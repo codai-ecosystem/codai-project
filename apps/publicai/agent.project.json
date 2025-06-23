@@ -1,0 +1,49 @@
+{
+  "name": "publicai",
+  "domain": "publicai.ro",
+  "description": "Civic AI & Transparency Tools",
+  "priority": 4,
+  "tier": "specialized",
+  "workspace": {
+    "type": "nextjs",
+    "framework": "Next.js 14",
+    "language": "TypeScript",
+    "styling": "TailwindCSS",
+    "database": "PostgreSQL",
+    "deployment": "Vercel"
+  },
+  "development": {
+    "port": 3004,
+    "hotReload": true,
+    "typeChecking": true,
+    "linting": true
+  },
+  "ai": {
+    "model": "claude-3.5-sonnet",
+    "context": "Civic AI & Transparency Tools. Focus on specialized tier development with priority 4.",
+    "capabilities": [
+      "web-development",
+      "typescript",
+      "nextjs",
+      "react"
+    ],
+    "restrictions": [
+      "no-breaking-changes",
+      "maintain-consistency"
+    ]
+  },
+  "integration": {
+    "monorepo": true,
+    "sharedPackages": [
+      "@codai/ui",
+      "@codai/config",
+      "@codai/auth"
+    ],
+    "apis": [
+      "api.codai.ro"
+    ],
+    "databases": [
+      "memorai.ro"
+    ]
+  }
+}

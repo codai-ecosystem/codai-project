@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "lastUpdated": "2025-06-23T15:00:32.637Z",
-  "totalApps": 10,
+  "lastUpdated": "2025-06-23T15:41:24.916Z",
+  "totalApps": 11,
   "apps": [
     {
       "name": "codai",
@@ -221,6 +221,23 @@
         "framework": "next.js",
         "language": "typescript",
         "styling": "tailwindcss"
+      }
+    },
+    {
+      "name": "publicai",
+      "domain": "publicai.ro",
+      "description": "Civic AI & Transparency Tools",
+      "type": "codai-app",
+      "tier": "specialized",
+      "priority": 4,
+      "status": "active",
+      "path": "apps/publicai",
+      "repository": "https://github.com/codai-ecosystem/publicai.git",
+      "lastUpdated": "2025-06-23T15:41:24.916Z",
+      "integration": {
+        "method": "local-creation",
+        "branch": "main",
+        "lastSync": "2025-06-23T15:41:24.916Z"
       }
     }
   ],

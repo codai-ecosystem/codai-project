@@ -12,21 +12,21 @@ const { execSync } = require('child_process');
 const MIGRATION_MAP = [
     {
         name: 'codai',
-        sourceRepo: 'dragoscv/AIDE',
+        sourceRepo: 'codai-ecosystem/codai',
         targetPath: 'apps/codai',
         description: 'AIDE AI Development Environment',
         copyMethod: 'clone-and-merge'
     },
     {
         name: 'memorai',
-        sourceRepo: 'dragoscv/memorai-mcp',
+        sourceRepo: 'codai-ecosystem/memorai',
         targetPath: 'apps/memorai',
         description: 'Memorai MCP Server',
         copyMethod: 'clone-and-merge'
     },
     {
         name: 'studiai',
-        sourceRepo: 'dragoscv/cursuri',
+        sourceRepo: 'codai-ecosystem/studiai',
         targetPath: 'apps/studiai',
         description: 'AI Education Platform (from cursuri)',
         copyMethod: 'clone-and-merge'

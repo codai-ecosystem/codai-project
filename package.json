@@ -4,6 +4,14 @@
     "version": "2.0.0",
     "type": "module",
     "description": "Codai OS - Hybrid orchestration system for the Codai ecosystem",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/codai-ecosystem/codai-project.git"
+    },
+    "homepage": "https://codai.ro",
+    "bugs": {
+        "url": "https://github.com/codai-ecosystem/codai-project/issues"
+    },
     "workspaces": [
         "services/*",
         "packages/*"
@@ -35,7 +43,8 @@
         "status:focus": "node scripts/dev-coordination.js focus status",
         "status:platform": "node scripts/dev-coordination.js platform status",
         "status:full": "node scripts/dev-coordination.js full status",
-        "validate-workspace": "node scripts/validate-workspace.js"
+        "validate-workspace": "node scripts/validate-workspace.js",
+        "update-org": "node scripts/update-organization-references.js"
     },
     "dependencies": {
         "chalk": "^5.3.0",

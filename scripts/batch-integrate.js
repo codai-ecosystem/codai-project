@@ -15,7 +15,7 @@ const CODAI_SERVICES = [
         domain: 'codai.ro',
         description: 'Central Platform & AIDE Hub',
         priority: 1,
-        sourceRepo: 'dragoscv/AIDE', // Source to copy from
+        sourceRepo: 'codai-ecosystem/codai', // Source repository in codai-ecosystem
         targetRepo: 'codai-ecosystem/codai',
         subdomains: ['aide.codai.ro', 'api.codai.ro', 'cdn.codai.ro', 'status.codai.ro'],
         tier: 'foundation'
@@ -25,7 +25,7 @@ const CODAI_SERVICES = [
         domain: 'memorai.ro',
         description: 'AI Memory & Database Core',
         priority: 1,
-        sourceRepo: 'dragoscv/memorai-mcp',
+        sourceRepo: 'codai-ecosystem/memorai',
         targetRepo: 'codai-ecosystem/memorai',
         subdomains: ['mcp.memorai.ro', 'local.memorai.ro'],
         tier: 'foundation'
@@ -75,7 +75,7 @@ const CODAI_SERVICES = [
         domain: 'studiai.ro',
         description: 'AI Education Platform',
         priority: 3,
-        sourceRepo: 'dragoscv/cursuri',
+        sourceRepo: 'codai-ecosystem/studiai',
         targetRepo: 'codai-ecosystem/studiai',
         subdomains: [],
         tier: 'user'

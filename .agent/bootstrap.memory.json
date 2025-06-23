@@ -1,0 +1,36 @@
+{
+    "bootstrapVersion": "2.0.0",
+    "completedAt": "2025-06-10T00:00:00Z",
+    "integratedApps": [],
+    "failedIntegrations": [],
+    "configuration": {
+        "turboVersion": "2.0.0",
+        "nodeVersion": "18.x",
+        "pnpmVersion": "8.x",
+        "orchestrationMethod": "monorepo-turbo"
+    },
+    "nextSteps": [
+        "Run pnpm install to initialize workspace",
+        "Execute pnpm dev to start development servers",
+        "Integrate first Codai app using provided commands",
+        "Validate workspace with pnpm validate-workspace"
+    ],
+    "validationChecklist": {
+        "rootStructure": true,
+        "packageConfiguration": true,
+        "workspaceSetup": true,
+        "ciConfiguration": true,
+        "vscodeSetup": true,
+        "agentSystem": true
+    },
+    "integrationTemplate": {
+        "gitSubtreeCommand": "git subtree add --prefix=apps/{app-name} https://github.com/codai/{app-name}-app.git main --squash",
+        "fallbackCommand": "git clone https://github.com/codai/{app-name}-app.git apps/{app-name} && rm -rf apps/{app-name}/.git",
+        "requiredFiles": [
+            "apps/{app-name}/agent.project.json",
+            "apps/{app-name}/copilot-instructions.md",
+            "apps/{app-name}/.agent/agent.memory.json",
+            "apps/{app-name}/.vscode/tasks.json"
+        ]
+    }
+}

@@ -1,0 +1,65 @@
+{
+    "$schema": "https://turborepo.org/schema.json",
+    "globalDependencies": [
+        "**/.env.*local"
+    ],
+    "globalEnv": [
+        "NODE_ENV",
+        "DATABASE_URL",
+        "NEXT_PUBLIC_*"
+    ],
+    "tasks": {
+        "dev": {
+            "cache": false,
+            "persistent": true,
+            "dependsOn": [
+                "^build"
+            ]
+        },
+        "build": {
+            "dependsOn": [
+                "^build"
+            ],
+            "outputs": [
+                ".next/**",
+                "dist/**",
+                "build/**",
+                "storybook-static/**"
+            ]
+        },
+        "test": {
+            "dependsOn": [
+                "build"
+            ],
+            "outputs": [
+                "coverage/**",
+                "test-results/**"
+            ]
+        },
+        "test:e2e": {
+            "dependsOn": [
+                "build"
+            ],
+            "outputs": [
+                "playwright-report/**",
+                "test-results/**"
+            ]
+        },
+        "lint": {
+            "dependsOn": [
+                "^build"
+            ],
+            "outputs": []
+        },
+        "typecheck": {
+            "dependsOn": [
+                "^build"
+            ],
+            "outputs": []
+        },
+        "clean": {
+            "cache": false,
+            "outputs": []
+        }
+    }
+}

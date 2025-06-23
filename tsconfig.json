@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@codai/shared": ["packages/shared/src"],
+      "@codai/ui": ["packages/ui/src"],
+      "@codai/config": ["packages/config/src"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+  "exclude": ["node_modules", "dist", "build", ".next"]
+}

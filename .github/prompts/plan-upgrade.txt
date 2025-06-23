@@ -1,0 +1,307 @@
+Here’s the **refactored and unified project overview** for the entire **Codai Ecosystem**, including proper linking between services, updated domain conventions, and descriptions of all current and future components:
+
+---
+
+# 🌐 Codai Ecosystem – The Open AI Infrastructure for the New Internet
+
+The Codai Ecosystem is a **modular, AI-native, open-source platform** of interconnected services designed to empower individuals, developers, organizations, and governments with intelligent, privacy-conscious, and programmable digital tools.
+
+> 💡 *"Everything is public code, but the business is private."*
+
+All projects are hosted under the [`codai-ecosystem`](https://github.com/codai-ecosystem) GitHub organization, owned by the `metu` enterprise.
+All code is published with the identity: `D C <dc@codai.ro>`.
+All NPM packages are published under the [`@codai`](https://www.npmjs.com/org/codai) organization.
+Security is top priority — every repo will integrate **enterprise-grade vulnerability checkers**.
+
+---
+
+## 🔷 1. `codai.ro` – **The Central Platform**
+
+**GitHub**: [codai-ecosystem/codai](https://github.com/codai-ecosystem/codai)
+**Live App**: `https://codai.ro`
+
+* Home of **AIDE**, your AI meta-agent development environment
+* Landing page for the Codai ecosystem and brand
+* Access point for:
+
+  * `aide.codai.ro`: Full interactive environment for conversational software creation
+  * `status.codai.ro`: Real-time system status + historical outages
+  * `cdn.codai.ro`: Global CDN for assets & packages
+  * `api.codai.ro`: Unified API gateway for developers
+
+### ✨ What is Codai?
+
+> “Build software just by talking.”
+
+* AI-first programming for solo devs and teams
+* SDKs, meta-agents, dev utilities
+* Powered by GPT-4o (Azure) and CodaiChain automation
+* Chat-driven, minimal, extensible
+
+---
+
+## 🧠 2. `aide.codai.ro` – **The AI-Native Development Interface**
+
+**GitHub**: [codai-ecosystem/AIDE](https://github.com/codai-ecosystem/AIDE)
+
+* Talk to AIDE, your collaborative AI builder
+* Integrated with `mod.codai.ro` to install automation modules
+* Access CodaiChain and real-time memory via `memorai.ro`
+* Deploy instantly to any subdomain with secure agent signing
+
+---
+
+## 🔒 3. `logai.ro` – **Identity & Access Control**
+
+**GitHub**: [codai-ecosystem/logai](https://github.com/codai-ecosystem/logai)
+
+* Unified authentication for the entire ecosystem
+* CodaiID: your smart identity (wallet, roles, reputation, preferences)
+* Role-based access, fraud detection, AI login optimization
+* Works with all apps: `wallet.bancai.ro`, `x.codai.ro`, `studiai.ro`, etc.
+
+---
+
+## 🏛 4. `kodex.codai.ro` – **CodaiChain Protocol & Governance Layer**
+
+**GitHub**: [codai-ecosystem/kodex](https://github.com/codai-ecosystem/kodex)
+
+* Core programmable rule engine for agent permissions, triggers, and logic
+* KODEX DSL for building reusable workflows
+* Smart contract registry, DAO governance, agent audit trails
+* Integrates with: `wallet.bancai.ro`, `x.codai.ro`, `marketai.ro`, and more
+
+---
+
+## 🔍 5. `explorer.codai.ro` – **AI Blockchain Explorer**
+
+**GitHub**: [codai-ecosystem/explorer](https://github.com/codai-ecosystem/explorer)
+
+* Human-readable, AI-explained transactions
+* Agent logs, wallet summaries, visual DAGs
+* Understand on-chain behavior, automation history, and outcomes
+
+---
+
+## 🧬 6. `id.codai.ro` – **Codai Identity & Reputation Layer**
+
+**GitHub**: [codai-ecosystem/id](https://github.com/codai-ecosystem/id)
+
+* View CodaiID, trust scores, agent access scopes
+* Ties together identity across `logai`, `kodex`, `marketai`, and `publicai`
+
+---
+
+## 🛍️ 7. `marketai.ro` – **Marketplace for AI Agents & Modules**
+
+**GitHub**: [codai-ecosystem/marketai](https://github.com/codai-ecosystem/marketai)
+
+* Sell and install agents, prompt packs, templates, datasets, UIs
+* Direct integration with:
+
+  * `mod.codai.ro`: Module builder
+  * `wallet.bancai.ro`: Purchases
+  * `kodex.codai.ro`: Permissions and license registry
+
+---
+
+## 🧱 8. `mod.codai.ro` – **Modular Automation Builder**
+
+**GitHub**: [codai-ecosystem/mod](https://github.com/codai-ecosystem/mod)
+
+* Build reusable modules (if-then automations, smart agents, UI blocks)
+* Publish to `marketai.ro`, use in `aide.codai.ro`
+
+---
+
+## 🔧 9. `tools.codai.ro` – **AI Utilities & Standalone Tools**
+
+**GitHub**: [codai-ecosystem/tools](https://github.com/codai-ecosystem/tools)
+
+* Hub of microtools: AI email writer, prompt tuner, image explainer, etc.
+* Fast to deploy, fun to use, powered by shared Codai agent core
+
+---
+
+## 📊 10. `analizai.ro` – **Insights & Diagnostics Layer**
+
+**GitHub**: [codai-ecosystem/analizai](https://github.com/codai-ecosystem/analizai)
+
+* Understand everything from wallet usage to agent performance
+* Personalized reports, trends, forecasts, RAG-based CSV analysis
+* Feeds into: `dash.codai.ro`, `ajutai.ro`, `wallet.bancai.ro`
+
+---
+
+## 📈 11. `dash.codai.ro` – **Visual Dashboards & Graphs**
+
+**GitHub**: [codai-ecosystem/dash](https://github.com/codai-ecosystem/dash)
+
+* Drag-and-drop widgets for business KPIs, finance stats, agent behavior
+* White-label support for `fabricai.ro` customers
+
+---
+
+## 📦 12. `stocai.ro` – **Codai Storage & Vector Memory**
+
+**GitHub**: [codai-ecosystem/stocai](https://github.com/codai-ecosystem/stocai)
+
+* Store files, documents, vectors, knowledge bases
+* Powers memory for agents across Codai
+* Integrated with: `memorai.ro`, `ajutai.ro`, `studiai.ro`
+
+---
+
+## 🧠 13. `memorai.ro` – **AI Memory & Database Core**
+
+**GitHub**: [codai-ecosystem/memorai](https://github.com/codai-ecosystem/memorai)
+
+* AI-native memory orchestration platform
+* Supports cloud (`mcp.memorai.ro`) and local (`local.memorai.ro`) servers
+* Used internally across all services for persistent agent memory
+
+---
+
+## ⚖️ 14. `legalizai.ro` – **AI Legal & Compliance Agent**
+
+**GitHub**: [codai-ecosystem/legalizai](https://github.com/codai-ecosystem/legalizai)
+
+* Generate contracts, explain clauses, check GDPR/AML
+* Integrated with: `wallet.bancai.ro`, `ajutai.ro`, `kodex.codai.ro`, `publicai.ro`
+
+---
+
+## 🆘 15. `ajutai.ro` – **Support, Docs & Copilot UI**
+
+**GitHub**: [codai-ecosystem/ajutai](https://github.com/codai-ecosystem/ajutai)
+
+* Docs, support chat, onboarding copilot, dev helper
+* Fully integrated across all subdomains
+* Uses `logai`, `memorai`, and `stocai` for personalized help
+
+---
+
+## 🧾 16. `admin.codai.ro` – **Internal Admin & Service Health Dashboard**
+
+**GitHub**: [codai-ecosystem/admin](https://github.com/codai-ecosystem/admin)
+
+* Monitor, manage, secure the entire Codai infrastructure
+* Control notifications, updates, licenses
+
+---
+
+## 🔗 17. `hub.codai.ro` – **Codai Integration & Automation Center**
+
+**GitHub**: [codai-ecosystem/hub](https://github.com/codai-ecosystem/hub)
+
+* Build and manage external service integrations
+* Zapier-style workflows with Codai agents
+* Connect to Notion, Discord, WhatsApp, Google Workspace, etc.
+
+---
+
+## 📚 18. `docs.codai.ro` – **Developer Docs & SDK Guides**
+
+**GitHub**: [codai-ecosystem/docs](https://github.com/codai-ecosystem/docs)
+
+* Centralized documentation for the whole Codai ecosystem
+* Auto-generated and human-curated
+
+---
+
+## 💰 19. `bancai.ro` – **Financial Engine & KYC Core**
+
+**GitHub**: [codai-ecosystem/bancai](https://github.com/codai-ecosystem/bancai)
+
+* Embedded finance layer: KYC, compliance, API monetization
+* Used by: `wallet.bancai.ro`, `x.codai.ro`, `fabricai.ro`
+
+---
+
+## 💳 20. `wallet.bancai.ro` – **Smart Programmable Wallet**
+
+**GitHub**: [codai-ecosystem/wallet](https://github.com/codai-ecosystem/wallet)
+
+* Multi-currency wallet (crypto + fiat)
+* Agent-controlled automations
+* QR pay, programmable rules, spending categories
+
+---
+
+## 📉 21. `x.codai.ro` – **AI Trading & Swapping Platform**
+
+**GitHub**: [codai-ecosystem/x](https://github.com/codai-ecosystem/x)
+
+* Unified interface for spot, margin, crypto, DeFi, forex
+* GPT signal engine, strategy builder, social trading
+* Integrated with `wallet`, `kodex`, `logai`
+
+---
+
+## 🧠 22. `studiai.ro` – **AI-Powered Learning & Education**
+
+**GitHub**: [codai-ecosystem/studiai](https://github.com/codai-ecosystem/studiai)
+
+* Adaptive tutors, curriculum generation, parent dashboards
+* Neurodivergent-friendly UX
+* Reuses code from [`dragoscv/cursuri`](https://github.com/dragoscv/cursuri)
+
+---
+
+## 📣 23. `publicai.ro` – **Civic Tech & Transparency Tools**
+
+**GitHub**: [codai-ecosystem/publicai](https://github.com/codai-ecosystem/publicai)
+
+* Agentul Digital al Poporului, public budget map, FOIA tools
+* Crowd-powered petitions, civic dashboards
+* Powered by `kodex`, `ajutai`, `logai`, `analizai`
+
+---
+
+## 🎭 24. `sociai.ro` – **AI-Enhanced Social Platform**
+
+**GitHub**: [codai-ecosystem/sociai](https://github.com/codai-ecosystem/sociai)
+
+* Personalized feeds, digital twins, emotional AI agents
+* Sync social content, enhance identity, explore self
+* Visual & creative AI integrated
+
+---
+
+## 🛒 25. `cumparai.ro` – **AI Shopping & Recommender Platform**
+
+**GitHub**: [codai-ecosystem/cumparai](https://github.com/codai-ecosystem/cumparai)
+
+* Smart product finders, dynamic pricing, affiliate search engine
+* Shopping agent, Stripe-integrated checkout
+* Can work as WooCommerce-style standalone or cloud SaaS
+
+---
+
+## 🧘 26. `jucai.ro` – **The AI-Native Game Platform & Marketplace**
+
+**GitHub**: [codai-ecosystem/metu](https://github.com/codai-ecosystem/jucai)
+
+* Anyone can build AI-native games with Codai
+* Games can feature living agents, programmable economies, and decentralized logic
+* Integrated with: `memorai`, `stocai`, `analizai`, `wallet`
+
+---
+
+## 🧘 26. `metu.ro` – **Personal Flow, Journaling & Focus Agent**
+
+**GitHub**: [codai-ecosystem/metu](https://github.com/codai-ecosystem/metu)
+
+* Daily planner, mood tracking, motivational agent
+* ADHD-friendly tools, “talk to future you” chat
+* Integrated with: `memorai`, `stocai`, `analizai`, `wallet`, `marketai`, `mod`, `kodex`, `dash`
+
+---
+
+Let me know when you're ready to:
+
+* Build a **homepage for codai.ro** linking all services
+* Auto-generate the ecosystem map as SVG
+* Scaffold any missing repo structure or setup CI/CD workflows
+
+You're ready to lead the future of **open-source AI infrastructure**. This structure is enterprise-grade, future-proof, and incredibly inspiring.

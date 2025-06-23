@@ -1,0 +1,38 @@
+{
+    "name": "codai-project",
+    "private": true,
+    "version": "0.1.0",
+    "description": "Codai OS - Meta-orchestration system for the Codai ecosystem",
+    "workspaces": [
+        "apps/*",
+        "packages/*"
+    ],
+    "scripts": {
+        "dev": "turbo run dev",
+        "build": "turbo run build",
+        "test": "turbo run test",
+        "lint": "turbo run lint",
+        "typecheck": "turbo run typecheck",
+        "clean": "turbo run clean",
+        "bootstrap": "pnpm install && turbo run build --filter=...@codai/shared",
+        "changeset": "changeset",
+        "version-packages": "changeset version",
+        "release": "turbo run build && changeset publish",
+        "integrate-app": "node scripts/integrate-app.js",
+        "sync-apps": "node scripts/sync-apps.js",
+        "validate-workspace": "node scripts/validate-workspace.js"
+    },
+    "devDependencies": {
+        "turbo": "^2.0.0",
+        "@changesets/cli": "^2.27.0",
+        "typescript": "^5.3.0",
+        "prettier": "^3.1.0",
+        "eslint": "^8.55.0",
+        "@types/node": "^20.10.0"
+    },
+    "engines": {
+        "node": ">=18.0.0",
+        "pnpm": ">=8.0.0"
+    },
+    "packageManager": "pnpm@8.15.0"
+}

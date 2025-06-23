@@ -1,0 +1,26 @@
+{
+    "profile": "orchestrator",
+    "activeApp": null,
+    "workspaceMode": "global",
+    "memoryPath": ".agent/global.memory.json",
+    "capabilities": [
+        "cross-app-coordination",
+        "shared-package-management",
+        "deployment-orchestration",
+        "integration-management",
+        "workspace-validation"
+    ],
+    "preferences": {
+        "defaultApp": "ajutai",
+        "autoSync": true,
+        "parallelBuilds": true,
+        "errorRecovery": true,
+        "auditLogging": true
+    },
+    "configuration": {
+        "turboVersion": "2.0.0",
+        "nodeVersion": "18.x",
+        "pnpmVersion": "8.x",
+        "integrationMethod": "git-subtree"
+    }
+}

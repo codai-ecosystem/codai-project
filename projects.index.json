@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-06-23T14:58:48.320Z",
+  "totalApps": 0,
+  "apps": [],
+  "packages": [],
+  "metadata": {
+    "nodeVersion": ">=18.0.0",
+    "pnpmVersion": ">=8.0.0",
+    "platform": "multi-platform",
+    "orchestrationVersion": "2.0.0",
+    "integrationType": "git-subtree"
+  }
+}

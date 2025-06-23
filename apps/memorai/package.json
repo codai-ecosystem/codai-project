@@ -9,8 +9,8 @@
     "apps/*"
   ],
   "scripts": {
-    "build": "turbo build",
-    "build:all": "turbo build",
+    "build": "pnpm run --parallel --filter ./packages/* build && pnpm run --parallel --filter ./apps/* build",
+    "build:all": "pnpm run build",
     "dev": "turbo dev",
     "test": "turbo test",
     "test:watch": "turbo test:watch",

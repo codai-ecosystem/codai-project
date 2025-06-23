@@ -1,0 +1,36 @@
+[submodule "services/codai"]
+	path = services/codai
+	url = https://github.com/codai-ecosystem/codai.git
+[submodule "services/memorai"]
+	path = services/memorai
+	url = https://github.com/codai-ecosystem/memorai.git
+[submodule "services/studiai"]
+	path = services/studiai
+	url = https://github.com/codai-ecosystem/studiai.git
+[submodule "services/templates"]
+	path = services/templates
+	url = https://github.com/codai-ecosystem/templates.git
+[submodule "services/logai"]
+	path = services/logai
+	url = https://github.com/codai-ecosystem/logai.git
+[submodule "services/bancai"]
+	path = services/bancai
+	url = https://github.com/codai-ecosystem/bancai.git
+[submodule "services/wallet"]
+	path = services/wallet
+	url = https://github.com/codai-ecosystem/wallet.git
+[submodule "services/fabricai"]
+	path = services/fabricai
+	url = https://github.com/codai-ecosystem/fabricai.git
+[submodule "services/sociai"]
+	path = services/sociai
+	url = https://github.com/codai-ecosystem/sociai.git
+[submodule "services/cumparai"]
+	path = services/cumparai
+	url = https://github.com/codai-ecosystem/cumparai.git
+[submodule "services/publicai"]
+	path = services/publicai
+	url = https://github.com/codai-ecosystem/publicai.git
+[submodule "services/x"]
+	path = services/x
+	url = https://github.com/codai-ecosystem/x.git

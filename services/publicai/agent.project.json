@@ -1,0 +1,46 @@
+{
+  "name": "PublicAI",
+  "description": "Civic AI Tools and Public Transparency Platform",
+  "version": "0.1.0",
+  "type": "service",
+  "priority": 4,
+  "domain": "publicai.ro",
+  "serviceType": "civic-tech",
+  "port": 3009,
+  "framework": "next.js",
+  "language": "typescript",
+  "aiCapabilities": {
+    "memory": true,
+    "reasoning": true,
+    "planning": true,
+    "codeGeneration": false,
+    "transparencyTools": true,
+    "publicDataAnalysis": true
+  },
+  "dependencies": [
+    "memorai",
+    "logai"
+  ],
+  "relatedServices": [
+    "memorai",
+    "logai",
+    "codai"
+  ],
+  "developmentStatus": "scaffolding",
+  "features": [
+    "Public Data Transparency",
+    "Civic Engagement Tools",
+    "Government AI Interface",
+    "Public Service Automation",
+    "Democratic Participation Platform"
+  ],
+  "lastUpdated": "2025-06-23T21:45:00.000Z",
+  "owner": "codai-ecosystem",
+  "repository": "https://github.com/codai-ecosystem/publicai", 
+  "documentation": "docs/publicai/README.md",
+  "deployment": {
+    "production": "https://publicai.ro",
+    "staging": "https://staging.publicai.ro",
+    "development": "http://localhost:3009"
+  }
+}

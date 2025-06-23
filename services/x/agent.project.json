@@ -1,0 +1,25 @@
+{
+  "name": "X",
+  "description": "AI Trading Platform for Advanced Financial Operations",
+  "version": "0.1.0",
+  "type": "service",
+  "priority": 4,
+  "domain": "x.codai.ro",
+  "serviceType": "trading",
+  "port": 3008,
+  "framework": "next.js",
+  "language": "typescript",
+  "aiCapabilities": {
+    "memory": true,
+    "reasoning": true,
+    "planning": true,
+    "codeGeneration": true
+  },
+  "dependencies": [],
+  "relatedServices": [],
+  "developmentStatus": "scaffolding",
+  "lastUpdated": "2025-06-23T18:33:45.935Z",
+  "owner": "codai-ecosystem",
+  "repository": "https://github.com/codai-ecosystem/x",
+  "documentation": "docs/x/README.md"
+}

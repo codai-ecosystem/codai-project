@@ -1,0 +1,25 @@
+{
+  "name": "BancAI",
+  "description": "AI-Powered Financial Platform for Modern Banking",
+  "version": "0.1.0",
+  "type": "service",
+  "priority": 2,
+  "domain": "bancai.ro",
+  "serviceType": "fintech",
+  "port": 3003,
+  "framework": "next.js",
+  "language": "typescript",
+  "aiCapabilities": {
+    "memory": true,
+    "reasoning": true,
+    "planning": true,
+    "codeGeneration": true
+  },
+  "dependencies": [],
+  "relatedServices": [],
+  "developmentStatus": "scaffolding",
+  "lastUpdated": "2025-06-23T18:33:45.923Z",
+  "owner": "codai-ecosystem",
+  "repository": "https://github.com/codai-ecosystem/bancai",
+  "documentation": "docs/bancai/README.md"
+}

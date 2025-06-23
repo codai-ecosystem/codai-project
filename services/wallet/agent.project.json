@@ -1,0 +1,25 @@
+{
+  "name": "Wallet",
+  "description": "Programmable Wallet for BancAI Financial Services",
+  "version": "0.1.0",
+  "type": "service",
+  "priority": 2,
+  "domain": "wallet.bancai.ro",
+  "serviceType": "fintech-wallet",
+  "port": 3004,
+  "framework": "next.js",
+  "language": "typescript",
+  "aiCapabilities": {
+    "memory": true,
+    "reasoning": true,
+    "planning": true,
+    "codeGeneration": true
+  },
+  "dependencies": [],
+  "relatedServices": [],
+  "developmentStatus": "scaffolding",
+  "lastUpdated": "2025-06-23T18:33:45.925Z",
+  "owner": "codai-ecosystem",
+  "repository": "https://github.com/codai-ecosystem/wallet",
+  "documentation": "docs/wallet/README.md"
+}

@@ -1,0 +1,25 @@
+{
+  "name": "CumparAI",
+  "description": "AI-Powered Shopping and Marketplace Platform",
+  "version": "0.1.0",
+  "type": "service",
+  "priority": 3,
+  "domain": "cumparai.ro",
+  "serviceType": "ecommerce",
+  "port": 3007,
+  "framework": "next.js",
+  "language": "typescript",
+  "aiCapabilities": {
+    "memory": true,
+    "reasoning": true,
+    "planning": true,
+    "codeGeneration": true
+  },
+  "dependencies": [],
+  "relatedServices": [],
+  "developmentStatus": "scaffolding",
+  "lastUpdated": "2025-06-23T18:33:45.933Z",
+  "owner": "codai-ecosystem",
+  "repository": "https://github.com/codai-ecosystem/cumparai",
+  "documentation": "docs/cumparai/README.md"
+}

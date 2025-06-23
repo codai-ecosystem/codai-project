@@ -11,7 +11,7 @@
         "workspace-validation"
     ],
     "preferences": {
-        "defaultApp": "ajutai",
+        "defaultApp": "codai",
         "autoSync": true,
         "parallelBuilds": true,
         "errorRecovery": true,

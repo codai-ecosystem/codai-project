@@ -81,7 +81,7 @@ export default function Dashboard() {
     <div className="space-y-6">
       {/* Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-lg shadow p-6 border">
+        <div className="bg-white rounded-lg shadow-md p-6 border">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">Total Services</p>
@@ -96,7 +96,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6 border">
+        <div className="bg-white rounded-lg shadow-md p-6 border">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">Active Users</p>
@@ -111,7 +111,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6 border">
+        <div className="bg-white rounded-lg shadow-md p-6 border">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">Total Requests</p>
@@ -126,7 +126,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6 border">
+        <div className="bg-white rounded-lg shadow-md p-6 border">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">System Health</p>
@@ -143,31 +143,24 @@ export default function Dashboard() {
       </div>
 
       {/* Filter Tabs */}
-      <div className="bg-white rounded-lg shadow border">
+      <div className="bg-white rounded-lg shadow-md border">
         <div className="p-6 border-b">
-          <h3 className="text-lg font-semibold text-gray-900">Service Status</h3>
-          <div className="mt-4 flex space-x-1">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Service Status</h3>
+          <div className="flex flex-wrap gap-2">
             {['all', 'foundation', 'business', 'specialized'].map((tier) => (
               <button
                 key={tier}
                 onClick={() => setSelectedTier(tier)}
-                className={`px-3 py-2 text-sm font-medium rounded-md ${
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
                   selectedTier === tier
                     ? 'bg-blue-100 text-blue-700 border border-blue-300'
-                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100 border border-gray-200'
                 }`}
               >
                 {tier.charAt(0).toUpperCase() + tier.slice(1)}
-                {tier !== 'all' && (
-                  <span className="ml-2 bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full text-xs">
-                    {services.filter(s => s.tier === tier).length}
-                  </span>
-                )}
-                {tier === 'all' && (
-                  <span className="ml-2 bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full text-xs">
-                    {services.length}
-                  </span>
-                )}
+                <span className="ml-2 bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full text-xs">
+                  {tier === 'all' ? services.length : services.filter(s => s.tier === tier).length}
+                </span>
               </button>
             ))}
           </div>
@@ -204,7 +197,7 @@ export default function Dashboard() {
                     </span>
                   </div>
                 </div>
-                <button className="w-full mt-4 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 transition-colors">
+                <button className="w-full mt-4 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
                   Manage Service
                 </button>
               </div>

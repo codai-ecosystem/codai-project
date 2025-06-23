@@ -1,0 +1,33 @@
+{
+  "name": "cumparai",
+  "domain": "cumparai.ro",
+  "description": "AI Shopping Platform",
+  "type": "codai-app",
+  "tier": "user",
+  "priority": 3,
+  "version": "1.0.0",
+  "lastUpdated": "2025-06-23T15:00:29.229Z",
+  "status": "integrated",
+  "repository": "https://github.com/codai-ecosystem/cumparai.git",
+  "localPath": "apps/cumparai",
+  "subdomains": [],
+  "dependencies": [],
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "test": "jest",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "ports": {
+    "dev": 3030,
+    "preview": 3031
+  },
+  "environment": {
+    "nodeVersion": ">=18.0.0",
+    "requiredEnvVars": [
+      "NEXT_PUBLIC_API_URL",
+      "NEXT_PUBLIC_APP_NAME"
+    ]
+  }
+}

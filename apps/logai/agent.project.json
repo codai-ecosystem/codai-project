@@ -1,0 +1,33 @@
+{
+  "name": "logai",
+  "domain": "logai.ro",
+  "description": "Identity & Authentication Hub",
+  "type": "codai-app",
+  "tier": "foundation",
+  "priority": 1,
+  "version": "1.0.0",
+  "lastUpdated": "2025-06-23T15:00:12.723Z",
+  "status": "integrated",
+  "repository": "https://github.com/codai-ecosystem/logai.git",
+  "localPath": "apps/logai",
+  "subdomains": [],
+  "dependencies": [],
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "test": "jest",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "ports": {
+    "dev": 3010,
+    "preview": 3011
+  },
+  "environment": {
+    "nodeVersion": ">=18.0.0",
+    "requiredEnvVars": [
+      "NEXT_PUBLIC_API_URL",
+      "NEXT_PUBLIC_APP_NAME"
+    ]
+  }
+}

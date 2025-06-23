@@ -1,0 +1,33 @@
+{
+  "name": "fabricai",
+  "domain": "fabricai.ro",
+  "description": "AI Services Platform",
+  "type": "codai-app",
+  "tier": "business",
+  "priority": 2,
+  "version": "1.0.0",
+  "lastUpdated": "2025-06-23T15:00:21.080Z",
+  "status": "integrated",
+  "repository": "https://github.com/codai-ecosystem/fabricai.git",
+  "localPath": "apps/fabricai",
+  "subdomains": [],
+  "dependencies": [],
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "test": "jest",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "ports": {
+    "dev": 3020,
+    "preview": 3021
+  },
+  "environment": {
+    "nodeVersion": ">=18.0.0",
+    "requiredEnvVars": [
+      "NEXT_PUBLIC_API_URL",
+      "NEXT_PUBLIC_APP_NAME"
+    ]
+  }
+}

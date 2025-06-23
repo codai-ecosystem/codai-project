@@ -1,8 +1,229 @@
 {
   "version": "1.0.0",
-  "lastUpdated": "2025-06-23T14:58:48.320Z",
-  "totalApps": 0,
-  "apps": [],
+  "lastUpdated": "2025-06-23T15:00:32.637Z",
+  "totalApps": 10,
+  "apps": [
+    {
+      "name": "codai",
+      "domain": "codai.ro",
+      "description": "Central Platform & AIDE Hub",
+      "type": "codai-app",
+      "tier": "foundation",
+      "priority": 1,
+      "status": "active",
+      "path": "apps/codai",
+      "repository": "https://github.com/codai-ecosystem/codai.git",
+      "lastUpdated": "2025-06-23T15:00:32.637Z",
+      "integration": {
+        "method": "git-subtree",
+        "branch": "main",
+        "lastSync": "2025-06-23T15:00:32.637Z"
+      },
+      "metadata": {
+        "framework": "next.js",
+        "language": "typescript",
+        "styling": "tailwindcss"
+      }
+    },
+    {
+      "name": "memorai",
+      "domain": "memorai.ro",
+      "description": "AI Memory & Database Core",
+      "type": "codai-app",
+      "tier": "foundation",
+      "priority": 1,
+      "status": "active",
+      "path": "apps/memorai",
+      "repository": "https://github.com/codai-ecosystem/memorai.git",
+      "lastUpdated": "2025-06-23T15:00:32.637Z",
+      "integration": {
+        "method": "git-subtree",
+        "branch": "main",
+        "lastSync": "2025-06-23T15:00:32.637Z"
+      },
+      "metadata": {
+        "framework": "next.js",
+        "language": "typescript",
+        "styling": "tailwindcss"
+      }
+    },
+    {
+      "name": "logai",
+      "domain": "logai.ro",
+      "description": "Identity & Authentication Hub",
+      "type": "codai-app",
+      "tier": "foundation",
+      "priority": 1,
+      "status": "active",
+      "path": "apps/logai",
+      "repository": "https://github.com/codai-ecosystem/logai.git",
+      "lastUpdated": "2025-06-23T15:00:32.637Z",
+      "integration": {
+        "method": "git-subtree",
+        "branch": "main",
+        "lastSync": "2025-06-23T15:00:32.637Z"
+      },
+      "metadata": {
+        "framework": "next.js",
+        "language": "typescript",
+        "styling": "tailwindcss"
+      }
+    },
+    {
+      "name": "bancai",
+      "domain": "bancai.ro",
+      "description": "Financial Platform",
+      "type": "codai-app",
+      "tier": "business",
+      "priority": 2,
+      "status": "active",
+      "path": "apps/bancai",
+      "repository": "https://github.com/codai-ecosystem/bancai.git",
+      "lastUpdated": "2025-06-23T15:00:32.637Z",
+      "integration": {
+        "method": "git-subtree",
+        "branch": "main",
+        "lastSync": "2025-06-23T15:00:32.637Z"
+      },
+      "metadata": {
+        "framework": "next.js",
+        "language": "typescript",
+        "styling": "tailwindcss"
+      }
+    },
+    {
+      "name": "wallet",
+      "domain": "wallet.bancai.ro",
+      "description": "Programmable Wallet",
+      "type": "codai-app",
+      "tier": "business",
+      "priority": 2,
+      "status": "active",
+      "path": "apps/wallet",
+      "repository": "https://github.com/codai-ecosystem/wallet.git",
+      "lastUpdated": "2025-06-23T15:00:32.637Z",
+      "integration": {
+        "method": "git-subtree",
+        "branch": "main",
+        "lastSync": "2025-06-23T15:00:32.637Z"
+      },
+      "metadata": {
+        "framework": "next.js",
+        "language": "typescript",
+        "styling": "tailwindcss"
+      }
+    },
+    {
+      "name": "fabricai",
+      "domain": "fabricai.ro",
+      "description": "AI Services Platform",
+      "type": "codai-app",
+      "tier": "business",
+      "priority": 2,
+      "status": "active",
+      "path": "apps/fabricai",
+      "repository": "https://github.com/codai-ecosystem/fabricai.git",
+      "lastUpdated": "2025-06-23T15:00:32.637Z",
+      "integration": {
+        "method": "git-subtree",
+        "branch": "main",
+        "lastSync": "2025-06-23T15:00:32.637Z"
+      },
+      "metadata": {
+        "framework": "next.js",
+        "language": "typescript",
+        "styling": "tailwindcss"
+      }
+    },
+    {
+      "name": "studiai",
+      "domain": "studiai.ro",
+      "description": "AI Education Platform",
+      "type": "codai-app",
+      "tier": "user",
+      "priority": 3,
+      "status": "active",
+      "path": "apps/studiai",
+      "repository": "https://github.com/codai-ecosystem/studiai.git",
+      "lastUpdated": "2025-06-23T15:00:32.637Z",
+      "integration": {
+        "method": "git-subtree",
+        "branch": "main",
+        "lastSync": "2025-06-23T15:00:32.637Z"
+      },
+      "metadata": {
+        "framework": "next.js",
+        "language": "typescript",
+        "styling": "tailwindcss"
+      }
+    },
+    {
+      "name": "sociai",
+      "domain": "sociai.ro",
+      "description": "AI Social Platform",
+      "type": "codai-app",
+      "tier": "user",
+      "priority": 3,
+      "status": "active",
+      "path": "apps/sociai",
+      "repository": "https://github.com/codai-ecosystem/sociai.git",
+      "lastUpdated": "2025-06-23T15:00:32.637Z",
+      "integration": {
+        "method": "git-subtree",
+        "branch": "main",
+        "lastSync": "2025-06-23T15:00:32.637Z"
+      },
+      "metadata": {
+        "framework": "next.js",
+        "language": "typescript",
+        "styling": "tailwindcss"
+      }
+    },
+    {
+      "name": "cumparai",
+      "domain": "cumparai.ro",
+      "description": "AI Shopping Platform",
+      "type": "codai-app",
+      "tier": "user",
+      "priority": 3,
+      "status": "active",
+      "path": "apps/cumparai",
+      "repository": "https://github.com/codai-ecosystem/cumparai.git",
+      "lastUpdated": "2025-06-23T15:00:32.637Z",
+      "integration": {
+        "method": "git-subtree",
+        "branch": "main",
+        "lastSync": "2025-06-23T15:00:32.637Z"
+      },
+      "metadata": {
+        "framework": "next.js",
+        "language": "typescript",
+        "styling": "tailwindcss"
+      }
+    },
+    {
+      "name": "x",
+      "domain": "x.codai.ro",
+      "description": "AI Trading Platform",
+      "type": "codai-app",
+      "tier": "specialized",
+      "priority": 4,
+      "status": "active",
+      "path": "apps/x",
+      "repository": "https://github.com/codai-ecosystem/x.git",
+      "lastUpdated": "2025-06-23T15:00:32.637Z",
+      "integration": {
+        "method": "git-subtree",
+        "branch": "main",
+        "lastSync": "2025-06-23T15:00:32.637Z"
+      },
+      "metadata": {
+        "framework": "next.js",
+        "language": "typescript",
+        "styling": "tailwindcss"
+      }
+    }
+  ],
   "packages": [],
   "metadata": {
     "nodeVersion": ">=18.0.0",

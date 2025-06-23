@@ -1,0 +1,33 @@
+{
+  "name": "wallet",
+  "domain": "wallet.bancai.ro",
+  "description": "Programmable Wallet",
+  "type": "codai-app",
+  "tier": "business",
+  "priority": 2,
+  "version": "1.0.0",
+  "lastUpdated": "2025-06-23T15:00:18.426Z",
+  "status": "integrated",
+  "repository": "https://github.com/codai-ecosystem/wallet.git",
+  "localPath": "apps/wallet",
+  "subdomains": [],
+  "dependencies": [],
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "test": "jest",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "ports": {
+    "dev": 3020,
+    "preview": 3021
+  },
+  "environment": {
+    "nodeVersion": ">=18.0.0",
+    "requiredEnvVars": [
+      "NEXT_PUBLIC_API_URL",
+      "NEXT_PUBLIC_APP_NAME"
+    ]
+  }
+}

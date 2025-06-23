@@ -1,0 +1,33 @@
+{
+  "name": "x",
+  "domain": "x.codai.ro",
+  "description": "AI Trading Platform",
+  "type": "codai-app",
+  "tier": "specialized",
+  "priority": 4,
+  "version": "1.0.0",
+  "lastUpdated": "2025-06-23T15:00:32.635Z",
+  "status": "integrated",
+  "repository": "https://github.com/codai-ecosystem/x.git",
+  "localPath": "apps/x",
+  "subdomains": [],
+  "dependencies": [],
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "test": "jest",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "ports": {
+    "dev": 3040,
+    "preview": 3041
+  },
+  "environment": {
+    "nodeVersion": ">=18.0.0",
+    "requiredEnvVars": [
+      "NEXT_PUBLIC_API_URL",
+      "NEXT_PUBLIC_APP_NAME"
+    ]
+  }
+}

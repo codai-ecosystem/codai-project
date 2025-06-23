@@ -1,0 +1,36 @@
+{
+  "name": "memorai",
+  "domain": "memorai.ro",
+  "description": "AI Memory & Database Core",
+  "type": "codai-app",
+  "tier": "foundation",
+  "priority": 1,
+  "version": "1.0.0",
+  "lastUpdated": "2025-06-23T15:00:10.038Z",
+  "status": "integrated",
+  "repository": "https://github.com/codai-ecosystem/memorai.git",
+  "localPath": "apps/memorai",
+  "subdomains": [
+    "mcp.memorai.ro",
+    "local.memorai.ro"
+  ],
+  "dependencies": [],
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "test": "jest",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "ports": {
+    "dev": 3010,
+    "preview": 3011
+  },
+  "environment": {
+    "nodeVersion": ">=18.0.0",
+    "requiredEnvVars": [
+      "NEXT_PUBLIC_API_URL",
+      "NEXT_PUBLIC_APP_NAME"
+    ]
+  }
+}

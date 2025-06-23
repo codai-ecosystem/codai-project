@@ -9,9 +9,21 @@
     "build": "next build",
     "start": "next start -p 3003",
     "lint": "next lint",
+    "lint:fix": "next lint --fix",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "type-check": "tsc --noEmit"
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
+    "type-check": "tsc --noEmit",
+    "docker:build": "docker build -t bancai:latest .",
+    "docker:run": "docker run -p 3003:3003 bancai:latest",
+    "docker:compose": "docker-compose up -d",
+    "docker:compose:down": "docker-compose down",
+    "health": "curl -f http://localhost:3003/api/health || exit 1",
+    "clean": "rm -rf .next && rm -rf node_modules/.cache"
   },
   "dependencies": {
     "next": "^14.0.0",
@@ -29,7 +41,8 @@
     "eslint": "^8.0.0",
     "eslint-config-next": "^14.0.0",
     "vitest": "^1.0.0",
-    "@vitejs/plugin-react": "^4.0.0"
+    "@vitejs/plugin-react": "^4.0.0",
+    "@playwright/test": "^1.40.0"
   },
   "engines": {
     "node": ">=18.0.0",

@@ -1,9 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    // Enable React Server Components
-    serverComponentsExternalPackages: [],
-  },
+  // Server external packages (moved from experimental)
+  serverExternalPackages: [],
   // Environment variables
   env: {
     CUSTOM_KEY: process.env.CUSTOM_KEY,

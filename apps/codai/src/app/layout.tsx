@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 import { ReactNode } from 'react'
+import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Codai - Codai Ecosystem',
-  description: 'Central Platform & AIDE Hub',
+  title: 'Codai - Central Platform',
+  description: 'AI-Driven Ecosystem Orchestration & Management Hub',
 }
 
 export default function RootLayout({

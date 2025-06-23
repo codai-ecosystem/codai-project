@@ -1,0 +1,33 @@
+{
+  "name": "memorai",
+  "description": "Enterprise-grade memory management for AI agents",
+  "version": "2.0.8",
+  "checkCompatibility": false,
+  "server": {
+    "command": "memorai-mcp",
+    "args": [],
+    "env": {
+      "MEMORAI_STORAGE_TYPE": "memory",
+      "MEMORAI_LOG_LEVEL": "info",
+      "WEB_PORT": "6366"
+    }
+  },
+  "capabilities": [
+    "memory_management",
+    "knowledge_graph",
+    "semantic_search",
+    "entity_relations",
+    "observations",
+    "multi_tenant",
+    "web_dashboard"
+  ],
+  "dashboard": {
+    "enabled": true,
+    "port": 6366,
+    "url": "http://localhost:6366",
+    "auto_start": true
+  },
+  "requirements": {
+    "node": ">=20.0.0"
+  }
+}

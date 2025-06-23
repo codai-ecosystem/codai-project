@@ -1,0 +1,12 @@
+export { default as PlayIcon } from './PlayIcon';
+export { default as PauseIcon } from './PauseIcon';
+export { default as RewindIcon } from './RewindIcon';
+export { default as ForwardIcon } from './ForwardIcon';
+export { default as CheckIcon } from './CheckIcon';
+export { default as FullscreenIcon } from './FullscreenIcon';
+export { default as ExitFullscreenIcon } from './ExitFullscreenIcon';
+export { default as PlaybackSpeedIcon } from './PlaybackSpeedIcon';
+export { default as SaveIcon } from './SaveIcon';
+export { default as QuestionAnswerIcon } from './QuestionAnswerIcon';
+export { default as ReplyIcon } from './ReplyIcon';
+export { default as LikeIcon } from './LikeIcon';

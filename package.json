@@ -38,6 +38,12 @@
         "open:focus": "node scripts/dev-coordination.js focus",
         "open:platform": "node scripts/dev-coordination.js platform",
         "open:full": "node scripts/dev-coordination.js full",
+        "push-scaffolded": "node scripts/push-remaining-scaffolded.js",
+        "verify-repos": "node scripts/verify-repositories.js",
+        "integrate-all-repos": "node scripts/integrate-all-repositories.js",
+        "scaffold-empty-repos": "node scripts/scaffold-empty-repositories.js",
+        "push-all-repos": "node scripts/push-all-29-repositories.js",
+        "verify-all-repos": "node scripts/verify-all-29-repositories.js",
         "dev:focus": "node scripts/dev-coordination.js focus dev",
         "dev:platform": "node scripts/dev-coordination.js platform dev",
         "status:focus": "node scripts/dev-coordination.js focus status",
@@ -45,7 +51,8 @@
         "status:full": "node scripts/dev-coordination.js full status",
         "validate-workspace": "node scripts/validate-workspace.js",
         "update-org": "node scripts/update-organization-references.js",
-        "push-scaffolded": "node scripts/push-scaffolded-services.js"
+        "push-all-scaffolded": "node scripts/push-all-scaffolded.js",
+        "audit-ecosystem": "node scripts/audit-ecosystem-repositories.js"
     },
     "dependencies": {
         "chalk": "^5.3.0",

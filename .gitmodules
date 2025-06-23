@@ -1,36 +1,140 @@
 [submodule "services/codai"]
 	path = services/codai
 	url = https://github.com/codai-ecosystem/codai.git
+	branch = main
+
 [submodule "services/memorai"]
 	path = services/memorai
 	url = https://github.com/codai-ecosystem/memorai.git
-[submodule "services/studiai"]
-	path = services/studiai
-	url = https://github.com/codai-ecosystem/studiai.git
-[submodule "services/templates"]
-	path = services/templates
-	url = https://github.com/codai-ecosystem/templates.git
+	branch = main
+
 [submodule "services/logai"]
 	path = services/logai
 	url = https://github.com/codai-ecosystem/logai.git
+	branch = main
+
 [submodule "services/bancai"]
 	path = services/bancai
 	url = https://github.com/codai-ecosystem/bancai.git
+	branch = main
+
 [submodule "services/wallet"]
 	path = services/wallet
 	url = https://github.com/codai-ecosystem/wallet.git
-[submodule "services/fabricai"]
-	path = services/fabricai
-	url = https://github.com/codai-ecosystem/fabricai.git
-[submodule "services/sociai"]
-	path = services/sociai
-	url = https://github.com/codai-ecosystem/sociai.git
-[submodule "services/cumparai"]
-	path = services/cumparai
-	url = https://github.com/codai-ecosystem/cumparai.git
-[submodule "services/publicai"]
-	path = services/publicai
-	url = https://github.com/codai-ecosystem/publicai.git
+	branch = main
+
 [submodule "services/x"]
 	path = services/x
 	url = https://github.com/codai-ecosystem/x.git
+	branch = main
+
+[submodule "services/stocai"]
+	path = services/stocai
+	url = https://github.com/codai-ecosystem/stocai.git
+	branch = main
+
+[submodule "services/fabricai"]
+	path = services/fabricai
+	url = https://github.com/codai-ecosystem/fabricai.git
+	branch = main
+
+[submodule "services/marketai"]
+	path = services/marketai
+	url = https://github.com/codai-ecosystem/marketai.git
+	branch = main
+
+[submodule "services/analizai"]
+	path = services/analizai
+	url = https://github.com/codai-ecosystem/analizai.git
+	branch = main
+
+[submodule "services/studiai"]
+	path = services/studiai
+	url = https://github.com/codai-ecosystem/studiai.git
+	branch = main
+
+[submodule "services/sociai"]
+	path = services/sociai
+	url = https://github.com/codai-ecosystem/sociai.git
+	branch = main
+
+[submodule "services/cumparai"]
+	path = services/cumparai
+	url = https://github.com/codai-ecosystem/cumparai.git
+	branch = main
+
+[submodule "services/ajutai"]
+	path = services/ajutai
+	url = https://github.com/codai-ecosystem/ajutai.git
+	branch = main
+
+[submodule "services/legalizai"]
+	path = services/legalizai
+	url = https://github.com/codai-ecosystem/legalizai.git
+	branch = main
+
+[submodule "services/jucai"]
+	path = services/jucai
+	url = https://github.com/codai-ecosystem/jucai.git
+	branch = main
+
+[submodule "services/metu"]
+	path = services/metu
+	url = https://github.com/codai-ecosystem/metu.git
+	branch = main
+
+[submodule "services/templates"]
+	path = services/templates
+	url = https://github.com/codai-ecosystem/templates.git
+	branch = main
+
+[submodule "services/tools"]
+	path = services/tools
+	url = https://github.com/codai-ecosystem/tools.git
+	branch = main
+
+[submodule "services/explorer"]
+	path = services/explorer
+	url = https://github.com/codai-ecosystem/explorer.git
+	branch = main
+
+[submodule "services/hub"]
+	path = services/hub
+	url = https://github.com/codai-ecosystem/hub.git
+	branch = main
+
+[submodule "services/dash"]
+	path = services/dash
+	url = https://github.com/codai-ecosystem/dash.git
+	branch = main
+
+[submodule "services/admin"]
+	path = services/admin
+	url = https://github.com/codai-ecosystem/admin.git
+	branch = main
+
+[submodule "services/docs"]
+	path = services/docs
+	url = https://github.com/codai-ecosystem/docs.git
+	branch = main
+
+[submodule "services/kodex"]
+	path = services/kodex
+	url = https://github.com/codai-ecosystem/kodex.git
+	branch = main
+
+[submodule "services/mod"]
+	path = services/mod
+	url = https://github.com/codai-ecosystem/mod.git
+	branch = main
+
+[submodule "services/id"]
+	path = services/id
+	url = https://github.com/codai-ecosystem/id.git
+	branch = main
+
+[submodule "services/AIDE"]
+	path = services/AIDE
+	url = https://github.com/codai-ecosystem/AIDE.git
+	branch = main
+

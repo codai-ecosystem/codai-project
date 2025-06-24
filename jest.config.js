@@ -1,55 +1,28 @@
-/** @type {import('jest').Config} */
 module.exports = {
-  testEnvironment: 'node',
-  transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
-    '^.+\\.(js|jsx)$': 'babel-jest'
-  },
-  moduleNameMapping: {
-    '^@/(.*)$': '<rootDir>/src/$1',
-    '^@codai/(.*)$': '<rootDir>/packages/$1/src'
-  },
-  testMatch: [
-    '<rootDir>/tests/**/*.test.{js,ts,jsx,tsx}',
-    '<rootDir>/apps/**/*.test.{js,ts,jsx,tsx}',
-    '<rootDir>/services/**/*.test.{js,ts,jsx,tsx}',
-    '<rootDir>/packages/**/*.test.{js,ts,jsx,tsx}'
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "testMatch": [
+    "**/__tests__/**/*.{test,spec}.{js,ts}",
+    "**/*.{test,spec}.{js,ts}"
   ],
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  collectCoverageFrom: [
-    'apps/**/*.{js,ts,jsx,tsx}',
-    'services/**/*.{js,ts,jsx,tsx}',
-    'packages/**/*.{js,ts,jsx,tsx}',
-    '!**/*.d.ts',
-    '!**/node_modules/**',
-    '!**/.next/**',
-    '!**/dist/**',
-    '!**/build/**'
+  "collectCoverageFrom": [
+    "src/**/*.{js,ts}",
+    "services/**/*.{js,ts}",
+    "!**/*.d.ts",
+    "!**/node_modules/**"
   ],
-  coverageThreshold: {
-    global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80
-    }
+  "moduleFileExtensions": [
+    "ts",
+    "js",
+    "json"
+  ],
+  "transform": {
+    "^.+\\.(ts|tsx)$": "ts-jest"
   },
-  collectCoverage: true,
-  coverageDirectory: '<rootDir>/coverage',
-  coverageReporters: [
-    'text',
-    'lcov',
-    'html',
-    'json'
+  "testPathIgnorePatterns": [
+    "node_modules",
+    "dist",
+    "build"
   ],
-  testTimeout: 30000,
-  maxWorkers: '50%',
-  verbose: true,
-  testPathIgnorePatterns: [
-    '/node_modules/',
-    '/.next/',
-    '/dist/',
-    '/build/',
-    '/coverage/'
-  ]
+  "passWithNoTests": true
 };

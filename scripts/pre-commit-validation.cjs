@@ -61,7 +61,7 @@ console.log('🔧 Validating services...');
 if (fs.existsSync('services')) {
     const services = fs.readdirSync('services');
     console.log(`Found ${services.length} services`);
-    
+
     for (const service of services) {
         const servicePath = path.join('services', service);
         if (fs.statSync(servicePath).isDirectory()) {
@@ -78,7 +78,7 @@ console.log('📱 Validating apps...');
 if (fs.existsSync('apps')) {
     const apps = fs.readdirSync('apps');
     console.log(`Found ${apps.length} apps`);
-    
+
     for (const app of apps) {
         const appPath = path.join('apps', app);
         if (fs.statSync(appPath).isDirectory()) {
@@ -160,12 +160,12 @@ if (errors.length === 0 && warnings.length === 0) {
         console.log('\n❌ ERRORS FOUND:');
         errors.forEach((error, i) => console.log(`${i + 1}. ${error}`));
     }
-    
+
     if (warnings.length > 0) {
         console.log('\n⚠️  WARNINGS:');
         warnings.forEach((warning, i) => console.log(`${i + 1}. ${warning}`));
     }
-    
+
     if (errors.length > 0) {
         console.log('\n🚫 Cannot commit with errors. Please fix the issues above.');
         process.exit(1);

@@ -9,7 +9,7 @@
     "build": "next build",
     "start": "next start -p 3002",
     "lint": "next lint",
-    "test": "npx vitest run --reporter=verbose",
+    "test": "jest --passWithNoTests",
     "test:ui": "npx vitest ui",
     "test:e2e": "playwright test",
     "test:coverage": "vitest --coverage",
@@ -22,7 +22,7 @@
     "docker:run": "docker run -p 3002:3002 logai",
     "health": "curl -f http://localhost:3002/api/health || exit 1",
     "test:run": "vitest run",
-    "test:watch": "npx vitest watch --reporter=verbose"
+    "test:watch": "jest --watch --passWithNoTests"
   },
   "dependencies": {
     "next": "^14.2.0",

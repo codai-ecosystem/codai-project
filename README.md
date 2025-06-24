@@ -86,6 +86,54 @@ The Codai OS includes a sophisticated AI agent system for intelligent orchestrat
 - **Memory**: App-specific context and preferences
 - **Scope**: Individual app boundaries
 
+## 🌟 Codai Ecosystem Overview
+
+The Codai ecosystem consists of **29 repositories** organized into two main categories:
+
+### 📱 Core Applications (11 Apps in `apps/`)
+Priority applications directly integrated into the monorepo:
+
+- **codai** - Central Platform & AIDE Hub (codai.ro) 
+- **memorai** - AI Memory & Database Core (memorai.ro)
+- **logai** - Identity & Authentication Hub (logai.ro)
+- **bancai** - Financial Platform (bancai.ro)
+- **wallet** - Programmable Wallet (wallet.bancai.ro)
+- **fabricai** - AI Services Platform (fabricai.ro)
+- **studiai** - AI Education Platform (studiai.ro)
+- **sociai** - AI Social Platform (sociai.ro)
+- **cumparai** - AI Shopping Platform (cumparai.ro)
+- **x** - AI Trading Platform (x.codai.ro)
+- **publicai** - Public AI Services (publicai.ro)
+
+### 🛠️ Extended Services (18 Services in `services/`)
+Supporting services and specialized platforms:
+
+- **admin** - Admin Panel & Management
+- **AIDE** - AI Development Environment
+- **ajutai** - AI Support & Help Platform
+- **analizai** - AI Analytics Platform
+- **dash** - Analytics Dashboard
+- **docs** - Documentation Platform
+- **explorer** - AI Blockchain Explorer
+- **hub** - Central Hub & Dashboard
+- **id** - Identity Management System
+- **jucai** - AI Gaming Platform
+- **kodex** - Code Repository & Version Control
+- **legalizai** - AI Legal Services Platform
+- **marketai** - AI Marketing Platform
+- **metu** - AI Metrics & Analytics
+- **mod** - Modding & Extension Platform
+- **stocai** - AI Stock Trading Platform
+- **templates** - Shared Templates & Boilerplates
+- **tools** - Development Tools & Utilities
+
+### 📊 Ecosystem Statistics
+- **Total Repositories**: 29
+- **Core Applications**: 11
+- **Extended Services**: 18
+- **Development Status**: All repositories active and scaffolded
+- **Integration Method**: Git subtrees and submodules
+
 ## 📊 Project Management
 
 ### Projects Index (`projects.index.json`)
@@ -95,14 +143,16 @@ Central registry tracking all integrated apps:
 ```json
 {
   "version": "1.0.0",
-  "totalApps": 2,
+  "totalApps": 11,
+  "totalServices": 29,
+  "totalRepositories": 29,
   "apps": [
     {
-      "name": "ajutai",
+      "name": "codai",
       "type": "codai-app",
       "status": "active",
-      "path": "apps/ajutai",
-      "repository": "https://github.com/codai/ajutai-app.git"
+      "path": "apps/codai",
+      "repository": "https://github.com/codai-ecosystem/codai.git"
     }
   ]
 }

@@ -20,9 +20,38 @@ This is the Codai OS meta-orchestration system - a production-ready monorepo man
 ## Architecture Overview
 
 ```
-codai-project/              # Meta-orchestration root
-├── apps/                   # Individual Codai applications
-│   └── {app-name}/        # Integrated via git subtree
+codai-project/              # Meta-orchestration root (29 repositories total)
+├── apps/                   # 11 Core Applications (primary integrations)
+│   ├── codai/             # Central Platform & AIDE Hub (Priority 1)
+│   ├── memorai/           # AI Memory & Database Core (Priority 1)
+│   ├── logai/             # Identity & Authentication (Priority 1)
+│   ├── bancai/            # Financial Platform (Priority 2)
+│   ├── wallet/            # Programmable Wallet (Priority 2)
+│   ├── fabricai/          # AI Services Platform (Priority 2)
+│   ├── studiai/           # AI Education Platform (Priority 3)
+│   ├── sociai/            # AI Social Platform (Priority 3)
+│   ├── cumparai/          # AI Shopping Platform (Priority 3)
+│   ├── x/                 # AI Trading Platform (Priority 2)
+│   └── publicai/          # Public AI Services
+├── services/              # 18 Extended Services (supporting platforms)
+│   ├── admin/             # Admin Panel & Management
+│   ├── AIDE/              # AI Development Environment
+│   ├── ajutai/            # AI Support & Help Platform
+│   ├── analizai/          # AI Analytics Platform
+│   ├── dash/              # Analytics Dashboard
+│   ├── docs/              # Documentation Platform
+│   ├── explorer/          # AI Blockchain Explorer
+│   ├── hub/               # Central Hub & Dashboard
+│   ├── id/                # Identity Management System
+│   ├── jucai/             # AI Gaming Platform
+│   ├── kodex/             # Code Repository & Version Control
+│   ├── legalizai/         # AI Legal Services Platform
+│   ├── marketai/          # AI Marketing Platform
+│   ├── metu/              # AI Metrics & Analytics
+│   ├── mod/               # Modding & Extension Platform
+│   ├── stocai/            # AI Stock Trading Platform
+│   ├── templates/         # Shared Templates & Boilerplates
+│   └── tools/             # Development Tools & Utilities
 ├── packages/              # Shared libraries and utilities
 ├── .agent/                # AI agent system configuration
 ├── scripts/               # Automation and integration tools
@@ -49,19 +78,28 @@ codai-project/              # Meta-orchestration root
 
 ```bash
 # Workspace Management
-pnpm install                # Initialize workspace
-pnpm validate-workspace     # Health check
-pnpm dev                   # Start all apps
-pnpm build                 # Build all apps
+pnpm install                   # Initialize workspace
+pnpm validate-workspace        # Health check
+pnpm dev                      # Start all priority apps
+pnpm build                    # Build all apps
+
+# Ecosystem Management
+pnpm integrate-all-repos      # Integrate all 29 repositories
+pnpm verify-all-repos         # Verify all 29 repositories
+pnpm push-all-repos          # Push all scaffolded content
+pnpm scaffold-empty-repos    # Scaffold empty repositories
 
 # App Integration
-pnpm integrate-app <name>  # Integrate new Codai app
-pnpm sync-apps            # Sync all apps with remotes
+pnpm integrate-app <name>     # Integrate new Codai app
+pnpm sync-apps               # Sync all apps with remotes
 
 # Development
-pnpm dev --filter=<app>   # Start specific app
-pnpm test --filter=<app>  # Test specific app
-pnpm build --filter=<app> # Build specific app
+pnpm dev --filter=<app>      # Start specific app
+pnpm test --filter=<app>     # Test specific app
+pnpm build --filter=<app>    # Build specific app
+
+# Service Management
+cd services/<service> && npm run dev  # Start specific service
 ```
 
 ## Integration Process

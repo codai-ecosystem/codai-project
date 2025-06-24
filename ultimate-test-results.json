@@ -1,0 +1,41 @@
+{
+  "timestamp": "2025-06-24T01:24:05.059Z",
+  "summary": {
+    "total": 40,
+    "passed": 0,
+    "failed": 5,
+    "successRate": 0
+  },
+  "results": [
+    {
+      "service": "bancai",
+      "type": "app",
+      "status": "failed",
+      "error": "Command failed: \"E:\\GitHub\\codai-project\\node_modules\\.bin\\vitest\" run --reporter=verbose\n'\"E:\\GitHub\\codai-project\\node_modules\\.bin\\vitest\"' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+    },
+    {
+      "service": "codai",
+      "type": "app",
+      "status": "failed",
+      "error": "Command failed: \"E:\\GitHub\\codai-project\\node_modules\\.bin\\vitest\" run --reporter=verbose\n'\"E:\\GitHub\\codai-project\\node_modules\\.bin\\vitest\"' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+    },
+    {
+      "service": "cumparai",
+      "type": "app",
+      "status": "failed",
+      "error": "Command failed: \"E:\\GitHub\\codai-project\\node_modules\\.bin\\vitest\" run --reporter=verbose\n'\"E:\\GitHub\\codai-project\\node_modules\\.bin\\vitest\"' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+    },
+    {
+      "service": "fabricai",
+      "type": "app",
+      "status": "failed",
+      "error": "Command failed: \"E:\\GitHub\\codai-project\\node_modules\\.bin\\vitest\" run --reporter=verbose\n'\"E:\\GitHub\\codai-project\\node_modules\\.bin\\vitest\"' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+    },
+    {
+      "service": "logai",
+      "type": "app",
+      "status": "failed",
+      "error": "Command failed: \"E:\\GitHub\\codai-project\\node_modules\\.bin\\vitest\" run --reporter=verbose\n'\"E:\\GitHub\\codai-project\\node_modules\\.bin\\vitest\"' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+    }
+  ]
+}

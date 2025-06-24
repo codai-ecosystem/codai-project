@@ -9,8 +9,8 @@
     "build": "next build",
     "start": "next start -p 3002",
     "lint": "next lint",
-    "test": "vitest",
-    "test:ui": "vitest --ui",
+    "test": "npx vitest run --reporter=verbose",
+    "test:ui": "npx vitest ui",
     "test:e2e": "playwright test",
     "test:coverage": "vitest --coverage",
     "type-check": "tsc --noEmit",
@@ -20,7 +20,9 @@
     "security:audit": "npm audit && pnpm dlx audit-ci --config audit-ci.json",
     "docker:build": "docker build -t logai .",
     "docker:run": "docker run -p 3002:3002 logai",
-    "health": "curl -f http://localhost:3002/api/health || exit 1"
+    "health": "curl -f http://localhost:3002/api/health || exit 1",
+    "test:run": "vitest run",
+    "test:watch": "npx vitest watch --reporter=verbose"
   },
   "dependencies": {
     "next": "^14.2.0",
@@ -62,10 +64,6 @@
     "tailwind-merge": "^2.0.0",
     "lucide-react": "^0.365.0",
     "@radix-ui/react-alert-dialog": "^1.0.5",
-    "@radix-ui/react-button": "^0.1.0",
-    "@radix-ui/react-card": "^0.1.0",
-    "@radix-ui/react-form": "^0.0.3",
-    "@radix-ui/react-input": "^0.1.0",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-toast": "^1.1.5",
     "react-hook-form": "^7.50.0",
@@ -88,7 +86,7 @@
     "eslint-config-next": "^14.2.0",
     "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.2.0",
-    "vitest": "^1.4.0",
+    "vitest": "^2.1.8",
     "@vitejs/plugin-react": "^4.2.0",
     "@testing-library/react": "^14.2.0",
     "@testing-library/jest-dom": "^6.4.0",
@@ -97,7 +95,10 @@
     "tsx": "^4.7.0",
     "@vitest/coverage-v8": "^1.4.0",
     "audit-ci": "^7.0.0",
-    "dotenv": "^16.4.0"
+    "dotenv": "^16.4.0",
+    "@vitest/ui": "^2.1.8",
+    "jsdom": "^23.0.0",
+    "happy-dom": "^12.0.0"
   },
   "engines": {
     "node": ">=18.0.0",

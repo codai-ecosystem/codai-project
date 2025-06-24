@@ -1,0 +1,22 @@
+{
+  "timestamp": "2025-06-24T00:32:30.039Z",
+  "duration": "2.16s",
+  "summary": {
+    "filesRemoved": 5,
+    "sizeFreed": 0.046385765075683594,
+    "packagesAnalyzed": 114,
+    "todoItems": 828
+  },
+  "details": {
+    "backupFiles": {
+      "removedCount": 5,
+      "totalSize": 48639
+    },
+    "logFiles": {
+      "removedCount": 0,
+      "totalSize": 0
+    },
+    "packages": 114,
+    "todos": 828
+  }
+}

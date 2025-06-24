@@ -31,7 +31,7 @@ This document provides comprehensive instructions for deploying the Codai ecosys
 ├─────────────────────────────────────────────────────────────┤
 │  API Gateway (Kong/AWS API Gateway)                        │
 ├─────────────────────────────────────────────────────────────┤
-│  Applications (11 Core Apps + 29 Services)                 │
+│  Applications (11 Core Apps + 29 Total Services/Repositories)    │
 │  ┌─────────┬─────────┬─────────┬─────────┬─────────┐      │
 │  │ Codai   │ Memorai │ Bancai  │ Fabricai│ ...     │      │
 │  │ :3000   │ :3001   │ :3002   │ :3003   │         │      │

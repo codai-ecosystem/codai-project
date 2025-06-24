@@ -20,8 +20,15 @@
             "dependsOn": [
                 "^build"
             ],
+            "inputs": [
+                "src/**",
+                "public/**",
+                "next.config.js",
+                "package.json"
+            ],
             "outputs": [
                 ".next/**",
+                "!.next/cache/**",
                 "dist/**",
                 "build/**",
                 "storybook-static/**"
@@ -30,6 +37,33 @@
         "test": {
             "dependsOn": [
                 "build"
+            ],
+            "inputs": [
+                "src/**",
+                "test/**",
+                "tests/**",
+                "__tests__/**",
+                "*.test.*",
+                "jest.config.*",
+                "package.json"
+            ],
+            "outputs": [
+                "coverage/**",
+                "test-results/**"
+            ]
+        },
+        "test:unit": {
+            "dependsOn": [
+                "build"
+            ],
+            "inputs": [
+                "src/**",
+                "test/**",
+                "tests/**",
+                "__tests__/**",
+                "*.test.*",
+                "jest.config.*",
+                "package.json"
             ],
             "outputs": [
                 "coverage/**",
@@ -40,14 +74,43 @@
             "dependsOn": [
                 "build"
             ],
+            "inputs": [
+                "src/**",
+                "tests/**",
+                "playwright.config.*",
+                "package.json"
+            ],
             "outputs": [
                 "playwright-report/**",
                 "test-results/**"
             ]
         },
+        "test:performance": {
+            "dependsOn": [
+                "build"
+            ],
+            "inputs": [
+                "src/**",
+                "tests/**",
+                "playwright.config.*",
+                "package.json"
+            ],
+            "outputs": [
+                "test-results/performance/**"
+            ]
+        },
         "lint": {
             "dependsOn": [
                 "^build"
+            ],
+            "inputs": [
+                "src/**",
+                "*.js",
+                "*.ts",
+                "*.jsx",
+                "*.tsx",
+                ".eslintrc.*",
+                "package.json"
             ],
             "outputs": []
         },
@@ -55,9 +118,35 @@
             "dependsOn": [
                 "^build"
             ],
+            "inputs": [
+                "src/**",
+                "*.ts",
+                "*.tsx",
+                "tsconfig.json",
+                "package.json"
+            ],
             "outputs": []
         },
         "clean": {
+            "cache": false,
+            "outputs": []
+        },
+        "package": {
+            "dependsOn": [
+                "build",
+                "test"
+            ],
+            "outputs": [
+                "dist/**",
+                "*.tgz"
+            ]
+        },
+        "deploy": {
+            "dependsOn": [
+                "build",
+                "test",
+                "package"
+            ],
             "cache": false,
             "outputs": []
         }

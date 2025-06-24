@@ -3,6 +3,10 @@
 import { useEffect, useState } from 'react';
 import { Card, Button, LoadingSpinner, ErrorMessage } from '@/components/ui';
 import { BalanceCard, TransactionList, InsightCard } from '@/components/financial';
+import PortfolioManager from '@/components/investment/PortfolioManager';
+import TradingInterface from '@/components/trading/TradingInterface';
+import RiskManagement from '@/components/risk/RiskManagement';
+import OptionsTrading from '@/components/options/OptionsTrading';
 
 interface DashboardData {
   user: {
@@ -60,7 +64,7 @@ export default function Home() {
     try {
       // Check authentication status
       const authResponse = await fetch('/api/auth/me');
-      
+
       if (!authResponse.ok) {
         setIsAuthenticated(false);
         setIsLoading(false);
@@ -72,14 +76,14 @@ export default function Home() {
 
       // Load dashboard data
       const dashboardResponse = await fetch('/api/dashboard');
-      
+
       if (!dashboardResponse.ok) {
         throw new Error('Failed to load dashboard data');
       }
 
       const data = await dashboardResponse.json();
       setDashboardData(data);
-      
+
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -302,8 +306,8 @@ export default function Home() {
                         </span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
-                          className="bg-blue-600 h-2 rounded-full" 
+                        <div
+                          className="bg-blue-600 h-2 rounded-full"
                           style={{ width: `${goal.progress * 100}%` }}
                         />
                       </div>
@@ -334,6 +338,41 @@ export default function Home() {
                   <span>CodAI: Integrating</span>
                 </div>
               </div>
+            </div>
+          </Card>
+        </div>
+
+        {/* Advanced Financial Features */}
+        <div className="mt-8 space-y-8">
+          {/* Portfolio Management */}
+          <Card>
+            <div className="p-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">Portfolio Management</h2>
+              <PortfolioManager />
+            </div>
+          </Card>
+
+          {/* Trading Interface */}
+          <Card>
+            <div className="p-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">Trading Interface</h2>
+              <TradingInterface />
+            </div>
+          </Card>
+
+          {/* Options Trading */}
+          <Card>
+            <div className="p-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">Options Trading</h2>
+              <OptionsTrading />
+            </div>
+          </Card>
+
+          {/* Risk Management */}
+          <Card>
+            <div className="p-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">Risk Management</h2>
+              <RiskManagement />
             </div>
           </Card>
         </div>

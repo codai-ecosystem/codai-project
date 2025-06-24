@@ -75,7 +75,7 @@ const SERVICES = [
  */
 function generateCommitMessage(service) {
     const featuresText = service.features.map(f => `- ${f}`).join('\n');
-    
+
     return `feat: Initial scaffolding for ${service.description}
 
 ✅ COMPLETE NEXT.JS 14 FOUNDATION:
@@ -113,7 +113,7 @@ STATUS: Ready for AI agent development and business logic implementation`;
 function hasScaffolding(serviceName) {
     const servicePath = path.join('services', serviceName);
     const requiredFiles = ['package.json', 'app/page.tsx', 'agent.project.json'];
-    
+
     return requiredFiles.every(file => {
         return fs.existsSync(path.join(servicePath, file));
     });
@@ -124,24 +124,24 @@ function hasScaffolding(serviceName) {
  */
 async function pushService(service) {
     const servicePath = path.join('services', service.name);
-    
+
     console.log(chalk.blue(`\n📦 Processing ${service.name}...`));
-    
+
     // Check if service exists and has scaffolding
     if (!fs.existsSync(servicePath)) {
         console.log(chalk.yellow(`  ⚠️  Service directory not found: ${servicePath}`));
         return false;
     }
-    
+
     if (!hasScaffolding(service.name)) {
         console.log(chalk.yellow(`  ⚠️  Service not scaffolded: ${service.name}`));
         return false;
     }
-    
+
     try {
         // Change to service directory
         process.chdir(servicePath);
-        
+
         // Check if there are changes to commit
         const { stdout: statusOut } = await execAsync('git status --porcelain');
         if (!statusOut.trim()) {
@@ -149,24 +149,24 @@ async function pushService(service) {
             process.chdir('../../');
             return true;
         }
-        
+
         // Stage all files
         await execAsync('git add .');
         console.log(chalk.green(`  ✅ Staged files for ${service.name}`));
-        
+
         // Commit with generated message
         const commitMessage = generateCommitMessage(service);
         await execAsync(`git commit -m "${commitMessage}"`);
         console.log(chalk.green(`  ✅ Committed changes for ${service.name}`));
-        
+
         // Push to origin
         await execAsync('git push origin main');
         console.log(chalk.green(`  ✅ Pushed ${service.name} to codai-ecosystem/${service.name}`));
-        
+
         // Return to main directory
         process.chdir('../../');
         return true;
-        
+
     } catch (error) {
         console.log(chalk.red(`  ❌ Error with ${service.name}: ${error.message}`));
         // Ensure we return to main directory even on error
@@ -184,37 +184,37 @@ async function pushService(service) {
  */
 async function main() {
     console.log(chalk.bold.blue('🚀 Pushing Scaffolded Services to Codai Ecosystem\n'));
-    
+
     const startTime = Date.now();
     let successCount = 0;
     let totalCount = 0;
-    
+
     // Ensure we start from the correct directory
     const rootDir = process.cwd();
     if (!fs.existsSync('services') || !fs.existsSync('package.json')) {
         console.log(chalk.red('❌ Please run this script from the codai-project root directory'));
         process.exit(1);
     }
-    
+
     console.log(chalk.gray(`Root directory: ${rootDir}`));
     console.log(chalk.gray(`Services to process: ${SERVICES.length}\n`));
-    
+
     for (const service of SERVICES) {
         totalCount++;
         if (await pushService(service)) {
             successCount++;
         }
     }
-    
+
     // Summary
     const duration = ((Date.now() - startTime) / 1000).toFixed(2);
-    
+
     console.log(chalk.bold.green('\n✅ Service Push Complete!'));
     console.log(chalk.gray('📊 Summary:'));
     console.log(chalk.gray(`   • Services processed: ${totalCount}`));
     console.log(chalk.gray(`   • Successfully pushed: ${successCount}`));
     console.log(chalk.gray(`   • Duration: ${duration}s`));
-    
+
     if (successCount === totalCount) {
         console.log(chalk.bold.green('\n🎉 All scaffolded services successfully pushed to codai-ecosystem!'));
         console.log(chalk.gray('Ready for individual AI agent development.\n'));

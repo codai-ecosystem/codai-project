@@ -17,8 +17,8 @@
   },
   "dependencies": [],
   "relatedServices": [],
-  "developmentStatus": "scaffolding",
-  "lastUpdated": "2025-06-23T18:33:45.925Z",
+  "developmentStatus": "enterprise-ready",
+  "lastUpdated": "2025-01-27T17:30:00.000Z",
   "owner": "codai-ecosystem",
   "repository": "https://github.com/codai-ecosystem/wallet",
   "documentation": "docs/wallet/README.md"

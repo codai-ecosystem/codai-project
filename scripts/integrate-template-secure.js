@@ -24,23 +24,23 @@ try {
     if (fs.existsSync(templatesRepoPath)) {
         fs.rmSync(templatesRepoPath, { recursive: true, force: true });
     }
-    
+
     console.log('📦 Cloning templates repository...');
     execSync(`git clone https://github.com/codai-ecosystem/templates.git ${templatesRepoPath}`, { stdio: 'inherit' });
-    
+
     console.log('📦 Copying template files...');
-    
+
     // Create templates directory if not exists
     const templatesDir = path.join(templatesRepoPath, 'templates');
     if (!fs.existsSync(templatesDir)) {
         fs.mkdirSync(templatesDir, { recursive: true });
     }
-    
+
     // Function to copy directory recursively with exclusions and sanitization
     function copyDirectory(src, dest, level = 0) {
         const indent = '  '.repeat(level);
         const basename = path.basename(src);
-        
+
         // Skip patterns
         const skipPatterns = [
             /node_modules/,
@@ -51,18 +51,18 @@ try {
             /\.turbo.*\.log$/,
             /turbo-.*\.log$/
         ];
-        
+
         if (skipPatterns.some(pattern => pattern.test(basename))) {
             console.log(`${indent}⏭️  Skipping ${basename}`);
             return;
         }
-        
+
         if (fs.statSync(src).isDirectory()) {
             console.log(`${indent}📁 Copying ${src} → ${dest}`);
             if (!fs.existsSync(dest)) {
                 fs.mkdirSync(dest, { recursive: true });
             }
-            
+
             const items = fs.readdirSync(src);
             for (const item of items) {
                 const srcPath = path.join(src, item);
@@ -72,19 +72,19 @@ try {
         } else {
             console.log(`${indent}📄 Copied ${basename}`);
             let content = fs.readFileSync(src, 'utf8');
-            
+
             // Sanitize Stripe secrets
             if (basename === '.env.example' || basename.endsWith('.js')) {
                 content = content.replace(/sk_test_[a-zA-Z0-9]{24,}/g, 'sk_test_your_stripe_secret_key_here');
                 content = content.replace(/pk_test_[a-zA-Z0-9]{24,}/g, 'pk_test_your_stripe_publishable_key_here');
             }
-            
+
             fs.writeFileSync(dest, content);
         }
     }
-    
+
     copyDirectory(sourcePath, templateDestPath);
-    
+
     // Create template metadata
     console.log('📋 Creating template metadata...');
     const templateMetadata = {
@@ -108,13 +108,13 @@ try {
         language: 'typescript',
         category: 'web'
     };
-    
+
     fs.writeFileSync(
         path.join(templateDestPath, 'template.json'),
         JSON.stringify(templateMetadata, null, 2)
     );
     console.log('📋 Created template metadata');
-    
+
     // Create template README
     const templateReadme = `# Web Application Template
 
@@ -202,24 +202,24 @@ web-app/
 
 MIT License - see [LICENSE](./LICENSE) for details.
 `;
-    
+
     fs.writeFileSync(path.join(templateDestPath, 'README.md'), templateReadme);
     console.log('📖 Created template README');
-    
+
     // Update templates index
     console.log('📚 Updating templates index...');
     const templatesIndexPath = path.join(templatesRepoPath, 'templates.json');
     let templatesIndex = {};
-    
+
     if (fs.existsSync(templatesIndexPath)) {
         templatesIndex = JSON.parse(fs.readFileSync(templatesIndexPath, 'utf8'));
     }
-    
+
     templatesIndex.templates = templatesIndex.templates || [];
-    
+
     // Remove existing web-app template if exists
     templatesIndex.templates = templatesIndex.templates.filter(t => t.name !== 'web-app');
-    
+
     // Add new template
     templatesIndex.templates.push({
         name: 'web-app',
@@ -231,10 +231,10 @@ MIT License - see [LICENSE](./LICENSE) for details.
         category: 'web',
         tags: ['nextjs', 'typescript', 'tailwind', 'web', 'fullstack']
     });
-    
+
     fs.writeFileSync(templatesIndexPath, JSON.stringify(templatesIndex, null, 2));
     console.log('📋 Updated templates index');
-    
+
     // Create repository README
     const repoReadme = `# Codai Templates
 
@@ -276,21 +276,21 @@ Each template should include:
 
 MIT License - see individual templates for specific licenses.
 `;
-    
+
     fs.writeFileSync(path.join(templatesRepoPath, 'README.md'), repoReadme);
     console.log('📖 Created templates repository README');
-    
+
     // Commit and push
     console.log('🔄 Committing to repository...');
     process.chdir(templatesRepoPath);
-    
+
     execSync('git add .', { stdio: 'inherit' });
     execSync('git commit -m "Add web-app template (secure)"', { stdio: 'inherit' });
     execSync('git push origin main', { stdio: 'inherit' });
-    
+
     console.log('✅ Template integration completed successfully!');
     console.log('🌐 Template available at: https://github.com/codai-ecosystem/templates/tree/main/templates/web-app');
-    
+
 } catch (error) {
     console.error(`❌ Template integration failed: ${error.message}`);
     process.exit(1);

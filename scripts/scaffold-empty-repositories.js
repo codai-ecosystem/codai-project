@@ -13,115 +13,115 @@ const SERVICES_DIR = 'services';
 
 // Empty repositories that need scaffolding
 const EMPTY_REPOSITORIES = [
-  'admin', 'AIDE', 'ajutai', 'dash', 'docs', 'hub', 'id', 
-  'jucai', 'kodex', 'legalizai', 'metu', 'mod', 'stocai'
+    'admin', 'AIDE', 'ajutai', 'dash', 'docs', 'hub', 'id',
+    'jucai', 'kodex', 'legalizai', 'metu', 'mod', 'stocai'
 ];
 
 function execCommand(command, cwd = process.cwd()) {
-  try {
-    console.log(`📋 Executing: ${command}`);
-    const result = execSync(command, { 
-      cwd, 
-      encoding: 'utf-8',
-      stdio: 'pipe'
-    });
-    console.log(`✅ Success: ${command}`);
-    return result;
-  } catch (error) {
-    console.error(`❌ Error executing: ${command}`);
-    console.error(error.message);
-    return null;
-  }
+    try {
+        console.log(`📋 Executing: ${command}`);
+        const result = execSync(command, {
+            cwd,
+            encoding: 'utf-8',
+            stdio: 'pipe'
+        });
+        console.log(`✅ Success: ${command}`);
+        return result;
+    } catch (error) {
+        console.error(`❌ Error executing: ${command}`);
+        console.error(error.message);
+        return null;
+    }
 }
 
 function createPackageJson(serviceName, serviceDir) {
-  const getServiceDescription = (name) => {
-    const descriptions = {
-      'admin': 'Admin Panel & Management System',
-      'AIDE': 'AI Development Environment',
-      'ajutai': 'AI Support & Help Platform',
-      'dash': 'Analytics Dashboard',
-      'docs': 'Documentation Platform',
-      'hub': 'Central Hub & Dashboard',
-      'id': 'Identity Management System',
-      'jucai': 'AI Gaming Platform',
-      'kodex': 'Code Repository & Version Control',
-      'legalizai': 'AI Legal Services Platform',
-      'metu': 'AI Metrics & Analytics',
-      'mod': 'Modding & Extension Platform',
-      'stocai': 'AI Stock Trading Platform'
+    const getServiceDescription = (name) => {
+        const descriptions = {
+            'admin': 'Admin Panel & Management System',
+            'AIDE': 'AI Development Environment',
+            'ajutai': 'AI Support & Help Platform',
+            'dash': 'Analytics Dashboard',
+            'docs': 'Documentation Platform',
+            'hub': 'Central Hub & Dashboard',
+            'id': 'Identity Management System',
+            'jucai': 'AI Gaming Platform',
+            'kodex': 'Code Repository & Version Control',
+            'legalizai': 'AI Legal Services Platform',
+            'metu': 'AI Metrics & Analytics',
+            'mod': 'Modding & Extension Platform',
+            'stocai': 'AI Stock Trading Platform'
+        };
+        return descriptions[name] || 'AI-powered service';
     };
-    return descriptions[name] || 'AI-powered service';
-  };
 
-  const packageJson = {
-    name: `@codai/${serviceName}`,
-    version: "0.1.0",
-    private: true,
-    description: getServiceDescription(serviceName),
-    type: "module",
-    scripts: {
-      dev: "next dev",
-      build: "next build",
-      start: "next start",
-      lint: "next lint",
-      test: "vitest",
-      "test:ui": "vitest --ui",
-      typecheck: "tsc --noEmit"
-    },
-    dependencies: {
-      "next": "^14.2.0",
-      "react": "^18.3.0",
-      "react-dom": "^18.3.0",
-      "@tailwindcss/typography": "^0.5.15",
-      "clsx": "^2.1.1",
-      "lucide-react": "^0.445.0"
-    },
-    devDependencies: {
-      "@types/node": "^20.16.0",
-      "@types/react": "^18.3.0",
-      "@types/react-dom": "^18.3.0",
-      "autoprefixer": "^10.4.20",
-      "eslint": "^8.57.0",
-      "eslint-config-next": "^14.2.0",
-      "postcss": "^8.4.47",
-      "tailwindcss": "^3.4.0",
-      "typescript": "^5.6.0",
-      "vitest": "^2.1.0",
-      "@vitejs/plugin-react": "^4.3.0"
-    },
-    engines: {
-      node: ">=18.17.0"
-    }
-  };
+    const packageJson = {
+        name: `@codai/${serviceName}`,
+        version: "0.1.0",
+        private: true,
+        description: getServiceDescription(serviceName),
+        type: "module",
+        scripts: {
+            dev: "next dev",
+            build: "next build",
+            start: "next start",
+            lint: "next lint",
+            test: "vitest",
+            "test:ui": "vitest --ui",
+            typecheck: "tsc --noEmit"
+        },
+        dependencies: {
+            "next": "^14.2.0",
+            "react": "^18.3.0",
+            "react-dom": "^18.3.0",
+            "@tailwindcss/typography": "^0.5.15",
+            "clsx": "^2.1.1",
+            "lucide-react": "^0.445.0"
+        },
+        devDependencies: {
+            "@types/node": "^20.16.0",
+            "@types/react": "^18.3.0",
+            "@types/react-dom": "^18.3.0",
+            "autoprefixer": "^10.4.20",
+            "eslint": "^8.57.0",
+            "eslint-config-next": "^14.2.0",
+            "postcss": "^8.4.47",
+            "tailwindcss": "^3.4.0",
+            "typescript": "^5.6.0",
+            "vitest": "^2.1.0",
+            "@vitejs/plugin-react": "^4.3.0"
+        },
+        engines: {
+            node: ">=18.17.0"
+        }
+    };
 
-  fs.writeFileSync(
-    path.join(serviceDir, 'package.json'),
-    JSON.stringify(packageJson, null, 2)
-  );
+    fs.writeFileSync(
+        path.join(serviceDir, 'package.json'),
+        JSON.stringify(packageJson, null, 2)
+    );
 }
 
 function createReadme(serviceName, serviceDir) {
-  const getServiceDescription = (name) => {
-    const descriptions = {
-      'admin': 'Admin Panel & Management System for the Codai ecosystem',
-      'AIDE': 'AI Development Environment - Advanced IDE for AI-powered development',
-      'ajutai': 'AI Support & Help Platform - Intelligent assistance and support',
-      'dash': 'Analytics Dashboard - Real-time metrics and visualization',
-      'docs': 'Documentation Platform - Comprehensive documentation system',
-      'hub': 'Central Hub & Dashboard - Main control center',
-      'id': 'Identity Management System - User authentication and authorization',
-      'jucai': 'AI Gaming Platform - Intelligent gaming and entertainment',
-      'kodex': 'Code Repository & Version Control - Development workflow management',
-      'legalizai': 'AI Legal Services Platform - Intelligent legal assistance',
-      'metu': 'AI Metrics & Analytics - Advanced analytics and insights',
-      'mod': 'Modding & Extension Platform - Customization and extensions',
-      'stocai': 'AI Stock Trading Platform - Intelligent financial trading'
+    const getServiceDescription = (name) => {
+        const descriptions = {
+            'admin': 'Admin Panel & Management System for the Codai ecosystem',
+            'AIDE': 'AI Development Environment - Advanced IDE for AI-powered development',
+            'ajutai': 'AI Support & Help Platform - Intelligent assistance and support',
+            'dash': 'Analytics Dashboard - Real-time metrics and visualization',
+            'docs': 'Documentation Platform - Comprehensive documentation system',
+            'hub': 'Central Hub & Dashboard - Main control center',
+            'id': 'Identity Management System - User authentication and authorization',
+            'jucai': 'AI Gaming Platform - Intelligent gaming and entertainment',
+            'kodex': 'Code Repository & Version Control - Development workflow management',
+            'legalizai': 'AI Legal Services Platform - Intelligent legal assistance',
+            'metu': 'AI Metrics & Analytics - Advanced analytics and insights',
+            'mod': 'Modding & Extension Platform - Customization and extensions',
+            'stocai': 'AI Stock Trading Platform - Intelligent financial trading'
+        };
+        return descriptions[name] || 'AI-powered service';
     };
-    return descriptions[name] || 'AI-powered service';
-  };
 
-  const readme = `# ${serviceName.toUpperCase()} - ${getServiceDescription(serviceName)}
+    const readme = `# ${serviceName.toUpperCase()} - ${getServiceDescription(serviceName)}
 
 ## Overview
 
@@ -219,67 +219,67 @@ Part of the Codai ecosystem - All rights reserved.
 Built with ❤️ for the Codai ecosystem
 `;
 
-  fs.writeFileSync(path.join(serviceDir, 'README.md'), readme);
+    fs.writeFileSync(path.join(serviceDir, 'README.md'), readme);
 }
 
 function createAgentConfig(serviceName, serviceDir) {
-  const getServiceType = (name) => {
-    const types = {
-      'admin': 'management',
-      'AIDE': 'development',
-      'ajutai': 'support',
-      'dash': 'analytics',
-      'docs': 'documentation',
-      'hub': 'dashboard',
-      'id': 'authentication',
-      'jucai': 'gaming',
-      'kodex': 'repository',
-      'legalizai': 'legal',
-      'metu': 'analytics',
-      'mod': 'extension',
-      'stocai': 'trading'
+    const getServiceType = (name) => {
+        const types = {
+            'admin': 'management',
+            'AIDE': 'development',
+            'ajutai': 'support',
+            'dash': 'analytics',
+            'docs': 'documentation',
+            'hub': 'dashboard',
+            'id': 'authentication',
+            'jucai': 'gaming',
+            'kodex': 'repository',
+            'legalizai': 'legal',
+            'metu': 'analytics',
+            'mod': 'extension',
+            'stocai': 'trading'
+        };
+        return types[name] || 'service';
     };
-    return types[name] || 'service';
-  };
 
-  const agentConfig = {
-    name: serviceName,
-    version: "0.1.0",
-    type: getServiceType(serviceName),
-    framework: "next-js-14",
-    language: "typescript",
-    ai_integration: {
-      enabled: true,
-      agent_capable: true,
-      memory_enabled: true
-    },
-    development: {
-      port: 3000,
-      hot_reload: true,
-      typescript_strict: true
-    },
-    ecosystem: {
-      organization: "codai-ecosystem",
-      monorepo: "codai-project",
-      integration: "submodule"
-    },
-    capabilities: [
-      "web-interface",
-      "api-endpoints",
-      "real-time-updates",
-      "responsive-design",
-      "ai-ready"
-    ]
-  };
+    const agentConfig = {
+        name: serviceName,
+        version: "0.1.0",
+        type: getServiceType(serviceName),
+        framework: "next-js-14",
+        language: "typescript",
+        ai_integration: {
+            enabled: true,
+            agent_capable: true,
+            memory_enabled: true
+        },
+        development: {
+            port: 3000,
+            hot_reload: true,
+            typescript_strict: true
+        },
+        ecosystem: {
+            organization: "codai-ecosystem",
+            monorepo: "codai-project",
+            integration: "submodule"
+        },
+        capabilities: [
+            "web-interface",
+            "api-endpoints",
+            "real-time-updates",
+            "responsive-design",
+            "ai-ready"
+        ]
+    };
 
-  fs.writeFileSync(
-    path.join(serviceDir, 'agent.project.json'),
-    JSON.stringify(agentConfig, null, 2)
-  );
+    fs.writeFileSync(
+        path.join(serviceDir, 'agent.project.json'),
+        JSON.stringify(agentConfig, null, 2)
+    );
 }
 
 function createNextConfig(serviceDir) {
-  const nextConfig = `/** @type {import('next').NextConfig} */
+    const nextConfig = `/** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
     typedRoutes: true,
@@ -295,46 +295,46 @@ const nextConfig = {
 module.exports = nextConfig
 `;
 
-  fs.writeFileSync(path.join(serviceDir, 'next.config.js'), nextConfig);
+    fs.writeFileSync(path.join(serviceDir, 'next.config.js'), nextConfig);
 }
 
 function createTsConfig(serviceDir) {
-  const tsConfig = {
-    compilerOptions: {
-      lib: ["dom", "dom.iterable", "es6"],
-      allowJs: true,
-      skipLibCheck: true,
-      strict: true,
-      noEmit: true,
-      esModuleInterop: true,
-      module: "esnext",
-      moduleResolution: "bundler",
-      resolveJsonModule: true,
-      isolatedModules: true,
-      jsx: "preserve",
-      incremental: true,
-      plugins: [
-        {
-          name: "next"
-        }
-      ],
-      baseUrl: ".",
-      paths: {
-        "@/*": ["./src/*"]
-      }
-    },
-    include: ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-    exclude: ["node_modules"]
-  };
+    const tsConfig = {
+        compilerOptions: {
+            lib: ["dom", "dom.iterable", "es6"],
+            allowJs: true,
+            skipLibCheck: true,
+            strict: true,
+            noEmit: true,
+            esModuleInterop: true,
+            module: "esnext",
+            moduleResolution: "bundler",
+            resolveJsonModule: true,
+            isolatedModules: true,
+            jsx: "preserve",
+            incremental: true,
+            plugins: [
+                {
+                    name: "next"
+                }
+            ],
+            baseUrl: ".",
+            paths: {
+                "@/*": ["./src/*"]
+            }
+        },
+        include: ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+        exclude: ["node_modules"]
+    };
 
-  fs.writeFileSync(
-    path.join(serviceDir, 'tsconfig.json'),
-    JSON.stringify(tsConfig, null, 2)
-  );
+    fs.writeFileSync(
+        path.join(serviceDir, 'tsconfig.json'),
+        JSON.stringify(tsConfig, null, 2)
+    );
 }
 
 function createTailwindConfig(serviceDir) {
-  const tailwindConfig = `/** @type {import('tailwindcss').Config} */
+    const tailwindConfig = `/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -359,11 +359,11 @@ module.exports = {
 }
 `;
 
-  fs.writeFileSync(path.join(serviceDir, 'tailwind.config.js'), tailwindConfig);
+    fs.writeFileSync(path.join(serviceDir, 'tailwind.config.js'), tailwindConfig);
 }
 
 function createPostcssConfig(serviceDir) {
-  const postcssConfig = `module.exports = {
+    const postcssConfig = `module.exports = {
   plugins: {
     tailwindcss: {},
     autoprefixer: {},
@@ -371,25 +371,25 @@ function createPostcssConfig(serviceDir) {
 }
 `;
 
-  fs.writeFileSync(path.join(serviceDir, 'postcss.config.js'), postcssConfig);
+    fs.writeFileSync(path.join(serviceDir, 'postcss.config.js'), postcssConfig);
 }
 
 function createBasicAppStructure(serviceName, serviceDir) {
-  // Create src directory structure
-  const srcDir = path.join(serviceDir, 'src');
-  const appDir = path.join(srcDir, 'app');
-  const componentsDir = path.join(srcDir, 'components');
-  const libDir = path.join(srcDir, 'lib');
-  const typesDir = path.join(srcDir, 'types');
+    // Create src directory structure
+    const srcDir = path.join(serviceDir, 'src');
+    const appDir = path.join(srcDir, 'app');
+    const componentsDir = path.join(srcDir, 'components');
+    const libDir = path.join(srcDir, 'lib');
+    const typesDir = path.join(srcDir, 'types');
 
-  [srcDir, appDir, componentsDir, libDir, typesDir].forEach(dir => {
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-  });
+    [srcDir, appDir, componentsDir, libDir, typesDir].forEach(dir => {
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
+    });
 
-  // Create globals.css
-  const globalsCss = `@tailwind base;
+    // Create globals.css
+    const globalsCss = `@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -418,10 +418,10 @@ body {
 }
 `;
 
-  fs.writeFileSync(path.join(appDir, 'globals.css'), globalsCss);
+    fs.writeFileSync(path.join(appDir, 'globals.css'), globalsCss);
 
-  // Create layout.tsx
-  const layout = `import type { Metadata } from 'next'
+    // Create layout.tsx
+    const layout = `import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 
@@ -445,10 +445,10 @@ export default function RootLayout({
 }
 `;
 
-  fs.writeFileSync(path.join(appDir, 'layout.tsx'), layout);
+    fs.writeFileSync(path.join(appDir, 'layout.tsx'), layout);
 
-  // Create page.tsx
-  const page = `export default function Home() {
+    // Create page.tsx
+    const page = `export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
@@ -522,12 +522,12 @@ export default function RootLayout({
 }
 `;
 
-  fs.writeFileSync(path.join(appDir, 'page.tsx'), page);
+    fs.writeFileSync(path.join(appDir, 'page.tsx'), page);
 }
 
 function createAdditionalFiles(serviceDir) {
-  // Create .gitignore
-  const gitignore = `# Dependencies
+    // Create .gitignore
+    const gitignore = `# Dependencies
 node_modules/
 .pnpm-debug.log*
 
@@ -573,10 +573,10 @@ next-env.d.ts
 .vitest/
 `;
 
-  fs.writeFileSync(path.join(serviceDir, '.gitignore'), gitignore);
+    fs.writeFileSync(path.join(serviceDir, '.gitignore'), gitignore);
 
-  // Create .env.example
-  const envExample = `# Development
+    // Create .env.example
+    const envExample = `# Development
 NODE_ENV=development
 PORT=3000
 
@@ -594,87 +594,87 @@ API_URL=http://localhost:3000/api
 # EXTERNAL_API_KEY=
 `;
 
-  fs.writeFileSync(path.join(serviceDir, '.env.example'), envExample);
+    fs.writeFileSync(path.join(serviceDir, '.env.example'), envExample);
 }
 
 function scaffoldEmptyRepository(serviceName) {
-  const servicePath = path.join(SERVICES_DIR, serviceName);
-  
-  if (!fs.existsSync(servicePath)) {
-    console.log(`⚠️  Service directory not found: ${servicePath}`);
-    return false;
-  }
+    const servicePath = path.join(SERVICES_DIR, serviceName);
 
-  console.log(`\n🏗️  Scaffolding ${serviceName}...`);
-
-  try {
-    // Check if directory is actually empty
-    const files = fs.readdirSync(servicePath).filter(f => f !== '.git');
-    if (files.length > 0) {
-      console.log(`✅ ${serviceName}: Already has content, skipping scaffolding`);
-      return true;
+    if (!fs.existsSync(servicePath)) {
+        console.log(`⚠️  Service directory not found: ${servicePath}`);
+        return false;
     }
 
-    // Create all necessary files
-    createPackageJson(serviceName, servicePath);
-    createReadme(serviceName, servicePath);
-    createAgentConfig(serviceName, servicePath);
-    createNextConfig(servicePath);
-    createTsConfig(servicePath);
-    createTailwindConfig(servicePath);
-    createPostcssConfig(servicePath);
-    createBasicAppStructure(serviceName, servicePath);
-    createAdditionalFiles(servicePath);
+    console.log(`\n🏗️  Scaffolding ${serviceName}...`);
 
-    console.log(`✅ ${serviceName}: Successfully scaffolded with Next.js 14 + TypeScript!`);
-    return true;
+    try {
+        // Check if directory is actually empty
+        const files = fs.readdirSync(servicePath).filter(f => f !== '.git');
+        if (files.length > 0) {
+            console.log(`✅ ${serviceName}: Already has content, skipping scaffolding`);
+            return true;
+        }
 
-  } catch (error) {
-    console.error(`❌ ${serviceName}: Failed to scaffold`);
-    console.error(error.message);
-    return false;
-  }
+        // Create all necessary files
+        createPackageJson(serviceName, servicePath);
+        createReadme(serviceName, servicePath);
+        createAgentConfig(serviceName, servicePath);
+        createNextConfig(servicePath);
+        createTsConfig(servicePath);
+        createTailwindConfig(servicePath);
+        createPostcssConfig(servicePath);
+        createBasicAppStructure(serviceName, servicePath);
+        createAdditionalFiles(servicePath);
+
+        console.log(`✅ ${serviceName}: Successfully scaffolded with Next.js 14 + TypeScript!`);
+        return true;
+
+    } catch (error) {
+        console.error(`❌ ${serviceName}: Failed to scaffold`);
+        console.error(error.message);
+        return false;
+    }
 }
 
 async function main() {
-  console.log('🏗️  SCAFFOLDING EMPTY REPOSITORIES');
-  console.log('==================================');
-  console.log(`Empty repositories to scaffold: ${EMPTY_REPOSITORIES.length}`);
-  console.log(`Repositories: ${EMPTY_REPOSITORIES.join(', ')}\n`);
+    console.log('🏗️  SCAFFOLDING EMPTY REPOSITORIES');
+    console.log('==================================');
+    console.log(`Empty repositories to scaffold: ${EMPTY_REPOSITORIES.length}`);
+    console.log(`Repositories: ${EMPTY_REPOSITORIES.join(', ')}\n`);
 
-  const results = [];
+    const results = [];
 
-  for (const service of EMPTY_REPOSITORIES) {
-    const success = scaffoldEmptyRepository(service);
-    results.push({ service, success });
-  }
+    for (const service of EMPTY_REPOSITORIES) {
+        const success = scaffoldEmptyRepository(service);
+        results.push({ service, success });
+    }
 
-  console.log('\n📊 SCAFFOLDING RESULTS:');
-  console.log('=======================');
+    console.log('\n📊 SCAFFOLDING RESULTS:');
+    console.log('=======================');
 
-  let successCount = 0;
-  for (const { service, success } of results) {
-    const status = success ? '✅ SUCCESS' : '❌ FAILED';
-    console.log(`${service.padEnd(12)} ${status}`);
-    if (success) successCount++;
-  }
+    let successCount = 0;
+    for (const { service, success } of results) {
+        const status = success ? '✅ SUCCESS' : '❌ FAILED';
+        console.log(`${service.padEnd(12)} ${status}`);
+        if (success) successCount++;
+    }
 
-  console.log(`\n🎉 COMPLETED: ${successCount}/${results.length} repositories scaffolded successfully!`);
+    console.log(`\n🎉 COMPLETED: ${successCount}/${results.length} repositories scaffolded successfully!`);
 
-  if (successCount === results.length) {
-    console.log('\n🚀 ALL EMPTY REPOSITORIES NOW HAVE SCAFFOLDING!');
-    console.log('✨ Each repository has Next.js 14 + TypeScript foundation');
-    console.log('🔗 All repositories are ready for AI agent development');
-    console.log('👥 Ready for individual service development');
-    
-    console.log('\n📋 NEXT ACTIONS:');
-    console.log('1. Push scaffolding to GitHub: npm run push-all-repos');
-    console.log('2. Verify all repositories: npm run verify-all-repos');
-    console.log('3. Install dependencies: pnpm install');
-    console.log('4. Start development: npm run dev');
-  } else {
-    console.log('\n⚠️  Some repositories failed to scaffold. Check the errors above.');
-  }
+    if (successCount === results.length) {
+        console.log('\n🚀 ALL EMPTY REPOSITORIES NOW HAVE SCAFFOLDING!');
+        console.log('✨ Each repository has Next.js 14 + TypeScript foundation');
+        console.log('🔗 All repositories are ready for AI agent development');
+        console.log('👥 Ready for individual service development');
+
+        console.log('\n📋 NEXT ACTIONS:');
+        console.log('1. Push scaffolding to GitHub: npm run push-all-repos');
+        console.log('2. Verify all repositories: npm run verify-all-repos');
+        console.log('3. Install dependencies: pnpm install');
+        console.log('4. Start development: npm run dev');
+    } else {
+        console.log('\n⚠️  Some repositories failed to scaffold. Check the errors above.');
+    }
 }
 
 main().catch(console.error);

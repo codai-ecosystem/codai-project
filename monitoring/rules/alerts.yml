@@ -1,0 +1,128 @@
+groups:
+  - name: codai-infrastructure
+    rules:
+      # High CPU usage alert
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage detected"
+          description: "CPU usage is above 80% on {{ $labels.instance }} for more than 5 minutes."
+
+      # High memory usage alert
+      - alert: HighMemoryUsage
+        expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage detected"
+          description: "Memory usage is above 85% on {{ $labels.instance }} for more than 5 minutes."
+
+      # Disk space alert
+      - alert: DiskSpaceLow
+        expr: (node_filesystem_avail_bytes / node_filesystem_size_bytes) * 100 < 20
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Disk space running low"
+          description: "Disk space is below 20% on {{ $labels.instance }} filesystem {{ $labels.mountpoint }}."
+
+  - name: codai-applications
+    rules:
+      # Application down alert
+      - alert: ApplicationDown
+        expr: up{job=~"codai-apps"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Application is down"
+          description: "{{ $labels.instance }} has been down for more than 2 minutes."
+
+      # High error rate alert
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m]) * 100 > 5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High error rate detected"
+          description: "Error rate is above 5% for {{ $labels.instance }} for more than 5 minutes."
+
+      # High response time alert
+      - alert: HighResponseTime
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High response time detected"
+          description: "95th percentile response time is above 2 seconds for {{ $labels.instance }}."
+
+      # Database connection issues
+      - alert: DatabaseConnectionHigh
+        expr: database_connections_active / database_connections_max > 0.8
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Database connections running high"
+          description: "Database connections are above 80% of maximum for {{ $labels.instance }}."
+
+  - name: codai-business-metrics
+    rules:
+      # Low user registrations
+      - alert: LowUserRegistrations
+        expr: rate(user_registrations_total[1h]) < 1
+        for: 30m
+        labels:
+          severity: info
+        annotations:
+          summary: "Low user registration rate"
+          description: "User registration rate is below 1 per hour for the last 30 minutes."
+
+      # High user churn
+      - alert: HighUserChurn
+        expr: rate(user_churn_total[24h]) > 0.05
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: "High user churn rate"
+          description: "User churn rate is above 5% in the last 24 hours."
+
+      # API rate limit approaching
+      - alert: APIRateLimitApproaching
+        expr: rate(api_rate_limit_hits_total[5m]) / api_rate_limit_max > 0.8
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "API rate limit approaching"
+          description: "API rate limit usage is above 80% for {{ $labels.instance }}."
+
+  - name: codai-security
+    rules:
+      # Failed login attempts
+      - alert: HighFailedLogins
+        expr: rate(failed_login_attempts_total[5m]) > 10
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High number of failed login attempts"
+          description: "More than 10 failed login attempts per minute detected on {{ $labels.instance }}."
+
+      # Suspicious activity
+      - alert: SuspiciousActivity
+        expr: rate(security_suspicious_activity_total[5m]) > 5
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Suspicious activity detected"
+          description: "Suspicious activity detected on {{ $labels.instance }}."

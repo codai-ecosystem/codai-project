@@ -5,10 +5,29 @@
 
 'use client';
 
+import { useState } from 'react';
 import { useAuth } from '../auth/AuthProvider';
 import { ServiceStatusDashboard } from './ServiceStatusDashboard';
 import { MemoryInterface } from '../memory/MemoryInterface';
 import { LoadingPage } from '../common/Loading';
+import AIServiceOrchestrator from '../ai/AIServiceOrchestrator';
+import ModelManagement from '../models/ModelManagement';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
+import {
+  Brain,
+  Zap,
+  Activity,
+  Settings,
+  BarChart3,
+  Layers,
+  Code,
+  Database,
+  Network,
+  Cpu
+} from 'lucide-react';
 
 export function MainDashboard() {
   const { user, logout, isLoading } = useAuth();

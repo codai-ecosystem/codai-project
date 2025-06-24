@@ -44,55 +44,55 @@ async function checkSourceRepo(sourceRepo) {
 
 async function migrateSource(migration) {
     console.log(`\n🔄 Migrating ${migration.name} from ${migration.sourceRepo}...`);
-    
+
     const sourceExists = await checkSourceRepo(migration.sourceRepo);
     if (!sourceExists) {
         console.log(`⚠️  Source repository ${migration.sourceRepo} not accessible`);
         return { success: false, reason: 'source_not_accessible' };
     }
-    
+
     const tempDir = `temp-${migration.name}-${Date.now()}`;
     const targetPath = migration.targetPath;
-    
+
     try {
         // Clone source repository to temp directory
         console.log(`📥 Cloning source repository...`);
         execSync(`git clone https://github.com/${migration.sourceRepo}.git ${tempDir}`, { stdio: 'inherit' });
-        
+
         // Remove .git directory from temp
         if (process.platform === 'win32') {
             execSync(`rmdir /s /q "${tempDir}\\.git"`, { stdio: 'ignore' });
         } else {
             execSync(`rm -rf ${tempDir}/.git`, { stdio: 'ignore' });
         }
-        
+
         // Read existing target structure
         const targetExists = await fs.access(targetPath).then(() => true).catch(() => false);
         let existingFiles = [];
         if (targetExists) {
             existingFiles = await fs.readdir(targetPath, { recursive: true });
         }
-        
+
         // Copy source files to target, preserving our generated structure
         console.log(`📋 Merging source code with generated structure...`);
         await mergeDirectories(tempDir, targetPath, existingFiles);
-        
+
         // Clean up temp directory
         if (process.platform === 'win32') {
             execSync(`rmdir /s /q "${tempDir}"`, { stdio: 'ignore' });
         } else {
             execSync(`rm -rf ${tempDir}`, { stdio: 'ignore' });
         }
-        
+
         // Update package.json with source dependencies
         await updatePackageJson(targetPath, migration);
-        
+
         console.log(`✅ Successfully migrated ${migration.name}`);
         return { success: true, migration };
-        
+
     } catch (error) {
         console.error(`❌ Failed to migrate ${migration.name}: ${error.message}`);
-        
+
         // Clean up on failure
         try {
             if (process.platform === 'win32') {
@@ -103,18 +103,18 @@ async function migrateSource(migration) {
         } catch (cleanupError) {
             // Ignore cleanup errors
         }
-        
+
         return { success: false, reason: 'migration_failed', error: error.message };
     }
 }
 
 async function mergeDirectories(sourceDir, targetDir, existingFiles) {
     const sourceFiles = await fs.readdir(sourceDir, { recursive: true, withFileTypes: true });
-    
+
     for (const file of sourceFiles) {
         const sourcePath = path.join(sourceDir, file.name);
         const targetPath = path.join(targetDir, file.name);
-        
+
         if (file.isDirectory()) {
             await fs.mkdir(targetPath, { recursive: true });
         } else {
@@ -126,12 +126,12 @@ async function mergeDirectories(sourceDir, targetDir, existingFiles) {
                 'next.config.js',
                 '.vscode/tasks.json'
             ];
-            
+
             if (shouldPreserve.some(preserve => file.name.includes(preserve))) {
                 console.log(`⚠️  Preserving generated file: ${file.name}`);
                 continue;
             }
-            
+
             // Copy source file
             await fs.mkdir(path.dirname(targetPath), { recursive: true });
             await fs.copyFile(sourcePath, targetPath);
@@ -142,24 +142,24 @@ async function mergeDirectories(sourceDir, targetDir, existingFiles) {
 
 async function updatePackageJson(targetPath, migration) {
     const packageJsonPath = path.join(targetPath, 'package.json');
-    
+
     try {
         // Read our generated package.json
         const generated = JSON.parse(await fs.readFile(packageJsonPath, 'utf8'));
-        
+
         // Try to read source package.json if it exists
         const tempDir = `temp-${migration.name}-check`;
         let sourcePackage = null;
-        
+
         try {
             execSync(`git clone https://github.com/${migration.sourceRepo}.git ${tempDir}`, { stdio: 'ignore' });
             const sourcePackageJson = path.join(tempDir, 'package.json');
             const sourceExists = await fs.access(sourcePackageJson).then(() => true).catch(() => false);
-            
+
             if (sourceExists) {
                 sourcePackage = JSON.parse(await fs.readFile(sourcePackageJson, 'utf8'));
             }
-            
+
             // Clean up temp
             if (process.platform === 'win32') {
                 execSync(`rmdir /s /q "${tempDir}"`, { stdio: 'ignore' });
@@ -169,35 +169,35 @@ async function updatePackageJson(targetPath, migration) {
         } catch (error) {
             // Ignore errors, continue with generated package.json
         }
-        
+
         if (sourcePackage) {
             // Merge dependencies
             generated.dependencies = {
                 ...generated.dependencies,
                 ...sourcePackage.dependencies
             };
-            
+
             generated.devDependencies = {
                 ...generated.devDependencies,
                 ...sourcePackage.devDependencies
             };
-            
+
             // Merge scripts, preserving our generated ones
             generated.scripts = {
                 ...sourcePackage.scripts,
                 ...generated.scripts // Our scripts take precedence
             };
-            
+
             // Update description if source has one
             if (sourcePackage.description) {
                 generated.description = sourcePackage.description;
             }
-            
+
             console.log(`📦 Merged package.json dependencies and scripts`);
         }
-        
+
         await fs.writeFile(packageJsonPath, JSON.stringify(generated, null, 2));
-        
+
     } catch (error) {
         console.log(`⚠️  Could not update package.json: ${error.message}`);
     }
@@ -206,19 +206,19 @@ async function updatePackageJson(targetPath, migration) {
 async function generateMigrationReport(results) {
     const successful = results.filter(r => r.success);
     const failed = results.filter(r => !r.success);
-    
+
     console.log('\n📊 MIGRATION REPORT');
     console.log('===================');
     console.log(`✅ Successfully migrated: ${successful.length}`);
     console.log(`❌ Failed: ${failed.length}`);
-    
+
     if (successful.length > 0) {
         console.log('\n✅ SUCCESSFULLY MIGRATED:');
         successful.forEach(r => {
             console.log(`   - ${r.migration.name}: ${r.migration.sourceRepo} → ${r.migration.targetPath}`);
         });
     }
-    
+
     if (failed.length > 0) {
         console.log('\n❌ MIGRATION FAILURES:');
         failed.forEach(r => {
@@ -228,7 +228,7 @@ async function generateMigrationReport(results) {
             }
         });
     }
-    
+
     console.log('\n🔧 NEXT STEPS:');
     console.log('1. Run "pnpm install" to install all dependencies');
     console.log('2. Review and test each migrated service');
@@ -240,16 +240,16 @@ async function main() {
     console.log('🔄 CODAI ECOSYSTEM SOURCE MIGRATION');
     console.log('===================================');
     console.log(`Migrating ${MIGRATION_MAP.length} source repositories...\n`);
-    
+
     const results = [];
-    
+
     for (const migration of MIGRATION_MAP) {
         const result = await migrateSource(migration);
         results.push(result);
     }
-    
+
     await generateMigrationReport(results);
-    
+
     console.log('\n🎉 Source migration complete!');
 }
 

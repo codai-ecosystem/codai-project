@@ -13,130 +13,130 @@ console.log('🚀 Starting comprehensive dependency update...\n');
 
 // Define the latest versions for key dependencies (as of June 2025)
 const LATEST_VERSIONS = {
-  // Core Framework
-  'next': '^15.0.0',
-  'react': '^18.3.1',
-  'react-dom': '^18.3.1',
-  
-  // TypeScript & Tools
-  'typescript': '^5.5.0',
-  '@types/node': '^20.14.0',
-  '@types/react': '^18.3.0',
-  '@types/react-dom': '^18.3.0',
-  
-  // Styling (Keep Tailwind at v3)
-  'tailwindcss': '^3.4.4',
-  'postcss': '^8.4.38',
-  'autoprefixer': '^10.4.19',
-  
-  // Development Tools
-  'eslint': '^9.5.0',
-  'eslint-config-next': '^15.0.0',
-  '@typescript-eslint/eslint-plugin': '^7.13.0',
-  '@typescript-eslint/parser': '^7.13.0',
-  
-  // Testing
-  'jest': '^29.7.0',
-  '@testing-library/jest-dom': '^6.4.6',
-  '@testing-library/react': '^16.0.0',
-  '@testing-library/user-event': '^14.5.2',
-  '@types/jest': '^29.5.12',
-  'jest-environment-jsdom': '^29.7.0',
-  
-  // UI & Animation
-  'framer-motion': '^11.2.12',
-  'lucide-react': '^0.400.0',
-  'class-variance-authority': '^0.7.0',
-  'clsx': '^2.1.1',
-  'tailwind-merge': '^2.3.0',
-  
-  // Forms & Validation
-  'react-hook-form': '^7.52.0',
-  'zod': '^3.23.8',
-  '@hookform/resolvers': '^3.6.0',
-  
-  // State Management
-  'zustand': '^4.5.2',
-  '@tanstack/react-query': '^5.45.1',
-  
-  // Utilities
-  'date-fns': '^3.6.0',
-  'lodash': '^4.17.21',
-  '@types/lodash': '^4.17.5'
+    // Core Framework
+    'next': '^15.0.0',
+    'react': '^18.3.1',
+    'react-dom': '^18.3.1',
+
+    // TypeScript & Tools
+    'typescript': '^5.5.0',
+    '@types/node': '^20.14.0',
+    '@types/react': '^18.3.0',
+    '@types/react-dom': '^18.3.0',
+
+    // Styling (Keep Tailwind at v3)
+    'tailwindcss': '^3.4.4',
+    'postcss': '^8.4.38',
+    'autoprefixer': '^10.4.19',
+
+    // Development Tools
+    'eslint': '^9.5.0',
+    'eslint-config-next': '^15.0.0',
+    '@typescript-eslint/eslint-plugin': '^7.13.0',
+    '@typescript-eslint/parser': '^7.13.0',
+
+    // Testing
+    'jest': '^29.7.0',
+    '@testing-library/jest-dom': '^6.4.6',
+    '@testing-library/react': '^16.0.0',
+    '@testing-library/user-event': '^14.5.2',
+    '@types/jest': '^29.5.12',
+    'jest-environment-jsdom': '^29.7.0',
+
+    // UI & Animation
+    'framer-motion': '^11.2.12',
+    'lucide-react': '^0.400.0',
+    'class-variance-authority': '^0.7.0',
+    'clsx': '^2.1.1',
+    'tailwind-merge': '^2.3.0',
+
+    // Forms & Validation
+    'react-hook-form': '^7.52.0',
+    'zod': '^3.23.8',
+    '@hookform/resolvers': '^3.6.0',
+
+    // State Management
+    'zustand': '^4.5.2',
+    '@tanstack/react-query': '^5.45.1',
+
+    // Utilities
+    'date-fns': '^3.6.0',
+    'lodash': '^4.17.21',
+    '@types/lodash': '^4.17.5'
 };
 
 // Apps to update
 const APPS = [
-  'codai', 'memorai', 'logai', 'bancai', 'wallet', 
-  'fabricai', 'studiai', 'sociai', 'cumparai', 'x', 'publicai'
+    'codai', 'memorai', 'logai', 'bancai', 'wallet',
+    'fabricai', 'studiai', 'sociai', 'cumparai', 'x', 'publicai'
 ];
 
 function updatePackageJson(appPath, appName) {
-  const packageJsonPath = path.join(appPath, 'package.json');
-  
-  if (!fs.existsSync(packageJsonPath)) {
-    console.log(`⚠️  No package.json found for ${appName}, skipping...`);
-    return;
-  }
+    const packageJsonPath = path.join(appPath, 'package.json');
 
-  console.log(`📦 Updating ${appName}...`);
-  
-  try {
-    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-    
-    // Update dependencies
-    if (packageJson.dependencies) {
-      for (const [dep, version] of Object.entries(LATEST_VERSIONS)) {
-        if (packageJson.dependencies[dep]) {
-          console.log(`  ✅ ${dep}: ${packageJson.dependencies[dep]} → ${version}`);
-          packageJson.dependencies[dep] = version;
+    if (!fs.existsSync(packageJsonPath)) {
+        console.log(`⚠️  No package.json found for ${appName}, skipping...`);
+        return;
+    }
+
+    console.log(`📦 Updating ${appName}...`);
+
+    try {
+        const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+
+        // Update dependencies
+        if (packageJson.dependencies) {
+            for (const [dep, version] of Object.entries(LATEST_VERSIONS)) {
+                if (packageJson.dependencies[dep]) {
+                    console.log(`  ✅ ${dep}: ${packageJson.dependencies[dep]} → ${version}`);
+                    packageJson.dependencies[dep] = version;
+                }
+            }
         }
-      }
-    }
-    
-    // Update devDependencies
-    if (packageJson.devDependencies) {
-      for (const [dep, version] of Object.entries(LATEST_VERSIONS)) {
-        if (packageJson.devDependencies[dep]) {
-          console.log(`  ✅ ${dep}: ${packageJson.devDependencies[dep]} → ${version}`);
-          packageJson.devDependencies[dep] = version;
+
+        // Update devDependencies
+        if (packageJson.devDependencies) {
+            for (const [dep, version] of Object.entries(LATEST_VERSIONS)) {
+                if (packageJson.devDependencies[dep]) {
+                    console.log(`  ✅ ${dep}: ${packageJson.devDependencies[dep]} → ${version}`);
+                    packageJson.devDependencies[dep] = version;
+                }
+            }
         }
-      }
+
+        // Ensure required scripts exist
+        if (!packageJson.scripts) packageJson.scripts = {};
+
+        const requiredScripts = {
+            'dev': 'next dev',
+            'build': 'next build',
+            'start': 'next start',
+            'lint': 'next lint',
+            'test': 'jest',
+            'test:watch': 'jest --watch',
+            'type-check': 'tsc --noEmit'
+        };
+
+        for (const [script, command] of Object.entries(requiredScripts)) {
+            if (!packageJson.scripts[script]) {
+                packageJson.scripts[script] = command;
+                console.log(`  ➕ Added script: ${script}`);
+            }
+        }
+
+        // Write back to file
+        fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n');
+        console.log(`  ✅ Updated ${appName} package.json\n`);
+
+    } catch (error) {
+        console.error(`❌ Failed to update ${appName}:`, error.message);
     }
-    
-    // Ensure required scripts exist
-    if (!packageJson.scripts) packageJson.scripts = {};
-    
-    const requiredScripts = {
-      'dev': 'next dev',
-      'build': 'next build',
-      'start': 'next start',
-      'lint': 'next lint',
-      'test': 'jest',
-      'test:watch': 'jest --watch',
-      'type-check': 'tsc --noEmit'
-    };
-    
-    for (const [script, command] of Object.entries(requiredScripts)) {
-      if (!packageJson.scripts[script]) {
-        packageJson.scripts[script] = command;
-        console.log(`  ➕ Added script: ${script}`);
-      }
-    }
-    
-    // Write back to file
-    fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n');
-    console.log(`  ✅ Updated ${appName} package.json\n`);
-    
-  } catch (error) {
-    console.error(`❌ Failed to update ${appName}:`, error.message);
-  }
 }
 
 function updateTailwindConfig(appPath, appName) {
-  const tailwindConfigPath = path.join(appPath, 'tailwind.config.js');
-  
-  const tailwindConfig = `/** @type {import('tailwindcss').Config} */
+    const tailwindConfigPath = path.join(appPath, 'tailwind.config.js');
+
+    const tailwindConfig = `/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -193,77 +193,77 @@ module.exports = {
   plugins: [],
 }`;
 
-  try {
-    fs.writeFileSync(tailwindConfigPath, tailwindConfig);
-    console.log(`  ✅ Updated ${appName} Tailwind config`);
-  } catch (error) {
-    console.error(`❌ Failed to update Tailwind config for ${appName}:`, error.message);
-  }
+    try {
+        fs.writeFileSync(tailwindConfigPath, tailwindConfig);
+        console.log(`  ✅ Updated ${appName} Tailwind config`);
+    } catch (error) {
+        console.error(`❌ Failed to update Tailwind config for ${appName}:`, error.message);
+    }
 }
 
 function updatePostCSSConfig(appPath, appName) {
-  const postCSSConfigPath = path.join(appPath, 'postcss.config.js');
-  
-  const postCSSConfig = `module.exports = {
+    const postCSSConfigPath = path.join(appPath, 'postcss.config.js');
+
+    const postCSSConfig = `module.exports = {
   plugins: {
     tailwindcss: {},
     autoprefixer: {},
   },
 }`;
 
-  try {
-    fs.writeFileSync(postCSSConfigPath, postCSSConfig);
-    console.log(`  ✅ Updated ${appName} PostCSS config`);
-  } catch (error) {
-    console.error(`❌ Failed to update PostCSS config for ${appName}:`, error.message);
-  }
+    try {
+        fs.writeFileSync(postCSSConfigPath, postCSSConfig);
+        console.log(`  ✅ Updated ${appName} PostCSS config`);
+    } catch (error) {
+        console.error(`❌ Failed to update PostCSS config for ${appName}:`, error.message);
+    }
 }
 
 function updateTSConfig(appPath, appName) {
-  const tsConfigPath = path.join(appPath, 'tsconfig.json');
-  
-  const tsConfig = {
-    "extends": "../../tsconfig.base.json",
-    "compilerOptions": {
-      "plugins": [
-        {
-          "name": "next"
-        }
-      ],
-      "baseUrl": ".",
-      "paths": {
-        "@/*": ["./src/*"]
-      }
-    },
-    "include": [
-      "next-env.d.ts",
-      "**/*.ts",
-      "**/*.tsx",
-      ".next/types/**/*.ts"
-    ],
-    "exclude": [
-      "node_modules"
-    ]
-  };
+    const tsConfigPath = path.join(appPath, 'tsconfig.json');
 
-  try {
-    fs.writeFileSync(tsConfigPath, JSON.stringify(tsConfig, null, 2) + '\n');
-    console.log(`  ✅ Updated ${appName} TypeScript config`);
-  } catch (error) {
-    console.error(`❌ Failed to update TypeScript config for ${appName}:`, error.message);
-  }
+    const tsConfig = {
+        "extends": "../../tsconfig.base.json",
+        "compilerOptions": {
+            "plugins": [
+                {
+                    "name": "next"
+                }
+            ],
+            "baseUrl": ".",
+            "paths": {
+                "@/*": ["./src/*"]
+            }
+        },
+        "include": [
+            "next-env.d.ts",
+            "**/*.ts",
+            "**/*.tsx",
+            ".next/types/**/*.ts"
+        ],
+        "exclude": [
+            "node_modules"
+        ]
+    };
+
+    try {
+        fs.writeFileSync(tsConfigPath, JSON.stringify(tsConfig, null, 2) + '\n');
+        console.log(`  ✅ Updated ${appName} TypeScript config`);
+    } catch (error) {
+        console.error(`❌ Failed to update TypeScript config for ${appName}:`, error.message);
+    }
 }
 
 function updateGlobalsCSS(appPath, appName) {
-  const globalsCSSPath = path.join(appPath, 'src', 'app', 'globals.css');
-  
-  // Ensure the directory exists
-  const dir = path.dirname(globalsCSSPath);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-  
-  const globalsCSS = `@tailwind base;
+    const globalsCSSPath = path.join(appPath, 'src', 'app', 'globals.css');
+
+    // Ensure the directory exists
+    const dir = path.dirname(globalsCSSPath);
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+    }
+
+    const globalsCSS = `@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -322,126 +322,126 @@ body {
   }
 }`;
 
-  try {
-    fs.writeFileSync(globalsCSSPath, globalsCSS);
-    console.log(`  ✅ Updated ${appName} globals.css`);
-  } catch (error) {
-    console.error(`❌ Failed to update globals.css for ${appName}:`, error.message);
-  }
+    try {
+        fs.writeFileSync(globalsCSSPath, globalsCSS);
+        console.log(`  ✅ Updated ${appName} globals.css`);
+    } catch (error) {
+        console.error(`❌ Failed to update globals.css for ${appName}:`, error.message);
+    }
 }
 
 function addMissingDependencies(appPath, appName) {
-  console.log(`🔧 Installing missing dependencies for ${appName}...`);
-  
-  const requiredDeps = [
-    'next@^15.0.0',
-    'react@^18.3.1', 
-    'react-dom@^18.3.1',
-    'tailwindcss@^3.4.4',
-    'postcss@^8.4.38',
-    'autoprefixer@^10.4.19'
-  ];
-  
-  const requiredDevDeps = [
-    'typescript@^5.5.0',
-    '@types/node@^20.14.0',
-    '@types/react@^18.3.0',
-    '@types/react-dom@^18.3.0',
-    'eslint@^9.5.0',
-    'eslint-config-next@^15.0.0'
-  ];
-  
-  try {
-    // Change to the app directory
-    process.chdir(appPath);
-    
-    // Install production dependencies
-    execSync(`pnpm add ${requiredDeps.join(' ')}`, { stdio: 'inherit' });
-    
-    // Install dev dependencies
-    execSync(`pnpm add -D ${requiredDevDeps.join(' ')}`, { stdio: 'inherit' });
-    
-    console.log(`  ✅ Dependencies installed for ${appName}\n`);
-    
-  } catch (error) {
-    console.error(`❌ Failed to install dependencies for ${appName}:`, error.message);
-  }
+    console.log(`🔧 Installing missing dependencies for ${appName}...`);
+
+    const requiredDeps = [
+        'next@^15.0.0',
+        'react@^18.3.1',
+        'react-dom@^18.3.1',
+        'tailwindcss@^3.4.4',
+        'postcss@^8.4.38',
+        'autoprefixer@^10.4.19'
+    ];
+
+    const requiredDevDeps = [
+        'typescript@^5.5.0',
+        '@types/node@^20.14.0',
+        '@types/react@^18.3.0',
+        '@types/react-dom@^18.3.0',
+        'eslint@^9.5.0',
+        'eslint-config-next@^15.0.0'
+    ];
+
+    try {
+        // Change to the app directory
+        process.chdir(appPath);
+
+        // Install production dependencies
+        execSync(`pnpm add ${requiredDeps.join(' ')}`, { stdio: 'inherit' });
+
+        // Install dev dependencies
+        execSync(`pnpm add -D ${requiredDevDeps.join(' ')}`, { stdio: 'inherit' });
+
+        console.log(`  ✅ Dependencies installed for ${appName}\n`);
+
+    } catch (error) {
+        console.error(`❌ Failed to install dependencies for ${appName}:`, error.message);
+    }
 }
 
 // Main execution
 async function main() {
-  const rootDir = process.cwd();
-  const appsDir = path.join(rootDir, 'apps');
-  
-  console.log(`📁 Working directory: ${rootDir}`);
-  console.log(`📂 Apps directory: ${appsDir}\n`);
-  
-  // Process each app
-  for (const appName of APPS) {
-    const appPath = path.join(appsDir, appName);
-    
-    if (!fs.existsSync(appPath)) {
-      console.log(`⚠️  App directory ${appName} does not exist, skipping...\n`);
-      continue;
+    const rootDir = process.cwd();
+    const appsDir = path.join(rootDir, 'apps');
+
+    console.log(`📁 Working directory: ${rootDir}`);
+    console.log(`📂 Apps directory: ${appsDir}\n`);
+
+    // Process each app
+    for (const appName of APPS) {
+        const appPath = path.join(appsDir, appName);
+
+        if (!fs.existsSync(appPath)) {
+            console.log(`⚠️  App directory ${appName} does not exist, skipping...\n`);
+            continue;
+        }
+
+        console.log(`🔄 Processing ${appName}...`);
+
+        // Update configurations
+        updatePackageJson(appPath, appName);
+        updateTailwindConfig(appPath, appName);
+        updatePostCSSConfig(appPath, appName);
+        updateTSConfig(appPath, appName);
+        updateGlobalsCSS(appPath, appName);
+
+        console.log(`✅ Configuration updates complete for ${appName}\n`);
     }
-    
-    console.log(`🔄 Processing ${appName}...`);
-    
-    // Update configurations
-    updatePackageJson(appPath, appName);
-    updateTailwindConfig(appPath, appName);
-    updatePostCSSConfig(appPath, appName);
-    updateTSConfig(appPath, appName);
-    updateGlobalsCSS(appPath, appName);
-    
-    console.log(`✅ Configuration updates complete for ${appName}\n`);
-  }
-  
-  // Install dependencies from workspace root
-  console.log('📦 Installing dependencies from workspace root...');
-  try {
-    process.chdir(rootDir);
-    execSync('pnpm install', { stdio: 'inherit' });
-    console.log('✅ Workspace dependencies installed successfully!\n');
-  } catch (error) {
-    console.error('❌ Failed to install workspace dependencies:', error.message);
-  }
-  
-  // Run validation
-  console.log('🔍 Running workspace validation...');
-  try {
-    execSync('pnpm validate-workspace', { stdio: 'inherit' });
-    console.log('✅ Workspace validation passed!\n');
-  } catch (error) {
-    console.error('⚠️  Workspace validation warnings (expected during updates)');
-  }
-  
-  console.log('🎉 DEPENDENCY UPDATE COMPLETE!');
-  console.log('\n📋 SUMMARY:');
-  console.log(`   ✅ Updated ${APPS.length} applications`);
-  console.log('   ✅ All dependencies updated to latest versions');
-  console.log('   ✅ Tailwind CSS kept at version 3.x');
-  console.log('   ✅ TypeScript configurations standardized');
-  console.log('   ✅ Build and development scripts configured');
-  console.log('\n🚀 Next steps:');
-  console.log('   1. Test individual apps: pnpm dev --filter=@codai/<app-name>');
-  console.log('   2. Run full build: pnpm build');
-  console.log('   3. Start all services: pnpm dev');
+
+    // Install dependencies from workspace root
+    console.log('📦 Installing dependencies from workspace root...');
+    try {
+        process.chdir(rootDir);
+        execSync('pnpm install', { stdio: 'inherit' });
+        console.log('✅ Workspace dependencies installed successfully!\n');
+    } catch (error) {
+        console.error('❌ Failed to install workspace dependencies:', error.message);
+    }
+
+    // Run validation
+    console.log('🔍 Running workspace validation...');
+    try {
+        execSync('pnpm validate-workspace', { stdio: 'inherit' });
+        console.log('✅ Workspace validation passed!\n');
+    } catch (error) {
+        console.error('⚠️  Workspace validation warnings (expected during updates)');
+    }
+
+    console.log('🎉 DEPENDENCY UPDATE COMPLETE!');
+    console.log('\n📋 SUMMARY:');
+    console.log(`   ✅ Updated ${APPS.length} applications`);
+    console.log('   ✅ All dependencies updated to latest versions');
+    console.log('   ✅ Tailwind CSS kept at version 3.x');
+    console.log('   ✅ TypeScript configurations standardized');
+    console.log('   ✅ Build and development scripts configured');
+    console.log('\n🚀 Next steps:');
+    console.log('   1. Test individual apps: pnpm dev --filter=@codai/<app-name>');
+    console.log('   2. Run full build: pnpm build');
+    console.log('   3. Start all services: pnpm dev');
 }
 
 // Handle errors gracefully
 process.on('unhandledRejection', (reason, promise) => {
-  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
-  process.exit(1);
+    console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+    process.exit(1);
 });
 
 process.on('uncaughtException', (error) => {
-  console.error('❌ Uncaught Exception:', error);
-  process.exit(1);
+    console.error('❌ Uncaught Exception:', error);
+    process.exit(1);
 });
 
 // Run the main function
 main().catch(error => {
-  console.error('❌ Script failed:', error);
-  process.exit(1);
+    console.error('❌ Script failed:', error);
+    process.exit(1);
 });

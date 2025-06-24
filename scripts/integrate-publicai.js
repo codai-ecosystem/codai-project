@@ -31,10 +31,10 @@ async function log(message, type = 'info') {
 async function createNextJSProject(service) {
     const appDir = path.join(APPS_DIR, service.name);
     await log(`Creating Next.js project for ${service.name}...`);
-    
+
     try {
         await fs.mkdir(appDir, { recursive: true });
-        
+
         // Create package.json
         const packageJson = {
             name: `@codai/${service.name}`,
@@ -64,18 +64,18 @@ async function createNextJSProject(service) {
                 'typescript': '^5.0.0'
             }
         };
-        
+
         await fs.writeFile(
             path.join(appDir, 'package.json'),
             JSON.stringify(packageJson, null, 2)
         );
-        
+
         // Create directory structure
         await fs.mkdir(path.join(appDir, 'src', 'app'), { recursive: true });
         await fs.mkdir(path.join(appDir, 'src', 'components'), { recursive: true });
         await fs.mkdir(path.join(appDir, 'src', 'lib'), { recursive: true });
         await fs.mkdir(path.join(appDir, 'public'), { recursive: true });
-        
+
         // Create layout.tsx
         const layoutContent = `import type { Metadata } from 'next'
 import { ReactNode } from 'react'
@@ -96,12 +96,12 @@ export default function RootLayout({
     </html>
   )
 }`;
-        
+
         await fs.writeFile(
             path.join(appDir, 'src', 'app', 'layout.tsx'),
             layoutContent
         );
-        
+
         // Create page.tsx
         const pageContent = `export default function HomePage() {
   return (
@@ -112,12 +112,12 @@ export default function RootLayout({
     </main>
   )
 }`;
-        
+
         await fs.writeFile(
             path.join(appDir, 'src', 'app', 'page.tsx'),
             pageContent
         );
-        
+
         // Create tsconfig.json
         const tsconfig = {
             extends: '../../tsconfig.base.json',
@@ -138,12 +138,12 @@ export default function RootLayout({
                 'node_modules'
             ]
         };
-        
+
         await fs.writeFile(
             path.join(appDir, 'tsconfig.json'),
             JSON.stringify(tsconfig, null, 2)
         );
-        
+
         // Create next.config.js
         const nextConfig = `/** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -153,12 +153,12 @@ const nextConfig = {
 }
 
 module.exports = nextConfig`;
-        
+
         await fs.writeFile(
             path.join(appDir, 'next.config.js'),
             nextConfig
         );
-        
+
         await log(`✅ Next.js project created for ${service.name}`, 'success');
         return true;
     } catch (error) {
@@ -170,7 +170,7 @@ module.exports = nextConfig`;
 async function createAgentConfig(service) {
     const appDir = path.join(APPS_DIR, service.name);
     await log(`Creating agent configuration for ${service.name}...`);
-    
+
     try {
         // Create agent.project.json
         const agentConfig = {
@@ -206,15 +206,15 @@ async function createAgentConfig(service) {
                 databases: ['memorai.ro']
             }
         };
-        
+
         await fs.writeFile(
             path.join(appDir, 'agent.project.json'),
             JSON.stringify(agentConfig, null, 2)
         );
-        
+
         // Create .vscode directory and tasks
         await fs.mkdir(path.join(appDir, '.vscode'), { recursive: true });
-        
+
         const vscodeSettings = {
             'typescript.preferences.includePackageJsonAutoImports': 'on',
             'editor.formatOnSave': true,
@@ -223,12 +223,12 @@ async function createAgentConfig(service) {
                 'source.organizeImports': true
             }
         };
-        
+
         await fs.writeFile(
             path.join(appDir, '.vscode', 'settings.json'),
             JSON.stringify(vscodeSettings, null, 2)
         );
-        
+
         const vscodeTasks = {
             version: '2.0.0',
             tasks: [
@@ -275,12 +275,12 @@ async function createAgentConfig(service) {
                 }
             ]
         };
-        
+
         await fs.writeFile(
             path.join(appDir, '.vscode', 'tasks.json'),
             JSON.stringify(vscodeTasks, null, 2)
         );
-        
+
         await log(`✅ Agent configuration created for ${service.name}`, 'success');
         return true;
     } catch (error) {
@@ -291,11 +291,11 @@ async function createAgentConfig(service) {
 
 async function updateProjectsIndex(service) {
     await log(`Updating projects index...`);
-    
+
     try {
         const indexPath = path.join(PROJECT_ROOT, 'projects.index.json');
         let projectsIndex = {};
-        
+
         try {
             const indexContent = await fs.readFile(indexPath, 'utf8');
             projectsIndex = JSON.parse(indexContent);
@@ -308,12 +308,12 @@ async function updateProjectsIndex(service) {
                 apps: []
             };
         }
-        
+
         // Ensure apps array exists
         if (!projectsIndex.apps) {
             projectsIndex.apps = [];
         }
-        
+
         // Add the service
         const serviceEntry = {
             name: service.name,
@@ -332,11 +332,11 @@ async function updateProjectsIndex(service) {
                 lastSync: new Date().toISOString()
             }
         };
-        
+
         projectsIndex.apps.push(serviceEntry);
         projectsIndex.totalApps = projectsIndex.apps.length;
         projectsIndex.lastUpdated = new Date().toISOString();
-        
+
         await fs.writeFile(indexPath, JSON.stringify(projectsIndex, null, 2));
         await log(`✅ Projects index updated`, 'success');
         return true;
@@ -348,31 +348,31 @@ async function updateProjectsIndex(service) {
 
 async function main() {
     await log('🚀 Starting publicai service integration...');
-    
+
     try {
         // Create Next.js project
         const projectCreated = await createNextJSProject(SERVICE_TO_INTEGRATE);
         if (!projectCreated) {
             throw new Error('Failed to create Next.js project');
         }
-        
+
         // Create agent configuration
         const agentCreated = await createAgentConfig(SERVICE_TO_INTEGRATE);
         if (!agentCreated) {
             throw new Error('Failed to create agent configuration');
         }
-        
+
         // Update projects index
         const indexUpdated = await updateProjectsIndex(SERVICE_TO_INTEGRATE);
         if (!indexUpdated) {
             throw new Error('Failed to update projects index');
         }
-        
+
         await log('🎉 publicai service integration completed successfully!', 'success');
         await log(`📁 Service created at: apps/${SERVICE_TO_INTEGRATE.name}`, 'info');
         await log(`🌐 Domain: ${SERVICE_TO_INTEGRATE.domain}`, 'info');
         await log(`📋 Priority: ${SERVICE_TO_INTEGRATE.priority} (${SERVICE_TO_INTEGRATE.tier} tier)`, 'info');
-        
+
     } catch (error) {
         await log(`❌ Integration failed: ${error.message}`, 'error');
         process.exit(1);

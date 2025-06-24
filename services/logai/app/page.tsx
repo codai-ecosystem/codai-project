@@ -56,7 +56,7 @@ export default function Home() {
             </p>
           </div>
         </div>
-        
+
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <Link
             href="/auth/signin"

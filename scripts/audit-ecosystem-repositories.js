@@ -20,18 +20,18 @@ const execAsync = promisify(exec);
 // Known repositories in codai-ecosystem organization
 const ECOSYSTEM_REPOSITORIES = [
     // Core Services (Priority 1-4)
-    'codai', 'memorai', 'studiai', 'logai', 'bancai', 'wallet', 
+    'codai', 'memorai', 'studiai', 'logai', 'bancai', 'wallet',
     'fabricai', 'sociai', 'cumparai', 'x',
-    
+
     // Infrastructure & Support
     'templates', 'tools', 'docs', 'hub', 'admin', 'dash',
-    
+
     // Additional AI Services
     'marketai', 'analizai', 'stocai', 'legalizai', 'ajutai', 'jucai',
-    
+
     // Legacy/Alternative names
     'AIDE', 'kodex', 'explorer', 'mod', 'id', 'metu',
-    
+
     // Main orchestration
     'codai-project'
 ];
@@ -72,18 +72,18 @@ async function checkRepositoryEmpty(repoName) {
  */
 function hasLocalScaffolding(serviceName) {
     const servicePath = path.join('services', serviceName);
-    
+
     if (!fs.existsSync(servicePath)) {
         return false;
     }
-    
+
     const requiredFiles = [
         'package.json',
         'app/page.tsx',
         'agent.project.json',
         'copilot-instructions.md'
     ];
-    
+
     return requiredFiles.every(file => {
         return fs.existsSync(path.join(servicePath, file));
     });
@@ -97,10 +97,10 @@ async function getRepositoryStats(repoName) {
     if (!exists) {
         return { exists: false, empty: true, hasScaffolding: false };
     }
-    
+
     const empty = await checkRepositoryEmpty(repoName);
     const hasScaffolding = CORE_SERVICES.includes(repoName) ? hasLocalScaffolding(repoName) : false;
-    
+
     return { exists, empty, hasScaffolding };
 }
 
@@ -109,7 +109,7 @@ async function getRepositoryStats(repoName) {
  */
 async function auditRepositories() {
     console.log(chalk.bold.blue('🔍 Codai Ecosystem Repository Audit\n'));
-    
+
     const results = {
         total: 0,
         existing: 0,
@@ -118,7 +118,7 @@ async function auditRepositories() {
         scaffolded: 0,
         needsPush: 0
     };
-    
+
     const categories = {
         contentRich: [],
         empty: [],
@@ -126,28 +126,28 @@ async function auditRepositories() {
         needsPush: [],
         nonExistent: []
     };
-    
+
     for (const repoName of ECOSYSTEM_REPOSITORIES) {
         results.total++;
         console.log(chalk.gray(`Checking ${repoName}...`));
-        
+
         const stats = await getRepositoryStats(repoName);
-        
+
         if (!stats.exists) {
             categories.nonExistent.push(repoName);
             console.log(chalk.red(`  ❌ ${repoName} - Repository does not exist`));
             continue;
         }
-        
+
         results.existing++;
-        
+
         if (!stats.empty) {
             results.withContent++;
             categories.contentRich.push(repoName);
             console.log(chalk.green(`  ✅ ${repoName} - Has content`));
         } else {
             results.empty++;
-            
+
             if (stats.hasScaffolding) {
                 results.scaffolded++;
                 results.needsPush++;
@@ -160,7 +160,7 @@ async function auditRepositories() {
             }
         }
     }
-    
+
     // Summary Report
     console.log(chalk.bold.blue('\n📊 Audit Summary:'));
     console.log(chalk.gray(`Total repositories checked: ${results.total}`));
@@ -169,45 +169,45 @@ async function auditRepositories() {
     console.log(chalk.yellow(`Empty repositories: ${results.empty}`));
     console.log(chalk.cyan(`Scaffolded locally: ${results.scaffolded}`));
     console.log(chalk.orange(`Need immediate push: ${results.needsPush}`));
-    
+
     // Detailed Categories
     if (categories.contentRich.length > 0) {
         console.log(chalk.bold.green('\n✅ Repositories with Content:'));
         categories.contentRich.forEach(repo => console.log(chalk.green(`  • ${repo}`)));
     }
-    
+
     if (categories.needsPush.length > 0) {
         console.log(chalk.bold.yellow('\n📦 Scaffolded - Need Push:'));
         categories.needsPush.forEach(repo => console.log(chalk.yellow(`  • ${repo}`)));
     }
-    
+
     if (categories.empty.length > 0) {
         console.log(chalk.bold.red('\n📭 Empty Repositories:'));
         categories.empty.forEach(repo => console.log(chalk.red(`  • ${repo}`)));
     }
-    
+
     if (categories.nonExistent.length > 0) {
         console.log(chalk.bold.gray('\n❌ Non-existent Repositories:'));
         categories.nonExistent.forEach(repo => console.log(chalk.gray(`  • ${repo}`)));
     }
-    
+
     // Recommendations
     console.log(chalk.bold.blue('\n🎯 Recommended Actions:'));
-    
+
     if (categories.needsPush.length > 0) {
         console.log(chalk.yellow(`1. Run "npm run push-scaffolded" to push ${categories.needsPush.length} scaffolded services`));
     }
-    
+
     if (categories.empty.length > 0) {
         console.log(chalk.red(`2. Create scaffolding for ${categories.empty.length} empty repositories`));
     }
-    
+
     if (categories.nonExistent.length > 0) {
         console.log(chalk.gray(`3. Create ${categories.nonExistent.length} missing repositories in GitHub`));
     }
-    
+
     console.log(chalk.bold.green('\n🚀 Ready to scale the Codai Ecosystem!'));
-    
+
     return { results, categories };
 }
 

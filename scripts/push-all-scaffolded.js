@@ -33,7 +33,7 @@ function generateCommitMessage(serviceName) {
         cumparai: 'AI Shopping Platform (cumparai.ro)',
         x: 'AI Trading Platform (x.codai.ro)'
     };
-    
+
     const serviceFeatures = {
         wallet: ['Digital wallet', 'Cryptocurrency support', 'Smart contracts', 'Multi-chain integration'],
         fabricai: ['AI model hosting', 'API endpoints', 'Model training', 'Service orchestration'],
@@ -41,11 +41,11 @@ function generateCommitMessage(serviceName) {
         cumparai: ['E-commerce', 'AI recommendations', 'Product catalog', 'Payment integration'],
         x: ['Algorithmic trading', 'Market analysis', 'Portfolio management', 'Risk assessment']
     };
-    
+
     const description = serviceDescriptions[serviceName] || `${serviceName} Service`;
     const features = serviceFeatures[serviceName] || ['Core functionality', 'AI integration', 'Modern UI'];
     const featuresText = features.map(f => `- ${f}`).join('\n');
-    
+
     return `feat: Initial scaffolding for ${description}
 
 ✅ COMPLETE NEXT.JS 14 FOUNDATION:
@@ -82,11 +82,11 @@ STATUS: Ready for AI agent development and business logic implementation`;
 function hasScaffolding(serviceName) {
     const servicePath = path.join('services', serviceName);
     const requiredFiles = ['package.json', 'app/page.tsx', 'agent.project.json'];
-    
+
     if (!fs.existsSync(servicePath)) {
         return false;
     }
-    
+
     return requiredFiles.every(file => {
         return fs.existsSync(path.join(servicePath, file));
     });
@@ -97,30 +97,30 @@ function hasScaffolding(serviceName) {
  */
 async function pushService(serviceName) {
     const servicePath = path.join('services', serviceName);
-    
+
     console.log(chalk.blue(`\n📦 Processing ${serviceName}...`));
-    
+
     if (!hasScaffolding(serviceName)) {
         console.log(chalk.yellow(`  ⚠️  Service not scaffolded: ${serviceName}`));
         return false;
     }
-    
+
     try {
         // Change to service directory and execute git commands
         const commitMessage = generateCommitMessage(serviceName);
-        
+
         console.log(chalk.gray(`  • Staging files...`));
         await execAsync('git add .', { cwd: servicePath });
-        
+
         console.log(chalk.gray(`  • Committing changes...`));
         await execAsync(`git commit -m "${commitMessage}"`, { cwd: servicePath });
-        
+
         console.log(chalk.gray(`  • Pushing to origin...`));
         await execAsync('git push origin main', { cwd: servicePath });
-        
+
         console.log(chalk.green(`  ✅ Successfully pushed ${serviceName} to codai-ecosystem/${serviceName}`));
         return true;
-        
+
     } catch (error) {
         if (error.message.includes('nothing to commit')) {
             console.log(chalk.gray(`  ℹ️  No changes to commit for ${serviceName}`));
@@ -137,35 +137,35 @@ async function pushService(serviceName) {
  */
 async function main() {
     console.log(chalk.bold.blue('🚀 Pushing All Scaffolded Services to Codai Ecosystem\n'));
-    
+
     const startTime = Date.now();
     let successCount = 0;
     let totalCount = 0;
-    
+
     // Ensure we're in the correct directory
     if (!fs.existsSync('services') || !fs.existsSync('package.json')) {
         console.log(chalk.red('❌ Please run this script from the codai-project root directory'));
         process.exit(1);
     }
-    
+
     console.log(chalk.gray(`Services to process: ${SCAFFOLDED_SERVICES.length}\n`));
-    
+
     for (const serviceName of SCAFFOLDED_SERVICES) {
         totalCount++;
         if (await pushService(serviceName)) {
             successCount++;
         }
     }
-    
+
     // Summary
     const duration = ((Date.now() - startTime) / 1000).toFixed(2);
-    
+
     console.log(chalk.bold.green('\n✅ Service Push Complete!'));
     console.log(chalk.gray('📊 Summary:'));
     console.log(chalk.gray(`   • Services processed: ${totalCount}`));
     console.log(chalk.gray(`   • Successfully pushed: ${successCount}`));
     console.log(chalk.gray(`   • Duration: ${duration}s`));
-    
+
     if (successCount === totalCount) {
         console.log(chalk.bold.green('\n🎉 All scaffolded services successfully pushed to codai-ecosystem!'));
         console.log(chalk.gray('Ready for individual AI agent development.\n'));

@@ -131,16 +131,3 @@ public
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-
-# Custom entries from existing .gitignore
-/node_modules
-/.pnp
-.pnp.js
-/coverage
-/.next/
-/out/
-/build
-*.pem
-.vercel
-next-env.d.ts
-.vscode/

@@ -13,7 +13,6 @@ This document records the accessibility and asset fixes applied to the Cursuri p
 ### 2. Asset Management
 
 - **SVG Badge Files**:
-
   - Created badge SVG files in the `components/icons/svg` directory:
     - `BadgeFirstCourse.tsx`
     - `BadgeFiveLessons.tsx`
@@ -27,7 +26,6 @@ This document records the accessibility and asset fixes applied to the Cursuri p
   - Updated the main index.ts file to export all badge components
 
 - **Added AchievementBadge Component**:
-
   - Created a reusable `AchievementBadge` component that maps achievement IDs to their corresponding badge components
   - Updated the `AchievementsSection.tsx` component to use the new `AchievementBadge` component instead of static image URLs
 

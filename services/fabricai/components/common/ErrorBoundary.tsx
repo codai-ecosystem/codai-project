@@ -70,8 +70,8 @@ export class ErrorBoundary extends Component<Props, State> {
 
             <div className="mb-4">
               <p className="text-sm text-gray-600">
-                An error occurred while rendering this component. Our team has been
-                notified and is working to fix the issue.
+                An error occurred while rendering this component. Our team has
+                been notified and is working to fix the issue.
               </p>
             </div>
 
@@ -103,7 +103,13 @@ export class ErrorBoundary extends Component<Props, State> {
                 Reload Page
               </button>
               <button
-                onClick={() => this.setState({ hasError: false, error: undefined, errorInfo: undefined })}
+                onClick={() =>
+                  this.setState({
+                    hasError: false,
+                    error: undefined,
+                    errorInfo: undefined,
+                  })
+                }
                 className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
               >
                 Try Again
@@ -119,16 +125,12 @@ export class ErrorBoundary extends Component<Props, State> {
 }
 
 // Functional wrapper for easier use
-export function WithErrorBoundary({ 
-  children, 
-  fallback 
-}: { 
-  children: ReactNode; 
-  fallback?: ReactNode; 
+export function WithErrorBoundary({
+  children,
+  fallback,
+}: {
+  children: ReactNode;
+  fallback?: ReactNode;
 }) {
-  return (
-    <ErrorBoundary fallback={fallback}>
-      {children}
-    </ErrorBoundary>
-  );
+  return <ErrorBoundary fallback={fallback}>{children}</ErrorBoundary>;
 }

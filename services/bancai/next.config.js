@@ -2,17 +2,17 @@
 const nextConfig = {
   // Enable standalone output for Docker
   output: 'standalone',
-  
+
   experimental: {
     // Enable React Server Components
     serverComponentsExternalPackages: [],
   },
-  
+
   // Environment variables
   env: {
     CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
-  
+
   // Security headers
   async headers() {
     return [
@@ -39,23 +39,23 @@ const nextConfig = {
       },
     ];
   },
-  
+
   // Redirect configuration
   async redirects() {
     return [];
   },
-  
+
   // Rewrite configuration
   async rewrites() {
     return [];
   },
-  
+
   // Image optimization
   images: {
     domains: ['localhost'],
     formats: ['image/webp', 'image/avif'],
   },
-  
+
   // Webpack configuration for better optimization
   webpack: (config, { dev, isServer }) => {
     // Production optimizations
@@ -72,7 +72,7 @@ const nextConfig = {
         },
       };
     }
-    
+
     return config;
   },
 };

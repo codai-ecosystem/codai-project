@@ -13,7 +13,9 @@ export function MemoryInterface() {
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [newMemory, setNewMemory] = useState('');
-  const [selectedMemory, setSelectedMemory] = useState<MemoryEntry | null>(null);
+  const [selectedMemory, setSelectedMemory] = useState<MemoryEntry | null>(
+    null
+  );
 
   const searchMemories = async (query: string) => {
     if (!query.trim()) {
@@ -27,7 +29,7 @@ export function MemoryInterface() {
         `/api/memory?query=${encodeURIComponent(query)}&limit=10`
       );
       const data = await response.json();
-      
+
       if (data.success) {
         setMemories(data.memories || []);
       } else {
@@ -63,7 +65,7 @@ export function MemoryInterface() {
       });
 
       const data = await response.json();
-      
+
       if (data.success) {
         setNewMemory('');
         // Refresh search if there's an active query
@@ -109,7 +111,7 @@ export function MemoryInterface() {
           <form onSubmit={handleStoreSubmit} className="space-y-3">
             <textarea
               value={newMemory}
-              onChange={(e) => setNewMemory(e.target.value)}
+              onChange={e => setNewMemory(e.target.value)}
               placeholder="Enter information to store in memory..."
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 resize-none"
@@ -142,7 +144,7 @@ export function MemoryInterface() {
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 placeholder="Search stored memories..."
                 className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 disabled={isLoading}
@@ -171,7 +173,7 @@ export function MemoryInterface() {
               Search Results ({memories.length})
             </h4>
             <div className="space-y-3">
-              {memories.map((memory) => (
+              {memories.map(memory => (
                 <div
                   key={memory.id}
                   className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer transition-colors"
@@ -213,7 +215,9 @@ export function MemoryInterface() {
 
         {!isLoading && searchQuery && memories.length === 0 && (
           <div className="text-center py-8">
-            <p className="text-gray-500">No memories found for "{searchQuery}"</p>
+            <p className="text-gray-500">
+              No memories found for "{searchQuery}"
+            </p>
           </div>
         )}
       </div>
@@ -231,28 +235,44 @@ export function MemoryInterface() {
                   onClick={() => setSelectedMemory(null)}
                   className="text-gray-400 hover:text-gray-600"
                 >
-                  <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  <svg
+                    className="h-6 w-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                 </button>
               </div>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Content</label>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Content
+                  </label>
                   <p className="mt-1 text-sm text-gray-900 bg-gray-50 p-3 rounded-md">
                     {selectedMemory.content}
                   </p>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Timestamp</label>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Timestamp
+                    </label>
                     <p className="mt-1 text-sm text-gray-900">
                       {formatTimestamp(selectedMemory.timestamp)}
                     </p>
                   </div>
                   {selectedMemory.relevance && (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Relevance</label>
+                      <label className="block text-sm font-medium text-gray-700">
+                        Relevance
+                      </label>
                       <p className="mt-1 text-sm text-gray-900">
                         {(selectedMemory.relevance * 100).toFixed(1)}%
                       </p>
@@ -261,7 +281,9 @@ export function MemoryInterface() {
                 </div>
                 {selectedMemory.metadata && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Metadata</label>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Metadata
+                    </label>
                     <pre className="mt-1 text-xs text-gray-900 bg-gray-50 p-3 rounded-md overflow-auto">
                       {JSON.stringify(selectedMemory.metadata, null, 2)}
                     </pre>

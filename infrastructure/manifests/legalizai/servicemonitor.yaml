@@ -1,0 +1,29 @@
+{
+  "apiVersion": "monitoring.coreos.com/v1",
+  "kind": "ServiceMonitor",
+  "metadata": {
+    "name": "legalizai",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "legalizai",
+      "component": "monitoring",
+      "app.kubernetes.io/name": "legalizai",
+      "app.kubernetes.io/component": "monitoring",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  },
+  "spec": {
+    "selector": {
+      "matchLabels": {
+        "app": "legalizai"
+      }
+    },
+    "endpoints": [
+      {
+        "port": "http",
+        "path": "/metrics",
+        "interval": "30s"
+      }
+    ]
+  }
+}

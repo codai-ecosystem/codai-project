@@ -7,7 +7,7 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   {
     plugins: {
-      '@next/next': nextPlugin
+      '@next/next': nextPlugin,
     },
     rules: {
       // Add overrides for specific rules here
@@ -16,12 +16,12 @@ export default tseslint.config(
       '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/no-explicit-any': 'warn',
       'no-empty': 'warn',
-      'no-empty-function': 'warn'
+      'no-empty-function': 'warn',
     },
     languageOptions: {
       parserOptions: {
-        project: './tsconfig.json'
-      }
-    }
+        project: './tsconfig.json',
+      },
+    },
   }
 );

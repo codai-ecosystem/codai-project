@@ -1,0 +1,252 @@
+{
+  "timestamp": "2025-06-24T01:15:39.906Z",
+  "fixes": [
+    {
+      "service": "bancai",
+      "type": "app",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "codai",
+      "type": "app",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "cumparai",
+      "type": "app",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "fabricai",
+      "type": "app",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "logai",
+      "type": "app",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "memorai",
+      "type": "app",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "publicai",
+      "type": "app",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "sociai",
+      "type": "app",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "studiai",
+      "type": "app",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "wallet",
+      "type": "app",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "x",
+      "type": "app",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "admin",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "AIDE",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "ajutai",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "analizai",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "bancai",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "codai",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "cumparai",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "dash",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "docs",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "explorer",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "fabricai",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "hub",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "id",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "jucai",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "kodex",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "legalizai",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "logai",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "marketai",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "memorai",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "metu",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "mod",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "publicai",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "sociai",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "stocai",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "studiai",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "templates",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "tools",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "wallet",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    },
+    {
+      "service": "x",
+      "type": "service",
+      "testFramework": "vitest",
+      "script": "npx vitest run --reporter=verbose"
+    }
+  ],
+  "errors": [],
+  "summary": {
+    "totalServices": 40,
+    "fixedServices": 40,
+    "failedServices": 0,
+    "successRate": 100
+  }
+}

@@ -13,16 +13,13 @@ The application was experiencing infinite loop issues and accessibility warnings
 We identified and fixed the following Progress component instances:
 
 1. **CourseEnrollment.tsx**
-
    - Added `aria-label="Course progress"` to the Progress component displaying course completion.
 
 2. **LearningPathSection.tsx**
-
    - Added `aria-label="Current course progress"` to the Progress component displaying current course progress.
    - Added `aria-label="{node.name} course progress"` to the Progress component in the course node list.
 
 3. **DashboardProgress.tsx**
-
    - Added `aria-label="Course completion progress"` to the first Progress component.
    - Added `aria-label="Lesson completion progress"` to the second Progress component.
    - Added `aria-label="Course completion percentage"` to the third Progress component.
@@ -30,7 +27,6 @@ We identified and fixed the following Progress component instances:
    - Added `aria-label="{course.name} progress"` to individual course progress components.
 
 4. **OfflineButton.tsx**
-
    - Added `aria-label="Download progress"` to the Progress component showing download status.
 
 5. **Course/Lesson.tsx**

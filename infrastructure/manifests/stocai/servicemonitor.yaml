@@ -1,0 +1,29 @@
+{
+  "apiVersion": "monitoring.coreos.com/v1",
+  "kind": "ServiceMonitor",
+  "metadata": {
+    "name": "stocai",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "stocai",
+      "component": "monitoring",
+      "app.kubernetes.io/name": "stocai",
+      "app.kubernetes.io/component": "monitoring",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  },
+  "spec": {
+    "selector": {
+      "matchLabels": {
+        "app": "stocai"
+      }
+    },
+    "endpoints": [
+      {
+        "port": "http",
+        "path": "/metrics",
+        "interval": "30s"
+      }
+    ]
+  }
+}

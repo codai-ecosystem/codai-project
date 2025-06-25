@@ -1,0 +1,35 @@
+{{- if .Values.configMap.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "admin.fullname" . }}-config
+  labels:
+    {{- include "admin.labels" . | nindent 4 }}
+data:
+  # Environment Configuration
+  NODE_ENV: {{ .Values.env.nodeEnv | quote }}
+  PORT: {{ .Values.service.port | quote }}
+  
+  # Database Configuration
+  {{- if .Values.database.enabled }}
+  DATABASE_URL: {{ printf "postgresql://%s:%s/%s" .Values.database.host .Values.database.port .Values.database.name | quote }}
+  {{- end }}
+  
+  # Redis Configuration
+  {{- if .Values.redis.enabled }}
+  REDIS_URL: {{ printf "redis://%s:%s" .Values.redis.host .Values.redis.port | quote }}
+  {{- end }}
+  
+  # API Configuration
+  API_VERSION: {{ .Values.api.version | quote }}
+  API_TIMEOUT: {{ .Values.api.timeout | quote }}
+  
+  # Logging Configuration
+  LOG_LEVEL: {{ .Values.logging.level | quote }}
+  LOG_FORMAT: {{ .Values.logging.format | quote }}
+  
+  # Custom Configuration
+  {{- range $key, $value := .Values.configMap.data }}
+  {{ $key }}: {{ $value | quote }}
+  {{- end }}
+{{- end }}

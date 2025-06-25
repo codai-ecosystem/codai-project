@@ -308,15 +308,18 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.7(@types/react@18.3.23)
+      '@types/supertest':
+        specifier: ^6.0.2
+        version: 6.0.3
       '@vitejs/plugin-react':
         specifier: ^4.3.0
         version: 4.6.0(vite@6.3.5)
       '@vitest/coverage-v8':
         specifier: ^1.2.0
-        version: 1.6.1(vitest@2.1.9)
+        version: 1.6.1(vitest@1.6.1)
       '@vitest/ui':
         specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9)
+        version: 2.1.9(vitest@1.6.1)
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.21(postcss@8.5.6)
@@ -332,9 +335,15 @@ importers:
       jsdom:
         specifier: ^23.0.0
         version: 23.2.0
+      playwright:
+        specifier: ^1.44.0
+        version: 1.53.1
       postcss:
         specifier: ^8.4.47
         version: 8.5.6
+      supertest:
+        specifier: ^6.3.4
+        version: 6.3.4
       tailwindcss:
         specifier: ^3.4.0
         version: 3.4.17
@@ -342,8 +351,8 @@ importers:
         specifier: ^5.6.0
         version: 5.8.3
       vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
+        specifier: ^1.6.0
+        version: 1.6.1(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
 
   services/admin:
     dependencies:
@@ -381,15 +390,18 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.7(@types/react@18.3.23)
+      '@types/supertest':
+        specifier: ^6.0.2
+        version: 6.0.3
       '@vitejs/plugin-react':
         specifier: ^4.3.0
         version: 4.6.0(vite@6.3.5)
       '@vitest/coverage-v8':
         specifier: ^1.2.0
-        version: 1.6.1(vitest@2.1.9)
+        version: 1.6.1(vitest@1.6.1)
       '@vitest/ui':
         specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9)
+        version: 2.1.9(vitest@1.6.1)
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.21(postcss@8.5.6)
@@ -405,9 +417,15 @@ importers:
       jsdom:
         specifier: ^23.0.0
         version: 23.2.0
+      playwright:
+        specifier: ^1.44.0
+        version: 1.53.1
       postcss:
         specifier: ^8.4.47
         version: 8.5.6
+      supertest:
+        specifier: ^6.3.4
+        version: 6.3.4
       tailwindcss:
         specifier: ^3.4.0
         version: 3.4.17
@@ -415,8 +433,8 @@ importers:
         specifier: ^5.6.0
         version: 5.8.3
       vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
+        specifier: ^1.6.0
+        version: 1.6.1(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
 
   services/ajutai:
     dependencies:
@@ -454,15 +472,18 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.7(@types/react@18.3.23)
+      '@types/supertest':
+        specifier: ^6.0.2
+        version: 6.0.3
       '@vitejs/plugin-react':
         specifier: ^4.3.0
         version: 4.6.0(vite@6.3.5)
       '@vitest/coverage-v8':
         specifier: ^1.2.0
-        version: 1.6.1(vitest@2.1.9)
+        version: 1.6.1(vitest@1.6.1)
       '@vitest/ui':
         specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9)
+        version: 2.1.9(vitest@1.6.1)
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.21(postcss@8.5.6)
@@ -478,9 +499,15 @@ importers:
       jsdom:
         specifier: ^23.0.0
         version: 23.2.0
+      playwright:
+        specifier: ^1.44.0
+        version: 1.53.1
       postcss:
         specifier: ^8.4.47
         version: 8.5.6
+      supertest:
+        specifier: ^6.3.4
+        version: 6.3.4
       tailwindcss:
         specifier: ^3.4.0
         version: 3.4.17
@@ -488,8 +515,8 @@ importers:
         specifier: ^5.6.0
         version: 5.8.3
       vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
+        specifier: ^1.6.0
+        version: 1.6.1(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
 
   services/analizai:
     dependencies:
@@ -590,6 +617,9 @@ importers:
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.3.1(@types/react@18.3.23)(react-dom@18.3.1)(react@18.3.1)
+      '@types/supertest':
+        specifier: ^6.0.2
+        version: 6.0.3
       '@typescript-eslint/eslint-plugin':
         specifier: ^6.13.2
         version: 6.21.0(@typescript-eslint/parser@6.21.0)(eslint@8.57.1)(typescript@5.8.3)
@@ -601,10 +631,10 @@ importers:
         version: 4.6.0(vite@6.3.5)
       '@vitest/coverage-v8':
         specifier: ^1.2.0
-        version: 1.6.1(vitest@2.1.9)
+        version: 1.6.1(vitest@1.6.1)
       '@vitest/ui':
         specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9)
+        version: 2.1.9(vitest@1.6.1)
       eslint:
         specifier: ^8.55.0
         version: 8.57.1
@@ -617,9 +647,15 @@ importers:
       jsdom:
         specifier: ^23.0.0
         version: 23.2.0
+      playwright:
+        specifier: ^1.44.0
+        version: 1.53.1
+      supertest:
+        specifier: ^6.3.4
+        version: 6.3.4
       vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
+        specifier: ^1.6.0
+        version: 1.6.1(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
 
   services/bancai:
     dependencies:
@@ -1329,15 +1365,18 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.7(@types/react@18.3.23)
+      '@types/supertest':
+        specifier: ^6.0.2
+        version: 6.0.3
       '@vitejs/plugin-react':
         specifier: ^4.3.0
         version: 4.6.0(vite@6.3.5)
       '@vitest/coverage-v8':
         specifier: ^1.2.0
-        version: 1.6.1(vitest@2.1.9)
+        version: 1.6.1(vitest@1.6.1)
       '@vitest/ui':
         specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9)
+        version: 2.1.9(vitest@1.6.1)
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.21(postcss@8.5.6)
@@ -1353,9 +1392,15 @@ importers:
       jsdom:
         specifier: ^23.0.0
         version: 23.2.0
+      playwright:
+        specifier: ^1.44.0
+        version: 1.53.1
       postcss:
         specifier: ^8.4.47
         version: 8.5.6
+      supertest:
+        specifier: ^6.3.4
+        version: 6.3.4
       tailwindcss:
         specifier: ^3.4.0
         version: 3.4.17
@@ -1363,8 +1408,8 @@ importers:
         specifier: ^5.6.0
         version: 5.8.3
       vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
+        specifier: ^1.6.0
+        version: 1.6.1(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
 
   services/docs:
     dependencies:
@@ -1402,15 +1447,18 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.7(@types/react@18.3.23)
+      '@types/supertest':
+        specifier: ^6.0.2
+        version: 6.0.3
       '@vitejs/plugin-react':
         specifier: ^4.3.0
         version: 4.6.0(vite@6.3.5)
       '@vitest/coverage-v8':
         specifier: ^1.2.0
-        version: 1.6.1(vitest@2.1.9)
+        version: 1.6.1(vitest@1.6.1)
       '@vitest/ui':
         specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9)
+        version: 2.1.9(vitest@1.6.1)
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.21(postcss@8.5.6)
@@ -1426,9 +1474,15 @@ importers:
       jsdom:
         specifier: ^23.0.0
         version: 23.2.0
+      playwright:
+        specifier: ^1.44.0
+        version: 1.53.1
       postcss:
         specifier: ^8.4.47
         version: 8.5.6
+      supertest:
+        specifier: ^6.3.4
+        version: 6.3.4
       tailwindcss:
         specifier: ^3.4.0
         version: 3.4.17
@@ -1436,8 +1490,8 @@ importers:
         specifier: ^5.6.0
         version: 5.8.3
       vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
+        specifier: ^1.6.0
+        version: 1.6.1(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
 
   services/explorer:
     dependencies:
@@ -1484,6 +1538,9 @@ importers:
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.3.1(@types/react@18.3.23)(react-dom@18.3.1)(react@18.3.1)
+      '@types/supertest':
+        specifier: ^6.0.2
+        version: 6.0.3
       '@typescript-eslint/eslint-plugin':
         specifier: ^6.13.2
         version: 6.21.0(@typescript-eslint/parser@6.21.0)(eslint@8.57.1)(typescript@5.8.3)
@@ -1495,10 +1552,10 @@ importers:
         version: 4.6.0(vite@6.3.5)
       '@vitest/coverage-v8':
         specifier: ^1.2.0
-        version: 1.6.1(vitest@2.1.9)
+        version: 1.6.1(vitest@1.6.1)
       '@vitest/ui':
         specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9)
+        version: 2.1.9(vitest@1.6.1)
       eslint:
         specifier: ^8.55.0
         version: 8.57.1
@@ -1511,9 +1568,15 @@ importers:
       jsdom:
         specifier: ^23.0.0
         version: 23.2.0
+      playwright:
+        specifier: ^1.44.0
+        version: 1.53.1
+      supertest:
+        specifier: ^6.3.4
+        version: 6.3.4
       vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
+        specifier: ^1.6.0
+        version: 1.6.1(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
 
   services/fabricai:
     dependencies:
@@ -1621,15 +1684,18 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.7(@types/react@18.3.23)
+      '@types/supertest':
+        specifier: ^6.0.2
+        version: 6.0.3
       '@vitejs/plugin-react':
         specifier: ^4.3.0
         version: 4.6.0(vite@6.3.5)
       '@vitest/coverage-v8':
         specifier: ^1.2.0
-        version: 1.6.1(vitest@2.1.9)
+        version: 1.6.1(vitest@1.6.1)
       '@vitest/ui':
         specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9)
+        version: 2.1.9(vitest@1.6.1)
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.21(postcss@8.5.6)
@@ -1645,9 +1711,15 @@ importers:
       jsdom:
         specifier: ^23.0.0
         version: 23.2.0
+      playwright:
+        specifier: ^1.44.0
+        version: 1.53.1
       postcss:
         specifier: ^8.4.47
         version: 8.5.6
+      supertest:
+        specifier: ^6.3.4
+        version: 6.3.4
       tailwindcss:
         specifier: ^3.4.0
         version: 3.4.17
@@ -1655,8 +1727,8 @@ importers:
         specifier: ^5.6.0
         version: 5.8.3
       vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
+        specifier: ^1.6.0
+        version: 1.6.1(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
 
   services/id:
     dependencies:
@@ -1694,15 +1766,18 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.7(@types/react@18.3.23)
+      '@types/supertest':
+        specifier: ^6.0.2
+        version: 6.0.3
       '@vitejs/plugin-react':
         specifier: ^4.3.0
         version: 4.6.0(vite@6.3.5)
       '@vitest/coverage-v8':
         specifier: ^1.2.0
-        version: 1.6.1(vitest@2.1.9)
+        version: 1.6.1(vitest@1.6.1)
       '@vitest/ui':
         specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9)
+        version: 2.1.9(vitest@1.6.1)
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.21(postcss@8.5.6)
@@ -1718,9 +1793,15 @@ importers:
       jsdom:
         specifier: ^23.0.0
         version: 23.2.0
+      playwright:
+        specifier: ^1.44.0
+        version: 1.53.1
       postcss:
         specifier: ^8.4.47
         version: 8.5.6
+      supertest:
+        specifier: ^6.3.4
+        version: 6.3.4
       tailwindcss:
         specifier: ^3.4.0
         version: 3.4.17
@@ -1728,8 +1809,8 @@ importers:
         specifier: ^5.6.0
         version: 5.8.3
       vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
+        specifier: ^1.6.0
+        version: 1.6.1(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
 
   services/jucai:
     dependencies:
@@ -1767,15 +1848,18 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.7(@types/react@18.3.23)
+      '@types/supertest':
+        specifier: ^6.0.2
+        version: 6.0.3
       '@vitejs/plugin-react':
         specifier: ^4.3.0
         version: 4.6.0(vite@6.3.5)
       '@vitest/coverage-v8':
         specifier: ^1.2.0
-        version: 1.6.1(vitest@2.1.9)
+        version: 1.6.1(vitest@1.6.1)
       '@vitest/ui':
         specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9)
+        version: 2.1.9(vitest@1.6.1)
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.21(postcss@8.5.6)
@@ -1791,9 +1875,15 @@ importers:
       jsdom:
         specifier: ^23.0.0
         version: 23.2.0
+      playwright:
+        specifier: ^1.44.0
+        version: 1.53.1
       postcss:
         specifier: ^8.4.47
         version: 8.5.6
+      supertest:
+        specifier: ^6.3.4
+        version: 6.3.4
       tailwindcss:
         specifier: ^3.4.0
         version: 3.4.17
@@ -1801,8 +1891,8 @@ importers:
         specifier: ^5.6.0
         version: 5.8.3
       vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
+        specifier: ^1.6.0
+        version: 1.6.1(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
 
   services/kodex:
     dependencies:
@@ -1840,15 +1930,18 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.7(@types/react@18.3.23)
+      '@types/supertest':
+        specifier: ^6.0.2
+        version: 6.0.3
       '@vitejs/plugin-react':
         specifier: ^4.3.0
         version: 4.6.0(vite@6.3.5)
       '@vitest/coverage-v8':
         specifier: ^1.2.0
-        version: 1.6.1(vitest@2.1.9)
+        version: 1.6.1(vitest@1.6.1)
       '@vitest/ui':
         specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9)
+        version: 2.1.9(vitest@1.6.1)
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.21(postcss@8.5.6)
@@ -1864,9 +1957,15 @@ importers:
       jsdom:
         specifier: ^23.0.0
         version: 23.2.0
+      playwright:
+        specifier: ^1.44.0
+        version: 1.53.1
       postcss:
         specifier: ^8.4.47
         version: 8.5.6
+      supertest:
+        specifier: ^6.3.4
+        version: 6.3.4
       tailwindcss:
         specifier: ^3.4.0
         version: 3.4.17
@@ -1874,8 +1973,8 @@ importers:
         specifier: ^5.6.0
         version: 5.8.3
       vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
+        specifier: ^1.6.0
+        version: 1.6.1(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
 
   services/legalizai:
     dependencies:
@@ -1913,15 +2012,18 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.7(@types/react@18.3.23)
+      '@types/supertest':
+        specifier: ^6.0.2
+        version: 6.0.3
       '@vitejs/plugin-react':
         specifier: ^4.3.0
         version: 4.6.0(vite@6.3.5)
       '@vitest/coverage-v8':
         specifier: ^1.2.0
-        version: 1.6.1(vitest@2.1.9)
+        version: 1.6.1(vitest@1.6.1)
       '@vitest/ui':
         specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9)
+        version: 2.1.9(vitest@1.6.1)
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.21(postcss@8.5.6)
@@ -1937,9 +2039,15 @@ importers:
       jsdom:
         specifier: ^23.0.0
         version: 23.2.0
+      playwright:
+        specifier: ^1.44.0
+        version: 1.53.1
       postcss:
         specifier: ^8.4.47
         version: 8.5.6
+      supertest:
+        specifier: ^6.3.4
+        version: 6.3.4
       tailwindcss:
         specifier: ^3.4.0
         version: 3.4.17
@@ -1947,8 +2055,8 @@ importers:
         specifier: ^5.6.0
         version: 5.8.3
       vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
+        specifier: ^1.6.0
+        version: 1.6.1(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
 
   services/logai:
     dependencies:
@@ -2215,6 +2323,9 @@ importers:
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.3.1(@types/react@18.3.23)(react-dom@18.3.1)(react@18.3.1)
+      '@types/supertest':
+        specifier: ^6.0.2
+        version: 6.0.3
       '@typescript-eslint/eslint-plugin':
         specifier: ^6.13.2
         version: 6.21.0(@typescript-eslint/parser@6.21.0)(eslint@8.57.1)(typescript@5.8.3)
@@ -2226,10 +2337,10 @@ importers:
         version: 4.6.0(vite@6.3.5)
       '@vitest/coverage-v8':
         specifier: ^1.2.0
-        version: 1.6.1(vitest@2.1.9)
+        version: 1.6.1(vitest@1.6.1)
       '@vitest/ui':
         specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9)
+        version: 2.1.9(vitest@1.6.1)
       eslint:
         specifier: ^8.55.0
         version: 8.57.1
@@ -2242,9 +2353,15 @@ importers:
       jsdom:
         specifier: ^23.0.0
         version: 23.2.0
+      playwright:
+        specifier: ^1.44.0
+        version: 1.53.1
+      supertest:
+        specifier: ^6.3.4
+        version: 6.3.4
       vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
+        specifier: ^1.6.0
+        version: 1.6.1(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
 
   services/memorai:
     devDependencies:
@@ -2324,15 +2441,18 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.7(@types/react@18.3.23)
+      '@types/supertest':
+        specifier: ^6.0.2
+        version: 6.0.3
       '@vitejs/plugin-react':
         specifier: ^4.3.0
         version: 4.6.0(vite@6.3.5)
       '@vitest/coverage-v8':
         specifier: ^1.2.0
-        version: 1.6.1(vitest@2.1.9)
+        version: 1.6.1(vitest@1.6.1)
       '@vitest/ui':
         specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9)
+        version: 2.1.9(vitest@1.6.1)
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.21(postcss@8.5.6)
@@ -2348,9 +2468,15 @@ importers:
       jsdom:
         specifier: ^23.0.0
         version: 23.2.0
+      playwright:
+        specifier: ^1.44.0
+        version: 1.53.1
       postcss:
         specifier: ^8.4.47
         version: 8.5.6
+      supertest:
+        specifier: ^6.3.4
+        version: 6.3.4
       tailwindcss:
         specifier: ^3.4.0
         version: 3.4.17
@@ -2358,8 +2484,8 @@ importers:
         specifier: ^5.6.0
         version: 5.8.3
       vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
+        specifier: ^1.6.0
+        version: 1.6.1(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
 
   services/mod:
     dependencies:
@@ -2397,15 +2523,18 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.7(@types/react@18.3.23)
+      '@types/supertest':
+        specifier: ^6.0.2
+        version: 6.0.3
       '@vitejs/plugin-react':
         specifier: ^4.3.0
         version: 4.6.0(vite@6.3.5)
       '@vitest/coverage-v8':
         specifier: ^1.2.0
-        version: 1.6.1(vitest@2.1.9)
+        version: 1.6.1(vitest@1.6.1)
       '@vitest/ui':
         specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9)
+        version: 2.1.9(vitest@1.6.1)
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.21(postcss@8.5.6)
@@ -2421,9 +2550,15 @@ importers:
       jsdom:
         specifier: ^23.0.0
         version: 23.2.0
+      playwright:
+        specifier: ^1.44.0
+        version: 1.53.1
       postcss:
         specifier: ^8.4.47
         version: 8.5.6
+      supertest:
+        specifier: ^6.3.4
+        version: 6.3.4
       tailwindcss:
         specifier: ^3.4.0
         version: 3.4.17
@@ -2431,8 +2566,8 @@ importers:
         specifier: ^5.6.0
         version: 5.8.3
       vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
+        specifier: ^1.6.0
+        version: 1.6.1(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
 
   services/publicai:
     dependencies:
@@ -2571,15 +2706,18 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.7(@types/react@18.3.23)
+      '@types/supertest':
+        specifier: ^6.0.2
+        version: 6.0.3
       '@vitejs/plugin-react':
         specifier: ^4.3.0
         version: 4.6.0(vite@6.3.5)
       '@vitest/coverage-v8':
         specifier: ^1.2.0
-        version: 1.6.1(vitest@2.1.9)
+        version: 1.6.1(vitest@1.6.1)
       '@vitest/ui':
         specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9)
+        version: 2.1.9(vitest@1.6.1)
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.21(postcss@8.5.6)
@@ -2595,9 +2733,15 @@ importers:
       jsdom:
         specifier: ^23.0.0
         version: 23.2.0
+      playwright:
+        specifier: ^1.44.0
+        version: 1.53.1
       postcss:
         specifier: ^8.4.47
         version: 8.5.6
+      supertest:
+        specifier: ^6.3.4
+        version: 6.3.4
       tailwindcss:
         specifier: ^3.4.0
         version: 3.4.17
@@ -2605,8 +2749,8 @@ importers:
         specifier: ^5.6.0
         version: 5.8.3
       vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
+        specifier: ^1.6.0
+        version: 1.6.1(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
 
   services/studiai:
     dependencies:
@@ -2734,24 +2878,33 @@ importers:
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.3.1(@types/react@18.3.23)(react-dom@18.3.1)(react@18.3.1)
+      '@types/supertest':
+        specifier: ^6.0.2
+        version: 6.0.3
       '@vitest/coverage-v8':
         specifier: ^1.2.0
-        version: 1.6.1(vitest@2.1.9)
+        version: 1.6.1(vitest@1.6.1)
       '@vitest/ui':
         specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9)
+        version: 2.1.9(vitest@1.6.1)
       happy-dom:
         specifier: ^12.0.0
         version: 12.10.3
       jsdom:
         specifier: ^23.0.0
         version: 23.2.0
+      playwright:
+        specifier: ^1.44.0
+        version: 1.53.1
+      supertest:
+        specifier: ^6.3.4
+        version: 6.3.4
       typescript:
         specifier: ^5.0.0
         version: 5.8.3
       vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
+        specifier: ^1.6.0
+        version: 1.6.1(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
 
   services/tools:
     dependencies:
@@ -2798,6 +2951,9 @@ importers:
       '@testing-library/react':
         specifier: ^14.0.0
         version: 14.3.1(@types/react@18.3.23)(react-dom@18.3.1)(react@18.3.1)
+      '@types/supertest':
+        specifier: ^6.0.2
+        version: 6.0.3
       '@typescript-eslint/eslint-plugin':
         specifier: ^6.13.2
         version: 6.21.0(@typescript-eslint/parser@6.21.0)(eslint@8.57.1)(typescript@5.8.3)
@@ -2809,10 +2965,10 @@ importers:
         version: 4.6.0(vite@6.3.5)
       '@vitest/coverage-v8':
         specifier: ^1.2.0
-        version: 1.6.1(vitest@2.1.9)
+        version: 1.6.1(vitest@1.6.1)
       '@vitest/ui':
         specifier: ^2.1.8
-        version: 2.1.9(vitest@2.1.9)
+        version: 2.1.9(vitest@1.6.1)
       eslint:
         specifier: ^8.55.0
         version: 8.57.1
@@ -2825,9 +2981,15 @@ importers:
       jsdom:
         specifier: ^23.0.0
         version: 23.2.0
+      playwright:
+        specifier: ^1.44.0
+        version: 1.53.1
+      supertest:
+        specifier: ^6.3.4
+        version: 6.3.4
       vitest:
-        specifier: ^2.1.8
-        version: 2.1.9(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
+        specifier: ^1.6.0
+        version: 1.6.1(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
 
   services/wallet:
     dependencies:
@@ -9096,6 +9258,11 @@ packages:
     dev: false
     optional: true
 
+  /@noble/hashes@1.8.0:
+    resolution: {integrity: sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A==}
+    engines: {node: ^14.21.3 || >=16}
+    dev: true
+
   /@nodelib/fs.scandir@2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -9292,6 +9459,12 @@ packages:
   /@panva/hkdf@1.2.1:
     resolution: {integrity: sha512-6oclG6Y3PiDFcoyk8srjLfVKyMfVCKJ27JwNPViuXziFpmdz+MZnZN/aKY0JGXgYuO/VghU0jcOAZgWXZ1Dmrw==}
     dev: false
+
+  /@paralleldrive/cuid2@2.2.2:
+    resolution: {integrity: sha512-ZOBkgDwEdoYVlSeRbYYXs0S9MejQofiVYoTbKzy/6GQa39/q5tQU2IX46+shYnUkpEl3wc+J6wRlar7r2EK2xA==}
+    dependencies:
+      '@noble/hashes': 1.8.0
+    dev: true
 
   /@parcel/watcher-android-arm64@2.5.1:
     resolution: {integrity: sha512-KF8+j9nNbUN8vzOFDpRMsaKBHZ/mcjEjMToVMJOhTozkDonQFFrRcfdLWn6yWKCmJKmdVxSgHiYvTCef4/qcBA==}
@@ -13511,6 +13684,10 @@ packages:
     resolution: {integrity: sha512-LKVP3cgXBT9RYj+t+9FDKwS5tdI+rPBXaNSkma7hvqy35lc7mAokC2zsqWJH0LaqIt3B962nuYI77hsJoT1gow==}
     dev: true
 
+  /@types/cookiejar@2.1.5:
+    resolution: {integrity: sha512-he+DHOWReW0nghN24E1WUqM0efK4kI9oTqDm6XmK8ZPe2djZ90BSNdGnIyCLzCPw7/pogPlGbzI2wHGGmi4O/Q==}
+    dev: true
+
   /@types/cors@2.8.19:
     resolution: {integrity: sha512-mFNylyeyqN93lfe/9CSxOGREz8cpzAhH+E93xJ4xWQf62V8sQ/24reV2nyzUWM6H6Xji+GGHpkbLe7pVoUEskg==}
     dependencies:
@@ -13717,6 +13894,10 @@ packages:
     resolution: {integrity: sha512-+OWZQfAYyio6YkJb3HLxDrvnx6SWWDbC0zVPfBRzUk0/nqoDyf6dNxQi3eArPe8rJ473nobTMQ/8Zk+LxJ+Yuw==}
     dev: true
 
+  /@types/methods@1.1.4:
+    resolution: {integrity: sha512-ymXWVrDiCxTBE3+RIrrP533E70eA+9qu7zdWoHuOmGujkYtzf4HQF96b8nwHLqhuf4ykX61IGRIB38CC6/sImQ==}
+    dev: true
+
   /@types/mime@1.3.5:
     resolution: {integrity: sha512-/pyBZWSLD2n0dcHE3hq8s8ZvcETHtEuF+3E7XVt0Ig2nvsVQXdghHVcEkIWjy9A0wKfTn97a/PSDYohKIlnP/w==}
 
@@ -13904,6 +14085,22 @@ packages:
 
   /@types/stack-utils@2.0.3:
     resolution: {integrity: sha512-9aEbYZ3TbYMznPdcdr3SmIrLXwC/AKZXQeCf9Pgao5CKb8CyHuEX5jzWPTkvregvhRJHcpRO6BFoGW9ycaOkYw==}
+
+  /@types/superagent@8.1.9:
+    resolution: {integrity: sha512-pTVjI73witn+9ILmoJdajHGW2jkSaOzhiFYF1Rd3EQ94kymLqB9PjD9ISg7WaALC7+dCHT0FGe9T2LktLq/3GQ==}
+    dependencies:
+      '@types/cookiejar': 2.1.5
+      '@types/methods': 1.1.4
+      '@types/node': 20.19.1
+      form-data: 4.0.3
+    dev: true
+
+  /@types/supertest@6.0.3:
+    resolution: {integrity: sha512-8WzXq62EXFhJ7QsH3Ocb/iKQ/Ty9ZVWnVzoTKc9tyyFRRF3a74Tk2+TLFgaFFw364Ere+npzHKEJ6ga2LzIL7w==}
+    dependencies:
+      '@types/methods': 1.1.4
+      '@types/superagent': 8.1.9
+    dev: true
 
   /@types/svgo@1.3.6:
     resolution: {integrity: sha512-AZU7vQcy/4WFEuwnwsNsJnFwupIpbllH1++LXScN6uxT1Z4zPzdrWG97w4/I7eFKFTvfy/bHFStWjdBAg2Vjug==}
@@ -14955,6 +15152,21 @@ packages:
       picocolors: 1.1.1
       sirv: 2.0.4
       vitest: 1.6.1(@types/node@20.19.1)(@vitest/ui@1.6.1)(happy-dom@12.10.3)(jsdom@23.2.0)
+    dev: true
+
+  /@vitest/ui@2.1.9(vitest@1.6.1):
+    resolution: {integrity: sha512-izzd2zmnk8Nl5ECYkW27328RbQ1nKvkm6Bb5DAaz1Gk59EbLkiCMa6OLT0NoaAYTjOFS6N+SMYW1nh4/9ljPiw==}
+    peerDependencies:
+      vitest: 2.1.9
+    dependencies:
+      '@vitest/utils': 2.1.9
+      fflate: 0.8.2
+      flatted: 3.3.3
+      pathe: 1.1.2
+      sirv: 3.0.1
+      tinyglobby: 0.2.14
+      tinyrainbow: 1.2.0
+      vitest: 1.6.1(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0)
     dev: true
 
   /@vitest/ui@2.1.9(vitest@2.1.9):
@@ -16033,7 +16245,6 @@ packages:
 
   /asap@2.0.6:
     resolution: {integrity: sha512-BSHWgDSAiKs50o2Re8ppvp3seVHXSRM44cdSsT9FfNEUUZLOGWVCsiWaRPWM1Znn+mqZ1OfVZ3z3DWEzSp7hRA==}
-    dev: false
 
   /asn1.js@4.10.1:
     resolution: {integrity: sha512-p32cOF5q0Zqs9uBiONKYLm6BClCoBCM5O9JfeUSlnQLBTxYdTK+pW+nXflm8UkKd2UYlEbYz5qEi0JuZR9ckSw==}
@@ -17705,6 +17916,10 @@ packages:
     resolution: {integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==}
     engines: {node: '>= 0.6'}
 
+  /cookiejar@2.1.4:
+    resolution: {integrity: sha512-LDx6oHrK+PhzLKJU9j5S7/Y3jM/mUHvD/DeI1WQmJn652iPC5Y4TBzC9l+5OMOXlyTTA+SmVUPm0HQUwpD5Jqw==}
+    dev: true
+
   /cookies@0.9.1:
     resolution: {integrity: sha512-TG2hpqe4ELx54QER/S3HQ9SRVnQnGBtKUz5bLQWtYAQ+o6GpgMs6sYUvaiJjVxb+UXwhRhAEP3m7LbsIZ77Hmw==}
     engines: {node: '>= 0.8'}
@@ -18459,6 +18674,13 @@ packages:
 
   /detect-node@2.1.0:
     resolution: {integrity: sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g==}
+
+  /dezalgo@1.0.4:
+    resolution: {integrity: sha512-rXSP0bf+5n0Qonsb+SVVfNfIsimO4HEtmnIpPHY8Q1UCzKlQrDMfdobr8nJOOsRgWCyMRqeSBQzmWUMq7zvVig==}
+    dependencies:
+      asap: 2.0.6
+      wrappy: 1.0.2
+    dev: true
 
   /di@0.0.1:
     resolution: {integrity: sha512-uJaamHkagcZtHPqCIHZxnFrXlunQXgBOsZSUOWwFw31QJCAbyTBoHMW75YOTur5ZNx8pIeAKgf6GWIgaqqiLhA==}
@@ -20454,6 +20676,10 @@ packages:
     resolution: {integrity: sha512-DCXu6Ifhqcks7TZKY3Hxp3y6qphY5SJZmrWMDrKcERSOXWQdMhU9Ig/PYrzyw/ul9jOIyh0N4M0tbC5hodg8dw==}
     dev: true
 
+  /fast-safe-stringify@2.1.1:
+    resolution: {integrity: sha512-W+KJc2dmILlPplD/H4K9l9LcAHAfPtP6BY84uVLXQ6Evcz9Lcg33Y2z1IVblT6xdY54PXYVHEv+0Wpq8Io6zkA==}
+    dev: true
+
   /fast-uri@3.0.6:
     resolution: {integrity: sha512-Atfo14OibSv5wAp4VWNsFYE1AchQRTv9cBGWET4pZWHzYshFSS9NQI6I57rdKn9croWVMbYFbLhJ+yJvmZIIHw==}
     dev: true
@@ -20965,6 +21191,15 @@ packages:
     dependencies:
       fetch-blob: 3.2.0
     dev: false
+
+  /formidable@2.1.5:
+    resolution: {integrity: sha512-Oz5Hwvwak/DCaXVVUtPn4oLMLLy1CdclLKO1LFgU7XzDpVMUU5UjlSLpGMocyQNNk8F6IJW9M/YdooSn2MRI+Q==}
+    dependencies:
+      '@paralleldrive/cuid2': 2.2.2
+      dezalgo: 1.0.4
+      once: 1.4.0
+      qs: 6.14.0
+    dev: true
 
   /forwarded@0.2.0:
     resolution: {integrity: sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==}
@@ -30204,12 +30439,41 @@ packages:
       - supports-color
     dev: true
 
+  /superagent@8.1.2:
+    resolution: {integrity: sha512-6WTxW1EB6yCxV5VFOIPQruWGHqc3yI7hEmZK6h+pyk69Lk/Ut7rLUY6W/ONF2MjBuGjvmMiIpsrVJ2vjrHlslA==}
+    engines: {node: '>=6.4.0 <13 || >=14'}
+    deprecated: Please upgrade to v9.0.0+ as we have fixed a public vulnerability with formidable dependency. Note that v9.0.0+ requires Node.js v14.18.0+. See https://github.com/ladjs/superagent/pull/1800 for insight. This project is supported and maintained by the team at Forward Email @ https://forwardemail.net
+    dependencies:
+      component-emitter: 1.3.1
+      cookiejar: 2.1.4
+      debug: 4.4.1(supports-color@8.1.1)
+      fast-safe-stringify: 2.1.1
+      form-data: 4.0.3
+      formidable: 2.1.5
+      methods: 1.1.2
+      mime: 2.6.0
+      qs: 6.14.0
+      semver: 7.7.2
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /superjson@2.2.2:
     resolution: {integrity: sha512-5JRxVqC8I8NuOUjzBbvVJAKNM8qoVuH0O77h4WInc/qC2q5IreqKxYwgkga3PfA22OayK2ikceb/B26dztPl+Q==}
     engines: {node: '>=16'}
     dependencies:
       copy-anything: 3.0.5
     dev: false
+
+  /supertest@6.3.4:
+    resolution: {integrity: sha512-erY3HFDG0dPnhw4U+udPfrzXa4xhSG+n4rxfRuZWCUvjFWwKl+OxWf/7zk50s84/fAAs7vf5QAb9uRa0cCykxw==}
+    engines: {node: '>=6.4.0'}
+    dependencies:
+      methods: 1.1.2
+      superagent: 8.1.2
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
 
   /supports-color@2.0.0:
     resolution: {integrity: sha512-KKNVtd6pCYgPIKU4cp2733HWYCpplQhddZLBUryaAHou723x+FRzQ5Df824Fj+IyyuiQTRoub4SnIFfIcrp70g==}
@@ -32120,6 +32384,66 @@ packages:
       '@vitest/snapshot': 1.6.1
       '@vitest/spy': 1.6.1
       '@vitest/ui': 1.6.1(vitest@1.6.1)
+      '@vitest/utils': 1.6.1
+      acorn-walk: 8.3.4
+      chai: 4.5.0
+      debug: 4.4.1(supports-color@8.1.1)
+      execa: 8.0.1
+      happy-dom: 12.10.3
+      jsdom: 23.2.0
+      local-pkg: 0.5.1
+      magic-string: 0.30.17
+      pathe: 1.1.2
+      picocolors: 1.1.1
+      std-env: 3.9.0
+      strip-literal: 2.1.1
+      tinybench: 2.9.0
+      tinypool: 0.8.4
+      vite: 5.4.19(@types/node@20.19.1)
+      vite-node: 1.6.1(@types/node@20.19.1)
+      why-is-node-running: 2.3.0
+    transitivePeerDependencies:
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    dev: true
+
+  /vitest@1.6.1(@types/node@20.19.1)(@vitest/ui@2.1.9)(happy-dom@12.10.3)(jsdom@23.2.0):
+    resolution: {integrity: sha512-Ljb1cnSJSivGN0LqXd/zmDbWEM0RNNg2t1QW/XUhYl/qPqyu7CsqeWtqQXHVaJsecLPuDoak2oJcZN2QoRIOag==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+    hasBin: true
+    peerDependencies:
+      '@edge-runtime/vm': '*'
+      '@types/node': ^18.0.0 || >=20.0.0
+      '@vitest/browser': 1.6.1
+      '@vitest/ui': 1.6.1
+      happy-dom: '*'
+      jsdom: '*'
+    peerDependenciesMeta:
+      '@edge-runtime/vm':
+        optional: true
+      '@types/node':
+        optional: true
+      '@vitest/browser':
+        optional: true
+      '@vitest/ui':
+        optional: true
+      happy-dom:
+        optional: true
+      jsdom:
+        optional: true
+    dependencies:
+      '@types/node': 20.19.1
+      '@vitest/expect': 1.6.1
+      '@vitest/runner': 1.6.1
+      '@vitest/snapshot': 1.6.1
+      '@vitest/spy': 1.6.1
+      '@vitest/ui': 2.1.9(vitest@1.6.1)
       '@vitest/utils': 1.6.1
       acorn-walk: 8.3.4
       chai: 4.5.0

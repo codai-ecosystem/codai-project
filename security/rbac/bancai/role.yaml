@@ -1,0 +1,41 @@
+{
+  "apiVersion": "rbac.authorization.k8s.io/v1",
+  "kind": "Role",
+  "metadata": {
+    "name": "bancai-role",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "bancai",
+      "component": "rbac",
+      "app.kubernetes.io/name": "bancai",
+      "app.kubernetes.io/component": "rbac",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  },
+  "rules": [
+    {
+      "apiGroups": [
+        ""
+      ],
+      "resources": [
+        "configmaps",
+        "secrets"
+      ],
+      "verbs": [
+        "get",
+        "list"
+      ]
+    },
+    {
+      "apiGroups": [
+        ""
+      ],
+      "resources": [
+        "events"
+      ],
+      "verbs": [
+        "create"
+      ]
+    }
+  ]
+}

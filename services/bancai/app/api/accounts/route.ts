@@ -10,7 +10,7 @@ async function getAccountsHandler(
 ): Promise<NextResponse> {
   try {
     const memoryService = createMemoryService(user.id);
-    
+
     // In a real implementation, this would fetch from a database
     // For now, we'll return mock data and store in memory
     const mockAccounts: BankAccount[] = [
@@ -30,7 +30,7 @@ async function getAccountsHandler(
         userId: user.id,
         accountNumber: '****5678',
         accountType: 'savings',
-        balance: 15000.00,
+        balance: 15000.0,
         currency: 'USD',
         status: 'active',
         createdAt: new Date().toISOString(),

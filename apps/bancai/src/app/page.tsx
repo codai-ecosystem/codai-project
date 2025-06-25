@@ -5,8 +5,10 @@ export default function Home() {
       <p className="text-xl text-gray-600">Financial Platform</p>
       <div className="mt-8">
         <h2 className="text-2xl font-semibold mb-4">Status</h2>
-        <p className="text-green-600">🚀 Service is running and ready for development!</p>
+        <p className="text-green-600">
+          🚀 Service is running and ready for development!
+        </p>
       </div>
     </div>
-  )
+  );
 }

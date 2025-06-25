@@ -1,0 +1,127 @@
+# Codai Project - Global Helm Values
+# Enterprise-Grade Configuration for All 29 Services
+
+global:
+  # Image Configuration
+  image:
+    registry: "ghcr.io/codai-project"
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  
+  # Environment
+  environment: production
+  
+  # Service Mesh
+  serviceMesh:
+    enabled: true
+    istio:
+      enabled: true
+      version: "1.19"
+  
+  # Security
+  security:
+    tls:
+      enabled: true
+      issuer: letsencrypt-prod
+    networkPolicies:
+      enabled: true
+    podSecurityStandards:
+      enforce: restricted
+  
+  # Monitoring
+  monitoring:
+    prometheus:
+      enabled: true
+      namespace: monitoring
+    grafana:
+      enabled: true
+    jaeger:
+      enabled: true
+    alertmanager:
+      enabled: true
+  
+  # Database
+  database:
+    postgresql:
+      enabled: true
+      version: "15"
+      cluster: true
+      replication: 3
+    redis:
+      enabled: true
+      cluster: true
+      replicas: 3
+  
+  # Storage
+  storage:
+    storageClass: ssd
+    backup:
+      enabled: true
+      schedule: "0 2 * * *"
+  
+  # Networking
+  networking:
+    domain: "codai.ai"
+    ingress:
+      className: nginx
+      tls: true
+    loadBalancer:
+      type: nlb
+  
+  # Scaling
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 100
+    targetCPU: 70
+    targetMemory: 80
+  
+  # Resource Limits
+  resources:
+    small:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    medium:
+      requests:
+        cpu: 250m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    large:
+      requests:
+        cpu: 500m
+        memory: 512Mi
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+  
+  # Compliance
+  compliance:
+    gdpr: true
+    soc2: true
+    iso27001: true
+    hipaa: false
+  
+  # Backup & Recovery
+  backup:
+    enabled: true
+    retention: "30d"
+    encryption: true
+  
+  # Service Discovery
+  serviceDiscovery:
+    consul:
+      enabled: true
+      datacenter: "dc1"
+  
+  # API Gateway
+  apiGateway:
+    enabled: true
+    type: "kong"
+    rateLimit: 1000
+    auth: true

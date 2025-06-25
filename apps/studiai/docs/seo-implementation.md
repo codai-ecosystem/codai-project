@@ -39,8 +39,8 @@ Each page defines its own metadata using the `generateMetadata` function:
 ```typescript
 export async function generateMetadata(): Promise<Metadata> {
   return constructMetadata({
-    title: "Page Title",
-    description: "Page description",
+    title: 'Page Title',
+    description: 'Page description',
     // other properties
   });
 }
@@ -89,27 +89,23 @@ export default async function CoursePage({
 ## SEO Features Implemented
 
 1. **Basic Metadata**:
-
    - Title tags
    - Meta descriptions
    - Canonical URLs
    - Language attributes
 
 2. **Social Media Optimization**:
-
    - Open Graph tags
    - Twitter Card tags
    - Social images
 
 3. **Structured Data (JSON-LD)**:
-
    - Course schema
    - Organization schema
    - Person schema (for instructors)
    - Rating schema
 
 4. **Technical SEO**:
-
    - Proper heading structure
    - Semantic HTML
    - Mobile responsiveness
@@ -124,19 +120,16 @@ export default async function CoursePage({
 ## Best Practices for Ongoing SEO Maintenance
 
 1. **Content Quality**:
-
    - Ensure all courses have complete, descriptive information
    - Use keyword-rich but natural titles and descriptions
    - Keep content fresh and updated
 
 2. **Performance Monitoring**:
-
    - Monitor page speed and Core Web Vitals
    - Review search console data regularly
    - Track ranking performance
 
 3. **Content Expansion**:
-
    - Create valuable blog content related to courses
    - Build out course category pages
    - Develop instructor profile pages

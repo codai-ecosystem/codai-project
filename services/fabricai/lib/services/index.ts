@@ -32,7 +32,7 @@ async function checkLogAIHealth(): Promise<boolean> {
   try {
     const response = await fetch(
       `${process.env.LOGAI_API_URL || 'http://localhost:3002'}/health`,
-      { 
+      {
         method: 'GET',
         signal: AbortSignal.timeout(5000),
       }
@@ -47,7 +47,7 @@ async function checkMemorAIHealth(): Promise<boolean> {
   try {
     const response = await fetch(
       `${process.env.MEMORAI_API_URL || 'http://localhost:3001'}/health`,
-      { 
+      {
         method: 'GET',
         signal: AbortSignal.timeout(5000),
       }
@@ -62,7 +62,7 @@ async function checkCodaiHealth(): Promise<boolean> {
   try {
     const response = await fetch(
       `${process.env.CODAI_API_URL || 'http://localhost:3000'}/health`,
-      { 
+      {
         method: 'GET',
         signal: AbortSignal.timeout(5000),
       }

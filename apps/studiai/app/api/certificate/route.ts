@@ -6,7 +6,8 @@ import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
 // Initialize Firebase Admin SDK if not already initialized
 // Skip during build time or when credentials aren't available
-const isBuild = process.env.NODE_ENV !== 'production' || !process.env.FIREBASE_PRIVATE_KEY;
+const isBuild =
+  process.env.NODE_ENV !== 'production' || !process.env.FIREBASE_PRIVATE_KEY;
 if (!getApps().length) {
   try {
     if (!isBuild) {
@@ -14,37 +15,45 @@ if (!getApps().length) {
         credential: cert({
           projectId: process.env.FIREBASE_PROJECT_ID || '',
           clientEmail: process.env.FIREBASE_CLIENT_EMAIL || '',
-          privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n') || '',
+          privateKey:
+            process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n') || '',
         }),
       });
     } else {
       // For build time, use a minimal configuration
       initializeApp({
-        projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'mock-project-id',
+        projectId:
+          process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'mock-project-id',
       });
     }
   } catch (error) {
-    console.error("Failed to initialize Firebase Admin in certificate route:", error);
+    console.error(
+      'Failed to initialize Firebase Admin in certificate route:',
+      error
+    );
   }
 }
 
 export async function POST(req: NextRequest) {
   try {
     // Check if we're in build mode
-    const isBuild = process.env.NODE_ENV !== 'production' || !process.env.FIREBASE_PRIVATE_KEY;
+    const isBuild =
+      process.env.NODE_ENV !== 'production' ||
+      !process.env.FIREBASE_PRIVATE_KEY;
 
     // If we're building, return a mock response to allow the build to complete
     if (isBuild) {
       return NextResponse.json({
         success: true,
-        message: "This is a mock certificate response for build time",
-        certificateUrl: "https://example.com/mock-certificate.pdf"
+        message: 'This is a mock certificate response for build time',
+        certificateUrl: 'https://example.com/mock-certificate.pdf',
       });
     }
 
     const { courseId } = await req.json();
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!authHeader)
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     const idToken = authHeader.replace('Bearer ', '');
     const decoded = await getAuth().verifyIdToken(idToken);
     const userId = decoded.uid;
@@ -54,7 +63,10 @@ export async function POST(req: NextRequest) {
     const userDoc = await db.collection('users').doc(userId).get();
     const courseDoc = await db.collection('courses').doc(courseId).get();
     if (!userDoc.exists || !courseDoc.exists) {
-      return NextResponse.json({ error: 'User or course not found' }, { status: 404 });
+      return NextResponse.json(
+        { error: 'User or course not found' },
+        { status: 404 }
+      );
     }
     const user = userDoc.data();
     const course = courseDoc.data();
@@ -71,8 +83,8 @@ export async function POST(req: NextRequest) {
 
     // Define colors
     const primaryColor = rgb(0.2, 0.2, 0.6); // Deep blue
-    const accentColor = rgb(0.7, 0.5, 0.1);  // Gold
-    const textColor = rgb(0.1, 0.1, 0.1);    // Near black
+    const accentColor = rgb(0.7, 0.5, 0.1); // Gold
+    const textColor = rgb(0.1, 0.1, 0.1); // Near black
 
     // Draw border
     page.drawRectangle({
@@ -105,7 +117,7 @@ export async function POST(req: NextRequest) {
       color: primaryColor,
     });
 
-    // Cursuri logo position 
+    // Cursuri logo position
     page.drawText('CURSURI', {
       x: 375,
       y: 460,
@@ -162,7 +174,7 @@ export async function POST(req: NextRequest) {
     const completionDate = new Date().toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
     });
 
     page.drawText(`Awarded on ${completionDate}`, {
@@ -201,13 +213,18 @@ export async function POST(req: NextRequest) {
     });
 
     // Store certificate information in Firestore for records
-    await db.collection('users').doc(userId).collection('certificates').doc(certificateId).set({
-      courseId,
-      courseName,
-      completionDate: new Date().toISOString(),
-      certificateId,
-      downloadedAt: new Date().toISOString()
-    });
+    await db
+      .collection('users')
+      .doc(userId)
+      .collection('certificates')
+      .doc(certificateId)
+      .set({
+        courseId,
+        courseName,
+        completionDate: new Date().toISOString(),
+        certificateId,
+        downloadedAt: new Date().toISOString(),
+      });
 
     // Convert to PDF and return
     const pdfBytes = await pdfDoc.save();
@@ -219,7 +236,8 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error occurred';
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

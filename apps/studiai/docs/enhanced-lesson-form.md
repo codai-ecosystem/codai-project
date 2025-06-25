@@ -51,7 +51,7 @@ const fetchModules = async () => {
   const modulesSnapshot = await getDocs(modulesRef);
   const modulesData = [];
 
-  modulesSnapshot.forEach((doc) => {
+  modulesSnapshot.forEach(doc => {
     modulesData.push({
       id: doc.id,
       ...doc.data(),
@@ -66,12 +66,12 @@ const fetchModules = async () => {
   label="Module"
   placeholder="Select a module"
   value={moduleId}
-  onChange={(value) => setModuleId(value)}
+  onChange={value => setModuleId(value)}
 >
   <SelectItem key="" value="">
     None (Top Level)
   </SelectItem>
-  {modules.map((module) => (
+  {modules.map(module => (
     <SelectItem key={module.id} value={module.id}>
       {module.name}
     </SelectItem>
@@ -92,13 +92,13 @@ Implementation:
 ```tsx
 // State management
 const [learningObjectives, setLearningObjectives] = useState<string[]>([]);
-const [currentObjective, setCurrentObjective] = useState("");
+const [currentObjective, setCurrentObjective] = useState('');
 
 // Add objective function
 const addObjective = () => {
   if (currentObjective.trim()) {
     setLearningObjectives([...learningObjectives, currentObjective.trim()]);
-    setCurrentObjective("");
+    setCurrentObjective('');
   }
 };
 
@@ -107,7 +107,7 @@ const addObjective = () => {
   <div className="flex gap-2 mb-2">
     <Input
       value={currentObjective}
-      onChange={(e) => setCurrentObjective(e.target.value)}
+      onChange={e => setCurrentObjective(e.target.value)}
       placeholder="Add a learning objective"
     />
     <Button onPress={addObjective}>Add</Button>
@@ -159,7 +159,7 @@ const handleAdditionalFileUpload = useCallback(() => {
   ]);
 
   setCurrentAdditionalFile(null);
-  setCurrentFileDescription("");
+  setCurrentFileDescription('');
 }, [currentAdditionalFile, currentFileDescription, additionalFiles]);
 
 // Store in Firestore
@@ -203,15 +203,15 @@ interface QuizQuestion {
 const addQuestion = () => {
   if (
     currentQuestion.question &&
-    currentQuestion.options.filter((o) => o).length >= 2
+    currentQuestion.options.filter(o => o).length >= 2
   ) {
     setQuizQuestions([...quizQuestions, currentQuestion]);
     setCurrentQuestion({
       id: crypto.randomUUID(),
-      question: "",
-      options: ["", "", "", ""],
+      question: '',
+      options: ['', '', '', ''],
       correctOption: 0,
-      explanation: "",
+      explanation: '',
     });
   }
 };
@@ -247,10 +247,10 @@ Implementation:
 
 ```tsx
 // Embed state
-const [embedUrl, setEmbedUrl] = useState("");
+const [embedUrl, setEmbedUrl] = useState('');
 const [embedType, setEmbedType] = useState<
-  "youtube" | "codepen" | "github" | "other"
->("youtube");
+  'youtube' | 'codepen' | 'github' | 'other'
+>('youtube');
 
 // Store in lesson object
 if (embedUrl) {
@@ -272,10 +272,10 @@ Implementation:
 ```tsx
 // SEO keywords
 const [seoKeywords, setSeoKeywords] = useState<string[]>([]);
-const [currentKeyword, setCurrentKeyword] = useState("");
+const [currentKeyword, setCurrentKeyword] = useState('');
 
 // Transcription
-const [transcription, setTranscription] = useState("");
+const [transcription, setTranscription] = useState('');
 
 // Store in lesson object
 if (seoKeywords.length > 0) {
@@ -342,19 +342,16 @@ The enhanced form uses Firebase for:
 Planned improvements:
 
 1. **Advanced Video Features**:
-
    - In-browser trimming
    - Chaptering and bookmarks
    - Interactive video elements
 
 2. **AI Integration**:
-
    - Automatic transcription generation
    - Content summarization
    - Quiz generation from lesson content
 
 3. **Enhanced Interaction**:
-
    - Drag-and-drop lesson ordering
    - Interactive exercises with code execution
    - Peer review capabilities

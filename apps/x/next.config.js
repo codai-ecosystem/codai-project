@@ -4,6 +4,6 @@ const nextConfig = {
   images: {
     domains: ['x.codai.ro'],
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

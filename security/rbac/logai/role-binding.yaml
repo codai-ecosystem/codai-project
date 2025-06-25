@@ -1,0 +1,27 @@
+{
+  "apiVersion": "rbac.authorization.k8s.io/v1",
+  "kind": "RoleBinding",
+  "metadata": {
+    "name": "logai-rb",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "logai",
+      "component": "rbac",
+      "app.kubernetes.io/name": "logai",
+      "app.kubernetes.io/component": "rbac",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  },
+  "subjects": [
+    {
+      "kind": "ServiceAccount",
+      "name": "logai-sa",
+      "namespace": "codai-production"
+    }
+  ],
+  "roleRef": {
+    "kind": "Role",
+    "name": "logai-role",
+    "apiGroup": "rbac.authorization.k8s.io"
+  }
+}

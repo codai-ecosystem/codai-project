@@ -1,0 +1,27 @@
+{
+  "apiVersion": "rbac.authorization.k8s.io/v1",
+  "kind": "RoleBinding",
+  "metadata": {
+    "name": "AIDE-rb",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "AIDE",
+      "component": "rbac",
+      "app.kubernetes.io/name": "AIDE",
+      "app.kubernetes.io/component": "rbac",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  },
+  "subjects": [
+    {
+      "kind": "ServiceAccount",
+      "name": "AIDE-sa",
+      "namespace": "codai-production"
+    }
+  ],
+  "roleRef": {
+    "kind": "Role",
+    "name": "AIDE-role",
+    "apiGroup": "rbac.authorization.k8s.io"
+  }
+}

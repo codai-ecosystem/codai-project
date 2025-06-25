@@ -112,19 +112,16 @@ Based on the analysis of the current codebase, here are recommended improvements
 ## Completed Improvements (April 4, 2025)
 
 1. **UI Library Migration**:
-
    - Updated all NextUI references to HeroUI across the application
    - Modified providers.tsx and tailwind.config.ts files
    - Updated component imports in Header.tsx
 
 2. **Homepage Enhancements**:
-
    - Added modern hero section with compelling headline and CTAs
    - Implemented testimonials section with student feedback
    - Improved overall layout with better spacing and visual hierarchy
 
 3. **Course Cards Redesign**:
-
    - Completely redesigned with modern appearance
    - Added difficulty level badges and duration indicators
    - Implemented hover effects and animations
@@ -132,20 +129,17 @@ Based on the analysis of the current codebase, here are recommended improvements
    - Enhanced presentation of ratings and pricing
 
 4. **Course Experience Improvements**:
-
    - Created tabbed interface for better content organization
    - Implemented improved lesson navigation with numbering
    - Added clear visual distinction for locked vs. accessible lessons
 
 5. **Lesson Experience Enhancements**:
-
    - Built feature-rich video player with custom controls
    - Added video progress tracking and playback speed controls
    - Implemented notes system that persists between sessions
    - Created sidebar for resources and navigation
 
 6. **AI-Focused Modernization (April 4, 2025)**:
-
    - Reimagined hero section with futuristic AI theme and animated particle effects
    - Added neural network visualization with animated nodes and connections
    - Implemented scroll-triggered animations using Framer Motion throughout the site
@@ -159,7 +153,6 @@ Based on the analysis of the current codebase, here are recommended improvements
    - Improved overall responsive design with mobile-optimized layouts
 
 7. **Component Architecture Refactoring (April 4, 2025)**:
-
    - Refactored large Lesson.tsx component into modular components
    - Created separate VideoPlayer component with encapsulated functionality
    - Implemented LessonNavigation, LessonSettings, Notes, and ResourcesList components
@@ -180,25 +173,21 @@ Based on the analysis of the current codebase, here are recommended improvements
 ## Next Steps for Azure Speech Integration
 
 1. **Audio Extraction Improvement**:
-
    - Implement more robust audio extraction from video files before transcription
    - Add support for various video formats
    - Optimize audio quality for better transcription results
 
 2. **Processing Queue System**:
-
    - Develop a processing queue for handling multiple caption generation requests
    - Implement background processing for large courses
    - Add progress tracking and status updates for ongoing processes
 
 3. **Caption Timing Enhancement**:
-
    - Implement more accurate timing for caption segments
    - Use speech recognition timestamps for precise synchronization
    - Add support for adjusting caption timing in the UI
 
 4. **Caption Editor Interface**:
-
    - Create an interface for instructors to edit auto-generated captions
    - Add spell checking and grammar correction features
    - Implement a side-by-side video and caption editor

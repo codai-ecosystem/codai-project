@@ -4,7 +4,12 @@ import type { User, Transaction, BankAccount, AIInsight } from '@/types';
 
 export interface FinancialMemoryEntry extends MemoryEntry {
   userId?: string;
-  category?: 'transaction' | 'account' | 'user_preference' | 'ai_insight' | 'financial_goal';
+  category?:
+    | 'transaction'
+    | 'account'
+    | 'user_preference'
+    | 'ai_insight'
+    | 'financial_goal';
   financialData?: {
     amount?: number;
     currency?: string;
@@ -138,7 +143,7 @@ export class BancaiMemoryService {
     category?: string
   ): Promise<FinancialMemoryEntry[]> {
     try {
-      const searchQuery = category 
+      const searchQuery = category
         ? `${query} category:${category} userId:${this.userId}`
         : `${query} userId:${this.userId}`;
 
@@ -173,15 +178,21 @@ export class BancaiMemoryService {
   }> {
     try {
       const insights = await this.searchFinancialMemories('', 'ai_insight');
-      
-      const categories = insights.reduce((acc, insight) => {
-        const type = insight.metadata?.insightType || 'unknown';
-        acc[type] = (acc[type] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>);
+
+      const categories = insights.reduce(
+        (acc, insight) => {
+          const type = insight.metadata?.insightType || 'unknown';
+          acc[type] = (acc[type] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      );
 
       const recentInsights = insights
-        .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+        .sort(
+          (a, b) =>
+            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+        )
         .slice(0, 10);
 
       return {
@@ -230,14 +241,16 @@ export class BancaiMemoryService {
   }
 
   // Clean up old memories (privacy compliance)
-  async cleanupOldMemories(olderThanDays: number = 365): Promise<{ success: boolean; cleaned: number }> {
+  async cleanupOldMemories(
+    olderThanDays: number = 365
+  ): Promise<{ success: boolean; cleaned: number }> {
     try {
       const cutoffDate = new Date();
       cutoffDate.setDate(cutoffDate.getDate() - olderThanDays);
 
       const oldMemories = await this.searchFinancialMemories('');
-      const memoriesToDelete = oldMemories.filter(memory => 
-        new Date(memory.timestamp) < cutoffDate
+      const memoriesToDelete = oldMemories.filter(
+        memory => new Date(memory.timestamp) < cutoffDate
       );
 
       let cleaned = 0;
@@ -296,8 +309,10 @@ export class BancaiSystemMemory {
     systemHealth: string;
   }> {
     try {
-      const systemMemories = await memorai.recallMemory('system category:system_metrics');
-      
+      const systemMemories = await memorai.recallMemory(
+        'system category:system_metrics'
+      );
+
       // This would be populated by background processes
       // For now, return default values
       return {

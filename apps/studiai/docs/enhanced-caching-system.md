@@ -20,7 +20,7 @@ The caching system introduces several new types:
 
 ```typescript
 // Cache status types to track loading state
-export type CacheStatus = "idle" | "loading" | "success" | "error";
+export type CacheStatus = 'idle' | 'loading' | 'success' | 'error';
 
 // Metadata to track cache freshness
 export interface CacheMetadata {
@@ -104,7 +104,7 @@ if (courseLoadingStates[courseId] === "error") {
 const { clearCache, clearAllCache } = useContext(AppContext);
 
 // Clear specific cache
-clearCache("lessons_123");
+clearCache('lessons_123');
 
 // Clear all cache
 clearAllCache();
@@ -115,7 +115,6 @@ clearAllCache();
 1. **Use Persistence Selectively**: Only enable `persist: true` for data that doesn't change frequently and benefits from being available immediately on page load.
 
 2. **Consider TTL Carefully**: Set appropriate TTL values based on how frequently the data changes:
-
    - User preferences: Long TTL (hours/days)
    - Course listings: Medium TTL (30-60 minutes)
    - Active lesson data: Short TTL (5-15 minutes)
@@ -124,13 +123,13 @@ clearAllCache();
 
    ```tsx
    {
-     courseLoadingStates["all"] === "loading" && <LoadingIndicator />;
+     courseLoadingStates['all'] === 'loading' && <LoadingIndicator />;
    }
    {
-     courseLoadingStates["all"] === "error" && <ErrorMessage />;
+     courseLoadingStates['all'] === 'error' && <ErrorMessage />;
    }
    {
-     courseLoadingStates["all"] === "success" && <CourseList />;
+     courseLoadingStates['all'] === 'success' && <CourseList />;
    }
    ```
 
@@ -138,7 +137,7 @@ clearAllCache();
    ```typescript
    // After adding a new course
    addCourse(newCourse).then(() => {
-     clearCache("courses");
+     clearCache('courses');
    });
    ```
 

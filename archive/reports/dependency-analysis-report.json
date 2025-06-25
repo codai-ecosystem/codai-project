@@ -1,0 +1,6924 @@
+{
+  "packageFiles": [
+    {
+      "path": "E:\\GitHub\\codai-project\\apps\\bancai\\package.json",
+      "relativePath": "apps\\bancai\\package.json",
+      "type": "apps",
+      "name": "bancai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\apps\\codai\\package.json",
+      "relativePath": "apps\\codai\\package.json",
+      "type": "apps",
+      "name": "codai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\apps\\cumparai\\package.json",
+      "relativePath": "apps\\cumparai\\package.json",
+      "type": "apps",
+      "name": "cumparai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\apps\\fabricai\\package.json",
+      "relativePath": "apps\\fabricai\\package.json",
+      "type": "apps",
+      "name": "fabricai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\apps\\logai\\package.json",
+      "relativePath": "apps\\logai\\package.json",
+      "type": "apps",
+      "name": "logai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\apps\\memorai\\package.json",
+      "relativePath": "apps\\memorai\\package.json",
+      "type": "apps",
+      "name": "memorai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\apps\\publicai\\package.json",
+      "relativePath": "apps\\publicai\\package.json",
+      "type": "apps",
+      "name": "publicai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\apps\\sociai\\package.json",
+      "relativePath": "apps\\sociai\\package.json",
+      "type": "apps",
+      "name": "sociai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\apps\\studiai\\package.json",
+      "relativePath": "apps\\studiai\\package.json",
+      "type": "apps",
+      "name": "studiai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\apps\\wallet\\package.json",
+      "relativePath": "apps\\wallet\\package.json",
+      "type": "apps",
+      "name": "wallet"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\apps\\x\\package.json",
+      "relativePath": "apps\\x\\package.json",
+      "type": "apps",
+      "name": "x"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\admin\\package.json",
+      "relativePath": "services\\admin\\package.json",
+      "type": "services",
+      "name": "admin"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\AIDE\\package.json",
+      "relativePath": "services\\AIDE\\package.json",
+      "type": "services",
+      "name": "AIDE"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\ajutai\\package.json",
+      "relativePath": "services\\ajutai\\package.json",
+      "type": "services",
+      "name": "ajutai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\analizai\\package.json",
+      "relativePath": "services\\analizai\\package.json",
+      "type": "services",
+      "name": "analizai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\bancai\\package.json",
+      "relativePath": "services\\bancai\\package.json",
+      "type": "services",
+      "name": "bancai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\codai\\package.json",
+      "relativePath": "services\\codai\\package.json",
+      "type": "services",
+      "name": "codai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\cumparai\\package.json",
+      "relativePath": "services\\cumparai\\package.json",
+      "type": "services",
+      "name": "cumparai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\dash\\package.json",
+      "relativePath": "services\\dash\\package.json",
+      "type": "services",
+      "name": "dash"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\docs\\package.json",
+      "relativePath": "services\\docs\\package.json",
+      "type": "services",
+      "name": "docs"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\explorer\\package.json",
+      "relativePath": "services\\explorer\\package.json",
+      "type": "services",
+      "name": "explorer"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\fabricai\\package.json",
+      "relativePath": "services\\fabricai\\package.json",
+      "type": "services",
+      "name": "fabricai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\hub\\package.json",
+      "relativePath": "services\\hub\\package.json",
+      "type": "services",
+      "name": "hub"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\id\\package.json",
+      "relativePath": "services\\id\\package.json",
+      "type": "services",
+      "name": "id"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\jucai\\package.json",
+      "relativePath": "services\\jucai\\package.json",
+      "type": "services",
+      "name": "jucai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\kodex\\package.json",
+      "relativePath": "services\\kodex\\package.json",
+      "type": "services",
+      "name": "kodex"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\legalizai\\package.json",
+      "relativePath": "services\\legalizai\\package.json",
+      "type": "services",
+      "name": "legalizai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\logai\\package.json",
+      "relativePath": "services\\logai\\package.json",
+      "type": "services",
+      "name": "logai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\marketai\\package.json",
+      "relativePath": "services\\marketai\\package.json",
+      "type": "services",
+      "name": "marketai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\memorai\\package.json",
+      "relativePath": "services\\memorai\\package.json",
+      "type": "services",
+      "name": "memorai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\metu\\package.json",
+      "relativePath": "services\\metu\\package.json",
+      "type": "services",
+      "name": "metu"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\mod\\package.json",
+      "relativePath": "services\\mod\\package.json",
+      "type": "services",
+      "name": "mod"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\publicai\\package.json",
+      "relativePath": "services\\publicai\\package.json",
+      "type": "services",
+      "name": "publicai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\sociai\\package.json",
+      "relativePath": "services\\sociai\\package.json",
+      "type": "services",
+      "name": "sociai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\stocai\\package.json",
+      "relativePath": "services\\stocai\\package.json",
+      "type": "services",
+      "name": "stocai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\studiai\\package.json",
+      "relativePath": "services\\studiai\\package.json",
+      "type": "services",
+      "name": "studiai"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\templates\\package.json",
+      "relativePath": "services\\templates\\package.json",
+      "type": "services",
+      "name": "templates"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\tools\\package.json",
+      "relativePath": "services\\tools\\package.json",
+      "type": "services",
+      "name": "tools"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\wallet\\package.json",
+      "relativePath": "services\\wallet\\package.json",
+      "type": "services",
+      "name": "wallet"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\services\\x\\package.json",
+      "relativePath": "services\\x\\package.json",
+      "type": "services",
+      "name": "x"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\packages\\api\\package.json",
+      "relativePath": "packages\\api\\package.json",
+      "type": "packages",
+      "name": "api"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\packages\\auth\\package.json",
+      "relativePath": "packages\\auth\\package.json",
+      "type": "packages",
+      "name": "auth"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\packages\\core\\package.json",
+      "relativePath": "packages\\core\\package.json",
+      "type": "packages",
+      "name": "core"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\packages\\ui\\package.json",
+      "relativePath": "packages\\ui\\package.json",
+      "type": "packages",
+      "name": "ui"
+    },
+    {
+      "path": "E:\\GitHub\\codai-project\\package.json",
+      "relativePath": "package.json",
+      "type": "root"
+    }
+  ],
+  "duplicateDependencies": {
+    "next": {
+      "occurrences": 36,
+      "versions": ["^15.0.0", "15.2.4", "^14.2.0", "^14.0.4", "^14.0.0"],
+      "packages": [
+        {
+          "package": "apps\\bancai\\package.json",
+          "version": "^15.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\codai\\package.json",
+          "version": "^15.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\cumparai\\package.json",
+          "version": "^15.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\fabricai\\package.json",
+          "version": "^15.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\logai\\package.json",
+          "version": "^15.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\publicai\\package.json",
+          "version": "^15.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\sociai\\package.json",
+          "version": "^15.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\studiai\\package.json",
+          "version": "15.2.4",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\wallet\\package.json",
+          "version": "^15.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\x\\package.json",
+          "version": "^15.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\admin\\package.json",
+          "version": "^14.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\AIDE\\package.json",
+          "version": "^14.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\ajutai\\package.json",
+          "version": "^14.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\analizai\\package.json",
+          "version": "^14.0.4",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\bancai\\package.json",
+          "version": "^14.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\cumparai\\package.json",
+          "version": "^14.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\dash\\package.json",
+          "version": "^14.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\docs\\package.json",
+          "version": "^14.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\explorer\\package.json",
+          "version": "^14.0.4",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\fabricai\\package.json",
+          "version": "^14.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\hub\\package.json",
+          "version": "^14.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\id\\package.json",
+          "version": "^14.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\jucai\\package.json",
+          "version": "^14.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\kodex\\package.json",
+          "version": "^14.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\legalizai\\package.json",
+          "version": "^14.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^14.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\marketai\\package.json",
+          "version": "^14.0.4",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\metu\\package.json",
+          "version": "^14.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\mod\\package.json",
+          "version": "^14.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\publicai\\package.json",
+          "version": "^14.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\sociai\\package.json",
+          "version": "^14.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\stocai\\package.json",
+          "version": "^14.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\studiai\\package.json",
+          "version": "15.2.4",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\tools\\package.json",
+          "version": "^14.0.4",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\wallet\\package.json",
+          "version": "^14.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\x\\package.json",
+          "version": "^14.0.0",
+          "type": "dependency"
+        }
+      ]
+    },
+    "react": {
+      "occurrences": 37,
+      "versions": ["^18.3.1", "^19", "^18.3.0", "^18.2.0", "^18.0.0"],
+      "packages": [
+        {
+          "package": "apps\\bancai\\package.json",
+          "version": "^18.3.1",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\codai\\package.json",
+          "version": "^18.3.1",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\cumparai\\package.json",
+          "version": "^18.3.1",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\fabricai\\package.json",
+          "version": "^18.3.1",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\logai\\package.json",
+          "version": "^18.3.1",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\publicai\\package.json",
+          "version": "^18.3.1",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\sociai\\package.json",
+          "version": "^18.3.1",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\studiai\\package.json",
+          "version": "^19",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\wallet\\package.json",
+          "version": "^18.3.1",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\x\\package.json",
+          "version": "^18.3.1",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\admin\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\AIDE\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\ajutai\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\analizai\\package.json",
+          "version": "^18.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\bancai\\package.json",
+          "version": "^18.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\cumparai\\package.json",
+          "version": "^18.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\dash\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\docs\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\explorer\\package.json",
+          "version": "^18.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\fabricai\\package.json",
+          "version": "^18.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\hub\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\id\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\jucai\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\kodex\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\legalizai\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^18.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\marketai\\package.json",
+          "version": "^18.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\metu\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\mod\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\publicai\\package.json",
+          "version": "^18.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\sociai\\package.json",
+          "version": "^18.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\stocai\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\studiai\\package.json",
+          "version": "^19",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\tools\\package.json",
+          "version": "^18.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\wallet\\package.json",
+          "version": "^18.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\x\\package.json",
+          "version": "^18.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "packages\\ui\\package.json",
+          "version": "^18.2.0",
+          "type": "dependency"
+        }
+      ]
+    },
+    "react-dom": {
+      "occurrences": 37,
+      "versions": ["^18.3.1", "^19", "^18.3.0", "^18.2.0", "^18.0.0"],
+      "packages": [
+        {
+          "package": "apps\\bancai\\package.json",
+          "version": "^18.3.1",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\codai\\package.json",
+          "version": "^18.3.1",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\cumparai\\package.json",
+          "version": "^18.3.1",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\fabricai\\package.json",
+          "version": "^18.3.1",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\logai\\package.json",
+          "version": "^18.3.1",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\publicai\\package.json",
+          "version": "^18.3.1",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\sociai\\package.json",
+          "version": "^18.3.1",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\studiai\\package.json",
+          "version": "^19",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\wallet\\package.json",
+          "version": "^18.3.1",
+          "type": "dependency"
+        },
+        {
+          "package": "apps\\x\\package.json",
+          "version": "^18.3.1",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\admin\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\AIDE\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\ajutai\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\analizai\\package.json",
+          "version": "^18.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\bancai\\package.json",
+          "version": "^18.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\cumparai\\package.json",
+          "version": "^18.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\dash\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\docs\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\explorer\\package.json",
+          "version": "^18.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\fabricai\\package.json",
+          "version": "^18.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\hub\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\id\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\jucai\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\kodex\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\legalizai\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^18.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\marketai\\package.json",
+          "version": "^18.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\metu\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\mod\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\publicai\\package.json",
+          "version": "^18.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\sociai\\package.json",
+          "version": "^18.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\stocai\\package.json",
+          "version": "^18.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\studiai\\package.json",
+          "version": "^19",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\tools\\package.json",
+          "version": "^18.2.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\wallet\\package.json",
+          "version": "^18.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\x\\package.json",
+          "version": "^18.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "packages\\ui\\package.json",
+          "version": "^18.2.0",
+          "type": "dependency"
+        }
+      ]
+    },
+    "@radix-ui/react-slot": {
+      "occurrences": 2,
+      "versions": ["^1.2.3", "^1.0.2"],
+      "packages": [
+        {
+          "package": "apps\\codai\\package.json",
+          "version": "^1.2.3",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\analizai\\package.json",
+          "version": "^1.0.2",
+          "type": "dependency"
+        }
+      ]
+    },
+    "autoprefixer": {
+      "occurrences": 16,
+      "versions": ["^10.4.21", "^10.4.20"],
+      "packages": [
+        {
+          "package": "apps\\studiai\\package.json",
+          "version": "^10.4.21",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\admin\\package.json",
+          "version": "^10.4.20",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\AIDE\\package.json",
+          "version": "^10.4.20",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\ajutai\\package.json",
+          "version": "^10.4.20",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\codai\\package.json",
+          "version": "^10.4.21",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\dash\\package.json",
+          "version": "^10.4.20",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\docs\\package.json",
+          "version": "^10.4.20",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\hub\\package.json",
+          "version": "^10.4.20",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\id\\package.json",
+          "version": "^10.4.20",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\jucai\\package.json",
+          "version": "^10.4.20",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\kodex\\package.json",
+          "version": "^10.4.20",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\legalizai\\package.json",
+          "version": "^10.4.20",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\metu\\package.json",
+          "version": "^10.4.20",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\mod\\package.json",
+          "version": "^10.4.20",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\stocai\\package.json",
+          "version": "^10.4.20",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\studiai\\package.json",
+          "version": "^10.4.21",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "chalk": {
+      "occurrences": 2,
+      "versions": ["^5.4.1", "^5.3.0"],
+      "packages": [
+        {
+          "package": "apps\\codai\\package.json",
+          "version": "^5.4.1",
+          "type": "dependency"
+        },
+        {
+          "package": "package.json",
+          "version": "^5.3.0",
+          "type": "dependency"
+        }
+      ]
+    },
+    "clsx": {
+      "occurrences": 21,
+      "versions": ["^2.1.1", "^2.0.0", "^2.1.0"],
+      "packages": [
+        {
+          "package": "apps\\codai\\package.json",
+          "version": "^2.1.1",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\admin\\package.json",
+          "version": "^2.1.1",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\AIDE\\package.json",
+          "version": "^2.1.1",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\ajutai\\package.json",
+          "version": "^2.1.1",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\analizai\\package.json",
+          "version": "^2.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\dash\\package.json",
+          "version": "^2.1.1",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\docs\\package.json",
+          "version": "^2.1.1",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\explorer\\package.json",
+          "version": "^2.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\fabricai\\package.json",
+          "version": "^2.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\hub\\package.json",
+          "version": "^2.1.1",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\id\\package.json",
+          "version": "^2.1.1",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\jucai\\package.json",
+          "version": "^2.1.1",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\kodex\\package.json",
+          "version": "^2.1.1",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\legalizai\\package.json",
+          "version": "^2.1.1",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^2.1.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\marketai\\package.json",
+          "version": "^2.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\metu\\package.json",
+          "version": "^2.1.1",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\mod\\package.json",
+          "version": "^2.1.1",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\stocai\\package.json",
+          "version": "^2.1.1",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\tools\\package.json",
+          "version": "^2.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "packages\\ui\\package.json",
+          "version": "^2.0.0",
+          "type": "dependency"
+        }
+      ]
+    },
+    "commander": {
+      "occurrences": 2,
+      "versions": ["^14.0.0", "^12.0.0"],
+      "packages": [
+        {
+          "package": "apps\\codai\\package.json",
+          "version": "^14.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "package.json",
+          "version": "^12.0.0",
+          "type": "dependency"
+        }
+      ]
+    },
+    "lucide-react": {
+      "occurrences": 17,
+      "versions": ["^0.400.0", "^0.445.0", "^0.300.0", "^0.365.0", "^0.292.0"],
+      "packages": [
+        {
+          "package": "apps\\codai\\package.json",
+          "version": "^0.400.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\admin\\package.json",
+          "version": "^0.445.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\AIDE\\package.json",
+          "version": "^0.445.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\ajutai\\package.json",
+          "version": "^0.445.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\analizai\\package.json",
+          "version": "^0.300.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\dash\\package.json",
+          "version": "^0.445.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\docs\\package.json",
+          "version": "^0.445.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\hub\\package.json",
+          "version": "^0.445.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\id\\package.json",
+          "version": "^0.445.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\jucai\\package.json",
+          "version": "^0.445.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\kodex\\package.json",
+          "version": "^0.445.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\legalizai\\package.json",
+          "version": "^0.445.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^0.365.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\metu\\package.json",
+          "version": "^0.445.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\mod\\package.json",
+          "version": "^0.445.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\stocai\\package.json",
+          "version": "^0.445.0",
+          "type": "dependency"
+        },
+        {
+          "package": "packages\\ui\\package.json",
+          "version": "^0.292.0",
+          "type": "dependency"
+        }
+      ]
+    },
+    "postcss": {
+      "occurrences": 16,
+      "versions": ["^8.5.3", "^8.4.47", "^8.5.4"],
+      "packages": [
+        {
+          "package": "apps\\studiai\\package.json",
+          "version": "^8.5.3",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\admin\\package.json",
+          "version": "^8.4.47",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\AIDE\\package.json",
+          "version": "^8.4.47",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\ajutai\\package.json",
+          "version": "^8.4.47",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\codai\\package.json",
+          "version": "^8.5.4",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\dash\\package.json",
+          "version": "^8.4.47",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\docs\\package.json",
+          "version": "^8.4.47",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\hub\\package.json",
+          "version": "^8.4.47",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\id\\package.json",
+          "version": "^8.4.47",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\jucai\\package.json",
+          "version": "^8.4.47",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\kodex\\package.json",
+          "version": "^8.4.47",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\legalizai\\package.json",
+          "version": "^8.4.47",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\metu\\package.json",
+          "version": "^8.4.47",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\mod\\package.json",
+          "version": "^8.4.47",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\stocai\\package.json",
+          "version": "^8.4.47",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\studiai\\package.json",
+          "version": "^8.5.3",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "tailwind-merge": {
+      "occurrences": 4,
+      "versions": ["^2.3.0", "^2.0.0"],
+      "packages": [
+        {
+          "package": "apps\\codai\\package.json",
+          "version": "^2.3.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\analizai\\package.json",
+          "version": "^2.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\fabricai\\package.json",
+          "version": "^2.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^2.0.0",
+          "type": "dependency"
+        }
+      ]
+    },
+    "tailwindcss": {
+      "occurrences": 16,
+      "versions": ["^4.1.3", "^3.4.0", "^3.3.0"],
+      "packages": [
+        {
+          "package": "apps\\studiai\\package.json",
+          "version": "^4.1.3",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\admin\\package.json",
+          "version": "^3.4.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\AIDE\\package.json",
+          "version": "^3.4.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\ajutai\\package.json",
+          "version": "^3.4.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\dash\\package.json",
+          "version": "^3.4.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\docs\\package.json",
+          "version": "^3.4.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\hub\\package.json",
+          "version": "^3.4.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\id\\package.json",
+          "version": "^3.4.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\jucai\\package.json",
+          "version": "^3.4.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\kodex\\package.json",
+          "version": "^3.4.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\legalizai\\package.json",
+          "version": "^3.4.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\metu\\package.json",
+          "version": "^3.4.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\mod\\package.json",
+          "version": "^3.4.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\stocai\\package.json",
+          "version": "^3.4.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\studiai\\package.json",
+          "version": "^4.1.3",
+          "type": "devDependency"
+        },
+        {
+          "package": "packages\\ui\\package.json",
+          "version": "^3.3.0",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "framer-motion": {
+      "occurrences": 4,
+      "versions": ["^12.6.3", "^10.16.0", "^11.0.0"],
+      "packages": [
+        {
+          "package": "apps\\studiai\\package.json",
+          "version": "^12.6.3",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\analizai\\package.json",
+          "version": "^10.16.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^11.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\studiai\\package.json",
+          "version": "^12.6.3",
+          "type": "dependency"
+        }
+      ]
+    },
+    "date-fns": {
+      "occurrences": 4,
+      "versions": ["^3.3.1", "^3.0.0", "^3.6.0"],
+      "packages": [
+        {
+          "package": "apps\\studiai\\package.json",
+          "version": "^3.3.1",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\analizai\\package.json",
+          "version": "^3.0.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^3.6.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\studiai\\package.json",
+          "version": "^3.3.1",
+          "type": "dependency"
+        }
+      ]
+    },
+    "@types/node": {
+      "occurrences": 29,
+      "versions": ["^20.14.0", "^22", "^20.16.0", "22.x", "^20.10.0"],
+      "packages": [
+        {
+          "package": "apps\\bancai\\package.json",
+          "version": "^20.14.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\codai\\package.json",
+          "version": "^20.14.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\cumparai\\package.json",
+          "version": "^20.14.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\fabricai\\package.json",
+          "version": "^20.14.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\logai\\package.json",
+          "version": "^20.14.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\publicai\\package.json",
+          "version": "^20.14.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\sociai\\package.json",
+          "version": "^20.14.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\studiai\\package.json",
+          "version": "^22",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\wallet\\package.json",
+          "version": "^20.14.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\x\\package.json",
+          "version": "^20.14.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\admin\\package.json",
+          "version": "^20.16.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\AIDE\\package.json",
+          "version": "^20.16.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\ajutai\\package.json",
+          "version": "^20.16.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\codai\\package.json",
+          "version": "22.x",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\dash\\package.json",
+          "version": "^20.16.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\docs\\package.json",
+          "version": "^20.16.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\hub\\package.json",
+          "version": "^20.16.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\id\\package.json",
+          "version": "^20.16.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\jucai\\package.json",
+          "version": "^20.16.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\kodex\\package.json",
+          "version": "^20.16.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\legalizai\\package.json",
+          "version": "^20.16.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\metu\\package.json",
+          "version": "^20.16.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\mod\\package.json",
+          "version": "^20.16.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\stocai\\package.json",
+          "version": "^20.16.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\studiai\\package.json",
+          "version": "^22",
+          "type": "devDependency"
+        },
+        {
+          "package": "packages\\api\\package.json",
+          "version": "^20.10.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "packages\\auth\\package.json",
+          "version": "^20.10.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "packages\\core\\package.json",
+          "version": "^20.10.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "package.json",
+          "version": "^20.10.0",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "@types/react": {
+      "occurrences": 25,
+      "versions": ["^18.3.0", "^19", "^18.2.0"],
+      "packages": [
+        {
+          "package": "apps\\bancai\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\codai\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\cumparai\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\fabricai\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\logai\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\publicai\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\sociai\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\studiai\\package.json",
+          "version": "^19",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\wallet\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\x\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\admin\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\AIDE\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\ajutai\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\dash\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\docs\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\hub\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\id\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\jucai\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\kodex\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\legalizai\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\metu\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\mod\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\stocai\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\studiai\\package.json",
+          "version": "^19",
+          "type": "devDependency"
+        },
+        {
+          "package": "packages\\ui\\package.json",
+          "version": "^18.2.0",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "@types/react-dom": {
+      "occurrences": 25,
+      "versions": ["^18.3.0", "^19", "^18.2.0"],
+      "packages": [
+        {
+          "package": "apps\\bancai\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\codai\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\cumparai\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\fabricai\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\logai\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\publicai\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\sociai\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\studiai\\package.json",
+          "version": "^19",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\wallet\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\x\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\admin\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\AIDE\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\ajutai\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\dash\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\docs\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\hub\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\id\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\jucai\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\kodex\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\legalizai\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\metu\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\mod\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\stocai\\package.json",
+          "version": "^18.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\studiai\\package.json",
+          "version": "^19",
+          "type": "devDependency"
+        },
+        {
+          "package": "packages\\ui\\package.json",
+          "version": "^18.2.0",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "typescript": {
+      "occurrences": 33,
+      "versions": [
+        "^5.5.0",
+        "^5.5.4",
+        "^5",
+        "^5.6.0",
+        "^5.9.0-dev.20250522",
+        "^5.0.0",
+        "^5.3.0"
+      ],
+      "packages": [
+        {
+          "package": "apps\\bancai\\package.json",
+          "version": "^5.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\codai\\package.json",
+          "version": "^5.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\cumparai\\package.json",
+          "version": "^5.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\fabricai\\package.json",
+          "version": "^5.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\logai\\package.json",
+          "version": "^5.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\memorai\\package.json",
+          "version": "^5.5.4",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\publicai\\package.json",
+          "version": "^5.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\sociai\\package.json",
+          "version": "^5.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\studiai\\package.json",
+          "version": "^5",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\wallet\\package.json",
+          "version": "^5.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\x\\package.json",
+          "version": "^5.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\admin\\package.json",
+          "version": "^5.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\AIDE\\package.json",
+          "version": "^5.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\ajutai\\package.json",
+          "version": "^5.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\codai\\package.json",
+          "version": "^5.9.0-dev.20250522",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\dash\\package.json",
+          "version": "^5.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\docs\\package.json",
+          "version": "^5.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\hub\\package.json",
+          "version": "^5.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\id\\package.json",
+          "version": "^5.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\jucai\\package.json",
+          "version": "^5.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\kodex\\package.json",
+          "version": "^5.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\legalizai\\package.json",
+          "version": "^5.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\memorai\\package.json",
+          "version": "^5.5.4",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\metu\\package.json",
+          "version": "^5.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\mod\\package.json",
+          "version": "^5.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\stocai\\package.json",
+          "version": "^5.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\studiai\\package.json",
+          "version": "^5",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\templates\\package.json",
+          "version": "^5.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "packages\\api\\package.json",
+          "version": "^5.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "packages\\auth\\package.json",
+          "version": "^5.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "packages\\core\\package.json",
+          "version": "^5.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "packages\\ui\\package.json",
+          "version": "^5.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "package.json",
+          "version": "^5.3.0",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "react-hook-form": {
+      "occurrences": 2,
+      "versions": ["^7.48.0", "^7.50.0"],
+      "packages": [
+        {
+          "package": "services\\analizai\\package.json",
+          "version": "^7.48.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^7.50.0",
+          "type": "dependency"
+        }
+      ]
+    },
+    "zod": {
+      "occurrences": 5,
+      "versions": ["^3.22.0", "^3.23.0", "^3.22.4"],
+      "packages": [
+        {
+          "package": "services\\analizai\\package.json",
+          "version": "^3.22.0",
+          "type": "dependency"
+        },
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^3.23.0",
+          "type": "dependency"
+        },
+        {
+          "package": "packages\\api\\package.json",
+          "version": "^3.22.4",
+          "type": "dependency"
+        },
+        {
+          "package": "packages\\auth\\package.json",
+          "version": "^3.22.4",
+          "type": "dependency"
+        },
+        {
+          "package": "packages\\core\\package.json",
+          "version": "^3.22.4",
+          "type": "dependency"
+        }
+      ]
+    },
+    "next-auth": {
+      "occurrences": 2,
+      "versions": ["^4.24.5", "^4.24.0"],
+      "packages": [
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^4.24.5",
+          "type": "dependency"
+        },
+        {
+          "package": "packages\\auth\\package.json",
+          "version": "^4.24.0",
+          "type": "dependency"
+        }
+      ]
+    },
+    "eslint": {
+      "occurrences": 43,
+      "versions": [
+        "^9.5.0",
+        "^8.57.1",
+        "^9",
+        "^8.57.0",
+        "^8.55.0",
+        "^8.0.0",
+        "^9.11.1"
+      ],
+      "packages": [
+        {
+          "package": "apps\\bancai\\package.json",
+          "version": "^9.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\codai\\package.json",
+          "version": "^9.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\cumparai\\package.json",
+          "version": "^9.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\fabricai\\package.json",
+          "version": "^9.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\logai\\package.json",
+          "version": "^9.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\memorai\\package.json",
+          "version": "^8.57.1",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\publicai\\package.json",
+          "version": "^9.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\sociai\\package.json",
+          "version": "^9.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\studiai\\package.json",
+          "version": "^9",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\wallet\\package.json",
+          "version": "^9.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\x\\package.json",
+          "version": "^9.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\admin\\package.json",
+          "version": "^8.57.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\AIDE\\package.json",
+          "version": "^8.57.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\ajutai\\package.json",
+          "version": "^8.57.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\analizai\\package.json",
+          "version": "^8.55.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\bancai\\package.json",
+          "version": "^8.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\codai\\package.json",
+          "version": "^9.11.1",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\cumparai\\package.json",
+          "version": "^8.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\dash\\package.json",
+          "version": "^8.57.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\docs\\package.json",
+          "version": "^8.57.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\explorer\\package.json",
+          "version": "^8.55.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\fabricai\\package.json",
+          "version": "^8.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\hub\\package.json",
+          "version": "^8.57.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\id\\package.json",
+          "version": "^8.57.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\jucai\\package.json",
+          "version": "^8.57.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\kodex\\package.json",
+          "version": "^8.57.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\legalizai\\package.json",
+          "version": "^8.57.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^8.57.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\marketai\\package.json",
+          "version": "^8.55.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\memorai\\package.json",
+          "version": "^8.57.1",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\metu\\package.json",
+          "version": "^8.57.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\mod\\package.json",
+          "version": "^8.57.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\sociai\\package.json",
+          "version": "^8.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\stocai\\package.json",
+          "version": "^8.57.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\studiai\\package.json",
+          "version": "^9",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\tools\\package.json",
+          "version": "^8.55.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\wallet\\package.json",
+          "version": "^8.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\x\\package.json",
+          "version": "^8.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "packages\\api\\package.json",
+          "version": "^8.55.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "packages\\auth\\package.json",
+          "version": "^8.55.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "packages\\core\\package.json",
+          "version": "^8.55.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "packages\\ui\\package.json",
+          "version": "^8.55.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "package.json",
+          "version": "^8.55.0",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "eslint-config-next": {
+      "occurrences": 36,
+      "versions": ["^15.0.0", "15.2.4", "^14.2.0", "^14.0.4", "^14.0.0"],
+      "packages": [
+        {
+          "package": "apps\\bancai\\package.json",
+          "version": "^15.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\codai\\package.json",
+          "version": "^15.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\cumparai\\package.json",
+          "version": "^15.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\fabricai\\package.json",
+          "version": "^15.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\logai\\package.json",
+          "version": "^15.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\publicai\\package.json",
+          "version": "^15.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\sociai\\package.json",
+          "version": "^15.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\studiai\\package.json",
+          "version": "15.2.4",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\wallet\\package.json",
+          "version": "^15.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\x\\package.json",
+          "version": "^15.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\admin\\package.json",
+          "version": "^14.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\AIDE\\package.json",
+          "version": "^14.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\ajutai\\package.json",
+          "version": "^14.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\analizai\\package.json",
+          "version": "^14.0.4",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\bancai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\cumparai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\dash\\package.json",
+          "version": "^14.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\docs\\package.json",
+          "version": "^14.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\explorer\\package.json",
+          "version": "^14.0.4",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\fabricai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\hub\\package.json",
+          "version": "^14.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\id\\package.json",
+          "version": "^14.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\jucai\\package.json",
+          "version": "^14.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\kodex\\package.json",
+          "version": "^14.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\legalizai\\package.json",
+          "version": "^14.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^14.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\marketai\\package.json",
+          "version": "^14.0.4",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\metu\\package.json",
+          "version": "^14.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\mod\\package.json",
+          "version": "^14.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\sociai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\stocai\\package.json",
+          "version": "^14.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\studiai\\package.json",
+          "version": "15.2.4",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\tools\\package.json",
+          "version": "^14.0.4",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\wallet\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\x\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "vitest": {
+      "occurrences": 41,
+      "versions": ["^1.6.0", "^2.1.8", "^1.2.0"],
+      "packages": [
+        {
+          "package": "apps\\bancai\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\codai\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\cumparai\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\fabricai\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\logai\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\memorai\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\publicai\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\sociai\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\studiai\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\wallet\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\x\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\admin\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\AIDE\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\ajutai\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\analizai\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\bancai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\codai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\cumparai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\dash\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\docs\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\explorer\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\fabricai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\hub\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\id\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\jucai\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\kodex\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\legalizai\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\marketai\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\memorai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\metu\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\mod\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\publicai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\sociai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\stocai\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\studiai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\templates\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\tools\\package.json",
+          "version": "^1.6.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\wallet\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\x\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "@vitest/ui": {
+      "occurrences": 41,
+      "versions": ["^2.1.8", "^1.2.0"],
+      "packages": [
+        {
+          "package": "apps\\bancai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\codai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\cumparai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\fabricai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\logai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\memorai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\publicai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\sociai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\studiai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\wallet\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\x\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\admin\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\AIDE\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\ajutai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\analizai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\bancai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\codai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\cumparai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\dash\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\docs\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\explorer\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\fabricai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\hub\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\id\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\jucai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\kodex\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\legalizai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\marketai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\memorai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\metu\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\mod\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\publicai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\sociai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\stocai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\studiai\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\templates\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\tools\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\wallet\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\x\\package.json",
+          "version": "^2.1.8",
+          "type": "devDependency"
+        },
+        {
+          "package": "package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "@vitest/coverage-v8": {
+      "occurrences": 41,
+      "versions": ["^1.2.0", "^1.4.0"],
+      "packages": [
+        {
+          "package": "apps\\bancai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\codai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\cumparai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\fabricai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\logai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\memorai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\publicai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\sociai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\studiai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\wallet\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\x\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\admin\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\AIDE\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\ajutai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\analizai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\bancai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\codai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\cumparai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\dash\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\docs\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\explorer\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\fabricai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\hub\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\id\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\jucai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\kodex\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\legalizai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^1.4.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\marketai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\memorai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\metu\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\mod\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\publicai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\sociai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\stocai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\studiai\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\templates\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\tools\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\wallet\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\x\\package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "package.json",
+          "version": "^1.2.0",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "@testing-library/react": {
+      "occurrences": 41,
+      "versions": ["^14.0.0", "^16.3.0", "^14.2.0", "^14.1.2"],
+      "packages": [
+        {
+          "package": "apps\\bancai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\codai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\cumparai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\fabricai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\logai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\memorai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\publicai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\sociai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\studiai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\wallet\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\x\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\admin\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\AIDE\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\ajutai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\analizai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\bancai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\codai\\package.json",
+          "version": "^16.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\cumparai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\dash\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\docs\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\explorer\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\fabricai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\hub\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\id\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\jucai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\kodex\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\legalizai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^14.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\marketai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\memorai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\metu\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\mod\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\publicai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\sociai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\stocai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\studiai\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\templates\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\tools\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\wallet\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\x\\package.json",
+          "version": "^14.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "package.json",
+          "version": "^14.1.2",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "@testing-library/jest-dom": {
+      "occurrences": 41,
+      "versions": ["^6.1.0", "^6.6.3", "^6.4.0"],
+      "packages": [
+        {
+          "package": "apps\\bancai\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\codai\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\cumparai\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\fabricai\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\logai\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\memorai\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\publicai\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\sociai\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\studiai\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\wallet\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\x\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\admin\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\AIDE\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\ajutai\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\analizai\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\bancai\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\codai\\package.json",
+          "version": "^6.6.3",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\cumparai\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\dash\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\docs\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\explorer\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\fabricai\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\hub\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\id\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\jucai\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\kodex\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\legalizai\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^6.4.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\marketai\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\memorai\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\metu\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\mod\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\publicai\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\sociai\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\stocai\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\studiai\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\templates\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\tools\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\wallet\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\x\\package.json",
+          "version": "^6.1.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "package.json",
+          "version": "^6.6.3",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "playwright": {
+      "occurrences": 30,
+      "versions": ["^1.44.0", "^1.42.0"],
+      "packages": [
+        {
+          "package": "apps\\bancai\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\codai\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\cumparai\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\fabricai\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\logai\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\memorai\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\publicai\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\sociai\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\studiai\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\wallet\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "apps\\x\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\admin\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\AIDE\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\ajutai\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\analizai\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\dash\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\docs\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\explorer\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\hub\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\id\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\jucai\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\kodex\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\legalizai\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^1.42.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\marketai\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\metu\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\mod\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\stocai\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\templates\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\tools\\package.json",
+          "version": "^1.44.0",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "@typescript-eslint/eslint-plugin": {
+      "occurrences": 8,
+      "versions": ["^8.18.1", "^6.13.2", "^7.8.0", "^8.34.1"],
+      "packages": [
+        {
+          "package": "apps\\memorai\\package.json",
+          "version": "^8.18.1",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\analizai\\package.json",
+          "version": "^6.13.2",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\codai\\package.json",
+          "version": "^7.8.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\explorer\\package.json",
+          "version": "^6.13.2",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\marketai\\package.json",
+          "version": "^6.13.2",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\memorai\\package.json",
+          "version": "^8.18.1",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\tools\\package.json",
+          "version": "^6.13.2",
+          "type": "devDependency"
+        },
+        {
+          "package": "package.json",
+          "version": "^8.34.1",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "@typescript-eslint/parser": {
+      "occurrences": 8,
+      "versions": ["^8.18.1", "^6.13.2", "^7.8.0", "^8.34.1"],
+      "packages": [
+        {
+          "package": "apps\\memorai\\package.json",
+          "version": "^8.18.1",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\analizai\\package.json",
+          "version": "^6.13.2",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\codai\\package.json",
+          "version": "^7.8.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\explorer\\package.json",
+          "version": "^6.13.2",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\marketai\\package.json",
+          "version": "^6.13.2",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\memorai\\package.json",
+          "version": "^8.18.1",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\tools\\package.json",
+          "version": "^6.13.2",
+          "type": "devDependency"
+        },
+        {
+          "package": "package.json",
+          "version": "^8.34.1",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "prettier": {
+      "occurrences": 5,
+      "versions": ["^3.3.3", "^3.2.5", "^3.2.0", "^3.1.0"],
+      "packages": [
+        {
+          "package": "apps\\memorai\\package.json",
+          "version": "^3.3.3",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\codai\\package.json",
+          "version": "^3.2.5",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^3.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\memorai\\package.json",
+          "version": "^3.3.3",
+          "type": "devDependency"
+        },
+        {
+          "package": "package.json",
+          "version": "^3.1.0",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "turbo": {
+      "occurrences": 3,
+      "versions": ["^2.5.4", "^2.0.0"],
+      "packages": [
+        {
+          "package": "apps\\memorai\\package.json",
+          "version": "^2.5.4",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\memorai\\package.json",
+          "version": "^2.5.4",
+          "type": "devDependency"
+        },
+        {
+          "package": "package.json",
+          "version": "^2.0.0",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "@vitejs/plugin-react": {
+      "occurrences": 25,
+      "versions": ["^4.3.0", "^4.2.0", "^4.0.0"],
+      "packages": [
+        {
+          "package": "services\\admin\\package.json",
+          "version": "^4.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\AIDE\\package.json",
+          "version": "^4.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\ajutai\\package.json",
+          "version": "^4.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\analizai\\package.json",
+          "version": "^4.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\bancai\\package.json",
+          "version": "^4.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\cumparai\\package.json",
+          "version": "^4.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\dash\\package.json",
+          "version": "^4.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\docs\\package.json",
+          "version": "^4.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\explorer\\package.json",
+          "version": "^4.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\fabricai\\package.json",
+          "version": "^4.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\hub\\package.json",
+          "version": "^4.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\id\\package.json",
+          "version": "^4.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\jucai\\package.json",
+          "version": "^4.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\kodex\\package.json",
+          "version": "^4.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\legalizai\\package.json",
+          "version": "^4.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^4.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\marketai\\package.json",
+          "version": "^4.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\metu\\package.json",
+          "version": "^4.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\mod\\package.json",
+          "version": "^4.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\sociai\\package.json",
+          "version": "^4.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\stocai\\package.json",
+          "version": "^4.3.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\tools\\package.json",
+          "version": "^4.2.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\wallet\\package.json",
+          "version": "^4.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\x\\package.json",
+          "version": "^4.0.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "package.json",
+          "version": "^4.0.0",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "@playwright/test": {
+      "occurrences": 4,
+      "versions": ["^1.40.0", "^1.52.0", "^1.42.0"],
+      "packages": [
+        {
+          "package": "services\\bancai\\package.json",
+          "version": "^1.40.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\codai\\package.json",
+          "version": "^1.52.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^1.42.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "package.json",
+          "version": "^1.40.0",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "@testing-library/user-event": {
+      "occurrences": 2,
+      "versions": ["^14.5.0", "^14.5.1"],
+      "packages": [
+        {
+          "package": "services\\codai\\package.json",
+          "version": "^14.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "package.json",
+          "version": "^14.5.1",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "tsx": {
+      "occurrences": 2,
+      "versions": ["^4.7.1", "^4.7.0"],
+      "packages": [
+        {
+          "package": "services\\codai\\package.json",
+          "version": "^4.7.1",
+          "type": "devDependency"
+        },
+        {
+          "package": "services\\logai\\package.json",
+          "version": "^4.7.0",
+          "type": "devDependency"
+        }
+      ]
+    },
+    "@types/jest": {
+      "occurrences": 5,
+      "versions": ["^29.5.0", "^29.5.14"],
+      "packages": [
+        {
+          "package": "packages\\api\\package.json",
+          "version": "^29.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "packages\\auth\\package.json",
+          "version": "^29.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "packages\\core\\package.json",
+          "version": "^29.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "packages\\ui\\package.json",
+          "version": "^29.5.0",
+          "type": "devDependency"
+        },
+        {
+          "package": "package.json",
+          "version": "^29.5.14",
+          "type": "devDependency"
+        }
+      ]
+    }
+  },
+  "unusedDevDependencies": [
+    {
+      "package": "apps\\bancai\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\bancai\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\bancai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\bancai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\bancai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\bancai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\bancai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\bancai\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\bancai\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\bancai\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\codai\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\codai\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\codai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\codai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\codai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\codai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\codai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\codai\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\codai\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\codai\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\cumparai\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\cumparai\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\cumparai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\cumparai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\cumparai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\cumparai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\cumparai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\cumparai\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\cumparai\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\cumparai\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\fabricai\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\fabricai\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\fabricai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\fabricai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\fabricai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\fabricai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\fabricai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\fabricai\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\fabricai\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\fabricai\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\logai\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\logai\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\logai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\logai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\logai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\logai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\logai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\logai\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\logai\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\logai\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\memorai\\package.json",
+      "dependency": "@typescript-eslint/eslint-plugin",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\memorai\\package.json",
+      "dependency": "@typescript-eslint/parser",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\memorai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\memorai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\memorai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\memorai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\memorai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\memorai\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\memorai\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\memorai\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\publicai\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\publicai\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\publicai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\publicai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\publicai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\publicai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\publicai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\publicai\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\publicai\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\publicai\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\sociai\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\sociai\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\sociai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\sociai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\sociai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\sociai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\sociai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\sociai\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\sociai\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\sociai\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\studiai\\package.json",
+      "dependency": "@tailwindcss/postcss",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\studiai\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\studiai\\package.json",
+      "dependency": "autoprefixer",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\studiai\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\studiai\\package.json",
+      "dependency": "tailwindcss",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\studiai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\studiai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\studiai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\studiai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\studiai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\studiai\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\studiai\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\studiai\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\wallet\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\wallet\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\wallet\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\wallet\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\wallet\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\wallet\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\wallet\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\wallet\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\wallet\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\wallet\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\x\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\x\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\x\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\x\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\x\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\x\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\x\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\x\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\x\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "apps\\x\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\admin\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\admin\\package.json",
+      "dependency": "autoprefixer",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\admin\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\admin\\package.json",
+      "dependency": "tailwindcss",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\admin\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\admin\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\admin\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\admin\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\admin\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\admin\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\admin\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\admin\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\admin\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\AIDE\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\AIDE\\package.json",
+      "dependency": "autoprefixer",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\AIDE\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\AIDE\\package.json",
+      "dependency": "tailwindcss",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\AIDE\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\AIDE\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\AIDE\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\AIDE\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\AIDE\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\AIDE\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\AIDE\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\AIDE\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\AIDE\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\ajutai\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\ajutai\\package.json",
+      "dependency": "autoprefixer",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\ajutai\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\ajutai\\package.json",
+      "dependency": "tailwindcss",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\ajutai\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\ajutai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\ajutai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\ajutai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\ajutai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\ajutai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\ajutai\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\ajutai\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\ajutai\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\analizai\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\analizai\\package.json",
+      "dependency": "@typescript-eslint/parser",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\analizai\\package.json",
+      "dependency": "@typescript-eslint/eslint-plugin",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\analizai\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\analizai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\analizai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\analizai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\analizai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\analizai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\analizai\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\analizai\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\analizai\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\bancai\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\bancai\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\bancai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\bancai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\bancai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\bancai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\bancai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@electron/asar",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@electron/rebuild",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@rollup/rollup-win32-x64-msvc",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@stylistic/eslint-plugin-ts",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@testing-library/user-event",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@types/cookie",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@types/debug",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@types/eslint",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@types/gulp-svgmin",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@types/http-proxy-agent",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@types/kerberos",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@types/minimist",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@types/mocha",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@types/sinon",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@types/sinon-test",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@types/trusted-types",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@types/vscode-notebook-renderer",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@types/webpack",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@types/wicg-file-system-access",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@types/windows-foreground-love",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@types/winreg",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@types/yauzl",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@types/yazl",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@typescript-eslint/eslint-plugin",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@typescript-eslint/parser",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@typescript-eslint/utils",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@vscode/gulp-electron",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@vscode/l10n-dev",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@vscode/telemetry-extractor",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@vscode/test-cli",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@vscode/test-electron",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@vscode/test-web",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@vscode/v8-heap-parser",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@vscode/vscode-perf",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@webgpu/types",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "ansi-colors",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "autoprefixer",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "chromium-pickle-js",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "cookie",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "copy-webpack-plugin",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "crypto-browserify",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "css-loader",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "debounce",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "deemon",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "electron",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "esbuild",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "eslint-config-prettier",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "eslint-formatter-compact",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "eslint-plugin-header",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "eslint-plugin-jsdoc",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "event-stream",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "fancy-log",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "file-loader",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "glob",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "gulp",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "gulp-azure-storage",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "gulp-bom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "gulp-buffer",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "gulp-filter",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "gulp-flatmap",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "gulp-gunzip",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "gulp-gzip",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "gulp-json-editor",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "gulp-merge-json",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "gulp-plumber",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "gulp-rename",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "gulp-replace",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "gulp-sort",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "gulp-sourcemaps",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "gulp-svgmin",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "gulp-untar",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "gulp-vinyl-zip",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "husky",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "innosetup",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "istanbul-lib-coverage",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "istanbul-lib-instrument",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "istanbul-lib-report",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "istanbul-lib-source-maps",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "istanbul-reports",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "jsonc-parser",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "lazy.js",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "lint-staged",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "merge-options",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "mime",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "minimatch",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "minimist",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "mocha",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "mocha-junit-reporter",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "mocha-multi-reporters",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "node-gyp",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "npm-run-all",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "os-browserify",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "p-all",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "path-browserify",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "postcss",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "postcss-nesting",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "pump",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "rcedit",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "rimraf",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "rollup",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "sinon",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "sinon-test",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "source-map",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "source-map-support",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "style-loader",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "ternary-stream",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "through2",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "ts-loader",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "ts-node",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "tsec",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "tslib",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "tsx",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "typescript-eslint",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "util",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "vinyl",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "vinyl-fs",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "webpack",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "webpack-cli",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "webpack-stream",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "workerpool",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "xml2js",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "yaserver",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\codai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\cumparai\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\cumparai\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\cumparai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\cumparai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\cumparai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\cumparai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\cumparai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\dash\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\dash\\package.json",
+      "dependency": "autoprefixer",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\dash\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\dash\\package.json",
+      "dependency": "tailwindcss",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\dash\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\dash\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\dash\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\dash\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\dash\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\dash\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\dash\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\dash\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\dash\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\docs\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\docs\\package.json",
+      "dependency": "autoprefixer",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\docs\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\docs\\package.json",
+      "dependency": "tailwindcss",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\docs\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\docs\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\docs\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\docs\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\docs\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\docs\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\docs\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\docs\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\docs\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\explorer\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\explorer\\package.json",
+      "dependency": "@typescript-eslint/parser",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\explorer\\package.json",
+      "dependency": "@typescript-eslint/eslint-plugin",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\explorer\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\explorer\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\explorer\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\explorer\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\explorer\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\explorer\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\explorer\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\explorer\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\explorer\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\fabricai\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\fabricai\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\fabricai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\fabricai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\fabricai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\fabricai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\fabricai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\hub\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\hub\\package.json",
+      "dependency": "autoprefixer",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\hub\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\hub\\package.json",
+      "dependency": "tailwindcss",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\hub\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\hub\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\hub\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\hub\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\hub\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\hub\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\hub\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\hub\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\hub\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\id\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\id\\package.json",
+      "dependency": "autoprefixer",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\id\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\id\\package.json",
+      "dependency": "tailwindcss",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\id\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\id\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\id\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\id\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\id\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\id\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\id\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\id\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\id\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\jucai\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\jucai\\package.json",
+      "dependency": "autoprefixer",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\jucai\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\jucai\\package.json",
+      "dependency": "tailwindcss",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\jucai\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\jucai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\jucai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\jucai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\jucai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\jucai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\jucai\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\jucai\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\jucai\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\kodex\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\kodex\\package.json",
+      "dependency": "autoprefixer",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\kodex\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\kodex\\package.json",
+      "dependency": "tailwindcss",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\kodex\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\kodex\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\kodex\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\kodex\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\kodex\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\kodex\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\kodex\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\kodex\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\kodex\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\legalizai\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\legalizai\\package.json",
+      "dependency": "autoprefixer",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\legalizai\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\legalizai\\package.json",
+      "dependency": "tailwindcss",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\legalizai\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\legalizai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\legalizai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\legalizai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\legalizai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\legalizai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\legalizai\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\legalizai\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\legalizai\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\logai\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\logai\\package.json",
+      "dependency": "eslint-config-prettier",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\logai\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\logai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\logai\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\logai\\package.json",
+      "dependency": "tsx",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\logai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\logai\\package.json",
+      "dependency": "audit-ci",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\logai\\package.json",
+      "dependency": "dotenv",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\logai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\logai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\logai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\marketai\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\marketai\\package.json",
+      "dependency": "@typescript-eslint/parser",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\marketai\\package.json",
+      "dependency": "@typescript-eslint/eslint-plugin",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\marketai\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\marketai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\marketai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\marketai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\marketai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\marketai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\marketai\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\marketai\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\marketai\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\memorai\\package.json",
+      "dependency": "@typescript-eslint/eslint-plugin",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\memorai\\package.json",
+      "dependency": "@typescript-eslint/parser",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\memorai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\memorai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\memorai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\memorai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\memorai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\metu\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\metu\\package.json",
+      "dependency": "autoprefixer",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\metu\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\metu\\package.json",
+      "dependency": "tailwindcss",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\metu\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\metu\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\metu\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\metu\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\metu\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\metu\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\metu\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\metu\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\metu\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\mod\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\mod\\package.json",
+      "dependency": "autoprefixer",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\mod\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\mod\\package.json",
+      "dependency": "tailwindcss",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\mod\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\mod\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\mod\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\mod\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\mod\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\mod\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\mod\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\mod\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\mod\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\publicai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\publicai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\publicai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\publicai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\publicai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\sociai\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\sociai\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\sociai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\sociai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\sociai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\sociai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\sociai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\stocai\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\stocai\\package.json",
+      "dependency": "autoprefixer",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\stocai\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\stocai\\package.json",
+      "dependency": "tailwindcss",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\stocai\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\stocai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\stocai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\stocai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\stocai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\stocai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\stocai\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\stocai\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\stocai\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\studiai\\package.json",
+      "dependency": "@tailwindcss/postcss",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\studiai\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\studiai\\package.json",
+      "dependency": "autoprefixer",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\studiai\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\studiai\\package.json",
+      "dependency": "tailwindcss",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\studiai\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\studiai\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\studiai\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\studiai\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\studiai\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\templates\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\templates\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\templates\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\templates\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\templates\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\templates\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\templates\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\templates\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\tools\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\tools\\package.json",
+      "dependency": "@typescript-eslint/parser",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\tools\\package.json",
+      "dependency": "@typescript-eslint/eslint-plugin",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\tools\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\tools\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\tools\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\tools\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\tools\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\tools\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\tools\\package.json",
+      "dependency": "supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\tools\\package.json",
+      "dependency": "playwright",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\tools\\package.json",
+      "dependency": "@types/supertest",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\wallet\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\wallet\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\wallet\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\wallet\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\wallet\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\wallet\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\wallet\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\x\\package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\x\\package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\x\\package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\x\\package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\x\\package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\x\\package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "services\\x\\package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "packages\\api\\package.json",
+      "dependency": "tsup",
+      "reason": "No config file found"
+    },
+    {
+      "package": "packages\\auth\\package.json",
+      "dependency": "@types/jsonwebtoken",
+      "reason": "No config file found"
+    },
+    {
+      "package": "packages\\auth\\package.json",
+      "dependency": "@types/bcrypt",
+      "reason": "No config file found"
+    },
+    {
+      "package": "packages\\auth\\package.json",
+      "dependency": "tsup",
+      "reason": "No config file found"
+    },
+    {
+      "package": "packages\\core\\package.json",
+      "dependency": "tsup",
+      "reason": "No config file found"
+    },
+    {
+      "package": "packages\\ui\\package.json",
+      "dependency": "@types/react-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "packages\\ui\\package.json",
+      "dependency": "tsup",
+      "reason": "No config file found"
+    },
+    {
+      "package": "packages\\ui\\package.json",
+      "dependency": "tailwindcss",
+      "reason": "No config file found"
+    },
+    {
+      "package": "packages\\ui\\package.json",
+      "dependency": "@storybook/react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "packages\\ui\\package.json",
+      "dependency": "@storybook/react-vite",
+      "reason": "No config file found"
+    },
+    {
+      "package": "packages\\ui\\package.json",
+      "dependency": "@storybook/addon-essentials",
+      "reason": "No config file found"
+    },
+    {
+      "package": "package.json",
+      "dependency": "@changesets/cli",
+      "reason": "No config file found"
+    },
+    {
+      "package": "package.json",
+      "dependency": "@testing-library/jest-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "package.json",
+      "dependency": "@testing-library/user-event",
+      "reason": "No config file found"
+    },
+    {
+      "package": "package.json",
+      "dependency": "@typescript-eslint/eslint-plugin",
+      "reason": "No config file found"
+    },
+    {
+      "package": "package.json",
+      "dependency": "@typescript-eslint/parser",
+      "reason": "No config file found"
+    },
+    {
+      "package": "package.json",
+      "dependency": "@vitejs/plugin-react",
+      "reason": "No config file found"
+    },
+    {
+      "package": "package.json",
+      "dependency": "@vitest/coverage-v8",
+      "reason": "No config file found"
+    },
+    {
+      "package": "package.json",
+      "dependency": "@vitest/ui",
+      "reason": "No config file found"
+    },
+    {
+      "package": "package.json",
+      "dependency": "eslint-config-next",
+      "reason": "No config file found"
+    },
+    {
+      "package": "package.json",
+      "dependency": "happy-dom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "package.json",
+      "dependency": "jest-environment-jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "package.json",
+      "dependency": "jsdom",
+      "reason": "No config file found"
+    },
+    {
+      "package": "package.json",
+      "dependency": "snyk",
+      "reason": "No config file found"
+    },
+    {
+      "package": "package.json",
+      "dependency": "ts-jest",
+      "reason": "No config file found"
+    }
+  ],
+  "outdatedPackages": [],
+  "securityIssues": [],
+  "summary": {
+    "totalPackageFiles": 45,
+    "packagesByType": {
+      "apps": 11,
+      "services": 29,
+      "packages": 4,
+      "root": 1
+    },
+    "duplicateDependencyCount": 38,
+    "suspiciousDevDepsCount": 566,
+    "recommendations": [
+      "Consolidate 38 duplicate dependencies",
+      "Review 566 potentially unused devDependencies",
+      "Consider using workspace dependency management for large monorepo"
+    ]
+  }
+}

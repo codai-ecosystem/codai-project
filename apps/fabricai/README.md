@@ -3,8 +3,8 @@
 AI Services Platform
 
 ## Domain
-- Primary: fabricai.ro
 
+- Primary: fabricai.ro
 
 ## Development
 

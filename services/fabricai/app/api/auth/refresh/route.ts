@@ -9,7 +9,7 @@ import { getLogAIService } from '@/lib/services';
 export async function POST(request: NextRequest) {
   try {
     const { refreshToken } = await request.json();
-    
+
     if (!refreshToken) {
       return NextResponse.json(
         { success: false, error: 'Refresh token is required' },

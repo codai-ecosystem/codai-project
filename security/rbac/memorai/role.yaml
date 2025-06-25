@@ -1,0 +1,41 @@
+{
+  "apiVersion": "rbac.authorization.k8s.io/v1",
+  "kind": "Role",
+  "metadata": {
+    "name": "memorai-role",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "memorai",
+      "component": "rbac",
+      "app.kubernetes.io/name": "memorai",
+      "app.kubernetes.io/component": "rbac",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  },
+  "rules": [
+    {
+      "apiGroups": [
+        ""
+      ],
+      "resources": [
+        "configmaps",
+        "secrets"
+      ],
+      "verbs": [
+        "get",
+        "list"
+      ]
+    },
+    {
+      "apiGroups": [
+        ""
+      ],
+      "resources": [
+        "events"
+      ],
+      "verbs": [
+        "create"
+      ]
+    }
+  ]
+}

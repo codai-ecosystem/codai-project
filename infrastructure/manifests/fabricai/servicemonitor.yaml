@@ -1,0 +1,29 @@
+{
+  "apiVersion": "monitoring.coreos.com/v1",
+  "kind": "ServiceMonitor",
+  "metadata": {
+    "name": "fabricai",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "fabricai",
+      "component": "monitoring",
+      "app.kubernetes.io/name": "fabricai",
+      "app.kubernetes.io/component": "monitoring",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  },
+  "spec": {
+    "selector": {
+      "matchLabels": {
+        "app": "fabricai"
+      }
+    },
+    "endpoints": [
+      {
+        "port": "http",
+        "path": "/metrics",
+        "interval": "30s"
+      }
+    ]
+  }
+}

@@ -68,6 +68,39 @@ pnpm clean                   # Clean all build artifacts
 pnpm changeset              # Create changeset for releases
 ```
 
+## 🌐 Port Assignments
+
+The Codai ecosystem uses **ports 3000-3029** to ensure all services can run simultaneously without conflicts:
+
+### Core Applications (Priority 1-3)
+
+- **Codai Platform** (:3000) - Central coordination hub
+- **MemorAI Core** (:3001) - AI memory and database
+- **LogAI Auth** (:3002) - Identity and authentication
+- **BancAI** (:3003) - Financial platform
+- **Wallet** (:3004) - Programmable wallet
+- **FabricAI** (:3005) - AI services platform
+- **X Trading** (:3006) - AI trading platform
+
+### Extended Services (4011-4028)
+
+Extended services use ports 3011+ for specialized functionality.
+
+> **📋 Full Port Reference**: See [PORT_ASSIGNMENTS.md](./PORT_ASSIGNMENTS.md) for complete port mapping and development URLs.
+
+### Development URLs
+
+```bash
+# Priority 1 Services (Foundation)
+http://localhost:3000  # Codai Platform
+http://localhost:3001  # MemorAI Core
+http://localhost:3002  # LogAI Auth
+
+# Start individual services
+cd apps/codai && pnpm dev    # Runs on :3000
+cd services/dash && pnpm dev # Runs on :3015
+```
+
 ## 🤖 AI Agent System
 
 The Codai OS includes a sophisticated AI agent system for intelligent orchestration:
@@ -91,9 +124,10 @@ The Codai OS includes a sophisticated AI agent system for intelligent orchestrat
 The Codai ecosystem consists of **29 repositories** organized into two main categories:
 
 ### 📱 Core Applications (11 Apps in `apps/`)
+
 Priority applications directly integrated into the monorepo:
 
-- **codai** - Central Platform & AIDE Hub (codai.ro) 
+- **codai** - Central Platform & AIDE Hub (codai.ro)
 - **memorai** - AI Memory & Database Core (memorai.ro)
 - **logai** - Identity & Authentication Hub (logai.ro)
 - **bancai** - Financial Platform (bancai.ro)
@@ -106,6 +140,7 @@ Priority applications directly integrated into the monorepo:
 - **publicai** - Public AI Services (publicai.ro)
 
 ### 🛠️ Extended Services (18 Services in `services/`)
+
 Supporting services and specialized platforms:
 
 - **admin** - Admin Panel & Management
@@ -128,6 +163,7 @@ Supporting services and specialized platforms:
 - **tools** - Development Tools & Utilities
 
 ### 📊 Ecosystem Statistics
+
 - **Total Repositories**: 29
 - **Core Applications**: 11
 - **Extended Services**: 18

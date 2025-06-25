@@ -1,0 +1,27 @@
+{
+  "apiVersion": "rbac.authorization.k8s.io/v1",
+  "kind": "RoleBinding",
+  "metadata": {
+    "name": "metu-rb",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "metu",
+      "component": "rbac",
+      "app.kubernetes.io/name": "metu",
+      "app.kubernetes.io/component": "rbac",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  },
+  "subjects": [
+    {
+      "kind": "ServiceAccount",
+      "name": "metu-sa",
+      "namespace": "codai-production"
+    }
+  ],
+  "roleRef": {
+    "kind": "Role",
+    "name": "metu-role",
+    "apiGroup": "rbac.authorization.k8s.io"
+  }
+}

@@ -10,15 +10,15 @@ import type { HealthCheck } from '@/lib/services';
 export async function GET() {
   try {
     const startTime = Date.now();
-    
+
     // Check ecosystem service health
     const serviceStatus = await checkServiceHealth();
     const responseTime = Date.now() - startTime;
-    
+
     // Get system metrics
     const memoryUsage = process.memoryUsage();
     const uptime = process.uptime();
-    
+
     const healthData: HealthCheck = {
       status: determineOverallHealth(serviceStatus),
       timestamp: new Date().toISOString(),
@@ -53,10 +53,12 @@ export async function GET() {
   }
 }
 
-function determineOverallHealth(services: any): 'healthy' | 'unhealthy' | 'degraded' {
+function determineOverallHealth(
+  services: any
+): 'healthy' | 'unhealthy' | 'degraded' {
   const healthyServices = Object.values(services).filter(Boolean).length;
   const totalServices = Object.keys(services).length;
-  
+
   if (healthyServices === totalServices) {
     return 'healthy';
   } else if (healthyServices > 0) {

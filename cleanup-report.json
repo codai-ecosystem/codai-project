@@ -1,22 +1,22 @@
 {
-  "timestamp": "2025-06-24T00:32:30.039Z",
-  "duration": "2.16s",
+  "timestamp": "2025-06-24T23:48:35.374Z",
+  "duration": "2.52s",
   "summary": {
-    "filesRemoved": 5,
-    "sizeFreed": 0.046385765075683594,
-    "packagesAnalyzed": 114,
-    "todoItems": 828
+    "filesRemoved": 0,
+    "sizeFreed": 0,
+    "packagesAnalyzed": 118,
+    "todoItems": 875
   },
   "details": {
     "backupFiles": {
-      "removedCount": 5,
-      "totalSize": 48639
+      "removedCount": 0,
+      "totalSize": 0
     },
     "logFiles": {
       "removedCount": 0,
       "totalSize": 0
     },
-    "packages": 114,
-    "todos": 828
+    "packages": 118,
+    "todos": 875
   }
 }

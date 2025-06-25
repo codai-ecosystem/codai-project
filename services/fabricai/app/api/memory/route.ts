@@ -9,7 +9,7 @@ import { getMemorAIService } from '@/lib/services';
 export async function POST(request: NextRequest) {
   try {
     const { content, metadata } = await request.json();
-    
+
     if (!content) {
       return NextResponse.json(
         { success: false, error: 'Content is required' },
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const query = searchParams.get('query');
     const limit = parseInt(searchParams.get('limit') || '10');
-    
+
     if (!query) {
       return NextResponse.json(
         { success: false, error: 'Query is required' },

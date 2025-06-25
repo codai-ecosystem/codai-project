@@ -1,0 +1,29 @@
+{
+  "apiVersion": "monitoring.coreos.com/v1",
+  "kind": "ServiceMonitor",
+  "metadata": {
+    "name": "memorai",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "memorai",
+      "component": "monitoring",
+      "app.kubernetes.io/name": "memorai",
+      "app.kubernetes.io/component": "monitoring",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  },
+  "spec": {
+    "selector": {
+      "matchLabels": {
+        "app": "memorai"
+      }
+    },
+    "endpoints": [
+      {
+        "port": "http",
+        "path": "/metrics",
+        "interval": "30s"
+      }
+    ]
+  }
+}

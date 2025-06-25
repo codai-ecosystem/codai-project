@@ -1,0 +1,252 @@
+# Default values for x
+# This is a YAML-formatted file.
+
+# Global configuration
+global:
+  namespace: codai
+  environment: production
+  
+# Application configuration
+replicaCount: 3
+
+image:
+  repository: codai/x
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+# Service Account
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+# Pod configuration
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "9090"
+  prometheus.io/path: "/metrics"
+
+podLabels:
+  app.kubernetes.io/name: x
+  app.kubernetes.io/part-of: codai
+
+podSecurityContext:
+  fsGroup: 2000
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+
+# Service configuration
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
+  annotations: {}
+
+# Ingress configuration
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    - host: x.codai.ai
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: x-tls
+      hosts:
+        - x.codai.ai
+
+# Resource limits and requests
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+  requests:
+    cpu: 250m
+    memory: 512Mi
+
+# Health checks
+livenessProbe:
+  httpGet:
+    path: /health
+    port: http
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /ready
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+# Startup probe
+startupProbe:
+  httpGet:
+    path: /health
+    port: http
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 30
+
+# Autoscaling
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+# Pod Disruption Budget
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 2
+
+# Network Policy
+networkPolicy:
+  enabled: true
+  egress:
+    - to: []
+      ports:
+        - protocol: TCP
+          port: 443
+        - protocol: TCP
+          port: 80
+        - protocol: UDP
+          port: 53
+
+# Environment variables
+env:
+  nodeEnv: production
+  logLevel: info
+  port: 3000
+
+# ConfigMap
+configMap:
+  enabled: true
+  data:
+    FEATURE_FLAGS: "true"
+    METRICS_ENABLED: "true"
+
+# Secrets
+secrets:
+  enabled: true
+  database:
+    username: ""
+    password: ""
+  api:
+    key: ""
+    secret: ""
+  jwt:
+    secret: ""
+  external: {}
+  custom: {}
+
+# Database configuration
+database:
+  enabled: true
+  host: postgresql
+  port: 5432
+  name: x
+
+# Redis configuration  
+redis:
+  enabled: true
+  host: redis
+  port: 6379
+
+# External dependencies
+postgresql:
+  enabled: false
+  auth:
+    postgresPassword: ""
+    database: x
+
+redis:
+  enabled: false
+  auth:
+    enabled: true
+    password: ""
+
+# Monitoring
+monitoring:
+  enabled: true
+  port: 9090
+  serviceMonitor:
+    enabled: true
+    interval: 30s
+    scrapeTimeout: 10s
+    path: /metrics
+    labels:
+      release: prometheus
+
+# API configuration
+api:
+  version: v1
+  timeout: 30s
+
+# Logging
+logging:
+  level: info
+  format: json
+
+# Testing
+tests:
+  enabled: true
+  endpoints:
+    - name: health-check
+      path: /health
+      method: GET
+    - name: readiness-check
+      path: /ready
+      method: GET
+
+# Node selection
+nodeSelector: {}
+
+# Tolerations
+tolerations: []
+
+# Affinity rules
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - x
+          topologyKey: kubernetes.io/hostname
+
+# Additional volumes
+volumes: []
+
+# Additional volume mounts
+volumeMounts: []

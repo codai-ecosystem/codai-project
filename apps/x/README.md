@@ -3,8 +3,8 @@
 AI Trading Platform
 
 ## Domain
-- Primary: x.codai.ro
 
+- Primary: x.codai.ro
 
 ## Development
 

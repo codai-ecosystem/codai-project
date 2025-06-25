@@ -1,0 +1,29 @@
+{
+  "apiVersion": "v1",
+  "kind": "Service",
+  "metadata": {
+    "name": "analizai",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "analizai",
+      "component": "service",
+      "app.kubernetes.io/name": "analizai",
+      "app.kubernetes.io/component": "service",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  },
+  "spec": {
+    "type": "ClusterIP",
+    "ports": [
+      {
+        "port": 80,
+        "targetPort": 4003,
+        "protocol": "TCP",
+        "name": "http"
+      }
+    ],
+    "selector": {
+      "app": "analizai"
+    }
+  }
+}

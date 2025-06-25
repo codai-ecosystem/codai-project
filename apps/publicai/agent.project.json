@@ -21,29 +21,13 @@
   "ai": {
     "model": "claude-3.5-sonnet",
     "context": "Civic AI & Transparency Tools. Focus on specialized tier development with priority 4.",
-    "capabilities": [
-      "web-development",
-      "typescript",
-      "nextjs",
-      "react"
-    ],
-    "restrictions": [
-      "no-breaking-changes",
-      "maintain-consistency"
-    ]
+    "capabilities": ["web-development", "typescript", "nextjs", "react"],
+    "restrictions": ["no-breaking-changes", "maintain-consistency"]
   },
   "integration": {
     "monorepo": true,
-    "sharedPackages": [
-      "@codai/ui",
-      "@codai/config",
-      "@codai/auth"
-    ],
-    "apis": [
-      "api.codai.ro"
-    ],
-    "databases": [
-      "memorai.ro"
-    ]
+    "sharedPackages": ["@codai/ui", "@codai/config", "@codai/auth"],
+    "apis": ["api.codai.ro"],
+    "databases": ["memorai.ro"]
   }
 }

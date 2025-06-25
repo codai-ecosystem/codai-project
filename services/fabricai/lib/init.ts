@@ -58,7 +58,7 @@ function startHealthMonitoring(): void {
 export function setupGracefulShutdown(): void {
   const shutdown = async (signal: string) => {
     console.log(`🛑 Received ${signal}, shutting down gracefully...`);
-    
+
     try {
       // Notify Codai platform about shutdown
       const codaiService = getCodaiService();

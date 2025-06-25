@@ -5,7 +5,13 @@
 
 'use client';
 
-import { useState, useEffect, useContext, createContext, ReactNode } from 'react';
+import {
+  useState,
+  useEffect,
+  useContext,
+  createContext,
+  ReactNode,
+} from 'react';
 import { AuthUser } from '@/lib/services';
 
 interface AuthContextType {

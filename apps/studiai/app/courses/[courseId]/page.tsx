@@ -18,11 +18,15 @@ const CourseDetail = dynamic(() => import('@/components/Course/CourseDetail'), {
         </div>
       </div>
     </div>
-  )
+  ),
 });
 
 // Generate metadata dynamically for each course
-export async function generateMetadata({ params }: { params: { courseId: string } | Promise<{ courseId: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: { courseId: string } | Promise<{ courseId: string }>;
+}): Promise<Metadata> {
   try {
     // Await params if they are a Promise
     const resolvedParams = 'then' in params ? await params : params;
@@ -32,29 +36,45 @@ export async function generateMetadata({ params }: { params: { courseId: string 
     if (!course) {
       return {
         title: 'Course Not Found',
-        description: 'The requested course could not be found.'
+        description: 'The requested course could not be found.',
       };
     }
 
     return constructCourseMetadata({
       title: course.title || course.name || 'Course',
       description: course.description || 'No description available',
-      instructorName: course.instructorName || (typeof course.instructor === 'string' ? course.instructor : course.instructor?.name || 'Unknown Instructor'),
-      updatedAt: course.updatedAt ? (typeof course.updatedAt === 'string' ? course.updatedAt : course.updatedAt.toString()) : undefined,
-      createdAt: course.createdAt ? (typeof course.createdAt === 'string' ? course.createdAt : course.createdAt.toString()) : undefined,
+      instructorName:
+        course.instructorName ||
+        (typeof course.instructor === 'string'
+          ? course.instructor
+          : course.instructor?.name || 'Unknown Instructor'),
+      updatedAt: course.updatedAt
+        ? typeof course.updatedAt === 'string'
+          ? course.updatedAt
+          : course.updatedAt.toString()
+        : undefined,
+      createdAt: course.createdAt
+        ? typeof course.createdAt === 'string'
+          ? course.createdAt
+          : course.createdAt.toString()
+        : undefined,
       slug: courseId,
-      coverImage: course.coverImage || course.imageUrl
+      coverImage: course.coverImage || course.imageUrl,
     });
   } catch (error) {
     console.error('Error generating course metadata:', error);
     return {
       title: 'Course Details',
-      description: 'View course details and curriculum'
+      description: 'View course details and curriculum',
     };
   }
 }
 
-export default async function Page({ params }: { params: { courseId: string } | Promise<{ courseId: string }> }) {
+export default async function Page({
+  params,
+}: {
+  params: { courseId: string } | Promise<{ courseId: string }>;
+}) {
   // Await params if they are a Promise
   const resolvedParams = 'then' in params ? await params : params;
   const courseId = String(resolvedParams.courseId);

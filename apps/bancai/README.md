@@ -3,8 +3,8 @@
 Financial Platform
 
 ## Domain
-- Primary: bancai.ro
 
+- Primary: bancai.ro
 
 ## Development
 

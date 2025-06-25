@@ -1,0 +1,1069 @@
+# Auto-generated Docker Compose for Codai Ecosystem
+# Milestone 2: Enterprise Production Excellence  
+# Generated: 2025-06-24T14:18:58.433Z
+
+{
+  "version": "3.8",
+  "services": {
+    "postgres": {
+      "image": "postgres:15-alpine",
+      "environment": {
+        "POSTGRES_DB": "codai",
+        "POSTGRES_USER": "codai",
+        "POSTGRES_PASSWORD": "codai_dev_password"
+      },
+      "ports": [
+        "5432:5432"
+      ],
+      "volumes": [
+        "postgres_data:/var/lib/postgresql/data"
+      ],
+      "networks": [
+        "codai"
+      ],
+      "healthcheck": {
+        "test": [
+          "CMD-SHELL",
+          "pg_isready -U codai"
+        ],
+        "interval": "10s",
+        "timeout": "5s",
+        "retries": 5
+      }
+    },
+    "redis": {
+      "image": "redis:7-alpine",
+      "ports": [
+        "6379:6379"
+      ],
+      "volumes": [
+        "redis_data:/data"
+      ],
+      "networks": [
+        "codai"
+      ],
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "redis-cli",
+          "ping"
+        ],
+        "interval": "10s",
+        "timeout": "3s",
+        "retries": 5
+      }
+    },
+    "mongodb": {
+      "image": "mongo:7",
+      "environment": {
+        "MONGO_INITDB_ROOT_USERNAME": "codai",
+        "MONGO_INITDB_ROOT_PASSWORD": "codai_dev_password"
+      },
+      "ports": [
+        "27017:27017"
+      ],
+      "volumes": [
+        "mongodb_data:/data/db"
+      ],
+      "networks": [
+        "codai"
+      ]
+    },
+    "codai": {
+      "build": {
+        "context": "../apps/codai",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "3000:3000"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "3000",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../apps/codai:/app",
+        "/app/node_modules"
+      ]
+    },
+    "memorai": {
+      "build": {
+        "context": "../apps/memorai",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "3001:3001"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "3001",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../apps/memorai:/app",
+        "/app/node_modules"
+      ]
+    },
+    "logai": {
+      "build": {
+        "context": "../apps/logai",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "3002:3002"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "3002",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../apps/logai:/app",
+        "/app/node_modules"
+      ]
+    },
+    "bancai": {
+      "build": {
+        "context": "../apps/bancai",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "3003:3003"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "3003",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../apps/bancai:/app",
+        "/app/node_modules"
+      ]
+    },
+    "wallet": {
+      "build": {
+        "context": "../apps/wallet",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "3004:3004"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "3004",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../apps/wallet:/app",
+        "/app/node_modules"
+      ]
+    },
+    "fabricai": {
+      "build": {
+        "context": "../apps/fabricai",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "3005:3005"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "3005",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../apps/fabricai:/app",
+        "/app/node_modules"
+      ]
+    },
+    "studiai": {
+      "build": {
+        "context": "../apps/studiai",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "3006:3006"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "3006",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../apps/studiai:/app",
+        "/app/node_modules"
+      ]
+    },
+    "sociai": {
+      "build": {
+        "context": "../apps/sociai",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "3007:3007"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "3007",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../apps/sociai:/app",
+        "/app/node_modules"
+      ]
+    },
+    "cumparai": {
+      "build": {
+        "context": "../apps/cumparai",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "3008:3008"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "3008",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../apps/cumparai:/app",
+        "/app/node_modules"
+      ]
+    },
+    "x": {
+      "build": {
+        "context": "../apps/x",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "3009:3009"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "3009",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../apps/x:/app",
+        "/app/node_modules"
+      ]
+    },
+    "publicai": {
+      "build": {
+        "context": "../apps/publicai",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "3010:3010"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "3010",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../apps/publicai:/app",
+        "/app/node_modules"
+      ]
+    },
+    "admin": {
+      "build": {
+        "context": "../services/admin",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "4000:4000"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "4000",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../services/admin:/app",
+        "/app/node_modules"
+      ]
+    },
+    "AIDE": {
+      "build": {
+        "context": "../services/AIDE",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "4001:4001"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "4001",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../services/AIDE:/app",
+        "/app/node_modules"
+      ]
+    },
+    "ajutai": {
+      "build": {
+        "context": "../services/ajutai",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "4002:4002"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "4002",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../services/ajutai:/app",
+        "/app/node_modules"
+      ]
+    },
+    "analizai": {
+      "build": {
+        "context": "../services/analizai",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "4003:4003"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "4003",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../services/analizai:/app",
+        "/app/node_modules"
+      ]
+    },
+    "dash": {
+      "build": {
+        "context": "../services/dash",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "4004:4004"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "4004",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../services/dash:/app",
+        "/app/node_modules"
+      ]
+    },
+    "docs": {
+      "build": {
+        "context": "../services/docs",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "4005:4005"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "4005",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../services/docs:/app",
+        "/app/node_modules"
+      ]
+    },
+    "explorer": {
+      "build": {
+        "context": "../services/explorer",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "4006:4006"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "4006",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../services/explorer:/app",
+        "/app/node_modules"
+      ]
+    },
+    "hub": {
+      "build": {
+        "context": "../services/hub",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "4007:4007"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "4007",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../services/hub:/app",
+        "/app/node_modules"
+      ]
+    },
+    "id": {
+      "build": {
+        "context": "../services/id",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "4008:4008"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "4008",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../services/id:/app",
+        "/app/node_modules"
+      ]
+    },
+    "jucai": {
+      "build": {
+        "context": "../services/jucai",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "4009:4009"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "4009",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../services/jucai:/app",
+        "/app/node_modules"
+      ]
+    },
+    "kodex": {
+      "build": {
+        "context": "../services/kodex",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "4010:4010"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "4010",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../services/kodex:/app",
+        "/app/node_modules"
+      ]
+    },
+    "legalizai": {
+      "build": {
+        "context": "../services/legalizai",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "4011:4011"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "4011",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../services/legalizai:/app",
+        "/app/node_modules"
+      ]
+    },
+    "marketai": {
+      "build": {
+        "context": "../services/marketai",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "4012:4012"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "4012",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../services/marketai:/app",
+        "/app/node_modules"
+      ]
+    },
+    "metu": {
+      "build": {
+        "context": "../services/metu",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "4013:4013"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "4013",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../services/metu:/app",
+        "/app/node_modules"
+      ]
+    },
+    "mod": {
+      "build": {
+        "context": "../services/mod",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "4014:4014"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "4014",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../services/mod:/app",
+        "/app/node_modules"
+      ]
+    },
+    "stocai": {
+      "build": {
+        "context": "../services/stocai",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "4015:4015"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "4015",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../services/stocai:/app",
+        "/app/node_modules"
+      ]
+    },
+    "templates": {
+      "build": {
+        "context": "../services/templates",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "4016:4016"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "4016",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../services/templates:/app",
+        "/app/node_modules"
+      ]
+    },
+    "tools": {
+      "build": {
+        "context": "../services/tools",
+        "dockerfile": "Dockerfile"
+      },
+      "ports": [
+        "4017:4017"
+      ],
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "4017",
+        "DATABASE_URL": "postgresql://codai:codai_dev_password@postgres:5432/codai",
+        "REDIS_URL": "redis://redis:6379",
+        "MONGODB_URL": "mongodb://codai:codai_dev_password@mongodb:27017/codai"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "mongodb": {
+          "condition": "service_started"
+        }
+      },
+      "networks": [
+        "codai"
+      ],
+      "volumes": [
+        "../services/tools:/app",
+        "/app/node_modules"
+      ]
+    }
+  },
+  "networks": {
+    "codai": {
+      "driver": "bridge"
+    }
+  },
+  "volumes": {
+    "postgres_data": {},
+    "redis_data": {},
+    "mongodb_data": {}
+  }
+}

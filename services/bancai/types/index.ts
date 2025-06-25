@@ -80,7 +80,11 @@ export interface Address {
 export interface AIInsight {
   id: string;
   userId: string;
-  type: 'spending_pattern' | 'saving_opportunity' | 'investment_advice' | 'fraud_alert';
+  type:
+    | 'spending_pattern'
+    | 'saving_opportunity'
+    | 'investment_advice'
+    | 'fraud_alert';
   title: string;
   description: string;
   confidence: number; // 0-1
@@ -92,7 +96,10 @@ export interface AIInsight {
 export interface AIAnalysis {
   id: string;
   userId: string;
-  analysisType: 'spending_analysis' | 'risk_assessment' | 'investment_recommendation';
+  analysisType:
+    | 'spending_analysis'
+    | 'risk_assessment'
+    | 'investment_recommendation';
   result: Record<string, any>;
   confidence: number;
   timestamp: string;

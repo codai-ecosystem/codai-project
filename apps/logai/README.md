@@ -3,8 +3,8 @@
 Identity & Authentication Hub
 
 ## Domain
-- Primary: logai.ro
 
+- Primary: logai.ro
 
 ## Development
 

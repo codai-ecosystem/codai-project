@@ -1,0 +1,29 @@
+{
+  "apiVersion": "monitoring.coreos.com/v1",
+  "kind": "ServiceMonitor",
+  "metadata": {
+    "name": "dash",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "dash",
+      "component": "monitoring",
+      "app.kubernetes.io/name": "dash",
+      "app.kubernetes.io/component": "monitoring",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  },
+  "spec": {
+    "selector": {
+      "matchLabels": {
+        "app": "dash"
+      }
+    },
+    "endpoints": [
+      {
+        "port": "http",
+        "path": "/metrics",
+        "interval": "30s"
+      }
+    ]
+  }
+}

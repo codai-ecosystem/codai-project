@@ -194,11 +194,9 @@ All libraries used are type-safe, production-ready, and focused on performance a
 - Use Tailwind for all styling.
 - Light/dark themes supported via context.
 - Use predefined color schemes:
-
   - Black & White, Modern Purple, Green Neon, Blue Ocean, Brown Sunset, Yellow Morning, Red Bold, Pink Candy.
 
 - Fully test all flows:
-
   - Auth
   - Navigation
   - Purchases

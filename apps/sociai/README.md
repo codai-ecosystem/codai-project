@@ -3,8 +3,8 @@
 AI Social Platform
 
 ## Domain
-- Primary: sociai.ro
 
+- Primary: sociai.ro
 
 ## Development
 

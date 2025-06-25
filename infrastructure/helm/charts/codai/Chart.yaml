@@ -1,0 +1,35 @@
+apiVersion: v2
+name: codai
+description: Codai Central Platform & AIDE Hub - Priority 1 Core Service
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - codai
+  - ai
+  - platform
+  - hub
+  - aide
+home: https://codai.ro
+sources:
+  - https://github.com/codai-ecosystem/codai
+maintainers:
+  - name: Codai Team
+    email: support@codai.ro
+annotations:
+  category: Core Platform
+  tier: foundation
+  priority: "1"
+dependencies:
+  - name: postgresql
+    version: "^12.0.0"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: postgresql.enabled
+  - name: redis
+    version: "^17.0.0"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: redis.enabled
+  - name: elasticsearch
+    version: "^19.0.0"
+    repository: "https://helm.elastic.co"
+    condition: elasticsearch.enabled

@@ -6,8 +6,11 @@
       "@codai/shared": ["packages/shared/src"],
       "@codai/ui": ["packages/ui/src"],
       "@codai/config": ["packages/config/src"]
-    }
+    },
+    "skipLibCheck": true,
+    "incremental": true,
+    "composite": false
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
-  "exclude": ["node_modules", "dist", "build", ".next"]
+  "exclude": ["node_modules", "dist", "build", ".next", "coverage", "test-results", "playwright-report", ".turbo"]
 }

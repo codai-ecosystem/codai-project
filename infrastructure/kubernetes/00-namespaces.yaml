@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: codai-production
+  labels:
+    name: codai-production
+    tier: production
+    owner: codai-platform
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: codai-staging
+  labels:
+    name: codai-staging
+    tier: staging
+    owner: codai-platform
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: codai-development
+  labels:
+    name: codai-development
+    tier: development
+    owner: codai-platform
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: codai-monitoring
+  labels:
+    name: codai-monitoring
+    tier: infrastructure
+    owner: codai-platform
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: codai-security
+  labels:
+    name: codai-security
+    tier: infrastructure
+    owner: codai-platform

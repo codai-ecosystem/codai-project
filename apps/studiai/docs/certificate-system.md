@@ -9,14 +9,12 @@ The certificate system allows users to receive professionally designed certifica
 ## Features
 
 1. **Automatic Certificate Generation**
-
    - PDF certificates generated using pdf-lib
    - Elegant design with decorative elements
    - Unique certificate ID for verification
    - Stores certificate records in user's profile
 
 2. **Certificate Management**
-
    - Dedicated certificates page in user profile
    - Historical record of all earned certificates
    - Ability to re-download certificates at any time
@@ -57,9 +55,9 @@ const certificateId = `${courseId.substring(0, 6)}-${userId.substring(
 
 // Store certificate in user's profile
 await db
-  .collection("users")
+  .collection('users')
   .doc(userId)
-  .collection("certificates")
+  .collection('certificates')
   .doc(certificateId)
   .set({
     courseId,
@@ -83,7 +81,6 @@ await db
 3. **Certificates Profile Page**
 
    Created a dedicated page at `/profile/certificates` that displays all certificates earned by the user in a grid layout with:
-
    - Course name
    - Completion date
    - Certificate ID

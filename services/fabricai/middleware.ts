@@ -8,9 +8,15 @@ import { getLogAIService } from '@/lib/services';
 
 export async function authMiddleware(request: NextRequest) {
   // Skip authentication for public routes
-  const publicRoutes = ['/api/health', '/api/auth/validate', '/api/auth/refresh'];
-  const isPublicRoute = publicRoutes.some(route => request.nextUrl.pathname.startsWith(route));
-  
+  const publicRoutes = [
+    '/api/health',
+    '/api/auth/validate',
+    '/api/auth/refresh',
+  ];
+  const isPublicRoute = publicRoutes.some(route =>
+    request.nextUrl.pathname.startsWith(route)
+  );
+
   if (isPublicRoute) {
     return NextResponse.next();
   }
@@ -26,7 +32,7 @@ export async function authMiddleware(request: NextRequest) {
     }
 
     const token = authHeader.substring(7);
-    
+
     // Validate token with LogAI
     const logaiService = getLogAIService();
     const result = await logaiService.validateToken(token);
@@ -56,8 +62,5 @@ export async function authMiddleware(request: NextRequest) {
 
 // Middleware configuration
 export const config = {
-  matcher: [
-    '/api/(.*)',
-    '/((?!_next/static|_next/image|favicon.ico).*)',
-  ],
+  matcher: ['/api/(.*)', '/((?!_next/static|_next/image|favicon.ico).*)'],
 };

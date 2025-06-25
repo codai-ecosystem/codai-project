@@ -1,0 +1,61 @@
+{{- if .Values.tests.enabled }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "legalizai.fullname" . }}-test"
+  labels:
+    {{- include "legalizai.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+    "helm.sh/hook-weight": "1"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  restartPolicy: Never
+  containers:
+    - name: test
+      image: curlimages/curl:latest
+      command:
+        - /bin/sh
+        - -c
+        - |
+          set -e
+          echo "Testing {{ include "legalizai.fullname" . }} service..."
+          
+          # Health check test
+          curl -f http://{{ include "legalizai.fullname" . }}:{{ .Values.service.port }}/health || exit 1
+          echo "✓ Health check passed"
+          
+          # API endpoint test
+          {{- if .Values.tests.endpoints }}
+          {{- range .Values.tests.endpoints }}
+          curl -f -X {{ .method | default "GET" }} \
+            {{- if .headers }}
+            {{- range $key, $value := .headers }}
+            -H "{{ $key }}: {{ $value }}" \
+            {{- end }}
+            {{- end }}
+            {{- if .data }}
+            -d '{{ .data | toJson }}' \
+            {{- end }}
+            http://{{ include "legalizai.fullname" $ }}:{{ $.Values.service.port }}{{ .path }} || exit 1
+          echo "✓ {{ .name | default .path }} test passed"
+          {{- end }}
+          {{- end }}
+          
+          echo "All tests passed!"
+      resources:
+        limits:
+          cpu: 100m
+          memory: 128Mi
+        requests:
+          cpu: 50m
+          memory: 64Mi
+  {{- with .Values.nodeSelector }}
+  nodeSelector:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.tolerations }}
+  tolerations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}

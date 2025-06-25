@@ -16,9 +16,9 @@ console.log(`Running: ${command} ${args.join(' ')}`);
 const proc = spawn(command, args, {
   stdio: 'inherit',
   shell: true,
-  cwd: resolve(__dirname, '..')
+  cwd: resolve(__dirname, '..'),
 });
 
-proc.on('close', (code) => {
+proc.on('close', code => {
   process.exit(code);
 });

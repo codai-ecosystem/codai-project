@@ -1,9 +1,15 @@
-'use client'
+'use client';
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Toast, ToastPosition } from '@/types';
-import { FiX, FiAlertCircle, FiCheckCircle, FiInfo, FiAlertTriangle } from '@/components/icons/FeatherIcons';
+import {
+  FiX,
+  FiAlertCircle,
+  FiCheckCircle,
+  FiInfo,
+  FiAlertTriangle,
+} from '@/components/icons/FeatherIcons';
 
 interface ToastContainerProps {
   toasts: Toast[];
@@ -31,24 +37,42 @@ const getPositionClass = (position: ToastPosition): string => {
 
 const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onClose }) => {
   // Group toasts by position
-  const toastsByPosition = toasts.reduce((acc, toast) => {
-    const position = toast.position || 'bottom-right';
-    if (!acc[position]) {
-      acc[position] = [];
-    }
-    acc[position].push(toast);
-    return acc;
-  }, {} as Record<ToastPosition, Toast[]>);
+  const toastsByPosition = toasts.reduce(
+    (acc, toast) => {
+      const position = toast.position || 'bottom-right';
+      if (!acc[position]) {
+        acc[position] = [];
+      }
+      acc[position].push(toast);
+      return acc;
+    },
+    {} as Record<ToastPosition, Toast[]>
+  );
 
   // Toast icon based on type
   const getToastIcon = (type: Toast['type']) => {
     switch (type) {
       case 'success':
-        return <FiCheckCircle className="text-[color:var(--ai-success, #10b981)]" size={18} />;
+        return (
+          <FiCheckCircle
+            className="text-[color:var(--ai-success, #10b981)]"
+            size={18}
+          />
+        );
       case 'warning':
-        return <FiAlertTriangle className="text-[color:var(--ai-warning, #f59e0b)]" size={18} />;
+        return (
+          <FiAlertTriangle
+            className="text-[color:var(--ai-warning, #f59e0b)]"
+            size={18}
+          />
+        );
       case 'error':
-        return <FiAlertCircle className="text-[color:var(--ai-error, #ef4444)]" size={18} />;
+        return (
+          <FiAlertCircle
+            className="text-[color:var(--ai-error, #ef4444)]"
+            size={18}
+          />
+        );
       case 'info':
       default:
         return <FiInfo className="text-[color:var(--ai-primary)]" size={18} />;
@@ -77,8 +101,12 @@ const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onClose }) => {
 
     return {
       initial: { opacity: 0, y: isTop ? -20 : 20 },
-      animate: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 400, damping: 30 } },
-      exit: { opacity: 0, x: 100, transition: { duration: 0.2 } }
+      animate: {
+        opacity: 1,
+        y: 0,
+        transition: { type: 'spring', stiffness: 400, damping: 30 },
+      },
+      exit: { opacity: 0, x: 100, transition: { duration: 0.2 } },
     };
   };
 
@@ -90,7 +118,7 @@ const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onClose }) => {
           className={`fixed z-[9999] flex flex-col gap-2 min-w-[300px] max-w-md ${getPositionClass(position as ToastPosition)}`}
         >
           <AnimatePresence>
-            {positionToasts.map((toast) => (
+            {positionToasts.map(toast => (
               <motion.div
                 key={toast.id}
                 layout
@@ -130,7 +158,10 @@ const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onClose }) => {
                     className="flex-shrink-0 rounded-full p-1 hover:bg-[color:var(--ai-card-border)]/30 transition-colors"
                     aria-label="Close notification"
                   >
-                    <FiX size={16} className="text-[color:var(--ai-foreground)] opacity-60" />
+                    <FiX
+                      size={16}
+                      className="text-[color:var(--ai-foreground)] opacity-60"
+                    />
                   </button>
                 )}
               </motion.div>

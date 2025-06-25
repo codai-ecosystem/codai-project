@@ -11,7 +11,9 @@ export default function AdminCourseDetailPage() {
   const course = context?.courses?.[courseId];
   // lessons may be an object, convert to array if needed
   const lessonsRaw = context?.lessons?.[courseId] || [];
-  const lessons = Array.isArray(lessonsRaw) ? lessonsRaw : Object.values(lessonsRaw);
+  const lessons = Array.isArray(lessonsRaw)
+    ? lessonsRaw
+    : Object.values(lessonsRaw);
   // For admin, always hasAccess = true
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">

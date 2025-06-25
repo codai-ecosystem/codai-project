@@ -1,0 +1,136 @@
+{
+  "apiVersion": "apps/v1",
+  "kind": "Deployment",
+  "metadata": {
+    "name": "cumparai",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "cumparai",
+      "component": "application",
+      "app.kubernetes.io/name": "cumparai",
+      "app.kubernetes.io/component": "application",
+      "app.kubernetes.io/part-of": "codai-ecosystem",
+      "app.kubernetes.io/version": "2.0.0"
+    }
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {
+      "matchLabels": {
+        "app": "cumparai"
+      }
+    },
+    "template": {
+      "metadata": {
+        "labels": {
+          "app": "cumparai",
+          "component": "application",
+          "app.kubernetes.io/name": "cumparai",
+          "app.kubernetes.io/component": "application",
+          "app.kubernetes.io/part-of": "codai-ecosystem"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "cumparai",
+            "image": "codai/cumparai:latest",
+            "ports": [
+              {
+                "containerPort": 3008,
+                "name": "http"
+              }
+            ],
+            "env": [
+              {
+                "name": "PORT",
+                "value": "3008"
+              },
+              {
+                "name": "NODE_ENV",
+                "value": "production"
+              },
+              {
+                "name": "SERVICE_NAME",
+                "value": "cumparai"
+              }
+            ],
+            "envFrom": [
+              {
+                "secretRef": {
+                  "name": "cumparai-env"
+                }
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": "100m",
+                "memory": "256Mi"
+              },
+              "limits": {
+                "cpu": "500m",
+                "memory": "1Gi"
+              }
+            },
+            "livenessProbe": {
+              "httpGet": {
+                "path": "/health",
+                "port": 3008
+              },
+              "initialDelaySeconds": 30,
+              "periodSeconds": 10,
+              "timeoutSeconds": 5,
+              "failureThreshold": 3
+            },
+            "readinessProbe": {
+              "httpGet": {
+                "path": "/health",
+                "port": 3008
+              },
+              "initialDelaySeconds": 5,
+              "periodSeconds": 5,
+              "timeoutSeconds": 3,
+              "failureThreshold": 3
+            },
+            "securityContext": {
+              "allowPrivilegeEscalation": false,
+              "runAsNonRoot": true,
+              "runAsUser": 1001,
+              "capabilities": {
+                "drop": [
+                  "ALL"
+                ]
+              }
+            }
+          }
+        ],
+        "securityContext": {
+          "fsGroup": 1001
+        },
+        "affinity": {
+          "podAntiAffinity": {
+            "preferredDuringSchedulingIgnoredDuringExecution": [
+              {
+                "weight": 100,
+                "podAffinityTerm": {
+                  "labelSelector": {
+                    "matchExpressions": [
+                      {
+                        "key": "app",
+                        "operator": "In",
+                        "values": [
+                          "cumparai"
+                        ]
+                      }
+                    ]
+                  },
+                  "topologyKey": "kubernetes.io/hostname"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

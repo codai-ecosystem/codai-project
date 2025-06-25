@@ -51,13 +51,15 @@ class CodaiService {
   /**
    * Register service with central platform
    */
-  async registerService(serviceInfo: Omit<ServiceInfo, 'id'>): Promise<ServiceRegistration> {
+  async registerService(
+    serviceInfo: Omit<ServiceInfo, 'id'>
+  ): Promise<ServiceRegistration> {
     try {
       const response = await fetch(`${this.config.apiUrl}/services/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.config.apiKey}`,
+          Authorization: `Bearer ${this.config.apiKey}`,
         },
         body: JSON.stringify({
           ...serviceInfo,
@@ -79,16 +81,21 @@ class CodaiService {
   /**
    * Send health check status
    */
-  async sendHealthCheck(health: HealthCheck): Promise<{ success: boolean; error?: string }> {
+  async sendHealthCheck(
+    health: HealthCheck
+  ): Promise<{ success: boolean; error?: string }> {
     try {
-      const response = await fetch(`${this.config.apiUrl}/services/${this.config.serviceId}/health`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.config.apiKey}`,
-        },
-        body: JSON.stringify(health),
-      });
+      const response = await fetch(
+        `${this.config.apiUrl}/services/${this.config.serviceId}/health`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${this.config.apiKey}`,
+          },
+          body: JSON.stringify(health),
+        }
+      );
 
       return await response.json();
     } catch (error) {
@@ -107,7 +114,7 @@ class CodaiService {
     try {
       const response = await fetch(`${this.config.apiUrl}/services`, {
         headers: {
-          'Authorization': `Bearer ${this.config.apiKey}`,
+          Authorization: `Bearer ${this.config.apiKey}`,
         },
       });
 
@@ -128,11 +135,14 @@ class CodaiService {
    */
   async getService(serviceId: string): Promise<ServiceInfo | null> {
     try {
-      const response = await fetch(`${this.config.apiUrl}/services/${serviceId}`, {
-        headers: {
-          'Authorization': `Bearer ${this.config.apiKey}`,
-        },
-      });
+      const response = await fetch(
+        `${this.config.apiUrl}/services/${serviceId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${this.config.apiKey}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         return null;
@@ -148,19 +158,24 @@ class CodaiService {
   /**
    * Send service metrics
    */
-  async sendMetrics(metrics: Record<string, any>): Promise<{ success: boolean; error?: string }> {
+  async sendMetrics(
+    metrics: Record<string, any>
+  ): Promise<{ success: boolean; error?: string }> {
     try {
-      const response = await fetch(`${this.config.apiUrl}/services/${this.config.serviceId}/metrics`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.config.apiKey}`,
-        },
-        body: JSON.stringify({
-          timestamp: new Date().toISOString(),
-          metrics,
-        }),
-      });
+      const response = await fetch(
+        `${this.config.apiUrl}/services/${this.config.serviceId}/metrics`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${this.config.apiKey}`,
+          },
+          body: JSON.stringify({
+            timestamp: new Date().toISOString(),
+            metrics,
+          }),
+        }
+      );
 
       return await response.json();
     } catch (error) {

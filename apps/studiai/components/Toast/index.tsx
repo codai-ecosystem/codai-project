@@ -1,8 +1,8 @@
 'use client';
 
 import {
-    ToastProvider as ToastProviderComponent,
-    useToast as useToastHook
+  ToastProvider as ToastProviderComponent,
+  useToast as useToastHook,
 } from './ToastContext';
 
 export const ToastProvider = ToastProviderComponent;

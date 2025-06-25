@@ -3,8 +3,8 @@
  * Automatically selects the best available memory tier and provides graceful fallback
  */
 
-import { nanoid } from "nanoid";
-import { logger } from "../utils/logger.js";
+import { nanoid } from 'nanoid';
+import { logger } from '../utils/logger.js';
 import type {
   MemoryMetadata,
   MemoryQuery,
@@ -13,18 +13,18 @@ import type {
   ContextResponse,
   MemoryType,
   MemoryConfig,
-} from "../types/index.js";
-import { MemoryError } from "../types/index.js";
-import { MemoryEngine } from "./MemoryEngine.js";
-import { BasicMemoryEngine } from "./BasicMemoryEngine.js";
-import { MockMemoryEngine } from "./MockMemoryEngine.js";
-import { LocalEmbeddingService } from "../embedding/LocalEmbeddingService.js";
+} from '../types/index.js';
+import { MemoryError } from '../types/index.js';
+import { MemoryEngine } from './MemoryEngine.js';
+import { BasicMemoryEngine } from './BasicMemoryEngine.js';
+import { MockMemoryEngine } from './MockMemoryEngine.js';
+import { LocalEmbeddingService } from '../embedding/LocalEmbeddingService.js';
 import {
   MemoryTierLevel,
   MemoryTierDetector,
   type MemoryTierInfo,
   type MemoryTierCapabilities,
-} from "./MemoryTier.js";
+} from './MemoryTier.js';
 
 export interface UnifiedMemoryConfig extends Partial<MemoryConfig> {
   preferredTier?: MemoryTierLevel;
@@ -127,22 +127,22 @@ export class UnifiedMemoryEngine {
       this.isInitialized = true;
 
       logger.info(
-        `🧠 Memory Engine initialized with ${this.getTierInfo().message}`,
+        `🧠 Memory Engine initialized with ${this.getTierInfo().message}`
       );
     } catch (error: unknown) {
       if (this.config.enableFallback) {
         logger.warn(
-          `Failed to initialize ${this.currentTier} tier, attempting fallback...`,
+          `Failed to initialize ${this.currentTier} tier, attempting fallback...`
         );
         await this.fallbackToNextTier();
       } else {
         if (error instanceof Error) {
           throw new MemoryError(
             `Failed to initialize memory engine: ${error.message}`,
-            "INIT_ERROR",
+            'INIT_ERROR'
           );
         }
-        throw new MemoryError("Unknown initialization error", "INIT_ERROR");
+        throw new MemoryError('Unknown initialization error', 'INIT_ERROR');
       }
     }
   }
@@ -154,17 +154,17 @@ export class UnifiedMemoryEngine {
     content: string,
     tenantId: string,
     agentId?: string,
-    options: RememberOptions = {},
+    options: RememberOptions = {}
   ): Promise<string> {
     if (!this.isInitialized) {
       throw new MemoryError(
-        "Memory engine not initialized. Call initialize() first.",
-        "NOT_INITIALIZED",
+        'Memory engine not initialized. Call initialize() first.',
+        'NOT_INITIALIZED'
       );
     }
 
     if (!content || content.trim().length === 0) {
-      throw new MemoryError("Content cannot be empty", "INVALID_CONTENT");
+      throw new MemoryError('Content cannot be empty', 'INVALID_CONTENT');
     }
 
     try {
@@ -192,12 +192,12 @@ export class UnifiedMemoryEngine {
     } catch (error) {
       if (this.config.enableFallback) {
         logger.warn(
-          `Memory operation failed on ${this.currentTier} tier, attempting fallback...`,
+          `Memory operation failed on ${this.currentTier} tier, attempting fallback...`
         );
         await this.fallbackToNextTier();
         return this.remember(content, tenantId, agentId, options);
       }
-      throw this.handleError(error, "REMEMBER_ERROR");
+      throw this.handleError(error, 'REMEMBER_ERROR');
     }
   }
 
@@ -208,17 +208,17 @@ export class UnifiedMemoryEngine {
     query: string,
     tenantId: string,
     agentId?: string,
-    options: RecallOptions = {},
+    options: RecallOptions = {}
   ): Promise<MemoryResult[]> {
     if (!this.isInitialized) {
       throw new MemoryError(
-        "Memory engine not initialized. Call initialize() first.",
-        "NOT_INITIALIZED",
+        'Memory engine not initialized. Call initialize() first.',
+        'NOT_INITIALIZED'
       );
     }
 
     if (!query || query.trim().length === 0) {
-      throw new MemoryError("Query cannot be empty", "INVALID_QUERY");
+      throw new MemoryError('Query cannot be empty', 'INVALID_QUERY');
     }
 
     try {
@@ -244,12 +244,12 @@ export class UnifiedMemoryEngine {
     } catch (error) {
       if (this.config.enableFallback) {
         logger.warn(
-          `Memory operation failed on ${this.currentTier} tier, attempting fallback...`,
+          `Memory operation failed on ${this.currentTier} tier, attempting fallback...`
         );
         await this.fallbackToNextTier();
         return this.recall(query, tenantId, agentId, options);
       }
-      throw this.handleError(error, "RECALL_ERROR");
+      throw this.handleError(error, 'RECALL_ERROR');
     }
   }
 
@@ -259,15 +259,15 @@ export class UnifiedMemoryEngine {
   public async getContext(_request: ContextRequest): Promise<ContextResponse> {
     if (!this.isInitialized) {
       throw new MemoryError(
-        "Memory engine not initialized. Call initialize() first.",
-        "NOT_INITIALIZED",
+        'Memory engine not initialized. Call initialize() first.',
+        'NOT_INITIALIZED'
       );
     }
     try {
       const memories = await this.activeEngine.getContext(
         _request.tenant_id,
         _request.agent_id,
-        _request.max_memories ?? 10,
+        _request.max_memories ?? 10
       );
 
       return {
@@ -285,12 +285,12 @@ export class UnifiedMemoryEngine {
     } catch (error) {
       if (this.config.enableFallback) {
         logger.warn(
-          `Memory operation failed on ${this.currentTier} tier, attempting fallback...`,
+          `Memory operation failed on ${this.currentTier} tier, attempting fallback...`
         );
         await this.fallbackToNextTier();
         return this.getContext(_request);
       }
-      throw this.handleError(error, "CONTEXT_ERROR");
+      throw this.handleError(error, 'CONTEXT_ERROR');
     }
   }
 
@@ -300,8 +300,8 @@ export class UnifiedMemoryEngine {
   public async forget(memoryId: string): Promise<boolean> {
     if (!this.isInitialized) {
       throw new MemoryError(
-        "Memory engine not initialized. Call initialize() first.",
-        "NOT_INITIALIZED",
+        'Memory engine not initialized. Call initialize() first.',
+        'NOT_INITIALIZED'
       );
     }
 
@@ -310,12 +310,12 @@ export class UnifiedMemoryEngine {
     } catch (error) {
       if (this.config.enableFallback) {
         logger.warn(
-          `Memory operation failed on ${this.currentTier} tier, attempting fallback...`,
+          `Memory operation failed on ${this.currentTier} tier, attempting fallback...`
         );
         await this.fallbackToNextTier();
         return this.forget(memoryId);
       }
-      throw this.handleError(error, "FORGET_ERROR");
+      throw this.handleError(error, 'FORGET_ERROR');
     }
   }
 
@@ -343,8 +343,8 @@ export class UnifiedMemoryEngine {
       logger.info(`🔄 Switched to ${this.getTierInfo().message}`);
     } catch (error) {
       throw new MemoryError(
-        `Failed to switch to ${tier} tier: ${error instanceof Error ? error.message : "Unknown error"}`,
-        "TIER_SWITCH_ERROR",
+        `Failed to switch to ${tier} tier: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        'TIER_SWITCH_ERROR'
       );
     }
   }
@@ -388,7 +388,7 @@ export class UnifiedMemoryEngine {
   private async initializeSmartTier(): Promise<void> {
     if (!this.localEmbedding) {
       this.localEmbedding = new LocalEmbeddingService(
-        this.config.localEmbedding,
+        this.config.localEmbedding
       );
     }
 
@@ -399,8 +399,8 @@ export class UnifiedMemoryEngine {
         ...this.config,
         // Override embedding to use local
         embedding: {
-          provider: "local",
-          model: this.config.localEmbedding?.model || "all-MiniLM-L6-v2",
+          provider: 'local',
+          model: this.config.localEmbedding?.model || 'all-MiniLM-L6-v2',
           dimensions: 384, // Default for MiniLM
         },
         // Enhanced performance settings for smart tier
@@ -413,7 +413,7 @@ export class UnifiedMemoryEngine {
         security: {
           encryption_key:
             process.env.MEMORAI_ENCRYPTION_KEY ||
-            "default-key-for-development-only-32-chars",
+            'default-key-for-development-only-32-chars',
           tenant_isolation: true,
           audit_logs: true,
         },
@@ -453,7 +453,7 @@ export class UnifiedMemoryEngine {
     const optimizationInterval = setInterval(
       async () => {
         try {
-          if (this.smartEngine && this.currentTier === "smart") {
+          if (this.smartEngine && this.currentTier === 'smart') {
             // Optimize vector indices
             await this.optimizeVectorIndices();
 
@@ -464,10 +464,10 @@ export class UnifiedMemoryEngine {
             await this.updateClassificationModels();
           }
         } catch (error) {
-          logger.warn("Background optimization error", { error });
+          logger.warn('Background optimization error', { error });
         }
       },
-      5 * 60 * 1000,
+      5 * 60 * 1000
     ); // Store interval for cleanup
     (
       this as unknown as { optimizationInterval: NodeJS.Timeout }
@@ -482,7 +482,7 @@ export class UnifiedMemoryEngine {
     // - Query frequency analysis
     // - Context pattern recognition
     // - Personalization based on usage
-    logger.debug("Pattern learning enabled for smart tier");
+    logger.debug('Pattern learning enabled for smart tier');
   }
 
   /**
@@ -494,7 +494,7 @@ export class UnifiedMemoryEngine {
     // - Usage pattern analysis
     // - Predictive pre-loading
     // - Intelligent cache eviction
-    logger.debug("Predictive caching enabled for smart tier");
+    logger.debug('Predictive caching enabled for smart tier');
   } /**
    * Optimize vector indices for better performance
    */
@@ -505,12 +505,12 @@ export class UnifiedMemoryEngine {
       if (this.smartEngine) {
         // Get current metrics to determine if optimization is needed
         const health = await this.smartEngine.getHealth();
-        if (health.status === "healthy") {
-          logger.debug("Vector indices optimized successfully");
+        if (health.status === 'healthy') {
+          logger.debug('Vector indices optimized successfully');
         }
       }
     } catch (error) {
-      logger.warn("Vector index optimization failed", { error });
+      logger.warn('Vector index optimization failed', { error });
     }
   }
 
@@ -531,9 +531,9 @@ export class UnifiedMemoryEngine {
       // 3. Consider memory importance and user preferences
       // 4. Perform cleanup while maintaining data integrity
 
-      logger.debug("Memory cleanup completed for smart tier");
+      logger.debug('Memory cleanup completed for smart tier');
     } catch (error) {
-      logger.warn("Memory cleanup failed", { error });
+      logger.warn('Memory cleanup failed', { error });
     }
   }
 
@@ -551,9 +551,9 @@ export class UnifiedMemoryEngine {
       // 3. Update memory type predictions
       // 4. Improve categorization accuracy
 
-      logger.debug("Classification models updated for smart tier");
+      logger.debug('Classification models updated for smart tier');
     } catch (error) {
-      logger.warn("Classification model update failed", { error });
+      logger.warn('Classification model update failed', { error });
     }
   }
 
@@ -563,7 +563,10 @@ export class UnifiedMemoryEngine {
   private async initializeBasicTier(): Promise<void> {
     if (!this.basicEngine) {
       // Use shared data directory for persistent storage
-      const dataDirectory = this.config.dataPath || process.env.MEMORAI_DATA_PATH || "./data/memory";
+      const dataDirectory =
+        this.config.dataPath ||
+        process.env.MEMORAI_DATA_PATH ||
+        './data/memory';
       this.basicEngine = new BasicMemoryEngine(dataDirectory);
       await this.basicEngine.initialize();
     }
@@ -596,14 +599,14 @@ export class UnifiedMemoryEngine {
         this.isInitialized = true;
       } else {
         throw new MemoryError(
-          "No valid fallback tier available",
-          "FALLBACK_EXHAUSTED",
+          'No valid fallback tier available',
+          'FALLBACK_EXHAUSTED'
         );
       }
     } else {
       throw new MemoryError(
-        "No more fallback tiers available",
-        "FALLBACK_EXHAUSTED",
+        'No more fallback tiers available',
+        'FALLBACK_EXHAUSTED'
       );
     }
   }
@@ -615,49 +618,49 @@ export class UnifiedMemoryEngine {
     const lower = content.toLowerCase();
 
     if (
-      lower.includes("prefer") ||
-      lower.includes("like") ||
-      lower.includes("want")
+      lower.includes('prefer') ||
+      lower.includes('like') ||
+      lower.includes('want')
     ) {
-      return "preference";
+      return 'preference';
     }
     if (
-      lower.includes("feel") ||
-      lower.includes("emotion") ||
-      lower.includes("mood")
+      lower.includes('feel') ||
+      lower.includes('emotion') ||
+      lower.includes('mood')
     ) {
-      return "emotion";
+      return 'emotion';
     }
     if (
-      lower.includes("procedure") ||
-      lower.includes("step") ||
-      lower.includes("process")
+      lower.includes('procedure') ||
+      lower.includes('step') ||
+      lower.includes('process')
     ) {
-      return "procedure";
+      return 'procedure';
     }
     if (
-      lower.includes("task") ||
-      lower.includes("todo") ||
-      lower.includes("assignment")
+      lower.includes('task') ||
+      lower.includes('todo') ||
+      lower.includes('assignment')
     ) {
-      return "task";
+      return 'task';
     }
     if (
-      lower.includes("personality") ||
-      lower.includes("characteristic") ||
-      lower.includes("trait")
+      lower.includes('personality') ||
+      lower.includes('characteristic') ||
+      lower.includes('trait')
     ) {
-      return "personality";
+      return 'personality';
     }
     if (
-      lower.includes("conversation") ||
-      lower.includes("thread") ||
-      lower.includes("discussion")
+      lower.includes('conversation') ||
+      lower.includes('thread') ||
+      lower.includes('discussion')
     ) {
-      return "thread";
+      return 'thread';
     }
 
-    return "fact"; // Default
+    return 'fact'; // Default
   }
 
   /**
@@ -670,23 +673,23 @@ export class UnifiedMemoryEngine {
 
     // Increase importance for certain keywords
     if (
-      lower.includes("important") ||
-      lower.includes("critical") ||
-      lower.includes("urgent")
+      lower.includes('important') ||
+      lower.includes('critical') ||
+      lower.includes('urgent')
     ) {
       importance += 0.3;
     }
     if (
-      lower.includes("remember") ||
-      lower.includes("note") ||
-      lower.includes("key")
+      lower.includes('remember') ||
+      lower.includes('note') ||
+      lower.includes('key')
     ) {
       importance += 0.2;
     }
     if (
-      lower.includes("password") ||
-      lower.includes("secret") ||
-      lower.includes("private")
+      lower.includes('password') ||
+      lower.includes('secret') ||
+      lower.includes('private')
     ) {
       importance += 0.3;
     }
@@ -699,7 +702,7 @@ export class UnifiedMemoryEngine {
    */
   private generateContextSummary(memories: MemoryMetadata[]): string {
     if (memories.length === 0) {
-      return "No relevant context available.";
+      return 'No relevant context available.';
     }
 
     const typeCount: Record<string, number> = {};
@@ -708,8 +711,8 @@ export class UnifiedMemoryEngine {
     }
 
     const typeSummary = Object.entries(typeCount)
-      .map(([type, count]) => `${count} ${type}${count > 1 ? "s" : ""}`)
-      .join(", ");
+      .map(([type, count]) => `${count} ${type}${count > 1 ? 's' : ''}`)
+      .join(', ');
 
     return `Context includes ${memories.length} memories: ${typeSummary}. Using ${this.currentTier} memory tier.`;
   }
@@ -738,7 +741,7 @@ export class UnifiedMemoryEngine {
     const tierInfo = this.getTierInfo();
     let engineStats = {};
 
-    if (this.activeEngine && typeof this.activeEngine.getStats === "function") {
+    if (this.activeEngine && typeof this.activeEngine.getStats === 'function') {
       engineStats = await this.activeEngine.getStats();
     }
 
@@ -753,11 +756,11 @@ export class UnifiedMemoryEngine {
    * Test tier functionality - required by API
    */
   public async testTier(
-    tier: string,
+    tier: string
   ): Promise<{ success: boolean; message: string }> {
     try {
       // Validate tier
-      if (!["advanced", "smart", "basic", "mock"].includes(tier)) {
+      if (!['advanced', 'smart', 'basic', 'mock'].includes(tier)) {
         return { success: false, message: `Invalid tier: ${tier}` };
       }
 
@@ -765,17 +768,17 @@ export class UnifiedMemoryEngine {
       if (tier === this.currentTier) {
         if (
           this.activeEngine &&
-          typeof this.activeEngine.testTier === "function"
+          typeof this.activeEngine.testTier === 'function'
         ) {
           return await this.activeEngine.testTier(tier);
         } else {
           // Basic test - just check if we can remember and recall
           const testId = await this.remember(
-            "test-content",
-            "test-tenant",
-            "test-agent",
+            'test-content',
+            'test-tenant',
+            'test-agent'
           );
-          await this.recall("test-content", "test-tenant", "test-agent", {
+          await this.recall('test-content', 'test-tenant', 'test-agent', {
             limit: 1,
           });
           await this.forget(testId);
@@ -797,14 +800,14 @@ export class UnifiedMemoryEngine {
           await this.switchTier(originalTier); // Switch back on error
           return {
             success: false,
-            message: `Failed to test tier '${tier}': ${error instanceof Error ? error.message : "Unknown error"}`,
+            message: `Failed to test tier '${tier}': ${error instanceof Error ? error.message : 'Unknown error'}`,
           };
         }
       }
     } catch (error) {
       return {
         success: false,
-        message: `Failed to test tier '${tier}': ${error instanceof Error ? error.message : "Unknown error"}`,
+        message: `Failed to test tier '${tier}': ${error instanceof Error ? error.message : 'Unknown error'}`,
       };
     }
   }

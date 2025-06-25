@@ -38,11 +38,7 @@
     "typescript",
     "tailwindcss"
   ],
-  "relatedServices": [
-    "memorai",
-    "logai",
-    "analizai"
-  ],
+  "relatedServices": ["memorai", "logai", "analizai"],
   "developmentStatus": "enterprise-ready",
   "lastUpdated": "2025-01-27T19:30:00.000Z",
   "owner": "codai-ecosystem",

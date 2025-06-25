@@ -1,0 +1,27 @@
+{
+  "apiVersion": "rbac.authorization.k8s.io/v1",
+  "kind": "RoleBinding",
+  "metadata": {
+    "name": "wallet-rb",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "wallet",
+      "component": "rbac",
+      "app.kubernetes.io/name": "wallet",
+      "app.kubernetes.io/component": "rbac",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  },
+  "subjects": [
+    {
+      "kind": "ServiceAccount",
+      "name": "wallet-sa",
+      "namespace": "codai-production"
+    }
+  ],
+  "roleRef": {
+    "kind": "Role",
+    "name": "wallet-role",
+    "apiGroup": "rbac.authorization.k8s.io"
+  }
+}

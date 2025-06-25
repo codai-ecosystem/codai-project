@@ -1,0 +1,29 @@
+{
+  "apiVersion": "v1",
+  "kind": "Service",
+  "metadata": {
+    "name": "AIDE",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "AIDE",
+      "component": "service",
+      "app.kubernetes.io/name": "AIDE",
+      "app.kubernetes.io/component": "service",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  },
+  "spec": {
+    "type": "ClusterIP",
+    "ports": [
+      {
+        "port": 80,
+        "targetPort": 4001,
+        "protocol": "TCP",
+        "name": "http"
+      }
+    ],
+    "selector": {
+      "app": "AIDE"
+    }
+  }
+}

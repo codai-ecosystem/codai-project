@@ -29,7 +29,6 @@ Additionally, the `ClientLessonWrapper.tsx` component was initially empty, causi
 ## Changes Made
 
 1. **In `app/courses/[courseId]/lessons/[lessonId]/page.tsx`:**
-
    - Enhanced the params handling with stronger typing
    - Added explicit String() conversion for params
    - Added additional debug logging
@@ -38,27 +37,24 @@ Additionally, the `ClientLessonWrapper.tsx` component was initially empty, causi
 
    ```tsx
    const courseId =
-     typeof params === "object" && "courseId" in params
+     typeof params === 'object' && 'courseId' in params
        ? String(params.courseId)
        : params instanceof Promise
-       ? String((await params).courseId)
-       : "";
+         ? String((await params).courseId)
+         : '';
    ```
 
 2. **Added implementation to `components/Lesson/ClientLessonWrapper.tsx`:**
-
    - Created a robust client component that properly handles the lesson rendering
    - Added error handling and loading states
    - Implemented proper integration with the AppContext for accessing course and lesson data
 
 3. **Updated `app/courses/[courseId]/page.tsx`:**
-
    - Applied the same parameter handling pattern for consistency across the application
    - Fixed potential issues with parameters in the `generateMetadata` function
    - Updated error handling and fallback paths
 
 4. **In `components/Lesson/ClientLessonWrapper.tsx`:**
-
    - Created the previously missing component
    - Added proper client-side data fetching
    - Implemented loading state

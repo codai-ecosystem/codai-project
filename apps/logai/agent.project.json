@@ -25,9 +25,6 @@
   },
   "environment": {
     "nodeVersion": ">=18.0.0",
-    "requiredEnvVars": [
-      "NEXT_PUBLIC_API_URL",
-      "NEXT_PUBLIC_APP_NAME"
-    ]
+    "requiredEnvVars": ["NEXT_PUBLIC_API_URL", "NEXT_PUBLIC_APP_NAME"]
   }
 }

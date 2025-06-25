@@ -1,12 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
     // Connect to actual MCP server API
-    const response = await fetch("http://localhost:6367/api/memory", {
-      method: "GET",
+    const response = await fetch('http://localhost:6367/api/memory', {
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     });
 
@@ -21,16 +21,19 @@ export async function GET() {
       data: apiData,
     });
   } catch (error) {
-    console.error("Error fetching MCP data:", error);
+    console.error('Error fetching MCP data:', error);
 
     // Fallback to empty state if API server is not available
-    return NextResponse.json({
-      success: false,
-      error: "Unable to connect to API server",
-      data: {
-        entities: [],
-        relations: [],
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Unable to connect to API server',
+        data: {
+          entities: [],
+          relations: [],
+        },
       },
-    }, { status: 500 });
+      { status: 500 }
+    );
   }
 }

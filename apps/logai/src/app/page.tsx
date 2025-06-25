@@ -1,4 +1,4 @@
-import AuthDashboard from '@/components/AuthDashboard'
+import AuthDashboard from '@/components/AuthDashboard';
 
 export default function Home() {
   return (
@@ -7,5 +7,5 @@ export default function Home() {
         <AuthDashboard />
       </div>
     </div>
-  )
+  );
 }

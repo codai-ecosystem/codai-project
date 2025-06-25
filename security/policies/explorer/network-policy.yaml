@@ -1,0 +1,91 @@
+{
+  "apiVersion": "networking.k8s.io/v1",
+  "kind": "NetworkPolicy",
+  "metadata": {
+    "name": "explorer-network-policy",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "explorer",
+      "component": "security",
+      "app.kubernetes.io/name": "explorer",
+      "app.kubernetes.io/component": "security",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  },
+  "spec": {
+    "podSelector": {
+      "matchLabels": {
+        "app": "explorer"
+      }
+    },
+    "policyTypes": [
+      "Ingress",
+      "Egress"
+    ],
+    "ingress": [
+      {
+        "from": [
+          {
+            "namespaceSelector": {
+              "matchLabels": {
+                "name": "codai-production"
+              }
+            }
+          },
+          {
+            "namespaceSelector": {
+              "matchLabels": {
+                "name": "ingress-nginx"
+              }
+            }
+          }
+        ],
+        "ports": [
+          {
+            "protocol": "TCP",
+            "port": 4006
+          }
+        ]
+      }
+    ],
+    "egress": [
+      {
+        "to": [
+          {
+            "namespaceSelector": {
+              "matchLabels": {
+                "name": "codai-production"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "to": [],
+        "ports": [
+          {
+            "protocol": "TCP",
+            "port": 53
+          },
+          {
+            "protocol": "UDP",
+            "port": 53
+          }
+        ]
+      },
+      {
+        "to": [],
+        "ports": [
+          {
+            "protocol": "TCP",
+            "port": 443
+          },
+          {
+            "protocol": "TCP",
+            "port": 80
+          }
+        ]
+      }
+    ]
+  }
+}

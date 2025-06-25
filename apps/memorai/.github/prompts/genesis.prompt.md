@@ -42,10 +42,10 @@ The goal: create the **definitive long-term memory system for conversational age
 Agents must be able to interact like this:
 
 ```ts
-agent.remember("User prefers React over Vue");
-agent.recall("deployment process from last week");
-agent.forget("old Sentry integration");
-agent.context("build pipeline"); // returns smart context blob
+agent.remember('User prefers React over Vue');
+agent.recall('deployment process from last week');
+agent.forget('old Sentry integration');
+agent.context('build pipeline'); // returns smart context blob
 ```
 
 These are not database commands — they are **natural semantic instructions**. You must design the MCP around this flow.
@@ -59,7 +59,6 @@ These are not database commands — they are **natural semantic instructions**. 
 - TypeScript 5+ monorepo with `pnpm` workspaces
 - ESM-only, strict mode, zero `any` allowed
 - Packages:
-
   - `core` – memory engine & vector logic
   - `server` – Fastify or Hono memory API
   - `sdk` – simple client SDK for agent use
@@ -101,7 +100,6 @@ No human interfaces by default. Instead, provide:
 - Auto-injection of relevant context during task execution
 - Built-in context filters for hallucination reduction
 - Support for multiple memory types:
-
   - Personalities
   - Procedures
   - Preferences
@@ -161,18 +159,18 @@ tools/
 const memory = new MemoryClient();
 
 await memory.remember(
-  "Dragos prefers AI agents that manage memory like people think",
+  'Dragos prefers AI agents that manage memory like people think'
 );
 
-const context = await memory.recall("last time I worked on a Vite build issue");
+const context = await memory.recall('last time I worked on a Vite build issue');
 
-const related = await memory.findRelated("deployment strategies", { limit: 3 });
+const related = await memory.findRelated('deployment strategies', { limit: 3 });
 
-await memory.forget("old test command for Jest");
+await memory.forget('old test command for Jest');
 
 const fullContext = await memory.getContext({
-  topic: "CI/CD",
-  timeRange: "last 48h",
+  topic: 'CI/CD',
+  timeRange: 'last 48h',
 });
 ```
 
@@ -193,33 +191,27 @@ const fullContext = await memory.getContext({
 ## ✅ NEXT STEPS
 
 1. **Plan First!**
-
    - Save the implementation plan as `.github/plans/memorai-mcp.md`
    - Include modules, dependencies, tasks, priorities
    - Include memory goals per phase and test metrics
 
 2. **Build the Engine**
-
    - Start with `core`, `sdk`, and `server`
    - Integrate fast memory + vector DB
 
 3. **Ship MVP v0.1**
-
    - CLI, memory ops, simple recall
    - Publish: `@codai/memory-core`, `@codai/memory-sdk`, etc.
 
 4. **Document Everything**
-
    - Write agent onboarding inside `docs/agent-usage.md`
    - Add Copilot instructions in `.github/copilot-instructions.me`
 
 5. **Test with VS Code Copilot**
-
    - Validate agent compatibility inside real chat workflows
    - Add Playwright-MCP scenarios
 
 6. **Release + Scale**
-
    - Publish Docker images
    - Enable multi-agent clusters
    - Track memory recall success rate over time

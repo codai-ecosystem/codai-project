@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { useEffect, useRef } from 'react';
 
@@ -61,11 +61,14 @@ export default function ParticlesAnimation() {
       setTimeout(() => {
         particle.remove();
       }, 20000);
-    };        // Create particles periodically, but limit to fewer particles
+    }; // Create particles periodically, but limit to fewer particles
     const interval = setInterval(() => {
       // Limit the total number of particles to avoid performance issues
       const maxParticles = 30;
-      if (particlesRef.current && particlesRef.current.childElementCount < maxParticles) {
+      if (
+        particlesRef.current &&
+        particlesRef.current.childElementCount < maxParticles
+      ) {
         createParticle();
       }
     }, 800);
@@ -80,5 +83,10 @@ export default function ParticlesAnimation() {
     };
   }, []);
 
-  return <div ref={particlesRef} className="absolute inset-0 pointer-events-none overflow-hidden" />;
+  return (
+    <div
+      ref={particlesRef}
+      className="absolute inset-0 pointer-events-none overflow-hidden"
+    />
+  );
 }

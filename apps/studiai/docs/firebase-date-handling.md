@@ -43,14 +43,14 @@ const safeToISOString = (dateValue: any): string | undefined => {
 
   try {
     // Handle Firestore timestamps that might be objects with seconds and nanoseconds
-    if (typeof dateValue === "object" && "seconds" in dateValue) {
+    if (typeof dateValue === 'object' && 'seconds' in dateValue) {
       return new Date(dateValue.seconds * 1000).toISOString();
     }
 
     // Handle normal date strings or numbers
     return new Date(dateValue).toISOString();
   } catch (error) {
-    console.error("Invalid date value:", dateValue, error);
+    console.error('Invalid date value:', dateValue, error);
     return undefined;
   }
 };

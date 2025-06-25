@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { useContext, useEffect } from 'react';
 import { AppContext } from '../AppContext';
@@ -12,7 +12,14 @@ export default function CourseDetail({ courseId }: { courseId: string }) {
   if (!context) {
     throw new Error('CourseDetail must be used within an AppContextProvider');
   }
-  const { courses, userPaidProducts, lessons, isAdmin, fetchCourseById, fetchLessonsForCourse } = context;
+  const {
+    courses,
+    userPaidProducts,
+    lessons,
+    isAdmin,
+    fetchCourseById,
+    fetchLessonsForCourse,
+  } = context;
 
   // Track if lessons have been fetched to avoid infinite loop
   const lessonsFetched = React.useRef(false);
@@ -30,7 +37,9 @@ export default function CourseDetail({ courseId }: { courseId: string }) {
   // Separate useEffect for lessons to avoid dependency loops
   useEffect(() => {
     if (courseId) {
-      const hasNoLessons = !lessons || !lessons[courseId] ||
+      const hasNoLessons =
+        !lessons ||
+        !lessons[courseId] ||
         (lessons[courseId] && Object.keys(lessons[courseId]).length === 0);
 
       if (hasNoLessons && !lessonsFetched.current) {
@@ -43,16 +52,17 @@ export default function CourseDetail({ courseId }: { courseId: string }) {
   const course = courses ? courses[courseId] : null;
 
   // Get lessons for this course from context
-  const courseLessons = lessons && courseId && lessons[courseId]
-    ? Object.values(lessons[courseId])
-    : [];
+  const courseLessons =
+    lessons && courseId && lessons[courseId]
+      ? Object.values(lessons[courseId])
+      : [];
 
   // Check if the course has been purchased
   const isPurchased = userPaidProducts?.some(
-    (product) => product.metadata?.courseId === courseId
+    product => product.metadata?.courseId === courseId
   );
 
-  const hasAccess = isPurchased || isAdmin;  // Add structured data
+  const hasAccess = isPurchased || isAdmin; // Add structured data
   useEffect(() => {
     if (!course) {
       return undefined; // Early return if no course data
@@ -62,26 +72,42 @@ export default function CourseDetail({ courseId }: { courseId: string }) {
     const structuredData = generateCourseStructuredData({
       title: course.title || course.name || 'Course',
       description: course.description || 'No description available',
-      instructorName: course.instructorName || (typeof course.instructor === 'string' ?
-        course.instructor : course.instructor?.name) || 'Cursuri Instructor', updatedAt: course.updatedAt ?
-          (typeof course.updatedAt === 'string' ?
-            course.updatedAt : course.updatedAt.toString()) :
-          undefined,
-      createdAt: course.createdAt ?
-        (typeof course.createdAt === 'string' ?
-          course.createdAt : course.createdAt.toString()) :
-        undefined,
+      instructorName:
+        course.instructorName ||
+        (typeof course.instructor === 'string'
+          ? course.instructor
+          : course.instructor?.name) ||
+        'Cursuri Instructor',
+      updatedAt: course.updatedAt
+        ? typeof course.updatedAt === 'string'
+          ? course.updatedAt
+          : course.updatedAt.toString()
+        : undefined,
+      createdAt: course.createdAt
+        ? typeof course.createdAt === 'string'
+          ? course.createdAt
+          : course.createdAt.toString()
+        : undefined,
       slug: courseId,
       coverImage: course.coverImage || course.imageUrl,
-      price: typeof course.price === 'string' ? parseFloat(course.price) : course.price,
-      rating: typeof course.rating === 'string' ? parseFloat(course.rating) : course.rating,
-      ratingCount: course.reviewCount, lessons: courseLessons
+      price:
+        typeof course.price === 'string'
+          ? parseFloat(course.price)
+          : course.price,
+      rating:
+        typeof course.rating === 'string'
+          ? parseFloat(course.rating)
+          : course.rating,
+      ratingCount: course.reviewCount,
+      lessons: courseLessons
         .filter(lesson => lesson !== null && lesson !== undefined) // Filter out null/undefined lessons
         .map(lesson => ({
           title: lesson?.title || lesson?.name || 'Unnamed Lesson',
-          duration: typeof lesson?.duration === 'string' ?
-            parseInt(lesson.duration) : lesson?.duration || 0
-        }))
+          duration:
+            typeof lesson?.duration === 'string'
+              ? parseInt(lesson.duration)
+              : lesson?.duration || 0,
+        })),
     });
 
     // Create script element for structured data
@@ -90,11 +116,13 @@ export default function CourseDetail({ courseId }: { courseId: string }) {
     script.textContent = structuredData;
 
     // Remove any existing structured data scripts
-    const existingScripts = document.querySelectorAll('script[type="application/ld+json"]');
+    const existingScripts = document.querySelectorAll(
+      'script[type="application/ld+json"]'
+    );
     existingScripts.forEach(s => s.remove());
 
     // Add script to head
-    document.head.appendChild(script);    // Cleanup on unmount
+    document.head.appendChild(script); // Cleanup on unmount
     return () => {
       document.head.removeChild(script);
     };

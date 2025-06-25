@@ -1,0 +1,46 @@
+{
+  "apiVersion": "autoscaling/v2",
+  "kind": "HorizontalPodAutoscaler",
+  "metadata": {
+    "name": "mod",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "mod",
+      "component": "autoscaler",
+      "app.kubernetes.io/name": "mod",
+      "app.kubernetes.io/component": "autoscaler",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  },
+  "spec": {
+    "scaleTargetRef": {
+      "apiVersion": "apps/v1",
+      "kind": "Deployment",
+      "name": "mod"
+    },
+    "minReplicas": 2,
+    "maxReplicas": 10,
+    "metrics": [
+      {
+        "type": "Resource",
+        "resource": {
+          "name": "cpu",
+          "target": {
+            "type": "Utilization",
+            "averageUtilization": 70
+          }
+        }
+      },
+      {
+        "type": "Resource",
+        "resource": {
+          "name": "memory",
+          "target": {
+            "type": "Utilization",
+            "averageUtilization": 80
+          }
+        }
+      }
+    ]
+  }
+}

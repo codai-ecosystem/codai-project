@@ -5,7 +5,6 @@ This document details the TypeScript errors that were fixed in the Cursuri proje
 ## Issues Fixed
 
 1. **Empty Module Files**
-
    - Added necessary content to empty files that were being imported but had no content:
      - `utils/timeHelpers.ts`
      - `components/ErrorPage.tsx`
@@ -13,13 +12,11 @@ This document details the TypeScript errors that were fixed in the Cursuri proje
      - `components/Lesson/LessonLoadingSkeleton.tsx`
 
 2. **Parameter Handling in Next.js Page Components**
-
    - Fixed type errors in `app/courses/[courseId]/lessons/[lessonId]/page.tsx` related to param handling
    - Replaced the complex parameter extraction logic with a simpler solution using Promise resolution
    - Used a more type-safe approach to handle params that might be a Promise
 
 3. **Component Props Type Issues**
-
    - Updated `LessonNotFound.tsx` component to include additional props like `lessonId` and `courseExists`
 
 4. **Badge Component Imports**
@@ -35,12 +32,12 @@ The pattern for safely handling params in Next.js server components was updated:
 ```tsx
 // Old pattern with type errors
 const courseId =
-  typeof params === "object" && "courseId" in params
+  typeof params === 'object' && 'courseId' in params
     ? String(params.courseId)
     : (await Promise.resolve(params)).courseId;
 
 // New pattern that's TypeScript friendly
-const resolvedParams = "then" in params ? await params : params;
+const resolvedParams = 'then' in params ? await params : params;
 const courseId = String(resolvedParams.courseId);
 ```
 
@@ -53,14 +50,14 @@ import {
   BadgeFirstCourse,
   BadgeFiveLessons,
   // ...more badges
-} from "@/components/icons/svg";
+} from '@/components/icons/svg';
 ```
 
 To direct imports:
 
 ```tsx
-import { BadgeFirstCourse } from "@/components/icons/svg/BadgeFirstCourse";
-import { BadgeFiveLessons } from "@/components/icons/svg/BadgeFiveLessons";
+import { BadgeFirstCourse } from '@/components/icons/svg/BadgeFirstCourse';
+import { BadgeFiveLessons } from '@/components/icons/svg/BadgeFiveLessons';
 // ...more badges
 ```
 

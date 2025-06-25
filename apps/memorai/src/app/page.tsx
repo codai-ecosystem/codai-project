@@ -1,4 +1,4 @@
-import MemoryDashboard from '@/components/MemoryDashboard'
+import MemoryDashboard from '@/components/MemoryDashboard';
 
 export default function Home() {
   return (
@@ -7,5 +7,5 @@ export default function Home() {
         <MemoryDashboard />
       </div>
     </div>
-  )
+  );
 }

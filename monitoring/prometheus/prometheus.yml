@@ -1,0 +1,942 @@
+# Prometheus Configuration for Codai Ecosystem
+# Milestone 2: Enterprise Production Excellence
+# Generated: 2025-06-24T14:22:20.695Z
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'codai-production'
+    environment: 'production'
+
+rule_files:
+  - "alerts/*.yml"
+  - "recording_rules/*.yml"
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+
+  - job_name: 'kubernetes-apiservers'
+    kubernetes_sd_configs:
+      - role: endpoints
+    scheme: https
+    tls_config:
+      ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+    bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: default;kubernetes;https
+
+  - job_name: 'kubernetes-nodes'
+    kubernetes_sd_configs:
+      - role: node
+    scheme: https
+    tls_config:
+      ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+    bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+    relabel_configs:
+      - action: labelmap
+        regex: __meta_kubernetes_node_label_(.+)
+
+
+  - job_name: 'codai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: codai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'memorai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: memorai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'logai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: logai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'bancai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: bancai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'wallet'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: wallet
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'fabricai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: fabricai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'studiai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: studiai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'sociai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: sociai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'cumparai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: cumparai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'x'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: x
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'publicai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: publicai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'admin'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: admin
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'AIDE'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: AIDE
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'ajutai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: ajutai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'analizai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: analizai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'bancai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: bancai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'codai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: codai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'cumparai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: cumparai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'dash'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: dash
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'docs'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: docs
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'explorer'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: explorer
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'fabricai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: fabricai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'hub'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: hub
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'id'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: id
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'jucai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: jucai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'kodex'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: kodex
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'legalizai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: legalizai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'logai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: logai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'marketai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: marketai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'memorai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: memorai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'metu'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: metu
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'mod'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: mod
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'publicai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: publicai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'sociai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: sociai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'stocai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: stocai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'studiai'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: studiai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'templates'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: templates
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'tools'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: tools
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'wallet'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: wallet
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+  - job_name: 'x'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name]
+        action: keep
+        regex: x
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: kubernetes_pod_name
+    metrics_path: /metrics
+    scrape_interval: 30s
+
+  - job_name: 'blackbox'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+          - https://codai.codai.dev
+          - https://memorai.codai.dev
+          - https://logai.codai.dev
+          - https://bancai.codai.dev
+          - https://wallet.codai.dev
+          - https://fabricai.codai.dev
+          - https://studiai.codai.dev
+          - https://sociai.codai.dev
+          - https://cumparai.codai.dev
+          - https://x.codai.dev
+          - https://publicai.codai.dev
+          - https://admin.codai.dev
+          - https://bancai.codai.dev
+          - https://codai.codai.dev
+          - https://cumparai.codai.dev
+          - https://dash.codai.dev
+          - https://docs.codai.dev
+          - https://explorer.codai.dev
+          - https://fabricai.codai.dev
+          - https://hub.codai.dev
+          - https://id.codai.dev
+          - https://logai.codai.dev
+          - https://memorai.codai.dev
+          - https://publicai.codai.dev
+          - https://sociai.codai.dev
+          - https://studiai.codai.dev
+          - https://wallet.codai.dev
+          - https://x.codai.dev
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+
+remote_write:
+  - url: https://prometheus-remote-write.grafana.net/api/prom/push
+    basic_auth:
+      username: !ENV GRAFANA_CLOUD_USER
+      password: !ENV GRAFANA_CLOUD_KEY

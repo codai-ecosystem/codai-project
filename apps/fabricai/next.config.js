@@ -4,6 +4,6 @@ const nextConfig = {
   images: {
     domains: ['fabricai.ro'],
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

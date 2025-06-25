@@ -9,7 +9,7 @@ import { getLogAIService } from '@/lib/services';
 export async function POST(request: NextRequest) {
   try {
     const { token } = await request.json();
-    
+
     if (!token) {
       return NextResponse.json(
         { success: false, error: 'Token is required' },

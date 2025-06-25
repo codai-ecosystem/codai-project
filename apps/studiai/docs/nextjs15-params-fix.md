@@ -12,7 +12,6 @@ Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
 ## Files Fixed
 
 1. `app/courses/[courseId]/page.tsx`
-
    - Updated `generateMetadata` and `Page` functions to properly await the params object
    - Changed from directly accessing `params.courseId` to using `const resolvedParams = await params`
 

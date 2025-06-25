@@ -138,12 +138,17 @@ export interface AuthUser {
 
 // MemorAI specific methods
 export class MemoraiService extends CodaiServiceClient {
-  async storeMemory(content: string, metadata?: Record<string, any>): Promise<ServiceResponse<MemoryEntry>> {
+  async storeMemory(
+    content: string,
+    metadata?: Record<string, any>
+  ): Promise<ServiceResponse<MemoryEntry>> {
     return this.post<MemoryEntry>('/api/memories', { content, metadata });
   }
 
   async recallMemory(query: string): Promise<ServiceResponse<MemoryEntry[]>> {
-    return this.get<MemoryEntry[]>(`/api/memories/search?q=${encodeURIComponent(query)}`);
+    return this.get<MemoryEntry[]>(
+      `/api/memories/search?q=${encodeURIComponent(query)}`
+    );
   }
 
   async getMemory(id: string): Promise<ServiceResponse<MemoryEntry>> {
@@ -161,11 +166,15 @@ export class LogaiService extends CodaiServiceClient {
     return this.post<AuthUser>('/api/auth/validate', { token });
   }
 
-  async getCurrentUser(sessionToken: string): Promise<ServiceResponse<AuthUser>> {
+  async getCurrentUser(
+    sessionToken: string
+  ): Promise<ServiceResponse<AuthUser>> {
     return this.get<AuthUser>('/api/auth/user');
   }
 
-  async refreshToken(refreshToken: string): Promise<ServiceResponse<{ token: string; refreshToken: string }>> {
+  async refreshToken(
+    refreshToken: string
+  ): Promise<ServiceResponse<{ token: string; refreshToken: string }>> {
     return this.post('/api/auth/refresh', { refreshToken });
   }
 }

@@ -39,7 +39,7 @@ class LogAIService {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.config.apiKey}`,
+          Authorization: `Bearer ${this.config.apiKey}`,
         },
         body: JSON.stringify({ token }),
       });
@@ -62,7 +62,7 @@ class LogAIService {
     try {
       const response = await fetch(`${this.config.apiUrl}/users/${userId}`, {
         headers: {
-          'Authorization': `Bearer ${this.config.apiKey}`,
+          Authorization: `Bearer ${this.config.apiKey}`,
         },
       });
 
@@ -86,7 +86,7 @@ class LogAIService {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.config.apiKey}`,
+          Authorization: `Bearer ${this.config.apiKey}`,
         },
         body: JSON.stringify({ refreshToken }),
       });

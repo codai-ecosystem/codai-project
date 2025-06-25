@@ -1,0 +1,65 @@
+# Codai-specific Falco Rules
+# Milestone 2: Enterprise Production Excellence
+
+- rule: Codai Unauthorized File Access
+  desc: Detect unauthorized file access in Codai services
+  condition: >
+    open_read and
+    proc.name in (codai_binaries) and
+    fd.name startswith /etc/passwd or
+    fd.name startswith /etc/shadow or
+    fd.name startswith /root/.ssh
+  output: >
+    Unauthorized file access in Codai service
+    (user=%user.name command=%proc.cmdline file=%fd.name)
+  priority: HIGH
+  tags: [codai, filesystem, security]
+
+- rule: Codai Suspicious Network Activity
+  desc: Detect suspicious network connections from Codai services
+  condition: >
+    inbound_outbound and
+    proc.name in (codai_binaries) and
+    not fd.ip in (allowed_ips)
+  output: >
+    Suspicious network activity from Codai service
+    (user=%user.name command=%proc.cmdline connection=%fd.name)
+  priority: MEDIUM
+  tags: [codai, network, security]
+
+- rule: Codai Container Escape Attempt
+  desc: Detect container escape attempts
+  condition: >
+    spawned_process and
+    proc.name in (docker, runc, containerd) and
+    proc.args contains "--privileged"
+  output: >
+    Container escape attempt detected
+    (user=%user.name command=%proc.cmdline)
+  priority: CRITICAL
+  tags: [codai, container, security]
+
+- rule: Codai Database Access Anomaly
+  desc: Detect anomalous database access patterns
+  condition: >
+    spawned_process and
+    proc.name in (psql, mongo, redis-cli) and
+    proc.args contains "DROP" or
+    proc.args contains "DELETE FROM" or
+    proc.args contains "TRUNCATE"
+  output: >
+    Anomalous database operation detected
+    (user=%user.name command=%proc.cmdline)
+  priority: HIGH
+  tags: [codai, database, security]
+
+- list: codai_binaries
+  items: [codai, memorai, logai, bancai, wallet, fabricai, studiai, sociai, cumparai, x, publicai]
+
+- list: allowed_ips
+  items: [
+    "10.0.0.0/8",
+    "172.16.0.0/12", 
+    "192.168.0.0/16",
+    "127.0.0.1"
+  ]

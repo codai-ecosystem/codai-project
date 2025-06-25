@@ -4,6 +4,6 @@ const nextConfig = {
   images: {
     domains: ['wallet.bancai.ro'],
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

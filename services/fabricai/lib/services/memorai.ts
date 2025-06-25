@@ -40,13 +40,16 @@ class MemorAIService {
   /**
    * Store memory entry
    */
-  async remember(content: string, metadata?: Record<string, any>): Promise<MemoryStoreResult> {
+  async remember(
+    content: string,
+    metadata?: Record<string, any>
+  ): Promise<MemoryStoreResult> {
     try {
       const response = await fetch(`${this.config.apiUrl}/memory/store`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.config.apiKey}`,
+          Authorization: `Bearer ${this.config.apiKey}`,
         },
         body: JSON.stringify({
           agentId: this.config.agentId || 'fabricai',
@@ -75,7 +78,7 @@ class MemorAIService {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.config.apiKey}`,
+          Authorization: `Bearer ${this.config.apiKey}`,
         },
         body: JSON.stringify({
           agentId: this.config.agentId || 'fabricai',
@@ -105,7 +108,7 @@ class MemorAIService {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.config.apiKey}`,
+          Authorization: `Bearer ${this.config.apiKey}`,
         },
         body: JSON.stringify({
           agentId: this.config.agentId || 'fabricai',
@@ -128,13 +131,15 @@ class MemorAIService {
   /**
    * Delete memory entry
    */
-  async forget(memoryId: string): Promise<{ success: boolean; error?: string }> {
+  async forget(
+    memoryId: string
+  ): Promise<{ success: boolean; error?: string }> {
     try {
       const response = await fetch(`${this.config.apiUrl}/memory/delete`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.config.apiKey}`,
+          Authorization: `Bearer ${this.config.apiKey}`,
         },
         body: JSON.stringify({
           agentId: this.config.agentId || 'fabricai',
@@ -168,4 +173,9 @@ export function getMemorAIService(): MemorAIService {
   return memoraiService;
 }
 
-export type { MemoryEntry, MemorySearchResult, MemoryStoreResult, MemorAIConfig };
+export type {
+  MemoryEntry,
+  MemorySearchResult,
+  MemoryStoreResult,
+  MemorAIConfig,
+};

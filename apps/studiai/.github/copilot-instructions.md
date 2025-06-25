@@ -28,7 +28,6 @@ Cursuri is a Next.js application for an online course platform with the followin
 ### Main Components
 
 1. **AppContext.tsx**
-
    - Central state management
    - Manages user authentication state
    - Handles theme switching
@@ -37,13 +36,11 @@ Cursuri is a Next.js application for an online course platform with the followin
    - Admin state management
 
 2. **Courses.tsx**
-
    - Main course listing component
    - Handles course purchase flow
    - Initiates Stripe checkout sessions
 
 3. **Course Components**
-
    - **Course.tsx**: Individual course display
    - **Lesson.tsx**: Lesson content display
    - **AddCourse.tsx**: Admin component for adding courses
@@ -51,7 +48,6 @@ Cursuri is a Next.js application for an online course platform with the followin
    - **Reviews.tsx**: Course review component
 
 4. **Authentication Components**
-
    - **Login.tsx**: Login/registration component
    - **Profile.tsx**: User profile management
 
@@ -96,25 +92,25 @@ Modals are managed through the AppContext using the openModal, closeModal, and u
 
 ```typescript
 openModal({
-  id: "uniqueId", // Required - unique identifier for the modal
+  id: 'uniqueId', // Required - unique identifier for the modal
   isOpen: true, // Required - controls visibility
-  modalBody: "componentName", // Required - can be a string ID or a React component
+  modalBody: 'componentName', // Required - can be a string ID or a React component
 
   // Optional parameters with their defaults
   hideCloseIcon: false, // Hide the X icon in the top-right
   hideCloseButton: false, // Hide the Close button in the footer
-  backdrop: "blur", // 'blur', 'opaque', or 'transparent'
-  size: "md", // 'xs', 'sm', 'md', 'lg', 'xl', 'full'
-  scrollBehavior: "inside", // 'inside' or 'outside'
+  backdrop: 'blur', // 'blur', 'opaque', or 'transparent'
+  size: 'md', // 'xs', 'sm', 'md', 'lg', 'xl', 'full'
+  scrollBehavior: 'inside', // 'inside' or 'outside'
   isDismissable: true, // Can click outside to dismiss
-  modalHeader: "Header Text", // Text or component for the header
+  modalHeader: 'Header Text', // Text or component for the header
   headerDisabled: false, // Hide the header completely
   footerDisabled: true, // Hide the footer completely
   footerButtonText: null, // Custom text for footer button
   footerButtonClick: null, // Handler for footer button click
   modalBottomComponent: null, // Component to render at bottom of modal
   noReplaceURL: false, // Don't modify browser history
-  onClose: () => closeModal("uniqueId"), // Close handler
+  onClose: () => closeModal('uniqueId'), // Close handler
 });
 ```
 
@@ -129,7 +125,7 @@ The most common modal types include:
 To close a modal, use the closeModal function with the modal's ID:
 
 ```typescript
-closeModal("uniqueId");
+closeModal('uniqueId');
 ```
 
 To update an existing modal, use the updateModal function:
@@ -152,17 +148,17 @@ Data is typically fetched using:
 ```typescript
 // One-time query example
 const q = query(
-  collection(firestoreDB, "courses"),
-  where("status", "==", "active")
+  collection(firestoreDB, 'courses'),
+  where('status', '==', 'active')
 );
 const querySnapshot = await getDocs(q);
-querySnapshot.forEach((doc) => {
+querySnapshot.forEach(doc => {
   // Process document
 });
 
 // Real-time updates example
-const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  querySnapshot.forEach((doc) => {
+const unsubscribe = onSnapshot(q, querySnapshot => {
+  querySnapshot.forEach(doc => {
     // Process document
   });
 });
@@ -177,7 +173,7 @@ const payments = stripePayments(firebaseApp);
 const session = await createCheckoutSession(payments, {
   price: priceId,
   allow_promotion_codes: true,
-  mode: "payment",
+  mode: 'payment',
   metadata: {
     courseId: courseId,
   },
@@ -201,7 +197,7 @@ import {
   StripePayments,
   getProducts,
   createCheckoutSession,
-} from "firewand";
+} from 'firewand';
 ```
 
 ### Key Firewand Functions
@@ -211,8 +207,8 @@ import {
    ```typescript
    export const stripePayments = (firebaseApp: FirebaseApp): StripePayments =>
      getStripePayments(firebaseApp, {
-       productsCollection: "products",
-       customersCollection: "/customers",
+       productsCollection: 'products',
+       customersCollection: '/customers',
      });
    ```
 
@@ -271,8 +267,8 @@ The app uses Firebase Authentication with email/password. The login flow is:
 Admin functionality is determined by the user's email address:
 
 ```typescript
-if (user.email === "adminEmail@example.com") {
-  dispatch({ type: "SET_IS_ADMIN", payload: true });
+if (user.email === 'adminEmail@example.com') {
+  dispatch({ type: 'SET_IS_ADMIN', payload: true });
 }
 ```
 

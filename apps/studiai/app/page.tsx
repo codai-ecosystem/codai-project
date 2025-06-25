@@ -1,20 +1,21 @@
-import type { Metadata } from 'next'
-import AvailableCoursesSection from '@/components/AvailableCoursesSection'
-import HeroSection from '@/components/HeroSection'
-import FeaturedReviewsSection from '@/components/FeaturedReviewsSection'
-import TechStackSection from '@/components/TechStackSection'
-import WhyChooseUsSection from '@/components/WhyChooseUsSection'
-import LearningPathSection from '@/components/LearningPathSection'
-import StatisticsSection from '@/components/StatisticsSection'
-import CallToActionSection from '@/components/CallToActionSection'
-import FeaturedCoursesSection from '@/components/FeaturedCoursesSection'
-import InstructorHighlightsSection from '@/components/InstructorHighlightsSection'
-import RecommendedCoursesSection from '@/components/RecommendedCoursesSection'
-import { constructMetadata } from '@/utils/metadata'
+import type { Metadata } from 'next';
+import AvailableCoursesSection from '@/components/AvailableCoursesSection';
+import HeroSection from '@/components/HeroSection';
+import FeaturedReviewsSection from '@/components/FeaturedReviewsSection';
+import TechStackSection from '@/components/TechStackSection';
+import WhyChooseUsSection from '@/components/WhyChooseUsSection';
+import LearningPathSection from '@/components/LearningPathSection';
+import StatisticsSection from '@/components/StatisticsSection';
+import CallToActionSection from '@/components/CallToActionSection';
+import FeaturedCoursesSection from '@/components/FeaturedCoursesSection';
+import InstructorHighlightsSection from '@/components/InstructorHighlightsSection';
+import RecommendedCoursesSection from '@/components/RecommendedCoursesSection';
+import { constructMetadata } from '@/utils/metadata';
 
 export const metadata: Metadata = constructMetadata({
   title: 'Home',
-  description: 'Advance your career with expert-led online courses in programming, technology, and digital skills. Learn at your own pace with our comprehensive curriculum.',
+  description:
+    'Advance your career with expert-led online courses in programming, technology, and digital skills. Learn at your own pace with our comprehensive curriculum.',
   keywords: [
     'online courses',
     'programming courses',
@@ -22,8 +23,8 @@ export const metadata: Metadata = constructMetadata({
     'learn to code',
     'professional development',
     'digital skills',
-    'online learning platform'
-  ]
+    'online learning platform',
+  ],
 });
 
 export default function Home() {
@@ -62,5 +63,5 @@ export default function Home() {
       {/* Call to action section */}
       <CallToActionSection />
     </main>
-  )
+  );
 }

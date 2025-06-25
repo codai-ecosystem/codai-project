@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { Toast, ToastProps, ToastType } from '@/types';
@@ -13,7 +13,9 @@ interface ToastContextProps {
 
 const ToastContext = createContext<ToastContextProps | undefined>(undefined);
 
-const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const ToastProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const showToast = useCallback((props: Omit<ToastProps, 'id'>): string => {
@@ -59,13 +61,15 @@ const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   }, []);
 
   const updateToast = useCallback((id: string, props: Partial<ToastProps>) => {
-    setToasts(prev => prev.map(toast => 
-      toast.id === id ? { ...toast, ...props } : toast
-    ));
+    setToasts(prev =>
+      prev.map(toast => (toast.id === id ? { ...toast, ...props } : toast))
+    );
   }, []);
 
   return (
-    <ToastContext.Provider value={{ showToast, hideToast, hideAllToasts, updateToast }}>
+    <ToastContext.Provider
+      value={{ showToast, hideToast, hideAllToasts, updateToast }}
+    >
       {children}
       <ToastContainer toasts={toasts} onClose={hideToast} />
     </ToastContext.Provider>

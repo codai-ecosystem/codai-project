@@ -14,18 +14,18 @@ import ExpoIcon from './ExpoIcon';
 import StripeIcon from './StripeIcon';
 
 export {
-    HTMLIcon,
-    CSSIcon,
-    JavaScriptIcon,
-    TypeScriptIcon,
-    ReactIcon,
-    ReactNativeIcon,
-    NextJsIcon,
-    NodeJsIcon,
-    TailwindCssIcon,
-    FirebaseIcon,
-    MongoDBIcon,
-    NoSQLIcon,
-    ExpoIcon,
-    StripeIcon
+  HTMLIcon,
+  CSSIcon,
+  JavaScriptIcon,
+  TypeScriptIcon,
+  ReactIcon,
+  ReactNativeIcon,
+  NextJsIcon,
+  NodeJsIcon,
+  TailwindCssIcon,
+  FirebaseIcon,
+  MongoDBIcon,
+  NoSQLIcon,
+  ExpoIcon,
+  StripeIcon,
 };

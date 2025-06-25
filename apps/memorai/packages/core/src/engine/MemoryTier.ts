@@ -4,10 +4,10 @@
  */
 
 export enum MemoryTierLevel {
-  ADVANCED = "advanced", // OpenAI-powered semantic search
-  SMART = "smart", // Local AI embeddings
-  BASIC = "basic", // Keyword-based search
-  MOCK = "mock", // Testing/development mode
+  ADVANCED = 'advanced', // OpenAI-powered semantic search
+  SMART = 'smart', // Local AI embeddings
+  BASIC = 'basic', // Keyword-based search
+  MOCK = 'mock', // Testing/development mode
 }
 
 export interface MemoryTierCapabilities {
@@ -16,8 +16,8 @@ export interface MemoryTierCapabilities {
   classification: boolean;
   vectorSimilarity: boolean;
   offline: boolean;
-  performance: "high" | "medium" | "low";
-  accuracy: "high" | "medium" | "low";
+  performance: 'high' | 'medium' | 'low';
+  accuracy: 'high' | 'medium' | 'low';
 }
 
 export interface MemoryTierConfig {
@@ -44,8 +44,8 @@ export const MEMORY_TIER_CONFIGS: Record<MemoryTierLevel, MemoryTierConfig> = {
       classification: true,
       vectorSimilarity: true,
       offline: false,
-      performance: "high",
-      accuracy: "high",
+      performance: 'high',
+      accuracy: 'high',
     },
     fallbackTier: MemoryTierLevel.SMART,
     priority: 1,
@@ -58,8 +58,8 @@ export const MEMORY_TIER_CONFIGS: Record<MemoryTierLevel, MemoryTierConfig> = {
       classification: true,
       vectorSimilarity: true,
       offline: true,
-      performance: "medium",
-      accuracy: "medium",
+      performance: 'medium',
+      accuracy: 'medium',
     },
     fallbackTier: MemoryTierLevel.BASIC,
     priority: 2,
@@ -72,8 +72,8 @@ export const MEMORY_TIER_CONFIGS: Record<MemoryTierLevel, MemoryTierConfig> = {
       classification: true,
       vectorSimilarity: false,
       offline: true,
-      performance: "medium",
-      accuracy: "low",
+      performance: 'medium',
+      accuracy: 'low',
     },
     fallbackTier: MemoryTierLevel.MOCK,
     priority: 3,
@@ -86,8 +86,8 @@ export const MEMORY_TIER_CONFIGS: Record<MemoryTierLevel, MemoryTierConfig> = {
       classification: false,
       vectorSimilarity: false,
       offline: true,
-      performance: "high",
-      accuracy: "low",
+      performance: 'high',
+      accuracy: 'low',
     },
     priority: 4,
   },
@@ -154,20 +154,20 @@ export class MemoryTierDetector {
       if (azureEndpoint && azureApiKey && azureDeployment) {
         // Test Azure OpenAI availability with a minimal chat request
         const azureApiVersion =
-          process.env.AZURE_OPENAI_API_VERSION || "2024-02-15-preview";
+          process.env.AZURE_OPENAI_API_VERSION || '2024-02-15-preview';
         const response = await fetch(
           `${azureEndpoint}/openai/deployments/${azureDeployment}/chat/completions?api-version=${azureApiVersion}`,
           {
-            method: "POST",
+            method: 'POST',
             headers: {
-              "api-key": azureApiKey,
-              "Content-Type": "application/json",
+              'api-key': azureApiKey,
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              messages: [{ role: "user", content: "test" }],
+              messages: [{ role: 'user', content: 'test' }],
               max_tokens: 1,
             }),
-          },
+          }
         );
 
         if (response.ok) return true;
@@ -179,11 +179,11 @@ export class MemoryTierDetector {
       if (!apiKey) return false;
 
       // Quick test call to validate API key
-      const response = await fetch("https://api.openai.com/v1/models", {
-        method: "GET",
+      const response = await fetch('https://api.openai.com/v1/models', {
+        method: 'GET',
         headers: {
           Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       });
 
@@ -199,19 +199,19 @@ export class MemoryTierDetector {
   private async isLocalAIAvailable(): Promise<boolean> {
     try {
       // Check if Python and sentence-transformers are available
-      const { spawn } = await import("child_process");
+      const { spawn } = await import('child_process');
 
-      return new Promise((resolve) => {
-        const python = spawn("python", [
-          "-c",
+      return new Promise(resolve => {
+        const python = spawn('python', [
+          '-c',
           'import sentence_transformers; print("OK")',
         ]);
 
-        python.on("close", (code) => {
+        python.on('close', code => {
           resolve(code === 0);
         });
 
-        python.on("error", () => {
+        python.on('error', () => {
           resolve(false);
         });
 
@@ -227,8 +227,8 @@ export class MemoryTierDetector {
    */
   private isTestingEnvironment(): boolean {
     return (
-      process.env.NODE_ENV === "test" ||
-      process.env.MEMORAI_MODE === "test" ||
+      process.env.NODE_ENV === 'test' ||
+      process.env.MEMORAI_MODE === 'test' ||
       process.env.JEST_WORKER_ID !== undefined
     );
   }
@@ -255,15 +255,15 @@ export class MemoryTierDetector {
   private getTierMessage(tier: MemoryTierLevel): string {
     switch (tier) {
       case MemoryTierLevel.ADVANCED:
-        return "🚀 Advanced Memory: Full semantic search with OpenAI embeddings";
+        return '🚀 Advanced Memory: Full semantic search with OpenAI embeddings';
       case MemoryTierLevel.SMART:
-        return "🧠 Smart Memory: Local AI embeddings for offline semantic search";
+        return '🧠 Smart Memory: Local AI embeddings for offline semantic search';
       case MemoryTierLevel.BASIC:
-        return "📝 Basic Memory: Keyword-based search, fully offline";
+        return '📝 Basic Memory: Keyword-based search, fully offline';
       case MemoryTierLevel.MOCK:
-        return "🧪 Mock Memory: Testing mode with simulated responses";
+        return '🧪 Mock Memory: Testing mode with simulated responses';
       default:
-        return "❓ Unknown Memory Tier";
+        return '❓ Unknown Memory Tier';
     }
   }
 }

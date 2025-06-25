@@ -1,28 +1,43 @@
-module.exports = {
-  "preset": "ts-jest",
-  "testEnvironment": "node",
-  "testMatch": [
-    "**/__tests__/**/*.{test,spec}.{js,ts}",
-    "**/*.{test,spec}.{js,ts}"
+// Strategic Testing Configuration
+// This file is maintained for backward compatibility
+// Current testing framework: Vitest (configured in vitest.config.ts)
+
+export default {
+  preset: 'ts-jest/presets/default-esm',
+  extensionsToTreatAsEsm: ['.ts'],
+  testEnvironment: 'node',
+  testMatch: [
+    '**/tests/**/*.{test,spec}.{js,ts}',
+    '**/__tests__/**/*.{test,spec}.{js,ts}',
   ],
-  "collectCoverageFrom": [
-    "src/**/*.{js,ts}",
-    "services/**/*.{js,ts}",
-    "!**/*.d.ts",
-    "!**/node_modules/**"
+  testPathIgnorePatterns: [
+    'node_modules',
+    'dist',
+    'build',
+    '**/packages/**', // Packages use Vitest
+    '**/apps/**', // Apps use Vitest
+    '**/services/**', // Services use Vitest
   ],
-  "moduleFileExtensions": [
-    "ts",
-    "js",
-    "json"
+  collectCoverageFrom: [
+    'tests/**/*.{js,ts}',
+    '!**/*.d.ts',
+    '!**/node_modules/**',
+    '!**/dist/**',
+    '!**/build/**',
   ],
-  "transform": {
-    "^.+\\.(ts|tsx)$": "ts-jest"
+  moduleFileExtensions: ['ts', 'js', 'json'],
+  transform: {
+    '^.+\\.(ts|tsx)$': [
+      'ts-jest',
+      {
+        useESM: true,
+      },
+    ],
   },
-  "testPathIgnorePatterns": [
-    "node_modules",
-    "dist",
-    "build"
-  ],
-  "passWithNoTests": true
+  passWithNoTests: true,
+  globals: {
+    'ts-jest': {
+      useESM: true,
+    },
+  },
 };

@@ -4,16 +4,16 @@ import React, { ReactElement, JSXElementConstructor } from 'react';
 /**
  * A helper function to safely render conditional React elements.
  * This solves TypeScript errors when using conditional rendering with && operator.
- * 
+ *
  * @param condition The condition to check
  * @param element The element to render if condition is true
  * @returns The element if condition is true, null otherwise
  */
 export function renderWhen<P>(
-    condition: boolean,
-    element: ReactElement<P, string | JSXElementConstructor<any>>
+  condition: boolean,
+  element: ReactElement<P, string | JSXElementConstructor<any>>
 ): ReactElement<P, string | JSXElementConstructor<any>> | null {
-    return condition ? element : null;
+  return condition ? element : null;
 }
 
 /**
@@ -21,9 +21,13 @@ export function renderWhen<P>(
  * Use this with Array.filter() to remove nulls and undefined values from an array of elements.
  */
 export function isReactElement<P>(
-    item: ReactElement<P, string | JSXElementConstructor<any>> | boolean | null | undefined
+  item:
+    | ReactElement<P, string | JSXElementConstructor<any>>
+    | boolean
+    | null
+    | undefined
 ): item is ReactElement<P, string | JSXElementConstructor<any>> {
-    return item !== null && item !== undefined && item !== false && item !== true;
+  return item !== null && item !== undefined && item !== false && item !== true;
 }
 
 /**
@@ -31,8 +35,8 @@ export function isReactElement<P>(
  * Example: <>{conditionalElement(myCondition, <MyComponent/>)}</>
  */
 export function conditionalElement<P>(
-    condition: boolean,
-    element: ReactElement<P, string | JSXElementConstructor<any>>
+  condition: boolean,
+  element: ReactElement<P, string | JSXElementConstructor<any>>
 ): ReactElement<P, string | JSXElementConstructor<any>> | null {
-    return condition ? element : null;
+  return condition ? element : null;
 }

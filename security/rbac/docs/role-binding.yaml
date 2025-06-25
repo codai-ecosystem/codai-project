@@ -1,0 +1,27 @@
+{
+  "apiVersion": "rbac.authorization.k8s.io/v1",
+  "kind": "RoleBinding",
+  "metadata": {
+    "name": "docs-rb",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "docs",
+      "component": "rbac",
+      "app.kubernetes.io/name": "docs",
+      "app.kubernetes.io/component": "rbac",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  },
+  "subjects": [
+    {
+      "kind": "ServiceAccount",
+      "name": "docs-sa",
+      "namespace": "codai-production"
+    }
+  ],
+  "roleRef": {
+    "kind": "Role",
+    "name": "docs-role",
+    "apiGroup": "rbac.authorization.k8s.io"
+  }
+}

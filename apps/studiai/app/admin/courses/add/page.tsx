@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import AddCourseForm from '@/components/Course/AddCourseForm';
 import { useRouter } from 'next/navigation';

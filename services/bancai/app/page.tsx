@@ -2,7 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { Card, Button, LoadingSpinner, ErrorMessage } from '@/components/ui';
-import { BalanceCard, TransactionList, InsightCard } from '@/components/financial';
+import {
+  BalanceCard,
+  TransactionList,
+  InsightCard,
+} from '@/components/financial';
 import PortfolioManager from '@/components/investment/PortfolioManager';
 import TradingInterface from '@/components/trading/TradingInterface';
 import RiskManagement from '@/components/risk/RiskManagement';
@@ -51,7 +55,9 @@ interface DashboardData {
 }
 
 export default function Home() {
-  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -83,7 +89,6 @@ export default function Home() {
 
       const data = await dashboardResponse.json();
       setDashboardData(data);
-
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -98,8 +103,8 @@ export default function Home() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: 'demo@bancai.ro',
-          password: 'demo123'
-        })
+          password: 'demo123',
+        }),
       });
 
       if (response.ok) {
@@ -139,9 +144,7 @@ export default function Home() {
             <Button onClick={handleSignIn} className="w-full">
               Demo Sign In
             </Button>
-            {error && (
-              <ErrorMessage message={error} className="mt-4" />
-            )}
+            {error && <ErrorMessage message={error} className="mt-4" />}
           </div>
         </Card>
       </div>
@@ -171,8 +174,12 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">BancAI Dashboard</h1>
-              <p className="text-gray-600">Welcome back, {dashboardData.user.name}</p>
+              <h1 className="text-2xl font-bold text-gray-900">
+                BancAI Dashboard
+              </h1>
+              <p className="text-gray-600">
+                Welcome back, {dashboardData.user.name}
+              </p>
             </div>
             <div className="text-sm text-gray-500">
               Service: bancai.ro | Priority: 2
@@ -219,15 +226,23 @@ export default function Home() {
             {/* Account Summary */}
             <Card>
               <div className="p-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">Account Summary</h2>
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                  Account Summary
+                </h2>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm text-gray-600">Checking</p>
-                    <p className="text-xl font-semibold">${dashboardData.accountSummary.checkingBalance.toLocaleString()}</p>
+                    <p className="text-xl font-semibold">
+                      $
+                      {dashboardData.accountSummary.checkingBalance.toLocaleString()}
+                    </p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Savings</p>
-                    <p className="text-xl font-semibold">${dashboardData.accountSummary.savingsBalance.toLocaleString()}</p>
+                    <p className="text-xl font-semibold">
+                      $
+                      {dashboardData.accountSummary.savingsBalance.toLocaleString()}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -236,14 +251,25 @@ export default function Home() {
             {/* Spending by Category */}
             <Card>
               <div className="p-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">Spending by Category</h2>
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                  Spending by Category
+                </h2>
                 <div className="space-y-3">
-                  {Object.entries(dashboardData.spendingByCategory).map(([category, amount]) => (
-                    <div key={category} className="flex justify-between items-center">
-                      <span className="text-gray-700 capitalize">{category}</span>
-                      <span className="font-medium">${amount.toFixed(2)}</span>
-                    </div>
-                  ))}
+                  {Object.entries(dashboardData.spendingByCategory).map(
+                    ([category, amount]) => (
+                      <div
+                        key={category}
+                        className="flex justify-between items-center"
+                      >
+                        <span className="text-gray-700 capitalize">
+                          {category}
+                        </span>
+                        <span className="font-medium">
+                          ${amount.toFixed(2)}
+                        </span>
+                      </div>
+                    )
+                  )}
                 </div>
               </div>
             </Card>
@@ -254,15 +280,21 @@ export default function Home() {
             {/* AI Insights Summary */}
             <Card>
               <div className="p-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">AI Insights</h2>
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                  AI Insights
+                </h2>
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Total Insights</span>
-                    <span className="font-medium">{dashboardData.insights.total}</span>
+                    <span className="font-medium">
+                      {dashboardData.insights.total}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Recent</span>
-                    <span className="font-medium">{dashboardData.insights.recent}</span>
+                    <span className="font-medium">
+                      {dashboardData.insights.recent}
+                    </span>
                   </div>
                 </div>
                 <Button className="w-full mt-4" variant="outline">
@@ -274,17 +306,21 @@ export default function Home() {
             {/* AI Recommendations */}
             <Card>
               <div className="p-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">AI Recommendations</h2>
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                  AI Recommendations
+                </h2>
                 <div className="space-y-4">
-                  {dashboardData.aiRecommendations.slice(0, 2).map((recommendation) => (
-                    <InsightCard
-                      key={recommendation.id}
-                      title={recommendation.title}
-                      description={recommendation.description}
-                      type={recommendation.type}
-                      impact={recommendation.impact}
-                    />
-                  ))}
+                  {dashboardData.aiRecommendations
+                    .slice(0, 2)
+                    .map(recommendation => (
+                      <InsightCard
+                        key={recommendation.id}
+                        title={recommendation.title}
+                        description={recommendation.description}
+                        type={recommendation.type}
+                        impact={recommendation.impact}
+                      />
+                    ))}
                 </div>
                 <Button className="w-full mt-4" variant="outline">
                   View All Recommendations
@@ -295,14 +331,17 @@ export default function Home() {
             {/* Savings Goals */}
             <Card>
               <div className="p-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">Savings Goals</h2>
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                  Savings Goals
+                </h2>
                 <div className="space-y-4">
-                  {dashboardData.savingsGoals.map((goal) => (
+                  {dashboardData.savingsGoals.map(goal => (
                     <div key={goal.id} className="space-y-2">
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-700">{goal.name}</span>
                         <span className="text-gray-500">
-                          ${goal.currentAmount.toLocaleString()} / ${goal.targetAmount.toLocaleString()}
+                          ${goal.currentAmount.toLocaleString()} / $
+                          {goal.targetAmount.toLocaleString()}
                         </span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
@@ -323,7 +362,9 @@ export default function Home() {
         <div className="mt-8">
           <Card>
             <div className="p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Codai Ecosystem Integration</h2>
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                Codai Ecosystem Integration
+              </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                 <div className="flex items-center space-x-2">
                   <div className="w-3 h-3 bg-green-500 rounded-full"></div>
@@ -347,7 +388,9 @@ export default function Home() {
           {/* Portfolio Management */}
           <Card>
             <div className="p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">Portfolio Management</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                Portfolio Management
+              </h2>
               <PortfolioManager />
             </div>
           </Card>
@@ -355,7 +398,9 @@ export default function Home() {
           {/* Trading Interface */}
           <Card>
             <div className="p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">Trading Interface</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                Trading Interface
+              </h2>
               <TradingInterface />
             </div>
           </Card>
@@ -363,7 +408,9 @@ export default function Home() {
           {/* Options Trading */}
           <Card>
             <div className="p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">Options Trading</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                Options Trading
+              </h2>
               <OptionsTrading />
             </div>
           </Card>
@@ -371,7 +418,9 @@ export default function Home() {
           {/* Risk Management */}
           <Card>
             <div className="p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">Risk Management</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                Risk Management
+              </h2>
               <RiskManagement />
             </div>
           </Card>

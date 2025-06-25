@@ -6,135 +6,135 @@ import path from 'path';
 const servicesDir = 'services';
 
 const serviceConfigs = {
-    logai: {
-        name: 'LogAI',
-        description: 'Identity & Authentication Hub for the Codai Ecosystem',
-        domain: 'logai.ro',
-        priority: 1,
-        port: 3002,
-        type: 'identity-auth'
-    },
-    bancai: {
-        name: 'BancAI',
-        description: 'AI-Powered Financial Platform for Modern Banking',
-        domain: 'bancai.ro',
-        priority: 2,
-        port: 3003,
-        type: 'fintech'
-    },
-    wallet: {
-        name: 'Wallet',
-        description: 'Programmable Wallet for BancAI Financial Services',
-        domain: 'wallet.bancai.ro',
-        priority: 2,
-        port: 3004,
-        type: 'fintech-wallet'
-    },
-    fabricai: {
-        name: 'FabricAI',
-        description: 'AI Services Platform and Orchestration Layer',
-        domain: 'fabricai.ro',
-        priority: 2,
-        port: 3005,
-        type: 'ai-services'
-    },
-    sociai: {
-        name: 'SociAI',
-        description: 'AI-Native Social Platform for Community Building',
-        domain: 'sociai.ro',
-        priority: 3,
-        port: 3006,
-        type: 'social'
-    },
-    cumparai: {
-        name: 'CumparAI',
-        description: 'AI-Powered Shopping and Marketplace Platform',
-        domain: 'cumparai.ro',
-        priority: 3,
-        port: 3007,
-        type: 'ecommerce'
-    },
-    x: {
-        name: 'X',
-        description: 'AI Trading Platform for Advanced Financial Operations',
-        domain: 'x.codai.ro',
-        priority: 4,
-        port: 3008,
-        type: 'trading'
-    }
+  logai: {
+    name: 'LogAI',
+    description: 'Identity & Authentication Hub for the Codai Ecosystem',
+    domain: 'logai.ro',
+    priority: 1,
+    port: 3002,
+    type: 'identity-auth',
+  },
+  bancai: {
+    name: 'BancAI',
+    description: 'AI-Powered Financial Platform for Modern Banking',
+    domain: 'bancai.ro',
+    priority: 2,
+    port: 3003,
+    type: 'fintech',
+  },
+  wallet: {
+    name: 'Wallet',
+    description: 'Programmable Wallet for BancAI Financial Services',
+    domain: 'wallet.bancai.ro',
+    priority: 2,
+    port: 3004,
+    type: 'fintech-wallet',
+  },
+  fabricai: {
+    name: 'FabricAI',
+    description: 'AI Services Platform and Orchestration Layer',
+    domain: 'fabricai.ro',
+    priority: 2,
+    port: 3005,
+    type: 'ai-services',
+  },
+  sociai: {
+    name: 'SociAI',
+    description: 'AI-Native Social Platform for Community Building',
+    domain: 'sociai.ro',
+    priority: 3,
+    port: 3006,
+    type: 'social',
+  },
+  cumparai: {
+    name: 'CumparAI',
+    description: 'AI-Powered Shopping and Marketplace Platform',
+    domain: 'cumparai.ro',
+    priority: 3,
+    port: 3007,
+    type: 'ecommerce',
+  },
+  x: {
+    name: 'X',
+    description: 'AI Trading Platform for Advanced Financial Operations',
+    domain: 'x.codai.ro',
+    priority: 4,
+    port: 3008,
+    type: 'trading',
+  },
 };
 
 function createPackageJson(serviceName, config) {
-    return {
-        name: `@codai/${serviceName}`,
-        version: '0.1.0',
-        description: config.description,
-        private: true,
-        type: 'module',
-        scripts: {
-            dev: 'next dev -p ' + config.port,
-            build: 'next build',
-            start: 'next start -p ' + config.port,
-            lint: 'next lint',
-            test: 'vitest',
-            'test:ui': 'vitest --ui',
-            'type-check': 'tsc --noEmit'
-        },
-        dependencies: {
-            'next': '^14.0.0',
-            'react': '^18.0.0',
-            'react-dom': '^18.0.0',
-            '@types/node': '^20.0.0',
-            '@types/react': '^18.0.0',
-            '@types/react-dom': '^18.0.0',
-            'typescript': '^5.0.0',
-            'tailwindcss': '^3.4.0',
-            'autoprefixer': '^10.4.0',
-            'postcss': '^8.4.0'
-        },
-        devDependencies: {
-            'eslint': '^8.0.0',
-            'eslint-config-next': '^14.0.0',
-            'vitest': '^1.0.0',
-            '@vitejs/plugin-react': '^4.0.0'
-        },
-        engines: {
-            node: '>=18.0.0',
-            pnpm: '>=8.0.0'
-        }
-    };
+  return {
+    name: `@codai/${serviceName}`,
+    version: '0.1.0',
+    description: config.description,
+    private: true,
+    type: 'module',
+    scripts: {
+      dev: 'next dev -p ' + config.port,
+      build: 'next build',
+      start: 'next start -p ' + config.port,
+      lint: 'next lint',
+      test: 'vitest',
+      'test:ui': 'vitest --ui',
+      'type-check': 'tsc --noEmit',
+    },
+    dependencies: {
+      next: '^14.0.0',
+      react: '^18.0.0',
+      'react-dom': '^18.0.0',
+      '@types/node': '^20.0.0',
+      '@types/react': '^18.0.0',
+      '@types/react-dom': '^18.0.0',
+      typescript: '^5.0.0',
+      tailwindcss: '^3.4.0',
+      autoprefixer: '^10.4.0',
+      postcss: '^8.4.0',
+    },
+    devDependencies: {
+      eslint: '^8.0.0',
+      'eslint-config-next': '^14.0.0',
+      vitest: '^1.0.0',
+      '@vitejs/plugin-react': '^4.0.0',
+    },
+    engines: {
+      node: '>=18.0.0',
+      pnpm: '>=8.0.0',
+    },
+  };
 }
 
 function createAgentProjectJson(serviceName, config) {
-    return {
-        name: config.name,
-        description: config.description,
-        version: '0.1.0',
-        type: 'service',
-        priority: config.priority,
-        domain: config.domain,
-        serviceType: config.type,
-        port: config.port,
-        framework: 'next.js',
-        language: 'typescript',
-        aiCapabilities: {
-            memory: true,
-            reasoning: true,
-            planning: true,
-            codeGeneration: true
-        },
-        dependencies: [],
-        relatedServices: [],
-        developmentStatus: 'scaffolding',
-        lastUpdated: new Date().toISOString(),
-        owner: 'codai-ecosystem',
-        repository: `https://github.com/codai-ecosystem/${serviceName}`,
-        documentation: `docs/${serviceName}/README.md`
-    };
+  return {
+    name: config.name,
+    description: config.description,
+    version: '0.1.0',
+    type: 'service',
+    priority: config.priority,
+    domain: config.domain,
+    serviceType: config.type,
+    port: config.port,
+    framework: 'next.js',
+    language: 'typescript',
+    aiCapabilities: {
+      memory: true,
+      reasoning: true,
+      planning: true,
+      codeGeneration: true,
+    },
+    dependencies: [],
+    relatedServices: [],
+    developmentStatus: 'scaffolding',
+    lastUpdated: new Date().toISOString(),
+    owner: 'codai-ecosystem',
+    repository: `https://github.com/codai-ecosystem/${serviceName}`,
+    documentation: `docs/${serviceName}/README.md`,
+  };
 }
 
 function createReadme(serviceName, config) {
-    return `# ${config.name}
+  return `# ${config.name}
 
 ${config.description}
 
@@ -198,7 +198,7 @@ Private - Codai Ecosystem
 }
 
 function createNextConfig(serviceName) {
-    return `/** @type {import('next').NextConfig} */
+  return `/** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
     // Enable React Server Components
@@ -223,7 +223,7 @@ export default nextConfig;
 }
 
 function createTailwindConfig() {
-    return `import type { Config } from 'tailwindcss';
+  return `import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: [
@@ -247,7 +247,7 @@ export default config;
 }
 
 function createTsConfig() {
-    return `{
+  return `{
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -278,7 +278,7 @@ function createTsConfig() {
 }
 
 function createAppLayout() {
-    return `import type { Metadata } from 'next';
+  return `import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 
@@ -304,7 +304,7 @@ export default function RootLayout({
 }
 
 function createAppPage(serviceName, config) {
-    return `export default function Home() {
+  return `export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
@@ -347,7 +347,7 @@ function createAppPage(serviceName, config) {
 }
 
 function createGlobalsCss() {
-    return `@tailwind base;
+  return `@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -384,7 +384,7 @@ body {
 }
 
 function createPostcssConfig() {
-    return `module.exports = {
+  return `module.exports = {
   plugins: {
     tailwindcss: {},
     autoprefixer: {},
@@ -394,14 +394,14 @@ function createPostcssConfig() {
 }
 
 function createEslintConfig() {
-    return `{
+  return `{
   "extends": ["next/core-web-vitals"]
 }
 `;
 }
 
 function createVitestConfig() {
-    return `import { defineConfig } from 'vitest/config';
+  return `import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
@@ -414,7 +414,7 @@ export default defineConfig({
 }
 
 function createGitignore() {
-    return `# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+  return `# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
 /node_modules
@@ -461,114 +461,110 @@ Thumbs.db
 }
 
 async function scaffoldService(serviceName, config) {
-    const servicePath = path.join(servicesDir, serviceName);
+  const servicePath = path.join(servicesDir, serviceName);
 
-    // Check if service directory exists and is empty
-    if (!fs.existsSync(servicePath)) {
-        console.log(`❌ Service directory ${serviceName} does not exist`);
-        return;
-    }
+  // Check if service directory exists and is empty
+  if (!fs.existsSync(servicePath)) {
+    console.log(`❌ Service directory ${serviceName} does not exist`);
+    return;
+  }
 
-    const files = fs.readdirSync(servicePath);
-    if (files.length > 0) {
-        console.log(`ℹ️  Service ${serviceName} already has content (${files.length} files), skipping scaffold`);
-        return;
-    }
-
-    console.log(`🚀 Scaffolding ${serviceName}...`);
-
-    // Create directory structure
-    const dirs = ['app', 'components', 'lib', 'public', 'styles', 'types'];
-    dirs.forEach(dir => {
-        fs.mkdirSync(path.join(servicePath, dir), { recursive: true });
-    });
-
-    // Create files
-    fs.writeFileSync(
-        path.join(servicePath, 'package.json'),
-        JSON.stringify(createPackageJson(serviceName, config), null, 2)
+  const files = fs.readdirSync(servicePath);
+  if (files.length > 0) {
+    console.log(
+      `ℹ️  Service ${serviceName} already has content (${files.length} files), skipping scaffold`
     );
+    return;
+  }
 
-    fs.writeFileSync(
-        path.join(servicePath, 'agent.project.json'),
-        JSON.stringify(createAgentProjectJson(serviceName, config), null, 2)
-    );
+  console.log(`🚀 Scaffolding ${serviceName}...`);
 
-    fs.writeFileSync(
-        path.join(servicePath, 'README.md'),
-        createReadme(serviceName, config)
-    );
+  // Create directory structure
+  const dirs = ['app', 'components', 'lib', 'public', 'styles', 'types'];
+  dirs.forEach(dir => {
+    fs.mkdirSync(path.join(servicePath, dir), { recursive: true });
+  });
 
-    fs.writeFileSync(
-        path.join(servicePath, 'next.config.js'),
-        createNextConfig(serviceName)
-    );
+  // Create files
+  fs.writeFileSync(
+    path.join(servicePath, 'package.json'),
+    JSON.stringify(createPackageJson(serviceName, config), null, 2)
+  );
 
-    fs.writeFileSync(
-        path.join(servicePath, 'tailwind.config.ts'),
-        createTailwindConfig()
-    );
+  fs.writeFileSync(
+    path.join(servicePath, 'agent.project.json'),
+    JSON.stringify(createAgentProjectJson(serviceName, config), null, 2)
+  );
 
-    fs.writeFileSync(
-        path.join(servicePath, 'tsconfig.json'),
-        createTsConfig()
-    );
+  fs.writeFileSync(
+    path.join(servicePath, 'README.md'),
+    createReadme(serviceName, config)
+  );
 
-    fs.writeFileSync(
-        path.join(servicePath, 'postcss.config.js'),
-        createPostcssConfig()
-    );
+  fs.writeFileSync(
+    path.join(servicePath, 'next.config.js'),
+    createNextConfig(serviceName)
+  );
 
-    fs.writeFileSync(
-        path.join(servicePath, '.eslintrc.json'),
-        createEslintConfig()
-    );
+  fs.writeFileSync(
+    path.join(servicePath, 'tailwind.config.ts'),
+    createTailwindConfig()
+  );
 
-    fs.writeFileSync(
-        path.join(servicePath, 'vitest.config.ts'),
-        createVitestConfig()
-    );
+  fs.writeFileSync(path.join(servicePath, 'tsconfig.json'), createTsConfig());
 
-    fs.writeFileSync(
-        path.join(servicePath, '.gitignore'),
-        createGitignore()
-    );
+  fs.writeFileSync(
+    path.join(servicePath, 'postcss.config.js'),
+    createPostcssConfig()
+  );
 
-    // Create app structure
-    fs.writeFileSync(
-        path.join(servicePath, 'app', 'layout.tsx'),
-        createAppLayout()
-    );
+  fs.writeFileSync(
+    path.join(servicePath, '.eslintrc.json'),
+    createEslintConfig()
+  );
 
-    fs.writeFileSync(
-        path.join(servicePath, 'app', 'page.tsx'),
-        createAppPage(serviceName, config)
-    );
+  fs.writeFileSync(
+    path.join(servicePath, 'vitest.config.ts'),
+    createVitestConfig()
+  );
 
-    fs.writeFileSync(
-        path.join(servicePath, 'app', 'globals.css'),
-        createGlobalsCss()
-    );
+  fs.writeFileSync(path.join(servicePath, '.gitignore'), createGitignore());
 
-    // Create a basic component
-    fs.writeFileSync(
-        path.join(servicePath, 'components', 'README.md'),
-        `# Components\n\nReact components for ${config.name} service.\n`
-    );
+  // Create app structure
+  fs.writeFileSync(
+    path.join(servicePath, 'app', 'layout.tsx'),
+    createAppLayout()
+  );
 
-    // Create lib structure
-    fs.writeFileSync(
-        path.join(servicePath, 'lib', 'utils.ts'),
-        `export function cn(...classes: string[]) {\n  return classes.filter(Boolean).join(' ');\n}\n`
-    );
+  fs.writeFileSync(
+    path.join(servicePath, 'app', 'page.tsx'),
+    createAppPage(serviceName, config)
+  );
 
-    // Create types
-    fs.writeFileSync(
-        path.join(servicePath, 'types', 'index.ts'),
-        `// Type definitions for ${config.name}\n\nexport interface ServiceConfig {\n  name: string;\n  version: string;\n  domain: string;\n}\n`
-    );
+  fs.writeFileSync(
+    path.join(servicePath, 'app', 'globals.css'),
+    createGlobalsCss()
+  );
 
-    console.log(`✅ Successfully scaffolded ${serviceName}!`);
+  // Create a basic component
+  fs.writeFileSync(
+    path.join(servicePath, 'components', 'README.md'),
+    `# Components\n\nReact components for ${config.name} service.\n`
+  );
+
+  // Create lib structure
+  fs.writeFileSync(
+    path.join(servicePath, 'lib', 'utils.ts'),
+    `export function cn(...classes: string[]) {\n  return classes.filter(Boolean).join(' ');\n}\n`
+  );
+
+  // Create types
+  fs.writeFileSync(
+    path.join(servicePath, 'types', 'index.ts'),
+    `// Type definitions for ${config.name}\n\nexport interface ServiceConfig {\n  name: string;\n  version: string;\n  domain: string;\n}\n`
+  );
+
+  console.log(`✅ Successfully scaffolded ${serviceName}!`);
 }
 
 // Main execution
@@ -576,7 +572,7 @@ console.log('🏗️  CODAI ECOSYSTEM SERVICE SCAFFOLDING');
 console.log('========================================');
 
 for (const [serviceName, config] of Object.entries(serviceConfigs)) {
-    await scaffoldService(serviceName, config);
+  await scaffoldService(serviceName, config);
 }
 
 console.log('\n🎉 Service scaffolding complete!');

@@ -19,14 +19,15 @@ export async function withAuth(
   const {
     requireAuth = true,
     allowedRoles = [],
-    redirectTo = '/auth/signin'
+    redirectTo = '/auth/signin',
   } = options;
 
   try {
     // Extract token from Authorization header or cookies
     const authHeader = request.headers.get('authorization');
-    const token = authHeader?.replace('Bearer ', '') || 
-                  request.cookies.get('bancai-auth-token')?.value;
+    const token =
+      authHeader?.replace('Bearer ', '') ||
+      request.cookies.get('bancai-auth-token')?.value;
 
     if (!token) {
       if (requireAuth) {
@@ -49,7 +50,7 @@ export async function withAuth(
 
     // Check role permissions
     if (allowedRoles.length > 0) {
-      const hasRequiredRole = allowedRoles.some(role => 
+      const hasRequiredRole = allowedRoles.some(role =>
         user.roles.includes(role)
       );
 
@@ -64,11 +65,11 @@ export async function withAuth(
     return { user };
   } catch (error) {
     console.error('Authentication error:', error);
-    
+
     if (requireAuth) {
       return NextResponse.redirect(new URL(redirectTo, request.url));
     }
-    
+
     return NextResponse.next();
   }
 }
@@ -153,7 +154,10 @@ export class SessionManager {
 
 // Protected route wrapper for API routes
 export function withAuthApi<T = any>(
-  handler: (req: AuthenticatedRequest, user: AuthUser) => Promise<NextResponse<T>>,
+  handler: (
+    req: AuthenticatedRequest,
+    user: AuthUser
+  ) => Promise<NextResponse<T>>,
   options: AuthMiddlewareOptions = {}
 ) {
   return async (req: AuthenticatedRequest): Promise<NextResponse> => {

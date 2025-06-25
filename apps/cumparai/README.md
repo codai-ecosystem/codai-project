@@ -3,8 +3,8 @@
 AI Shopping Platform
 
 ## Domain
-- Primary: cumparai.ro
 
+- Primary: cumparai.ro
 
 ## Development
 

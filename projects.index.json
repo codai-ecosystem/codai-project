@@ -1,9 +1,15 @@
 {
   "version": "1.0.0",
-  "lastUpdated": "2025-06-23T15:41:24.916Z",
+  "lastUpdated": "2025-06-24T10:30:00.000Z",
   "totalApps": 11,
   "totalServices": 29,
   "totalRepositories": 29,
+  "portConfiguration": {
+    "portRange": "4000-4028",
+    "totalPorts": 29,
+    "lastPortAssignment": "2025-06-24T10:30:00.000Z",
+    "conflictResolution": "unique-port-per-service"
+  },
   "apps": [
     {
       "name": "codai",
@@ -24,7 +30,9 @@
       "metadata": {
         "framework": "next.js",
         "language": "typescript",
-        "styling": "tailwindcss"
+        "styling": "tailwindcss",
+        "port": 4000,
+        "developmentUrl": "http://localhost:3000"
       }
     },
     {

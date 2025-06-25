@@ -1,12 +1,24 @@
-'use client'
+'use client';
 
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiX, FiAlertCircle, FiCheckCircle, FiInfo, FiAlertTriangle } from '@/components/icons/FeatherIcons';
+import {
+  FiX,
+  FiAlertCircle,
+  FiCheckCircle,
+  FiInfo,
+  FiAlertTriangle,
+} from '@/components/icons/FeatherIcons';
 
 // Toast Types
 export type ToastType = 'info' | 'success' | 'warning' | 'error';
-export type ToastPosition = 'top-right' | 'top-center' | 'top-left' | 'bottom-right' | 'bottom-center' | 'bottom-left';
+export type ToastPosition =
+  | 'top-right'
+  | 'top-center'
+  | 'top-left'
+  | 'bottom-right'
+  | 'bottom-center'
+  | 'bottom-left';
 
 export interface ToastProps {
   id: string;
@@ -37,16 +49,34 @@ interface ToastContextProps {
 const ToastContext = createContext<ToastContextProps | undefined>(undefined);
 
 // Toast Component
-const ToastItem: React.FC<{ toast: Toast; onClose: (id: string) => void }> = ({ toast, onClose }) => {
+const ToastItem: React.FC<{ toast: Toast; onClose: (id: string) => void }> = ({
+  toast,
+  onClose,
+}) => {
   // Toast icon based on type
   const getToastIcon = (type: Toast['type']) => {
     switch (type) {
       case 'success':
-        return <FiCheckCircle className="text-[color:var(--ai-success, #10b981)]" size={18} />;
+        return (
+          <FiCheckCircle
+            className="text-[color:var(--ai-success, #10b981)]"
+            size={18}
+          />
+        );
       case 'warning':
-        return <FiAlertTriangle className="text-[color:var(--ai-warning, #f59e0b)]" size={18} />;
+        return (
+          <FiAlertTriangle
+            className="text-[color:var(--ai-warning, #f59e0b)]"
+            size={18}
+          />
+        );
       case 'error':
-        return <FiAlertCircle className="text-[color:var(--ai-error, #ef4444)]" size={18} />;
+        return (
+          <FiAlertCircle
+            className="text-[color:var(--ai-error, #ef4444)]"
+            size={18}
+          />
+        );
       case 'info':
       default:
         return <FiInfo className="text-[color:var(--ai-primary)]" size={18} />;
@@ -73,12 +103,15 @@ const ToastItem: React.FC<{ toast: Toast; onClose: (id: string) => void }> = ({ 
       layout
       className={`rounded-lg shadow-lg backdrop-blur-sm border ${getToastBgClass(toast.type)} p-4 flex gap-3 items-start`}
       initial={{ opacity: 0, y: 20, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 400, damping: 30 } }}
+      animate={{
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: { type: 'spring', stiffness: 400, damping: 30 },
+      }}
       exit={{ opacity: 0, x: 100, transition: { duration: 0.2 } }}
     >
-      <div className="flex-shrink-0 mt-0.5">
-        {getToastIcon(toast.type)}
-      </div>
+      <div className="flex-shrink-0 mt-0.5">{getToastIcon(toast.type)}</div>
 
       <div className="flex-1 min-w-0">
         {toast.title && (
@@ -106,7 +139,10 @@ const ToastItem: React.FC<{ toast: Toast; onClose: (id: string) => void }> = ({ 
           className="flex-shrink-0 rounded-full p-1 hover:bg-[color:var(--ai-card-border)]/30 transition-colors"
           aria-label="Close notification"
         >
-          <FiX size={16} className="text-[color:var(--ai-foreground)] opacity-60" />
+          <FiX
+            size={16}
+            className="text-[color:var(--ai-foreground)] opacity-60"
+          />
         </button>
       )}
     </motion.div>
@@ -114,16 +150,22 @@ const ToastItem: React.FC<{ toast: Toast; onClose: (id: string) => void }> = ({ 
 };
 
 // Toast Container Component
-const ToastContainer: React.FC<{ toasts: Toast[]; onClose: (id: string) => void }> = ({ toasts, onClose }) => {
+const ToastContainer: React.FC<{
+  toasts: Toast[];
+  onClose: (id: string) => void;
+}> = ({ toasts, onClose }) => {
   // Group toasts by position
-  const toastsByPosition = toasts.reduce((acc, toast) => {
-    const position = toast.position || 'bottom-right';
-    if (!acc[position]) {
-      acc[position] = [];
-    }
-    acc[position].push(toast);
-    return acc;
-  }, {} as Record<ToastPosition, Toast[]>);
+  const toastsByPosition = toasts.reduce(
+    (acc, toast) => {
+      const position = toast.position || 'bottom-right';
+      if (!acc[position]) {
+        acc[position] = [];
+      }
+      acc[position].push(toast);
+      return acc;
+    },
+    {} as Record<ToastPosition, Toast[]>
+  );
 
   // Get the CSS class for the toast position
   const getPositionClass = (position: ToastPosition): string => {
@@ -152,7 +194,7 @@ const ToastContainer: React.FC<{ toasts: Toast[]; onClose: (id: string) => void 
           className={`fixed z-[9999] flex flex-col gap-2 min-w-[300px] max-w-md ${getPositionClass(position as ToastPosition)}`}
         >
           <AnimatePresence>
-            {positionToasts.map((toast) => (
+            {positionToasts.map(toast => (
               <ToastItem key={toast.id} toast={toast} onClose={onClose} />
             ))}
           </AnimatePresence>
@@ -163,7 +205,9 @@ const ToastContainer: React.FC<{ toasts: Toast[]; onClose: (id: string) => void 
 };
 
 // Toast Provider Component
-export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const showToast = useCallback((props: Omit<ToastProps, 'id'>): string => {
@@ -209,13 +253,15 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, []);
 
   const updateToast = useCallback((id: string, props: Partial<ToastProps>) => {
-    setToasts(prev => prev.map(toast =>
-      toast.id === id ? { ...toast, ...props } : toast
-    ));
+    setToasts(prev =>
+      prev.map(toast => (toast.id === id ? { ...toast, ...props } : toast))
+    );
   }, []);
 
   return (
-    <ToastContext.Provider value={{ showToast, hideToast, hideAllToasts, updateToast }}>
+    <ToastContext.Provider
+      value={{ showToast, hideToast, hideAllToasts, updateToast }}
+    >
       {children}
       <ToastContainer toasts={toasts} onClose={hideToast} />
     </ToastContext.Provider>

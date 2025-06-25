@@ -1,0 +1,54 @@
+{
+  "apiVersion": "networking.k8s.io/v1",
+  "kind": "Ingress",
+  "metadata": {
+    "name": "codai",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "codai",
+      "component": "ingress",
+      "app.kubernetes.io/name": "codai",
+      "app.kubernetes.io/component": "ingress",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    },
+    "annotations": {
+      "kubernetes.io/ingress.class": "nginx",
+      "nginx.ingress.kubernetes.io/ssl-redirect": "true",
+      "nginx.ingress.kubernetes.io/force-ssl-redirect": "true",
+      "cert-manager.io/cluster-issuer": "letsencrypt-prod",
+      "nginx.ingress.kubernetes.io/rate-limit": "100",
+      "nginx.ingress.kubernetes.io/rate-limit-window": "1m"
+    }
+  },
+  "spec": {
+    "rules": [
+      {
+        "host": "codai.codai.dev",
+        "http": {
+          "paths": [
+            {
+              "path": "/",
+              "pathType": "Prefix",
+              "backend": {
+                "service": {
+                  "name": "codai",
+                  "port": {
+                    "number": 80
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "tls": [
+      {
+        "hosts": [
+          "codai.codai.dev"
+        ],
+        "secretName": "codai-tls"
+      }
+    ]
+  }
+}

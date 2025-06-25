@@ -17,9 +17,28 @@ export { default as Divider } from './Divider';
 export { default as Tooltip } from './Tooltip';
 // Temporarily import dropdown components individually
 import Dropdown from './Dropdown';
-import { DropdownTrigger, DropdownMenu, DropdownItem, DropdownSection } from './Dropdown';
-export { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, DropdownSection };
-export { default as Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem } from './Navbar';
+import {
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  DropdownSection,
+} from './Dropdown';
+export {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  DropdownSection,
+};
+export {
+  default as Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  NavbarMenuToggle,
+  NavbarMenu,
+  NavbarMenuItem,
+} from './Navbar';
 
 // Types
 export type { ButtonProps } from './Button';
@@ -36,5 +55,10 @@ export type { AvatarProps } from './Avatar';
 export type { ProgressProps } from './Progress';
 export type { TooltipProps } from './Tooltip';
 export type { DividerProps } from './Divider';
-export type { DropdownProps, DropdownMenuProps, DropdownItemProps, DropdownSectionProps } from './Dropdown';
+export type {
+  DropdownProps,
+  DropdownMenuProps,
+  DropdownItemProps,
+  DropdownSectionProps,
+} from './Dropdown';
 export type { NavbarProps } from './Navbar';

@@ -21,18 +21,21 @@ This is a civic technology service focused on public transparency and democratic
 ## Core Features
 
 ### Transparency Tools
+
 - Government data dashboards
 - Public spending visualization
 - Policy impact analysis
 - Open data API endpoints
 
 ### Civic Engagement
+
 - Public consultation platforms
 - Voting information systems
 - Community feedback tools
 - Democratic participation interfaces
 
 ### Data Analysis
+
 - Government performance metrics
 - Public service efficiency tracking
 - Budget allocation analysis
@@ -41,18 +44,21 @@ This is a civic technology service focused on public transparency and democratic
 ## Code Style & Patterns
 
 ### TypeScript
+
 - Use strict TypeScript configuration
 - Define proper interfaces for civic data
 - Implement robust error handling
 - Use generic types for data visualization
 
 ### React/Next.js
+
 - Server-side rendering for SEO
 - Static generation for performance
 - Accessibility-first component design
 - Progressive enhancement approach
 
 ### Data Handling
+
 - Secure API integrations
 - Data validation and sanitization
 - Privacy-preserving analytics
@@ -77,12 +83,14 @@ publicai/
 ## API Integration
 
 ### Government Data Sources
+
 - Open data portals
 - Government APIs
 - Public records systems
 - Statistical databases
 
 ### Security Considerations
+
 - API key management
 - Rate limiting
 - Data anonymization
@@ -113,12 +121,14 @@ publicai/
 ## Civic AI Features
 
 ### AI-Powered Analysis
+
 - Sentiment analysis of public feedback
 - Trend identification in civic data
 - Predictive modeling for public services
 - Natural language queries for data
 
 ### Ethical AI Guidelines
+
 - Bias detection and mitigation
 - Transparent AI decision-making
 - Public accountability for AI systems

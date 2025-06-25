@@ -1,0 +1,29 @@
+{
+  "apiVersion": "v1",
+  "kind": "Service",
+  "metadata": {
+    "name": "explorer",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "explorer",
+      "component": "service",
+      "app.kubernetes.io/name": "explorer",
+      "app.kubernetes.io/component": "service",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  },
+  "spec": {
+    "type": "ClusterIP",
+    "ports": [
+      {
+        "port": 80,
+        "targetPort": 4006,
+        "protocol": "TCP",
+        "name": "http"
+      }
+    ],
+    "selector": {
+      "app": "explorer"
+    }
+  }
+}

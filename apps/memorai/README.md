@@ -56,21 +56,21 @@ pnpm test
 ### Basic Usage
 
 ```typescript
-import { MemoraiClient } from "@codai/memorai-sdk";
+import { MemoraiClient } from '@codai/memorai-sdk';
 
 const client = new MemoraiClient({
-  serverUrl: "http://localhost:6367",
-  apiKey: "your-api-key",
+  serverUrl: 'http://localhost:6367',
+  apiKey: 'your-api-key',
 });
 
 // Remember something
-await client.remember("User prefers dark mode and minimal designs");
+await client.remember('User prefers dark mode and minimal designs');
 
 // Recall relevant memories
-const memories = await client.recall("what does the user prefer?");
+const memories = await client.recall('what does the user prefer?');
 
 // Generate contextual summary
-const context = await client.context({ topic: "user preferences" });
+const context = await client.context({ topic: 'user preferences' });
 ```
 
 ## 📦 Packages

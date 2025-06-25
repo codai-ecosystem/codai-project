@@ -8,7 +8,10 @@ interface LoadingSpinnerProps {
   color?: 'indigo' | 'white' | 'gray';
 }
 
-export function LoadingSpinner({ size = 'md', color = 'indigo' }: LoadingSpinnerProps) {
+export function LoadingSpinner({
+  size = 'md',
+  color = 'indigo',
+}: LoadingSpinnerProps) {
   const sizeClasses = {
     sm: 'h-4 w-4',
     md: 'h-8 w-8',
@@ -33,7 +36,10 @@ interface LoadingCardProps {
   description?: string;
 }
 
-export function LoadingCard({ title = 'Loading...', description }: LoadingCardProps) {
+export function LoadingCard({
+  title = 'Loading...',
+  description,
+}: LoadingCardProps) {
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <div className="flex items-center justify-center mb-4">
@@ -41,9 +47,7 @@ export function LoadingCard({ title = 'Loading...', description }: LoadingCardPr
       </div>
       <div className="text-center">
         <h3 className="text-lg font-medium text-gray-900 mb-2">{title}</h3>
-        {description && (
-          <p className="text-sm text-gray-600">{description}</p>
-        )}
+        {description && <p className="text-sm text-gray-600">{description}</p>}
       </div>
     </div>
   );
@@ -54,12 +58,16 @@ interface LoadingSkeletonProps {
 }
 
 export function LoadingSkeleton({ className = '' }: LoadingSkeletonProps) {
-  return (
-    <div className={`animate-pulse bg-gray-200 rounded ${className}`} />
-  );
+  return <div className={`animate-pulse bg-gray-200 rounded ${className}`} />;
 }
 
-export function LoadingTable({ rows = 5, columns = 4 }: { rows?: number; columns?: number }) {
+export function LoadingTable({
+  rows = 5,
+  columns = 4,
+}: {
+  rows?: number;
+  columns?: number;
+}) {
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
       <div className="px-6 py-4 border-b border-gray-200">
@@ -68,7 +76,10 @@ export function LoadingTable({ rows = 5, columns = 4 }: { rows?: number; columns
       <div className="divide-y divide-gray-200">
         {Array.from({ length: rows }).map((_, rowIndex) => (
           <div key={rowIndex} className="px-6 py-4">
-            <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}>
+            <div
+              className="grid gap-4"
+              style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}
+            >
               {Array.from({ length: columns }).map((_, colIndex) => (
                 <LoadingSkeleton
                   key={colIndex}
@@ -88,9 +99,9 @@ interface LoadingPageProps {
   description?: string;
 }
 
-export function LoadingPage({ 
-  title = 'Loading FabricAI...', 
-  description = 'Initializing AI services platform' 
+export function LoadingPage({
+  title = 'Loading FabricAI...',
+  description = 'Initializing AI services platform',
 }: LoadingPageProps) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -102,7 +113,7 @@ export function LoadingPage({
         <p className="text-gray-600">{description}</p>
         <div className="mt-8 flex justify-center">
           <div className="flex space-x-1">
-            {[0, 1, 2].map((i) => (
+            {[0, 1, 2].map(i => (
               <div
                 key={i}
                 className="h-2 w-2 bg-indigo-600 rounded-full animate-pulse"

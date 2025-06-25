@@ -3,8 +3,8 @@
 Programmable Wallet
 
 ## Domain
-- Primary: wallet.bancai.ro
 
+- Primary: wallet.bancai.ro
 
 ## Development
 

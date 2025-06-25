@@ -102,7 +102,6 @@ yarn dev
 The application uses the following Firestore collections:
 
 - **courses**: Course information
-
   - Fields: name, description, status, price, priceProduct
   - Sub-collection: **lessons**
     - Fields: name, content, status, order
@@ -110,7 +109,6 @@ The application uses the following Firestore collections:
     - Fields: rating, comment, userId, userName
 
 - **customers**: User specific data
-
   - Sub-collection: **payments**
     - Payment records from Stripe
 
@@ -143,8 +141,8 @@ For other deployment options, please refer to the [Next.js deployment documentat
 Admin functionality is currently tied to specific email addresses. Update the AppContext.tsx file to include your admin email:
 
 ```typescript
-if (user.email === "youradmin@email.com") {
-  dispatch({ type: "SET_IS_ADMIN", payload: true });
+if (user.email === 'youradmin@email.com') {
+  dispatch({ type: 'SET_IS_ADMIN', payload: true });
 }
 ```
 

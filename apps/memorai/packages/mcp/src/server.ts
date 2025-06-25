@@ -8,20 +8,20 @@
 // Remove forced in-memory mode - use proper configuration from environment
 // process.env.MEMORAI_USE_INMEMORY = 'true'; // REMOVED - Use real persistence
 
-import { Server } from "@modelcontextprotocol/sdk/server/index.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
-} from "@modelcontextprotocol/sdk/types.js";
+} from '@modelcontextprotocol/sdk/types.js';
 
 import {
   UnifiedMemoryEngine,
   type UnifiedMemoryConfig,
   MemoryTierLevel,
-} from "@codai/memorai-core";
-import { PerformanceMonitor } from "@codai/memorai-core";
-import { infrastructureManager } from "./infrastructure.js";
+} from '@codai/memorai-core';
+import { PerformanceMonitor } from '@codai/memorai-core';
+import { infrastructureManager } from './infrastructure.js';
 
 // Enterprise-grade configuration for real persistence - use ADVANCED tier with Azure OpenAI
 const memoryConfig: UnifiedMemoryConfig = {
@@ -30,14 +30,16 @@ const memoryConfig: UnifiedMemoryConfig = {
   preferredTier: MemoryTierLevel.ADVANCED, // Use ADVANCED tier for semantic search and high performance
 
   // Use shared data directory for unified storage across API and MCP servers
-  dataPath: process.env.MEMORAI_DATA_PATH || "e:\\GitHub\\memorai\\data\\memory",
+  dataPath:
+    process.env.MEMORAI_DATA_PATH || 'e:\\GitHub\\memorai\\data\\memory',
 
   // Azure OpenAI configuration (primary) - from workspace-ai environment
   azureOpenAI: {
     endpoint: process.env.AZURE_OPENAI_ENDPOINT,
     apiKey: process.env.AZURE_OPENAI_API_KEY,
-    deploymentName: process.env.AZURE_OPENAI_DEPLOYMENT_NAME || "memorai-model-r",
-    apiVersion: process.env.AZURE_OPENAI_API_VERSION || "2024-02-15-preview",
+    deploymentName:
+      process.env.AZURE_OPENAI_DEPLOYMENT_NAME || 'memorai-model-r',
+    apiVersion: process.env.AZURE_OPENAI_API_VERSION || '2024-02-15-preview',
   },
 
   // Remove OpenAI fallback - use Azure OpenAI exclusively
@@ -46,8 +48,8 @@ const memoryConfig: UnifiedMemoryConfig = {
 
   // Local embedding fallback for offline capability
   localEmbedding: {
-    model: "all-MiniLM-L6-v2",
-    cachePath: "./embeddings-cache",
+    model: 'all-MiniLM-L6-v2',
+    cachePath: './embeddings-cache',
   },
 
   // Remove mock configuration - use real persistence only
@@ -76,31 +78,31 @@ class EnterpriseMemoryEngine {
   async remember(
     agentId: string,
     content: string,
-    metadata: unknown = {},
+    metadata: unknown = {}
   ): Promise<{ id: string }> {
     const start = performance.now();
 
     try {
       const memoryId = await this.unifiedEngine.remember(
         content,
-        "default-tenant", // Use default tenant for MCP
+        'default-tenant', // Use default tenant for MCP
         agentId,
         {
-          type: (metadata as any)?.type || "general",
+          type: (metadata as any)?.type || 'general',
           importance: (metadata as any)?.importance || 0.5,
           tags: (metadata as any)?.tags || [],
           context: metadata as Record<string, unknown>,
-        },
+        }
       );
 
       const end = performance.now();
       this.performanceMonitor.recordQuery({
-        operation: "remember",
+        operation: 'remember',
         startTime: start,
         endTime: end,
         duration: end - start,
         success: true,
-        tenantId: "default-tenant",
+        tenantId: 'default-tenant',
         agentId,
         resultCount: 1,
         cacheHit: false,
@@ -110,13 +112,13 @@ class EnterpriseMemoryEngine {
     } catch (error: unknown) {
       const end = performance.now();
       this.performanceMonitor.recordQuery({
-        operation: "remember",
+        operation: 'remember',
         startTime: start,
         endTime: end,
         duration: end - start,
         success: false,
-        error: error instanceof Error ? error.message : "Unknown error",
-        tenantId: "default-tenant",
+        error: error instanceof Error ? error.message : 'Unknown error',
+        tenantId: 'default-tenant',
         agentId,
       });
       throw error;
@@ -129,35 +131,35 @@ class EnterpriseMemoryEngine {
     try {
       const results = await this.unifiedEngine.recall(
         query,
-        "default-tenant",
+        'default-tenant',
         agentId,
         {
           limit,
           threshold: 0.1,
           include_context: true,
           time_decay: true,
-        },
+        }
       );
 
       const end = performance.now();
       this.performanceMonitor.recordQuery({
-        operation: "recall",
+        operation: 'recall',
         startTime: start,
         endTime: end,
         duration: end - start,
         success: true,
-        tenantId: "default-tenant",
+        tenantId: 'default-tenant',
         agentId,
         resultCount: results.length,
         cacheHit: false, // UnifiedEngine handles its own caching
       });
       return results
-        .map((result) => ({
-          id: result.memory?.id || "",
-          content: result.memory?.content || "",
+        .map(result => ({
+          id: result.memory?.id || '',
+          content: result.memory?.content || '',
           relevance: result.score,
           metadata: {
-            type: result.memory?.type || "fact",
+            type: result.memory?.type || 'fact',
             importance: result.memory?.importance || 0,
             tags: result.memory?.tags || [],
             context: result.memory?.context || {},
@@ -165,17 +167,17 @@ class EnterpriseMemoryEngine {
           },
           timestamp: result.memory?.createdAt || new Date(),
         }))
-        .filter((item) => item.id !== "");
+        .filter(item => item.id !== '');
     } catch (error: unknown) {
       const end = performance.now();
       this.performanceMonitor.recordQuery({
-        operation: "recall",
+        operation: 'recall',
         startTime: start,
         endTime: end,
         duration: end - start,
         success: false,
-        error: error instanceof Error ? error.message : "Unknown error",
-        tenantId: "default-tenant",
+        error: error instanceof Error ? error.message : 'Unknown error',
+        tenantId: 'default-tenant',
         agentId,
       });
       throw error;
@@ -187,19 +189,19 @@ class EnterpriseMemoryEngine {
 
     try {
       const contextData = await this.unifiedEngine.getContext({
-        tenant_id: "default-tenant",
+        tenant_id: 'default-tenant',
         agent_id: agentId,
         max_memories: size,
       });
 
       const end = performance.now();
       this.performanceMonitor.recordQuery({
-        operation: "context",
+        operation: 'context',
         startTime: start,
         endTime: end,
         duration: end - start,
         success: true,
-        tenantId: "default-tenant",
+        tenantId: 'default-tenant',
         agentId,
         resultCount: contextData.memories?.length || 0,
         cacheHit: false,
@@ -208,20 +210,20 @@ class EnterpriseMemoryEngine {
       return {
         context: contextData.summary || `Context for ${agentId}`,
         memories: contextData.memories || [],
-        summary: contextData.summary || "No context available",
+        summary: contextData.summary || 'No context available',
         windowSize: size,
         totalMemories: contextData.total_count || 0,
       };
     } catch (error: unknown) {
       const end = performance.now();
       this.performanceMonitor.recordQuery({
-        operation: "context",
+        operation: 'context',
         startTime: start,
         endTime: end,
         duration: end - start,
         success: false,
-        error: error instanceof Error ? error.message : "Unknown error",
-        tenantId: "default-tenant",
+        error: error instanceof Error ? error.message : 'Unknown error',
+        tenantId: 'default-tenant',
         agentId,
       });
       throw error;
@@ -236,12 +238,12 @@ class EnterpriseMemoryEngine {
 
       const end = performance.now();
       this.performanceMonitor.recordQuery({
-        operation: "forget",
+        operation: 'forget',
         startTime: start,
         endTime: end,
         duration: end - start,
         success: true,
-        tenantId: "default-tenant",
+        tenantId: 'default-tenant',
         agentId,
         resultCount: 1,
         cacheHit: false,
@@ -251,13 +253,13 @@ class EnterpriseMemoryEngine {
     } catch (error: unknown) {
       const end = performance.now();
       this.performanceMonitor.recordQuery({
-        operation: "forget",
+        operation: 'forget',
         startTime: start,
         endTime: end,
         duration: end - start,
         success: false,
-        error: error instanceof Error ? error.message : "Unknown error",
-        tenantId: "default-tenant",
+        error: error instanceof Error ? error.message : 'Unknown error',
+        tenantId: 'default-tenant',
         agentId,
       });
       return false;
@@ -277,14 +279,14 @@ const enterpriseEngine = new EnterpriseMemoryEngine();
 
 const server = new Server(
   {
-    name: "memorai-enterprise",
-    version: "2.0.8",
+    name: 'memorai-enterprise',
+    version: '2.0.8',
   },
   {
     capabilities: {
       tools: {},
     },
-  },
+  }
 );
 
 // Advanced tool handlers with real performance tracking
@@ -292,96 +294,96 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
       {
-        name: "remember",
+        name: 'remember',
         description:
-          "Store information in memory with enterprise-grade performance tracking",
+          'Store information in memory with enterprise-grade performance tracking',
         inputSchema: {
-          type: "object",
+          type: 'object',
           properties: {
-            agentId: { type: "string", description: "Unique agent identifier" },
-            content: { type: "string", description: "Information to remember" },
+            agentId: { type: 'string', description: 'Unique agent identifier' },
+            content: { type: 'string', description: 'Information to remember' },
             metadata: {
-              type: "object",
-              description: "Optional metadata with type, importance, tags",
+              type: 'object',
+              description: 'Optional metadata with type, importance, tags',
             },
           },
-          required: ["agentId", "content"],
+          required: ['agentId', 'content'],
         },
       },
       {
-        name: "recall",
+        name: 'recall',
         description:
-          "Search memories with unified multi-tier engine and performance optimization",
+          'Search memories with unified multi-tier engine and performance optimization',
         inputSchema: {
-          type: "object",
+          type: 'object',
           properties: {
-            agentId: { type: "string", description: "Unique agent identifier" },
-            query: { type: "string", description: "Search query" },
-            limit: { type: "number", description: "Max results", default: 10 },
+            agentId: { type: 'string', description: 'Unique agent identifier' },
+            query: { type: 'string', description: 'Search query' },
+            limit: { type: 'number', description: 'Max results', default: 10 },
           },
-          required: ["agentId", "query"],
+          required: ['agentId', 'query'],
         },
       },
       {
-        name: "context",
-        description: "Get contextual memory summary with enterprise analytics",
+        name: 'context',
+        description: 'Get contextual memory summary with enterprise analytics',
         inputSchema: {
-          type: "object",
+          type: 'object',
           properties: {
-            agentId: { type: "string", description: "Unique agent identifier" },
+            agentId: { type: 'string', description: 'Unique agent identifier' },
             contextSize: {
-              type: "number",
-              description: "Context window size",
+              type: 'number',
+              description: 'Context window size',
               default: 5,
             },
           },
-          required: ["agentId"],
+          required: ['agentId'],
         },
       },
       {
-        name: "forget",
-        description: "Remove specific memory with performance tracking",
+        name: 'forget',
+        description: 'Remove specific memory with performance tracking',
         inputSchema: {
-          type: "object",
+          type: 'object',
           properties: {
-            agentId: { type: "string", description: "Unique agent identifier" },
-            memoryId: { type: "string", description: "Memory ID to forget" },
+            agentId: { type: 'string', description: 'Unique agent identifier' },
+            memoryId: { type: 'string', description: 'Memory ID to forget' },
           },
-          required: ["agentId", "memoryId"],
+          required: ['agentId', 'memoryId'],
         },
       },
     ],
   };
 });
 
-server.setRequestHandler(CallToolRequestSchema, async (request) => {
+server.setRequestHandler(CallToolRequestSchema, async request => {
   const startTime = performance.now();
 
   try {
     const { name, arguments: args } = request.params;
 
     if (!args) {
-      throw new Error("Missing arguments");
+      throw new Error('Missing arguments');
     }
 
     const agentId = args.agentId as string;
 
     if (!agentId) {
-      throw new Error("Missing agentId");
+      throw new Error('Missing agentId');
     }
 
     switch (name) {
-      case "remember":
+      case 'remember':
         const result = await enterpriseEngine.remember(
           agentId,
           args.content as string,
-          args.metadata,
+          args.metadata
         );
         const metrics = enterpriseEngine.getMetrics();
         return {
           content: [
             {
-              type: "text",
+              type: 'text',
               text: JSON.stringify({
                 success: true,
                 memoryId: result.id,
@@ -401,17 +403,17 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           ],
         };
 
-      case "recall":
+      case 'recall':
         const memories = await enterpriseEngine.recall(
           agentId,
           args.query as string,
-          args.limit as number,
+          args.limit as number
         );
         const recallMetrics = enterpriseEngine.getMetrics();
         return {
           content: [
             {
-              type: "text",
+              type: 'text',
               text: JSON.stringify({
                 success: true,
                 memories,
@@ -431,16 +433,16 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           ],
         };
 
-      case "context":
+      case 'context':
         const context = await enterpriseEngine.context(
           agentId,
-          args.contextSize as number,
+          args.contextSize as number
         );
         const contextMetrics = enterpriseEngine.getMetrics();
         return {
           content: [
             {
-              type: "text",
+              type: 'text',
               text: JSON.stringify({
                 success: true,
                 ...(context as Record<string, unknown>),
@@ -460,16 +462,16 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           ],
         };
 
-      case "forget":
+      case 'forget':
         const forgotten = await enterpriseEngine.forget(
           agentId,
-          args.memoryId as string,
+          args.memoryId as string
         );
         const forgetMetrics = enterpriseEngine.getMetrics();
         return {
           content: [
             {
-              type: "text",
+              type: 'text',
               text: JSON.stringify({
                 success: forgotten,
                 tierInfo: enterpriseEngine.getTierInfo(),
@@ -495,10 +497,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     return {
       content: [
         {
-          type: "text",
+          type: 'text',
           text: JSON.stringify({
             success: false,
-            error: error instanceof Error ? error.message : "Unknown error",
+            error: error instanceof Error ? error.message : 'Unknown error',
             performance: {
               responseTime: `${(performance.now() - startTime).toFixed(2)}ms`,
               tierInfo: enterpriseEngine.getTierInfo(),
@@ -517,8 +519,11 @@ async function main() {
     process.env.MCP_DISABLE_VERSION_CHECK = 'true';
 
     // Start infrastructure services first
-    console.log('🚀 Memorai MCP Server starting with automated infrastructure...');
-    const infrastructureReady = await infrastructureManager.startInfrastructure();
+    console.log(
+      '🚀 Memorai MCP Server starting with automated infrastructure...'
+    );
+    const infrastructureReady =
+      await infrastructureManager.startInfrastructure();
 
     if (!infrastructureReady) {
       console.error('❌ Failed to start required infrastructure services');
@@ -536,7 +541,6 @@ async function main() {
     await server.connect(transport);
 
     console.log('✅ Memorai MCP Server ready with full infrastructure!');
-
   } catch (error) {
     console.error('[ERROR] Server startup failed:', error);
     process.exit(1);
@@ -544,7 +548,7 @@ async function main() {
 }
 
 // Auto-start server
-main().catch((error) => {
+main().catch(error => {
   console.error('[ERROR] Main function failed:', error);
   process.exit(1);
 });

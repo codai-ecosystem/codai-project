@@ -241,8 +241,8 @@ export default function Dashboard() {
 				<button
 					onClick={() => setActiveTab('dashboard')}
 					className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-colors ${activeTab === 'dashboard'
-							? 'bg-white text-blue-600 shadow-sm'
-							: 'text-gray-600 hover:text-gray-900'
+						? 'bg-white text-blue-600 shadow-sm'
+						: 'text-gray-600 hover:text-gray-900'
 						}`}
 				>
 					<BarChart3 className="w-5 h-5" />
@@ -251,8 +251,8 @@ export default function Dashboard() {
 				<button
 					onClick={() => setActiveTab('aide')}
 					className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-colors ${activeTab === 'aide'
-							? 'bg-white text-blue-600 shadow-sm'
-							: 'text-gray-600 hover:text-gray-900'
+						? 'bg-white text-blue-600 shadow-sm'
+						: 'text-gray-600 hover:text-gray-900'
 						}`}
 				>
 					<Code className="w-5 h-5" />
@@ -457,10 +457,10 @@ export default function Dashboard() {
 					</div>
 				</div>
 			) : (
-					<div className="h-[600px]">
-						<AideInterface />
-					</div>
-				)}
-			</div>
-		);
-	}
+				<div className="h-[600px]">
+					<AideInterface />
+				</div>
+			)}
+		</div>
+	);
+}

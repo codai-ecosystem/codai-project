@@ -8,3 +8,6 @@ public-hoist-pattern=*prettier*
 public-hoist-pattern=*typescript*
 public-hoist-pattern=@types/*
 shamefully-hoist=true
+node-linker=hoisted
+symlink=false
+store-dir=E:/pnpm-store

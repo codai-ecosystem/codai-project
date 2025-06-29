@@ -8,12 +8,13 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   experimental: {
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
+    // Move turbo config to turbopack as new format
+  },
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
       },
     },
   },
@@ -23,7 +24,13 @@ const nextConfig = {
       ...config.experiments,
       topLevelAwait: true,
     };
-    
+
+    // Fix Windows temp directory permissions
+    config.cache = {
+      type: 'filesystem',
+      cacheDirectory: 'E:/GitHub/codai-project/temp/studiai/.next/cache',
+    };
+
     return config;
   },
   transpilePackages: ['@codai/ui', '@codai/core', '@codai/auth'],
@@ -34,6 +41,11 @@ const nextConfig = {
         hostname: '**',
       },
     ],
+  },
+  distDir: '.next',
+  generateBuildId: async () => {
+    // Use a simple build ID to avoid path issues
+    return 'codai-studiai-build'
   },
 };
 

@@ -23,7 +23,7 @@ const nextConfig = {
       ...config.experiments,
       topLevelAwait: true,
     };
-    
+
     return config;
   },
   transpilePackages: ['@codai/ui', '@codai/core', '@codai/auth'],

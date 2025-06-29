@@ -1,9 +1,9 @@
 {
-  "successful": 36,
-  "failed": 4,
+  "successful": 37,
+  "failed": 3,
   "skipped": 0,
   "total": 40,
-  "duration": 236154,
+  "duration": 245145,
   "services": {
     "codai": {
       "name": "codai",
@@ -11,7 +11,7 @@
       "priority": 1,
       "framework": "next",
       "success": true,
-      "duration": 646,
+      "duration": 598,
       "size": 83155176,
       "errors": []
     },
@@ -21,7 +21,7 @@
       "priority": 1,
       "framework": "next",
       "success": true,
-      "duration": 550,
+      "duration": 486,
       "size": 294861184,
       "errors": []
     },
@@ -31,7 +31,7 @@
       "priority": 1,
       "framework": "unknown",
       "success": true,
-      "duration": 5367,
+      "duration": 3196,
       "size": 0,
       "errors": []
     },
@@ -41,8 +41,8 @@
       "priority": 2,
       "framework": "next",
       "success": true,
-      "duration": 7621,
-      "size": 72989211,
+      "duration": 7550,
+      "size": 72991476,
       "errors": []
     },
     "fabricai": {
@@ -51,8 +51,8 @@
       "priority": 2,
       "framework": "next",
       "success": true,
-      "duration": 7392,
-      "size": 75431636,
+      "duration": 7363,
+      "size": 75363643,
       "errors": []
     },
     "wallet": {
@@ -61,8 +61,8 @@
       "priority": 2,
       "framework": "next",
       "success": true,
-      "duration": 7244,
-      "size": 71827116,
+      "duration": 7117,
+      "size": 72088966,
       "errors": []
     },
     "x": {
@@ -71,8 +71,8 @@
       "priority": 2,
       "framework": "next",
       "success": true,
-      "duration": 6573,
-      "size": 53714977,
+      "duration": 6367,
+      "size": 53716987,
       "errors": []
     },
     "cumparai": {
@@ -81,8 +81,8 @@
       "priority": 3,
       "framework": "next",
       "success": true,
-      "duration": 5799,
-      "size": 54943212,
+      "duration": 5935,
+      "size": 54595720,
       "errors": []
     },
     "sociai": {
@@ -91,8 +91,8 @@
       "priority": 3,
       "framework": "next",
       "success": true,
-      "duration": 7213,
-      "size": 69889610,
+      "duration": 7627,
+      "size": 69817096,
       "errors": []
     },
     "studiai": {
@@ -101,12 +101,12 @@
       "priority": 3,
       "framework": "next",
       "success": false,
-      "duration": 11166,
-      "size": 589746285,
+      "duration": 15766,
+      "size": 933612482,
       "errors": [
         {
           "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nglob error [Error: EPERM: operation not permitted, scandir 'C:\\Users\\vladu\\AppData\\Local\\Temp\\WinSAT'] {\n  errno: -4048,\n  code: 'EPERM',\n  syscall: 'scandir',\n  path: 'C:\\\\Users\\\\vladu\\\\AppData\\\\Local\\\\Temp\\\\WinSAT'\n}\nFailed to compile.\n\nError: EPERM: operation not permitted, scandir 'C:\\Users\\vladu\\AppData\\Local\\Temp\\WinSAT'\n\n\n> Build failed because of webpack errors\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\studiai\nnpm error workspace @codai/studiai-service@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\studiai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nFailed to compile.\n\n./components/Lesson/QA/AnswerForm.tsx\nModule not found: Can't resolve 'uuid'\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n./components/Lesson/QA/QuestionItem.tsx\n./components/Lesson/QA/QuestionsList.tsx\n./components/Lesson/QA/QASection.tsx\n./components/Lesson/LessonContent.tsx\n./components/Lesson/ClientLessonWrapper.tsx\n\n\n> Build failed because of webpack errors\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\studiai\nnpm error workspace @codai/studiai-service@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\studiai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
           "code": 1
         }
       ]
@@ -117,8 +117,8 @@
       "priority": 4,
       "framework": "next",
       "success": true,
-      "duration": 7899,
-      "size": 52792922,
+      "duration": 7683,
+      "size": 52715361,
       "errors": []
     },
     "admin": {
@@ -127,8 +127,8 @@
       "priority": 4,
       "framework": "next",
       "success": true,
-      "duration": 7024,
-      "size": 57830360,
+      "duration": 7034,
+      "size": 57838622,
       "errors": []
     },
     "AIDE": {
@@ -137,8 +137,8 @@
       "priority": 4,
       "framework": "next",
       "success": true,
-      "duration": 6012,
-      "size": 54076194,
+      "duration": 5649,
+      "size": 53716072,
       "errors": []
     },
     "ajutai": {
@@ -147,8 +147,8 @@
       "priority": 4,
       "framework": "next",
       "success": true,
-      "duration": 5855,
-      "size": 54075288,
+      "duration": 5661,
+      "size": 53715124,
       "errors": []
     },
     "analizai": {
@@ -157,8 +157,8 @@
       "priority": 4,
       "framework": "next",
       "success": true,
-      "duration": 6674,
-      "size": 76255549,
+      "duration": 6596,
+      "size": 76003089,
       "errors": []
     },
     "dash": {
@@ -167,8 +167,8 @@
       "priority": 4,
       "framework": "next",
       "success": true,
-      "duration": 5699,
-      "size": 54076598,
+      "duration": 5776,
+      "size": 53716599,
       "errors": []
     },
     "docs": {
@@ -177,8 +177,8 @@
       "priority": 4,
       "framework": "next",
       "success": true,
-      "duration": 5788,
-      "size": 54681812,
+      "duration": 5764,
+      "size": 54684073,
       "errors": []
     },
     "explorer": {
@@ -187,8 +187,8 @@
       "priority": 4,
       "framework": "next",
       "success": true,
-      "duration": 6085,
-      "size": 58887369,
+      "duration": 5966,
+      "size": 58893296,
       "errors": []
     },
     "hub": {
@@ -197,8 +197,8 @@
       "priority": 4,
       "framework": "next",
       "success": true,
-      "duration": 6303,
-      "size": 63141644,
+      "duration": 6222,
+      "size": 63143902,
       "errors": []
     },
     "id": {
@@ -207,8 +207,8 @@
       "priority": 4,
       "framework": "next",
       "success": true,
-      "duration": 5783,
-      "size": 54074403,
+      "duration": 5598,
+      "size": 53714312,
       "errors": []
     },
     "jucai": {
@@ -217,8 +217,8 @@
       "priority": 4,
       "framework": "next",
       "success": true,
-      "duration": 5748,
-      "size": 54074395,
+      "duration": 5771,
+      "size": 53714265,
       "errors": []
     },
     "kodex": {
@@ -227,8 +227,8 @@
       "priority": 4,
       "framework": "next",
       "success": true,
-      "duration": 5708,
-      "size": 55023932,
+      "duration": 5613,
+      "size": 54663784,
       "errors": []
     },
     "legalizai": {
@@ -237,8 +237,8 @@
       "priority": 4,
       "framework": "next",
       "success": true,
-      "duration": 6035,
-      "size": 54082691,
+      "duration": 5572,
+      "size": 53722473,
       "errors": []
     },
     "marketai": {
@@ -247,8 +247,8 @@
       "priority": 4,
       "framework": "next",
       "success": true,
-      "duration": 6642,
-      "size": 54882093,
+      "duration": 5638,
+      "size": 54541351,
       "errors": []
     },
     "metu": {
@@ -257,8 +257,8 @@
       "priority": 4,
       "framework": "next",
       "success": true,
-      "duration": 6100,
-      "size": 54076736,
+      "duration": 5648,
+      "size": 53716611,
       "errors": []
     },
     "mod": {
@@ -267,8 +267,8 @@
       "priority": 4,
       "framework": "next",
       "success": true,
-      "duration": 5943,
-      "size": 55022271,
+      "duration": 5644,
+      "size": 54662166,
       "errors": []
     },
     "stocai": {
@@ -277,8 +277,8 @@
       "priority": 4,
       "framework": "next",
       "success": true,
-      "duration": 6318,
-      "size": 55024958,
+      "duration": 5862,
+      "size": 54664801,
       "errors": []
     },
     "templates": {
@@ -287,7 +287,7 @@
       "priority": 4,
       "framework": "react",
       "success": true,
-      "duration": 522,
+      "duration": 496,
       "size": 0,
       "errors": []
     },
@@ -297,8 +297,8 @@
       "priority": 4,
       "framework": "next",
       "success": true,
-      "duration": 6046,
-      "size": 53935998,
+      "duration": 5859,
+      "size": 53595332,
       "errors": []
     }
   },

@@ -31,6 +31,12 @@ const nextConfig = {
       cacheDirectory: 'E:/GitHub/codai-project/temp/studiai/.next/cache',
     };
 
+    // Add module resolution aliases
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'uuid': 'uuid',
+    };
+
     return config;
   },
   transpilePackages: ['@codai/ui', '@codai/core', '@codai/auth'],

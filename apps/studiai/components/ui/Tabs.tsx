@@ -1,97 +1,96 @@
-'use client';
+"use client";
 
-import React, { forwardRef } from 'react';
-import { Tabs as HeroTabs, Tab as HeroTab } from '@heroui/react';
-import type {
-  TabsProps as HeroTabsProps,
-  TabItemProps as HeroTabProps,
-} from '@heroui/react';
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
-export interface TabsProps extends HeroTabsProps {
-  /**
-   * Additional CSS classes to apply
-   */
+const TabsContext = React.createContext<{
+  value?: string;
+  onValueChange?: (value: string) => void;
+}>({});
+
+interface TabsProps {
+  value?: string;
+  onValueChange?: (value: string) => void;
   className?: string;
-
-  /**
-   * Class names for different parts of the tabs
-   */
-  classNames?: {
-    base?: string;
-    tabList?: string;
-    tab?: string;
-    tabContent?: string;
-  };
-
-  /**
-   * Tab content
-   */
-  children?: React.ReactNode;
-
-  /**
-   * Additional props
-   */
-  [key: string]: any;
+  children: React.ReactNode;
 }
 
-/**
- * A set of layered sections of content that display one panel at a time
- */
-const Tabs = forwardRef<HTMLDivElement, TabsProps>((props, ref) => {
-  const { children, className = '', classNames = {}, ...rest } = props;
+const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
+  ({ className, value, onValueChange, children, ...props }, ref) => (
+    <TabsContext.Provider value={{ value, onValueChange }}>
+      <div ref={ref} className={cn("w-full", className)} {...props}>
+        {children}
+      </div>
+    </TabsContext.Provider>
+  )
+);
+Tabs.displayName = "Tabs";
 
-  const defaultClassNames = {
-    base: 'w-full',
-    tabList:
-      'px-0 border-b border-[color:var(--ai-card-border)] gap-4 overflow-x-auto',
-    tab: 'px-0 h-10 data-[selected=true]:text-[color:var(--ai-primary)] data-[selected=true]:border-b-2 data-[selected=true]:border-[color:var(--ai-primary)] font-medium',
-    tabContent: 'py-4',
-  };
+const TabsList = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground",
+      className
+    )}
+    {...props}
+  />
+));
+TabsList.displayName = "TabsList";
 
-  // Merge default classNames with user-provided ones
-  const mergedClassNames = {
-    base: `${defaultClassNames.base} ${classNames.base || ''}`,
-    tabList: `${defaultClassNames.tabList} ${classNames.tabList || ''}`,
-    tab: `${defaultClassNames.tab} ${classNames.tab || ''}`,
-    tabContent: `${defaultClassNames.tabContent} ${classNames.tabContent || ''}`,
-  };
+const TabsTrigger = React.forwardRef<
+  HTMLButtonElement,
+  React.ButtonHTMLAttributes<HTMLButtonElement> & { value: string }
+>(({ className, value, ...props }, ref) => {
+  const { value: selectedValue, onValueChange } = React.useContext(TabsContext);
+  const isSelected = selectedValue === value;
 
   return (
-    <HeroTabs
+    <button
       ref={ref}
-      className={`text-[color:var(--ai-foreground)] ${className}`}
-      classNames={mergedClassNames}
-      {...rest}
-    >
-      {children}
-    </HeroTabs>
-  );
-});
-
-Tabs.displayName = 'Tabs';
-
-export default Tabs;
-
-export interface TabProps extends Omit<HeroTabProps, 'ref'> {
-  className?: string;
-  title?: React.ReactNode;
-  key?: string;
-}
-
-/**
- * A single tab item within a Tabs component
- */
-export const Tab = forwardRef<HTMLDivElement, TabProps>((props, ref) => {
-  const { className = '', title, ...rest } = props;
-
-  return (
-    <HeroTab
-      // HeroTab doesn't accept ref prop, so we don't forward it
-      className={className}
-      title={title}
-      {...rest}
+      className={cn(
+        "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+        isSelected
+          ? "bg-background text-foreground shadow"
+          : "hover:bg-background/50",
+        className
+      )}
+      onClick={() => onValueChange?.(value)}
+      {...props}
     />
   );
 });
+TabsTrigger.displayName = "TabsTrigger";
 
-Tab.displayName = 'Tab';
+const TabsContent = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & { value: string }
+>(({ className, value, ...props }, ref) => {
+  const { value: selectedValue } = React.useContext(TabsContext);
+  const isSelected = selectedValue === value;
+
+  if (!isSelected) return null;
+
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        className
+      )}
+      {...props}
+    />
+  );
+});
+TabsContent.displayName = "TabsContent";
+
+// Export Tab as alias for TabsTrigger for backward compatibility
+const Tab = TabsTrigger;
+
+export { Tabs, TabsList, TabsTrigger, TabsContent, Tab };
+
+// Default export for backward compatibility
+export default Tabs;

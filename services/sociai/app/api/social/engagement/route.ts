@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     // 5. Send notifications to post author
     // 6. Update user's activity feed
 
-    const responseData = {
+    const responseData: any = {
       success: true,
       postId,
       action,

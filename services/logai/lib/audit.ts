@@ -1,7 +1,7 @@
 // Audit Logging System for LogAI
 import winston from 'winston';
 import { db, auditLogs, auditActionEnum } from './db';
-import { eq, gte, lte, desc } from 'drizzle-orm';
+import { eq, gte, lte, desc, and } from 'drizzle-orm';
 
 // Configure Winston logger
 const logger = winston.createLogger({
@@ -137,37 +137,44 @@ class AuditLogger {
     offset?: number;
   }) {
     try {
-      let query = db.select().from(auditLogs);
+      const whereConditions = [];
 
       if (filters.userId) {
-        query = query.where(eq(auditLogs.userId, filters.userId));
+        whereConditions.push(eq(auditLogs.userId, filters.userId));
       }
       if (filters.action) {
-        query = query.where(eq(auditLogs.action, filters.action as any));
+        whereConditions.push(eq(auditLogs.action, filters.action as any));
       }
       if (filters.resource) {
-        query = query.where(eq(auditLogs.resource, filters.resource));
+        whereConditions.push(eq(auditLogs.resource, filters.resource));
       }
       if (filters.success !== undefined) {
-        query = query.where(eq(auditLogs.success, filters.success));
+        whereConditions.push(eq(auditLogs.success, filters.success));
       }
       if (filters.startDate) {
-        query = query.where(gte(auditLogs.createdAt, filters.startDate));
+        whereConditions.push(gte(auditLogs.createdAt, filters.startDate));
       }
       if (filters.endDate) {
-        query = query.where(lte(auditLogs.createdAt, filters.endDate));
+        whereConditions.push(lte(auditLogs.createdAt, filters.endDate));
       }
 
-      query = query.orderBy(desc(auditLogs.createdAt));
+      const baseQuery = db.select().from(auditLogs);
 
-      if (filters.limit) {
-        query = query.limit(filters.limit);
-      }
-      if (filters.offset) {
-        query = query.offset(filters.offset);
-      }
+      const queryWithWhere = whereConditions.length > 0
+        ? baseQuery.where(and(...whereConditions))
+        : baseQuery;
 
-      return await query;
+      const queryWithOrder = queryWithWhere.orderBy(desc(auditLogs.createdAt));
+
+      const queryWithLimit = filters.limit
+        ? queryWithOrder.limit(filters.limit)
+        : queryWithOrder;
+
+      const finalQuery = filters.offset
+        ? queryWithLimit.offset(filters.offset)
+        : queryWithLimit;
+
+      return await finalQuery;
     } catch (error) {
       logger.error('Failed to query audit logs', {
         error: error instanceof Error ? error.message : String(error),
@@ -335,3 +342,6 @@ export const auditEvents = {
 };
 
 export { logger };
+
+// Compatibility alias for logAuditEvent
+export const logAuditEvent = auditLogger.log.bind(auditLogger);

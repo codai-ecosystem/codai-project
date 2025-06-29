@@ -29,27 +29,20 @@ export const AccountCard: React.FC<AccountCardProps> = ({
 
   const getAccountTypeColor = (type: string) => {
     switch (type) {
-      case 'checking':
-        return 'info';
-      case 'savings':
-        return 'success';
-      case 'credit':
-        return 'warning';
-      case 'investment':
-        return 'default';
-      default:
-        return 'default';
+      case 'checking': return 'info';
+      case 'savings': return 'success';
+      case 'credit': return 'warning';
+      case 'investment': return 'default';
+      default: return 'default';
     }
   };
 
   return (
-    <Card variant="elevated" className="w-full">
+    <Card className="w-full">
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg">
-            {account.accountType.charAt(0).toUpperCase() +
-              account.accountType.slice(1)}{' '}
-            Account
+            {account.accountType.charAt(0).toUpperCase() + account.accountType.slice(1)} Account
           </CardTitle>
           <Badge variant={getAccountTypeColor(account.accountType)}>
             {account.status}
@@ -67,12 +60,20 @@ export const AccountCard: React.FC<AccountCardProps> = ({
             </p>
             <p className="text-sm text-gray-500">Available Balance</p>
           </div>
-
+          
           <div className="flex space-x-2">
-            <Button size="sm" variant="outline" onClick={onViewTransactions}>
+            <Button 
+              size="sm" 
+              variant="outline"
+              onClick={onViewTransactions}
+            >
               View Transactions
             </Button>
-            <Button size="sm" variant="primary" onClick={onTransfer}>
+            <Button 
+              size="sm" 
+              variant="primary"
+              onClick={onTransfer}
+            >
               Transfer
             </Button>
           </div>
@@ -109,14 +110,10 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'completed':
-        return 'success';
-      case 'pending':
-        return 'warning';
-      case 'failed':
-        return 'error';
-      default:
-        return 'default';
+      case 'completed': return 'success';
+      case 'pending': return 'warning';
+      case 'failed': return 'error';
+      default: return 'default';
     }
   };
 
@@ -128,30 +125,23 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
       onClick={onClick}
     >
       <div className="flex items-center space-x-4">
-        <div
-          className={`w-10 h-10 rounded-full flex items-center justify-center ${
-            isDebit ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'
-          }`}
-        >
+        <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+          isDebit ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'
+        }`}>
           {isDebit ? '↓' : '↑'}
         </div>
         <div>
           <p className="font-medium text-gray-900">{transaction.description}</p>
           <p className="text-sm text-gray-500">{transaction.category}</p>
-          <p className="text-xs text-gray-400">
-            {formatDate(transaction.createdAt)}
-          </p>
+          <p className="text-xs text-gray-400">{formatDate(transaction.createdAt)}</p>
         </div>
       </div>
-
+      
       <div className="text-right">
-        <p
-          className={`font-semibold ${
-            isDebit ? 'text-red-600' : 'text-green-600'
-          }`}
-        >
-          {isDebit ? '-' : '+'}
-          {formatCurrency(transaction.amount, transaction.currency)}
+        <p className={`font-semibold ${
+          isDebit ? 'text-red-600' : 'text-green-600'
+        }`}>
+          {isDebit ? '-' : '+'}{formatCurrency(transaction.amount, transaction.currency)}
         </p>
         <Badge variant={getStatusColor(transaction.status)} className="mt-1">
           {transaction.status}
@@ -175,34 +165,25 @@ export const AIInsightCard: React.FC<AIInsightCardProps> = ({
 }) => {
   const getInsightIcon = (type: string) => {
     switch (type) {
-      case 'spending_pattern':
-        return '📊';
-      case 'saving_opportunity':
-        return '💰';
-      case 'investment_advice':
-        return '📈';
-      case 'fraud_alert':
-        return '⚠️';
-      default:
-        return '💡';
+      case 'spending_pattern': return '📊';
+      case 'saving_opportunity': return '💰';
+      case 'investment_advice': return '📈';
+      case 'fraud_alert': return '⚠️';
+      default: return '💡';
     }
   };
 
   const getInsightColor = (type: string) => {
     switch (type) {
-      case 'fraud_alert':
-        return 'error';
-      case 'saving_opportunity':
-        return 'success';
-      case 'investment_advice':
-        return 'info';
-      default:
-        return 'default';
+      case 'fraud_alert': return 'error';
+      case 'saving_opportunity': return 'success';
+      case 'investment_advice': return 'info';
+      default: return 'default';
     }
   };
 
   return (
-    <Card variant="outlined" className="w-full">
+    <Card className="w-full">
       <CardContent className="p-4">
         <div className="flex items-start justify-between">
           <div className="flex items-start space-x-3">
@@ -214,9 +195,7 @@ export const AIInsightCard: React.FC<AIInsightCardProps> = ({
                   {insight.type.replace('_', ' ')}
                 </Badge>
               </div>
-              <p className="text-gray-600 text-sm mb-3">
-                {insight.description}
-              </p>
+              <p className="text-gray-600 text-sm mb-3">{insight.description}</p>
               <div className="flex items-center space-x-4 text-xs text-gray-500">
                 <span>Confidence: {Math.round(insight.confidence * 100)}%</span>
                 <span>•</span>
@@ -231,10 +210,14 @@ export const AIInsightCard: React.FC<AIInsightCardProps> = ({
             ✕
           </button>
         </div>
-
+        
         {insight.actionable && (
           <div className="mt-4 pt-3 border-t border-gray-100">
-            <Button size="sm" variant="primary" onClick={onAction}>
+            <Button 
+              size="sm" 
+              variant="primary"
+              onClick={onAction}
+            >
               Take Action
             </Button>
           </div>
@@ -274,7 +257,7 @@ export const FinancialSummary: React.FC<FinancialSummaryProps> = ({
   };
 
   return (
-    <Card variant="elevated" className="w-full">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Financial Overview</CardTitle>
       </CardHeader>
@@ -286,25 +269,23 @@ export const FinancialSummary: React.FC<FinancialSummaryProps> = ({
             </p>
             <p className="text-sm text-gray-500">Total Balance</p>
           </div>
-
+          
           <div className="text-center">
             <p className="text-2xl font-bold text-green-600">
               {formatCurrency(monthlyIncome, currency)}
             </p>
             <p className="text-sm text-gray-500">Monthly Income</p>
           </div>
-
+          
           <div className="text-center">
             <p className="text-2xl font-bold text-red-600">
               {formatCurrency(monthlyExpenses, currency)}
             </p>
             <p className="text-sm text-gray-500">Monthly Expenses</p>
           </div>
-
+          
           <div className="text-center">
-            <p
-              className={`text-2xl font-bold ${getSavingsRateColor(savingsRate)}`}
-            >
+            <p className={`text-2xl font-bold ${getSavingsRateColor(savingsRate)}`}>
               {savingsRate.toFixed(1)}%
             </p>
             <p className="text-sm text-gray-500">Savings Rate</p>
@@ -337,7 +318,7 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
   ];
 
   return (
-    <Card variant="default" className="w-full">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Quick Actions</CardTitle>
       </CardHeader>
@@ -374,7 +355,7 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
   amount,
   change,
   positive,
-  suffix = '',
+  suffix = ''
 }) => {
   const formatAmount = (amount: number) => {
     if (suffix === '%') {
@@ -393,44 +374,22 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
           <p className="text-sm font-medium text-gray-600">{title}</p>
           <div className="flex items-baseline">
             <p className="text-2xl font-semibold text-gray-900">
-              {formatAmount(amount)}
-              {suffix}
+              {formatAmount(amount)}{suffix}
             </p>
             {change !== undefined && change !== 0 && (
-              <p
-                className={cn(
-                  'ml-2 flex items-baseline text-sm font-medium',
-                  positive === true
-                    ? 'text-green-600'
-                    : positive === false
-                      ? 'text-red-600'
-                      : 'text-gray-500'
-                )}
-              >
+              <p className={cn(
+                "ml-2 flex items-baseline text-sm font-medium",
+                positive === true ? "text-green-600" : 
+                positive === false ? "text-red-600" : "text-gray-500"
+              )}>
                 {positive === true && (
-                  <svg
-                    className="h-3 w-3 flex-shrink-0"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L10 6.414 6.707 9.707a1 1 0 01-1.414 0z"
-                      clipRule="evenodd"
-                    />
+                  <svg className="h-3 w-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L10 6.414 6.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
                   </svg>
                 )}
                 {positive === false && (
-                  <svg
-                    className="h-3 w-3 flex-shrink-0"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L10 13.586l3.293-3.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
+                  <svg className="h-3 w-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L10 13.586l3.293-3.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                 )}
                 {Math.abs(change)}%
@@ -453,7 +412,7 @@ interface TransactionListProps {
 export const TransactionList: React.FC<TransactionListProps> = ({
   transactions,
   onTransactionClick,
-  showAccount = false,
+  showAccount = false
 }) => {
   const formatCurrency = (amount: number, currency: string) => {
     return new Intl.NumberFormat('en-US', {
@@ -466,58 +425,38 @@ export const TransactionList: React.FC<TransactionListProps> = ({
     return new Date(dateString).toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
-      year: 'numeric',
+      year: 'numeric'
     });
   };
 
   return (
     <div className="space-y-3">
-      {transactions.map(transaction => (
+      {transactions.map((transaction) => (
         <div
           key={transaction.id}
           className={cn(
-            'flex items-center justify-between p-4 rounded-lg border',
-            onTransactionClick && 'cursor-pointer hover:bg-gray-50'
+            "flex items-center justify-between p-4 rounded-lg border",
+            onTransactionClick && "cursor-pointer hover:bg-gray-50"
           )}
           onClick={() => onTransactionClick?.(transaction)}
         >
           <div className="flex items-center space-x-3">
-            <div
-              className={cn(
-                'w-10 h-10 rounded-full flex items-center justify-center',
-                transaction.type === 'credit' ? 'bg-green-100' : 'bg-red-100'
-              )}
-            >
+            <div className={cn(
+              "w-10 h-10 rounded-full flex items-center justify-center",
+              transaction.type === 'credit' ? 'bg-green-100' : 'bg-red-100'
+            )}>
               {transaction.type === 'credit' ? (
-                <svg
-                  className="w-5 h-5 text-green-600"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  />
+                <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
                 </svg>
               ) : (
-                <svg
-                  className="w-5 h-5 text-red-600"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M3 3a1 1 0 000 2h12a1 1 0 100-2H3zm3.293 4.293a1 1 0 011.414 0L9 8.586V16a1 1 0 11-2 0V8.586L5.707 9.879a1 1 0 01-1.414-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L9 8.586z"
-                    clipRule="evenodd"
-                  />
+                <svg className="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M3 3a1 1 0 000 2h12a1 1 0 100-2H3zm3.293 4.293a1 1 0 011.414 0L9 8.586V16a1 1 0 11-2 0V8.586L5.707 9.879a1 1 0 01-1.414-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L9 8.586z" clipRule="evenodd" />
                 </svg>
               )}
             </div>
             <div>
-              <p className="font-medium text-gray-900">
-                {transaction.description}
-              </p>
+              <p className="font-medium text-gray-900">{transaction.description}</p>
               <p className="text-sm text-gray-500">
                 {formatDate(transaction.createdAt)} • {transaction.category}
                 {showAccount && ` • ${transaction.accountId}`}
@@ -525,22 +464,13 @@ export const TransactionList: React.FC<TransactionListProps> = ({
             </div>
           </div>
           <div className="text-right">
-            <p
-              className={cn(
-                'font-medium',
-                transaction.type === 'credit'
-                  ? 'text-green-600'
-                  : 'text-gray-900'
-              )}
-            >
-              {transaction.type === 'credit' ? '+' : '-'}
-              {formatCurrency(transaction.amount, transaction.currency)}
+            <p className={cn(
+              "font-medium",
+              transaction.type === 'credit' ? 'text-green-600' : 'text-gray-900'
+            )}>
+              {transaction.type === 'credit' ? '+' : '-'}{formatCurrency(transaction.amount, transaction.currency)}
             </p>
-            <Badge
-              variant={
-                transaction.status === 'completed' ? 'success' : 'warning'
-              }
-            >
+            <Badge variant={transaction.status === 'completed' ? 'success' : 'warning'}>
               {transaction.status}
             </Badge>
           </div>
@@ -562,31 +492,23 @@ export const InsightCard: React.FC<InsightCardProps> = ({
   title,
   description,
   type,
-  impact,
+  impact
 }) => {
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case 'spending':
-        return '💳';
-      case 'saving':
-        return '💰';
-      case 'investment':
-        return '📈';
-      default:
-        return '💡';
+      case 'spending': return '💳';
+      case 'saving': return '💰';
+      case 'investment': return '📈';
+      default: return '💡';
     }
   };
 
   const getImpactColor = (impact: string) => {
     switch (impact) {
-      case 'high':
-        return 'bg-red-100 text-red-800';
-      case 'medium':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'low':
-        return 'bg-green-100 text-green-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
+      case 'high': return 'bg-red-100 text-red-800';
+      case 'medium': return 'bg-yellow-100 text-yellow-800';
+      case 'low': return 'bg-green-100 text-green-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -600,7 +522,9 @@ export const InsightCard: React.FC<InsightCardProps> = ({
             <p className="text-xs text-gray-600 mt-1">{description}</p>
           </div>
         </div>
-        <Badge className={getImpactColor(impact)}>{impact}</Badge>
+        <Badge className={getImpactColor(impact)}>
+          {impact}
+        </Badge>
       </div>
     </div>
   );

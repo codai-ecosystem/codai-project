@@ -12,47 +12,41 @@ async function handleGetDashboard(req: AuthenticatedRequest, user: AuthUser) {
     const insightsSummary = await memoryService.getFinancialInsightsSummary();
 
     // Search for account and transaction data
-    const accountData = await memoryService.searchFinancialMemories(
-      'account banking financial',
-      'transaction'
-    );
-    const transactionData = await memoryService.searchFinancialMemories(
-      'transactions spending',
-      'transaction'
-    );
+    const accountData = await memoryService.searchFinancialMemories('account banking financial', 'transaction');
+    const transactionData = await memoryService.searchFinancialMemories('transactions spending', 'transaction');
 
     // Mock dashboard data (in real implementation, this would aggregate from database)
     const dashboardData = {
       user: {
         id: user.id,
         name: user.name,
-        email: user.email,
+        email: user.email
       },
       financialSummary: {
         totalBalance: 17741.28, // This would be calculated from actual accounts
-        monthlyIncome: 2500.0,
+        monthlyIncome: 2500.00,
         monthlyExpenses: 1845.32,
         savingsRate: 0.26,
-        netWorth: 17741.28,
+        netWorth: 17741.28
       },
       accountSummary: {
         totalAccounts: 2,
         checkingBalance: 2540.78,
-        savingsBalance: 15200.5,
-        creditUtilization: 0.15,
+        savingsBalance: 15200.50,
+        creditUtilization: 0.15
       },
       recentTransactions: 5, // Count of recent transactions
       insights: {
         total: insightsSummary.totalInsights,
         categories: insightsSummary.categories,
-        recent: insightsSummary.recentInsights.length,
+        recent: insightsSummary.recentInsights.length
       },
       spendingByCategory: {
         food: 285.42,
         shopping: 189.99,
         utilities: 245.67,
-        transport: 125.3,
-        entertainment: 89.45,
+        transport: 125.30,
+        entertainment: 89.45
       },
       savingsGoals: [
         {
@@ -61,7 +55,7 @@ async function handleGetDashboard(req: AuthenticatedRequest, user: AuthUser) {
           targetAmount: 20000,
           currentAmount: 15200,
           progress: 0.76,
-          targetDate: '2024-12-31',
+          targetDate: '2024-12-31'
         },
         {
           id: `goal_${user.id}_vacation`,
@@ -69,17 +63,17 @@ async function handleGetDashboard(req: AuthenticatedRequest, user: AuthUser) {
           targetAmount: 5000,
           currentAmount: 1200,
           progress: 0.24,
-          targetDate: '2024-08-01',
-        },
+          targetDate: '2024-08-01'
+        }
       ],
       alerts: [
         {
           id: `alert_${user.id}_001`,
           type: 'spending',
-          message: "You're 15% over your monthly food budget",
+          message: 'You\'re 15% over your monthly food budget',
           severity: 'medium',
-          actionable: true,
-        },
+          actionable: true
+        }
       ],
       aiRecommendations: [
         {
@@ -87,17 +81,16 @@ async function handleGetDashboard(req: AuthenticatedRequest, user: AuthUser) {
           type: 'saving',
           title: 'Optimize Coffee Spending',
           description: 'Save $120/month by brewing coffee at home',
-          impact: 'medium',
+          impact: 'medium'
         },
         {
           id: `rec_${user.id}_002`,
           type: 'investment',
           title: 'Consider Index Funds',
-          description:
-            'Your cash reserves are high - consider investing for growth',
-          impact: 'high',
-        },
-      ],
+          description: 'Your cash reserves are high - consider investing for growth',
+          impact: 'high'
+        }
+      ]
     };
 
     // Store dashboard access insight
@@ -112,12 +105,13 @@ async function handleGetDashboard(req: AuthenticatedRequest, user: AuthUser) {
       data: {
         accessTime: new Date().toISOString(),
         totalBalance: dashboardData.financialSummary.totalBalance,
-        savingsRate: dashboardData.financialSummary.savingsRate,
+        savingsRate: dashboardData.financialSummary.savingsRate
       },
-      createdAt: new Date().toISOString(),
+      createdAt: new Date().toISOString()
     });
 
     return NextResponse.json(dashboardData);
+
   } catch (error) {
     console.error('Error fetching dashboard data:', error);
     return NextResponse.json(

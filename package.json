@@ -14,7 +14,8 @@
   },
   "workspaces": [
     "services/*",
-    "packages/*"
+    "packages/*",
+    "apps/*"
   ],
   "scripts": {
     "dev": "node scripts/dev-orchestrator.js start",
@@ -48,14 +49,16 @@
     "dev:platform": "node scripts/dev-coordination.js platform dev",
     "status:focus": "node scripts/dev-coordination.js focus status",
     "status:platform": "node scripts/dev-coordination.js platform status",
+    "auto-discover": "node scripts/auto-discover-ecosystem.js",
+    "validate-dashboard": "node scripts/validate-dashboard-fix.js",
     "status:full": "node scripts/dev-coordination.js full status",
     "validate-workspace": "node scripts/validate-workspace.js",
     "update-org": "node scripts/update-organization-references.js",
     "push-all-scaffolded": "node scripts/push-all-scaffolded.js",
     "audit-ecosystem": "node scripts/audit-ecosystem-repositories.js",
-    "test:unit": "jest",
-    "test:unit:watch": "jest --watch",
-    "test:unit:coverage": "jest --coverage",
+    "test:unit": "node node_modules/jest/bin/jest.js",
+    "test:unit:watch": "node node_modules/jest/bin/jest.js --watch",
+    "test:unit:coverage": "node node_modules/jest/bin/jest.js --coverage",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
@@ -67,12 +70,27 @@
     "cleanup:deps": "node scripts/analyze-dependencies.js",
     "cleanup:full": "pnpm cleanup && pnpm cleanup:deps",
     "test:watch": "node scripts/test-runner.js",
-    "test:coverage": "jest --coverage --passWithNoTests",
+    "test:coverage": "node node_modules/jest/bin/jest.js --coverage --passWithNoTests",
     "test:ci": "node scripts/test-runner.js"
   },
   "dependencies": {
     "chalk": "^5.3.0",
-    "commander": "^12.0.0"
+    "commander": "^12.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "class-variance-authority": "^0.7.0",
+    "@heroicons/react": "^2.0.18",
+    "tailwind-merge": "^2.3.0",
+    "clsx": "^2.1.1",
+    "postgres": "^3.4.4",
+    "@radix-ui/react-progress": "^1.0.3",
+    "@radix-ui/react-tabs": "^1.0.4",
+    "@radix-ui/react-select": "^2.0.0",
+    "lucide-react": "^0.263.1",
+    "recharts": "^2.12.7",
+    "zod": "^3.23.8",
+    "uuid": "^9.0.1",
+    "@types/uuid": "^9.0.8"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.0",
@@ -81,7 +99,7 @@
     "@testing-library/react": "^14.1.2",
     "@testing-library/user-event": "^14.5.1",
     "@types/jest": "^29.5.14",
-    "@types/node": "^20.10.0",
+    "@types/node": "^20.12.12",
     "@typescript-eslint/eslint-plugin": "^8.34.1",
     "@typescript-eslint/parser": "^8.34.1",
     "@vitejs/plugin-react": "^4.0.0",
@@ -98,11 +116,21 @@
     "ts-jest": "^29.4.0",
     "turbo": "^2.0.0",
     "typescript": "^5.3.0",
-    "vitest": "^1.2.0"
+    "vitest": "^1.2.0",
+    "@types/react": "^18.3.23",
+    "@types/react-dom": "^18.3.7",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3"
   },
   "engines": {
     "node": ">=18.0.0",
     "pnpm": ">=8.0.0"
   },
-  "packageManager": "pnpm@8.15.0"
+  "packageManager": "pnpm@8.15.0",
+  "pnpm": {
+    "overrides": {
+      "next": "^15.1.0"
+    }
+  }
 }

@@ -1,20 +1,32 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    // Enable React Server Components
-    serverComponentsExternalPackages: [],
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
   },
-  // Environment variables
-  env: {
-    CUSTOM_KEY: process.env.CUSTOM_KEY,
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    // Enable top-level await
+    config.experiments = {
+      ...config.experiments,
+      topLevelAwait: true,
+    };
+    
+    return config;
   },
-  // Redirect configuration
-  async redirects() {
-    return [];
-  },
-  // Rewrite configuration
-  async rewrites() {
-    return [];
+  transpilePackages: ['@codai/ui', '@codai/core', '@codai/auth'],
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
 };
 

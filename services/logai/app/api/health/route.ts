@@ -1,6 +1,7 @@
 // Health check endpoint for LogAI
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
+import { sql } from 'drizzle-orm';
 import { withAPIMiddleware } from '@/lib/security';
 
 async function handler(request: NextRequest): Promise<NextResponse> {
@@ -42,7 +43,7 @@ async function handler(request: NextRequest): Promise<NextResponse> {
 async function checkDatabase(): Promise<boolean> {
   try {
     // Simple query to check database connectivity
-    await db.execute('SELECT 1');
+    await db.execute(sql`SELECT 1`);
     return true;
   } catch (error) {
     console.error('Database health check failed:', error);

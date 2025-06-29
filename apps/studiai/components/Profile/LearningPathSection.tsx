@@ -185,7 +185,7 @@ export default function LearningPathSection() {
       case 'locked':
         return 'default';
       default:
-        return 'secondary';
+        return 'default';
     }
   };
 

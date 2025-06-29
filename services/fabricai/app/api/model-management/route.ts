@@ -604,9 +604,9 @@ export async function POST(request: NextRequest) {
         break;
 
       case 'manage-deployment':
-        const { deploymentId, action: deploymentAction } = requestData;
+        const { deploymentId: manageDeploymentId, action: deploymentAction } = requestData;
 
-        const deployment = mockDeployments.find(d => d.id === deploymentId);
+        const deployment = mockDeployments.find(d => d.id === manageDeploymentId);
         if (!deployment) {
           return NextResponse.json(
             { error: 'Deployment not found' },

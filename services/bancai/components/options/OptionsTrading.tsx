@@ -10,14 +10,6 @@ import {
 } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../ui/select';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import {
@@ -304,33 +296,24 @@ export default function OptionsTrading() {
           </p>
         </div>
         <div className="flex items-center space-x-4">
-          <Select value={selectedSymbol} onValueChange={setSelectedSymbol}>
-            <SelectTrigger className="w-32">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="AAPL">AAPL</SelectItem>
-              <SelectItem value="NVDA">NVDA</SelectItem>
-              <SelectItem value="TSLA">TSLA</SelectItem>
-              <SelectItem value="SPY">SPY</SelectItem>
-              <SelectItem value="QQQ">QQQ</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select
-            value={selectedExpiration}
-            onValueChange={setSelectedExpiration}
+          <select
+            value={selectedSymbol}
+            onChange={(e) => setSelectedSymbol(e.target.value)}
+            className="w-32 h-10 rounded-md border border-input bg-background px-3 py-2 text-sm"
           >
-            <SelectTrigger className="w-40">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {expirations.map(exp => (
-                <SelectItem key={exp} value={exp}>
-                  {exp}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            <option value="AAPL">AAPL</option>
+            <option value="NVDA">NVDA</option>
+            <option value="TSLA">TSLA</option>
+            <option value="SPY">SPY</option>
+            <option value="QQQ">QQQ</option>
+          </select>
+          <select
+            value={selectedExpiration}
+            onChange={(e) => setSelectedExpiration(e.target.value)}
+            className="h-10 rounded-md border border-input bg-background px-3 py-2 text-sm"
+          >
+
+          </select>
         </div>
       </div>
 
@@ -345,15 +328,15 @@ export default function OptionsTrading() {
         </Card>
       )}
 
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="chain">Options Chain</TabsTrigger>
-          <TabsTrigger value="strategies">Strategies</TabsTrigger>
-          <TabsTrigger value="volatility">Volatility</TabsTrigger>
-          <TabsTrigger value="builder">Strategy Builder</TabsTrigger>
-        </TabsList>
+      <div>
+        <div className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground">
+          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium" onClick={() => setActiveTab("chain")}>Options Chain</button>
+          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium" onClick={() => setActiveTab("strategies")}>Strategies</button>
+          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium" onClick={() => setActiveTab("volatility")}>Volatility</button>
+          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium" onClick={() => setActiveTab("builder")}>Strategy Builder</button>
+        </div>
 
-        <TabsContent value="chain" className="space-y-4">
+        <div className={activeTab === "chain" ? "block" : "hidden"}>
           {optionsChain && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card>
@@ -393,9 +376,9 @@ export default function OptionsTrading() {
               </Card>
             </div>
           )}
-        </TabsContent>
+        </div>
 
-        <TabsContent value="strategies" className="space-y-4">
+        <div className={activeTab === "strategies" ? "block" : "hidden"}>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {strategies.map(strategy => (
               <Card
@@ -479,9 +462,9 @@ export default function OptionsTrading() {
               </Card>
             ))}
           </div>
-        </TabsContent>
+        </div>
 
-        <TabsContent value="volatility" className="space-y-4">
+        <div className={activeTab === "volatility" ? "block" : "hidden"}>
           {volatilityData && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card>
@@ -580,9 +563,9 @@ export default function OptionsTrading() {
               </Card>
             </div>
           )}
-        </TabsContent>
+        </div>
 
-        <TabsContent value="builder" className="space-y-4">
+        <div className={activeTab === "builder" ? "block" : "hidden"}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
@@ -598,28 +581,20 @@ export default function OptionsTrading() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label>Contract Type</Label>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="call">Call</SelectItem>
-                        <SelectItem value="put">Put</SelectItem>
-                        <SelectItem value="stock">Stock</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <select className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+                      <option value="">Select type</option>
+                      <option value="call">Call</option>
+                      <option value="put">Put</option>
+                      <option value="stock">Stock</option>
+                    </select>
                   </div>
                   <div>
                     <Label>Action</Label>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select action" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="buy">Buy</SelectItem>
-                        <SelectItem value="sell">Sell</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <select className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+                      <option value="">Select action</option>
+                      <option value="buy">Buy</option>
+                      <option value="sell">Sell</option>
+                    </select>
                   </div>
                 </div>
 
@@ -753,8 +728,8 @@ export default function OptionsTrading() {
               </Card>
             )}
           </div>
-        </TabsContent>
-      </Tabs>
+        </div>
+      </div>
     </div>
   );
 }

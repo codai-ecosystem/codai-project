@@ -33,7 +33,7 @@ async function handleUserAction(
     }
 
     let updateData: Partial<typeof users.$inferInsert> = {};
-    let auditAction = 'admin_action';
+    let auditAction: 'admin_action' = 'admin_action';
     let actionDescription = '';
 
     switch (action) {
@@ -114,9 +114,9 @@ async function handleUserAction(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { userId: string; action: string } }
+  { params }: { params: Promise<{ userId: string; action: string }> }
 ) {
-  const { userId, action } = params;
+  const { userId, action } = await params;
 
   return withAPIMiddleware(
     request,

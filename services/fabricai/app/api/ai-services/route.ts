@@ -539,9 +539,9 @@ export async function POST(request: NextRequest) {
         break;
 
       case 'execute-pipeline':
-        const { pipelineId } = requestData;
+        const { pipelineId: executePipelineId } = requestData;
 
-        const pipeline = mockPipelines.find(p => p.id === pipelineId);
+        const pipeline = mockPipelines.find(p => p.id === executePipelineId);
         if (!pipeline) {
           return NextResponse.json(
             { error: 'Pipeline not found' },

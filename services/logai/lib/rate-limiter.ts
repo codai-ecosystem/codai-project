@@ -80,14 +80,14 @@ export async function checkRateLimit(
     const resRateLimiter = await limiter.consume(key, points);
     return {
       allowed: true,
-      totalHits: resRateLimiter.totalHits,
-      totalTime: resRateLimiter.totalTime,
-      remainingPoints: resRateLimiter.remainingPoints,
+      totalHits: 0, // Not available in RateLimiterRes
+      totalTime: resRateLimiter.msBeforeNext || 0,
+      remainingPoints: resRateLimiter.remainingPoints || 0,
     };
   } catch (rejRes: any) {
     return {
       allowed: false,
-      totalHits: rejRes.totalHits,
+      totalHits: 0, // Not available in rejection response
       totalTime: rejRes.totalTime,
       remainingPoints: rejRes.remainingPoints || 0,
     };
@@ -106,7 +106,11 @@ export async function getRateLimitInfo(
   try {
     await ensureConnection();
     const resRateLimiter = await limiter.get(key);
-    return resRateLimiter;
+    return resRateLimiter ? {
+      totalHits: 0, // Not available in RateLimiterRes
+      remainingPoints: resRateLimiter.remainingPoints || 0,
+      msBeforeNext: resRateLimiter.msBeforeNext || 0,
+    } : null;
   } catch (error) {
     console.error('Error getting rate limit info:', error);
     return null;

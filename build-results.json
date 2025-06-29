@@ -1,41 +1,29 @@
 {
-  "successful": 2,
-  "failed": 38,
+  "successful": 37,
+  "failed": 3,
   "skipped": 0,
   "total": 40,
-  "duration": 111382,
+  "duration": 272421,
   "services": {
     "codai": {
       "name": "codai",
       "type": "service",
       "priority": 1,
-      "framework": "unknown",
-      "success": false,
-      "duration": 2396,
+      "framework": "next",
+      "success": true,
+      "duration": 756,
       "size": 83155176,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn config ignoring workspace config at E:\\GitHub\\codai-project\\services\\codai/.npmrc\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\codai\nnpm error workspace codai@1.0.0\nnpm error location E:\\GitHub\\codai-project\\services\\codai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c pnpm run build:packages\n",
-          "code": 1
-        }
-      ]
+      "errors": []
     },
     "logai": {
       "name": "logai",
       "type": "service",
       "priority": 1,
       "framework": "next",
-      "success": false,
-      "duration": 6064,
-      "size": 109266600,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nFailed to compile.\n\napp\\layout.tsx\nAn error occurred in `next/font`.\n\nReferenceError: module is not defined in ES module scope\nThis file is being treated as an ES module because it has a '.js' file extension and 'E:\\GitHub\\codai-project\\services\\logai\\package.json' contains \"type\": \"module\". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.\n    at file:///E:/GitHub/codai-project/services/logai/postcss.config.js:1:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:327:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:663:26)\n    at async findConfig (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\lib\\find-config.js:85:25)\n    at async getPostCssPlugins (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\webpack\\config\\blocks\\css\\plugins.js:89:18)\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\webpack\\config\\blocks\\css\\index.js:124:36\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\webpack\\loaders\\next-font-loader\\index.js:86:33\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n\n./app/auth/signin/page.tsx\nModule not found: Can't resolve '@/components/ui/button'\n\nhttps://nextjs.org/docs/messages/module-not-found\n\n./app/profile/mfa/page.tsx\nModule not found: Can't resolve '@/components/ui/button'\n\nhttps://nextjs.org/docs/messages/module-not-found\n\n./app/profile/page.tsx\nModule not found: Can't resolve '@/components/ui/button'\n\nhttps://nextjs.org/docs/messages/module-not-found\n\n./lib/db/index.ts\nModule not found: Can't resolve 'postgres'\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n./app/api/health/route.ts\n\n\n> Build failed because of webpack errors\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\logai\nnpm error workspace @codai/logai@1.0.0\nnpm error location E:\\GitHub\\codai-project\\services\\logai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 568,
+      "size": 294861184,
+      "errors": []
     },
     "memorai": {
       "name": "memorai",
@@ -43,7 +31,7 @@
       "priority": 1,
       "framework": "unknown",
       "success": true,
-      "duration": 15610,
+      "duration": 1366,
       "size": 0,
       "errors": []
     },
@@ -52,392 +40,248 @@
       "type": "service",
       "priority": 2,
       "framework": "next",
-      "success": false,
-      "duration": 3592,
-      "size": 34022917,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nFailed to compile.\n\n./components/options/OptionsTrading.tsx\nModule not found: Can't resolve '../ui/card'\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n./app/page.tsx\n\n./components/options/OptionsTrading.tsx\nModule not found: Can't resolve '../ui/badge'\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n./app/page.tsx\n\n./components/options/OptionsTrading.tsx\nModule not found: Can't resolve '../ui/button'\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n./app/page.tsx\n\n./components/options/OptionsTrading.tsx\nModule not found: Can't resolve '../ui/tabs'\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n./app/page.tsx\n\n./components/options/OptionsTrading.tsx\nModule not found: Can't resolve '../ui/select'\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n./app/page.tsx\n\n\n> Build failed because of webpack errors\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\bancai\nnpm error workspace @codai/bancai@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\bancai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 8836,
+      "size": 73061079,
+      "errors": []
     },
     "fabricai": {
       "name": "fabricai",
       "type": "service",
       "priority": 2,
       "framework": "next",
-      "success": false,
-      "duration": 3622,
-      "size": 21019048,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n ⚠ Invalid next.config.js options detected: \n ⚠     Unrecognized key(s) in object: 'serverExternalPackages'\n ⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config\nFailed to compile.\n\n./app/api/ai-services/route.ts\nError: \n  \u001b[31mx\u001b[0m the name `pipelineId` is defined multiple times\n     ,-[\u001b[36;1;4mE:\\GitHub\\codai-project\\services\\fabricai\\app\\api\\ai-services\\route.ts\u001b[0m:523:1]\n \u001b[2m523\u001b[0m |           );\n \u001b[2m524\u001b[0m |         }\n \u001b[2m525\u001b[0m | \n \u001b[2m526\u001b[0m |         const pipelineId = `pipeline-${Date.now()}`;\n     : \u001b[31;1m              ^^^^^|^^^^\u001b[0m\n     :                    \u001b[31;1m`-- \u001b[31;1mprevious definition of `pipelineId` here\u001b[0m\u001b[0m\n \u001b[2m527\u001b[0m | \n \u001b[2m528\u001b[0m |         response = {\n \u001b[2m529\u001b[0m |           pipelineId,\n \u001b[2m530\u001b[0m |           name,\n \u001b[2m531\u001b[0m |           description,\n \u001b[2m532\u001b[0m |           services,\n \u001b[2m533\u001b[0m |           triggers: triggers || [],\n \u001b[2m534\u001b[0m |           status: 'inactive',\n \u001b[2m535\u001b[0m |           configuration: configuration || {},\n \u001b[2m536\u001b[0m |           created: new Date().toISOString(),\n \u001b[2m537\u001b[0m |           message: 'Pipeline created successfully',\n \u001b[2m538\u001b[0m |         };\n \u001b[2m539\u001b[0m |         break;\n \u001b[2m540\u001b[0m | \n \u001b[2m541\u001b[0m |       case 'execute-pipeline':\n \u001b[2m542\u001b[0m |         const { pipelineId } = requestData;\n     : \u001b[33;1m                ^^^^^|^^^^\u001b[0m\n     :                      \u001b[33;1m`-- \u001b[33;1m`pipelineId` redefined here\u001b[0m\u001b[0m\n \u001b[2m543\u001b[0m | \n \u001b[2m544\u001b[0m |         const pipeline = mockPipelines.find(p => p.id === pipelineId);\n \u001b[2m545\u001b[0m |         if (!pipeline) {\n     `----\n\nImport trace for requested module:\n./app/api/ai-services/route.ts\n\n./app/api/model-management/route.ts\nError: \n  \u001b[31mx\u001b[0m the name `deploymentId` is defined multiple times\n     ,-[\u001b[36;1;4mE:\\GitHub\\codai-project\\services\\fabricai\\app\\api\\model-management\\route.ts\u001b[0m:589:1]\n \u001b[2m589\u001b[0m |           );\n \u001b[2m590\u001b[0m |         }\n \u001b[2m591\u001b[0m | \n \u001b[2m592\u001b[0m |         const deploymentId = `deploy-${Date.now()}`;\n     : \u001b[31;1m              ^^^^^^|^^^^^\u001b[0m\n     :                     \u001b[31;1m`-- \u001b[31;1mprevious definition of `deploymentId` here\u001b[0m\u001b[0m\n \u001b[2m593\u001b[0m | \n \u001b[2m594\u001b[0m |         response = {\n \u001b[2m595\u001b[0m |           deploymentId,\n \u001b[2m596\u001b[0m |           templateId,\n \u001b[2m597\u001b[0m |           name,\n \u001b[2m598\u001b[0m |           status: 'deploying',\n \u001b[2m599\u001b[0m |           endpoint: `https://api.fabricai.ro/models/${deploymentId}`,\n \u001b[2m600\u001b[0m |           configuration: configuration || {},\n \u001b[2m601\u001b[0m |           estimatedCompletion: new Date(Date.now() + 300000).toISOString(), // 5 minutes\n \u001b[2m602\u001b[0m |           message: 'Deployment initiated successfully',\n \u001b[2m603\u001b[0m |         };\n \u001b[2m604\u001b[0m |         break;\n \u001b[2m605\u001b[0m | \n \u001b[2m606\u001b[0m |       case 'manage-deployment':\n \u001b[2m607\u001b[0m |         const { deploymentId, action: deploymentAction } = requestData;\n     : \u001b[33;1m                ^^^^^^|^^^^^\u001b[0m\n     :                       \u001b[33;1m`-- \u001b[33;1m`deploymentId` redefined here\u001b[0m\u001b[0m\n \u001b[2m608\u001b[0m | \n \u001b[2m609\u001b[0m |         const deployment = mockDeployments.find(d => d.id === deploymentId);\n \u001b[2m610\u001b[0m |         if (!deployment) {\n     `----\n\nImport trace for requested module:\n./app/api/model-management/route.ts\n\n\n> Build failed because of webpack errors\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\fabricai\nnpm error workspace @codai/fabricai@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\fabricai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 8474,
+      "size": 75355841,
+      "errors": []
     },
     "wallet": {
       "name": "wallet",
       "type": "service",
       "priority": 2,
       "framework": "next",
-      "success": false,
-      "duration": 3357,
-      "size": 21888521,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nFailed to compile.\n\napp\\layout.tsx\nAn error occurred in `next/font`.\n\nReferenceError: module is not defined in ES module scope\nThis file is being treated as an ES module because it has a '.js' file extension and 'E:\\GitHub\\codai-project\\services\\wallet\\package.json' contains \"type\": \"module\". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.\n    at file:///E:/GitHub/codai-project/services/wallet/postcss.config.js:1:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:327:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:663:26)\n    at async findConfig (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\lib\\find-config.js:85:25)\n    at async getPostCssPlugins (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\webpack\\config\\blocks\\css\\plugins.js:89:18)\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\webpack\\config\\blocks\\css\\index.js:124:36\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\webpack\\loaders\\next-font-loader\\index.js:86:33\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n\n./components/ui/progress.tsx\nModule not found: Can't resolve '@radix-ui/react-progress'\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n./components/defi/DeFiIntegration.tsx\n./app/page.tsx\n\n\n> Build failed because of webpack errors\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\wallet\nnpm error workspace @codai/wallet@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\wallet\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 8546,
+      "size": 71876032,
+      "errors": []
     },
     "x": {
       "name": "x",
       "type": "service",
       "priority": 2,
       "framework": "next",
-      "success": false,
-      "duration": 3196,
-      "size": 13490502,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nFailed to compile.\n\napp\\layout.tsx\nAn error occurred in `next/font`.\n\nReferenceError: module is not defined in ES module scope\nThis file is being treated as an ES module because it has a '.js' file extension and 'E:\\GitHub\\codai-project\\services\\x\\package.json' contains \"type\": \"module\". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.\n    at file:///E:/GitHub/codai-project/services/x/postcss.config.js:1:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:327:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:663:26)\n    at async findConfig (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\lib\\find-config.js:85:25)\n    at async getPostCssPlugins (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\webpack\\config\\blocks\\css\\plugins.js:89:18)\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\webpack\\config\\blocks\\css\\index.js:124:36\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\webpack\\loaders\\next-font-loader\\index.js:86:33\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n\n\n> Build failed because of webpack errors\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\x\nnpm error workspace @codai/x@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\x\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 7710,
+      "size": 53710398,
+      "errors": []
     },
     "cumparai": {
       "name": "cumparai",
       "type": "service",
       "priority": 3,
       "framework": "next",
-      "success": false,
-      "duration": 3115,
-      "size": 13496174,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nFailed to compile.\n\napp\\layout.tsx\nAn error occurred in `next/font`.\n\nReferenceError: module is not defined in ES module scope\nThis file is being treated as an ES module because it has a '.js' file extension and 'E:\\GitHub\\codai-project\\services\\cumparai\\package.json' contains \"type\": \"module\". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.\n    at file:///E:/GitHub/codai-project/services/cumparai/postcss.config.js:1:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:327:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:663:26)\n    at async findConfig (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\lib\\find-config.js:85:25)\n    at async getPostCssPlugins (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\webpack\\config\\blocks\\css\\plugins.js:89:18)\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\webpack\\config\\blocks\\css\\index.js:124:36\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\webpack\\loaders\\next-font-loader\\index.js:86:33\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n\n\n> Build failed because of webpack errors\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\cumparai\nnpm error workspace @codai/cumparai@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\cumparai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 7544,
+      "size": 54589141,
+      "errors": []
     },
     "sociai": {
       "name": "sociai",
       "type": "service",
       "priority": 3,
       "framework": "next",
-      "success": false,
-      "duration": 3269,
-      "size": 21523478,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nFailed to compile.\n\napp\\layout.tsx\nAn error occurred in `next/font`.\n\nReferenceError: module is not defined in ES module scope\nThis file is being treated as an ES module because it has a '.js' file extension and 'E:\\GitHub\\codai-project\\services\\sociai\\package.json' contains \"type\": \"module\". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.\n    at file:///E:/GitHub/codai-project/services/sociai/postcss.config.js:1:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:327:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:663:26)\n    at async findConfig (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\lib\\find-config.js:85:25)\n    at async getPostCssPlugins (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\webpack\\config\\blocks\\css\\plugins.js:89:18)\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\webpack\\config\\blocks\\css\\index.js:124:36\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\webpack\\loaders\\next-font-loader\\index.js:86:33\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n\n\n> Build failed because of webpack errors\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\sociai\nnpm error workspace @codai/sociai@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\sociai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 9073,
+      "size": 69889125,
+      "errors": []
     },
     "studiai": {
       "name": "studiai",
       "type": "service",
       "priority": 3,
       "framework": "next",
-      "success": false,
-      "duration": 9941,
-      "size": 103141352,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nglob error [Error: EPERM: operation not permitted, scandir 'C:\\Users\\vladu\\AppData\\Local\\Temp\\WinSAT'] {\n  errno: -4048,\n  code: 'EPERM',\n  syscall: 'scandir',\n  path: 'C:\\\\Users\\\\vladu\\\\AppData\\\\Local\\\\Temp\\\\WinSAT'\n}\nFailed to compile.\n\nError: EPERM: operation not permitted, scandir 'C:\\Users\\vladu\\AppData\\Local\\Temp\\WinSAT'\n\n\n> Build failed because of webpack errors\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\studiai\nnpm error workspace cursuri@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\studiai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 16271,
+      "size": 722171598,
+      "errors": []
     },
     "publicai": {
       "name": "publicai",
       "type": "service",
       "priority": 4,
       "framework": "next",
-      "success": false,
-      "duration": 936,
-      "size": 530,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n\n> Build error occurred\nError: > Couldn't find any `pages` or `app` directory. Please create one under the project root\n    at findPagesDir (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\lib\\find-pages-dir.js:42:15)\n    at E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:406:73\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async build (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:368:9)\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\publicai\nnpm error workspace @codai/publicai@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\publicai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 8920,
+      "size": 52708769,
+      "errors": []
     },
     "admin": {
       "name": "admin",
       "type": "service",
       "priority": 4,
       "framework": "next",
-      "success": false,
-      "duration": 937,
-      "size": 0,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n ⨯ Failed to load next.config.js, see more info here https://nextjs.org/docs/messages/next-config-error\n\n> Build error occurred\nReferenceError: module is not defined in ES module scope\nThis file is being treated as an ES module because it has a '.js' file extension and 'E:\\GitHub\\codai-project\\services\\admin\\package.json' contains \"type\": \"module\". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.\n    at file:///E:/GitHub/codai-project/services/admin/next.config.js:14:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:327:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:663:26)\n    at async loadConfig (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\server\\config.js:711:36)\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:374:28\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async build (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:368:9)\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\admin\nnpm error workspace @codai/admin@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\admin\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 8932,
+      "size": 57829661,
+      "errors": []
     },
     "AIDE": {
       "name": "AIDE",
       "type": "service",
       "priority": 4,
       "framework": "next",
-      "success": false,
-      "duration": 920,
-      "size": 0,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n ⨯ Failed to load next.config.js, see more info here https://nextjs.org/docs/messages/next-config-error\n\n> Build error occurred\nReferenceError: module is not defined in ES module scope\nThis file is being treated as an ES module because it has a '.js' file extension and 'E:\\GitHub\\codai-project\\services\\AIDE\\package.json' contains \"type\": \"module\". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.\n    at file:///E:/GitHub/codai-project/services/AIDE/next.config.js:14:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:327:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:663:26)\n    at async loadConfig (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\server\\config.js:711:36)\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:374:28\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async build (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:368:9)\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\AIDE\nnpm error workspace @codai/AIDE@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\AIDE\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 7366,
+      "size": 53709491,
+      "errors": []
     },
     "ajutai": {
       "name": "ajutai",
       "type": "service",
       "priority": 4,
       "framework": "next",
-      "success": false,
-      "duration": 920,
-      "size": 0,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n ⨯ Failed to load next.config.js, see more info here https://nextjs.org/docs/messages/next-config-error\n\n> Build error occurred\nReferenceError: module is not defined in ES module scope\nThis file is being treated as an ES module because it has a '.js' file extension and 'E:\\GitHub\\codai-project\\services\\ajutai\\package.json' contains \"type\": \"module\". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.\n    at file:///E:/GitHub/codai-project/services/ajutai/next.config.js:14:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:327:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:663:26)\n    at async loadConfig (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\server\\config.js:711:36)\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:374:28\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async build (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:368:9)\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\ajutai\nnpm error workspace @codai/ajutai@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\ajutai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 7348,
+      "size": 53708557,
+      "errors": []
     },
     "analizai": {
       "name": "analizai",
       "type": "service",
       "priority": 4,
       "framework": "next",
-      "success": false,
-      "duration": 3137,
-      "size": 24738539,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nFailed to compile.\n\n./lib/utils.ts\nModule not found: Can't resolve 'tailwindcss-merge'\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n./components/ui/badge.tsx\n./app/page.tsx\n\n./app/layout.tsx\nError: \n  \u001b[31mx\u001b[0m the name `Inter` is defined multiple times\n    ,-[\u001b[36;1;4mE:\\GitHub\\codai-project\\services\\analizai\\app\\layout.tsx\u001b[0m:1:1]\n \u001b[2m 1\u001b[0m | import type { Metadata } from 'next';\n \u001b[2m 2\u001b[0m | import { Inter } from 'next/font/google';\n    : \u001b[31;1m         ^^|^^\u001b[0m\n    :            \u001b[31;1m`-- \u001b[31;1mprevious definition of `Inter` here\u001b[0m\u001b[0m\n \u001b[2m 3\u001b[0m | import './globals.css';\n \u001b[2m 4\u001b[0m | \n \u001b[2m 5\u001b[0m | const inter = Inter({ subsets: ['latin'] });\n \u001b[2m 6\u001b[0m | \n \u001b[2m 7\u001b[0m | import type { Metadata } from 'next';\n \u001b[2m 8\u001b[0m | import { Inter } from 'next/font/google';\n    : \u001b[33;1m         ^^|^^\u001b[0m\n    :            \u001b[33;1m`-- \u001b[33;1m`Inter` redefined here\u001b[0m\u001b[0m\n \u001b[2m 9\u001b[0m | import './globals.css';\n \u001b[2m10\u001b[0m | \n \u001b[2m11\u001b[0m | const inter = Inter({ subsets: ['latin'] });\n    `----\n\n  \u001b[31mx\u001b[0m the name `inter` is defined multiple times\n    ,-[\u001b[36;1;4mE:\\GitHub\\codai-project\\services\\analizai\\app\\layout.tsx\u001b[0m:2:1]\n \u001b[2m 2\u001b[0m | import { Inter } from 'next/font/google';\n \u001b[2m 3\u001b[0m | import './globals.css';\n \u001b[2m 4\u001b[0m | \n \u001b[2m 5\u001b[0m | const inter = Inter({ subsets: ['latin'] });\n    : \u001b[31;1m      ^^|^^\u001b[0m\n    :         \u001b[31;1m`-- \u001b[31;1mprevious definition of `inter` here\u001b[0m\u001b[0m\n \u001b[2m 6\u001b[0m | \n \u001b[2m 7\u001b[0m | import type { Metadata } from 'next';\n \u001b[2m 8\u001b[0m | import { Inter } from 'next/font/google';\n \u001b[2m 9\u001b[0m | import './globals.css';\n \u001b[2m10\u001b[0m | \n \u001b[2m11\u001b[0m | const inter = Inter({ subsets: ['latin'] });\n    : \u001b[33;1m      ^^|^^\u001b[0m\n    :         \u001b[33;1m`-- \u001b[33;1m`inter` redefined here\u001b[0m\u001b[0m\n \u001b[2m12\u001b[0m | \n \u001b[2m13\u001b[0m | export const metadata: Metadata = {\n \u001b[2m14\u001b[0m |   title: 'AnalizAI - AI Analytics Platform',\n    `----\n\nImport trace for requested module:\n./app/layout.tsx\n\n\n> Build failed because of webpack errors\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\analizai\nnpm error workspace @codai/analizai@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\analizai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 8508,
+      "size": 76268495,
+      "errors": []
     },
     "dash": {
       "name": "dash",
       "type": "service",
       "priority": 4,
       "framework": "next",
-      "success": false,
-      "duration": 917,
-      "size": 0,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n ⨯ Failed to load next.config.js, see more info here https://nextjs.org/docs/messages/next-config-error\n\n> Build error occurred\nReferenceError: module is not defined in ES module scope\nThis file is being treated as an ES module because it has a '.js' file extension and 'E:\\GitHub\\codai-project\\services\\dash\\package.json' contains \"type\": \"module\". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.\n    at file:///E:/GitHub/codai-project/services/dash/next.config.js:14:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:327:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:663:26)\n    at async loadConfig (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\server\\config.js:711:36)\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:374:28\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async build (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:368:9)\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\dash\nnpm error workspace @codai/dash@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\dash\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 7573,
+      "size": 53710009,
+      "errors": []
     },
     "docs": {
       "name": "docs",
       "type": "service",
       "priority": 4,
       "framework": "next",
-      "success": false,
-      "duration": 930,
-      "size": 0,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n ⨯ Failed to load next.config.js, see more info here https://nextjs.org/docs/messages/next-config-error\n\n> Build error occurred\nReferenceError: module is not defined in ES module scope\nThis file is being treated as an ES module because it has a '.js' file extension and 'E:\\GitHub\\codai-project\\services\\docs\\package.json' contains \"type\": \"module\". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.\n    at file:///E:/GitHub/codai-project/services/docs/next.config.js:14:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:327:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:663:26)\n    at async loadConfig (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\server\\config.js:711:36)\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:374:28\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async build (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:368:9)\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\docs\nnpm error workspace @codai/docs@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\docs\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 7583,
+      "size": 55043464,
+      "errors": []
     },
     "explorer": {
       "name": "explorer",
       "type": "service",
       "priority": 4,
       "framework": "next",
-      "success": false,
-      "duration": 9762,
-      "size": 37438582,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n ⨯ ESLint: Cannot read config file: E:\\GitHub\\codai-project\\.eslintrc.js Error: module is not defined\nFailed to compile.\n\n./components/analytics/AIAnalytics.tsx:6:3\nType error: Module '\"@heroicons/react/24/outline\"' has no exported member 'TrendingUpIcon'.\n\n\u001b[0m \u001b[90m 4 |\u001b[39m \u001b[36mimport\u001b[39m {\u001b[0m\n\u001b[0m \u001b[90m 5 |\u001b[39m   \u001b[33mChartBarIcon\u001b[39m\u001b[33m,\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 6 |\u001b[39m   \u001b[33mTrendingUpIcon\u001b[39m\u001b[33m,\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m   |\u001b[39m   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 7 |\u001b[39m   \u001b[33mTrendingDownIcon\u001b[39m\u001b[33m,\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 8 |\u001b[39m   \u001b[33mLightBulbIcon\u001b[39m\u001b[33m,\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 9 |\u001b[39m   \u001b[33mShieldCheckIcon\u001b[39m\u001b[33m,\u001b[39m\u001b[0m\nNext.js build worker exited with code: 1 and signal: null\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\explorer\nnpm error workspace @codai/explorer@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\explorer\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 8057,
+      "size": 58885489,
+      "errors": []
     },
     "hub": {
       "name": "hub",
       "type": "service",
       "priority": 4,
       "framework": "next",
-      "success": false,
-      "duration": 938,
-      "size": 0,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n ⨯ Failed to load next.config.js, see more info here https://nextjs.org/docs/messages/next-config-error\n\n> Build error occurred\nReferenceError: module is not defined in ES module scope\nThis file is being treated as an ES module because it has a '.js' file extension and 'E:\\GitHub\\codai-project\\services\\hub\\package.json' contains \"type\": \"module\". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.\n    at file:///E:/GitHub/codai-project/services/hub/next.config.js:14:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:327:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:663:26)\n    at async loadConfig (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\server\\config.js:711:36)\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:374:28\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async build (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:368:9)\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\hub\nnpm error workspace @codai/hub@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\hub\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 8386,
+      "size": 63140916,
+      "errors": []
     },
     "id": {
       "name": "id",
       "type": "service",
       "priority": 4,
       "framework": "next",
-      "success": false,
-      "duration": 907,
-      "size": 0,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n ⨯ Failed to load next.config.js, see more info here https://nextjs.org/docs/messages/next-config-error\n\n> Build error occurred\nReferenceError: module is not defined in ES module scope\nThis file is being treated as an ES module because it has a '.js' file extension and 'E:\\GitHub\\codai-project\\services\\id\\package.json' contains \"type\": \"module\". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.\n    at file:///E:/GitHub/codai-project/services/id/next.config.js:14:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:327:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:663:26)\n    at async loadConfig (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\server\\config.js:711:36)\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:374:28\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async build (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:368:9)\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\id\nnpm error workspace @codai/id@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\id\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 6793,
+      "size": 53707742,
+      "errors": []
     },
     "jucai": {
       "name": "jucai",
       "type": "service",
       "priority": 4,
       "framework": "next",
-      "success": false,
-      "duration": 909,
-      "size": 0,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n ⨯ Failed to load next.config.js, see more info here https://nextjs.org/docs/messages/next-config-error\n\n> Build error occurred\nReferenceError: module is not defined in ES module scope\nThis file is being treated as an ES module because it has a '.js' file extension and 'E:\\GitHub\\codai-project\\services\\jucai\\package.json' contains \"type\": \"module\". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.\n    at file:///E:/GitHub/codai-project/services/jucai/next.config.js:14:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:327:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:663:26)\n    at async loadConfig (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\server\\config.js:711:36)\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:374:28\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async build (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:368:9)\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\jucai\nnpm error workspace @codai/jucai@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\jucai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 6831,
+      "size": 53707678,
+      "errors": []
     },
     "kodex": {
       "name": "kodex",
       "type": "service",
       "priority": 4,
       "framework": "next",
-      "success": false,
-      "duration": 956,
-      "size": 0,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n ⨯ Failed to load next.config.js, see more info here https://nextjs.org/docs/messages/next-config-error\n\n> Build error occurred\nReferenceError: module is not defined in ES module scope\nThis file is being treated as an ES module because it has a '.js' file extension and 'E:\\GitHub\\codai-project\\services\\kodex\\package.json' contains \"type\": \"module\". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.\n    at file:///E:/GitHub/codai-project/services/kodex/next.config.js:14:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:327:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:663:26)\n    at async loadConfig (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\server\\config.js:711:36)\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:374:28\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async build (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:368:9)\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\kodex\nnpm error workspace @codai/kodex@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\kodex\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 6755,
+      "size": 54657205,
+      "errors": []
     },
     "legalizai": {
       "name": "legalizai",
       "type": "service",
       "priority": 4,
       "framework": "next",
-      "success": false,
-      "duration": 906,
-      "size": 0,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n ⨯ Failed to load next.config.js, see more info here https://nextjs.org/docs/messages/next-config-error\n\n> Build error occurred\nReferenceError: module is not defined in ES module scope\nThis file is being treated as an ES module because it has a '.js' file extension and 'E:\\GitHub\\codai-project\\services\\legalizai\\package.json' contains \"type\": \"module\". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.\n    at file:///E:/GitHub/codai-project/services/legalizai/next.config.js:14:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:327:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:663:26)\n    at async loadConfig (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\server\\config.js:711:36)\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:374:28\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async build (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:368:9)\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\legalizai\nnpm error workspace @codai/legalizai@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\legalizai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 6694,
+      "size": 53715876,
+      "errors": []
     },
     "marketai": {
       "name": "marketai",
       "type": "service",
       "priority": 4,
       "framework": "next",
-      "success": false,
-      "duration": 9242,
-      "size": 32097106,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n ⨯ ESLint: Cannot read config file: E:\\GitHub\\codai-project\\.eslintrc.js Error: module is not defined\nFailed to compile.\n\n./lib/utils.ts:2:25\nType error: Cannot find module 'tailwindcss-merge' or its corresponding type declarations.\n\n\u001b[0m \u001b[90m 1 |\u001b[39m \u001b[36mimport\u001b[39m { type \u001b[33mClassValue\u001b[39m\u001b[33m,\u001b[39m clsx } \u001b[36mfrom\u001b[39m \u001b[32m'clsx'\u001b[39m\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 2 |\u001b[39m \u001b[36mimport\u001b[39m { twMerge } \u001b[36mfrom\u001b[39m \u001b[32m'tailwindcss-merge'\u001b[39m\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m   |\u001b[39m                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 3 |\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 4 |\u001b[39m \u001b[36mexport\u001b[39m \u001b[36mfunction\u001b[39m cn(\u001b[33m...\u001b[39minputs\u001b[33m:\u001b[39m \u001b[33mClassValue\u001b[39m[]) {\u001b[0m\n\u001b[0m \u001b[90m 5 |\u001b[39m   \u001b[36mreturn\u001b[39m twMerge(clsx(inputs))\u001b[33m;\u001b[39m\u001b[0m\nNext.js build worker exited with code: 1 and signal: null\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\marketai\nnpm error workspace @codai/marketai@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\marketai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 7034,
+      "size": 54534836,
+      "errors": []
     },
     "metu": {
       "name": "metu",
       "type": "service",
       "priority": 4,
       "framework": "next",
-      "success": false,
-      "duration": 945,
-      "size": 0,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n ⨯ Failed to load next.config.js, see more info here https://nextjs.org/docs/messages/next-config-error\n\n> Build error occurred\nReferenceError: module is not defined in ES module scope\nThis file is being treated as an ES module because it has a '.js' file extension and 'E:\\GitHub\\codai-project\\services\\metu\\package.json' contains \"type\": \"module\". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.\n    at file:///E:/GitHub/codai-project/services/metu/next.config.js:14:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:327:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:663:26)\n    at async loadConfig (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\server\\config.js:711:36)\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:374:28\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async build (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:368:9)\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\metu\nnpm error workspace @codai/metu@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\metu\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 6826,
+      "size": 53710035,
+      "errors": []
     },
     "mod": {
       "name": "mod",
       "type": "service",
       "priority": 4,
       "framework": "next",
-      "success": false,
-      "duration": 910,
-      "size": 0,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n ⨯ Failed to load next.config.js, see more info here https://nextjs.org/docs/messages/next-config-error\n\n> Build error occurred\nReferenceError: module is not defined in ES module scope\nThis file is being treated as an ES module because it has a '.js' file extension and 'E:\\GitHub\\codai-project\\services\\mod\\package.json' contains \"type\": \"module\". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.\n    at file:///E:/GitHub/codai-project/services/mod/next.config.js:14:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:327:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:663:26)\n    at async loadConfig (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\server\\config.js:711:36)\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:374:28\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async build (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:368:9)\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\mod\nnpm error workspace @codai/mod@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\mod\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 6887,
+      "size": 54655606,
+      "errors": []
     },
     "stocai": {
       "name": "stocai",
       "type": "service",
       "priority": 4,
       "framework": "next",
-      "success": false,
-      "duration": 935,
-      "size": 0,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n ⨯ Failed to load next.config.js, see more info here https://nextjs.org/docs/messages/next-config-error\n\n> Build error occurred\nReferenceError: module is not defined in ES module scope\nThis file is being treated as an ES module because it has a '.js' file extension and 'E:\\GitHub\\codai-project\\services\\stocai\\package.json' contains \"type\": \"module\". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.\n    at file:///E:/GitHub/codai-project/services/stocai/next.config.js:14:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:327:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:663:26)\n    at async loadConfig (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\server\\config.js:711:36)\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:374:28\n    at async Span.traceAsyncFn (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\trace\\trace.js:154:20)\n    at async build (E:\\GitHub\\codai-project\\node_modules\\.pnpm\\next@14.2.30_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@18.3.1_react@18.3.1\\node_modules\\next\\dist\\build\\index.js:368:9)\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\stocai\nnpm error workspace @codai/stocai@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\stocai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 6880,
+      "size": 54658213,
+      "errors": []
     },
     "templates": {
       "name": "templates",
       "type": "service",
       "priority": 4,
-      "framework": "unknown",
+      "framework": "react",
       "success": true,
-      "duration": 452,
+      "duration": 561,
       "size": 0,
       "errors": []
     },
@@ -446,16 +290,10 @@
       "type": "service",
       "priority": 4,
       "framework": "next",
-      "success": false,
-      "duration": 9276,
-      "size": 32096264,
-      "errors": [
-        {
-          "type": "build_failure",
-          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n ⨯ ESLint: Cannot read config file: E:\\GitHub\\codai-project\\.eslintrc.js Error: module is not defined\nFailed to compile.\n\n./lib/utils.ts:2:25\nType error: Cannot find module 'tailwindcss-merge' or its corresponding type declarations.\n\n\u001b[0m \u001b[90m 1 |\u001b[39m \u001b[36mimport\u001b[39m { type \u001b[33mClassValue\u001b[39m\u001b[33m,\u001b[39m clsx } \u001b[36mfrom\u001b[39m \u001b[32m\"clsx\"\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 2 |\u001b[39m \u001b[36mimport\u001b[39m { twMerge } \u001b[36mfrom\u001b[39m \u001b[32m\"tailwindcss-merge\"\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m   |\u001b[39m                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 3 |\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 4 |\u001b[39m \u001b[36mexport\u001b[39m \u001b[36mfunction\u001b[39m cn(\u001b[33m...\u001b[39minputs\u001b[33m:\u001b[39m \u001b[33mClassValue\u001b[39m[]) {\u001b[0m\n\u001b[0m \u001b[90m 5 |\u001b[39m   \u001b[36mreturn\u001b[39m twMerge(clsx(inputs))\u001b[0m\nNext.js build worker exited with code: 1 and signal: null\nnpm error Lifecycle script `build` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\tools\nnpm error workspace @codai/tools@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\tools\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c next build\n",
-          "code": 1
-        }
-      ]
+      "success": true,
+      "duration": 6894,
+      "size": 53588739,
+      "errors": []
     }
   },
   "errors": []

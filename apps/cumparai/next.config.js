@@ -1,9 +1,33 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  experimental: {
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
+  },
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    // Enable top-level await
+    config.experiments = {
+      ...config.experiments,
+      topLevelAwait: true,
+    };
+    
+    return config;
+  },
+  transpilePackages: ['@codai/ui', '@codai/core', '@codai/auth'],
   images: {
-    domains: ['cumparai.ro'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

@@ -13,7 +13,7 @@ import { Progress } from '../ui/progress';
 import {
     Wallet,
     Send,
-    Receive,
+    ArrowDownIcon,
     History,
     Shield,
     Zap,
@@ -258,8 +258,8 @@ export default function WalletManagement() {
                             <div
                                 key={wallet.id}
                                 className={`p-4 rounded-lg border cursor-pointer transition-all ${selectedWallet === wallet.id
-                                        ? 'border-blue-500 bg-blue-50'
-                                        : 'border-gray-200 hover:border-gray-300'
+                                    ? 'border-blue-500 bg-blue-50'
+                                    : 'border-gray-200 hover:border-gray-300'
                                     }`}
                                 onClick={() => setSelectedWallet(wallet.id)}
                             >
@@ -328,11 +328,11 @@ export default function WalletManagement() {
                             <div key={tx.id} className="flex items-center justify-between p-3 rounded-lg border">
                                 <div className="flex items-center space-x-3">
                                     <div className={`p-2 rounded-full ${tx.type === 'receive' ? 'bg-green-100' :
-                                            tx.type === 'send' ? 'bg-red-100' :
-                                                'bg-blue-100'
+                                        tx.type === 'send' ? 'bg-red-100' :
+                                            'bg-blue-100'
                                         }`}>
                                         {tx.type === 'receive' ? (
-                                            <Receive className="w-4 h-4 text-green-600" />
+                                            <ArrowDownIcon className="w-4 h-4 text-green-600" />
                                         ) : tx.type === 'send' ? (
                                             <Send className="w-4 h-4 text-red-600" />
                                         ) : (
@@ -384,8 +384,8 @@ export default function WalletManagement() {
                         </Button>
 
                         <Button variant="outline" className="flex flex-col items-center space-y-2 h-auto py-4">
-                            <Receive className="w-6 h-6" />
-                            <span>Receive</span>
+                            <ArrowDownIcon className="w-6 h-6" />
+                            <span>ArrowDownIcon</span>
                         </Button>
 
                         <Button variant="outline" className="flex flex-col items-center space-y-2 h-auto py-4">

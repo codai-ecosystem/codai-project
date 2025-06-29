@@ -1,0 +1,10 @@
+auto-install-peers=true
+strict-peer-dependencies=false
+resolution-mode=highest
+prefer-workspace-packages=true
+hoist-pattern=*
+public-hoist-pattern=*eslint*
+public-hoist-pattern=*prettier*
+public-hoist-pattern=*typescript*
+public-hoist-pattern=@types/*
+shamefully-hoist=true

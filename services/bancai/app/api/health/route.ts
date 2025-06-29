@@ -15,7 +15,7 @@ export async function GET() {
       dependencies: {
         memorai: process.env.MEMORAI_API_URL ? 'configured' : 'not_configured',
         logai: process.env.LOGAI_API_URL ? 'configured' : 'not_configured',
-      },
+      }
     };
 
     return NextResponse.json(healthStatus, { status: 200 });

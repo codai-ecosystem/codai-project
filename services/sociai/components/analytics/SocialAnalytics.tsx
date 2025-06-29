@@ -8,7 +8,7 @@ import {
   ChatBubbleLeftRightIcon,
   ShareIcon,
   EyeIcon,
-  TrendingUpIcon,
+  ArrowTrendingUpIcon,
   CalendarIcon,
   ClockIcon,
   HashtagIcon,
@@ -304,7 +304,7 @@ export default function SocialAnalytics() {
               icon: ChatBubbleLeftRightIcon,
             },
             { key: 'audience', label: 'Audience Insights', icon: UsersIcon },
-            { key: 'trends', label: 'Engagement Trends', icon: TrendingUpIcon },
+            { key: 'trends', label: 'Engagement Trends', icon: ArrowTrendingUpIcon },
           ].map(tab => (
             <button
               key={tab.key}
@@ -507,7 +507,7 @@ export default function SocialAnalytics() {
                       </div>
                       <div className="text-center">
                         <div className="flex items-center justify-center mb-1">
-                          <TrendingUpIcon className="h-4 w-4 text-orange-500 mr-1" />
+                          <ArrowTrendingUpIcon className="h-4 w-4 text-orange-500 mr-1" />
                           <span className="font-semibold">
                             {post.metrics.engagementRate}%
                           </span>

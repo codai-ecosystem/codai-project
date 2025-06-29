@@ -5,10 +5,16 @@ export async function setupTestEnvironment() {
 	console.log('🧪 Setting up test environment...');
 
 	// Set test environment variables
-	process.env.NODE_ENV = 'test';
-	process.env.DATABASE_URL =
-		process.env.TEST_DATABASE_URL || 'postgresql://test:test@localhost:5432/test';
-	process.env.REDIS_URL = process.env.TEST_REDIS_URL || 'redis://localhost:6379';
+	if (!process.env.NODE_ENV) {
+		(process.env as any).NODE_ENV = 'test';
+	}
+	if (!process.env.DATABASE_URL) {
+		process.env.DATABASE_URL =
+			process.env.TEST_DATABASE_URL || 'postgresql://test:test@localhost:5432/test';
+	}
+	if (!process.env.REDIS_URL) {
+		process.env.REDIS_URL = process.env.TEST_REDIS_URL || 'redis://localhost:6379';
+	}
 
 	// Setup database
 	if (db) {
@@ -44,7 +50,6 @@ export async function teardownTestEnvironment() {
 	if (db) {
 		try {
 			await db.migrate.rollback();
-			await db.destroy();
 			console.log('✅ Database cleanup complete');
 		} catch (error) {
 			console.error('❌ Database cleanup failed:', error);

@@ -13,7 +13,7 @@ async function execCommand(command, cwd = process.cwd()) {
     const { exec } = await import('child_process');
     const { promisify } = await import('util');
     const execAsync = promisify(exec);
-    
+
     try {
         const { stdout, stderr } = await execAsync(command, { cwd });
         return { success: true, stdout: stdout.trim(), stderr: stderr.trim() };
@@ -24,7 +24,7 @@ async function execCommand(command, cwd = process.cwd()) {
 
 async function checkRepository(repoPath, repoName) {
     console.log(`📁 Checking ${repoName}...`);
-    
+
     const results = {
         exists: false,
         isGitRepo: false,
@@ -36,7 +36,7 @@ async function checkRepository(repoPath, repoName) {
         hasGitignore: false,
         status: 'unknown'
     };
-    
+
     // Check if directory exists
     if (!fs.existsSync(repoPath)) {
         console.log(`  ❌ Directory does not exist`);
@@ -44,7 +44,7 @@ async function checkRepository(repoPath, repoName) {
         return results;
     }
     results.exists = true;
-    
+
     // Check if it's a git repository
     const gitDir = path.join(repoPath, '.git');
     if (!fs.existsSync(gitDir)) {
@@ -53,7 +53,7 @@ async function checkRepository(repoPath, repoName) {
         return results;
     }
     results.isGitRepo = true;
-    
+
     // Check for commits
     const logResult = await execCommand('git log --oneline -1', repoPath);
     if (logResult.success && logResult.stdout) {
@@ -61,7 +61,7 @@ async function checkRepository(repoPath, repoName) {
     } else {
         console.log(`  ⚠️  No commits found`);
     }
-    
+
     // Check for remote
     const remoteResult = await execCommand('git remote -v', repoPath);
     if (remoteResult.success && remoteResult.stdout) {
@@ -70,14 +70,14 @@ async function checkRepository(repoPath, repoName) {
     } else {
         console.log(`  ❌ No remote configured`);
     }
-    
+
     // Check for uncommitted changes
     const statusResult = await execCommand('git status --porcelain', repoPath);
     if (statusResult.success && statusResult.stdout) {
         results.uncommittedChanges = true;
         console.log(`  ⚠️  Uncommitted changes: ${statusResult.stdout.split('\n').length} files`);
     }
-    
+
     // Check for unpushed commits (if has remote)
     if (results.hasRemote) {
         const unpushedResult = await execCommand('git log origin/main..HEAD --oneline', repoPath);
@@ -86,14 +86,14 @@ async function checkRepository(repoPath, repoName) {
             console.log(`  ⚠️  Unpushed commits: ${unpushedResult.stdout.split('\n').length}`);
         }
     }
-    
+
     // Check if node_modules is tracked by git
     const lsFilesResult = await execCommand('git ls-files | grep node_modules', repoPath);
     if (lsFilesResult.success && lsFilesResult.stdout) {
         results.nodeModulesTracked = true;
         console.log(`  ❌ node_modules is tracked by git!`);
     }
-    
+
     // Check for .gitignore
     const gitignorePath = path.join(repoPath, '.gitignore');
     if (fs.existsSync(gitignorePath)) {
@@ -105,7 +105,7 @@ async function checkRepository(repoPath, repoName) {
     } else {
         console.log(`  ❌ Missing .gitignore file`);
     }
-    
+
     // Determine overall status
     if (!results.hasCommits) {
         results.status = 'no-commits';
@@ -119,18 +119,18 @@ async function checkRepository(repoPath, repoName) {
         results.status = 'ready';
         console.log(`  ✅ Repository is up to date`);
     }
-    
+
     console.log('');
     return results;
 }
 
 async function main() {
     const rootPath = path.join(__dirname, '..');
-    
+
     // Read projects.index.json
     const projectsPath = path.join(rootPath, 'projects.index.json');
     const projects = JSON.parse(fs.readFileSync(projectsPath, 'utf8'));
-    
+
     const summary = {
         ready: 0,
         needsPush: 0,
@@ -141,7 +141,7 @@ async function main() {
         nodeModulesTracked: 0,
         total: 0
     };
-    
+
     // Check apps
     console.log('🚀 Checking Apps...\n');
     for (const app of projects.apps) {
@@ -156,7 +156,7 @@ async function main() {
         else if (result.status === 'not-git') summary.notGit++;
         if (result.nodeModulesTracked) summary.nodeModulesTracked++;
     }
-    
+
     // Check services (read from directory)
     console.log('🔧 Checking Services...\n');
     const servicesPath = path.join(rootPath, 'services');
@@ -164,7 +164,7 @@ async function main() {
         const servicePath = path.join(servicesPath, name);
         return fs.statSync(servicePath).isDirectory();
     });
-    
+
     for (const serviceName of serviceNames) {
         const servicePath = path.join(servicesPath, serviceName);
         const result = await checkRepository(servicePath, `services/${serviceName}`);
@@ -177,7 +177,7 @@ async function main() {
         else if (result.status === 'not-git') summary.notGit++;
         if (result.nodeModulesTracked) summary.nodeModulesTracked++;
     }
-    
+
     // Print summary
     console.log('📊 SUMMARY REPORT');
     console.log('=================');
@@ -189,7 +189,7 @@ async function main() {
     console.log(`❌ Missing directories: ${summary.missing}`);
     console.log(`❌ Not git repositories: ${summary.notGit}`);
     console.log(`❌ node_modules tracked: ${summary.nodeModulesTracked}`);
-    
+
     if (summary.ready === summary.total) {
         console.log('\n🎉 ALL REPOSITORIES ARE READY! 🎉');
     } else {

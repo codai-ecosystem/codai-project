@@ -191,9 +191,9 @@ export const PortfolioManager: React.FC = () => {
       case 'buy':
         return 'success';
       case 'sell':
-        return 'destructive';
+        return 'error';
       case 'hold':
-        return 'secondary';
+        return 'default';
       case 'rebalance':
         return 'warning';
       default:
@@ -208,7 +208,7 @@ export const PortfolioManager: React.FC = () => {
       case 'medium':
         return 'warning';
       case 'high':
-        return 'destructive';
+        return 'error';
       default:
         return 'default';
     }
@@ -276,7 +276,7 @@ export const PortfolioManager: React.FC = () => {
                     ? 'success'
                     : portfolio.riskScore <= 7
                       ? 'warning'
-                      : 'destructive'
+                      : 'error'
                 }
               >
                 {portfolio.riskScore <= 3
@@ -298,7 +298,7 @@ export const PortfolioManager: React.FC = () => {
                     ? 'success'
                     : portfolio.diversificationScore >= 6
                       ? 'warning'
-                      : 'destructive'
+                      : 'error'
                 }
               >
                 {portfolio.diversificationScore >= 8
@@ -324,11 +324,10 @@ export const PortfolioManager: React.FC = () => {
             <button
               key={id}
               onClick={() => setSelectedTab(id as any)}
-              className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
-                selectedTab === id
+              className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${selectedTab === id
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
+                }`}
             >
               <Icon className="h-4 w-4" />
               <span>{label}</span>
@@ -354,7 +353,7 @@ export const PortfolioManager: React.FC = () => {
                     <div>
                       <p className="font-semibold">{holding.symbol}</p>
                       <p className="text-sm text-gray-500">{holding.name}</p>
-                      <Badge variant="outline" className="mt-1 text-xs">
+                      <Badge variant="default" className="mt-1 text-xs">
                         {holding.sector}
                       </Badge>
                     </div>
@@ -498,3 +497,5 @@ export const PortfolioManager: React.FC = () => {
     </div>
   );
 };
+
+export default PortfolioManager;

@@ -1,18 +1,17 @@
 {
-  "name": "@codai/bancai",
+  "name": "@codai/bancai-service",
   "version": "0.1.0",
   "description": "AI-Powered Financial Platform for Modern Banking",
   "private": true,
-  "type": "module",
   "scripts": {
-    "dev": "next dev -p 4003",
+    "dev": "next dev -p 3003",
     "build": "next build",
     "start": "next start -p 3003",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "test": "jest --passWithNoTests",
-    "test:ui": "npx vitest ui",
-    "test:watch": "jest --watch --passWithNoTests",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:watch": "vitest --watch",
     "test:coverage": "vitest --coverage",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
@@ -23,8 +22,7 @@
     "docker:compose": "docker-compose up -d",
     "docker:compose:down": "docker-compose down",
     "health": "curl -f http://localhost:3003/api/health || exit 1",
-    "clean": "rm -rf .next && rm -rf node_modules/.cache",
-    "test:run": "vitest run"
+    "clean": "rm -rf .next && rm -rf node_modules/.cache"
   },
   "dependencies": {
     "next": "^14.0.0",
@@ -36,23 +34,24 @@
     "typescript": "^5.0.0",
     "tailwindcss": "^3.4.0",
     "autoprefixer": "^10.4.0",
-    "postcss": "^8.4.0"
+    "postcss": "^8.4.0",
+    "@radix-ui/react-slot": "^1.0.2",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "tailwind-merge": "^2.3.0",
+    "lucide-react": "^0.263.1",
+    "@heroicons/react": "^2.0.18"
   },
   "devDependencies": {
     "eslint": "^8.0.0",
     "eslint-config-next": "^14.0.0",
-    "vitest": "^2.1.8",
+    "vitest": "^1.0.0",
     "@vitejs/plugin-react": "^4.0.0",
-    "@playwright/test": "^1.40.0",
-    "@vitest/ui": "^2.1.8",
-    "@vitest/coverage-v8": "^1.2.0",
-    "@testing-library/react": "^14.0.0",
-    "@testing-library/jest-dom": "^6.1.0",
-    "jsdom": "^23.0.0",
-    "happy-dom": "^12.0.0"
+    "@playwright/test": "^1.40.0"
   },
   "engines": {
     "node": ">=18.0.0",
     "pnpm": ">=8.0.0"
-  }
+  },
+  "type": "module"
 }

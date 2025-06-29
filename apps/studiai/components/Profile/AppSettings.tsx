@@ -201,7 +201,7 @@ const AppSettings: React.FC<AppSettingsProps> = ({ userId }) => {
                   Email Notifications
                 </h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Receive general email notifications about your account
+                  ArrowDownIcon general email notifications about your account
                 </p>
               </div>
               <Switch
@@ -221,7 +221,7 @@ const AppSettings: React.FC<AppSettingsProps> = ({ userId }) => {
                   Course Updates
                 </h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Receive notifications about updates to courses you're enrolled
+                  ArrowDownIcon notifications about updates to courses you're enrolled
                   in
                 </p>
               </div>
@@ -307,7 +307,7 @@ const AppSettings: React.FC<AppSettingsProps> = ({ userId }) => {
                   Payment Receipts
                 </h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Receive receipts for payments and purchases
+                  ArrowDownIcon receipts for payments and purchases
                 </p>
               </div>
               <Switch
@@ -328,7 +328,7 @@ const AppSettings: React.FC<AppSettingsProps> = ({ userId }) => {
                   Weekly Learning Digest
                 </h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Receive a weekly summary of your learning progress
+                  ArrowDownIcon a weekly summary of your learning progress
                 </p>
               </div>
               <Switch
@@ -349,7 +349,7 @@ const AppSettings: React.FC<AppSettingsProps> = ({ userId }) => {
                   Marketing Emails
                 </h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Receive emails about new courses, promotions, and updates
+                  ArrowDownIcon emails about new courses, promotions, and updates
                 </p>
               </div>
               <Switch

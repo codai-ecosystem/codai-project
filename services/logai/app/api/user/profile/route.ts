@@ -12,6 +12,9 @@ const updateProfileSchema = z.object({
   email: z.string().email('Invalid email address'),
 });
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
@@ -31,7 +34,7 @@ export async function GET() {
     }
 
     // Remove sensitive fields
-    const { password, mfaSecret, ...userProfile } = user;
+    const { passwordHash, mfaSecret, ...userProfile } = user;
 
     return NextResponse.json({
       user: {
@@ -113,7 +116,7 @@ export async function PATCH(request: NextRequest) {
     });
 
     // Remove sensitive fields
-    const { password, mfaSecret, ...userProfile } = updatedUser;
+    const { passwordHash, mfaSecret, ...userProfile } = updatedUser;
 
     return NextResponse.json({
       user: {

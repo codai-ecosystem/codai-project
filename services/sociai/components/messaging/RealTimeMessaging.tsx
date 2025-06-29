@@ -54,7 +54,7 @@ interface OnlineUser {
   id: string;
   name: string;
   avatar: string;
-  status: 'online' | 'away' | 'busy';
+  status: 'online' | 'offline' | 'away';
   lastSeen?: string;
 }
 
@@ -161,13 +161,13 @@ export default function RealTimeMessaging() {
         prev.map(conv =>
           conv.id === activeConversation
             ? {
-                ...conv,
-                lastMessage: {
-                  content: newMessage,
-                  timestamp: new Date().toISOString(),
-                  senderId: 'current-user',
-                },
-              }
+              ...conv,
+              lastMessage: {
+                content: newMessage,
+                timestamp: new Date().toISOString(),
+                senderId: 'current-user',
+              },
+            }
             : conv
         )
       );
@@ -397,7 +397,7 @@ export default function RealTimeMessaging() {
       id: 'mike',
       name: 'Mike Johnson',
       avatar: '/api/placeholder/32/32',
-      status: 'busy',
+      status: 'away',
     },
     {
       id: 'emma',
@@ -484,11 +484,10 @@ export default function RealTimeMessaging() {
                     <button
                       key={conversation.id}
                       onClick={() => setActiveConversation(conversation.id)}
-                      className={`w-full p-4 text-left hover:bg-gray-50 transition-colors ${
-                        activeConversation === conversation.id
+                      className={`w-full p-4 text-left hover:bg-gray-50 transition-colors ${activeConversation === conversation.id
                           ? 'bg-blue-50 border-r-2 border-blue-500'
                           : ''
-                      }`}
+                        }`}
                     >
                       <div className="flex items-center space-x-3">
                         <div className="relative">
@@ -499,17 +498,16 @@ export default function RealTimeMessaging() {
                           />
                           {conversation.type === 'direct' && (
                             <div
-                              className={`absolute -bottom-1 -right-1 w-3 h-3 border-2 border-white rounded-full ${
-                                conversation.participants.find(
-                                  p => p.id !== 'current-user'
-                                )?.status === 'online'
+                              className={`absolute -bottom-1 -right-1 w-3 h-3 border-2 border-white rounded-full ${conversation.participants.find(
+                                p => p.id !== 'current-user'
+                              )?.status === 'online'
                                   ? 'bg-green-500'
                                   : conversation.participants.find(
-                                        p => p.id !== 'current-user'
-                                      )?.status === 'away'
+                                    p => p.id !== 'current-user'
+                                  )?.status === 'away'
                                     ? 'bg-yellow-500'
                                     : 'bg-gray-400'
-                              }`}
+                                }`}
                             ></div>
                           )}
                         </div>
@@ -561,8 +559,8 @@ export default function RealTimeMessaging() {
                         {activeConv.type === 'group'
                           ? `${activeConv.participants.length} members`
                           : activeConv.participants.find(
-                                p => p.id !== 'current-user'
-                              )?.status === 'online'
+                            p => p.id !== 'current-user'
+                          )?.status === 'online'
                             ? 'Online now'
                             : 'Last seen recently'}
                       </p>
@@ -589,11 +587,10 @@ export default function RealTimeMessaging() {
                       className={`flex ${message.senderId === 'current-user' ? 'justify-end' : 'justify-start'}`}
                     >
                       <div
-                        className={`flex items-start space-x-2 max-w-xs lg:max-w-md ${
-                          message.senderId === 'current-user'
+                        className={`flex items-start space-x-2 max-w-xs lg:max-w-md ${message.senderId === 'current-user'
                             ? 'flex-row-reverse space-x-reverse'
                             : ''
-                        }`}
+                          }`}
                       >
                         <img
                           src={message.senderAvatar}
@@ -602,11 +599,10 @@ export default function RealTimeMessaging() {
                         />
                         <div>
                           <div
-                            className={`rounded-lg px-4 py-2 ${
-                              message.senderId === 'current-user'
+                            className={`rounded-lg px-4 py-2 ${message.senderId === 'current-user'
                                 ? 'bg-blue-600 text-white'
                                 : 'bg-gray-100 text-gray-900'
-                            }`}
+                              }`}
                           >
                             <p>{message.content}</p>
                           </div>

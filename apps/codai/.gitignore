@@ -102,3 +102,5 @@ known_hosts
 *.p7b
 *.p7s
 *.spc
+
+/generated/prisma

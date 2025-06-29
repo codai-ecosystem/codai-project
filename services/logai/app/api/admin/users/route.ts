@@ -1,3 +1,6 @@
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 // Admin users management API
 import { NextRequest, NextResponse } from 'next/server';
 import { db, users } from '@/lib/db';

@@ -245,23 +245,23 @@ export const RiskManagement: React.FC = () => {
       case 'medium':
         return 'warning';
       case 'high':
-        return 'destructive';
+        return 'error';
       case 'critical':
-        return 'destructive';
+        return 'error';
       default:
         return 'default';
     }
   };
 
   const getAlertTypeColor = (type: string, severity: string) => {
-    if (severity === 'critical') return 'destructive';
+    if (severity === 'critical') return 'error';
     switch (type) {
       case 'warning':
         return 'warning';
       case 'danger':
-        return 'destructive';
+        return 'error';
       case 'info':
-        return 'secondary';
+        return 'default';
       default:
         return 'default';
     }
@@ -274,7 +274,7 @@ export const RiskManagement: React.FC = () => {
       case 'moderate':
         return 'warning';
       case 'weak':
-        return 'secondary';
+        return 'default';
       default:
         return 'default';
     }
@@ -366,7 +366,7 @@ export const RiskManagement: React.FC = () => {
                     ? 'success'
                     : riskMetrics.diversificationScore >= 6
                       ? 'warning'
-                      : 'destructive'
+                      : 'error'
                 }
               >
                 {riskMetrics.diversificationScore >= 8
@@ -413,11 +413,10 @@ export const RiskManagement: React.FC = () => {
             <button
               key={id}
               onClick={() => setSelectedTab(id as any)}
-              className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
-                selectedTab === id
+              className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${selectedTab === id
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
+                }`}
             >
               <Icon className="h-4 w-4" />
               <span>{label}</span>
@@ -515,13 +514,12 @@ export const RiskManagement: React.FC = () => {
                   <div className="flex items-start justify-between">
                     <div className="flex items-start space-x-3">
                       <AlertTriangle
-                        className={`h-5 w-5 mt-0.5 ${
-                          alert.type === 'danger'
+                        className={`h-5 w-5 mt-0.5 ${alert.type === 'danger'
                             ? 'text-red-500'
                             : alert.type === 'warning'
                               ? 'text-yellow-500'
                               : 'text-blue-500'
-                        }`}
+                          }`}
                       />
                       <div className="space-y-2">
                         <div className="flex items-center space-x-2">
@@ -535,7 +533,7 @@ export const RiskManagement: React.FC = () => {
                             {alert.severity.toUpperCase()}
                           </Badge>
                           {alert.acknowledged && (
-                            <Badge variant="secondary">
+                            <Badge variant="default">
                               <CheckCircle className="h-3 w-3 mr-1" />
                               Acknowledged
                             </Badge>
@@ -584,7 +582,7 @@ export const RiskManagement: React.FC = () => {
                 >
                   <div className="flex items-center justify-between">
                     <h4 className="font-semibold">{scenario.name}</h4>
-                    <Badge variant="outline">
+                    <Badge variant="default">
                       {(scenario.probability * 100).toFixed(0)}% probability
                     </Badge>
                   </div>
@@ -649,7 +647,7 @@ export const RiskManagement: React.FC = () => {
                         {strategy.recommendation.toUpperCase()}
                       </Badge>
                     </div>
-                    <Badge variant="outline">
+                    <Badge variant="default">
                       {strategy.type.toUpperCase()}
                     </Badge>
                   </div>
@@ -702,3 +700,5 @@ export const RiskManagement: React.FC = () => {
     </div>
   );
 };
+
+export default RiskManagement;

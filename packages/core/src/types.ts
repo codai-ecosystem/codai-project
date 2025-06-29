@@ -25,11 +25,49 @@ export interface ApiResponse<T = any> {
 export interface User {
   id: string;
   email: string;
-  name: string;
+  emailVerified?: Date | null;
+  name?: string | null;
+  image?: string | null;
   role: 'admin' | 'user' | 'developer';
   permissions: string[];
+  preferences?: UserPreferences;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface UserPreferences {
+  theme: 'light' | 'dark' | 'auto';
+  language: string;
+  notifications: {
+    email: boolean;
+    push: boolean;
+    inApp: boolean;
+  };
+  privacy: {
+    profileVisible: boolean;
+    activityVisible: boolean;
+  };
+}
+
+export interface Account {
+  id: string;
+  userId: string;
+  type: string;
+  provider: string;
+  providerAccountId: string;
+  refresh_token?: string | null;
+  access_token?: string | null;
+  expires_at?: number | null;
+  token_type?: string | null;
+  scope?: string | null;
+  id_token?: string | null;
+  session_state?: string | null;
+}
+
+export interface AuthSession {
+  sessionToken: string;
+  userId: string;
+  expires: Date;
 }
 
 export interface Session {

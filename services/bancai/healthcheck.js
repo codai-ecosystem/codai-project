@@ -6,10 +6,10 @@ const options = {
   port: process.env.PORT || 3003,
   path: '/api/health',
   method: 'GET',
-  timeout: 2000,
+  timeout: 2000
 };
 
-const req = http.request(options, res => {
+const req = http.request(options, (res) => {
   if (res.statusCode === 200) {
     process.exit(0);
   } else {
@@ -18,7 +18,7 @@ const req = http.request(options, res => {
   }
 });
 
-req.on('error', err => {
+req.on('error', (err) => {
   console.error(`Health check failed: ${err.message}`);
   process.exit(1);
 });

@@ -255,11 +255,11 @@ export const TradingInterface: React.FC = () => {
       case 'buy':
         return 'default';
       case 'hold':
-        return 'secondary';
+        return 'default';
       case 'sell':
         return 'warning';
       case 'strong_sell':
-        return 'destructive';
+        return 'error';
       default:
         return 'default';
     }
@@ -305,7 +305,7 @@ export const TradingInterface: React.FC = () => {
             <CardTitle className="flex items-center space-x-2">
               <Activity className="h-5 w-5" />
               <span>Market Data</span>
-              <Badge variant="outline" className="ml-auto">
+              <Badge variant="default" className="ml-auto">
                 Live
               </Badge>
             </CardTitle>
@@ -315,11 +315,10 @@ export const TradingInterface: React.FC = () => {
               {marketData.map(item => (
                 <div
                   key={item.symbol}
-                  className={`p-4 border rounded-lg cursor-pointer transition-colors ${
-                    selectedSymbol === item.symbol
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'hover:bg-gray-50'
-                  }`}
+                  className={`p-4 border rounded-lg cursor-pointer transition-colors ${selectedSymbol === item.symbol
+                    ? 'border-blue-500 bg-blue-50'
+                    : 'hover:bg-gray-50'
+                    }`}
                   onClick={() => setSelectedSymbol(item.symbol)}
                 >
                   <div className="flex items-center justify-between">
@@ -462,7 +461,7 @@ export const TradingInterface: React.FC = () => {
 
             <div className="grid grid-cols-2 gap-2">
               <Button
-                variant={orderSide === 'buy' ? 'default' : 'outline'}
+                variant={orderSide === 'buy' ? 'secondary' : 'outline'}
                 onClick={() => setOrderSide('buy')}
                 className="w-full"
               >
@@ -615,3 +614,5 @@ export const TradingInterface: React.FC = () => {
     </div>
   );
 };
+
+export default TradingInterface;

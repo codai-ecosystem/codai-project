@@ -1,39 +1,58 @@
-import '@testing-library/jest-dom'
-import { beforeAll, afterEach, afterAll } from 'vitest'
-import { cleanup } from '@testing-library/react'
-
-// Cleanup after each test case (e.g. clearing jsdom)
-afterEach(() => {
-  cleanup()
-})
+import '@testing-library/jest-dom';
 
 // Mock IntersectionObserver
-global.IntersectionObserver = class IntersectionObserver {
-  constructor() {}
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+class MockIntersectionObserver implements IntersectionObserver {
+  root: Element | Document | null = null;
+  rootMargin: string = '';
+  thresholds: ReadonlyArray<number> = [];
+
+  constructor(callback: IntersectionObserverCallback, options?: IntersectionObserverInit) {
+    this.root = options?.root || null;
+    this.rootMargin = options?.rootMargin || '';
+    this.thresholds = options?.threshold ? 
+      Array.isArray(options.threshold) ? options.threshold : [options.threshold] : 
+      [];
+  }
+
+  observe(target: Element): void {}
+  unobserve(target: Element): void {}
+  disconnect(): void {}
+  takeRecords(): IntersectionObserverEntry[] {
+    return [];
+  }
 }
+
+Object.defineProperty(global, 'IntersectionObserver', {
+  writable: true,
+  configurable: true,
+  value: MockIntersectionObserver,
+});
 
 // Mock ResizeObserver
-global.ResizeObserver = class ResizeObserver {
-  constructor() {}
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+class MockResizeObserver implements ResizeObserver {
+  constructor(callback: ResizeObserverCallback) {}
+  observe(target: Element, options?: ResizeObserverOptions): void {}
+  unobserve(target: Element): void {}
+  disconnect(): void {}
 }
 
-// Mock matchMedia
+Object.defineProperty(global, 'ResizeObserver', {
+  writable: true,
+  configurable: true,
+  value: MockResizeObserver,
+});
+
+// Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: (query: string) => ({
+  value: jest.fn().mockImplementation(query => ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: () => {},
-    removeListener: () => {},
-    addEventListener: () => {},
-    removeEventListener: () => {},
-    dispatchEvent: () => {},
-  }),
-})
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
+});

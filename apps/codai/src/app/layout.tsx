@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { ReactNode } from 'react';
+import Navigation from '../components/Navigation';
+import { Providers } from '../components/providers';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -10,7 +12,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html lang="en">
-			<body>{children}</body>
+			<body>
+				<Providers>
+					<Navigation />
+					{children}
+				</Providers>
+			</body>
 		</html>
 	);
 }

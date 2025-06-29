@@ -202,9 +202,9 @@ const mockVolatilityData = {
         ]
     },
     historicalVolatility: {
-        30day: 0.24,
-        60day: 0.26,
-        90day: 0.28,
+        "30day": 0.24,
+        "60day": 0.26,
+        "90day": 0.28,
         annualized: 0.31
     },
     volatilitySkew: [

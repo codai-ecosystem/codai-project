@@ -21,14 +21,30 @@
     "test:debug": "vitest --inspect-brk --no-timeout"
   },
   "dependencies": {
-    "next": "^15.0.0",
+    "next": "^15.1.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "class-variance-authority": "^0.7.0",
+    "@heroicons/react": "^2.0.18",
+    "tailwind-merge": "^2.3.0",
+    "clsx": "^2.1.1",
+    "postgres": "^3.4.4",
+    "@radix-ui/react-progress": "^1.0.3",
+    "@radix-ui/react-tabs": "^1.0.4",
+    "@radix-ui/react-select": "^2.0.0",
+    "lucide-react": "^0.263.1",
+    "recharts": "^2.12.7",
+    "zod": "^3.23.8",
+    "uuid": "^9.0.1",
+    "@types/uuid": "^9.0.8",
+    "ethereum": "^0.0.4",
+    "web3": "^4.8.0",
+    "@radix-ui/react-slot": "^1.0.2"
   },
   "devDependencies": {
-    "@types/node": "^20.14.0",
-    "@types/react": "^18.3.0",
-    "@types/react-dom": "^18.3.0",
+    "@types/node": "^20.12.12",
+    "@types/react": "^18.3.23",
+    "@types/react-dom": "^18.3.7",
     "eslint": "^9.5.0",
     "eslint-config-next": "^15.0.0",
     "typescript": "^5.5.0",
@@ -41,6 +57,10 @@
     "happy-dom": "^12.0.0",
     "supertest": "^6.3.4",
     "playwright": "^1.44.0",
-    "@types/supertest": "^6.0.2"
-  }
+    "@types/supertest": "^6.0.2",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3"
+  },
+  "type": "module"
 }

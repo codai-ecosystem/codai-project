@@ -210,9 +210,9 @@ async function handleRegenerateBackupCodes(
 // Route handlers
 export async function GET(
   request: NextRequest,
-  { params }: { params: { action: string } }
+  { params }: { params: Promise<{ action: string }> }
 ) {
-  const action = params.action;
+  const { action } = await params;
 
   switch (action) {
     case 'generate-secret':
@@ -230,9 +230,9 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { action: string } }
+  { params }: { params: Promise<{ action: string }> }
 ) {
-  const action = params.action;
+  const { action } = await params;
 
   switch (action) {
     case 'enable':

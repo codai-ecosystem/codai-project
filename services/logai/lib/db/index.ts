@@ -8,7 +8,7 @@ const globalForDb = globalThis as unknown as {
 
 const conn =
   globalForDb.conn ??
-  postgres(process.env.DATABASE_URL!, {
+  postgres(process.env.DATABASE_URL || 'postgresql://localhost/logai', {
     prepare: false,
   });
 

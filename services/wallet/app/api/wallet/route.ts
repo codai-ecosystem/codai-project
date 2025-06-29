@@ -1,3 +1,13 @@
+interface Transaction {
+    id: string;
+    amount: number;
+    type: 'send' | 'receive';
+    status: 'pending' | 'confirmed' | 'failed';
+    timestamp: Date;
+    toAddress?: string;
+    fromAddress?: string;
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 
 /**
@@ -253,7 +263,7 @@ export async function POST(request: NextRequest) {
                     from,
                     to,
                     timestamp: new Date(),
-                    status: 'pending' as const,
+                    status: 'pending' as 'pending' | 'confirmed' | 'failed',
                     hash: `0x${Math.random().toString(16).substr(2, 64)}`,
                     chain: txChain || 'Ethereum'
                 };
@@ -262,7 +272,7 @@ export async function POST(request: NextRequest) {
 
                 // Simulate transaction confirmation after delay
                 setTimeout(() => {
-                    newTransaction.status = 'confirmed';
+                    newTransaction.status = 'confirmed' as const;
                 }, 30000); // 30 seconds
 
                 return NextResponse.json({

@@ -14,9 +14,12 @@ export default {
     'node_modules',
     'dist',
     'build',
-    '**/packages/**', // Packages use Vitest
-    '**/apps/**', // Apps use Vitest
-    '**/services/**', // Services use Vitest
+    'packages/',
+    'apps/',
+    'services/',
+    'tests/e2e/',
+    'tests/browser/',
+    '.spec.ts',
   ],
   collectCoverageFrom: [
     'tests/**/*.{js,ts}',

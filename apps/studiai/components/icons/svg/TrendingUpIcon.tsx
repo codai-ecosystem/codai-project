@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconProps } from '@/types';
 
-const TrendingUpIcon: React.FC<IconProps> = ({
+const ArrowTrendingUpIcon: React.FC<IconProps> = ({
   className = 'w-5 h-5',
   size,
 }) => {
@@ -24,4 +24,4 @@ const TrendingUpIcon: React.FC<IconProps> = ({
   );
 };
 
-export default TrendingUpIcon;
+export default ArrowTrendingUpIcon;

@@ -145,11 +145,11 @@ public
 
 async function checkAndFixGitignore(repoPath, repoName) {
     const gitignorePath = path.join(repoPath, '.gitignore');
-    
+
     try {
         let existingContent = '';
         let fileExists = false;
-        
+
         try {
             existingContent = await fs.readFile(gitignorePath, 'utf8');
             fileExists = true;
@@ -157,25 +157,25 @@ async function checkAndFixGitignore(repoPath, repoName) {
             console.log(`📝 Creating new .gitignore for ${repoName}`);
             fileExists = false;
         }
-        
+
         // Check if node_modules is properly ignored
         const hasNodeModules = existingContent.includes('node_modules/') || existingContent.includes('node_modules');
         const hasBasicIgnores = existingContent.includes('.env') && existingContent.includes('dist/');
-        
+
         if (!fileExists || !hasNodeModules || !hasBasicIgnores) {
             console.log(`🔧 ${fileExists ? 'Updating' : 'Creating'} .gitignore for ${repoName}`);
-            
+
             // If file exists, try to preserve custom entries
             let finalContent = STANDARD_GITIGNORE;
-            
+
             if (fileExists && existingContent.trim()) {
                 // Look for custom entries that aren't in our standard template
                 const existingLines = existingContent.split('\n').map(line => line.trim());
                 const standardLines = STANDARD_GITIGNORE.split('\n').map(line => line.trim());
-                
-                const customLines = existingLines.filter(line => 
-                    line && 
-                    !line.startsWith('#') && 
+
+                const customLines = existingLines.filter(line =>
+                    line &&
+                    !line.startsWith('#') &&
                     !standardLines.includes(line) &&
                     !line.match(/^node_modules/) &&
                     !line.match(/^\.env/) &&
@@ -183,13 +183,13 @@ async function checkAndFixGitignore(repoPath, repoName) {
                     !line.match(/^build/) &&
                     !line.match(/^coverage/)
                 );
-                
+
                 if (customLines.length > 0) {
                     finalContent += '\n# Custom entries from existing .gitignore\n';
                     finalContent += customLines.join('\n') + '\n';
                 }
             }
-            
+
             await fs.writeFile(gitignorePath, finalContent);
             return { updated: true, created: !fileExists };
         } else {
@@ -206,11 +206,11 @@ async function removeNodeModulesFromGit(repoPath, repoName) {
     const { exec } = await import('child_process');
     const { promisify } = await import('util');
     const execAsync = promisify(exec);
-    
+
     try {
         // Check if node_modules is tracked
         const { stdout } = await execAsync('git ls-files | grep node_modules', { cwd: repoPath });
-        
+
         if (stdout.trim()) {
             console.log(`🗑️  Removing tracked node_modules from ${repoName}`);
             await execAsync('git rm -r --cached node_modules/', { cwd: repoPath });
@@ -226,29 +226,29 @@ async function removeNodeModulesFromGit(repoPath, repoName) {
 
 async function main() {
     console.log('🚀 Fixing .gitignore files across all Codai repositories...\n');
-    
+
     const results = {
         updated: 0,
         created: 0,
         errors: 0,
         removedFromGit: 0
     };
-    
+
     // Read projects.index.json to get all repositories
     const projectsPath = path.join(__dirname, '..', 'projects.index.json');
     const projects = JSON.parse(await fs.readFile(projectsPath, 'utf8'));
-    
+
     // Process apps
     console.log('📱 Processing apps...');
     for (const appInfo of projects.apps) {
         const appName = appInfo.name;
         const appPath = path.join(__dirname, '..', 'apps', appName);
-        
+
         try {
             await fs.access(appPath);
             const result = await checkAndFixGitignore(appPath, `apps/${appName}`);
             const gitResult = await removeNodeModulesFromGit(appPath, `apps/${appName}`);
-            
+
             if (result.updated) results.updated++;
             if (result.created) results.created++;
             if (result.error) results.errors++;
@@ -257,7 +257,7 @@ async function main() {
             console.log(`⚠️  Skipping missing app: ${appName}`);
         }
     }
-    
+
     // Process services - read from directory since they're not in projects.index.json
     console.log('\n🔧 Processing services...');
     const servicesPath = path.join(__dirname, '..', 'services');
@@ -266,14 +266,14 @@ async function main() {
         const serviceNames = serviceDirs
             .filter(dirent => dirent.isDirectory())
             .map(dirent => dirent.name);
-        
+
         for (const serviceName of serviceNames) {
             const servicePath = path.join(servicesPath, serviceName);
-            
+
             try {
                 const result = await checkAndFixGitignore(servicePath, `services/${serviceName}`);
                 const gitResult = await removeNodeModulesFromGit(servicePath, `services/${serviceName}`);
-                
+
                 if (result.updated) results.updated++;
                 if (result.created) results.created++;
                 if (result.error) results.errors++;
@@ -287,13 +287,13 @@ async function main() {
         console.log(`❌ Error reading services directory: ${error.message}`);
         results.errors++;
     }
-    
+
     console.log('\n📊 Summary:');
     console.log(`✅ Updated: ${results.updated}`);
     console.log(`📝 Created: ${results.created}`);
     console.log(`🗑️  Removed node_modules from git: ${results.removedFromGit}`);
     console.log(`❌ Errors: ${results.errors}`);
-    
+
     console.log('\n🎉 .gitignore fix complete!');
 }
 

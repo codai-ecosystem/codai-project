@@ -41,7 +41,7 @@ export class MFAService {
    * Verify MFA token
    */
   verifyToken(token: string, secret: string, window: number = 2): boolean {
-    return speakeasy.authenticator.verify({
+    return speakeasy.totp.verify({
       token,
       secret,
       encoding: 'base32',

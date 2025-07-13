@@ -42,10 +42,19 @@ import { ActionPanel } from '../components/ActionPanel'
 import { DataTable } from '../components/DataTable'
 import type { MobileStats, MobileFeature } from '../types'
 
+// App configuration
+const appConfig = {
+  colorScheme: {
+    primary: '#3B82F6',
+    secondary: '#06B6D4',
+    accent: '#8B5CF6'
+  }
+}
+
 export default function MobilePage() {
   const [isOnline, setIsOnline] = useState(true)
   const [currentTime, setCurrentTime] = useState(new Date())
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'analytics' | 'management' | 'settings'>('dashboard')
+  const [activeTab, setActiveTab] = useState<'overview' | 'analytics' | 'features' | 'monitor'>('overview')
   const [stats, setStats] = useState<MobileStats>({
     totalItems: Math.floor(Math.random() * 50000) + 10000,
     activeUsers: Math.floor(Math.random() * 1000) + 200,
@@ -54,7 +63,7 @@ export default function MobilePage() {
     processingSpeed: Math.random() * 0.1 + 0.05,
     uptime: 99.9
   })
-  
+
   const [features] = useState<MobileFeature[]>([
     {
       id: '1',
@@ -168,13 +177,13 @@ export default function MobilePage() {
       {/* Tab Navigation */}
       <div className="relative z-10 container mx-auto px-4 mb-8">
         <div className="flex justify-center space-x-1 bg-white/10 backdrop-blur-lg rounded-xl p-1 max-w-4xl mx-auto">
-          {(['dashboard', 'analytics', 'management', 'settings'] as const).map((tab) => (
+          {(['overview', 'analytics', 'features', 'monitor'] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`px-6 py-2 rounded-lg font-medium transition-all duration-300 ${activeTab === tab
-                  ? 'bg-blue-500/30 text-blue-300'
-                  : 'text-slate-400 hover:text-white hover:bg-white/10'
+                ? 'bg-blue-500/30 text-blue-300'
+                : 'text-slate-400 hover:text-white hover:bg-white/10'
                 }`}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -186,9 +195,9 @@ export default function MobilePage() {
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 py-8">
         <AnimatePresence mode="wait">
-          {activeTab === 'dashboard' && (
+          {activeTab === 'overview' && (
             <motion.div
-              key="dashboard"
+              key="overview"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -269,9 +278,9 @@ export default function MobilePage() {
             </motion.div>
           )}
 
-          {activeTab === 'management' && (
+          {activeTab === 'features' && (
             <motion.div
-              key="management"
+              key="features"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -281,9 +290,9 @@ export default function MobilePage() {
             </motion.div>
           )}
 
-          {activeTab === 'settings' && (
+          {activeTab === 'monitor' && (
             <motion.div
-              key="settings"
+              key="monitor"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -291,7 +300,7 @@ export default function MobilePage() {
             >
               <div className="glassmorphism rounded-xl p-8">
                 <h2 className="text-2xl font-bold mb-6 text-blue-400">
-                  Settings & Configuration
+                  Monitor & Configuration
                 </h2>
                 <div className="space-y-6">
                   <div className="bg-white/5 rounded-lg p-6">

@@ -217,6 +217,7 @@ vi.mock('lucide-react', () => {
     X: MockIcon,
     Check: MockIcon,
     Loader: MockIcon,
+    Loader2: MockIcon,
     MenuIcon: MockIcon,
     Home: MockIcon,
     Folder: MockIcon,
@@ -252,6 +253,13 @@ vi.mock('lucide-react', () => {
     MicOff: MockIcon,
     Camera: MockIcon,
     CameraOff: MockIcon,
+    CheckSquare: MockIcon,
+    MessageCircle: MockIcon,
+    FileImage: MockIcon,
+    Sparkles: MockIcon,
+    TestTube: MockIcon,
+    Lightbulb: MockIcon,
+    Smartphone: MockIcon,
   };
 });
 

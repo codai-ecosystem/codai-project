@@ -12,19 +12,58 @@ const mockToast = vi.hoisted(() => {
   return mockFn;
 });
 
-const mockMemoryStore = vi.hoisted(() => ({
-  addMemory: vi.fn(),
-  isLoading: false,
-}));
-
 // Mock toast notifications
 vi.mock('react-hot-toast', () => ({
   default: mockToast,
 }));
 
+// Mock framer-motion
+vi.mock('framer-motion', () => ({
+  motion: {
+    button: 'button',
+    div: 'div',
+  },
+  AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
+}));
+
+// Create mock store functions
+const mockAddMemory = vi.fn();
+
+// Create a mutable mock store
+const mockStore = {
+  memories: [],
+  isLoading: false,
+  error: null,
+  searchQuery: '',
+  selectedMemories: [],
+  filters: {},
+  addMemory: mockAddMemory,
+  updateMemory: vi.fn(),
+  deleteMemory: vi.fn(),
+  getMemory: vi.fn(),
+  searchMemories: vi.fn(),
+  setFilters: vi.fn(),
+  clearFilters: vi.fn(),
+  selectMemory: vi.fn(),
+  deselectMemory: vi.fn(),
+  clearSelection: vi.fn(),
+  selectAll: vi.fn(),
+  deleteSelected: vi.fn(),
+  exportSelected: vi.fn(),
+  getMemoriesByType: vi.fn(),
+  getRecentMemories: vi.fn(),
+  getMemoriesByImportance: vi.fn(),
+  getMemoriesWithTags: vi.fn(),
+  setLoading: vi.fn(),
+  setError: vi.fn(),
+  clearError: vi.fn(),
+  fetchMemories: vi.fn(),
+  refreshMemories: vi.fn(),
+};
+
 // Mock the memory store
-vi.mock('../../../src/stores/memory-store', () => ({
-  useMemoryStore: () => mockMemoryStore,
+vi.mock('../../../../../src/stores/memory-store', () => ({
+  useMemoryStore: () => mockStore,
 }));
 
 // Mock utils
@@ -40,7 +79,7 @@ describe('MemoryActions - Comprehensive Testing', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    mockMemoryStore.isLoading = false;
+    mockStore.isLoading = false;
     user = userEvent.setup();
   });
 
@@ -254,7 +293,16 @@ describe('MemoryActions - Comprehensive Testing', () => {
     });
 
     it('should submit form with valid data', async () => {
-      mockMemoryStore.addMemory.mockResolvedValue(undefined);
+      mockAddMemory.mockResolvedValue(undefined);
+
+      // First open the add memory form
+      const addMemoryButton = screen.getByTestId('quick-action-add-memory');
+      await user.click(addMemoryButton);
+
+      // Wait for form to appear
+      await waitFor(() => {
+        expect(screen.getByLabelText('Content *')).toBeInTheDocument();
+      });
 
       const contentField = screen.getByLabelText('Content *');
       const tagsField = screen.getByLabelText('Tags');
@@ -265,18 +313,20 @@ describe('MemoryActions - Comprehensive Testing', () => {
 
       await user.click(submitButton);
 
-      expect(mockMemoryStore.addMemory).toHaveBeenCalledWith(
-        'Test memory content',
-        {
-          tags: ['tag1', 'tag2', 'tag3'],
-          importance: 0.5,
-          source: 'dashboard',
-        }
-      );
+      await waitFor(() => {
+        expect(mockAddMemory).toHaveBeenCalledWith(
+          'Test memory content',
+          {
+            tags: ['tag1', 'tag2', 'tag3'],
+            importance: 0.5,
+            source: 'dashboard',
+          }
+        );
+      });
     });
 
     it('should show success toast and reset form after successful submission', async () => {
-      mockMemoryStore.addMemory.mockResolvedValue(undefined);
+      mockAddMemory.mockResolvedValue(undefined);
 
       const addMemoryButton = screen.getByTestId('quick-action-add-memory');
       await user.click(addMemoryButton);
@@ -307,7 +357,7 @@ describe('MemoryActions - Comprehensive Testing', () => {
       await waitFor(() => {
         expect(mockToast.error).toHaveBeenCalledWith('Content is required');
       });
-      expect(mockMemoryStore.addMemory).not.toHaveBeenCalled();
+      expect(mockAddMemory).not.toHaveBeenCalled();
     });
 
     it('should show error toast for whitespace-only content', async () => {
@@ -323,11 +373,11 @@ describe('MemoryActions - Comprehensive Testing', () => {
       await waitFor(() => {
         expect(mockToast.error).toHaveBeenCalledWith('Content is required');
       });
-      expect(mockMemoryStore.addMemory).not.toHaveBeenCalled();
+      expect(mockAddMemory).not.toHaveBeenCalled();
     });
 
     it('should handle API errors gracefully', async () => {
-      mockMemoryStore.addMemory.mockRejectedValue(new Error('API Error'));
+      mockAddMemory.mockRejectedValue(new Error('API Error'));
 
       const addMemoryButton = screen.getByTestId('quick-action-add-memory');
       await user.click(addMemoryButton);
@@ -344,7 +394,7 @@ describe('MemoryActions - Comprehensive Testing', () => {
     });
 
     it('should handle tags parsing correctly', async () => {
-      mockMemoryStore.addMemory.mockResolvedValue(undefined);
+      mockAddMemory.mockResolvedValue(undefined);
 
       const addMemoryButton = screen.getByTestId('quick-action-add-memory');
       await user.click(addMemoryButton);
@@ -360,7 +410,7 @@ describe('MemoryActions - Comprehensive Testing', () => {
       fireEvent.submit(form);
 
       await waitFor(() => {
-        expect(mockMemoryStore.addMemory).toHaveBeenCalledWith('Test content', {
+        expect(mockAddMemory).toHaveBeenCalledWith('Test content', {
           tags: ['tag1', 'tag2', 'tag3', 'tag4'], // Empty tags should be filtered out
           importance: 0.5,
           source: 'dashboard',
@@ -369,7 +419,7 @@ describe('MemoryActions - Comprehensive Testing', () => {
     });
 
     it('should handle empty tags gracefully', async () => {
-      mockMemoryStore.addMemory.mockResolvedValue(undefined);
+      mockAddMemory.mockResolvedValue(undefined);
 
       const addMemoryButton = screen.getByTestId('quick-action-add-memory');
       await user.click(addMemoryButton);
@@ -383,7 +433,7 @@ describe('MemoryActions - Comprehensive Testing', () => {
       fireEvent.submit(form);
 
       await waitFor(() => {
-        expect(mockMemoryStore.addMemory).toHaveBeenCalledWith('Test content', {
+        expect(mockAddMemory).toHaveBeenCalledWith('Test content', {
           tags: [],
           importance: 0.5,
           source: 'dashboard',
@@ -395,7 +445,7 @@ describe('MemoryActions - Comprehensive Testing', () => {
   describe('Loading States', () => {
     it('should show loading state during submission', async () => {
       // Set loading state before rendering
-      mockMemoryStore.isLoading = true;
+      mockStore.isLoading = true;
 
       render(<MemoryActions />);
       const addMemoryButton = screen.getByTestId('quick-action-add-memory');
@@ -406,7 +456,7 @@ describe('MemoryActions - Comprehensive Testing', () => {
     });
 
     it('should disable submit button when loading', async () => {
-      mockMemoryStore.isLoading = true;
+      mockStore.isLoading = true;
 
       render(<MemoryActions />);
       const addMemoryButton = screen.getAllByTestId(
@@ -538,7 +588,7 @@ describe('MemoryActions - Comprehensive Testing', () => {
     });
 
     it('should handle special characters in content and tags', async () => {
-      mockMemoryStore.addMemory.mockResolvedValue(undefined);
+      mockAddMemory.mockResolvedValue(undefined);
 
       render(<MemoryActions />);
       const addMemoryButton = screen.getByTestId('quick-action-add-memory');
@@ -556,7 +606,7 @@ describe('MemoryActions - Comprehensive Testing', () => {
       fireEvent.submit(form);
 
       await waitFor(() => {
-        expect(mockMemoryStore.addMemory).toHaveBeenCalledWith(specialContent, {
+        expect(mockAddMemory).toHaveBeenCalledWith(specialContent, {
           tags: ['tag-1', 'tag_2', 'tag@3', 'tag#4'],
           importance: 0.5,
           source: 'dashboard',
@@ -565,7 +615,7 @@ describe('MemoryActions - Comprehensive Testing', () => {
     });
 
     it('should handle rapid form submissions', async () => {
-      mockMemoryStore.addMemory.mockImplementation(
+      mockAddMemory.mockImplementation(
         () => new Promise(resolve => setTimeout(resolve, 100))
       );
 
@@ -583,12 +633,12 @@ describe('MemoryActions - Comprehensive Testing', () => {
       fireEvent.submit(form);
       fireEvent.submit(form); // Should call addMemory for each submit event
       await waitFor(() => {
-        expect(mockMemoryStore.addMemory).toHaveBeenCalledTimes(3);
+        expect(mockAddMemory).toHaveBeenCalledTimes(3);
       });
     });
 
     it('should maintain form state during errors', async () => {
-      mockMemoryStore.addMemory.mockRejectedValue(new Error('API Error'));
+      mockAddMemory.mockRejectedValue(new Error('API Error'));
 
       render(<MemoryActions />);
       const addMemoryButton = screen.getByTestId('quick-action-add-memory');
@@ -613,3 +663,4 @@ describe('MemoryActions - Comprehensive Testing', () => {
     });
   });
 });
+

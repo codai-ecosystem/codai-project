@@ -7,6 +7,47 @@ afterEach(() => {
   cleanup()
 })
 
+// Mock framer-motion for test compatibility
+vi.mock('framer-motion', () => ({
+  motion: {
+    div: 'div',
+    h1: 'h1',
+    section: 'section',
+    span: 'span',
+    button: 'button',
+    nav: 'nav',
+    header: 'header',
+    main: 'main',
+    aside: 'aside',
+    footer: 'footer',
+    article: 'article',
+    p: 'p',
+    img: 'img',
+    ul: 'ul',
+    li: 'li',
+    form: 'form',
+    input: 'input',
+    textarea: 'textarea',
+    select: 'select',
+    option: 'option',
+    table: 'table',
+    thead: 'thead',
+    tbody: 'tbody',
+    tr: 'tr',
+    td: 'td',
+    th: 'th'
+  },
+  AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
+  useAnimation: () => ({
+    start: vi.fn(),
+    stop: vi.fn(),
+    set: vi.fn()
+  }),
+  useMotionValue: () => ({ get: vi.fn(), set: vi.fn() }),
+  useTransform: () => ({ get: vi.fn(), set: vi.fn() }),
+  useSpring: () => ({ get: vi.fn(), set: vi.fn() })
+}))
+
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,

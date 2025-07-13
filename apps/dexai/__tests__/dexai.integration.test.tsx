@@ -2,101 +2,159 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom'
-import DexaiPage from '../app/page'
 
-describe('dexai Integration Tests', () => {
+// Mock next/navigation
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    back: vi.fn(),
+    forward: vi.fn(),
+    refresh: vi.fn(),
+    replace: vi.fn(),
+  }),
+}))
+
+// Mock the complex components to focus on integration testing
+vi.mock('../apps/web/components/GlassSearch', () => ({
+  default: ({ placeholder, onSearch }: any) => (
+    <div>
+      <input placeholder={placeholder} data-testid="glass-search-input" />
+      <button onClick={() => onSearch?.('test')}>Search</button>
+    </div>
+  )
+}))
+
+vi.mock('../apps/web/components/Header', () => ({
+  default: ({ onLoginClick }: any) => (
+    <header data-testid="header">
+      <button onClick={onLoginClick}>Login</button>
+    </header>
+  )
+}))
+
+vi.mock('../apps/web/src/lib/logai', () => ({
+  dexaiLogger: {
+    log: vi.fn(),
+    searchWord: vi.fn(),
+  }
+}))
+
+// Import the component after mocks
+const DexaiPage = React.lazy(() => import('../apps/web/app/page'))
+
+describe('DEXAI Integration Tests - Romanian Dictionary', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
 
-  describe('Complete User Flows', () => {
-    it('completes full dashboard navigation flow', async () => {
-      const user = userEvent.setup()
-      render(<DexaiPage />)
-      
-      // Navigate through all tabs
-      const tabs = ['Overview', 'Analytics', 'Features', 'Monitor']
-      
-      for (const tabName of tabs) {
-        const tab = screen.getByText(tabName)
-        await user.click(tab)
-        
-        await waitFor(() => {
-          expect(tab).toHaveClass('bg-blue-500/30')
-        })
-      }
-    })
+  describe('Complete Dictionary User Flows', () => {
+    it('displays main Romanian dictionary interface', async () => {
+      render(
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <DexaiPage />
+        </React.Suspense>
+      )
 
-    it('handles real-time data updates correctly', async () => {
-      render(<DexaiPage />)
-      
-      // Wait for initial stats to load
+      // Check for main dictionary title
       await waitFor(() => {
-        expect(screen.getByText(/total users/i)).toBeInTheDocument()
+        expect(screen.getByText(/dicționarul/i)).toBeInTheDocument()
+        expect(screen.getByText(/viitorului/i)).toBeInTheDocument()
       })
-      
-      // Wait for stats update (simulated)
-      await waitFor(() => {
-        const statsElements = screen.getAllByText(/\d+/)
-        expect(statsElements.length).toBeGreaterThan(0)
-      }, { timeout: 5000 })
+
+      // Check for search functionality
+      expect(screen.getByTestId('glass-search-input')).toBeInTheDocument()
     })
 
-    it('maintains state across navigation', async () => {
-      const user = userEvent.setup()
-      render(<DexaiPage />)
-      
-      // Switch to analytics
-      await user.click(screen.getByText('Analytics'))
-      
-      // Switch back to overview
-      await user.click(screen.getByText('Overview'))
-      
-      // Verify overview content is restored
-      await waitFor(() => {
-        expect(screen.getByText(/total users/i)).toBeInTheDocument()
-      })
-    })
-  })
+    it('shows Romanian language statistics', async () => {
+      render(
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <DexaiPage />
+        </React.Suspense>
+      )
 
-  describe('Data Flow Integration', () => {
-    it('integrates stats with visual elements', async () => {
-      render(<DexaiPage />)
-      
       await waitFor(() => {
-        // Check that stats are reflected in progress bars
-        const progressBars = document.querySelectorAll('[class*="w-full"][class*="bg-"]')
-        expect(progressBars.length).toBeGreaterThan(0)
+        // Check for Romanian language statistics
+        expect(screen.getByText(/75,000\+/)).toBeInTheDocument()
+        expect(screen.getByText(/24M\+/)).toBeInTheDocument()
+        expect(screen.getByText(/500\+/)).toBeInTheDocument()
+        expect(screen.getByText(/cuvinte în dex/i)).toBeInTheDocument()
+        expect(screen.getByText(/vorbitori în lume/i)).toBeInTheDocument()
       })
     })
 
-    it('synchronizes real-time updates across components', async () => {
-      render(<DexaiPage />)
-      
-      // Wait for multiple components to show consistent data
+    it('displays AI technology features', async () => {
+      render(
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <DexaiPage />
+        </React.Suspense>
+      )
+
       await waitFor(() => {
-        const timeElements = screen.getAllByText(/\d{1,2}:\d{2}/)
-        expect(timeElements.length).toBeGreaterThan(0)
+        expect(screen.getByText(/azure openai real/i)).toBeInTheDocument()
+        expect(screen.getByText(/firebase live database/i)).toBeInTheDocument()
+        expect(screen.getByText(/conturi utilizator reale/i)).toBeInTheDocument()
+      })
+    })
+
+    it('shows example word definition for "acasă"', async () => {
+      render(
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <DexaiPage />
+        </React.Suspense>
+      )
+
+      await waitFor(() => {
+        expect(screen.getByText('acasă')).toBeInTheDocument()
+        expect(screen.getByText('adverb')).toBeInTheDocument()
+        expect(screen.getByText(/la casa proprie/i)).toBeInTheDocument()
       })
     })
   })
 
-  describe('Performance Integration', () => {
-    it('handles multiple simultaneous operations', async () => {
-      const user = userEvent.setup()
-      render(<DexaiPage />)
-      
-      // Rapidly switch between tabs
-      const tabs = ['Analytics', 'Features', 'Monitor', 'Overview']
-      
-      for (const tabName of tabs) {
-        const tab = screen.getByText(tabName)
-        await user.click(tab)
-        // Don't wait for animation to complete - test rapid switching
-      }
-      
-      // Should not crash or show errors
-      expect(document.body).toBeInTheDocument()
+  describe('Real-time Performance Validation', () => {
+    it('shows search performance metrics', async () => {
+      render(
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <DexaiPage />
+        </React.Suspense>
+      )
+
+      await waitFor(() => {
+        // Check for performance indicators
+        expect(screen.getByText(/găsite/i)).toBeInTheDocument()
+        expect(screen.getByText(/rezultate în/i)).toBeInTheDocument()
+        expect(screen.getByText(/50/)).toBeInTheDocument()
+        expect(screen.getByText(/ms/)).toBeInTheDocument()
+      })
+    })
+
+    it('validates Romanian text rendering', async () => {
+      render(
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <DexaiPage />
+        </React.Suspense>
+      )
+
+      await waitFor(() => {
+        // Check for proper Romanian diacritics and text
+        expect(screen.getByText(/descoperiți frumusețea/i)).toBeInTheDocument()
+        expect(screen.getByText(/realizat cu/i)).toBeInTheDocument()
+        expect(screen.getByText(/pentru limba română/i)).toBeInTheDocument()
+      })
+    })
+
+    it('displays animated background elements', async () => {
+      render(
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <DexaiPage />
+        </React.Suspense>
+      )
+
+      await waitFor(() => {
+        // Check for animated background elements
+        const animatedElements = document.querySelectorAll('.animate-float')
+        expect(animatedElements.length).toBeGreaterThan(0)
+      })
     })
   })
 })

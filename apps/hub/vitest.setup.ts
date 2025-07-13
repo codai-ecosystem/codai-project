@@ -1,10 +1,61 @@
 import '@testing-library/jest-dom'
 import { expect, afterEach, vi } from 'vitest'
 import { cleanup } from '@testing-library/react'
+import React from 'react'
 
 // Cleanup after each test case
 afterEach(() => {
   cleanup()
+})
+
+// Essential framer-motion mock (minimal)
+vi.mock('framer-motion', () => ({
+  motion: {
+    div: 'div',
+    span: 'span',
+    button: 'button',
+    h1: 'h1',
+    h2: 'h2',
+    h3: 'h3',
+    img: 'img',
+    section: 'section'
+  },
+  AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
+  useAnimation: () => ({
+    start: vi.fn(),
+    stop: vi.fn(),
+    set: vi.fn()
+  })
+}))
+
+// Mock lucide-react icons
+vi.mock('lucide-react', () => {
+  const MockIcon = ({ className, ...props }: any) =>
+    React.createElement('svg', { className, ...props, 'data-testid': 'mock-icon' })
+
+  return {
+    Hub: MockIcon,
+    Network: MockIcon,
+    Workflow: MockIcon,
+    Zap: MockIcon,
+    Activity: MockIcon,
+    TrendingUp: MockIcon,
+    Clock: MockIcon,
+    Users: MockIcon,
+    Settings: MockIcon,
+    ChevronRight: MockIcon,
+    Star: MockIcon,
+    ArrowRight: MockIcon,
+    Layers: MockIcon,
+    Link: MockIcon,
+    Database: MockIcon,
+    Shield: MockIcon,
+    Play: MockIcon,
+    Monitor: MockIcon,
+    Globe: MockIcon,
+    Server: MockIcon,
+    Grid3x3: MockIcon
+  }
 })
 
 // Mock window.matchMedia

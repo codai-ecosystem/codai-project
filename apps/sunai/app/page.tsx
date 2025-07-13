@@ -42,6 +42,14 @@ import { ActionPanel } from '../components/ActionPanel'
 import { DataTable } from '../components/DataTable'
 import type { SunaiStats, SunaiFeature } from '../types'
 
+const appConfig = {
+  colorScheme: {
+    primary: '#EAB308', // yellow-500
+    secondary: '#F97316', // orange-500
+    accent: '#F59E0B' // amber-500
+  }
+}
+
 export default function SunaiPage() {
   const [isOnline, setIsOnline] = useState(true)
   const [currentTime, setCurrentTime] = useState(new Date())
@@ -54,7 +62,7 @@ export default function SunaiPage() {
     processingSpeed: Math.random() * 0.1 + 0.05,
     uptime: 99.9
   })
-  
+
   const [features] = useState<SunaiFeature[]>([
     {
       id: '1',
@@ -173,8 +181,8 @@ export default function SunaiPage() {
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`px-6 py-2 rounded-lg font-medium transition-all duration-300 ${activeTab === tab
-                  ? 'bg-yellow-500/30 text-yellow-300'
-                  : 'text-slate-400 hover:text-white hover:bg-white/10'
+                ? 'bg-yellow-500/30 text-yellow-300'
+                : 'text-slate-400 hover:text-white hover:bg-white/10'
                 }`}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}

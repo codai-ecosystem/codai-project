@@ -3,8 +3,9 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Search, Filter, SortAsc, SortDesc, X } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { useMemoryStore } from '../../stores/memory-store';
 
-// Create a simple debounce function since we can't import from utils
+// Debounce utility function
 const debounce = (func: Function, wait: number) => {
   let timeout: NodeJS.Timeout;
   return function executedFunction(...args: any[]) {
@@ -23,8 +24,6 @@ interface MemorySearchProps {
 
 export function MemorySearch({ className }: MemorySearchProps) {
   const [query, setQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [filters, setFilters] = useState({
     type: '',
     agentId: '',
@@ -34,61 +33,32 @@ export function MemorySearch({ className }: MemorySearchProps) {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [showFilters, setShowFilters] = useState(false);
 
-  // Function to search memories using our fixed API endpoints
-  const searchMemories = async (searchQuery: string) => {
-    if (!searchQuery.trim()) {
-      setSearchResults([]);
-      return;
-    }
+  // Use the memory store
+  const { searchMemories, clearSearch, searchResults, isLoading } = useMemoryStore();
 
-    setIsLoading(true);
-    try {
-      console.log('Searching memories with query:', searchQuery);
-
-      // Use our working API endpoint to get memories
-      const response = await fetch('/api/mcp/read-graph');
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Search API response:', data);
-
-        if (data.memories) {
-          // Filter memories based on the search query
-          const filteredMemories = data.memories.filter((memory: any) =>
-            memory.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            memory.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            (memory.metadata.tags && memory.metadata.tags.some((tag: string) =>
-              tag.toLowerCase().includes(searchQuery.toLowerCase())
-            ))
-          );
-
-          console.log(`Found ${filteredMemories.length} matching memories`);
-          setSearchResults(filteredMemories);
-        } else {
-          setSearchResults([]);
-        }
-      } else {
-        console.error('Search failed:', response.status);
-        setSearchResults([]);
-      }
-    } catch (error) {
-      console.error('Search error:', error);
-      setSearchResults([]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Debounced search function
+  // Debounced search function using the store
   const debouncedSearch = useCallback(
     debounce((searchQuery: string) => {
-      searchMemories(searchQuery);
+      if (!searchQuery.trim()) {
+        clearSearch();
+        return;
+      }
+      searchMemories(searchQuery, {
+        type: filters.type,
+        agentId: filters.agentId,
+        limit: 50,
+      });
     }, 300),
-    []
+    [searchMemories, clearSearch, filters.type, filters.agentId]
   );
 
   const handleQueryChange = (value: string) => {
     setQuery(value);
-    debouncedSearch(value);
+    if (!value.trim()) {
+      clearSearch();
+    } else {
+      debouncedSearch(value);
+    }
   };
 
   const handleFilterChange = (filterType: string, value: string) => {
@@ -105,7 +75,7 @@ export function MemorySearch({ className }: MemorySearchProps) {
       tags: [],
     });
     setQuery('');
-    setSearchResults([]);
+    clearSearch();
   };
 
   const memoryTypes = [
@@ -305,7 +275,7 @@ export function MemorySearch({ className }: MemorySearchProps) {
         {searchResults && searchResults.length > 0 ? (
           <div>
             <div className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-              Found {searchResults.length} matching memories
+              {searchResults.length} Memories
             </div>
             <div className="space-y-4">
               {searchResults.map((memory: any) => (
@@ -331,9 +301,9 @@ export function MemorySearch({ className }: MemorySearchProps) {
                         >
                           {memory.type}
                         </span>
-                        {memory.metadata.tags && memory.metadata.tags.length > 0 && (
+                        {memory.metadata?.tags && memory.metadata.tags.length > 0 && (
                           <>
-                            {memory.metadata.tags.slice(0, 3).map((tag: string) => (
+                            {memory.metadata?.tags?.slice(0, 3).map((tag: string) => (
                               <span
                                 key={tag}
                                 className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300"
@@ -344,10 +314,10 @@ export function MemorySearch({ className }: MemorySearchProps) {
                           </>
                         )}
                         <span className="text-xs text-gray-500 dark:text-gray-400">
-                          {memory.metadata.timestamp ? new Date(memory.metadata.timestamp).toLocaleDateString() : 'No date'}
+                          {memory.metadata?.timestamp ? new Date(memory.metadata.timestamp).toLocaleDateString() : 'No date'}
                         </span>
                       </div>
-                      {memory.metadata.importance && (
+                      {memory.metadata?.importance && (
                         <div className="mt-2">
                           <div className="flex items-center space-x-2">
                             <span className="text-xs text-gray-500 dark:text-gray-400">Importance:</span>
@@ -357,7 +327,7 @@ export function MemorySearch({ className }: MemorySearchProps) {
                                   key={star}
                                   className={cn(
                                     'h-3 w-3 rounded-full',
-                                    star <= (memory.metadata.importance * 5)
+                                    star <= ((memory.metadata?.importance || 0) * 5)
                                       ? 'bg-yellow-400'
                                       : 'bg-gray-200 dark:bg-gray-600'
                                   )}
@@ -376,10 +346,10 @@ export function MemorySearch({ className }: MemorySearchProps) {
               ))}
             </div>
           </div>
-        ) : query && !isLoading ? (
+        ) : query && !isLoading && searchResults.length === 0 ? (
           <div className="text-center py-8 text-gray-500 dark:text-gray-400">
             <Search className="h-12 w-12 mx-auto mb-4 opacity-50" />
-            <p>No memories found matching "{query}"</p>
+            <p>No memories yet</p>
             <p className="text-sm mt-2">Try adjusting your search terms or clear filters</p>
           </div>
         ) : !query ? (

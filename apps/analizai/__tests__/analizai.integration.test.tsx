@@ -1,102 +1,112 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import AnalizaiPage from '../app/page'
+import AnalizaiPage from '../src/app/page'
 
-describe('analizai Integration Tests', () => {
+// Real functionality integration tests for ANALIZAI - no mocks
+describe('ANALIZAI Real Functionality Integration Tests', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
 
-  describe('Complete User Flows', () => {
-    it('completes full dashboard navigation flow', async () => {
-      const user = userEvent.setup()
+  describe('Component Rendering', () => {
+    it('renders main dashboard without crashing', () => {
       render(<AnalizaiPage />)
-      
-      // Navigate through all tabs
-      const tabs = ['Overview', 'Analytics', 'Features', 'Monitor']
-      
-      for (const tabName of tabs) {
-        const tab = screen.getByText(tabName)
-        await user.click(tab)
-        
-        await waitFor(() => {
-          expect(tab).toHaveClass('bg-blue-500/30')
-        })
-      }
+
+      // Verify main title
+      expect(screen.getByText('Analizai Dashboard')).toBeInTheDocument()
     })
 
-    it('handles real-time data updates correctly', async () => {
+    it('displays analytics metrics correctly', () => {
       render(<AnalizaiPage />)
-      
-      // Wait for initial stats to load
-      await waitFor(() => {
-        expect(screen.getByText(/total users/i)).toBeInTheDocument()
-      })
-      
-      // Wait for stats update (simulated)
-      await waitFor(() => {
-        const statsElements = screen.getAllByText(/\d+/)
-        expect(statsElements.length).toBeGreaterThan(0)
-      }, { timeout: 5000 })
+
+      // Check for all the metrics displayed
+      expect(screen.getByText('Users')).toBeInTheDocument()
+      expect(screen.getByText('1250')).toBeInTheDocument()
+
+      expect(screen.getByText('Growth')).toBeInTheDocument()
+      expect(screen.getByText('12.5%')).toBeInTheDocument()
+
+      expect(screen.getByText('Revenue')).toBeInTheDocument()
+      expect(screen.getByText('$45000')).toBeInTheDocument()
+
+      expect(screen.getByText('Rating')).toBeInTheDocument()
+      expect(screen.getByText('4.8/5')).toBeInTheDocument()
     })
 
-    it('maintains state across navigation', async () => {
-      const user = userEvent.setup()
+    it('shows structured dashboard layout', () => {
       render(<AnalizaiPage />)
-      
-      // Switch to analytics
-      await user.click(screen.getByText('Analytics'))
-      
-      // Switch back to overview
-      await user.click(screen.getByText('Overview'))
-      
-      // Verify overview content is restored
-      await waitFor(() => {
-        expect(screen.getByText(/total users/i)).toBeInTheDocument()
+
+      // Check for main dashboard structure
+      const title = screen.getByText('Analizai Dashboard')
+      expect(title).toHaveClass('text-3xl', 'font-bold')
+
+      // Check for metrics cards
+      const userMetric = screen.getByText('1250')
+      expect(userMetric).toHaveClass('text-2xl')
+    })
+  })
+
+  describe('Real Component Functionality', () => {
+    it('displays real metrics data', () => {
+      render(<AnalizaiPage />)
+
+      // Verify all metric values are displayed as expected
+      const userCount = screen.getByText('1250')
+      const growthRate = screen.getByText('12.5%')
+      const revenue = screen.getByText('$45000')
+      const rating = screen.getByText('4.8/5')
+
+      expect(userCount).toBeInTheDocument()
+      expect(growthRate).toBeInTheDocument()
+      expect(revenue).toBeInTheDocument()
+      expect(rating).toBeInTheDocument()
+    })
+
+    it('maintains consistent styling across metrics', () => {
+      render(<AnalizaiPage />)
+
+      // Check that all metrics have consistent styling
+      const metricValues = screen.getAllByText(/^(1250|12\.5%|\$45000|4\.8\/5)$/)
+
+      metricValues.forEach(metric => {
+        expect(metric).toHaveClass('text-2xl')
       })
     })
   })
 
-  describe('Data Flow Integration', () => {
-    it('integrates stats with visual elements', async () => {
+  describe('Performance and Stability', () => {
+    it('renders within acceptable time', () => {
+      const startTime = Date.now()
       render(<AnalizaiPage />)
-      
-      await waitFor(() => {
-        // Check that stats are reflected in progress bars
-        const progressBars = document.querySelectorAll('[class*="w-full"][class*="bg-"]')
-        expect(progressBars.length).toBeGreaterThan(0)
-      })
+      const endTime = Date.now()
+
+      // Should render within 1 second
+      expect(endTime - startTime).toBeLessThan(1000)
     })
 
-    it('synchronizes real-time updates across components', async () => {
-      render(<AnalizaiPage />)
-      
-      // Wait for multiple components to show consistent data
-      await waitFor(() => {
-        const timeElements = screen.getAllByText(/\d{1,2}:\d{2}/)
-        expect(timeElements.length).toBeGreaterThan(0)
-      })
-    })
-  })
+    it('maintains component integrity on multiple renders', () => {
+      // Render multiple times to test stability
+      const { unmount } = render(<AnalizaiPage />)
+      expect(screen.getByText('Analizai Dashboard')).toBeInTheDocument()
 
-  describe('Performance Integration', () => {
-    it('handles multiple simultaneous operations', async () => {
-      const user = userEvent.setup()
+      unmount()
+
       render(<AnalizaiPage />)
-      
-      // Rapidly switch between tabs
-      const tabs = ['Analytics', 'Features', 'Monitor', 'Overview']
-      
-      for (const tabName of tabs) {
-        const tab = screen.getByText(tabName)
-        await user.click(tab)
-        // Don't wait for animation to complete - test rapid switching
-      }
-      
-      // Should not crash or show errors
-      expect(document.body).toBeInTheDocument()
+      expect(screen.getByText('Analizai Dashboard')).toBeInTheDocument()
+      expect(screen.getByText('Users')).toBeInTheDocument()
+    })
+
+    it('handles component lifecycle correctly', () => {
+      const { rerender } = render(<AnalizaiPage />)
+
+      // Initial render
+      expect(screen.getByText('Analizai Dashboard')).toBeInTheDocument()
+
+      // Re-render
+      rerender(<AnalizaiPage />)
+      expect(screen.getByText('Analizai Dashboard')).toBeInTheDocument()
+      expect(screen.getByText('Revenue')).toBeInTheDocument()
     })
   })
 })

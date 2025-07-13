@@ -11,6 +11,12 @@ export default defineConfig({
     setupFiles: ['./jest.setup.ts'],
     testTimeout: 30000,
     hookTimeout: 30000,
+    pool: 'forks',
+    poolOptions: {
+      forks: {
+        singleFork: true,
+      },
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],

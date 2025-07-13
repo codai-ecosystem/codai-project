@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
-import { Button } from '../ui/button';
-import { Badge } from '../ui/badge';
-import { Progress } from '../ui/progress';
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import { Progress } from './ui/progress';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
   LineChart,
   Line,
@@ -60,25 +60,25 @@ export default function AjutaiDashboard() {
   };
 
   const ajutaiFeatures = {
-  "userFlows": [
-    "support_chat",
-    "ticket_management",
-    "knowledge_base",
-    "ai_assistance"
-  ],
-  "businessLogic": [
-    "intelligent_support",
-    "ticket_routing",
-    "knowledge_management",
-    "ai_responses"
-  ],
-  "integrations": [
-    "chat_platforms",
-    "ticketing_systems",
-    "knowledge_bases",
-    "ai_models"
-  ]
-};
+    "userFlows": [
+      "support_chat",
+      "ticket_management",
+      "knowledge_base",
+      "ai_assistance"
+    ],
+    "businessLogic": [
+      "intelligent_support",
+      "ticket_routing",
+      "knowledge_management",
+      "ai_responses"
+    ],
+    "integrations": [
+      "chat_platforms",
+      "ticketing_systems",
+      "knowledge_bases",
+      "ai_models"
+    ]
+  };
 
   if (loading) {
     return (

@@ -13,14 +13,14 @@ describe('mobile Integration Tests', () => {
     it('completes full dashboard navigation flow', async () => {
       const user = userEvent.setup()
       render(<MobilePage />)
-      
+
       // Navigate through all tabs
       const tabs = ['Overview', 'Analytics', 'Features', 'Monitor']
-      
+
       for (const tabName of tabs) {
         const tab = screen.getByText(tabName)
         await user.click(tab)
-        
+
         await waitFor(() => {
           expect(tab).toHaveClass('bg-blue-500/30')
         })
@@ -29,12 +29,12 @@ describe('mobile Integration Tests', () => {
 
     it('handles real-time data updates correctly', async () => {
       render(<MobilePage />)
-      
+
       // Wait for initial stats to load
       await waitFor(() => {
-        expect(screen.getByText(/total users/i)).toBeInTheDocument()
+        expect(screen.getByText(/total items/i)).toBeInTheDocument()
       })
-      
+
       // Wait for stats update (simulated)
       await waitFor(() => {
         const statsElements = screen.getAllByText(/\d+/)
@@ -45,16 +45,16 @@ describe('mobile Integration Tests', () => {
     it('maintains state across navigation', async () => {
       const user = userEvent.setup()
       render(<MobilePage />)
-      
+
       // Switch to analytics
       await user.click(screen.getByText('Analytics'))
-      
+
       // Switch back to overview
       await user.click(screen.getByText('Overview'))
-      
+
       // Verify overview content is restored
       await waitFor(() => {
-        expect(screen.getByText(/total users/i)).toBeInTheDocument()
+        expect(screen.getByText(/total items/i)).toBeInTheDocument()
       })
     })
   })
@@ -62,7 +62,7 @@ describe('mobile Integration Tests', () => {
   describe('Data Flow Integration', () => {
     it('integrates stats with visual elements', async () => {
       render(<MobilePage />)
-      
+
       await waitFor(() => {
         // Check that stats are reflected in progress bars
         const progressBars = document.querySelectorAll('[class*="w-full"][class*="bg-"]')
@@ -72,7 +72,7 @@ describe('mobile Integration Tests', () => {
 
     it('synchronizes real-time updates across components', async () => {
       render(<MobilePage />)
-      
+
       // Wait for multiple components to show consistent data
       await waitFor(() => {
         const timeElements = screen.getAllByText(/\d{1,2}:\d{2}/)
@@ -85,16 +85,16 @@ describe('mobile Integration Tests', () => {
     it('handles multiple simultaneous operations', async () => {
       const user = userEvent.setup()
       render(<MobilePage />)
-      
+
       // Rapidly switch between tabs
       const tabs = ['Analytics', 'Features', 'Monitor', 'Overview']
-      
+
       for (const tabName of tabs) {
         const tab = screen.getByText(tabName)
         await user.click(tab)
         // Don't wait for animation to complete - test rapid switching
       }
-      
+
       // Should not crash or show errors
       expect(document.body).toBeInTheDocument()
     })

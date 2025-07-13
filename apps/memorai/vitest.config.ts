@@ -1,4 +1,4 @@
-/// <reference types="vitest" />
+﻿/// <reference types="vitest" />
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import path from 'path'
@@ -6,8 +6,9 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   test: {
+    watch: false, // Prevent watch mode by default
     globals: true,
-    environment: 'happy-dom',
+    environment: 'jsdom',
     setupFiles: ['./vitest.setup.ts'],
     css: true,
     coverage: {
@@ -36,18 +37,35 @@ export default defineConfig({
     pool: 'threads',
     poolOptions: {
       threads: {
-        singleThread: false,
+        singleThread: true,
         minThreads: 1,
-        maxThreads: 4
+        maxThreads: 1
       }
     },
     deps: {
       inline: ['framer-motion', 'zustand', 'react', 'react-dom']
+    },
+    env: {
+      NODE_ENV: 'test',
+      MEMORY_API_KEY: 'test-api-key-12345678901234567890',
+      MEMORY_EMBEDDING_API_KEY: 'test-embedding-api-key-12345678901234567890',
+      MEMORY_OPENAI_API_KEY: 'test-openai-api-key-12345678901234567890',
+      MEMORY_DATABASE_HOST: 'localhost',
+      MEMORY_DATABASE_PORT: '6379',
+      MEMORY_EMBEDDING_MODEL: 'text-embedding-ada-002',
+      MEMORY_ENCRYPTION_KEY: 'test-encryption-key-32-chars-long'
     }
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './')
+      '@': path.resolve(__dirname, './'),
+      '@/packages': path.resolve(__dirname, './packages'),
+      '@/apps': path.resolve(__dirname, './apps'),
+      '@/core': path.resolve(__dirname, './packages/core/src'),
+      '@/sdk': path.resolve(__dirname, './packages/sdk/src')
     }
+  },
+  define: {
+    global: 'globalThis'
   }
 })

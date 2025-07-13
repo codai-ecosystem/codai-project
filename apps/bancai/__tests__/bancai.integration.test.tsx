@@ -13,28 +13,33 @@ describe('bancai Integration Tests', () => {
     it('completes full dashboard navigation flow', async () => {
       const user = userEvent.setup()
       render(<BancaiPage />)
-      
-      // Navigate through all tabs
-      const tabs = ['Overview', 'Analytics', 'Features', 'Monitor']
-      
-      for (const tabName of tabs) {
-        const tab = screen.getByText(tabName)
+
+      // Navigate through all tabs using getByRole to avoid ambiguity
+      const tabs = [
+        { name: 'Overview', role: 'button' },
+        { name: 'Features', role: 'button' },
+        { name: 'Analytics', role: 'button' },
+        { name: 'Settings', role: 'button' }
+      ]
+
+      for (const tabInfo of tabs) {
+        const tab = screen.getByRole(tabInfo.role, { name: tabInfo.name })
         await user.click(tab)
-        
+
         await waitFor(() => {
-          expect(tab).toHaveClass('bg-blue-500/30')
+          expect(tab).toHaveClass('bg-emerald-500/30')
         })
       }
     })
 
     it('handles real-time data updates correctly', async () => {
       render(<BancaiPage />)
-      
+
       // Wait for initial stats to load
       await waitFor(() => {
-        expect(screen.getByText(/total users/i)).toBeInTheDocument()
+        expect(screen.getByText(/active users/i)).toBeInTheDocument()
       })
-      
+
       // Wait for stats update (simulated)
       await waitFor(() => {
         const statsElements = screen.getAllByText(/\d+/)
@@ -45,16 +50,16 @@ describe('bancai Integration Tests', () => {
     it('maintains state across navigation', async () => {
       const user = userEvent.setup()
       render(<BancaiPage />)
-      
+
       // Switch to analytics
       await user.click(screen.getByText('Analytics'))
-      
+
       // Switch back to overview
       await user.click(screen.getByText('Overview'))
-      
+
       // Verify overview content is restored
       await waitFor(() => {
-        expect(screen.getByText(/total users/i)).toBeInTheDocument()
+        expect(screen.getByText(/active users/i)).toBeInTheDocument()
       })
     })
   })
@@ -62,17 +67,17 @@ describe('bancai Integration Tests', () => {
   describe('Data Flow Integration', () => {
     it('integrates stats with visual elements', async () => {
       render(<BancaiPage />)
-      
+
       await waitFor(() => {
-        // Check that stats are reflected in progress bars
-        const progressBars = document.querySelectorAll('[class*="w-full"][class*="bg-"]')
-        expect(progressBars.length).toBeGreaterThan(0)
+        // Check that banking stats are displayed
+        const statsElements = screen.getAllByText(/\d+/)
+        expect(statsElements.length).toBeGreaterThan(0)
       })
     })
 
     it('synchronizes real-time updates across components', async () => {
       render(<BancaiPage />)
-      
+
       // Wait for multiple components to show consistent data
       await waitFor(() => {
         const timeElements = screen.getAllByText(/\d{1,2}:\d{2}/)
@@ -85,16 +90,21 @@ describe('bancai Integration Tests', () => {
     it('handles multiple simultaneous operations', async () => {
       const user = userEvent.setup()
       render(<BancaiPage />)
-      
-      // Rapidly switch between tabs
-      const tabs = ['Analytics', 'Features', 'Monitor', 'Overview']
-      
-      for (const tabName of tabs) {
-        const tab = screen.getByText(tabName)
+
+      // Rapidly switch between tabs using getByRole
+      const tabs = [
+        { name: 'Analytics', role: 'button' },
+        { name: 'Features', role: 'button' },
+        { name: 'Settings', role: 'button' },
+        { name: 'Overview', role: 'button' }
+      ]
+
+      for (const tabInfo of tabs) {
+        const tab = screen.getByRole(tabInfo.role, { name: tabInfo.name })
         await user.click(tab)
         // Don't wait for animation to complete - test rapid switching
       }
-      
+
       // Should not crash or show errors
       expect(document.body).toBeInTheDocument()
     })

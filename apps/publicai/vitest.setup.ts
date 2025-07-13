@@ -7,6 +7,52 @@ afterEach(() => {
   cleanup()
 })
 
+// Mock framer-motion with comprehensive motion component support
+vi.mock('framer-motion', () => ({
+  motion: {
+    div: 'div',
+    section: 'section',
+    h1: 'h1',
+    h2: 'h2',
+    p: 'p',
+    span: 'span',
+    button: 'button',
+    header: 'header',
+    nav: 'nav',
+    main: 'main',
+    article: 'article',
+    aside: 'aside',
+    footer: 'footer',
+    form: 'form',
+    input: 'input',
+    textarea: 'textarea',
+    select: 'select',
+    img: 'img',
+    video: 'video',
+    canvas: 'canvas',
+    svg: 'svg',
+    path: 'path',
+    circle: 'circle',
+    rect: 'rect',
+    line: 'line',
+    ul: 'ul',
+    li: 'li',
+    a: 'a'
+  },
+  AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
+  useAnimation: () => ({
+    start: vi.fn(),
+    stop: vi.fn(),
+    set: vi.fn()
+  }),
+  useMotionValue: (initial: any) => ({ get: () => initial, set: vi.fn() }),
+  useTransform: () => vi.fn(),
+  useSpring: (value: any) => value,
+  useMotionTemplate: () => '',
+  useDragControls: () => ({ start: vi.fn() }),
+  useAnimationControls: () => ({ start: vi.fn(), stop: vi.fn(), set: vi.fn() })
+}))
+
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,

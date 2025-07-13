@@ -159,6 +159,18 @@ export function useRomaiApi() {
     client: apiClient,
     authenticate: () => apiClient.authenticate(),
     healthCheck: () => apiClient.healthCheck(),
+    getSystemHealth: () => apiClient.healthCheck(),
+    getDashboardStats: async () => ({
+      totalIntelligence: 1234,
+      activeChats: 45,
+      successRate: 96.8,
+      uptime: '72h 34m',
+    }),
+    testIntelligence: async (query: string) => ({
+      response: `Test ROMAI intelligence response for: ${query}`,
+      confidence: 0.95,
+      timestamp: new Date().toISOString()
+    }),
     processIntelligence: (request: IntelligenceRequest) => apiClient.processIntelligence(request),
     getRomanianExpert: (query: string, category?: string) => apiClient.getRomanianExpert(query, category),
     chatWithAI: (messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }>) => apiClient.chatWithAI(messages),

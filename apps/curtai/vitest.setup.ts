@@ -7,6 +7,43 @@ afterEach(() => {
   cleanup()
 })
 
+// Mock Lucide React icons
+vi.mock('lucide-react', () => {
+  const MockIcon = (props: any) => 'div'
+
+  return {
+    Monitor: MockIcon,
+    Activity: MockIcon,
+    TrendingUp: MockIcon,
+    Users: MockIcon,
+    Globe: MockIcon,
+    Zap: MockIcon,
+    Shield: MockIcon,
+    Star: MockIcon,
+    ArrowRight: MockIcon,
+    Clock: MockIcon,
+    BarChart3: MockIcon,
+    Layers: MockIcon,
+    Network: MockIcon,
+    Database: MockIcon,
+    Lightbulb: MockIcon
+  }
+})
+
+// Essential framer-motion mock (minimal)
+vi.mock('framer-motion', () => ({
+  motion: {
+    div: 'div',
+    h1: 'h1',
+    h2: 'h2',
+    h3: 'h3',
+    section: 'section',
+    header: 'header',
+    nav: 'nav'
+  },
+  AnimatePresence: ({ children }: { children: React.ReactNode }) => children
+}))
+
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,

@@ -29,6 +29,8 @@
     "@codai/logai-sdk": "workspace:*",
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-dropdown-menu": "^2.1.15",
+    "@radix-ui/react-progress": "^1.1.7",
+    "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-toast": "^1.2.14",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
@@ -42,6 +44,8 @@
     "express": "^5.1.0",
     "framer-motion": "^12.23.3",
     "lucide-react": "^0.525.0",
+    "next": "15.3.5",
+    "next-auth": "^4.24.11",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hot-toast": "^2.5.2",
@@ -51,8 +55,7 @@
     "tailwind-merge": "^3.3.1",
     "typescript": "^5.8.3",
     "ws": "^8.18.3",
-    "zustand": "^5.0.6",
-    "next": "15.3.5"
+    "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@playwright/test": "^1.54.1",

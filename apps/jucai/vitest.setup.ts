@@ -1,10 +1,65 @@
 import '@testing-library/jest-dom'
 import { expect, afterEach, vi } from 'vitest'
 import { cleanup } from '@testing-library/react'
+import React from 'react'
 
 // Cleanup after each test case
 afterEach(() => {
   cleanup()
+})
+
+// Essential framer-motion mock (minimal)
+vi.mock('framer-motion', () => ({
+  motion: {
+    div: 'div',
+    span: 'span',
+    button: 'button',
+    h1: 'h1',
+    h2: 'h2',
+    h3: 'h3',
+    img: 'img',
+    section: 'section',
+    header: 'header',
+    p: 'p'
+  },
+  AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
+  useAnimation: () => ({
+    start: vi.fn(),
+    stop: vi.fn(),
+    set: vi.fn()
+  })
+}))
+
+// Mock lucide-react icons
+vi.mock('lucide-react', () => {
+  const MockIcon = ({ className, ...props }: any) =>
+    React.createElement('svg', { className, ...props, 'data-testid': 'mock-icon' })
+
+  return {
+    Gamepad2: MockIcon,
+    Brain: MockIcon,
+    BarChart3: MockIcon,
+    Zap: MockIcon,
+    Activity: MockIcon,
+    TrendingUp: MockIcon,
+    Clock: MockIcon,
+    Users: MockIcon,
+    Settings: MockIcon,
+    ChevronRight: MockIcon,
+    Star: MockIcon,
+    ArrowRight: MockIcon,
+    Trophy: MockIcon,
+    Target: MockIcon,
+    Sparkles: MockIcon,
+    Play: MockIcon,
+    Pause: MockIcon,
+    Monitor: MockIcon,
+    Globe: MockIcon,
+    Shield: MockIcon,
+    Calendar: MockIcon,
+    Award: MockIcon,
+    Download: MockIcon
+  }
 })
 
 // Mock window.matchMedia
@@ -35,6 +90,18 @@ global.IntersectionObserver = vi.fn().mockImplementation(() => ({
   unobserve: vi.fn(),
   disconnect: vi.fn(),
 }))
+
+// Mock Performance API
+Object.defineProperty(window, 'performance', {
+  writable: true,
+  value: {
+    mark: vi.fn(),
+    measure: vi.fn(),
+    now: vi.fn(() => Date.now()),
+    getEntriesByType: vi.fn(() => []),
+    getEntriesByName: vi.fn(() => []),
+  },
+})
 
 // Enhanced custom matchers
 expect.extend({

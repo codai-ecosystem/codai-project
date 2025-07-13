@@ -1,10 +1,76 @@
 import '@testing-library/jest-dom'
 import { expect, afterEach, vi } from 'vitest'
 import { cleanup } from '@testing-library/react'
+import React from 'react'
 
 // Cleanup after each test case
 afterEach(() => {
   cleanup()
+})
+
+// Essential framer-motion mock (minimal)
+vi.mock('framer-motion', () => ({
+  motion: {
+    div: 'div',
+    span: 'span',
+    button: 'button',
+    h1: 'h1',
+    h2: 'h2',
+    h3: 'h3',
+    img: 'img',
+    section: 'section',
+    header: 'header',
+    p: 'p',
+    form: 'form',
+    input: 'input',
+    textarea: 'textarea',
+    a: 'a',
+    article: 'article',
+    nav: 'nav',
+    footer: 'footer',
+    main: 'main',
+    aside: 'aside'
+  },
+  AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
+  useAnimation: () => ({
+    start: vi.fn(),
+    stop: vi.fn(),
+    set: vi.fn()
+  }),
+  useInView: () => true,
+  useMotionValue: (initial: any) => ({ get: () => initial, set: vi.fn() }),
+  useSpring: (value: any) => value,
+  useTransform: (value: any, input: any, output: any) => value,
+  animate: vi.fn()
+}))
+
+// Mock lucide-react icons
+vi.mock('lucide-react', () => {
+  const MockIcon = ({ className, ...props }: any) =>
+    React.createElement('svg', { className, ...props, 'data-testid': 'mock-icon' })
+
+  return {
+    GitBranch: MockIcon,
+    Users: MockIcon,
+    Brain: MockIcon,
+    Code: MockIcon,
+    Activity: MockIcon,
+    TrendingUp: MockIcon,
+    Clock: MockIcon,
+    Settings: MockIcon,
+    ChevronRight: MockIcon,
+    Star: MockIcon,
+    ArrowRight: MockIcon,
+    Zap: MockIcon,
+    Shield: MockIcon,
+    Globe: MockIcon,
+    Database: MockIcon,
+    Monitor: MockIcon,
+    Terminal: MockIcon,
+    FileText: MockIcon,
+    Lock: MockIcon,
+    Key: MockIcon
+  }
 })
 
 // Mock window.matchMedia
@@ -36,27 +102,14 @@ global.IntersectionObserver = vi.fn().mockImplementation(() => ({
   disconnect: vi.fn(),
 }))
 
-// Enhanced custom matchers
-expect.extend({
-  toBeAccessible(received) {
-    // Custom accessibility matcher
-    return {
-      message: () => `expected element to be accessible`,
-      pass: true,
-    }
-  },
-  toHavePerformanceScore(received, expected) {
-    // Custom performance matcher
-    return {
-      message: () => `expected performance score to be at least ${expected}`,
-      pass: received >= expected,
-    }
-  },
-  toBeSecure(received) {
-    // Custom security matcher
-    return {
-      message: () => `expected element to be secure`,
-      pass: true,
-    }
+// Mock performance API
+Object.defineProperty(window, 'performance', {
+  writable: true,
+  value: {
+    mark: vi.fn(),
+    measure: vi.fn(),
+    now: () => Date.now(),
+    getEntriesByType: vi.fn(() => []),
+    getEntriesByName: vi.fn(() => [])
   }
 })

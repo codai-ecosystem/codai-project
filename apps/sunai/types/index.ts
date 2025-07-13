@@ -12,7 +12,7 @@ export interface SunaiFeature {
   title: string
   description: string
   status: 'active' | 'inactive' | 'pending'
-  icon: string
+  icon: any
   progress: number
 }
 

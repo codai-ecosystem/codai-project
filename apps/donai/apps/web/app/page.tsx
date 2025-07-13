@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Heart, Coins, Users, TrendingUp, Vote, Shield, Zap, ArrowRight, Wallet, BarChart3, Globe, Star } from 'lucide-react'
 
 export default function DonAIPage() {

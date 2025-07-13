@@ -7,6 +7,41 @@ afterEach(() => {
   cleanup()
 })
 
+// Mock framer-motion
+vi.mock('framer-motion', () => ({
+  motion: {
+    div: 'div',
+    button: 'button',
+    h1: 'h1',
+    h2: 'h2',
+    h3: 'h3',
+    p: 'p',
+    span: 'span',
+    section: 'section',
+    article: 'article',
+    aside: 'aside',
+    nav: 'nav',
+    main: 'main',
+    header: 'header',
+    footer: 'footer',
+    form: 'form',
+    input: 'input',
+    textarea: 'textarea',
+    select: 'select',
+    option: 'option',
+    ul: 'ul',
+    ol: 'ol',
+    li: 'li',
+    table: 'table',
+    thead: 'thead',
+    tbody: 'tbody',
+    tr: 'tr',
+    td: 'td',
+    th: 'th'
+  },
+  AnimatePresence: ({ children }: { children: React.ReactNode }) => children
+}))
+
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,

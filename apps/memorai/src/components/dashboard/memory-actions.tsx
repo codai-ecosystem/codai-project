@@ -44,7 +44,8 @@ const memoryTypeOptions: Array<{ value: Memory['type']; label: string; icon: Rea
 ]
 
 export function MemoryActions({ className }: MemoryActionsProps) {
-  const { addMemory, isLoading } = useMemoryStore()
+  const memoryStore = useMemoryStore()
+  const { addMemory, isLoading } = memoryStore
   const [showAddForm, setShowAddForm] = useState(false)
   const [formData, setFormData] = useState({
     content: '',
@@ -103,12 +104,10 @@ export function MemoryActions({ className }: MemoryActionsProps) {
         .filter(tag => tag.length > 0)
 
       await addMemory(formData.content, {
-        type: formData.type,
         tags,
         importance: formData.importance,
         source: 'dashboard'
       })
-
       toast.success('Memory added successfully!')
       setShowAddForm(false)
       setFormData({
@@ -118,6 +117,7 @@ export function MemoryActions({ className }: MemoryActionsProps) {
         importance: 0.5
       })
     } catch (error) {
+      console.error('Error in handleFormSubmit:', error)
       toast.error('Failed to add memory')
     }
   }

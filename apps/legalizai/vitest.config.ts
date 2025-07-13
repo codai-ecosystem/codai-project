@@ -1,4 +1,4 @@
-/// <reference types="vitest" />
+﻿/// <reference types="vitest" />
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import path from 'path'
@@ -6,6 +6,7 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   test: {
+    watch: false, // Prevent watch mode by default
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.ts'],
@@ -44,7 +45,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './')
+      '@': path.resolve(__dirname, './src')
     }
   }
 })

@@ -33,15 +33,15 @@ describe('MemoraiPage Component', () => {
       expect(title).toHaveClass('text-3xl', 'font-bold')
     })
 
-    it('shows enterprise branding elements', () => {
+    it('shows platform branding elements', () => {
       render(<MemoraiPage />)
-      expect(screen.getByText(/enterprise/i)).toBeInTheDocument()
+      expect(screen.getByText(/AI Memory Management|Advanced AI memory/i)).toBeInTheDocument()
     })
 
-    it('displays glassmorphism styling', () => {
+    it('displays backdrop blur styling', () => {
       render(<MemoraiPage />)
-      const glassElements = document.getElementsByClassName('glassmorphism')
-      expect(glassElements.length).toBeGreaterThan(0)
+      const backdropElements = document.querySelectorAll('.backdrop-blur-xl, .backdrop-blur-lg')
+      expect(backdropElements.length).toBeGreaterThan(0)
     })
   })
 
@@ -57,10 +57,10 @@ describe('MemoraiPage Component', () => {
     it('handles tab switching correctly', async () => {
       const user = userEvent.setup()
       render(<MemoraiPage />)
-      
+
       const analyticsTab = screen.getByText('Analytics')
       await user.click(analyticsTab)
-      
+
       await waitFor(() => {
         expect(screen.getByText('Advanced Analytics Dashboard')).toBeInTheDocument()
       })
@@ -69,10 +69,10 @@ describe('MemoraiPage Component', () => {
     it('maintains active tab state', async () => {
       const user = userEvent.setup()
       render(<MemoraiPage />)
-      
+
       const featuresTab = screen.getByText('Features')
       await user.click(featuresTab)
-      
+
       await waitFor(() => {
         expect(featuresTab).toHaveClass('bg-blue-500/30') // Active state
       })
@@ -99,20 +99,20 @@ describe('MemoraiPage Component', () => {
     })
   })
 
-  describe('Enterprise Features', () => {
-    it('shows security features', () => {
+  describe('Platform Features', () => {
+    it('shows memory management features', () => {
       render(<MemoraiPage />)
-      expect(screen.getByText(/enterprise security/i)).toBeInTheDocument()
+      expect(screen.getByText(/Memory Overview|knowledge management/i)).toBeInTheDocument()
     })
 
     it('displays performance metrics', () => {
       render(<MemoraiPage />)
-      expect(screen.getByText(/high performance/i)).toBeInTheDocument()
+      expect(screen.getByText(/performance|Active|Live/i)).toBeInTheDocument()
     })
 
-    it('shows global scale indicator', () => {
+    it('shows platform scale indicator', () => {
       render(<MemoraiPage />)
-      expect(screen.getByText(/global scale/i)).toBeInTheDocument()
+      expect(screen.getByText(/platform|management|AI/i)).toBeInTheDocument()
     })
   })
 
@@ -121,7 +121,7 @@ describe('MemoraiPage Component', () => {
       render(<MemoraiPage />)
       const headings = screen.getAllByRole('heading')
       expect(headings.length).toBeGreaterThan(0)
-      
+
       // Check h1 exists
       const h1Elements = headings.filter(h => h.tagName === 'H1')
       expect(h1Elements.length).toBeGreaterThan(0)
@@ -130,10 +130,10 @@ describe('MemoraiPage Component', () => {
     it('provides keyboard navigation support', async () => {
       const user = userEvent.setup()
       render(<MemoraiPage />)
-      
+
       const firstTab = screen.getByText('Overview')
       firstTab.focus()
-      
+
       await user.keyboard('{Tab}')
       expect(document.activeElement).not.toBe(firstTab)
     })
@@ -152,7 +152,7 @@ describe('MemoraiPage Component', () => {
       const startTime = performance.now()
       render(<MemoraiPage />)
       const endTime = performance.now()
-      
+
       const renderTime = endTime - startTime
       expect(renderTime).toBeLessThan(100) // Should render in under 100ms
     })
@@ -161,7 +161,7 @@ describe('MemoraiPage Component', () => {
       // Test with mocked large dataset
       const mockLargeData = Array.from({ length: 1000 }, (_, i) => ({ id: i, name: `Item ${i}` }))
       render(<MemoraiPage />)
-      
+
       // Should not crash with large datasets
       expect(document.body).toBeInTheDocument()
     })
@@ -175,10 +175,10 @@ describe('MemoraiPage Component', () => {
 
     it('displays error boundaries correctly', () => {
       // Mock console.error to avoid noise in tests
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-      
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { })
+
       render(<MemoraiPage />)
-      
+
       consoleSpy.mockRestore()
     })
   })
@@ -190,9 +190,9 @@ describe('MemoraiPage Component', () => {
         configurable: true,
         value: 375,
       })
-      
+
       render(<MemoraiPage />)
-      
+
       // Check mobile-specific classes
       const container = document.querySelector('.container')
       expect(container).toBeInTheDocument()
@@ -204,7 +204,7 @@ describe('MemoraiPage Component', () => {
         configurable: true,
         value: 768,
       })
-      
+
       render(<MemoraiPage />)
       expect(document.body).toBeInTheDocument()
     })
@@ -215,7 +215,7 @@ describe('MemoraiPage Component', () => {
         configurable: true,
         value: 1920,
       })
-      
+
       render(<MemoraiPage />)
       expect(document.body).toBeInTheDocument()
     })

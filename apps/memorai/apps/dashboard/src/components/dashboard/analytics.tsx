@@ -15,6 +15,7 @@ import {
   Download,
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { useMemoryStore } from '../../stores/memory-store';
 
 interface AnalyticsDashboardProps {
   className?: string;
@@ -28,38 +29,24 @@ export function AnalyticsDashboard({ className }: AnalyticsDashboardProps) {
     'agents',
   ]);
   const [renderError, setRenderError] = useState<string | null>(null);
-  const [memories, setMemories] = useState<any[]>([]);
-  const [stats, setStats] = useState<any>({});
-  const [isLoading, setIsLoading] = useState(true);
+
+  // Use the memory store
+  const { memories, stats, isLoading, fetchStats, fetchMemories } = useMemoryStore();
 
   useEffect(() => {
     console.log('AnalyticsDashboard: Component mounted, fetching data...');
     const fetchData = async () => {
-      setIsLoading(true);
       try {
-        // Fetch stats from our fixed API
-        const statsResponse = await fetch('/api/stats');
-        if (statsResponse.ok) {
-          const statsData = await statsResponse.json();
-          setStats(statsData);
-        }
-
-        // Fetch memories from our fixed API  
-        const memoriesResponse = await fetch('/api/mcp/read-graph');
-        if (memoriesResponse.ok) {
-          const memoriesData = await memoriesResponse.json();
-          setMemories(memoriesData.memories || []);
-        }
+        await fetchStats();
+        await fetchMemories();
       } catch (error) {
-        console.error('Error fetching analytics data:', error);
+        console.error('Failed to load analytics data:', error);
         setRenderError('Failed to load analytics data');
-      } finally {
-        setIsLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [fetchStats, fetchMemories]);
 
   // Add safety checks for memories
   const safeMemories = memories || [];
@@ -70,7 +57,7 @@ export function AnalyticsDashboard({ className }: AnalyticsDashboardProps) {
     totalMemories: safeMemories.length,
     memoriesThisWeek: safeMemories.filter(m => {
       try {
-        const date = new Date(m.created_at || Date.now());
+        const date = new Date(m.metadata?.timestamp || Date.now());
         const weekAgo = new Date();
         weekAgo.setDate(weekAgo.getDate() - 7);
         return date > weekAgo;
@@ -81,7 +68,7 @@ export function AnalyticsDashboard({ className }: AnalyticsDashboardProps) {
     }).length,
     memoriesThisMonth: safeMemories.filter(m => {
       try {
-        const date = new Date(m.created_at || Date.now());
+        const date = new Date(m.metadata?.timestamp || Date.now());
         const monthAgo = new Date();
         monthAgo.setMonth(monthAgo.getMonth() - 1);
         return date > monthAgo;
@@ -93,17 +80,17 @@ export function AnalyticsDashboard({ className }: AnalyticsDashboardProps) {
     avgImportance:
       safeMemories.length > 0
         ? safeMemories.reduce(
-          (sum, m) => sum + (m.importance || 0),
+          (sum, m) => sum + (m.metadata?.importance || 0),
           0
         ) / safeMemories.length
         : 0,
     uniqueAgents: [
-      ...new Set(safeMemories.map(m => m.agent_id).filter(Boolean)),
+      ...new Set(safeMemories.map(m => m.metadata?.agentId).filter(Boolean)),
     ].length,
     topTypes: safeMemories.reduce(
       (types, memory) => {
-        if (memory.entity_type) {
-          types[memory.entity_type] = (types[memory.entity_type] || 0) + 1;
+        if (memory.type) {
+          types[memory.type] = (types[memory.type] || 0) + 1;
         }
         return types;
       },
@@ -111,12 +98,12 @@ export function AnalyticsDashboard({ className }: AnalyticsDashboardProps) {
     ),
     // FIX: Add missing avgSimilarity and topTags properties
     avgSimilarity: safeMemories.length > 0
-      ? safeMemories.reduce((sum, m) => sum + (m.confidence || 0.5), 0) / safeMemories.length
+      ? safeMemories.reduce((sum, m) => sum + (m.metadata?.confidence || 0.5), 0) / safeMemories.length
       : 0.5,
     topTags: safeMemories.reduce(
       (tags, memory) => {
         // Extract tags from memory content or use entity_type as fallback
-        const memoryTags = memory.tags || [memory.entity_type || 'general'];
+        const memoryTags = memory.metadata?.tags || [memory.type || 'general'];
         memoryTags.forEach((tag: string) => {
           if (tag) {
             tags[tag] = (tags[tag] || 0) + 1;
@@ -140,7 +127,7 @@ export function AnalyticsDashboard({ className }: AnalyticsDashboardProps) {
 
       const dayMemories = safeMemories.filter(m => {
         try {
-          const memoryDate = new Date(m.created_at || Date.now());
+          const memoryDate = new Date(m.metadata?.timestamp || Date.now());
           return memoryDate.toDateString() === date.toDateString();
         } catch {
           return false;
@@ -401,11 +388,11 @@ export function AnalyticsDashboard({ className }: AnalyticsDashboardProps) {
               <div className="flex-1">
                 {' '}
                 <p className="text-sm text-gray-900 dark:text-white font-medium">
-                  Memory created by {memory.agent_id ?? 'System'}
+                  Memory created by {memory.metadata?.agentId ?? 'System'}
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  {memory.created_at
-                    ? new Date(memory.created_at).toLocaleString()
+                  {memory.metadata?.timestamp
+                    ? new Date(memory.metadata.timestamp).toLocaleString()
                     : 'Recently'
                   }
                 </p>

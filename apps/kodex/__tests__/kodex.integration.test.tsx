@@ -2,101 +2,108 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom'
-import KodexPage from '../app/page'
+import KodexPage from '../src/app/page'
 
-describe('kodex Integration Tests', () => {
+describe('KODEX Integration Tests - CodaiChain Protocol & Smart Contract Platform', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
 
   describe('Complete User Flows', () => {
-    it('completes full dashboard navigation flow', async () => {
-      const user = userEvent.setup()
+    it('renders dashboard with all metrics displayed', async () => {
       render(<KodexPage />)
-      
-      // Navigate through all tabs
-      const tabs = ['Overview', 'Analytics', 'Features', 'Monitor']
-      
-      for (const tabName of tabs) {
-        const tab = screen.getByText(tabName)
-        await user.click(tab)
-        
-        await waitFor(() => {
-          expect(tab).toHaveClass('bg-blue-500/30')
-        })
-      }
+
+      // Verify main heading
+      await waitFor(() => {
+        expect(screen.getByText('Kodex Dashboard')).toBeInTheDocument()
+      })
+
+      // Verify all metric cards are present
+      expect(screen.getByText('Users')).toBeInTheDocument()
+      expect(screen.getByText('Growth')).toBeInTheDocument()
+      expect(screen.getByText('Revenue')).toBeInTheDocument()
+      expect(screen.getByText('Rating')).toBeInTheDocument()
     })
 
-    it('handles real-time data updates correctly', async () => {
+    it('displays correct metric values', async () => {
       render(<KodexPage />)
-      
-      // Wait for initial stats to load
+
+      // Verify metric values are displayed
       await waitFor(() => {
-        expect(screen.getByText(/total users/i)).toBeInTheDocument()
+        expect(screen.getByText('1250')).toBeInTheDocument() // Users
+        expect(screen.getByText('12.5%')).toBeInTheDocument() // Growth
+        expect(screen.getByText('$45000')).toBeInTheDocument() // Revenue
+        expect(screen.getByText('4.8/5')).toBeInTheDocument() // Rating
       })
-      
-      // Wait for stats update (simulated)
-      await waitFor(() => {
-        const statsElements = screen.getAllByText(/\d+/)
-        expect(statsElements.length).toBeGreaterThan(0)
-      }, { timeout: 5000 })
     })
 
-    it('maintains state across navigation', async () => {
-      const user = userEvent.setup()
+    it('maintains proper grid layout structure', async () => {
       render(<KodexPage />)
-      
-      // Switch to analytics
-      await user.click(screen.getByText('Analytics'))
-      
-      // Switch back to overview
-      await user.click(screen.getByText('Overview'))
-      
-      // Verify overview content is restored
-      await waitFor(() => {
-        expect(screen.getByText(/total users/i)).toBeInTheDocument()
-      })
+
+      // Check grid container exists
+      const gridContainer = document.querySelector('.grid.grid-cols-4.gap-4')
+      expect(gridContainer).toBeInTheDocument()
+
+      // Check all metric cards have proper styling
+      const metricCards = document.querySelectorAll('.bg-white.p-4.rounded.shadow')
+      expect(metricCards).toHaveLength(4)
     })
   })
 
   describe('Data Flow Integration', () => {
-    it('integrates stats with visual elements', async () => {
+    it('integrates dashboard data with visual components', async () => {
       render(<KodexPage />)
-      
+
       await waitFor(() => {
-        // Check that stats are reflected in progress bars
-        const progressBars = document.querySelectorAll('[class*="w-full"][class*="bg-"]')
-        expect(progressBars.length).toBeGreaterThan(0)
+        // Verify that each metric card contains both label and value
+        const usersCard = screen.getByText('Users').closest('div')
+        expect(usersCard).toContainElement(screen.getByText('1250'))
+
+        const growthCard = screen.getByText('Growth').closest('div')
+        expect(growthCard).toContainElement(screen.getByText('12.5%'))
+
+        const revenueCard = screen.getByText('Revenue').closest('div')
+        expect(revenueCard).toContainElement(screen.getByText('$45000'))
+
+        const ratingCard = screen.getByText('Rating').closest('div')
+        expect(ratingCard).toContainElement(screen.getByText('4.8/5'))
       })
     })
 
-    it('synchronizes real-time updates across components', async () => {
+    it('validates data consistency across components', async () => {
       render(<KodexPage />)
-      
-      // Wait for multiple components to show consistent data
+
+      // Check that numeric values are properly formatted
       await waitFor(() => {
-        const timeElements = screen.getAllByText(/\d{1,2}:\d{2}/)
-        expect(timeElements.length).toBeGreaterThan(0)
+        const numericElements = [
+          screen.getByText('1250'),
+          screen.getByText('12.5%'),
+          screen.getByText('$45000'),
+          screen.getByText('4.8/5')
+        ]
+
+        numericElements.forEach(element => {
+          expect(element).toHaveClass('text-2xl')
+        })
       })
     })
   })
 
   describe('Performance Integration', () => {
-    it('handles multiple simultaneous operations', async () => {
-      const user = userEvent.setup()
+    it('renders dashboard components efficiently', async () => {
+      const startTime = performance.now()
+
       render(<KodexPage />)
-      
-      // Rapidly switch between tabs
-      const tabs = ['Analytics', 'Features', 'Monitor', 'Overview']
-      
-      for (const tabName of tabs) {
-        const tab = screen.getByText(tabName)
-        await user.click(tab)
-        // Don't wait for animation to complete - test rapid switching
-      }
-      
-      // Should not crash or show errors
-      expect(document.body).toBeInTheDocument()
+
+      await waitFor(() => {
+        expect(screen.getByText('Kodex Dashboard')).toBeInTheDocument()
+      })
+
+      const endTime = performance.now()
+      const renderTime = endTime - startTime
+
+      // Dashboard should render within reasonable time
+      expect(renderTime).toBeLessThan(1000)
     })
   })
 })

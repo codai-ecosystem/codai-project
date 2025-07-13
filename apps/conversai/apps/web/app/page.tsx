@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Mail, Send, Search, Settings, User, Bell, Archive, Trash2, Star, Plus } from 'lucide-react';
 
 export default function HomePage() {

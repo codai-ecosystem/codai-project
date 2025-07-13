@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { z } from 'zod';
+import { z, ZodError } from 'zod';
 import { asyncHandler, createApiError } from '../middleware/errorHandler';
 import { logger } from '../utils/logger';
 
@@ -9,7 +9,7 @@ const router: Router = Router();
 const rememberSchema = z.object({
   agentId: z.string().min(1),
   content: z.string().min(1),
-  metadata: z.record(z.any()).optional(),
+  metadata: z.record(z.string(), z.any()).optional(),
 });
 
 const recallSchema = z.object({
@@ -58,13 +58,12 @@ router.post(
         message: 'Memory stored successfully',
       });
     } catch (error: unknown) {
-      if ((error as any)?.name === 'ZodError') {
+      if (error instanceof ZodError) {
         logger.error('Validation error in remember', {
-          error: (error as any)?.errors,
+          error: error.issues,
         });
-        const fieldErrors = (error as any)?.errors.map(
-          (err: unknown) =>
-            `${(err as any)?.path.join('.')}: ${(err as any)?.message}`
+        const fieldErrors = error.issues.map(
+          (err) => `${err.path.join('.')}: ${err.message}`
         );
         throw createApiError(
           `Validation error: ${fieldErrors.join(', ')}`,
@@ -121,13 +120,12 @@ router.post(
         query,
       });
     } catch (error: unknown) {
-      if ((error as any)?.name === 'ZodError') {
+      if (error instanceof ZodError) {
         logger.error('Validation error in recall', {
-          error: (error as any)?.errors,
+          error: error.issues,
         });
-        const fieldErrors = (error as any)?.errors.map(
-          (err: unknown) =>
-            `${(err as any)?.path.join('.')}: ${(err as any)?.message}`
+        const fieldErrors = error.issues.map(
+          (err) => `${err.path.join('.')}: ${err.message}`
         );
         throw createApiError(
           `Validation error: ${fieldErrors.join(', ')}`,
@@ -182,13 +180,12 @@ router.post(
         context,
       });
     } catch (error: unknown) {
-      if ((error as any)?.name === 'ZodError') {
+      if (error instanceof ZodError) {
         logger.error('Validation error in context', {
-          error: (error as any)?.errors,
+          error: error.issues,
         });
-        const fieldErrors = (error as any)?.errors.map(
-          (err: unknown) =>
-            `${(err as any)?.path.join('.')}: ${(err as any)?.message}`
+        const fieldErrors = error.issues.map(
+          (err) => `${err.path.join('.')}: ${err.message}`
         );
         throw createApiError(
           `Validation error: ${fieldErrors.join(', ')}`,
@@ -242,13 +239,12 @@ router.delete(
         message: 'Memory forgotten successfully',
       });
     } catch (error: unknown) {
-      if ((error as any)?.name === 'ZodError') {
+      if (error instanceof ZodError) {
         logger.error('Validation error in forget', {
-          error: (error as any)?.errors,
+          error: error.issues,
         });
-        const fieldErrors = (error as any)?.errors.map(
-          (err: unknown) =>
-            `${(err as any)?.path.join('.')}: ${(err as any)?.message}`
+        const fieldErrors = error.issues.map(
+          (err) => `${err.path.join('.')}: ${err.message}`
         );
         throw createApiError(
           `Validation error: ${fieldErrors.join(', ')}`,

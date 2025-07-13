@@ -1,8 +1,9 @@
-import { defineConfig } from 'vitest/config'
+﻿import { defineConfig } from 'vitest/config'
 import { resolve } from 'path'
 
 export default defineConfig({
     test: {
+    watch: false, // Prevent watch mode by default
         environment: 'jsdom',
         globals: true,
         setupFiles: ['./tests/setup.ts'],
@@ -38,3 +39,4 @@ export default defineConfig({
         }
     }
 })
+

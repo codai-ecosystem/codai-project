@@ -1,102 +1,125 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import '@testing-library/jest-dom'
-import SociaiPage from '../app/page'
+import React from 'react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import SociAIPage from '../app/page'
 
-describe('sociai Integration Tests', () => {
+// Mock framer-motion for testing
+vi.mock('framer-motion', () => ({
+  motion: {
+    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    button: ({ children, ...props }: any) => <button {...props}>{children}</button>
+  },
+  AnimatePresence: ({ children }: { children: React.ReactNode }) => children
+}))
+
+describe('SOCIAI Integration Tests - Real Functionality', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+
+    // Mock Date for consistent time display
+    const mockDate = new Date('2024-01-15T10:30:00Z')
+    vi.setSystemTime(mockDate)
   })
 
-  describe('Complete User Flows', () => {
-    it('completes full dashboard navigation flow', async () => {
-      const user = userEvent.setup()
-      render(<SociaiPage />)
-      
-      // Navigate through all tabs
-      const tabs = ['Overview', 'Analytics', 'Features', 'Monitor']
-      
-      for (const tabName of tabs) {
-        const tab = screen.getByText(tabName)
-        await user.click(tab)
-        
-        await waitFor(() => {
-          expect(tab).toHaveClass('bg-blue-500/30')
-        })
-      }
-    })
+  it('renders main SOCIAI dashboard successfully', async () => {
+    render(<SociAIPage />)
 
-    it('handles real-time data updates correctly', async () => {
-      render(<SociaiPage />)
-      
-      // Wait for initial stats to load
-      await waitFor(() => {
-        expect(screen.getByText(/total users/i)).toBeInTheDocument()
-      })
-      
-      // Wait for stats update (simulated)
-      await waitFor(() => {
-        const statsElements = screen.getAllByText(/\d+/)
-        expect(statsElements.length).toBeGreaterThan(0)
-      }, { timeout: 5000 })
-    })
+    // Verify main title and branding
+    expect(screen.getByRole('heading', { name: 'SociAI' })).toBeInTheDocument()
+    expect(screen.getByText('AI Social Platform')).toBeInTheDocument()
 
-    it('maintains state across navigation', async () => {
-      const user = userEvent.setup()
-      render(<SociaiPage />)
-      
-      // Switch to analytics
-      await user.click(screen.getByText('Analytics'))
-      
-      // Switch back to overview
-      await user.click(screen.getByText('Overview'))
-      
-      // Verify overview content is restored
-      await waitFor(() => {
-        expect(screen.getByText(/total users/i)).toBeInTheDocument()
-      })
-    })
+    // Verify navigation tabs are present
+    expect(screen.getByRole('button', { name: 'Overview' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Features' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Analytics' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Settings' })).toBeInTheDocument()
   })
 
-  describe('Data Flow Integration', () => {
-    it('integrates stats with visual elements', async () => {
-      render(<SociaiPage />)
-      
-      await waitFor(() => {
-        // Check that stats are reflected in progress bars
-        const progressBars = document.querySelectorAll('[class*="w-full"][class*="bg-"]')
-        expect(progressBars.length).toBeGreaterThan(0)
-      })
+  it('displays real social media metrics correctly', async () => {
+    render(<SociAIPage />)
+
+    // Check for actual metric values from the component
+    expect(screen.getByText('12.4K')).toBeInTheDocument() // Active Users
+    expect(screen.getByText('98.5%')).toBeInTheDocument() // Performance
+    expect(screen.getByText('4')).toBeInTheDocument() // Features count
+    expect(screen.getByText('4.9/5')).toBeInTheDocument() // Satisfaction
+
+    // Verify metric descriptions using getAllByText for duplicates
+    expect(screen.getAllByText('Active Users')[0]).toBeInTheDocument()
+    expect(screen.getAllByText('Performance')[0]).toBeInTheDocument()
+    expect(screen.getAllByText('Features')[0]).toBeInTheDocument()
+    expect(screen.getAllByText('Satisfaction')[0]).toBeInTheDocument()
+  })
+
+  it('handles tab navigation between different sections', async () => {
+    render(<SociAIPage />)
+
+    // Start with overview tab (default)
+    expect(screen.getByText('Social media management and analytics with AI-powered insights')).toBeInTheDocument()
+
+    // Click Features tab using role-based selector
+    const featuresTab = screen.getByRole('button', { name: 'Features' })
+    fireEvent.click(featuresTab)
+
+    await waitFor(() => {
+      expect(screen.getByText('Social Management')).toBeInTheDocument()
+      expect(screen.getByText('Content AI')).toBeInTheDocument()
     })
 
-    it('synchronizes real-time updates across components', async () => {
-      render(<SociaiPage />)
-      
-      // Wait for multiple components to show consistent data
-      await waitFor(() => {
-        const timeElements = screen.getAllByText(/\d{1,2}:\d{2}/)
-        expect(timeElements.length).toBeGreaterThan(0)
-      })
+    // Click Analytics tab using role-based selector
+    const analyticsTab = screen.getByRole('button', { name: 'Analytics' })
+    fireEvent.click(analyticsTab)
+
+    await waitFor(() => {
+      expect(screen.getByText('Analytics Panel')).toBeInTheDocument()
+      expect(screen.getByText('Advanced analytics and insights for your platform usage and performance metrics.')).toBeInTheDocument()
     })
   })
 
-  describe('Performance Integration', () => {
-    it('handles multiple simultaneous operations', async () => {
-      const user = userEvent.setup()
-      render(<SociaiPage />)
-      
-      // Rapidly switch between tabs
-      const tabs = ['Analytics', 'Features', 'Monitor', 'Overview']
-      
-      for (const tabName of tabs) {
-        const tab = screen.getByText(tabName)
-        await user.click(tab)
-        // Don't wait for animation to complete - test rapid switching
-      }
-      
-      // Should not crash or show errors
-      expect(document.body).toBeInTheDocument()
+  it('displays feature cards with proper status indicators', async () => {
+    render(<SociAIPage />)
+
+    // Navigate to features tab
+    const featuresTab = screen.getByRole('button', { name: 'Features' })
+    fireEvent.click(featuresTab)
+
+    await waitFor(() => {
+      // Check all feature cards are displayed
+      expect(screen.getByText('Social Management')).toBeInTheDocument()
+      expect(screen.getByText('Advanced social management capabilities with AI optimization')).toBeInTheDocument()
+
+      expect(screen.getByText('Content AI')).toBeInTheDocument()
+      expect(screen.getByText('Advanced content ai capabilities with AI optimization')).toBeInTheDocument()
+
+      // Check for "Learn More" buttons
+      const learnMoreButtons = screen.getAllByText('Learn More')
+      expect(learnMoreButtons).toHaveLength(4)
     })
+  })
+
+  it('displays live status indicator correctly', async () => {
+    render(<SociAIPage />)
+
+    // Check for live status indicator
+    expect(screen.getByText('Live')).toBeInTheDocument()
+
+    // The time should be displayed in 24-hour format (12:30:00 due to timezone)
+    expect(screen.getByText('12:30:00')).toBeInTheDocument()
+  })
+
+  it('measures component render performance', async () => {
+    const startTime = performance.now()
+
+    render(<SociAIPage />)
+
+    // Verify key elements are rendered
+    expect(screen.getByRole('heading', { name: 'SociAI' })).toBeInTheDocument()
+    expect(screen.getByText('AI Social Platform')).toBeInTheDocument()
+
+    const endTime = performance.now()
+    const renderTime = endTime - startTime
+
+    // Component should render within reasonable time (< 100ms)
+    expect(renderTime).toBeLessThan(100)
   })
 })

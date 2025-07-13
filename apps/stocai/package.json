@@ -9,7 +9,7 @@
     "start": "next start --port 4065",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "test": "vitest",
+    "test": "vitest run",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest watch"

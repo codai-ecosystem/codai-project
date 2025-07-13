@@ -1,9 +1,10 @@
-/// <reference types="vitest" />
+﻿/// <reference types="vitest" />
 import { defineConfig } from 'vitest/config';
 import { resolve } from 'path';
 
 export default defineConfig({
     test: {
+        watch: false, // Prevent watch mode by default
         globals: true,
         environment: 'jsdom',
         include: ['**/*.test.ts', '**/*.test.tsx'],
@@ -36,7 +37,7 @@ export default defineConfig({
             }
         },
         testTimeout: 30000,
-        setupFiles: ['./tests/setup.ts'],
+        setupFiles: ['./vitest.setup.ts'],
     },
     resolve: {
         alias: {
@@ -50,3 +51,4 @@ export default defineConfig({
         },
     },
 });
+

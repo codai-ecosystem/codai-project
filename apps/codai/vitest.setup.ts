@@ -36,27 +36,34 @@ global.IntersectionObserver = vi.fn().mockImplementation(() => ({
   disconnect: vi.fn(),
 }))
 
-// Enhanced custom matchers
-expect.extend({
-  toBeAccessible(received) {
-    // Custom accessibility matcher
-    return {
-      message: () => `expected element to be accessible`,
-      pass: true,
-    }
+// Minimal framer-motion mock for real functionality testing
+vi.mock('framer-motion', () => ({
+  motion: {
+    div: 'div',
+    button: 'button',
+    span: 'span',
+    h1: 'h1',
+    h2: 'h2',
+    h3: 'h3',
+    p: 'p',
+    header: 'header'
   },
-  toHavePerformanceScore(received, expected) {
-    // Custom performance matcher
-    return {
-      message: () => `expected performance score to be at least ${expected}`,
-      pass: received >= expected,
-    }
-  },
-  toBeSecure(received) {
-    // Custom security matcher
-    return {
-      message: () => `expected element to be secure`,
-      pass: true,
-    }
+  AnimatePresence: ({ children }: any) => children,
+  useAnimation: () => ({
+    start: vi.fn(),
+    stop: vi.fn(),
+    set: vi.fn()
+  })
+}))
+
+// Mock performance API for performance tests
+Object.defineProperty(global, 'performance', {
+  writable: true,
+  value: {
+    now: vi.fn(() => Date.now()),
+    mark: vi.fn(),
+    measure: vi.fn(),
+    getEntriesByType: vi.fn(() => []),
+    getEntriesByName: vi.fn(() => [])
   }
 })

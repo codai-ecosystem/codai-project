@@ -7,12 +7,14 @@ export interface MobileStats {
   uptime: number
 }
 
+import { LucideIcon } from 'lucide-react'
+
 export interface MobileFeature {
   id: string
   title: string
   description: string
   status: 'active' | 'inactive' | 'pending'
-  icon: string
+  icon: LucideIcon
   progress: number
 }
 

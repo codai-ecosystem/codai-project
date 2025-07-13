@@ -1,0 +1,18 @@
+packages:
+  # Core applications (active development)
+  - "apps/*"
+  
+  # Memorai subpackages
+  - "apps/memorai/apps/*"
+  - "apps/memorai/packages/*"
+  
+  # Shared packages
+  - "packages/*"
+  
+  # Analytics and monitoring
+  - "analytics"
+  - "monitoring"
+  - "security"
+  
+  # Archived applications (inactive)
+  - "archive/apps/*"

@@ -1,0 +1,20 @@
+{
+  "name": "@codai/shared-services",
+  "version": "1.0.0",
+  "description": "Shared services for CodAI ecosystem inter-app communication",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@codai/shared-types": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0"
+  }
+}

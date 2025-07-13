@@ -1,0 +1,48 @@
+{
+  "name": "@codai/service-registry",
+  "version": "1.0.0",
+  "description": "Service discovery and registration system for CODAI ecosystem",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --build && tsc --build tsconfig.esm.json",
+    "dev": "tsc --build --watch",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.tsx",
+    "test": "jest"
+  },
+  "keywords": [
+    "codai",
+    "service-registry",
+    "service-discovery",
+    "microservices",
+    "ecosystem"
+  ],
+  "author": "CODAI Ecosystem Team",
+  "license": "MIT",
+  "dependencies": {
+    "@codai/core": "workspace:*",
+    "@codai/logai-sdk": "workspace:*",
+    "axios": "^1.10.0",
+    "joi": "^17.13.3",
+    "node-cron": "^4.2.1",
+    "redis": "^5.6.0",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.13",
+    "@types/node-cron": "^3.0.11",
+    "@types/uuid": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.36.0",
+    "@typescript-eslint/parser": "^8.36.0",
+    "eslint": "^9.31.0",
+    "jest": "^30.0.4",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  }
+}

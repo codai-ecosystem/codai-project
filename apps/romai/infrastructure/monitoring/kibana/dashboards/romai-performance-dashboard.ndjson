@@ -1,0 +1,192 @@
+# ROMAI Performance Analytics Dashboard
+# Advanced performance monitoring with ML-driven insights and optimization recommendations
+
+{
+  "version": "8.11.3",
+  "objects": [
+    {
+      "id": "romai-performance-dashboard",
+      "type": "dashboard",
+      "attributes": {
+        "title": "ROMAI Performance Analytics",
+        "description": "Advanced performance monitoring with ML-driven insights and optimization recommendations",
+        "panelsJSON": "[{\"version\":\"8.11.3\",\"gridData\":{\"x\":0,\"y\":0,\"w\":24,\"h\":15,\"i\":\"1\"},\"panelIndex\":\"1\",\"embeddableConfig\":{\"title\":\"Response Time Percentiles\"},\"panelRefName\":\"panel_1\"},{\"version\":\"8.11.3\",\"gridData\":{\"x\":24,\"y\":0,\"w\":24,\"h\":15,\"i\":\"2\"},\"panelIndex\":\"2\",\"embeddableConfig\":{\"title\":\"Throughput Analysis\"},\"panelRefName\":\"panel_2\"},{\"version\":\"8.11.3\",\"gridData\":{\"x\":0,\"y\":15,\"w\":24,\"h\":15,\"i\":\"3\"},\"panelIndex\":\"3\",\"embeddableConfig\":{\"title\":\"Error Rate Trends\"},\"panelRefName\":\"panel_3\"},{\"version\":\"8.11.3\",\"gridData\":{\"x\":24,\"y\":15,\"w\":24,\"h\":15,\"i\":\"4\"},\"panelIndex\":\"4\",\"embeddableConfig\":{\"title\":\"Database Performance\"},\"panelRefName\":\"panel_4\"},{\"version\":\"8.11.3\",\"gridData\":{\"x\":0,\"y\":30,\"w\":24,\"h\":15,\"i\":\"5\"},\"panelIndex\":\"5\",\"embeddableConfig\":{\"title\":\"Memory Usage Patterns\"},\"panelRefName\":\"panel_5\"},{\"version\":\"8.11.3\",\"gridData\":{\"x\":24,\"y\":30,\"w\":24,\"h\":15,\"i\":\"6\"},\"panelIndex\":\"6\",\"embeddableConfig\":{\"title\":\"CPU Utilization\"},\"panelRefName\":\"panel_6\"},{\"version\":\"8.11.3\",\"gridData\":{\"x\":0,\"y\":45,\"w\":24,\"h\":15,\"i\":\"7\"},\"panelIndex\":\"7\",\"embeddableConfig\":{\"title\":\"Cache Hit Rates\"},\"panelRefName\":\"panel_7\"},{\"version\":\"8.11.3\",\"gridData\":{\"x\":24,\"y\":45,\"w\":24,\"h\":15,\"i\":\"8\"},\"panelIndex\":\"8\",\"embeddableConfig\":{\"title\":\"Network Latency\"},\"panelRefName\":\"panel_8\"},{\"version\":\"8.11.3\",\"gridData\":{\"x\":0,\"y\":60,\"w\":48,\"h\":15,\"i\":\"9\"},\"panelIndex\":\"9\",\"embeddableConfig\":{\"title\":\"Performance Anomalies\"},\"panelRefName\":\"panel_9\"}]",
+        "timeRestore": false,
+        "timeTo": "now",
+        "timeFrom": "now-4h",
+        "refreshInterval": {
+          "pause": false,
+          "value": 10000
+        },
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        }
+      },
+      "references": [
+        {
+          "name": "panel_1",
+          "type": "visualization",
+          "id": "response-time-percentiles"
+        },
+        {
+          "name": "panel_2",
+          "type": "visualization",
+          "id": "throughput-area"
+        },
+        {
+          "name": "panel_3",
+          "type": "visualization",
+          "id": "error-rate-line"
+        },
+        {
+          "name": "panel_4",
+          "type": "visualization",
+          "id": "database-perf-multi"
+        },
+        {
+          "name": "panel_5",
+          "type": "visualization",
+          "id": "memory-usage-area"
+        },
+        {
+          "name": "panel_6",
+          "type": "visualization",
+          "id": "cpu-utilization-line"
+        },
+        {
+          "name": "panel_7",
+          "type": "visualization",
+          "id": "cache-hit-gauge"
+        },
+        {
+          "name": "panel_8",
+          "type": "visualization",
+          "id": "network-latency-histogram"
+        },
+        {
+          "name": "panel_9",
+          "type": "saved_search",
+          "id": "performance-anomalies-table"
+        }
+      ]
+    },
+    {
+      "id": "response-time-percentiles",
+      "type": "visualization",
+      "attributes": {
+        "title": "Response Time Percentiles",
+        "visState": "{\"title\":\"Response Time Percentiles\",\"type\":\"line\",\"aggs\":[{\"id\":\"1\",\"type\":\"percentiles\",\"schema\":\"metric\",\"params\":{\"field\":\"response_time\",\"percents\":[50,75,90,95,99]}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"min_doc_count\":1}}]}",
+        "uiStateJSON": "{}",
+        "description": "Multi-percentile response time analysis for SLA monitoring",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"romai-logs-*\",\"query\":{\"bool\":{\"must\":[{\"exists\":{\"field\":\"response_time\"}}]}},\"filter\":[]}"
+        }
+      }
+    },
+    {
+      "id": "throughput-area",
+      "type": "visualization",
+      "attributes": {
+        "title": "Throughput Analysis",
+        "visState": "{\"title\":\"Throughput Analysis\",\"type\":\"area\",\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\"}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"service\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\"}}]}",
+        "uiStateJSON": "{}",
+        "description": "Request throughput by service with trend analysis",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"romai-logs-*\",\"query\":{\"bool\":{\"must\":[{\"exists\":{\"field\":\"service\"}}]}},\"filter\":[]}"
+        }
+      }
+    },
+    {
+      "id": "error-rate-line",
+      "type": "visualization",
+      "attributes": {
+        "title": "Error Rate Trends",
+        "visState": "{\"title\":\"Error Rate Trends\",\"type\":\"line\",\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\"}},{\"id\":\"3\",\"type\":\"filters\",\"schema\":\"group\",\"params\":{\"filters\":[{\"input\":{\"query\":\"severity:error\"},\"label\":\"Errors\"},{\"input\":{\"query\":\"severity:warning\"},\"label\":\"Warnings\"},{\"input\":{\"query\":\"severity:critical\"},\"label\":\"Critical\"}]}}]}",
+        "uiStateJSON": "{}",
+        "description": "Error rate tracking by severity with trend analysis",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"romai-logs-*\",\"query\":{\"bool\":{\"should\":[{\"term\":{\"severity\":\"error\"}},{\"term\":{\"severity\":\"warning\"}},{\"term\":{\"severity\":\"critical\"}}]}},\"filter\":[]}"
+        }
+      }
+    },
+    {
+      "id": "database-perf-multi",
+      "type": "visualization",
+      "attributes": {
+        "title": "Database Performance",
+        "visState": "{\"title\":\"Database Performance\",\"type\":\"line\",\"aggs\":[{\"id\":\"1\",\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"db_query_time\"}},{\"id\":\"2\",\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"db_connection_time\"}},{\"id\":\"3\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\"}}]}",
+        "uiStateJSON": "{}",
+        "description": "Database query and connection performance metrics",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"romai-logs-*\",\"query\":{\"bool\":{\"must\":[{\"exists\":{\"field\":\"db_query_time\"}}]}},\"filter\":[]}"
+        }
+      }
+    },
+    {
+      "id": "memory-usage-area",
+      "type": "visualization",
+      "attributes": {
+        "title": "Memory Usage Patterns",
+        "visState": "{\"title\":\"Memory Usage Patterns\",\"type\":\"area\",\"aggs\":[{\"id\":\"1\",\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"memory_used_mb\"}},{\"id\":\"2\",\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"memory_total_mb\"}},{\"id\":\"3\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\"}}]}",
+        "uiStateJSON": "{}",
+        "description": "Memory usage trends with capacity planning insights",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"romai-logs-*\",\"query\":{\"bool\":{\"must\":[{\"exists\":{\"field\":\"memory_used_mb\"}}]}},\"filter\":[]}"
+        }
+      }
+    },
+    {
+      "id": "cpu-utilization-line",
+      "type": "visualization",
+      "attributes": {
+        "title": "CPU Utilization",
+        "visState": "{\"title\":\"CPU Utilization\",\"type\":\"line\",\"aggs\":[{\"id\":\"1\",\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"cpu_usage_percent\"}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\"}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"service\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\"}}]}",
+        "uiStateJSON": "{}",
+        "description": "CPU utilization by service with threshold monitoring",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"romai-logs-*\",\"query\":{\"bool\":{\"must\":[{\"exists\":{\"field\":\"cpu_usage_percent\"}}]}},\"filter\":[]}"
+        }
+      }
+    },
+    {
+      "id": "cache-hit-gauge",
+      "type": "visualization",
+      "attributes": {
+        "title": "Cache Hit Rates",
+        "visState": "{\"title\":\"Cache Hit Rates\",\"type\":\"gauge\",\"aggs\":[{\"id\":\"1\",\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"cache_hit_rate\"}}],\"params\":{\"gauge\":{\"colorSchema\":\"Red to Green\",\"colorsRange\":[{\"from\":0,\"to\":70},{\"from\":70,\"to\":85},{\"from\":85,\"to\":100}],\"invertColors\":false,\"percentageMode\":true,\"scale\":{\"show\":true,\"labels\":false,\"color\":\"rgba(105,112,125,0.2)\"},\"type\":\"meter\",\"style\":{\"bgFill\":\"rgba(105,112,125,0.2)\",\"bgColor\":false,\"labelColor\":false,\"subText\":\"\",\"fontSize\":60}}}}",
+        "uiStateJSON": "{}",
+        "description": "Cache efficiency monitoring with optimization indicators",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"romai-logs-*\",\"query\":{\"bool\":{\"must\":[{\"exists\":{\"field\":\"cache_hit_rate\"}}]}},\"filter\":[]}"
+        }
+      }
+    },
+    {
+      "id": "network-latency-histogram",
+      "type": "visualization",
+      "attributes": {
+        "title": "Network Latency",
+        "visState": "{\"title\":\"Network Latency\",\"type\":\"histogram\",\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"network_latency_ms\",\"interval\":5,\"min_doc_count\":1}}]}",
+        "uiStateJSON": "{}",
+        "description": "Network latency distribution analysis",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"romai-logs-*\",\"query\":{\"bool\":{\"must\":[{\"exists\":{\"field\":\"network_latency_ms\"}}]}},\"filter\":[]}"
+        }
+      }
+    },
+    {
+      "id": "performance-anomalies-table",
+      "type": "search",
+      "attributes": {
+        "title": "Performance Anomalies",
+        "description": "ML-detected performance anomalies requiring investigation",
+        "hits": 0,
+        "columns": ["@timestamp", "service", "anomaly_type", "anomaly_score", "baseline_value", "actual_value", "impact_level"],
+        "sort": [["anomaly_score", "desc"]],
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"index\":\"romai-logs-*\",\"query\":{\"bool\":{\"must\":[{\"range\":{\"anomaly_score\":{\"gte\":75}}}]}},\"filter\":[],\"sort\":[[\"anomaly_score\",{\"order\":\"desc\"}]]}"
+        }
+      }
+    }
+  ]
+}

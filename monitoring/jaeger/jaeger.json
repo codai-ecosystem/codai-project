@@ -1,0 +1,35 @@
+{
+  "query": {
+    "grpc-server": {
+      "host-port": "0.0.0.0:16685"
+    },
+    "http-server": {
+      "host-port": "0.0.0.0:16686"
+    }
+  },
+  "collector": {
+    "grpc-server": {
+      "host-port": "0.0.0.0:14250"
+    },
+    "http-server": {
+      "host-port": "0.0.0.0:14268"
+    },
+    "zipkin": {
+      "host-port": "0.0.0.0:9411"
+    }
+  },
+  "agent": {
+    "jaeger.tags": "cluster=codai-production,environment=production"
+  },
+  "storage": {
+    "type": "elasticsearch",
+    "options": {
+      "primary": {
+        "es.server-urls": "http://elasticsearch:9200",
+        "es.index-prefix": "jaeger",
+        "es.num-shards": 1,
+        "es.num-replicas": 0
+      }
+    }
+  }
+}

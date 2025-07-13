@@ -1,0 +1,122 @@
+{
+  "name": "@codai/sdk",
+  "version": "1.0.0",
+  "description": "Universal SDK for CODAI Ecosystem - Complete cross-app integration",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./auth": {
+      "types": "./dist/auth/index.d.ts",
+      "import": "./dist/auth/index.mjs",
+      "require": "./dist/auth/index.js"
+    },
+    "./storage": {
+      "types": "./dist/storage/index.d.ts",
+      "import": "./dist/storage/index.mjs",
+      "require": "./dist/storage/index.js"
+    },
+    "./memory": {
+      "types": "./dist/memory/index.d.ts",
+      "import": "./dist/memory/index.mjs",
+      "require": "./dist/memory/index.js"
+    },
+    "./analytics": {
+      "types": "./dist/analytics/index.d.ts",
+      "import": "./dist/analytics/index.mjs",
+      "require": "./dist/analytics/index.js"
+    },
+    "./wallet": {
+      "types": "./dist/wallet/index.d.ts",
+      "import": "./dist/wallet/index.mjs",
+      "require": "./dist/wallet/index.js"
+    },
+    "./marketplace": {
+      "types": "./dist/marketplace/index.d.ts",
+      "import": "./dist/marketplace/index.mjs",
+      "require": "./dist/marketplace/index.js"
+    },
+    "./legal": {
+      "types": "./dist/legal/index.d.ts",
+      "import": "./dist/legal/index.mjs",
+      "require": "./dist/legal/index.js"
+    },
+    "./support": {
+      "types": "./dist/support/index.d.ts",
+      "import": "./dist/support/index.mjs",
+      "require": "./dist/support/index.js"
+    },
+    "./identity": {
+      "types": "./dist/identity/index.d.ts",
+      "import": "./dist/identity/index.mjs",
+      "require": "./dist/identity/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build && tsc --build tsconfig.esm.json",
+    "dev": "tsc --build --watch",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "type-check": "tsc --noEmit",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@codai/auth": "workspace:*",
+    "@codai/logai-sdk": "workspace:*",
+    "@codai/shared-types": "workspace:*",
+    "axios": "^1.10.0",
+    "eventemitter3": "^5.0.1",
+    "uuid": "^11.1.0",
+    "zod": "^4.0.5"
+  },
+  "devDependencies": {
+    "@types/uuid": "^10.0.0",
+    "rimraf": "^6.0.1",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "next": {
+      "optional": true
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codai-ecosystem/codai-project",
+    "directory": "packages/sdk"
+  },
+  "keywords": [
+    "codai",
+    "sdk",
+    "ecosystem",
+    "ai",
+    "integration",
+    "universal",
+    "cross-app",
+    "enterprise"
+  ],
+  "author": "CODAI Team <dev@codai.ro>",
+  "license": "MIT"
+}

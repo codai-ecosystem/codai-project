@@ -1,0 +1,2075 @@
+# Alerting Rules for Codai Ecosystem
+# Milestone 2: Enterprise Production Excellence
+# Generated: 2025-06-24T14:22:20.697Z
+
+groups:
+
+  - name: codai_alerts
+    rules:
+      - alert: CODAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="codai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="codai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: codai
+        annotations:
+          summary: "High error rate for codai"
+          description: "Error rate for codai is {{ $value | humanizePercentage }}"
+
+      - alert: CODAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="codai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: codai
+        annotations:
+          summary: "High latency for codai"
+          description: "95th percentile latency for codai is {{ $value }}s"
+
+      - alert: CODAI_ServiceDown
+        expr: up{service="codai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: codai
+        annotations:
+          summary: "codai service is down"
+          description: "codai service has been down for more than 1 minute"
+
+      - alert: CODAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="codai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: codai
+        annotations:
+          summary: "High memory usage for codai"
+          description: "Memory usage for codai is {{ $value }}GB"
+
+      - alert: CODAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="codai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: codai
+        annotations:
+          summary: "High CPU usage for codai"
+          description: "CPU usage for codai is {{ $value }}%"
+  - name: memorai_alerts
+    rules:
+      - alert: MEMORAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="memorai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="memorai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: memorai
+        annotations:
+          summary: "High error rate for memorai"
+          description: "Error rate for memorai is {{ $value | humanizePercentage }}"
+
+      - alert: MEMORAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="memorai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: memorai
+        annotations:
+          summary: "High latency for memorai"
+          description: "95th percentile latency for memorai is {{ $value }}s"
+
+      - alert: MEMORAI_ServiceDown
+        expr: up{service="memorai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: memorai
+        annotations:
+          summary: "memorai service is down"
+          description: "memorai service has been down for more than 1 minute"
+
+      - alert: MEMORAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="memorai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: memorai
+        annotations:
+          summary: "High memory usage for memorai"
+          description: "Memory usage for memorai is {{ $value }}GB"
+
+      - alert: MEMORAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="memorai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: memorai
+        annotations:
+          summary: "High CPU usage for memorai"
+          description: "CPU usage for memorai is {{ $value }}%"
+  - name: logai_alerts
+    rules:
+      - alert: LOGAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="logai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="logai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: logai
+        annotations:
+          summary: "High error rate for logai"
+          description: "Error rate for logai is {{ $value | humanizePercentage }}"
+
+      - alert: LOGAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="logai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: logai
+        annotations:
+          summary: "High latency for logai"
+          description: "95th percentile latency for logai is {{ $value }}s"
+
+      - alert: LOGAI_ServiceDown
+        expr: up{service="logai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: logai
+        annotations:
+          summary: "logai service is down"
+          description: "logai service has been down for more than 1 minute"
+
+      - alert: LOGAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="logai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: logai
+        annotations:
+          summary: "High memory usage for logai"
+          description: "Memory usage for logai is {{ $value }}GB"
+
+      - alert: LOGAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="logai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: logai
+        annotations:
+          summary: "High CPU usage for logai"
+          description: "CPU usage for logai is {{ $value }}%"
+  - name: bancai_alerts
+    rules:
+      - alert: BANCAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="bancai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="bancai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: bancai
+        annotations:
+          summary: "High error rate for bancai"
+          description: "Error rate for bancai is {{ $value | humanizePercentage }}"
+
+      - alert: BANCAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="bancai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: bancai
+        annotations:
+          summary: "High latency for bancai"
+          description: "95th percentile latency for bancai is {{ $value }}s"
+
+      - alert: BANCAI_ServiceDown
+        expr: up{service="bancai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: bancai
+        annotations:
+          summary: "bancai service is down"
+          description: "bancai service has been down for more than 1 minute"
+
+      - alert: BANCAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="bancai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: bancai
+        annotations:
+          summary: "High memory usage for bancai"
+          description: "Memory usage for bancai is {{ $value }}GB"
+
+      - alert: BANCAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="bancai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: bancai
+        annotations:
+          summary: "High CPU usage for bancai"
+          description: "CPU usage for bancai is {{ $value }}%"
+  - name: wallet_alerts
+    rules:
+      - alert: WALLET_HighErrorRate
+        expr: sum(rate(http_requests_total{service="wallet",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="wallet"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: wallet
+        annotations:
+          summary: "High error rate for wallet"
+          description: "Error rate for wallet is {{ $value | humanizePercentage }}"
+
+      - alert: WALLET_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="wallet"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: wallet
+        annotations:
+          summary: "High latency for wallet"
+          description: "95th percentile latency for wallet is {{ $value }}s"
+
+      - alert: WALLET_ServiceDown
+        expr: up{service="wallet"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: wallet
+        annotations:
+          summary: "wallet service is down"
+          description: "wallet service has been down for more than 1 minute"
+
+      - alert: WALLET_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="wallet"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: wallet
+        annotations:
+          summary: "High memory usage for wallet"
+          description: "Memory usage for wallet is {{ $value }}GB"
+
+      - alert: WALLET_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="wallet"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: wallet
+        annotations:
+          summary: "High CPU usage for wallet"
+          description: "CPU usage for wallet is {{ $value }}%"
+  - name: fabricai_alerts
+    rules:
+      - alert: FABRICAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="fabricai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="fabricai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: fabricai
+        annotations:
+          summary: "High error rate for fabricai"
+          description: "Error rate for fabricai is {{ $value | humanizePercentage }}"
+
+      - alert: FABRICAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="fabricai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: fabricai
+        annotations:
+          summary: "High latency for fabricai"
+          description: "95th percentile latency for fabricai is {{ $value }}s"
+
+      - alert: FABRICAI_ServiceDown
+        expr: up{service="fabricai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: fabricai
+        annotations:
+          summary: "fabricai service is down"
+          description: "fabricai service has been down for more than 1 minute"
+
+      - alert: FABRICAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="fabricai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: fabricai
+        annotations:
+          summary: "High memory usage for fabricai"
+          description: "Memory usage for fabricai is {{ $value }}GB"
+
+      - alert: FABRICAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="fabricai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: fabricai
+        annotations:
+          summary: "High CPU usage for fabricai"
+          description: "CPU usage for fabricai is {{ $value }}%"
+  - name: studiai_alerts
+    rules:
+      - alert: STUDIAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="studiai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="studiai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: studiai
+        annotations:
+          summary: "High error rate for studiai"
+          description: "Error rate for studiai is {{ $value | humanizePercentage }}"
+
+      - alert: STUDIAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="studiai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: studiai
+        annotations:
+          summary: "High latency for studiai"
+          description: "95th percentile latency for studiai is {{ $value }}s"
+
+      - alert: STUDIAI_ServiceDown
+        expr: up{service="studiai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: studiai
+        annotations:
+          summary: "studiai service is down"
+          description: "studiai service has been down for more than 1 minute"
+
+      - alert: STUDIAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="studiai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: studiai
+        annotations:
+          summary: "High memory usage for studiai"
+          description: "Memory usage for studiai is {{ $value }}GB"
+
+      - alert: STUDIAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="studiai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: studiai
+        annotations:
+          summary: "High CPU usage for studiai"
+          description: "CPU usage for studiai is {{ $value }}%"
+  - name: sociai_alerts
+    rules:
+      - alert: SOCIAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="sociai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="sociai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: sociai
+        annotations:
+          summary: "High error rate for sociai"
+          description: "Error rate for sociai is {{ $value | humanizePercentage }}"
+
+      - alert: SOCIAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="sociai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: sociai
+        annotations:
+          summary: "High latency for sociai"
+          description: "95th percentile latency for sociai is {{ $value }}s"
+
+      - alert: SOCIAI_ServiceDown
+        expr: up{service="sociai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: sociai
+        annotations:
+          summary: "sociai service is down"
+          description: "sociai service has been down for more than 1 minute"
+
+      - alert: SOCIAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="sociai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: sociai
+        annotations:
+          summary: "High memory usage for sociai"
+          description: "Memory usage for sociai is {{ $value }}GB"
+
+      - alert: SOCIAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="sociai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: sociai
+        annotations:
+          summary: "High CPU usage for sociai"
+          description: "CPU usage for sociai is {{ $value }}%"
+  - name: cumparai_alerts
+    rules:
+      - alert: CUMPARAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="cumparai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="cumparai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: cumparai
+        annotations:
+          summary: "High error rate for cumparai"
+          description: "Error rate for cumparai is {{ $value | humanizePercentage }}"
+
+      - alert: CUMPARAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="cumparai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: cumparai
+        annotations:
+          summary: "High latency for cumparai"
+          description: "95th percentile latency for cumparai is {{ $value }}s"
+
+      - alert: CUMPARAI_ServiceDown
+        expr: up{service="cumparai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: cumparai
+        annotations:
+          summary: "cumparai service is down"
+          description: "cumparai service has been down for more than 1 minute"
+
+      - alert: CUMPARAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="cumparai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: cumparai
+        annotations:
+          summary: "High memory usage for cumparai"
+          description: "Memory usage for cumparai is {{ $value }}GB"
+
+      - alert: CUMPARAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="cumparai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: cumparai
+        annotations:
+          summary: "High CPU usage for cumparai"
+          description: "CPU usage for cumparai is {{ $value }}%"
+  - name: x_alerts
+    rules:
+      - alert: X_HighErrorRate
+        expr: sum(rate(http_requests_total{service="x",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="x"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: x
+        annotations:
+          summary: "High error rate for x"
+          description: "Error rate for x is {{ $value | humanizePercentage }}"
+
+      - alert: X_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="x"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: x
+        annotations:
+          summary: "High latency for x"
+          description: "95th percentile latency for x is {{ $value }}s"
+
+      - alert: X_ServiceDown
+        expr: up{service="x"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: x
+        annotations:
+          summary: "x service is down"
+          description: "x service has been down for more than 1 minute"
+
+      - alert: X_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="x"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: x
+        annotations:
+          summary: "High memory usage for x"
+          description: "Memory usage for x is {{ $value }}GB"
+
+      - alert: X_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="x"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: x
+        annotations:
+          summary: "High CPU usage for x"
+          description: "CPU usage for x is {{ $value }}%"
+  - name: publicai_alerts
+    rules:
+      - alert: PUBLICAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="publicai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="publicai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: publicai
+        annotations:
+          summary: "High error rate for publicai"
+          description: "Error rate for publicai is {{ $value | humanizePercentage }}"
+
+      - alert: PUBLICAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="publicai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: publicai
+        annotations:
+          summary: "High latency for publicai"
+          description: "95th percentile latency for publicai is {{ $value }}s"
+
+      - alert: PUBLICAI_ServiceDown
+        expr: up{service="publicai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: publicai
+        annotations:
+          summary: "publicai service is down"
+          description: "publicai service has been down for more than 1 minute"
+
+      - alert: PUBLICAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="publicai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: publicai
+        annotations:
+          summary: "High memory usage for publicai"
+          description: "Memory usage for publicai is {{ $value }}GB"
+
+      - alert: PUBLICAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="publicai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: publicai
+        annotations:
+          summary: "High CPU usage for publicai"
+          description: "CPU usage for publicai is {{ $value }}%"
+  - name: admin_alerts
+    rules:
+      - alert: ADMIN_HighErrorRate
+        expr: sum(rate(http_requests_total{service="admin",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="admin"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: admin
+        annotations:
+          summary: "High error rate for admin"
+          description: "Error rate for admin is {{ $value | humanizePercentage }}"
+
+      - alert: ADMIN_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="admin"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: admin
+        annotations:
+          summary: "High latency for admin"
+          description: "95th percentile latency for admin is {{ $value }}s"
+
+      - alert: ADMIN_ServiceDown
+        expr: up{service="admin"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: admin
+        annotations:
+          summary: "admin service is down"
+          description: "admin service has been down for more than 1 minute"
+
+      - alert: ADMIN_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="admin"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: admin
+        annotations:
+          summary: "High memory usage for admin"
+          description: "Memory usage for admin is {{ $value }}GB"
+
+      - alert: ADMIN_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="admin"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: admin
+        annotations:
+          summary: "High CPU usage for admin"
+          description: "CPU usage for admin is {{ $value }}%"
+  - name: AIDE_alerts
+    rules:
+      - alert: AIDE_HighErrorRate
+        expr: sum(rate(http_requests_total{service="AIDE",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="AIDE"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: AIDE
+        annotations:
+          summary: "High error rate for AIDE"
+          description: "Error rate for AIDE is {{ $value | humanizePercentage }}"
+
+      - alert: AIDE_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="AIDE"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: AIDE
+        annotations:
+          summary: "High latency for AIDE"
+          description: "95th percentile latency for AIDE is {{ $value }}s"
+
+      - alert: AIDE_ServiceDown
+        expr: up{service="AIDE"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: AIDE
+        annotations:
+          summary: "AIDE service is down"
+          description: "AIDE service has been down for more than 1 minute"
+
+      - alert: AIDE_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="AIDE"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: AIDE
+        annotations:
+          summary: "High memory usage for AIDE"
+          description: "Memory usage for AIDE is {{ $value }}GB"
+
+      - alert: AIDE_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="AIDE"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: AIDE
+        annotations:
+          summary: "High CPU usage for AIDE"
+          description: "CPU usage for AIDE is {{ $value }}%"
+  - name: ajutai_alerts
+    rules:
+      - alert: AJUTAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="ajutai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="ajutai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: ajutai
+        annotations:
+          summary: "High error rate for ajutai"
+          description: "Error rate for ajutai is {{ $value | humanizePercentage }}"
+
+      - alert: AJUTAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="ajutai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: ajutai
+        annotations:
+          summary: "High latency for ajutai"
+          description: "95th percentile latency for ajutai is {{ $value }}s"
+
+      - alert: AJUTAI_ServiceDown
+        expr: up{service="ajutai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: ajutai
+        annotations:
+          summary: "ajutai service is down"
+          description: "ajutai service has been down for more than 1 minute"
+
+      - alert: AJUTAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="ajutai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: ajutai
+        annotations:
+          summary: "High memory usage for ajutai"
+          description: "Memory usage for ajutai is {{ $value }}GB"
+
+      - alert: AJUTAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="ajutai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: ajutai
+        annotations:
+          summary: "High CPU usage for ajutai"
+          description: "CPU usage for ajutai is {{ $value }}%"
+  - name: analizai_alerts
+    rules:
+      - alert: ANALIZAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="analizai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="analizai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: analizai
+        annotations:
+          summary: "High error rate for analizai"
+          description: "Error rate for analizai is {{ $value | humanizePercentage }}"
+
+      - alert: ANALIZAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="analizai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: analizai
+        annotations:
+          summary: "High latency for analizai"
+          description: "95th percentile latency for analizai is {{ $value }}s"
+
+      - alert: ANALIZAI_ServiceDown
+        expr: up{service="analizai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: analizai
+        annotations:
+          summary: "analizai service is down"
+          description: "analizai service has been down for more than 1 minute"
+
+      - alert: ANALIZAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="analizai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: analizai
+        annotations:
+          summary: "High memory usage for analizai"
+          description: "Memory usage for analizai is {{ $value }}GB"
+
+      - alert: ANALIZAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="analizai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: analizai
+        annotations:
+          summary: "High CPU usage for analizai"
+          description: "CPU usage for analizai is {{ $value }}%"
+  - name: bancai_alerts
+    rules:
+      - alert: BANCAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="bancai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="bancai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: bancai
+        annotations:
+          summary: "High error rate for bancai"
+          description: "Error rate for bancai is {{ $value | humanizePercentage }}"
+
+      - alert: BANCAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="bancai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: bancai
+        annotations:
+          summary: "High latency for bancai"
+          description: "95th percentile latency for bancai is {{ $value }}s"
+
+      - alert: BANCAI_ServiceDown
+        expr: up{service="bancai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: bancai
+        annotations:
+          summary: "bancai service is down"
+          description: "bancai service has been down for more than 1 minute"
+
+      - alert: BANCAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="bancai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: bancai
+        annotations:
+          summary: "High memory usage for bancai"
+          description: "Memory usage for bancai is {{ $value }}GB"
+
+      - alert: BANCAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="bancai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: bancai
+        annotations:
+          summary: "High CPU usage for bancai"
+          description: "CPU usage for bancai is {{ $value }}%"
+  - name: codai_alerts
+    rules:
+      - alert: CODAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="codai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="codai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: codai
+        annotations:
+          summary: "High error rate for codai"
+          description: "Error rate for codai is {{ $value | humanizePercentage }}"
+
+      - alert: CODAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="codai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: codai
+        annotations:
+          summary: "High latency for codai"
+          description: "95th percentile latency for codai is {{ $value }}s"
+
+      - alert: CODAI_ServiceDown
+        expr: up{service="codai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: codai
+        annotations:
+          summary: "codai service is down"
+          description: "codai service has been down for more than 1 minute"
+
+      - alert: CODAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="codai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: codai
+        annotations:
+          summary: "High memory usage for codai"
+          description: "Memory usage for codai is {{ $value }}GB"
+
+      - alert: CODAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="codai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: codai
+        annotations:
+          summary: "High CPU usage for codai"
+          description: "CPU usage for codai is {{ $value }}%"
+  - name: cumparai_alerts
+    rules:
+      - alert: CUMPARAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="cumparai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="cumparai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: cumparai
+        annotations:
+          summary: "High error rate for cumparai"
+          description: "Error rate for cumparai is {{ $value | humanizePercentage }}"
+
+      - alert: CUMPARAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="cumparai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: cumparai
+        annotations:
+          summary: "High latency for cumparai"
+          description: "95th percentile latency for cumparai is {{ $value }}s"
+
+      - alert: CUMPARAI_ServiceDown
+        expr: up{service="cumparai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: cumparai
+        annotations:
+          summary: "cumparai service is down"
+          description: "cumparai service has been down for more than 1 minute"
+
+      - alert: CUMPARAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="cumparai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: cumparai
+        annotations:
+          summary: "High memory usage for cumparai"
+          description: "Memory usage for cumparai is {{ $value }}GB"
+
+      - alert: CUMPARAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="cumparai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: cumparai
+        annotations:
+          summary: "High CPU usage for cumparai"
+          description: "CPU usage for cumparai is {{ $value }}%"
+  - name: dash_alerts
+    rules:
+      - alert: DASH_HighErrorRate
+        expr: sum(rate(http_requests_total{service="dash",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="dash"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: dash
+        annotations:
+          summary: "High error rate for dash"
+          description: "Error rate for dash is {{ $value | humanizePercentage }}"
+
+      - alert: DASH_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="dash"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: dash
+        annotations:
+          summary: "High latency for dash"
+          description: "95th percentile latency for dash is {{ $value }}s"
+
+      - alert: DASH_ServiceDown
+        expr: up{service="dash"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: dash
+        annotations:
+          summary: "dash service is down"
+          description: "dash service has been down for more than 1 minute"
+
+      - alert: DASH_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="dash"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: dash
+        annotations:
+          summary: "High memory usage for dash"
+          description: "Memory usage for dash is {{ $value }}GB"
+
+      - alert: DASH_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="dash"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: dash
+        annotations:
+          summary: "High CPU usage for dash"
+          description: "CPU usage for dash is {{ $value }}%"
+  - name: docs_alerts
+    rules:
+      - alert: DOCS_HighErrorRate
+        expr: sum(rate(http_requests_total{service="docs",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="docs"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: docs
+        annotations:
+          summary: "High error rate for docs"
+          description: "Error rate for docs is {{ $value | humanizePercentage }}"
+
+      - alert: DOCS_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="docs"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: docs
+        annotations:
+          summary: "High latency for docs"
+          description: "95th percentile latency for docs is {{ $value }}s"
+
+      - alert: DOCS_ServiceDown
+        expr: up{service="docs"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: docs
+        annotations:
+          summary: "docs service is down"
+          description: "docs service has been down for more than 1 minute"
+
+      - alert: DOCS_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="docs"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: docs
+        annotations:
+          summary: "High memory usage for docs"
+          description: "Memory usage for docs is {{ $value }}GB"
+
+      - alert: DOCS_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="docs"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: docs
+        annotations:
+          summary: "High CPU usage for docs"
+          description: "CPU usage for docs is {{ $value }}%"
+  - name: explorer_alerts
+    rules:
+      - alert: EXPLORER_HighErrorRate
+        expr: sum(rate(http_requests_total{service="explorer",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="explorer"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: explorer
+        annotations:
+          summary: "High error rate for explorer"
+          description: "Error rate for explorer is {{ $value | humanizePercentage }}"
+
+      - alert: EXPLORER_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="explorer"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: explorer
+        annotations:
+          summary: "High latency for explorer"
+          description: "95th percentile latency for explorer is {{ $value }}s"
+
+      - alert: EXPLORER_ServiceDown
+        expr: up{service="explorer"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: explorer
+        annotations:
+          summary: "explorer service is down"
+          description: "explorer service has been down for more than 1 minute"
+
+      - alert: EXPLORER_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="explorer"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: explorer
+        annotations:
+          summary: "High memory usage for explorer"
+          description: "Memory usage for explorer is {{ $value }}GB"
+
+      - alert: EXPLORER_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="explorer"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: explorer
+        annotations:
+          summary: "High CPU usage for explorer"
+          description: "CPU usage for explorer is {{ $value }}%"
+  - name: fabricai_alerts
+    rules:
+      - alert: FABRICAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="fabricai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="fabricai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: fabricai
+        annotations:
+          summary: "High error rate for fabricai"
+          description: "Error rate for fabricai is {{ $value | humanizePercentage }}"
+
+      - alert: FABRICAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="fabricai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: fabricai
+        annotations:
+          summary: "High latency for fabricai"
+          description: "95th percentile latency for fabricai is {{ $value }}s"
+
+      - alert: FABRICAI_ServiceDown
+        expr: up{service="fabricai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: fabricai
+        annotations:
+          summary: "fabricai service is down"
+          description: "fabricai service has been down for more than 1 minute"
+
+      - alert: FABRICAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="fabricai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: fabricai
+        annotations:
+          summary: "High memory usage for fabricai"
+          description: "Memory usage for fabricai is {{ $value }}GB"
+
+      - alert: FABRICAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="fabricai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: fabricai
+        annotations:
+          summary: "High CPU usage for fabricai"
+          description: "CPU usage for fabricai is {{ $value }}%"
+  - name: hub_alerts
+    rules:
+      - alert: HUB_HighErrorRate
+        expr: sum(rate(http_requests_total{service="hub",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="hub"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: hub
+        annotations:
+          summary: "High error rate for hub"
+          description: "Error rate for hub is {{ $value | humanizePercentage }}"
+
+      - alert: HUB_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="hub"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: hub
+        annotations:
+          summary: "High latency for hub"
+          description: "95th percentile latency for hub is {{ $value }}s"
+
+      - alert: HUB_ServiceDown
+        expr: up{service="hub"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: hub
+        annotations:
+          summary: "hub service is down"
+          description: "hub service has been down for more than 1 minute"
+
+      - alert: HUB_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="hub"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: hub
+        annotations:
+          summary: "High memory usage for hub"
+          description: "Memory usage for hub is {{ $value }}GB"
+
+      - alert: HUB_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="hub"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: hub
+        annotations:
+          summary: "High CPU usage for hub"
+          description: "CPU usage for hub is {{ $value }}%"
+  - name: id_alerts
+    rules:
+      - alert: ID_HighErrorRate
+        expr: sum(rate(http_requests_total{service="id",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="id"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: id
+        annotations:
+          summary: "High error rate for id"
+          description: "Error rate for id is {{ $value | humanizePercentage }}"
+
+      - alert: ID_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="id"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: id
+        annotations:
+          summary: "High latency for id"
+          description: "95th percentile latency for id is {{ $value }}s"
+
+      - alert: ID_ServiceDown
+        expr: up{service="id"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: id
+        annotations:
+          summary: "id service is down"
+          description: "id service has been down for more than 1 minute"
+
+      - alert: ID_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="id"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: id
+        annotations:
+          summary: "High memory usage for id"
+          description: "Memory usage for id is {{ $value }}GB"
+
+      - alert: ID_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="id"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: id
+        annotations:
+          summary: "High CPU usage for id"
+          description: "CPU usage for id is {{ $value }}%"
+  - name: jucai_alerts
+    rules:
+      - alert: JUCAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="jucai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="jucai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: jucai
+        annotations:
+          summary: "High error rate for jucai"
+          description: "Error rate for jucai is {{ $value | humanizePercentage }}"
+
+      - alert: JUCAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="jucai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: jucai
+        annotations:
+          summary: "High latency for jucai"
+          description: "95th percentile latency for jucai is {{ $value }}s"
+
+      - alert: JUCAI_ServiceDown
+        expr: up{service="jucai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: jucai
+        annotations:
+          summary: "jucai service is down"
+          description: "jucai service has been down for more than 1 minute"
+
+      - alert: JUCAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="jucai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: jucai
+        annotations:
+          summary: "High memory usage for jucai"
+          description: "Memory usage for jucai is {{ $value }}GB"
+
+      - alert: JUCAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="jucai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: jucai
+        annotations:
+          summary: "High CPU usage for jucai"
+          description: "CPU usage for jucai is {{ $value }}%"
+  - name: kodex_alerts
+    rules:
+      - alert: KODEX_HighErrorRate
+        expr: sum(rate(http_requests_total{service="kodex",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="kodex"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: kodex
+        annotations:
+          summary: "High error rate for kodex"
+          description: "Error rate for kodex is {{ $value | humanizePercentage }}"
+
+      - alert: KODEX_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="kodex"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: kodex
+        annotations:
+          summary: "High latency for kodex"
+          description: "95th percentile latency for kodex is {{ $value }}s"
+
+      - alert: KODEX_ServiceDown
+        expr: up{service="kodex"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: kodex
+        annotations:
+          summary: "kodex service is down"
+          description: "kodex service has been down for more than 1 minute"
+
+      - alert: KODEX_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="kodex"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: kodex
+        annotations:
+          summary: "High memory usage for kodex"
+          description: "Memory usage for kodex is {{ $value }}GB"
+
+      - alert: KODEX_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="kodex"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: kodex
+        annotations:
+          summary: "High CPU usage for kodex"
+          description: "CPU usage for kodex is {{ $value }}%"
+  - name: legalizai_alerts
+    rules:
+      - alert: LEGALIZAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="legalizai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="legalizai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: legalizai
+        annotations:
+          summary: "High error rate for legalizai"
+          description: "Error rate for legalizai is {{ $value | humanizePercentage }}"
+
+      - alert: LEGALIZAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="legalizai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: legalizai
+        annotations:
+          summary: "High latency for legalizai"
+          description: "95th percentile latency for legalizai is {{ $value }}s"
+
+      - alert: LEGALIZAI_ServiceDown
+        expr: up{service="legalizai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: legalizai
+        annotations:
+          summary: "legalizai service is down"
+          description: "legalizai service has been down for more than 1 minute"
+
+      - alert: LEGALIZAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="legalizai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: legalizai
+        annotations:
+          summary: "High memory usage for legalizai"
+          description: "Memory usage for legalizai is {{ $value }}GB"
+
+      - alert: LEGALIZAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="legalizai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: legalizai
+        annotations:
+          summary: "High CPU usage for legalizai"
+          description: "CPU usage for legalizai is {{ $value }}%"
+  - name: logai_alerts
+    rules:
+      - alert: LOGAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="logai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="logai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: logai
+        annotations:
+          summary: "High error rate for logai"
+          description: "Error rate for logai is {{ $value | humanizePercentage }}"
+
+      - alert: LOGAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="logai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: logai
+        annotations:
+          summary: "High latency for logai"
+          description: "95th percentile latency for logai is {{ $value }}s"
+
+      - alert: LOGAI_ServiceDown
+        expr: up{service="logai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: logai
+        annotations:
+          summary: "logai service is down"
+          description: "logai service has been down for more than 1 minute"
+
+      - alert: LOGAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="logai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: logai
+        annotations:
+          summary: "High memory usage for logai"
+          description: "Memory usage for logai is {{ $value }}GB"
+
+      - alert: LOGAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="logai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: logai
+        annotations:
+          summary: "High CPU usage for logai"
+          description: "CPU usage for logai is {{ $value }}%"
+  - name: marketai_alerts
+    rules:
+      - alert: MARKETAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="marketai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="marketai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: marketai
+        annotations:
+          summary: "High error rate for marketai"
+          description: "Error rate for marketai is {{ $value | humanizePercentage }}"
+
+      - alert: MARKETAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="marketai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: marketai
+        annotations:
+          summary: "High latency for marketai"
+          description: "95th percentile latency for marketai is {{ $value }}s"
+
+      - alert: MARKETAI_ServiceDown
+        expr: up{service="marketai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: marketai
+        annotations:
+          summary: "marketai service is down"
+          description: "marketai service has been down for more than 1 minute"
+
+      - alert: MARKETAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="marketai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: marketai
+        annotations:
+          summary: "High memory usage for marketai"
+          description: "Memory usage for marketai is {{ $value }}GB"
+
+      - alert: MARKETAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="marketai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: marketai
+        annotations:
+          summary: "High CPU usage for marketai"
+          description: "CPU usage for marketai is {{ $value }}%"
+  - name: memorai_alerts
+    rules:
+      - alert: MEMORAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="memorai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="memorai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: memorai
+        annotations:
+          summary: "High error rate for memorai"
+          description: "Error rate for memorai is {{ $value | humanizePercentage }}"
+
+      - alert: MEMORAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="memorai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: memorai
+        annotations:
+          summary: "High latency for memorai"
+          description: "95th percentile latency for memorai is {{ $value }}s"
+
+      - alert: MEMORAI_ServiceDown
+        expr: up{service="memorai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: memorai
+        annotations:
+          summary: "memorai service is down"
+          description: "memorai service has been down for more than 1 minute"
+
+      - alert: MEMORAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="memorai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: memorai
+        annotations:
+          summary: "High memory usage for memorai"
+          description: "Memory usage for memorai is {{ $value }}GB"
+
+      - alert: MEMORAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="memorai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: memorai
+        annotations:
+          summary: "High CPU usage for memorai"
+          description: "CPU usage for memorai is {{ $value }}%"
+  - name: metu_alerts
+    rules:
+      - alert: METU_HighErrorRate
+        expr: sum(rate(http_requests_total{service="metu",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="metu"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: metu
+        annotations:
+          summary: "High error rate for metu"
+          description: "Error rate for metu is {{ $value | humanizePercentage }}"
+
+      - alert: METU_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="metu"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: metu
+        annotations:
+          summary: "High latency for metu"
+          description: "95th percentile latency for metu is {{ $value }}s"
+
+      - alert: METU_ServiceDown
+        expr: up{service="metu"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: metu
+        annotations:
+          summary: "metu service is down"
+          description: "metu service has been down for more than 1 minute"
+
+      - alert: METU_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="metu"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: metu
+        annotations:
+          summary: "High memory usage for metu"
+          description: "Memory usage for metu is {{ $value }}GB"
+
+      - alert: METU_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="metu"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: metu
+        annotations:
+          summary: "High CPU usage for metu"
+          description: "CPU usage for metu is {{ $value }}%"
+  - name: mod_alerts
+    rules:
+      - alert: MOD_HighErrorRate
+        expr: sum(rate(http_requests_total{service="mod",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="mod"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: mod
+        annotations:
+          summary: "High error rate for mod"
+          description: "Error rate for mod is {{ $value | humanizePercentage }}"
+
+      - alert: MOD_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="mod"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: mod
+        annotations:
+          summary: "High latency for mod"
+          description: "95th percentile latency for mod is {{ $value }}s"
+
+      - alert: MOD_ServiceDown
+        expr: up{service="mod"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: mod
+        annotations:
+          summary: "mod service is down"
+          description: "mod service has been down for more than 1 minute"
+
+      - alert: MOD_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="mod"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: mod
+        annotations:
+          summary: "High memory usage for mod"
+          description: "Memory usage for mod is {{ $value }}GB"
+
+      - alert: MOD_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="mod"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: mod
+        annotations:
+          summary: "High CPU usage for mod"
+          description: "CPU usage for mod is {{ $value }}%"
+  - name: publicai_alerts
+    rules:
+      - alert: PUBLICAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="publicai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="publicai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: publicai
+        annotations:
+          summary: "High error rate for publicai"
+          description: "Error rate for publicai is {{ $value | humanizePercentage }}"
+
+      - alert: PUBLICAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="publicai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: publicai
+        annotations:
+          summary: "High latency for publicai"
+          description: "95th percentile latency for publicai is {{ $value }}s"
+
+      - alert: PUBLICAI_ServiceDown
+        expr: up{service="publicai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: publicai
+        annotations:
+          summary: "publicai service is down"
+          description: "publicai service has been down for more than 1 minute"
+
+      - alert: PUBLICAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="publicai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: publicai
+        annotations:
+          summary: "High memory usage for publicai"
+          description: "Memory usage for publicai is {{ $value }}GB"
+
+      - alert: PUBLICAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="publicai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: publicai
+        annotations:
+          summary: "High CPU usage for publicai"
+          description: "CPU usage for publicai is {{ $value }}%"
+  - name: sociai_alerts
+    rules:
+      - alert: SOCIAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="sociai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="sociai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: sociai
+        annotations:
+          summary: "High error rate for sociai"
+          description: "Error rate for sociai is {{ $value | humanizePercentage }}"
+
+      - alert: SOCIAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="sociai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: sociai
+        annotations:
+          summary: "High latency for sociai"
+          description: "95th percentile latency for sociai is {{ $value }}s"
+
+      - alert: SOCIAI_ServiceDown
+        expr: up{service="sociai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: sociai
+        annotations:
+          summary: "sociai service is down"
+          description: "sociai service has been down for more than 1 minute"
+
+      - alert: SOCIAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="sociai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: sociai
+        annotations:
+          summary: "High memory usage for sociai"
+          description: "Memory usage for sociai is {{ $value }}GB"
+
+      - alert: SOCIAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="sociai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: sociai
+        annotations:
+          summary: "High CPU usage for sociai"
+          description: "CPU usage for sociai is {{ $value }}%"
+  - name: stocai_alerts
+    rules:
+      - alert: STOCAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="stocai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="stocai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: stocai
+        annotations:
+          summary: "High error rate for stocai"
+          description: "Error rate for stocai is {{ $value | humanizePercentage }}"
+
+      - alert: STOCAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="stocai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: stocai
+        annotations:
+          summary: "High latency for stocai"
+          description: "95th percentile latency for stocai is {{ $value }}s"
+
+      - alert: STOCAI_ServiceDown
+        expr: up{service="stocai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: stocai
+        annotations:
+          summary: "stocai service is down"
+          description: "stocai service has been down for more than 1 minute"
+
+      - alert: STOCAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="stocai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: stocai
+        annotations:
+          summary: "High memory usage for stocai"
+          description: "Memory usage for stocai is {{ $value }}GB"
+
+      - alert: STOCAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="stocai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: stocai
+        annotations:
+          summary: "High CPU usage for stocai"
+          description: "CPU usage for stocai is {{ $value }}%"
+  - name: studiai_alerts
+    rules:
+      - alert: STUDIAI_HighErrorRate
+        expr: sum(rate(http_requests_total{service="studiai",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="studiai"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: studiai
+        annotations:
+          summary: "High error rate for studiai"
+          description: "Error rate for studiai is {{ $value | humanizePercentage }}"
+
+      - alert: STUDIAI_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="studiai"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: studiai
+        annotations:
+          summary: "High latency for studiai"
+          description: "95th percentile latency for studiai is {{ $value }}s"
+
+      - alert: STUDIAI_ServiceDown
+        expr: up{service="studiai"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: studiai
+        annotations:
+          summary: "studiai service is down"
+          description: "studiai service has been down for more than 1 minute"
+
+      - alert: STUDIAI_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="studiai"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: studiai
+        annotations:
+          summary: "High memory usage for studiai"
+          description: "Memory usage for studiai is {{ $value }}GB"
+
+      - alert: STUDIAI_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="studiai"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: studiai
+        annotations:
+          summary: "High CPU usage for studiai"
+          description: "CPU usage for studiai is {{ $value }}%"
+  - name: templates_alerts
+    rules:
+      - alert: TEMPLATES_HighErrorRate
+        expr: sum(rate(http_requests_total{service="templates",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="templates"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: templates
+        annotations:
+          summary: "High error rate for templates"
+          description: "Error rate for templates is {{ $value | humanizePercentage }}"
+
+      - alert: TEMPLATES_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="templates"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: templates
+        annotations:
+          summary: "High latency for templates"
+          description: "95th percentile latency for templates is {{ $value }}s"
+
+      - alert: TEMPLATES_ServiceDown
+        expr: up{service="templates"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: templates
+        annotations:
+          summary: "templates service is down"
+          description: "templates service has been down for more than 1 minute"
+
+      - alert: TEMPLATES_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="templates"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: templates
+        annotations:
+          summary: "High memory usage for templates"
+          description: "Memory usage for templates is {{ $value }}GB"
+
+      - alert: TEMPLATES_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="templates"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: templates
+        annotations:
+          summary: "High CPU usage for templates"
+          description: "CPU usage for templates is {{ $value }}%"
+  - name: tools_alerts
+    rules:
+      - alert: TOOLS_HighErrorRate
+        expr: sum(rate(http_requests_total{service="tools",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="tools"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: tools
+        annotations:
+          summary: "High error rate for tools"
+          description: "Error rate for tools is {{ $value | humanizePercentage }}"
+
+      - alert: TOOLS_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="tools"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: tools
+        annotations:
+          summary: "High latency for tools"
+          description: "95th percentile latency for tools is {{ $value }}s"
+
+      - alert: TOOLS_ServiceDown
+        expr: up{service="tools"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: tools
+        annotations:
+          summary: "tools service is down"
+          description: "tools service has been down for more than 1 minute"
+
+      - alert: TOOLS_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="tools"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: tools
+        annotations:
+          summary: "High memory usage for tools"
+          description: "Memory usage for tools is {{ $value }}GB"
+
+      - alert: TOOLS_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="tools"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: tools
+        annotations:
+          summary: "High CPU usage for tools"
+          description: "CPU usage for tools is {{ $value }}%"
+  - name: wallet_alerts
+    rules:
+      - alert: WALLET_HighErrorRate
+        expr: sum(rate(http_requests_total{service="wallet",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="wallet"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: wallet
+        annotations:
+          summary: "High error rate for wallet"
+          description: "Error rate for wallet is {{ $value | humanizePercentage }}"
+
+      - alert: WALLET_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="wallet"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: wallet
+        annotations:
+          summary: "High latency for wallet"
+          description: "95th percentile latency for wallet is {{ $value }}s"
+
+      - alert: WALLET_ServiceDown
+        expr: up{service="wallet"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: wallet
+        annotations:
+          summary: "wallet service is down"
+          description: "wallet service has been down for more than 1 minute"
+
+      - alert: WALLET_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="wallet"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: wallet
+        annotations:
+          summary: "High memory usage for wallet"
+          description: "Memory usage for wallet is {{ $value }}GB"
+
+      - alert: WALLET_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="wallet"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: wallet
+        annotations:
+          summary: "High CPU usage for wallet"
+          description: "CPU usage for wallet is {{ $value }}%"
+  - name: x_alerts
+    rules:
+      - alert: X_HighErrorRate
+        expr: sum(rate(http_requests_total{service="x",status=~"5.."}[5m])) / sum(rate(http_requests_total{service="x"}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: x
+        annotations:
+          summary: "High error rate for x"
+          description: "Error rate for x is {{ $value | humanizePercentage }}"
+
+      - alert: X_HighLatency
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service="x"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: x
+        annotations:
+          summary: "High latency for x"
+          description: "95th percentile latency for x is {{ $value }}s"
+
+      - alert: X_ServiceDown
+        expr: up{service="x"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: x
+        annotations:
+          summary: "x service is down"
+          description: "x service has been down for more than 1 minute"
+
+      - alert: X_HighMemoryUsage
+        expr: process_resident_memory_bytes{service="x"} / (1024*1024*1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: x
+        annotations:
+          summary: "High memory usage for x"
+          description: "Memory usage for x is {{ $value }}GB"
+
+      - alert: X_HighCPUUsage
+        expr: rate(process_cpu_seconds_total{service="x"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: x
+        annotations:
+          summary: "High CPU usage for x"
+          description: "CPU usage for x is {{ $value }}%"
+
+  - name: infrastructure_alerts
+    rules:
+      - alert: KubernetesNodeDown
+        expr: up{job="kubernetes-nodes"} == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Kubernetes node is down"
+          description: "Kubernetes node {{ $labels.instance }} has been down for more than 5 minutes"
+
+      - alert: KubernetesApiServerDown
+        expr: up{job="kubernetes-apiservers"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Kubernetes API server is down"
+          description: "Kubernetes API server has been down for more than 1 minute"
+
+      - alert: PrometheusDown
+        expr: up{job="prometheus"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Prometheus is down"
+          description: "Prometheus has been down for more than 1 minute"

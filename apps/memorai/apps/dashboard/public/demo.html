@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memorai Dashboard Demo - Published MCP Integration</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin: 20px 0;
+        }
+
+        h1 {
+            color: #4a5568;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .memories-section {
+            margin-top: 30px;
+        }
+
+        .memory-item {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .memory-content {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .memory-meta {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .tag {
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-right: 5px;
+        }
+
+        .loading {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+        }
+
+        .error {
+            background: #fed7d7;
+            color: #c53030;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .success-banner {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .test-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 10px 5px;
+            font-size: 1em;
+        }
+
+        .test-button:hover {
+            background: #5a6fd8;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🧠 Memorai Dashboard Demo</h1>
+        <div class="success-banner">
+            ✅ Published MCP Integration Active - Using @codai/memorai-mcp@latest
+        </div>
+
+        <div class="test-section">
+            <h2>API Testing</h2>
+            <button class="test-button" onclick="testStatsAPI()">Test Stats API</button>
+            <button class="test-button" onclick="testMemoriesAPI()">Test Memories API</button>
+            <button class="test-button" onclick="loadDashboard()">Load Full Dashboard</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div>Total Memories</div>
+                <div class="stat-value" id="totalMemories">Loading...</div>
+                <div>Published MCP Data</div>
+            </div>
+            <div class="stat-card">
+                <div>System Health</div>
+                <div class="stat-value" id="systemHealth">Loading...</div>
+                <div>Real-time Status</div>
+            </div>
+            <div class="stat-card">
+                <div>Active Agents</div>
+                <div class="stat-value" id="totalAgents">Loading...</div>
+                <div>Connected Systems</div>
+            </div>
+            <div class="stat-card">
+                <div>Avg Importance</div>
+                <div class="stat-value" id="avgImportance">Loading...</div>
+                <div>Quality Score</div>
+            </div>
+        </div>
+
+        <div class="memories-section">
+            <h2>Recent Memories from Published MCP</h2>
+            <div id="memories-container">
+                <div class="loading">Loading memories from published MCP system...</div>
+            </div>
+        </div>
+
+        <div id="debug-section" style="margin-top: 30px;">
+            <h3>Debug Information</h3>
+            <div id="debug-output"
+                style="background: #f0f0f0; padding: 15px; border-radius: 8px; font-family: monospace; white-space: pre-wrap;">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let debugOutput = '';
+
+        function addDebug(message) {
+            debugOutput += new Date().toISOString() + ': ' + message + '\n';
+            document.getElementById('debug-output').textContent = debugOutput;
+        }
+
+        async function testStatsAPI() {
+            addDebug('Testing Stats API...');
+            try {
+                const response = await fetch('/api/stats');
+                addDebug('Stats API Response Status: ' + response.status);
+
+                if (response.ok) {
+                    const data = await response.json();
+                    addDebug('Stats API Response: ' + JSON.stringify(data, null, 2));
+                    updateStatsDisplay(data);
+                } else {
+                    const errorText = await response.text();
+                    addDebug('Stats API Error: ' + errorText);
+                    showError('Stats API Error: ' + response.status);
+                }
+            } catch (error) {
+                addDebug('Stats API Fetch Error: ' + error.message);
+                showError('Failed to fetch stats: ' + error.message);
+            }
+        }
+
+        async function testMemoriesAPI() {
+            addDebug('Testing Memories API...');
+            try {
+                const response = await fetch('/api/mcp/read-graph');
+                addDebug('Memories API Response Status: ' + response.status);
+
+                if (response.ok) {
+                    const data = await response.json();
+                    addDebug('Memories API Response: ' + JSON.stringify(data, null, 2));
+                    updateMemoriesDisplay(data);
+                } else {
+                    const errorText = await response.text();
+                    addDebug('Memories API Error: ' + errorText);
+                    showError('Memories API Error: ' + response.status);
+                }
+            } catch (error) {
+                addDebug('Memories API Fetch Error: ' + error.message);
+                showError('Failed to fetch memories: ' + error.message);
+            }
+        }
+
+        function updateStatsDisplay(data) {
+            document.getElementById('totalMemories').textContent = data.totalMemories || '0';
+            document.getElementById('systemHealth').textContent = data.systemHealth || 'Unknown';
+            document.getElementById('totalAgents').textContent = data.totalAgents || '0';
+            document.getElementById('avgImportance').textContent =
+                data.averageImportance ? Math.round(data.averageImportance * 100) + '%' : '0%';
+        }
+
+        function updateMemoriesDisplay(data) {
+            const container = document.getElementById('memories-container');
+
+            if (data.memories && data.memories.length > 0) {
+                container.innerHTML = data.memories.map(memory => `
+                    <div class="memory-item">
+                        <div class="memory-content">${memory.content}</div>
+                        <div class="memory-meta">
+                            <span class="tag">${memory.type}</span>
+                            ${memory.metadata.tags ? memory.metadata.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : ''}
+                            <br>
+                            <strong>Importance:</strong> ${memory.metadata.importance || 'N/A'} | 
+                            <strong>ID:</strong> ${memory.id}
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = '<div class="loading">No memories found</div>';
+            }
+        }
+
+        function showError(message) {
+            const container = document.getElementById('memories-container');
+            container.innerHTML = `<div class="error">${message}</div>`;
+        }
+
+        function loadDashboard() {
+            window.open('/', '_blank');
+        }
+
+        // Auto-load data when page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            addDebug('Demo page loaded - testing published MCP integration');
+            testStatsAPI();
+            setTimeout(testMemoriesAPI, 1000);
+        });
+    </script>
+</body>
+
+</html>

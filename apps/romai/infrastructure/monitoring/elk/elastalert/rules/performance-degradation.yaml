@@ -1,0 +1,227 @@
+# ROMAI Performance Degradation Alert
+# ML-powered performance monitoring with predictive alerting
+
+name: romai-performance-degradation
+type: spike
+index: romai-logs-*
+
+# Spike detection configuration
+spike_height: 3.0  # 3x baseline response time
+spike_type: "up"   # Detect increases in response time
+threshold_ref: 50  # Minimum 50 events for baseline
+
+# Time window
+timeframe:
+  minutes: 15
+
+# Use response time field for spike detection
+metric_agg_key: response_time
+metric_agg_type: avg
+
+# Filter for performance data
+filter:
+- exists:
+    field: response_time
+- range:
+    response_time:
+      gte: 0
+      lte: 300000  # Max 5 minutes response time
+
+# Group by service for targeted analysis
+query_key: service
+
+# ML integration
+ml_anomaly_detection:
+  job_id: romai-performance-forecasting
+  anomaly_threshold: 70
+  enable_forecasting: true
+  forecast_window_hours: 24
+
+# Alert controls
+realert:
+  minutes: 20
+
+exponential_realert:
+  hours: 2
+
+# Data enrichment
+include:
+  - "@timestamp"
+  - service
+  - endpoint
+  - response_time
+  - cpu_usage_percent
+  - memory_used_mb
+  - db_query_time
+  - cache_hit_rate
+  - user_id
+  - correlation_id
+
+# Comprehensive alerting
+alert:
+  - "email"
+  - "slack"
+  - "webhook"
+
+# Email notification
+email:
+  - "performance-team@romai-corp.com"
+  - "engineering-leads@romai-corp.com"
+  - "sre-team@romai-corp.com"
+
+email_subject: "⚠️ PERFORMANCE: Response Time Spike in {0}"
+email_subject_args:
+  - service
+
+email_body: |
+  PERFORMANCE DEGRADATION ALERT
+  
+  Service: {0}
+  Average Response Time: {1}ms
+  Baseline Response Time: {2}ms
+  Performance Impact: {3}x slower
+  Time Window: {4}
+  
+  System Metrics During Incident:
+  - CPU Usage: {5}%
+  - Memory Usage: {6}MB
+  - Database Query Time: {7}ms
+  - Cache Hit Rate: {8}%
+  
+  Top Affected Endpoints:
+  {9}
+  
+  Correlation IDs for Deep Analysis:
+  {10}
+  
+  Performance Analysis:
+  1. Check resource utilization trends
+  2. Review recent deployments and changes
+  3. Analyze database performance metrics
+  4. Investigate cache efficiency
+  5. Check for external dependencies issues
+  
+  Performance Dashboard: http://kibana:5601/app/dashboards#/view/romai-performance-dashboard
+  Grafana Metrics: http://grafana:3000/d/romai-system-health
+  APM Traces: http://kibana:5601/app/apm/services/{0}
+  
+email_body_args:
+  - service
+  - response_time
+  - baseline_response_time
+  - spike_height
+  - timeframe
+  - cpu_usage_percent
+  - memory_used_mb
+  - db_query_time
+  - cache_hit_rate
+  - endpoint
+  - correlation_id
+
+# Slack performance channel
+slack_channel_override: "#performance-alerts"
+slack_title: "⚠️ Performance Degradation Alert"
+slack_text: |
+  *Service:* {0}
+  *Response Time:* {1}ms (was {2}ms)
+  *Impact:* {3}x slower than baseline
+  *Duration:* {4}
+  
+  *Quick Stats:*
+  • CPU: {5}%
+  • Memory: {6}MB  
+  • DB Query: {7}ms
+  • Cache Hit: {8}%
+  
+  <http://kibana:5601/app/dashboards#/view/romai-performance-dashboard|Performance Dashboard> | <http://grafana:3000/d/romai-system-health|System Metrics>
+
+slack_text_args:
+  - service
+  - response_time
+  - baseline_response_time
+  - spike_height
+  - timeframe
+  - cpu_usage_percent
+  - memory_used_mb
+  - db_query_time
+  - cache_hit_rate
+
+# Webhook for external monitoring tools
+webhook_url: "http://monitoring-tools.romai-corp.com/api/alerts/performance"
+webhook_http_method: "POST"
+webhook_body: |
+  {
+    "alert_type": "performance_degradation",
+    "service": "{0}",
+    "severity": "warning",
+    "response_time_ms": {1},
+    "baseline_ms": {2},
+    "spike_multiplier": {3},
+    "timestamp": "{4}",
+    "metrics": {
+      "cpu_percent": {5},
+      "memory_mb": {6},
+      "db_query_ms": {7},
+      "cache_hit_rate": {8}
+    },
+    "dashboard_url": "http://kibana:5601/app/dashboards#/view/romai-performance-dashboard",
+    "correlation_ids": ["{9}"]
+  }
+
+webhook_body_args:
+  - service
+  - response_time
+  - baseline_response_time
+  - spike_height
+  - "@timestamp"
+  - cpu_usage_percent
+  - memory_used_mb
+  - db_query_time
+  - cache_hit_rate
+  - correlation_id
+
+# Jira integration for performance tracking
+jira_labels:
+  - "performance"
+  - "degradation"
+  - "monitoring"
+
+jira_priority: "Medium"
+jira_summary: "Performance Degradation: {0} Service Response Time Spike"
+jira_description: |
+  h2. Performance Degradation Alert
+  
+  *Service:* {0}
+  *Current Response Time:* {1}ms
+  *Baseline Response Time:* {2}ms
+  *Performance Impact:* {3}x slower than normal
+  *Detection Time:* {4}
+  
+  h3. System Metrics During Incident:
+  * CPU Usage: {5}%
+  * Memory Usage: {6}MB
+  * Database Query Time: {7}ms
+  * Cache Hit Rate: {8}%
+  
+  h3. Investigation Plan:
+  # [ ] Review resource utilization trends in Grafana
+  # [ ] Check recent deployments and configuration changes
+  # [ ] Analyze database performance and query patterns
+  # [ ] Investigate cache efficiency and hit rates
+  # [ ] Check external dependencies and third-party services
+  # [ ] Review application logs for errors or warnings
+  # [ ] Consider scaling resources if needed
+  
+  h3. Monitoring Links:
+  * [Performance Dashboard|http://kibana:5601/app/dashboards#/view/romai-performance-dashboard]
+  * [System Health Metrics|http://grafana:3000/d/romai-system-health]
+  * [APM Service Map|http://kibana:5601/app/apm/services/{0}]
+  * [Database Performance|http://grafana:3000/d/database-metrics]
+
+# Custom aggregation for baseline calculation
+aggregation:
+  hours: 24
+  
+# Ignore outliers in baseline calculation
+threshold_cur: 0.9
+threshold_ref: 0.1

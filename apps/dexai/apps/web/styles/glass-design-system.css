@@ -1,0 +1,219 @@
+/* DEXAI Glass Morphism Design System */
+
+/* Glass Morphism Utilities */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark Mode Glass */
+.dark .glass {
+  background: rgba(15, 23, 42, 0.2);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.glass-strong {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Dark Mode Glass Strong */
+.dark .glass-strong {
+  background: rgba(15, 23, 42, 0.25);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.glass-subtle {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Dark Mode Glass Subtle */
+.dark .glass-subtle {
+  background: rgba(15, 23, 42, 0.1);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+/* Romanian Flag Accent Colors */
+.romanian-blue { color: #002B7F; }
+.romanian-yellow { color: #FCD116; }
+.romanian-red { color: #CE1126; }
+
+.bg-romanian-blue { background-color: #002B7F; }
+.bg-romanian-yellow { background-color: #FCD116; }
+.bg-romanian-red { background-color: #CE1126; }
+
+/* Gradient Utilities */
+.gradient-primary {
+  background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+}
+
+.gradient-romanian {
+  background: linear-gradient(135deg, #002B7F 0%, #FCD116 50%, #CE1126 100%);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animation Utilities */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.transition-glass {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-glass:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Keyframes */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+  to { box-shadow: 0 0 30px rgba(139, 92, 246, 0.7); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Romanian Diacritics Support */
+.romanian-text {
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "pnum" 1, "tnum" 0, "onum" 1, "lnum" 0, "dlig" 0;
+  text-rendering: optimizeLegibility;
+}
+
+/* Glass Card Components */
+.glass-card {
+  @apply glass rounded-2xl p-6 transition-glass hover-glass;
+}
+
+.glass-input {
+  @apply glass rounded-xl px-4 py-3 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 border-0 focus:ring-2 focus:ring-blue-500/50 transition-glass;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Dark Mode Glass Input */
+.dark .glass-input {
+  background: rgba(15, 23, 42, 0.15);
+  color: #e2e8f0;
+}
+
+.glass-input-improved {
+  @apply glass rounded-xl border-0 focus:ring-2 focus:ring-blue-500/50 transition-glass;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px);
+  color: white;
+}
+
+/* Dark Mode Glass Input Improved */
+.dark .glass-input-improved {
+  background: rgba(15, 23, 42, 0.18);
+  color: #f1f5f9;
+}
+
+.glass-input-improved:focus {
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3), 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Dark Mode Glass Input Focus */
+.dark .glass-input-improved:focus {
+  background: rgba(15, 23, 42, 0.25);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4), 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.glass-button {
+  @apply glass rounded-xl px-6 py-3 font-semibold transition-glass hover-glass;
+}
+
+/* Dark Mode Glass Button */
+.dark .glass-button {
+  background: rgba(15, 23, 42, 0.2);
+  color: #f1f5f9;
+}
+
+.dark .glass-button:hover {
+  background: rgba(15, 23, 42, 0.3);
+}
+
+.glass-button-primary {
+  @apply glass-button gradient-primary text-white shadow-lg hover:shadow-xl;
+}
+
+/* Typography Scale */
+.text-hero {
+  @apply text-6xl md:text-7xl lg:text-8xl font-bold leading-none;
+}
+
+.text-display {
+  @apply text-4xl md:text-5xl lg:text-6xl font-bold;
+}
+
+.text-headline {
+  @apply text-2xl md:text-3xl lg:text-4xl font-bold;
+}
+
+.text-title {
+  @apply text-xl md:text-2xl font-semibold;
+}
+
+.text-body {
+  @apply text-base md:text-lg leading-relaxed;
+}
+
+.text-caption {
+  @apply text-sm text-gray-600 dark:text-gray-400;
+}
+
+/* Spacing System */
+.space-section { @apply py-16 md:py-24 lg:py-32; }
+.space-component { @apply py-8 md:py-12; }
+.space-element { @apply py-4 md:py-6; }
+
+/* Responsive Containers */
+.container-hero {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.container-content {
+  @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.container-narrow {
+  @apply max-w-2xl mx-auto px-4 sm:px-6 lg:px-8;
+}

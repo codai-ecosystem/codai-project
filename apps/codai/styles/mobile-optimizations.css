@@ -1,0 +1,250 @@
+/* Mobile Experience Optimization */
+
+/* Enhanced Touch Targets */
+@media (max-width: 768px) {
+    .glass-card {
+        min-height: 44px;
+        padding: 20px 16px;
+        margin-bottom: 16px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(59, 130, 246, 0.3);
+    }
+
+    button,
+    [role="button"],
+    .interactive-element {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 12px 16px;
+        touch-action: manipulation;
+    }
+
+    /* Larger text for mobile readability */
+    .text-xl {
+        font-size: 1.375rem;
+        /* 22px */
+        line-height: 1.4;
+    }
+
+    .text-6xl {
+        font-size: 3.5rem;
+        /* 56px instead of 60px for mobile */
+        line-height: 1.1;
+    }
+
+    /* Enhanced spacing for thumb navigation */
+    .space-x-4>*+* {
+        margin-left: 1.5rem;
+        /* 24px instead of 16px */
+    }
+
+    .space-y-2>*+* {
+        margin-top: 0.75rem;
+        /* 12px instead of 8px */
+    }
+}
+
+/* Tablet Optimization */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    .glass-card {
+        padding: 24px;
+    }
+}
+
+/* Enhanced Touch Feedback */
+.glass-card:active,
+.touch-feedback:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+}
+
+.glass-card:hover:not(:active) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Swipe Gesture Support */
+.swipeable {
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile Navigation Enhancements */
+@media (max-width: 768px) {
+    .mobile-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(15, 23, 42, 0.95);
+        backdrop-filter: blur(20px);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 12px 16px;
+        z-index: 50;
+    }
+
+    .mobile-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 8px;
+        min-width: 64px;
+        min-height: 56px;
+        border-radius: 12px;
+        transition: background-color 0.2s ease;
+    }
+
+    .mobile-nav-item:active {
+        background: rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* Pull-to-Refresh Indicator */
+.pull-refresh {
+    position: fixed;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    background: rgba(59, 130, 246, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: top 0.3s ease;
+    z-index: 1000;
+}
+
+.pull-refresh.active {
+    top: 20px;
+}
+
+/* Improved Modal Experience for Mobile */
+@media (max-width: 768px) {
+    .modal-mobile {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: auto;
+        border-radius: 20px 20px 0 0;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .modal-handle {
+        width: 40px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 2px;
+        margin: 12px auto;
+    }
+}
+
+/* Enhanced Readability */
+@media (max-width: 768px) {
+    body {
+        font-size: 16px;
+        /* Prevent zoom on iOS */
+        -webkit-text-size-adjust: 100%;
+    }
+
+    p,
+    li {
+        line-height: 1.6;
+        font-size: 1rem;
+    }
+
+    /* Better contrast for mobile viewing */
+    .text-slate-400 {
+        color: #a1a1aa;
+        /* Lighter for better mobile readability */
+    }
+}
+
+/* Landscape Orientation Optimization */
+@media (max-width: 812px) and (orientation: landscape) {
+    .hero-section {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+
+    .text-6xl {
+        font-size: 2.5rem;
+        /* Smaller for landscape */
+    }
+
+    .grid {
+        gap: 1rem;
+        /* Tighter spacing in landscape */
+    }
+}
+
+/* Safe Area Insets for iPhone X+ */
+@supports (padding: max(0px)) {
+    .safe-area-inset {
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+        padding-bottom: max(16px, env(safe-area-inset-bottom));
+    }
+}
+
+/* Dark Mode Adjustments for Mobile */
+@media (max-width: 768px) {
+    .glass-card {
+        background: rgba(255, 255, 255, 0.12);
+        /* Slightly more opaque for mobile */
+        border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    /* Better shadows for mobile screens */
+    .glass-card:hover {
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* Gesture-Friendly Animations */
+@media (hover: none) and (pointer: coarse) {
+    .glass-card {
+        transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    .glass-card:hover {
+        transform: none;
+        /* Disable hover effects on touch devices */
+    }
+
+    .glass-card:active {
+        transform: scale(0.98);
+        background: rgba(255, 255, 255, 0.15);
+    }
+}
+
+/* iOS Specific Optimizations */
+@supports (-webkit-touch-callout: none) {
+
+    .glass-card,
+    button {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+
+    /* iOS Safe Area */
+    .header-ios {
+        padding-top: max(24px, env(safe-area-inset-top));
+    }
+
+    /* Prevent iOS zoom on focus */
+    input,
+    textarea,
+    select {
+        font-size: 16px;
+    }
+}

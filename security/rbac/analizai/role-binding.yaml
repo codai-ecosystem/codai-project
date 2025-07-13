@@ -1,0 +1,27 @@
+{
+  "apiVersion": "rbac.authorization.k8s.io/v1",
+  "kind": "RoleBinding",
+  "metadata": {
+    "name": "analizai-rb",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "analizai",
+      "component": "rbac",
+      "app.kubernetes.io/name": "analizai",
+      "app.kubernetes.io/component": "rbac",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  },
+  "subjects": [
+    {
+      "kind": "ServiceAccount",
+      "name": "analizai-sa",
+      "namespace": "codai-production"
+    }
+  ],
+  "roleRef": {
+    "kind": "Role",
+    "name": "analizai-role",
+    "apiGroup": "rbac.authorization.k8s.io"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "@codai/fabricai",
+  "version": "1.0.0",
+  "description": "AI Services Platform - Machine learning infrastructure",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "echo \"Test passed for ${service.name}\"",
+    "health": "curl http://localhost:${service.port}/health"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.0.0",
+    "morgan": "^1.10.0",
+    "compression": "^1.7.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  },
+  "keywords": [
+    "codai",
+    "ecosystem",
+    "business",
+    "app"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

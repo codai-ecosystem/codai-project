@@ -1,0 +1,614 @@
+# Comprehensive Monitoring and Alerting Configuration
+# This file defines all monitoring rules, alerts, and dashboards for the Codai ecosystem
+
+global:
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'codai-production'
+    environment: 'production'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - alertmanager:9093
+      scheme: http
+      timeout: 10s
+      api_version: v2
+
+# Rules files
+rule_files:
+  - "rules/*.yml"
+  - "alerts/*.yml"
+
+# Scrape configurations
+scrape_configs:
+  # ==========================================
+  # INFRASTRUCTURE MONITORING
+  # ==========================================
+  
+  # Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    scrape_interval: 30s
+    metrics_path: /metrics
+
+  # Node Exporter - System metrics
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets:
+          - 'node-exporter:9100'
+    scrape_interval: 30s
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: node-exporter:9100
+
+  # Kubernetes API Server
+  - job_name: 'kubernetes-apiservers'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - default
+    scheme: https
+    tls_config:
+      ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      insecure_skip_verify: false
+    bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: default;kubernetes;https
+
+  # Kubernetes Nodes
+  - job_name: 'kubernetes-nodes'
+    kubernetes_sd_configs:
+      - role: node
+    scheme: https
+    tls_config:
+      ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      insecure_skip_verify: false
+    bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+    relabel_configs:
+      - action: labelmap
+        regex: __meta_kubernetes_node_label_(.+)
+      - target_label: __address__
+        replacement: kubernetes.default.svc:443
+      - source_labels: [__meta_kubernetes_node_name]
+        regex: (.+)
+        target_label: __metrics_path__
+        replacement: /api/v1/nodes/$1/proxy/metrics
+
+  # Kubernetes Pods
+  - job_name: 'kubernetes-pods'
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        action: keep
+        regex: true
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
+      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        action: replace
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        replacement: $1:$2
+        target_label: __address__
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
+      - source_labels: [__meta_kubernetes_namespace]
+        action: replace
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_pod_name]
+        action: replace
+        target_label: kubernetes_pod_name
+
+  # ==========================================
+  # CODAI APPS MONITORING
+  # ==========================================
+  
+  # Core Apps (Priority 1)
+  - job_name: 'codai-app'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: codai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http-metrics
+    scrape_interval: 15s
+    metrics_path: /metrics
+
+  - job_name: 'memorai-app'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: memorai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http-metrics
+    scrape_interval: 15s
+    metrics_path: /metrics
+
+  - job_name: 'logai-app'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: logai
+      - source_labels: [__meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: http-metrics
+    scrape_interval: 15s
+    metrics_path: /metrics
+
+  # Business Apps (Priority 2)
+  - job_name: 'bancai-app'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: bancai
+    scrape_interval: 30s
+    metrics_path: /metrics
+
+  - job_name: 'wallet-app'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: wallet
+    scrape_interval: 30s
+    metrics_path: /metrics
+
+  - job_name: 'fabricai-app'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: fabricai
+    scrape_interval: 30s
+    metrics_path: /metrics
+
+  # Specialized Apps (Priority 3)
+  - job_name: 'studiai-app'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: studiai
+    scrape_interval: 60s
+    metrics_path: /metrics
+
+  - job_name: 'sociai-app'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: sociai
+    scrape_interval: 60s
+    metrics_path: /metrics
+
+  - job_name: 'cumparai-app'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: cumparai
+    scrape_interval: 60s
+    metrics_path: /metrics
+
+  - job_name: 'x-app'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: x
+    scrape_interval: 30s
+    metrics_path: /metrics
+
+  - job_name: 'publicai-app'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: publicai
+    scrape_interval: 60s
+    metrics_path: /metrics
+
+  # ==========================================
+  # CODAI SERVICES MONITORING
+  # ==========================================
+  
+  # Management Services
+  - job_name: 'admin-service'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: admin
+    scrape_interval: 30s
+    metrics_path: /metrics
+
+  - job_name: 'aide-service'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: aide
+    scrape_interval: 30s
+    metrics_path: /metrics
+
+  - job_name: 'hub-service'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: hub
+    scrape_interval: 30s
+    metrics_path: /metrics
+
+  # Support Services
+  - job_name: 'ajutai-service'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: ajutai
+    scrape_interval: 60s
+    metrics_path: /metrics
+
+  - job_name: 'docs-service'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: docs
+    scrape_interval: 60s
+    metrics_path: /metrics
+
+  # Analytics Services
+  - job_name: 'analizai-service'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: analizai
+    scrape_interval: 30s
+    metrics_path: /metrics
+
+  - job_name: 'dash-service'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: dash
+    scrape_interval: 30s
+    metrics_path: /metrics
+
+  - job_name: 'metu-service'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: metu
+    scrape_interval: 30s
+    metrics_path: /metrics
+
+  # Infrastructure Services
+  - job_name: 'explorer-service'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: explorer
+    scrape_interval: 60s
+    metrics_path: /metrics
+
+  - job_name: 'id-service'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: id
+    scrape_interval: 30s
+    metrics_path: /metrics
+
+  - job_name: 'kodex-service'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: kodex
+    scrape_interval: 60s
+    metrics_path: /metrics
+
+  # Specialized Services
+  - job_name: 'jucai-service'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: jucai
+    scrape_interval: 60s
+    metrics_path: /metrics
+
+  - job_name: 'legalizai-service'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: legalizai
+    scrape_interval: 60s
+    metrics_path: /metrics
+
+  - job_name: 'marketai-service'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: marketai
+    scrape_interval: 60s
+    metrics_path: /metrics
+
+  - job_name: 'mod-service'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: mod
+    scrape_interval: 60s
+    metrics_path: /metrics
+
+  - job_name: 'stocai-service'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: stocai
+    scrape_interval: 30s
+    metrics_path: /metrics
+
+  - job_name: 'templates-service'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: templates
+    scrape_interval: 60s
+    metrics_path: /metrics
+
+  - job_name: 'tools-service'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - codai-production
+            - codai-staging
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+        action: keep
+        regex: tools
+    scrape_interval: 60s
+    metrics_path: /metrics
+
+  # ==========================================
+  # EXTERNAL DEPENDENCIES
+  # ==========================================
+  
+  # PostgreSQL
+  - job_name: 'postgresql'
+    static_configs:
+      - targets:
+          - 'postgres-exporter:9187'
+    scrape_interval: 30s
+    metrics_path: /metrics
+
+  # Redis
+  - job_name: 'redis'
+    static_configs:
+      - targets:
+          - 'redis-exporter:9121'
+    scrape_interval: 30s
+    metrics_path: /metrics
+
+  # Nginx Ingress Controller
+  - job_name: 'nginx-ingress'
+    kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names:
+            - ingress-nginx
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
+        action: keep
+        regex: ingress-nginx
+      - source_labels: [__meta_kubernetes_pod_container_port_number]
+        action: keep
+        regex: "10254"
+    scrape_interval: 30s
+    metrics_path: /metrics
+
+  # cert-manager
+  - job_name: 'cert-manager'
+    kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names:
+            - cert-manager
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
+        action: keep
+        regex: cert-manager
+    scrape_interval: 60s
+    metrics_path: /metrics
+
+# Remote storage configuration
+remote_write:
+  - url: "https://prometheus-remote-write.example.com/api/v1/write"
+    basic_auth:
+      username: "codai"
+      password_file: "/etc/prometheus/remote-write-password"
+    queue_config:
+      max_samples_per_send: 1000
+      max_shards: 200
+      capacity: 2500
+
+# Storage configuration
+storage:
+  tsdb:
+    retention.time: 30d
+    retention.size: 100GB
+    wal-compression: true

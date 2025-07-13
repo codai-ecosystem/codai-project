@@ -1,0 +1,375 @@
+'use client'
+
+import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
+import {
+  TrendingUp,
+  TrendingDown,
+  Users,
+  Code2,
+  Clock,
+  GitBranch,
+  Calendar,
+  Download,
+  Filter,
+  BarChart3,
+  PieChart,
+  Activity
+} from 'lucide-react'
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart as RechartsPieChart,
+  Cell
+} from 'recharts'
+
+interface MetricCard {
+  title: string
+  value: string
+  change: number
+  icon: React.ReactNode
+  color: string
+}
+
+interface ChartData {
+  name: string
+  value: number
+  commits?: number
+  lines?: number
+  bugs?: number
+}
+
+export default function AnalyticsPage() {
+  const [timeRange, setTimeRange] = useState('7d')
+  const [selectedMetric, setSelectedMetric] = useState('overview')
+
+  const [metrics, setMetrics] = useState<MetricCard[]>([
+    {
+      title: 'Total Lines of Code',
+      value: '156,892',
+      change: 12.5,
+      icon: <Code2 className="w-6 h-6" />,
+      color: 'text-blue-400'
+    },
+    {
+      title: 'Active Projects',
+      value: '12',
+      change: 8.3,
+      icon: <GitBranch className="w-6 h-6" />,
+      color: 'text-emerald-400'
+    },
+    {
+      title: 'Team Members',
+      value: '8',
+      change: 0,
+      icon: <Users className="w-6 h-6" />,
+      color: 'text-purple-400'
+    },
+    {
+      title: 'Avg. Build Time',
+      value: '2.4m',
+      change: -15.2,
+      icon: <Clock className="w-6 h-6" />,
+      color: 'text-amber-400'
+    }
+  ])
+
+  const weeklyData: ChartData[] = [
+    { name: 'Mon', value: 45, commits: 45, lines: 2400, bugs: 3 },
+    { name: 'Tue', value: 52, commits: 52, lines: 3100, bugs: 5 },
+    { name: 'Wed', value: 38, commits: 38, lines: 2800, bugs: 2 },
+    { name: 'Thu', value: 67, commits: 67, lines: 4200, bugs: 8 },
+    { name: 'Fri', value: 43, commits: 43, lines: 2900, bugs: 4 },
+    { name: 'Sat', value: 28, commits: 28, lines: 1800, bugs: 1 },
+    { name: 'Sun', value: 31, commits: 31, lines: 2100, bugs: 2 }
+  ]
+
+  const languageData: ChartData[] = [
+    { name: 'TypeScript', value: 45 },
+    { name: 'JavaScript', value: 25 },
+    { name: 'Python', value: 15 },
+    { name: 'Go', value: 8 },
+    { name: 'Rust', value: 7 }
+  ]
+
+  const projectData: ChartData[] = [
+    { name: 'E-commerce', value: 85 },
+    { name: 'Banking App', value: 68 },
+    { name: 'ML Dashboard', value: 100 },
+    { name: 'Blockchain', value: 45 },
+    { name: 'API Gateway', value: 82 }
+  ]
+
+  const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6']
+
+  const [realtimeMetrics, setRealtimeMetrics] = useState({
+    activeUsers: 47,
+    currentBuilds: 3,
+    systemLoad: 23.4
+  })
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRealtimeMetrics(prev => ({
+        activeUsers: Math.floor(Math.random() * 20) + 40,
+        currentBuilds: Math.floor(Math.random() * 5) + 1,
+        systemLoad: Math.random() * 20 + 20
+      }))
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+      {/* Animated Background */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -inset-[10px] opacity-20">
+          <motion.div
+            className="absolute top-1/4 left-1/4 w-96 h-96 bg-emerald-500 rounded-full mix-blend-multiply filter blur-xl opacity-70"
+            animate={{
+              x: [0, 100, 0],
+              y: [0, -100, 0],
+            }}
+            transition={{
+              duration: 30,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="relative z-10 p-6">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center justify-between mb-8"
+        >
+          <div>
+            <h1 className="text-3xl font-bold text-white mb-2">Analytics Dashboard</h1>
+            <p className="text-slate-400">Track your development metrics and insights</p>
+          </div>
+          <div className="flex items-center space-x-4">
+            <select
+              value={timeRange}
+              onChange={(e) => setTimeRange(e.target.value)}
+              className="px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-blue-400"
+            >
+              <option value="7d">Last 7 days</option>
+              <option value="30d">Last 30 days</option>
+              <option value="90d">Last 90 days</option>
+              <option value="1y">Last year</option>
+            </select>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+            >
+              <Download className="w-5 h-5" />
+              <span>Export</span>
+            </motion.button>
+          </div>
+        </motion.div>
+
+        {/* Real-time Status */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 mb-8"
+        >
+          <h3 className="text-lg font-semibold text-white mb-4">Real-time Status</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-blue-600/20 rounded-lg">
+                <Users className="w-5 h-5 text-blue-400" />
+              </div>
+              <div>
+                <p className="text-slate-400 text-sm">Active Users</p>
+                <motion.p
+                  key={realtimeMetrics.activeUsers}
+                  initial={{ scale: 1.2, color: "#60a5fa" }}
+                  animate={{ scale: 1, color: "#ffffff" }}
+                  className="text-xl font-bold text-white"
+                >
+                  {realtimeMetrics.activeUsers}
+                </motion.p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-emerald-600/20 rounded-lg">
+                <Activity className="w-5 h-5 text-emerald-400" />
+              </div>
+              <div>
+                <p className="text-slate-400 text-sm">Current Builds</p>
+                <motion.p
+                  key={realtimeMetrics.currentBuilds}
+                  initial={{ scale: 1.2, color: "#10b981" }}
+                  animate={{ scale: 1, color: "#ffffff" }}
+                  className="text-xl font-bold text-white"
+                >
+                  {realtimeMetrics.currentBuilds}
+                </motion.p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-amber-600/20 rounded-lg">
+                <BarChart3 className="w-5 h-5 text-amber-400" />
+              </div>
+              <div>
+                <p className="text-slate-400 text-sm">System Load</p>
+                <motion.p
+                  key={realtimeMetrics.systemLoad}
+                  initial={{ scale: 1.2, color: "#f59e0b" }}
+                  animate={{ scale: 1, color: "#ffffff" }}
+                  className="text-xl font-bold text-white"
+                >
+                  {realtimeMetrics.systemLoad.toFixed(1)}%
+                </motion.p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Metric Cards */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+        >
+          {metrics.map((metric, index) => (
+            <motion.div
+              key={metric.title}
+              variants={itemVariants}
+              whileHover={{ scale: 1.02 }}
+              className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className={metric.color}>
+                  {metric.icon}
+                </div>
+                <div className={`flex items-center space-x-1 text-sm ${metric.change > 0 ? 'text-emerald-400' : metric.change < 0 ? 'text-red-400' : 'text-slate-400'
+                  }`}>
+                  {metric.change > 0 ? (
+                    <TrendingUp className="w-4 h-4" />
+                  ) : metric.change < 0 ? (
+                    <TrendingDown className="w-4 h-4" />
+                  ) : null}
+                  <span>{Math.abs(metric.change)}%</span>
+                </div>
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-1">{metric.value}</h3>
+              <p className="text-slate-400 text-sm">{metric.title}</p>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Charts Grid */}
+        <div className="grid lg:grid-cols-2 gap-8 mb-8">
+          {/* Weekly Activity */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20"
+          >
+            <h3 className="text-lg font-semibold text-white mb-6">Weekly Activity</h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={weeklyData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                <XAxis dataKey="name" stroke="#94a3b8" />
+                <YAxis stroke="#94a3b8" />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: 'rgba(15, 23, 42, 0.8)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    borderRadius: '8px'
+                  }}
+                />
+                <Bar dataKey="commits" fill="#3B82F6" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </motion.div>
+
+          {/* Language Distribution */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20"
+          >
+            <h3 className="text-lg font-semibold text-white mb-6">Language Distribution</h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <RechartsPieChart>
+                <Pie
+                  data={languageData}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                >
+                  {languageData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </RechartsPieChart>
+            </ResponsiveContainer>
+          </motion.div>
+        </div>
+
+        {/* Project Progress */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20"
+        >
+          <h3 className="text-lg font-semibold text-white mb-6">Project Progress</h3>
+          <div className="space-y-4">
+            {projectData.map((project, index) => (
+              <div key={project.name} className="flex items-center space-x-4">
+                <div className="w-24 text-sm text-slate-300">{project.name}</div>
+                <div className="flex-1 bg-white/10 rounded-full h-3">
+                  <motion.div
+                    className="h-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${project.value}%` }}
+                    transition={{ delay: index * 0.1 + 0.5, duration: 1 }}
+                  />
+                </div>
+                <div className="w-12 text-sm text-white font-medium">{project.value}%</div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  )
+}

@@ -1,0 +1,172 @@
+apiVersion: v2
+name: codai-platform
+description: Ultimate Enterprise Helm Chart for Complete Codai Platform
+type: application
+version: 3.0.0
+appVersion: "3.0.0"
+home: https://codai.ai
+sources:
+  - https://github.com/codai-project/codai-project
+maintainers:
+  - name: Codai Team
+    email: platform@codai.ai
+
+dependencies:
+  # Core Applications (11)
+  - name: codai
+    version: "1.0.0"
+    repository: "file://charts/codai"
+    condition: codai.enabled
+  - name: memorai
+    version: "1.0.0"
+    repository: "file://charts/memorai"
+    condition: memorai.enabled
+  - name: logai
+    version: "1.0.0"
+    repository: "file://charts/logai"
+    condition: logai.enabled
+  - name: bancai
+    version: "1.0.0"
+    repository: "file://charts/bancai"
+    condition: bancai.enabled
+  - name: wallet
+    version: "1.0.0"
+    repository: "file://charts/wallet"
+    condition: wallet.enabled
+  - name: fabricai
+    version: "1.0.0"
+    repository: "file://charts/fabricai"
+    condition: fabricai.enabled
+  - name: studiai
+    version: "1.0.0"
+    repository: "file://charts/studiai"
+    condition: studiai.enabled
+  - name: sociai
+    version: "1.0.0"
+    repository: "file://charts/sociai"
+    condition: sociai.enabled
+  - name: cumparai
+    version: "1.0.0"
+    repository: "file://charts/cumparai"
+    condition: cumparai.enabled
+  - name: x
+    version: "1.0.0"
+    repository: "file://charts/x"
+    condition: x.enabled
+  - name: publicai
+    version: "1.0.0"
+    repository: "file://charts/publicai"
+    condition: publicai.enabled
+
+  # Extended Services (29)
+  - name: admin
+    version: "1.0.0"
+    repository: "file://charts/admin"
+    condition: admin.enabled
+  - name: aide
+    version: "1.0.0"
+    repository: "file://charts/aide"
+    condition: aide.enabled
+  - name: ajutai
+    version: "1.0.0"
+    repository: "file://charts/ajutai"
+    condition: ajutai.enabled
+  - name: analizai
+    version: "1.0.0"
+    repository: "file://charts/analizai"
+    condition: analizai.enabled
+  - name: dash
+    version: "1.0.0"
+    repository: "file://charts/dash"
+    condition: dash.enabled
+  - name: docs
+    version: "1.0.0"
+    repository: "file://charts/docs"
+    condition: docs.enabled
+  - name: explorer
+    version: "1.0.0"
+    repository: "file://charts/explorer"
+    condition: explorer.enabled
+  - name: hub
+    version: "1.0.0"
+    repository: "file://charts/hub"
+    condition: hub.enabled
+  - name: id
+    version: "1.0.0"
+    repository: "file://charts/id"
+    condition: id.enabled
+  - name: jucai
+    version: "1.0.0"
+    repository: "file://charts/jucai"
+    condition: jucai.enabled
+  - name: kodex
+    version: "1.0.0"
+    repository: "file://charts/kodex"
+    condition: kodex.enabled
+  - name: legalizai
+    version: "1.0.0"
+    repository: "file://charts/legalizai"
+    condition: legalizai.enabled
+  - name: marketai
+    version: "1.0.0"
+    repository: "file://charts/marketai"
+    condition: marketai.enabled
+  - name: metu
+    version: "1.0.0"
+    repository: "file://charts/metu"
+    condition: metu.enabled
+  - name: mod
+    version: "1.0.0"
+    repository: "file://charts/mod"
+    condition: mod.enabled
+  - name: stocai
+    version: "1.0.0"
+    repository: "file://charts/stocai"
+    condition: stocai.enabled
+  - name: templates
+    version: "1.0.0"
+    repository: "file://charts/templates"
+    condition: templates.enabled
+  - name: tools
+    version: "1.0.0"
+    repository: "file://charts/tools"
+    condition: tools.enabled
+
+  # Infrastructure Dependencies
+  - name: postgresql
+    version: "12.12.10"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: postgresql.enabled
+  - name: redis
+    version: "18.1.5"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: redis.enabled
+  - name: kafka
+    version: "25.3.5"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: kafka.enabled
+  - name: elasticsearch
+    version: "19.13.7"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: elasticsearch.enabled
+  - name: nginx-ingress-controller
+    version: "9.9.1"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: nginx.enabled
+  - name: cert-manager
+    version: "1.13.1"
+    repository: "https://charts.jetstack.io"
+    condition: certManager.enabled
+
+keywords:
+  - codai
+  - ai
+  - platform
+  - enterprise
+  - microservices
+  - kubernetes
+annotations:
+  category: AI Platform
+  enterprise: "true"
+  production-ready: "true"
+  compliance: "SOC2,ISO27001,GDPR"

@@ -1,0 +1,389 @@
+{
+  "timestamp": "2025-06-29T19:00:57.681Z",
+  "totalServices": 29,
+  "existingServices": 29,
+  "averageScores": {
+    "apis": 4.103448275862069,
+    "components": 13.344827586206897,
+    "integrations": 1,
+    "services": 1.0689655172413792,
+    "tests": 2,
+    "config": 3.7241379310344827,
+    "overall": 1
+  },
+  "detailedResults": {
+    "codai": {
+      "exists": true,
+      "apis": 5,
+      "components": 29,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 4,
+      "totalFiles": 42,
+      "totalScore": 1
+    },
+    "memorai": {
+      "exists": true,
+      "apis": 4,
+      "components": 19,
+      "integrations": 1,
+      "services": 3,
+      "tests": 2,
+      "config": 3,
+      "totalFiles": 32,
+      "totalScore": 1
+    },
+    "logai": {
+      "exists": true,
+      "apis": 4,
+      "components": 19,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 4,
+      "totalFiles": 31,
+      "totalScore": 1
+    },
+    "bancai": {
+      "exists": true,
+      "apis": 4,
+      "components": 18,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 4,
+      "totalFiles": 30,
+      "totalScore": 1
+    },
+    "wallet": {
+      "exists": true,
+      "apis": 4,
+      "components": 18,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 4,
+      "totalFiles": 30,
+      "totalScore": 1
+    },
+    "fabricai": {
+      "exists": true,
+      "apis": 3,
+      "components": 11,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 3,
+      "totalFiles": 21,
+      "totalScore": 1
+    },
+    "studiai": {
+      "exists": true,
+      "apis": 8,
+      "components": 7,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 3,
+      "totalFiles": 22,
+      "totalScore": 1
+    },
+    "sociai": {
+      "exists": true,
+      "apis": 4,
+      "components": 11,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 3,
+      "totalFiles": 22,
+      "totalScore": 1
+    },
+    "cumparai": {
+      "exists": true,
+      "apis": 4,
+      "components": 11,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 3,
+      "totalFiles": 22,
+      "totalScore": 1
+    },
+    "x": {
+      "exists": true,
+      "apis": 4,
+      "components": 11,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 3,
+      "totalFiles": 22,
+      "totalScore": 1
+    },
+    "publicai": {
+      "exists": true,
+      "apis": 3,
+      "components": 11,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 3,
+      "totalFiles": 21,
+      "totalScore": 1
+    },
+    "admin": {
+      "exists": true,
+      "apis": 4,
+      "components": 19,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 4,
+      "totalFiles": 31,
+      "totalScore": 1
+    },
+    "aide": {
+      "exists": true,
+      "apis": 4,
+      "components": 15,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 4,
+      "totalFiles": 27,
+      "totalScore": 1
+    },
+    "ajutai": {
+      "exists": true,
+      "apis": 4,
+      "components": 15,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 4,
+      "totalFiles": 27,
+      "totalScore": 1
+    },
+    "analizai": {
+      "exists": true,
+      "apis": 4,
+      "components": 11,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 4,
+      "totalFiles": 23,
+      "totalScore": 1
+    },
+    "dash": {
+      "exists": true,
+      "apis": 4,
+      "components": 11,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 4,
+      "totalFiles": 23,
+      "totalScore": 1
+    },
+    "docs": {
+      "exists": true,
+      "apis": 4,
+      "components": 11,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 4,
+      "totalFiles": 23,
+      "totalScore": 1
+    },
+    "explorer": {
+      "exists": true,
+      "apis": 4,
+      "components": 15,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 4,
+      "totalFiles": 27,
+      "totalScore": 1
+    },
+    "hub": {
+      "exists": true,
+      "apis": 4,
+      "components": 15,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 4,
+      "totalFiles": 27,
+      "totalScore": 1
+    },
+    "id": {
+      "exists": true,
+      "apis": 4,
+      "components": 11,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 4,
+      "totalFiles": 23,
+      "totalScore": 1
+    },
+    "jucai": {
+      "exists": true,
+      "apis": 4,
+      "components": 11,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 4,
+      "totalFiles": 23,
+      "totalScore": 1
+    },
+    "kodex": {
+      "exists": true,
+      "apis": 4,
+      "components": 11,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 4,
+      "totalFiles": 23,
+      "totalScore": 1
+    },
+    "legalizai": {
+      "exists": true,
+      "apis": 4,
+      "components": 11,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 4,
+      "totalFiles": 23,
+      "totalScore": 1
+    },
+    "marketai": {
+      "exists": true,
+      "apis": 4,
+      "components": 11,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 4,
+      "totalFiles": 23,
+      "totalScore": 1
+    },
+    "metu": {
+      "exists": true,
+      "apis": 4,
+      "components": 11,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 4,
+      "totalFiles": 23,
+      "totalScore": 1
+    },
+    "mod": {
+      "exists": true,
+      "apis": 4,
+      "components": 11,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 4,
+      "totalFiles": 23,
+      "totalScore": 1
+    },
+    "stocai": {
+      "exists": true,
+      "apis": 4,
+      "components": 11,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 4,
+      "totalFiles": 23,
+      "totalScore": 1
+    },
+    "templates": {
+      "exists": true,
+      "apis": 4,
+      "components": 11,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 3,
+      "totalFiles": 22,
+      "totalScore": 1
+    },
+    "tools": {
+      "exists": true,
+      "apis": 4,
+      "components": 11,
+      "integrations": 1,
+      "services": 1,
+      "tests": 2,
+      "config": 4,
+      "totalFiles": 23,
+      "totalScore": 1
+    }
+  },
+  "topPerformers": [
+    {
+      "name": "codai",
+      "score": 1,
+      "files": 42
+    },
+    {
+      "name": "memorai",
+      "score": 1,
+      "files": 32
+    },
+    {
+      "name": "logai",
+      "score": 1,
+      "files": 31
+    },
+    {
+      "name": "bancai",
+      "score": 1,
+      "files": 30
+    },
+    {
+      "name": "wallet",
+      "score": 1,
+      "files": 30
+    }
+  ],
+  "bottomPerformers": [
+    {
+      "name": "metu",
+      "score": 1,
+      "files": 23
+    },
+    {
+      "name": "mod",
+      "score": 1,
+      "files": 23
+    },
+    {
+      "name": "stocai",
+      "score": 1,
+      "files": 23
+    },
+    {
+      "name": "templates",
+      "score": 1,
+      "files": 22
+    },
+    {
+      "name": "tools",
+      "score": 1,
+      "files": 23
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "name": "codai-performance-monitor",
+  "version": "1.0.0",
+  "description": "Enterprise Performance Monitor for Codai Ecosystem",
+  "type": "module",
+  "main": "performance-monitor.js",
+  "scripts": {
+    "start": "node performance-monitor.js",
+    "dev": "node performance-monitor.js"
+  },
+  "dependencies": {
+    "compression": "^1.8.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "http-proxy-middleware": "^3.0.5"
+  },
+  "keywords": [
+    "monitoring",
+    "performance",
+    "codai",
+    "enterprise"
+  ],
+  "author": "Codai Ecosystem",
+  "license": "MIT"
+}

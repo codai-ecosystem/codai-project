@@ -1,0 +1,441 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// NextAuth.js required models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?   // For credentials-based authentication
+  role          String    @default("USER")
+  
+  // Public AI specific fields
+  apiKey        String?   @unique // Personal API key for accessing services
+  tier          String    @default("FREE") // FREE, BASIC, PRO, ENTERPRISE
+  monthlyUsage  Int       @default(0)
+  usageLimit    Int       @default(1000) // Monthly API call limit
+  lastUsageReset DateTime @default(now())
+  
+  // Billing and subscription
+  stripeCustomerId String?
+  subscriptionId   String?
+  subscriptionStatus String @default("inactive")
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Authentication relations
+  accounts      Account[]
+  sessions      Session[]
+  
+  // User preferences and settings
+  preferences   UserPreferences?
+  
+  // Public AI features
+  apiRequests   AIApiRequest[]
+  models        AIModel[]
+  datasets      Dataset[]
+  prompts       Prompt[]
+  integrations  Integration[]
+  apiKeys       APIKey[]
+  usageQuotas   UsageQuota[]
+  feedback      Feedback[]
+  
+  // Collaboration features
+  workspaceMembers WorkspaceMember[]
+  projects         Project[]
+  collaborationParticipants CollaborationParticipant[]
+  presenceUpdates PresenceUpdate[]
+  
+  @@map("users")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// User preferences model for personalization
+model UserPreferences {
+  id               String  @id @default(cuid())
+  userId           String  @unique
+  theme            String  @default("system") // light, dark, system
+  language         String  @default("en")
+  timezone         String  @default("UTC")
+  emailNotifications Boolean @default(true)
+  pushNotifications  Boolean @default(true)
+  
+  // AI preferences
+  defaultProvider  String  @default("openai")
+  defaultModel     String  @default("gpt-4")
+  defaultTemperature Float @default(0.7)
+  defaultMaxTokens Int     @default(1000)
+  
+  // API preferences
+  rateLimitAlerts  Boolean @default(true)
+  usageAlerts      Boolean @default(true)
+  debugMode        Boolean @default(false)
+  
+  // UI preferences
+  sidebarCollapsed Boolean @default(false)
+  compactMode      Boolean @default(false)
+  codeTheme        String  @default("vs-dark")
+  
+  user             User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("user_preferences")
+}
+
+// Public AI Services Models
+model AIProvider {
+  id          String    @id @default(cuid())
+  name        String    @unique // "openai", "anthropic", "huggingface", "cohere", etc.
+  displayName String
+  baseUrl     String
+  isActive    Boolean   @default(true)
+  apiKeyRequired Boolean @default(true)
+  description String?
+  logoUrl     String?
+  pricing     String?   // JSON string with pricing tiers
+  rateLimit   Int       @default(100) // Requests per minute
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  models      AIModel[]
+  requests    AIApiRequest[]
+  
+  @@map("ai_providers")
+}
+
+model AIModel {
+  id            String    @id @default(cuid())
+  providerId    String
+  modelId       String    // Provider's model identifier
+  name          String
+  displayName   String
+  description   String?
+  type          String    // "text", "image", "audio", "embedding", "chat"
+  inputPrice    Float     @default(0) // Price per 1K input tokens
+  outputPrice   Float     @default(0) // Price per 1K output tokens
+  maxTokens     Int       @default(4096)
+  capabilities  String?   // JSON array of capabilities
+  isActive      Boolean   @default(true)
+  isPublic      Boolean   @default(true)
+  ownerId       String?   // For custom fine-tuned models
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  provider      AIProvider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  owner         User?      @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+  requests      AIApiRequest[]
+  
+  @@unique([providerId, modelId])
+  @@map("ai_models")
+}
+
+model AIApiRequest {
+  id            String    @id @default(cuid())
+  userId        String
+  providerId    String
+  modelId       String
+  
+  // Request details
+  prompt        String
+  response      String?
+  parameters    String?   // JSON string with request parameters
+  inputTokens   Int       @default(0)
+  outputTokens  Int       @default(0)
+  totalTokens   Int       @default(0)
+  
+  // Metadata
+  endpoint      String    // "/chat", "/completion", "/embedding", etc.
+  httpMethod    String    @default("POST")
+  statusCode    Int?
+  responseTime  Int?      // Response time in milliseconds
+  cost          Float     @default(0) // Cost in USD
+  
+  // Request tracking
+  ipAddress     String?
+  userAgent     String?
+  referer       String?
+  
+  createdAt     DateTime  @default(now())
+  
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider      AIProvider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  model         AIModel    @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  
+  @@index([userId, createdAt])
+  @@index([providerId, createdAt])
+  @@map("ai_api_requests")
+}
+
+model Dataset {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  type        String    // "training", "fine-tuning", "evaluation"
+  format      String    // "jsonl", "csv", "txt", "parquet"
+  size        Int       @default(0) // Size in bytes
+  recordCount Int       @default(0)
+  isPublic    Boolean   @default(false)
+  tags        String?   // JSON array of tags
+  metadata    String?   // JSON metadata
+  storageUrl  String?   // URL to stored dataset
+  ownerId     String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  owner       User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  
+  @@map("datasets")
+}
+
+model Prompt {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  content     String
+  category    String    // "chat", "completion", "creative", "technical", etc.
+  tags        String?   // JSON array of tags
+  isPublic    Boolean   @default(false)
+  isFeatured  Boolean   @default(false)
+  usageCount  Int       @default(0)
+  likes       Int       @default(0)
+  version     String    @default("1.0")
+  language    String    @default("en")
+  ownerId     String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  owner       User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  
+  @@index([category, isPublic])
+  @@index([isFeatured, isPublic])
+  @@map("prompts")
+}
+
+model Integration {
+  id            String    @id @default(cuid())
+  name          String
+  type          String    // "webhook", "api", "oauth", "key"
+  platform      String    // "slack", "discord", "github", "zapier", etc.
+  description   String?
+  config        String    // JSON configuration
+  isActive      Boolean   @default(true)
+  lastUsed      DateTime?
+  usageCount    Int       @default(0)
+  ownerId       String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  owner         User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  
+  @@map("integrations")
+}
+
+model APIKey {
+  id          String    @id @default(cuid())
+  key         String    @unique
+  name        String
+  description String?
+  permissions String    // JSON array of permissions
+  lastUsed    DateTime?
+  usageCount  Int       @default(0)
+  isActive    Boolean   @default(true)
+  expiresAt   DateTime?
+  ownerId     String
+  createdAt   DateTime  @default(now())
+  
+  owner       User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  
+  @@map("api_keys")
+}
+
+model UsageQuota {
+  id          String    @id @default(cuid())
+  userId      String
+  type        String    // "requests", "tokens", "cost"
+  limit       Int
+  used        Int       @default(0)
+  resetPeriod String    // "daily", "monthly", "yearly"
+  lastReset   DateTime  @default(now())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, type, resetPeriod])
+  @@map("usage_quotas")
+}
+
+model ServiceStatus {
+  id          String    @id @default(cuid())
+  service     String    @unique // "api", "dashboard", "auth", specific provider
+  status      String    // "operational", "degraded", "outage", "maintenance"
+  message     String?
+  startTime   DateTime  @default(now())
+  endTime     DateTime?
+  updatedAt   DateTime  @updatedAt
+  
+  @@map("service_status")
+}
+
+model Feedback {
+  id          String    @id @default(cuid())
+  type        String    // "bug", "feature", "improvement", "question"
+  title       String
+  description String
+  category    String?
+  priority    String    @default("medium") // "low", "medium", "high", "urgent"
+  status      String    @default("open") // "open", "in_progress", "resolved", "closed"
+  userId      String?
+  email       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  @@map("feedback")
+}
+
+// Collaboration models
+model Workspace {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  slug        String    @unique
+  ownerId     String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  members     WorkspaceMember[]
+  projects    Project[]
+  
+  @@map("workspaces")
+}
+
+model WorkspaceMember {
+  id          String        @id @default(cuid())
+  workspaceId String
+  userId      String
+  role        String        @default("MEMBER")
+  joinedAt    DateTime      @default(now())
+  
+  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([workspaceId, userId])
+  @@map("workspace_members")
+}
+
+model Project {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  workspaceId String
+  ownerId     String
+  isPublic    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  owner       User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  
+  @@map("projects")
+}
+
+// Real-time collaboration models
+model CollaborationSession {
+  id          String    @id @default(cuid())
+  workspaceId String
+  type        String    // "shared_workspace", "collaborative_editing", "presence"
+  createdBy   String
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  participants    CollaborationParticipant[]
+  presenceUpdates PresenceUpdate[]
+  
+  @@map("collaboration_sessions")
+}
+
+model CollaborationParticipant {
+  id          String    @id @default(cuid())
+  sessionId   String
+  userId      String
+  permissions String    @default("write") // "read", "write", "admin"
+  joinedAt    DateTime  @default(now())
+  leftAt      DateTime?
+  
+  session     CollaborationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user        User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([sessionId, userId])
+  @@map("collaboration_participants")
+}
+
+model PresenceUpdate {
+  id            String    @id @default(cuid())
+  userId        String
+  workspaceId   String
+  sessionId     String?
+  status        String    // "online", "offline", "away", "busy"
+  currentFile   String?
+  cursorPosition String?   // JSON string: { "line": number, "column": number }
+  updatedAt     DateTime  @default(now())
+  
+  user          User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  session       CollaborationSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  
+  @@unique([userId, workspaceId])
+  @@map("presence_updates")
+}
+
+// Note: SQLite doesn't support enums, so we use string constants
+// Valid UserRole values: "USER", "ADMIN", "MODERATOR"
+// Valid WorkspaceRole values: "OWNER", "ADMIN", "MEMBER", "VIEWER"
+// Valid CollaborationType values: "shared_workspace", "collaborative_editing", "presence"
+// Valid PresenceStatus values: "online", "offline", "away", "busy"
+// Valid Permissions values: "read", "write", "admin"

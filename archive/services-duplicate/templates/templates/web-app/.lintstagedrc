@@ -1,0 +1,24 @@
+{
+    "*.{js,jsx,ts,tsx}": [
+        "eslint --fix --max-warnings=0",
+        "prettier --write"
+    ],
+    "*.{json,md,yaml,yml}": [
+        "prettier --write"
+    ],
+    "*.{css,scss}": [
+        "prettier --write"
+    ],
+    "package.json": [
+        "prettier --write"
+    ],
+    "apps/web/src/**/*.{ts,tsx}": [
+        "bash -c 'cd apps/web && pnpm test --findRelatedTests --passWithNoTests --silent'"
+    ],
+    "apps/backend/src/**/*.{ts}": [
+        "bash -c 'cd apps/backend && pnpm test --findRelatedTests --passWithNoTests --silent'"
+    ],
+    "packages/*/src/**/*.{ts,tsx}": [
+        "bash -c 'pnpm type-check'"
+    ]
+}

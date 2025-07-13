@@ -1,0 +1,88 @@
+{
+  "name": "@codai/config",
+  "version": "1.0.0",
+  "description": "Shared configuration utilities for the Codai ecosystem",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/index.js"
+    },
+    "./eslint": {
+      "import": "./dist/esm/eslint.js",
+      "require": "./dist/eslint.js"
+    },
+    "./tailwind": {
+      "import": "./dist/esm/tailwind.js",
+      "require": "./dist/tailwind.js"
+    },
+    "./typescript": {
+      "import": "./dist/esm/typescript.js",
+      "require": "./dist/typescript.js"
+    },
+    "./vite": {
+      "import": "./dist/esm/vite.js",
+      "require": "./dist/vite.js"
+    },
+    "./rollup": {
+      "import": "./dist/esm/rollup.js",
+      "require": "./dist/rollup.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build && tsc --build tsconfig.esm.json",
+    "dev": "tsc --build --watch",
+    "lint": "eslint src --ext .ts,.tsx",
+    "test": "vitest",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.4",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.16",
+    "@typescript-eslint/eslint-plugin": "^8.36.0",
+    "@typescript-eslint/parser": "^8.36.0",
+    "@vitejs/plugin-react": "^4.6.0",
+    "eslint-config-next": "^15.3.5",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "rollup": "^4.45.0",
+    "rollup-plugin-dts": "^6.2.1",
+    "tailwindcss": "^4.1.11",
+    "vite": "^7.0.4",
+    "vitest": "^3.2.4"
+  },
+  "devDependencies": {
+    "@jest/types": "^30.0.1",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.13",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.31.0",
+    "postcss": "^8.5.6",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3"
+  },
+  "peerDependencies": {
+    "eslint": ">=9.0.0",
+    "typescript": ">=5.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "codai",
+    "config",
+    "eslint",
+    "tailwind",
+    "typescript",
+    "build-tools"
+  ],
+  "author": "Codai Team",
+  "license": "MIT"
+}

@@ -1,0 +1,153 @@
+# Codai Platform Helm Templates
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.global.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "codai-platform.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    codai.ai/platform: "true"
+---
+# Global ConfigMap for shared configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "codai-platform.fullname" . }}-global-config
+  namespace: {{ .Values.global.namespace }}
+data:
+  ENVIRONMENT: {{ .Values.global.environment | quote }}
+  LOG_LEVEL: {{ .Values.global.logging.level | quote }}
+  PLATFORM_VERSION: {{ .Chart.AppVersion | quote }}
+  ENABLE_METRICS: {{ .Values.global.monitoring.enabled | quote }}
+  ENABLE_TRACING: {{ .Values.global.tracing.enabled | quote }}
+  DATABASE_HOST: {{ .Values.global.database.host | quote }}
+  REDIS_HOST: {{ .Values.global.redis.host | quote }}
+  KAFKA_BROKERS: {{ .Values.global.kafka.brokers | quote }}
+  {{- if .Values.global.security.tls.enabled }}
+  TLS_ENABLED: "true"
+  {{- end }}
+  {{- range $key, $value := .Values.global.config }}
+  {{ $key }}: {{ $value | quote }}
+  {{- end }}
+---
+# Global Secret for sensitive data
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "codai-platform.fullname" . }}-global-secret
+  namespace: {{ .Values.global.namespace }}
+type: Opaque
+data:
+  {{- range $key, $value := .Values.global.secrets }}
+  {{ $key }}: {{ $value | b64enc }}
+  {{- end }}
+---
+# Service Account for platform services
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "codai-platform.serviceAccountName" . }}
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    {{- include "codai-platform.labels" . | nindent 4 }}
+  {{- with .Values.serviceAccount.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
+---
+# Cluster Role for platform operations
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "codai-platform.fullname" . }}-cluster-role
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "endpoints", "configmaps", "secrets"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "replicasets"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["networking.k8s.io"]
+  resources: ["ingresses"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["metrics.k8s.io"]
+  resources: ["pods", "nodes"]
+  verbs: ["get", "list"]
+---
+# Cluster Role Binding
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "codai-platform.fullname" . }}-cluster-role-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "codai-platform.fullname" . }}-cluster-role
+subjects:
+- kind: ServiceAccount
+  name: {{ include "codai-platform.serviceAccountName" . }}
+  namespace: {{ .Values.global.namespace }}
+---
+# Network Policy for platform security
+{{- if .Values.global.security.networkPolicy.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "codai-platform.fullname" . }}-network-policy
+  namespace: {{ .Values.global.namespace }}
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          codai.ai/allowed: "true"
+    - podSelector:
+        matchLabels:
+          codai.ai/platform: "true"
+  egress:
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 80
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+{{- end }}
+---
+# Pod Security Policy
+{{- if .Values.global.security.podSecurityPolicy.enabled }}
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: {{ include "codai-platform.fullname" . }}-psp
+spec:
+  privileged: false
+  allowPrivilegeEscalation: false
+  requiredDropCapabilities:
+    - ALL
+  volumes:
+    - 'configMap'
+    - 'emptyDir'
+    - 'projected'
+    - 'secret'
+    - 'downwardAPI'
+    - 'persistentVolumeClaim'
+  runAsUser:
+    rule: 'MustRunAsNonRoot'
+  seLinux:
+    rule: 'RunAsAny'
+  fsGroup:
+    rule: 'RunAsAny'
+{{- end }}

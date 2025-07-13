@@ -1,0 +1,608 @@
+{
+  "passed": 0,
+  "failed": 40,
+  "skipped": 0,
+  "total": 40,
+  "coverage": 0,
+  "duration": 295746,
+  "services": {
+    "codai": {
+      "name": "codai",
+      "type": "service",
+      "priority": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 8993,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn config ignoring workspace config at E:\\GitHub\\codai-project\\services\\codai/.npmrc\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn config ignoring workspace config at E:\\GitHub\\codai-project\\services\\codai/.npmrc\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\codai\nnpm error workspace codai@1.0.0\nnpm error location E:\\GitHub\\codai-project\\services\\codai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "logai": {
+      "name": "logai",
+      "type": "service",
+      "priority": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 8625,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\logai\nnpm error workspace @codai/logai@1.0.0\nnpm error location E:\\GitHub\\codai-project\\services\\logai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "memorai": {
+      "name": "memorai",
+      "type": "service",
+      "priority": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 8868,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn config ignoring workspace config at E:\\GitHub\\codai-project\\services\\memorai/.npmrc\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn config ignoring workspace config at E:\\GitHub\\codai-project\\services\\memorai/.npmrc\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\memorai\nnpm error workspace memorai-mcp@2.0.1\nnpm error location E:\\GitHub\\codai-project\\services\\memorai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "bancai": {
+      "name": "bancai",
+      "type": "service",
+      "priority": 2,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 8917,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\bancai\nnpm error workspace @codai/bancai@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\bancai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "fabricai": {
+      "name": "fabricai",
+      "type": "service",
+      "priority": 2,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 7939,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\fabricai\nnpm error workspace @codai/fabricai@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\fabricai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "wallet": {
+      "name": "wallet",
+      "type": "service",
+      "priority": 2,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 7967,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\wallet\nnpm error workspace @codai/wallet@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\wallet\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "x": {
+      "name": "x",
+      "type": "service",
+      "priority": 2,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 7978,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\x\nnpm error workspace @codai/x@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\x\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "cumparai": {
+      "name": "cumparai",
+      "type": "service",
+      "priority": 3,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 7844,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\cumparai\nnpm error workspace @codai/cumparai@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\cumparai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "sociai": {
+      "name": "sociai",
+      "type": "service",
+      "priority": 3,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 8177,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\sociai\nnpm error workspace @codai/sociai@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\sociai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "studiai": {
+      "name": "studiai",
+      "type": "service",
+      "priority": 3,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 8198,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\studiai\nnpm error workspace cursuri@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\studiai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "publicai": {
+      "name": "publicai",
+      "type": "service",
+      "priority": 4,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 8425,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\publicai\nnpm error workspace @codai/publicai@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\publicai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "admin": {
+      "name": "admin",
+      "type": "service",
+      "priority": 4,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 8056,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\admin\nnpm error workspace @codai/admin@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\admin\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "AIDE": {
+      "name": "AIDE",
+      "type": "service",
+      "priority": 4,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 8121,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\AIDE\nnpm error workspace @codai/AIDE@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\AIDE\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "ajutai": {
+      "name": "ajutai",
+      "type": "service",
+      "priority": 4,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 7979,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\ajutai\nnpm error workspace @codai/ajutai@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\ajutai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "analizai": {
+      "name": "analizai",
+      "type": "service",
+      "priority": 4,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 7989,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\analizai\nnpm error workspace @codai/analizai@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\analizai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "dash": {
+      "name": "dash",
+      "type": "service",
+      "priority": 4,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 7992,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\dash\nnpm error workspace @codai/dash@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\dash\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "docs": {
+      "name": "docs",
+      "type": "service",
+      "priority": 4,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 7936,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\docs\nnpm error workspace @codai/docs@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\docs\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "explorer": {
+      "name": "explorer",
+      "type": "service",
+      "priority": 4,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 7799,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\explorer\nnpm error workspace @codai/explorer@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\explorer\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "hub": {
+      "name": "hub",
+      "type": "service",
+      "priority": 4,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 7925,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\hub\nnpm error workspace @codai/hub@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\hub\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "id": {
+      "name": "id",
+      "type": "service",
+      "priority": 4,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 8214,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\id\nnpm error workspace @codai/id@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\id\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "jucai": {
+      "name": "jucai",
+      "type": "service",
+      "priority": 4,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 8320,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\jucai\nnpm error workspace @codai/jucai@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\jucai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "kodex": {
+      "name": "kodex",
+      "type": "service",
+      "priority": 4,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 7710,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\kodex\nnpm error workspace @codai/kodex@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\kodex\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "legalizai": {
+      "name": "legalizai",
+      "type": "service",
+      "priority": 4,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 7572,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\legalizai\nnpm error workspace @codai/legalizai@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\legalizai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "marketai": {
+      "name": "marketai",
+      "type": "service",
+      "priority": 4,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 8076,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\marketai\nnpm error workspace @codai/marketai@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\marketai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "metu": {
+      "name": "metu",
+      "type": "service",
+      "priority": 4,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 8991,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\metu\nnpm error workspace @codai/metu@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\metu\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "mod": {
+      "name": "mod",
+      "type": "service",
+      "priority": 4,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 8608,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\mod\nnpm error workspace @codai/mod@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\mod\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        },
+        {
+          "type": "timeout",
+          "message": "Test execution timed out"
+        }
+      ]
+    },
+    "stocai": {
+      "name": "stocai",
+      "type": "service",
+      "priority": 4,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 9382,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\stocai\nnpm error workspace @codai/stocai@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\stocai\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        }
+      ]
+    },
+    "templates": {
+      "name": "templates",
+      "type": "service",
+      "priority": 4,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 9234,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\templates\nnpm error workspace @codai/templates@1.0.0\nnpm error location E:\\GitHub\\codai-project\\services\\templates\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        }
+      ]
+    },
+    "tools": {
+      "name": "tools",
+      "type": "service",
+      "priority": 4,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 0,
+      "duration": 9380,
+      "errors": [
+        {
+          "type": "test_failure",
+          "message": "npm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\nnpm warn Unknown env config \"_dragoscatalin-registry\". This will stop working in the next major version of npm.\n'vitest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\nnpm error Lifecycle script `test` failed with error:\nnpm error code 1\nnpm error path E:\\GitHub\\codai-project\\services\\tools\nnpm error workspace @codai/tools@0.1.0\nnpm error location E:\\GitHub\\codai-project\\services\\tools\nnpm error command failed\nnpm error command C:\\WINDOWS\\system32\\cmd.exe /d /s /c npx vitest run --reporter=verbose\n",
+          "code": 1
+        }
+      ]
+    }
+  },
+  "errors": []
+}

@@ -1,0 +1,83 @@
+{
+  "name": "codai-mobile",
+  "version": "1.0.0",
+  "description": "CODAI Mobile - AI-powered mobile application for the CODAI ecosystem",
+  "main": "expo-router/entry",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "build:android": "eas build --platform android",
+    "build:ios": "eas build --platform ios",
+    "build:all": "eas build --platform all",
+    "submit:android": "eas submit --platform android",
+    "submit:ios": "eas submit --platform ios",
+    "update": "eas update",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf .expo dist coverage"
+  },
+  "dependencies": {
+    "@codai/api-keys": "workspace:*",
+    "@codai/core": "workspace:*",
+    "@codai/logai-integration": "workspace:*",
+    "@codai/logai-sdk": "workspace:*",
+    "@codai/sdk": "workspace:*",
+    "@codai/ui": "workspace:*",
+    "@expo/vector-icons": "^14.1.0",
+    "@react-navigation/bottom-tabs": "^7.4.2",
+    "@react-navigation/native": "^7.1.14",
+    "@react-navigation/stack": "^7.4.2",
+    "expo": "~53.0.19",
+    "expo-blur": "~14.1.5",
+    "expo-font": "~13.3.2",
+    "expo-haptics": "~14.1.4",
+    "expo-linear-gradient": "~14.1.5",
+    "expo-notifications": "~0.31.4",
+    "expo-router": "~5.1.3",
+    "expo-secure-store": "~14.2.3",
+    "expo-splash-screen": "~0.30.10",
+    "expo-status-bar": "~2.2.3",
+    "nativewind": "^4.1.23",
+    "react": "19.1.0",
+    "react-native": "0.80.1",
+    "react-native-gesture-handler": "~2.27.1",
+    "react-native-reanimated": "~3.18.0",
+    "react-native-safe-area-context": "^5.5.2",
+    "react-native-screens": "^4.11.1",
+    "react-native-svg": "15.12.0",
+    "zustand": "^5.0.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@types/jest": "^30.0.0",
+    "@types/react": "~19.1.8",
+    "@types/react-test-renderer": "^19.1.0",
+    "@typescript-eslint/eslint-plugin": "^8.36.0",
+    "@typescript-eslint/parser": "^8.36.0",
+    "eslint": "^9.31.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "jest": "^30.0.4",
+    "jest-expo": "~53.0.9",
+    "prettier": "^3.6.2",
+    "react-test-renderer": "19.1.0",
+    "tailwindcss": "^4.1.11",
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "expo": {
+    "install": {
+      "exclude": [
+        "react-native-safe-area-context"
+      ]
+    }
+  }
+}

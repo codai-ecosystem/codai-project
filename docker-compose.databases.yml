@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: codai-postgres
+    environment:
+      POSTGRES_DB: codai
+      POSTGRES_USER: codai
+      POSTGRES_PASSWORD: codai_secure_2025
+      POSTGRES_MULTIPLE_DATABASES: memorai,logai,bancai,fabricai
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-multiple-databases.sh:/docker-entrypoint-initdb.d/init-multiple-databases.sh
+    networks:
+      - codai-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U codai -d codai"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: codai-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - codai-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    command: redis-server --appendonly yes --requirepass codai_redis_2025
+
+  adminer:
+    image: adminer:latest
+    container_name: codai-adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - codai-network
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  codai-network:
+    driver: bridge

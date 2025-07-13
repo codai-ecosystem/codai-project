@@ -1,0 +1,656 @@
+# ROMAI Ultimate MCP Server - GitHub Actions CI/CD Enhancement
+# Advanced security testing, performance benchmarking, and deployment automation
+
+name: 'ROMAI Ultimate CI/CD - Enterprise Security & Performance'
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'packages/romai-mcp/**'
+      - '.github/workflows/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'packages/romai-mcp/**'
+  schedule:
+    # Daily security scans at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      deployment_type:
+        description: 'Deployment Type'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+        - staging
+        - production
+        - blue-green
+      skip_tests:
+        description: 'Skip Tests (Emergency Only)'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  NODE_VERSION: '20'
+  REGISTRY: ghcr.io
+  IMAGE_NAME: romai/ultimate-mcp-server
+  WORKING_DIRECTORY: packages/romai-mcp
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Security Analysis & SAST
+  security-analysis:
+    name: 🔒 Security Analysis (SAST/DAST)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      security-score: ${{ steps.security-report.outputs.score }}
+      vulnerabilities: ${{ steps.security-report.outputs.vulnerabilities }}
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: ${{ env.WORKING_DIRECTORY }}/package-lock.json
+
+      - name: 📦 Install Dependencies
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: |
+          npm ci --production=false
+          npm install -g @microsoft/rush
+
+      - name: 🔍 SAST - Static Analysis (SonarQube)
+        uses: sonarqube-quality-gate-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          scanMetadataReportFile: ${{ env.WORKING_DIRECTORY }}/sonar-report.json
+
+      - name: 🔍 SAST - CodeQL Analysis
+        uses: github/codeql-action/init@v3
+        with:
+          languages: typescript, javascript
+          queries: security-and-quality
+
+      - name: 🔍 SAST - ESLint Security Rules
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: |
+          npx eslint . --ext .ts,.js --format json --output-file eslint-security-report.json || true
+          npx eslint . --ext .ts,.js --config .eslintrc.security.json
+
+      - name: 🔍 SAST - Semgrep Security Analysis
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: >-
+            p/security-audit
+            p/secrets
+            p/typescript
+          generateSarif: "1"
+
+      - name: 🔍 Dependency Vulnerability Scan
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: |
+          npm audit --audit-level=moderate --format json > npm-audit-report.json || true
+          npx audit-ci --moderate
+
+      - name: 🔍 Container Security Scan (Trivy)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: ${{ env.WORKING_DIRECTORY }}
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: 📊 Security Report Generation
+        id: security-report
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: |
+          echo "🔒 Generating comprehensive security report..."
+          
+          # Count vulnerabilities
+          CRITICAL=$(cat npm-audit-report.json | jq '.metadata.vulnerabilities.critical // 0' 2>/dev/null || echo "0")
+          HIGH=$(cat npm-audit-report.json | jq '.metadata.vulnerabilities.high // 0' 2>/dev/null || echo "0")
+          MODERATE=$(cat npm-audit-report.json | jq '.metadata.vulnerabilities.moderate // 0' 2>/dev/null || echo "0")
+          
+          # Calculate security score
+          TOTAL_VULNS=$((CRITICAL + HIGH + MODERATE))
+          if [ $CRITICAL -gt 0 ]; then
+            SCORE=0
+          elif [ $HIGH -gt 0 ]; then
+            SCORE=70
+          elif [ $MODERATE -gt 3 ]; then
+            SCORE=85
+          else
+            SCORE=100
+          fi
+          
+          echo "score=$SCORE" >> $GITHUB_OUTPUT
+          echo "vulnerabilities=$TOTAL_VULNS" >> $GITHUB_OUTPUT
+          
+          echo "🎯 Security Score: $SCORE/100"
+          echo "🔍 Total Vulnerabilities: $TOTAL_VULNS"
+          
+          # Fail if critical/high vulnerabilities found
+          if [ $CRITICAL -gt 0 ] || [ $HIGH -gt 0 ]; then
+            echo "❌ Critical or High vulnerabilities found. Failing build."
+            exit 1
+          fi
+
+      - name: 📤 Upload Security Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-reports
+          path: |
+            ${{ env.WORKING_DIRECTORY }}/npm-audit-report.json
+            ${{ env.WORKING_DIRECTORY }}/eslint-security-report.json
+            trivy-results.sarif
+          retention-days: 30
+
+  # Performance Benchmarking
+  performance-benchmarking:
+    name: 📈 Performance Benchmarking
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      performance-score: ${{ steps.perf-report.outputs.score }}
+      response-time: ${{ steps.perf-report.outputs.response_time }}
+    
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_USER: test_user
+          POSTGRES_DB: romai_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: ${{ env.WORKING_DIRECTORY }}/package-lock.json
+
+      - name: 📦 Install Dependencies
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: npm ci
+
+      - name: 🏗️ Build Application
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: npm run build
+
+      - name: 🚀 Start Test Server
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: |
+          npm start &
+          echo $! > server.pid
+          sleep 10  # Wait for server to start
+        env:
+          NODE_ENV: test
+          DATABASE_URL: postgresql://test_user:test_password@localhost:5432/romai_test
+          REDIS_URL: redis://localhost:6379
+          PORT: 3001
+
+      - name: 🔍 Health Check
+        run: |
+          curl -f http://localhost:3001/health || exit 1
+          echo "✅ Server health check passed"
+
+      - name: 📊 K6 Load Testing
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: |
+          npm install -g k6
+          
+          cat > k6-test.js << 'EOF'
+          import http from 'k6/http';
+          import { check, sleep } from 'k6';
+          
+          export let options = {
+            stages: [
+              { duration: '30s', target: 10 },  // Ramp up
+              { duration: '60s', target: 50 },  // Stay at 50 users
+              { duration: '30s', target: 100 }, // Ramp to 100 users
+              { duration: '60s', target: 100 }, // Stay at 100 users
+              { duration: '30s', target: 0 },   // Ramp down
+            ],
+            thresholds: {
+              http_req_duration: ['p(95)<200'], // 95% of requests under 200ms
+              http_req_failed: ['rate<0.01'],   // Error rate under 1%
+            },
+          };
+          
+          export default function() {
+            let response = http.get('http://localhost:3001/health');
+            check(response, {
+              'status is 200': (r) => r.status === 200,
+              'response time < 200ms': (r) => r.timings.duration < 200,
+            });
+            
+            // Test MCP server endpoints
+            http.get('http://localhost:3001/mcp/tools');
+            http.post('http://localhost:3001/mcp/call', JSON.stringify({
+              tool: 'romai_intelligence',
+              arguments: { query: 'test performance', language: 'en' }
+            }), { headers: { 'Content-Type': 'application/json' } });
+            
+            sleep(1);
+          }
+          EOF
+          
+          k6 run k6-test.js --out json=performance-results.json
+
+      - name: 📊 Artillery.js Complex Testing
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: |
+          npm install -g artillery
+          
+          cat > artillery-test.yml << 'EOF'
+          config:
+            target: 'http://localhost:3001'
+            phases:
+              - duration: 60
+                arrivalRate: 20
+                maxVusers: 100
+            defaults:
+              headers:
+                content-type: 'application/json'
+          
+          scenarios:
+            - name: "Health Check Load"
+              weight: 30
+              flow:
+                - get:
+                    url: "/health"
+                    expect:
+                      - statusCode: 200
+                      - hasProperty: "status"
+            
+            - name: "MCP Tools Testing"
+              weight: 40
+              flow:
+                - get:
+                    url: "/mcp/tools"
+                    expect:
+                      - statusCode: 200
+                - post:
+                    url: "/mcp/call"
+                    json:
+                      tool: "romai_intelligence"
+                      arguments:
+                        query: "performance test"
+                        language: "en"
+            
+            - name: "Complex User Journey"
+              weight: 30
+              flow:
+                - post:
+                    url: "/mcp/call"
+                    json:
+                      tool: "romai_code_assistant"
+                      arguments:
+                        request: "optimize performance"
+                        language: "typescript"
+                - post:
+                    url: "/mcp/call"
+                    json:
+                      tool: "romai_problem_solver"
+                      arguments:
+                        problem: "scale application"
+          EOF
+          
+          artillery run artillery-test.yml --output artillery-results.json
+
+      - name: 🧠 Memory & CPU Profiling
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: |
+          # Install clinic.js for profiling
+          npm install -g clinic
+          
+          # Memory profiling
+          timeout 60s clinic doctor --on-port 'curl http://localhost:3001/health' -- node dist/index.js > memory-profile.txt 2>&1 || true
+          
+          # Check memory usage
+          ps aux | grep node | head -1 > memory-usage.txt
+
+      - name: 📊 Performance Report Generation
+        id: perf-report
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: |
+          echo "📈 Generating performance report..."
+          
+          # Extract metrics from k6 results
+          if [ -f performance-results.json ]; then
+            AVG_RESPONSE=$(cat performance-results.json | jq -r '.metrics.http_req_duration.values.avg' | head -1)
+            P95_RESPONSE=$(cat performance-results.json | jq -r '.metrics.http_req_duration.values.p\(95\)' | head -1)
+            ERROR_RATE=$(cat performance-results.json | jq -r '.metrics.http_req_failed.values.rate' | head -1)
+          else
+            AVG_RESPONSE=0
+            P95_RESPONSE=0
+            ERROR_RATE=0
+          fi
+          
+          # Calculate performance score
+          if (( $(echo "$P95_RESPONSE < 100" | bc -l) )); then
+            SCORE=100
+          elif (( $(echo "$P95_RESPONSE < 200" | bc -l) )); then
+            SCORE=90
+          elif (( $(echo "$P95_RESPONSE < 500" | bc -l) )); then
+            SCORE=70
+          else
+            SCORE=50
+          fi
+          
+          # Adjust for error rate
+          if (( $(echo "$ERROR_RATE > 0.01" | bc -l) )); then
+            SCORE=$((SCORE - 20))
+          fi
+          
+          echo "score=$SCORE" >> $GITHUB_OUTPUT
+          echo "response_time=$P95_RESPONSE" >> $GITHUB_OUTPUT
+          
+          echo "🎯 Performance Score: $SCORE/100"
+          echo "⚡ P95 Response Time: ${P95_RESPONSE}ms"
+          echo "❌ Error Rate: ${ERROR_RATE}%"
+          
+          # Fail if performance is too poor
+          if [ $SCORE -lt 70 ]; then
+            echo "❌ Performance below acceptable threshold. Failing build."
+            exit 1
+          fi
+
+      - name: 🛑 Stop Test Server
+        if: always()
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: |
+          if [ -f server.pid ]; then
+            kill $(cat server.pid) || true
+            rm server.pid
+          fi
+
+      - name: 📤 Upload Performance Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: performance-reports
+          path: |
+            ${{ env.WORKING_DIRECTORY }}/performance-results.json
+            ${{ env.WORKING_DIRECTORY }}/artillery-results.json
+            ${{ env.WORKING_DIRECTORY }}/memory-profile.txt
+            ${{ env.WORKING_DIRECTORY }}/memory-usage.txt
+          retention-days: 30
+
+  # Build & Test
+  build-and-test:
+    name: 🧪 Build & Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [security-analysis, performance-benchmarking]
+    if: needs.security-analysis.outputs.security-score >= '85' && needs.performance-benchmarking.outputs.performance-score >= '70'
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: ${{ env.WORKING_DIRECTORY }}/package-lock.json
+
+      - name: 📦 Install Dependencies
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: npm ci
+
+      - name: 🔍 Lint & Type Check
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: |
+          npm run lint
+          npm run type-check
+
+      - name: 🧪 Run Tests
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: npm test -- --coverage --passWithNoTests
+        env:
+          NODE_ENV: test
+
+      - name: 🏗️ Build Application
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: npm run build
+
+      - name: 📤 Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            ${{ env.WORKING_DIRECTORY }}/dist/
+            ${{ env.WORKING_DIRECTORY }}/coverage/
+          retention-days: 30
+
+  # Docker Build & Security Scan
+  docker-build:
+    name: 🐳 Docker Build & Security
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [build-and-test]
+    outputs:
+      image-tag: ${{ steps.image-tag.outputs.tag }}
+      image-digest: ${{ steps.build.outputs.digest }}
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 🔑 Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🏷️ Generate Image Tag
+        id: image-tag
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            TAG="pr-${{ github.event.number }}"
+          elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            TAG="latest"
+          else
+            TAG="dev-$(echo ${{ github.sha }} | cut -c1-8)"
+          fi
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "🏷️ Generated tag: $TAG"
+
+      - name: 📥 Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: ${{ env.WORKING_DIRECTORY }}/
+
+      - name: 🐳 Build and Push Docker Image
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ env.WORKING_DIRECTORY }}
+          file: ${{ env.WORKING_DIRECTORY }}/Dockerfile
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.image-tag.outputs.tag }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.created=${{ github.event.head_commit.timestamp }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64,linux/arm64
+
+      - name: 🔍 Container Security Scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.image-tag.outputs.tag }}
+          format: 'sarif'
+          output: 'container-scan-results.sarif'
+
+      - name: 📤 Upload Container Scan Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: container-security-scan
+          path: container-scan-results.sarif
+          retention-days: 30
+
+  # Blue-Green Deployment (Production)
+  blue-green-deployment:
+    name: 🔄 Blue-Green Deployment
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [docker-build]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment: production
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.28.0'
+
+      - name: 🔑 Configure Kubernetes
+        run: |
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > kubeconfig
+          export KUBECONFIG=kubeconfig
+
+      - name: 🔄 Blue-Green Deployment
+        run: |
+          cd ${{ env.WORKING_DIRECTORY }}/infrastructure/kubernetes
+          
+          # Deploy to blue environment
+          kubectl apply -f deployment-blue.yaml
+          kubectl set image deployment/romai-mcp-blue romai-mcp=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.docker-build.outputs.image-tag }}
+          
+          # Wait for rollout
+          kubectl rollout status deployment/romai-mcp-blue --timeout=300s
+          
+          # Health check
+          kubectl wait --for=condition=available --timeout=300s deployment/romai-mcp-blue
+          
+          # Switch traffic to blue
+          kubectl patch service romai-mcp-service -p '{"spec":{"selector":{"version":"blue"}}}'
+          
+          echo "✅ Blue-green deployment completed successfully"
+
+      - name: 🧪 Smoke Tests
+        run: |
+          # Get service endpoint
+          ENDPOINT=$(kubectl get service romai-mcp-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+          
+          # Wait for endpoint to be ready
+          sleep 30
+          
+          # Run smoke tests
+          curl -f "http://$ENDPOINT/health" || exit 1
+          curl -f "http://$ENDPOINT/mcp/tools" || exit 1
+          
+          echo "✅ Smoke tests passed"
+
+      - name: 📊 Deployment Report
+        run: |
+          echo "🎉 Deployment Summary"
+          echo "===================="
+          echo "🏷️ Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.docker-build.outputs.image-tag }}"
+          echo "🔒 Security Score: ${{ needs.security-analysis.outputs.security-score }}/100"
+          echo "📈 Performance Score: ${{ needs.performance-benchmarking.outputs.performance-score }}/100"
+          echo "⚡ Response Time: ${{ needs.performance-benchmarking.outputs.response-time }}ms"
+          echo "🐳 Image Digest: ${{ needs.docker-build.outputs.image-digest }}"
+          echo "📅 Deployed At: $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+
+  # Rollback (Emergency)
+  emergency-rollback:
+    name: 🚨 Emergency Rollback
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.deployment_type == 'rollback'
+    environment: production
+    
+    steps:
+      - name: 🔧 Setup kubectl
+        uses: azure/setup-kubectl@v3
+
+      - name: 🔑 Configure Kubernetes
+        run: |
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > kubeconfig
+          export KUBECONFIG=kubeconfig
+
+      - name: 🚨 Execute Rollback
+        run: |
+          echo "🚨 Executing emergency rollback..."
+          
+          # Rollback to previous deployment
+          kubectl rollout undo deployment/romai-mcp-blue
+          kubectl rollout status deployment/romai-mcp-blue --timeout=180s
+          
+          # Switch traffic back to green (stable)
+          kubectl patch service romai-mcp-service -p '{"spec":{"selector":{"version":"green"}}}'
+          
+          echo "✅ Emergency rollback completed"
+
+  # Notification
+  notification:
+    name: 📢 Notifications
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [security-analysis, performance-benchmarking, build-and-test, docker-build, blue-green-deployment]
+    
+    steps:
+      - name: 📢 Success Notification
+        if: needs.blue-green-deployment.result == 'success'
+        run: |
+          echo "🎉 ROMAI Ultimate MCP Server deployed successfully!"
+          echo "🔒 Security Score: ${{ needs.security-analysis.outputs.security-score }}/100"
+          echo "📈 Performance Score: ${{ needs.performance-benchmarking.outputs.performance-score }}/100"
+
+      - name: 📢 Failure Notification
+        if: contains(needs.*.result, 'failure')
+        run: |
+          echo "❌ ROMAI Ultimate MCP Server deployment failed!"
+          echo "Please check the logs and take corrective action."

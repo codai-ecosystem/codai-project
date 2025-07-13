@@ -1,0 +1,15 @@
+{
+  "name": "tools",
+  "description": "Development Tools & Utilities",
+  "domain": "tools.codai.ro",
+  "port": 3017,
+  "priority": 4,
+  "framework": "Next.js 14",
+  "language": "TypeScript",
+  "styling": "Tailwind CSS",
+  "testing": "Vitest",
+  "packageManager": "PNPM",
+  "ecosystem": "Codai",
+  "status": "scaffolded",
+  "category": "infrastructure"
+}

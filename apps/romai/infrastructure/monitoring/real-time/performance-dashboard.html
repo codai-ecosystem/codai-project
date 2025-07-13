@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROMAI Performance Optimization Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        .status-connected {
+            background-color: #4CAF50;
+        }
+
+        .status-disconnected {
+            background-color: #f44336;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #ffffff;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .metric-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .optimization-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+
+        .optimization-item {
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .opt-critical {
+            border-left-color: #f44336;
+        }
+
+        .opt-high {
+            border-left-color: #ff9800;
+        }
+
+        .opt-medium {
+            border-left-color: #ffeb3b;
+        }
+
+        .opt-low {
+            border-left-color: #4caf50;
+        }
+
+        .bottleneck-alert {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid #f44336;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            animation: alertPulse 1s infinite;
+        }
+
+        @keyframes alertPulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(244, 67, 54, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(244, 67, 54, 0);
+            }
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 20px;
+        }
+
+        .log-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 5px;
+            border-radius: 3px;
+        }
+
+        .log-info {
+            background: rgba(33, 150, 243, 0.2);
+        }
+
+        .log-warning {
+            background: rgba(255, 152, 0, 0.2);
+        }
+
+        .log-error {
+            background: rgba(244, 67, 54, 0.2);
+        }
+
+        .log-success {
+            background: rgba(76, 175, 80, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>🚀 ROMAI Performance Optimization Dashboard</h1>
+        <div>
+            <span class="status-indicator status-disconnected" id="connectionStatus"></span>
+            <span id="connectionText">Disconnected</span> |
+            <span id="serverInfo">Day 20: Advanced Performance Monitoring</span>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn" onclick="dashboard.connect()">Connect</button>
+        <button class="btn" onclick="dashboard.disconnect()">Disconnect</button>
+        <button class="btn" onclick="dashboard.getReport()">Get Report</button>
+        <button class="btn" onclick="dashboard.triggerOptimization('cpu')">Optimize CPU</button>
+        <button class="btn" onclick="dashboard.triggerOptimization('memory')">Optimize Memory</button>
+        <button class="btn" onclick="dashboard.triggerGC()">Trigger GC</button>
+        <button class="btn" onclick="dashboard.clearLogs()">Clear Logs</button>
+    </div>
+
+    <div id="bottleneckAlert" class="bottleneck-alert" style="display: none;">
+        <h4>🚨 Performance Bottleneck Detected!</h4>
+        <div id="bottleneckDetails"></div>
+    </div>
+
+    <div class="dashboard-grid">
+        <!-- Real-time Metrics -->
+        <div class="card">
+            <h3>📊 Real-time Performance Metrics</h3>
+            <div class="metrics-grid">
+                <div class="metric-item">
+                    <div class="metric-value" id="cpuUsage">--</div>
+                    <div class="metric-label">CPU Usage %</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value" id="memoryUsage">--</div>
+                    <div class="metric-label">Memory Usage %</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value" id="responseTime">--</div>
+                    <div class="metric-label">Response Time (ms)</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value" id="throughput">--</div>
+                    <div class="metric-label">Throughput</div>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="performanceChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Active Optimizations -->
+        <div class="card">
+            <h3>🔧 Active Optimizations</h3>
+            <div class="metric-item">
+                <div class="metric-value" id="activeOptCount">0</div>
+                <div class="metric-label">Running Optimizations</div>
+            </div>
+            <div class="optimization-list" id="optimizationList">
+                <p>No active optimizations</p>
+            </div>
+        </div>
+
+        <!-- System Health -->
+        <div class="card">
+            <h3>💚 System Health</h3>
+            <div class="metrics-grid">
+                <div class="metric-item">
+                    <div class="metric-value" id="serverUptime">--</div>
+                    <div class="metric-label">Server Uptime (min)</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value" id="clientCount">--</div>
+                    <div class="metric-label">Connected Clients</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value" id="errorRate">--</div>
+                    <div class="metric-label">Error Rate %</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value" id="networkLatency">--</div>
+                    <div class="metric-label">Network Latency (ms)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Optimization History -->
+        <div class="card">
+            <h3>📈 Optimization Impact</h3>
+            <div class="chart-container">
+                <canvas id="optimizationChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity Logs -->
+    <div class="card">
+        <h3>📋 Activity Logs</h3>
+        <div class="log-container" id="logContainer">
+            <div class="log-entry log-info">Waiting for connection...</div>
+        </div>
+    </div>
+
+    <script>
+        class PerformanceOptimizationDashboard {
+            constructor() {
+                this.ws = null;
+                this.connected = false;
+                this.performanceData = [];
+                this.optimizationHistory = [];
+                this.setupCharts();
+            }
+
+            setupCharts() {
+                // Performance metrics chart
+                const perfCtx = document.getElementById('performanceChart').getContext('2d');
+                this.performanceChart = new Chart(perfCtx, {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [
+                            {
+                                label: 'CPU Usage %',
+                                data: [],
+                                borderColor: '#ff6384',
+                                backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                                tension: 0.4
+                            },
+                            {
+                                label: 'Memory Usage %',
+                                data: [],
+                                borderColor: '#36a2eb',
+                                backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                                tension: 0.4
+                            },
+                            {
+                                label: 'Response Time (ms)',
+                                data: [],
+                                borderColor: '#ffce56',
+                                backgroundColor: 'rgba(255, 206, 86, 0.1)',
+                                tension: 0.4,
+                                yAxisID: 'y1'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: { color: 'white' }
+                            },
+                            y1: {
+                                type: 'linear',
+                                display: true,
+                                position: 'right',
+                                ticks: { color: 'white' }
+                            },
+                            x: {
+                                ticks: { color: 'white' }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: { color: 'white' }
+                            }
+                        }
+                    }
+                });
+
+                // Optimization impact chart
+                const optCtx = document.getElementById('optimizationChart').getContext('2d');
+                this.optimizationChart = new Chart(optCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: 'Improvement %',
+                            data: [],
+                            backgroundColor: [
+                                '#ff6384', '#36a2eb', '#ffce56', '#4bc0c0',
+                                '#9966ff', '#ff9f40', '#ff6384', '#c9cbcf'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { color: 'white' }
+                            },
+                            x: {
+                                ticks: { color: 'white' }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: { color: 'white' }
+                            }
+                        }
+                    }
+                });
+            }
+
+            connect() {
+                if (this.connected) return;
+
+                this.log('Connecting to Performance Optimization Server...', 'info');
+                this.ws = new WebSocket('ws://localhost:8767/performance');
+
+                this.ws.onopen = () => {
+                    this.connected = true;
+                    this.updateConnectionStatus(true);
+                    this.log('Connected to ROMAI Performance Optimization Server', 'success');
+
+                    // Subscribe to all performance data
+                    this.send({
+                        type: 'subscribe',
+                        subscriptions: {
+                            performance: true,
+                            optimizations: true,
+                            trends: true,
+                            reports: true
+                        }
+                    });
+                };
+
+                this.ws.onmessage = (event) => {
+                    const message = JSON.parse(event.data);
+                    this.handleMessage(message);
+                };
+
+                this.ws.onclose = () => {
+                    this.connected = false;
+                    this.updateConnectionStatus(false);
+                    this.log('Connection closed', 'warning');
+                };
+
+                this.ws.onerror = (error) => {
+                    this.log(`Connection error: ${error}`, 'error');
+                };
+            }
+
+            disconnect() {
+                if (this.ws) {
+                    this.ws.close();
+                }
+            }
+
+            send(message) {
+                if (this.connected && this.ws) {
+                    this.ws.send(JSON.stringify(message));
+                }
+            }
+
+            handleMessage(message) {
+                switch (message.type) {
+                    case 'connection_established':
+                        this.log(`Connected as ${message.client_id}`, 'success');
+                        document.getElementById('clientCount').textContent = message.client_count;
+                        break;
+
+                    case 'performance_metrics':
+                        this.updatePerformanceMetrics(message.data);
+                        break;
+
+                    case 'bottlenecks_detected':
+                        this.showBottleneckAlert(message.data, message.severity);
+                        break;
+
+                    case 'optimization_completed':
+                        this.logOptimization(message.data, true);
+                        break;
+
+                    case 'optimization_failed':
+                        this.logOptimization(message.data, false);
+                        break;
+
+                    case 'performance_report':
+                        this.updateOptimizationsList(message.data);
+                        break;
+
+                    case 'server_status':
+                        this.updateServerStatus(message.data);
+                        break;
+
+                    case 'server_heartbeat':
+                        document.getElementById('serverUptime').textContent =
+                            (message.uptime / 60).toFixed(1);
+                        break;
+
+                    case 'gc_triggered':
+                        this.log('Garbage collection triggered', 'info');
+                        break;
+
+                    default:
+                        this.log(`${message.type}: ${message.message || 'received'}`, 'info');
+                }
+            }
+
+            updatePerformanceMetrics(data) {
+                // Update metric displays
+                document.getElementById('cpuUsage').textContent = data.cpu.usage.toFixed(1);
+                document.getElementById('memoryUsage').textContent = data.memory.percentage.toFixed(1);
+                document.getElementById('responseTime').textContent = data.application.responseTime.toFixed(0);
+                document.getElementById('throughput').textContent = data.application.throughput.toFixed(0);
+                document.getElementById('errorRate').textContent = data.application.errorRate.toFixed(1);
+                document.getElementById('networkLatency').textContent = data.network.latency.toFixed(0);
+
+                // Update chart
+                const now = new Date().toLocaleTimeString();
+                this.performanceChart.data.labels.push(now);
+                this.performanceChart.data.datasets[0].data.push(data.cpu.usage);
+                this.performanceChart.data.datasets[1].data.push(data.memory.percentage);
+                this.performanceChart.data.datasets[2].data.push(data.application.responseTime);
+
+                // Keep only last 20 data points
+                if (this.performanceChart.data.labels.length > 20) {
+                    this.performanceChart.data.labels.shift();
+                    this.performanceChart.data.datasets.forEach(dataset => dataset.data.shift());
+                }
+
+                this.performanceChart.update('none');
+            }
+
+            showBottleneckAlert(bottlenecks, severity) {
+                const alert = document.getElementById('bottleneckAlert');
+                const details = document.getElementById('bottleneckDetails');
+
+                alert.style.display = 'block';
+                details.innerHTML = bottlenecks.map(b => `
+                    <p><strong>${b.type.toUpperCase()}</strong>: ${b.metric} at ${b.currentValue.toFixed(1)} 
+                    (threshold: ${b.threshold}) - ${b.impact}</p>
+                `).join('');
+
+                this.log(`Bottleneck detected: ${severity} severity`, 'error');
+
+                // Auto-hide after 10 seconds
+                setTimeout(() => {
+                    alert.style.display = 'none';
+                }, 10000);
+            }
+
+            logOptimization(data, success) {
+                const action = data.action;
+                const improvement = success ? data.actualImprovement?.toFixed(1) : 'Failed';
+
+                this.log(`Optimization ${success ? 'completed' : 'failed'}: ${action.action} 
+                         (${improvement}% improvement)`, success ? 'success' : 'error');
+
+                if (success && data.actualImprovement) {
+                    // Add to optimization history chart
+                    const label = action.type + '_' + Date.now().toString().slice(-4);
+                    this.optimizationChart.data.labels.push(label);
+                    this.optimizationChart.data.datasets[0].data.push(data.actualImprovement);
+
+                    if (this.optimizationChart.data.labels.length > 10) {
+                        this.optimizationChart.data.labels.shift();
+                        this.optimizationChart.data.datasets[0].data.shift();
+                    }
+
+                    this.optimizationChart.update();
+                }
+            }
+
+            updateOptimizationsList(reportData) {
+                const list = document.getElementById('optimizationList');
+                const count = document.getElementById('activeOptCount');
+
+                count.textContent = reportData.activeOptimizations;
+
+                if (reportData.optimizationDetails && reportData.optimizationDetails.length > 0) {
+                    list.innerHTML = reportData.optimizationDetails.map(opt => `
+                        <div class="optimization-item opt-${opt.priority}">
+                            <strong>${opt.type.toUpperCase()}</strong>: ${opt.action}
+                            <br><small>Target: ${opt.target} | Expected: ${opt.expectedImprovement}%</small>
+                        </div>
+                    `).join('');
+                } else {
+                    list.innerHTML = '<p>No active optimizations</p>';
+                }
+            }
+
+            updateServerStatus(status) {
+                document.getElementById('serverUptime').textContent =
+                    (status.uptime / 60).toFixed(1);
+                document.getElementById('clientCount').textContent =
+                    status.connected_clients;
+            }
+
+            updateConnectionStatus(connected) {
+                const indicator = document.getElementById('connectionStatus');
+                const text = document.getElementById('connectionText');
+
+                if (connected) {
+                    indicator.className = 'status-indicator status-connected';
+                    text.textContent = 'Connected';
+                } else {
+                    indicator.className = 'status-indicator status-disconnected';
+                    text.textContent = 'Disconnected';
+                }
+            }
+
+            getReport() {
+                this.send({ type: 'get_performance_report' });
+            }
+
+            triggerOptimization(target) {
+                this.send({
+                    type: 'force_optimization',
+                    target: target
+                });
+                this.log(`Triggered ${target} optimization`, 'info');
+            }
+
+            triggerGC() {
+                this.send({ type: 'trigger_gc' });
+            }
+
+            log(message, type = 'info') {
+                const container = document.getElementById('logContainer');
+                const entry = document.createElement('div');
+                entry.className = `log-entry log-${type}`;
+                entry.textContent = `${new Date().toLocaleTimeString()} - ${message}`;
+
+                container.appendChild(entry);
+                container.scrollTop = container.scrollHeight;
+
+                // Keep only last 100 entries
+                while (container.children.length > 100) {
+                    container.removeChild(container.firstChild);
+                }
+            }
+
+            clearLogs() {
+                document.getElementById('logContainer').innerHTML = '';
+            }
+        }
+
+        // Initialize dashboard
+        const dashboard = new PerformanceOptimizationDashboard();
+
+        // Auto-connect on load
+        window.addEventListener('load', () => {
+            setTimeout(() => dashboard.connect(), 1000);
+        });
+    </script>
+</body>
+
+</html>

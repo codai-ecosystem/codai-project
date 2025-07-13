@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEXAI - Offline</title>
+    <link rel="icon" href="/favicon.ico">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 500px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .features-list {
+            text-align: left;
+            margin: 30px 0;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .features-list h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .features-list ul {
+            list-style: none;
+        }
+
+        .features-list li {
+            margin: 10px 0;
+            padding-left: 25px;
+            position: relative;
+            font-size: 1rem;
+        }
+
+        .features-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        button,
+        .button-link {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+        }
+
+        button:hover,
+        .button-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .secondary {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .connection-status {
+            margin-top: 2rem;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .online {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.5);
+        }
+
+        .offline {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff4444;
+        }
+
+        .status-indicator.online {
+            background: #4CAF50;
+        }
+
+        .status-indicator.offline {
+            background: #ff4444;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+
+            .icon {
+                font-size: 3rem;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="icon">�</div>
+        <h1>DEXAI</h1>
+        <div class="subtitle">Dicționar Explicativ AI</div>
+        <p>Momentan nu ai conexiune la internet, dar poți folosi funcțiile offline ale aplicației.</p>
+
+        <div class="features-list">
+            <h3>🔄 Disponibil offline:</h3>
+            <ul>
+                <li>Cuvinte salvate în cache</li>
+                <li>Dicționar local</li>
+                <li>Progresul personal</li>
+                <li>Cuvinte favorite</li>
+                <li>Historicul căutărilor</li>
+                <li>Pronunțiile salvate</li>
+            </ul>
+        </div>
+
+        <div class="actions">
+            <button onclick="window.location.reload()">
+                🔄 Încearcă din nou
+            </button>
+            <a href="/dashboard" class="button-link secondary">
+                📊 Mergi la Dashboard
+            </a>
+            <a href="/favorites" class="button-link secondary">
+                ❤️ Vezi Favoritele
+            </a>
+            <a href="/dictionary" class="button-link secondary">
+                📖 Dicționar Local
+            </a>
+        </div>
+
+        <div id="connectionStatus" class="connection-status offline">
+            <span class="status-indicator offline"></span>
+            <span>Offline - Verifică conexiunea</span>
+        </div>
+    </div>
+
+    <script>
+        // Check online status
+        function updateConnectionStatus() {
+            const statusEl = document.getElementById('connectionStatus');
+            const indicator = statusEl.querySelector('.status-indicator');
+            const text = statusEl.querySelector('span:last-child');
+
+            if (navigator.onLine) {
+                statusEl.className = 'connection-status online';
+                indicator.className = 'status-indicator online';
+                text.textContent = 'Online - Conexiunea a fost restabilită!';
+
+                // Show reconnection message
+                setTimeout(() => {
+                    if (confirm('Conexiunea a fost restabilită! Vrei să reîncarci pagina pentru funcționalitate completă?')) {
+                        window.location.reload();
+                    }
+                }, 1500);
+            } else {
+                statusEl.className = 'connection-status offline';
+                indicator.className = 'status-indicator offline';
+                text.textContent = 'Offline - Verifică conexiunea';
+            }
+        }
+
+        // Navigate to pages
+        function goToPage(path) {
+            window.location.href = path;
+        }
+
+        // Listen for online/offline events
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+
+        // Initial check
+        updateConnectionStatus();
+
+        // Periodic check every 10 seconds
+        setInterval(updateConnectionStatus, 10000);
+
+        // Service worker message handling
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.ready.then((registration) => {
+                console.log('Service Worker ready for DEXAI offline mode');
+
+                // Listen for service worker messages
+                navigator.serviceWorker.addEventListener('message', (event) => {
+                    if (event.data && event.data.type === 'CACHE_UPDATED') {
+                        console.log('Cache updated, new content available offline');
+                    }
+                });
+            });
+        }
+
+        // Preload critical pages for offline use
+        function preloadOfflinePages() {
+            const criticalPages = ['/dashboard', '/favorites', '/dictionary'];
+
+            criticalPages.forEach(page => {
+                const link = document.createElement('link');
+                link.rel = 'prefetch';
+                link.href = page;
+                document.head.appendChild(link);
+            });
+        }
+
+        // Preload when page loads
+        window.addEventListener('load', preloadOfflinePages);
+
+        // Show cached words count if available
+        if ('caches' in window) {
+            caches.open('dexai-dictionary-v1').then(cache => {
+                cache.keys().then(requests => {
+                    if (requests.length > 0) {
+                        const cachedCount = requests.length;
+                        const statusEl = document.querySelector('.features-list ul');
+                        const li = document.createElement('li');
+                        li.textContent = `${cachedCount} cuvinte în cache`;
+                        li.style.fontWeight = 'bold';
+                        li.style.color = '#4CAF50';
+                        statusEl.appendChild(li);
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,27 @@
+{
+  "apiVersion": "rbac.authorization.k8s.io/v1",
+  "kind": "RoleBinding",
+  "metadata": {
+    "name": "explorer-rb",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "explorer",
+      "component": "rbac",
+      "app.kubernetes.io/name": "explorer",
+      "app.kubernetes.io/component": "rbac",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  },
+  "subjects": [
+    {
+      "kind": "ServiceAccount",
+      "name": "explorer-sa",
+      "namespace": "codai-production"
+    }
+  ],
+  "roleRef": {
+    "kind": "Role",
+    "name": "explorer-role",
+    "apiGroup": "rbac.authorization.k8s.io"
+  }
+}

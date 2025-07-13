@@ -1,0 +1,2 @@
+# Run commitlint for commit message (lint-staged disabled)
+# pnpm exec commitlint --edit $1

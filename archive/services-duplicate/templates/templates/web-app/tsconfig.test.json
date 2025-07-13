@@ -1,0 +1,19 @@
+{
+  "extends": "./packages/typescript-config/base.json",
+  "include": [
+    "apps/**/*",
+    "packages/**/*",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/*.stories.ts",
+    "**/*.stories.tsx"
+  ],
+  "references": [
+    { "path": "./apps/web" },
+    { "path": "./apps/backend" },
+    { "path": "./packages/ui" },
+    { "path": "./packages/utils" }
+  ]
+}

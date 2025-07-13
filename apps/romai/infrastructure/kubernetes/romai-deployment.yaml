@@ -1,0 +1,526 @@
+# 🚀 ROMAI Kubernetes Production Deployment
+# Enterprise-grade container orchestration for cloud platforms
+# Generated for Phase 4 Week 4 Day 25 - Cloud Deployment & Scaling
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: romai-production
+  labels:
+    name: romai-production
+    tier: production
+    version: "1.0.0"
+---
+# =============================================================================
+# 🔐 ConfigMap for Production Configuration
+# =============================================================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: romai-config
+  namespace: romai-production
+data:
+  NODE_ENV: "production"
+  ROMAI_ENVIRONMENT: "production"
+  ROMAI_API_PORT: "8000"
+  ROMAI_DASHBOARD_PORT: "4000"
+  ROMAI_MCP_PORT: "3001"
+  LOG_LEVEL: "info"
+  METRICS_ENABLED: "true"
+  ENABLE_CLUSTERING: "true"
+  ENABLE_HEALTH_CHECKS: "true"
+---
+# =============================================================================
+# 🔒 Secret for Sensitive Configuration
+# =============================================================================
+apiVersion: v1
+kind: Secret
+metadata:
+  name: romai-secrets
+  namespace: romai-production
+type: Opaque
+data:
+  # Base64 encoded secrets - CHANGE IN PRODUCTION
+  AZURE_OPENAI_API_KEY: c2stcHJvZHVjdGlvbi1henVyZS1vcGVuYWkta2V5  # sk-production-azure-openai-key
+  JWT_SECRET: cHJvZHVjdGlvbi1qd3Qtc2VjcmV0LTI1Ni1iaXQtbWluaW11bQ==  # production-jwt-secret-256-bit-minimum
+  API_SECRET_KEY: cHJvZHVjdGlvbi1hcGktc2VjcmV0LWtleS0yNTYtYml0cw==  # production-api-secret-key-256-bits
+---
+# =============================================================================
+# 🌐 ROMAI API Deployment
+# =============================================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: romai-api
+  namespace: romai-production
+  labels:
+    app: romai-api
+    tier: backend
+    version: "1.0.0"
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: romai-api
+  template:
+    metadata:
+      labels:
+        app: romai-api
+        tier: backend
+        version: "1.0.0"
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        fsGroup: 1001
+      containers:
+      - name: romai-api
+        image: romai/api:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: romai-config
+              key: NODE_ENV
+        - name: ROMAI_API_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: romai-config
+              key: ROMAI_API_PORT
+        - name: AZURE_OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: romai-secrets
+              key: AZURE_OPENAI_API_KEY
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: romai-secrets
+              key: JWT_SECRET
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        volumeMounts:
+        - name: api-data
+          mountPath: /app/data
+        - name: api-logs
+          mountPath: /app/logs
+      volumes:
+      - name: api-data
+        persistentVolumeClaim:
+          claimName: romai-api-data
+      - name: api-logs
+        persistentVolumeClaim:
+          claimName: romai-api-logs
+---
+# =============================================================================
+# 🎨 ROMAI Dashboard Deployment
+# =============================================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: romai-dashboard
+  namespace: romai-production
+  labels:
+    app: romai-dashboard
+    tier: frontend
+    version: "1.0.0"
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: romai-dashboard
+  template:
+    metadata:
+      labels:
+        app: romai-dashboard
+        tier: frontend
+        version: "1.0.0"
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        fsGroup: 1001
+      containers:
+      - name: romai-dashboard
+        image: romai/dashboard:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 4000
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: romai-config
+              key: NODE_ENV
+        - name: ROMAI_DASHBOARD_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: romai-config
+              key: ROMAI_DASHBOARD_PORT
+        - name: NEXT_PUBLIC_API_URL
+          value: "https://api.romai.ro"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 4000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 4000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        volumeMounts:
+        - name: dashboard-data
+          mountPath: /app/data
+      volumes:
+      - name: dashboard-data
+        persistentVolumeClaim:
+          claimName: romai-dashboard-data
+---
+# =============================================================================
+# 🧠 ROMAI MCP Server Deployment
+# =============================================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: romai-mcp
+  namespace: romai-production
+  labels:
+    app: romai-mcp
+    tier: backend
+    version: "1.0.0"
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: romai-mcp
+  template:
+    metadata:
+      labels:
+        app: romai-mcp
+        tier: backend
+        version: "1.0.0"
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        fsGroup: 1001
+      containers:
+      - name: romai-mcp
+        image: romai/mcp:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3001
+          name: mcp
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: romai-config
+              key: NODE_ENV
+        - name: ROMAI_MCP_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: romai-config
+              key: ROMAI_MCP_PORT
+        - name: AZURE_OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: romai-secrets
+              key: AZURE_OPENAI_API_KEY
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        livenessProbe:
+          tcpSocket:
+            port: 3001
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          tcpSocket:
+            port: 3001
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        volumeMounts:
+        - name: mcp-data
+          mountPath: /app/data
+        - name: mcp-logs
+          mountPath: /app/logs
+      volumes:
+      - name: mcp-data
+        persistentVolumeClaim:
+          claimName: romai-mcp-data
+      - name: mcp-logs
+        persistentVolumeClaim:
+          claimName: romai-mcp-logs
+---
+# =============================================================================
+# 🔍 Elasticsearch Deployment
+# =============================================================================
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: elasticsearch
+  namespace: romai-production
+  labels:
+    app: elasticsearch
+    tier: data
+spec:
+  serviceName: elasticsearch-headless
+  replicas: 3
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+        tier: data
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+      - name: elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+        ports:
+        - containerPort: 9200
+          name: http
+        - containerPort: 9300
+          name: transport
+        env:
+        - name: node.name
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: cluster.name
+          value: "romai-cluster"
+        - name: discovery.seed_hosts
+          value: "elasticsearch-headless"
+        - name: cluster.initial_master_nodes
+          value: "elasticsearch-0,elasticsearch-1,elasticsearch-2"
+        - name: ES_JAVA_OPTS
+          value: "-Xms1g -Xmx1g"
+        - name: xpack.security.enabled
+          value: "false"
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "500m"
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+        volumeMounts:
+        - name: elasticsearch-data
+          mountPath: /usr/share/elasticsearch/data
+  volumeClaimTemplates:
+  - metadata:
+      name: elasticsearch-data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 50Gi
+---
+# =============================================================================
+# 🗄️ Redis Deployment
+# =============================================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: romai-production
+  labels:
+    app: redis
+    tier: cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+        tier: cache
+    spec:
+      containers:
+      - name: redis
+        image: redis:7-alpine
+        ports:
+        - containerPort: 6379
+          name: redis
+        args: ["redis-server", "--appendonly", "yes"]
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        livenessProbe:
+          exec:
+            command:
+            - redis-cli
+            - ping
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - redis-cli
+            - ping
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        volumeMounts:
+        - name: redis-data
+          mountPath: /data
+      volumes:
+      - name: redis-data
+        persistentVolumeClaim:
+          claimName: redis-data
+---
+# =============================================================================
+# 💾 Persistent Volume Claims
+# =============================================================================
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: romai-api-data
+  namespace: romai-production
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: fast-ssd
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: romai-api-logs
+  namespace: romai-production
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: fast-ssd
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: romai-dashboard-data
+  namespace: romai-production
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: fast-ssd
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: romai-mcp-data
+  namespace: romai-production
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: fast-ssd
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: romai-mcp-logs
+  namespace: romai-production
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: fast-ssd
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-data
+  namespace: romai-production
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: fast-ssd

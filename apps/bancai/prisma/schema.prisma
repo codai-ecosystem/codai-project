@@ -1,0 +1,215 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Romanian Banking Platform - Comprehensive Banking Domain
+
+model Customer {
+  id                String        @id @default(cuid())
+  email             String        @unique
+  firstName         String
+  lastName          String
+  phone             String?
+  dateOfBirth       DateTime
+  nationalId        String        @unique // CNP (Cod Numeric Personal)
+  address           String?
+  city              String?
+  county            String?
+  postalCode        String?
+  country           String        @default("Romania")
+  kycStatus         String        @default("PENDING")
+  riskLevel         String        @default("MEDIUM")
+  isActive          Boolean       @default(true)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  lastLoginAt       DateTime?
+  
+  // Banking Relations
+  accounts          Account[]
+  transactions      Transaction[]
+  cards             Card[]
+  creditApplications CreditApplication[]
+  kycDocuments      KYCDocument[]
+  payments          Payment[]
+  
+  @@map("customers")
+}
+
+model Account {
+  id                String        @id @default(cuid())
+  accountNumber     String        @unique // Romanian IBAN format
+  accountType       String        @default("CURRENT")
+  currency          String        @default("RON")
+  balance           Float         @default(0.00)
+  availableBalance  Float         @default(0.00)
+  overdraftLimit    Float         @default(0.00)
+  interestRate      Float         @default(0.0)
+  status            String        @default("ACTIVE")
+  openedAt          DateTime      @default(now())
+  closedAt          DateTime?
+  customerId        String
+  customer          Customer      @relation(fields: [customerId], references: [id])
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  
+  // Banking Relations
+  transactionsFrom  Transaction[] @relation("FromAccount")
+  transactionsTo    Transaction[] @relation("ToAccount")
+  cards             Card[]
+  
+  @@map("accounts")
+}
+
+model Transaction {
+  id                String            @id @default(cuid())
+  amount            Float
+  type              String
+  status            String            @default("PENDING")
+  description       String?
+  reference         String            @unique
+  merchantName      String?
+  merchantCategory  String?
+  authorizationCode String?
+  processingDate    DateTime?
+  valueDate         DateTime?
+  
+  // Account Relations
+  fromAccountId     String?
+  fromAccount       Account?          @relation("FromAccount", fields: [fromAccountId], references: [id])
+  toAccountId       String?
+  toAccount         Account?          @relation("ToAccount", fields: [toAccountId], references: [id])
+  
+  // Customer Relation
+  customerId        String
+  customer          Customer          @relation(fields: [customerId], references: [id])
+  
+  // Payment Relation
+  paymentId         String?
+  payment           Payment?          @relation(fields: [paymentId], references: [id])
+  
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  
+  @@map("transactions")
+}
+
+model Card {
+  id                String     @id @default(cuid())
+  cardNumber        String     @unique // Masked for security
+  cardType          String     @default("DEBIT")
+  expiryMonth       Int
+  expiryYear        Int
+  cardholderName    String
+  status            String     @default("ACTIVE")
+  dailyLimit        Float      @default(5000.00) // RON
+  monthlyLimit      Float      @default(50000.00) // RON
+  isContactless     Boolean    @default(true)
+  pinAttempts       Int        @default(0)
+  isBlocked         Boolean    @default(false)
+  blockedReason     String?
+  issuedAt          DateTime   @default(now())
+  blockedAt         DateTime?
+  
+  // Relations
+  accountId         String
+  account           Account    @relation(fields: [accountId], references: [id])
+  customerId        String
+  customer          Customer   @relation(fields: [customerId], references: [id])
+  
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  
+  @@map("cards")
+}
+
+model Payment {
+  id                String        @id @default(cuid())
+  amount            Float
+  currency          String        @default("RON")
+  paymentMethod     String
+  status            String        @default("PENDING")
+  description       String?
+  merchantName      String?
+  merchantId        String?
+  paymentReference  String        @unique
+  externalReference String?
+  processingFee     Float         @default(0.00)
+  
+  // Customer Relation
+  customerId        String
+  customer          Customer      @relation(fields: [customerId], references: [id])
+  
+  // Transaction Relation
+  transactions      Transaction[]
+  
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  processedAt       DateTime?
+  
+  @@map("payments")
+}
+
+model CreditApplication {
+  id                String               @id @default(cuid())
+  amount            Float
+  purpose           String
+  termMonths        Int
+  interestRate      Float?
+  monthlyPayment    Float?
+  status            String               @default("PENDING")
+  creditScore       Int?
+  incomeVerified    Boolean              @default(false)
+  employmentStatus  String?
+  monthlyIncome     Float?
+  existingDebt      Float?
+  collateralType    String?
+  collateralValue   Float?
+  
+  // Decision Info
+  approvedAmount    Float?
+  approvedRate      Float?
+  approvedTerms     String?
+  rejectionReason   String?
+  reviewNotes       String?
+  reviewedBy        String?
+  reviewedAt        DateTime?
+  
+  // Relations
+  customerId        String
+  customer          Customer             @relation(fields: [customerId], references: [id])
+  
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  
+  @@map("credit_applications")
+}
+
+model KYCDocument {
+  id                String       @id @default(cuid())
+  documentType      String
+  documentNumber    String
+  expiryDate        DateTime?
+  issueDate         DateTime?
+  issuingAuthority  String?
+  documentUrl       String?      // Secure file storage URL
+  status            String       @default("PENDING")
+  verifiedBy        String?
+  verifiedAt        DateTime?
+  rejectionReason   String?
+  
+  // Relations
+  customerId        String
+  customer          Customer     @relation(fields: [customerId], references: [id])
+  
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  
+  @@map("kyc_documents")
+}
+
+// Romanian Banking Schema - SQLite compatible with string enums

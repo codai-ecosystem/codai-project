@@ -1,0 +1,283 @@
+# ROMAI Ultimate MCP Server - Production Docker Compose
+# Complete production environment with all services
+
+version: '3.8'
+
+services:
+  # Main ROMAI MCP Server
+  romai-mcp:
+    build:
+      context: .
+      dockerfile: packages/romai-mcp/Dockerfile
+      target: production
+    container_name: romai-mcp-server
+    restart: unless-stopped
+    ports:
+      - "4095:3000"
+    environment:
+      # Core Configuration
+      - NODE_ENV=production
+      - PORT=3000
+      - ROMAI_ENV=production
+      
+      # Security Configuration
+      - ROMAI_SECURITY_ENABLED=true
+      - JWT_SECRET=${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
+      - JWT_EXPIRES_IN=24h
+      - RATE_LIMIT_WINDOW=15
+      - RATE_LIMIT_MAX=1000
+      - BCRYPT_ROUNDS=12
+      
+      # Monitoring Configuration
+      - ROMAI_MONITORING_ENABLED=true
+      - METRICS_PORT=9090
+      - HEALTH_CHECK_INTERVAL=30000
+      - ALERT_WEBHOOK_URL=${ALERT_WEBHOOK_URL:-}
+      
+      # Database Configuration
+      - DATABASE_URL=${DATABASE_URL:-postgresql://romai:romai@postgres:5432/romai}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      
+      # Logging Configuration
+      - ROMAI_LOG_LEVEL=info
+      - LOG_FORMAT=json
+      - LOG_FILE_ENABLED=true
+      - LOG_ROTATION_SIZE=10M
+      - LOG_RETENTION_DAYS=30
+      
+      # External Services
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - GOOGLE_AI_KEY=${GOOGLE_AI_KEY:-}
+    volumes:
+      - romai_logs:/app/logs
+      - romai_data:/app/data
+      - ./config/production.json:/app/config/production.json:ro
+    depends_on:
+      - postgres
+      - redis
+      - prometheus
+    networks:
+      - romai-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.romai.rule=Host(`api.romai.local`)"
+      - "traefik.http.services.romai.loadbalancer.server.port=3000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: romai-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=romai
+      - POSTGRES_USER=romai
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-romai}
+      - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infrastructure/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "5432:5432"
+    networks:
+      - romai-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U romai"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: romai-redis
+    restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD:-romai} --appendonly yes
+    volumes:
+      - redis_data:/data
+      - ./infrastructure/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    ports:
+      - "6379:6379"
+    networks:
+      - romai-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Prometheus Monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: romai-prometheus
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ./infrastructure/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - romai-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Grafana Dashboards
+  grafana:
+    image: grafana/grafana:latest
+    container_name: romai-grafana
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./infrastructure/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./infrastructure/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports:
+      - "4096:3000"
+    networks:
+      - romai-network
+    depends_on:
+      - prometheus
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # NGINX Load Balancer
+  nginx:
+    image: nginx:alpine
+    container_name: romai-nginx
+    restart: unless-stopped
+    volumes:
+      - ./infrastructure/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./infrastructure/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./infrastructure/nginx/ssl:/etc/nginx/ssl:ro
+      - nginx_logs:/var/log/nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - romai-network
+    depends_on:
+      - romai-mcp
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Elasticsearch for Logging
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: romai-elasticsearch
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - romai-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Kibana for Log Visualization
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    container_name: romai-kibana
+    restart: unless-stopped
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    volumes:
+      - ./infrastructure/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+    ports:
+      - "5601:5601"
+    networks:
+      - romai-network
+    depends_on:
+      - elasticsearch
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5601/api/status || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Traefik Reverse Proxy (Alternative to NGINX)
+  traefik:
+    image: traefik:v3.0
+    container_name: romai-traefik
+    restart: unless-stopped
+    command:
+      - --api.dashboard=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL:-admin@romai.dev}
+      - --certificatesresolvers.letsencrypt.acme.storage=/acme.json
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik_acme:/acme.json
+    ports:
+      - "8080:8080"  # Traefik dashboard
+    networks:
+      - romai-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.romai.local`)"
+      - "traefik.http.routers.dashboard.service=api@internal"
+
+# Volumes
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+  romai_logs:
+    driver: local
+  romai_data:
+    driver: local
+  nginx_logs:
+    driver: local
+  traefik_acme:
+    driver: local
+
+# Networks
+networks:
+  romai-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

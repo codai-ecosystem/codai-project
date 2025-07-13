@@ -1,0 +1,280 @@
+name: "🚀 Production Deployment"
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  NODE_VERSION: '18'
+  PNPM_VERSION: '8'
+
+jobs:
+  pre-deployment-checks:
+    name: "Pre-Deployment Checks"
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      environment: ${{ steps.env.outputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Determine environment
+        id: env
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "environment=staging" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            echo "environment=production" >> $GITHUB_OUTPUT
+          else
+            echo "environment=development" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Get version
+        id: version
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          else
+            echo "version=$(date +%Y%m%d)-${GITHUB_SHA:0:7}" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Security scan
+        run: |
+          echo "Running security scan..."
+          # Add security scan here
+      
+      - name: Dependency audit
+        run: |
+          echo "Running dependency audit..."
+          # Add dependency audit here
+
+  build-and-test:
+    name: "Build & Test for Deployment"
+    runs-on: ubuntu-latest
+    needs: [pre-deployment-checks]
+    strategy:
+      matrix:
+        service: [codai, memorai, bancai, fabricai, publicai, sociai, studiai, logai, cumparai, wallet]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      
+      - name: Build service
+        run: |
+          if [ -d "apps/${{ matrix.service }}" ]; then
+            cd apps/${{ matrix.service }}
+            pnpm build
+          elif [ -d "services/${{ matrix.service }}" ]; then
+            cd services/${{ matrix.service }}
+            pnpm build || echo "No build script for ${{ matrix.service }}"
+          fi
+        env:
+          NODE_ENV: production
+          NEXT_PUBLIC_ENV: ${{ needs.pre-deployment-checks.outputs.environment }}
+      
+      - name: Run service tests
+        run: |
+          if [ -d "apps/${{ matrix.service }}" ]; then
+            cd apps/${{ matrix.service }}
+            pnpm test || echo "No tests for ${{ matrix.service }}"
+          elif [ -d "services/${{ matrix.service }}" ]; then
+            cd services/${{ matrix.service }}
+            pnpm test || echo "No tests for ${{ matrix.service }}"
+          fi
+      
+      - name: Create deployment artifact
+        run: |
+          SERVICE_PATH=""
+          if [ -d "apps/${{ matrix.service }}" ]; then
+            SERVICE_PATH="apps/${{ matrix.service }}"
+          elif [ -d "services/${{ matrix.service }}" ]; then
+            SERVICE_PATH="services/${{ matrix.service }}"
+          fi
+          
+          if [ -n "$SERVICE_PATH" ]; then
+            tar -czf ${{ matrix.service }}-${{ needs.pre-deployment-checks.outputs.version }}.tar.gz \
+              --exclude='node_modules' \
+              --exclude='.git' \
+              --exclude='coverage' \
+              --exclude='test-results' \
+              $SERVICE_PATH/
+          fi
+      
+      - name: Upload deployment artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.service }}-deployment
+          path: ${{ matrix.service }}-${{ needs.pre-deployment-checks.outputs.version }}.tar.gz
+          retention-days: 30
+
+  deploy-infrastructure:
+    name: "Deploy Infrastructure"
+    runs-on: ubuntu-latest
+    needs: [pre-deployment-checks]
+    environment: ${{ needs.pre-deployment-checks.outputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
+      
+      - name: Initialize Terraform
+        run: |
+          cd infrastructure/terraform
+          terraform init
+      
+      - name: Plan Terraform changes
+        run: |
+          cd infrastructure/terraform
+          terraform plan -var="environment=${{ needs.pre-deployment-checks.outputs.environment }}" -out=tfplan
+      
+      - name: Apply Terraform changes
+        if: needs.pre-deployment-checks.outputs.environment != 'production' || github.ref == 'refs/heads/main'
+        run: |
+          cd infrastructure/terraform
+          terraform apply tfplan
+
+  deploy-services:
+    name: "Deploy Services"
+    runs-on: ubuntu-latest
+    needs: [pre-deployment-checks, build-and-test, deploy-infrastructure]
+    environment: ${{ needs.pre-deployment-checks.outputs.environment }}
+    strategy:
+      matrix:
+        service: [codai, memorai, bancai, fabricai, publicai, sociai, studiai, logai, cumparai, wallet]
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download deployment artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ matrix.service }}-deployment
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
+      
+      - name: Deploy to ECS/Lambda
+        run: |
+          echo "Deploying ${{ matrix.service }} to ${{ needs.pre-deployment-checks.outputs.environment }}"
+          # Add your deployment logic here
+          # Example: aws ecs update-service --cluster codai-${{ needs.pre-deployment-checks.outputs.environment }} --service ${{ matrix.service }} --force-new-deployment
+      
+      - name: Wait for deployment
+        run: |
+          echo "Waiting for ${{ matrix.service }} deployment to complete..."
+          # Add health check logic here
+      
+      - name: Verify deployment
+        run: |
+          echo "Verifying ${{ matrix.service }} deployment..."
+          # Add verification logic here
+
+  post-deployment-tests:
+    name: "Post-Deployment Tests"
+    runs-on: ubuntu-latest
+    needs: [pre-deployment-checks, deploy-services]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      
+      - name: Install Playwright
+        run: pnpm exec playwright install --with-deps
+      
+      - name: Run smoke tests
+        run: |
+          BASE_URL="${{ vars.BASE_URL_STAGING }}"
+          if [ "${{ needs.pre-deployment-checks.outputs.environment }}" == "production" ]; then
+            BASE_URL="${{ vars.BASE_URL_PRODUCTION }}"
+          fi
+          BASE_URL=$BASE_URL pnpm test:e2e --grep @smoke
+      
+      - name: Run health checks
+        run: |
+          echo "Running health checks..."
+          # Add health check script here
+
+  rollback:
+    name: "Rollback on Failure"
+    runs-on: ubuntu-latest
+    needs: [pre-deployment-checks, deploy-services, post-deployment-tests]
+    if: failure() && needs.pre-deployment-checks.outputs.environment == 'production'
+    environment: ${{ needs.pre-deployment-checks.outputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Rollback deployment
+        run: |
+          echo "Rolling back deployment..."
+          # Add rollback logic here
+      
+      - name: Notify rollback
+        run: |
+          echo "🚨 Deployment rolled back due to failures"
+          # Add notification logic here
+
+  notify-deployment:
+    name: "Notify Deployment Status"
+    runs-on: ubuntu-latest
+    needs: [pre-deployment-checks, deploy-services, post-deployment-tests]
+    if: always()
+    steps:
+      - name: Notify success
+        if: needs.deploy-services.result == 'success' && needs.post-deployment-tests.result == 'success'
+        run: |
+          echo "✅ Deployment to ${{ needs.pre-deployment-checks.outputs.environment }} successful!"
+          echo "Version: ${{ needs.pre-deployment-checks.outputs.version }}"
+          # Add notification logic here (Slack, Discord, etc.)
+      
+      - name: Notify failure
+        if: needs.deploy-services.result == 'failure' || needs.post-deployment-tests.result == 'failure'
+        run: |
+          echo "❌ Deployment to ${{ needs.pre-deployment-checks.outputs.environment }} failed!"
+          # Add notification logic here

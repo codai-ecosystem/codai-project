@@ -1,0 +1,182 @@
+# Default values for codai service
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 3
+
+image:
+  repository: codai-registry/codai
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  fsGroup: 2000
+  runAsNonRoot: true
+  runAsUser: 1000
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    - host: codai.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: codai-tls
+      hosts:
+        - codai.local
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 2Gi
+  requests:
+    cpu: 500m
+    memory: 1Gi
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+    - weight: 100
+      podAffinityTerm:
+        labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values:
+            - codai
+        topologyKey: kubernetes.io/hostname
+
+# Application specific configuration
+app:
+  name: codai
+  tier: foundation
+  priority: "1"
+  env:
+    NODE_ENV: production
+    PORT: "3000"
+    LOG_LEVEL: info
+  
+  # Environment variables from configmap
+  configMap:
+    FEATURE_FLAGS: "ai-enhanced,collaborative-mode,real-time-sync"
+    API_VERSION: "v1"
+    CACHE_TTL: "3600"
+    MAX_FILE_SIZE: "10MB"
+    SESSION_TIMEOUT: "1800"
+  
+  # Environment variables from secrets
+  secrets:
+    DATABASE_URL: ""
+    JWT_SECRET: ""
+    REDIS_URL: ""
+    ELASTICSEARCH_URL: ""
+    API_KEYS: ""
+
+# Health checks
+healthcheck:
+  enabled: true
+  livenessProbe:
+    httpGet:
+      path: /health
+      port: http
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: http
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 3
+
+# Monitoring
+monitoring:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    interval: 30s
+    path: /metrics
+  prometheusRule:
+    enabled: true
+
+# Persistence
+persistence:
+  enabled: true
+  size: 10Gi
+  storageClass: "fast-ssd"
+  accessMode: ReadWriteOnce
+
+# Database dependencies
+postgresql:
+  enabled: true
+  auth:
+    postgresPassword: ""
+    database: codai
+  primary:
+    persistence:
+      enabled: true
+      size: 20Gi
+
+redis:
+  enabled: true
+  auth:
+    enabled: true
+    password: ""
+  master:
+    persistence:
+      enabled: true
+      size: 5Gi
+
+elasticsearch:
+  enabled: true
+  replicas: 1
+  minimumMasterNodes: 1
+  volumeClaimTemplate:
+    accessModes: [ "ReadWriteOnce" ]
+    resources:
+      requests:
+        storage: 10Gi

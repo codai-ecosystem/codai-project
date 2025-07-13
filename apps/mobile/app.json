@@ -1,0 +1,32 @@
+{
+  "name": "CodaiMobile",
+  "displayName": "CODAI Mobile",
+  "description": "React Native mobile application for CODAI financial ecosystem",
+  "slug": "codai-mobile",
+  "version": "1.0.0",
+  "orientation": "portrait",
+  "icon": "./assets/icon.png",
+  "userInterfaceStyle": "automatic",
+  "splash": {
+    "image": "./assets/splash.png",
+    "resizeMode": "contain",
+    "backgroundColor": "#10B981"
+  },
+  "assetBundlePatterns": [
+    "**/*"
+  ],
+  "ios": {
+    "supportsTablet": true,
+    "bundleIdentifier": "com.codai.mobile"
+  },
+  "android": {
+    "adaptiveIcon": {
+      "foregroundImage": "./assets/adaptive-icon.png",
+      "backgroundColor": "#10B981"
+    },
+    "package": "com.codai.mobile"
+  },
+  "web": {
+    "favicon": "./assets/favicon.png"
+  }
+}

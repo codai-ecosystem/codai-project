@@ -1,0 +1,39 @@
+{
+  "apiVersion": "policy/v1beta1",
+  "kind": "PodSecurityPolicy",
+  "metadata": {
+    "name": "hub-psp",
+    "labels": {
+      "app": "hub",
+      "component": "security",
+      "app.kubernetes.io/name": "hub",
+      "app.kubernetes.io/component": "security",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  },
+  "spec": {
+    "privileged": false,
+    "allowPrivilegeEscalation": false,
+    "requiredDropCapabilities": [
+      "ALL"
+    ],
+    "volumes": [
+      "configMap",
+      "emptyDir",
+      "projected",
+      "secret",
+      "downwardAPI",
+      "persistentVolumeClaim"
+    ],
+    "runAsUser": {
+      "rule": "MustRunAsNonRoot"
+    },
+    "seLinux": {
+      "rule": "RunAsAny"
+    },
+    "fsGroup": {
+      "rule": "RunAsAny"
+    },
+    "readOnlyRootFilesystem": false
+  }
+}

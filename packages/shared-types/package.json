@@ -1,0 +1,17 @@
+{
+  "name": "@codai/shared-types",
+  "version": "1.0.0",
+  "description": "Shared TypeScript types for CodAI ecosystem",
+  "main": "index.ts",
+  "types": "index.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0"
+  }
+}

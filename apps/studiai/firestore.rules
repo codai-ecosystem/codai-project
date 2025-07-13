@@ -1,0 +1,153 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == 'vladulescu.catalin@gmail.com';
+    }
+    
+    // Check if a user has purchased a course using a simplified approach
+    function hasUserPaid() {
+      return request.auth != null;
+    }
+    
+    // Allow admins to list/read all users (collection query)
+    match /users {
+      allow list: if isAdmin();
+    }
+    
+    // Allow admins to list/read all users
+    match /users/{userId} {
+      // Users can read and write their own data, admins can read all user data
+      allow read: if request.auth != null && (request.auth.uid == userId || isAdmin());
+      allow write: if request.auth != null && (request.auth.uid == userId || isAdmin());
+      
+      match /progress/{progressId} {
+        // Users can only read and write their own progress, admins can read all progress
+        allow read: if request.auth != null && (request.auth.uid == userId || isAdmin());
+        allow write: if request.auth != null && (request.auth.uid == userId || isAdmin());
+      }
+      
+      // Adding profile settings access
+      match /profile/{document=**} {
+        allow read: if request.auth != null && (request.auth.uid == userId || isAdmin());
+        allow write: if request.auth != null && (request.auth.uid == userId || isAdmin());
+      }
+        // Adding user activity tracking
+      match /activity/{activityId} {
+        allow read: if request.auth != null && (request.auth.uid == userId || isAdmin());
+        allow create: if request.auth != null && request.auth.uid == userId;
+        allow update, delete: if false; // Activities should be immutable once created
+      }
+      
+      // Adding bookmarks collection
+      match /bookmarks/{bookmarkId} {
+        allow read: if request.auth != null && (request.auth.uid == userId || isAdmin());
+        allow write: if request.auth != null && request.auth.uid == userId;
+        allow delete: if request.auth != null && request.auth.uid == userId;
+      }
+        // Adding wishlist collection
+      match /wishlist/{wishlistItemId} {
+        allow read: if request.auth != null && (request.auth.uid == userId || isAdmin());
+        allow write: if request.auth != null && request.auth.uid == userId;
+        allow delete: if request.auth != null && request.auth.uid == userId;
+      }
+      
+      // Adding achievements collection
+      match /achievements/{achievementId} {
+        allow read: if request.auth != null && (request.auth.uid == userId || isAdmin());
+        allow write: if request.auth != null && (request.auth.uid == userId || isAdmin());
+        allow delete: if request.auth != null && isAdmin();
+      }
+    }
+    
+    // If you need to allow admin to access all users including subcollections
+    match /{path=**}/users/{userId} {
+      allow read: if isAdmin();
+    }
+    
+    match /courses/{courseId} {
+      allow read: if true;
+      allow write: if isAdmin();
+      
+      match /lessons/{lessonId} {
+        // Public access for lesson metadata, but potentially restrict full content access
+        allow read: if true || hasUserPaid();
+        // Allow write operations for admin
+        allow write: if isAdmin();
+        // Specifically allow updates to the order field for reordering
+        allow update: if isAdmin() && 
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['order']);
+      }
+      
+      match /reviews/{reviewId} {
+        allow read: if true;
+        allow write: if request.auth != null;
+      }
+    }
+    
+    // Questions collection for lesson Q&A
+    match /questions/{questionId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+      allow update: if request.auth != null && 
+        (request.auth.uid == resource.data.userId || isAdmin() || 
+        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['answers', 'likes', 'likedBy', 'isResolved'])));
+      allow delete: if request.auth != null && (request.auth.uid == resource.data.userId || isAdmin());
+    }
+    
+    // Adding admin collection for admin-only data
+    match /admin/{document=**} {
+      allow read, write: if isAdmin();
+    }
+    
+    // Adding analytics collection
+    match /analytics/{document=**} {
+      allow read: if isAdmin();
+      allow create: if request.auth != null; // Logged-in users can create analytics entries
+      allow update, delete: if isAdmin();
+    }
+    
+    match /customers/{uid} {
+      // Allow admins to read/write any customer data for course assignments
+      allow read: if request.auth != null && (request.auth.uid == uid || isAdmin());
+      allow write: if isAdmin();
+
+      match /checkout_sessions/{id} {
+        allow read, write: if request.auth != null && (request.auth.uid == uid || isAdmin());
+      }
+      
+      match /subscriptions/{id} {
+        allow read: if request.auth != null && (request.auth.uid == uid || isAdmin());
+      }
+      
+      match /payments/{id} {
+        allow read: if request.auth != null && (request.auth.uid == uid || isAdmin());
+        // Allow admins to create payments for users (for course assignment functionality)
+        allow create: if isAdmin();
+      }
+    }
+
+    match /products/{id} {
+      allow read: if true;
+
+      match /prices/{id} {
+        allow read: if true;
+      }
+
+      match /tax_rates/{id} {
+        allow read: if true;
+      }
+    }
+    
+    // Allow collection group query access for admins
+    match /{path=**}/payments/{paymentId} {
+      allow read: if isAdmin();
+    }
+    
+    // Add collection group rules for payments
+    match /{path=**}/payments/{payment} {
+      allow read: if isAdmin();
+    }
+  }
+}

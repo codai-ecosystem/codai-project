@@ -1,0 +1,505 @@
+You are the AI bootstrap agent responsible for setting up the full Codai Orchestration Project from an empty folder. This folder will become the root of a meta-repository named codai-project, which will orchestrate a decentralized ecosystem of standalone Codai apps hosted under the GitHub organization `codai`.
+
+Your job is to:
+
+1. Create the following root-level folder structure:
+   - apps/
+   - packages/
+   - .github/
+   - .vscode/
+   - .agent/
+   - scripts/
+   - docs/
+
+2. Create the following root configuration files:
+
+a) package.json:
+{
+  "name": "codai-project",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Codai OS - Meta-orchestration system for the Codai ecosystem",
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "clean": "turbo run clean",
+    "bootstrap": "pnpm install && turbo run build --filter=...@codai/shared",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "turbo run build && changeset publish",
+    "integrate-app": "node scripts/integrate-app.js",
+    "sync-apps": "node scripts/sync-apps.js",
+    "validate-workspace": "node scripts/validate-workspace.js"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0",
+    "@changesets/cli": "^2.27.0",
+    "typescript": "^5.3.0",
+    "prettier": "^3.1.0",
+    "eslint": "^8.55.0",
+    "@types/node": "^20.10.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0"
+}
+
+b) pnpm-workspace.yaml:
+packages:
+  - "apps/*"
+  - "packages/*"
+
+c) turbo.json:
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "globalDependencies": ["**/.env.*local"],
+  "globalEnv": ["NODE_ENV", "DATABASE_URL", "NEXT_PUBLIC_*"],
+  "pipeline": {
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["^build"]
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "dist/**", "build/**", "storybook-static/**"]
+    },
+    "test": {
+      "dependsOn": ["build"],
+      "outputs": ["coverage/**", "test-results/**"]
+    },
+    "test:e2e": {
+      "dependsOn": ["build"],
+      "outputs": ["playwright-report/**", "test-results/**"]
+    },
+    "lint": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "clean": {
+      "cache": false,
+      "outputs": []
+    }
+  }
+}
+
+d) tsconfig.base.json:
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["dom", "dom.iterable", "ES2022"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [{ "name": "next" }],
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@codai/shared": ["./packages/shared/src"],
+      "@codai/ui": ["./packages/ui/src"],
+      "@codai/config": ["./packages/config/src"]
+    },
+    "types": ["node", "jest", "@testing-library/jest-dom"]
+  },
+  "exclude": ["node_modules", "dist", "build", ".next"]
+}
+
+e) .gitignore:
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+.next/
+out/
+dist/
+build/
+storybook-static/
+
+# Environment variables
+.env
+.env*.local
+
+# Testing
+coverage/
+test-results/
+playwright-report/
+playwright/.cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary
+.tmp/
+.temp/
+
+f) projects.index.json:
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-06-10T00:00:00Z",
+  "totalApps": 0,
+  "apps": [],
+  "packages": [],
+  "metadata": {
+    "nodeVersion": ">=18.0.0",
+    "pnpmVersion": ">=8.0.0",
+    "platform": "multi-platform"
+  }
+}
+
+g) .github/workflows/ci.yml:
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-and-typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8  
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [lint-and-typecheck, test]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+h) .vscode/settings.json:
+{
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.preferences.includePackageJsonAutoImports": "on",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/dist": true,
+    "**/build": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/coverage": true
+  }
+}
+
+i) .vscode/extensions.json:
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-typescript-next",
+    "bradlc.vscode-tailwindcss",
+    "github.copilot",
+    "github.copilot-chat",
+    "ms-playwright.playwright"
+  ]
+}
+
+3. For each Codai app the user wants to integrate, execute these steps with comprehensive error handling:
+
+   PHASE 1: Pre-integration Validation
+   - Validate GitHub repository exists: GET https://api.github.com/repos/codai/{app-name}-app
+   - Check if app folder already exists locally
+   - Verify git working directory is clean
+   - Create backup of current projects.index.json
+
+   PHASE 2: Repository Integration  
+   - Create folder `apps/{app-name}` if not exists
+   - Execute: `git subtree add --prefix=apps/{app-name} https://github.com/codai/{app-name}-app.git main --squash`
+   - If subtree fails, fallback to: `git clone https://github.com/codai/{app-name}-app.git apps/{app-name} && rm -rf apps/{app-name}/.git`
+   
+   PHASE 3: App Configuration
+   - Create `apps/{app-name}/agent.project.json`:
+   {
+     "name": "{app-name}",
+     "type": "codai-app",
+     "version": "1.0.0",
+     "lastUpdated": "2025-06-10T00:00:00Z",
+     "status": "integrated",
+     "repository": "https://github.com/codai/{app-name}-app.git",
+     "localPath": "apps/{app-name}",
+     "dependencies": [],
+     "scripts": {
+       "dev": "next dev",
+       "build": "next build", 
+       "test": "jest",
+       "lint": "next lint"
+     },
+     "ports": {
+       "dev": 3000,
+       "preview": 3001
+     },
+     "environment": {
+       "nodeVersion": ">=18.0.0",
+       "requiredEnvVars": []
+     }
+   }
+   
+   - Create `apps/{app-name}/copilot-instructions.md`:
+   # {app-name} Copilot Instructions
+   
+   This is the {app-name} application within the Codai ecosystem.
+   
+   ## Context
+   - Part of the larger codai-project monorepo
+   - Follows Codai architectural patterns
+   - Uses shared packages from packages/ directory
+   
+   ## Development
+   - Run `pnpm dev` from root to start all apps
+   - Run `pnpm dev --filter={app-name}` to start only this app
+   - All changes should maintain compatibility with the monorepo structure
+   
+   ## Architecture
+   - Next.js 14+ with TypeScript
+   - Tailwind CSS for styling
+   - Shared components from @codai/ui
+   - Shared utilities from @codai/shared
+   
+   - Create `apps/{app-name}/.agent/agent.memory.json`:
+   {
+     "appName": "{app-name}",
+     "lastAccessed": "2025-06-10T00:00:00Z",
+     "context": {
+       "integrationStatus": "completed",
+       "knownIssues": [],
+       "recentChanges": [],
+       "dependencies": []
+     },
+     "preferences": {
+       "codeStyle": "typescript-strict",
+       "testFramework": "jest",
+       "deploymentTarget": "vercel"
+     }
+   }
+   
+   - Create `apps/{app-name}/.vscode/tasks.json`:
+   {
+     "version": "2.0.0",
+     "tasks": [
+       {
+         "type": "shell",
+         "label": "{app-name}: dev",
+         "command": "pnpm",
+         "args": ["dev", "--filter={app-name}"],
+         "options": { "cwd": "${workspaceFolder}/../.." },
+         "group": "build",
+         "presentation": { "echo": true, "reveal": "always", "focus": false, "panel": "shared" },
+         "problemMatcher": ["$tsc", "$eslint-stylish"]
+       },
+       {
+         "type": "shell", 
+         "label": "{app-name}: build",
+         "command": "pnpm",
+         "args": ["build", "--filter={app-name}"],
+         "options": { "cwd": "${workspaceFolder}/../.." },
+         "group": "build",
+         "presentation": { "echo": true, "reveal": "always", "focus": false, "panel": "shared" }
+       },
+       {
+         "type": "shell",
+         "label": "{app-name}: test",
+         "command": "pnpm", 
+         "args": ["test", "--filter={app-name}"],
+         "options": { "cwd": "${workspaceFolder}/../.." },
+         "group": "test",
+         "presentation": { "echo": true, "reveal": "always", "focus": false, "panel": "shared" }
+       }
+     ]
+   }
+   
+   PHASE 4: Index Updates
+   - Update projects.index.json with new app metadata:
+   {
+     "name": "{app-name}",
+     "type": "codai-app", 
+     "status": "active",
+     "path": "apps/{app-name}",
+     "repository": "https://github.com/codai/{app-name}-app.git",
+     "lastUpdated": "2025-06-10T00:00:00Z",
+     "integration": {
+       "method": "git-subtree",
+       "branch": "main",
+       "lastSync": "2025-06-10T00:00:00Z"
+     },
+     "metadata": {
+       "framework": "next.js",
+       "language": "typescript",
+       "styling": "tailwindcss"
+     }
+   }
+   
+   PHASE 5: Workspace Updates  
+   - Verify app is listed in pnpm-workspace.yaml
+   - Update root package.json if needed
+   - Run `pnpm install` to update lockfile
+   - Validate turbo.json covers new app
+
+4. Enhanced Working Modes:
+
+   GLOBAL MODE (codai-project root):
+   - Create `agent.profile.json` for cross-app orchestration:
+   {
+     "profile": "orchestrator",
+     "activeApp": null,
+     "workspaceMode": "global",
+     "memoryPath": ".agent/global.memory.json",
+     "capabilities": ["cross-app-coordination", "shared-package-management", "deployment-orchestration"],
+     "preferences": {
+       "defaultApp": "ajutai",
+       "autoSync": true,
+       "parallelBuilds": true
+     }
+   }
+   
+   ISOLATED MODE (apps/{app-name}):
+   - Detect when working within single app directory
+   - Use local agent.memory.json and copilot-instructions.md
+   - Respect app-specific configuration and constraints
+   - Maintain awareness of monorepo context but avoid cross-app modifications
+
+5. Scope Management & Safety:
+   - Never modify other apps unless explicitly authorized
+   - Always validate changes against app-specific constraints
+   - Maintain audit trail of all cross-app operations
+   - Implement rollback mechanisms for failed integrations
+
+6. Post-Integration Validation:
+   - Verify all apps build successfully: `pnpm build`
+   - Run integration tests: `pnpm test`
+   - Check linting: `pnpm lint`
+   - Validate TypeScript: `pnpm typecheck`
+   - Test development servers start correctly
+
+7. Commit Strategy:
+   - Initial structure: `chore: bootstrap codai-project monorepo structure`
+   - App integrations: `feat: integrate {app-name} via git subtree`
+   - Configuration updates: `chore: update workspace configuration for {app-name}`
+   - Use conventional commits with proper scopes
+
+8. Memory & State Management:
+   - Save complete bootstrap state in `.agent/bootstrap.memory.json`:
+   {
+     "bootstrapVersion": "2.0.0",
+     "completedAt": "2025-06-10T00:00:00Z",
+     "integratedApps": [],
+     "failedIntegrations": [],
+     "configuration": {
+       "turboVersion": "2.0.0",
+       "nodeVersion": "18.x",
+       "pnpmVersion": "8.x"
+     },
+     "nextSteps": [
+       "Run pnpm install to initialize workspace",
+       "Execute pnpm dev to start development servers", 
+       "Integrate first Codai app using provided commands"
+     ]
+   }
+
+9. Error Recovery & Resilience:
+   - Implement comprehensive error handling for all Git operations
+   - Provide clear rollback instructions for failed integrations
+   - Maintain backup of critical configuration files
+   - Log all operations for debugging and audit purposes
+
+10. Integration Commands for User:
+    After bootstrap completion, provide these commands:
+    
+    ```bash
+    # Initialize the workspace
+    pnpm install
+    
+    # Integrate a Codai app (replace {app-name} with actual app)
+    git subtree add --prefix=apps/{app-name} https://github.com/codai/{app-name}-app.git main --squash
+    
+    # Start development
+    pnpm dev
+    
+    # Build all apps
+    pnpm build
+    
+    # Run tests
+    pnpm test
+    ```
+
+This enhanced bootstrap system creates a production-ready, scalable foundation for the Codai OS orchestration environment. It's designed for AI-native collaboration, robust error handling, and seamless integration of the growing Codai ecosystem. You're not just creating folders — you're architecting the digital infrastructure for an intelligent, self-evolving development ecosystem that scales with your ambitions.  I dare you to give 110% of your power and finish this project by making it perfect. No errors, no problems, no missing features. I challange you to make it PERFECT!

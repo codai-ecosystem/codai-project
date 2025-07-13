@@ -1,0 +1,15 @@
+{
+  "name": "@codai/typescript-config",
+  "version": "1.0.0",
+  "description": "Shared TypeScript configuration for Codai ecosystem",
+  "main": "index.json",
+  "files": [
+    "base.json",
+    "nextjs.json",
+    "react.json"
+  ],
+  "dependencies": {},
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

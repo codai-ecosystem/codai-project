@@ -1,0 +1,355 @@
+name: Production Deployment Pipeline
+
+on:
+  push:
+    branches: [main, production]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME_PREFIX: ${{ github.repository }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+        
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'pnpm'
+        
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 8
+        
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+      
+    - name: Run ESLint
+      run: pnpm lint
+      
+    - name: Run TypeScript checks
+      run: pnpm type-check
+      
+    - name: Run unit tests
+      run: pnpm test:unit
+      
+    - name: Run integration tests
+      run: pnpm test:integration
+      
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage/lcov.info
+        
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+        
+    - name: Upload Trivy scan results
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: 'trivy-results.sarif'
+        
+    - name: Run npm audit
+      run: npm audit --audit-level high
+      
+  build-images:
+    needs: [test, security-scan]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/'))
+    
+    strategy:
+      matrix:
+        service: [codai-platform, memorai-service, bancai-service, api-gateway]
+        
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: Log in to Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_PREFIX }}/${{ matrix.service }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=sha,prefix={{branch}}-
+          
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./docker/Dockerfile.${{ matrix.service }}
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        platforms: linux/amd64,linux/arm64
+        
+  deploy-staging:
+    needs: [build-images]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: staging
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup kubectl
+      uses: azure/setup-kubectl@v3
+      with:
+        version: 'v1.28.0'
+        
+    - name: Configure kubectl for staging
+      run: |
+        mkdir -p $HOME/.kube
+        echo "${{ secrets.STAGING_KUBECONFIG }}" | base64 --decode > $HOME/.kube/config
+        chmod 600 $HOME/.kube/config
+        
+    - name: Deploy to staging
+      run: |
+        # Update image tags in staging manifests
+        sed -i 's|image: codai/|image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_PREFIX }}/|g' infrastructure/kubernetes/staging/
+        sed -i 's|:latest|:main-${{ github.sha }}|g' infrastructure/kubernetes/staging/
+        
+        # Apply staging configuration
+        kubectl apply -f infrastructure/kubernetes/staging/
+        
+        # Wait for rollout
+        kubectl rollout status deployment/codai-platform -n codai-staging --timeout=600s
+        kubectl rollout status deployment/memorai-service -n codai-staging --timeout=600s
+        kubectl rollout status deployment/bancai-service -n codai-staging --timeout=600s
+        
+    - name: Run smoke tests
+      run: |
+        # Wait for services to be ready
+        kubectl wait --for=condition=ready pod -l app=codai-platform -n codai-staging --timeout=300s
+        
+        # Run basic health checks
+        kubectl port-forward svc/codai-platform-service 3000:80 -n codai-staging &
+        sleep 10
+        
+        # Test endpoints
+        curl -f http://localhost:3000/health || exit 1
+        curl -f http://localhost:3000/api/health || exit 1
+        
+        # Run Playwright E2E tests
+        pnpm test:e2e:staging
+        
+  deploy-production:
+    needs: [build-images, deploy-staging]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    environment: production
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup kubectl
+      uses: azure/setup-kubectl@v3
+      with:
+        version: 'v1.28.0'
+        
+    - name: Configure kubectl for production
+      run: |
+        mkdir -p $HOME/.kube
+        echo "${{ secrets.PRODUCTION_KUBECONFIG }}" | base64 --decode > $HOME/.kube/config
+        chmod 600 $HOME/.kube/config
+        
+    - name: Deploy to production
+      run: |
+        # Extract version from tag
+        VERSION=${GITHUB_REF#refs/tags/}
+        
+        # Update image tags in production manifests
+        sed -i 's|image: codai/|image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_PREFIX }}/|g' infrastructure/kubernetes/production-deployment.yaml
+        sed -i "s|:latest|:${VERSION}|g" infrastructure/kubernetes/production-deployment.yaml
+        
+        # Apply production configuration
+        kubectl apply -f infrastructure/kubernetes/production-deployment.yaml
+        
+        # Rolling update with zero downtime
+        kubectl rollout status deployment/codai-platform -n codai-ecosystem --timeout=900s
+        kubectl rollout status deployment/memorai-service -n codai-ecosystem --timeout=900s
+        kubectl rollout status deployment/bancai-service -n codai-ecosystem --timeout=900s
+        
+    - name: Verify deployment
+      run: |
+        # Wait for all pods to be ready
+        kubectl wait --for=condition=ready pod -l app=codai-platform -n codai-ecosystem --timeout=600s
+        kubectl wait --for=condition=ready pod -l app=memorai-service -n codai-ecosystem --timeout=600s
+        kubectl wait --for=condition=ready pod -l app=bancai-service -n codai-ecosystem --timeout=600s
+        
+        # Check service health
+        kubectl get pods -n codai-ecosystem
+        kubectl get services -n codai-ecosystem
+        kubectl get ingress -n codai-ecosystem
+        
+    - name: Run production health checks
+      run: |
+        # Test production endpoints
+        curl -f https://codai.ro/health || exit 1
+        curl -f https://memorai.ro/health || exit 1
+        curl -f https://bancai.ro/health || exit 1
+        curl -f https://api.codai.ro/health || exit 1
+        
+        # Run critical path tests
+        pnpm test:e2e:production:critical
+        
+    - name: Update deployment status
+      run: |
+        # Update GitHub deployment status
+        gh api repos/${{ github.repository }}/deployments \
+          -X POST \
+          -f ref='${{ github.ref }}' \
+          -f environment='production' \
+          -f description='Production deployment successful'
+          
+    - name: Notify team
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        channel: '#deployments'
+        text: |
+          🚀 Production deployment successful!
+          Version: ${{ github.ref }}
+          Services: CODAI Platform, MEMORAI, BANCAI
+          Health: All systems operational
+          
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        
+  rollback:
+    runs-on: ubuntu-latest
+    if: failure()
+    environment: production
+    
+    steps:
+    - name: Rollback production deployment
+      run: |
+        # Get previous successful deployment
+        PREVIOUS_VERSION=$(kubectl rollout history deployment/codai-platform -n codai-ecosystem --revision=1 | grep -o 'v[0-9]*\.[0-9]*\.[0-9]*' | head -1)
+        
+        # Rollback all services
+        kubectl rollout undo deployment/codai-platform -n codai-ecosystem
+        kubectl rollout undo deployment/memorai-service -n codai-ecosystem  
+        kubectl rollout undo deployment/bancai-service -n codai-ecosystem
+        
+        # Wait for rollback completion
+        kubectl rollout status deployment/codai-platform -n codai-ecosystem --timeout=600s
+        kubectl rollout status deployment/memorai-service -n codai-ecosystem --timeout=600s
+        kubectl rollout status deployment/bancai-service -n codai-ecosystem --timeout=600s
+        
+    - name: Verify rollback
+      run: |
+        kubectl get pods -n codai-ecosystem
+        curl -f https://codai.ro/health || exit 1
+        
+    - name: Notify rollback
+      uses: 8398a7/action-slack@v3
+      with:
+        status: 'warning'
+        channel: '#deployments'
+        text: |
+          ⚠️ Production deployment failed - ROLLBACK EXECUTED
+          Failed version: ${{ github.ref }}
+          Rolled back to previous stable version
+          All services restored to working state
+          
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        
+  performance-test:
+    needs: [deploy-production]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        
+    - name: Install Artillery
+      run: npm install -g artillery@latest
+      
+    - name: Run performance tests
+      run: |
+        # Test main platform
+        artillery run tests/performance/codai-platform.yml --target https://codai.ro
+        
+        # Test MEMORAI service
+        artillery run tests/performance/memorai-service.yml --target https://memorai.ro
+        
+        # Test BANCAI service
+        artillery run tests/performance/bancai-service.yml --target https://bancai.ro
+        
+        # Test API Gateway
+        artillery run tests/performance/api-gateway.yml --target https://api.codai.ro
+        
+    - name: Upload performance results
+      uses: actions/upload-artifact@v3
+      with:
+        name: performance-test-results
+        path: artillery-report-*.json
+        
+  security-production-scan:
+    needs: [deploy-production]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    
+    steps:
+    - name: Run OWASP ZAP scan
+      uses: zaproxy/action-full-scan@v0.7.0
+      with:
+        target: 'https://codai.ro'
+        rules_file_name: '.zap/rules.tsv'
+        cmd_options: '-a'
+        
+    - name: Run SSL Labs scan
+      run: |
+        # Check SSL configuration
+        curl -s "https://api.ssllabs.com/api/v3/analyze?host=codai.ro&publish=off&all=done" | jq '.endpoints[0].grade'
+        curl -s "https://api.ssllabs.com/api/v3/analyze?host=memorai.ro&publish=off&all=done" | jq '.endpoints[0].grade'
+        curl -s "https://api.ssllabs.com/api/v3/analyze?host=bancai.ro&publish=off&all=done" | jq '.endpoints[0].grade'

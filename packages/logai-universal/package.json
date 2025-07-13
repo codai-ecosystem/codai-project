@@ -1,0 +1,52 @@
+{
+  "name": "@codai/logai-universal",
+  "version": "2.0.0",
+  "description": "Universal LogAI - Comprehensive Logging and Analytics for CODAI Ecosystem",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "lint": "eslint src --ext .ts",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "logging",
+    "analytics",
+    "monitoring",
+    "ai",
+    "codai",
+    "romanian",
+    "real-time"
+  ],
+  "author": "CODAI Ecosystem",
+  "license": "MIT",
+  "dependencies": {
+    "date-fns": "^4.1.0",
+    "eventemitter3": "^5.0.1",
+    "lodash": "^4.17.21",
+    "uuid": "^11.1.0",
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/lodash": "^4.17.20",
+    "@types/node": "^24.0.13",
+    "@types/uuid": "^10.0.0",
+    "@types/ws": "^8.18.1",
+    "@typescript-eslint/eslint-plugin": "^8.36.0",
+    "@typescript-eslint/parser": "^8.36.0",
+    "eslint": "^9.31.0",
+    "jest": "^30.0.4",
+    "typescript": "^5.8.3"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

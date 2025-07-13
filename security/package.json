@@ -1,0 +1,29 @@
+{
+  "name": "codai-enterprise-security",
+  "version": "1.0.0",
+  "description": "Enterprise Security & Authentication System for Codai Ecosystem",
+  "type": "module",
+  "main": "enterprise-auth.js",
+  "scripts": {
+    "start": "node enterprise-auth.js",
+    "dev": "node enterprise-auth.js"
+  },
+  "dependencies": {
+    "compression": "^1.8.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "http-proxy-middleware": "^3.0.5",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "keywords": [
+    "security",
+    "authentication",
+    "oauth",
+    "mfa",
+    "rbac",
+    "codai",
+    "enterprise"
+  ],
+  "author": "Codai Ecosystem",
+  "license": "MIT"
+}

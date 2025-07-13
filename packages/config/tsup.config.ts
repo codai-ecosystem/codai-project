@@ -1,0 +1,32 @@
+import { defineConfig } from 'tsup';
+
+export default defineConfig({
+  entry: ['src/index.ts'],
+  format: ['cjs', 'esm'],
+  dts: true,
+  sourcemap: true,
+  clean: true,
+  splitting: false,
+  external: [
+    '@vitejs/plugin-react',
+    '@rollup/plugin-typescript',
+    '@rollup/plugin-node-resolve',
+    '@rollup/plugin-commonjs',
+    '@rollup/plugin-terser',
+    'rollup-plugin-dts',
+    'vite',
+    'vitest',
+    'rollup',
+    'tailwindcss',
+    '@tailwindcss/typography',
+    '@tailwindcss/forms',
+    '@tailwindcss/aspect-ratio',
+    'eslint',
+    '@typescript-eslint/eslint-plugin',
+    '@typescript-eslint/parser',
+    'eslint-config-next',
+    'eslint-plugin-react',
+    'eslint-plugin-react-hooks',
+    'eslint-plugin-import',
+  ],
+});

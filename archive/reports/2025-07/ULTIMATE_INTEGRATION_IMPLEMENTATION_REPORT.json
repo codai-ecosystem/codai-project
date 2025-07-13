@@ -1,0 +1,218 @@
+{
+  "timestamp": "2025-06-29T18:49:33.423Z",
+  "summary": {
+    "totalServices": 29,
+    "successfulServices": 29,
+    "successRate": 100,
+    "totalIntegrations": 87,
+    "totalAPIs": 87,
+    "totalServiceClasses": 87,
+    "duration": 68
+  },
+  "results": [
+    {
+      "service": "codai",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "memorai",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "logai",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "bancai",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "wallet",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "fabricai",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "studiai",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "sociai",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "cumparai",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "x",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "publicai",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "admin",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "aide",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "ajutai",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "analizai",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "dash",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "docs",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "explorer",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "hub",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "id",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "jucai",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "kodex",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "legalizai",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "marketai",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "metu",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "mod",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "stocai",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "templates",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    },
+    {
+      "service": "tools",
+      "integrations": 3,
+      "apis": 3,
+      "services": 3,
+      "success": true
+    }
+  ],
+  "powerLevel": "110%"
+}

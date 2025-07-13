@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "📝 Validating commit message format..."
+
+# Enforce Conventional Commits format
+npx --no -- commitlint --edit ${1} || (
+  echo ""
+  echo "❌ Commit message format is invalid!"
+  echo ""
+  echo "📋 Valid formats:"
+  echo "  feat: add new feature"
+  echo "  fix: fix a bug"
+  echo "  docs: update documentation"
+  echo "  style: formatting changes"
+  echo "  refactor: code refactoring"
+  echo "  test: add or update tests"
+  echo "  chore: maintenance tasks"
+  echo ""
+  echo "🔗 See https://conventionalcommits.org for details"
+  exit 1
+)
+
+echo "✅ Commit message format is valid!"

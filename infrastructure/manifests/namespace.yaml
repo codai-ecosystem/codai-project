@@ -1,0 +1,11 @@
+{
+  "apiVersion": "v1",
+  "kind": "Namespace",
+  "metadata": {
+    "name": "codai-production",
+    "labels": {
+      "app.kubernetes.io/name": "codai-production",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  }
+}

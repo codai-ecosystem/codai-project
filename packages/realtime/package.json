@@ -1,0 +1,56 @@
+{
+  "name": "@codai/realtime",
+  "version": "1.0.0",
+  "description": "Universal real-time synchronization engine for CODAI ecosystem",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --build && tsc --build tsconfig.esm.json",
+    "dev": "tsc --build --watch",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "eventemitter3": "^5.0.1",
+    "ioredis": "^5.6.1",
+    "jsonwebtoken": "^9.0.2",
+    "redis": "^5.6.0",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "uuid": "^11.1.0",
+    "ws": "^8.18.3",
+    "zod": "^4.0.5"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/uuid": "^10.0.0",
+    "@types/ws": "^8.18.1",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./server": {
+      "import": "./dist/server.mjs",
+      "require": "./dist/server.js",
+      "types": "./dist/server.d.ts"
+    },
+    "./client": {
+      "import": "./dist/client.mjs",
+      "require": "./dist/client.js",
+      "types": "./dist/client.d.ts"
+    }
+  },
+  "keywords": [
+    "realtime",
+    "websocket",
+    "synchronization",
+    "collaboration",
+    "codai"
+  ],
+  "author": "CODAI Ecosystem",
+  "license": "MIT"
+}

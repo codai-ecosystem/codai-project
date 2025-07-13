@@ -1,0 +1,73 @@
+{
+  "name": "@codai/conversai",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "ConversAI - Professional Email Service with AI-Powered Features",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "pnpm --filter @codai/conversai-web dev",
+    "build": "pnpm --filter @codai/conversai-web build",
+    "start": "pnpm --filter @codai/conversai-web start",
+    "lint": "pnpm --filter @codai/conversai-web lint",
+    "test": "pnpm --filter @codai/conversai-web test",
+    "type-check": "pnpm --filter @codai/conversai-web type-check",
+    "clean": "pnpm --filter @codai/conversai-web clean",
+    "dev:api": "pnpm --filter @codai/conversai-api dev",
+    "dev:mobile": "pnpm --filter @codai/conversai-mobile start",
+    "setup": "pnpm install",
+    "setup:web": "pnpm --filter @codai/conversai-web install",
+    "setup:api": "pnpm --filter @codai/conversai-api install",
+    "setup:mobile": "pnpm --filter @codai/conversai-mobile install",
+    "clean:all": "pnpm -r clean && rimraf node_modules",
+    "install:all": "pnpm install"
+  },
+  "dependencies": {
+    "@codai/logai-universal": "file:..\\..\\packages\\logai-universal",
+    "@hookform/resolvers": "^5.1.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "12.23.3",
+    "lucide-react": "^0.525.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-hook-form": "^7.60.0",
+    "tailwind-merge": "^3.3.1",
+    "typescript": "^5.8.3",
+    "zod": "^4.0.5",
+    "zustand": "^5.0.6"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.13",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@typescript-eslint/eslint-plugin": "^8.36.0",
+    "@typescript-eslint/parser": "^8.36.0",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.31.0",
+    "eslint-config-next": "15.3.5",
+    "jest": "^30.0.4",
+    "jest-environment-jsdom": "^30.0.4",
+    "postcss": "^8.5.6",
+    "prettier": "^3.6.2",
+    "tailwindcss": "4.1.11",
+    "typescript": "^5.8.0",
+    "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "email",
+    "ai",
+    "codai",
+    "romanian",
+    "professional",
+    "communication"
+  ],
+  "author": "CODAI Ecosystem",
+  "license": "MIT"
+}

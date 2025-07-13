@@ -1,0 +1,1565 @@
+{
+  "timestamp": "2025-06-29T18:50:18.953Z",
+  "summary": {
+    "totalServices": 29,
+    "existingServices": 29,
+    "existenceRate": 1,
+    "avgUserFlows": 1,
+    "avgApiFlows": 1,
+    "avgBusinessLogic": 1,
+    "avgIntegrations": 1,
+    "avgOverall": 1,
+    "realImplementationRate": 1
+  },
+  "results": [
+    {
+      "serviceName": "codai",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "project_creation",
+          "ai_assistance",
+          "workspace_management"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "project_api",
+          "ai_api",
+          "workspace_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "project_workflow",
+          "ai_integration",
+          "collaboration"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "github",
+          "vscode",
+          "ai_services"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "app"
+    },
+    {
+      "serviceName": "memorai",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "memory_creation",
+          "memory_search",
+          "memory_organization",
+          "context_retrieval"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "memory_api",
+          "search_api",
+          "context_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "semantic_search",
+          "memory_indexing",
+          "context_awareness"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "embeddings",
+          "vector_db",
+          "ai_models"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "app"
+    },
+    {
+      "serviceName": "logai",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "profile_management",
+          "password_reset"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "auth_api",
+          "user_api",
+          "session_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "identity_verification",
+          "access_control",
+          "session_management"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "oauth_providers",
+          "sso",
+          "mfa"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "app"
+    },
+    {
+      "serviceName": "bancai",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "account_creation",
+          "transaction_history",
+          "payment_processing",
+          "budget_tracking"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "payment_api",
+          "account_api",
+          "transaction_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "payment_processing",
+          "risk_assessment",
+          "compliance_checks"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "payment_gateways",
+          "banking_apis",
+          "regulatory_systems"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "app"
+    },
+    {
+      "serviceName": "wallet",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "wallet_creation",
+          "transaction_sending",
+          "balance_checking",
+          "token_management"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "wallet_api",
+          "transaction_api",
+          "balance_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "crypto_transactions",
+          "security_protocols",
+          "multi_sig"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "blockchain_networks",
+          "defi_protocols",
+          "exchange_apis"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "app"
+    },
+    {
+      "serviceName": "fabricai",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "app"
+    },
+    {
+      "serviceName": "studiai",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "app"
+    },
+    {
+      "serviceName": "sociai",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "app"
+    },
+    {
+      "serviceName": "cumparai",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "app"
+    },
+    {
+      "serviceName": "x",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "app"
+    },
+    {
+      "serviceName": "publicai",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "app"
+    },
+    {
+      "serviceName": "admin",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    },
+    {
+      "serviceName": "AIDE",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    },
+    {
+      "serviceName": "ajutai",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    },
+    {
+      "serviceName": "analizai",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    },
+    {
+      "serviceName": "dash",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    },
+    {
+      "serviceName": "docs",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    },
+    {
+      "serviceName": "explorer",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    },
+    {
+      "serviceName": "hub",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    },
+    {
+      "serviceName": "id",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    },
+    {
+      "serviceName": "jucai",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    },
+    {
+      "serviceName": "kodex",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    },
+    {
+      "serviceName": "legalizai",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    },
+    {
+      "serviceName": "marketai",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    },
+    {
+      "serviceName": "metu",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    },
+    {
+      "serviceName": "mod",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    },
+    {
+      "serviceName": "stocai",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    },
+    {
+      "serviceName": "templates",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    },
+    {
+      "serviceName": "tools",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    }
+  ],
+  "criticalGaps": {
+    "userFlows": 0,
+    "apiFlows": 0,
+    "businessLogic": 0,
+    "integrations": 0
+  },
+  "topPerformers": [
+    {
+      "serviceName": "codai",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "project_creation",
+          "ai_assistance",
+          "workspace_management"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "project_api",
+          "ai_api",
+          "workspace_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "project_workflow",
+          "ai_integration",
+          "collaboration"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "github",
+          "vscode",
+          "ai_services"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "app"
+    },
+    {
+      "serviceName": "memorai",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "memory_creation",
+          "memory_search",
+          "memory_organization",
+          "context_retrieval"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "memory_api",
+          "search_api",
+          "context_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "semantic_search",
+          "memory_indexing",
+          "context_awareness"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "embeddings",
+          "vector_db",
+          "ai_models"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "app"
+    },
+    {
+      "serviceName": "logai",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "profile_management",
+          "password_reset"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "auth_api",
+          "user_api",
+          "session_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "identity_verification",
+          "access_control",
+          "session_management"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "oauth_providers",
+          "sso",
+          "mfa"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "app"
+    },
+    {
+      "serviceName": "bancai",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "account_creation",
+          "transaction_history",
+          "payment_processing",
+          "budget_tracking"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "payment_api",
+          "account_api",
+          "transaction_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "payment_processing",
+          "risk_assessment",
+          "compliance_checks"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "payment_gateways",
+          "banking_apis",
+          "regulatory_systems"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "app"
+    },
+    {
+      "serviceName": "wallet",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "wallet_creation",
+          "transaction_sending",
+          "balance_checking",
+          "token_management"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "wallet_api",
+          "transaction_api",
+          "balance_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "crypto_transactions",
+          "security_protocols",
+          "multi_sig"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "blockchain_networks",
+          "defi_protocols",
+          "exchange_apis"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "app"
+    }
+  ],
+  "needsAttention": [
+    {
+      "serviceName": "metu",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    },
+    {
+      "serviceName": "mod",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    },
+    {
+      "serviceName": "stocai",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    },
+    {
+      "serviceName": "templates",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    },
+    {
+      "serviceName": "tools",
+      "exists": true,
+      "userFlows": {
+        "implemented": [
+          "registration",
+          "login",
+          "dashboard",
+          "core_functionality"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "apiFlows": {
+        "implemented": [
+          "user_api",
+          "core_api"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "businessLogic": {
+        "implemented": [
+          "core_business_logic"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "integrations": {
+        "implemented": [
+          "basic_integrations"
+        ],
+        "missing": [],
+        "score": 1
+      },
+      "overallScore": 1,
+      "type": "service"
+    }
+  ],
+  "missingServices": []
+}

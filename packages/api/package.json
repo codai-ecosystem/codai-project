@@ -1,0 +1,53 @@
+{
+  "name": "@codai/api",
+  "version": "1.0.0",
+  "description": "API communication utilities for the Codai ecosystem",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build && tsc --build tsconfig.esm.json",
+    "dev": "tsc --build --watch",
+    "lint": "eslint src --ext .ts,.tsx",
+    "test": "jest",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@codai/core": "workspace:*",
+    "@tanstack/react-query": "^5.83.0",
+    "@trpc/client": "^11.4.3",
+    "@trpc/react-query": "^11.4.3",
+    "@trpc/server": "^11.4.3",
+    "superjson": "^2.2.2",
+    "zod": "^4.0.5"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.13",
+    "eslint": "^9.31.0",
+    "jest": "^30.0.4",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "codai",
+    "api",
+    "trpc",
+    "communication",
+    "typescript"
+  ],
+  "author": "Codai Team",
+  "license": "MIT"
+}

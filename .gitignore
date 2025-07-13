@@ -1,0 +1,105 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+.next/
+out/
+dist/
+build/
+storybook-static/
+
+# Environment variables
+.env
+.env*.local
+
+# Testing
+coverage/
+test-results/
+playwright-report/
+playwright/.cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary
+.tmp/
+.temp/
+
+# Agent specific
+.agent/local/*
+.agent/temp/*
+
+# Codai Project
+apps-backup/
+temp-*/
+temp/
+
+# Submodules and Git conflicts
+**/.git/
+.gitmodules
+.git/modules/
+
+# Services (if they are separate repos)
+services/*/
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Next.js
+.next/
+out/
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.production
+
+# Scripts with secrets
+scripts/update-all-env-vars.ps1
+setup-vercel.ps1
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build
+dist/
+build/
+coverage/
+.vercel
+
+# Cache and temporary files
+.cache/
+.tmp/
+.temp/
+.turbo/

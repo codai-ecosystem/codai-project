@@ -1,0 +1,64 @@
+# BANCAI Service Dockerfile
+FROM node:20-alpine AS base
+
+# Install system dependencies
+RUN apk add --no-cache \
+    libc6-compat \
+    openssl \
+    curl \
+    ca-certificates
+
+# Install dependencies only when needed
+FROM base AS deps
+WORKDIR /app
+
+# Copy package files
+COPY package.json pnpm-lock.yaml* ./
+COPY apps/bancai/package.json ./apps/bancai/
+COPY packages/*/package.json ./packages/*/
+
+# Install dependencies
+RUN corepack enable pnpm && pnpm i --frozen-lockfile
+
+# Rebuild the source code only when needed
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+# Build the BANCAI service
+RUN corepack enable pnpm && pnpm build:bancai
+
+# Production image
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV production
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 bancai
+
+# Create secure directories
+RUN mkdir -p /app/secure /app/logs
+RUN chown bancai:nodejs /app/secure /app/logs
+RUN chmod 700 /app/secure
+
+# Copy built application
+COPY --from=builder --chown=bancai:nodejs /app/apps/bancai/dist ./dist
+COPY --from=builder --chown=bancai:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=bancai:nodejs /app/packages ./packages
+
+# Copy configuration and compliance files
+COPY --chown=bancai:nodejs ./apps/bancai/config ./config
+COPY --chown=bancai:nodejs ./apps/bancai/compliance ./compliance
+
+USER bancai
+
+EXPOSE 4032
+
+# Health check with compliance validation
+HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
+  CMD curl -f http://localhost:4032/health && \
+      curl -f http://localhost:4032/compliance/status || exit 1
+
+CMD ["node", "dist/server.js"]

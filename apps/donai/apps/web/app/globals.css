@@ -1,0 +1,233 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+
+  /* CODAI Brand Colors */
+  --codai-primary: #2563eb;
+  --codai-secondary: #7c3aed;
+  --codai-accent: #06b6d4;
+  --codai-success: #10b981;
+  --codai-warning: #f59e0b;
+  --codai-error: #ef4444;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+  font-family: 'Inter', sans-serif;
+}
+
+/* Donation specific animations */
+@keyframes donationPulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.donation-pulse {
+  animation: donationPulse 2s ease-in-out infinite;
+}
+
+/* Blockchain verification indicator */
+.blockchain-verified {
+  position: relative;
+}
+
+.blockchain-verified::after {
+  content: '✓';
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #10b981;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* Progress bar animations */
+.progress-bar {
+  transition: width 1s ease-in-out;
+}
+
+/* Voting progress styles */
+.voting-active {
+  background: linear-gradient(45deg, #7c3aed, #2563eb);
+  background-size: 200% 200%;
+  animation: gradient 3s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #2563eb, #7c3aed);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #1d4ed8, #6d28d9);
+}
+
+/* Impact counter animation */
+.counter-animate {
+  animation: countUp 2s ease-out forwards;
+}
+
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Wallet connection status */
+.wallet-connected {
+  background: linear-gradient(135deg, #10b981, #059669);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.wallet-disconnected {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+}
+
+/* Donation success animation */
+.donation-success {
+  animation: successPulse 0.6s ease-in-out;
+}
+
+@keyframes successPulse {
+  0% {
+    transform: scale(1);
+    background-color: #2563eb;
+  }
+
+  50% {
+    transform: scale(1.1);
+    background-color: #10b981;
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: #059669;
+  }
+}
+
+/* Cause card hover effects */
+.cause-card {
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.cause-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(37, 99, 235, 0.1);
+}
+
+/* Blockchain transaction loading */
+.blockchain-loading {
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(37, 99, 235, 0.3),
+      transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Custom button styles */
+.btn-donate {
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-donate::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent);
+  transition: left 0.5s;
+}
+
+.btn-donate:hover::before {
+  left: 100%;
+}
+
+.btn-vote {
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  transition: all 0.3s ease;
+}
+
+.btn-vote:hover {
+  background: linear-gradient(135deg, #6d28d9, #9333ea);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(124, 58, 237, 0.3);
+}

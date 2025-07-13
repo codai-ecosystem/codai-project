@@ -1,0 +1,160 @@
+{
+  "timestamp": "2025-06-29T18:23:17.494Z",
+  "overallSuccessRate": 80,
+  "serviceResults": [
+    {
+      "service": "memorai",
+      "results": {
+        "auth": true,
+        "database": true,
+        "api": false,
+        "middleware": true,
+        "dependencies": true
+      },
+      "successRate": 80
+    },
+    {
+      "service": "logai",
+      "results": {
+        "auth": true,
+        "database": true,
+        "api": false,
+        "middleware": true,
+        "dependencies": true
+      },
+      "successRate": 80
+    },
+    {
+      "service": "hub",
+      "results": {
+        "auth": true,
+        "database": true,
+        "api": false,
+        "middleware": true,
+        "dependencies": true
+      },
+      "successRate": 80
+    },
+    {
+      "service": "bancai",
+      "results": {
+        "auth": true,
+        "database": true,
+        "api": false,
+        "middleware": true,
+        "dependencies": true
+      },
+      "successRate": 80
+    },
+    {
+      "service": "wallet",
+      "results": {
+        "auth": true,
+        "database": true,
+        "api": false,
+        "middleware": true,
+        "dependencies": true
+      },
+      "successRate": 80
+    },
+    {
+      "service": "fabricai",
+      "results": {
+        "auth": true,
+        "database": true,
+        "api": false,
+        "middleware": true,
+        "dependencies": true
+      },
+      "successRate": 80
+    },
+    {
+      "service": "x",
+      "results": {
+        "auth": true,
+        "database": true,
+        "api": false,
+        "middleware": true,
+        "dependencies": true
+      },
+      "successRate": 80
+    },
+    {
+      "service": "admin",
+      "results": {
+        "auth": true,
+        "database": true,
+        "api": false,
+        "middleware": true,
+        "dependencies": true
+      },
+      "successRate": 80
+    },
+    {
+      "service": "dash",
+      "results": {
+        "auth": true,
+        "database": true,
+        "api": false,
+        "middleware": true,
+        "dependencies": true
+      },
+      "successRate": 80
+    },
+    {
+      "service": "studiai",
+      "results": {
+        "auth": true,
+        "database": true,
+        "api": false,
+        "middleware": true,
+        "dependencies": true
+      },
+      "successRate": 80
+    },
+    {
+      "service": "sociai",
+      "results": {
+        "auth": true,
+        "database": true,
+        "api": false,
+        "middleware": true,
+        "dependencies": true
+      },
+      "successRate": 80
+    },
+    {
+      "service": "cumparai",
+      "results": {
+        "auth": true,
+        "database": true,
+        "api": false,
+        "middleware": true,
+        "dependencies": true
+      },
+      "successRate": 80
+    },
+    {
+      "service": "publicai",
+      "results": {
+        "auth": true,
+        "database": true,
+        "api": false,
+        "middleware": true,
+        "dependencies": true
+      },
+      "successRate": 80
+    },
+    {
+      "service": "docs",
+      "results": {
+        "auth": true,
+        "database": true,
+        "api": false,
+        "middleware": true,
+        "dependencies": true
+      },
+      "successRate": 80
+    }
+  ]
+}

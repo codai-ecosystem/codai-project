@@ -1,0 +1,29 @@
+{
+  "apiVersion": "v1",
+  "kind": "Service",
+  "metadata": {
+    "name": "cumparai",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "cumparai",
+      "component": "service",
+      "app.kubernetes.io/name": "cumparai",
+      "app.kubernetes.io/component": "service",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  },
+  "spec": {
+    "type": "ClusterIP",
+    "ports": [
+      {
+        "port": 80,
+        "targetPort": 3008,
+        "protocol": "TCP",
+        "name": "http"
+      }
+    ],
+    "selector": {
+      "app": "cumparai"
+    }
+  }
+}

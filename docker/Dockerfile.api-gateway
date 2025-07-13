@@ -1,0 +1,61 @@
+# API Gateway Dockerfile
+FROM node:20-alpine AS base
+
+# Install system dependencies
+RUN apk add --no-cache \
+    libc6-compat \
+    openssl \
+    curl \
+    ca-certificates
+
+# Install dependencies only when needed
+FROM base AS deps
+WORKDIR /app
+
+# Copy package files
+COPY package.json pnpm-lock.yaml* ./
+COPY services/api-gateway/package.json ./services/api-gateway/
+COPY packages/*/package.json ./packages/*/
+
+# Install dependencies
+RUN corepack enable pnpm && pnpm i --frozen-lockfile
+
+# Rebuild the source code only when needed
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+# Build the API Gateway
+RUN corepack enable pnpm && pnpm build:api-gateway
+
+# Production image
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV production
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 gateway
+
+# Create directories for logs and cache
+RUN mkdir -p /app/logs /app/cache
+RUN chown gateway:nodejs /app/logs /app/cache
+
+# Copy built application
+COPY --from=builder --chown=gateway:nodejs /app/services/api-gateway/dist ./dist
+COPY --from=builder --chown=gateway:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=gateway:nodejs /app/packages ./packages
+
+# Copy configuration
+COPY --chown=gateway:nodejs ./services/api-gateway/config ./config
+
+USER gateway
+
+EXPOSE 8080
+
+# Health check
+HEALTHCHECK --interval=20s --timeout=3s --start-period=10s --retries=3 \
+  CMD curl -f http://localhost:8080/health || exit 1
+
+CMD ["node", "dist/server.js"]

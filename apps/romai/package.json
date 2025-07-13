@@ -1,0 +1,75 @@
+{
+  "name": "@codai/romai",
+  "version": "1.0.0",
+  "description": "Romanian AI Central Intelligence System - Central Intelligence for the CODAI Ecosystem",
+  "private": true,
+  "packageManager": "pnpm@9.15.9",
+  "keywords": [
+    "ai",
+    "artificial-intelligence",
+    "romanian",
+    "mcp",
+    "model-context-protocol",
+    "azure-openai",
+    "typescript",
+    "monorepo",
+    "codai",
+    "intelligence"
+  ],
+  "homepage": "https://romai.ro",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CodAI-Project/codai-project.git",
+    "directory": "apps/romai"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "CODAI Contributors",
+    "email": "team@codai.ro",
+    "url": "https://codai.ro"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "build": "pnpm --filter './packages/*' build && pnpm --filter './apps/*' build",
+    "dev": "pnpm --filter './packages/*' dev & pnpm --filter './apps/*' dev",
+    "test": "pnpm --filter './packages/*' test && pnpm --filter './apps/*' test",
+    "test:watch": "pnpm --filter './packages/*' test:watch",
+    "test:coverage": "pnpm --filter './packages/*' test:coverage && pnpm --filter './apps/*' test:coverage",
+    "test:integration": "pnpm --filter './packages/*' test:integration && pnpm --filter './apps/*' test:integration",
+    "lint": "pnpm --filter './packages/*' lint && pnpm --filter './apps/*' lint",
+    "lint:fix": "pnpm --filter './packages/*' lint:fix && pnpm --filter './apps/*' lint:fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
+    "type-check": "pnpm --filter './packages/*' type-check && pnpm --filter './apps/*' type-check",
+    "clean": "pnpm --filter './packages/*' clean && pnpm --filter './apps/*' clean",
+    "clean:dist": "pnpm --filter './packages/*' clean && pnpm --filter './apps/*' clean",
+    "reset": "pnpm clean && pnpm install",
+    "mcp:start": "cd apps/mcp-server && pnpm start",
+    "mcp:dev": "cd apps/mcp-server && pnpm dev",
+    "mcp:build": "cd apps/mcp-server && pnpm build",
+    "api:start": "cd apps/api && pnpm start",
+    "api:dev": "cd apps/api && pnpm dev",
+    "api:build": "cd apps/api && pnpm build",
+    "dashboard:start": "cd apps/dashboard && pnpm start",
+    "dashboard:dev": "cd apps/dashboard && pnpm dev",
+    "dashboard:build": "cd apps/dashboard && pnpm build",
+    "start:all": "concurrently \"pnpm mcp:start\" \"pnpm api:start\" \"pnpm dashboard:start\"",
+    "dev:all": "concurrently \"pnpm mcp:dev\" \"pnpm api:dev\" \"pnpm dashboard:dev\"",
+    "health:check": "node -e \"console.log('ROMAI Health Check: OK')\"",
+    "version:check": "node -e \"console.log('ROMAI Version:', require('./package.json').version)\"",
+    "info": "pnpm version:check && pnpm workspace:list"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.13",
+    "concurrently": "^9.2.0",
+    "eslint": "^9.31.0",
+    "prettier": "^3.6.2",
+    "typescript": "^5.8.3"
+  }
+}

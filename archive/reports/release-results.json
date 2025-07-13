@@ -1,0 +1,387 @@
+{
+  "released": 0,
+  "failed": 0,
+  "skipped": 40,
+  "total": 40,
+  "duration": 2306,
+  "services": {
+    "codai": {
+      "name": "codai",
+      "type": "service",
+      "priority": 1,
+      "oldVersion": "1.0.0",
+      "newVersion": "1.0.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "logai": {
+      "name": "logai",
+      "type": "service",
+      "priority": 1,
+      "oldVersion": "1.0.0",
+      "newVersion": "1.0.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "memorai": {
+      "name": "memorai",
+      "type": "service",
+      "priority": 1,
+      "oldVersion": "2.0.1",
+      "newVersion": "2.0.1",
+      "success": true,
+      "duration": 1,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "bancai": {
+      "name": "bancai",
+      "type": "service",
+      "priority": 2,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "fabricai": {
+      "name": "fabricai",
+      "type": "service",
+      "priority": 2,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "wallet": {
+      "name": "wallet",
+      "type": "service",
+      "priority": 2,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 1,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "x": {
+      "name": "x",
+      "type": "service",
+      "priority": 2,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "cumparai": {
+      "name": "cumparai",
+      "type": "service",
+      "priority": 3,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "sociai": {
+      "name": "sociai",
+      "type": "service",
+      "priority": 3,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "studiai": {
+      "name": "studiai",
+      "type": "service",
+      "priority": 3,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "publicai": {
+      "name": "publicai",
+      "type": "service",
+      "priority": 4,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "admin": {
+      "name": "admin",
+      "type": "service",
+      "priority": 4,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "AIDE": {
+      "name": "AIDE",
+      "type": "service",
+      "priority": 4,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "ajutai": {
+      "name": "ajutai",
+      "type": "service",
+      "priority": 4,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "analizai": {
+      "name": "analizai",
+      "type": "service",
+      "priority": 4,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "dash": {
+      "name": "dash",
+      "type": "service",
+      "priority": 4,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "docs": {
+      "name": "docs",
+      "type": "service",
+      "priority": 4,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "explorer": {
+      "name": "explorer",
+      "type": "service",
+      "priority": 4,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "hub": {
+      "name": "hub",
+      "type": "service",
+      "priority": 4,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "id": {
+      "name": "id",
+      "type": "service",
+      "priority": 4,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "jucai": {
+      "name": "jucai",
+      "type": "service",
+      "priority": 4,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "kodex": {
+      "name": "kodex",
+      "type": "service",
+      "priority": 4,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "legalizai": {
+      "name": "legalizai",
+      "type": "service",
+      "priority": 4,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "marketai": {
+      "name": "marketai",
+      "type": "service",
+      "priority": 4,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "metu": {
+      "name": "metu",
+      "type": "service",
+      "priority": 4,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "mod": {
+      "name": "mod",
+      "type": "service",
+      "priority": 4,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "stocai": {
+      "name": "stocai",
+      "type": "service",
+      "priority": 4,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "templates": {
+      "name": "templates",
+      "type": "service",
+      "priority": 4,
+      "oldVersion": "1.0.0",
+      "newVersion": "1.0.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    },
+    "tools": {
+      "name": "tools",
+      "type": "service",
+      "priority": 4,
+      "oldVersion": "0.1.0",
+      "newVersion": "0.1.0",
+      "success": true,
+      "duration": 0,
+      "steps": [
+        "skipped_private"
+      ],
+      "errors": []
+    }
+  },
+  "errors": []
+}

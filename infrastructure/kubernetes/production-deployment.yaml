@@ -1,0 +1,581 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: codai-ecosystem
+  labels:
+    app: codai
+    tier: production
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: codai-secrets
+  namespace: codai-ecosystem
+type: Opaque
+data:
+  # Base64 encoded secrets (these would be properly encrypted in production)
+  mongodb-password: Y29kYWktcHJvZC1wYXNzd29yZA==
+  redis-password: cmVkaXMtcHJvZC1wYXNzd29yZA==
+  jwt-secret: and3dC1zdXBlci1zZWNyZXQta2V5LWZvci1wcm9kdWN0aW9u
+  stripe-secret: c2tfbGl2ZV9zdHJpcGVfc2VjcmV0X2tleQ==
+  openai-api-key: c2stcHJvamVjdC1vcGVuYWktYXBpLWtleQ==
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: codai-config
+  namespace: codai-ecosystem
+data:
+  NODE_ENV: "production"
+  LOG_LEVEL: "info"
+  CORS_ORIGINS: "https://codai.ro,https://memorai.ro,https://bancai.ro"
+  RATE_LIMIT_REQUESTS: "1000"
+  RATE_LIMIT_WINDOW: "900000"
+  SESSION_TIMEOUT: "86400000"
+  COMPLIANCE_LEVEL: "enterprise"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-platform
+  namespace: codai-ecosystem
+  labels:
+    app: codai-platform
+    tier: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: codai-platform
+  template:
+    metadata:
+      labels:
+        app: codai-platform
+        tier: frontend
+    spec:
+      containers:
+      - name: codai-platform
+        image: codai/platform:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: codai-config
+              key: NODE_ENV
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: codai-secrets
+              key: jwt-secret
+        - name: MONGODB_URI
+          value: "mongodb://codai-mongodb:27017/codai"
+        - name: REDIS_URL
+          value: "redis://codai-redis:6379"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          readOnlyRootFilesystem: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-platform-service
+  namespace: codai-ecosystem
+spec:
+  selector:
+    app: codai-platform
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memorai-service
+  namespace: codai-ecosystem
+  labels:
+    app: memorai-service
+    tier: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: memorai-service
+  template:
+    metadata:
+      labels:
+        app: memorai-service
+        tier: backend
+    spec:
+      containers:
+      - name: memorai-service
+        image: codai/memorai:latest
+        ports:
+        - containerPort: 4031
+        env:
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: codai-config
+              key: NODE_ENV
+        - name: MONGODB_URI
+          value: "mongodb://codai-mongodb:27017/memorai"
+        - name: ML_MODEL_PATH
+          value: "/models"
+        volumeMounts:
+        - name: ml-models
+          mountPath: /models
+          readOnly: true
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 4031
+          initialDelaySeconds: 45
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 4031
+          initialDelaySeconds: 10
+          periodSeconds: 10
+      volumes:
+      - name: ml-models
+        persistentVolumeClaim:
+          claimName: ml-models-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memorai-service
+  namespace: codai-ecosystem
+spec:
+  selector:
+    app: memorai-service
+  ports:
+  - protocol: TCP
+    port: 4031
+    targetPort: 4031
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bancai-service
+  namespace: codai-ecosystem
+  labels:
+    app: bancai-service
+    tier: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bancai-service
+  template:
+    metadata:
+      labels:
+        app: bancai-service
+        tier: backend
+    spec:
+      containers:
+      - name: bancai-service
+        image: codai/bancai:latest
+        ports:
+        - containerPort: 4032
+        env:
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: codai-config
+              key: NODE_ENV
+        - name: STRIPE_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: codai-secrets
+              key: stripe-secret
+        - name: COMPLIANCE_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: codai-config
+              key: COMPLIANCE_LEVEL
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 4032
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 4032
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          readOnlyRootFilesystem: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bancai-service
+  namespace: codai-ecosystem
+spec:
+  selector:
+    app: bancai-service
+  ports:
+  - protocol: TCP
+    port: 4032
+    targetPort: 4032
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: codai-mongodb
+  namespace: codai-ecosystem
+spec:
+  serviceName: codai-mongodb
+  replicas: 3
+  selector:
+    matchLabels:
+      app: codai-mongodb
+  template:
+    metadata:
+      labels:
+        app: codai-mongodb
+    spec:
+      containers:
+      - name: mongodb
+        image: mongo:7.0
+        ports:
+        - containerPort: 27017
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          value: "codai"
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: codai-secrets
+              key: mongodb-password
+        volumeMounts:
+        - name: mongodb-data
+          mountPath: /data/db
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        livenessProbe:
+          exec:
+            command:
+            - mongo
+            - --eval
+            - "db.adminCommand('ping')"
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - mongo
+            - --eval
+            - "db.adminCommand('ping')"
+          initialDelaySeconds: 5
+          periodSeconds: 5
+  volumeClaimTemplates:
+  - metadata:
+      name: mongodb-data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 20Gi
+      storageClassName: fast-ssd
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-mongodb
+  namespace: codai-ecosystem
+spec:
+  selector:
+    app: codai-mongodb
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+  type: ClusterIP
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-redis
+  namespace: codai-ecosystem
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: codai-redis
+  template:
+    metadata:
+      labels:
+        app: codai-redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:7.2-alpine
+        ports:
+        - containerPort: 6379
+        args:
+        - redis-server
+        - --requirepass
+        - $(REDIS_PASSWORD)
+        env:
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: codai-secrets
+              key: redis-password
+        volumeMounts:
+        - name: redis-data
+          mountPath: /data
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "200m"
+        livenessProbe:
+          exec:
+            command:
+            - redis-cli
+            - ping
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - redis-cli
+            - ping
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: redis-data
+        persistentVolumeClaim:
+          claimName: redis-data-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-redis
+  namespace: codai-ecosystem
+spec:
+  selector:
+    app: codai-redis
+  ports:
+  - protocol: TCP
+    port: 6379
+    targetPort: 6379
+  type: ClusterIP
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-data-pvc
+  namespace: codai-ecosystem
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: fast-ssd
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ml-models-pvc
+  namespace: codai-ecosystem
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: shared-storage
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: codai-ingress
+  namespace: codai-ecosystem
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/rate-limit-window: "1m"
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+spec:
+  tls:
+  - hosts:
+    - codai.ro
+    - memorai.ro
+    - bancai.ro
+    - api.codai.ro
+    secretName: codai-tls
+  rules:
+  - host: codai.ro
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: codai-platform-service
+            port:
+              number: 80
+  - host: memorai.ro
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: memorai-service
+            port:
+              number: 4031
+  - host: bancai.ro
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: bancai-service
+            port:
+              number: 4032
+  - host: api.codai.ro
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: api-gateway-service
+            port:
+              number: 8080
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: codai-platform-pdb
+  namespace: codai-ecosystem
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: codai-platform
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: memorai-service-pdb
+  namespace: codai-ecosystem
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: memorai-service
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: codai-platform-hpa
+  namespace: codai-ecosystem
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: codai-platform
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: memorai-service-hpa
+  namespace: codai-ecosystem
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: memorai-service
+  minReplicas: 2
+  maxReplicas: 8
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 75
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 85

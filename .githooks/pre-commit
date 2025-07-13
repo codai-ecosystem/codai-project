@@ -1,0 +1,18 @@
+#!/bin/sh
+# Pre-commit hook for port policy enforcement
+
+echo "🔍 Checking port policy compliance..."
+
+# Run the port policy enforcement script
+node scripts/enforce-port-policy.js
+
+# Check the exit code
+if [ $? -ne 0 ]; then
+    echo "❌ Port policy violations detected!"
+    echo "💡 Run 'pnpm ports:fix' to automatically fix package.json violations"
+    echo "💡 For other violations, please fix manually and ensure all development ports are >= 4000"
+    exit 1
+fi
+
+echo "✅ Port policy compliance verified"
+exit 0

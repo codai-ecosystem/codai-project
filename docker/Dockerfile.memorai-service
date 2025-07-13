@@ -1,0 +1,64 @@
+# MEMORAI Service Dockerfile
+FROM node:20-alpine AS base
+
+# Install system dependencies for ML libraries
+RUN apk add --no-cache \
+    python3 \
+    py3-pip \
+    make \
+    g++ \
+    libc6-compat \
+    curl
+
+# Install dependencies only when needed
+FROM base AS deps
+WORKDIR /app
+
+# Copy package files
+COPY package.json pnpm-lock.yaml* ./
+COPY apps/memorai/package.json ./apps/memorai/
+COPY packages/*/package.json ./packages/*/
+
+# Install dependencies
+RUN corepack enable pnpm && pnpm i --frozen-lockfile
+
+# Rebuild the source code only when needed
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+# Build the MEMORAI service
+RUN corepack enable pnpm && pnpm build:memorai
+
+# Production image
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV production
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 memorai
+
+# Create directories for ML models and data
+RUN mkdir -p /app/models /app/data
+RUN chown memorai:nodejs /app/models /app/data
+
+# Copy built application
+COPY --from=builder --chown=memorai:nodejs /app/apps/memorai/dist ./dist
+COPY --from=builder --chown=memorai:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=memorai:nodejs /app/packages ./packages
+
+# Copy ML models and configuration
+COPY --chown=memorai:nodejs ./apps/memorai/models ./models
+COPY --chown=memorai:nodejs ./apps/memorai/config ./config
+
+USER memorai
+
+EXPOSE 4031
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+  CMD curl -f http://localhost:4031/health || exit 1
+
+CMD ["node", "dist/server.js"]

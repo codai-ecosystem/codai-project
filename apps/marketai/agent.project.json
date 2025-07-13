@@ -1,0 +1,15 @@
+{
+  "name": "marketai",
+  "description": "AI Marketing Platform",
+  "domain": "marketai.ro",
+  "port": 3015,
+  "priority": 2,
+  "framework": "Next.js 14",
+  "language": "TypeScript",
+  "styling": "Tailwind CSS",
+  "testing": "Vitest",
+  "packageManager": "PNPM",
+  "ecosystem": "Codai",
+  "status": "scaffolded",
+  "category": "core"
+}

@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "dexai-dictionary"
+  },
+  "targets": {
+    "dexai-dictionary": {
+      "hosting": {
+        "production": [
+          "dexai-dictionary"
+        ],
+        "staging": [
+          "dexai-dictionary-staging"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

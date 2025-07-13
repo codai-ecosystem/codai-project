@@ -1,0 +1,56 @@
+{
+  "name": "@codai/logai-sdk",
+  "version": "1.0.0",
+  "description": "LogAI SDK for CODAI ecosystem services",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist/**/*",
+    "src/**/*",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "pnpm clean && pnpm build"
+  },
+  "keywords": [
+    "logging",
+    "analytics",
+    "ai",
+    "codai",
+    "ecosystem",
+    "sdk"
+  ],
+  "author": "CODAI Ecosystem",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^24.0.13",
+    "picocolors": "^1.1.1",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  },
+  "peerDependencies": {
+    "typescript": ">=4.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codai-ecosystem/codai-project",
+    "directory": "packages/logai-sdk"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

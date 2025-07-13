@@ -1,0 +1,37 @@
+apiVersion: v2
+name: codai
+description: Codai Ecosystem - AI-Native Development Platform
+type: application
+version: 1.0.0
+appVersion: "2.0.0"
+home: https://codai.ai
+sources:
+  - https://github.com/codai-ecosystem/codai-project
+maintainers:
+  - name: Codai Team
+    email: team@codai.ai
+
+dependencies:
+  - name: postgresql
+    version: 13.2.24
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
+  - name: redis
+    version: 18.4.0
+    repository: https://charts.bitnami.com/bitnami
+    condition: redis.enabled
+  - name: prometheus
+    version: 25.8.0
+    repository: https://prometheus-community.github.io/helm-charts
+    condition: monitoring.prometheus.enabled
+  - name: grafana
+    version: 7.0.19
+    repository: https://grafana.github.io/helm-charts
+    condition: monitoring.grafana.enabled
+
+keywords:
+  - ai
+  - development
+  - platform
+  - microservices
+  - kubernetes

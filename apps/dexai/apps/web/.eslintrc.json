@@ -1,0 +1,25 @@
+{
+  "extends": [
+    "next/core-web-vitals"
+  ],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "react-hooks/exhaustive-deps": "warn",
+    "no-console": "off",
+    "react/no-unescaped-entities": "off",
+    "unused-imports/no-unused-imports": "off",
+    "import/order": "off"
+  },
+  "ignorePatterns": [
+    "node_modules/",
+    ".next/",
+    "dist/",
+    "build/",
+    "*.config.js",
+    "*.config.ts",
+    "test-results/",
+    "playwright-report/",
+    "coverage/"
+  ]
+}

@@ -1,0 +1,583 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// NextAuth.js required models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?   // For credentials-based authentication
+  role          String    @default("USER")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Social profile fields
+  username      String?   @unique
+  bio           String?
+  location      String?
+  website       String?
+  dateOfBirth   DateTime?
+  isVerified    Boolean   @default(false)
+  isPrivate     Boolean   @default(false)
+  followersCount Int      @default(0)
+  followingCount Int      @default(0)
+  postsCount     Int      @default(0)
+  
+  // Authentication relations
+  accounts      Account[]
+  sessions      Session[]
+  
+  // User preferences and settings
+  preferences   UserPreferences?
+  
+  // Collaboration features
+  workspaceMembers WorkspaceMember[]
+  projects         Project[]
+  collaborationParticipants CollaborationParticipant[]
+  presenceUpdates PresenceUpdate[]
+  
+  // Social features
+  posts         Post[]
+  comments      Comment[]
+  likes         Like[]
+  shares        Share[]
+  followers     Follow[] @relation("UserFollowers")
+  following     Follow[] @relation("UserFollowing")
+  conversations Conversation[]
+  messages      Message[]
+  stories       Story[]
+  storyViews    StoryView[]
+  groups        GroupMember[]
+  events        Event[]
+  notifications Notification[]
+  reports       Report[]
+  blocks        Block[] @relation("BlockedByUser")
+  blocked       Block[] @relation("UserBlocked")
+  aiPersona     AIPersona?
+  
+  @@map("users")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// User preferences model for personalization
+model UserPreferences {
+  id               String  @id @default(cuid())
+  userId           String  @unique
+  theme            String  @default("system") // light, dark, system
+  language         String  @default("en")
+  timezone         String  @default("UTC")
+  emailNotifications Boolean @default(true)
+  pushNotifications  Boolean @default(true)
+  
+  // AI preferences
+  aiProvider       String  @default("openai")
+  aiModel          String  @default("gpt-4")
+  aiTemperature    Float   @default(0.7)
+  
+  // UI preferences
+  sidebarCollapsed Boolean @default(false)
+  compactMode      Boolean @default(false)
+  
+  user             User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("user_preferences")
+}
+
+// Collaboration models
+model Workspace {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  slug        String    @unique
+  ownerId     String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  members     WorkspaceMember[]
+  projects    Project[]
+  
+  @@map("workspaces")
+}
+
+model WorkspaceMember {
+  id          String        @id @default(cuid())
+  workspaceId String
+  userId      String
+  role        String        @default("MEMBER")
+  joinedAt    DateTime      @default(now())
+  
+  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([workspaceId, userId])
+  @@map("workspace_members")
+}
+
+model Project {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  workspaceId String
+  ownerId     String
+  isPublic    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  owner       User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  
+  @@map("projects")
+}
+
+// Real-time collaboration models
+model CollaborationSession {
+  id          String    @id @default(cuid())
+  workspaceId String
+  type        String    // "shared_workspace", "collaborative_editing", "presence"
+  createdBy   String
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  participants    CollaborationParticipant[]
+  presenceUpdates PresenceUpdate[]
+  
+  @@map("collaboration_sessions")
+}
+
+model CollaborationParticipant {
+  id          String    @id @default(cuid())
+  sessionId   String
+  userId      String
+  permissions String    @default("write") // "read", "write", "admin"
+  joinedAt    DateTime  @default(now())
+  leftAt      DateTime?
+  
+  session     CollaborationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user        User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([sessionId, userId])
+  @@map("collaboration_participants")
+}
+
+model PresenceUpdate {
+  id            String    @id @default(cuid())
+  userId        String
+  workspaceId   String
+  sessionId     String?
+  status        String    // "online", "offline", "away", "busy"
+  currentFile   String?
+  cursorPosition String?   // JSON string: { "line": number, "column": number }
+  updatedAt     DateTime  @default(now())
+  
+  user          User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  session       CollaborationSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  
+  @@unique([userId, workspaceId])
+  @@map("presence_updates")
+}
+
+// Note: SQLite doesn't support enums, so we use string constants
+// Valid UserRole values: "USER", "ADMIN", "MODERATOR"
+// Valid WorkspaceRole values: "OWNER", "ADMIN", "MEMBER", "VIEWER"
+// Valid CollaborationType values: "shared_workspace", "collaborative_editing", "presence"
+// Valid PresenceStatus values: "online", "offline", "away", "busy"
+// Valid Permissions values: "read", "write", "admin"
+
+// Social Platform Models
+model Post {
+  id          String    @id @default(cuid())
+  authorId    String
+  content     String
+  mediaUrls   String?   // JSON array of media URLs
+  type        String    @default("text") // "text", "image", "video", "poll", "event", "ai_generated"
+  visibility  String    @default("public") // "public", "private", "friends", "followers"
+  isEdited    Boolean   @default(false)
+  editedAt    DateTime?
+  likesCount  Int       @default(0)
+  commentsCount Int     @default(0)
+  sharesCount Int       @default(0)
+  viewsCount  Int       @default(0)
+  tags        String?   // JSON array of tags
+  location    String?
+  isAIGenerated Boolean @default(false)
+  aiPrompt    String?   // Original AI prompt if AI generated
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments    Comment[]
+  likes       Like[]
+  shares      Share[]
+  reports     Report[]
+  
+  @@map("posts")
+}
+
+model Comment {
+  id          String    @id @default(cuid())
+  postId      String
+  authorId    String
+  content     String
+  parentId    String?   // For nested comments
+  likesCount  Int       @default(0)
+  isEdited    Boolean   @default(false)
+  editedAt    DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  post        Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  parent      Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies     Comment[] @relation("CommentReplies")
+  likes       Like[]
+  reports     Report[]
+  
+  @@map("comments")
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String?
+  commentId String?
+  type      String   @default("like") // "like", "love", "laugh", "angry", "sad"
+  createdAt DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, postId])
+  @@unique([userId, commentId])
+  @@map("likes")
+}
+
+model Share {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String
+  content   String?  // Optional comment when sharing
+  createdAt DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  
+  @@map("shares")
+}
+
+model Follow {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  status      String   @default("active") // "active", "pending", "blocked"
+  createdAt   DateTime @default(now())
+  
+  follower    User     @relation("UserFollowers", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User     @relation("UserFollowing", fields: [followingId], references: [id], onDelete: Cascade)
+  
+  @@unique([followerId, followingId])
+  @@map("follows")
+}
+
+model Conversation {
+  id          String    @id @default(cuid())
+  type        String    @default("direct") // "direct", "group"
+  name        String?   // For group conversations
+  description String?
+  imageUrl    String?
+  isActive    Boolean   @default(true)
+  lastMessageAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  participants User[]
+  messages     Message[]
+  
+  @@map("conversations")
+}
+
+model Message {
+  id             String    @id @default(cuid())
+  conversationId String
+  senderId       String
+  content        String
+  type           String    @default("text") // "text", "image", "video", "audio", "file", "ai_response"
+  mediaUrl       String?
+  replyToId      String?   // For message replies
+  isEdited       Boolean   @default(false)
+  editedAt       DateTime?
+  isRead         Boolean   @default(false)
+  readAt         DateTime?
+  isAIGenerated  Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender         User         @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  replyTo        Message?     @relation("MessageReplies", fields: [replyToId], references: [id])
+  replies        Message[]    @relation("MessageReplies")
+  
+  @@map("messages")
+}
+
+model Story {
+  id        String   @id @default(cuid())
+  authorId  String
+  content   String?
+  mediaUrl  String
+  type      String   @default("image") // "image", "video"
+  duration  Int      @default(24) // Duration in hours
+  viewsCount Int     @default(0)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  views     StoryView[]
+  
+  @@map("stories")
+}
+
+model StoryView {
+  id      String   @id @default(cuid())
+  storyId String
+  userId  String
+  viewedAt DateTime @default(now())
+  
+  story   Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([storyId, userId])
+  @@map("story_views")
+}
+
+model Group {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  imageUrl    String?
+  isPrivate   Boolean   @default(false)
+  category    String?
+  rules       String?   // JSON string of group rules
+  membersCount Int      @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  members     GroupMember[]
+  posts       GroupPost[]
+  
+  @@map("groups")
+}
+
+model GroupMember {
+  id      String   @id @default(cuid())
+  groupId String
+  userId  String
+  role    String   @default("member") // "admin", "moderator", "member"
+  status  String   @default("active") // "active", "pending", "banned"
+  joinedAt DateTime @default(now())
+  
+  group   Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([groupId, userId])
+  @@map("group_members")
+}
+
+model GroupPost {
+  id        String   @id @default(cuid())
+  groupId   String
+  authorId  String
+  content   String
+  mediaUrls String?  // JSON array
+  isPinned  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  
+  @@map("group_posts")
+}
+
+model Event {
+  id          String    @id @default(cuid())
+  organizerId String
+  title       String
+  description String
+  location    String?
+  isVirtual   Boolean   @default(false)
+  virtualUrl  String?
+  startDate   DateTime
+  endDate     DateTime
+  timezone    String    @default("UTC")
+  maxAttendees Int?
+  isPrivate   Boolean   @default(false)
+  category    String?
+  tags        String?   // JSON array
+  imageUrl    String?
+  price       Float?    // 0 for free events
+  currency    String    @default("USD")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  organizer   User      @relation(fields: [organizerId], references: [id], onDelete: Cascade)
+  attendees   EventAttendee[]
+  
+  @@map("events")
+}
+
+model EventAttendee {
+  id       String   @id @default(cuid())
+  eventId  String
+  userId   String
+  status   String   @default("interested") // "going", "interested", "not_going"
+  joinedAt DateTime @default(now())
+  
+  event    Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  
+  @@unique([eventId, userId])
+  @@map("event_attendees")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String   // "like", "comment", "follow", "mention", "message", "event", "ai_suggestion"
+  title     String
+  content   String
+  isRead    Boolean  @default(false)
+  actionUrl String?  // Deep link to relevant content
+  metadata  String?  // JSON for additional data
+  createdAt DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("notifications")
+}
+
+model Report {
+  id        String   @id @default(cuid())
+  reporterId String
+  type      String   // "spam", "harassment", "fake_news", "inappropriate", "copyright"
+  reason    String
+  postId    String?
+  commentId String?
+  userId    String?  // Reported user
+  status    String   @default("pending") // "pending", "reviewed", "resolved", "dismissed"
+  reviewedAt DateTime?
+  reviewedBy String?
+  resolution String?
+  createdAt DateTime @default(now())
+  
+  reporter  User     @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+  post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  
+  @@map("reports")
+}
+
+model Block {
+  id        String   @id @default(cuid())
+  blockerId String
+  blockedId String
+  reason    String?
+  createdAt DateTime @default(now())
+  
+  blocker   User     @relation("BlockedByUser", fields: [blockerId], references: [id], onDelete: Cascade)
+  blocked   User     @relation("UserBlocked", fields: [blockedId], references: [id], onDelete: Cascade)
+  
+  @@unique([blockerId, blockedId])
+  @@map("blocks")
+}
+
+// AI Features
+model AIPersona {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  name        String
+  description String
+  personality String   // JSON object with personality traits
+  interests   String   // JSON array of interests
+  writingStyle String  // JSON object with writing preferences
+  language    String   @default("en")
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("ai_personas")
+}
+
+model AIInteraction {
+  id          String   @id @default(cuid())
+  userId      String
+  type        String   // "content_generation", "response_suggestion", "personality_chat", "trend_analysis"
+  prompt      String
+  response    String
+  metadata    String?  // JSON with interaction details
+  rating      Int?     // User rating 1-5
+  isUsed      Boolean  @default(false) // Whether user used the AI suggestion
+  createdAt   DateTime @default(now())
+  
+  @@map("ai_interactions")
+}
+
+model Trend {
+  id          String   @id @default(cuid())
+  hashtag     String   @unique
+  category    String?
+  description String?
+  postsCount  Int      @default(0)
+  score       Float    @default(0.0) // Trending score
+  region      String?
+  isPromoted  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("trends")
+}

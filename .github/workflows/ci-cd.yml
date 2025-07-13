@@ -1,0 +1,645 @@
+name: 🚀 Codai Project CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop, 'release/*']
+    paths-ignore:
+      - '*.md'
+      - 'docs/**'
+      - '.vscode/**'
+  pull_request:
+    branches: [main, develop]
+    paths-ignore:
+      - '*.md'
+      - 'docs/**'
+      - '.vscode/**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+      apps_to_deploy:
+        description: 'Apps to deploy (comma-separated, or "all")'
+        required: false
+        default: 'all'
+
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '8.15.0'
+  DOCKER_REGISTRY: 'ghcr.io'
+  DOCKER_IMAGE_PREFIX: 'codai-project'
+  HELM_VERSION: '3.14.0'
+  KUBECTL_VERSION: '1.29.0'
+
+# Security and permissions
+permissions:
+  contents: read
+  packages: write
+  security-events: write
+  pull-requests: write
+  checks: write
+
+# Cancel previous runs
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  # ========================================
+  # 🔍 CHANGE DETECTION & SETUP
+  # ========================================
+  detect-changes:
+    name: 🔍 Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      has-apps: ${{ steps.changes.outputs.has-apps }}
+      has-services: ${{ steps.changes.outputs.has-services }}
+      has-packages: ${{ steps.changes.outputs.has-packages }}
+      has-infrastructure: ${{ steps.changes.outputs.has-infrastructure }}
+      changed-apps: ${{ steps.changes.outputs.changed-apps }}
+      changed-services: ${{ steps.changes.outputs.changed-services }}
+      changed-packages: ${{ steps.changes.outputs.changed-packages }}
+      should-deploy: ${{ steps.should-deploy.outputs.result }}
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: 🔍 Detect Changed Files
+        id: changes
+        run: |
+          # Get changed files
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          else
+            CHANGED_FILES=$(git diff --name-only HEAD~1)
+          fi
+          
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+          
+          # Detect changes in different areas
+          HAS_APPS=$(echo "$CHANGED_FILES" | grep -E "^apps/" | wc -l)
+          HAS_SERVICES=$(echo "$CHANGED_FILES" | grep -E "^services/" | wc -l)
+          HAS_PACKAGES=$(echo "$CHANGED_FILES" | grep -E "^packages/" | wc -l)
+          HAS_INFRASTRUCTURE=$(echo "$CHANGED_FILES" | grep -E "^infrastructure/|^monitoring/|^security/" | wc -l)
+          
+          # Get specific changed apps and services
+          CHANGED_APPS=$(echo "$CHANGED_FILES" | grep -E "^apps/" | cut -d'/' -f2 | sort -u | tr '\n' ',' | sed 's/,$//')
+          CHANGED_SERVICES=$(echo "$CHANGED_FILES" | grep -E "^services/" | cut -d'/' -f2 | sort -u | tr '\n' ',' | sed 's/,$//')
+          CHANGED_PACKAGES=$(echo "$CHANGED_FILES" | grep -E "^packages/" | cut -d'/' -f2 | sort -u | tr '\n' ',' | sed 's/,$//')
+          
+          # Set outputs
+          echo "has-apps=$([[ $HAS_APPS -gt 0 ]] && echo true || echo false)" >> $GITHUB_OUTPUT
+          echo "has-services=$([[ $HAS_SERVICES -gt 0 ]] && echo true || echo false)" >> $GITHUB_OUTPUT
+          echo "has-packages=$([[ $HAS_PACKAGES -gt 0 ]] && echo true || echo false)" >> $GITHUB_OUTPUT
+          echo "has-infrastructure=$([[ $HAS_INFRASTRUCTURE -gt 0 ]] && echo true || echo false)" >> $GITHUB_OUTPUT
+          echo "changed-apps=$CHANGED_APPS" >> $GITHUB_OUTPUT
+          echo "changed-services=$CHANGED_SERVICES" >> $GITHUB_OUTPUT
+          echo "changed-packages=$CHANGED_PACKAGES" >> $GITHUB_OUTPUT
+          
+      - name: 🚀 Should Deploy?
+        id: should-deploy
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "result=true" >> $GITHUB_OUTPUT
+          elif [ "${{ github.ref }}" = "refs/heads/main" ] || [ "${{ github.ref }}" = "refs/heads/develop" ]; then
+            echo "result=true" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.ref }}" == refs/heads/release/* ]]; then
+            echo "result=true" >> $GITHUB_OUTPUT
+          else
+            echo "result=false" >> $GITHUB_OUTPUT
+          fi
+
+  # ========================================
+  # 🧪 QUALITY ASSURANCE
+  # ========================================
+  quality-checks:
+    name: 🧪 Quality Checks
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: always()
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          run_install: false
+          
+      - name: 🔧 Get pnpm store directory
+        shell: bash
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+        
+      - name: 📦 Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+            
+      - name: 📥 Install Dependencies
+        run: pnpm install --frozen-lockfile
+        
+      - name: 🔍 Lint Code
+        run: pnpm lint
+        continue-on-error: false
+        
+      - name: 🎨 Check Code Formatting
+        run: pnpm format:check
+        continue-on-error: false
+        
+      - name: 🔒 Security Audit
+        run: pnpm audit --audit-level moderate
+        continue-on-error: true
+        
+      - name: 📊 Type Check
+        run: pnpm type-check
+        continue-on-error: false
+
+  # ========================================
+  # 🧪 UNIT & INTEGRATION TESTS
+  # ========================================
+  test-packages:
+    name: 🧪 Test Packages
+    runs-on: ubuntu-latest
+    needs: [detect-changes, quality-checks]
+    if: needs.detect-changes.outputs.has-packages == 'true'
+    strategy:
+      matrix:
+        package: ['api', 'auth', 'core', 'ui']
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          
+      - name: 📥 Install Dependencies
+        run: pnpm install --frozen-lockfile
+        
+      - name: 🧪 Run Package Tests
+        run: pnpm test --filter=packages/${{ matrix.package }}
+        
+      - name: 📊 Upload Coverage
+        uses: codecov/codecov-action@v4
+        with:
+          flags: packages-${{ matrix.package }}
+          directory: packages/${{ matrix.package }}/coverage
+
+  test-apps:
+    name: 🧪 Test Apps
+    runs-on: ubuntu-latest
+    needs: [detect-changes, quality-checks]
+    if: needs.detect-changes.outputs.has-apps == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [codai, memorai, logai, bancai, wallet, fabricai, studiai, sociai, cumparai, x, publicai]
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_${{ matrix.app }}
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          
+      - name: 📥 Install Dependencies
+        run: pnpm install --frozen-lockfile
+        
+      - name: 🏗️ Build App
+        run: pnpm build --filter=apps/${{ matrix.app }}
+        
+      - name: 🧪 Run App Tests
+        run: pnpm test --filter=apps/${{ matrix.app }}
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_${{ matrix.app }}
+          REDIS_URL: redis://localhost:6379
+          NODE_ENV: test
+          
+      - name: 📊 Upload Coverage
+        uses: codecov/codecov-action@v4
+        with:
+          flags: apps-${{ matrix.app }}
+          directory: apps/${{ matrix.app }}/coverage
+
+  test-services:
+    name: 🧪 Test Services
+    runs-on: ubuntu-latest
+    needs: [detect-changes, quality-checks]
+    if: needs.detect-changes.outputs.has-services == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        service: [admin, AIDE, ajutai, analizai, dash, docs, explorer, hub, id, jucai, kodex, legalizai, marketai, metu, mod, stocai, templates, tools]
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_${{ matrix.service }}
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          
+      - name: 📥 Install Dependencies
+        run: pnpm install --frozen-lockfile
+        
+      - name: 🧪 Run Service Tests
+        run: pnpm test --filter=services/${{ matrix.service }}
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_${{ matrix.service }}
+          REDIS_URL: redis://localhost:6379
+          NODE_ENV: test
+          
+      - name: 📊 Upload Coverage
+        uses: codecov/codecov-action@v4
+        with:
+          flags: services-${{ matrix.service }}
+          directory: services/${{ matrix.service }}/coverage
+
+  # ========================================
+  # 🐳 BUILD & PUBLISH DOCKER IMAGES
+  # ========================================
+  build-images:
+    name: 🐳 Build Images
+    runs-on: ubuntu-latest
+    needs: [detect-changes, quality-checks]
+    if: needs.detect-changes.outputs.should-deploy == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Apps
+          - name: codai
+            path: apps/codai
+            type: app
+          - name: memorai
+            path: apps/memorai
+            type: app
+          - name: logai
+            path: apps/logai
+            type: app
+          - name: bancai
+            path: apps/bancai
+            type: app
+          - name: wallet
+            path: apps/wallet
+            type: app
+          - name: fabricai
+            path: apps/fabricai
+            type: app
+          - name: studiai
+            path: apps/studiai
+            type: app
+          - name: sociai
+            path: apps/sociai
+            type: app
+          - name: cumparai
+            path: apps/cumparai
+            type: app
+          - name: x
+            path: apps/x
+            type: app
+          - name: publicai
+            path: apps/publicai
+            type: app
+          # Services
+          - name: admin
+            path: services/admin
+            type: service
+          - name: aide
+            path: services/AIDE
+            type: service
+          - name: ajutai
+            path: services/ajutai
+            type: service
+          - name: analizai
+            path: services/analizai
+            type: service
+          - name: dash
+            path: services/dash
+            type: service
+          - name: docs
+            path: services/docs
+            type: service
+          - name: explorer
+            path: services/explorer
+            type: service
+          - name: hub
+            path: services/hub
+            type: service
+          - name: id
+            path: services/id
+            type: service
+          - name: jucai
+            path: services/jucai
+            type: service
+          - name: kodex
+            path: services/kodex
+            type: service
+          - name: legalizai
+            path: services/legalizai
+            type: service
+          - name: marketai
+            path: services/marketai
+            type: service
+          - name: metu
+            path: services/metu
+            type: service
+          - name: mod
+            path: services/mod
+            type: service
+          - name: stocai
+            path: services/stocai
+            type: service
+          - name: templates
+            path: services/templates
+            type: service
+          - name: tools
+            path: services/tools
+            type: service
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: 🐳 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        
+      - name: 🔑 Login to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.DOCKER_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: 🏷️ Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.DOCKER_REGISTRY }}/${{ github.repository_owner }}/${{ env.DOCKER_IMAGE_PREFIX }}-${{ matrix.name }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=sha,prefix={{branch}}-
+            
+      - name: 🐳 Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ${{ matrix.path }}/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64,linux/arm64
+          build-args: |
+            BUILDKIT_INLINE_CACHE=1
+            BUILD_DATE=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}
+            VCS_REF=${{ github.sha }}
+            VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
+
+  # ========================================
+  # 🔒 SECURITY SCANNING
+  # ========================================
+  security-scan:
+    name: 🔒 Security Scan
+    runs-on: ubuntu-latest
+    needs: [build-images]
+    if: always() && (needs.build-images.result == 'success' || needs.build-images.result == 'skipped')
+    strategy:
+      matrix:
+        target: [codai, memorai, logai, bancai, wallet, fabricai]
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: 🔍 Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.DOCKER_REGISTRY }}/${{ github.repository_owner }}/${{ env.DOCKER_IMAGE_PREFIX }}-${{ matrix.target }}:${{ github.sha }}
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          
+      - name: 📊 Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  # ========================================
+  # 🚀 DEPLOYMENT
+  # ========================================
+  deploy-staging:
+    name: 🚀 Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [detect-changes, build-images, test-apps, test-services]
+    if: needs.detect-changes.outputs.should-deploy == 'true' && (github.ref == 'refs/heads/develop' || github.event_name == 'workflow_dispatch')
+    environment:
+      name: staging
+      url: https://staging.codai.ai
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: ⚙️ Setup Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: ${{ env.HELM_VERSION }}
+          
+      - name: ⚙️ Setup kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: ${{ env.KUBECTL_VERSION }}
+          
+      - name: 🔑 Configure Kubernetes
+        run: |
+          echo "${{ secrets.KUBE_CONFIG_STAGING }}" | base64 -d > kubeconfig
+          echo "KUBECONFIG=$(pwd)/kubeconfig" >> $GITHUB_ENV
+          
+      - name: 🚀 Deploy to Staging
+        run: |
+          # Deploy all apps and services to staging
+          helm upgrade --install codai-staging infrastructure/helm \\
+            --namespace codai-staging \\
+            --create-namespace \\
+            --values infrastructure/helm/values-staging.yaml \\
+            --set global.environment=staging \\
+            --set global.image.tag=${{ github.sha }} \\
+            --wait \\
+            --timeout=10m
+            
+      - name: 🧪 Run Deployment Tests
+        run: |
+          # Wait for all services to be ready
+          kubectl wait --for=condition=ready pod -l app.kubernetes.io/part-of=codai -n codai-staging --timeout=300s
+          
+          # Run Helm tests
+          helm test codai-staging -n codai-staging
+
+  deploy-production:
+    name: 🚀 Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [detect-changes, build-images, test-apps, test-services, security-scan]
+    if: needs.detect-changes.outputs.should-deploy == 'true' && (github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch')
+    environment:
+      name: production
+      url: https://codai.ai
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: ⚙️ Setup Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: ${{ env.HELM_VERSION }}
+          
+      - name: ⚙️ Setup kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: ${{ env.KUBECTL_VERSION }}
+          
+      - name: 🔑 Configure Kubernetes
+        run: |
+          echo "${{ secrets.KUBE_CONFIG_PRODUCTION }}" | base64 -d > kubeconfig
+          echo "KUBECONFIG=$(pwd)/kubeconfig" >> $GITHUB_ENV
+          
+      - name: 🚀 Deploy to Production
+        run: |
+          # Deploy all apps and services to production
+          helm upgrade --install codai-production infrastructure/helm \\
+            --namespace codai-production \\
+            --create-namespace \\
+            --values infrastructure/helm/values-production.yaml \\
+            --set global.environment=production \\
+            --set global.image.tag=${{ github.sha }} \\
+            --wait \\
+            --timeout=15m
+            
+      - name: 🧪 Run Production Tests
+        run: |
+          # Wait for all services to be ready
+          kubectl wait --for=condition=ready pod -l app.kubernetes.io/part-of=codai -n codai-production --timeout=600s
+          
+          # Run Helm tests
+          helm test codai-production -n codai-production
+          
+      - name: 📊 Update Deployment Status
+        run: |
+          echo "🎉 Successfully deployed to production!"
+          echo "🔗 URL: https://codai.ai"
+          echo "📊 Services: 29 services deployed"
+          echo "🏷️ Version: ${{ github.sha }}"
+
+  # ========================================
+  # 📊 MONITORING & NOTIFICATIONS
+  # ========================================
+  notify-deployment:
+    name: 📊 Notify Deployment
+    runs-on: ubuntu-latest
+    needs: [deploy-staging, deploy-production]
+    if: always() && (needs.deploy-staging.result != 'skipped' || needs.deploy-production.result != 'skipped')
+    steps:
+      - name: 📊 Deployment Notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          channel: '#deployments'
+          text: |
+            🚀 Codai Project Deployment Complete!
+            
+            📦 **Repository:** ${{ github.repository }}
+            🌿 **Branch:** ${{ github.ref_name }}
+            🏷️ **Version:** ${{ github.sha }}
+            👤 **Author:** ${{ github.actor }}
+            
+            🎯 **Environments:**
+            ${{ needs.deploy-staging.result == 'success' && '✅ Staging: https://staging.codai.ai' || '' }}
+            ${{ needs.deploy-production.result == 'success' && '✅ Production: https://codai.ai' || '' }}
+            
+            📊 **Services Deployed:** 29 services
+            ⏱️ **Duration:** ${{ github.event.head_commit.timestamp }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()

@@ -1,0 +1,531 @@
+# 🚀 ROMAI Production Docker Compose
+# Multi-service production deployment with security and monitoring
+# Generated for Phase 4 Week 4 Day 24 - Production Deployment
+
+# =============================================================================
+# 🌐 SERVICES DEFINITION
+# =============================================================================
+services:
+  
+  # ---------------------------------------------------------------------------
+  # 🔵 ROMAI API SERVER
+  # ---------------------------------------------------------------------------
+  romai-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+      args:
+        BUILD_REVISION: ${BUILD_REVISION:-latest}
+    image: romai/api:${VERSION:-latest}
+    container_name: romai-api
+    restart: unless-stopped
+    
+    # Environment Configuration
+    environment:
+      - NODE_ENV=production
+      - ROMAI_ENVIRONMENT=production
+      - ROMAI_API_PORT=8000
+      - ROMAI_API_HOST=0.0.0.0
+    
+    # Environment file for sensitive variables
+    env_file:
+      - .env.production
+    
+    # Port mapping
+    ports:
+      - "8000:8000"
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.5'
+        reservations:
+          memory: 1G
+          cpus: '0.5'
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    
+    # Volumes
+    volumes:
+      - romai-api-data:/app/data
+      - romai-api-logs:/app/logs
+      - /etc/localtime:/etc/localtime:ro
+    
+    # Dependencies
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    
+    # Networks
+    networks:
+      - romai-network
+      - monitoring-network
+    
+    # Logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "5"
+        labels: "service=romai-api"
+
+  # ---------------------------------------------------------------------------
+  # 🎨 ROMAI DASHBOARD
+  # ---------------------------------------------------------------------------
+  romai-dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+      target: production
+    image: romai/dashboard:${VERSION:-latest}
+    container_name: romai-dashboard
+    restart: unless-stopped
+    
+    # Environment Configuration
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://romai-api:8000
+      - ROMAI_DASHBOARD_PORT=4000
+    
+    env_file:
+      - .env.production
+    
+    # Port mapping
+    ports:
+      - "4000:4000"
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+    
+    # Volumes
+    volumes:
+      - romai-dashboard-data:/app/data
+      - /etc/localtime:/etc/localtime:ro
+    
+    # Dependencies
+    depends_on:
+      romai-api:
+        condition: service_healthy
+    
+    # Networks
+    networks:
+      - romai-network
+    
+    # Logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+        labels: "service=romai-dashboard"
+
+  # ---------------------------------------------------------------------------
+  # 🧠 ROMAI MCP SERVER
+  # ---------------------------------------------------------------------------
+  romai-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile.mcp
+      target: production
+    image: romai/mcp:${VERSION:-latest}
+    container_name: romai-mcp
+    restart: unless-stopped
+    
+    # Environment Configuration
+    environment:
+      - NODE_ENV=production
+      - ROMAI_MCP_PORT=3001
+      - ROMAI_MCP_HOST=0.0.0.0
+    
+    env_file:
+      - .env.production
+    
+    # Port mapping
+    ports:
+      - "4093:3001"
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+    
+    # Volumes
+    volumes:
+      - romai-mcp-data:/app/data
+      - romai-mcp-logs:/app/logs
+      - /etc/localtime:/etc/localtime:ro
+    
+    # Dependencies
+    depends_on:
+      romai-api:
+        condition: service_healthy
+    
+    # Networks
+    networks:
+      - romai-network
+    
+    # Logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+        labels: "service=romai-mcp"
+
+  # ---------------------------------------------------------------------------
+  # 🔍 ELASTICSEARCH
+  # ---------------------------------------------------------------------------
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: romai-elasticsearch
+    restart: unless-stopped
+    
+    # Environment Configuration
+    environment:
+      - node.name=romai-elasticsearch
+      - cluster.name=romai-cluster
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+    
+    # Memory limit
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '2'
+        reservations:
+          memory: 1G
+          cpus: '0.5'
+    
+    # Port mapping
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    
+    # Health check
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    
+    # Volumes
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+      - /etc/localtime:/etc/localtime:ro
+    
+    # Networks
+    networks:
+      - romai-network
+      - elk-network
+
+  # ---------------------------------------------------------------------------
+  # 📊 KIBANA
+  # ---------------------------------------------------------------------------
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    container_name: romai-kibana
+    restart: unless-stopped
+    
+    # Environment Configuration
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - SERVER_NAME=romai-kibana
+      - SERVER_HOST=0.0.0.0
+      - SERVER_PORT=5601
+    
+    # Port mapping
+    ports:
+      - "5601:5601"
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+    
+    # Health check
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5601/api/status || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
+    
+    # Volumes
+    volumes:
+      - kibana-data:/usr/share/kibana/data
+      - /etc/localtime:/etc/localtime:ro
+    
+    # Dependencies
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    
+    # Networks
+    networks:
+      - romai-network
+      - elk-network
+
+  # ---------------------------------------------------------------------------
+  # 🔄 LOGSTASH
+  # ---------------------------------------------------------------------------
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.11.0
+    container_name: romai-logstash
+    restart: unless-stopped
+    
+    # Environment Configuration
+    environment:
+      - "LS_JAVA_OPTS=-Xmx1g -Xms1g"
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    
+    # Port mapping
+    ports:
+      - "9600:9600"
+      - "5044:5044"
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 1.5G
+          cpus: '1'
+        reservations:
+          memory: 1G
+          cpus: '0.5'
+    
+    # Configuration
+    volumes:
+      - ./infrastructure/elk/logstash/config:/usr/share/logstash/config:ro
+      - ./infrastructure/elk/logstash/pipeline:/usr/share/logstash/pipeline:ro
+      - logstash-data:/usr/share/logstash/data
+      - /etc/localtime:/etc/localtime:ro
+    
+    # Dependencies
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    
+    # Networks
+    networks:
+      - romai-network
+      - elk-network
+
+  # ---------------------------------------------------------------------------
+  # 🗄️ REDIS CACHE
+  # ---------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: romai-redis
+    restart: unless-stopped
+    
+    # Configuration
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-romai-production}
+    
+    # Port mapping
+    ports:
+      - "6379:6379"
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.1'
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 3s
+      retries: 5
+    
+    # Volumes
+    volumes:
+      - redis-data:/data
+      - /etc/localtime:/etc/localtime:ro
+    
+    # Networks
+    networks:
+      - romai-network
+
+  # ---------------------------------------------------------------------------
+  # 🔄 NGINX REVERSE PROXY
+  # ---------------------------------------------------------------------------
+  nginx:
+    image: nginx:alpine
+    container_name: romai-nginx
+    restart: unless-stopped
+    
+    # Port mapping
+    ports:
+      - "80:80"
+      - "443:443"
+    
+    # Configuration
+    volumes:
+      - ./infrastructure/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./infrastructure/nginx/sites-available:/etc/nginx/sites-available:ro
+      - ./infrastructure/ssl:/etc/nginx/ssl:ro
+      - nginx-logs:/var/log/nginx
+      - /etc/localtime:/etc/localtime:ro
+    
+    # Dependencies
+    depends_on:
+      - romai-api
+      - romai-dashboard
+    
+    # Networks
+    networks:
+      - romai-network
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+# =============================================================================
+# 🌐 NETWORKS DEFINITION
+# =============================================================================
+networks:
+  romai-network:
+    driver: bridge
+    name: romai-production
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+  
+  elk-network:
+    driver: bridge
+    name: elk-production
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
+  
+  monitoring-network:
+    driver: bridge
+    name: monitoring-production
+    ipam:
+      config:
+        - subnet: 172.22.0.0/16
+
+# =============================================================================
+# 💾 VOLUMES DEFINITION
+# =============================================================================
+volumes:
+  # Application Data
+  romai-api-data:
+    driver: local
+    name: romai-api-data
+  romai-api-logs:
+    driver: local
+    name: romai-api-logs
+  romai-dashboard-data:
+    driver: local
+    name: romai-dashboard-data
+  romai-mcp-data:
+    driver: local
+    name: romai-mcp-data
+  romai-mcp-logs:
+    driver: local
+    name: romai-mcp-logs
+  
+  # ELK Stack Data
+  elasticsearch-data:
+    driver: local
+    name: romai-elasticsearch-data
+  kibana-data:
+    driver: local
+    name: romai-kibana-data
+  logstash-data:
+    driver: local
+    name: romai-logstash-data
+  
+  # Cache and Proxy Data
+  redis-data:
+    driver: local
+    name: romai-redis-data
+  nginx-logs:
+    driver: local
+    name: romai-nginx-logs
+
+# =============================================================================
+# 🔧 PRODUCTION USAGE COMMANDS
+# =============================================================================
+# Deploy:     docker-compose -f docker-compose.prod.yml --env-file .env.production up -d
+# Scale:      docker-compose -f docker-compose.prod.yml up -d --scale romai-api=3
+# Monitor:    docker-compose -f docker-compose.prod.yml logs -f
+# Health:     docker-compose -f docker-compose.prod.yml ps
+# Stop:       docker-compose -f docker-compose.prod.yml down
+# Update:     docker-compose -f docker-compose.prod.yml pull && docker-compose -f docker-compose.prod.yml up -d
+
+# =============================================================================
+# 📊 MONITORING & OBSERVABILITY
+# =============================================================================
+# Kibana Dashboard: http://localhost:5601
+# Elasticsearch: http://localhost:9200
+# API Health: http://localhost:8000/health
+# Dashboard: http://localhost:4000
+# Nginx Status: http://localhost/nginx_status
+
+# =============================================================================
+# 🔒 SECURITY FEATURES
+# =============================================================================
+# - Non-root containers with security contexts
+# - Network isolation with custom networks
+# - Resource limits to prevent resource exhaustion
+# - Health checks for reliability
+# - Persistent volumes for data protection
+# - Logging configuration for audit trails
+# - SSL/TLS termination at nginx level

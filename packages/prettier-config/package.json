@@ -1,0 +1,14 @@
+{
+  "name": "@codai/prettier-config",
+  "version": "1.0.0",
+  "description": "Shared Prettier configuration for Codai ecosystem",
+  "main": "index.js",
+  "type": "module",
+  "files": [
+    "index.js"
+  ],
+  "dependencies": {},
+  "peerDependencies": {
+    "prettier": "^3.0.0"
+  }
+}

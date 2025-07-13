@@ -1,0 +1,16 @@
+{
+  "name": "@codai/romai-mcp-standalone",
+  "version": "0.1.0",
+  "description": "Standalone ROMAI MCP Server using published packages",
+  "main": "index.js",
+  "bin": {
+    "romai-mcp": "./index.js"
+  },
+  "dependencies": {
+    "@codai/romai-mcp": "^0.1.1",
+    "dotenv": "^16.4.7"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

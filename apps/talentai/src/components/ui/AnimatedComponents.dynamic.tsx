@@ -1,0 +1,12 @@
+'use client';
+
+import dynamic from 'next/dynamic';
+import { LoadingSpinner } from './LoadingSpinner';
+
+const AnimatedComponents = dynamic(() => import('./AnimatedComponents').then(mod => ({ default: mod.FadeIn })), {
+  loading: () => <LoadingSpinner className="h-8 w-8" />,
+  ssr: false,
+});
+
+export default AnimatedComponents;
+export { AnimatedComponents };

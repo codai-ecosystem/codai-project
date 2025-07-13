@@ -1,0 +1,30 @@
+{
+  "name": "romai-realtime-monitoring",
+  "version": "1.0.0",
+  "description": "ROMAI Real-time Monitoring - TypeScript WebSocket Server",
+  "main": "simple-server.js",
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "start": "node simple-server.js",
+    "dev": "ts-node simple-server.ts",
+    "test": "node test-simple.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/ws": "^8.5.10",
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.0"
+  },
+  "keywords": [
+    "romai",
+    "websocket",
+    "real-time",
+    "monitoring",
+    "typescript"
+  ],
+  "author": "ROMAI Team",
+  "license": "MIT"
+}

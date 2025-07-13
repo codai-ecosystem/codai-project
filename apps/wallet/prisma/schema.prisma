@@ -1,0 +1,606 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// WalletAI - Comprehensive Crypto Wallet Platform
+// Production-ready multi-chain wallet with DeFi, NFT, and portfolio management
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  username    String?  @unique
+  name        String?
+  firstName   String?
+  lastName    String?
+  phoneNumber String?
+  dateOfBirth DateTime?
+  kycStatus   KYCStatus @default(PENDING)
+  kycLevel    KYCLevel  @default(BASIC)
+  status      UserStatus @default(ACTIVE)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  lastLoginAt DateTime?
+  
+  // Wallet Relations
+  wallets           Wallet[]
+  transactions      Transaction[]
+  smartContracts    SmartContract[]
+  stakingPositions  StakingPosition[]
+  nftCollections    NFTCollection[]
+  
+  // Security Relations
+  securitySettings  SecuritySettings?
+  backupCodes       BackupCode[]
+  sessions          WalletSession[]
+  
+  // Compliance Relations
+  kycDocuments      KYCDocument[]
+  complianceChecks  ComplianceCheck[]
+  
+  @@map("users")
+}
+
+model Wallet {
+  id          String      @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  type        WalletType
+  network     Network
+  address     String      @unique
+  publicKey   String
+  encryptedPrivateKey String // Encrypted private key
+  derivationPath String?   // For HD wallets
+  isActive    Boolean     @default(true)
+  isHardware  Boolean     @default(false)
+  balance     Float       @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Wallet Relations
+  assets            WalletAsset[]
+  transactions      Transaction[]
+  smartContracts    SmartContract[]
+  stakingPositions  StakingPosition[]
+  nfts              NFT[]
+  deFiPositions     DeFiPosition[]
+  
+  @@map("wallets")
+}
+
+model WalletAsset {
+  id          String   @id @default(cuid())
+  walletId    String
+  assetId     String
+  symbol      String
+  name        String
+  decimals    Int      @default(18)
+  balance     Float    @default(0)
+  lockedBalance Float  @default(0)
+  usdValue    Float?
+  lastPriceUpdate DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  wallet Wallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  asset  Asset  @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  
+  @@unique([walletId, assetId])
+  @@map("wallet_assets")
+}
+
+model Asset {
+  id          String    @id @default(cuid())
+  symbol      String    @unique
+  name        String
+  type        AssetType
+  network     Network
+  contractAddress String?
+  decimals    Int       @default(18)
+  isNative    Boolean   @default(false)
+  isStablecoin Boolean  @default(false)
+  logoUrl     String?
+  websiteUrl  String?
+  description String?
+  marketCap   Float?
+  totalSupply Float?
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Asset Relations
+  walletAssets    WalletAsset[]
+  transactions    Transaction[]
+  priceHistory    PriceHistory[]
+  stakingRewards  StakingReward[]
+  
+  @@map("assets")
+}
+
+model Transaction {
+  id            String          @id @default(cuid())
+  userId        String
+  walletId      String
+  assetId       String?
+  type          TransactionType
+  status        TransactionStatus @default(PENDING)
+  direction     Direction
+  amount        Float           
+  fee           Float?
+  fromAddress   String?
+  toAddress     String?
+  txHash        String?         @unique
+  blockNumber   Int?
+  blockHash     String?
+  gasUsed       Int?
+  gasPrice      Float?
+  nonce         Int?
+  data          String?         // Contract interaction data
+  memo          String?
+  tags          Json?           // Array of transaction tags
+  metadata      Json?           // Additional transaction metadata
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  confirmedAt   DateTime?
+  
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wallet Wallet  @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  asset  Asset?  @relation(fields: [assetId], references: [id], onDelete: SetNull)
+  
+  @@map("transactions")
+}
+
+model SmartContract {
+  id          String             @id @default(cuid())
+  userId      String
+  walletId    String
+  name        String
+  description String?
+  type        SmartContractType
+  network     Network
+  address     String
+  abi         Json               // Contract ABI
+  bytecode    String?
+  source      String?            // Solidity source code
+  isVerified  Boolean            @default(false)
+  isProxy     Boolean            @default(false)
+  status      ContractStatus     @default(DEPLOYED)
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  deployedAt  DateTime?
+  
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wallet Wallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  
+  // Contract Relations
+  interactions ContractInteraction[]
+  events       ContractEvent[]
+  
+  @@unique([address, network])
+  @@map("smart_contracts")
+}
+
+model ContractInteraction {
+  id            String        @id @default(cuid())
+  contractId    String
+  txHash        String
+  functionName  String
+  inputs        Json          // Function inputs
+  outputs       Json?         // Function outputs
+  gasUsed       Int?
+  status        String        @default("pending")
+  createdAt     DateTime      @default(now())
+  
+  contract SmartContract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  
+  @@map("contract_interactions")
+}
+
+model ContractEvent {
+  id          String        @id @default(cuid())
+  contractId  String
+  eventName   String
+  blockNumber Int
+  txHash      String
+  logIndex    Int
+  data        Json          // Event data
+  topics      Json          // Event topics
+  createdAt   DateTime      @default(now())
+  
+  contract SmartContract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  
+  @@map("contract_events")
+}
+
+model StakingPosition {
+  id          String        @id @default(cuid())
+  userId      String
+  walletId    String
+  validator   String
+  network     Network
+  amount      Float
+  stakedAt    DateTime
+  unstakingAt DateTime?
+  status      StakingStatus @default(ACTIVE)
+  apr         Float?
+  lockPeriod  Int?          // Lock period in seconds
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wallet Wallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  
+  // Staking Relations
+  rewards StakingReward[]
+  
+  @@map("staking_positions")
+}
+
+model StakingReward {
+  id              String          @id @default(cuid())
+  stakingPositionId String
+  assetId         String
+  amount          Float
+  blockNumber     Int
+  txHash          String?
+  claimedAt       DateTime?
+  createdAt       DateTime        @default(now())
+  
+  stakingPosition StakingPosition @relation(fields: [stakingPositionId], references: [id], onDelete: Cascade)
+  asset           Asset           @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  
+  @@map("staking_rewards")
+}
+
+model NFTCollection {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  symbol      String?
+  description String?
+  network     Network
+  contractAddress String
+  standard    NFTStandard @default(ERC721)
+  isVerified  Boolean  @default(false)
+  floorPrice  Float?
+  totalSupply Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // NFT Relations
+  nfts NFT[]
+  
+  @@unique([contractAddress, network])
+  @@map("nft_collections")
+}
+
+model NFT {
+  id           String        @id @default(cuid())
+  walletId     String
+  collectionId String
+  tokenId      String
+  name         String?
+  description  String?
+  imageUrl     String?
+  animationUrl String?
+  externalUrl  String?
+  attributes   Json?         // NFT attributes/traits
+  rarity       String?
+  metadata     Json?         // Full metadata
+  isListed     Boolean       @default(false)
+  listPrice    Float?
+  lastSalePrice Float?
+  acquiredAt   DateTime
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  
+  wallet     Wallet        @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  collection NFTCollection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  
+  @@unique([collectionId, tokenId])
+  @@map("nfts")
+}
+
+model DeFiPosition {
+  id          String       @id @default(cuid())
+  walletId    String
+  protocol    String       // Protocol name (Uniswap, Aave, etc.)
+  type        DeFiType
+  network     Network
+  poolAddress String?
+  tokenA      String?      // First token in LP or lending
+  tokenB      String?      // Second token in LP
+  amount      Float
+  value       Float?
+  apr         Float?
+  status      PositionStatus @default(ACTIVE)
+  entryPrice  Float?
+  currentPrice Float?
+  pnl         Float?
+  metadata    Json?        // Protocol-specific data
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  
+  wallet Wallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  
+  @@map("defi_positions")
+}
+
+model PriceHistory {
+  id        String   @id @default(cuid())
+  assetId   String
+  price     Float
+  volume24h Float?
+  marketCap Float?
+  change24h Float?
+  timestamp DateTime @default(now())
+  
+  asset Asset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  
+  @@unique([assetId, timestamp])
+  @@map("price_history")
+}
+
+model SecuritySettings {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  twoFactorEnabled Boolean @default(false)
+  biometricEnabled Boolean @default(false)
+  emailVerified   Boolean  @default(false)
+  phoneVerified   Boolean  @default(false)
+  recoveryEmail   String?
+  recoveryPhone   String?
+  autoLockTimeout Int      @default(300) // seconds
+  requirePinForTx Boolean  @default(true)
+  maxDailyLimit   Float?
+  whitelistedAddresses Json? // Array of whitelisted addresses
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("security_settings")
+}
+
+model BackupCode {
+  id        String   @id @default(cuid())
+  userId    String
+  code      String   @unique
+  used      Boolean  @default(false)
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("backup_codes")
+}
+
+model WalletSession {
+  id          String   @id @default(cuid())
+  userId      String
+  sessionId   String   @unique
+  ipAddress   String?
+  userAgent   String?
+  deviceInfo  Json?
+  isActive    Boolean  @default(true)
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("wallet_sessions")
+}
+
+model KYCDocument {
+  id          String       @id @default(cuid())
+  userId      String
+  type        DocumentType
+  documentNumber String?
+  fileName    String
+  fileUrl     String
+  status      DocumentStatus @default(PENDING)
+  uploadedAt  DateTime     @default(now())
+  verifiedAt  DateTime?
+  rejectedAt  DateTime?
+  rejectionReason String?
+  expiresAt   DateTime?
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("kyc_documents")
+}
+
+model ComplianceCheck {
+  id          String          @id @default(cuid())
+  userId      String
+  checkType   ComplianceType
+  status      ComplianceStatus @default(PENDING)
+  result      Json?           // Check results
+  performedAt DateTime        @default(now())
+  validUntil  DateTime?
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("compliance_checks")
+}
+
+// Enums for Programmable Wallet
+
+enum WalletType {
+  HOT_WALLET
+  COLD_WALLET
+  HARDWARE_WALLET
+  MULTISIG_WALLET
+  SMART_WALLET
+  WATCH_ONLY
+}
+
+enum Network {
+  ETHEREUM
+  BITCOIN
+  POLYGON
+  BSC
+  AVALANCHE
+  SOLANA
+  CARDANO
+  POLKADOT
+  COSMOS
+  NEAR
+  ARBITRUM
+  OPTIMISM
+  BASE
+  FANTOM
+  CRONOS
+}
+
+enum AssetType {
+  NATIVE
+  ERC20
+  ERC721
+  ERC1155
+  BEP20
+  SPL_TOKEN
+  ADA_NATIVE
+  DOT_NATIVE
+}
+
+enum TransactionType {
+  TRANSFER
+  RECEIVE
+  SMART_CONTRACT
+  SWAP
+  STAKE
+  UNSTAKE
+  CLAIM_REWARDS
+  NFT_TRANSFER
+  DEFI_DEPOSIT
+  DEFI_WITHDRAW
+  BRIDGE
+}
+
+enum TransactionStatus {
+  PENDING
+  CONFIRMED
+  FAILED
+  CANCELLED
+  DROPPED
+}
+
+enum Direction {
+  INCOMING
+  OUTGOING
+  INTERNAL
+}
+
+enum SmartContractType {
+  ERC20_TOKEN
+  ERC721_NFT
+  ERC1155_MULTI
+  DEFI_PROTOCOL
+  DAO_GOVERNANCE
+  MARKETPLACE
+  STAKING_POOL
+  BRIDGE
+  CUSTOM
+}
+
+enum ContractStatus {
+  DEPLOYED
+  VERIFIED
+  PAUSED
+  DEPRECATED
+  DESTROYED
+}
+
+enum StakingStatus {
+  ACTIVE
+  UNSTAKING
+  UNSTAKED
+  SLASHED
+}
+
+enum NFTStandard {
+  ERC721
+  ERC1155
+  SPL_NFT
+  ADA_NFT
+}
+
+enum DeFiType {
+  LIQUIDITY_POOL
+  LENDING
+  BORROWING
+  YIELD_FARMING
+  STAKING
+  GOVERNANCE
+  INSURANCE
+}
+
+enum PositionStatus {
+  ACTIVE
+  CLOSED
+  LIQUIDATED
+  PARTIAL
+}
+
+enum KYCStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+  EXPIRED
+}
+
+enum KYCLevel {
+  BASIC
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  BANNED
+  PENDING_VERIFICATION
+}
+
+enum DocumentType {
+  PASSPORT
+  DRIVERS_LICENSE
+  NATIONAL_ID
+  UTILITY_BILL
+  BANK_STATEMENT
+  SELFIE
+  PROOF_OF_ADDRESS
+}
+
+enum DocumentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  EXPIRED
+}
+
+enum ComplianceType {
+  AML_CHECK
+  SANCTIONS_CHECK
+  PEP_CHECK
+  ADDRESS_VERIFICATION
+  TRANSACTION_MONITORING
+}
+
+enum ComplianceStatus {
+  PENDING
+  PASSED
+  FAILED
+  MANUAL_REVIEW
+}

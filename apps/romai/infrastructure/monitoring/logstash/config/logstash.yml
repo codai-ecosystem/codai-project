@@ -1,0 +1,37 @@
+# Logstash Configuration for ROMAI Advanced Logging Integration
+# Version: 8.11.3
+# Purpose: Central log processing pipeline with enhanced parsing and enrichment
+
+# ================================ HTTP API Configuration ================================
+http.host: "0.0.0.0"
+http.port: 9600
+
+# ================================ Node Configuration ================================
+node.name: "romai-logstash-node1"
+
+# ================================ Pipeline Configuration ================================
+pipeline.workers: 2
+pipeline.batch.size: 125
+pipeline.batch.delay: 50
+
+# ================================ Queue Configuration ================================
+queue.type: persisted
+queue.max_bytes: 1gb
+queue.drain: true
+
+# ================================ Dead Letter Queue ================================
+dead_letter_queue.enable: true
+dead_letter_queue.max_bytes: 1gb
+
+# ================================ Monitoring Configuration ================================
+monitoring.elasticsearch.hosts: ["http://elasticsearch:9200"]
+monitoring.elasticsearch.username: "elastic"
+monitoring.elasticsearch.password: "${ELASTIC_PASSWORD:elastic_secure_2025}"
+
+# ================================ Log Configuration ================================
+log.level: info
+path.logs: /usr/share/logstash/logs
+
+# ================================ Automatic Config Reload ================================
+config.reload.automatic: true
+config.reload.interval: 3s

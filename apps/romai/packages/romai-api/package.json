@@ -1,0 +1,67 @@
+{
+  "name": "@codai/romai-api",
+  "version": "0.1.0",
+  "description": "ROMAI REST API Server - HTTP API for Romanian AI Intelligence",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "rimraf dist",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src --ext .ts,.tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "romai",
+    "api",
+    "rest",
+    "romanian",
+    "ai",
+    "fastify",
+    "openapi",
+    "codai"
+  ],
+  "author": "CODAI Contributors",
+  "license": "MIT",
+  "dependencies": {
+    "@codai/romai-core": "workspace:*",
+    "@codai/romai-types": "workspace:*",
+    "fastify": "^4.28.1",
+    "@fastify/cors": "^9.0.1",
+    "@fastify/rate-limit": "^9.1.0",
+    "@fastify/swagger": "^8.15.0",
+    "@fastify/swagger-ui": "^4.1.0",
+    "@fastify/jwt": "^8.0.1",
+    "@fastify/helmet": "^11.1.1",
+    "zod": "^3.25.74",
+    "winston": "^3.17.0",
+    "dotenv": "^16.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.16.0",
+    "eslint": "^9.17.0",
+    "rimraf": "^6.0.1",
+    "tsup": "^8.5.0",
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.8"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

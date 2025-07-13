@@ -1,0 +1,136 @@
+{
+  "apiVersion": "apps/v1",
+  "kind": "Deployment",
+  "metadata": {
+    "name": "logai",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "logai",
+      "component": "application",
+      "app.kubernetes.io/name": "logai",
+      "app.kubernetes.io/component": "application",
+      "app.kubernetes.io/part-of": "codai-ecosystem",
+      "app.kubernetes.io/version": "2.0.0"
+    }
+  },
+  "spec": {
+    "replicas": 3,
+    "selector": {
+      "matchLabels": {
+        "app": "logai"
+      }
+    },
+    "template": {
+      "metadata": {
+        "labels": {
+          "app": "logai",
+          "component": "application",
+          "app.kubernetes.io/name": "logai",
+          "app.kubernetes.io/component": "application",
+          "app.kubernetes.io/part-of": "codai-ecosystem"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "logai",
+            "image": "codai/logai:latest",
+            "ports": [
+              {
+                "containerPort": 3002,
+                "name": "http"
+              }
+            ],
+            "env": [
+              {
+                "name": "PORT",
+                "value": "3002"
+              },
+              {
+                "name": "NODE_ENV",
+                "value": "production"
+              },
+              {
+                "name": "SERVICE_NAME",
+                "value": "logai"
+              }
+            ],
+            "envFrom": [
+              {
+                "secretRef": {
+                  "name": "logai-env"
+                }
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": "500m",
+                "memory": "1Gi"
+              },
+              "limits": {
+                "cpu": "2000m",
+                "memory": "4Gi"
+              }
+            },
+            "livenessProbe": {
+              "httpGet": {
+                "path": "/health",
+                "port": 3002
+              },
+              "initialDelaySeconds": 30,
+              "periodSeconds": 10,
+              "timeoutSeconds": 5,
+              "failureThreshold": 3
+            },
+            "readinessProbe": {
+              "httpGet": {
+                "path": "/health",
+                "port": 3002
+              },
+              "initialDelaySeconds": 5,
+              "periodSeconds": 5,
+              "timeoutSeconds": 3,
+              "failureThreshold": 3
+            },
+            "securityContext": {
+              "allowPrivilegeEscalation": false,
+              "runAsNonRoot": true,
+              "runAsUser": 1001,
+              "capabilities": {
+                "drop": [
+                  "ALL"
+                ]
+              }
+            }
+          }
+        ],
+        "securityContext": {
+          "fsGroup": 1001
+        },
+        "affinity": {
+          "podAntiAffinity": {
+            "preferredDuringSchedulingIgnoredDuringExecution": [
+              {
+                "weight": 100,
+                "podAffinityTerm": {
+                  "labelSelector": {
+                    "matchExpressions": [
+                      {
+                        "key": "app",
+                        "operator": "In",
+                        "values": [
+                          "logai"
+                        ]
+                      }
+                    ]
+                  },
+                  "topologyKey": "kubernetes.io/hostname"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

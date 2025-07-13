@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "demo-metu-template"
+  },
+  "targets": {
+    "demo-metu-template": {
+      "hosting": {
+        "production": [
+          "demo-metu-template"
+        ],
+        "staging": [
+          "demo-metu-template-staging"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

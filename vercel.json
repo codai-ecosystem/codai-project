@@ -1,0 +1,31 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "apps/bancai/package.json",
+            "use": "@vercel/static-build",
+            "config": {
+                "buildCommand": "cd apps/bancai && npm run build",
+                "outputDirectory": "apps/bancai/.next"
+            }
+        },
+        {
+            "src": "apps/memorai/package.json",
+            "use": "@vercel/static-build",
+            "config": {
+                "buildCommand": "cd apps/memorai && npm run build",
+                "outputDirectory": "apps/memorai/.next"
+            }
+        }
+    ],
+    "routes": [
+        {
+            "src": "/bancai/(.*)",
+            "dest": "/apps/bancai/$1"
+        },
+        {
+            "src": "/memorai/(.*)",
+            "dest": "/apps/memorai/$1"
+        }
+    ]
+}

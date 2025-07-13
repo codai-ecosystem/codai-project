@@ -1,0 +1,424 @@
+# 🌐 ROMAI Production Services Configuration
+# Load balancer and service discovery for Kubernetes
+# Generated for Phase 4 Week 4 Day 25 - Cloud Deployment & Scaling
+
+# =============================================================================
+# 🔗 ROMAI API Service - Backend API Gateway
+# =============================================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: romai-api-service
+  namespace: romai-production
+  labels:
+    app: romai-api
+    tier: backend
+    service: api
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "false"
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    cloud.google.com/neg: '{"ingress": true}'
+spec:
+  selector:
+    app: romai-api
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8000
+    protocol: TCP
+  - name: https
+    port: 443
+    targetPort: 8000
+    protocol: TCP
+  type: LoadBalancer
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 300
+---
+# =============================================================================
+# 🎨 ROMAI Dashboard Service - Frontend Application
+# =============================================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: romai-dashboard-service
+  namespace: romai-production
+  labels:
+    app: romai-dashboard
+    tier: frontend
+    service: dashboard
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "false"
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    cloud.google.com/neg: '{"ingress": true}'
+spec:
+  selector:
+    app: romai-dashboard
+  ports:
+  - name: http
+    port: 80
+    targetPort: 4000
+    protocol: TCP
+  - name: https
+    port: 443
+    targetPort: 4000
+    protocol: TCP
+  type: LoadBalancer
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 300
+---
+# =============================================================================
+# 🧠 ROMAI MCP Service - Model Context Protocol Server
+# =============================================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: romai-mcp-service
+  namespace: romai-production
+  labels:
+    app: romai-mcp
+    tier: backend
+    service: mcp
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+    cloud.google.com/load-balancer-type: "Internal"
+spec:
+  selector:
+    app: romai-mcp
+  ports:
+  - name: mcp
+    port: 3001
+    targetPort: 3001
+    protocol: TCP
+  type: ClusterIP
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 300
+---
+# =============================================================================
+# 🔍 Elasticsearch Service - Search and Analytics
+# =============================================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch-service
+  namespace: romai-production
+  labels:
+    app: elasticsearch
+    tier: data
+    service: search
+spec:
+  selector:
+    app: elasticsearch
+  ports:
+  - name: http
+    port: 9200
+    targetPort: 9200
+    protocol: TCP
+  - name: transport
+    port: 9300
+    targetPort: 9300
+    protocol: TCP
+  type: ClusterIP
+---
+# =============================================================================
+# 🔍 Elasticsearch Headless Service - Cluster Discovery
+# =============================================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch-headless
+  namespace: romai-production
+  labels:
+    app: elasticsearch
+    tier: data
+    service: search-headless
+spec:
+  selector:
+    app: elasticsearch
+  ports:
+  - name: http
+    port: 9200
+    targetPort: 9200
+    protocol: TCP
+  - name: transport
+    port: 9300
+    targetPort: 9300
+    protocol: TCP
+  clusterIP: None
+---
+# =============================================================================
+# 🗄️ Redis Service - Caching and Session Storage
+# =============================================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+  namespace: romai-production
+  labels:
+    app: redis
+    tier: cache
+    service: cache
+spec:
+  selector:
+    app: redis
+  ports:
+  - name: redis
+    port: 6379
+    targetPort: 6379
+    protocol: TCP
+  type: ClusterIP
+---
+# =============================================================================
+# 🌐 Ingress Controller - External Access and SSL Termination
+# =============================================================================
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: romai-ingress
+  namespace: romai-production
+  labels:
+    app: romai
+    tier: ingress
+  annotations:
+    # Nginx Ingress Controller
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    
+    # SSL Configuration
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-protocols: "TLSv1.2 TLSv1.3"
+    nginx.ingress.kubernetes.io/ssl-ciphers: "ECDHE-RSA-AES128-GCM-SHA256,ECDHE-RSA-AES256-GCM-SHA384"
+    
+    # Rate Limiting
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/rate-limit-window: "1m"
+    nginx.ingress.kubernetes.io/rate-limit-connections: "10"
+    
+    # Security Headers
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      add_header X-Frame-Options "SAMEORIGIN" always;
+      add_header X-Content-Type-Options "nosniff" always;
+      add_header X-XSS-Protection "1; mode=block" always;
+      add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+      add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; frame-ancestors 'self';" always;
+      add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
+    
+    # Performance
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://romai.ro,https://www.romai.ro,https://dashboard.romai.ro"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization"
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "30"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "30"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "30"
+spec:
+  tls:
+  - hosts:
+    - api.romai.ro
+    - dashboard.romai.ro
+    - www.romai.ro
+    - romai.ro
+    secretName: romai-tls-secret
+  rules:
+  # API Subdomain
+  - host: api.romai.ro
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: romai-api-service
+            port:
+              number: 80
+  # Dashboard Subdomain
+  - host: dashboard.romai.ro
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: romai-dashboard-service
+            port:
+              number: 80
+  # Main Domain (redirect to dashboard)
+  - host: romai.ro
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: romai-dashboard-service
+            port:
+              number: 80
+  # WWW Subdomain (redirect to dashboard)
+  - host: www.romai.ro
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: romai-dashboard-service
+            port:
+              number: 80
+---
+# =============================================================================
+# 🔒 SSL Certificate Configuration
+# =============================================================================
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: romai-tls-certificate
+  namespace: romai-production
+spec:
+  secretName: romai-tls-secret
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+  - romai.ro
+  - www.romai.ro
+  - api.romai.ro
+  - dashboard.romai.ro
+---
+# =============================================================================
+# 🔐 Let's Encrypt ClusterIssuer
+# =============================================================================
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    # Production ACME server
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: admin@romai.ro
+    privateKeySecretRef:
+      name: letsencrypt-prod-key
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+---
+# =============================================================================
+# 📊 Network Policies - Security and Isolation
+# =============================================================================
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: romai-api-network-policy
+  namespace: romai-production
+spec:
+  podSelector:
+    matchLabels:
+      app: romai-api
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: ingress-nginx
+    - namespaceSelector:
+        matchLabels:
+          name: romai-production
+    ports:
+    - protocol: TCP
+      port: 8000
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: romai-production
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443  # HTTPS outbound
+    - protocol: TCP
+      port: 53   # DNS
+    - protocol: UDP
+      port: 53   # DNS
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: romai-dashboard-network-policy
+  namespace: romai-production
+spec:
+  podSelector:
+    matchLabels:
+      app: romai-dashboard
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: ingress-nginx
+    - namespaceSelector:
+        matchLabels:
+          name: romai-production
+    ports:
+    - protocol: TCP
+      port: 4000
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: romai-production
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443  # HTTPS outbound
+    - protocol: TCP
+      port: 53   # DNS
+    - protocol: UDP
+      port: 53   # DNS
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: romai-mcp-network-policy
+  namespace: romai-production
+spec:
+  podSelector:
+    matchLabels:
+      app: romai-mcp
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: romai-production
+    ports:
+    - protocol: TCP
+      port: 3001
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: romai-production
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443  # HTTPS outbound
+    - protocol: TCP
+      port: 53   # DNS
+    - protocol: UDP
+      port: 53   # DNS

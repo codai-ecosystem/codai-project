@@ -1,0 +1,307 @@
+{
+  "timestamp": "2025-07-06T20:26:28.510Z",
+  "summary": {
+    "total": 34,
+    "online": 0,
+    "offline": 34,
+    "percentage": 0
+  },
+  "byPriority": {
+    "CRITICAL": {
+      "total": 6,
+      "online": 0
+    },
+    "HIGH": {
+      "total": 4,
+      "online": 0
+    },
+    "MEDIUM": {
+      "total": 8,
+      "online": 0
+    },
+    "STANDARD": {
+      "total": 8,
+      "online": 0
+    },
+    "LOW": {
+      "total": 8,
+      "online": 0
+    }
+  },
+  "onlineApps": [],
+  "offlineApps": [
+    {
+      "name": "codai",
+      "status": "NOT_RUNNING",
+      "port": 4030,
+      "priority": "CRITICAL",
+      "error": "",
+      "responseTime": 25
+    },
+    {
+      "name": "memorai",
+      "status": "NOT_RUNNING",
+      "port": 4031,
+      "priority": "CRITICAL",
+      "error": "",
+      "responseTime": 2
+    },
+    {
+      "name": "logai",
+      "status": "NOT_RUNNING",
+      "port": 4032,
+      "priority": "CRITICAL",
+      "error": "",
+      "responseTime": 2
+    },
+    {
+      "name": "bancai",
+      "status": "NOT_RUNNING",
+      "port": 4033,
+      "priority": "CRITICAL",
+      "error": "",
+      "responseTime": 1
+    },
+    {
+      "name": "kodex",
+      "status": "NOT_RUNNING",
+      "port": 4034,
+      "priority": "CRITICAL",
+      "error": "",
+      "responseTime": 2
+    },
+    {
+      "name": "docai",
+      "status": "NOT_RUNNING",
+      "port": 4035,
+      "priority": "CRITICAL",
+      "error": "",
+      "responseTime": 1
+    },
+    {
+      "name": "paymentsai",
+      "status": "NOT_RUNNING",
+      "port": 4036,
+      "priority": "HIGH",
+      "error": "",
+      "responseTime": 1
+    },
+    {
+      "name": "bankingai",
+      "status": "NOT_RUNNING",
+      "port": 4037,
+      "priority": "HIGH",
+      "error": "",
+      "responseTime": 1
+    },
+    {
+      "name": "tradingai",
+      "status": "NOT_RUNNING",
+      "port": 4038,
+      "priority": "HIGH",
+      "error": "",
+      "responseTime": 1
+    },
+    {
+      "name": "cryptoai",
+      "status": "NOT_RUNNING",
+      "port": 4039,
+      "priority": "HIGH",
+      "error": "",
+      "responseTime": 2
+    },
+    {
+      "name": "publicai",
+      "status": "NOT_RUNNING",
+      "port": 4040,
+      "priority": "MEDIUM",
+      "error": "",
+      "responseTime": 2
+    },
+    {
+      "name": "assistantai",
+      "status": "NOT_RUNNING",
+      "port": 4041,
+      "priority": "MEDIUM",
+      "error": "",
+      "responseTime": 1
+    },
+    {
+      "name": "aide",
+      "status": "NOT_RUNNING",
+      "port": 4042,
+      "priority": "MEDIUM",
+      "error": "",
+      "responseTime": 2
+    },
+    {
+      "name": "devai",
+      "status": "NOT_RUNNING",
+      "port": 4043,
+      "priority": "MEDIUM",
+      "error": "",
+      "responseTime": 1
+    },
+    {
+      "name": "builderai",
+      "status": "NOT_RUNNING",
+      "port": 4044,
+      "priority": "MEDIUM",
+      "error": "",
+      "responseTime": 1
+    },
+    {
+      "name": "testai",
+      "status": "NOT_RUNNING",
+      "port": 4045,
+      "priority": "MEDIUM",
+      "error": "",
+      "responseTime": 2
+    },
+    {
+      "name": "deployai",
+      "status": "NOT_RUNNING",
+      "port": 4046,
+      "priority": "MEDIUM",
+      "error": "",
+      "responseTime": 1
+    },
+    {
+      "name": "monitorai",
+      "status": "NOT_RUNNING",
+      "port": 4047,
+      "priority": "MEDIUM",
+      "error": "",
+      "responseTime": 1
+    },
+    {
+      "name": "apigatewayai",
+      "status": "NOT_RUNNING",
+      "port": 4048,
+      "priority": "STANDARD",
+      "error": "",
+      "responseTime": 1
+    },
+    {
+      "name": "authenticationai",
+      "status": "NOT_RUNNING",
+      "port": 4049,
+      "priority": "STANDARD",
+      "error": "",
+      "responseTime": 2
+    },
+    {
+      "name": "notificationai",
+      "status": "NOT_RUNNING",
+      "port": 4050,
+      "priority": "STANDARD",
+      "error": "",
+      "responseTime": 2
+    },
+    {
+      "name": "storageai",
+      "status": "NOT_RUNNING",
+      "port": 4051,
+      "priority": "STANDARD",
+      "error": "",
+      "responseTime": 2
+    },
+    {
+      "name": "searchai",
+      "status": "NOT_RUNNING",
+      "port": 4052,
+      "priority": "STANDARD",
+      "error": "",
+      "responseTime": 1
+    },
+    {
+      "name": "analyticsai",
+      "status": "NOT_RUNNING",
+      "port": 4053,
+      "priority": "STANDARD",
+      "error": "",
+      "responseTime": 2
+    },
+    {
+      "name": "reportingai",
+      "status": "NOT_RUNNING",
+      "port": 4054,
+      "priority": "STANDARD",
+      "error": "",
+      "responseTime": 1
+    },
+    {
+      "name": "backupai",
+      "status": "NOT_RUNNING",
+      "port": 4055,
+      "priority": "STANDARD",
+      "error": "",
+      "responseTime": 1
+    },
+    {
+      "name": "creativai",
+      "status": "NOT_RUNNING",
+      "port": 4056,
+      "priority": "LOW",
+      "error": "",
+      "responseTime": 1
+    },
+    {
+      "name": "mediaai",
+      "status": "NOT_RUNNING",
+      "port": 4057,
+      "priority": "LOW",
+      "error": "",
+      "responseTime": 1
+    },
+    {
+      "name": "designai",
+      "status": "NOT_RUNNING",
+      "port": 4058,
+      "priority": "LOW",
+      "error": "",
+      "responseTime": 2
+    },
+    {
+      "name": "socialai",
+      "status": "NOT_RUNNING",
+      "port": 4059,
+      "priority": "LOW",
+      "error": "",
+      "responseTime": 1
+    },
+    {
+      "name": "marketingai",
+      "status": "NOT_RUNNING",
+      "port": 4060,
+      "priority": "LOW",
+      "error": "",
+      "responseTime": 1
+    },
+    {
+      "name": "cumparai",
+      "status": "NOT_RUNNING",
+      "port": 4061,
+      "priority": "LOW",
+      "error": "",
+      "responseTime": 2
+    },
+    {
+      "name": "sociai",
+      "status": "NOT_RUNNING",
+      "port": 4062,
+      "priority": "LOW",
+      "error": "",
+      "responseTime": 1
+    },
+    {
+      "name": "stocai",
+      "status": "NOT_RUNNING",
+      "port": 4063,
+      "priority": "LOW",
+      "error": "",
+      "responseTime": 2
+    }
+  ],
+  "recommendations": "Fix critical apps first"
+}

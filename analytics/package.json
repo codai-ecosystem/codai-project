@@ -1,0 +1,25 @@
+{
+  "name": "codai-business-intelligence",
+  "version": "1.0.0",
+  "description": "Enterprise Business Intelligence Engine for Codai Ecosystem",
+  "type": "module",
+  "main": "business-intelligence.js",
+  "scripts": {
+    "start": "node business-intelligence.js",
+    "dev": "node business-intelligence.js"
+  },
+  "dependencies": {
+    "compression": "^1.8.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  },
+  "keywords": [
+    "analytics",
+    "business-intelligence",
+    "kpi",
+    "codai",
+    "enterprise"
+  ],
+  "author": "Codai Ecosystem",
+  "license": "MIT"
+}

@@ -1,0 +1,188 @@
+# Metricbeat Configuration for ROMAI Enterprise System Metrics
+# Comprehensive system and application metrics collection
+
+# General settings
+metricbeat.config:
+  modules:
+    path: ${path.config}/modules.d/*.yml
+    reload.enabled: true
+    reload.period: 10s
+
+# Global processors
+processors:
+  - add_host_metadata:
+      when.not.contains.tags: forwarded
+  - add_docker_metadata: ~
+
+# Module configurations
+metricbeat.modules:
+  # System metrics
+  - module: system
+    period: 10s
+    metricsets:
+      - cpu
+      - load
+      - memory
+      - network
+      - process
+      - process_summary
+      - uptime
+      - socket_summary
+      - core
+      - diskio
+      - filesystem
+      - fsstat
+      - raid
+      - socket
+      - service
+    enabled: true
+    process.include_top_n:
+      by_cpu: 5
+      by_memory: 5
+    processes: ['.*']
+
+  # Docker metrics
+  - module: docker
+    period: 10s
+    hosts: ["unix:///var/run/docker.sock"]
+    metricsets:
+      - container
+      - cpu
+      - diskio
+      - event
+      - healthcheck
+      - info
+      - image
+      - memory
+      - network
+    enabled: true
+
+  # HTTP metrics for ROMAI services
+  - module: http
+    period: 10s
+    metricsets: ["json"]
+    enabled: true
+    hosts: ["http://api:3000/metrics"]
+    namespace: "romai_api"
+    path: "/metrics"
+
+  - module: http
+    period: 10s
+    metricsets: ["json"]
+    enabled: true
+    hosts: ["http://mcp-server:3333/metrics"]
+    namespace: "romai_mcp"
+    path: "/metrics"
+
+  - module: http
+    period: 10s
+    metricsets: ["json"]
+    enabled: true
+    hosts: ["http://dashboard:3001/metrics"]
+    namespace: "romai_dashboard"
+    path: "/metrics"
+
+  # Redis metrics
+  - module: redis
+    period: 10s
+    metricsets: ["info", "keyspace"]
+    enabled: true
+    hosts: ["redis:6379"]
+    password: "${REDIS_PASSWORD}"
+
+  # PostgreSQL metrics
+  - module: postgresql
+    period: 10s
+    metricsets:
+      - database
+      - bgwriter
+      - activity
+    enabled: true
+    hosts: ["postgres://postgres:5432?sslmode=disable"]
+    username: "postgres"
+    password: "${POSTGRES_PASSWORD}"
+
+  # Nginx metrics
+  - module: nginx
+    period: 10s
+    metricsets: ["stubstatus"]
+    enabled: true
+    hosts: ["http://nginx/nginx_status"]
+
+  # Elasticsearch metrics
+  - module: elasticsearch
+    period: 10s
+    metricsets:
+      - node
+      - node_stats
+      - cluster_stats
+    enabled: true
+    hosts: ["elasticsearch:9200"]
+    username: "elastic"
+    password: "${ELASTIC_PASSWORD}"
+
+  # Kibana metrics
+  - module: kibana
+    period: 10s
+    metricsets: ["status"]
+    enabled: true
+    hosts: ["kibana:5601"]
+
+  # Logstash metrics
+  - module: logstash
+    period: 10s
+    metricsets: ["node", "node_stats"]
+    enabled: true
+    hosts: ["logstash:9600"]
+
+# Output configuration
+output.elasticsearch:
+  hosts: ["elasticsearch:9200"]
+  username: "elastic"
+  password: "${ELASTIC_PASSWORD}"
+  index: "metricbeat-%{+yyyy.MM.dd}"
+  template.enabled: true
+  template.name: "metricbeat"
+  template.pattern: "metricbeat-*"
+
+# Alternative output to Logstash
+# output.logstash:
+#   hosts: ["logstash:5044"]
+
+# Logging configuration
+logging.level: info
+logging.to_files: true
+logging.files:
+  path: /var/log/metricbeat
+  name: metricbeat.log
+  keepfiles: 7
+  permissions: 0644
+
+# HTTP endpoint for monitoring
+http.enabled: true
+http.host: 0.0.0.0
+http.port: 5067
+
+# Monitoring configuration
+monitoring:
+  enabled: true
+  elasticsearch:
+    hosts: ["elasticsearch:9200"]
+    username: "elastic"
+    password: "${ELASTIC_PASSWORD}"
+
+# Performance tuning
+queue.mem:
+  events: 4096
+  flush.min_events: 512
+  flush.timeout: 5s
+
+# Security settings
+ssl.verification_mode: none
+
+# Fields configuration
+fields:
+  environment: production
+  service: romai-monitoring
+  cluster: romai-production
+fields_under_root: true

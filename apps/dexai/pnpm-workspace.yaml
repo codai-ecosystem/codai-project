@@ -1,0 +1,18 @@
+packages:
+  - apps/*
+  - packages/*
+auto-install-peers: true
+enable-pre-post-scripts: true
+hoist-pattern:
+  - '*'
+ignoredBuiltDependencies:
+  - unrs-resolver
+link-workspace-packages: true
+onlyBuiltDependencies:
+  - protobufjs
+  - sharp
+prefer-workspace-packages: true
+save-exact: false
+store-dir: ~/.pnpm-store
+strict-peer-dependencies: false
+verify-store-integrity: false

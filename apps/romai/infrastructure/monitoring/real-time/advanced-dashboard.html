@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROMAI Advanced Analytics Dashboard - Day 19</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #4a6741 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(15px);
+            border-bottom: 2px solid rgba(0, 255, 159, 0.3);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #00ff9f;
+            text-shadow: 0 0 10px rgba(0, 255, 159, 0.5);
+        }
+
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .status-indicator {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #ff4757;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
+        }
+
+        .status-indicator.connected {
+            background: #00ff9f;
+            box-shadow: 0 0 10px rgba(0, 255, 159, 0.5);
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.7;
+                transform: scale(1.1);
+            }
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-tab {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(45deg, #00ff9f, #00d4aa);
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 255, 159, 0.3);
+        }
+
+        .nav-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .dashboard-container {
+            padding: 2rem;
+            max-height: calc(100vh - 160px);
+            overflow-y: auto;
+        }
+
+        .dashboard-section {
+            display: none;
+        }
+
+        .dashboard-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .widgets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .widget {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 2px solid rgba(0, 255, 159, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .widget:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 255, 159, 0.1);
+            border-color: rgba(0, 255, 159, 0.5);
+        }
+
+        .widget::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #00ff9f, #00d4aa, #1dd1a1);
+        }
+
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .widget-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #00ff9f;
+        }
+
+        .widget-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .widget-content {
+            height: 300px;
+            position: relative;
+        }
+
+        .chart-container {
+            height: 100%;
+            position: relative;
+        }
+
+        .metric-display {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            height: 100%;
+        }
+
+        .metric-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .metric-item:hover {
+            background: rgba(0, 255, 159, 0.1);
+            transform: scale(1.05);
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #00ff9f;
+        }
+
+        .trend-indicator {
+            display: inline-block;
+            margin-left: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .trend-up {
+            color: #e74c3c;
+        }
+
+        .trend-down {
+            color: #2ecc71;
+        }
+
+        .trend-stable {
+            color: #f39c12;
+        }
+
+        .alert-list {
+            max-height: 280px;
+            overflow-y: auto;
+        }
+
+        .alert-item {
+            background: rgba(231, 76, 60, 0.2);
+            border-left: 4px solid #e74c3c;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .alert-item.critical {
+            background: rgba(231, 76, 60, 0.3);
+            border-left-color: #c0392b;
+            box-shadow: 0 0 20px rgba(231, 76, 60, 0.2);
+        }
+
+        .alert-item.high {
+            background: rgba(241, 196, 15, 0.2);
+            border-left-color: #f1c40f;
+        }
+
+        .alert-item.medium {
+            background: rgba(52, 152, 219, 0.2);
+            border-left-color: #3498db;
+        }
+
+        .alert-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .alert-name {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .alert-severity {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .prediction-display {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            height: 100%;
+        }
+
+        .prediction-item {
+            background: linear-gradient(45deg, rgba(0, 255, 159, 0.1), rgba(0, 212, 170, 0.1));
+            padding: 1rem;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 159, 0.3);
+        }
+
+        .prediction-metric {
+            font-weight: 600;
+            color: #00ff9f;
+            margin-bottom: 0.5rem;
+        }
+
+        .prediction-values {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .control-btn {
+            background: linear-gradient(45deg, #00ff9f, #00d4aa);
+            border: none;
+            color: #000;
+            padding: 1rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0, 255, 159, 0.3);
+        }
+
+        .control-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 255, 159, 0.4);
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Scrollbar styling */
+        .dashboard-container::-webkit-scrollbar,
+        .alert-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .dashboard-container::-webkit-scrollbar-track,
+        .alert-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .dashboard-container::-webkit-scrollbar-thumb,
+        .alert-list::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #00ff9f, #00d4aa);
+            border-radius: 4px;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #ccc;
+        }
+
+        .loading::after {
+            content: '...';
+            animation: loading 2s infinite;
+        }
+
+        @keyframes loading {
+
+            0%,
+            20% {
+                content: '.';
+            }
+
+            40% {
+                content: '..';
+            }
+
+            60%,
+            100% {
+                content: '...';
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo">🚀 ROMAI Advanced Analytics - Day 19</div>
+        <div class="connection-status">
+            <div class="status-indicator" id="statusIndicator"></div>
+            <span id="connectionStatus">Disconnected</span>
+        </div>
+        <div class="stats-bar">
+            <div class="stat">Enhanced Server</div>
+            <div class="stat" id="clientsCount">Clients: 0</div>
+            <div class="stat" id="alertsCount">Alerts: 0</div>
+            <div class="stat" id="predictionsCount">Predictions: 0</div>
+        </div>
+    </div>
+
+    <div class="nav-tabs">
+        <button class="nav-tab active" onclick="switchTab('overview')">📊 Overview</button>
+        <button class="nav-tab" onclick="switchTab('analytics')">📈 Analytics</button>
+        <button class="nav-tab" onclick="switchTab('trends')">📉 Trends</button>
+        <button class="nav-tab" onclick="switchTab('alerts')">🚨 Alerts</button>
+        <button class="nav-tab" onclick="switchTab('predictions')">🔮 Predictions</button>
+    </div>
+
+    <div class="dashboard-container">
+        <!-- Overview Section -->
+        <div id="overview" class="dashboard-section active">
+            <div class="widgets-grid">
+                <div class="widget">
+                    <div class="widget-header">
+                        <span class="widget-title">🎯 System Health Score</span>
+                        <span class="widget-value" id="healthScore">--</span>
+                    </div>
+                    <div class="widget-content">
+                        <canvas id="healthChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-header">
+                        <span class="widget-title">⚡ Real-time Metrics</span>
+                        <span class="widget-value" id="metricsCount">0</span>
+                    </div>
+                    <div class="widget-content">
+                        <div class="metric-display" id="realtimeMetrics">
+                            <div class="loading">Loading metrics</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-header">
+                        <span class="widget-title">🚨 Active Alerts</span>
+                        <span class="widget-value" id="alertCountWidget">0</span>
+                    </div>
+                    <div class="widget-content">
+                        <div class="alert-list" id="alertsList">
+                            <div class="loading">Loading alerts</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-header">
+                        <span class="widget-title">🔮 Live Predictions</span>
+                        <span class="widget-value" id="predictionAccuracy">--</span>
+                    </div>
+                    <div class="widget-content">
+                        <div class="prediction-display" id="predictionsList">
+                            <div class="loading">Loading predictions</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Section -->
+        <div id="analytics" class="dashboard-section">
+            <div class="widgets-grid">
+                <div class="widget">
+                    <div class="widget-header">
+                        <span class="widget-title">📊 Response Time Analytics</span>
+                    </div>
+                    <div class="widget-content">
+                        <canvas id="responseTimeChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-header">
+                        <span class="widget-title">💻 CPU Usage Analytics</span>
+                    </div>
+                    <div class="widget-content">
+                        <canvas id="cpuChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-header">
+                        <span class="widget-title">💾 Memory Usage Analytics</span>
+                    </div>
+                    <div class="widget-content">
+                        <canvas id="memoryChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-header">
+                        <span class="widget-title">🚫 Error Rate Analytics</span>
+                    </div>
+                    <div class="widget-content">
+                        <canvas id="errorChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trends Section -->
+        <div id="trends" class="dashboard-section">
+            <div class="widgets-grid">
+                <div class="widget">
+                    <div class="widget-header">
+                        <span class="widget-title">📈 Performance Trends</span>
+                    </div>
+                    <div class="widget-content" id="performanceTrends">
+                        <div class="loading">Loading trends</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alerts Section -->
+        <div id="alerts" class="dashboard-section">
+            <div class="widgets-grid">
+                <div class="widget">
+                    <div class="widget-header">
+                        <span class="widget-title">🚨 Alert Management</span>
+                    </div>
+                    <div class="widget-content" id="alertManagement">
+                        <div class="loading">Loading alert rules</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Predictions Section -->
+        <div id="predictions" class="dashboard-section">
+            <div class="widgets-grid">
+                <div class="widget">
+                    <div class="widget-header">
+                        <span class="widget-title">🔮 Predictive Analytics</span>
+                    </div>
+                    <div class="widget-content" id="predictiveAnalytics">
+                        <div class="loading">Loading predictions</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="control-btn" onclick="toggleConnection()">🔌 Connect/Disconnect</button>
+        <button class="control-btn" onclick="refreshAnalytics()">🔄 Refresh Analytics</button>
+        <button class="control-btn" onclick="exportAnalytics()">💾 Export Data</button>
+    </div>
+
+    <script>
+        class AdvancedAnalyticsDashboard {
+            constructor() {
+                this.ws = null;
+                this.isConnected = false;
+                this.charts = {};
+                this.data = {
+                    analytics: [],
+                    trends: [],
+                    alerts: [],
+                    predictions: []
+                };
+
+                this.initializeCharts();
+                this.connect();
+                this.startUpdates();
+            }
+
+            connect() {
+                try {
+                    console.log('🔌 Connecting to ROMAI Enhanced Analytics...');
+                    this.ws = new WebSocket('ws://localhost:8766');
+
+                    this.ws.onopen = () => {
+                        console.log('✅ Connected to enhanced analytics server');
+                        this.isConnected = true;
+                        this.updateConnectionStatus();
+
+                        // Subscribe to all analytics streams
+                        this.send({
+                            type: 'subscribe',
+                            subscriptions: {
+                                analytics: true,
+                                trends: true,
+                                alerts: true,
+                                predictions: true,
+                                dashboards: true
+                            }
+                        });
+
+                        this.requestInitialData();
+                    };
+
+                    this.ws.onmessage = (event) => {
+                        try {
+                            const message = JSON.parse(event.data);
+                            this.handleMessage(message);
+                        } catch (error) {
+                            console.error('Error parsing message:', error);
+                        }
+                    };
+
+                    this.ws.onclose = () => {
+                        console.log('🔌 Connection closed');
+                        this.isConnected = false;
+                        this.updateConnectionStatus();
+                    };
+
+                    this.ws.onerror = (error) => {
+                        console.error('❌ WebSocket error:', error);
+                        this.isConnected = false;
+                        this.updateConnectionStatus();
+                    };
+
+                } catch (error) {
+                    console.error('❌ Connection failed:', error);
+                }
+            }
+
+            send(message) {
+                if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                    this.ws.send(JSON.stringify(message));
+                }
+            }
+
+            handleMessage(message) {
+                console.log('📨 Enhanced message received:', message);
+
+                switch (message.type) {
+                    case 'analytics':
+                        this.handleAnalyticsData(message.data);
+                        break;
+                    case 'trend':
+                        this.handleTrendData(message.data);
+                        break;
+                    case 'alert':
+                        this.handleAlertData(message.data);
+                        break;
+                    case 'prediction':
+                        this.handlePredictionData(message.data);
+                        break;
+                    case 'analytics_summary':
+                        this.updateAnalyticsSummary(message.data);
+                        break;
+                    case 'active_alerts':
+                        this.updateAlertsList(message.data);
+                        break;
+                }
+            }
+
+            requestInitialData() {
+                // Request analytics summary
+                this.send({ type: 'get_analytics', timeframe: '1h' });
+
+                // Request active alerts
+                this.send({ type: 'get_alerts' });
+
+                // Request trends for key metrics
+                ['responseTime', 'cpuUsage', 'memoryUsage'].forEach(metric => {
+                    this.send({ type: 'get_trends', metric, timeframe: '1h' });
+                });
+
+                // Request predictions
+                ['romai-api', 'romai-dashboard'].forEach(service => {
+                    ['responseTime', 'cpuUsage'].forEach(metric => {
+                        this.send({ type: 'get_predictions', service, metric });
+                    });
+                });
+            }
+
+            handleAnalyticsData(data) {
+                this.data.analytics.push(data);
+                this.updateRealtimeMetrics(data);
+                this.updateCharts();
+            }
+
+            handleTrendData(data) {
+                this.data.trends.push(data);
+                this.updateTrendDisplay(data);
+            }
+
+            handleAlertData(data) {
+                this.data.alerts.push(data);
+                this.updateAlertsDisplay();
+            }
+
+            handlePredictionData(data) {
+                this.data.predictions.push(data);
+                this.updatePredictionsDisplay();
+            }
+
+            updateAnalyticsSummary(summary) {
+                if (!summary) return;
+
+                document.getElementById('healthScore').textContent =
+                    Math.round(100 - (summary.avgResponseTime / 10)) + '%';
+
+                this.updateMetricDisplay(summary);
+            }
+
+            updateMetricDisplay(summary) {
+                const container = document.getElementById('realtimeMetrics');
+                if (!container) return;
+
+                container.innerHTML = `
+                    <div class="metric-item">
+                        <div class="metric-label">Avg Response Time</div>
+                        <div class="metric-value">${Math.round(summary.avgResponseTime || 0)}ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">CPU Usage</div>
+                        <div class="metric-value">${Math.round(summary.avgCpuUsage || 0)}%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Memory Usage</div>
+                        <div class="metric-value">${Math.round(summary.avgMemoryUsage || 0)}%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Healthy Services</div>
+                        <div class="metric-value">${summary.healthyServices || 0}/${summary.totalServices || 0}</div>
+                    </div>
+                `;
+            }
+
+            updateAlertsList(alerts) {
+                const container = document.getElementById('alertsList');
+                if (!container) return;
+
+                if (!alerts || alerts.length === 0) {
+                    container.innerHTML = '<div class="loading">No active alerts</div>';
+                    return;
+                }
+
+                container.innerHTML = alerts.map(alert => `
+                    <div class="alert-item ${alert.severity}">
+                        <div class="alert-header">
+                            <span class="alert-name">${alert.name}</span>
+                            <span class="alert-severity">${alert.severity}</span>
+                        </div>
+                        <div>${alert.message}</div>
+                    </div>
+                `).join('');
+
+                document.getElementById('alertCountWidget').textContent = alerts.length;
+                document.getElementById('alertsCount').textContent = `Alerts: ${alerts.length}`;
+            }
+
+            updatePredictionsDisplay() {
+                const container = document.getElementById('predictionsList');
+                if (!container) return;
+
+                const recentPredictions = this.data.predictions.slice(-4);
+
+                container.innerHTML = recentPredictions.map(pred => `
+                    <div class="prediction-item">
+                        <div class="prediction-metric">${pred.service} - ${pred.metric}</div>
+                        <div class="prediction-values">
+                            <div>5min: ${Math.round(pred.prediction?.next5min || 0)}</div>
+                            <div>15min: ${Math.round(pred.prediction?.next15min || 0)}</div>
+                            <div>1hr: ${Math.round(pred.prediction?.next1hour || 0)}</div>
+                        </div>
+                    </div>
+                `).join('');
+
+                document.getElementById('predictionsCount').textContent =
+                    `Predictions: ${this.data.predictions.length}`;
+            }
+
+            initializeCharts() {
+                // Initialize Chart.js charts
+                setTimeout(() => {
+                    this.createHealthChart();
+                    this.createResponseTimeChart();
+                    this.createCpuChart();
+                    this.createMemoryChart();
+                    this.createErrorChart();
+                }, 100);
+            }
+
+            createHealthChart() {
+                const ctx = document.getElementById('healthChart')?.getContext('2d');
+                if (!ctx) return;
+
+                this.charts.health = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Healthy', 'Warning', 'Critical'],
+                        datasets: [{
+                            data: [85, 10, 5],
+                            backgroundColor: ['#00ff9f', '#f1c40f', '#e74c3c'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'bottom' } }
+                    }
+                });
+            }
+
+            createResponseTimeChart() {
+                const ctx = document.getElementById('responseTimeChart')?.getContext('2d');
+                if (!ctx) return;
+
+                this.charts.responseTime = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: 'Response Time (ms)',
+                            data: [],
+                            borderColor: '#00ff9f',
+                            backgroundColor: 'rgba(0, 255, 159, 0.1)',
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+            }
+
+            createCpuChart() {
+                const ctx = document.getElementById('cpuChart')?.getContext('2d');
+                if (!ctx) return;
+
+                this.charts.cpu = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: 'CPU Usage (%)',
+                            data: [],
+                            borderColor: '#f1c40f',
+                            backgroundColor: 'rgba(241, 196, 15, 0.1)',
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true, max: 100 }
+                        }
+                    }
+                });
+            }
+
+            createMemoryChart() {
+                const ctx = document.getElementById('memoryChart')?.getContext('2d');
+                if (!ctx) return;
+
+                this.charts.memory = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: 'Memory Usage (%)',
+                            data: [],
+                            borderColor: '#e74c3c',
+                            backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true, max: 100 }
+                        }
+                    }
+                });
+            }
+
+            createErrorChart() {
+                const ctx = document.getElementById('errorChart')?.getContext('2d');
+                if (!ctx) return;
+
+                this.charts.error = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: 'Error Rate (%)',
+                            data: [],
+                            backgroundColor: 'rgba(231, 76, 60, 0.7)',
+                            borderColor: '#e74c3c',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+            }
+
+            updateCharts() {
+                // Update charts with latest data
+                const recentData = this.data.analytics.slice(-20);
+
+                Object.keys(this.charts).forEach(chartType => {
+                    const chart = this.charts[chartType];
+                    if (chart && chart.data) {
+                        // Update chart data based on type
+                        this.updateChartData(chart, chartType, recentData);
+                    }
+                });
+            }
+
+            updateChartData(chart, type, data) {
+                if (data.length === 0) return;
+
+                const labels = data.map(d => new Date(d.timestamp).toLocaleTimeString());
+
+                switch (type) {
+                    case 'responseTime':
+                        chart.data.labels = labels;
+                        chart.data.datasets[0].data = data.map(d => d.data?.responseTime || 0);
+                        break;
+                    // Add other chart updates as needed
+                }
+
+                chart.update();
+            }
+
+            updateConnectionStatus() {
+                const indicator = document.getElementById('statusIndicator');
+                const status = document.getElementById('connectionStatus');
+
+                if (this.isConnected) {
+                    indicator.classList.add('connected');
+                    status.textContent = 'Connected to Enhanced Server';
+                } else {
+                    indicator.classList.remove('connected');
+                    status.textContent = 'Disconnected';
+                }
+            }
+
+            startUpdates() {
+                setInterval(() => {
+                    if (this.isConnected) {
+                        this.requestInitialData();
+                    }
+                }, 30000); // Update every 30 seconds
+            }
+        }
+
+        // Global functions
+        let dashboard;
+
+        function switchTab(tabName) {
+            // Update nav tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Update sections
+            document.querySelectorAll('.dashboard-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        function toggleConnection() {
+            if (dashboard.isConnected) {
+                dashboard.ws.close();
+            } else {
+                dashboard.connect();
+            }
+        }
+
+        function refreshAnalytics() {
+            if (dashboard.isConnected) {
+                dashboard.requestInitialData();
+            }
+        }
+
+        function exportAnalytics() {
+            const exportData = {
+                timestamp: new Date().toISOString(),
+                server: 'Enhanced Analytics Server',
+                data: dashboard.data
+            };
+
+            const blob = new Blob([JSON.stringify(exportData, null, 2)],
+                { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `romai-advanced-analytics-${Date.now()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Initialize dashboard when page loads
+        window.addEventListener('load', () => {
+            dashboard = new AdvancedAnalyticsDashboard();
+        });
+    </script>
+</body>
+
+</html>

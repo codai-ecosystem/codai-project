@@ -1,0 +1,543 @@
+// X Trading Platform Database Schema
+// Comprehensive AI-powered trading and investment platform
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// NextAuth.js required models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// NextAuth.js required models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// User Authentication & Management
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          String    @default("TRADER") // TRADER, PREMIUM, ADMIN
+  kycStatus     String    @default("PENDING") // PENDING, VERIFIED, REJECTED
+  kycDocument   String?
+  phone         String?
+  countryCode   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Trading profile
+  tradingLevel     String   @default("BEGINNER") // BEGINNER, INTERMEDIATE, ADVANCED, PROFESSIONAL
+  riskTolerance    String   @default("MODERATE") // LOW, MODERATE, HIGH, AGGRESSIVE
+  tradingStyle     String   @default("SWING") // SCALP, DAY, SWING, POSITION
+  preferredAssets  String?  // JSON array of preferred asset types
+  
+  // Authentication relations
+  accounts         Account[]
+  sessions         Session[]
+  
+  // Trading relations
+  portfolios       Portfolio[]
+  watchlists       Watchlist[]
+  trades           Trade[]
+  orders           Order[]
+  alerts           Alert[]
+  strategies       TradingStrategy[]
+  aiInsights       AITradingInsight[]
+  riskProfiles     RiskProfile[]
+  backtests        Backtest[]
+  
+  @@map("users")
+}
+
+// Portfolio Management
+model Portfolio {
+  id              String    @id @default(cuid())
+  userId          String
+  name            String
+  description     String?
+  type            String    @default("STANDARD") // STANDARD, DEMO, PAPER, COPY_TRADING
+  totalValue      Float     @default(0)
+  totalCash       Float     @default(0)
+  totalInvested   Float     @default(0)
+  totalPnL        Float     @default(0)
+  dailyPnL        Float     @default(0)
+  dayChange       Float     @default(0)
+  dayChangePercent Float    @default(0)
+  isDefault       Boolean   @default(false)
+  isActive        Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  positions       Position[]
+  trades          Trade[]
+  performance     PortfolioPerformance[]
+  
+  @@map("portfolios")
+}
+
+// Asset Management
+model Asset {
+  id              String    @id @default(cuid())
+  symbol          String    @unique
+  name            String
+  type            String    // STOCK, CRYPTO, FOREX, COMMODITY, INDEX, ETF, OPTION, FUTURE
+  exchange        String
+  currency        String    @default("USD")
+  sector          String?
+  industry        String?
+  marketCap       Float?
+  description     String?
+  website         String?
+  logo            String?
+  isActive        Boolean   @default(true)
+  isTradable      Boolean   @default(true)
+  minOrderSize    Float?
+  maxOrderSize    Float?
+  tickSize        Float?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // Trading relations
+  prices          Price[]
+  positions       Position[]
+  orders          Order[]
+  trades          Trade[]
+  watchlistItems  WatchlistItem[]
+  alerts          Alert[]
+  technicalData   TechnicalIndicator[]
+  fundamentalData FundamentalData[]
+  newsItems       NewsItem[]
+  
+  @@map("assets")
+}
+
+// Market Data
+model Price {
+  id          String    @id @default(cuid())
+  assetId     String
+  timestamp   DateTime
+  open        Float
+  high        Float
+  low         Float
+  close       Float
+  volume      Float
+  adjustedClose Float?
+  timeframe   String    @default("1D") // 1M, 5M, 15M, 1H, 4H, 1D, 1W, 1M
+  source      String    @default("LIVE") // LIVE, HISTORICAL, SIMULATED
+  createdAt   DateTime  @default(now())
+  
+  asset       Asset     @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  
+  @@unique([assetId, timestamp, timeframe])
+  @@map("prices")
+}
+
+// Trading Positions
+model Position {
+  id              String    @id @default(cuid())
+  portfolioId     String
+  assetId         String
+  type            String    // LONG, SHORT
+  quantity        Float
+  averagePrice    Float
+  currentPrice    Float
+  marketValue     Float
+  unrealizedPnL   Float
+  realizedPnL     Float     @default(0)
+  totalReturn     Float
+  totalReturnPercent Float
+  dayChange       Float
+  dayChangePercent Float
+  openedAt        DateTime
+  lastUpdated     DateTime  @default(now())
+  
+  portfolio       Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  asset           Asset     @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  trades          Trade[]
+  
+  @@unique([portfolioId, assetId])
+  @@map("positions")
+}
+
+// Trading Orders
+model Order {
+  id              String    @id @default(cuid())
+  userId          String
+  portfolioId     String?
+  assetId         String
+  type            String    // MARKET, LIMIT, STOP, STOP_LIMIT, TRAILING_STOP
+  side            String    // BUY, SELL
+  quantity        Float
+  price           Float?    // For limit orders
+  stopPrice       Float?    // For stop orders
+  trailingAmount  Float?    // For trailing stop orders
+  timeInForce     String    @default("DAY") // DAY, GTC, IOC, FOK
+  status          String    @default("PENDING") // PENDING, PARTIAL, FILLED, CANCELLED, REJECTED
+  filledQuantity  Float     @default(0)
+  averageFillPrice Float?
+  commission      Float     @default(0)
+  fees            Float     @default(0)
+  reason          String?   // Cancellation/rejection reason
+  clientOrderId   String?   // User-defined order ID
+  brokerOrderId   String?   // Broker-assigned order ID
+  placedAt        DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  asset           Asset     @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  trades          Trade[]
+  
+  @@map("orders")
+}
+
+// Executed Trades
+model Trade {
+  id              String    @id @default(cuid())
+  userId          String
+  portfolioId     String
+  positionId      String?
+  orderId         String?
+  assetId         String
+  type            String    // BUY, SELL
+  quantity        Float
+  price           Float
+  amount          Float     // quantity * price
+  commission      Float     @default(0)
+  fees            Float     @default(0)
+  pnl             Float?    // For closing trades
+  pnlPercent      Float?    // For closing trades
+  executedAt      DateTime  @default(now())
+  strategy        String?   // Associated strategy name
+  notes           String?
+  
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  portfolio       Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  position        Position? @relation(fields: [positionId], references: [id], onDelete: SetNull)
+  order           Order?    @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  asset           Asset     @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  
+  @@map("trades")
+}
+
+// Watchlists
+model Watchlist {
+  id          String    @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  isDefault   Boolean   @default(false)
+  isPublic    Boolean   @default(false)
+  sortOrder   Int       @default(0)
+  color       String?   // Hex color for UI
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items       WatchlistItem[]
+  
+  @@map("watchlists")
+}
+
+model WatchlistItem {
+  id          String    @id @default(cuid())
+  watchlistId String
+  assetId     String
+  addedAt     DateTime  @default(now())
+  notes       String?
+  alertsEnabled Boolean @default(false)
+  
+  watchlist   Watchlist @relation(fields: [watchlistId], references: [id], onDelete: Cascade)
+  asset       Asset     @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  
+  @@unique([watchlistId, assetId])
+  @@map("watchlist_items")
+}
+
+// Price Alerts
+model Alert {
+  id          String    @id @default(cuid())
+  userId      String
+  assetId     String
+  type        String    // PRICE_ABOVE, PRICE_BELOW, VOLUME_SPIKE, TECHNICAL_INDICATOR
+  condition   String    // JSON condition details
+  targetValue Float
+  currentValue Float?
+  isTriggered Boolean   @default(false)
+  isActive    Boolean   @default(true)
+  triggeredAt DateTime?
+  message     String?
+  createdAt   DateTime  @default(now())
+  expiresAt   DateTime?
+  
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  asset       Asset     @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  
+  @@map("alerts")
+}
+
+// AI Trading Insights
+model AITradingInsight {
+  id              String    @id @default(cuid())
+  userId          String
+  assetId         String?
+  type            String    // MARKET_ANALYSIS, TRADE_RECOMMENDATION, RISK_WARNING, OPPORTUNITY
+  title           String
+  content         String
+  confidence      Float     // 0.0 to 1.0
+  sentiment       String    // BULLISH, BEARISH, NEUTRAL
+  timeframe       String?   // SHORT_TERM, MEDIUM_TERM, LONG_TERM
+  priority        String    @default("MEDIUM") // LOW, MEDIUM, HIGH, CRITICAL
+  category        String    // TECHNICAL, FUNDAMENTAL, SENTIMENT, NEWS, AI_PATTERN
+  metadata        String?   // JSON with additional insight data
+  isRead          Boolean   @default(false)
+  isBookmarked    Boolean   @default(false)
+  expiresAt       DateTime?
+  createdAt       DateTime  @default(now())
+  
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  asset           Asset?    @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  
+  @@map("ai_trading_insights")
+}
+
+// Trading Strategies
+model TradingStrategy {
+  id              String    @id @default(cuid())
+  userId          String
+  name            String
+  description     String?
+  type            String    // TECHNICAL, FUNDAMENTAL, HYBRID, AI_DRIVEN
+  category        String    // SCALPING, DAY_TRADING, SWING, POSITION
+  rules           String    // JSON rules configuration
+  parameters      String?   // JSON parameters
+  isActive        Boolean   @default(true)
+  isBacktested    Boolean   @default(false)
+  winRate         Float?
+  averageReturn   Float?
+  maxDrawdown     Float?
+  sharpeRatio     Float?
+  totalTrades     Int       @default(0)
+  profitableTrades Int      @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  backtests       Backtest[]
+  
+  @@map("trading_strategies")
+}
+
+// Strategy Backtesting
+model Backtest {
+  id              String    @id @default(cuid())
+  userId          String
+  strategyId      String
+  name            String
+  startDate       DateTime
+  endDate         DateTime
+  initialCapital  Float
+  finalCapital    Float
+  totalReturn     Float
+  totalReturnPercent Float
+  maxDrawdown     Float
+  maxDrawdownPercent Float
+  sharpeRatio     Float
+  winRate         Float
+  totalTrades     Int
+  profitableTrades Int
+  averageWin      Float
+  averageLoss     Float
+  profitFactor    Float
+  results         String    // JSON detailed results
+  status          String    @default("RUNNING") // RUNNING, COMPLETED, FAILED
+  createdAt       DateTime  @default(now())
+  completedAt     DateTime?
+  
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  strategy        TradingStrategy @relation(fields: [strategyId], references: [id], onDelete: Cascade)
+  
+  @@map("backtests")
+}
+
+// Risk Management
+model RiskProfile {
+  id                  String    @id @default(cuid())
+  userId              String
+  maxPortfolioRisk    Float     @default(0.02) // 2% portfolio risk per trade
+  maxDailyLoss        Float     @default(0.05) // 5% max daily loss
+  maxDrawdown         Float     @default(0.10) // 10% max drawdown
+  positionSizing      String    @default("FIXED") // FIXED, PERCENT_RISK, KELLY
+  leverageLimit       Float     @default(1.0)
+  allowShortSelling   Boolean   @default(false)
+  allowOptions        Boolean   @default(false)
+  allowFutures        Boolean   @default(false)
+  allowCrypto         Boolean   @default(true)
+  restrictedAssets    String?   // JSON array of restricted asset symbols
+  riskScore           Float     @default(5.0) // 1-10 risk score
+  isActive            Boolean   @default(true)
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("risk_profiles")
+}
+
+// Portfolio Performance Tracking
+model PortfolioPerformance {
+  id              String    @id @default(cuid())
+  portfolioId     String
+  date            DateTime
+  totalValue      Float
+  totalCash       Float
+  totalInvested   Float
+  dailyReturn     Float
+  dailyReturnPercent Float
+  totalReturn     Float
+  totalReturnPercent Float
+  benchmark       String?   // Benchmark symbol (e.g., SPY)
+  benchmarkReturn Float?
+  alpha           Float?    // Alpha vs benchmark
+  beta            Float?    // Beta vs benchmark
+  sharpeRatio     Float?
+  volatility      Float?
+  maxDrawdown     Float?
+  
+  portfolio       Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  
+  @@unique([portfolioId, date])
+  @@map("portfolio_performance")
+}
+
+// Technical Analysis
+model TechnicalIndicator {
+  id          String    @id @default(cuid())
+  assetId     String
+  name        String    // RSI, MACD, SMA, EMA, etc.
+  timeframe   String    // 1M, 5M, 15M, 1H, 4H, 1D
+  value       Float
+  signal      String?   // BUY, SELL, NEUTRAL
+  parameters  String?   // JSON parameters for the indicator
+  timestamp   DateTime
+  createdAt   DateTime  @default(now())
+  
+  asset       Asset     @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  
+  @@unique([assetId, name, timeframe, timestamp])
+  @@map("technical_indicators")
+}
+
+// Fundamental Analysis
+model FundamentalData {
+  id              String    @id @default(cuid())
+  assetId         String
+  reportDate      DateTime
+  revenue         Float?
+  netIncome       Float?
+  eps             Float?    // Earnings per share
+  pe              Float?    // Price-to-earnings ratio
+  pb              Float?    // Price-to-book ratio
+  roe             Float?    // Return on equity
+  roa             Float?    // Return on assets
+  debtToEquity    Float?
+  currentRatio    Float?
+  quickRatio      Float?
+  grossMargin     Float?
+  operatingMargin Float?
+  netMargin       Float?
+  freeCashFlow    Float?
+  dividendYield   Float?
+  payoutRatio     Float?
+  
+  asset           Asset     @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  
+  @@unique([assetId, reportDate])
+  @@map("fundamental_data")
+}
+
+// Market News & Sentiment
+model NewsItem {
+  id          String    @id @default(cuid())
+  assetId     String?
+  title       String
+  content     String?
+  summary     String?
+  author      String?
+  source      String
+  url         String?
+  publishedAt DateTime
+  sentiment   String?   // POSITIVE, NEGATIVE, NEUTRAL
+  impact      String    @default("LOW") // LOW, MEDIUM, HIGH
+  category    String?   // EARNINGS, ANNOUNCEMENT, ANALYSIS, etc.
+  keywords    String?   // JSON array of keywords
+  createdAt   DateTime  @default(now())
+  
+  asset       Asset?    @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  
+  @@map("news_items")
+}

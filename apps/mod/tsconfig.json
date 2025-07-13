@@ -1,0 +1,25 @@
+{
+  "extends": "../../configs/tsconfig.node.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "noEmit": true,
+    "incremental": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "*.js",
+    "*.ts",
+    "../../types/**/*",
+    "src/**/*",
+    ".next/types/**/*.ts"
+  ]
+}

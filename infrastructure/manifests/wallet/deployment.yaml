@@ -1,0 +1,136 @@
+{
+  "apiVersion": "apps/v1",
+  "kind": "Deployment",
+  "metadata": {
+    "name": "wallet",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "wallet",
+      "component": "application",
+      "app.kubernetes.io/name": "wallet",
+      "app.kubernetes.io/component": "application",
+      "app.kubernetes.io/part-of": "codai-ecosystem",
+      "app.kubernetes.io/version": "2.0.0"
+    }
+  },
+  "spec": {
+    "replicas": 2,
+    "selector": {
+      "matchLabels": {
+        "app": "wallet"
+      }
+    },
+    "template": {
+      "metadata": {
+        "labels": {
+          "app": "wallet",
+          "component": "application",
+          "app.kubernetes.io/name": "wallet",
+          "app.kubernetes.io/component": "application",
+          "app.kubernetes.io/part-of": "codai-ecosystem"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "wallet",
+            "image": "codai/wallet:latest",
+            "ports": [
+              {
+                "containerPort": 3004,
+                "name": "http"
+              }
+            ],
+            "env": [
+              {
+                "name": "PORT",
+                "value": "3004"
+              },
+              {
+                "name": "NODE_ENV",
+                "value": "production"
+              },
+              {
+                "name": "SERVICE_NAME",
+                "value": "wallet"
+              }
+            ],
+            "envFrom": [
+              {
+                "secretRef": {
+                  "name": "wallet-env"
+                }
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": "250m",
+                "memory": "512Mi"
+              },
+              "limits": {
+                "cpu": "1000m",
+                "memory": "2Gi"
+              }
+            },
+            "livenessProbe": {
+              "httpGet": {
+                "path": "/health",
+                "port": 3004
+              },
+              "initialDelaySeconds": 30,
+              "periodSeconds": 10,
+              "timeoutSeconds": 5,
+              "failureThreshold": 3
+            },
+            "readinessProbe": {
+              "httpGet": {
+                "path": "/health",
+                "port": 3004
+              },
+              "initialDelaySeconds": 5,
+              "periodSeconds": 5,
+              "timeoutSeconds": 3,
+              "failureThreshold": 3
+            },
+            "securityContext": {
+              "allowPrivilegeEscalation": false,
+              "runAsNonRoot": true,
+              "runAsUser": 1001,
+              "capabilities": {
+                "drop": [
+                  "ALL"
+                ]
+              }
+            }
+          }
+        ],
+        "securityContext": {
+          "fsGroup": 1001
+        },
+        "affinity": {
+          "podAntiAffinity": {
+            "preferredDuringSchedulingIgnoredDuringExecution": [
+              {
+                "weight": 100,
+                "podAffinityTerm": {
+                  "labelSelector": {
+                    "matchExpressions": [
+                      {
+                        "key": "app",
+                        "operator": "In",
+                        "values": [
+                          "wallet"
+                        ]
+                      }
+                    ]
+                  },
+                  "topologyKey": "kubernetes.io/hostname"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

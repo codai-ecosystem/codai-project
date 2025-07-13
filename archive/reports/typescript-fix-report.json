@@ -1,0 +1,185 @@
+{
+  "timestamp": "2025-07-03T19:58:13.523Z",
+  "summary": {
+    "fixed": 35,
+    "errors": 0,
+    "total": 35
+  },
+  "results": [
+    {
+      "type": "browser",
+      "name": "codai",
+      "status": "fixed"
+    },
+    {
+      "type": "browser",
+      "name": "memorai",
+      "status": "fixed"
+    },
+    {
+      "type": "browser",
+      "name": "logai",
+      "status": "fixed"
+    },
+    {
+      "type": "browser",
+      "name": "bancai",
+      "status": "fixed"
+    },
+    {
+      "type": "browser",
+      "name": "studiai",
+      "status": "fixed"
+    },
+    {
+      "type": "browser",
+      "name": "sociai",
+      "status": "fixed"
+    },
+    {
+      "type": "browser",
+      "name": "cumparai",
+      "status": "fixed"
+    },
+    {
+      "type": "browser",
+      "name": "publicai",
+      "status": "fixed"
+    },
+    {
+      "type": "node",
+      "name": "wallet",
+      "status": "fixed"
+    },
+    {
+      "type": "node",
+      "name": "fabricai",
+      "status": "fixed"
+    },
+    {
+      "type": "node",
+      "name": "x",
+      "status": "fixed"
+    },
+    {
+      "type": "package",
+      "name": "ai",
+      "status": "fixed"
+    },
+    {
+      "type": "package",
+      "name": "api",
+      "status": "fixed"
+    },
+    {
+      "type": "package",
+      "name": "auth",
+      "status": "fixed"
+    },
+    {
+      "type": "package",
+      "name": "config",
+      "status": "fixed"
+    },
+    {
+      "type": "package",
+      "name": "core",
+      "status": "fixed"
+    },
+    {
+      "type": "package",
+      "name": "ui",
+      "status": "fixed"
+    },
+    {
+      "type": "service",
+      "name": "admin",
+      "status": "fixed"
+    },
+    {
+      "type": "service",
+      "name": "AIDE",
+      "status": "fixed"
+    },
+    {
+      "type": "service",
+      "name": "ajutai",
+      "status": "fixed"
+    },
+    {
+      "type": "service",
+      "name": "analizai",
+      "status": "fixed"
+    },
+    {
+      "type": "service",
+      "name": "dash",
+      "status": "fixed"
+    },
+    {
+      "type": "service",
+      "name": "docs",
+      "status": "fixed"
+    },
+    {
+      "type": "service",
+      "name": "explorer",
+      "status": "fixed"
+    },
+    {
+      "type": "service",
+      "name": "hub",
+      "status": "fixed"
+    },
+    {
+      "type": "service",
+      "name": "id",
+      "status": "fixed"
+    },
+    {
+      "type": "service",
+      "name": "jucai",
+      "status": "fixed"
+    },
+    {
+      "type": "service",
+      "name": "kodex",
+      "status": "fixed"
+    },
+    {
+      "type": "service",
+      "name": "legalizai",
+      "status": "fixed"
+    },
+    {
+      "type": "service",
+      "name": "marketai",
+      "status": "fixed"
+    },
+    {
+      "type": "service",
+      "name": "metu",
+      "status": "fixed"
+    },
+    {
+      "type": "service",
+      "name": "mod",
+      "status": "fixed"
+    },
+    {
+      "type": "service",
+      "name": "stocai",
+      "status": "fixed"
+    },
+    {
+      "type": "service",
+      "name": "templates",
+      "status": "fixed"
+    },
+    {
+      "type": "service",
+      "name": "tools",
+      "status": "fixed"
+    }
+  ]
+}

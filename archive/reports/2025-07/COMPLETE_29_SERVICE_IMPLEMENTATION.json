@@ -1,0 +1,410 @@
+{
+  "timestamp": "2025-06-29T18:26:23.792Z",
+  "totalServices": 40,
+  "overallSuccessRate": 100,
+  "fullyImplemented": 40,
+  "partiallyImplemented": 0,
+  "barelyImplemented": 0,
+  "serviceResults": [
+    {
+      "serviceName": "codai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "memorai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "logai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "bancai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "wallet",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "fabricai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "studiai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "sociai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "cumparai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "x",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "publicai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "admin",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "AIDE",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "ajutai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "analizai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "bancai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "codai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "cumparai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "dash",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "docs",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "explorer",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "fabricai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "hub",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "id",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "jucai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "kodex",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "legalizai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "logai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "marketai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "memorai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "metu",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "mod",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "publicai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "sociai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "stocai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "studiai",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "templates",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "tools",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "wallet",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    },
+    {
+      "serviceName": "x",
+      "implementationCount": 12,
+      "totalFiles": 12,
+      "successRate": 100,
+      "hasAuth": true,
+      "hasDatabase": true,
+      "hasAPI": true,
+      "hasMiddleware": true
+    }
+  ]
+}

@@ -1,0 +1,245 @@
+// Fabricai - AI Services Platform Schema
+// Real AI service management and deployment platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// AI Service Provider Models
+model AIProvider {
+  id            String   @id @default(cuid())
+  name          String   @unique // "openai", "anthropic", "google", "azure"
+  displayName   String
+  apiEndpoint   String
+  status        ProviderStatus @default(ACTIVE)
+  capabilities  String[] // ["text-generation", "image-generation", "embeddings", "fine-tuning"]
+  rateLimit     Int      @default(100) // requests per minute
+  costPerToken  Float    @default(0.001)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  models        AIModel[]
+  deployments   AIDeployment[]
+  
+  @@map("ai_providers")
+}
+
+model AIModel {
+  id            String     @id @default(cuid())
+  providerId    String
+  name          String     // "gpt-4", "claude-3", "gemini-pro"
+  version       String     @default("latest")
+  modelType     ModelType
+  maxTokens     Int        @default(4096)
+  contextWindow Int        @default(8192)
+  inputCostPer1k Float     @default(0.03)
+  outputCostPer1k Float    @default(0.06)
+  capabilities  String[]   // ["chat", "completion", "function-calling", "vision"]
+  isActive      Boolean    @default(true)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  
+  provider      AIProvider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  services      AIService[]
+  deployments   AIDeployment[]
+  usageMetrics  AIUsageMetric[]
+  
+  @@unique([providerId, name, version])
+  @@map("ai_models")
+}
+
+model AIService {
+  id            String        @id @default(cuid())
+  name          String        @unique
+  description   String
+  category      ServiceCategory
+  modelId       String
+  endpoint      String        @unique
+  apiKey        String
+  status        ServiceStatus @default(DEVELOPING)
+  version       String        @default("1.0.0")
+  pricing       PricingModel  @default(PAY_PER_USE)
+  rateLimit     Int           @default(60) // requests per minute
+  config        Json          // Service-specific configuration
+  createdBy     String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  
+  model         AIModel       @relation(fields: [modelId], references: [id])
+  deployments   AIDeployment[]
+  usageMetrics  AIUsageMetric[]
+  apiKeys       APIKey[]
+  webhooks      Webhook[]
+  
+  @@map("ai_services")
+}
+
+model AIDeployment {
+  id            String           @id @default(cuid())
+  serviceId     String
+  providerId    String
+  modelId       String
+  environment   Environment      @default(DEVELOPMENT)
+  status        DeploymentStatus @default(PENDING)
+  endpoint      String           @unique
+  replicas      Int              @default(1)
+  autoScale     Boolean          @default(true)
+  minReplicas   Int              @default(1)
+  maxReplicas   Int              @default(10)
+  cpuLimit      String           @default("500m")
+  memoryLimit   String           @default("1Gi")
+  deployedAt    DateTime?
+  healthcheck   Json?            // Health check configuration
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  
+  service       AIService        @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  provider      AIProvider       @relation(fields: [providerId], references: [id])
+  model         AIModel          @relation(fields: [modelId], references: [id])
+  metrics       DeploymentMetric[]
+  
+  @@map("ai_deployments")
+}
+
+model APIKey {
+  id            String     @id @default(cuid())
+  serviceId     String
+  name          String
+  keyHash       String     @unique // Hashed API key
+  keyPreview    String     // First and last 4 characters for display
+  permissions   String[]   // ["read", "write", "admin"]
+  rateLimit     Int?       // Override service rate limit
+  expiresAt     DateTime?
+  lastUsedAt    DateTime?
+  isActive      Boolean    @default(true)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  
+  service       AIService  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  usageMetrics  AIUsageMetric[]
+  
+  @@map("api_keys")
+}
+
+model AIUsageMetric {
+  id            String    @id @default(cuid())
+  serviceId     String
+  modelId       String
+  apiKeyId      String?
+  requestCount  Int       @default(0)
+  tokenCount    Int       @default(0)
+  inputTokens   Int       @default(0)
+  outputTokens  Int       @default(0)
+  cost          Float     @default(0.0)
+  latencyMs     Int?      // Average latency
+  errorRate     Float     @default(0.0)
+  date          DateTime  @db.Date
+  hour          Int       // 0-23 for hourly metrics
+  createdAt     DateTime  @default(now())
+  
+  service       AIService @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  model         AIModel   @relation(fields: [modelId], references: [id])
+  apiKey        APIKey?   @relation(fields: [apiKeyId], references: [id], onDelete: SetNull)
+  
+  @@unique([serviceId, modelId, date, hour])
+  @@map("ai_usage_metrics")
+}
+
+model DeploymentMetric {
+  id            String       @id @default(cuid())
+  deploymentId  String
+  cpuUsage      Float        @default(0.0) // Percentage
+  memoryUsage   Float        @default(0.0) // Percentage
+  requestCount  Int          @default(0)
+  responseTime  Int          @default(0)   // Milliseconds
+  errorCount    Int          @default(0)
+  timestamp     DateTime     @default(now())
+  
+  deployment    AIDeployment @relation(fields: [deploymentId], references: [id], onDelete: Cascade)
+  
+  @@map("deployment_metrics")
+}
+
+model Webhook {
+  id            String      @id @default(cuid())
+  serviceId     String
+  url           String
+  events        String[]    // ["deployment.created", "usage.threshold", "error.occurred"]
+  secret        String      // For webhook signature verification
+  isActive      Boolean     @default(true)
+  lastTriggered DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  
+  service       AIService   @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  
+  @@map("webhooks")
+}
+
+// Enums
+enum ProviderStatus {
+  ACTIVE
+  INACTIVE
+  MAINTENANCE
+}
+
+enum ModelType {
+  TEXT_GENERATION
+  IMAGE_GENERATION
+  EMBEDDINGS
+  FINE_TUNING
+  MULTIMODAL
+  SPEECH_TO_TEXT
+  TEXT_TO_SPEECH
+}
+
+enum ServiceCategory {
+  CHAT_COMPLETION
+  TEXT_GENERATION
+  IMAGE_GENERATION
+  CODE_GENERATION
+  DATA_ANALYSIS
+  CONTENT_MODERATION
+  TRANSLATION
+  SUMMARIZATION
+  SENTIMENT_ANALYSIS
+  EMBEDDINGS
+  FINE_TUNING
+  CUSTOM
+}
+
+enum ServiceStatus {
+  DEVELOPING
+  TESTING
+  STAGING
+  PRODUCTION
+  DEPRECATED
+  MAINTENANCE
+}
+
+enum PricingModel {
+  FREE
+  PAY_PER_USE
+  SUBSCRIPTION
+  ENTERPRISE
+}
+
+enum Environment {
+  DEVELOPMENT
+  STAGING
+  PRODUCTION
+}
+
+enum DeploymentStatus {
+  PENDING
+  DEPLOYING
+  RUNNING
+  FAILED
+  STOPPED
+  UPDATING
+}

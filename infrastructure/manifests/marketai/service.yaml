@@ -1,0 +1,29 @@
+{
+  "apiVersion": "v1",
+  "kind": "Service",
+  "metadata": {
+    "name": "marketai",
+    "namespace": "codai-production",
+    "labels": {
+      "app": "marketai",
+      "component": "service",
+      "app.kubernetes.io/name": "marketai",
+      "app.kubernetes.io/component": "service",
+      "app.kubernetes.io/part-of": "codai-ecosystem"
+    }
+  },
+  "spec": {
+    "type": "ClusterIP",
+    "ports": [
+      {
+        "port": 80,
+        "targetPort": 4012,
+        "protocol": "TCP",
+        "name": "http"
+      }
+    ],
+    "selector": {
+      "app": "marketai"
+    }
+  }
+}

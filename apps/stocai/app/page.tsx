@@ -19,6 +19,9 @@ import {
   Lock,
   Activity
 } from 'lucide-react'
+import StorageManager from '@/components/storage/StorageManager'
+import VectorExplorer from '@/components/vectors/VectorExplorer'
+import AnalyticsDashboard from '@/components/analytics/AnalyticsDashboard'
 
 interface AppMetric {
   id: string
@@ -40,7 +43,7 @@ interface FeatureCard {
 
 export default function StocAIPage() {
   const [currentTime, setCurrentTime] = useState(new Date())
-  const [activeTab, setActiveTab] = useState<'overview' | 'features' | 'storage' | 'settings'>('overview')
+  const [activeTab, setActiveTab] = useState<'overview' | 'features' | 'storage' | 'vectors' | 'analytics' | 'settings'>('overview')
 
   const [metrics] = useState<AppMetric[]>([
     {
@@ -235,7 +238,7 @@ export default function StocAIPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          {(['overview', 'features', 'storage', 'settings'] as const).map((tab) => (
+          {(['overview', 'features', 'storage', 'vectors', 'analytics', 'settings'] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -343,9 +346,45 @@ export default function StocAIPage() {
             </motion.div>
           )}
 
-          {(activeTab === 'storage' || activeTab === 'settings') && (
+          {activeTab === 'storage' && (
             <motion.div
-              key={activeTab}
+              key="storage"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <StorageManager />
+            </motion.div>
+          )}
+
+          {activeTab === 'vectors' && (
+            <motion.div
+              key="vectors"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <VectorExplorer />
+            </motion.div>
+          )}
+
+          {activeTab === 'analytics' && (
+            <motion.div
+              key="analytics"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <AnalyticsDashboard />
+            </motion.div>
+          )}
+
+          {activeTab === 'settings' && (
+            <motion.div
+              key="settings"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -353,13 +392,10 @@ export default function StocAIPage() {
               className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-8 text-center"
             >
               <h2 className="text-2xl font-bold text-blue-400 mb-4">
-                {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Management
+                Settings Management
               </h2>
               <p className="text-gray-300 mb-6">
-                {activeTab === 'storage'
-                  ? 'Advanced storage analytics, file management, and capacity planning for your enterprise needs.'
-                  : 'Configure your storage settings, security preferences, and integration options.'
-                }
+                Configure your storage settings, security preferences, and integration options.
               </p>
               <button className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-xl hover:from-blue-600 hover:to-purple-600 transition-all font-medium">
                 Coming Soon

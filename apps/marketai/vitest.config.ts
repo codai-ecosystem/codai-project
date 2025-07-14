@@ -17,6 +17,7 @@ export default defineConfig({
       OPENAI_API_KEY: 'test-key',
       AZURE_OPENAI_API_KEY: 'test-azure-key',
       AZURE_OPENAI_ENDPOINT: 'https://test.openai.azure.com',
+      AZURE_OPENAI_DEPLOYMENT_NAME: 'test-deployment',
       PINECONE_API_KEY: 'test-pinecone-key',
       PINECONE_ENVIRONMENT: 'test-env',
       PINECONE_INDEX_NAME: 'test-index',

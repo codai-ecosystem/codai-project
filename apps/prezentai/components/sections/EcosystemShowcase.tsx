@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import {
     Code, Brain, CreditCard, TrendingUp, GraduationCap,
-    GamepadIcon, Video, Shield, Search, Hub,
+    GamepadIcon, Video, Shield, Search, Network,
     Bot, Database, Sparkles, Zap, Globe,
     ChevronRight, ExternalLink, Star
 } from 'lucide-react'
@@ -126,7 +126,7 @@ const ecosystemApps: EcosystemApp[] = [
         port: 4001,
         category: 'Integration',
         description: 'Central hub for ecosystem integration and inter-application communication.',
-        icon: Hub,
+        icon: Network,
         features: ['App Integration', 'API Gateway', 'Service Mesh', 'Communication Hub'],
         status: 'live',
         color: 'text-orange-600',
@@ -188,8 +188,8 @@ export function EcosystemShowcase() {
                             key={category}
                             onClick={() => setActiveCategory(category)}
                             className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 ${activeCategory === category
-                                    ? 'bg-gradient-to-r from-primary-600 to-secondary-600 text-white shadow-lg'
-                                    : 'bg-white/80 dark:bg-slate-800/80 text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-slate-800 border border-gray-200/50 dark:border-gray-700/50'
+                                ? 'bg-gradient-to-r from-primary-600 to-secondary-600 text-white shadow-lg'
+                                : 'bg-white/80 dark:bg-slate-800/80 text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-slate-800 border border-gray-200/50 dark:border-gray-700/50'
                                 }`}
                         >
                             {category}
@@ -215,10 +215,10 @@ export function EcosystemShowcase() {
                                 {/* Status Badge */}
                                 <div className="absolute top-4 right-4 z-10">
                                     <div className={`px-2 py-1 rounded-full text-xs font-medium ${app.status === 'live'
-                                            ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                                            : app.status === 'development'
-                                                ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
-                                                : 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400'
+                                        ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                                        : app.status === 'development'
+                                            ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
+                                            : 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400'
                                         }`}>
                                         {app.status === 'live' ? 'LIVE' : app.status === 'development' ? 'DEV' : 'PLANNED'}
                                     </div>

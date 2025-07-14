@@ -1,24 +1,28 @@
-import { withAuth } from "next-auth/middleware";
+import { NextRequest, NextResponse } from 'next/server';
 
-export default withAuth(
-  function middleware(req) {
-    // Add custom middleware logic here if needed
-  },
-  {
-    callbacks: {
-      authorized: ({ token, req }) => {
-        // Check if user is authenticated for protected routes
-        if (req.nextUrl.pathname.startsWith("/dashboard")) {
-          return !!token;
-        }
-        if (req.nextUrl.pathname.startsWith("/api/")) {
-          return !!token;
-        }
-        return true;
-      },
-    },
+export function middleware(request: NextRequest) {
+  // Simple middleware for protected routes
+  const { pathname } = request.nextUrl;
+
+  // Check if it's a protected route
+  const isProtectedRoute = pathname.startsWith("/dashboard") ||
+    pathname.startsWith("/api/secure") ||
+    pathname.startsWith("/settings") ||
+    pathname.startsWith("/profile");
+
+  if (isProtectedRoute) {
+    // Check for auth token in cookies or headers
+    const token = request.cookies.get('next-auth.session-token') ||
+      request.headers.get('authorization');
+
+    if (!token) {
+      // Redirect to login for protected routes
+      return NextResponse.redirect(new URL('/auth/signin', request.url));
+    }
   }
-);
+
+  return NextResponse.next();
+}
 
 export const config = {
   matcher: [

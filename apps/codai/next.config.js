@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Explicitly set app directory
   experimental: {
-    // Remove deprecated turbo config
+    appDir: true,
   },
   eslint: {
     ignoreDuringBuilds: true,

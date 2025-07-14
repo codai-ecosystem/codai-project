@@ -1,7 +1,6 @@
 import '@testing-library/jest-dom'
 import { expect, afterEach, vi } from 'vitest'
 import { cleanup } from '@testing-library/react'
-import React from 'react'
 
 // Cleanup after each test case
 afterEach(() => {
@@ -10,8 +9,13 @@ afterEach(() => {
 
 // Mock lucide-react icons
 vi.mock('lucide-react', () => {
-  const MockIcon = ({ className, ...props }: any) =>
-    React.createElement('svg', { className, ...props, 'data-testid': 'mock-icon' })
+  const MockIcon = ({ className, ...props }: any) => {
+    // Use a simple div element as mock
+    return {
+      type: 'svg',
+      props: { className, ...props, 'data-testid': 'mock-icon' }
+    }
+  }
 
   return {
     Target: MockIcon,
@@ -40,6 +44,7 @@ vi.stubEnv('NODE_ENV', 'test')
 vi.stubEnv('OPENAI_API_KEY', 'test-key')
 vi.stubEnv('AZURE_OPENAI_API_KEY', 'test-azure-key')
 vi.stubEnv('AZURE_OPENAI_ENDPOINT', 'https://test.openai.azure.com')
+vi.stubEnv('AZURE_OPENAI_DEPLOYMENT_NAME', 'test-deployment')
 vi.stubEnv('PINECONE_API_KEY', 'test-pinecone-key')
 vi.stubEnv('PINECONE_ENVIRONMENT', 'test-env')
 vi.stubEnv('PINECONE_INDEX_NAME', 'test-index')
@@ -89,7 +94,7 @@ global.fetch = vi.fn().mockImplementation(() =>
   } as Response)
 )
 
-// Mock OpenAI SDK
+// Mock OpenAI SDK with test environment configuration
 vi.mock('openai', () => ({
   default: vi.fn().mockImplementation(() => ({
     chat: {
@@ -102,29 +107,62 @@ vi.mock('openai', () => ({
   })),
 }))
 
+// Mock Azure OpenAI Service directly to prevent browser environment issues
+vi.mock('@codai/azure-openai', () => ({
+  AzureOpenAIService: vi.fn().mockImplementation(() => ({
+    generateCompletion: vi.fn().mockResolvedValue('Mock Azure OpenAI response'),
+    healthCheck: vi.fn().mockResolvedValue(true),
+    isConfigured: vi.fn().mockReturnValue(true),
+  })),
+}))
+
+// Mock Stripe SDK with proper webhook handling
+vi.mock('stripe', () => {
+  const mockWebhooks = {
+    constructEvent: vi.fn().mockImplementation((payload, sig, secret) => {
+      if (sig === 'invalid_signature') {
+        const error = new Error('Unable to extract timestamp and signatures from header') as any
+        error.name = 'StripeSignatureVerificationError'
+        error.type = 'StripeSignatureVerificationError'
+        throw error
+      }
+      return { type: 'payment_intent.succeeded', data: { object: { id: 'pi_test' } } }
+    })
+  }
+
+  const mockStripe = vi.fn().mockImplementation(() => ({
+    paymentIntents: {
+      create: vi.fn().mockResolvedValue({
+        id: 'pi_test_123',
+        client_secret: 'pi_test_123_secret',
+        amount: 1000,
+        currency: 'usd',
+        status: 'requires_payment_method'
+      }),
+      retrieve: vi.fn().mockResolvedValue({
+        id: 'pi_test_123',
+        status: 'succeeded',
+        amount: 1000,
+        currency: 'usd'
+      })
+    },
+    webhooks: mockWebhooks
+  }))
+
+  return { 
+    default: mockStripe,
+    webhooks: mockWebhooks
+  }
+})
+
 // Mock framer-motion to prevent animation issues in tests
 vi.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, ...props }: any) => {
-      const React = require('react')
-      return React.createElement('div', props, children)
-    },
-    span: ({ children, ...props }: any) => {
-      const React = require('react')
-      return React.createElement('span', props, children)
-    },
-    path: ({ children, ...props }: any) => {
-      const React = require('react')
-      return React.createElement('path', props, children)
-    },
-    svg: ({ children, ...props }: any) => {
-      const React = require('react')
-      return React.createElement('svg', props, children)
-    },
-    button: ({ children, ...props }: any) => {
-      const React = require('react')
-      return React.createElement('button', props, children)
-    },
+    div: ({ children, ...props }: any) => ({ type: 'div', props, children }),
+    span: ({ children, ...props }: any) => ({ type: 'span', props, children }),
+    path: ({ children, ...props }: any) => ({ type: 'path', props, children }),
+    svg: ({ children, ...props }: any) => ({ type: 'svg', props, children }),
+    button: ({ children, ...props }: any) => ({ type: 'button', props, children }),
   },
   AnimatePresence: ({ children }: any) => children,
   useAnimation: () => ({

@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom'
-import { expect, vi } from 'vitest'
+import { expect, vi, beforeEach } from 'vitest'
 
 // Mock framer-motion for test compatibility
 vi.mock('framer-motion', () => ({

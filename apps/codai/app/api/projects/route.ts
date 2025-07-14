@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
-import { readFileSync, readdirSync, statSync, existsSync } from 'fs'
+import { readFileSync, readdirSync, statSync, existsSync, writeFileSync, mkdirSync, rmSync } from 'fs'
 import { join } from 'path'
+import { scaffoldProject, loadTemplate } from '../../../lib/scaffolding'
 
 export interface Project {
   id: string
@@ -12,6 +13,33 @@ export interface Project {
   lastModified: Date
   size: string
   description: string
+  path?: string
+  dependencies?: string[]
+  scripts?: Record<string, string>
+  gitBranch?: string
+  gitCommits?: number
+}
+
+export interface CreateProjectRequest {
+  name: string
+  type: 'app' | 'package'
+  template: string // Changed to accept any template ID
+  description?: string
+  framework?: string
+  language?: string
+  author?: string
+  license?: string
+  repository?: string
+  version?: string
+  templateVariables?: Record<string, string>
+}
+
+export interface UpdateProjectRequest {
+  name?: string
+  description?: string
+  status?: 'active' | 'maintenance' | 'archived'
+  dependencies?: string[]
+  scripts?: Record<string, string>
 }
 
 function detectProjectLanguage(projectPath: string): string {
@@ -133,31 +161,507 @@ function getProjectDescription(projectPath: string, projectName: string): string
   }
 }
 
+// Helper function to get workspace root
+function getWorkspaceRoot(): string {
+  let workspaceRoot = process.cwd()
+  if (workspaceRoot.includes('apps')) {
+    workspaceRoot = join(workspaceRoot, '..', '..')
+  }
+  return workspaceRoot
+}
+
+// Helper function to execute shell commands
+async function executeCommand(command: string, cwd?: string): Promise<{ stdout: string; stderr: string }> {
+  const { spawn } = require('child_process')
+  return new Promise((resolve, reject) => {
+    const child = spawn('cmd', ['/c', command], {
+      cwd: cwd || process.cwd(),
+      shell: true
+    })
+
+    let stdout = ''
+    let stderr = ''
+
+    child.stdout?.on('data', (data: Buffer) => {
+      stdout += data.toString()
+    })
+
+    child.stderr?.on('data', (data: Buffer) => {
+      stderr += data.toString()
+    })
+
+    child.on('close', (code: number) => {
+      if (code === 0) {
+        resolve({ stdout, stderr })
+      } else {
+        reject(new Error(`Command failed with code ${code}: ${stderr}`))
+      }
+    })
+  })
+}
+
+// Get Git information for a project
+async function getGitInfo(projectPath: string): Promise<{ branch?: string; commits?: number }> {
+  try {
+    const { stdout: branch } = await executeCommand('git rev-parse --abbrev-ref HEAD', projectPath)
+    const { stdout: commits } = await executeCommand('git rev-list --count HEAD', projectPath)
+
+    return {
+      branch: branch.trim(),
+      commits: parseInt(commits.trim()) || 0
+    }
+  } catch {
+    return {}
+  }
+}
+
+// Get project dependencies from package.json
+function getProjectDependencies(projectPath: string): string[] {
+  try {
+    const packageJsonPath = join(projectPath, 'package.json')
+    if (existsSync(packageJsonPath)) {
+      const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'))
+      const deps = Object.keys(packageJson.dependencies || {})
+      const devDeps = Object.keys(packageJson.devDependencies || {})
+      return [...deps, ...devDeps]
+    }
+  } catch { }
+  return []
+}
+
+// Get project scripts from package.json
+function getProjectScripts(projectPath: string): Record<string, string> {
+  try {
+    const packageJsonPath = join(projectPath, 'package.json')
+    if (existsSync(packageJsonPath)) {
+      const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'))
+      return packageJson.scripts || {}
+    }
+  } catch { }
+  return {}
+}
+
+// Create project from template
+async function createProjectFromTemplate(
+  projectPath: string,
+  template: string,
+  projectName: string,
+  description: string
+): Promise<void> {
+  switch (template) {
+    case 'next-js':
+      await createNextJsProject(projectPath, projectName, description)
+      break
+    case 'react':
+      await createReactProject(projectPath, projectName, description)
+      break
+    case 'node-js':
+      await createNodeJsProject(projectPath, projectName, description)
+      break
+    case 'express':
+      await createExpressProject(projectPath, projectName, description)
+      break
+    case 'library':
+      await createLibraryProject(projectPath, projectName, description)
+      break
+    default:
+      await createCustomProject(projectPath, projectName, description)
+  }
+}
+
+async function createNextJsProject(projectPath: string, projectName: string, description: string): Promise<void> {
+  mkdirSync(projectPath, { recursive: true })
+
+  const packageJson = {
+    name: projectName,
+    version: '0.1.0',
+    description,
+    private: true,
+    scripts: {
+      dev: 'next dev',
+      build: 'next build',
+      start: 'next start',
+      lint: 'next lint'
+    },
+    dependencies: {
+      next: '^15.3.5',
+      react: '^19.1.0',
+      'react-dom': '^19.1.0'
+    },
+    devDependencies: {
+      '@types/node': '^22',
+      '@types/react': '^19',
+      '@types/react-dom': '^19',
+      eslint: '^9',
+      'eslint-config-next': '^15.3.5',
+      typescript: '^5'
+    }
+  }
+
+  writeFileSync(join(projectPath, 'package.json'), JSON.stringify(packageJson, null, 2))
+
+  // Create basic Next.js structure
+  mkdirSync(join(projectPath, 'app'), { recursive: true })
+  mkdirSync(join(projectPath, 'public'), { recursive: true })
+
+  const pageContent = `export default function HomePage() {
+  return (
+    <main className="container mx-auto p-8">
+      <h1 className="text-4xl font-bold mb-4">${projectName}</h1>
+      <p className="text-gray-600">${description}</p>
+    </main>
+  )
+}`
+
+  writeFileSync(join(projectPath, 'app', 'page.tsx'), pageContent)
+
+  const layoutContent = `import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: '${projectName}',
+  description: '${description}',
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  )
+}`
+
+  writeFileSync(join(projectPath, 'app', 'layout.tsx'), layoutContent)
+
+  // Create next.config.js
+  const nextConfig = `/** @type {import('next').NextConfig} */
+const nextConfig = {
+  experimental: {
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
+  },
+}
+
+module.exports = nextConfig`
+
+  writeFileSync(join(projectPath, 'next.config.js'), nextConfig)
+
+  // Create tsconfig.json
+  const tsConfig = {
+    compilerOptions: {
+      lib: ['dom', 'dom.iterable', 'es6'],
+      allowJs: true,
+      skipLibCheck: true,
+      strict: true,
+      noEmit: true,
+      esModuleInterop: true,
+      module: 'esnext',
+      moduleResolution: 'bundler',
+      resolveJsonModule: true,
+      isolatedModules: true,
+      jsx: 'preserve',
+      incremental: true,
+      plugins: [{ name: 'next' }],
+      paths: { '@/*': ['./*'] }
+    },
+    include: ['next-env.d.ts', '**/*.ts', '**/*.tsx', '.next/types/**/*.ts'],
+    exclude: ['node_modules']
+  }
+
+  writeFileSync(join(projectPath, 'tsconfig.json'), JSON.stringify(tsConfig, null, 2))
+}
+
+async function createReactProject(projectPath: string, projectName: string, description: string): Promise<void> {
+  mkdirSync(projectPath, { recursive: true })
+
+  const packageJson = {
+    name: projectName,
+    version: '0.1.0',
+    description,
+    private: true,
+    scripts: {
+      dev: 'vite',
+      build: 'tsc && vite build',
+      preview: 'vite preview',
+      lint: 'eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0'
+    },
+    dependencies: {
+      react: '^19.1.0',
+      'react-dom': '^19.1.0'
+    },
+    devDependencies: {
+      '@types/react': '^19.1.0',
+      '@types/react-dom': '^19.1.0',
+      '@typescript-eslint/eslint-plugin': '^8.15.0',
+      '@typescript-eslint/parser': '^8.15.0',
+      '@vitejs/plugin-react': '^5.0.0',
+      eslint: '^9.15.0',
+      'eslint-plugin-react-hooks': '^5.0.0',
+      'eslint-plugin-react-refresh': '^0.4.14',
+      typescript: '^5.8.3',
+      vite: '^6.0.1'
+    }
+  }
+
+  writeFileSync(join(projectPath, 'package.json'), JSON.stringify(packageJson, null, 2))
+
+  // Create basic React structure
+  mkdirSync(join(projectPath, 'src'), { recursive: true })
+  mkdirSync(join(projectPath, 'public'), { recursive: true })
+
+  const appContent = `import React from 'react'
+
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <h1>${projectName}</h1>
+        <p>${description}</p>
+      </header>
+    </div>
+  )
+}
+
+export default App`
+
+  writeFileSync(join(projectPath, 'src', 'App.tsx'), appContent)
+
+  const mainContent = `import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.tsx'
+import './index.css'
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+)`
+
+  writeFileSync(join(projectPath, 'src', 'main.tsx'), mainContent)
+
+  const indexCss = `body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.App {
+  text-align: center;
+  padding: 2rem;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 2rem;
+  color: white;
+  border-radius: 0.5rem;
+}`
+
+  writeFileSync(join(projectPath, 'src', 'index.css'), indexCss)
+
+  const viteConfig = `import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+})`
+
+  writeFileSync(join(projectPath, 'vite.config.ts'), viteConfig)
+}
+
+async function createNodeJsProject(projectPath: string, projectName: string, description: string): Promise<void> {
+  mkdirSync(projectPath, { recursive: true })
+
+  const packageJson = {
+    name: projectName,
+    version: '1.0.0',
+    description,
+    main: 'dist/index.js',
+    scripts: {
+      start: 'node dist/index.js',
+      dev: 'ts-node src/index.ts',
+      build: 'tsc',
+      test: 'jest'
+    },
+    dependencies: {},
+    devDependencies: {
+      '@types/node': '^22',
+      typescript: '^5',
+      'ts-node': '^10',
+      jest: '^29',
+      '@types/jest': '^29'
+    }
+  }
+
+  writeFileSync(join(projectPath, 'package.json'), JSON.stringify(packageJson, null, 2))
+
+  mkdirSync(join(projectPath, 'src'), { recursive: true })
+
+  const indexContent = `console.log('Hello from ${projectName}!')
+
+export function main() {
+  console.log('${description}')
+}
+
+if (require.main === module) {
+  main()
+}`
+
+  writeFileSync(join(projectPath, 'src', 'index.ts'), indexContent)
+}
+
+async function createExpressProject(projectPath: string, projectName: string, description: string): Promise<void> {
+  mkdirSync(projectPath, { recursive: true })
+
+  const packageJson = {
+    name: projectName,
+    version: '1.0.0',
+    description,
+    main: 'dist/index.js',
+    scripts: {
+      start: 'node dist/index.js',
+      dev: 'ts-node src/index.ts',
+      build: 'tsc'
+    },
+    dependencies: {
+      express: '^4.18.2',
+      cors: '^2.8.5'
+    },
+    devDependencies: {
+      '@types/node': '^22',
+      '@types/express': '^4.17.17',
+      '@types/cors': '^2.8.13',
+      typescript: '^5',
+      'ts-node': '^10'
+    }
+  }
+
+  writeFileSync(join(projectPath, 'package.json'), JSON.stringify(packageJson, null, 2))
+
+  mkdirSync(join(projectPath, 'src'), { recursive: true })
+
+  const indexContent = `import express from 'express'
+import cors from 'cors'
+
+const app = express()
+const PORT = process.env.PORT || 3000
+
+app.use(cors())
+app.use(express.json())
+
+app.get('/', (req, res) => {
+  res.json({
+    message: '${projectName}',
+    description: '${description}',
+    status: 'running'
+  })
+})
+
+app.listen(PORT, () => {
+  console.log(\`${projectName} server running on port \${PORT}\`)
+})`
+
+  writeFileSync(join(projectPath, 'src', 'index.ts'), indexContent)
+}
+
+async function createLibraryProject(projectPath: string, projectName: string, description: string): Promise<void> {
+  mkdirSync(projectPath, { recursive: true })
+
+  const packageJson = {
+    name: projectName,
+    version: '1.0.0',
+    description,
+    main: 'dist/index.js',
+    types: 'dist/index.d.ts',
+    scripts: {
+      build: 'tsc',
+      test: 'jest',
+      prepublishOnly: 'npm run build'
+    },
+    dependencies: {},
+    devDependencies: {
+      typescript: '^5',
+      jest: '^29',
+      '@types/jest': '^29'
+    }
+  }
+
+  writeFileSync(join(projectPath, 'package.json'), JSON.stringify(packageJson, null, 2))
+
+  mkdirSync(join(projectPath, 'src'), { recursive: true })
+
+  const indexContent = `/**
+ * ${description}
+ */
+
+export class ${projectName.charAt(0).toUpperCase() + projectName.slice(1)} {
+  constructor() {
+    console.log('${projectName} initialized')
+  }
+  
+  hello(): string {
+    return 'Hello from ${projectName}!'
+  }
+}
+
+export default ${projectName.charAt(0).toUpperCase() + projectName.slice(1)}`
+
+  writeFileSync(join(projectPath, 'src', 'index.ts'), indexContent)
+}
+
+async function createCustomProject(projectPath: string, projectName: string, description: string): Promise<void> {
+  mkdirSync(projectPath, { recursive: true })
+
+  const packageJson = {
+    name: projectName,
+    version: '1.0.0',
+    description,
+    main: 'index.js',
+    scripts: {
+      start: 'node index.js',
+      test: 'echo "No tests specified"'
+    }
+  }
+
+  writeFileSync(join(projectPath, 'package.json'), JSON.stringify(packageJson, null, 2))
+
+  const indexContent = `// ${projectName}
+// ${description}
+
+console.log('Welcome to ${projectName}!')
+
+module.exports = {
+  name: '${projectName}',
+  description: '${description}'
+}`
+
+  writeFileSync(join(projectPath, 'index.js'), indexContent)
+}
+
 export async function GET() {
   try {
-    // Get the workspace root by going up from the current directory
-    let workspaceRoot = process.cwd()
-
-    // If we're in apps/codai, go up two levels to the workspace root
-    if (workspaceRoot.includes('apps')) {
-      workspaceRoot = join(workspaceRoot, '..', '..')
-    }
-
-    console.log('Workspace root:', workspaceRoot)
-
+    const workspaceRoot = getWorkspaceRoot()
     const appsDir = join(workspaceRoot, 'apps')
     const packagesDir = join(workspaceRoot, 'packages')
 
-    console.log('Apps dir:', appsDir, 'exists:', existsSync(appsDir))
-    console.log('Packages dir:', packagesDir, 'exists:', existsSync(packagesDir))
-
     const projects: Project[] = []
 
-    // Scan apps directory with filtering
+    // Scan apps directory with enhanced information
     if (existsSync(appsDir)) {
       const appDirs = readdirSync(appsDir)
       for (const appName of appDirs) {
-        // Skip node_modules and hidden directories
         if (appName.startsWith('.') || appName === 'node_modules') continue
 
         const appPath = join(appsDir, appName)
@@ -165,6 +669,8 @@ export async function GET() {
           const stats = statSync(appPath)
 
           if (stats.isDirectory()) {
+            const gitInfo = await getGitInfo(appPath)
+
             projects.push({
               id: `app-${appName}`,
               name: appName,
@@ -174,7 +680,12 @@ export async function GET() {
               status: getProjectStatus(appPath, stats.mtime),
               lastModified: stats.mtime,
               size: getProjectSize(appPath),
-              description: getProjectDescription(appPath, appName)
+              description: getProjectDescription(appPath, appName),
+              path: appPath,
+              dependencies: getProjectDependencies(appPath),
+              scripts: getProjectScripts(appPath),
+              gitBranch: gitInfo.branch,
+              gitCommits: gitInfo.commits
             })
           }
         } catch (error) {
@@ -183,11 +694,10 @@ export async function GET() {
       }
     }
 
-    // Scan packages directory with filtering
+    // Scan packages directory with enhanced information
     if (existsSync(packagesDir)) {
       const packageDirs = readdirSync(packagesDir)
       for (const packageName of packageDirs) {
-        // Skip node_modules and hidden directories
         if (packageName.startsWith('.') || packageName === 'node_modules') continue
 
         const packagePath = join(packagesDir, packageName)
@@ -195,6 +705,8 @@ export async function GET() {
           const stats = statSync(packagePath)
 
           if (stats.isDirectory()) {
+            const gitInfo = await getGitInfo(packagePath)
+
             projects.push({
               id: `package-${packageName}`,
               name: packageName,
@@ -204,7 +716,12 @@ export async function GET() {
               status: getProjectStatus(packagePath, stats.mtime),
               lastModified: stats.mtime,
               size: getProjectSize(packagePath),
-              description: getProjectDescription(packagePath, packageName)
+              description: getProjectDescription(packagePath, packageName),
+              path: packagePath,
+              dependencies: getProjectDependencies(packagePath),
+              scripts: getProjectScripts(packagePath),
+              gitBranch: gitInfo.branch,
+              gitCommits: gitInfo.commits
             })
           }
         } catch (error) {
@@ -226,6 +743,283 @@ export async function GET() {
     console.error('Error getting project data:', error)
     return NextResponse.json(
       { error: 'Failed to get project data' },
+      { status: 500 }
+    )
+  }
+}
+
+// CREATE new project
+export async function POST(request: Request) {
+  try {
+    const body: CreateProjectRequest = await request.json()
+    const {
+      name,
+      type,
+      template,
+      description = '',
+      framework = '',
+      language = '',
+      author = '',
+      license = 'MIT',
+      repository = '',
+      version = '0.1.0',
+      templateVariables = {}
+    } = body
+
+    // Validate input
+    if (!name || !type || !template) {
+      return NextResponse.json(
+        { error: 'Missing required fields: name, type, template' },
+        { status: 400 }
+      )
+    }
+
+    // Validate project name
+    if (!/^[a-z0-9-]+$/.test(name)) {
+      return NextResponse.json(
+        { error: 'Project name must contain only lowercase letters, numbers, and hyphens' },
+        { status: 400 }
+      )
+    }
+
+    const workspaceRoot = getWorkspaceRoot()
+    const targetDir = type === 'app' ? join(workspaceRoot, 'apps') : join(workspaceRoot, 'packages')
+    const projectPath = join(targetDir, name)
+
+    // Check if project already exists
+    if (existsSync(projectPath)) {
+      return NextResponse.json(
+        { error: `Project ${name} already exists` },
+        { status: 409 }
+      )
+    }
+
+    // Try advanced scaffolding first, fall back to legacy templates
+    let isAdvancedTemplate = false
+    try {
+      // Check if it's a modern template from the templates system
+      const modernTemplate = await loadTemplate(template)
+
+      if (modernTemplate) {
+        isAdvancedTemplate = true
+        // Use advanced scaffolding
+        const scaffoldingOptions = {
+          projectName: name,
+          description,
+          author,
+          license,
+          repository,
+          version,
+          framework,
+          language,
+          ...templateVariables
+        }
+
+        await scaffoldProject(projectPath, template, scaffoldingOptions)
+      } else {
+        // Fall back to legacy template system
+        await createProjectFromTemplate(projectPath, template, name, description)
+      }
+    } catch (templateError) {
+      console.log('Template scaffolding failed, using legacy method:', templateError)
+      await createProjectFromTemplate(projectPath, template, name, description)
+    }
+
+    // Initialize git repository
+    try {
+      await executeCommand('git init', projectPath)
+      await executeCommand('git add .', projectPath)
+      await executeCommand(`git commit -m "Initial commit: ${name}"`, projectPath)
+    } catch (gitError) {
+      console.log('Git initialization failed:', gitError)
+    }
+
+    // Get the created project info
+    const stats = statSync(projectPath)
+    const gitInfo = await getGitInfo(projectPath)
+
+    const newProject: Project = {
+      id: `${type}-${name}`,
+      name,
+      type: detectProjectType(projectPath, name),
+      language: language || detectProjectLanguage(projectPath),
+      framework: framework || detectProjectFramework(projectPath),
+      status: 'active',
+      lastModified: stats.mtime,
+      size: getProjectSize(projectPath),
+      description: description || getProjectDescription(projectPath, name),
+      path: projectPath,
+      dependencies: getProjectDependencies(projectPath),
+      scripts: getProjectScripts(projectPath),
+      gitBranch: gitInfo.branch,
+      gitCommits: gitInfo.commits
+    }
+
+    return NextResponse.json({
+      message: `Project ${name} created successfully`,
+      project: newProject,
+      scaffolding: isAdvancedTemplate ? 'advanced' : 'legacy'
+    }, { status: 201 })
+
+  } catch (error) {
+    console.error('Error creating project:', error)
+    return NextResponse.json(
+      { error: 'Failed to create project' },
+      { status: 500 }
+    )
+  }
+}
+
+// UPDATE existing project
+export async function PUT(request: Request) {
+  try {
+    const url = new URL(request.url)
+    const projectId = url.searchParams.get('id')
+
+    if (!projectId) {
+      return NextResponse.json(
+        { error: 'Project ID is required' },
+        { status: 400 }
+      )
+    }
+
+    const body: UpdateProjectRequest = await request.json()
+    const { name, description, status, dependencies, scripts } = body
+
+    // Find project
+    const workspaceRoot = getWorkspaceRoot()
+    const [type, currentName] = projectId.split('-', 2)
+    const targetDir = type === 'app' ? join(workspaceRoot, 'apps') : join(workspaceRoot, 'packages')
+    const currentPath = join(targetDir, currentName)
+
+    if (!existsSync(currentPath)) {
+      return NextResponse.json(
+        { error: 'Project not found' },
+        { status: 404 }
+      )
+    }
+
+    // Update package.json if needed
+    const packageJsonPath = join(currentPath, 'package.json')
+    if (existsSync(packageJsonPath)) {
+      const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'))
+
+      if (description) packageJson.description = description
+      if (scripts) packageJson.scripts = { ...packageJson.scripts, ...scripts }
+      if (dependencies) {
+        packageJson.dependencies = packageJson.dependencies || {}
+        dependencies.forEach(dep => {
+          if (dep.startsWith('-')) {
+            delete packageJson.dependencies[dep.slice(1)]
+          } else {
+            packageJson.dependencies[dep] = '^1.0.0' // Default version
+          }
+        })
+      }
+
+      writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))
+    }
+
+    // Handle rename
+    let finalPath = currentPath
+    if (name && name !== currentName) {
+      const newPath = join(targetDir, name)
+      if (existsSync(newPath)) {
+        return NextResponse.json(
+          { error: `Project ${name} already exists` },
+          { status: 409 }
+        )
+      }
+
+      // Rename directory
+      mkdirSync(newPath, { recursive: true })
+      const { execSync } = require('child_process')
+      execSync(`xcopy "${currentPath}" "${newPath}" /E /I /H /Y`, { stdio: 'ignore' })
+      rmSync(currentPath, { recursive: true, force: true })
+      finalPath = newPath
+    }
+
+    // Get updated project info
+    const stats = statSync(finalPath)
+    const gitInfo = await getGitInfo(finalPath)
+
+    const updatedProject: Project = {
+      id: `${type}-${name || currentName}`,
+      name: name || currentName,
+      type: detectProjectType(finalPath, name || currentName),
+      language: detectProjectLanguage(finalPath),
+      framework: detectProjectFramework(finalPath),
+      status: status || getProjectStatus(finalPath, stats.mtime),
+      lastModified: stats.mtime,
+      size: getProjectSize(finalPath),
+      description: description || getProjectDescription(finalPath, name || currentName),
+      path: finalPath,
+      dependencies: getProjectDependencies(finalPath),
+      scripts: getProjectScripts(finalPath),
+      gitBranch: gitInfo.branch,
+      gitCommits: gitInfo.commits
+    }
+
+    return NextResponse.json({
+      message: `Project updated successfully`,
+      project: updatedProject
+    })
+
+  } catch (error) {
+    console.error('Error updating project:', error)
+    return NextResponse.json(
+      { error: 'Failed to update project' },
+      { status: 500 }
+    )
+  }
+}
+
+// DELETE project
+export async function DELETE(request: Request) {
+  try {
+    const url = new URL(request.url)
+    const projectId = url.searchParams.get('id')
+
+    if (!projectId) {
+      return NextResponse.json(
+        { error: 'Project ID is required' },
+        { status: 400 }
+      )
+    }
+
+    // Find project
+    const workspaceRoot = getWorkspaceRoot()
+    const [type, currentName] = projectId.split('-', 2)
+    const targetDir = type === 'app' ? join(workspaceRoot, 'apps') : join(workspaceRoot, 'packages')
+    const projectPath = join(targetDir, currentName)
+
+    if (!existsSync(projectPath)) {
+      return NextResponse.json(
+        { error: 'Project not found' },
+        { status: 404 }
+      )
+    }
+
+    // Safety check - don't delete core projects
+    const coreProjects = ['codai', 'memorai', 'logai', 'shared-ui', 'shared-utils']
+    if (coreProjects.includes(currentName)) {
+      return NextResponse.json(
+        { error: 'Cannot delete core system projects' },
+        { status: 403 }
+      )
+    }
+
+    // Remove project directory
+    rmSync(projectPath, { recursive: true, force: true })
+
+    return NextResponse.json({
+      message: `Project ${currentName} deleted successfully`
+    })
+
+  } catch (error) {
+    console.error('Error deleting project:', error)
+    return NextResponse.json(
+      { error: 'Failed to delete project' },
       { status: 500 }
     )
   }

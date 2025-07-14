@@ -1,0 +1,8 @@
+{
+    "agentId": "test-agent-1",
+    "content": "The Codai ecosystem consists of multiple interconnected applications including MEMORAI for memory management, LOGAI for authentication, BANCAI for financial services, and CODAI as the central platform.",
+    "memoryType": "SEMANTIC",
+    "category": "ecosystem",
+    "importance": 0.9,
+    "metadata": "{\"source\":\"documentation\",\"topic\":\"architecture\"}"
+}

@@ -37,7 +37,10 @@ vi.mock('lucide-react', () => {
     Monitor: MockIcon,
     Search: MockIcon,
     Filter: MockIcon,
-    BarChart3: MockIcon
+    BarChart3: MockIcon,
+    Bell: MockIcon,
+    Lock: MockIcon,
+    Globe: MockIcon
   }
 })
 

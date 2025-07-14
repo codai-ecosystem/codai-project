@@ -69,6 +69,55 @@ export default function MemoraiPage() {
   const [realTimeData, setRealTimeData] = useState<RealTimeData | null>(null)
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
+  const [searchResults, setSearchResults] = useState<any[]>([])
+  const [isSearching, setIsSearching] = useState(false)
+
+  // Real search functionality using MCP recall
+  const handleSearch = async (query: string) => {
+    if (!query.trim()) {
+      setSearchResults([])
+      return
+    }
+
+    setIsSearching(true)
+    try {
+      const response = await fetch('/api/mcp/recall', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          agentId: 'memorai-ui-agent',
+          query: query.trim(),
+          limit: 10
+        })
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        setSearchResults(result.memories || [])
+        console.log(`Found ${result.count} memories from ${result.sources?.mcp || 0} MCP + ${result.sources?.backup || 0} backup`)
+      } else {
+        console.error('Search failed:', result)
+        setSearchResults([])
+      }
+    } catch (error) {
+      console.error('Search error:', error)
+      setSearchResults([])
+    } finally {
+      setIsSearching(false)
+    }
+  }
+
+  // Debounced search
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      handleSearch(searchQuery)
+    }, 500)
+
+    return () => clearTimeout(timeoutId)
+  }, [searchQuery])
 
   // Enhanced memory statistics
   const memoryStats: MemoryStats = {
@@ -258,19 +307,47 @@ export default function MemoraiPage() {
 
   const createSampleMemory = async () => {
     try {
-      await MemoraiService.createMemory({
-        content: `Sample memory created at ${new Date().toLocaleTimeString()}`,
-        metadata: {
-          type: 'conversation',
-          importance: Math.floor(Math.random() * 10) + 1,
-          tags: ['demo', 'test', 'memorai'],
-          timestamp: new Date()
+      // Use real MCP integration instead of mock data
+      const response = await fetch('/api/mcp/remember', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        agentId: 'demo-agent',
-        isPublic: true
-      })
+        body: JSON.stringify({
+          agentId: 'memorai-ui-agent',
+          content: `Production memory created at ${new Date().toLocaleTimeString()}: Real user interaction with MemorAI dashboard. User performed memory creation action, demonstrating system functionality and user engagement.`,
+          metadata: {
+            type: 'user-interaction',
+            source: 'dashboard-ui',
+            timestamp: new Date().toISOString(),
+            importance: 8,
+            tags: ['dashboard', 'user-action', 'production', 'memorai'],
+            context: 'dashboard-demo'
+          }
+        })
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        console.log('Memory stored successfully:', result);
+        // Trigger UI refresh to show new memory
+        if (typeof window !== 'undefined') {
+          // Show success notification
+          const notification = document.createElement('div');
+          notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+          notification.textContent = `✅ Memory stored: ${result.memoryId}`;
+          document.body.appendChild(notification);
+
+          setTimeout(() => {
+            document.body.removeChild(notification);
+          }, 3000);
+        }
+      } else {
+        console.error('Failed to store memory:', result);
+      }
     } catch (error) {
-      console.error('Error creating sample memory:', error)
+      console.error('Error creating memory:', error);
     }
   }
 
@@ -295,7 +372,7 @@ export default function MemoraiPage() {
 
   return (
     <div className={`min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-900 text-white ${inter.className}`}>
-      {/* Enhanced Navigation */}
+      {/* Enhanced Navigation with Real Search */}
       <motion.nav
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -312,9 +389,36 @@ export default function MemoraiPage() {
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <button className="px-4 py-2 bg-white/10 backdrop-blur-xl rounded-lg hover:bg-white/20 transition-all">
-              <Search className="w-4 h-4" />
-            </button>
+            {/* Real Search Input */}
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search memories..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-lg px-4 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 w-64"
+              />
+              <Search className={`absolute right-3 top-2.5 w-4 h-4 text-slate-400 ${isSearching ? 'animate-spin' : ''}`} />
+
+              {/* Search Results Dropdown */}
+              {searchResults.length > 0 && (
+                <div className="absolute top-12 left-0 right-0 bg-slate-900/95 backdrop-blur-xl border border-white/20 rounded-lg max-h-64 overflow-y-auto z-50">
+                  {searchResults.map((result, index) => (
+                    <div key={result.id || index} className="p-3 hover:bg-white/10 border-b border-white/10 last:border-b-0">
+                      <div className="text-white font-medium text-sm mb-1">
+                        {result.metadata?.type || 'Memory'} • Relevance: {((result.relevance || 0) * 100).toFixed(0)}%
+                      </div>
+                      <div className="text-slate-300 text-sm line-clamp-2">
+                        {result.content.substring(0, 120)}...
+                      </div>
+                      <div className="text-slate-500 text-xs mt-1">
+                        {result.metadata?.source || 'Unknown source'} • {new Date(result.timestamp).toLocaleString()}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
             <button className="px-4 py-2 bg-white/10 backdrop-blur-xl rounded-lg hover:bg-white/20 transition-all">
               <Settings className="w-4 h-4" />
             </button>
@@ -725,8 +829,8 @@ export default function MemoraiPage() {
                         <button
                           key={actionIndex}
                           className={`px-3 py-1 text-xs rounded-lg transition-colors ${action === 'Apply'
-                              ? 'bg-purple-500/20 text-purple-300 hover:bg-purple-500/30'
-                              : 'bg-white/10 text-slate-300 hover:bg-white/15'
+                            ? 'bg-purple-500/20 text-purple-300 hover:bg-purple-500/30'
+                            : 'bg-white/10 text-slate-300 hover:bg-white/15'
                             }`}
                         >
                           {action}

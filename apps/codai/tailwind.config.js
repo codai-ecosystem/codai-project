@@ -9,7 +9,14 @@ const config: Config = {
     './components/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+        'spin': 'spin 1s linear infinite',
+      },
+      scale: {
+        '98': '0.98',
+      },
+    },
   },
   plugins: [],
 }

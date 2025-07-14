@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Mail, Send, Search, Settings, User, Bell, Archive, Trash2, Star, Plus } from 'lucide-react';
+import { Mail, Send, Search, Settings, User, Bell, Archive, Trash2, Star, Plus, BarChart3, Users, Calendar } from 'lucide-react';
+import Link from 'next/link';
 
 export default function HomePage() {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -11,6 +12,37 @@ export default function HomePage() {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+  const features = [
+    {
+      title: 'Dashboard Email',
+      description: 'Gestionează toate emailurile într-o interfață modernă cu funcții AI',
+      icon: <Mail className="h-12 w-12 text-blue-600" />,
+      link: '/dashboard',
+      color: 'blue'
+    },
+    {
+      title: 'Compune Email',
+      description: 'Scrie emailuri profesionale cu asistența AI integrată',
+      icon: <Send className="h-12 w-12 text-green-600" />,
+      link: '/compose',
+      color: 'green'
+    },
+    {
+      title: 'Analytics Email',
+      description: 'Monitorizează performanța și statisticile emailurilor',
+      icon: <BarChart3 className="h-12 w-12 text-purple-600" />,
+      link: '/analytics',
+      color: 'purple'
+    },
+    {
+      title: 'Setări & Contacte',
+      description: 'Configurează contul și gestionează contactele',
+      icon: <Settings className="h-12 w-12 text-orange-600" />,
+      link: '/settings',
+      color: 'orange'
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -42,8 +74,12 @@ export default function HomePage() {
                   </span>
                 )}
               </div>
-              <Settings className="h-5 w-5 text-gray-600 cursor-pointer hover:text-blue-600" />
-              <User className="h-5 w-5 text-gray-600 cursor-pointer hover:text-blue-600" />
+              <Link href="/settings" className="p-2 hover:bg-gray-100 rounded-lg">
+                <Settings className="h-5 w-5 text-gray-600 hover:text-blue-600" />
+              </Link>
+              <Link href="/settings" className="p-2 hover:bg-gray-100 rounded-lg">
+                <User className="h-5 w-5 text-gray-600 hover:text-blue-600" />
+              </Link>
             </div>
           </div>
         </div>
@@ -54,36 +90,54 @@ export default function HomePage() {
           {/* Sidebar */}
           <div className="col-span-3">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center space-x-2 mb-6 transition-colors">
+              <Link
+                href="/compose"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center space-x-2 mb-6 transition-colors"
+              >
                 <Plus className="h-4 w-4" />
                 <span>Compune Email</span>
-              </button>
+              </Link>
 
               <nav className="space-y-2">
-                <a href="#" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 text-gray-700">
+                <Link href="/dashboard" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 text-gray-700">
                   <Mail className="h-4 w-4" />
                   <span>Primite</span>
                   <span className="ml-auto bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">
                     {unreadCount}
                   </span>
-                </a>
-                <a href="#" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 text-gray-700">
+                </Link>
+                <Link href="/dashboard" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 text-gray-700">
                   <Send className="h-4 w-4" />
                   <span>Trimise</span>
-                </a>
-                <a href="#" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 text-gray-700">
+                </Link>
+                <Link href="/dashboard" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 text-gray-700">
                   <Star className="h-4 w-4" />
                   <span>Marcate</span>
-                </a>
-                <a href="#" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 text-gray-700">
+                </Link>
+                <Link href="/dashboard" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 text-gray-700">
                   <Archive className="h-4 w-4" />
                   <span>Arhivate</span>
-                </a>
-                <a href="#" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 text-gray-700">
+                </Link>
+                <Link href="/dashboard" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 text-gray-700">
                   <Trash2 className="h-4 w-4" />
                   <span>Șters</span>
-                </a>
+                </Link>
               </nav>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <Link href="/analytics" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 text-gray-700">
+                  <BarChart3 className="h-4 w-4" />
+                  <span>Analytics</span>
+                </Link>
+                <Link href="/settings" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 text-gray-700">
+                  <Users className="h-4 w-4" />
+                  <span>Contacte</span>
+                </Link>
+                <Link href="/settings" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 text-gray-700">
+                  <Settings className="h-4 w-4" />
+                  <span>Setări</span>
+                </Link>
+              </div>
             </div>
           </div>
 
@@ -102,7 +156,7 @@ export default function HomePage() {
             </div>
 
             {/* Welcome Section */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center mb-8">
               <div className="max-w-2xl mx-auto">
                 <h2 className="text-3xl font-bold text-gray-900 mb-4">
                   Bun venit la ConversAI!
@@ -112,33 +166,67 @@ export default function HomePage() {
                   Gestionează-ți emailurile eficient cu asistență AI integrată.
                 </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                  <div className="p-6 bg-blue-50 rounded-xl">
-                    <Mail className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-                    <h3 className="font-semibold text-gray-900 mb-2">Email Profesional</h3>
-                    <p className="text-sm text-gray-600">Adrese email @codai.ro pentru o prezență profesională</p>
-                  </div>
-
-                  <div className="p-6 bg-purple-50 rounded-xl">
-                    <Star className="h-12 w-12 text-purple-600 mx-auto mb-4" />
-                    <h3 className="font-semibold text-gray-900 mb-2">Asistență AI</h3>
-                    <p className="text-sm text-gray-600">Compunere inteligentă și răspunsuri automate</p>
-                  </div>
-
-                  <div className="p-6 bg-green-50 rounded-xl">
-                    <Settings className="h-12 w-12 text-green-600 mx-auto mb-4" />
-                    <h3 className="font-semibold text-gray-900 mb-2">Management Avansat</h3>
-                    <p className="text-sm text-gray-600">Organizare inteligentă și filtrare automată</p>
-                  </div>
-                </div>
-
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors">
-                    Începe să folosești ConversAI
-                  </button>
-                  <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-3 px-6 rounded-lg transition-colors">
-                    Învață mai multe
-                  </button>
+                  <Link
+                    href="/dashboard"
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+                  >
+                    Accesează Dashboard-ul
+                  </Link>
+                  <Link
+                    href="/compose"
+                    className="border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-3 px-6 rounded-lg transition-colors"
+                  >
+                    Compune primul email
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* Features Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {features.map((feature, index) => (
+                <Link
+                  key={index}
+                  href={feature.link}
+                  className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow group"
+                >
+                  <div className="flex items-start space-x-4">
+                    <div className={`p-3 bg-${feature.color}-50 rounded-xl group-hover:bg-${feature.color}-100 transition-colors`}>
+                      {feature.icon}
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                        {feature.title}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        {feature.description}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            {/* Quick Stats */}
+            <div className="mt-8 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Statistici Rapide</h3>
+              <div className="grid grid-cols-4 gap-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-blue-600">{unreadCount}</div>
+                  <div className="text-sm text-gray-600">Necitite</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-600">45</div>
+                  <div className="text-sm text-gray-600">Trimise</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-purple-600">87%</div>
+                  <div className="text-sm text-gray-600">Rata răspuns</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-orange-600">2.4h</div>
+                  <div className="text-sm text-gray-600">Timp mediu</div>
                 </div>
               </div>
             </div>

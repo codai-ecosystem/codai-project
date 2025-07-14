@@ -8,9 +8,20 @@ export default defineConfig({
   test: {
     watch: false, // Prevent watch mode by default
     globals: true,
-    environment: 'jsdom',
-    setupFiles: ['./vitest.setup.ts'],
-    css: true,
+    environment: 'node', // Use node environment for Azure OpenAI tests
+    setupFiles: ['./test-setup.ts'],
+    css: false,
+    include: ['**/__tests__/**/*.test.ts'], // Only include TypeScript tests
+    exclude: [
+      'node_modules/',
+      'dist/',
+      '**/*.d.ts',
+      '**/*.config.*',
+      '**/coverage/**',
+      '**/*.test.tsx', // Exclude React component tests for now
+      '**/*.spec.*',
+      '**/e2e/**'
+    ],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],

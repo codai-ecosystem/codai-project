@@ -11,7 +11,7 @@
       "@types/react": "^19.1.8",
       "@types/react-dom": "^19.1.6",
       "jest": "^30.0.4",
-      "tailwindcss": "^4.1.11",
+      "tailwindcss": "^3.4.17",
       "use-sync-external-store": "^1.2.0",
       "dmg-builder": "^26.0.12",
       "electron-builder-squirrel-windows": "^26.0.12",
@@ -28,7 +28,7 @@
         "react": "19",
         "react-dom": "19",
         "jest": "30",
-        "tailwindcss": "4"
+        "tailwindcss": "3"
       }
     }
   },
@@ -70,6 +70,8 @@
     "glob": "^11.0.3",
     "is-stream": "^4.0.1",
     "lucide-react": "^0.525.0",
+    "next": "15.3.5",
+    "openai": "^5.9.0",
     "prisma": "^6.11.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

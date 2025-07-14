@@ -1,198 +1,591 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// ANALIZAI Analytics Platform Database Schema
+// Comprehensive analytics, business intelligence, and AI insights
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-// NextAuth.js required models
-model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String?
-  access_token      String?
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?
-  session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
-  emailVerified DateTime?
-  image         String?
-  password      String?   // For credentials-based authentication
-  role          String    @default("USER")
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      UserRole @default(ANALYST)
+  avatar    String?
   
-  // Authentication relations
-  accounts      Account[]
-  sessions      Session[]
+  // Preferences
+  timezone     String  @default("UTC")
+  language     String  @default("en")
+  theme        String  @default("light")
   
-  // User preferences and settings
-  preferences   UserPreferences?
+  // Analytics Access
+  dashboards      Dashboard[]
+  reports         Report[]
+  insights        Insight[]
+  alertRules      AlertRule[]
+  dataConnections DataConnection[]
   
-  // Collaboration features
-  workspaceMembers WorkspaceMember[]
-  projects         Project[]
-  collaborationParticipants CollaborationParticipant[]
-  presenceUpdates PresenceUpdate[]
+  // Activity
+  sessions    AnalyticsSession[]
+  queries     Query[]
+  annotations Annotation[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   
   @@map("users")
 }
 
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
+enum UserRole {
+  ADMIN
+  ANALYST
+  VIEWER
+  DATA_SCIENTIST
+  BUSINESS_USER
 }
 
-// User preferences model for personalization
-model UserPreferences {
-  id               String  @id @default(cuid())
-  userId           String  @unique
-  theme            String  @default("system") // light, dark, system
-  language         String  @default("en")
-  timezone         String  @default("UTC")
-  emailNotifications Boolean @default(true)
-  pushNotifications  Boolean @default(true)
+model Dashboard {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  layout      Json     // Widget positions and sizes
   
-  // AI preferences
-  aiProvider       String  @default("openai")
-  aiModel          String  @default("gpt-4")
-  aiTemperature    Float   @default(0.7)
+  // Configuration
+  isPublic    Boolean @default(false)
+  isTemplate  Boolean @default(false)
+  refreshRate Int     @default(300) // seconds
   
-  // UI preferences
-  sidebarCollapsed Boolean @default(false)
-  compactMode      Boolean @default(false)
+  // Ownership
+  userId   String
+  user     User   @relation(fields: [userId], references: [id])
   
-  user             User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Components
+  widgets Widget[]
+  shares  DashboardShare[]
   
-  @@map("user_preferences")
+  // Metadata
+  tags      String[]
+  category  String?
+  viewCount Int      @default(0)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("dashboards")
 }
 
-// Collaboration models
-model Workspace {
+model Widget {
+  id          String     @id @default(cuid())
+  name        String
+  type        WidgetType
+  config      Json       // Chart config, filters, etc.
+  position    Json       // x, y, width, height
+  
+  // Data Source
+  dataSource   DataSource? @relation(fields: [dataSourceId], references: [id])
+  dataSourceId String?
+  query        String?     // SQL/Query for data
+  
+  // Dashboard Relation
+  dashboard   Dashboard @relation(fields: [dashboardId], references: [id], onDelete: Cascade)
+  dashboardId String
+  
+  // Cache
+  lastRefresh DateTime?
+  cacheData   Json?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("widgets")
+}
+
+enum WidgetType {
+  LINE_CHART
+  BAR_CHART
+  PIE_CHART
+  AREA_CHART
+  SCATTER_PLOT
+  HEATMAP
+  TABLE
+  METRIC_CARD
+  GAUGE
+  FUNNEL
+  TREEMAP
+  HISTOGRAM
+  BOX_PLOT
+  RADAR_CHART
+  SANKEY
+  WATERFALL
+  MAP
+  TEXT
+  IMAGE
+  AI_INSIGHT
+}
+
+model DataSource {
+  id          String         @id @default(cuid())
+  name        String
+  type        DataSourceType
+  config      Json           // Connection details, credentials
+  
+  // Status
+  status      DataSourceStatus @default(ACTIVE)
+  lastSync    DateTime?
+  errorMessage String?
+  
+  // Relationships
+  widgets     Widget[]
+  queries     Query[]
+  connections DataConnection[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("data_sources")
+}
+
+enum DataSourceType {
+  POSTGRESQL
+  MYSQL
+  MONGODB
+  GOOGLE_ANALYTICS
+  MIXPANEL
+  AMPLITUDE
+  STRIPE
+  REST_API
+  CSV_UPLOAD
+  ELASTICSEARCH
+}
+
+enum DataSourceStatus {
+  ACTIVE
+  INACTIVE
+  ERROR
+  SYNCING
+  PENDING
+}
+
+model DataConnection {
+  id           String     @id @default(cuid())
+  name         String
+  description  String?
+  
+  // Connection Details
+  dataSource   DataSource @relation(fields: [dataSourceId], references: [id])
+  dataSourceId String
+  
+  // User Access
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  
+  // Configuration
+  config      Json // Specific connection settings
+  permissions Json // What user can access
+  
+  // Status
+  isActive   Boolean  @default(true)
+  lastUsed   DateTime?
+  usageCount Int      @default(0)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("data_connections")
+}
+
+model Query {
+  id          String      @id @default(cuid())
+  name        String?
+  description String?
+  sqlQuery    String
+  
+  // Execution
+  executionTime Float?  // milliseconds
+  rowCount      Int?
+  status        QueryStatus @default(PENDING)
+  errorMessage  String?
+  
+  // Data Source
+  dataSource   DataSource? @relation(fields: [dataSourceId], references: [id])
+  dataSourceId String?
+  
+  // User
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  
+  // Results
+  results Json?
+  
+  // Metadata
+  tags      String[]
+  isPublic  Boolean @default(false)
+  favorite  Boolean @default(false)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("queries")
+}
+
+enum QueryStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+model Report {
+  id          String     @id @default(cuid())
+  name        String
+  description String?
+  type        ReportType
+  
+  // Configuration
+  config     Json // Report parameters, filters
+  schedule   Json? // Cron-like scheduling
+  format     ReportFormat @default(PDF)
+  
+  // Generation
+  status        ReportStatus @default(DRAFT)
+  lastGenerated DateTime?
+  nextRun       DateTime?
+  filePath      String?
+  fileSize      Int?
+  
+  // User
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  
+  // Distribution
+  recipients String[] // Email addresses
+  deliveries ReportDelivery[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("reports")
+}
+
+enum ReportType {
+  SCHEDULED
+  AD_HOC
+  AUTOMATED
+  SUBSCRIPTION
+}
+
+enum ReportFormat {
+  PDF
+  EXCEL
+  CSV
+  JSON
+  HTML
+  EMAIL
+}
+
+enum ReportStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  FAILED
+  ARCHIVED
+}
+
+model ReportDelivery {
+  id       String   @id @default(cuid())
+  
+  report   Report   @relation(fields: [reportId], references: [id])
+  reportId String
+  
+  // Delivery Details
+  recipient    String
+  status       DeliveryStatus
+  deliveredAt  DateTime?
+  errorMessage String?
+  attempts     Int            @default(0)
+  
+  createdAt DateTime @default(now())
+  
+  @@map("report_deliveries")
+}
+
+enum DeliveryStatus {
+  PENDING
+  SENT
+  FAILED
+  BOUNCED
+  OPENED
+  CLICKED
+}
+
+model Insight {
+  id          String      @id @default(cuid())
+  title       String
+  description String
+  type        InsightType
+  
+  // AI Analysis
+  confidence   Float // 0-1 confidence score
+  significance Float // Statistical significance
+  aiModel      String? // Model used for generation
+  
+  // Data
+  metrics     Json   // Key metrics and values
+  trends      Json   // Trend analysis
+  anomalies   Json   // Detected anomalies
+  predictions Json   // Forecast data
+  
+  // Categorization
+  category    String?
+  priority    InsightPriority @default(MEDIUM)
+  status      InsightStatus   @default(ACTIVE)
+  
+  // User
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  
+  // Engagement
+  isRead       Boolean @default(false)
+  isBookmarked Boolean @default(false)
+  feedback     InsightFeedback?
+  
+  // Validity
+  expiresAt DateTime?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("insights")
+}
+
+enum InsightType {
+  TREND_DETECTION
+  ANOMALY_ALERT
+  FORECAST
+  CORRELATION
+  PERFORMANCE_ISSUE
+  OPTIMIZATION_OPPORTUNITY
+  BUSINESS_RECOMMENDATION
+  RISK_ASSESSMENT
+  SEASONALITY
+  USER_BEHAVIOR
+}
+
+enum InsightPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum InsightStatus {
+  ACTIVE
+  ACKNOWLEDGED
+  RESOLVED
+  DISMISSED
+  EXPIRED
+}
+
+enum InsightFeedback {
+  HELPFUL
+  NOT_HELPFUL
+  INACCURATE
+  IRRELEVANT
+}
+
+model AlertRule {
   id          String    @id @default(cuid())
   name        String
   description String?
-  slug        String    @unique
-  ownerId     String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
   
-  members     WorkspaceMember[]
-  projects    Project[]
+  // Rule Configuration
+  metric      String    // Metric to monitor
+  condition   Json      // Alert conditions
+  threshold   Float     // Alert threshold
+  frequency   Int       // Check frequency in minutes
   
-  @@map("workspaces")
-}
-
-model WorkspaceMember {
-  id          String        @id @default(cuid())
-  workspaceId String
-  userId      String
-  role        String        @default("MEMBER")
-  joinedAt    DateTime      @default(now())
-  
-  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  @@unique([workspaceId, userId])
-  @@map("workspace_members")
-}
-
-model Project {
-  id          String    @id @default(cuid())
-  name        String
-  description String?
-  workspaceId String
-  ownerId     String
-  isPublic    Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  
-  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  owner       User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  
-  @@map("projects")
-}
-
-// Real-time collaboration models
-model CollaborationSession {
-  id          String    @id @default(cuid())
-  workspaceId String
-  type        String    // "shared_workspace", "collaborative_editing", "presence"
-  createdBy   String
+  // Status
   isActive    Boolean   @default(true)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  lastCheck   DateTime?
+  lastTrigger DateTime?
+  triggerCount Int      @default(0)
   
-  participants    CollaborationParticipant[]
-  presenceUpdates PresenceUpdate[]
+  // User
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
   
-  @@map("collaboration_sessions")
+  // Notifications
+  channels    AlertChannel[]
+  alerts      Alert[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("alert_rules")
 }
 
-model CollaborationParticipant {
-  id          String    @id @default(cuid())
-  sessionId   String
-  userId      String
-  permissions String    @default("write") // "read", "write", "admin"
-  joinedAt    DateTime  @default(now())
-  leftAt      DateTime?
+model AlertChannel {
+  id     String      @id @default(cuid())
+  type   ChannelType
+  config Json        // Channel-specific config (email, webhook URL, etc.)
   
-  session     CollaborationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  user        User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Alert Rule
+  alertRule   AlertRule @relation(fields: [alertRuleId], references: [id])
+  alertRuleId String
   
-  @@unique([sessionId, userId])
-  @@map("collaboration_participants")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("alert_channels")
 }
 
-model PresenceUpdate {
-  id            String    @id @default(cuid())
-  userId        String
-  workspaceId   String
-  sessionId     String?
-  status        String    // "online", "offline", "away", "busy"
-  currentFile   String?
-  cursorPosition String?   // JSON string: { "line": number, "column": number }
-  updatedAt     DateTime  @default(now())
-  
-  user          User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  session       CollaborationSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
-  
-  @@unique([userId, workspaceId])
-  @@map("presence_updates")
+enum ChannelType {
+  EMAIL
+  SMS
+  SLACK
+  DISCORD
+  WEBHOOK
+  PUSH_NOTIFICATION
+  TEAMS
 }
 
-// Note: SQLite doesn't support enums, so we use string constants
-// Valid UserRole values: "USER", "ADMIN", "MODERATOR"
-// Valid WorkspaceRole values: "OWNER", "ADMIN", "MEMBER", "VIEWER"
-// Valid CollaborationType values: "shared_workspace", "collaborative_editing", "presence"
-// Valid PresenceStatus values: "online", "offline", "away", "busy"
-// Valid Permissions values: "read", "write", "admin"
+model Alert {
+  id      String      @id @default(cuid())
+  level   AlertLevel
+  message String
+  
+  // Rule Reference
+  alertRule   AlertRule @relation(fields: [alertRuleId], references: [id])
+  alertRuleId String
+  
+  // Data
+  triggerData Json // Data that triggered the alert
+  
+  // Status
+  status        AlertStatus @default(ACTIVE)
+  acknowledgedAt DateTime?
+  resolvedAt     DateTime?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("alerts")
+}
+
+enum AlertLevel {
+  INFO
+  WARNING
+  ERROR
+  CRITICAL
+}
+
+enum AlertStatus {
+  ACTIVE
+  ACKNOWLEDGED
+  RESOLVED
+  DISMISSED
+}
+
+model AnalyticsSession {
+  id         String   @id @default(cuid())
+  sessionId  String   @unique
+  
+  // User
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+  
+  // Session Data
+  ipAddress   String?
+  userAgent   String?
+  referrer    String?
+  country     String?
+  city        String?
+  device      String?
+  browser     String?
+  os          String?
+  
+  // Timing
+  startTime DateTime
+  endTime   DateTime?
+  duration  Int?     // seconds
+  
+  // Activity
+  pageViews Int @default(0)
+  events    AnalyticsEvent[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("analytics_sessions")
+}
+
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  name      String
+  category  String?
+  action    String?
+  label     String?
+  value     Float?
+  
+  // Context
+  page      String?
+  element   String?
+  metadata  Json?
+  
+  // Session
+  session   AnalyticsSession @relation(fields: [sessionId], references: [id])
+  sessionId String
+  
+  timestamp DateTime @default(now())
+  
+  @@map("analytics_events")
+}
+
+model Annotation {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  
+  // Positioning
+  timestamp DateTime
+  dashboard String? // Dashboard ID
+  widget    String? // Widget ID
+  
+  // User
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  
+  // Metadata
+  color String @default("#007bff")
+  icon  String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("annotations")
+}
+
+model DashboardShare {
+  id           String    @id @default(cuid())
+  token        String    @unique
+  expiresAt    DateTime?
+  isPublic     Boolean   @default(false)
+  permissions  Json      // View, edit permissions
+  
+  dashboard   Dashboard @relation(fields: [dashboardId], references: [id])
+  dashboardId String
+  
+  // Usage
+  viewCount   Int @default(0)
+  lastAccessed DateTime?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("dashboard_shares")
+}

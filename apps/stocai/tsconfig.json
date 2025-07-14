@@ -14,6 +14,7 @@
     "jsx": "preserve",
     "incremental": true,
     "baseUrl": ".",
+    "rootDir": ".",
     "plugins": [
       {
         "name": "next"
@@ -33,7 +34,8 @@
     ".next/types/**/*.ts",
     "app/**/*",
     "lib/**/*",
-    "tests/**/*"
+    "tests/**/*",
+    "src/**/*"
   ],
   "exclude": ["node_modules", "packages"]
 }

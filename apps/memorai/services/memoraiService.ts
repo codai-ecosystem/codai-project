@@ -1,3 +1,4 @@
+import { AdvancedMemorySearch, SearchableMemory } from '../lib/search/AdvancedMemorySearch'
 // import { EcosystemService } from '@codai/shared-services'
 
 export interface Memory {
@@ -95,9 +96,11 @@ class MemorAIService {
   private memories: Map<string, Memory> = new Map()
   private connections: Map<string, MemoryConnection> = new Map()
   private insights: MemoryInsight[] = []
+  private advancedSearch: AdvancedMemorySearch
 
   private constructor() {
     // this.ecosystemService = EcosystemService.getInstance()
+    this.advancedSearch = new AdvancedMemorySearch()
     this.initializeMockData()
   }
 
@@ -418,80 +421,86 @@ class MemorAIService {
 
   // Search and Discovery
   public async searchMemories(searchQuery: SearchQuery): Promise<any[]> {
-    let results = Array.from(this.memories.values())
-
-    // Text search
-    if (searchQuery.query) {
-      const query = searchQuery.query.toLowerCase()
-      results = results.filter(memory =>
-        memory.title.toLowerCase().includes(query) ||
-        memory.content.toLowerCase().includes(query) ||
-        memory.tags.some(tag => tag.toLowerCase().includes(query))
-      )
-    }
-
-    // Apply filters
-    if (searchQuery.filters) {
-      const { type, tags, dateRange, importance } = searchQuery.filters
-
-      if (type && type.length > 0) {
-        results = results.filter(memory => type.includes(memory.type))
-      }
-
-      if (tags && tags.length > 0) {
-        results = results.filter(memory =>
-          tags.some(tag => memory.tags.includes(tag))
-        )
-      }
-
-      if (dateRange) {
-        const start = new Date(dateRange.start)
-        const end = new Date(dateRange.end)
-        results = results.filter(memory => {
-          const created = new Date(memory.timestamps.created)
-          return created >= start && created <= end
-        })
-      }
-
-      if (importance) {
-        results = results.filter(memory =>
-          memory.importance >= importance.min && memory.importance <= importance.max
-        )
-      }
-    }
-
-    // Sort by relevance (simplified - in reality would use embeddings)
-    results.sort((a, b) => {
-      const aScore = a.importance * (a.usage.accessCount + 1)
-      const bScore = b.importance * (b.usage.accessCount + 1)
-      return bScore - aScore
-    })
-
-    // Update search counts
-    results.forEach(memory => {
-      memory.usage.searchCount++
-    })
-
-    // Apply limit
-    if (searchQuery.limit) {
-      results = results.slice(0, searchQuery.limit)
-    }
-
-    // Transform to SearchResult format
-    const searchResults = results.map(memory => ({
+    // Convert memories to SearchableMemory format
+    const searchableMemories: SearchableMemory[] = Array.from(this.memories.values()).map(memory => ({
       id: memory.id,
-      title: memory.title,
-      content: memory.content,
-      type: memory.type,
-      importance: memory.importance,
-      relevanceScore: Math.random() * 0.5 + 0.5, // Mock relevance score
-      tags: memory.tags,
-      connections: memory.connections.length,
-      timestamp: memory.timestamps.created,
-      highlights: [memory.content.substring(0, 100) + '...'] // Mock highlights
+      content: `${memory.title} ${memory.content} ${memory.tags.join(' ')}`,
+      agentId: 'memorai-user', // Default agent ID
+      metadata: {
+        entityType: memory.type,
+        tags: memory.tags,
+        createdAt: memory.timestamps.created,
+        lastAccessedAt: memory.timestamps.lastAccessed,
+        importance: memory.importance,
+        emotionalWeight: memory.importance * 0.8
+      }
     }))
 
-    return searchResults
+    // Use advanced search with proper options
+    const searchOptions = {
+      fuzzyThreshold: searchQuery.mode === 'fuzzy' ? 0.4 : 0.2,
+      maxResults: searchQuery.limit || 50,
+      includeScore: true,
+      sortBy: 'relevance' as const,
+      filterBy: searchQuery.filters ? {
+        entityType: searchQuery.filters.type?.[0],
+        tags: searchQuery.filters.tags,
+        dateRange: searchQuery.filters.dateRange ? {
+          start: new Date(searchQuery.filters.dateRange.start),
+          end: new Date(searchQuery.filters.dateRange.end)
+        } : undefined,
+        importanceRange: searchQuery.filters.importance ? {
+          min: searchQuery.filters.importance.min,
+          max: searchQuery.filters.importance.max
+        } : undefined
+      } : undefined
+    }
+
+    const searchResult = await this.advancedSearch.search(searchQuery.query, searchableMemories, searchOptions)
+
+    // Transform back to expected format and update search counts
+    const transformedResults = searchResult.memories.map(result => {
+      const originalMemory = this.memories.get(result.id)
+      if (originalMemory) {
+        originalMemory.usage.searchCount++
+
+        return {
+          id: result.id,
+          title: originalMemory.title,
+          content: originalMemory.content,
+          type: originalMemory.type,
+          importance: originalMemory.importance,
+          relevanceScore: result.relevance || 0.5,
+          tags: originalMemory.tags,
+          connections: originalMemory.connections.length,
+          timestamp: originalMemory.timestamps.created,
+          highlights: this.generateHighlights(searchQuery.query, originalMemory.content)
+        }
+      }
+      return null
+    }).filter(Boolean)
+
+    return transformedResults
+  }
+
+  private generateHighlights(query: string, content: string): string[] {
+    if (!query || !content) return []
+
+    const words = query.toLowerCase().split(' ')
+    const sentences = content.split('. ')
+    const highlights: string[] = []
+
+    for (const sentence of sentences) {
+      const lowerSentence = sentence.toLowerCase()
+      for (const word of words) {
+        if (lowerSentence.includes(word) && highlights.length < 3) {
+          highlights.push(sentence.trim() + (sentence.endsWith('.') ? '' : '.'))
+          break
+        }
+      }
+    }
+
+    return highlights
   }
 
   // Knowledge Graph

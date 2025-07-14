@@ -1,32 +1,73 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// AJUTAI Support & Documentation System Database Schema
+// This schema supports tickets, knowledge base, chatbot, and documentation
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
-// NextAuth.js required models
+// User Management
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  avatar    String?
+  role      UserRole @default(USER)
+  language  String   @default("en")
+  timezone  String   @default("UTC")
+  
+  // Metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  lastSeen  DateTime?
+  isActive  Boolean  @default(true)
+  
+  // Preferences
+  emailNotifications    Boolean @default(true)
+  browserNotifications  Boolean @default(true)
+  preferredContactMethod ContactMethod @default(EMAIL)
+  
+  // Authentication
+  accounts      Account[]
+  sessions      Session[]
+  
+  // Support Relations
+  tickets       Ticket[]
+  ticketMessages TicketMessage[]
+  knowledgeBaseArticles KnowledgeBaseArticle[]
+  chatSessions  ChatSession[]
+  feedbacks     Feedback[]
+  
+  // Agent Relations (for support staff)
+  assignedTickets Ticket[] @relation("TicketAssignee")
+  agentProfile    AgentProfile?
+  
+  @@map("users")
+}
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String?
-  access_token      String?
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String?
+  id_token          String? @db.Text
   session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
   @@unique([provider, providerAccountId])
+  @@map("accounts")
 }
 
 model Session {
@@ -35,164 +76,401 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("sessions")
 }
 
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
-  emailVerified DateTime?
-  image         String?
-  password      String?   // For credentials-based authentication
-  role          String    @default("USER")
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+// Agent Profiles for Support Staff
+model AgentProfile {
+  id          String @id @default(cuid())
+  userId      String @unique
+  department  String
+  expertise   String[]
+  languages   String[]
+  workingHours Json // { start: "09:00", end: "17:00", timezone: "UTC", days: [1,2,3,4,5] }
+  maxTickets  Int    @default(10)
+  autoAssign  Boolean @default(true)
   
-  // Authentication relations
-  accounts      Account[]
-  sessions      Session[]
+  // Performance Metrics
+  averageResponseTime Int? // in minutes
+  resolutionRate      Float? // percentage
+  customerSatisfaction Float? // average rating
+  totalTicketsResolved Int @default(0)
   
-  // User preferences and settings
-  preferences   UserPreferences?
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   
-  // Collaboration features
-  workspaceMembers WorkspaceMember[]
-  projects         Project[]
-  collaborationParticipants CollaborationParticipant[]
-  presenceUpdates PresenceUpdate[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   
-  @@map("users")
+  @@map("agent_profiles")
 }
 
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
+// Support Ticket System
+model Ticket {
+  id          String       @id @default(cuid())
+  title       String
+  description String       @db.Text
+  status      TicketStatus @default(OPEN)
+  priority    TicketPriority @default(MEDIUM)
+  category    String?
+  tags        String[]
+  
+  // Relations
+  userId     String
+  assigneeId String?
+  user       User @relation(fields: [userId], references: [id])
+  assignee   User? @relation("TicketAssignee", fields: [assigneeId], references: [id])
+  
+  // Metadata
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  closedAt     DateTime?
+  dueDate      DateTime?
+  
+  // SLA Tracking
+  firstResponseAt DateTime?
+  resolvedAt      DateTime?
+  escalatedAt     DateTime?
+  
+  // Attachments and Messages
+  attachments Json[] // { filename, url, size, type }
+  messages    TicketMessage[]
+  
+  // Satisfaction
+  feedback    Feedback?
+  
+  @@map("tickets")
 }
 
-// User preferences model for personalization
-model UserPreferences {
-  id               String  @id @default(cuid())
-  userId           String  @unique
-  theme            String  @default("system") // light, dark, system
-  language         String  @default("en")
-  timezone         String  @default("UTC")
-  emailNotifications Boolean @default(true)
-  pushNotifications  Boolean @default(true)
+model TicketMessage {
+  id        String      @id @default(cuid())
+  content   String      @db.Text
+  type      MessageType @default(MESSAGE)
+  isInternal Boolean    @default(false)
   
-  // AI preferences
-  aiProvider       String  @default("openai")
-  aiModel          String  @default("gpt-4")
-  aiTemperature    Float   @default(0.7)
+  // Relations
+  ticketId String
+  userId   String
+  ticket   Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  user     User   @relation(fields: [userId], references: [id])
   
-  // UI preferences
-  sidebarCollapsed Boolean @default(false)
-  compactMode      Boolean @default(false)
+  // Metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  editedAt  DateTime?
   
-  user             User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Attachments
+  attachments Json[] // { filename, url, size, type }
   
-  @@map("user_preferences")
+  @@map("ticket_messages")
 }
 
-// Collaboration models
-model Workspace {
-  id          String    @id @default(cuid())
+// Knowledge Base System
+model KnowledgeBaseCategory {
+  id          String @id @default(cuid())
   name        String
+  slug        String @unique
   description String?
-  slug        String    @unique
-  ownerId     String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  icon        String?
+  order       Int    @default(0)
+  isPublic    Boolean @default(true)
   
-  members     WorkspaceMember[]
-  projects    Project[]
+  // Hierarchy
+  parentId String?
+  parent   KnowledgeBaseCategory? @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children KnowledgeBaseCategory[] @relation("CategoryHierarchy")
   
-  @@map("workspaces")
+  // Relations
+  articles KnowledgeBaseArticle[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("kb_categories")
 }
 
-model WorkspaceMember {
-  id          String        @id @default(cuid())
-  workspaceId String
-  userId      String
-  role        String        @default("MEMBER")
-  joinedAt    DateTime      @default(now())
+model KnowledgeBaseArticle {
+  id          String @id @default(cuid())
+  title       String
+  slug        String @unique
+  content     String @db.Text
+  excerpt     String?
+  status      ArticleStatus @default(DRAFT)
+  language    String @default("en")
   
-  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // SEO and Metadata
+  metaTitle       String?
+  metaDescription String?
+  keywords        String[]
   
-  @@unique([workspaceId, userId])
-  @@map("workspace_members")
+  // Content Management
+  version     Int    @default(1)
+  publishedAt DateTime?
+  
+  // Relations
+  categoryId String
+  authorId   String
+  category   KnowledgeBaseCategory @relation(fields: [categoryId], references: [id])
+  author     User @relation(fields: [authorId], references: [id])
+  
+  // Engagement
+  views      Int @default(0)
+  likes      Int @default(0)
+  dislikes   Int @default(0)
+  
+  // Search and Tagging
+  tags       String[]
+  searchVector String? // For full-text search
+  
+  // Attachments and Media
+  attachments Json[] // { filename, url, size, type, caption }
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("kb_articles")
 }
 
-model Project {
-  id          String    @id @default(cuid())
-  name        String
-  description String?
-  workspaceId String
-  ownerId     String
-  isPublic    Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+// AI Chatbot System
+model ChatSession {
+  id        String   @id @default(cuid())
+  userId    String?
+  sessionId String   @unique
+  language  String   @default("en")
+  context   Json?    // Conversation context and metadata
   
-  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  owner       User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  // Session Management
+  startedAt DateTime @default(now())
+  endedAt   DateTime?
+  isActive  Boolean  @default(true)
   
-  @@map("projects")
+  // Relations
+  user     User? @relation(fields: [userId], references: [id])
+  messages ChatMessage[]
+  
+  // Analytics
+  totalMessages    Int @default(0)
+  averageResponseTime Float? // in seconds
+  satisfactionRating Int? // 1-5 scale
+  
+  @@map("chat_sessions")
 }
 
-// Real-time collaboration models
-model CollaborationSession {
-  id          String    @id @default(cuid())
-  workspaceId String
-  type        String    // "shared_workspace", "collaborative_editing", "presence"
-  createdBy   String
-  isActive    Boolean   @default(true)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+model ChatMessage {
+  id        String      @id @default(cuid())
+  content   String      @db.Text
+  role      MessageRole // USER, ASSISTANT, SYSTEM
+  type      String      @default("text") // text, image, file, action
   
-  participants    CollaborationParticipant[]
-  presenceUpdates PresenceUpdate[]
+  // AI Metadata
+  model     String? // Which AI model was used
+  tokens    Int? // Token count for the message
+  confidence Float? // AI confidence score
+  intent    String? // Detected user intent
+  entities  Json? // Extracted entities
   
-  @@map("collaboration_sessions")
+  // Relations
+  sessionId String
+  session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  
+  // Metadata
+  createdAt DateTime @default(now())
+  
+  // References
+  referencedArticles String[] // KB article IDs that were referenced
+  escalatedToTicket  String? // Ticket ID if escalated
+  
+  @@map("chat_messages")
 }
 
-model CollaborationParticipant {
-  id          String    @id @default(cuid())
-  sessionId   String
-  userId      String
-  permissions String    @default("write") // "read", "write", "admin"
-  joinedAt    DateTime  @default(now())
-  leftAt      DateTime?
+// Documentation System
+model Documentation {
+  id          String @id @default(cuid())
+  title       String
+  slug        String @unique
+  content     String @db.Text
+  type        DocumentationType
+  language    String @default("en")
+  version     String @default("1.0.0")
   
-  session     CollaborationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  user        User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // API Documentation specific
+  endpoint    String?
+  method      String? // GET, POST, PUT, DELETE
+  parameters  Json?
+  examples    Json?
   
-  @@unique([sessionId, userId])
-  @@map("collaboration_participants")
+  // Tutorial specific
+  difficulty  DifficultyLevel?
+  duration    Int? // in minutes
+  steps       Json? // Step-by-step instructions
+  
+  // Status and Visibility
+  status      DocumentationStatus @default(DRAFT)
+  isPublic    Boolean @default(false)
+  
+  // Organization
+  categoryId  String?
+  order       Int @default(0)
+  tags        String[]
+  
+  // Engagement
+  views       Int @default(0)
+  rating      Float? // Average user rating
+  ratingCount Int @default(0)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  publishedAt DateTime?
+  
+  @@map("documentation")
 }
 
-model PresenceUpdate {
-  id            String    @id @default(cuid())
-  userId        String
-  workspaceId   String
-  sessionId     String?
-  status        String    // "online", "offline", "away", "busy"
-  currentFile   String?
-  cursorPosition String?   // JSON string: { "line": number, "column": number }
-  updatedAt     DateTime  @default(now())
+// Feedback and Analytics
+model Feedback {
+  id      String       @id @default(cuid())
+  type    FeedbackType
+  rating  Int          // 1-5 scale
+  comment String?      @db.Text
   
-  user          User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  session       CollaborationSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  // Relations
+  userId   String?
+  ticketId String? @unique
+  user     User?   @relation(fields: [userId], references: [id])
+  ticket   Ticket? @relation(fields: [ticketId], references: [id])
   
-  @@unique([userId, workspaceId])
-  @@map("presence_updates")
+  // Context
+  page     String? // Which page/feature the feedback is about
+  metadata Json?   // Additional context data
+  
+  createdAt DateTime @default(now())
+  
+  @@map("feedback")
 }
 
-// Note: SQLite doesn't support enums, so we use string constants
-// Valid UserRole values: "USER", "ADMIN", "MODERATOR"
-// Valid WorkspaceRole values: "OWNER", "ADMIN", "MEMBER", "VIEWER"
-// Valid CollaborationType values: "shared_workspace", "collaborative_editing", "presence"
-// Valid PresenceStatus values: "online", "offline", "away", "busy"
-// Valid Permissions values: "read", "write", "admin"
+model Analytics {
+  id     String        @id @default(cuid())
+  type   AnalyticsType
+  event  String        // Event name
+  data   Json          // Event data
+  
+  // Context
+  userId    String?
+  sessionId String?
+  page      String?
+  userAgent String?
+  ipAddress String?
+  
+  createdAt DateTime @default(now())
+  
+  @@map("analytics")
+}
+
+// System Configuration
+model SystemConfig {
+  id    String @id @default(cuid())
+  key   String @unique
+  value Json
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("system_config")
+}
+
+// Enums
+enum UserRole {
+  USER
+  AGENT
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum ContactMethod {
+  EMAIL
+  PHONE
+  CHAT
+  TICKET
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_FOR_CUSTOMER
+  WAITING_FOR_AGENT
+  RESOLVED
+  CLOSED
+  CANCELLED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+  CRITICAL
+}
+
+enum MessageType {
+  MESSAGE
+  NOTE
+  STATUS_CHANGE
+  ASSIGNMENT
+  ESCALATION
+  RESOLUTION
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
+}
+
+enum ArticleStatus {
+  DRAFT
+  REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+enum DocumentationType {
+  API_REFERENCE
+  TUTORIAL
+  GUIDE
+  FAQ
+  CHANGELOG
+  INTEGRATION
+}
+
+enum DocumentationStatus {
+  DRAFT
+  REVIEW
+  PUBLISHED
+  DEPRECATED
+}
+
+enum DifficultyLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  EXPERT
+}
+
+enum FeedbackType {
+  TICKET_SATISFACTION
+  CHAT_SATISFACTION
+  DOCUMENTATION_FEEDBACK
+  FEATURE_REQUEST
+  BUG_REPORT
+  GENERAL
+}
+
+enum AnalyticsType {
+  PAGE_VIEW
+  BUTTON_CLICK
+  FORM_SUBMIT
+  SEARCH_QUERY
+  DOWNLOAD
+  API_CALL
+  ERROR
+  PERFORMANCE
+}

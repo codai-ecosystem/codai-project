@@ -1,198 +1,177 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
+// Prisma database schema for MARKETAI - Agent Marketplace Platform
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-// NextAuth.js required models
-model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String?
-  access_token      String?
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?
-  session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
   id            String    @id @default(cuid())
-  name          String?
   email         String    @unique
-  emailVerified DateTime?
+  name          String?
   image         String?
-  password      String?   // For credentials-based authentication
-  role          String    @default("USER")
+  role          UserRole  @default(USER)
+  verified      Boolean   @default(false)
+  stripeCustomerId String?
+  
+  // Relations
+  agents        Agent[]
+  purchases     Purchase[]
+  reviews       Review[]
+  subscriptions Subscription[]
+  
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  
-  // Authentication relations
-  accounts      Account[]
-  sessions      Session[]
-  
-  // User preferences and settings
-  preferences   UserPreferences?
-  
-  // Collaboration features
-  workspaceMembers WorkspaceMember[]
-  projects         Project[]
-  collaborationParticipants CollaborationParticipant[]
-  presenceUpdates PresenceUpdate[]
   
   @@map("users")
 }
 
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
+model Agent {
+  id            String      @id @default(cuid())
+  name          String
+  description   String
+  version       String      @default("1.0.0")
+  price         Decimal     @db.Decimal(10, 2)
+  category      String
+  tags          String[]
+  
+  // Agent verification and quality
+  status        AgentStatus @default(PENDING)
+  qualityScore  Float       @default(0.0)
+  downloads     Int         @default(0)
+  rating        Float       @default(0.0)
+  
+  // Files and metadata
+  fileUrl       String
+  fileSize      Int
+  fileHash      String      @unique
+  
+  // Security scanning results
+  securityScan  Json?
+  lastScanned   DateTime?
+  
+  // Performance benchmarks
+  benchmarkResults Json?
+  lastBenchmarked  DateTime?
+  
+  // Author
+  authorId      String
+  author        User        @relation(fields: [authorId], references: [id])
+  
+  // Relations
+  purchases     Purchase[]
+  reviews       Review[]
+  
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  
+  @@map("agents")
 }
 
-// User preferences model for personalization
-model UserPreferences {
-  id               String  @id @default(cuid())
-  userId           String  @unique
-  theme            String  @default("system") // light, dark, system
-  language         String  @default("en")
-  timezone         String  @default("UTC")
-  emailNotifications Boolean @default(true)
-  pushNotifications  Boolean @default(true)
+model Purchase {
+  id              String        @id @default(cuid())
+  userId          String
+  agentId         String
+  amount          Decimal       @db.Decimal(10, 2)
+  stripePaymentId String?
+  blockchainTxId  String?
+  status          PaymentStatus @default(PENDING)
   
-  // AI preferences
-  aiProvider       String  @default("openai")
-  aiModel          String  @default("gpt-4")
-  aiTemperature    Float   @default(0.7)
+  // Revenue sharing
+  authorRevenue   Decimal       @db.Decimal(10, 2)
+  platformRevenue Decimal       @db.Decimal(10, 2)
   
-  // UI preferences
-  sidebarCollapsed Boolean @default(false)
-  compactMode      Boolean @default(false)
+  // Relations
+  user            User          @relation(fields: [userId], references: [id])
+  agent           Agent         @relation(fields: [agentId], references: [id])
   
-  user             User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
   
-  @@map("user_preferences")
+  @@unique([userId, agentId])
+  @@map("purchases")
 }
 
-// Collaboration models
-model Workspace {
-  id          String    @id @default(cuid())
-  name        String
-  description String?
-  slug        String    @unique
-  ownerId     String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+model Review {
+  id        String   @id @default(cuid())
+  userId    String
+  agentId   String
+  rating    Int      // 1-5 stars
+  comment   String?
+  helpful   Int      @default(0)
   
-  members     WorkspaceMember[]
-  projects    Project[]
+  // Relations
+  user      User     @relation(fields: [userId], references: [id])
+  agent     Agent    @relation(fields: [agentId], references: [id])
   
-  @@map("workspaces")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([userId, agentId])
+  @@map("reviews")
 }
 
-model WorkspaceMember {
-  id          String        @id @default(cuid())
-  workspaceId String
-  userId      String
-  role        String        @default("MEMBER")
-  joinedAt    DateTime      @default(now())
+model Subscription {
+  id              String           @id @default(cuid())
+  userId          String
+  plan            SubscriptionPlan
+  status          SubscriptionStatus @default(ACTIVE)
+  stripeSubId     String?          @unique
+  currentPeriodEnd DateTime?
   
-  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Relations
+  user            User             @relation(fields: [userId], references: [id])
   
-  @@unique([workspaceId, userId])
-  @@map("workspace_members")
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  
+  @@map("subscriptions")
 }
 
-model Project {
-  id          String    @id @default(cuid())
-  name        String
-  description String?
-  workspaceId String
-  ownerId     String
-  isPublic    Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+model Analytics {
+  id          String   @id @default(cuid())
+  agentId     String?
+  eventType   String   // download, view, purchase, review
+  metadata    Json?
+  timestamp   DateTime @default(now())
   
-  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  owner       User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  
-  @@map("projects")
+  @@map("analytics")
 }
 
-// Real-time collaboration models
-model CollaborationSession {
-  id          String    @id @default(cuid())
-  workspaceId String
-  type        String    // "shared_workspace", "collaborative_editing", "presence"
-  createdBy   String
-  isActive    Boolean   @default(true)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  
-  participants    CollaborationParticipant[]
-  presenceUpdates PresenceUpdate[]
-  
-  @@map("collaboration_sessions")
+// Enums
+enum UserRole {
+  USER
+  DEVELOPER
+  ADMIN
 }
 
-model CollaborationParticipant {
-  id          String    @id @default(cuid())
-  sessionId   String
-  userId      String
-  permissions String    @default("write") // "read", "write", "admin"
-  joinedAt    DateTime  @default(now())
-  leftAt      DateTime?
-  
-  session     CollaborationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  user        User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  @@unique([sessionId, userId])
-  @@map("collaboration_participants")
+enum AgentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUSPENDED
 }
 
-model PresenceUpdate {
-  id            String    @id @default(cuid())
-  userId        String
-  workspaceId   String
-  sessionId     String?
-  status        String    // "online", "offline", "away", "busy"
-  currentFile   String?
-  cursorPosition String?   // JSON string: { "line": number, "column": number }
-  updatedAt     DateTime  @default(now())
-  
-  user          User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  session       CollaborationSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
-  
-  @@unique([userId, workspaceId])
-  @@map("presence_updates")
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
 }
 
-// Note: SQLite doesn't support enums, so we use string constants
-// Valid UserRole values: "USER", "ADMIN", "MODERATOR"
-// Valid WorkspaceRole values: "OWNER", "ADMIN", "MEMBER", "VIEWER"
-// Valid CollaborationType values: "shared_workspace", "collaborative_editing", "presence"
-// Valid PresenceStatus values: "online", "offline", "away", "busy"
-// Valid Permissions values: "read", "write", "admin"
+enum SubscriptionPlan {
+  FREE
+  BASIC
+  PRO
+  ENTERPRISE
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  PAST_DUE
+  UNPAID
+}

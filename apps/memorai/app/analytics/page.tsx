@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import MemorAILayout from '../../components/layout/MemorAILayout'
+import MemoryAnalyticsDashboard from '../../components/analytics/MemoryAnalyticsDashboard'
 import { MemoryPerformanceChart } from '../../components/dashboard/DashboardComponents'
 import MemorAIService from '../../services/memoraiService'
 import {
@@ -85,7 +86,7 @@ interface AnalyticsData {
 export default function AnalyticsPage() {
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null)
   const [selectedTimeRange, setSelectedTimeRange] = useState<'7d' | '30d' | '90d' | '1y'>('30d')
-  const [selectedTab, setSelectedTab] = useState<'overview' | 'memories' | 'connections' | 'search' | 'insights'>('overview')
+  const [selectedTab, setSelectedTab] = useState<'overview' | 'dashboard' | 'memories' | 'connections' | 'search' | 'insights'>('overview')
   const [isLoading, setIsLoading] = useState(true)
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date())
 
@@ -100,6 +101,7 @@ export default function AnalyticsPage() {
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: BarChart3 },
+    { id: 'dashboard', label: 'Dashboard', icon: PieChart },
     { id: 'memories', label: 'Memories', icon: Brain },
     { id: 'connections', label: 'Connections', icon: Network },
     { id: 'search', label: 'Search', icon: Search },
@@ -244,8 +246,8 @@ export default function AnalyticsPage() {
                 key={tab.id}
                 onClick={() => setSelectedTab(tab.id as any)}
                 className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all ${selectedTab === tab.id
-                    ? 'bg-purple-500 text-white'
-                    : 'text-slate-300 hover:text-white hover:bg-white/10'
+                  ? 'bg-purple-500 text-white'
+                  : 'text-slate-300 hover:text-white hover:bg-white/10'
                   }`}
               >
                 <Icon className="w-4 h-4" />
@@ -262,6 +264,10 @@ export default function AnalyticsPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
+          {selectedTab === 'dashboard' && (
+            <MemoryAnalyticsDashboard />
+          )}
+
           {selectedTab === 'overview' && (
             <div className="space-y-6">
               {/* Key Metrics */}
@@ -343,10 +349,10 @@ export default function AnalyticsPage() {
                       <div key={type.type} className="flex items-center justify-between">
                         <div className="flex items-center space-x-3">
                           <div className={`w-3 h-3 rounded-full ${index === 0 ? 'bg-purple-400' :
-                              index === 1 ? 'bg-blue-400' :
-                                index === 2 ? 'bg-emerald-400' :
-                                  index === 3 ? 'bg-yellow-400' :
-                                    'bg-red-400'
+                            index === 1 ? 'bg-blue-400' :
+                              index === 2 ? 'bg-emerald-400' :
+                                index === 3 ? 'bg-yellow-400' :
+                                  'bg-red-400'
                             }`} />
                           <span className="text-slate-300 capitalize">{type.type}</span>
                         </div>
@@ -405,10 +411,10 @@ export default function AnalyticsPage() {
                       <div className="w-full h-2 bg-white/20 rounded-full overflow-hidden">
                         <div
                           className={`h-full rounded-full ${index === 0 ? 'bg-gradient-to-r from-purple-500 to-pink-500' :
-                              index === 1 ? 'bg-gradient-to-r from-blue-500 to-cyan-500' :
-                                index === 2 ? 'bg-gradient-to-r from-emerald-500 to-teal-500' :
-                                  index === 3 ? 'bg-gradient-to-r from-yellow-500 to-orange-500' :
-                                    'bg-gradient-to-r from-red-500 to-pink-500'
+                            index === 1 ? 'bg-gradient-to-r from-blue-500 to-cyan-500' :
+                              index === 2 ? 'bg-gradient-to-r from-emerald-500 to-teal-500' :
+                                index === 3 ? 'bg-gradient-to-r from-yellow-500 to-orange-500' :
+                                  'bg-gradient-to-r from-red-500 to-pink-500'
                             }`}
                           style={{ width: `${type.percentage}%` }}
                         />
@@ -596,8 +602,8 @@ export default function AnalyticsPage() {
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center space-x-3">
                         <div className={`w-3 h-3 rounded-full ${insight.impact === 'high' ? 'bg-red-400' :
-                            insight.impact === 'medium' ? 'bg-yellow-400' :
-                              'bg-emerald-400'
+                          insight.impact === 'medium' ? 'bg-yellow-400' :
+                            'bg-emerald-400'
                           }`} />
                         <span className={`text-sm font-medium ${getImpactColor(insight.impact)}`}>
                           {insight.impact.toUpperCase()} IMPACT

@@ -6,8 +6,9 @@ packages:
   - "apps/memorai/apps/*"
   - "apps/memorai/packages/*"
   
-  # Shared packages
+  # Shared packages and libraries
   - "packages/*"
+  - "libs/*"
   
   # Analytics and monitoring
   - "analytics"

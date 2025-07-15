@@ -10,7 +10,7 @@ describe('PREZENTAI Home Page', () => {
 
     it('should display hero section', () => {
         render(<Home />);
-        expect(screen.getByText(/Professional Portfolio/i)).toBeInTheDocument();
+        expect(screen.getByText(/AI Portfolio/i)).toBeInTheDocument();
     });
 
     it('should render navigation bar', () => {

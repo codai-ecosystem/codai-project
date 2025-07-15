@@ -3,6 +3,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import HomePage from '../app/page';
 
+// ConversAI Integration Tests
 describe('ConversAI Integration Tests', () => {
     beforeEach(() => {
         vi.clearAllMocks();
@@ -25,9 +26,12 @@ describe('ConversAI Integration Tests', () => {
     it('shows the sidebar navigation with email folders', () => {
         render(<HomePage />);
 
-        expect(screen.getByText('Compune Email')).toBeInTheDocument();
+        // Use getAllByText for "Compune Email" since it appears in both button and features list
+        const compuneEmailElements = screen.getAllByText('Compune Email');
+        expect(compuneEmailElements).toHaveLength(2); // Button and feature title
         expect(screen.getByText('Primite')).toBeInTheDocument();
-        expect(screen.getByText('Trimise')).toBeInTheDocument();
+        // Use getAllByText for "Trimise" since it appears in sidebar and stats
+        expect(screen.getAllByText('Trimise')).toHaveLength(2);
         expect(screen.getByText('Marcate')).toBeInTheDocument();
         expect(screen.getByText('Arhivate')).toBeInTheDocument();
         expect(screen.getByText('Șters')).toBeInTheDocument();
@@ -64,20 +68,21 @@ describe('ConversAI Integration Tests', () => {
     it('displays feature cards with AI capabilities', () => {
         render(<HomePage />);
 
-        expect(screen.getByText('Email Profesional')).toBeInTheDocument();
-        expect(screen.getByText('Asistență AI')).toBeInTheDocument();
-        expect(screen.getByText('Management Avansat')).toBeInTheDocument();
+        expect(screen.getByText('Dashboard Email')).toBeInTheDocument();
+        // Use getAllByText for "Compune Email" since it appears multiple times
+        expect(screen.getAllByText('Compune Email')).toHaveLength(2);
+        expect(screen.getByText('Analytics Email')).toBeInTheDocument();
 
-        expect(screen.getByText(/Adrese email @codai.ro/)).toBeInTheDocument();
-        expect(screen.getByText(/Compunere inteligentă/)).toBeInTheDocument();
-        expect(screen.getByText(/Organizare inteligentă/)).toBeInTheDocument();
+        expect(screen.getByText(/Gestionează toate emailurile/)).toBeInTheDocument();
+        expect(screen.getByText(/Scrie emailuri profesionale/)).toBeInTheDocument();
+        expect(screen.getByText(/Monitorizează performanța/)).toBeInTheDocument();
     });
 
     it('shows action buttons for getting started', () => {
         render(<HomePage />);
 
-        expect(screen.getByText('Începe să folosești ConversAI')).toBeInTheDocument();
-        expect(screen.getByText('Învață mai multe')).toBeInTheDocument();
+        expect(screen.getByText('Accesează Dashboard-ul')).toBeInTheDocument();
+        expect(screen.getByText('Compune primul email')).toBeInTheDocument();
     });
 
     it('displays header navigation icons', () => {

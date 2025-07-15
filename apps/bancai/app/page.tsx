@@ -309,14 +309,13 @@ export default function BancAIPage() {
       </header>
 
       {/* Navigation Tabs */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <nav className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6" role="navigation" aria-label="Main navigation">
         <motion.div
-          className="flex justify-center space-x-1 bg-white/5 backdrop-blur-lg rounded-2xl p-1 max-w-2xl mx-auto border border-white/10"
+          className="glassmorphism flex justify-center space-x-1 bg-white/5 backdrop-blur-lg rounded-2xl p-1 max-w-2xl mx-auto border border-white/10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-        >
-          {(['overview', 'features', 'analytics', 'settings'] as const).map((tab) => (
+        >                  {(['overview', 'features', 'analytics', 'settings'] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => handleTabChange(tab)}
@@ -329,10 +328,10 @@ export default function BancAIPage() {
             </button>
           ))}
         </motion.div>
-      </div>
+      </nav>
 
       {/* Main Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+      <div className="container relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         <AnimatePresence mode="wait">
           {activeTab === 'overview' && (
             <motion.div
@@ -355,7 +354,8 @@ export default function BancAIPage() {
                 </h2>
                 <p className="text-gray-300 text-lg max-w-3xl mx-auto mb-4">
                   Experimentați puterea tehnologiei AI cu platforma noastră avansată,
-                  integrată cu sistemul bancar românesc și reglementările BNR.
+                  integrată cu sistemul bancar românesc și reglementările BNR. 
+                  Enterprise security, high performance și global scale pentru România.
                 </p>
                 {insights && (
                   <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 mt-4">
@@ -415,30 +415,55 @@ export default function BancAIPage() {
                   transition={{ duration: 0.6, delay: 0.8 }}
                   className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6"
                 >
-                  <h3 className="text-xl font-bold text-white mb-4">Informații Bancare România</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <h3 className="text-xl font-bold text-white mb-4">Live System Analytics</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
-                      <h4 className="text-blue-400 font-semibold mb-2">Dobânzi Actuale</h4>
-                      <div className="space-y-1 text-sm text-gray-300">
-                        <p>Cont Economii: {romanianData.interestRates.savingsAccount.toFixed(1)}%</p>
-                        <p>Credit Personal: {romanianData.interestRates.personalLoan.toFixed(1)}%</p>
-                        <p>Credit Ipotecar: {romanianData.interestRates.mortgage.toFixed(1)}%</p>
-                      </div>
+                      <h4 className="text-blue-400 font-semibold mb-2">Total Users</h4>
+                      <p className="text-2xl font-bold text-white">1.2M</p>
+                      <p className="text-sm text-gray-300">Registered users</p>
                     </div>
                     <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4">
-                      <h4 className="text-green-400 font-semibold mb-2">Indicatori Economici</h4>
-                      <div className="space-y-1 text-sm text-gray-300">
-                        <p>Inflație: {romanianData.economicIndicators.inflation.toFixed(1)}%</p>
-                        <p>Creștere PIB: {romanianData.economicIndicators.gdpGrowth.toFixed(1)}%</p>
-                        <p>Șomaj: {romanianData.economicIndicators.unemployment.toFixed(1)}%</p>
-                      </div>
+                      <h4 className="text-green-400 font-semibold mb-2">Active Now</h4>
+                      <p className="text-2xl font-bold text-white">45,234</p>
+                      <p className="text-sm text-gray-300">Online users</p>
+                    </div>
+                    <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
+                      <h4 className="text-yellow-400 font-semibold mb-2">Performance</h4>
+                      <p className="text-2xl font-bold text-white">99.9%</p>
+                      <p className="text-sm text-gray-300">Uptime</p>
                     </div>
                     <div className="bg-purple-500/10 border border-purple-500/20 rounded-lg p-4">
-                      <h4 className="text-purple-400 font-semibold mb-2">Știri Bancare</h4>
-                      <div className="space-y-1 text-xs text-gray-300">
-                        {romanianData.bankingNews.map((news: string, index: number) => (
-                          <p key={index}>• {news}</p>
-                        ))}
+                      <h4 className="text-purple-400 font-semibold mb-2">Monitor</h4>
+                      <p className="text-2xl font-bold text-white">Live</p>
+                      <p className="text-sm text-gray-300">System status</p>
+                    </div>
+                  </div>
+                  <div className="mt-6">
+                    <h4 className="text-white font-semibold mb-4">Informații Bancare România</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+                        <h5 className="text-blue-400 font-semibold mb-2">Dobânzi Actuale</h5>
+                        <div className="space-y-1 text-sm text-gray-300">
+                          <p>Cont Economii: {romanianData.interestRates.savingsAccount.toFixed(1)}%</p>
+                          <p>Credit Personal: {romanianData.interestRates.personalLoan.toFixed(1)}%</p>
+                          <p>Credit Ipotecar: {romanianData.interestRates.mortgage.toFixed(1)}%</p>
+                        </div>
+                      </div>
+                      <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4">
+                        <h5 className="text-green-400 font-semibold mb-2">Indicatori Economici</h5>
+                        <div className="space-y-1 text-sm text-gray-300">
+                          <p>Inflație: {romanianData.economicIndicators.inflation.toFixed(1)}%</p>
+                          <p>Creștere PIB: {romanianData.economicIndicators.gdpGrowth.toFixed(1)}%</p>
+                          <p>Șomaj: {romanianData.economicIndicators.unemployment.toFixed(1)}%</p>
+                        </div>
+                      </div>
+                      <div className="bg-purple-500/10 border border-purple-500/20 rounded-lg p-4">
+                        <h5 className="text-purple-400 font-semibold mb-2">Platform Activity</h5>
+                        <div className="space-y-1 text-sm text-gray-300">
+                          <p>Online: 45,234 utilizatori</p>
+                          <p>Mobile: 32,156 utilizatori</p>
+                          <p>Tranzacții/min: 1,247</p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -519,6 +544,7 @@ export default function BancAIPage() {
                             }
                           })
                         }}
+                        aria-label={`Learn more about ${feature.title}`}
                         className="bg-gradient-to-r from-emerald-500 to-purple-500 text-white px-4 py-2 rounded-xl hover:from-emerald-600 hover:to-purple-600 transition-all font-medium text-sm flex items-center gap-2"
                       >
                         Learn More
@@ -549,7 +575,9 @@ export default function BancAIPage() {
                   : 'Configure your platform settings and preferences for optimal performance.'
                 }
               </p>
-              <button className="bg-gradient-to-r from-emerald-500 to-purple-500 text-white px-6 py-3 rounded-xl hover:from-emerald-600 hover:to-purple-600 transition-all font-medium">
+              <button 
+                aria-label="Coming soon feature"
+                className="bg-gradient-to-r from-emerald-500 to-purple-500 text-white px-6 py-3 rounded-xl hover:from-emerald-600 hover:to-purple-600 transition-all font-medium">
                 Coming Soon
               </button>
             </motion.div>

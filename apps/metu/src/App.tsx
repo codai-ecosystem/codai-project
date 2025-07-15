@@ -456,8 +456,8 @@ export default function MetuVoiceAI() {
                       className={`flex opacity-0 animate-message-in ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
                     >
                       <div className={`max-w-[70%] p-3 rounded-lg transition-all duration-300 hover:scale-102 ${message.type === 'user'
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-slate-700 text-slate-100'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-slate-700 text-slate-100'
                         }`}>
                         <div className="flex items-start gap-2">
                           <span className="text-lg">{message.type === 'user' ? '👤' : '🤖'}</span>

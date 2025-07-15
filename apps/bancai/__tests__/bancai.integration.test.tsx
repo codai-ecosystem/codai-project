@@ -16,10 +16,10 @@ describe('bancai Integration Tests', () => {
 
       // Navigate through all tabs using getByRole to avoid ambiguity
       const tabs = [
-        { name: 'Overview', role: 'button' },
-        { name: 'Features', role: 'button' },
-        { name: 'Analytics', role: 'button' },
-        { name: 'Settings', role: 'button' }
+        { name: 'Dashboard tab', role: 'button' },
+        { name: 'Features tab', role: 'button' },
+        { name: 'Analytics tab', role: 'button' },
+        { name: 'Settings tab', role: 'button' }
       ]
 
       for (const tabInfo of tabs) {
@@ -37,7 +37,7 @@ describe('bancai Integration Tests', () => {
 
       // Wait for initial stats to load
       await waitFor(() => {
-        expect(screen.getByText(/active users/i)).toBeInTheDocument()
+        expect(screen.getByText(/active now/i)).toBeInTheDocument()
       })
 
       // Wait for stats update (simulated)
@@ -54,12 +54,12 @@ describe('bancai Integration Tests', () => {
       // Switch to analytics
       await user.click(screen.getByText('Analytics'))
 
-      // Switch back to overview
-      await user.click(screen.getByText('Overview'))
+      // Switch back to dashboard
+      await user.click(screen.getByText('Dashboard'))
 
-      // Verify overview content is restored
+      // Verify dashboard content is restored
       await waitFor(() => {
-        expect(screen.getByText(/active users/i)).toBeInTheDocument()
+        expect(screen.getByText(/active now/i)).toBeInTheDocument()
       })
     })
   })
@@ -93,10 +93,10 @@ describe('bancai Integration Tests', () => {
 
       // Rapidly switch between tabs using getByRole
       const tabs = [
-        { name: 'Analytics', role: 'button' },
-        { name: 'Features', role: 'button' },
-        { name: 'Settings', role: 'button' },
-        { name: 'Overview', role: 'button' }
+        { name: 'Analytics tab', role: 'button' },
+        { name: 'Features tab', role: 'button' },
+        { name: 'Settings tab', role: 'button' },
+        { name: 'Dashboard tab', role: 'button' }
       ]
 
       for (const tabInfo of tabs) {

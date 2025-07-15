@@ -1,57 +1,30 @@
 import { render, screen } from '@testing-library/react';
+import { beforeEach, afterEach, describe, it, expect, vi } from 'vitest';
 
 import { logger } from '@/lib/logger';
 
 import { PWAProvider } from '../PWAProvider';
 
 // Mock the PWA hooks
-jest.mock('@/hooks/usePWA', () => ({
-  usePWA: jest.fn(() => ({
+vi.mock('../../hooks/usePWA', () => ({
+  usePWA: vi.fn(() => ({
     canInstall: true,
-    install: jest.fn(),
+    install: vi.fn(),
     isInstalling: false,
     isOnline: true,
   })),
-  useServiceWorker: jest.fn(() => ({
+  useServiceWorker: vi.fn(() => ({
     hasUpdate: false,
-    updateServiceWorker: jest.fn(),
-  })),
-}));
-
-// Mock the notification store
-jest.mock('@/stores/notifications', () => ({
-  useNotificationStore: jest.fn(() => ({
-    addNotification: jest.fn(),
-  })),
-}));
-
-// Mock the PWA hooks
-jest.mock('@/hooks/usePWA', () => ({
-  usePWA: jest.fn(() => ({
-    canInstall: true,
-    install: jest.fn(),
-    isInstalling: false,
-    isOnline: true,
-  })),
-  useServiceWorker: jest.fn(() => ({
-    hasUpdate: false,
-    updateServiceWorker: jest.fn(),
-  })),
-}));
-
-// Mock the notification store
-jest.mock('@/stores/notifications', () => ({
-  useNotificationStore: jest.fn(() => ({
-    addNotification: jest.fn(),
+    updateServiceWorker: vi.fn(),
   })),
 }));
 
 // Mock the logger
-jest.mock('@/lib/logger', () => ({
+vi.mock('@/lib/logger', () => ({
   logger: {
-    info: jest.fn(),
-    error: jest.fn(),
-    debug: jest.fn(),
+    info: vi.fn(),
+    error: vi.fn(),
+    debug: vi.fn(),
   },
 }));
 
@@ -59,6 +32,7 @@ describe('PWAProvider', () => {
   // Mock window properties for PWA support
   let originalIsSecureContext: boolean;
   let originalServiceWorker: any;
+  
   beforeEach(() => {
     // Store original values
     originalIsSecureContext = window.isSecureContext;
@@ -71,11 +45,11 @@ describe('PWAProvider', () => {
     window.isSecureContext = true;
     // @ts-ignore - mock serviceWorker
     navigator.serviceWorker = {
-      addEventListener: jest.fn(),
-      register: jest.fn().mockResolvedValue({
+      addEventListener: vi.fn(),
+      register: vi.fn().mockResolvedValue({
         scope: '/',
         waiting: null,
-        update: jest.fn().mockResolvedValue(undefined),
+        update: vi.fn().mockResolvedValue(undefined),
       }),
     };
   });
@@ -86,7 +60,7 @@ describe('PWAProvider', () => {
     // @ts-ignore - restore serviceWorker
     navigator.serviceWorker = originalServiceWorker;
     document.head.innerHTML = '';
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should render children and PWA components when supported', () => {
@@ -120,6 +94,7 @@ describe('PWAProvider', () => {
     // PWA installer should not be rendered
     expect(screen.queryByTestId('pwa-installer')).not.toBeInTheDocument();
   });
+  
   it('should only render children when PWA is not supported', () => {
     // Mock PWA not supported
     window.isSecureContext = false;

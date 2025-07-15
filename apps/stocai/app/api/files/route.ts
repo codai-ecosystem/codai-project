@@ -8,56 +8,65 @@ const supabase = createClient(
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
-    const { searchParams } = new URL(request.url)
+    const url = new URL(request.url || '', 'http://localhost')
+    const { searchParams } = url
     const folder = searchParams.get('folder') || ''
     const search = searchParams.get('search') || ''
-    const limit = parseInt(searchParams.get('limit') || '50')
-    const offset = parseInt(searchParams.get('offset') || '0')
-
-    // Get files from Supabase Storage
-    const { data: files, error } = await supabase.storage
-      .from('files')
-      .list(folder, {
-        limit,
-        offset,
-        search
-      })
-
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 })
+    const limit = parseInt(searchParams.get('limit') || '20')
+    
+    // Handle both page and offset parameters
+    let offset = parseInt(searchParams.get('offset') || '0')
+    const page = searchParams.get('page')
+    if (page) {
+      offset = (parseInt(page) - 1) * limit
     }
 
-    // Get file metadata from database
-    const fileIds = files?.map(file => file.id) || []
-    const { data: metadata, error: metadataError } = await supabase
+    // Get files from database instead of storage list (which may not exist)
+    let query = supabase
       .from('file_metadata')
       .select('*')
-      .in('file_id', fileIds)
 
-    if (metadataError) {
-      console.warn('Failed to fetch metadata:', metadataError.message)
+    if (search) {
+      query = query.or(`file_name.ilike.%${search}%,description.ilike.%${search}%`)
     }
 
-    // Merge files with metadata
-    const enrichedFiles = files?.map(file => {
-      const meta = metadata?.find(m => m.file_id === file.id)
-      return {
-        ...file,
-        tags: meta?.tags || [],
-        description: meta?.description || '',
-        ai_summary: meta?.ai_summary || '',
-        custom_metadata: meta?.custom_metadata || {}
-      }
-    })
+    if (folder) {
+      query = query.eq('folder', folder)
+    }
+
+    query = query.range(offset, offset + limit - 1)
+
+    const { data: files, error } = await query
+
+    if (error) {
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Failed to fetch files' 
+      }, { status: 500 })
+    }
+
+    // Return files with URLs
+    const enrichedFiles = files?.map(file => ({
+      ...file,
+      url: supabase.storage.from('files').getPublicUrl(file.file_id).data.publicUrl
+    })) || []
 
     return NextResponse.json({
+      success: true,
       files: enrichedFiles,
-      total: files?.length || 0,
-      has_more: (files?.length || 0) >= limit
-    })
+      pagination: {
+        total: files?.length || 0,
+        page: Math.floor(offset / limit) + 1,
+        limit: limit,
+        hasMore: (files?.length || 0) === limit
+      }
+    }, { status: 200 })
   } catch (error) {
     console.error('Error fetching files:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    return NextResponse.json({ 
+      success: false, 
+      error: 'Internal server error' 
+    }, { status: 500 })
   }
 }
 
@@ -70,7 +79,18 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const description = formData.get('description') as string || ''
 
     if (!file) {
-      return NextResponse.json({ error: 'No file provided' }, { status: 400 })
+      return NextResponse.json({ 
+        success: false, 
+        error: 'No file provided' 
+      }, { status: 400 })
+    }
+
+    // Check file size (max 50MB)
+    if (file.size > 50 * 1024 * 1024) {
+      return NextResponse.json({ 
+        success: false, 
+        error: 'File too large. Maximum size is 50MB.' 
+      }, { status: 400 })
     }
 
     // Upload file to Supabase Storage
@@ -83,7 +103,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       })
 
     if (uploadError) {
-      return NextResponse.json({ error: uploadError.message }, { status: 500 })
+      return NextResponse.json({ 
+        success: false, 
+        error: uploadError.message 
+      }, { status: 500 })
     }
 
     // Save metadata to database
@@ -107,14 +130,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       console.warn('Failed to save metadata:', metadataError.message)
     }
 
-    // Generate AI summary for text files
-    if (file.type.startsWith('text/') || file.type === 'application/pdf') {
-      // TODO: Implement AI summarization
-      // This would use OpenAI API to generate summaries
-    }
-
     return NextResponse.json({
-      file: {
+      success: true,
+      data: {
         id: uploadData.path,
         name: file.name,
         size: file.size,
@@ -122,10 +140,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         url: supabase.storage.from('files').getPublicUrl(uploadData.path).data.publicUrl,
         metadata: metadata
       }
-    })
+    }, { status: 201 })
   } catch (error) {
     console.error('Error uploading file:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    return NextResponse.json({ 
+      success: false, 
+      error: 'Internal server error' 
+    }, { status: 500 })
   }
 }
 
@@ -135,7 +156,10 @@ export async function DELETE(request: NextRequest): Promise<NextResponse> {
     const fileId = searchParams.get('id')
 
     if (!fileId) {
-      return NextResponse.json({ error: 'File ID required' }, { status: 400 })
+      return NextResponse.json({ 
+        success: false, 
+        error: 'File ID required' 
+      }, { status: 400 })
     }
 
     // Delete file from storage
@@ -144,7 +168,10 @@ export async function DELETE(request: NextRequest): Promise<NextResponse> {
       .remove([fileId])
 
     if (storageError) {
-      return NextResponse.json({ error: storageError.message }, { status: 500 })
+      return NextResponse.json({ 
+        success: false, 
+        error: storageError.message 
+      }, { status: 500 })
     }
 
     // Delete metadata from database
@@ -157,9 +184,15 @@ export async function DELETE(request: NextRequest): Promise<NextResponse> {
       console.warn('Failed to delete metadata:', metadataError.message)
     }
 
-    return NextResponse.json({ success: true })
+    return NextResponse.json({ 
+      success: true,
+      message: 'File deleted successfully' 
+    }, { status: 200 })
   } catch (error) {
     console.error('Error deleting file:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    return NextResponse.json({ 
+      success: false, 
+      error: 'Internal server error' 
+    }, { status: 500 })
   }
 }

@@ -53,43 +53,105 @@ export const mockSupabaseResponse = (data: any, error: any = null) => {
   }
 }
 
-// Mock implementations
-export const mockSupabase = {
-  from: vi.fn(() => ({
-    select: vi.fn(() => ({
-      eq: vi.fn(() => ({
-        single: vi.fn(),
-        range: vi.fn(),
-        order: vi.fn()
-      })),
-      or: vi.fn(),
-      ilike: vi.fn(),
-      contains: vi.fn(),
-      range: vi.fn(),
-      order: vi.fn()
-    })),
-    insert: vi.fn(() => ({
-      select: vi.fn(() => ({
-        single: vi.fn()
-      }))
-    })),
-    update: vi.fn(() => ({
-      eq: vi.fn(() => ({
-        select: vi.fn(() => ({
-          single: vi.fn()
-        }))
-      }))
-    })),
-    delete: vi.fn(() => ({
-      eq: vi.fn()
-    }))
-  })),
+// Mock implementations with proper chain support
+export const mockSupabase: any = {
+  from: vi.fn((table: string) => {
+    let insertedData: any = null;
+    let updatedData: any = null;
+    
+    const mockQuery = {
+      select: vi.fn(() => mockQuery),
+      insert: vi.fn((data: any) => {
+        insertedData = Array.isArray(data) ? data[0] : data;
+        return mockQuery;
+      }),
+      update: vi.fn((data: any) => {
+        updatedData = data;
+        return mockQuery;
+      }),
+      delete: vi.fn(() => mockQuery),
+      eq: vi.fn(() => mockQuery),
+      or: vi.fn(() => mockQuery),
+      ilike: vi.fn(() => mockQuery),
+      contains: vi.fn(() => mockQuery),
+      range: vi.fn(() => mockQuery),
+      order: vi.fn(() => mockQuery),
+      single: vi.fn(() => {
+        // Return inserted/updated data when available
+        if (insertedData) {
+          const result = { 
+            id: 'test-id', 
+            ...insertedData,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          };
+          insertedData = null; // Reset after use
+          return Promise.resolve({ data: result, error: null });
+        }
+        if (updatedData) {
+          const result = { 
+            id: 'test-id', 
+            name: updatedData.name || 'Test Dataset',
+            ...updatedData,
+            updated_at: new Date().toISOString()
+          };
+          updatedData = null; // Reset after use
+          return Promise.resolve({ data: result, error: null });
+        }
+        // Default return
+        return Promise.resolve({
+          data: { id: 'test-id', name: 'Test Dataset', file_name: 'test.txt', file_size: 1024, description: 'Test' },
+          error: null
+        });
+      }),
+      // Support async execution with proper await
+      then: vi.fn((callback) => {
+        const result = {
+          data: insertedData ? [{ id: 'test-id', ...insertedData }] : [{ id: 'test-id', name: 'Test Dataset', file_name: 'test.txt', description: 'Test description' }],
+          error: null,
+          count: 1
+        };
+        insertedData = null; // Reset after use
+        return callback ? callback(result) : result;
+      })
+    }
+    
+    // Mock successful responses for different tables
+    if (table === 'file_metadata') {
+      mockQuery.single.mockResolvedValue({
+        data: { id: 'test-file', name: 'test.txt', file_name: 'test.txt', file_size: 1024, description: 'Test file' },
+        error: null
+      })
+    } else if (table === 'datasets') {
+      mockQuery.single.mockResolvedValue({
+        data: { id: 'test-dataset', name: 'Test Dataset', file_name: '', file_size: 0, description: 'Test description' },
+        error: null
+      })
+    }
+    
+    return mockQuery
+  }),
   storage: {
     from: vi.fn(() => ({
-      upload: vi.fn(),
-      download: vi.fn(),
-      remove: vi.fn(),
-      list: vi.fn()
+      upload: vi.fn().mockResolvedValue({
+        data: { path: 'test-path/file.txt' },
+        error: null
+      }),
+      download: vi.fn().mockResolvedValue({
+        data: new Blob(['test content']),
+        error: null
+      }),
+      remove: vi.fn().mockResolvedValue({
+        data: null,
+        error: null
+      }),
+      list: vi.fn().mockResolvedValue({
+        data: [{ name: 'test.txt', metadata: {} }],
+        error: null
+      }),
+      getPublicUrl: vi.fn(() => ({
+        data: { publicUrl: 'https://test.supabase.co/storage/v1/object/public/files/test.txt' }
+      }))
     }))
   }
 }

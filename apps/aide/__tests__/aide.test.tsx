@@ -1,44 +1,61 @@
-import { describe, it, expect, render, screen, fireEvent, waitFor, TEST_TIMEOUT } from '../../../test-setup.js'
+import { describe, it, expect } from 'vitest'
+import { render, screen, waitFor } from '@testing-library/react'
+import AideHomepage from '../components/AideHomepage'
+
+const TEST_TIMEOUT = 10000
 
 describe('AIDE App', () => {
   it('renders the main page without crashing', () => {
-    // This test will be dynamically updated based on the actual component
-    expect(true).toBe(true)
+    render(<AideHomepage />)
+    expect(document.body).toBeInTheDocument()
   })
 
   it('displays the app title correctly', async () => {
-    // Test will verify the app title is displayed
-    expect(true).toBe(true)
+    render(<AideHomepage />)
+    expect(screen.getByText(/AIDE/i)).toBeInTheDocument()
+    expect(screen.getByText(/AI Development Environment/i)).toBeInTheDocument()
   }, TEST_TIMEOUT)
 
   it('shows online status indicator', async () => {
-    // Test will verify status indicator functionality
-    expect(true).toBe(true)
+    render(<AideHomepage />)
+    await waitFor(() => {
+      expect(screen.getByText(/Online/i) || screen.getByText(/Active/i)).toBeInTheDocument()
+    })
   }, TEST_TIMEOUT)
 
   it('displays real-time stats', async () => {
-    // Test will verify real-time statistics are updating
-    expect(true).toBe(true)
+    render(<AideHomepage />)
+    await waitFor(() => {
+      expect(screen.getByText(/Project/i) || screen.getByText(/Conversation/i)).toBeInTheDocument()
+    })
   }, TEST_TIMEOUT)
 
   it('handles responsive design', async () => {
-    // Test will verify responsive behavior
-    expect(true).toBe(true)
+    render(<AideHomepage />)
+    expect(document.querySelector('.grid, .flex')).toBeInTheDocument()
   }, TEST_TIMEOUT)
 
   it('implements accessibility standards', async () => {
-    // Test will verify ARIA labels and keyboard navigation
-    expect(true).toBe(true)
+    render(<AideHomepage />)
+    expect(document.body).toBeInTheDocument()
+    const headings = screen.getAllByRole('heading')
+    expect(headings.length).toBeGreaterThan(0)
   }, TEST_TIMEOUT)
 
   it('handles error states gracefully', async () => {
-    // Test will verify error handling
-    expect(true).toBe(true)
+    render(<AideHomepage />)
+    // Component should handle data loading states
+    expect(document.body).toBeInTheDocument()
   }, TEST_TIMEOUT)
 
   it('performs well under load', async () => {
-    // Test will verify performance metrics
-    expect(true).toBe(true)
+    render(<AideHomepage />)
+    const startTime = performance.now()
+    await waitFor(() => {
+      expect(document.body).toBeInTheDocument()
+    })
+    const endTime = performance.now()
+    expect(endTime - startTime).toBeLessThan(1000)
   }, TEST_TIMEOUT)
 })
 

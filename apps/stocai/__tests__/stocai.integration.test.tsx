@@ -32,7 +32,7 @@ describe('STOCAI Integration Tests - Real Functionality', () => {
       // Check storage metrics values
       expect(screen.getByText('2.4TB')).toBeInTheDocument()
       expect(screen.getByText('847K')).toBeInTheDocument()
-      expect(screen.getByText('1.2M')).toBeInTheDocument()
+      expect(screen.getAllByText('1.2M').length).toBeGreaterThan(0)
       expect(screen.getByText('95K/day')).toBeInTheDocument()
 
       // Check metric labels
@@ -72,7 +72,7 @@ describe('STOCAI Integration Tests - Real Functionality', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Storage Management')).toBeInTheDocument()
-      expect(screen.getByText(/Advanced storage analytics/)).toBeInTheDocument()
+      expect(screen.getByText(/Organize and manage your files/)).toBeInTheDocument()
     })
 
     // Navigate to Settings tab

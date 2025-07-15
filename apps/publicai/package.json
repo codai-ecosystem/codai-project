@@ -4,9 +4,9 @@
   "description": "Civic AI & Transparency Tools",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 4040",
+    "dev": "next dev --port 4041",
     "build": "next build",
-    "start": "next start --port 4040",
+    "start": "next start --port 4041",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "test": "vitest",

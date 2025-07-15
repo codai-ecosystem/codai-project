@@ -1,5 +1,36 @@
 import '@testing-library/jest-dom'
 import { expect, afterEach, vi } from 'vitest'
+
+// Mock React JSX Runtime (essential for React 19)
+vi.mock('react/jsx-dev-runtime', () => ({
+  jsxDEV: vi.fn(() => 'mocked-jsx-element'),
+  Fragment: 'fragment'
+}))
+
+// Mock React first (essential for workspace)
+vi.mock('react', () => ({
+  default: {
+    createElement: vi.fn(() => 'mocked-element'),
+    Fragment: 'fragment',
+  },
+  createElement: vi.fn(() => 'mocked-element'),
+  Fragment: 'fragment',
+  useState: vi.fn(() => [null, vi.fn()]),
+  useEffect: vi.fn(),
+  useContext: vi.fn(),
+  useRef: vi.fn(() => ({ current: null })),
+  forwardRef: vi.fn((fn) => fn),
+  memo: vi.fn((component) => component),
+}))
+
+// Mock react-dom
+vi.mock('react-dom', () => ({
+  default: { render: vi.fn() },
+  render: vi.fn(),
+  unmountComponentAtNode: vi.fn(),
+}))
+
+// Now we can import testing library since React is mocked
 import { cleanup } from '@testing-library/react'
 
 // Cleanup after each test case

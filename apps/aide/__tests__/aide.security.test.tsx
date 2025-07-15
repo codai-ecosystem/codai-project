@@ -18,8 +18,10 @@ describe('aide Security Tests', () => {
     it('escapes HTML in dynamic content', () => {
       render(<AidePage />)
       
-      // Verify no unescaped HTML
-      expect(true).toBe(true) // Placeholder for real XSS testing
+      // Verify no unescaped HTML in component output
+      const bodyContent = document.body.innerHTML
+      expect(bodyContent).not.toContain('<script>')
+      expect(bodyContent).not.toContain('javascript:')
     })
   })
 

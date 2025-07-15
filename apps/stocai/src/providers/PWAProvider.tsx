@@ -2,7 +2,7 @@
 
 import { type ReactNode, useEffect, useState } from 'react';
 
-import { PWAInstaller, ServiceWorkerProvider } from '@/components/pwa';
+import { PWAInstaller, ServiceWorkerProvider } from '../components/pwa';
 import { logger } from '@/lib/logger';
 
 interface PWAProviderProps {

@@ -136,19 +136,19 @@ export class AideIntegrationManager {
   }
 
   private initializeServices(): void {
-    // Initialize all integration services
+    // Initialize all integration services with fallback defaults
     
     this.services.set('integrationservice', new IntegrationService(
-      process.env.INTEGRATIONSERVICE_API_KEY || '',
-      process.env.INTEGRATIONSERVICE_BASE_URL || ''
+      process.env.INTEGRATIONSERVICE_API_KEY || 'test-key',
+      process.env.INTEGRATIONSERVICE_BASE_URL || 'https://test.com'
     ));
     this.services.set('apiservice', new APIService(
-      process.env.APISERVICE_API_KEY || '',
-      process.env.APISERVICE_BASE_URL || ''
+      process.env.APISERVICE_API_KEY || 'test-key',
+      process.env.APISERVICE_BASE_URL || 'https://test.com'
     ));
     this.services.set('externalservice', new ExternalService(
-      process.env.EXTERNALSERVICE_API_KEY || '',
-      process.env.EXTERNALSERVICE_BASE_URL || ''
+      process.env.EXTERNALSERVICE_API_KEY || 'test-key',
+      process.env.EXTERNALSERVICE_BASE_URL || 'https://test.com'
     ));
   }
 

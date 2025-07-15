@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+
 import {
   Monitor,
   Activity,
@@ -19,111 +20,28 @@ import {
   Database,
   Lightbulb,
   Settings,
-  Bell,
   Search,
-  Filter,
-  Download,
-  Upload,
-  RefreshCw,
-  Play,
-  Pause,
-  ChevronRight,
-  Calendar,
-  MapPin,
-  Award,
-  Target,
+  Bell,
+  User,
   Briefcase,
-  PieChart
+  Award,
+  Building,
+  UserCheck
 } from 'lucide-react'
-import { EnterpriseHeader } from '../components/EnterpriseHeader'
 import { RealTimeStats } from '../components/RealTimeStats'
-import FeatureCard from '../components/FeatureCard'
-import ActionPanel from '../components/ActionPanel'
-import DataTable from '../components/DataTable'
-import type { TalentaiStats, TalentaiFeature } from '../types'
 
-// Icon mapping function
-const getIcon = (iconName: string) => {
-  const iconMap: { [key: string]: any } = {
-    Database,
-    TrendingUp,
-    Shield,
-    Award,
-    Target,
-    Monitor,
-    Activity,
-    Users,
-    Globe,
-    Zap
-  }
-  const IconComponent = iconMap[iconName]
-  return IconComponent ? <IconComponent className="w-6 h-6" /> : null
-}
+type TabType = 'Overview' | 'Analytics' | 'Features' | 'Monitor'
 
 export default function TalentaiPage() {
   const [isOnline, setIsOnline] = useState(true)
   const [currentTime, setCurrentTime] = useState(new Date())
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'analytics' | 'management' | 'settings'>('dashboard')
-  const [stats, setStats] = useState<TalentaiStats>({
-    totalItems: Math.floor(Math.random() * 50000) + 10000,
-    activeUsers: Math.floor(Math.random() * 1000) + 200,
-    efficiency: Math.random() * 30 + 70,
-    performance: Math.random() * 20 + 80,
-    processingSpeed: Math.random() * 0.1 + 0.05,
+  const [activeTab, setActiveTab] = useState<TabType>('Overview')
+  const [stats, setStats] = useState({
+    totalUsers: Math.floor(Math.random() * 10000) + 1000,
+    activeConnections: Math.floor(Math.random() * 500) + 50,
+    dataProcessed: Math.floor(Math.random() * 1000) + 100,
     uptime: 99.9
   })
-
-  const [features] = useState<TalentaiFeature[]>([
-    {
-      id: '1',
-      title: 'AI candidate matching',
-      description: 'Advanced ai candidate matching with enterprise-grade capabilities',
-      status: 'active',
-      icon: 'Database',
-      progress: Math.floor(Math.random() * 40) + 60
-    },
-    {
-      id: '2',
-      title: 'Skills assessment automation',
-      description: 'Advanced skills assessment automation with enterprise-grade capabilities',
-      status: 'active',
-      icon: 'TrendingUp',
-      progress: Math.floor(Math.random() * 40) + 60
-    },
-    {
-      id: '3',
-      title: 'Interview scheduling',
-      description: 'Advanced interview scheduling with enterprise-grade capabilities',
-      status: 'active',
-      icon: 'Shield',
-      progress: Math.floor(Math.random() * 40) + 60
-    },
-    {
-      id: '4',
-      title: 'Performance analytics',
-      description: 'Advanced performance analytics with enterprise-grade capabilities',
-      status: 'active',
-      icon: 'Award',
-      progress: Math.floor(Math.random() * 40) + 60
-    },
-    {
-      id: '5',
-      title: 'Talent pipeline management',
-      description: 'Advanced talent pipeline management with enterprise-grade capabilities',
-      status: 'active',
-      icon: 'Target',
-      progress: Math.floor(Math.random() * 40) + 60
-    }
-  ])
-
-  // App configuration
-  const appConfig = {
-    colorScheme: {
-      primary: '#6366f1', // indigo
-      secondary: '#8b5cf6', // violet
-      accent: '#06b6d4' // cyan
-    }
-  }
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -134,19 +52,273 @@ export default function TalentaiPage() {
     const statsTimer = setInterval(() => {
       setStats(prev => ({
         ...prev,
-        totalItems: prev.totalItems + Math.floor(Math.random() * 10),
-        activeUsers: Math.max(0, prev.activeUsers + Math.floor(Math.random() * 20) - 10),
-        efficiency: Math.min(100, Math.max(60, prev.efficiency + (Math.random() * 4) - 2)),
-        performance: Math.min(100, Math.max(70, prev.performance + (Math.random() * 2) - 1)),
-        processingSpeed: Math.max(0.01, prev.processingSpeed + (Math.random() * 0.02) - 0.01)
+        totalUsers: prev.totalUsers + Math.floor(Math.random() * 3),
+        activeConnections: Math.max(0, prev.activeConnections + Math.floor(Math.random() * 10) - 5),
+        dataProcessed: prev.dataProcessed + Math.floor(Math.random() * 50)
       }))
-    }, 3000)
+    }, 5000)
 
     return () => {
       clearInterval(timer)
       clearInterval(statsTimer)
     }
   }, [])
+
+  const handleTabChange = (tab: TabType) => {
+    setActiveTab(tab)
+  }
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'Overview':
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            {/* Hero Section */}
+            <div className="text-center mb-12">
+              <motion.h2
+                className="text-6xl font-bold mb-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <span className="bg-gradient-to-r from-purple-400 to-violet-400 bg-clip-text text-transparent">
+                  Talent AI Recruitment
+                </span>
+              </motion.h2>
+              <p className="text-xl text-slate-300 max-w-3xl mx-auto mb-8">
+                AI-driven talent acquisition and human resource management platform with real-time analytics.
+              </p>
+              <div className="flex items-center justify-center space-x-2 text-purple-400 mb-8">
+                <Activity className="w-5 h-5 animate-pulse" />
+                <span className="text-sm font-medium">System Active</span>
+              </div>
+            </div>
+
+            {/* Stats Grid */}
+            <motion.div
+              className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <div className="glassmorphism p-6 text-center rounded-xl">
+                <div className="text-3xl font-bold text-purple-400">{stats.totalUsers.toLocaleString()}</div>
+                <div className="text-sm text-slate-400">Total Users</div>
+                <div className="text-xs text-purple-300 mt-1">↗ +5.2%</div>
+              </div>
+              <div className="glassmorphism p-6 text-center rounded-xl">
+                <div className="text-3xl font-bold text-violet-400">{stats.activeConnections}</div>
+                <div className="text-sm text-slate-400">Active Now</div>
+                <div className="text-xs text-violet-300 mt-1">↗ +2.1%</div>
+              </div>
+              <div className="glassmorphism p-6 text-center rounded-xl">
+                <div className="text-3xl font-bold text-blue-400">{stats.dataProcessed.toLocaleString()}</div>
+                <div className="text-sm text-slate-400">Data Processed (GB)</div>
+                <div className="text-xs text-blue-300 mt-1">↗ +8.7%</div>
+              </div>
+              <div className="glassmorphism p-6 text-center rounded-xl">
+                <div className="text-3xl font-bold text-emerald-400">{stats.uptime}%</div>
+                <div className="text-sm text-slate-400">Uptime</div>
+                <div className="text-xs text-emerald-300 mt-1">Performance</div>
+              </div>
+            </motion.div>
+
+            {/* Enterprise Features */}
+            <motion.div
+              className="grid md:grid-cols-3 gap-6 mb-16"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <motion.div
+                className="glassmorphism p-8 rounded-xl hover:bg-white/20 transition-all duration-300 cursor-pointer group"
+                whileHover={{ scale: 1.02, rotateY: 5 }}
+              >
+                <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-violet-600 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <TrendingUp className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2 group-hover:text-purple-400 transition-colors">
+                  Analytics Dashboard
+                </h3>
+                <p className="text-slate-400 mb-4">View real-time talent analytics and performance metrics</p>
+                <div className="flex items-center text-purple-400 group-hover:text-purple-300 transition-colors">
+                  <span className="text-sm font-medium">View Dashboard</span>
+                  <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </motion.div>
+
+              <motion.div
+                className="glassmorphism p-8 rounded-xl hover:bg-white/20 transition-all duration-300 cursor-pointer group"
+                whileHover={{ scale: 1.02, rotateY: 5 }}
+              >
+                <div className="w-12 h-12 bg-gradient-to-r from-violet-500 to-blue-600 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Users className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2 group-hover:text-purple-400 transition-colors">
+                  User Management
+                </h3>
+                <p className="text-slate-400 mb-4">Manage candidates and HR teams efficiently</p>
+                <div className="flex items-center text-purple-400 group-hover:text-purple-300 transition-colors">
+                  <span className="text-sm font-medium">Manage Users</span>
+                  <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </motion.div>
+
+              <motion.div
+                className="glassmorphism p-8 rounded-xl hover:bg-white/20 transition-all duration-300 cursor-pointer group"
+                whileHover={{ scale: 1.02, rotateY: 5 }}
+              >
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Database className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2 group-hover:text-purple-400 transition-colors">
+                  Data Management
+                </h3>
+                <p className="text-slate-400 mb-4">Organize talent data and insights intelligently</p>
+                <div className="flex items-center text-purple-400 group-hover:text-purple-300 transition-colors">
+                  <span className="text-sm font-medium">Manage Data</span>
+                  <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </motion.div>
+            </motion.div>
+
+            {/* Enterprise Security Features */}
+            <motion.div
+              className="glassmorphism rounded-xl p-6 mb-8"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-2">
+                    <Shield className="w-5 h-5 text-emerald-400" />
+                    <span className="text-sm text-emerald-400">Enterprise Security</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Zap className="w-4 h-4 text-purple-400" />
+                    <span className="text-sm text-slate-300">High Performance</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Globe className="w-4 h-4 text-blue-400" />
+                    <span className="text-sm text-slate-300">Global Scale</span>
+                  </div>
+                </div>
+                <div className="text-sm text-slate-400">
+                  Last updated: {currentTime.toLocaleTimeString()}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )
+
+      case 'Analytics':
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="glassmorphism rounded-xl p-8 mb-8">
+              <h2 className="text-2xl font-bold mb-6 text-purple-400">
+                Advanced Analytics Dashboard
+              </h2>
+              <RealTimeStats />
+            </div>
+          </motion.div>
+        )
+
+      case 'Features':
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="glassmorphism rounded-xl p-8">
+              <h2 className="text-2xl font-bold mb-6 text-purple-400">
+                Talent Management Features
+              </h2>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="bg-white/5 rounded-lg p-6">
+                  <div className="flex items-center mb-4">
+                    <Briefcase className="w-6 h-6 text-purple-400 mr-3" />
+                    <h3 className="text-lg font-semibold">Job Management</h3>
+                  </div>
+                  <p className="text-slate-400">Create, manage and track job postings with AI-powered matching.</p>
+                </div>
+                <div className="bg-white/5 rounded-lg p-6">
+                  <div className="flex items-center mb-4">
+                    <UserCheck className="w-6 h-6 text-purple-400 mr-3" />
+                    <h3 className="text-lg font-semibold">Candidate Screening</h3>
+                  </div>
+                  <p className="text-slate-400">Automated screening and skill assessment with AI evaluation.</p>
+                </div>
+                <div className="bg-white/5 rounded-lg p-6">
+                  <div className="flex items-center mb-4">
+                    <Award className="w-6 h-6 text-purple-400 mr-3" />
+                    <h3 className="text-lg font-semibold">Performance Metrics</h3>
+                  </div>
+                  <p className="text-slate-400">Track hiring performance and ROI with detailed analytics.</p>
+                </div>
+                <div className="bg-white/5 rounded-lg p-6">
+                  <div className="flex items-center mb-4">
+                    <Building className="w-6 h-6 text-purple-400 mr-3" />
+                    <h3 className="text-lg font-semibold">Enterprise Integration</h3>
+                  </div>
+                  <p className="text-slate-400">Seamless integration with existing HR and ATS systems.</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )
+
+      case 'Monitor':
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="glassmorphism rounded-xl p-8">
+              <h2 className="text-2xl font-bold mb-6 text-purple-400">
+                System Monitoring
+              </h2>
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="bg-white/5 rounded-lg p-6">
+                  <Network className="w-8 h-8 text-emerald-400 mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">Network Status</h3>
+                  <p className="text-emerald-400 text-2xl font-bold">99.9%</p>
+                  <p className="text-slate-400">Uptime</p>
+                </div>
+                <div className="bg-white/5 rounded-lg p-6">
+                  <Database className="w-8 h-8 text-blue-400 mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">Database</h3>
+                  <p className="text-blue-400 text-2xl font-bold">1.2ms</p>
+                  <p className="text-slate-400">Response Time</p>
+                </div>
+                <div className="bg-white/5 rounded-lg p-6">
+                  <Activity className="w-8 h-8 text-purple-400 mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">API Health</h3>
+                  <p className="text-purple-400 text-2xl font-bold">Healthy</p>
+                  <p className="text-slate-400">All systems operational</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )
+
+      default:
+        return null
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
@@ -183,28 +355,58 @@ export default function TalentaiPage() {
         </div>
       </div>
 
-      {/* Enterprise Header */}
-      <EnterpriseHeader
-        title="Talent AI Recruitment"
-        subtitle="AI-driven talent acquisition and human resource management"
-        isOnline={isOnline}
-        currentTime={currentTime}
-        colorScheme={appConfig.colorScheme}
-      />
+      {/* Header */}
+      <header className="relative z-10 p-6">
+        <nav className="flex items-center justify-between">
+          <motion.div
+            className="flex items-center space-x-3"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
+            <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-violet-500 rounded-lg flex items-center justify-center">
+              <Monitor className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-violet-400 bg-clip-text text-transparent">
+                Talent AI Recruitment
+              </h1>
+              <p className="text-xs text-slate-400">
+                AI-driven talent acquisition and human resource management
+              </p>
+            </div>
+          </motion.div>
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <div className={`w-3 h-3 rounded-full ${isOnline ? 'bg-emerald-400' : 'bg-red-400'} animate-pulse`}></div>
+              <span className="text-sm text-slate-300">
+                {isOnline ? 'Online' : 'Offline'}
+              </span>
+            </div>
+            <div className="text-sm text-slate-400" aria-live="polite">
+              {currentTime.toLocaleTimeString()}
+            </div>
+          </div>
+        </nav>
+      </header>
 
-      {/* Tab Navigation */}
+      {/* Navigation Tabs */}
       <div className="relative z-10 container mx-auto px-4 mb-8">
-        <div className="flex justify-center space-x-1 bg-white/10 backdrop-blur-lg rounded-xl p-1 max-w-4xl mx-auto">
-          {(['dashboard', 'analytics', 'management', 'settings'] as const).map((tab) => (
+        <div className="flex justify-center space-x-1 bg-white/10 backdrop-blur-lg rounded-xl p-1 max-w-4xl mx-auto" role="tablist">
+          {(['Overview', 'Analytics', 'Features', 'Monitor'] as TabType[]).map((tab) => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`px-6 py-2 rounded-lg font-medium transition-all duration-300 ${activeTab === tab
-                ? 'bg-purple-500/30 text-purple-300'
-                : 'text-slate-400 hover:text-white hover:bg-white/10'
-                }`}
+              onClick={() => handleTabChange(tab)}
+              className={`px-6 py-2 rounded-lg font-medium transition-all duration-300 ${
+                activeTab === tab
+                  ? 'bg-purple-500/30 text-purple-300'
+                  : 'text-slate-400 hover:text-white hover:bg-white/10'
+              }`}
+              aria-label={`Switch to ${tab} tab`}
+              role="tab"
+              aria-selected={activeTab === tab}
+              tabIndex={0}
             >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              {tab}
             </button>
           ))}
         </div>
@@ -213,182 +415,9 @@ export default function TalentaiPage() {
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 py-8">
         <AnimatePresence mode="wait">
-          {activeTab === 'dashboard' && (
-            <motion.div
-              key="dashboard"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              {/* Real-time Stats */}
-              <RealTimeStats />
-
-              {/* Feature Cards */}
-              <motion.div
-                className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-              >
-                {features.map((feature, index) => (
-                  <FeatureCard
-                    key={feature.id}
-                    feature={feature}
-                    colorScheme={appConfig.colorScheme}
-                    delay={index * 0.1}
-                  />
-                ))}
-              </motion.div>
-
-              {/* Action Panel */}
-              <ActionPanel title="Quick Actions" />
-            </motion.div>
-          )}
-
-          {activeTab === 'analytics' && (
-            <motion.div
-              key="analytics"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="glassmorphism rounded-xl p-8 mb-8">
-                <h2 className="text-2xl font-bold mb-6 text-purple-400">
-                  Analytics Dashboard
-                </h2>
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  <div className="bg-white/5 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <PieChart className="w-5 h-5 text-purple-400" />
-                      <span className="text-emerald-400 text-sm">↗ +12%</span>
-                    </div>
-                    <div className="text-2xl font-bold">{stats.efficiency.toFixed(1)}%</div>
-                    <div className="text-sm text-slate-400">Efficiency Rate</div>
-                  </div>
-                  <div className="bg-white/5 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <BarChart3 className="w-5 h-5 text-violet-400" />
-                      <span className="text-emerald-400 text-sm">↗ +8%</span>
-                    </div>
-                    <div className="text-2xl font-bold">{stats.performance.toFixed(1)}%</div>
-                    <div className="text-sm text-slate-400">Performance Score</div>
-                  </div>
-                  <div className="bg-white/5 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <Activity className="w-5 h-5 text-pink-400" />
-                      <span className="text-emerald-400 text-sm">↗ +15%</span>
-                    </div>
-                    <div className="text-2xl font-bold">{stats.processingSpeed.toFixed(3)}s</div>
-                    <div className="text-sm text-slate-400">Response Time</div>
-                  </div>
-                  <div className="bg-white/5 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <Shield className="w-5 h-5 text-emerald-400" />
-                      <span className="text-emerald-400 text-sm">Stable</span>
-                    </div>
-                    <div className="text-2xl font-bold">{stats.uptime}%</div>
-                    <div className="text-sm text-slate-400">Uptime</div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {activeTab === 'management' && (
-            <motion.div
-              key="management"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              <DataTable
-                data={[
-                  { name: 'John Doe', role: 'Software Engineer', status: 'Active' },
-                  { name: 'Jane Smith', role: 'Data Scientist', status: 'Pending' },
-                  { name: 'Mike Johnson', role: 'DevOps Engineer', status: 'Active' }
-                ]}
-                columns={[
-                  { key: 'name', label: 'Name' },
-                  { key: 'role', label: 'Role' },
-                  { key: 'status', label: 'Status' }
-                ]}
-              />
-            </motion.div>
-          )}
-
-          {activeTab === 'settings' && (
-            <motion.div
-              key="settings"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="glassmorphism rounded-xl p-8">
-                <h2 className="text-2xl font-bold mb-6 text-purple-400">
-                  Settings & Configuration
-                </h2>
-                <div className="space-y-6">
-                  <div className="bg-white/5 rounded-lg p-6">
-                    <h3 className="font-semibold mb-4">System Configuration</h3>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium mb-2">Processing Mode</label>
-                        <select className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2">
-                          <option>Real-time</option>
-                          <option>Batch</option>
-                          <option>Hybrid</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium mb-2">Performance Level</label>
-                        <select className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2">
-                          <option>Maximum</option>
-                          <option>Balanced</option>
-                          <option>Power Saving</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
+          {renderTabContent()}
         </AnimatePresence>
       </div>
-
-      {/* Status Footer */}
-      <motion.div
-        className="relative z-10 container mx-auto px-4 pb-8"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.8 }}
-      >
-        <div className="glassmorphism rounded-xl p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <Shield className="w-5 h-5 text-emerald-400" />
-                <span className="text-sm text-emerald-400">Enterprise Security</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Activity className="w-4 h-4 text-purple-400" />
-                <span className="text-sm text-slate-300">High Performance</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Globe className="w-4 h-4 text-pink-400" />
-                <span className="text-sm text-slate-300">Global Scale</span>
-              </div>
-            </div>
-            <div className="text-sm text-slate-400">
-              Last updated: {currentTime.toLocaleTimeString()}
-            </div>
-          </div>
-        </div>
-      </motion.div>
 
       <style jsx global>{`
         .glassmorphism {

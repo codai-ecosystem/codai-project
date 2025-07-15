@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from '@jest/globals';
-import { CodaiService } from '../../src/lib/services/codaiService';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { CodaiService } from '../../lib/services/CodaiService';
 
 describe('CodaiService', () => {
   let service: CodaiService;
@@ -34,7 +34,7 @@ describe('CodaiService', () => {
 
       expect(found).toBeDefined();
       expect(found.success).toBe(true);
-      expect(found.data.name).toBe('Item ' + created.data.id);
+      expect(found.data.name).toBe('Test Item');
     });
 
     it('should update an item', async () => {

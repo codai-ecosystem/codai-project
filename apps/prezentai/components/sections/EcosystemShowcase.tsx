@@ -202,13 +202,14 @@ export function EcosystemShowcase() {
                     {filteredApps.map((app, index) => (
                         <motion.div
                             key={app.name}
-                            layout
+                            layout="position"
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: index * 0.1 }}
                             viewport={{ once: true }}
-                            onHoverStart={() => setHoveredApp(app.name)}
-                            onHoverEnd={() => setHoveredApp(null)}
+                            whileHover={{ scale: 1.02 }}
+                            onMouseEnter={() => setHoveredApp(app.name)}
+                            onMouseLeave={() => setHoveredApp(null)}
                             className="group"
                         >
                             <div className="relative h-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl border border-gray-200/50 dark:border-gray-700/50 hover:border-primary-300 dark:hover:border-primary-600 transition-all duration-300 hover:shadow-xl hover:shadow-primary-500/20 overflow-hidden">

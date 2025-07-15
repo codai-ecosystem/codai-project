@@ -1,5 +1,5 @@
 
-import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { paymentFlowFlow } from '../lib/flows/payment-flow';
 import { orderFulfillmentFlow } from '../lib/flows/order-fulfillment';
 

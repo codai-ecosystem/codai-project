@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>MCP API Test</title>
+</head>
+
+<body>
+    <h1>MCP Memory API Test</h1>
+    <div id="results">Loading...</div>
+
+    <script>
+        async function testMCPAPI() {
+            try {
+                const response = await fetch('/api/mcp/recall-memories', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        agentId: 'github-copilot',
+                        query: 'all memories',
+                        limit: 10
+                    })
+                });
+
+                const data = await response.json();
+                document.getElementById('results').innerHTML = `
+                    <h2>MCP API Response:</h2>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                document.getElementById('results').innerHTML = `
+                    <h2>Error:</h2>
+                    <pre>${error.message}</pre>
+                `;
+            }
+        }
+
+        testMCPAPI();
+    </script>
+</body>
+
+</html>

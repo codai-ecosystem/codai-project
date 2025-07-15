@@ -277,9 +277,9 @@ export default function StocAIPage() {
                                 </h1>
                                 <p className="text-slate-300 text-sm">AI-Powered Trading Platform</p>
                             </div>
-                            <div className="flex items-center space-x-2 ml-8">
+                            <div className="flex items-center space-x-2 ml-8" role="status" aria-live="polite">
                                 <div className={`w-2 h-2 rounded-full ${isLiveData ? 'bg-emerald-400 animate-pulse' : 'bg-red-400'}`}></div>
-                                <span className="text-sm text-slate-300">
+                                <span className="text-sm text-slate-300" aria-label={`Data status: ${isLiveData ? 'Live updates active' : 'Offline mode'}`}>
                                     {isLiveData ? 'Live Data' : 'Offline'}
                                 </span>
                             </div>

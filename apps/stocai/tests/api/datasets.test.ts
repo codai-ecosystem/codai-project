@@ -1,32 +1,81 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { testApiHandler } from '../setup';
-import type { NextApiRequest, NextApiResponse } from 'next';
+
+// Set up environment variables before importing API routes
+process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co'
+process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service-role-key'
+
+import { testApiHandler } from '../setup.api';
 
 // Mock Supabase
 vi.mock('@supabase/supabase-js', () => ({
-  createClient: vi.fn(() => ({
-    from: vi.fn(() => ({
-      select: vi.fn().mockReturnThis(),
-      insert: vi.fn().mockReturnThis(),
-      update: vi.fn().mockReturnThis(),
-      delete: vi.fn().mockReturnThis(),
-      eq: vi.fn().mockReturnThis(),
-      ilike: vi.fn().mockReturnThis(),
-      order: vi.fn().mockReturnThis(),
-      limit: vi.fn().mockReturnThis(),
-      range: vi.fn().mockReturnThis(),
-      single: vi.fn().mockResolvedValue({
-        data: {
-          id: 'dataset-1',
-          name: 'Test Dataset',
-          description: 'Test dataset description',
-          files: [],
-          created_at: new Date().toISOString()
-        },
-        error: null
-      })
-    }))
-  }))
+  createClient: vi.fn(() => {
+    let capturedData: any = null;
+    
+    return {
+      from: vi.fn(() => ({
+        select: vi.fn().mockReturnThis(),
+        insert: vi.fn((data) => {
+          capturedData = Array.isArray(data) ? data[0] : data;
+          return {
+            select: vi.fn().mockReturnThis(),
+            single: vi.fn().mockResolvedValue({
+              data: {
+                id: 'dataset-1',
+                ...capturedData,
+                created_at: new Date().toISOString()
+              },
+              error: null
+            })
+          };
+        }),
+        update: vi.fn((data) => {
+          capturedData = data;
+          return {
+            eq: vi.fn().mockReturnThis(),
+            select: vi.fn().mockReturnThis(),
+            single: vi.fn().mockResolvedValue({
+              data: {
+                id: 'dataset-1',
+                name: 'Test Dataset',
+                ...capturedData,
+                updated_at: new Date().toISOString()
+              },
+              error: null
+            })
+          };
+        }),
+        delete: vi.fn().mockReturnThis(),
+        eq: vi.fn().mockReturnThis(),
+        or: vi.fn().mockReturnThis(),
+        ilike: vi.fn().mockReturnThis(),
+        order: vi.fn().mockReturnThis(),
+        limit: vi.fn().mockReturnThis(),
+        range: vi.fn().mockReturnThis(),
+        single: vi.fn().mockResolvedValue({
+          data: {
+            id: 'dataset-1',
+            name: 'Test Dataset',
+            description: 'Test dataset description',
+            files: [],
+            created_at: new Date().toISOString()
+          },
+          error: null
+        }),
+        // Add then method for promise chain operations
+        then: vi.fn((callback) => callback({
+          data: [{
+            id: 'dataset-1',
+            name: 'Test Dataset',
+            description: 'Test dataset description',
+            files: [],
+            created_at: new Date().toISOString()
+          }],
+          error: null,
+          count: 1
+        }))
+      }))
+    };
+  })
 }));
 
 // Mock OpenAI
@@ -57,7 +106,7 @@ describe('/api/datasets', () => {
 
   describe('GET /api/datasets', () => {
     it('should list all datasets', async () => {
-      const mockHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+      const mockHandler = async (req: any, res: any) => {
         const handler = await import('../../app/api/datasets/route');
         return handler.GET(req as any);
       };
@@ -75,7 +124,7 @@ describe('/api/datasets', () => {
     });
 
     it('should get dataset by ID', async () => {
-      const mockHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+      const mockHandler = async (req: any, res: any) => {
         const handler = await import('../../app/api/datasets/route');
         return handler.GET(req as any);
       };
@@ -93,7 +142,7 @@ describe('/api/datasets', () => {
     });
 
     it('should search datasets by name', async () => {
-      const mockHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+      const mockHandler = async (req: any, res: any) => {
         const handler = await import('../../app/api/datasets/route');
         return handler.GET(req as any);
       };
@@ -110,7 +159,7 @@ describe('/api/datasets', () => {
     });
 
     it('should handle pagination', async () => {
-      const mockHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+      const mockHandler = async (req: any, res: any) => {
         const handler = await import('../../app/api/datasets/route');
         return handler.GET(req as any);
       };
@@ -130,7 +179,7 @@ describe('/api/datasets', () => {
 
   describe('POST /api/datasets', () => {
     it('should create a new dataset', async () => {
-      const mockHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+      const mockHandler = async (req: any, res: any) => {
         const handler = await import('../../app/api/datasets/route');
         return handler.POST(req as any);
       };
@@ -158,7 +207,7 @@ describe('/api/datasets', () => {
     });
 
     it('should require name parameter', async () => {
-      const mockHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+      const mockHandler = async (req: any, res: any) => {
         const handler = await import('../../app/api/datasets/route');
         return handler.POST(req as any);
       };
@@ -188,7 +237,7 @@ describe('/api/datasets', () => {
         }
       }));
 
-      const mockHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+      const mockHandler = async (req: any, res: any) => {
         const handler = await import('../../app/api/datasets/route');
         return handler.POST(req as any);
       };
@@ -210,7 +259,7 @@ describe('/api/datasets', () => {
 
   describe('PUT /api/datasets', () => {
     it('should update an existing dataset', async () => {
-      const mockHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+      const mockHandler = async (req: any, res: any) => {
         const handler = await import('../../app/api/datasets/route');
         return handler.PUT(req as any);
       };
@@ -238,7 +287,7 @@ describe('/api/datasets', () => {
     });
 
     it('should require ID for update', async () => {
-      const mockHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+      const mockHandler = async (req: any, res: any) => {
         const handler = await import('../../app/api/datasets/route');
         return handler.PUT(req as any);
       };
@@ -259,7 +308,7 @@ describe('/api/datasets', () => {
 
   describe('DELETE /api/datasets', () => {
     it('should delete a dataset', async () => {
-      const mockHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+      const mockHandler = async (req: any, res: any) => {
         const handler = await import('../../app/api/datasets/route');
         return handler.DELETE(req as any);
       };
@@ -277,7 +326,7 @@ describe('/api/datasets', () => {
     });
 
     it('should require ID for deletion', async () => {
-      const mockHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+      const mockHandler = async (req: any, res: any) => {
         const handler = await import('../../app/api/datasets/route');
         return handler.DELETE(req as any);
       };
@@ -297,7 +346,7 @@ describe('/api/datasets', () => {
 
   describe('Batch Operations', () => {
     it('should handle batch dataset creation', async () => {
-      const mockHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+      const mockHandler = async (req: any, res: any) => {
         const handler = await import('../../app/api/datasets/route');
         return handler.POST(req as any);
       };
@@ -325,7 +374,7 @@ describe('/api/datasets', () => {
     });
 
     it('should handle file association', async () => {
-      const mockHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+      const mockHandler = async (req: any, res: any) => {
         const handler = await import('../../app/api/datasets/route');
         return handler.POST(req as any);
       };
@@ -352,7 +401,7 @@ describe('/api/datasets', () => {
 
   describe('Analytics & Insights', () => {
     it('should provide dataset analytics', async () => {
-      const mockHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+      const mockHandler = async (req: any, res: any) => {
         const handler = await import('../../app/api/datasets/route');
         return handler.GET(req as any);
       };
@@ -370,7 +419,7 @@ describe('/api/datasets', () => {
     });
 
     it('should handle category filtering', async () => {
-      const mockHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+      const mockHandler = async (req: any, res: any) => {
         const handler = await import('../../app/api/datasets/route');
         return handler.GET(req as any);
       };
@@ -400,7 +449,7 @@ describe('/api/datasets', () => {
         }))
       }));
 
-      const mockHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+      const mockHandler = async (req: any, res: any) => {
         const handler = await import('../../app/api/datasets/route');
         return handler.GET(req as any);
       };
@@ -417,7 +466,7 @@ describe('/api/datasets', () => {
     });
 
     it('should handle malformed request data', async () => {
-      const mockHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+      const mockHandler = async (req: any, res: any) => {
         const handler = await import('../../app/api/datasets/route');
         return handler.POST(req as any);
       };

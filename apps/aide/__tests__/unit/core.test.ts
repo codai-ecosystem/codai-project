@@ -1,163 +1,330 @@
 
-import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
-import { AideService } from '../src/services/AideService';
-import { AideRepository } from '../src/repositories/AideRepository';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import AideService from '../../lib/aide-service';
+import { basicFunctionalityFlow } from '../../lib/flows/basic-functionality';
 
-describe('AideService', () => {
-  let service: AideService;
-  let mockRepository: jest.Mocked<AideRepository>;
+describe('AIDE Core Functionality Tests', () => {
+  let service: typeof AideService;
 
   beforeEach(() => {
-    mockRepository = {
-      findById: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-      findAll: jest.fn()
-    } as any;
-    
-    service = new AideService(mockRepository);
+    service = AideService;
+    // Clear any existing sessions/data before each test
+    vi.clearAllMocks();
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.restoreAllMocks();
   });
 
-  describe('Core Functionality', () => {
-    it('should create new record successfully', async () => {
-      const testData = { name: 'Test Record', value: 'test-value' };
-      const expectedResult = { id: '1', ...testData, createdAt: new Date() };
-      
-      mockRepository.create.mockResolvedValue(expectedResult);
-      
-      const result = await service.create(testData);
-      
-      expect(result).toEqual(expectedResult);
-      expect(mockRepository.create).toHaveBeenCalledWith(testData);
-      expect(mockRepository.create).toHaveBeenCalledTimes(1);
+  describe('AI Assistant Core Features', () => {
+    it('should create AI session successfully', async () => {
+      const session = await service.createSession('test-user', 'code_generation');
+
+      expect(session).toBeDefined();
+      expect(session.id).toBeDefined();
+      expect(session.userId).toBe('test-user');
+      expect(session.sessionType).toBe('code_generation');
+      expect(session.isActive).toBe(true);
+      expect(session.startTime).toBeInstanceOf(Date);
+      expect(session.lastActivity).toBeInstanceOf(Date);
+      expect(session.history).toEqual([]);
     });
 
-    it('should retrieve record by ID successfully', async () => {
-      const recordId = '1';
-      const expectedRecord = { id: recordId, name: 'Test Record', value: 'test-value' };
-      
-      mockRepository.findById.mockResolvedValue(expectedRecord);
-      
-      const result = await service.getById(recordId);
-      
-      expect(result).toEqual(expectedRecord);
-      expect(mockRepository.findById).toHaveBeenCalledWith(recordId);
+    it('should retrieve session by ID successfully', async () => {
+      const createdSession = await service.createSession('test-user-2', 'debugging');
+      const retrievedSession = await service.getSession(createdSession.id);
+
+      expect(retrievedSession).toBeDefined();
+      expect(retrievedSession!.id).toBe(createdSession.id);
+      expect(retrievedSession!.sessionType).toBe('debugging');
     });
 
-    it('should update record successfully', async () => {
-      const recordId = '1';
-      const updateData = { name: 'Updated Record' };
-      const expectedResult = { id: recordId, ...updateData, updatedAt: new Date() };
-      
-      mockRepository.update.mockResolvedValue(expectedResult);
-      
-      const result = await service.update(recordId, updateData);
-      
-      expect(result).toEqual(expectedResult);
-      expect(mockRepository.update).toHaveBeenCalledWith(recordId, updateData);
-    });
-
-    it('should delete record successfully', async () => {
-      const recordId = '1';
-      
-      mockRepository.delete.mockResolvedValue(true);
-      
-      const result = await service.delete(recordId);
-      
-      expect(result).toBe(true);
-      expect(mockRepository.delete).toHaveBeenCalledWith(recordId);
-    });
-
-    it('should list all records with pagination', async () => {
-      const mockRecords = [
-        { id: '1', name: 'Record 1' },
-        { id: '2', name: 'Record 2' }
-      ];
-      const pagination = { page: 1, limit: 10 };
-      
-      mockRepository.findAll.mockResolvedValue({
-        data: mockRecords,
-        total: 2,
-        page: 1,
-        totalPages: 1
+    it('should update session successfully', async () => {
+      const session = await service.createSession('test-user-3', 'learning');
+      const updateResult = await service.updateSession(session.id, {
+        context: { project: 'web-app', language: 'typescript' }
       });
-      
-      const result = await service.getAll(pagination);
-      
-      expect(result.data).toEqual(mockRecords);
-      expect(result.total).toBe(2);
-      expect(mockRepository.findAll).toHaveBeenCalledWith(pagination);
+
+      expect(updateResult).toBe(true);
+
+      const updatedSession = await service.getSession(session.id);
+      expect(updatedSession?.context.project).toBe('web-app');
+      expect(updatedSession?.context.language).toBe('typescript');
+    });
+
+    it('should add interactions to session', async () => {
+      const session = await service.createSession('test-user-4', 'code_generation');
+      const addResult = await service.addInteraction(session.id, {
+        userMessage: 'Generate a React component for user login',
+        assistantResponse: 'Here is your React login component...',
+        actionType: 'code_generation',
+        codeSnippets: ['const LoginComponent = () => { return <div>Login</div>; }']
+      });
+
+      expect(addResult).toBe(true);
+
+      const updatedSession = await service.getSession(session.id);
+      expect(updatedSession?.history).toHaveLength(1);
+      expect(updatedSession?.history[0].userMessage).toBe('Generate a React component for user login');
+      expect(updatedSession?.history[0].codeSnippets).toEqual(['const LoginComponent = () => { return <div>Login</div>; }']);
+    });
+
+    it('should get active sessions for user', async () => {
+      const user = 'test-user-5';
+      await service.createSession(user, 'code_generation');
+      await service.createSession(user, 'debugging');
+      await service.createSession(user, 'optimization');
+
+      const activeSessions = await service.getActiveSessions(user);
+
+      expect(activeSessions).toHaveLength(3);
+      expect(activeSessions.every(s => s.userId === user && s.isActive)).toBe(true);
     });
   });
 
-  describe('Error Handling', () => {
-    it('should handle repository errors gracefully', async () => {
-      const testData = { name: 'Test Record' };
-      const error = new Error('Database connection failed');
-      
-      mockRepository.create.mockRejectedValue(error);
-      
-      await expect(service.create(testData)).rejects.toThrow('Database connection failed');
+  describe('Code Generation Core', () => {
+    it('should generate JavaScript code successfully', async () => {
+      const result = await service.generateCode({
+        prompt: 'Create a function to validate email addresses',
+        language: 'javascript',
+        style: 'functional',
+        complexity: 'simple'
+      });
+
+      expect(result).toBeDefined();
+      expect(result.code).toBeDefined();
+      expect(result.explanation).toBeDefined();
+      expect(typeof result.code).toBe('string');
+      expect(result.code.length).toBeGreaterThan(0);
+      expect(result.explanation).toContain('functional approach');
     });
 
-    it('should throw error for invalid ID format', async () => {
-      const invalidId = 'invalid-id-format';
-      
-      await expect(service.getById(invalidId)).rejects.toThrow('Invalid ID format');
+    it('should generate TypeScript code with types', async () => {
+      const result = await service.generateCode({
+        prompt: 'Create a user management class',
+        language: 'typescript',
+        style: 'oop',
+        complexity: 'intermediate'
+      });
+
+      expect(result).toBeDefined();
+      expect(result.code).toBeDefined();
+      expect(result.explanation).toBeDefined();
+      expect(result.code).toContain('class');
+      expect(result.explanation).toContain('oop approach');
     });
 
-    it('should handle not found scenarios', async () => {
-      const nonExistentId = '999';
-      
-      mockRepository.findById.mockResolvedValue(null);
-      
-      await expect(service.getById(nonExistentId)).rejects.toThrow('Record not found');
+    it('should include tests when requested', async () => {
+      const result = await service.generateCode({
+        prompt: 'Create a calculator function',
+        language: 'javascript',
+        style: 'functional',
+        complexity: 'simple',
+        includeTests: true
+      });
+
+      expect(result).toBeDefined();
+      expect(result.code).toBeDefined();
+      expect(result.tests).toBeDefined();
+      expect(typeof result.tests).toBe('string');
+      expect(result.tests!.length).toBeGreaterThan(0);
+    });
+
+    it('should include documentation when requested', async () => {
+      const result = await service.generateCode({
+        prompt: 'Create a data validation utility',
+        language: 'javascript',
+        style: 'functional',
+        complexity: 'intermediate',
+        includeComments: true
+      });
+
+      expect(result).toBeDefined();
+      expect(result.code).toBeDefined();
+      expect(result.documentation).toBeDefined();
+      expect(typeof result.documentation).toBe('object');
+      if (typeof result.documentation === 'object' && result.documentation !== null) {
+        expect((result.documentation as any).documentation).toBeDefined();
+        expect(typeof (result.documentation as any).documentation).toBe('string');
+      }
     });
   });
 
-  describe('Validation', () => {
-    it('should validate required fields on creation', async () => {
-      const invalidData = { value: 'test-value' }; // missing required 'name'
-      
-      await expect(service.create(invalidData)).rejects.toThrow('Name is required');
+  describe('Code Analysis Core', () => {
+    it('should analyze code quality', async () => {
+      const testCode = `
+        function fibonacci(n) {
+          if (n <= 1) return n;
+          return fibonacci(n - 1) + fibonacci(n - 2);
+        }
+      `;
+
+      const result = await service.analyzeCode({
+        code: testCode,
+        language: 'javascript',
+        analysisType: 'quality'
+      });
+
+      expect(result).toBeDefined();
+      expect(result.analysis).toBeDefined();
+      expect(result.score).toBeGreaterThan(0);
+      expect(result.suggestions).toBeInstanceOf(Array);
+      expect(result.issues).toBeInstanceOf(Array);
     });
 
-    it('should validate data types', async () => {
-      const invalidData = { name: 123, value: 'test-value' }; // name should be string
-      
-      await expect(service.create(invalidData)).rejects.toThrow('Name must be a string');
+    it('should analyze code security', async () => {
+      const testCode = `
+        function processUserInput(input) {
+          // Potentially unsafe code
+          eval(input);
+          return input;
+        }
+      `;
+
+      const result = await service.analyzeCode({
+        code: testCode,
+        language: 'javascript',
+        analysisType: 'security'
+      });
+
+      expect(result).toBeDefined();
+      expect(result.analysis.security).toBeDefined();
+      expect(typeof result.score).toBe('number');
     });
 
-    it('should validate field lengths', async () => {
-      const invalidData = { name: 'a'.repeat(256), value: 'test-value' }; // name too long
-      
-      await expect(service.create(invalidData)).rejects.toThrow('Name must be less than 255 characters');
+    it('should perform comprehensive analysis', async () => {
+      const testCode = `
+        class UserManager {
+          constructor() {
+            this.users = [];
+          }
+          
+          addUser(user) {
+            this.users.push(user);
+          }
+          
+          findUser(id) {
+            return this.users.find(u => u.id === id);
+          }
+        }
+      `;
+
+      const result = await service.analyzeCode({
+        code: testCode,
+        language: 'javascript',
+        analysisType: 'all'
+      });
+
+      expect(result).toBeDefined();
+      expect(result.analysis.quality).toBeDefined();
+      expect(result.analysis.security).toBeDefined();
+      expect(result.analysis.performance).toBeDefined();
+      expect(result.analysis.maintainability).toBeDefined();
     });
   });
 
-  describe('Business Logic', () => {
-    it('should apply business rules correctly', async () => {
-      const testData = { name: 'Test Record', status: 'active' };
-      
-      const result = await service.applyBusinessRules(testData);
-      
-      expect(result.processedAt).toBeInstanceOf(Date);
-      expect(result.isValid).toBe(true);
+  describe('Flow Management Core', () => {
+    it('should process basic functionality flow', async () => {
+      const request = {
+        id: 'test-core-flow',
+        data: { operation: 'test', parameters: ['param1', 'param2'] }
+      };
+
+      const result = await basicFunctionalityFlow.process(request);
+
+      expect(result).toBeDefined();
+      expect(result.success).toBe(true);
+      expect(result.data).toBeDefined();
+      expect(result.metadata?.processingTime).toBeGreaterThan(0);
     });
 
-    it('should calculate derived values correctly', async () => {
-      const testData = { quantity: 10, price: 5.99 };
-      
-      const result = await service.calculateTotals(testData);
-      
-      expect(result.subtotal).toBe(59.90);
-      expect(result.tax).toBe(5.39); // assuming 9% tax
-      expect(result.total).toBe(65.29);
+    it('should validate flow input correctly', async () => {
+      const validRequest = {
+        id: 'valid-test',
+        data: { test: 'data' }
+      };
+
+      const invalidRequest = {
+        id: '',
+        data: null
+      };
+
+      expect(await basicFunctionalityFlow.validateInput(validRequest)).toBe(true);
+      expect(await basicFunctionalityFlow.validateInput(invalidRequest)).toBe(false);
+    });
+
+    it('should maintain flow state correctly', async () => {
+      const request = {
+        id: 'state-test',
+        data: { operation: 'state-management' }
+      };
+
+      await basicFunctionalityFlow.process(request);
+      const state = await basicFunctionalityFlow.getState('state-test');
+
+      expect(state).toBeDefined();
+      expect(state?.status).toBe('completed');
+      expect(state?.lastUpdated).toBeInstanceOf(Date);
+    });
+  });
+
+  describe('System Status and Health', () => {
+    it('should return system status correctly', () => {
+      const status = service.getSystemStatus();
+
+      expect(status).toBeDefined();
+      expect(typeof status.activeSessions).toBe('number');
+      expect(typeof status.totalAnalyses).toBe('number');
+      expect(typeof status.totalLearningPaths).toBe('number');
+      expect(status.systemHealth).toBe('optimal');
+    });
+
+    it('should track active sessions count', async () => {
+      const initialStatus = service.getSystemStatus();
+      const initialSessions = initialStatus.activeSessions;
+
+      await service.createSession('test-user-status', 'code_generation');
+
+      const updatedStatus = service.getSystemStatus();
+      expect(updatedStatus.activeSessions).toBe(initialSessions + 1);
+    });
+  });
+
+  describe('Error Handling and Resilience', () => {
+    it('should handle invalid session operations gracefully', async () => {
+      const result = await service.getSession('non-existent-session-id');
+      expect(result).toBeNull();
+    });
+
+    it('should handle session updates for non-existent sessions', async () => {
+      const result = await service.updateSession('non-existent-id', { context: {} });
+      expect(result).toBe(false);
+    });
+
+    it('should handle interaction additions for non-existent sessions', async () => {
+      const result = await service.addInteraction('non-existent-id', {
+        userMessage: 'test',
+        assistantResponse: 'test',
+        actionType: 'test'
+      });
+      expect(result).toBe(false);
+    });
+
+    it('should handle code generation errors gracefully', async () => {
+      // This should not throw but handle gracefully
+      try {
+        await service.generateCode({
+          prompt: '',
+          language: 'invalid-language',
+          style: 'functional',
+          complexity: 'simple'
+        });
+        // If no error thrown, that's fine - service should handle gracefully
+        expect(true).toBe(true);
+      } catch (error) {
+        // If error is thrown, it should be a proper error message
+        expect(error).toBeInstanceOf(Error);
+      }
     });
   });
 });

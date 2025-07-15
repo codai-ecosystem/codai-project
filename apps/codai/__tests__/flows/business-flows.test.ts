@@ -1,181 +1,156 @@
 
-import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
-import { codeGenerationFlow } from '../lib/flows/code-generation';
-import { projectManagementFlow } from '../lib/flows/project-management';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { codeGenerationFlow } from '../../lib/flows/code-generation';
+import { projectManagementFlow } from '../../lib/flows/project-management';
 
 describe('Codai Business Flow Tests', () => {
   
-
-  describe('code-generation Flow', () => {
-    let codeGenerationService: typeof codeGenerationFlow;
-
-    beforeEach(() => {
-      codeGenerationService = codeGenerationFlow;
-    });
-
-    it('should process code-generation request successfully', async () => {
+  describe('Code Generation Flow', () => {
+    it('should generate code successfully', async () => {
       const testRequest = {
-        id: 'test-id',
-        data: 'test-data'
+        prompt: 'Create a simple calculator function',
+        language: 'typescript',
+        complexity: 'simple' as const
       };
 
-      const result = await codeGenerationService.process(testRequest);
+      const result = await codeGenerationFlow.generateCode(testRequest);
 
       expect(result).toBeDefined();
-      expect(result.success).toBe(true);
+      expect(result.generatedCode).toBeDefined();
+      expect(result.explanation).toBeDefined();
+      expect(result.testCases).toBeDefined();
+      expect(result.explanation).toContain('typescript');
+      expect(result.explanation).toContain(testRequest.prompt);
     });
 
-    it('should handle code-generation errors gracefully', async () => {
-      const invalidRequest = {
-        id: '',
-        data: null
-      };
-
-      await expect(codeGenerationService.process(invalidRequest))
-        .rejects.toThrow();
-    });
-
-    it('should validate code-generation input parameters', async () => {
+    it('should handle complex code generation', async () => {
       const testRequest = {
-        id: 'valid-id',
-        data: { /* valid data */ }
+        prompt: 'Create a distributed caching system',
+        language: 'go',
+        complexity: 'complex' as const
       };
 
-      const isValid = await codeGenerationService.validateInput(testRequest);
-      expect(isValid).toBe(true);
+      const result = await codeGenerationFlow.generateCode(testRequest);
+
+      expect(result).toBeDefined();
+      expect(result.generatedCode).toContain('go');
+      expect(result.explanation).toContain('distributed');
     });
 
-    it('should track code-generation performance metrics', async () => {
+    it('should generate appropriate test cases', async () => {
       const testRequest = {
-        id: 'test-id',
-        data: 'test-data'
+        prompt: 'Create user authentication service',
+        language: 'javascript',
+        complexity: 'moderate' as const
       };
 
-      const startTime = Date.now();
-      await codeGenerationService.process(testRequest);
-      const endTime = Date.now();
+      const result = await codeGenerationFlow.generateCode(testRequest);
 
-      expect(endTime - startTime).toBeLessThan(5000); // Should complete within 5 seconds
+      expect(result.testCases).toHaveLength(1);
+      expect(result.testCases[0]).toContain('Test');
     });
   });
 
+  describe('Project Management Flow', () => {
+    it('should create project successfully', async () => {
+      const projectName = 'Test Project';
 
-  describe('project-management Flow', () => {
-    let projectManagementService: typeof projectManagementFlow;
-
-    beforeEach(() => {
-      projectManagementService = projectManagementFlow;
-    });
-
-    it('should process project-management request successfully', async () => {
-      const testRequest = {
-        id: 'test-id',
-        data: 'test-data'
-      };
-
-      const result = await projectManagementService.process(testRequest);
+      const result = await projectManagementFlow.createProject(projectName);
 
       expect(result).toBeDefined();
-      expect(result.success).toBe(true);
+      expect(result.name).toBe(projectName);
+      expect(result.status).toBe('planning');
+      expect(result.progress).toBe(0);
+      expect(result.tasks).toHaveLength(0);
+      expect(result.id).toBeDefined();
     });
 
-    it('should handle project-management errors gracefully', async () => {
-      const invalidRequest = {
-        id: '',
-        data: null
-      };
+    it('should add task to project', async () => {
+      const projectId = 'test-project-id';
+      const taskTitle = 'Test Task';
 
-      await expect(projectManagementService.process(invalidRequest))
-        .rejects.toThrow();
+      const result = await projectManagementFlow.addTask(projectId, taskTitle);
+
+      expect(result).toBeDefined();
+      expect(result.title).toBe(taskTitle);
+      expect(result.status).toBe('todo');
+      expect(result.priority).toBe('medium');
+      expect(result.id).toBeDefined();
     });
 
-    it('should validate project-management input parameters', async () => {
-      const testRequest = {
-        id: 'valid-id',
-        data: { /* valid data */ }
-      };
+    it('should generate unique IDs', async () => {
+      const project1 = await projectManagementFlow.createProject('Project 1');
+      const project2 = await projectManagementFlow.createProject('Project 2');
 
-      const isValid = await projectManagementService.validateInput(testRequest);
-      expect(isValid).toBe(true);
-    });
-
-    it('should track project-management performance metrics', async () => {
-      const testRequest = {
-        id: 'test-id',
-        data: 'test-data'
-      };
-
-      const startTime = Date.now();
-      await projectManagementService.process(testRequest);
-      const endTime = Date.now();
-
-      expect(endTime - startTime).toBeLessThan(5000); // Should complete within 5 seconds
+      expect(project1.id).not.toBe(project2.id);
     });
   });
-
 
   describe('Cross-Flow Integration', () => {
     it('should handle multiple flow execution', async () => {
-      // Test coordination between multiple business flows
+      const codeRequest = {
+        prompt: 'Create API endpoint',
+        language: 'typescript',
+        complexity: 'moderate' as const
+      };
+
       const results = await Promise.all([
-        codeGenerationFlow.process({ id: 'test-code-generation', data: 'test' }),
-        projectManagementFlow.process({ id: 'test-project-management', data: 'test' })
+        codeGenerationFlow.generateCode(codeRequest),
+        projectManagementFlow.createProject('API Project')
       ]);
 
       expect(results).toHaveLength(2);
-      results.forEach(result => {
-        expect(result.success).toBe(true);
-      });
+      expect(results[0].generatedCode).toBeDefined();
+      expect(results[1].name).toBe('API Project');
     });
 
-    it('should maintain data consistency across flows', async () => {
-      // Test that flows maintain consistent state
-      const sharedData = { entityId: 'shared-entity-123' };
-      
-      
-      await codeGenerationFlow.process({ id: 'test-code-generation', data: sharedData });
-      await projectManagementFlow.process({ id: 'test-project-management', data: sharedData });
+    it('should maintain consistency across flows', async () => {
+      const projectName = 'Consistent Project';
+      const codePrompt = `Generate code for ${projectName}`;
 
-      // Verify data consistency
-      const finalState = await codeGenerationFlow.getState(sharedData.entityId);
-      expect(finalState).toBeDefined();
+      const project = await projectManagementFlow.createProject(projectName);
+      const code = await codeGenerationFlow.generateCode({
+        prompt: codePrompt,
+        language: 'typescript',
+        complexity: 'simple' as const
+      });
+
+      expect(project.name).toBe(projectName);
+      expect(code.explanation).toContain(projectName);
     });
   });
 
   describe('Performance and Scalability', () => {
-    it('should handle high load scenarios', async () => {
-      const concurrentRequests = Array.from({ length: 100 }, (_, i) => ({
-        id: `load-test-${i}`,
-        data: `test-data-${i}`
+    it('should handle concurrent code generation requests', async () => {
+      const requests = Array.from({ length: 10 }, (_, i) => ({
+        prompt: `Generate function ${i}`,
+        language: 'javascript',
+        complexity: 'simple' as const
       }));
 
       const startTime = Date.now();
       const results = await Promise.all(
-        concurrentRequests.map(req => codeGenerationFlow.process(req))
+        requests.map(req => codeGenerationFlow.generateCode(req))
       );
       const endTime = Date.now();
 
-      expect(results).toHaveLength(100);
-      expect(results.every(r => r.success)).toBe(true);
-      expect(endTime - startTime).toBeLessThan(10000); // Should complete within 10 seconds
+      expect(results).toHaveLength(10);
+      expect(results.every(r => r.generatedCode !== undefined)).toBe(true);
+      expect(endTime - startTime).toBeLessThan(5000); // Should complete within 5 seconds
     });
 
-    it('should manage memory usage efficiently', async () => {
-      const initialMemory = process.memoryUsage().heapUsed;
-      
-      // Process many requests
-      for (let i = 0; i < 1000; i++) {
-        await codeGenerationFlow.process({
-          id: `memory-test-${i}`,
-          data: `test-data-${i}`
-        });
-      }
+    it('should handle concurrent project creation', async () => {
+      const projectNames = Array.from({ length: 20 }, (_, i) => `Project ${i}`);
 
-      const finalMemory = process.memoryUsage().heapUsed;
-      const memoryIncrease = finalMemory - initialMemory;
+      const startTime = Date.now();
+      const results = await Promise.all(
+        projectNames.map(name => projectManagementFlow.createProject(name))
+      );
+      const endTime = Date.now();
 
-      // Memory increase should be reasonable (less than 100MB)
-      expect(memoryIncrease).toBeLessThan(100 * 1024 * 1024);
+      expect(results).toHaveLength(20);
+      expect(results.every(p => p.id !== undefined)).toBe(true);
+      expect(endTime - startTime).toBeLessThan(2000); // Should complete within 2 seconds
     });
   });
 });

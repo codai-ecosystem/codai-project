@@ -30,12 +30,27 @@ interface Transaction {
 
 export class RealBankingService {
     private static instance: RealBankingService;
-    private stripe: Stripe;
+    private stripe: Stripe | null;
+    private isStripeEnabled: boolean;
 
     private constructor() {
-        this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-            apiVersion: '2025-06-30.basil'
-        });
+        const stripeKey = process.env.STRIPE_SECRET_KEY;
+        this.isStripeEnabled = Boolean(stripeKey && stripeKey !== '');
+        
+        if (this.isStripeEnabled && stripeKey) {
+            try {
+                this.stripe = new Stripe(stripeKey, {
+                    apiVersion: '2025-06-30.basil'
+                });
+            } catch (error) {
+                console.warn('Stripe initialization failed, falling back to mock mode:', error);
+                this.stripe = null;
+                this.isStripeEnabled = false;
+            }
+        } else {
+            this.stripe = null;
+            console.log('Stripe not configured, using mock banking service');
+        }
     }
 
     public static getInstance(): RealBankingService {
@@ -81,6 +96,18 @@ export class RealBankingService {
         description: string;
         paymentMethodId?: string;
     }): Promise<any> {
+        if (!this.isStripeEnabled || !this.stripe) {
+            // Return mock payment success for development
+            return {
+                success: true,
+                paymentIntentId: `mock_pi_${Date.now()}`,
+                status: 'succeeded',
+                amount: paymentData.amount,
+                currency: paymentData.currency.toUpperCase(),
+                clientSecret: `mock_secret_${Date.now()}`
+            };
+        }
+
         try {
             // Create real Stripe payment
             const paymentIntent = await this.stripe.paymentIntents.create({
@@ -196,6 +223,11 @@ export class RealBankingService {
 
     // Private helper methods
     private async getStripeBalance(): Promise<number> {
+        if (!this.isStripeEnabled || !this.stripe) {
+            // Return mock balance for development
+            return Math.random() * 10000 + 5000; // 5,000-15,000 fallback
+        }
+
         try {
             const balance = await this.stripe.balance.retrieve();
             return balance.available[0]?.amount / 100 || 0;

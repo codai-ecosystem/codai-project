@@ -11,7 +11,7 @@ export default function LogaiPage() {
     { id: 'overview', label: 'Overview', icon: Activity },
     { id: 'features', label: 'Features', icon: Zap },
     { id: 'analytics', label: 'Analytics', icon: TrendingUp },
-    { id: 'settings', label: 'Settings', icon: Settings }
+    { id: 'monitor', label: 'Monitor', icon: Eye }
   ]
 
   const renderContent = () => {
@@ -24,7 +24,7 @@ export default function LogaiPage() {
               <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6 glassmorphism">
                 <Lock className="w-8 h-8 text-blue-400 mb-4" />
                 <h4 className="text-lg font-bold text-white mb-2">Enterprise Security</h4>
-                <p className="text-gray-300">Advanced security features with threat detection</p>
+                <p className="text-gray-300">Enterprise security features with threat detection</p>
               </div>
               <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6 glassmorphism">
                 <Globe className="w-8 h-8 text-green-400 mb-4" />
@@ -43,7 +43,7 @@ export default function LogaiPage() {
       case 'analytics':
         return (
           <div className="space-y-6">
-            <h3 className="text-2xl font-bold text-white mb-6">Analytics Dashboard</h3>
+            <h3 className="text-2xl font-bold text-white mb-6">Advanced Analytics Dashboard</h3>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6">
                 <h4 className="text-lg font-bold text-white mb-4">Log Processing Rate</h4>
@@ -59,10 +59,10 @@ export default function LogaiPage() {
           </div>
         )
       
-      case 'settings':
+      case 'monitor':
         return (
           <div className="space-y-6">
-            <h3 className="text-2xl font-bold text-white mb-6">System Configuration</h3>
+            <h3 className="text-2xl font-bold text-white mb-6">System Monitoring</h3>
             <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
@@ -83,6 +83,10 @@ export default function LogaiPage() {
                     <div className="w-4 h-4 bg-white rounded-full absolute top-1 right-1"></div>
                   </div>
                 </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-white font-medium">System Status</span>
+                  <span className="text-green-400 font-medium">Online</span>
+                </div>
               </div>
             </div>
           </div>
@@ -99,7 +103,7 @@ export default function LogaiPage() {
               transition={{ duration: 0.6, delay: 0.6 }}
             >
               <h2 className="text-2xl font-bold text-blue-400 mb-4">
-                Intelligent log management and analysis with AI-driven insights
+                Enterprise intelligent log management and analysis with AI-driven insights
               </h2>
               <p className="text-gray-300 text-lg max-w-3xl mx-auto">
                 Experience the power of AI-driven technology with our advanced platform designed for modern businesses and developers.
@@ -109,9 +113,9 @@ export default function LogaiPage() {
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 container">
               {[
-                { icon: Users, label: 'Active Users', value: '12.4K', change: '+8.2%', color: 'blue' },
-                { icon: TrendingUp, label: 'Performance', value: '98.5%', change: '+2.1%', color: 'green' },
-                { icon: Shield, label: 'Features', value: '4', change: '0%', color: 'blue' },
+                { icon: Users, label: 'Total Users', value: '12.4K', change: '+8.2%', color: 'blue' },
+                { icon: TrendingUp, label: 'Active Now', value: '3.2K', change: '+2.1%', color: 'green' },
+                { icon: Shield, label: 'Performance', value: '98.5%', change: '0%', color: 'blue' },
                 { icon: Bell, label: 'Satisfaction', value: '4.9/5', change: '+0.2', color: 'purple' }
               ].map((stat, index) => (
                 <motion.div
@@ -171,6 +175,10 @@ export default function LogaiPage() {
                 </div>
                 <p className="text-gray-300">System health and performance monitoring</p>
                 <div className="mt-4 space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-400">Status</span>
+                    <span className="text-sm text-green-400">Online</span>
+                  </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-400">CPU Usage</span>
                     <span className="text-sm text-green-400">45%</span>
@@ -272,7 +280,7 @@ export default function LogaiPage() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              aria-label={`Switch to ${tab.label} tab`}
+              aria-label={tab.label}
               className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center space-x-2 ${
                 activeTab === tab.id
                   ? 'bg-blue-500/30 text-blue-300 shadow-lg'

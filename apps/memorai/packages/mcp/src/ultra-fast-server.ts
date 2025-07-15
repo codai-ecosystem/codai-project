@@ -476,10 +476,13 @@ server.setRequestHandler(CallToolRequestSchema, async request => {
   const startTime = Date.now();
   const requestId = `ultra-${startTime}-${Math.random().toString(36).substr(2, 6)}`;
 
-  console.log(`🚀 [${requestId}] ULTRA-FAST request: ${name}`, {
-    timestamp: new Date().toISOString(),
-    args: args ? Object.keys(args) : []
-  });
+  // Debug to stderr only (not stdout which breaks MCP JSON-RPC)
+  if (process.env.DEBUG?.includes('memorai')) {
+    console.error(`🚀 [${requestId}] ULTRA-FAST request: ${name}`, {
+      timestamp: new Date().toISOString(),
+      args: args ? Object.keys(args) : []
+    });
+  }
 
   try {
     let result: any;
@@ -584,7 +587,10 @@ server.setRequestHandler(CallToolRequestSchema, async request => {
     }
 
     const duration = Date.now() - startTime;
-    console.log(`✅ [${requestId}] SUCCESS: ${name} completed in ${duration}ms`);
+    // Debug to stderr only (not stdout which breaks MCP JSON-RPC)
+    if (process.env.DEBUG?.includes('memorai')) {
+      console.error(`✅ [${requestId}] SUCCESS: ${name} completed in ${duration}ms`);
+    }
 
     return {
       content: [
@@ -639,7 +645,10 @@ server.setRequestHandler(CallToolRequestSchema, async request => {
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.log('⚡ Ultra-Fast MemorAI MCP Server ready - sub-100ms responses guaranteed!');
+  // Debug to stderr only (not stdout which breaks MCP JSON-RPC)
+  if (process.env.DEBUG?.includes('memorai')) {
+    console.error('⚡ Ultra-Fast MemorAI MCP Server ready - sub-100ms responses guaranteed!');
+  }
 }
 
 // Auto-start server 

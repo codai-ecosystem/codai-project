@@ -8,7 +8,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./vitest.setup.ts'],
+    setupFiles: ['./vitest.setup.basic.ts'],
     css: true,
     watch: false, // Prevent watch mode by default
     env: {
@@ -60,7 +60,9 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './')
+      '@': path.resolve(__dirname, './'),
+      'react': path.resolve(__dirname, '../../node_modules/react'),
+      'react-dom': path.resolve(__dirname, '../../node_modules/react-dom'),
     }
   }
 })

@@ -41,6 +41,7 @@ export interface IntegrationService {
   connect(): Promise<boolean>
   disconnect(): Promise<boolean>
   healthCheck(): Promise<boolean>
+  processRequest?(data: any): Promise<any>
 }
 
 export class AIServiceIntegration implements IntegrationService {
@@ -201,15 +202,22 @@ export class DevelopmentToolIntegration implements IntegrationService {
         return false
       }
 
-      // Test tool availability
+      // Test tool availability - handle missing tools gracefully
       const { exec } = require('child_process')
       const { promisify } = require('util')
       const execAsync = promisify(exec)
 
-      await execAsync(`${this.tool.command} --version`)
-      this.status = 'connected'
-      this.lastSync = new Date()
-      return true
+      try {
+        await execAsync(`${this.tool.command} --version`)
+        this.status = 'connected'
+        this.lastSync = new Date()
+        return true
+      } catch (versionError) {
+        // Tool not available, mark as disconnected but don't throw
+        console.warn(`Development tool ${this.name} not available:`, versionError.message)
+        this.status = 'disconnected'
+        return false
+      }
     } catch (error) {
       console.error(`Failed to connect to development tool ${this.name}:`, error)
       this.status = 'error'
@@ -697,6 +705,12 @@ export class AideIntegrationManager {
           return await this.cloneRepository(serviceName, data.localPath)
         } else if (data.type === 'pull') {
           return await this.pullRepository(serviceName, data.localPath)
+        }
+      } else if (this.services.has(serviceName)) {
+        // Handle generic service requests
+        const service = this.services.get(serviceName)
+        if (service && service.processRequest) {
+          return await service.processRequest(data)
         }
       }
 

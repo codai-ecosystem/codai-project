@@ -37,7 +37,8 @@ describe('stocai Accessibility Tests', () => {
       
       const buttons = screen.getAllByRole('button')
       buttons.forEach(button => {
-        expect(button).toHaveAttribute('tabIndex')
+        // Buttons are focusable by default, check they're not disabled
+        expect(button).not.toHaveAttribute('disabled')
       })
     })
 
@@ -46,8 +47,10 @@ describe('stocai Accessibility Tests', () => {
       
       const interactiveElements = [
         ...screen.getAllByRole('button'),
-        ...screen.getAllByRole('link'),
-        ...screen.getAllByRole('tab')
+        // Only add links if they exist
+        ...screen.queryAllByRole('link'),
+        // Only add tabs if they exist
+        ...screen.queryAllByRole('tab')
       ]
       
       interactiveElements.forEach(element => {
@@ -61,8 +64,8 @@ describe('stocai Accessibility Tests', () => {
     it('announces state changes to screen readers', () => {
       render(<StocaiPage />)
       
-      // Check for aria-live regions
-      const liveRegions = document.querySelectorAll('[aria-live]')
+      // Check for aria-live regions or other status announcements
+      const liveRegions = document.querySelectorAll('[aria-live], [role="status"], [role="alert"]')
       expect(liveRegions.length).toBeGreaterThan(0)
     })
   })

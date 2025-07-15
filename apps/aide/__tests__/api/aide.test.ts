@@ -1,150 +1,256 @@
-import { describe, it, expect, beforeEach } from '@jest/globals';
-import { AideService } from '../src/services/aideService';
+import { describe, it, expect, beforeEach } from 'vitest';
+import AideService from '../../lib/aide-service';
 
 describe('AideService', () => {
-  let service: AideService;
+  let service: typeof AideService;
 
   beforeEach(() => {
-    service = new AideService();
+    service = AideService;
   });
 
-  describe('CRUD Operations', () => {
-    it('should create a new item', async () => {
-      const data = { name: 'Test Item', description: 'Test Description' };
-      const result = await service.create(data);
-      
-      expect(result).toBeDefined();
-      expect(result.id).toBeDefined();
-      expect(result.name).toBe(data.name);
-      expect(result.createdAt).toBeDefined();
+  describe('AI Assistant Session Management', () => {
+    it('should create a new AI session', async () => {
+      const session = await service.createSession('test-user', 'code_generation');
+
+      expect(session).toBeDefined();
+      expect(session.id).toBeDefined();
+      expect(session.userId).toBe('test-user');
+      expect(session.sessionType).toBe('code_generation');
+      expect(session.isActive).toBe(true);
     });
 
-    it('should get all items', async () => {
-      await service.create({ name: 'Item 1' });
-      await service.create({ name: 'Item 2' });
-      
-      const results = await service.getAll();
-      expect(results).toHaveLength(2);
+    it('should get all active sessions for a user', async () => {
+      await service.createSession('test-user-1', 'debugging');
+      await service.createSession('test-user-1', 'optimization');
+
+      const sessions = await service.getActiveSessions('test-user-1');
+      expect(sessions).toHaveLength(2);
+      expect(sessions.every(s => s.userId === 'test-user-1')).toBe(true);
     });
 
-    it('should get item by id', async () => {
-      const created = await service.create({ name: 'Test Item' });
-      const found = await service.getById(created.id!);
-      
+    it('should get session by id', async () => {
+      const created = await service.createSession('test-user-2', 'learning');
+      const found = await service.getSession(created.id);
+
       expect(found).toBeDefined();
-      expect(found!.name).toBe('Test Item');
+      expect(found!.id).toBe(created.id);
+      expect(found!.sessionType).toBe('learning');
     });
 
-    it('should update an item', async () => {
-      const created = await service.create({ name: 'Original' });
-      const updated = await service.update(created.id!, { name: 'Updated' });
-      
-      expect(updated).toBeDefined();
-      expect(updated!.name).toBe('Updated');
-      expect(updated!.updatedAt).not.toEqual(created.createdAt);
+    it('should update session', async () => {
+      const session = await service.createSession('test-user-3', 'architecture');
+      const updateResult = await service.updateSession(session.id, {
+        context: { projectType: 'web-app' }
+      });
+
+      expect(updateResult).toBe(true);
+
+      const updated = await service.getSession(session.id);
+      expect(updated?.context.projectType).toBe('web-app');
     });
 
-    it('should delete an item', async () => {
-      const created = await service.create({ name: 'To Delete' });
-      const deleted = await service.delete(created.id!);
-      const found = await service.getById(created.id!);
-      
-      expect(deleted).toBe(true);
-      expect(found).toBeNull();
+    it('should add interaction to session', async () => {
+      const session = await service.createSession('test-user-4', 'code_generation');
+      const addResult = await service.addInteraction(session.id, {
+        userMessage: 'Generate a React component',
+        assistantResponse: 'Here is your React component...',
+        actionType: 'code_generation',
+        codeSnippets: ['const Component = () => {}']
+      });
+
+      expect(addResult).toBe(true);
+
+      const updated = await service.getSession(session.id);
+      expect(updated?.history).toHaveLength(1);
+      expect(updated?.history[0].userMessage).toBe('Generate a React component');
     });
   });
 
-  describe('Business Logic', () => {
-    it('should process business logic', async () => {
-      const data = { test: 'data' };
-      const result = await service.processBusinessLogic(data);
-      
-      expect(result.processed).toBe(true);
-      expect(result.data).toEqual(data);
+  describe('Code Generation', () => {
+    it('should generate code with basic request', async () => {
+      const result = await service.generateCode({
+        prompt: 'Create a function to calculate fibonacci numbers',
+        language: 'javascript',
+        style: 'functional',
+        complexity: 'simple'
+      });
+
+      expect(result).toBeDefined();
+      expect(result.code).toBeDefined();
+      expect(result.explanation).toBeDefined();
+      expect(typeof result.code).toBe('string');
+      expect(result.code.length).toBeGreaterThan(0);
     });
 
-    it('should validate data', async () => {
-      const validData = { name: 'Valid Name' };
-      const invalidData = { name: '' };
-      
-      expect(await service.validateData(validData as any)).toBe(true);
-      expect(await service.validateData(invalidData as any)).toBe(false);
+    it('should generate code with tests when requested', async () => {
+      const result = await service.generateCode({
+        prompt: 'Create a user validation function',
+        language: 'typescript',
+        style: 'functional',
+        complexity: 'intermediate',
+        includeTests: true
+      });
+
+      expect(result).toBeDefined();
+      expect(result.code).toBeDefined();
+      expect(result.tests).toBeDefined();
+      expect(typeof result.tests).toBe('string');
     });
 
-    it('should perform analytics', async () => {
-      await service.create({ name: 'Item 1' });
-      await service.create({ name: 'Item 2' });
-      
-      const analytics = await service.performAnalytics();
-      
-      expect(analytics.totalItems).toBe(2);
-      expect(analytics.service).toBe('aide');
-      expect(analytics.lastUpdate).toBeDefined();
+    it('should generate code with documentation when requested', async () => {
+      const result = await service.generateCode({
+        prompt: 'Create a data processing class',
+        language: 'python',
+        style: 'oop',
+        complexity: 'advanced',
+        includeComments: true
+      });
+
+      expect(result).toBeDefined();
+      expect(result.code).toBeDefined();
+      expect(result.documentation).toBeDefined();
+      expect(typeof result.documentation).toBe('object');
+      expect(result.documentation.documentation).toBeDefined();
+      expect(typeof result.documentation.documentation).toBe('string');
+    });
+  });
+
+  describe('Code Analysis', () => {
+    it('should analyze code quality', async () => {
+      const testCode = `
+        function calculateSum(a, b) {
+          return a + b;
+        }
+      `;
+
+      const result = await service.analyzeCode({
+        code: testCode,
+        language: 'javascript',
+        analysisType: 'quality'
+      });
+
+      expect(result).toBeDefined();
+      expect(result.analysis).toBeDefined();
+      expect(result.score).toBeGreaterThan(0);
+      expect(result.suggestions).toBeInstanceOf(Array);
+    });
+
+    it('should analyze code security', async () => {
+      const testCode = `
+        function validateInput(userInput) {
+          return userInput.length > 0;
+        }
+      `;
+
+      const result = await service.analyzeCode({
+        code: testCode,
+        language: 'javascript',
+        analysisType: 'security'
+      });
+
+      expect(result).toBeDefined();
+      expect(result.analysis.security).toBeDefined();
+      expect(result.score).toBeGreaterThan(0);
+    });
+
+    it('should perform comprehensive analysis', async () => {
+      const testCode = `
+        class DataProcessor {
+          process(data) {
+            return data.map(item => item * 2);
+          }
+        }
+      `;
+
+      const result = await service.analyzeCode({
+        code: testCode,
+        language: 'javascript',
+        analysisType: 'all'
+      });
+
+      expect(result).toBeDefined();
+      expect(result.analysis.quality).toBeDefined();
+      expect(result.analysis.security).toBeDefined();
+      expect(result.analysis.performance).toBeDefined();
+      expect(result.analysis.maintainability).toBeDefined();
+    });
+  });
+
+  describe('System Status', () => {
+    it('should return system status', () => {
+      const status = service.getSystemStatus();
+
+      expect(status).toBeDefined();
+      expect(status.activeSessions).toBeGreaterThanOrEqual(0);
+      expect(status.totalAnalyses).toBeGreaterThanOrEqual(0);
+      expect(status.totalLearningPaths).toBeGreaterThanOrEqual(0);
+      expect(status.systemHealth).toBe('optimal');
     });
   });
 });
 
-
-describe('assistance API Endpoints', () => {
+describe('API Endpoints - Assistant Features', () => {
   it('should handle assistance GET requests', async () => {
     // Test assistance GET endpoint
-    expect(true).toBe(true); // Placeholder
+    expect(true).toBe(true); // Placeholder for endpoint testing
   });
 
   it('should handle assistance POST requests', async () => {
-    // Test assistance POST endpoint
-    expect(true).toBe(true); // Placeholder
+    // Test assistance POST endpoint  
+    expect(true).toBe(true); // Placeholder for endpoint testing
   });
 
   it('should handle assistance PUT requests', async () => {
     // Test assistance PUT endpoint
-    expect(true).toBe(true); // Placeholder
+    expect(true).toBe(true); // Placeholder for endpoint testing
   });
 
   it('should handle assistance DELETE requests', async () => {
     // Test assistance DELETE endpoint
-    expect(true).toBe(true); // Placeholder
+    expect(true).toBe(true); // Placeholder for endpoint testing
   });
 });
-describe('tools API Endpoints', () => {
+
+describe('API Endpoints - Development Tools', () => {
   it('should handle tools GET requests', async () => {
     // Test tools GET endpoint
-    expect(true).toBe(true); // Placeholder
+    expect(true).toBe(true); // Placeholder for endpoint testing
   });
 
   it('should handle tools POST requests', async () => {
     // Test tools POST endpoint
-    expect(true).toBe(true); // Placeholder
+    expect(true).toBe(true); // Placeholder for endpoint testing
   });
 
   it('should handle tools PUT requests', async () => {
     // Test tools PUT endpoint
-    expect(true).toBe(true); // Placeholder
+    expect(true).toBe(true); // Placeholder for endpoint testing
   });
 
   it('should handle tools DELETE requests', async () => {
     // Test tools DELETE endpoint
-    expect(true).toBe(true); // Placeholder
+    expect(true).toBe(true); // Placeholder for endpoint testing
   });
 });
-describe('workflow API Endpoints', () => {
+
+describe('API Endpoints - Workflow Management', () => {
   it('should handle workflow GET requests', async () => {
     // Test workflow GET endpoint
-    expect(true).toBe(true); // Placeholder
+    expect(true).toBe(true); // Placeholder for endpoint testing
   });
 
   it('should handle workflow POST requests', async () => {
     // Test workflow POST endpoint
-    expect(true).toBe(true); // Placeholder
+    expect(true).toBe(true); // Placeholder for endpoint testing
   });
 
   it('should handle workflow PUT requests', async () => {
     // Test workflow PUT endpoint
-    expect(true).toBe(true); // Placeholder
+    expect(true).toBe(true); // Placeholder for endpoint testing
   });
 
   it('should handle workflow DELETE requests', async () => {
     // Test workflow DELETE endpoint
-    expect(true).toBe(true); // Placeholder
+    expect(true).toBe(true); // Placeholder for endpoint testing
   });
 });

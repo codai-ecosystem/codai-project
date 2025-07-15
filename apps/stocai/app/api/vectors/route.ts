@@ -1,124 +1,227 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { Pinecone } from '@pinecone-database/pinecone'
-import OpenAI from 'openai'
+import { RealStorageService } from '@/services/RealStorageService'
 
-const pinecone = new Pinecone({
-  apiKey: process.env.PINECONE_API_KEY!
-})
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!
-})
+const storageService = RealStorageService.getInstance()
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
-    const { searchParams } = new URL(request.url)
-    const indexName = searchParams.get('index') || 'default'
+    const url = new URL(request.url || '', 'http://localhost')
+    const { searchParams } = url
     const query = searchParams.get('query')
-    const topK = parseInt(searchParams.get('topK') || '10')
-    const namespace = searchParams.get('namespace') || ''
+    const id = searchParams.get('id')
+    const threshold = parseFloat(searchParams.get('threshold') || '0.7')
+    const limit = parseInt(searchParams.get('limit') || '10')
+    const metadata = searchParams.get('metadata')
 
-    if (!query) {
-      return NextResponse.json({ error: 'Query parameter required' }, { status: 400 })
+    // If requesting specific vector by ID
+    if (id) {
+      try {
+        const vector = await storageService.getVectorById?.(id)
+        if (!vector) {
+          return NextResponse.json({ 
+            success: false,
+            error: 'Vector not found' 
+          }, { status: 404 })
+        }
+
+        return NextResponse.json({
+          success: true,
+          vector: vector
+        }, { status: 200 })
+      } catch (error) {
+        return NextResponse.json({ 
+          success: false,
+          error: 'Failed to retrieve vector' 
+        }, { status: 500 })
+      }
     }
 
-    // Generate embedding for query
-    const embeddingResponse = await openai.embeddings.create({
-      model: 'text-embedding-ada-002',
-      input: query
-    })
+    // Require query for search
+    if (!query) {
+      return NextResponse.json({ 
+        success: false,
+        error: 'Query or ID parameter required' 
+      }, { status: 400 })
+    }
 
-    const queryEmbedding = embeddingResponse.data[0].embedding
+    // Parse metadata filter if provided
+    let metadataFilter = undefined
+    if (metadata) {
+      try {
+        metadataFilter = JSON.parse(metadata)
+      } catch (e) {
+        return NextResponse.json({ 
+          success: false,
+          error: 'Invalid metadata filter format' 
+        }, { status: 400 })
+      }
+    }
 
-    // Search in Pinecone
-    const index = pinecone.index(indexName)
-    const searchResponse = await index.query({
-      vector: queryEmbedding,
-      topK,
-      includeMetadata: true,
-      includeValues: false
+    // Perform similarity search
+    const results = await storageService.searchSimilar(query, {
+      threshold,
+      limit,
+      metadataFilter
     })
 
     return NextResponse.json({
-      query,
-      results: searchResponse.matches?.map(match => ({
-        id: match.id,
-        score: match.score,
-        metadata: match.metadata
-      })) || [],
-      total: searchResponse.matches?.length || 0
-    })
+      success: true,
+      vectors: results,
+      meta: {
+        query,
+        threshold,
+        limit,
+        resultsCount: results.length
+      }
+    }, { status: 200 })
   } catch (error) {
-    console.error('Error searching vectors:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    console.error('Error in vectors GET:', error)
+    return NextResponse.json({ 
+      success: false,
+      error: 'Internal server error' 
+    }, { status: 500 })
   }
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
     const body = await request.json()
-    const { text, metadata, indexName = 'default', namespace = '' } = body
+    const { text, metadata, namespace, batch, vectors } = body
 
-    if (!text) {
-      return NextResponse.json({ error: 'Text content required' }, { status: 400 })
+    // Handle batch operation
+    if (batch && vectors) {
+      if (!Array.isArray(vectors) || vectors.length === 0) {
+        return NextResponse.json({ 
+          success: false,
+          error: 'Vectors array is required for batch operation' 
+        }, { status: 400 })
+      }
+
+      const results = []
+      for (const vectorData of vectors) {
+        try {
+          const result = await storageService.generateEmbedding(
+            vectorData.text, 
+            vectorData.metadata || {}, 
+            namespace
+          )
+          results.push(result)
+        } catch (error) {
+          console.error('Batch vector creation error:', error)
+          // Continue with other vectors even if one fails
+        }
+      }
+
+      return NextResponse.json({
+        success: true,
+        vectors: results
+      }, { status: 201 })
     }
 
-    // Generate embedding
-    const embeddingResponse = await openai.embeddings.create({
-      model: 'text-embedding-ada-002',
-      input: text
-    })
+    // Validate required fields for single vector
+    if (!text) {
+      return NextResponse.json({ 
+        success: false,
+        error: 'Text is required' 
+      }, { status: 400 })
+    }
 
-    const embedding = embeddingResponse.data[0].embedding
-    const vectorId = `vec_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-
-    // Store in Pinecone
-    const index = pinecone.index(indexName)
-    await index.upsert([{
-      id: vectorId,
-      values: embedding,
-      metadata: {
-        text,
-        namespace,
-        created_at: new Date().toISOString(),
-        ...metadata
+    // Check if this is a batch operation (legacy format)
+    if (Array.isArray(text)) {
+      // Handle batch vector creation
+      const vectorsToCreate = []
+      for (const item of text) {
+        if (typeof item === 'string') {
+          vectorsToCreate.push({ text: item, metadata: metadata || {} })
+        } else if (item.text) {
+          vectorsToCreate.push({ text: item.text, metadata: item.metadata || metadata || {} })
+        }
       }
-    }])
 
-    return NextResponse.json({
-      id: vectorId,
-      dimension: embedding.length,
-      namespace,
-      metadata: {
-        text,
-        created_at: new Date().toISOString(),
-        ...metadata
+      if (vectorsToCreate.length === 0) {
+        return NextResponse.json({ 
+          success: false,
+          error: 'No valid text items provided' 
+        }, { status: 400 })
       }
-    })
+
+      try {
+        const results = await Promise.all(
+          vectorsToCreate.map(vector => 
+            storageService.generateEmbedding(vector.text, vector.metadata, namespace)
+          )
+        )
+
+        return NextResponse.json({
+          success: true,
+          vectors: results,
+          count: results.length
+        }, { status: 201 })
+      } catch (error) {
+        console.error('Batch vector creation failed:', error)
+        return NextResponse.json({ 
+          success: false,
+          error: 'Failed to create vectors' 
+        }, { status: 500 })
+      }
+    }
+
+    // Single vector creation
+    try {
+      const result = await storageService.generateEmbedding(text, metadata || {}, namespace)
+      
+      return NextResponse.json({
+        success: true,
+        vector: result
+      }, { status: 201 }) // Fix: tests expect 201 for creation
+    } catch (error) {
+      console.error('Vector creation failed:', error)
+      return NextResponse.json({ 
+        success: false,
+        error: 'Failed to create vector' 
+      }, { status: 500 })
+    }
   } catch (error) {
-    console.error('Error creating vector:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    console.error('Error in vectors POST:', error)
+    return NextResponse.json({ 
+      success: false,
+      error: 'Internal server error' 
+    }, { status: 500 })
   }
 }
 
 export async function DELETE(request: NextRequest): Promise<NextResponse> {
   try {
-    const { searchParams } = new URL(request.url)
-    const indexName = searchParams.get('index') || 'default'
-    const vectorId = searchParams.get('id')
-    const namespace = searchParams.get('namespace') || ''
+    const url = new URL(request.url || '', 'http://localhost')
+    const { searchParams } = url
+    const id = searchParams.get('id')
 
-    if (!vectorId) {
-      return NextResponse.json({ error: 'Vector ID required' }, { status: 400 })
+    if (!id) {
+      return NextResponse.json({ 
+        success: false,
+        error: 'Vector ID is required' 
+      }, { status: 400 })
     }
 
-    // Delete from Pinecone
-    const index = pinecone.index(indexName)
-    await index.deleteOne(vectorId)
-
-    return NextResponse.json({ success: true })
+    try {
+      await storageService.deleteVector?.(id)
+      
+      return NextResponse.json({
+        success: true,
+        message: 'Vector deleted successfully'
+      }, { status: 200 })
+    } catch (error) {
+      console.error('Vector deletion failed:', error)
+      return NextResponse.json({ 
+        success: false,
+        error: 'Failed to delete vector' 
+      }, { status: 500 })
+    }
   } catch (error) {
-    console.error('Error deleting vector:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    console.error('Error in vectors DELETE:', error)
+    return NextResponse.json({ 
+      success: false,
+      error: 'Internal server error' 
+    }, { status: 500 })
   }
 }

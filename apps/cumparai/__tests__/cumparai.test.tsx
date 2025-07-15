@@ -1,4 +1,7 @@
-import { describe, it, expect, render, screen, fireEvent, waitFor, TEST_TIMEOUT } from '../../../test-setup.js'
+import { describe, it, expect } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+
+const TEST_TIMEOUT = 10000;
 
 describe('CUMPARAI App', () => {
   it('renders the main page without crashing', () => {

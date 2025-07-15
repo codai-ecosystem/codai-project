@@ -1,4 +1,6 @@
-import { describe, it, expect, render, screen, fireEvent, waitFor, TEST_TIMEOUT } from '../../../test-setup.js'
+import { describe, it, expect } from 'vitest'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import AnalizaiPage from '../app/page'
 
 describe('ANALIZAI App', () => {
   it('renders the main page without crashing', () => {

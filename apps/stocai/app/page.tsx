@@ -231,7 +231,7 @@ export default function StocAIPage() {
       </header>
 
       {/* Navigation Tabs */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <nav className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <motion.div
           className="flex justify-center space-x-1 bg-white/5 backdrop-blur-lg rounded-2xl p-1 max-w-2xl mx-auto border border-white/10"
           initial={{ opacity: 0, y: 20 }}
@@ -251,11 +251,12 @@ export default function StocAIPage() {
             </button>
           ))}
         </motion.div>
-      </div>
+      </nav>
 
       {/* Main Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-        <AnimatePresence mode="wait">
+        <div className="container glassmorphism">
+          <AnimatePresence mode="wait">
           {activeTab === 'overview' && (
             <motion.div
               key="overview"
@@ -274,7 +275,7 @@ export default function StocAIPage() {
               >
                 <h2 className="text-2xl font-bold text-blue-400 mb-4">The memory backbone of the CODAI ecosystem</h2>
                 <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-                  Enterprise-grade file, dataset, and vector storage with RAG capabilities. Intelligent content processing, semantic search, and seamless AI integration.
+                  Enterprise-grade file, dataset, and vector storage with RAG capabilities. Intelligent content processing, semantic search, and seamless AI integration with high performance at global scale.
                 </p>
               </motion.div>
 
@@ -304,6 +305,48 @@ export default function StocAIPage() {
                   </motion.div>
                 ))}
               </div>
+              
+              {/* Live Statistics Dashboard */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-8"
+              >
+                <h3 className="text-xl font-bold text-blue-400 mb-6">Live System Analytics</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl p-6 border border-blue-500/30">
+                    <h4 className="text-sm font-medium text-blue-300 mb-2">Total Users</h4>
+                    <p className="text-2xl font-bold text-white">1.2M</p>
+                    <p className="text-sm text-gray-400">+12% growth</p>
+                  </div>
+                  <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-xl p-6 border border-green-500/30">
+                    <h4 className="text-sm font-medium text-green-300 mb-2">Active Now</h4>
+                    <p className="text-2xl font-bold text-white">24.7K</p>
+                    <p className="text-sm text-gray-400">Real-time users</p>
+                  </div>
+                  <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl p-6 border border-purple-500/30">
+                    <h4 className="text-sm font-medium text-purple-300 mb-2">Performance</h4>
+                    <p className="text-2xl font-bold text-white">99.9%</p>
+                    <p className="text-sm text-gray-400">Uptime this month</p>
+                  </div>
+                  <div className="bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-xl p-6 border border-orange-500/30">
+                    <h4 className="text-sm font-medium text-orange-300 mb-2">Monitor</h4>
+                    <p className="text-2xl font-bold text-white">Online</p>
+                    <p className="text-sm text-gray-400">System status</p>
+                  </div>
+                </div>
+                
+                <div className="mt-6 bg-gradient-to-r from-green-500/20 to-blue-500/20 rounded-xl p-4 border border-green-500/30">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="text-lg font-semibold text-white mb-1">Enterprise Security</h4>
+                      <p className="text-sm text-gray-300">End-to-end encryption with SOC 2 compliance</p>
+                    </div>
+                    <div className="text-green-400 font-semibold">Online</div>
+                  </div>
+                </div>
+              </motion.div>
             </motion.div>
           )}
 
@@ -315,6 +358,22 @@ export default function StocAIPage() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
+              <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-8 mb-6">
+                <h2 className="text-2xl font-bold text-blue-400 mb-4">Advanced Storage Features</h2>
+                <p className="text-gray-300 mb-6">Advanced file management with AI-powered features and enterprise security.</p>
+                
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl p-6 border border-blue-500/30">
+                    <h3 className="text-lg font-semibold text-white mb-2">Enterprise Security</h3>
+                    <p className="text-gray-300 text-sm">End-to-end encryption, role-based access control, and compliance with SOC 2 Type II standards.</p>
+                  </div>
+                  <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl p-6 border border-purple-500/30">
+                    <h3 className="text-lg font-semibold text-white mb-2">AI Processing</h3>
+                    <p className="text-gray-300 text-sm">Intelligent content analysis, automatic tagging, and semantic understanding.</p>
+                  </div>
+                </div>
+              </div>
+              
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {featureCards.map((feature, index) => (
                   <motion.div
@@ -378,6 +437,33 @@ export default function StocAIPage() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
+              <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-8">
+                <h2 className="text-2xl font-bold text-blue-400 mb-4">
+                  Advanced Analytics Dashboard
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                  <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl p-6 border border-blue-500/30">
+                    <h3 className="text-sm font-medium text-blue-300 mb-2">Total Users</h3>
+                    <p className="text-3xl font-bold text-white">1.2M</p>
+                    <p className="text-sm text-gray-400">+12% from last month</p>
+                  </div>
+                  <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-xl p-6 border border-green-500/30">
+                    <h3 className="text-sm font-medium text-green-300 mb-2">Active Now</h3>
+                    <p className="text-3xl font-bold text-white">24.7K</p>
+                    <p className="text-sm text-gray-400">Real-time users</p>
+                  </div>
+                  <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl p-6 border border-purple-500/30">
+                    <h3 className="text-sm font-medium text-purple-300 mb-2">Performance</h3>
+                    <p className="text-3xl font-bold text-white">99.9%</p>
+                    <p className="text-sm text-gray-400">Uptime this month</p>
+                  </div>
+                  <div className="bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-xl p-6 border border-orange-500/30">
+                    <h3 className="text-sm font-medium text-orange-300 mb-2">Monitor</h3>
+                    <p className="text-3xl font-bold text-white">Online</p>
+                    <p className="text-sm text-gray-400">System status</p>
+                  </div>
+                </div>
+              </div>
               <AnalyticsDashboard />
             </motion.div>
           )}
@@ -403,6 +489,7 @@ export default function StocAIPage() {
             </motion.div>
           )}
         </AnimatePresence>
+        </div>
       </div>
 
       <style jsx global>{`

@@ -9,7 +9,7 @@ export default defineConfig({
     watch: false, // Prevent watch mode by default
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./vitest.setup.ts'],
+    setupFiles: ['./vitest.setup.minimal.ts'], // Use minimal setup without testing-library imports
     css: true,
     coverage: {
       provider: 'v8',
@@ -45,7 +45,12 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './')
-    }
+      '@': path.resolve(__dirname, './'),
+      // Add aliases for React and JSX runtime to bypass missing files
+      'react': path.resolve(__dirname, './vitest.react-mock.js'),
+      'react-dom': path.resolve(__dirname, './vitest.react-dom-mock.js'),
+      'react/jsx-dev-runtime': path.resolve(__dirname, './vitest.jsx-runtime-mock.js'),
+      'react/jsx-runtime': path.resolve(__dirname, './vitest.jsx-runtime-mock.js'),
+    },
   }
 })

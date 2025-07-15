@@ -1,9 +1,9 @@
 // Basic test for analizai service
-const { describe, it, expect } = require('@jest/globals');
+import { describe, it, expect } from 'vitest';
 
 describe('analizai Service', () => {
-  it('should be properly configured', () => {
-    const packageJson = require('../package.json');
+  it('should be properly configured', async () => {
+    const packageJson = await import('../package.json');
     expect(packageJson.name).toBeDefined();
     expect(packageJson.version).toBeDefined();
   });

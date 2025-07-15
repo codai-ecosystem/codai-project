@@ -1,5 +1,5 @@
 
-import { describe, it, expect, beforeAll, afterAll, beforeEach, afterEach } from '@jest/globals';
+import { describe, it, expect, beforeAll, afterAll, beforeEach, afterEach } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { AideRepository } from '../src/repositories/AideRepository';
 

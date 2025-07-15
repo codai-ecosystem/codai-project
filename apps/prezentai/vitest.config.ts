@@ -11,7 +11,7 @@ export default defineConfig({
         environment: 'happy-dom',
         setupFiles: ['./vitest.setup.ts'],
         include: ['tests/**/*.{test,spec}.{js,ts,jsx,tsx}', 'src/**/*.{test,spec}.{js,ts,jsx,tsx}', '__tests__/**/*.{test,spec}.{js,ts,jsx,tsx}'],
-        exclude: ['node_modules/**', 'dist/**', '.next/**']
+        exclude: ['node_modules/**', 'dist/**', '.next/**', '**/*.e2e.*', '**/*playwright*', '**/*_e2e_*']
     },
     resolve: {
         alias: {

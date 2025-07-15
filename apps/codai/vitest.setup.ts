@@ -1,10 +1,22 @@
 import '@testing-library/jest-dom'
 import { expect, afterEach, vi } from 'vitest'
-import { cleanup } from '@testing-library/react'
 
-// Cleanup after each test case
+// Only import React cleanup if React is available
+let cleanup: (() => void) | undefined;
+try {
+  // Use require to conditionally load React testing library
+  const { cleanup: reactCleanup } = require('@testing-library/react');
+  cleanup = reactCleanup;
+} catch (error) {
+  // React not available or not needed for this test
+  cleanup = undefined;
+}
+
+// Cleanup after each test case (only for React component tests)
 afterEach(() => {
-  cleanup()
+  if (cleanup) {
+    cleanup();
+  }
 })
 
 // Mock window.matchMedia

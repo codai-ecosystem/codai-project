@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { render } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom'
 import AnalizaiPage from '../app/page'
 
@@ -62,11 +63,18 @@ describe('analizai Visual Regression Tests', () => {
       expect(nav).toBeInTheDocument()
     })
 
-    it('renders content areas correctly', () => {
+    it('renders content areas correctly', async () => {
+      const user = userEvent.setup()
       render(<AnalizaiPage />)
       
-      const containers = document.querySelectorAll('.container')
-      expect(containers.length).toBeGreaterThan(0)
+      // Switch to monitor tab to find container
+      const monitorTab = screen.getByText('Monitor')
+      await user.click(monitorTab)
+      
+      await waitFor(() => {
+        const containers = document.querySelectorAll('.container')
+        expect(containers.length).toBeGreaterThan(0)
+      })
     })
   })
 })

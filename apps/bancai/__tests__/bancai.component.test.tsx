@@ -35,7 +35,8 @@ describe('BancaiPage Component', () => {
 
     it('shows enterprise branding elements', () => {
       render(<BancaiPage />)
-      expect(screen.getByText(/enterprise/i)).toBeInTheDocument()
+      const enterpriseElements = screen.getAllByText(/enterprise/i)
+      expect(enterpriseElements.length).toBeGreaterThan(0)
     })
 
     it('displays glassmorphism styling', () => {
@@ -48,10 +49,10 @@ describe('BancaiPage Component', () => {
   describe('Navigation', () => {
     it('renders all navigation tabs', () => {
       render(<BancaiPage />)
-      expect(screen.getByText('Overview')).toBeInTheDocument()
+      expect(screen.getByText('Dashboard')).toBeInTheDocument()
       expect(screen.getByText('Analytics')).toBeInTheDocument()
       expect(screen.getByText('Features')).toBeInTheDocument()
-      expect(screen.getByText('Monitor')).toBeInTheDocument()
+      expect(screen.getAllByText('Monitor')[0]).toBeInTheDocument() // Navigation tab
     })
 
     it('handles tab switching correctly', async () => {
@@ -74,7 +75,7 @@ describe('BancaiPage Component', () => {
       await user.click(featuresTab)
       
       await waitFor(() => {
-        expect(featuresTab).toHaveClass('bg-blue-500/30') // Active state
+        expect(featuresTab).toHaveClass('bg-emerald-500/30') // Active state
       })
     })
   })
@@ -84,7 +85,7 @@ describe('BancaiPage Component', () => {
       render(<BancaiPage />)
       expect(screen.getByText(/total users/i)).toBeInTheDocument()
       expect(screen.getByText(/active now/i)).toBeInTheDocument()
-      expect(screen.getByText(/performance/i)).toBeInTheDocument()
+      expect(screen.getByText(/system performance/i)).toBeInTheDocument()
     })
 
     it('shows current time updates', () => {
@@ -95,7 +96,7 @@ describe('BancaiPage Component', () => {
 
     it('displays online status indicator', () => {
       render(<BancaiPage />)
-      expect(screen.getByText(/online|offline/i)).toBeInTheDocument()
+      expect(screen.getByText('Live')).toBeInTheDocument()
     })
   })
 
@@ -131,7 +132,7 @@ describe('BancaiPage Component', () => {
       const user = userEvent.setup()
       render(<BancaiPage />)
       
-      const firstTab = screen.getByText('Overview')
+      const firstTab = screen.getByText('Dashboard')
       firstTab.focus()
       
       await user.keyboard('{Tab}')

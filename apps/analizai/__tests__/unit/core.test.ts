@@ -1,5 +1,5 @@
 
-import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { AnalizaiService } from '../src/services/AnalizaiService';
 import { AnalizaiRepository } from '../src/repositories/AnalizaiRepository';
 

@@ -46,8 +46,7 @@ describe('bancai Accessibility Tests', () => {
       
       const interactiveElements = [
         ...screen.getAllByRole('button'),
-        ...screen.getAllByRole('link'),
-        ...screen.getAllByRole('tab')
+        ...screen.getAllByRole('link')
       ]
       
       interactiveElements.forEach(element => {

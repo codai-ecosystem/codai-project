@@ -1,4 +1,4 @@
-import { AzureOpenAIService } from '@codai/azure-openai'
+import AzureOpenAIService from '@codai/azure-openai'
 import { prisma } from './db'
 import { z } from 'zod'
 

@@ -1,6 +1,6 @@
 {
   "name": "@codai/memorai-mcp",
-  "version": "6.1.3",
+  "version": "7.0.1",
   "description": "WORLD-CLASS Enterprise MCP Server - Greatest of All Time achievement with sub-2ms responses, bank-grade security, and unlimited performance capabilities",
   "type": "module",
   "main": "./dist/index.js",
@@ -70,7 +70,7 @@
     "url": "https://github.com/dragoscv/memorai-mcp/issues"
   },
   "dependencies": {
-    "@codai/memorai-core": "^2.3.0",
+    "@codai/memorai-core": "workspace:^",
     "@codai/memorai-server": "^0.1.8",
     "@modelcontextprotocol/sdk": "^1.15.1",
     "commander": "^14.0.0",

@@ -138,11 +138,12 @@ describe('StocaiPage Component', () => {
       expect(document.activeElement).not.toBe(firstTab)
     })
 
-    it('has proper ARIA labels', () => {
+    it('has proper accessible names', () => {
       render(<StocaiPage />)
       const buttons = screen.getAllByRole('button')
       buttons.forEach(button => {
-        expect(button).toHaveAttribute('aria-label', expect.any(String))
+        // Buttons should have accessible names either from text content or aria-label
+        expect(button).toHaveAccessibleName()
       })
     })
   })

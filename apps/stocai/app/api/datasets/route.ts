@@ -1,93 +1,102 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '../../../lib/database'
-import { AIProcessor } from '../../../lib/ai'
+import { createClient } from '@supabase/supabase-js'
+import { azureOpenAI } from '@/lib/azure-openai'
 import { randomBytes } from 'crypto'
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
 
 interface DatasetCreateRequest {
   name: string
-  description: string
-  type: 'csv' | 'json' | 'parquet' | 'excel' | 'text'
-  tags: string[]
-  isPublic: boolean
-  metadata?: Record<string, any>
-}
-
-interface DatasetUpdateRequest {
-  name?: string
   description?: string
-  tags?: string[]
-  isPublic?: boolean
+  category?: string
+  files?: any[]
   metadata?: Record<string, any>
 }
 
-// GET /api/datasets - List datasets
+// GET /api/datasets - List datasets or get specific dataset
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
+    const url = new URL(request.url || '', 'http://localhost')
+    const { searchParams } = url
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '20')
     const search = searchParams.get('search')
-    const type = searchParams.get('type')
-    const tag = searchParams.get('tag')
-    const userId = searchParams.get('userId')
+    const category = searchParams.get('category')
+    const id = searchParams.get('id')
 
+    // If requesting specific dataset by ID
+    if (id) {
+      const { data: dataset, error } = await supabase
+        .from('datasets')
+        .select('*')
+        .eq('id', id)
+        .single()
+
+      if (error) {
+        return NextResponse.json({ 
+          success: false,
+          error: 'Failed to retrieve dataset' 
+        }, { status: 500 })
+      }
+
+      if (!dataset) {
+        return NextResponse.json({ 
+          success: false,
+          error: 'Dataset not found' 
+        }, { status: 404 })
+      }
+
+      return NextResponse.json({
+        success: true,
+        dataset: dataset
+      })
+    }
+
+    const offset = (page - 1) * limit
+
+    // Build query for listing datasets
     let query = supabase
       .from('datasets')
-      .select(`
-        *,
-        files:dataset_files(count)
-      `)
+      .select('*', { count: 'exact' })
+      .range(offset, offset + limit - 1)
+      .order('created_at', { ascending: false })
 
-    // Apply filters
     if (search) {
       query = query.or(`name.ilike.%${search}%,description.ilike.%${search}%`)
     }
 
-    if (type) {
-      query = query.eq('type', type)
+    if (category) {
+      query = query.eq('category', category)
     }
-
-    if (tag) {
-      query = query.contains('tags', [tag])
-    }
-
-    if (userId) {
-      query = query.eq('owner_id', userId)
-    } else {
-      // Only show public datasets if no specific user
-      query = query.eq('is_public', true)
-    }
-
-    // Apply pagination
-    const offset = (page - 1) * limit
-    query = query.range(offset, offset + limit - 1)
-    query = query.order('created_at', { ascending: false })
 
     const { data: datasets, error, count } = await query
 
     if (error) {
-      console.error('Database error:', error)
-      return NextResponse.json(
-        { error: 'Failed to fetch datasets' },
-        { status: 500 }
-      )
+      return NextResponse.json({ 
+        success: false,
+        error: 'Failed to retrieve datasets' 
+      }, { status: 500 })
     }
 
     return NextResponse.json({
+      success: true,
       datasets: datasets || [],
       pagination: {
         page,
         limit,
         total: count || 0,
-        totalPages: Math.ceil((count || 0) / limit)
+        pages: Math.ceil((count || 0) / limit)
       }
     })
   } catch (error) {
-    console.error('Error fetching datasets:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    console.error('Error in datasets GET:', error)
+    return NextResponse.json({ 
+      success: false,
+      error: 'Internal server error' 
+    }, { status: 500 })
   }
 }
 
@@ -97,34 +106,57 @@ export async function POST(request: NextRequest) {
     const body: DatasetCreateRequest = await request.json()
 
     // Validate required fields
-    if (!body.name || !body.description || !body.type) {
-      return NextResponse.json(
-        { error: 'Missing required fields: name, description, type' },
-        { status: 400 }
-      )
+    if (!body.name) {
+      return NextResponse.json({ 
+        success: false,
+        error: 'Name is required' 
+      }, { status: 400 })
     }
 
     // Generate dataset ID
     const datasetId = randomBytes(16).toString('hex')
 
-    // Create dataset with AI-generated insights
-    const summary = await AIProcessor.generateSummary(`Dataset: ${body.name}. Description: ${body.description}`)
-    const keywords = await AIProcessor.extractKeywords(`${body.name} ${body.description}`)
+    // Generate AI analysis for the dataset
+    let aiAnalysis = null
+    try {
+      const analysisPrompt = `Analyze this dataset:
+Name: ${body.name}
+Description: ${body.description || 'No description provided'}
+Category: ${body.category || 'General'}
+Files: ${body.files?.length || 0} files
 
+Provide a brief analysis including:
+1. Purpose and use cases
+2. Data quality assessment
+3. Potential insights
+4. Recommendations
+
+Respond in Romanian.`
+
+      const completion = await azureOpenAI.chat.completions.create({
+        model: 'gpt-4',
+        messages: [{ role: 'user', content: analysisPrompt }],
+        max_tokens: 500,
+        temperature: 0.7
+      })
+
+      aiAnalysis = completion.choices[0]?.message?.content || null
+    } catch (aiError) {
+      console.warn('AI analysis failed:', aiError)
+    }
+
+    // Create dataset record
     const { data: dataset, error } = await supabase
       .from('datasets')
       .insert({
         id: datasetId,
         name: body.name,
-        description: body.description,
-        type: body.type,
-        tags: body.tags || [],
-        is_public: body.isPublic || false,
+        description: body.description || '',
+        category: body.category || 'general',
+        file_count: body.files?.length || 0,
+        total_size: body.files?.reduce((sum: number, file: any) => sum + (file.size || 0), 0) || 0,
+        ai_analysis: aiAnalysis,
         metadata: body.metadata || {},
-        file_count: 0,
-        total_size: 0,
-        ai_summary: summary,
-        ai_keywords: keywords,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       })
@@ -132,148 +164,172 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (error) {
-      console.error('Database error:', error)
-      return NextResponse.json(
-        { error: 'Failed to create dataset' },
-        { status: 500 }
-      )
+      return NextResponse.json({ 
+        success: false,
+        error: 'Failed to create dataset' 
+      }, { status: 500 })
     }
 
-    return NextResponse.json(dataset, { status: 201 })
+    // Associate files with dataset if provided
+    if (body.files && body.files.length > 0) {
+      const fileAssociations = body.files.map((file: any) => ({
+        dataset_id: dataset.id,
+        file_id: file.id,
+        file_path: file.path || file.name,
+        created_at: new Date().toISOString()
+      }))
+
+      const { error: filesError } = await supabase
+        .from('dataset_files')
+        .insert(fileAssociations)
+
+      if (filesError) {
+        console.warn('Failed to associate files with dataset:', filesError)
+      }
+    }
+
+    return NextResponse.json({
+      success: true,
+      dataset: dataset,
+      aiAnalysis: aiAnalysis
+    }, { status: 201 })
   } catch (error) {
     console.error('Error creating dataset:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ 
+      success: false,
+      error: 'Internal server error' 
+    }, { status: 500 })
   }
 }
 
-// PUT /api/datasets/[id] - Update dataset
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+// PUT /api/datasets - Update dataset
+export async function PUT(request: NextRequest) {
   try {
-    const datasetId = params.id
-    const body: DatasetUpdateRequest = await request.json()
+    const body = await request.json()
+    const { id, name, description, category, metadata } = body
 
-    // Check if dataset exists
-    const { data: existingDataset, error: fetchError } = await supabase
-      .from('datasets')
-      .select('*')
-      .eq('id', datasetId)
-      .single()
-
-    if (fetchError || !existingDataset) {
-      return NextResponse.json(
-        { error: 'Dataset not found' },
-        { status: 404 }
-      )
+    if (!id) {
+      return NextResponse.json({ 
+        success: false,
+        error: 'Dataset ID is required' 
+      }, { status: 400 })
     }
 
-    // Prepare update data
-    const updateData: any = {
-      updated_at: new Date().toISOString()
-    }
+    // Generate AI analysis for the updated dataset
+    let aiAnalysis = null
+    try {
+      const analysisPrompt = `Analyze this updated dataset:
+Name: ${name || 'Updated Dataset'}
+Description: ${description || 'No description provided'}
+Category: ${category || 'General'}
 
-    if (body.name) updateData.name = body.name
-    if (body.description) updateData.description = body.description
-    if (body.tags) updateData.tags = body.tags
-    if (body.isPublic !== undefined) updateData.is_public = body.isPublic
-    if (body.metadata) updateData.metadata = { ...existingDataset.metadata, ...body.metadata }
+Provide a brief analysis including:
+1. Purpose and use cases
+2. Data quality assessment
+3. Potential insights
+4. Recommendations
 
-    // Update AI insights if content changed
-    if (body.name || body.description) {
-      const content = `${body.name || existingDataset.name} ${body.description || existingDataset.description}`
-      updateData.ai_summary = await AIProcessor.generateSummary(content)
-      updateData.ai_keywords = await AIProcessor.extractKeywords(content)
+Respond in Romanian.`
+
+      const completion = await azureOpenAI.chat.completions.create({
+        model: 'gpt-4',
+        messages: [{ role: 'user', content: analysisPrompt }],
+        max_tokens: 500,
+        temperature: 0.7
+      })
+
+      aiAnalysis = completion.choices[0]?.message?.content || null
+    } catch (aiError) {
+      console.warn('AI analysis failed:', aiError)
     }
 
     const { data: dataset, error } = await supabase
       .from('datasets')
-      .update(updateData)
-      .eq('id', datasetId)
+      .update({
+        name,
+        description,
+        category,
+        metadata,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', id)
       .select()
       .single()
 
     if (error) {
-      console.error('Database error:', error)
-      return NextResponse.json(
-        { error: 'Failed to update dataset' },
-        { status: 500 }
-      )
+      return NextResponse.json({ 
+        success: false,
+        error: 'Failed to update dataset' 
+      }, { status: 500 })
     }
 
-    return NextResponse.json(dataset)
+    if (!dataset) {
+      return NextResponse.json({ 
+        success: false,
+        error: 'Dataset not found' 
+      }, { status: 404 })
+    }
+
+    return NextResponse.json({
+      success: true,
+      dataset: dataset,
+      aiAnalysis: aiAnalysis
+    })
   } catch (error) {
     console.error('Error updating dataset:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ 
+      success: false,
+      error: 'Internal server error' 
+    }, { status: 500 })
   }
 }
 
-// DELETE /api/datasets/[id] - Delete dataset
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+// DELETE /api/datasets - Delete dataset
+export async function DELETE(request: NextRequest) {
   try {
-    const datasetId = params.id
+    const url = new URL(request.url || '', 'http://localhost')
+    const { searchParams } = url
+    const id = searchParams.get('id')
 
-    // Check if dataset exists
-    const { data: existingDataset, error: fetchError } = await supabase
-      .from('datasets')
-      .select('*')
-      .eq('id', datasetId)
-      .single()
-
-    if (fetchError || !existingDataset) {
-      return NextResponse.json(
-        { error: 'Dataset not found' },
-        { status: 404 }
-      )
+    if (!id) {
+      return NextResponse.json({ 
+        success: false,
+        error: 'Dataset ID is required' 
+      }, { status: 400 })
     }
 
-    // Delete associated files first
+    // Delete file associations first
     const { error: filesError } = await supabase
       .from('dataset_files')
       .delete()
-      .eq('dataset_id', datasetId)
+      .eq('dataset_id', id)
 
     if (filesError) {
-      console.error('Error deleting dataset files:', filesError)
-      return NextResponse.json(
-        { error: 'Failed to delete dataset files' },
-        { status: 500 }
-      )
+      console.warn('Failed to delete file associations:', filesError)
     }
 
-    // Delete the dataset
+    // Delete dataset
     const { error } = await supabase
       .from('datasets')
       .delete()
-      .eq('id', datasetId)
+      .eq('id', id)
 
     if (error) {
-      console.error('Database error:', error)
-      return NextResponse.json(
-        { error: 'Failed to delete dataset' },
-        { status: 500 }
-      )
+      return NextResponse.json({ 
+        success: false,
+        error: 'Failed to delete dataset' 
+      }, { status: 500 })
     }
 
-    return NextResponse.json(
-      { message: 'Dataset deleted successfully' },
-      { status: 200 }
-    )
+    return NextResponse.json({
+      success: true,
+      message: 'Dataset deleted successfully'
+    })
   } catch (error) {
     console.error('Error deleting dataset:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ 
+      success: false,
+      error: 'Internal server error' 
+    }, { status: 500 })
   }
 }

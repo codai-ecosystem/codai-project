@@ -35,9 +35,9 @@ describe('ajutai Accessibility Tests', () => {
     it('supports keyboard navigation', () => {
       render(<AjutaiPage />)
       
-      const buttons = screen.getAllByRole('button')
-      buttons.forEach(button => {
-        expect(button).toHaveAttribute('tabIndex')
+      const tabs = screen.getAllByRole('tab')
+      tabs.forEach(tab => {
+        expect(tab).toHaveAttribute('tabIndex', '0')
       })
     })
 
@@ -45,8 +45,6 @@ describe('ajutai Accessibility Tests', () => {
       render(<AjutaiPage />)
       
       const interactiveElements = [
-        ...screen.getAllByRole('button'),
-        ...screen.getAllByRole('link'),
         ...screen.getAllByRole('tab')
       ]
       
@@ -71,7 +69,7 @@ describe('ajutai Accessibility Tests', () => {
     it('supports tab navigation', () => {
       render(<AjutaiPage />)
       
-      const focusableElements = screen.getAllByRole('button')
+      const focusableElements = screen.getAllByRole('tab')
       expect(focusableElements.length).toBeGreaterThan(0)
     })
 

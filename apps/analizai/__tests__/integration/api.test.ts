@@ -1,5 +1,5 @@
 
-import { describe, it, expect, beforeAll, afterAll, beforeEach } from '@jest/globals';
+import { describe, it, expect, beforeAll, afterAll, beforeEach } from "vitest";
 import request from 'supertest';
 import { createTestApp } from '../test-utils/createTestApp';
 import { setupTestDatabase, cleanupTestDatabase } from '../test-utils/testDatabase';

@@ -1,0 +1,528 @@
+{
+  "timestamp": "2025-07-16T00:23:28.338Z",
+  "summary": {
+    "totalDiscovered": 23,
+    "totalScanned": 100,
+    "successRate": "23.0",
+    "averageResponseTime": 58
+  },
+  "services": [
+    {
+      "port": 4030,
+      "status": 200,
+      "responseTime": 190,
+      "contentLength": 27660,
+      "contentType": "text/html; charset=utf-8",
+      "title": "CODAI - Advanced AI Development Platform",
+      "isHealthy": true
+    },
+    {
+      "port": 4031,
+      "status": 200,
+      "responseTime": 76,
+      "contentLength": 17522,
+      "contentType": "text/html; charset=utf-8",
+      "title": "MEMORAI - AI Memory &amp; Database Core",
+      "isHealthy": true
+    },
+    {
+      "port": 4032,
+      "status": 200,
+      "responseTime": 74,
+      "contentLength": 22005,
+      "contentType": "text/html; charset=utf-8",
+      "title": "LogAI - AI Logging &amp; Analytics Platform",
+      "isHealthy": true
+    },
+    {
+      "port": 4033,
+      "status": 200,
+      "responseTime": 119,
+      "contentLength": 31118,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Bancai - AI Banking &amp; Finance Platform",
+      "isHealthy": true
+    },
+    {
+      "port": 4040,
+      "status": 200,
+      "responseTime": 51,
+      "contentLength": 9958,
+      "contentType": "text/html; charset=utf-8",
+      "title": "TalentAI - AI-Powered HR Recruitment",
+      "isHealthy": true
+    },
+    {
+      "port": 4043,
+      "status": 200,
+      "responseTime": 78,
+      "contentLength": 19653,
+      "contentType": "text/html; charset=utf-8",
+      "title": "Next.js",
+      "isHealthy": true
+    },
+    {
+      "port": 4050,
+      "status": 200,
+      "responseTime": 42,
+      "contentLength": 3850,
+      "contentType": "text/html; charset=utf-8",
+      "title": "admin - Codai Ecosystem",
+      "isHealthy": true
+    },
+    {
+      "port": 4051,
+      "status": 200,
+      "responseTime": 41,
+      "contentLength": 3833,
+      "contentType": "text/html; charset=utf-8",
+      "title": "aide - Codai Ecosystem",
+      "isHealthy": true
+    },
+    {
+      "port": 4052,
+      "status": 200,
+      "responseTime": 42,
+      "contentLength": 3837,
+      "contentType": "text/html; charset=utf-8",
+      "title": "ajutai - Codai Ecosystem",
+      "isHealthy": true
+    },
+    {
+      "port": 4053,
+      "status": 200,
+      "responseTime": 43,
+      "contentLength": 3843,
+      "contentType": "text/html; charset=utf-8",
+      "title": "analizai - Codai Ecosystem",
+      "isHealthy": true
+    },
+    {
+      "port": 4054,
+      "status": 200,
+      "responseTime": 42,
+      "contentLength": 3833,
+      "contentType": "text/html; charset=utf-8",
+      "title": "dash - Codai Ecosystem",
+      "isHealthy": true
+    },
+    {
+      "port": 4055,
+      "status": 200,
+      "responseTime": 44,
+      "contentLength": 3834,
+      "contentType": "text/html; charset=utf-8",
+      "title": "docs - Codai Ecosystem",
+      "isHealthy": true
+    },
+    {
+      "port": 4056,
+      "status": 200,
+      "responseTime": 43,
+      "contentLength": 3837,
+      "contentType": "text/html; charset=utf-8",
+      "title": "explorer - Codai Ecosystem",
+      "isHealthy": true
+    },
+    {
+      "port": 4057,
+      "status": 200,
+      "responseTime": 43,
+      "contentLength": 3842,
+      "contentType": "text/html; charset=utf-8",
+      "title": "hub - Codai Ecosystem",
+      "isHealthy": true
+    },
+    {
+      "port": 4058,
+      "status": 200,
+      "responseTime": 45,
+      "contentLength": 3836,
+      "contentType": "text/html; charset=utf-8",
+      "title": "id - Codai Ecosystem",
+      "isHealthy": true
+    },
+    {
+      "port": 4059,
+      "status": 200,
+      "responseTime": 43,
+      "contentLength": 3846,
+      "contentType": "text/html; charset=utf-8",
+      "title": "jucai - Codai Ecosystem",
+      "isHealthy": true
+    },
+    {
+      "port": 4060,
+      "status": 200,
+      "responseTime": 44,
+      "contentLength": 3853,
+      "contentType": "text/html; charset=utf-8",
+      "title": "kodex - Codai Ecosystem",
+      "isHealthy": true
+    },
+    {
+      "port": 4061,
+      "status": 200,
+      "responseTime": 44,
+      "contentLength": 3844,
+      "contentType": "text/html; charset=utf-8",
+      "title": "legalizai - Codai Ecosystem",
+      "isHealthy": true
+    },
+    {
+      "port": 4062,
+      "status": 200,
+      "responseTime": 45,
+      "contentLength": 3850,
+      "contentType": "text/html; charset=utf-8",
+      "title": "marketai - Codai Ecosystem",
+      "isHealthy": true
+    },
+    {
+      "port": 4063,
+      "status": 200,
+      "responseTime": 45,
+      "contentLength": 3832,
+      "contentType": "text/html; charset=utf-8",
+      "title": "mobile - Codai Ecosystem",
+      "isHealthy": true
+    },
+    {
+      "port": 4064,
+      "status": 200,
+      "responseTime": 47,
+      "contentLength": 3831,
+      "contentType": "text/html; charset=utf-8",
+      "title": "mod - Codai Ecosystem",
+      "isHealthy": true
+    },
+    {
+      "port": 4065,
+      "status": 200,
+      "responseTime": 46,
+      "contentLength": 3848,
+      "contentType": "text/html; charset=utf-8",
+      "title": "stocai - Codai Ecosystem",
+      "isHealthy": true
+    },
+    {
+      "port": 4066,
+      "status": 200,
+      "responseTime": 46,
+      "contentLength": 3840,
+      "contentType": "text/html; charset=utf-8",
+      "title": "tools - Codai Ecosystem",
+      "isHealthy": true
+    }
+  ],
+  "failures": [
+    {
+      "port": 4000,
+      "error": ""
+    },
+    {
+      "port": 4001,
+      "error": ""
+    },
+    {
+      "port": 4003,
+      "error": ""
+    },
+    {
+      "port": 4004,
+      "error": ""
+    },
+    {
+      "port": 4005,
+      "error": ""
+    },
+    {
+      "port": 4006,
+      "error": ""
+    },
+    {
+      "port": 4007,
+      "error": ""
+    },
+    {
+      "port": 4008,
+      "error": ""
+    },
+    {
+      "port": 4009,
+      "error": ""
+    },
+    {
+      "port": 4010,
+      "error": ""
+    },
+    {
+      "port": 4011,
+      "error": ""
+    },
+    {
+      "port": 4002,
+      "error": "HTTP 404"
+    },
+    {
+      "port": 4012,
+      "error": ""
+    },
+    {
+      "port": 4013,
+      "error": ""
+    },
+    {
+      "port": 4014,
+      "error": ""
+    },
+    {
+      "port": 4015,
+      "error": ""
+    },
+    {
+      "port": 4016,
+      "error": ""
+    },
+    {
+      "port": 4017,
+      "error": ""
+    },
+    {
+      "port": 4018,
+      "error": ""
+    },
+    {
+      "port": 4019,
+      "error": ""
+    },
+    {
+      "port": 4020,
+      "error": ""
+    },
+    {
+      "port": 4021,
+      "error": ""
+    },
+    {
+      "port": 4022,
+      "error": ""
+    },
+    {
+      "port": 4023,
+      "error": ""
+    },
+    {
+      "port": 4024,
+      "error": ""
+    },
+    {
+      "port": 4025,
+      "error": ""
+    },
+    {
+      "port": 4026,
+      "error": ""
+    },
+    {
+      "port": 4027,
+      "error": ""
+    },
+    {
+      "port": 4028,
+      "error": ""
+    },
+    {
+      "port": 4029,
+      "error": ""
+    },
+    {
+      "port": 4034,
+      "error": ""
+    },
+    {
+      "port": 4035,
+      "error": ""
+    },
+    {
+      "port": 4036,
+      "error": ""
+    },
+    {
+      "port": 4037,
+      "error": ""
+    },
+    {
+      "port": 4038,
+      "error": ""
+    },
+    {
+      "port": 4039,
+      "error": ""
+    },
+    {
+      "port": 4041,
+      "error": ""
+    },
+    {
+      "port": 4042,
+      "error": ""
+    },
+    {
+      "port": 4044,
+      "error": ""
+    },
+    {
+      "port": 4045,
+      "error": ""
+    },
+    {
+      "port": 4046,
+      "error": ""
+    },
+    {
+      "port": 4047,
+      "error": ""
+    },
+    {
+      "port": 4048,
+      "error": ""
+    },
+    {
+      "port": 4049,
+      "error": ""
+    },
+    {
+      "port": 4067,
+      "error": ""
+    },
+    {
+      "port": 4068,
+      "error": ""
+    },
+    {
+      "port": 4069,
+      "error": ""
+    },
+    {
+      "port": 4070,
+      "error": ""
+    },
+    {
+      "port": 4071,
+      "error": ""
+    },
+    {
+      "port": 4072,
+      "error": ""
+    },
+    {
+      "port": 4073,
+      "error": ""
+    },
+    {
+      "port": 4074,
+      "error": ""
+    },
+    {
+      "port": 4075,
+      "error": ""
+    },
+    {
+      "port": 4076,
+      "error": ""
+    },
+    {
+      "port": 4077,
+      "error": ""
+    },
+    {
+      "port": 4078,
+      "error": ""
+    },
+    {
+      "port": 4079,
+      "error": ""
+    },
+    {
+      "port": 4080,
+      "error": ""
+    },
+    {
+      "port": 4081,
+      "error": ""
+    },
+    {
+      "port": 4082,
+      "error": ""
+    },
+    {
+      "port": 4083,
+      "error": ""
+    },
+    {
+      "port": 4084,
+      "error": ""
+    },
+    {
+      "port": 4085,
+      "error": ""
+    },
+    {
+      "port": 4086,
+      "error": ""
+    },
+    {
+      "port": 4087,
+      "error": ""
+    },
+    {
+      "port": 4088,
+      "error": ""
+    },
+    {
+      "port": 4089,
+      "error": ""
+    },
+    {
+      "port": 4090,
+      "error": ""
+    },
+    {
+      "port": 4091,
+      "error": ""
+    },
+    {
+      "port": 4092,
+      "error": ""
+    },
+    {
+      "port": 4093,
+      "error": ""
+    },
+    {
+      "port": 4094,
+      "error": ""
+    },
+    {
+      "port": 4095,
+      "error": ""
+    },
+    {
+      "port": 4096,
+      "error": ""
+    },
+    {
+      "port": 4097,
+      "error": ""
+    },
+    {
+      "port": 4098,
+      "error": ""
+    },
+    {
+      "port": 4099,
+      "error": ""
+    }
+  ]
+}

@@ -9,6 +9,8 @@ export default defineConfig({
     'src/ultimate-server.ts',
     'src/ultimate-main.ts',
     'src/ultimate-validation.ts',
+    'src/simple-server.ts',
+    'src/simple-cli.ts',
     'src/logging/enterprise-logger.ts',
     'src/monitoring/metrics-collector.ts',
     'src/monitoring/request-tracer.ts',

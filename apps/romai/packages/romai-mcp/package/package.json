@@ -1,12 +1,13 @@
 {
   "name": "@codai/romai-mcp",
-  "version": "0.5.5",
+  "version": "0.4.9",
   "description": "ROMAI Ultimate MCP Server - All-in-One Enterprise Solution with 26+ Integrated Tools",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "romai-mcp": "./bin/romai-mcp.js"
+    "romai-mcp": "bin/romai-mcp.js",
+    "romai-mcp-ultimate": "bin/romai-mcp-ultimate.js"
   },
   "exports": {
     ".": {

@@ -1,11 +1,11 @@
 {
-  "timestamp": "2025-07-16T00:16:46.184Z",
+  "timestamp": "2025-07-16T00:18:19.729Z",
   "services": {
     "CODAI": {
       "success": true,
       "statusCode": 200,
-      "responseTime": 51,
-      "data": "<!DOCTYPE html><html lang=\"en\" class=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/app/layout.css?v=1752625006215\" data-precedence=\"next_static/css/app/layout.css\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/webpack.js?v=1752625006215\"/><script src=\"/_next/static/chunks/main-app.js?v=1752625006215\" async=\"\"></script><script src=\"/_next/static/chunks/app-pages-internals.js\" async=\"\"></script><script src=\"/_next/static/chunks/app/page.js\" async=\"\"></script><title>CODAI - Advanced AI Development Platform</title><meta name=\"description\" content=\"Enterprise-grade AI development platform with advanced features\"/><script src=\"/_next/static/chunks/polyfills.js\" noModule=\"\"></script></head><body class=\"bg-slate-900 text-white min-h-screen\"><div hidden=\"\"><!--$--><!--/$--></div><div class=\"flex\"><nav class=\"w-64 bg-gradient-to-b from-slate-800 to-slate-900",
+      "responseTime": 59,
+      "data": "<!DOCTYPE html><html lang=\"en\" class=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/app/layout.css?v=1752625099761\" data-precedence=\"next_static/css/app/layout.css\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/webpack.js?v=1752625099761\"/><script src=\"/_next/static/chunks/main-app.js?v=1752625099761\" async=\"\"></script><script src=\"/_next/static/chunks/app-pages-internals.js\" async=\"\"></script><script src=\"/_next/static/chunks/app/page.js\" async=\"\"></script><title>CODAI - Advanced AI Development Platform</title><meta name=\"description\" content=\"Enterprise-grade AI development platform with advanced features\"/><script src=\"/_next/static/chunks/polyfills.js\" noModule=\"\"></script></head><body class=\"bg-slate-900 text-white min-h-screen\"><div hidden=\"\"><!--$--><!--/$--></div><div class=\"flex\"><nav class=\"w-64 bg-gradient-to-b from-slate-800 to-slate-900",
       "error": null,
       "isHealthy": true,
       "validation": {
@@ -18,8 +18,8 @@
     "MEMORAI": {
       "success": true,
       "statusCode": 200,
-      "responseTime": 34,
-      "data": "<!DOCTYPE html><html lang=\"en\" class=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/app/layout.css?v=1752625006245\" data-precedence=\"next_static/css/app/layout.css\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/webpack.js?v=1752625006245\"/><script src=\"/_next/static/chunks/main-app.js?v=1752625006245\" async=\"\"></script><script src=\"/_next/static/chunks/app-pages-internals.js\" async=\"\"></script><script src=\"/_next/static/chunks/app/page.js\" async=\"\"></script><title>MEMORAI - AI Memory &amp; Database Core</title><meta name=\"description\" content=\"AI Memory &amp; Database Core - Modern, animated, real-time AI platform\"/><meta name=\"author\" content=\"Codai Team\"/><meta name=\"keywords\" content=\"AI,platform,memorai,modern,real-time\"/><script src=\"/_next/static/chunks/polyfills.js\" noModule=\"\"></script></head><body class=\"__className_e8ce0c\"><div class=\"jsx-",
+      "responseTime": 45,
+      "data": "<!DOCTYPE html><html lang=\"en\" class=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/app/layout.css?v=1752625099800\" data-precedence=\"next_static/css/app/layout.css\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/webpack.js?v=1752625099800\"/><script src=\"/_next/static/chunks/main-app.js?v=1752625099800\" async=\"\"></script><script src=\"/_next/static/chunks/app-pages-internals.js\" async=\"\"></script><script src=\"/_next/static/chunks/app/page.js\" async=\"\"></script><title>MEMORAI - AI Memory &amp; Database Core</title><meta name=\"description\" content=\"AI Memory &amp; Database Core - Modern, animated, real-time AI platform\"/><meta name=\"author\" content=\"Codai Team\"/><meta name=\"keywords\" content=\"AI,platform,memorai,modern,real-time\"/><script src=\"/_next/static/chunks/polyfills.js\" noModule=\"\"></script></head><body class=\"__className_e8ce0c\"><div class=\"jsx-",
       "error": null,
       "isHealthy": true,
       "validation": {
@@ -32,8 +32,8 @@
     "BANCAI": {
       "success": true,
       "statusCode": 200,
-      "responseTime": 57,
-      "data": "<!DOCTYPE html><html lang=\"en\" class=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/app/layout.css?v=1752625006281\" data-precedence=\"next_static/css/app/layout.css\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/webpack.js?v=1752625006281\"/><script src=\"/_next/static/chunks/main-app.js?v=1752625006281\" async=\"\"></script><script src=\"/_next/static/chunks/app/layout.js\" async=\"\"></script><script src=\"/_next/static/chunks/app-pages-internals.js\" async=\"\"></script><script src=\"/_next/static/chunks/app/page.js\" async=\"\"></script><title>Bancai - AI Banking &amp; Finance Platform</title><meta name=\"description\" content=\"Intelligent financial services and analytics platform\"/><script src=\"/_next/static/chunks/polyfills.js\" noModule=\"\"></script></head><body class=\"min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900\"><div hidden=\"\"><!--$--",
+      "responseTime": 77,
+      "data": "<!DOCTYPE html><html lang=\"en\" class=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/app/layout.css?v=1752625099846\" data-precedence=\"next_static/css/app/layout.css\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/webpack.js?v=1752625099846\"/><script src=\"/_next/static/chunks/main-app.js?v=1752625099846\" async=\"\"></script><script src=\"/_next/static/chunks/app/layout.js\" async=\"\"></script><script src=\"/_next/static/chunks/app-pages-internals.js\" async=\"\"></script><script src=\"/_next/static/chunks/app/page.js\" async=\"\"></script><title>Bancai - AI Banking &amp; Finance Platform</title><meta name=\"description\" content=\"Intelligent financial services and analytics platform\"/><script src=\"/_next/static/chunks/polyfills.js\" noModule=\"\"></script></head><body class=\"min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900\"><div hidden=\"\"><!--$--",
       "error": null,
       "isHealthy": true,
       "validation": {
@@ -46,7 +46,7 @@
     "STOCAI": {
       "success": true,
       "statusCode": 200,
-      "responseTime": 3,
+      "responseTime": 2,
       "data": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>tools - Codai Ecosystem</title>\n    <style>\n        * { margin: 0; padding: 0; box-sizing: border-box; }\n        \n        body {\n            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;\n            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n            min-height: 100vh;\n            color: white;\n            padding: 40px 20px;\n        }\n        \n        .container {\n            max-width: 1200px;\n            margin: 0 auto;\n        }\n        \n        .header {\n            text-align: center;\n            margin-bottom: 40px;\n        }\n        \n        .header h1 {\n            font-size: 3rem;\n            font-weight: 700;\n            margin-bottom: 20px;\n        }\n        \n        .badge {\n            display: inline-block;\n            background: rgba(255,255,255,0.2);\n           ",
       "error": null,
       "isHealthy": true,
@@ -60,8 +60,8 @@
     "PREZENTAI": {
       "success": true,
       "statusCode": 200,
-      "responseTime": 294,
-      "data": "<!DOCTYPE html><html lang=\"en\" class=\"__variable_e8ce0c __variable_1fdbab\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/app/layout.css?v=1752625006386\" data-precedence=\"next_static/css/app/layout.css\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/webpack.js?v=1752625006386\"/><script src=\"/_next/static/chunks/main-app.js?v=1752625006386\" async=\"\"></script><script src=\"/_next/static/chunks/app/layout.js\" async=\"\"></script><script src=\"/_next/static/chunks/app-pages-internals.js\" async=\"\"></script><script src=\"/_next/static/chunks/app/page.js\" async=\"\"></script><script src=\"/_next/static/chunks/polyfills.js\" noModule=\"\"></script></head><body class=\"antialiased\"><div hidden=\"\"><!--$?--><template id=\"B:0\"></template><!--/$--></div><script>((e, i, s, u, m, a, l, h)=>{\n    let d = document.documentElement, w = [\n        \"light\",\n        \"dark\"\n    ];\n    functi",
+      "responseTime": 151,
+      "data": "<!DOCTYPE html><html lang=\"en\" class=\"__variable_e8ce0c __variable_1fdbab\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/app/layout.css?v=1752625099926\" data-precedence=\"next_static/css/app/layout.css\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/webpack.js?v=1752625099926\"/><script src=\"/_next/static/chunks/main-app.js?v=1752625099926\" async=\"\"></script><script src=\"/_next/static/chunks/app/layout.js\" async=\"\"></script><script src=\"/_next/static/chunks/app-pages-internals.js\" async=\"\"></script><script src=\"/_next/static/chunks/app/page.js\" async=\"\"></script><script src=\"/_next/static/chunks/polyfills.js\" noModule=\"\"></script></head><body class=\"antialiased\"><div hidden=\"\"><!--$?--><template id=\"B:0\"></template><!--/$--></div><script>((e, i, s, u, m, a, l, h)=>{\n    let d = document.documentElement, w = [\n        \"light\",\n        \"dark\"\n    ];\n    functi",
       "error": null,
       "isHealthy": true,
       "validation": {
@@ -74,7 +74,7 @@
     "AIDE": {
       "success": true,
       "statusCode": 200,
-      "responseTime": 2,
+      "responseTime": 3,
       "data": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>aide - Codai Ecosystem</title>\n    <style>\n        * { margin: 0; padding: 0; box-sizing: border-box; }\n        \n        body {\n            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;\n            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n            min-height: 100vh;\n            color: white;\n            padding: 40px 20px;\n        }\n        \n        .container {\n            max-width: 1200px;\n            margin: 0 auto;\n        }\n        \n        .header {\n            text-align: center;\n            margin-bottom: 40px;\n        }\n        \n        .header h1 {\n            font-size: 3rem;\n            font-weight: 700;\n            margin-bottom: 20px;\n        }\n        \n        .badge {\n            display: inline-block;\n            background: rgba(255,255,255,0.2);\n            ",
       "error": null,
       "isHealthy": true,
@@ -89,7 +89,7 @@
   "apiGateway": {
     "success": true,
     "statusCode": 200,
-    "responseTime": 4,
+    "responseTime": 2,
     "data": "{\"message\":\"CODAI Ecosystem API Gateway\",\"version\":\"1.0.0\",\"services\":\"/api/services\",\"health\":\"/health\",\"documentation\":\"/docs\"}",
     "error": null
   },
@@ -98,29 +98,29 @@
     "healthyServices": 6,
     "healthPercentage": 100,
     "apiGatewayStatus": "UP",
-    "averageResponseTime": 74,
+    "averageResponseTime": 56,
     "ecosystemHealth": "HEALTHY"
   },
   "serviceDiscovery": {
     "CODAI": {
       "success": true,
       "statusCode": 200,
-      "responseTime": 60,
-      "data": "<!DOCTYPE html><html lang=\"en\" class=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/app/layout.css?v=1752625006671\" data-precedence=\"next_static/css/app/layout.css\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/webpack.js?v=1752625006671\"/><script src=\"/_next/static/chunks/main-app.js?v=1752625006671\" async=\"\"></script><script src=\"/_next/static/chunks/app-pages-internals.js\" async=\"\"></script><script src=\"/_next/static/chunks/app/page.js\" async=\"\"></script><title>CODAI - Advanced AI Development Platform</title><meta name=\"description\" content=\"Enterprise-grade AI development platform with advanced features\"/><script src=\"/_next/static/chunks/polyfills.js\" noModule=\"\"></script></head><body class=\"bg-slate-900 text-white min-h-screen\"><div hidden=\"\"><!--$--><!--/$--></div><div class=\"flex\"><nav class=\"w-64 bg-gradient-to-b from-slate-800 to-slate-900",
+      "responseTime": 45,
+      "data": "<!DOCTYPE html><html lang=\"en\" class=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/app/layout.css?v=1752625100083\" data-precedence=\"next_static/css/app/layout.css\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/webpack.js?v=1752625100083\"/><script src=\"/_next/static/chunks/main-app.js?v=1752625100083\" async=\"\"></script><script src=\"/_next/static/chunks/app-pages-internals.js\" async=\"\"></script><script src=\"/_next/static/chunks/app/page.js\" async=\"\"></script><title>CODAI - Advanced AI Development Platform</title><meta name=\"description\" content=\"Enterprise-grade AI development platform with advanced features\"/><script src=\"/_next/static/chunks/polyfills.js\" noModule=\"\"></script></head><body class=\"bg-slate-900 text-white min-h-screen\"><div hidden=\"\"><!--$--><!--/$--></div><div class=\"flex\"><nav class=\"w-64 bg-gradient-to-b from-slate-800 to-slate-900",
       "error": null
     },
     "MEMORAI": {
       "success": true,
       "statusCode": 200,
-      "responseTime": 37,
-      "data": "<!DOCTYPE html><html lang=\"en\" class=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/app/layout.css?v=1752625006704\" data-precedence=\"next_static/css/app/layout.css\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/webpack.js?v=1752625006704\"/><script src=\"/_next/static/chunks/main-app.js?v=1752625006704\" async=\"\"></script><script src=\"/_next/static/chunks/app-pages-internals.js\" async=\"\"></script><script src=\"/_next/static/chunks/app/page.js\" async=\"\"></script><title>MEMORAI - AI Memory &amp; Database Core</title><meta name=\"description\" content=\"AI Memory &amp; Database Core - Modern, animated, real-time AI platform\"/><meta name=\"author\" content=\"Codai Team\"/><meta name=\"keywords\" content=\"AI,platform,memorai,modern,real-time\"/><script src=\"/_next/static/chunks/polyfills.js\" noModule=\"\"></script></head><body class=\"__className_e8ce0c\"><div class=\"jsx-",
+      "responseTime": 44,
+      "data": "<!DOCTYPE html><html lang=\"en\" class=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/app/layout.css?v=1752625100127\" data-precedence=\"next_static/css/app/layout.css\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/webpack.js?v=1752625100127\"/><script src=\"/_next/static/chunks/main-app.js?v=1752625100127\" async=\"\"></script><script src=\"/_next/static/chunks/app-pages-internals.js\" async=\"\"></script><script src=\"/_next/static/chunks/app/page.js\" async=\"\"></script><title>MEMORAI - AI Memory &amp; Database Core</title><meta name=\"description\" content=\"AI Memory &amp; Database Core - Modern, animated, real-time AI platform\"/><meta name=\"author\" content=\"Codai Team\"/><meta name=\"keywords\" content=\"AI,platform,memorai,modern,real-time\"/><script src=\"/_next/static/chunks/polyfills.js\" noModule=\"\"></script></head><body class=\"__className_e8ce0c\"><div class=\"jsx-",
       "error": null
     },
     "BANCAI": {
       "success": true,
       "statusCode": 200,
-      "responseTime": 59,
-      "data": "<!DOCTYPE html><html lang=\"en\" class=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/app/layout.css?v=1752625006742\" data-precedence=\"next_static/css/app/layout.css\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/webpack.js?v=1752625006742\"/><script src=\"/_next/static/chunks/main-app.js?v=1752625006742\" async=\"\"></script><script src=\"/_next/static/chunks/app/layout.js\" async=\"\"></script><script src=\"/_next/static/chunks/app-pages-internals.js\" async=\"\"></script><script src=\"/_next/static/chunks/app/page.js\" async=\"\"></script><title>Bancai - AI Banking &amp; Finance Platform</title><meta name=\"description\" content=\"Intelligent financial services and analytics platform\"/><script src=\"/_next/static/chunks/polyfills.js\" noModule=\"\"></script></head><body class=\"min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900\"><div hidden=\"\"><!--$--",
+      "responseTime": 77,
+      "data": "<!DOCTYPE html><html lang=\"en\" class=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/app/layout.css?v=1752625100172\" data-precedence=\"next_static/css/app/layout.css\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/webpack.js?v=1752625100172\"/><script src=\"/_next/static/chunks/main-app.js?v=1752625100172\" async=\"\"></script><script src=\"/_next/static/chunks/app/layout.js\" async=\"\"></script><script src=\"/_next/static/chunks/app-pages-internals.js\" async=\"\"></script><script src=\"/_next/static/chunks/app/page.js\" async=\"\"></script><title>Bancai - AI Banking &amp; Finance Platform</title><meta name=\"description\" content=\"Intelligent financial services and analytics platform\"/><script src=\"/_next/static/chunks/polyfills.js\" noModule=\"\"></script></head><body class=\"min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900\"><div hidden=\"\"><!--$--",
       "error": null
     },
     "STOCAI": {
@@ -133,14 +133,14 @@
     "PREZENTAI": {
       "success": true,
       "statusCode": 404,
-      "responseTime": 3,
+      "responseTime": 1,
       "data": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<title>Error</title>\n</head>\n<body>\n<pre>Cannot GET /prezentai</pre>\n</body>\n</html>\n",
       "error": null
     },
     "AIDE": {
       "success": true,
       "statusCode": 504,
-      "responseTime": 3,
+      "responseTime": 2,
       "data": "Error occurred while trying to proxy: localhost:8080/",
       "error": null
     }

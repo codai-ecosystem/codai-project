@@ -14,8 +14,11 @@ import type {
 // Configuration validation schema
 const configSchema = z.object({
   azure: z.object({
-    apiKey: z.string().min(1),
-    endpoint: z.string().url(),
+    apiKey: z.string().transform(val => val?.trim() || undefined).optional(),
+    endpoint: z.string().transform(val => val?.trim() || undefined).optional().refine(
+      (val) => !val || z.string().url().safeParse(val).success,
+      "Invalid URL format"
+    ),
     apiVersion: z.string().default('2024-12-01-preview'),
     deploymentName: z.string().default('gpt-4'),
   }),
@@ -82,24 +85,43 @@ export class RomaiCore {
     this.logger = logger;
     this.config = this.validateConfig(config);
 
-    this.client = new OpenAI({
-      apiKey: this.config.azure.apiKey,
-      baseURL: `${this.config.azure.endpoint}/openai/deployments/${this.config.azure.deploymentName}`,
-      defaultQuery: { 'api-version': this.config.azure.apiVersion },
-      defaultHeaders: {
-        'api-key': this.config.azure.apiKey,
-      },
-    });
+    // Only initialize OpenAI client if Azure credentials are provided
+    if (this.config.azure.apiKey && this.config.azure.endpoint) {
+      this.client = new OpenAI({
+        apiKey: this.config.azure.apiKey,
+        baseURL: `${this.config.azure.endpoint}/openai/deployments/${this.config.azure.deploymentName}`,
+        defaultQuery: { 'api-version': this.config.azure.apiVersion },
+        defaultHeaders: {
+          'api-key': this.config.azure.apiKey,
+        },
+      });
 
-    this.logger.info('ROMAI Core initialized successfully', {
-      endpoint: this.config.azure.endpoint,
-      model: this.config.azure.deploymentName,
-    });
+      this.logger.info('ROMAI Core initialized successfully with Azure OpenAI', {
+        endpoint: this.config.azure.endpoint,
+        model: this.config.azure.deploymentName,
+      });
+    } else {
+      // Mock client for MCP-only mode
+      this.client = null as any;
+      this.logger.info('ROMAI Core initialized in MCP-only mode (no Azure OpenAI)');
+    }
   }
 
   private validateConfig(config: RomaiConfig): RomaiConfig {
     try {
-      return configSchema.parse(config);
+      const parsed = configSchema.parse(config);
+      // Convert parsed config to RomaiConfig with proper typing
+      return {
+        azure: {
+          apiKey: parsed.azure.apiKey || undefined,
+          endpoint: parsed.azure.endpoint || undefined,
+          apiVersion: parsed.azure.apiVersion,
+          deploymentName: parsed.azure.deploymentName,
+        },
+        memory: parsed.memory,
+        mcp: parsed.mcp,
+        api: parsed.api,
+      };
     } catch (error) {
       this.logger.error('Invalid configuration', { error });
       throw new Error(`Configuration validation failed: ${error}`);
@@ -107,6 +129,10 @@ export class RomaiCore {
   }
 
   async generateResponse(request: AIRequest): Promise<AIResponse> {
+    if (!this.client) {
+      throw new Error('Azure OpenAI not configured. Cannot generate AI responses in MCP-only mode.');
+    }
+
     try {
       this.logger.debug('Generating AI response', {
         messageCount: request.messages.length,
@@ -296,6 +322,17 @@ export class RomaiCore {
     details: Record<string, unknown>;
   }> {
     try {
+      if (!this.client) {
+        return {
+          status: 'healthy',
+          timestamp: new Date(),
+          details: {
+            azure: 'not_configured',
+            mode: 'mcp_only',
+          },
+        };
+      }
+
       // Test Azure OpenAI connectivity
       await this.client.chat.completions.create({
         model: this.config.azure.deploymentName || 'gpt-4',
@@ -342,8 +379,8 @@ export function createRomaiCore(config: RomaiConfig): RomaiCore {
 export function loadConfigFromEnv(): RomaiConfig {
   const config: RomaiConfig = {
     azure: {
-      apiKey: process.env.AZURE_OPENAI_API_KEY || '',
-      endpoint: process.env.AZURE_OPENAI_ENDPOINT || '',
+      apiKey: process.env.AZURE_OPENAI_API_KEY?.replace(/\s+/g, '') || undefined,
+      endpoint: process.env.AZURE_OPENAI_ENDPOINT?.trim() || undefined,
       apiVersion: process.env.AZURE_OPENAI_API_VERSION || '2024-12-01-preview',
       deploymentName: process.env.AZURE_OPENAI_DEPLOYMENT_NAME || 'gpt-4',
     },

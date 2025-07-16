@@ -61,8 +61,28 @@ export class RealBankingService {
         return RealBankingService.instance;
     }
 
+    // Missing method for transaction history - Add this to match dashboard expectations
+    public async getTransactionHistory(accountId?: string): Promise<Transaction[]> {
+        try {
+            return await this.getRealTransactionData(accountId || 'default');
+        } catch (error) {
+            console.error('Error fetching transaction history:', error);
+            return [];
+        }
+    }
+
+    // Missing method for transaction history - Add this to match dashboard expectations
+    public async getTransactionHistory(accountId?: string): Promise<Transaction[]> {
+        try {
+            return await this.getRealTransactionData(accountId || 'default');
+        } catch (error) {
+            console.error('Error fetching transaction history:', error);
+            return [];
+        }
+    }
+
     // Real Account Management with Live Data
-    public async getAccountBalance(accountId: string): Promise<{ balance: number; currency: string; lastUpdated: Date }> {
+    public async getAccountBalance(accountId?: string): Promise<any> {
         try {
             // Get real-time balance from multiple sources
             const [stripeBalance, localBalance, externalBalance] = await Promise.allSettled([
@@ -139,9 +159,10 @@ export class RealBankingService {
     }
 
     // Real Financial Insights using OpenAI
-    public async generateRealInsights(userId: string): Promise<any> {
+    public async generateRealInsights(userId?: string): Promise<any> {
         try {
-            const transactions = await this.getRealTransactionData(userId);
+            const safeUserId = userId || 'default';
+            const transactions = await this.getRealTransactionData(safeUserId);
 
             // Call OpenAI for real insights
             const openAiResponse = await this.callOpenAIForInsights(transactions);
@@ -157,7 +178,7 @@ export class RealBankingService {
         } catch (error) {
             console.error('Error generating real insights:', error);
             // Fallback to intelligent simulation
-            return this.generateFallbackInsights(userId);
+            return this.generateFallbackInsights(userId || 'default');
         }
     }
 

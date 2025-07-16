@@ -104,16 +104,14 @@ export default function BancaiDashboard() {
       setLoading(true)
 
       // Load comprehensive banking data using REAL service
-      const [accountsData, transactionsData, goalsData, insightsData] = await Promise.all([
+      const [accountsData, transactionsData, insightsData] = await Promise.all([
         realBankingService.getAccountBalance(),
         realBankingService.getTransactionHistory(),
-        realBankingService.getFinancialGoals ? realBankingService.getFinancialGoals() : Promise.resolve([]),
         realBankingService.generateRealInsights()
       ])
 
       // Transform accounts to cards using REAL data
-      const realBalance = await realBankingService.getAccountBalance()
-      const realTransactions = await realBankingService.getTransactionHistory()
+      const realBalance = accountsData
 
       const accountCards: AccountCard[] = [
         {
@@ -199,7 +197,7 @@ export default function BancaiDashboard() {
       setAccounts(accountCards)
 
       // Transform transactions to match interface using REAL data
-      const transformedTransactions = realTransactions.slice(0, 20).map((tx: any, index: number) => ({
+      const transformedTransactions = transactionsData.slice(0, 20).map((tx: any, index: number) => ({
         id: tx.id || `real_tx_${index}`,
         accountId: tx.accountId || 'primary',
         type: tx.type || (tx.amount > 0 ? 'credit' : 'debit'),
@@ -216,16 +214,30 @@ export default function BancaiDashboard() {
 
       setTransactions(transformedTransactions)
 
-      // Transform goals to match interface
-      const transformedGoals = goalsData.map((goal: any) => ({
-        ...goal,
-        deadline: goal.targetDate || '2025-12-31',
-        category: goal.type || 'General',
-        priority: goal.importance || 'medium'
-      }))
+      // Set mock goals data since getFinancialGoals is not implemented
+      const mockGoals = [
+        {
+          id: 'goal1',
+          name: 'Emergency Fund',
+          targetAmount: 50000,
+          currentAmount: 32000,
+          deadline: '2025-12-31',
+          category: 'Savings',
+          priority: 'high' as const
+        },
+        {
+          id: 'goal2',
+          name: 'Vacation Fund',
+          targetAmount: 15000,
+          currentAmount: 8500,
+          deadline: '2025-08-01',
+          category: 'Travel',
+          priority: 'medium' as const
+        }
+      ]
 
-      setGoals(transformedGoals)
-      setInsights(insightsData.slice(0, 5))
+      setGoals(mockGoals)
+      setInsights(insightsData.aiInsights?.slice(0, 5) || [])
 
     } catch (error) {
       console.error('Error loading dashboard data:', error)

@@ -72,7 +72,7 @@ describe('MEMORAI End-to-End Integration Tests', () => {
         }
       }
     ]
-    
+
     // Initialize the search service with test data
     searchService.updateIndex(testMemories)
   })

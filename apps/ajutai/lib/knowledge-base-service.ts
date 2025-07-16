@@ -118,15 +118,15 @@ export class KnowledgeBaseService {
 
         const newContent = validatedData.content || existingArticle.content
         const newTitle = validatedData.title || existingArticle.title
-        
+
         analysis = await this.analyzeArticleContent(newContent, newTitle)
       }
 
       const updateData: any = { ...validatedData }
       if (analysis) {
         updateData.searchKeywords = this.generateSearchKeywords(
-          validatedData.title || '', 
-          validatedData.content || '', 
+          validatedData.title || '',
+          validatedData.content || '',
           analysis.tags
         )
         updateData.aiSummary = analysis.suggestions.join(' ')
@@ -367,7 +367,7 @@ Provide analysis in JSON format:
 
     // Remove common words and duplicates
     const stopWords = new Set(['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by'])
-    const uniqueWords = [...new Set(words.filter(word => 
+    const uniqueWords = [...new Set(words.filter(word =>
       word.length > 2 && !stopWords.has(word) && /^[a-zA-Z]+$/.test(word)
     ))]
 
@@ -420,7 +420,7 @@ Return JSON array with relevance scores: [0.8, 0.6, 0.9, ...]`
       const titleMatch = article.title.toLowerCase().includes(query.toLowerCase()) ? 0.3 : 0
       const contentMatch = article.content.toLowerCase().includes(query.toLowerCase()) ? 0.2 : 0
       const baseScore = 0.5
-      
+
       return {
         ...article,
         relevanceScore: Math.min(1.0, baseScore + titleMatch + contentMatch)
@@ -445,13 +445,13 @@ Return JSON array with relevance scores: [0.8, 0.6, 0.9, ...]`
           }
         }
       }),
-      
+
       // Tags - This is complex with Prisma, so we'll get all articles and count tags
       prisma.knowledgeBaseArticle.findMany({
         where: baseWhereClause,
         select: { tags: true }
       }),
-      
+
       // Statuses
       prisma.knowledgeBaseArticle.groupBy({
         by: ['status'],

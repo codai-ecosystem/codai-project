@@ -21,11 +21,11 @@ let totalTests = 0;
 workingTestFiles.forEach(testFile => {
   try {
     console.log(`\n📋 Testing: ${testFile}`);
-    const result = execSync(`pnpm test run "${testFile}" --reporter=basic`, { 
+    const result = execSync(`pnpm test run "${testFile}" --reporter=basic`, {
       encoding: 'utf8',
       stdio: 'pipe'
     });
-    
+
     // Extract test results
     const lines = result.split('\n');
     const summaryLine = lines.find(line => line.includes('Tests') && line.includes('passed'));

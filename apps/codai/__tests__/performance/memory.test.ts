@@ -52,12 +52,12 @@ describe('Memory Performance Tests', () => {
 
       for (let i = 0; i < projectCount; i++) {
         const project = await projectFlow.createProject(`Large Project ${i}`);
-        
+
         // Add multiple tasks to each project
         for (let j = 0; j < 10; j++) {
           await projectFlow.addTask(project.id, `Task ${j} for project ${i}`);
         }
-        
+
         largeProjects.push(project);
       }
 
@@ -212,7 +212,7 @@ describe('Memory Performance Tests', () => {
       }
 
       const avgGrowthRate = growthRates.reduce((a, b) => a + b, 0) / growthRates.length;
-      
+
       // Average growth rate should be minimal (less than 2MB per batch)
       expect(Math.abs(avgGrowthRate)).toBeLessThan(2 * 1024 * 1024);
     });

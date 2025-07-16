@@ -68,7 +68,7 @@ const SecurityDashboard = () => {
   const loadSecurityData = async () => {
     try {
       setLoading(true)
-      
+
       // Get current user
       const currentUser = await authService.getCurrentUserProfile()
       setUser(currentUser)
@@ -207,11 +207,10 @@ const SecurityDashboard = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 px-4 py-3 rounded-xl font-medium transition-all duration-300 ${
-                  activeTab === tab.id
+                className={`flex items-center space-x-2 px-4 py-3 rounded-xl font-medium transition-all duration-300 ${activeTab === tab.id
                     ? 'bg-blue-500/30 text-blue-300 shadow-lg'
                     : 'text-slate-400 hover:text-white hover:bg-white/10'
-                }`}
+                  }`}
               >
                 <Icon className="w-4 h-4" />
                 <span>{tab.name}</span>
@@ -232,7 +231,7 @@ const SecurityDashboard = () => {
             {/* Security Score */}
             <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6">
               <h3 className="text-xl font-bold text-white mb-6">Scor Securitate</h3>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div className="text-center">
                   <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center">
@@ -283,11 +282,10 @@ const SecurityDashboard = () => {
                 <button
                   onClick={setupMFA}
                   disabled={mfaStatus?.totpEnabled}
-                  className={`w-full py-2 px-4 rounded-lg font-medium transition-colors ${
-                    mfaStatus?.totpEnabled
+                  className={`w-full py-2 px-4 rounded-lg font-medium transition-colors ${mfaStatus?.totpEnabled
                       ? 'bg-green-600 text-white cursor-not-allowed'
                       : 'bg-blue-600 text-white hover:bg-blue-700'
-                  }`}
+                    }`}
                 >
                   {mfaStatus?.totpEnabled ? 'Deja Activat' : 'Configurează 2FA'}
                 </button>
@@ -365,12 +363,10 @@ const SecurityDashboard = () => {
                   <div key={session.id} className="border border-white/10 rounded-xl p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
-                        <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                          session.isCurrent ? 'bg-green-500/20' : 'bg-blue-500/20'
-                        }`}>
-                          <Monitor className={`w-6 h-6 ${
-                            session.isCurrent ? 'text-green-400' : 'text-blue-400'
-                          }`} />
+                        <div className={`w-12 h-12 rounded-full flex items-center justify-center ${session.isCurrent ? 'bg-green-500/20' : 'bg-blue-500/20'
+                          }`}>
+                          <Monitor className={`w-6 h-6 ${session.isCurrent ? 'text-green-400' : 'text-blue-400'
+                            }`} />
                         </div>
                         <div>
                           <div className="text-white font-medium flex items-center space-x-2">
@@ -396,7 +392,7 @@ const SecurityDashboard = () => {
                           </div>
                         </div>
                       </div>
-                      
+
                       {!session.isCurrent && (
                         <button
                           onClick={() => terminateSession(session.id)}
@@ -421,7 +417,7 @@ const SecurityDashboard = () => {
           >
             <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6">
               <h3 className="text-xl font-bold text-white mb-6">Istoricul Evenimentelor de Securitate</h3>
-              
+
               <div className="space-y-3">
                 {securityEvents.map((event) => (
                   <div key={event.id} className="border border-white/10 rounded-lg p-4">
@@ -469,7 +465,7 @@ const SecurityDashboard = () => {
           >
             <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6">
               <h3 className="text-xl font-bold text-white mb-6">Autentificare Multi-Factor (2FA)</h3>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div className="border border-white/10 rounded-lg p-4">
@@ -478,9 +474,8 @@ const SecurityDashboard = () => {
                         <Smartphone className="w-6 h-6 text-blue-400" />
                         <span className="text-white font-medium">TOTP (Google Authenticator)</span>
                       </div>
-                      <div className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        mfaStatus?.totpEnabled ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'
-                      }`}>
+                      <div className={`px-3 py-1 rounded-full text-xs font-medium ${mfaStatus?.totpEnabled ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'
+                        }`}>
                         {mfaStatus?.totpEnabled ? 'ACTIVAT' : 'DEZACTIVAT'}
                       </div>
                     </div>
@@ -503,9 +498,8 @@ const SecurityDashboard = () => {
                         <Smartphone className="w-6 h-6 text-green-400" />
                         <span className="text-white font-medium">SMS Verification</span>
                       </div>
-                      <div className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        mfaStatus?.smsEnabled ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'
-                      }`}>
+                      <div className={`px-3 py-1 rounded-full text-xs font-medium ${mfaStatus?.smsEnabled ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'
+                        }`}>
                         {mfaStatus?.smsEnabled ? 'ACTIVAT' : 'DEZACTIVAT'}
                       </div>
                     </div>
@@ -523,9 +517,8 @@ const SecurityDashboard = () => {
                         <Eye className="w-6 h-6 text-purple-400" />
                         <span className="text-white font-medium">Autentificare Biometrică</span>
                       </div>
-                      <div className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        mfaStatus?.biometricEnabled ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'
-                      }`}>
+                      <div className={`px-3 py-1 rounded-full text-xs font-medium ${mfaStatus?.biometricEnabled ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'
+                        }`}>
                         {mfaStatus?.biometricEnabled ? 'ACTIVAT' : 'DEZACTIVAT'}
                       </div>
                     </div>
@@ -552,7 +545,7 @@ const SecurityDashboard = () => {
                   <div className="bg-white/5 rounded-lg p-4">
                     <h4 className="text-white font-medium mb-3">Ultima Utilizare</h4>
                     <p className="text-gray-400 text-sm">
-                      {mfaStatus?.lastUsed 
+                      {mfaStatus?.lastUsed
                         ? `Ultima oară: ${mfaStatus.lastUsed.toLocaleString('ro-RO')}`
                         : 'Nu a fost folosit încă'
                       }
@@ -574,7 +567,7 @@ const SecurityDashboard = () => {
             className="bg-slate-800 rounded-2xl border border-white/10 p-6 max-w-md w-full mx-4"
           >
             <h3 className="text-xl font-bold text-white mb-4">Configurare TOTP</h3>
-            
+
             <div className="text-center mb-6">
               <img src={qrCode} alt="QR Code" className="mx-auto mb-4 rounded-lg" />
               <p className="text-gray-400 text-sm mb-2">
@@ -597,7 +590,7 @@ const SecurityDashboard = () => {
                   }
                 }}
               />
-              
+
               <div className="flex space-x-3">
                 <button
                   onClick={() => setShowMFASetup(false)}

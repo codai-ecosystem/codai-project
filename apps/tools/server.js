@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const PORT = 4048;
+const PORT = 4066;
 
 // Middleware
 app.use(cors());
@@ -15,10 +15,10 @@ app.get('/health', (req, res) => {
   res.json({ 
     status: 'healthy', 
     service: 'tools',
-    description: 'Development Tools & Utilities',
+    description: 'AI Utilities & Standalone Tools',
     port: PORT,
-    type: 'tools',
-    category: 'development',
+    type: 'undefined',
+    category: 'utilities',
     timestamp: new Date().toISOString(),
     uptime: process.uptime()
   });

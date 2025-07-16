@@ -491,16 +491,16 @@ export class SupportTicketService {
       // Calculate average resolution time
       const avgResolutionTime = resolvedTickets.length > 0
         ? resolvedTickets.reduce((sum, ticket) => {
-            const resolutionTime = (ticket.resolvedAt!.getTime() - ticket.createdAt.getTime()) / (1000 * 60 * 60)
-            return sum + resolutionTime
-          }, 0) / resolvedTickets.length
+          const resolutionTime = (ticket.resolvedAt!.getTime() - ticket.createdAt.getTime()) / (1000 * 60 * 60)
+          return sum + resolutionTime
+        }, 0) / resolvedTickets.length
         : 0
 
       // Calculate first response rate
       const firstResponseRate = firstResponseData.length > 0
-        ? firstResponseData.filter(ticket => 
-            ticket.firstResponseAt! <= ticket.firstResponseDue
-          ).length / firstResponseData.length
+        ? firstResponseData.filter(ticket =>
+          ticket.firstResponseAt! <= ticket.firstResponseDue
+        ).length / firstResponseData.length
         : 0
 
       // Calculate resolution rate
@@ -625,12 +625,12 @@ Provide analysis in JSON format:
     const isFirstResponseOverdue = !firstResponseAt && now > firstResponseDue
     const isResolutionOverdue = !resolvedAt && now > resolutionDue
 
-    const responseTimeRemaining = firstResponseAt 
-      ? 0 
+    const responseTimeRemaining = firstResponseAt
+      ? 0
       : Math.max(0, (firstResponseDue.getTime() - now.getTime()) / (1000 * 60 * 60))
-    
-    const resolutionTimeRemaining = resolvedAt 
-      ? 0 
+
+    const resolutionTimeRemaining = resolvedAt
+      ? 0
       : Math.max(0, (resolutionDue.getTime() - now.getTime()) / (1000 * 60 * 60))
 
     return {
@@ -706,7 +706,7 @@ Provide analysis in JSON format:
     const priorityOrder = ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL']
     const userIndex = priorityOrder.indexOf(userPriority)
     const aiIndex = priorityOrder.indexOf(aiUrgency.toUpperCase())
-    
+
     return priorityOrder[Math.max(userIndex, aiIndex)]
   }
 

@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { query, dataSource, parameters, filters } = QueryRequestSchema.parse(body)
-    
+
     // Get user ID from headers or session (simplified for demo)
     const userId = request.headers.get('user-id') || 'demo-user'
 
@@ -27,9 +27,9 @@ export async function POST(request: NextRequest) {
     }, userId)
 
     if (!result.success) {
-      return NextResponse.json({ 
-        success: false, 
-        error: result.error 
+      return NextResponse.json({
+        success: false,
+        error: result.error
       }, { status: 400 })
     }
 
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Query execution error:', error)
-    
+
     if (error instanceof z.ZodError) {
       return NextResponse.json({
         success: false,

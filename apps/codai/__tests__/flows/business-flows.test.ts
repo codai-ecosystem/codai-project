@@ -4,7 +4,7 @@ import { codeGenerationFlow } from '../../lib/flows/code-generation';
 import { projectManagementFlow } from '../../lib/flows/project-management';
 
 describe('Codai Business Flow Tests', () => {
-  
+
   describe('Code Generation Flow', () => {
     it('should generate code successfully', async () => {
       const testRequest = {

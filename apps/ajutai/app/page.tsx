@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { 
-  Bot, 
-  MessageSquare, 
-  Ticket, 
-  BookOpen, 
-  Users, 
-  BarChart3, 
+import {
+  Bot,
+  MessageSquare,
+  Ticket,
+  BookOpen,
+  Users,
+  BarChart3,
   Activity,
   TrendingUp,
   Star,
@@ -17,6 +17,7 @@ import {
   Settings,
   CheckCircle
 } from 'lucide-react'
+import { AjutAIService, type SupportAnalytics } from '../services/ajutaiService'
 
 interface AppMetric {
   id: string
@@ -39,44 +40,45 @@ interface FeatureCard {
 export default function AjutAIPage() {
   const [currentTime, setCurrentTime] = useState(new Date())
   const [activeTab, setActiveTab] = useState<'overview' | 'features' | 'analytics' | 'monitor'>('overview')
-  
-  const [metrics] = useState<AppMetric[]>([
-    {
-      id: '1',
-      title: 'Total Users',
-      value: '12.4K',
-      change: '+8.2%',
-      trend: 'up',
-      icon: 'Users',
-      color: 'green'
-    },
-    {
-      id: '2',
-      title: 'Active Now',
-      value: '3.2K',
-      change: '+2.1%',
-      trend: 'up',
-      icon: 'Activity',
-      color: 'green'
-    },
-    {
-      id: '3',
-      title: 'System Performance',
-      value: '98.5%',
-      change: '0%',
-      trend: 'stable',
-      icon: 'BarChart3',
-      color: 'blue'
-    },
-    {
-      id: '4',
-      title: 'Support Quality',
-      value: '4.9/5',
-      change: '+0.2',
-      trend: 'up',
-      icon: 'Star',
-      color: 'purple'
+  const [analytics, setAnalytics] = useState<SupportAnalytics | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    loadRealAjutAIData()
+  }, [])
+
+  const loadRealAjutAIData = async () => {
+    setLoading(true)
+    try {
+      const ajutService = AjutAIService.getInstance()
+      const analyticsData = await ajutService.getAnalytics()
+      setAnalytics(analyticsData)
+    } catch (error) {
+      console.error('Failed to load AjutAI data:', error)
+    } finally {
+      setLoading(false)
     }
+  }
+
+  const [metrics] = useState<AppMetric[]>([])
+  {
+    id: '3',
+      title: 'System Performance',
+        value: '98.5%',
+          change: '0%',
+            trend: 'stable',
+              icon: 'BarChart3',
+                color: 'blue'
+  },
+  {
+    id: '4',
+      title: 'Support Quality',
+        value: '4.9/5',
+          change: '+0.2',
+            trend: 'up',
+              icon: 'Star',
+                color: 'purple'
+  }
   ])
 
   const [featureCards] = useState<FeatureCard[]>([
@@ -133,7 +135,7 @@ export default function AjutAIPage() {
       Bot,
       CheckCircle
     }
-    
+
     const IconComponent = iconMap[iconName]
     return IconComponent ? <IconComponent className={className} /> : null
   }
@@ -149,7 +151,7 @@ export default function AjutAIPage() {
 
   return (
     <div className="container min-h-screen bg-gradient-to-br from-slate-900 via-green-900 to-slate-900 text-white overflow-hidden"
-         style={{ width: '100%', maxWidth: '100%' }}>
+      style={{ width: '100%', maxWidth: '100%' }}>
       {/* Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -176,7 +178,7 @@ export default function AjutAIPage() {
       <header className="relative z-10 bg-white/5 backdrop-blur-xl border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
-            <motion.div 
+            <motion.div
               className="flex items-center space-x-4"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -192,8 +194,8 @@ export default function AjutAIPage() {
                 <p className="text-sm text-gray-400">Universal Support System</p>
               </div>
             </motion.div>
-            
-            <motion.div 
+
+            <motion.div
               className="flex items-center space-x-6"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -213,7 +215,7 @@ export default function AjutAIPage() {
 
       {/* Navigation Tabs */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <motion.div 
+        <motion.div
           className="flex justify-center space-x-1 bg-white/5 backdrop-blur-lg rounded-2xl p-1 max-w-2xl mx-auto border border-white/10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -221,23 +223,22 @@ export default function AjutAIPage() {
           role="tablist"
           aria-label="Main navigation"
         >              {(['overview', 'features', 'analytics', 'monitor'] as const).map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 ${
-                activeTab === tab
-                  ? 'bg-blue-500/30 text-green-300 shadow-lg'
-                  : 'text-slate-400 hover:text-white hover:bg-white/10'
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 ${activeTab === tab
+                ? 'bg-blue-500/30 text-green-300 shadow-lg'
+                : 'text-slate-400 hover:text-white hover:bg-white/10'
               }`}
-              role="tab"
-              aria-selected={activeTab === tab}
-              aria-controls={`${tab}-panel`}
-              aria-label={`Switch to ${tab} tab`}
-              tabIndex={0}
-            >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
-            </button>
-          ))}
+            role="tab"
+            aria-selected={activeTab === tab}
+            aria-controls={`${tab}-panel`}
+            aria-label={`Switch to ${tab} tab`}
+            tabIndex={0}
+          >
+            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+          </button>
+        ))}
         </motion.div>
       </div>
 
@@ -271,7 +272,58 @@ export default function AjutAIPage() {
 
               {/* Live Statistics */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" aria-live="polite">
-                {metrics.map((metric, index) => (
+                {loading ? (
+                  // Loading skeleton
+                  Array.from({ length: 4 }, (_, index) => (
+                    <div key={index} className="glassmorphism bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6 animate-pulse">
+                      <div className="h-12 bg-white/10 rounded mb-4"></div>
+                      <div className="h-6 bg-white/10 rounded mb-2"></div>
+                      <div className="h-4 bg-white/10 rounded w-1/2"></div>
+                    </div>
+                  ))
+                ) : analytics ? [
+                  {
+                    id: '1',
+                    title: 'Total Tickets',
+                    value: analytics.ticketMetrics.totalTickets.toString(),
+                    change: `${analytics.ticketMetrics.openTickets} open`,
+                    trend: 'up' as const,
+                    icon: 'Ticket',
+                    color: 'blue'
+                  },
+                  {
+                    id: '2',
+                    title: 'Active Agents',
+                    value: analytics.agentMetrics.activeAgents.toString(),
+                    change: `${analytics.agentMetrics.totalAgents} total`,
+                    trend: 'up' as const,
+                    icon: 'Users',
+                    color: 'green'
+                  },
+                  {
+                    id: '3',
+                    title: 'Resolution Rate',
+                    value: `${Math.round(analytics.chatMetrics.botResolutionRate)}%`,
+                    change: 'automated',
+                    trend: 'up' as const,
+                    icon: 'CheckCircle',
+                    color: 'green'
+                  },
+                  {
+                    id: '4',
+                    title: 'Satisfaction',
+                    value: `${analytics.ticketMetrics.customerSatisfaction}/5`,
+                    change: 'rating',
+                    trend: 'up' as const,
+                    icon: 'Star',
+                    color: 'purple'
+                  }
+                ] : [
+                  { id: '1', title: 'Total Tickets', value: '0', change: 'No data', trend: 'stable' as const, icon: 'Ticket', color: 'gray' },
+                  { id: '2', title: 'Active Agents', value: '0', change: 'No data', trend: 'stable' as const, icon: 'Users', color: 'gray' },
+                  { id: '3', title: 'Resolution Rate', value: '0%', change: 'No data', trend: 'stable' as const, icon: 'CheckCircle', color: 'gray' },
+                  { id: '4', title: 'Satisfaction', value: '0/5', change: 'No data', trend: 'stable' as const, icon: 'Star', color: 'gray' }
+                ].map((metric, index) => (
                   <motion.div
                     key={metric.id}
                     initial={{ opacity: 0, scale: 0.9 }}
@@ -366,7 +418,7 @@ export default function AjutAIPage() {
                       </div>
                     </div>
                     <div className="flex justify-end">
-                      <button 
+                      <button
                         className="bg-gradient-to-r from-green-500 to-purple-500 text-white px-4 py-2 rounded-xl hover:from-green-600 hover:to-purple-600 transition-all font-medium text-sm flex items-center gap-2"
                         aria-label={`Learn more about ${feature.title}`}
                         tabIndex={0}
@@ -397,12 +449,12 @@ export default function AjutAIPage() {
                 {activeTab === 'analytics' ? 'Advanced Analytics Dashboard' : 'System Monitor Dashboard'}
               </h2>
               <p className="text-gray-300 mb-6">
-                {activeTab === 'analytics' 
+                {activeTab === 'analytics'
                   ? 'Comprehensive analytics and insights for support performance and customer satisfaction metrics.'
                   : 'Real-time system monitoring and performance analytics for comprehensive platform oversight.'
                 }
               </p>
-              <button 
+              <button
                 className="bg-gradient-to-r from-green-500 to-purple-500 text-white px-6 py-3 rounded-xl hover:from-green-600 hover:to-purple-600 transition-all font-medium"
                 aria-label={`${activeTab === 'analytics' ? 'View Analytics Dashboard' : 'View System Monitor Dashboard'}`}
                 tabIndex={0}

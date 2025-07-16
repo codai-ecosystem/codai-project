@@ -77,7 +77,7 @@ global.fetch = vi.fn().mockImplementation((url: string) => {
       })
     } as Response);
   }
-  
+
   return Promise.resolve({
     ok: true,
     json: () => Promise.resolve({ success: true, data: [] })

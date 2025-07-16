@@ -11,9 +11,9 @@ describe('Files API Simple Test', () => {
     const limit = 10
     const page = 2
     const offset = (page - 1) * limit
-    
+
     const calculatedPage = Math.floor(offset / limit) + 1
-    
+
     expect(calculatedPage).toBe(2)
   })
 
@@ -25,7 +25,7 @@ describe('Files API Simple Test', () => {
         name: 'test.txt'
       }
     }
-    
+
     expect(mockResponse).toHaveProperty('data.id', 'test-file-id')
   })
 })

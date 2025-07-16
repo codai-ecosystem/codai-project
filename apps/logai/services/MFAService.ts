@@ -68,7 +68,7 @@ export class MFAService {
         try {
             // Generate secret (32 char base32)
             const secret = this.generateTOTPSecret()
-            
+
             // Generate backup codes
             const backupCodes = this.generateBackupCodes()
 
@@ -108,16 +108,16 @@ export class MFAService {
     }> {
         try {
             const mfaDoc = await getDoc(doc(firestore, 'mfa_secrets', userId))
-            
+
             if (!mfaDoc.exists()) {
                 return { success: false, error: 'TOTP nu a fost configurat' }
             }
 
             const mfaData = mfaDoc.data() as MFASecret
-            
+
             // Verify TOTP code
             const isValid = this.verifyTOTPCode(mfaData.secret, code)
-            
+
             if (!isValid) {
                 return { success: false, error: 'Cod TOTP invalid' }
             }
@@ -145,7 +145,7 @@ export class MFAService {
     }> {
         try {
             const mfaDoc = await getDoc(doc(firestore, 'mfa_secrets', userId))
-            
+
             if (!mfaDoc.exists()) {
                 return { success: false, error: 'MFA nu este configurat' }
             }
@@ -169,7 +169,7 @@ export class MFAService {
 
             // Verify TOTP code
             const isValid = this.verifyTOTPCode(mfaData.secret, code)
-            
+
             if (!isValid) {
                 return { success: false, error: 'Cod invalid' }
             }
@@ -197,7 +197,7 @@ export class MFAService {
         try {
             // Generate 6-digit code
             const code = Math.floor(100000 + Math.random() * 900000).toString()
-            
+
             // Set expiration (5 minutes)
             const expiresAt = new Date(Date.now() + 5 * 60 * 1000)
 
@@ -233,7 +233,7 @@ export class MFAService {
     }> {
         try {
             const smsDoc = await getDoc(doc(firestore, 'sms_verifications', userId))
-            
+
             if (!smsDoc.exists()) {
                 return { success: false, error: 'Verificarea SMS nu a fost inițiată' }
             }
@@ -327,14 +327,14 @@ export class MFAService {
             )
 
             const snapshot = await getDocs(biometricQuery)
-            
+
             if (snapshot.empty) {
                 return { success: false, error: 'Autentificare biometrică nu este configurată' }
             }
 
             // In production, verify signature with public key
             // const isValid = await this.verifySignature(publicKey, signature, challenge)
-            
+
             // For now, simulate successful verification
             const isValid = true
 

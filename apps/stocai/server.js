@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const PORT = 4053;
+const PORT = 4065;
 
 // Middleware
 app.use(cors());
@@ -15,10 +15,10 @@ app.get('/health', (req, res) => {
   res.json({ 
     status: 'healthy', 
     service: 'stocai',
-    description: 'AI Stock Trading Platform',
+    description: 'Stock Market & Investment AI Platform',
     port: PORT,
-    type: 'trading',
-    category: 'business',
+    type: 'undefined',
+    category: 'finance',
     timestamp: new Date().toISOString(),
     uptime: process.uptime()
   });

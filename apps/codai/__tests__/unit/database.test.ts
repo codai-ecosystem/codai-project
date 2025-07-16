@@ -58,7 +58,7 @@ class CodaiRepository {
     const allRecords = [...mockDatabase.projects, ...mockDatabase.users, ...mockDatabase.codeRepositories];
     const start = (options.page - 1) * options.limit;
     const end = start + options.limit;
-    
+
     return {
       data: allRecords.slice(start, end),
       total: allRecords.length,
@@ -116,10 +116,10 @@ describe('CODAI Database Tests', () => {
 
     it('should retrieve code project by ID', async () => {
       // Create test project
-      const projectData = { 
-        name: 'Test Project', 
+      const projectData = {
+        name: 'Test Project',
         language: 'python',
-        aiFeatures: ['code-generation', 'debugging'] 
+        aiFeatures: ['code-generation', 'debugging']
       };
       const created = await repository.create(projectData);
       mockDatabase.projects.push(created);
@@ -134,8 +134,8 @@ describe('CODAI Database Tests', () => {
 
     it('should update code project', async () => {
       // Create test project
-      const projectData = { 
-        name: 'Original Project', 
+      const projectData = {
+        name: 'Original Project',
         status: 'planning',
         aiAssistanceLevel: 'basic'
       };
@@ -143,7 +143,7 @@ describe('CODAI Database Tests', () => {
       mockDatabase.projects.push(created);
 
       // Update project
-      const updateData = { 
+      const updateData = {
         name: 'Updated Project',
         status: 'active',
         aiAssistanceLevel: 'advanced'
@@ -157,7 +157,7 @@ describe('CODAI Database Tests', () => {
 
     it('should delete code project', async () => {
       // Create test project
-      const projectData = { 
+      const projectData = {
         name: 'Test Project',
         type: 'web-app',
         repository: 'https://github.com/test/repo'
@@ -201,16 +201,16 @@ describe('CODAI Database Tests', () => {
 
   describe('CODAI Data Validation', () => {
     it('should enforce unique project names', async () => {
-      const projectData = { 
+      const projectData = {
         name: 'Unique Project',
         language: 'typescript',
         repository: 'https://github.com/test/unique'
       };
-      
+
       // Create first project
       const created = await repository.create(projectData);
       mockDatabase.projects.push(created);
-      
+
       // Attempt to create duplicate should be handled by business logic
       expect(mockDatabase.projects.filter(p => p.name === projectData.name)).toHaveLength(1);
     });
@@ -222,10 +222,10 @@ describe('CODAI Database Tests', () => {
         framework: 'next.js',
         aiFeatures: ['code-completion', 'error-detection']
       };
-      
+
       const created = await repository.create(validProjectData);
       mockDatabase.projects.push(created);
-      
+
       expect(created.name).toBe(validProjectData.name);
       expect(created.language).toBe(validProjectData.language);
       expect(Array.isArray(created.aiFeatures)).toBe(true);
@@ -233,7 +233,7 @@ describe('CODAI Database Tests', () => {
 
     it('should require essential project fields', async () => {
       const incompleteData = { language: 'python' }; // missing required name
-      
+
       try {
         const created = await repository.create(incompleteData);
         mockDatabase.projects.push(created);
@@ -249,10 +249,10 @@ describe('CODAI Database Tests', () => {
   describe('CODAI Batch Operations', () => {
     it('should handle multiple project creation with rollback', async () => {
       const projectData1 = { name: 'Project 1', language: 'typescript' };
-      const projectData2 = { name: 'Project 2', language: 'invalid-email' }; // will cause error
-      
+      const projectData2 = { name: 'Project 2', language: 'javascript', email: 'invalid-email' }; // will cause error
+
       await expect(repository.createMultiple([projectData1, projectData2])).rejects.toThrow();
-      
+
       // Verify no projects were created in our mock
       const allRecords = await repository.findAll({ page: 1, limit: 10 });
       expect(allRecords.data).toHaveLength(0);
@@ -263,13 +263,13 @@ describe('CODAI Database Tests', () => {
         { name: 'Project 1', language: 'typescript', type: 'web-app' },
         { name: 'Project 2', language: 'python', type: 'api' }
       ];
-      
+
       const created = await repository.createMultiple(projectData);
-      
+
       for (const project of created) {
         mockDatabase.projects.push(project);
       }
-      
+
       const allRecords = await repository.findAll({ page: 1, limit: 10 });
       expect(allRecords.data).toHaveLength(2);
     });
@@ -283,7 +283,7 @@ describe('CODAI Database Tests', () => {
         language: i % 2 === 0 ? 'typescript' : 'python',
         status: i % 2 === 0 ? 'active' : 'completed'
       }));
-      
+
       for (const project of testProjects) {
         const created = await repository.create(project);
         mockDatabase.projects.push(created);
@@ -293,13 +293,13 @@ describe('CODAI Database Tests', () => {
       const startTime = Date.now();
       await repository.findAll({ page: 1, limit: 50 });
       const endTime = Date.now();
-      
+
       expect(endTime - startTime).toBeLessThan(1000); // Should complete within 1 second
     });
 
     it('should optimize user lookup queries', async () => {
       // Create test user
-      const user = { 
+      const user = {
         email: 'test@example.com',
         name: 'Test User',
         codingPreferences: {
@@ -314,7 +314,7 @@ describe('CODAI Database Tests', () => {
       const startTime = Date.now();
       await repository.findByEmail('test@example.com');
       const endTime = Date.now();
-      
+
       expect(endTime - startTime).toBeLessThan(100); // Should be very fast with index
     });
   });

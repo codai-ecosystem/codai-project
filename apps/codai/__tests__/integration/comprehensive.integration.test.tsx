@@ -193,9 +193,9 @@ describe('🔧 CodAI Comprehensive Integration Tests', () => {
 
             await waitFor(() => {
                 // Check for any text pattern that includes active projects - be more flexible
-                const hasActiveProjectsText = screen.queryByText(/active.*projects/i) || 
-                                            screen.queryByText(/live.*development.*platform/i) ||
-                                            screen.queryByText(/12.*active/i);
+                const hasActiveProjectsText = screen.queryByText(/active.*projects/i) ||
+                    screen.queryByText(/live.*development.*platform/i) ||
+                    screen.queryByText(/12.*active/i);
                 expect(hasActiveProjectsText).toBeInTheDocument()
             })
 

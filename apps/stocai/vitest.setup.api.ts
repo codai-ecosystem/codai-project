@@ -21,7 +21,7 @@ vi.mock('openai', () => ({
         if (input === 'Test text' || input === 'force_embedding_failure') {
           return Promise.reject(new Error('API Error'));
         }
-        
+
         return Promise.resolve({
           data: [{ embedding: new Array(1536).fill(0.1) }]
         });
@@ -111,10 +111,10 @@ vi.mock('@supabase/supabase-js', () => ({
         })),
         // Mock successful responses for SELECT operations
         then: vi.fn((callback) => {
-          const mockData = table === 'file_metadata' 
+          const mockData = table === 'file_metadata'
             ? [{ id: 'test-file', file_name: 'test.txt', file_size: 1024, file_type: 'text/plain' }]
             : [{ id: 'test-dataset', name: 'Test Dataset', description: 'Test' }]
-          
+
           return callback({
             data: mockData,
             error: null,
@@ -122,15 +122,15 @@ vi.mock('@supabase/supabase-js', () => ({
           })
         })
       }
-      
+
       // Make mockQuery awaitable by adding Promise methods
       Object.assign(mockQuery, Promise.resolve({
-        data: table === 'file_metadata' 
+        data: table === 'file_metadata'
           ? [{ id: 'test-file', file_name: 'test.txt', file_size: 1024, file_type: 'text/plain' }]
           : [{ id: 'test-dataset', name: 'Test Dataset', description: 'Test' }],
         error: null,
       }))
-      
+
       return mockQuery
     }),
     storage: {

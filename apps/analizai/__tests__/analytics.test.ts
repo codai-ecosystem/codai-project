@@ -57,7 +57,7 @@ describe('AnalyticsService', () => {
         dataSourceId: 'test',
         tags: ['select', 'from'],
       })
-      
+
       mockDb.prisma.query.update.mockResolvedValue({
         id: '1',
         status: 'COMPLETED',
@@ -91,7 +91,7 @@ describe('AnalyticsService', () => {
         dataSourceId: 'test',
         tags: [],
       })
-      
+
       mockDb.prisma.query.update.mockResolvedValue({
         id: '1',
         status: 'FAILED',
@@ -105,7 +105,7 @@ describe('AnalyticsService', () => {
       }
 
       const result = await analyticsService.executeQuery(dataQuery, 'user1')
-      
+
       expect(result.success).toBe(true) // The service should handle errors gracefully
       expect(mockDb.prisma.query.create).toHaveBeenCalled()
     })
@@ -170,7 +170,7 @@ describe('AnalyticsService', () => {
       expect(result.success).toBe(true)
       if (result.anomalies) {
         expect(result.anomalies.length).toBeGreaterThan(0)
-        
+
         // Check if the anomaly was detected
         const anomaly = result.anomalies.find(a => a.value === 500)
         expect(anomaly).toBeDefined()
@@ -225,7 +225,7 @@ describe('AnalyticsService', () => {
       expect(result.success).toBe(true)
       if (result.forecast) {
         expect(result.forecast.length).toBe(7)
-        
+
         // Check forecast structure
         const prediction = result.forecast[0]
         expect(prediction).toBeDefined()

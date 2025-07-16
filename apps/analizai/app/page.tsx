@@ -1,11 +1,12 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { 
-  BarChart3, 
-  TrendingUp, 
-  AlertTriangle, 
-  Brain, 
+import AnalizAIService from '../services/AnalizAIService'
+import {
+  BarChart3,
+  TrendingUp,
+  AlertTriangle,
+  Brain,
   Database,
   Search,
   Filter,
@@ -21,6 +22,8 @@ import {
   Users,
   DollarSign
 } from 'lucide-react'
+
+const analizaiService = new AnalizAIService()
 
 // Component imports would be from a design system
 const StatCard = ({ icon: Icon, title, value, change, changeType, color = 'blue' }: any) => (
@@ -45,11 +48,10 @@ const InsightCard = ({ insight }: { insight: any }) => (
     <div className="flex items-start justify-between mb-3">
       <div className="flex items-center space-x-2">
         <Brain className="h-5 w-5 text-purple-600" />
-        <span className={`px-2 py-1 text-xs rounded-full ${
-          insight.priority === 'HIGH' ? 'bg-red-100 text-red-800' :
-          insight.priority === 'MEDIUM' ? 'bg-yellow-100 text-yellow-800' :
-          'bg-green-100 text-green-800'
-        }`}>
+        <span className={`px-2 py-1 text-xs rounded-full ${insight.priority === 'HIGH' ? 'bg-red-100 text-red-800' :
+            insight.priority === 'MEDIUM' ? 'bg-yellow-100 text-yellow-800' :
+              'bg-green-100 text-green-800'
+          }`}>
           {insight.priority}
         </span>
       </div>
@@ -94,30 +96,30 @@ export default function AnalizaiDashboard() {
 
   useEffect(() => {
     let isMounted = true
-    
+
     // Set initial time immediately
     const now = new Date()
     if (isMounted) {
-      setCurrentTime(now.toLocaleTimeString('ro-RO', { 
-        hour: '2-digit', 
+      setCurrentTime(now.toLocaleTimeString('ro-RO', {
+        hour: '2-digit',
         minute: '2-digit',
-        hour12: false 
+        hour12: false
       }))
     }
-    
+
     // Fetch initial data
     if (isMounted) {
       fetchDashboardData()
     }
-    
+
     // Update time every second
     const timer = setInterval(() => {
       if (isMounted) {
         const now = new Date()
-        setCurrentTime(now.toLocaleTimeString('ro-RO', { 
-          hour: '2-digit', 
+        setCurrentTime(now.toLocaleTimeString('ro-RO', {
+          hour: '2-digit',
           minute: '2-digit',
-          hour12: false 
+          hour12: false
         }))
       }
     }, 1000)
@@ -131,22 +133,43 @@ export default function AnalizaiDashboard() {
   const fetchDashboardData = async () => {
     try {
       setLoading(true)
-      
+
       // Fetch insights
       const insightsResponse = await fetch('/api/insights?limit=6')
       const insightsData = await insightsResponse.json()
-      
+
       // Batch state updates to reduce re-renders
+      // Load real analytics data from AnalizAI service
+      const realMetrics = await analizaiService.getAnalyticsMetrics()
+      const realInsights = await analizaiService.getAnalyticsInsights()
+
+      // Transform real metrics to format expected by UI
       const updates = {
-        insights: insightsData.success ? insightsData.insights : [],
+        insights: realInsights || [],
         metrics: {
-          totalRevenue: { value: '€245,670', change: '+12.5%', changeType: 'increase' },
-          activeUsers: { value: '12,847', change: '+8.2%', changeType: 'increase' },
-          conversionRate: { value: '3.24%', change: '-0.1%', changeType: 'decrease' },
-          avgSessionTime: { value: '4m 32s', change: '+15.3%', changeType: 'increase' }
+          totalRevenue: {
+            value: `€${(realMetrics[0]?.value || 0).toLocaleString()}`,
+            change: `+${(realMetrics[0]?.changePercent || 0).toFixed(1)}%`,
+            changeType: realMetrics[0]?.trend === 'up' ? 'increase' : realMetrics[0]?.trend === 'down' ? 'decrease' : 'stable'
+          },
+          activeUsers: {
+            value: (realMetrics[1]?.value || 0).toLocaleString(),
+            change: `+${(realMetrics[1]?.changePercent || 0).toFixed(1)}%`,
+            changeType: realMetrics[1]?.trend === 'up' ? 'increase' : realMetrics[1]?.trend === 'down' ? 'decrease' : 'stable'
+          },
+          conversionRate: {
+            value: `${(realMetrics[3]?.value || 0).toFixed(2)}%`,
+            change: `${realMetrics[3]?.changePercent > 0 ? '+' : ''}${(realMetrics[3]?.changePercent || 0).toFixed(1)}%`,
+            changeType: realMetrics[3]?.trend === 'up' ? 'increase' : realMetrics[3]?.trend === 'down' ? 'decrease' : 'stable'
+          },
+          avgSessionTime: {
+            value: `${Math.floor((realMetrics[2]?.value || 272) / 60)}m ${((realMetrics[2]?.value || 272) % 60)}s`,
+            change: `${realMetrics[2]?.changePercent > 0 ? '+' : ''}${(realMetrics[2]?.changePercent || 0).toFixed(1)}%`,
+            changeType: realMetrics[2]?.trend === 'up' ? 'increase' : realMetrics[2]?.trend === 'down' ? 'decrease' : 'stable'
+          }
         }
       }
-      
+
       setInsights(updates.insights)
       setMetrics(updates.metrics)
 
@@ -176,21 +199,21 @@ export default function AnalizaiDashboard() {
                 <span className="text-sm text-gray-500">Analytics & Business Intelligence</span>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <button className="p-2 text-gray-400 hover:text-gray-600" aria-label="Search">
                 <Search className="h-5 w-5" />
               </button>
-              
+
               <button className="p-2 text-gray-400 hover:text-gray-600" aria-label="Filter">
                 <Filter className="h-5 w-5" />
               </button>
-              
+
               <button className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 flex items-center space-x-2" aria-label="Create new query">
                 <Plus className="h-4 w-4" />
                 <span>New Query</span>
               </button>
-              
+
               <div className="flex items-center space-x-2 text-sm">
                 <div className="flex items-center space-x-1">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
@@ -199,7 +222,7 @@ export default function AnalizaiDashboard() {
                 <span className="text-gray-400">|</span>
                 <span className="text-gray-600">{currentTime}</span>
               </div>
-              
+
               <button className="p-2 text-gray-400 hover:text-gray-600" aria-label="Settings">
                 <Settings className="h-5 w-5" />
               </button>
@@ -217,11 +240,10 @@ export default function AnalizaiDashboard() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                    activeTab === tab.id
+                  className={`py-4 px-1 border-b-2 font-medium text-sm ${activeTab === tab.id
                       ? 'border-purple-500 text-purple-600 bg-purple-500/10'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                    }`}
                   aria-label={`Switch to ${tab.name} tab`}
                 >
                   <div className="flex items-center space-x-2">
@@ -348,7 +370,7 @@ export default function AnalizaiDashboard() {
                 </button>
               </div>
             </div>
-            
+
             {loading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {Array.from({ length: 6 }).map((_, i) => (
@@ -387,7 +409,7 @@ export default function AnalizaiDashboard() {
                 <span>Explore Features</span>
               </button>
             </div>
-            
+
             <div className="bg-white rounded-lg shadow-sm border p-8 text-center">
               <Database className="h-12 w-12 mx-auto mb-4 text-purple-600" />
               <h3 className="text-lg font-semibold mb-2">Advanced Data Features</h3>
@@ -422,7 +444,7 @@ export default function AnalizaiDashboard() {
                 <span>Configure Monitor</span>
               </button>
             </div>
-            
+
             <div className="bg-white rounded-lg shadow-sm border p-8 text-center">
               <Target className="h-12 w-12 mx-auto mb-4 text-purple-600" />
               <h3 className="text-lg font-semibold mb-2">Real-time Monitoring</h3>

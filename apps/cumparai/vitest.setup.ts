@@ -1,46 +1,37 @@
 import '@testing-library/jest-dom'
 import { expect, afterEach, vi } from 'vitest'
-
-// Mock React JSX Runtime (essential for React 19)
-vi.mock('react/jsx-dev-runtime', () => ({
-  jsxDEV: vi.fn(() => 'mocked-jsx-element'),
-  Fragment: 'fragment'
-}))
-
-// Mock React first (essential for workspace)
-vi.mock('react', () => ({
-  default: {
-    createElement: vi.fn(() => 'mocked-element'),
-    Fragment: 'fragment',
-  },
-  createElement: vi.fn(() => 'mocked-element'),
-  Fragment: 'fragment',
-  useState: vi.fn(() => [null, vi.fn()]),
-  useEffect: vi.fn(),
-  useContext: vi.fn(),
-  useRef: vi.fn(() => ({ current: null })),
-  forwardRef: vi.fn((fn) => fn),
-  memo: vi.fn((component) => component),
-}))
-
-// Mock react-dom
-vi.mock('react-dom', () => ({
-  default: { render: vi.fn() },
-  render: vi.fn(),
-  unmountComponentAtNode: vi.fn(),
-}))
-
-// Now we can import testing library since React is mocked
 import { cleanup } from '@testing-library/react'
+import React from 'react'
 
 // Cleanup after each test case
 afterEach(() => {
   cleanup()
 })
 
-// Mock Lucide React icons
+// Mock React hooks with better default values
+vi.mock('react', async () => {
+  const actual = await vi.importActual('react')
+  return {
+    ...actual,
+    useState: vi.fn((initial) => [initial, vi.fn()]),
+    useEffect: vi.fn((fn) => fn()),
+    useContext: vi.fn(),
+    useRef: vi.fn(() => ({ current: null })),
+  }
+})
+
+// Enhanced Lucide React icons mock with proper React elements
 vi.mock('lucide-react', () => {
-  const MockIcon = (props: any) => 'div'
+  const MockIcon = React.forwardRef(({ className, size, ...props }: any, ref: any) =>
+    React.createElement('svg', {
+      className,
+      width: size || 24,
+      height: size || 24,
+      ref,
+      'data-testid': 'lucide-icon',
+      ...props
+    })
+  )
 
   return {
     ShoppingBag: MockIcon,
@@ -56,25 +47,25 @@ vi.mock('lucide-react', () => {
     Heart: MockIcon,
     ShoppingCart: MockIcon,
     Sparkles: MockIcon,
-    PresentationChart: MockIcon,
+    BarChart3: MockIcon,
     Clock: MockIcon,
     Activity: MockIcon
   }
 })
 
-// Essential framer-motion mock (minimal)
+// Enhanced framer-motion mock with proper React elements
 vi.mock('framer-motion', () => ({
-  motion: {
-    div: 'div',
-    span: 'span',
-    button: 'button',
-    h1: 'h1',
-    h2: 'h2',
-    h3: 'h3',
-    img: 'img',
-    section: 'section'
-  },
-  AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
+  motion: new Proxy({}, {
+    get: (target, prop) => {
+      const Component = React.forwardRef(({ children, ...props }: any, ref: any) => {
+        const { whileHover, whileTap, animate, initial, exit, transition, ...restProps } = props
+        return React.createElement(prop as string, { ...restProps, ref }, children)
+      })
+      Component.displayName = `motion.${String(prop)}`
+      return Component
+    }
+  }),
+  AnimatePresence: ({ children }: any) => children,
   useAnimation: () => ({
     start: vi.fn(),
     stop: vi.fn(),
@@ -123,5 +114,12 @@ Object.defineProperty(window, 'performance', {
   }
 })
 
-// Mock fetch for API calls (minimal - let real functionality handle responses)
-global.fetch = vi.fn()
+// Mock fetch for API calls with proper implementation
+global.fetch = vi.fn(() =>
+  Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve({}),
+    text: () => Promise.resolve(''),
+    catch: () => Promise.resolve({ ok: false })
+  } as any)
+)

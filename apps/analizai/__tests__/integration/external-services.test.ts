@@ -148,7 +148,7 @@ describe('ANALIZAI External Services Integration', () => {
         data: { subscription_id: 'mock-sub-123' },
         error: null
       }
-      
+
       // Mock the Supabase subscription chain
       mockSupabaseClient.from.mockReturnValue({
         on: vi.fn().mockReturnValue(subscription)
@@ -197,16 +197,16 @@ describe('ANALIZAI External Services Integration', () => {
         ],
         status: 'success'
       }
-      
+
       global.fetch = vi.fn().mockResolvedValueOnce({
         ok: true,
         json: () => Promise.resolve(mockResponse)
       })
-      
+
       const response = await fetch('/api/insights?validate=true')
       const data = await response.json()
 
-      expect(data.insights.every((insight: any) => 
+      expect(data.insights.every((insight: any) =>
         insight.id && insight.type && insight.value
       )).toBe(true)
     })
@@ -215,14 +215,14 @@ describe('ANALIZAI External Services Integration', () => {
   describe('Service Integration Performance', () => {
     it('maintains performance under real load conditions', async () => {
       const startTime = performance.now()
-      
+
       // Mock the select chain for Supabase
       mockSupabaseClient.from.mockReturnValue({
         select: vi.fn().mockReturnValue({
           single: vi.fn().mockResolvedValue({ data: {}, error: null })
         })
       })
-      
+
       await Promise.all([
         mockOpenAIService.createEmbedding({ input: 'Test 1', model: 'text-embedding-ada-002' }),
         mockSupabaseClient.from('analysis_results').select('*').single(),
@@ -243,19 +243,19 @@ describe('ANALIZAI External Services Integration', () => {
       })
       global.fetch = mockFetch
 
-      const requests = Array.from({ length: 10 }, (_, i) => 
+      const requests = Array.from({ length: 10 }, (_, i) =>
         fetch(`/api/insights?batch=${i}`)
       )
 
       const results = await Promise.all(requests)
-      
+
       // Verify all requests completed successfully
       expect(results).toHaveLength(10)
       results.forEach((result, index) => {
         expect(result).toBeDefined()
         expect(result.ok).toBe(true)
       })
-      
+
       expect(mockFetch).toHaveBeenCalledTimes(10)
     })
   })

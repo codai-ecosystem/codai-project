@@ -16,7 +16,7 @@ describe('TalentAI Simple Tests', () => {
         children: 'TalentAI Dashboard'
       }
     }
-    
+
     expect(mockComponent.name).toBe('TalentaiPage')
     expect(mockComponent.props.children).toBe('TalentAI Dashboard')
   })
@@ -24,12 +24,12 @@ describe('TalentAI Simple Tests', () => {
   it('should validate platform features', () => {
     const features = [
       'Real-time Statistics',
-      'Candidate Management', 
+      'Candidate Management',
       'Job Posting',
       'Interview Scheduling',
       'AI-powered Matching'
     ]
-    
+
     expect(features).toHaveLength(5)
     expect(features).toContain('Real-time Statistics')
   })
@@ -44,7 +44,7 @@ describe('TalentAI Simple Tests', () => {
         interviewsScheduled: expect.any(Number)
       }
     }
-    
+
     expect(apiEndpoint.url).toBe('/api/talent-stats')
     expect(apiEndpoint.method).toBe('GET')
   })
@@ -55,7 +55,7 @@ describe('TalentAI Simple Tests', () => {
       backdropFilter: 'blur(20px)',
       border: '1px solid rgba(255, 255, 255, 0.2)'
     }
-    
+
     expect(glassStyles.background).toContain('rgba')
     expect(glassStyles.backdropFilter).toContain('blur')
   })

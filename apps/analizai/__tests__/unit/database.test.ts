@@ -45,21 +45,21 @@ describe('ANALIZAI Database Operations Tests', () => {
           ]
         })
       }
-      
+
       if (sql.includes('INSERT')) {
         return Promise.resolve({
           rows: [{ id: Math.floor(Math.random() * 1000) + 1 }],
           rowCount: 1
         })
       }
-      
+
       if (sql.includes('UPDATE')) {
         return Promise.resolve({
           rows: [],
           rowCount: 1
         })
       }
-      
+
       if (sql.includes('DELETE')) {
         return Promise.resolve({
           rows: [],
@@ -83,7 +83,7 @@ describe('ANALIZAI Database Operations Tests', () => {
   describe('Database Connection Management', () => {
     it('establishes real database connection successfully', async () => {
       const connection = await mockDatabase.connect()
-      
+
       expect(connection).toBe(true)
       expect(mockDatabase.connect).toHaveBeenCalledOnce()
     })
@@ -97,7 +97,7 @@ describe('ANALIZAI Database Operations Tests', () => {
 
       expect(connections).toHaveLength(3)
       expect(mockDatabase.getConnection).toHaveBeenCalledTimes(3)
-      
+
       // Verify connections are valid
       connections.forEach(conn => {
         expect(conn).toBeDefined()
@@ -115,7 +115,7 @@ describe('ANALIZAI Database Operations Tests', () => {
       mockDatabase.getConnection.mockResolvedValueOnce(mockConnection)
 
       await expect(mockDatabase.getConnection()).rejects.toThrow('Connection timeout')
-      
+
       // Retry should work
       const retryConnection = await mockDatabase.getConnection()
       expect(retryConnection).toBeDefined()
@@ -154,7 +154,7 @@ describe('ANALIZAI Database Operations Tests', () => {
       ]
 
       const result = await mockConnection.query(sql, params)
-      
+
       expect(result.rows).toHaveLength(1)
       expect(result.rows[0].id).toBeGreaterThan(0)
       expect(mockConnection.query).toHaveBeenCalledWith(sql, params)
@@ -173,7 +173,7 @@ describe('ANALIZAI Database Operations Tests', () => {
       const params = ['financial_analysis', 'completed', 10]
 
       const result = await mockConnection.query(complexQuery, params)
-      
+
       expect(result.rows).toHaveLength(3)
       expect(result.rows[0]).toHaveProperty('id')
       expect(result.rows[0]).toHaveProperty('name')
@@ -210,7 +210,7 @@ describe('ANALIZAI Database Operations Tests', () => {
       ]
 
       const result = await mockConnection.query(sql, params)
-      
+
       expect(result.rowCount).toBe(1)
       expect(mockConnection.query).toHaveBeenCalledWith(sql, params)
     })
@@ -303,7 +303,7 @@ describe('ANALIZAI Database Operations Tests', () => {
 
         // Simulate failure
         mockConnection.query.mockRejectedValueOnce(new Error('Constraint violation'))
-        
+
         await mockConnection.query(
           'INSERT INTO analysis_participants (analysis_id, user_id) VALUES ($1, $2)',
           [999999, 'invalid_user'] // This should fail
@@ -312,7 +312,7 @@ describe('ANALIZAI Database Operations Tests', () => {
         await mockConnection.commit()
       } catch (error) {
         await mockConnection.rollback()
-        
+
         expect(mockConnection.rollback).toHaveBeenCalledOnce()
         expect(error.message).toBe('Constraint violation')
       }
@@ -389,7 +389,7 @@ describe('ANALIZAI Database Operations Tests', () => {
       })
 
       const result = await mockConnection.query(optimizedQuery, params)
-      
+
       expect(result.rows).toBeDefined()
       expect(result.rows.some(row => row['QUERY PLAN'].includes('Index Scan'))).toBe(true)
       expect(mockConnection.query).toHaveBeenCalledWith(optimizedQuery, params)
@@ -447,7 +447,7 @@ describe('ANALIZAI Database Operations Tests', () => {
       })
 
       const result = await mockConnection.query(consistencyQuery)
-      
+
       expect(result.rows[0].orphaned_analyses).toBe(0)
       expect(result.rows[0].orphaned_participants).toBe(0)
       expect(result.rows[0].orphaned_resources).toBe(0)

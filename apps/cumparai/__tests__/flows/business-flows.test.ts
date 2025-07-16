@@ -4,7 +4,7 @@ import { paymentFlowFlow } from '../lib/flows/payment-flow';
 import { orderFulfillmentFlow } from '../lib/flows/order-fulfillment';
 
 describe('Cumparai Business Flow Tests', () => {
-  
+
 
   describe('payment-flow Flow', () => {
     let paymentFlowService: typeof paymentFlowFlow;
@@ -131,8 +131,8 @@ describe('Cumparai Business Flow Tests', () => {
     it('should maintain data consistency across flows', async () => {
       // Test that flows maintain consistent state
       const sharedData = { entityId: 'shared-entity-123' };
-      
-      
+
+
       await paymentFlowFlow.process({ id: 'test-payment-flow', data: sharedData });
       await orderFulfillmentFlow.process({ id: 'test-order-fulfillment', data: sharedData });
 
@@ -162,7 +162,7 @@ describe('Cumparai Business Flow Tests', () => {
 
     it('should manage memory usage efficiently', async () => {
       const initialMemory = process.memoryUsage().heapUsed;
-      
+
       // Process many requests
       for (let i = 0; i < 1000; i++) {
         await paymentFlowFlow.process({

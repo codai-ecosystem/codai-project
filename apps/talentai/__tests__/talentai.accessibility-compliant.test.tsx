@@ -10,7 +10,7 @@ describe('TalentAI Accessibility Compliance', () => {
         h2: ['Overview', 'Analytics', 'Features', 'Monitor'],
         h3: ['Real-time Statistics', 'Candidate Pool', 'Job Postings']
       }
-      
+
       expect(headingStructure.h1).toContain('TalentAI')
       expect(headingStructure.h2).toHaveLength(4)
       expect(headingStructure.h3).toContain('Real-time Statistics')
@@ -22,7 +22,7 @@ describe('TalentAI Accessibility Compliance', () => {
         { src: '/candidate-avatar.jpg', alt: 'Candidate Profile Photo' },
         { src: '/company-logo.png', alt: 'Company Logo' }
       ]
-      
+
       imageElements.forEach(img => {
         expect(img.alt).toBeDefined()
         expect(img.alt.length).toBeGreaterThan(0)
@@ -36,7 +36,7 @@ describe('TalentAI Accessibility Compliance', () => {
         accent: '#3b82f6', // blue-500
         contrast: 'AAA compliant'
       }
-      
+
       expect(colorScheme.contrast).toBe('AAA compliant')
       expect(colorScheme.background).toMatch(/^#[0-9a-f]{6}$/i)
       expect(colorScheme.text).toMatch(/^#[0-9a-f]{6}$/i)
@@ -49,7 +49,7 @@ describe('TalentAI Accessibility Compliance', () => {
         skipLinks: true,
         escapeKey: true
       }
-      
+
       expect(keyboardSupport.tabIndex).toHaveLength(5)
       expect(keyboardSupport.focusableElements).toContain('button')
       expect(keyboardSupport.skipLinks).toBe(true)
@@ -62,7 +62,7 @@ describe('TalentAI Accessibility Compliance', () => {
         'aria-describedby': 'dashboard-description',
         'aria-live': 'polite'
       }
-      
+
       Object.values(ariaLabels).forEach(label => {
         expect(label).toBeDefined()
         expect(typeof label).toBe('string')
@@ -75,7 +75,7 @@ describe('TalentAI Accessibility Compliance', () => {
         'error-messages': 'aria-live="assertive"',
         'success-notifications': 'aria-live="polite"'
       }
-      
+
       Object.values(liveRegions).forEach(region => {
         expect(region).toContain('aria-live')
       })
@@ -88,13 +88,13 @@ describe('TalentAI Accessibility Compliance', () => {
         'skip-link',
         'main-navigation',
         'tab-overview',
-        'tab-analytics', 
+        'tab-analytics',
         'tab-features',
         'tab-monitor',
         'search-input',
         'action-buttons'
       ]
-      
+
       expect(tabOrder).toHaveLength(8)
       expect(tabOrder[0]).toBe('skip-link')
     })
@@ -105,7 +105,7 @@ describe('TalentAI Accessibility Compliance', () => {
         { href: '#navigation', text: 'Skip to navigation' },
         { href: '#footer', text: 'Skip to footer' }
       ]
-      
+
       skipLinks.forEach(link => {
         expect(link.href).toMatch(/^#[a-z-]+$/)
         expect(link.text).toContain('Skip to')
@@ -116,7 +116,7 @@ describe('TalentAI Accessibility Compliance', () => {
   describe('Screen Reader Support', () => {
     it('should provide meaningful page title', () => {
       const pageTitle = 'TalentAI - Enterprise Talent Management Dashboard'
-      
+
       expect(pageTitle).toContain('TalentAI')
       expect(pageTitle).toContain('Enterprise')
       expect(pageTitle.length).toBeLessThan(60) // SEO best practice
@@ -128,7 +128,7 @@ describe('TalentAI Accessibility Compliance', () => {
         'search-loading': 'Searching candidates...',
         'save-loading': 'Saving changes...'
       }
-      
+
       Object.values(loadingStates).forEach(state => {
         expect(state).toContain('...')
         expect(state.length).toBeGreaterThan(5)

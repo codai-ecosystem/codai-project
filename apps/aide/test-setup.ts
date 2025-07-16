@@ -5,7 +5,7 @@ beforeAll(() => {
   // Mock console methods for cleaner test output
   const originalConsoleError = console.error;
   const originalConsoleWarn = console.warn;
-  
+
   console.error = (...args) => {
     // Filter out React testing library warnings
     if (args[0]?.includes?.('Warning:') || args[0]?.includes?.('act')) {

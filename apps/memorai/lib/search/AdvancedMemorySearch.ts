@@ -85,7 +85,7 @@ export class AdvancedMemorySearch {
 
     // Apply filters first
     let filteredMemories = this.applyFilters(memories, options.filterBy)
-    
+
     this.updateIndex(filteredMemories)
 
     const { maxResults = 50 } = options
@@ -204,7 +204,7 @@ export class AdvancedMemorySearch {
     mostSearchedTerms: Array<{ query: string; count: number }>
   } {
     const totalSearches = this.searchHistory.length
-    
+
     if (totalSearches === 0) {
       return {
         totalSearches: 0,

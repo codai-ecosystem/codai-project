@@ -38,10 +38,10 @@ export class AzureOpenAIService {
   constructor(customConfig?: Partial<AzureOpenAIConfig>) {
     // Load configuration with validation
     this.config = this.loadConfiguration(customConfig);
-    
+
     // Initialize Azure OpenAI client
     this.client = this.initializeClient();
-    
+
     // Perform initial health check
     this.performHealthCheck();
   }
@@ -206,17 +206,17 @@ export class AzureOpenAIService {
    */
   static validateEnvironment(): { isValid: boolean; errors: string[] } {
     const errors: string[] = [];
-    
+
     if (!process.env.AZURE_OPENAI_API_KEY) {
       errors.push('AZURE_OPENAI_API_KEY is required');
     }
-    
+
     if (!process.env.AZURE_OPENAI_ENDPOINT) {
       errors.push('AZURE_OPENAI_ENDPOINT is required');
     } else if (!process.env.AZURE_OPENAI_ENDPOINT.includes('.openai.azure.com')) {
       errors.push('AZURE_OPENAI_ENDPOINT must be a valid Azure OpenAI endpoint');
     }
-    
+
     if (!process.env.AZURE_OPENAI_DEPLOYMENT_NAME) {
       errors.push('AZURE_OPENAI_DEPLOYMENT_NAME is required');
     }

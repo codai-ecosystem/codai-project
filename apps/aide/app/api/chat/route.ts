@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
 
     // Support both new messages format and legacy message format
     let messages: ChatMessage[] = [];
-    
+
     if (body.messages && Array.isArray(body.messages)) {
       messages = body.messages;
     } else if (body.message) {
@@ -75,14 +75,14 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error('Chat API Error:', error);
-    
+
     // Provide detailed error information for debugging
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     const isOpenAIError = errorMessage.includes('openai') || errorMessage.includes('API');
-    
+
     return NextResponse.json(
-      { 
-        success: false, 
+      {
+        success: false,
         error: isOpenAIError ? 'AI service temporarily unavailable' : 'Failed to process chat request',
         details: process.env.NODE_ENV === 'development' ? errorMessage : undefined,
         fallback: isOpenAIError ? 'Using fallback responses' : undefined
@@ -98,7 +98,7 @@ export async function GET() {
     const startTime = Date.now();
     const isAIHealthy = await aiService.healthCheck();
     const responseTime = Date.now() - startTime;
-    
+
     return NextResponse.json({
       success: true,
       status: isAIHealthy ? 'healthy' : 'degraded',
@@ -109,7 +109,7 @@ export async function GET() {
       timestamp: new Date().toISOString(),
       capabilities: [
         'Code Generation',
-        'Debugging Assistance', 
+        'Debugging Assistance',
         'Concept Explanation',
         'Testing Support',
         'Romanian Development Context',

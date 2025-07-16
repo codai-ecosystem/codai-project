@@ -16,9 +16,9 @@ describe('AideRepository Database Tests', () => {
         }
       }
     });
-    
+
     repository = new AideRepository(prisma);
-    
+
     // Run migrations for test database
     await prisma.$executeRaw`PRAGMA foreign_keys = ON`;
   });
@@ -120,10 +120,10 @@ describe('AideRepository Database Tests', () => {
   describe('Database Constraints', () => {
     it('should enforce unique constraints', async () => {
       const testData = { name: 'Test Record', email: 'test@example.com' };
-      
+
       // Create first record
       await repository.create(testData);
-      
+
       // Attempt to create duplicate
       await expect(repository.create(testData)).rejects.toThrow();
     });
@@ -133,13 +133,13 @@ describe('AideRepository Database Tests', () => {
         name: 'Test Record',
         userId: 'non-existent-user-id'
       };
-      
+
       await expect(repository.create(invalidData)).rejects.toThrow();
     });
 
     it('should enforce required field constraints', async () => {
       const incompleteData = { email: 'test@example.com' }; // missing required name
-      
+
       await expect(repository.create(incompleteData)).rejects.toThrow();
     });
   });
@@ -148,9 +148,9 @@ describe('AideRepository Database Tests', () => {
     it('should handle transaction rollback on error', async () => {
       const testData1 = { name: 'Record 1', email: 'test1@example.com' };
       const testData2 = { name: 'Record 2', email: 'invalid-email' }; // will cause error
-      
+
       await expect(repository.createMultiple([testData1, testData2])).rejects.toThrow();
-      
+
       // Verify no records were created
       const allRecords = await repository.findAll({ page: 1, limit: 10 });
       expect(allRecords.data).toHaveLength(0);
@@ -161,9 +161,9 @@ describe('AideRepository Database Tests', () => {
         { name: 'Record 1', email: 'test1@example.com' },
         { name: 'Record 2', email: 'test2@example.com' }
       ];
-      
+
       await repository.createMultiple(testData);
-      
+
       const allRecords = await repository.findAll({ page: 1, limit: 10 });
       expect(allRecords.data).toHaveLength(2);
     });
@@ -176,7 +176,7 @@ describe('AideRepository Database Tests', () => {
         name: `Record ${i + 1}`,
         email: `test${i + 1}@example.com`
       }));
-      
+
       for (const record of testData) {
         await repository.create(record);
       }
@@ -185,7 +185,7 @@ describe('AideRepository Database Tests', () => {
       const startTime = Date.now();
       await repository.findAll({ page: 1, limit: 50 });
       const endTime = Date.now();
-      
+
       expect(endTime - startTime).toBeLessThan(1000); // Should complete within 1 second
     });
 
@@ -194,7 +194,7 @@ describe('AideRepository Database Tests', () => {
       const startTime = Date.now();
       await repository.findByEmail('test@example.com');
       const endTime = Date.now();
-      
+
       expect(endTime - startTime).toBeLessThan(100); // Should be very fast with index
     });
   });

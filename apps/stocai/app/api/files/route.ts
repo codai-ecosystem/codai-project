@@ -13,7 +13,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     const folder = searchParams.get('folder') || ''
     const search = searchParams.get('search') || ''
     const limit = parseInt(searchParams.get('limit') || '20')
-    
+
     // Handle both page and offset parameters
     let offset = parseInt(searchParams.get('offset') || '0')
     const page = searchParams.get('page')
@@ -39,9 +39,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     const { data: files, error } = await query
 
     if (error) {
-      return NextResponse.json({ 
-        success: false, 
-        error: 'Failed to fetch files' 
+      return NextResponse.json({
+        success: false,
+        error: 'Failed to fetch files'
       }, { status: 500 })
     }
 
@@ -63,9 +63,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     }, { status: 200 })
   } catch (error) {
     console.error('Error fetching files:', error)
-    return NextResponse.json({ 
-      success: false, 
-      error: 'Internal server error' 
+    return NextResponse.json({
+      success: false,
+      error: 'Internal server error'
     }, { status: 500 })
   }
 }
@@ -79,17 +79,17 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const description = formData.get('description') as string || ''
 
     if (!file) {
-      return NextResponse.json({ 
-        success: false, 
-        error: 'No file provided' 
+      return NextResponse.json({
+        success: false,
+        error: 'No file provided'
       }, { status: 400 })
     }
 
     // Check file size (max 50MB)
     if (file.size > 50 * 1024 * 1024) {
-      return NextResponse.json({ 
-        success: false, 
-        error: 'File too large. Maximum size is 50MB.' 
+      return NextResponse.json({
+        success: false,
+        error: 'File too large. Maximum size is 50MB.'
       }, { status: 400 })
     }
 
@@ -103,9 +103,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       })
 
     if (uploadError) {
-      return NextResponse.json({ 
-        success: false, 
-        error: uploadError.message 
+      return NextResponse.json({
+        success: false,
+        error: uploadError.message
       }, { status: 500 })
     }
 
@@ -143,9 +143,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     }, { status: 201 })
   } catch (error) {
     console.error('Error uploading file:', error)
-    return NextResponse.json({ 
-      success: false, 
-      error: 'Internal server error' 
+    return NextResponse.json({
+      success: false,
+      error: 'Internal server error'
     }, { status: 500 })
   }
 }
@@ -156,9 +156,9 @@ export async function DELETE(request: NextRequest): Promise<NextResponse> {
     const fileId = searchParams.get('id')
 
     if (!fileId) {
-      return NextResponse.json({ 
-        success: false, 
-        error: 'File ID required' 
+      return NextResponse.json({
+        success: false,
+        error: 'File ID required'
       }, { status: 400 })
     }
 
@@ -168,9 +168,9 @@ export async function DELETE(request: NextRequest): Promise<NextResponse> {
       .remove([fileId])
 
     if (storageError) {
-      return NextResponse.json({ 
-        success: false, 
-        error: storageError.message 
+      return NextResponse.json({
+        success: false,
+        error: storageError.message
       }, { status: 500 })
     }
 
@@ -184,15 +184,15 @@ export async function DELETE(request: NextRequest): Promise<NextResponse> {
       console.warn('Failed to delete metadata:', metadataError.message)
     }
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: true,
-      message: 'File deleted successfully' 
+      message: 'File deleted successfully'
     }, { status: 200 })
   } catch (error) {
     console.error('Error deleting file:', error)
-    return NextResponse.json({ 
-      success: false, 
-      error: 'Internal server error' 
+    return NextResponse.json({
+      success: false,
+      error: 'Internal server error'
     }, { status: 500 })
   }
 }

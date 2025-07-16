@@ -57,10 +57,10 @@ describe('StocaiPage Component', () => {
     it('handles tab switching correctly', async () => {
       const user = userEvent.setup()
       render(<StocaiPage />)
-      
+
       const analyticsTab = screen.getByText('Analytics')
       await user.click(analyticsTab)
-      
+
       await waitFor(() => {
         expect(screen.getByText('Advanced Analytics Dashboard')).toBeInTheDocument()
       })
@@ -69,10 +69,10 @@ describe('StocaiPage Component', () => {
     it('maintains active tab state', async () => {
       const user = userEvent.setup()
       render(<StocaiPage />)
-      
+
       const featuresTab = screen.getByText('Features')
       await user.click(featuresTab)
-      
+
       await waitFor(() => {
         expect(featuresTab).toHaveClass('bg-blue-500/30') // Active state
       })
@@ -121,7 +121,7 @@ describe('StocaiPage Component', () => {
       render(<StocaiPage />)
       const headings = screen.getAllByRole('heading')
       expect(headings.length).toBeGreaterThan(0)
-      
+
       // Check h1 exists
       const h1Elements = headings.filter(h => h.tagName === 'H1')
       expect(h1Elements.length).toBeGreaterThan(0)
@@ -130,10 +130,10 @@ describe('StocaiPage Component', () => {
     it('provides keyboard navigation support', async () => {
       const user = userEvent.setup()
       render(<StocaiPage />)
-      
+
       const firstTab = screen.getByText('Overview')
       firstTab.focus()
-      
+
       await user.keyboard('{Tab}')
       expect(document.activeElement).not.toBe(firstTab)
     })
@@ -153,7 +153,7 @@ describe('StocaiPage Component', () => {
       const startTime = performance.now()
       render(<StocaiPage />)
       const endTime = performance.now()
-      
+
       const renderTime = endTime - startTime
       expect(renderTime).toBeLessThan(100) // Should render in under 100ms
     })
@@ -162,7 +162,7 @@ describe('StocaiPage Component', () => {
       // Test with mocked large dataset
       const mockLargeData = Array.from({ length: 1000 }, (_, i) => ({ id: i, name: `Item ${i}` }))
       render(<StocaiPage />)
-      
+
       // Should not crash with large datasets
       expect(document.body).toBeInTheDocument()
     })
@@ -176,10 +176,10 @@ describe('StocaiPage Component', () => {
 
     it('displays error boundaries correctly', () => {
       // Mock console.error to avoid noise in tests
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-      
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { })
+
       render(<StocaiPage />)
-      
+
       consoleSpy.mockRestore()
     })
   })
@@ -191,9 +191,9 @@ describe('StocaiPage Component', () => {
         configurable: true,
         value: 375,
       })
-      
+
       render(<StocaiPage />)
-      
+
       // Check mobile-specific classes
       const container = document.querySelector('.container')
       expect(container).toBeInTheDocument()
@@ -205,7 +205,7 @@ describe('StocaiPage Component', () => {
         configurable: true,
         value: 768,
       })
-      
+
       render(<StocaiPage />)
       expect(document.body).toBeInTheDocument()
     })
@@ -216,7 +216,7 @@ describe('StocaiPage Component', () => {
         configurable: true,
         value: 1920,
       })
-      
+
       render(<StocaiPage />)
       expect(document.body).toBeInTheDocument()
     })

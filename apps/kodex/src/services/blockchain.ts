@@ -1,11 +1,11 @@
 import { ethers } from 'ethers';
-import { 
-  CODAI_TOKEN_ABI, 
-  MARKETPLACE_ABI, 
-  GOVERNANCE_ABI, 
-  CONTRACT_ADDRESSES, 
+import {
+  CODAI_TOKEN_ABI,
+  MARKETPLACE_ABI,
+  GOVERNANCE_ABI,
+  CONTRACT_ADDRESSES,
   NETWORKS,
-  GAS_CONFIGS 
+  GAS_CONFIGS
 } from './config';
 
 export interface Agent {
@@ -99,10 +99,10 @@ export class CodaiBlockchainService {
 
     const network = await this.provider.getNetwork();
     const chainId = network.chainId.toString();
-    
+
     // Determine network
-    this.currentNetwork = chainId === '137' ? 'POLYGON' : 
-                         chainId === '80001' ? 'MUMBAI' : 'LOCALHOST';
+    this.currentNetwork = chainId === '137' ? 'POLYGON' :
+      chainId === '80001' ? 'MUMBAI' : 'LOCALHOST';
 
     const addresses = CONTRACT_ADDRESSES[this.currentNetwork as keyof typeof CONTRACT_ADDRESSES];
 
@@ -138,7 +138,7 @@ export class CodaiBlockchainService {
     metadataURI: string
   ): Promise<ethers.TransactionResponse> {
     if (!this.marketplaceContract) throw new Error('Marketplace contract not initialized');
-    
+
     const priceWei = ethers.parseEther(price);
     return await this.marketplaceContract.registerAgent(
       name,
@@ -157,7 +157,7 @@ export class CodaiBlockchainService {
 
   async getAgent(agentId: number): Promise<Agent> {
     if (!this.marketplaceContract) throw new Error('Marketplace contract not initialized');
-    
+
     const agentData = await this.marketplaceContract.getAgent(agentId);
     return {
       id: agentId,
@@ -190,7 +190,7 @@ export class CodaiBlockchainService {
 
   async getMarketplaceStats(): Promise<{ totalAgents: number; totalPurchases: number; totalRevenue: string }> {
     if (!this.marketplaceContract) throw new Error('Marketplace contract not initialized');
-    
+
     const stats = await this.marketplaceContract.getMarketplaceStats();
     return {
       totalAgents: Number(stats.totalAgents),
@@ -213,7 +213,7 @@ export class CodaiBlockchainService {
     calldatas: string[]
   ): Promise<ethers.TransactionResponse> {
     if (!this.governanceContract) throw new Error('Governance contract not initialized');
-    
+
     const valuesWei = values.map(v => ethers.parseEther(v));
     return await this.governanceContract.propose(
       title,
@@ -237,10 +237,10 @@ export class CodaiBlockchainService {
 
   async getProposal(proposalId: number): Promise<Proposal> {
     if (!this.governanceContract) throw new Error('Governance contract not initialized');
-    
+
     const proposalData = await this.governanceContract.getProposal(proposalId);
     const state = await this.governanceContract.getProposalState(proposalId);
-    
+
     return {
       id: proposalId,
       proposer: proposalData.proposer,
@@ -265,7 +265,7 @@ export class CodaiBlockchainService {
 
   async getGovernanceStats(): Promise<{ totalProposals: number; activeProposals: number; totalVoters: number }> {
     if (!this.governanceContract) throw new Error('Governance contract not initialized');
-    
+
     const stats = await this.governanceContract.getGovernanceStats();
     return {
       totalProposals: Number(stats.totalProposals),

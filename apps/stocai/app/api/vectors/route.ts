@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { RealStorageService } from '@/services/RealStorageService'
+import { RealStorageService } from '../../../services/RealStorageService'
 
 const storageService = RealStorageService.getInstance()
 
@@ -18,9 +18,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       try {
         const vector = await storageService.getVectorById?.(id)
         if (!vector) {
-          return NextResponse.json({ 
+          return NextResponse.json({
             success: false,
-            error: 'Vector not found' 
+            error: 'Vector not found'
           }, { status: 404 })
         }
 
@@ -29,18 +29,18 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
           vector: vector
         }, { status: 200 })
       } catch (error) {
-        return NextResponse.json({ 
+        return NextResponse.json({
           success: false,
-          error: 'Failed to retrieve vector' 
+          error: 'Failed to retrieve vector'
         }, { status: 500 })
       }
     }
 
     // Require query for search
     if (!query) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         success: false,
-        error: 'Query or ID parameter required' 
+        error: 'Query or ID parameter required'
       }, { status: 400 })
     }
 
@@ -50,9 +50,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       try {
         metadataFilter = JSON.parse(metadata)
       } catch (e) {
-        return NextResponse.json({ 
+        return NextResponse.json({
           success: false,
-          error: 'Invalid metadata filter format' 
+          error: 'Invalid metadata filter format'
         }, { status: 400 })
       }
     }
@@ -76,9 +76,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     }, { status: 200 })
   } catch (error) {
     console.error('Error in vectors GET:', error)
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: false,
-      error: 'Internal server error' 
+      error: 'Internal server error'
     }, { status: 500 })
   }
 }
@@ -91,9 +91,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     // Handle batch operation
     if (batch && vectors) {
       if (!Array.isArray(vectors) || vectors.length === 0) {
-        return NextResponse.json({ 
+        return NextResponse.json({
           success: false,
-          error: 'Vectors array is required for batch operation' 
+          error: 'Vectors array is required for batch operation'
         }, { status: 400 })
       }
 
@@ -101,8 +101,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       for (const vectorData of vectors) {
         try {
           const result = await storageService.generateEmbedding(
-            vectorData.text, 
-            vectorData.metadata || {}, 
+            vectorData.text,
+            vectorData.metadata || {},
             namespace
           )
           results.push(result)
@@ -120,9 +120,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     // Validate required fields for single vector
     if (!text) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         success: false,
-        error: 'Text is required' 
+        error: 'Text is required'
       }, { status: 400 })
     }
 
@@ -139,15 +139,15 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       }
 
       if (vectorsToCreate.length === 0) {
-        return NextResponse.json({ 
+        return NextResponse.json({
           success: false,
-          error: 'No valid text items provided' 
+          error: 'No valid text items provided'
         }, { status: 400 })
       }
 
       try {
         const results = await Promise.all(
-          vectorsToCreate.map(vector => 
+          vectorsToCreate.map(vector =>
             storageService.generateEmbedding(vector.text, vector.metadata, namespace)
           )
         )
@@ -159,9 +159,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         }, { status: 201 })
       } catch (error) {
         console.error('Batch vector creation failed:', error)
-        return NextResponse.json({ 
+        return NextResponse.json({
           success: false,
-          error: 'Failed to create vectors' 
+          error: 'Failed to create vectors'
         }, { status: 500 })
       }
     }
@@ -169,23 +169,23 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     // Single vector creation
     try {
       const result = await storageService.generateEmbedding(text, metadata || {}, namespace)
-      
+
       return NextResponse.json({
         success: true,
         vector: result
       }, { status: 201 }) // Fix: tests expect 201 for creation
     } catch (error) {
       console.error('Vector creation failed:', error)
-      return NextResponse.json({ 
+      return NextResponse.json({
         success: false,
-        error: 'Failed to create vector' 
+        error: 'Failed to create vector'
       }, { status: 500 })
     }
   } catch (error) {
     console.error('Error in vectors POST:', error)
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: false,
-      error: 'Internal server error' 
+      error: 'Internal server error'
     }, { status: 500 })
   }
 }
@@ -197,31 +197,31 @@ export async function DELETE(request: NextRequest): Promise<NextResponse> {
     const id = searchParams.get('id')
 
     if (!id) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         success: false,
-        error: 'Vector ID is required' 
+        error: 'Vector ID is required'
       }, { status: 400 })
     }
 
     try {
       await storageService.deleteVector?.(id)
-      
+
       return NextResponse.json({
         success: true,
         message: 'Vector deleted successfully'
       }, { status: 200 })
     } catch (error) {
       console.error('Vector deletion failed:', error)
-      return NextResponse.json({ 
+      return NextResponse.json({
         success: false,
-        error: 'Failed to delete vector' 
+        error: 'Failed to delete vector'
       }, { status: 500 })
     }
   } catch (error) {
     console.error('Error in vectors DELETE:', error)
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: false,
-      error: 'Internal server error' 
+      error: 'Internal server error'
     }, { status: 500 })
   }
 }

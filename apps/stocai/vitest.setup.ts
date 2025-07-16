@@ -28,7 +28,7 @@ vi.mock('openai', () => ({
         if (input === 'Test text' || input === 'force_embedding_failure') {
           return Promise.reject(new Error('API Error'));
         }
-        
+
         return Promise.resolve({
           data: [{ embedding: new Array(1536).fill(0.1) }]
         });

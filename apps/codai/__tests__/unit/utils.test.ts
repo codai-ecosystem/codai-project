@@ -31,7 +31,7 @@ describe('Utility Functions Tests', () => {
     it('should generate unique IDs', () => {
       const id1 = utils.generateId();
       const id2 = utils.generateId();
-      
+
       expect(id1).toBeTruthy();
       expect(id2).toBeTruthy();
       expect(id1).not.toBe(id2);
@@ -40,7 +40,7 @@ describe('Utility Functions Tests', () => {
 
     it('should generate IDs of consistent length', () => {
       const ids = Array.from({ length: 10 }, () => utils.generateId());
-      
+
       ids.forEach(id => {
         expect(id.length).toBe(9);
       });
@@ -51,7 +51,7 @@ describe('Utility Functions Tests', () => {
     it('should format dates correctly', () => {
       const date = new Date('2024-01-15T10:30:00Z');
       const formatted = utils.formatDate(date);
-      
+
       expect(formatted).toBe('2024-01-15');
     });
 
@@ -63,7 +63,7 @@ describe('Utility Functions Tests', () => {
       ];
 
       const formatted = dates.map(utils.formatDate);
-      
+
       expect(formatted).toEqual([
         '2024-12-31',
         '2024-01-01',
@@ -104,7 +104,7 @@ describe('Utility Functions Tests', () => {
     it('should remove dangerous characters', () => {
       const dangerousInput = '<script>alert("xss")</script>';
       const sanitized = utils.sanitizeInput(dangerousInput);
-      
+
       expect(sanitized).not.toContain('<');
       expect(sanitized).not.toContain('>');
       expect(sanitized).toBe('scriptalert("xss")/script');
@@ -113,7 +113,7 @@ describe('Utility Functions Tests', () => {
     it('should trim whitespace', () => {
       const input = '  hello world  ';
       const sanitized = utils.sanitizeInput(input);
-      
+
       expect(sanitized).toBe('hello world');
     });
 

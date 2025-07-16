@@ -57,10 +57,10 @@ describe('AjutaiPage Component', () => {
     it('handles tab switching correctly', async () => {
       const user = userEvent.setup()
       render(<AjutaiPage />)
-      
+
       const analyticsTab = screen.getByText('Analytics')
       await user.click(analyticsTab)
-      
+
       await waitFor(() => {
         expect(screen.getByText('Advanced Analytics Dashboard')).toBeInTheDocument()
       })
@@ -69,10 +69,10 @@ describe('AjutaiPage Component', () => {
     it('maintains active tab state', async () => {
       const user = userEvent.setup()
       render(<AjutaiPage />)
-      
+
       const featuresTab = screen.getByText('Features')
       await user.click(featuresTab)
-      
+
       await waitFor(() => {
         expect(featuresTab).toHaveClass('bg-blue-500/30') // Active state
       })
@@ -121,7 +121,7 @@ describe('AjutaiPage Component', () => {
       render(<AjutaiPage />)
       const headings = screen.getAllByRole('heading')
       expect(headings.length).toBeGreaterThan(0)
-      
+
       // Check h1 exists
       const h1Elements = headings.filter(h => h.tagName === 'H1')
       expect(h1Elements.length).toBeGreaterThan(0)
@@ -130,10 +130,10 @@ describe('AjutaiPage Component', () => {
     it('provides keyboard navigation support', async () => {
       const user = userEvent.setup()
       render(<AjutaiPage />)
-      
+
       const firstTab = screen.getByText('Overview')
       firstTab.focus()
-      
+
       await user.keyboard('{Tab}')
       expect(document.activeElement).not.toBe(firstTab)
     })
@@ -152,7 +152,7 @@ describe('AjutaiPage Component', () => {
       const startTime = performance.now()
       render(<AjutaiPage />)
       const endTime = performance.now()
-      
+
       const renderTime = endTime - startTime
       expect(renderTime).toBeLessThan(100) // Should render in under 100ms
     })
@@ -161,7 +161,7 @@ describe('AjutaiPage Component', () => {
       // Test with mocked large dataset
       const mockLargeData = Array.from({ length: 1000 }, (_, i) => ({ id: i, name: `Item ${i}` }))
       render(<AjutaiPage />)
-      
+
       // Should not crash with large datasets
       expect(document.body).toBeInTheDocument()
     })
@@ -175,10 +175,10 @@ describe('AjutaiPage Component', () => {
 
     it('displays error boundaries correctly', () => {
       // Mock console.error to avoid noise in tests
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-      
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { })
+
       render(<AjutaiPage />)
-      
+
       consoleSpy.mockRestore()
     })
   })
@@ -190,9 +190,9 @@ describe('AjutaiPage Component', () => {
         configurable: true,
         value: 375,
       })
-      
+
       render(<AjutaiPage />)
-      
+
       // Check mobile-specific classes
       const container = document.querySelector('.container')
       expect(container).toBeInTheDocument()
@@ -204,7 +204,7 @@ describe('AjutaiPage Component', () => {
         configurable: true,
         value: 768,
       })
-      
+
       render(<AjutaiPage />)
       expect(document.body).toBeInTheDocument()
     })
@@ -215,7 +215,7 @@ describe('AjutaiPage Component', () => {
         configurable: true,
         value: 1920,
       })
-      
+
       render(<AjutaiPage />)
       expect(document.body).toBeInTheDocument()
     })

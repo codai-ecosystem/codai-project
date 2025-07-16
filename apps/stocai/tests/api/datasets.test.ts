@@ -3,6 +3,9 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 // Set up environment variables before importing API routes
 process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co'
 process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service-role-key'
+process.env.AZURE_OPENAI_API_KEY = 'test-azure-key'
+process.env.AZURE_OPENAI_ENDPOINT = 'https://test.openai.azure.com'
+process.env.AZURE_OPENAI_API_VERSION = '2024-05-01-preview'
 
 import { testApiHandler } from '../setup.api';
 
@@ -10,7 +13,7 @@ import { testApiHandler } from '../setup.api';
 vi.mock('@supabase/supabase-js', () => ({
   createClient: vi.fn(() => {
     let capturedData: any = null;
-    
+
     return {
       from: vi.fn(() => ({
         select: vi.fn().mockReturnThis(),
@@ -77,6 +80,25 @@ vi.mock('@supabase/supabase-js', () => ({
     };
   })
 }));
+
+// Mock Azure OpenAI with correct path
+vi.mock('../../../lib/azure-openai', () => ({
+  azureOpenAI: {
+    chat: {
+      completions: {
+        create: vi.fn().mockResolvedValue({
+          choices: [{
+            message: {
+              content: 'Mock AI analysis: This is a test dataset with good structure and potential for insights. It appears to be well-formatted and suitable for analysis.'
+            }
+          }]
+        })
+      }
+    }
+  }
+}));
+
+// Crypto module not needed - route uses simple ID generation
 
 // Mock OpenAI
 vi.mock('openai', () => ({

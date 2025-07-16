@@ -68,10 +68,10 @@ describe('AnalizaiPage Component', () => {
     it('handles tab switching correctly', async () => {
       const user = userEvent.setup()
       render(<AnalizaiPage />)
-      
+
       const analyticsTab = screen.getByText('Analytics')
       await user.click(analyticsTab)
-      
+
       await waitFor(() => {
         expect(screen.getByText('Advanced Analytics Dashboard')).toBeInTheDocument()
       })
@@ -80,10 +80,10 @@ describe('AnalizaiPage Component', () => {
     it('maintains active tab state', async () => {
       const user = userEvent.setup()
       render(<AnalizaiPage />)
-      
+
       const featuresTab = screen.getByText('Features')
       await user.click(featuresTab)
-      
+
       await waitFor(() => {
         // Check if tab switched content by looking for Features content
         expect(screen.getByText('Platform Features')).toBeInTheDocument()
@@ -135,7 +135,7 @@ describe('AnalizaiPage Component', () => {
       render(<AnalizaiPage />)
       const headings = screen.getAllByRole('heading')
       expect(headings.length).toBeGreaterThan(0)
-      
+
       // Check h1 exists
       const h1Elements = headings.filter(h => h.tagName === 'H1')
       expect(h1Elements.length).toBeGreaterThan(0)
@@ -144,10 +144,10 @@ describe('AnalizaiPage Component', () => {
     it('provides keyboard navigation support', async () => {
       const user = userEvent.setup()
       render(<AnalizaiPage />)
-      
+
       const firstTab = screen.getByText('Overview')
       firstTab.focus()
-      
+
       await user.keyboard('{Tab}')
       expect(document.activeElement).not.toBe(firstTab)
     })
@@ -166,7 +166,7 @@ describe('AnalizaiPage Component', () => {
       const startTime = performance.now()
       render(<AnalizaiPage />)
       const endTime = performance.now()
-      
+
       const renderTime = endTime - startTime
       expect(renderTime).toBeLessThan(100) // Should render in under 100ms
     })
@@ -175,7 +175,7 @@ describe('AnalizaiPage Component', () => {
       // Test with mocked large dataset
       const mockLargeData = Array.from({ length: 1000 }, (_, i) => ({ id: i, name: `Item ${i}` }))
       render(<AnalizaiPage />)
-      
+
       // Should not crash with large datasets
       expect(document.body).toBeInTheDocument()
     })
@@ -189,10 +189,10 @@ describe('AnalizaiPage Component', () => {
 
     it('displays error boundaries correctly', () => {
       // Mock console.error to avoid noise in tests
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-      
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { })
+
       render(<AnalizaiPage />)
-      
+
       consoleSpy.mockRestore()
     })
   })
@@ -204,14 +204,14 @@ describe('AnalizaiPage Component', () => {
         configurable: true,
         value: 375,
       })
-      
+
       const user = userEvent.setup()
       render(<AnalizaiPage />)
-      
+
       // Switch to monitor tab to find container
       const monitorTab = screen.getByText('Monitor')
       await user.click(monitorTab)
-      
+
       await waitFor(() => {
         const container = document.querySelector('.container')
         expect(container).toBeInTheDocument()
@@ -224,7 +224,7 @@ describe('AnalizaiPage Component', () => {
         configurable: true,
         value: 768,
       })
-      
+
       render(<AnalizaiPage />)
       expect(document.body).toBeInTheDocument()
     })
@@ -235,7 +235,7 @@ describe('AnalizaiPage Component', () => {
         configurable: true,
         value: 1920,
       })
-      
+
       render(<AnalizaiPage />)
       expect(document.body).toBeInTheDocument()
     })

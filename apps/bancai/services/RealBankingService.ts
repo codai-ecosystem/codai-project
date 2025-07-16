@@ -36,12 +36,13 @@ export class RealBankingService {
     private constructor() {
         const stripeKey = process.env.STRIPE_SECRET_KEY;
         this.isStripeEnabled = Boolean(stripeKey && stripeKey !== '');
-        
+
         if (this.isStripeEnabled && stripeKey) {
             try {
                 this.stripe = new Stripe(stripeKey, {
-                    apiVersion: '2025-06-30.basil'
+                    apiVersion: '2024-12-18.acacia'
                 });
+                console.log('Stripe initialized successfully');
             } catch (error) {
                 console.warn('Stripe initialization failed, falling back to mock mode:', error);
                 this.stripe = null;

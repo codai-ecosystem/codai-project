@@ -32,7 +32,7 @@ describe('PWAProvider', () => {
   // Mock window properties for PWA support
   let originalIsSecureContext: boolean;
   let originalServiceWorker: any;
-  
+
   beforeEach(() => {
     // Store original values
     originalIsSecureContext = window.isSecureContext;
@@ -94,7 +94,7 @@ describe('PWAProvider', () => {
     // PWA installer should not be rendered
     expect(screen.queryByTestId('pwa-installer')).not.toBeInTheDocument();
   });
-  
+
   it('should only render children when PWA is not supported', () => {
     // Mock PWA not supported
     window.isSecureContext = false;

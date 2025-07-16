@@ -69,10 +69,10 @@ describe('TalentaiPage Component', () => {
     it.skip('handles tab switching correctly', async () => {
       const user = userEvent.setup()
       render(<TalentaiPage />)
-      
+
       const analyticsTab = screen.getByRole('tab', { name: /switch to analytics tab/i })
       await user.click(analyticsTab)
-      
+
       await waitFor(() => {
         expect(screen.getByText('Advanced Analytics Dashboard')).toBeInTheDocument()
       })
@@ -81,10 +81,10 @@ describe('TalentaiPage Component', () => {
     it.skip('maintains active tab state', async () => {
       const user = userEvent.setup()
       render(<TalentaiPage />)
-      
+
       const featuresTab = screen.getByRole('tab', { name: /switch to features tab/i })
       await user.click(featuresTab)
-      
+
       await waitFor(() => {
         expect(featuresTab).toHaveClass('bg-purple-500/30') // Active state
       })
@@ -133,7 +133,7 @@ describe('TalentaiPage Component', () => {
       render(<TalentaiPage />)
       const headings = screen.getAllByRole('heading')
       expect(headings.length).toBeGreaterThan(0)
-      
+
       // Check h1 exists
       const h1Elements = headings.filter(h => h.tagName === 'H1')
       expect(h1Elements.length).toBeGreaterThan(0)
@@ -142,10 +142,10 @@ describe('TalentaiPage Component', () => {
     it.skip('provides keyboard navigation support', async () => {
       const user = userEvent.setup()
       render(<TalentaiPage />)
-      
+
       const firstTab = screen.getByRole('tab', { name: /switch to overview tab/i })
       firstTab.focus()
-      
+
       await user.keyboard('{Tab}')
       expect(document.activeElement).not.toBe(firstTab)
     })
@@ -164,7 +164,7 @@ describe('TalentaiPage Component', () => {
       const startTime = performance.now()
       render(<TalentaiPage />)
       const endTime = performance.now()
-      
+
       const renderTime = endTime - startTime
       expect(renderTime).toBeLessThan(100) // Should render in under 100ms
     })
@@ -173,7 +173,7 @@ describe('TalentaiPage Component', () => {
       // Test with mocked large dataset
       const mockLargeData = Array.from({ length: 1000 }, (_, i) => ({ id: i, name: `Item ${i}` }))
       render(<TalentaiPage />)
-      
+
       // Should not crash with large datasets
       expect(document.body).toBeInTheDocument()
     })
@@ -187,10 +187,10 @@ describe('TalentaiPage Component', () => {
 
     it('displays error boundaries correctly', () => {
       // Mock console.error to avoid noise in tests
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-      
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { })
+
       render(<TalentaiPage />)
-      
+
       consoleSpy.mockRestore()
     })
   })
@@ -202,9 +202,9 @@ describe('TalentaiPage Component', () => {
         configurable: true,
         value: 375,
       })
-      
+
       render(<TalentaiPage />)
-      
+
       // Check mobile-specific classes
       const container = document.querySelector('.container')
       expect(container).toBeInTheDocument()
@@ -216,7 +216,7 @@ describe('TalentaiPage Component', () => {
         configurable: true,
         value: 768,
       })
-      
+
       render(<TalentaiPage />)
       expect(document.body).toBeInTheDocument()
     })
@@ -227,7 +227,7 @@ describe('TalentaiPage Component', () => {
         configurable: true,
         value: 1920,
       })
-      
+
       render(<TalentaiPage />)
       expect(document.body).toBeInTheDocument()
     })

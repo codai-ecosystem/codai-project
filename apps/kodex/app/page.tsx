@@ -105,20 +105,20 @@ export default function KodexPage() {
   const loadBlockchainData = async () => {
     try {
       setIsLoading(true)
-      
+
       // Try to get current account if wallet is connected
       const account = await blockchainService.getCurrentAccount()
       if (account) {
         setCurrentAccount(account)
         setWalletConnected(true)
-        
+
         // Load token balance
         try {
           const balance = await blockchainService.getTokenBalance(account)
           setTokenBalance(balance)
-          
+
           // Update metrics
-          setMetrics(prev => prev.map(metric => 
+          setMetrics(prev => prev.map(metric =>
             metric.id === '1' ? { ...metric, value: `${parseFloat(balance).toFixed(2)}`, change: '+0%' } : metric
           ))
         } catch (error) {
@@ -130,7 +130,7 @@ export default function KodexPage() {
       try {
         const mStats = await blockchainService.getMarketplaceStats()
         setMarketplaceStats(mStats)
-        
+
         setMetrics(prev => prev.map(metric => {
           if (metric.id === '2') return { ...metric, value: mStats.totalAgents.toString(), change: '+0%' }
           if (metric.id === '3') return { ...metric, value: `${parseFloat(mStats.totalRevenue).toFixed(2)} CODAI`, change: '+0%' }
@@ -144,8 +144,8 @@ export default function KodexPage() {
       try {
         const gStats = await blockchainService.getGovernanceStats()
         setGovernanceStats(gStats)
-        
-        setMetrics(prev => prev.map(metric => 
+
+        setMetrics(prev => prev.map(metric =>
           metric.id === '4' ? { ...metric, value: `${gStats.totalProposals} Proposals`, change: '+0%' } : metric
         ))
       } catch (error) {
@@ -163,7 +163,7 @@ export default function KodexPage() {
     try {
       setIsLoading(true)
       const connected = await blockchainService.connectWallet()
-      
+
       if (connected) {
         setWalletConnected(true)
         await loadBlockchainData()
@@ -250,7 +250,7 @@ export default function KodexPage() {
               <div className="text-sm text-gray-400">
                 {currentTime.toLocaleTimeString()}
               </div>
-              
+
               {walletConnected ? (
                 <div className="flex items-center space-x-4">
                   <div className="text-sm">
@@ -302,8 +302,8 @@ export default function KodexPage() {
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center gap-2 ${activeTab === tab
-                  ? 'bg-blue-500/30 text-blue-300 shadow-lg'
-                  : 'text-slate-400 hover:text-white hover:bg-white/10'
+                ? 'bg-blue-500/30 text-blue-300 shadow-lg'
+                : 'text-slate-400 hover:text-white hover:bg-white/10'
                 }`}
             >
               {tab === 'overview' && <BarChart3 className="w-4 h-4" />}
@@ -337,8 +337,8 @@ export default function KodexPage() {
               >
                 <h2 className="text-2xl font-bold text-blue-400 mb-4">CodaiChain Ecosystem Protocol</h2>
                 <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-                  Decentralized blockchain protocol powering the Codai ecosystem with smart contracts, 
-                  governance, and marketplace functionality. Trade AI agents, participate in governance, 
+                  Decentralized blockchain protocol powering the Codai ecosystem with smart contracts,
+                  governance, and marketplace functionality. Trade AI agents, participate in governance,
                   and earn CODAI tokens.
                 </p>
               </motion.div>
@@ -458,7 +458,7 @@ export default function KodexPage() {
                   <p className="text-2xl text-purple-400 font-bold">{parseFloat(marketplaceStats.totalRevenue).toFixed(2)} CODAI</p>
                 </div>
               </div>
-              <button 
+              <button
                 className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-xl hover:from-blue-600 hover:to-purple-600 transition-all font-medium"
                 disabled={!walletConnected}
               >
@@ -498,7 +498,7 @@ export default function KodexPage() {
                   <p className="text-2xl text-blue-400 font-bold">{parseFloat(tokenBalance).toFixed(0)} CODAI</p>
                 </div>
               </div>
-              <button 
+              <button
                 className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all font-medium"
                 disabled={!walletConnected}
               >
@@ -541,7 +541,7 @@ export default function KodexPage() {
                   <p className="text-gray-300 mb-6">
                     Connect your wallet to view your CODAI balance and interact with the ecosystem.
                   </p>
-                  <button 
+                  <button
                     onClick={connectWallet}
                     disabled={isLoading}
                     className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-8 py-3 rounded-xl hover:from-yellow-600 hover:to-orange-600 transition-all font-medium disabled:opacity-50"

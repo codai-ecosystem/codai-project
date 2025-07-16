@@ -73,7 +73,7 @@ const ChatConfigSchema = z.object({
 export class AIChatbotService {
   private azureOpenAI: AzureOpenAIService
   private config: z.infer<typeof ChatConfigSchema>
-  
+
   constructor(config?: Partial<z.infer<typeof ChatConfigSchema>>) {
     this.azureOpenAI = new AzureOpenAIService()
     this.config = ChatConfigSchema.parse(config || {})
@@ -86,30 +86,30 @@ export class AIChatbotService {
     try {
       // Validate input
       const validatedInput = ChatInputSchema.parse(input)
-      
+
       // Get or create chat session
       let session = await this.getChatSession(validatedInput.sessionId, validatedInput.userId)
-      
+
       // Build conversation context
       const context = await this.buildContext(session, validatedInput.message)
-      
+
       // Analyze user intent and entities
       const analysis = await this.analyzeMessage(validatedInput.message, context)
-      
+
       // Check if knowledge base can answer
       const kbResult = await this.searchKnowledgeBase(validatedInput.message, context)
-      
+
       // Generate AI response
       const aiResponse = await this.generateResponse(validatedInput.message, context, analysis, kbResult)
-      
+
       // Save message and response
       await this.saveConversation(session.id, validatedInput.message, aiResponse)
-      
+
       // Update session analytics
       await this.updateSessionAnalytics(session.id, aiResponse)
-      
+
       return aiResponse
-      
+
     } catch (error) {
       console.error('Chat processing error:', error)
       throw new Error(`Failed to process chat message: ${error instanceof Error ? error.message : 'Unknown error'}`)
@@ -299,7 +299,7 @@ Respond in JSON format:
   ): Promise<ChatResponse> {
     const systemPrompt = this.buildSystemPrompt(context, analysis, kbResult)
     const conversationHistory = this.formatConversationHistory(context.conversationHistory)
-    
+
     const prompt = `${systemPrompt}
 
 Conversation History:
@@ -310,10 +310,12 @@ User: ${message}`
     try {
       const messages = [
         { role: 'system' as const, content: systemPrompt },
-        { role: 'user' as const, content: `Based on this conversation history and context, respond to: ${message}
+        {
+          role: 'user' as const, content: `Based on this conversation history and context, respond to: ${message}
 
 Conversation History:
-${conversationHistory}` }
+${conversationHistory}`
+        }
       ]
 
       const response = await this.azureOpenAI.generateCompletion(messages, {
@@ -368,11 +370,11 @@ ${conversationHistory}` }
    * Build system prompt for AI assistant
    */
   private buildSystemPrompt(context: ChatContext, analysis: any, kbResult: any): string {
-    const userInfo = context.userProfile 
+    const userInfo = context.userProfile
       ? `User: ${context.userProfile.name} (${context.userProfile.email})`
       : 'Anonymous user'
-    
-    const kbInfo = kbResult?.articles?.length 
+
+    const kbInfo = kbResult?.articles?.length
       ? `\nRelevant Knowledge Base Articles:\n${kbResult.articles.map((a: any) => `- ${a.title}: ${a.excerpt}`).join('\n')}`
       : ''
 
@@ -462,7 +464,7 @@ Remember: You represent the entire Codai ecosystem (codai.ro, memorai.ro, fabric
   private extractTopic(conversationHistory: ChatMessage[], currentMessage: string): string {
     const recentMessages = conversationHistory.slice(-5)
     const allText = [...recentMessages.map(m => m.content), currentMessage].join(' ')
-    
+
     // Simple keyword-based topic extraction
     const topics = {
       'wallet': ['wallet', 'payment', 'money', 'transfer', 'balance'],
@@ -486,13 +488,13 @@ Remember: You represent the entire Codai ecosystem (codai.ro, memorai.ro, fabric
    */
   private async detectIntent(message: string, conversationHistory: ChatMessage[]): Promise<string> {
     const text = message.toLowerCase()
-    
+
     if (text.includes('help') || text.includes('ajutor')) return 'help_request'
     if (text.includes('how') || text.includes('cum')) return 'how_to'
     if (text.includes('error') || text.includes('problem')) return 'technical_issue'
     if (text.includes('thank') || text.includes('multumesc')) return 'gratitude'
     if (text.includes('?')) return 'question'
-    
+
     return 'general_inquiry'
   }
 
@@ -501,11 +503,11 @@ Remember: You represent the entire Codai ecosystem (codai.ro, memorai.ro, fabric
    */
   private async extractEntities(message: string): Promise<Record<string, any>> {
     const entities: Record<string, any> = {}
-    
+
     // Simple entity extraction
     const emailMatch = message.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/)
     if (emailMatch) entities.email = emailMatch[0]
-    
+
     const amountMatch = message.match(/\$?(\d+(?:\.\d{2})?)\s?(USD|EUR|RON|BTC|ETH)?/i)
     if (amountMatch) {
       entities.amount = {
@@ -513,10 +515,10 @@ Remember: You represent the entire Codai ecosystem (codai.ro, memorai.ro, fabric
         currency: amountMatch[2] || 'USD'
       }
     }
-    
+
     const urlMatch = message.match(/https?:\/\/[^\s]+/)
     if (urlMatch) entities.url = urlMatch[0]
-    
+
     return entities
   }
 
@@ -526,14 +528,14 @@ Remember: You represent the entire Codai ecosystem (codai.ro, memorai.ro, fabric
   private calculateRelevance(query: string, content: string): number {
     const queryWords = query.toLowerCase().split(' ')
     const contentWords = content.toLowerCase().split(' ')
-    
+
     let matches = 0
     for (const word of queryWords) {
       if (word.length > 2 && contentWords.includes(word)) {
         matches++
       }
     }
-    
+
     return Math.min(matches / queryWords.length, 1)
   }
 
@@ -543,17 +545,17 @@ Remember: You represent the entire Codai ecosystem (codai.ro, memorai.ro, fabric
   private hasDirectAnswer(query: string, content: string): boolean {
     const queryLower = query.toLowerCase()
     const contentLower = content.toLowerCase()
-    
+
     // Simple heuristic: if query words appear in close proximity
     const queryWords = queryLower.split(' ').filter(w => w.length > 2)
     let foundWords = 0
-    
+
     for (const word of queryWords) {
       if (contentLower.includes(word)) {
         foundWords++
       }
     }
-    
+
     return foundWords >= Math.min(queryWords.length * 0.7, 3)
   }
 
@@ -573,20 +575,20 @@ Remember: You represent the entire Codai ecosystem (codai.ro, memorai.ro, fabric
   private shouldEscalateToHuman(analysis: any, context: ChatContext, response: string): boolean {
     // Escalate if urgency is critical
     if (analysis.urgency === 'critical') return true
-    
+
     // Escalate if user is frustrated/angry
     if (analysis.emotion === 'frustrated' || analysis.emotion === 'angry') return true
-    
+
     // Escalate if AI confidence is very low
     if (analysis.confidence < 0.3) return true
-    
+
     // Escalate if response contains uncertainty phrases
     const uncertaintyPhrases = ['i don\'t know', 'not sure', 'unable to help', 'nu știu', 'nu sunt sigur']
     if (uncertaintyPhrases.some(phrase => response.toLowerCase().includes(phrase))) return true
-    
+
     // Escalate if too many messages in session
     if (context.conversationHistory.length > 15) return true
-    
+
     return false
   }
 
@@ -595,7 +597,7 @@ Remember: You represent the entire Codai ecosystem (codai.ro, memorai.ro, fabric
    */
   private buildSuggestedActions(analysis: any, kbResult: any, shouldEscalate: boolean): SuggestedAction[] {
     const actions: SuggestedAction[] = []
-    
+
     if (shouldEscalate) {
       actions.push({
         type: 'contact_human',
@@ -604,7 +606,7 @@ Remember: You represent the entire Codai ecosystem (codai.ro, memorai.ro, fabric
         priority: 'high'
       })
     }
-    
+
     if (kbResult?.articles?.length > 0) {
       actions.push({
         type: 'kb_article',
@@ -614,7 +616,7 @@ Remember: You represent the entire Codai ecosystem (codai.ro, memorai.ro, fabric
         priority: 'medium'
       })
     }
-    
+
     if (analysis.category === 'technical') {
       actions.push({
         type: 'documentation',
@@ -624,7 +626,7 @@ Remember: You represent the entire Codai ecosystem (codai.ro, memorai.ro, fabric
         priority: 'medium'
       })
     }
-    
+
     if (analysis.intent === 'how_to') {
       actions.push({
         type: 'tutorial',
@@ -634,7 +636,7 @@ Remember: You represent the entire Codai ecosystem (codai.ro, memorai.ro, fabric
         priority: 'medium'
       })
     }
-    
+
     return actions
   }
 

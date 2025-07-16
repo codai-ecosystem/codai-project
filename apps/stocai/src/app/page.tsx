@@ -417,8 +417,8 @@ export default function StocAIPage() {
                                         transition={{ delay: index * 0.1 }}
                                         onClick={() => setActiveStock(stock.symbol)}
                                         className={`p-4 rounded-xl border transition-all duration-300 cursor-pointer group ${activeStock === stock.symbol
-                                                ? 'bg-blue-500/20 border-blue-400 shadow-lg shadow-blue-500/25'
-                                                : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
+                                            ? 'bg-blue-500/20 border-blue-400 shadow-lg shadow-blue-500/25'
+                                            : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
                                             }`}
                                     >
                                         <div className="flex items-center justify-between">
@@ -481,8 +481,8 @@ export default function StocAIPage() {
                                             key={timeframe}
                                             onClick={() => setSelectedTimeframe(timeframe)}
                                             className={`px-3 py-1 rounded-lg text-sm transition-colors ${selectedTimeframe === timeframe
-                                                    ? 'bg-blue-500/20 text-blue-400'
-                                                    : 'text-slate-400 hover:bg-white/10'
+                                                ? 'bg-blue-500/20 text-blue-400'
+                                                : 'text-slate-400 hover:bg-white/10'
                                                 }`}
                                         >
                                             {timeframe}
@@ -550,8 +550,8 @@ export default function StocAIPage() {
                                         <div className="flex items-center justify-between text-xs">
                                             <span className="opacity-75">Timeframe: {insight.timeframe}</span>
                                             <span className={`px-2 py-1 rounded ${insight.impact === 'high' ? 'bg-red-400/20 text-red-400' :
-                                                    insight.impact === 'medium' ? 'bg-yellow-400/20 text-yellow-400' :
-                                                        'bg-emerald-400/20 text-emerald-400'
+                                                insight.impact === 'medium' ? 'bg-yellow-400/20 text-yellow-400' :
+                                                    'bg-emerald-400/20 text-emerald-400'
                                                 }`}>
                                                 {insight.impact} impact
                                             </span>
@@ -661,8 +661,8 @@ export default function StocAIPage() {
                                                 </div>
                                             </div>
                                             <span className={`px-2 py-1 rounded text-xs ${news.impact === 'high' ? 'bg-red-400/20 text-red-400' :
-                                                    news.impact === 'medium' ? 'bg-yellow-400/20 text-yellow-400' :
-                                                        'bg-emerald-400/20 text-emerald-400'
+                                                news.impact === 'medium' ? 'bg-yellow-400/20 text-yellow-400' :
+                                                    'bg-emerald-400/20 text-emerald-400'
                                                 }`}>
                                                 {news.impact}
                                             </span>

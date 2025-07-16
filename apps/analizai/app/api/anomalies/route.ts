@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { data, threshold = 2.5 } = body
-    
+
     if (!data || !Array.isArray(data)) {
       return NextResponse.json({
         success: false,
@@ -18,9 +18,9 @@ export async function POST(request: NextRequest) {
     const result = await analyticsService.detectAnomalies(data, threshold)
 
     if (!result.success) {
-      return NextResponse.json({ 
-        success: false, 
-        error: result.error 
+      return NextResponse.json({
+        success: false,
+        error: result.error
       }, { status: 400 })
     }
 
@@ -86,7 +86,7 @@ export async function GET(request: NextRequest) {
     ]
 
     let filteredAnomalies = recentAnomalies
-    
+
     if (severity) {
       filteredAnomalies = filteredAnomalies.filter(a => a.severity === severity.toUpperCase())
     }

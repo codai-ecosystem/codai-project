@@ -1,3 +1,4 @@
+import React from 'react'
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/react'
 import CumparaiPage from '../app/page'
@@ -8,7 +9,7 @@ describe('cumparai Performance Tests', () => {
       const startTime = performance.now()
       render(<CumparaiPage />)
       const endTime = performance.now()
-      
+
       const renderTime = endTime - startTime
       expect(renderTime).toBeLessThan(100) // 100ms budget
     })
@@ -18,7 +19,7 @@ describe('cumparai Performance Tests', () => {
       const startTime = performance.now()
       render(<CumparaiPage />)
       const endTime = performance.now()
-      
+
       expect(endTime - startTime).toBeLessThan(200)
     })
   })
@@ -26,16 +27,16 @@ describe('cumparai Performance Tests', () => {
   describe('Memory Usage', () => {
     it('does not cause memory leaks', () => {
       const initialMemory = (performance as any).memory?.usedJSHeapSize || 0
-      
+
       // Render and unmount multiple times
       for (let i = 0; i < 10; i++) {
         const { unmount } = render(<CumparaiPage />)
         unmount()
       }
-      
+
       const finalMemory = (performance as any).memory?.usedJSHeapSize || 0
       const memoryIncrease = finalMemory - initialMemory
-      
+
       // Memory increase should be minimal
       expect(memoryIncrease).toBeLessThan(1000000) // 1MB threshold
     })

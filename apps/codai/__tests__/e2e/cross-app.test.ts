@@ -23,7 +23,7 @@ describe('Cross-App Integration Tests', () => {
 
     it('should retrieve project context from MEMORAI', async () => {
       const projectId = 'project_123';
-      
+
       // Mock MEMORAI context retrieval
       const mockContext = {
         projectHistory: ['action1', 'action2'],

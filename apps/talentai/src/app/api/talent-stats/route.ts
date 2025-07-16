@@ -15,10 +15,10 @@ interface TalentStatsData {
 function generateRealTalentStats(): TalentStatsData {
   const now = new Date()
   const dayOfYear = Math.floor((now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) / 86400000)
-  
+
   // Use deterministic values based on current time for consistent "real" data
   const seed = dayOfYear + now.getHours()
-  
+
   return {
     totalCandidates: 85000 + (seed * 123) % 50000, // Base + variable component
     activeJobs: 5500 + (seed * 47) % 2000,
@@ -34,7 +34,7 @@ function generateRealTalentStats(): TalentStatsData {
 export async function GET(request: NextRequest) {
   try {
     const stats = generateRealTalentStats()
-    
+
     return NextResponse.json(stats, {
       status: 200,
       headers: {
@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
     })
   } catch (error) {
     console.error('Error generating talent stats:', error)
-    
+
     return NextResponse.json(
       { error: 'Failed to fetch talent statistics' },
       { status: 500 }
@@ -57,10 +57,10 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    
+
     // In a real implementation, this would update stats in a database
     console.log('Stats update requested:', body)
-    
+
     return NextResponse.json(
       { message: 'Stats updated successfully' },
       { status: 200 }

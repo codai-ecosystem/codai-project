@@ -1,29 +1,29 @@
 import { describe, it, expect    it('should work in Firefox', () => {
-      // E2E test specification: Firefox compatibility verification  
-      expect('AIDE Firefox Compatibility Specification').toBeDefined()
-    })
+  // E2E test specification: Firefox compatibility verification  
+  expect('AIDE Firefox Compatibility Specification').toBeDefined()
+})
 
-    it('should work in Safari', () => {
-      // E2E test specification: Safari compatibility verification
-      expect('AIDE Safari Compatibility Specification').toBeDefined()
-    })
+it('should work in Safari', () => {
+  // E2E test specification: Safari compatibility verification
+  expect('AIDE Safari Compatibility Specification').toBeDefined()
+})
   })
 
-  describe('Mobile Responsiveness', () => {
-    it('should work on mobile devices', () => {
-      // E2E test specification: Mobile device compatibility and responsive design
-      expect('AIDE Mobile Responsiveness Specification').toBeDefined()
-    })
-
-    it('should handle touch interactions', () => {
-      // E2E test specification: Touch gesture support and mobile-specific interactions
-      expect('AIDE Touch Interaction Specification').toBeDefined()
-    })
+describe('Mobile Responsiveness', () => {
+  it('should work on mobile devices', () => {
+    // E2E test specification: Mobile device compatibility and responsive design
+    expect('AIDE Mobile Responsiveness Specification').toBeDefined()
   })
-})escribe('aide End-to-End Tests', () => {
+
+  it('should handle touch interactions', () => {
+    // E2E test specification: Touch gesture support and mobile-specific interactions
+    expect('AIDE Touch Interaction Specification').toBeDefined()
+  })
+})
+}) escribe('aide End-to-End Tests', () => {
   // Note: These are E2E test specifications
   // In a real implementation, these would use Playwright or Cypress
-  
+
   describe('User Journey Tests', () => {
     it('should complete onboarding flow', () => {
       // E2E test specification: Navigate to AIDE, interact with onboarding modals, verify completion

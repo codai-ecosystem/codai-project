@@ -12,7 +12,7 @@ describe('BancaiService', () => {
     it('should create a new item', async () => {
       const data = { name: 'Test Item', description: 'Test Description' };
       const result = await service.create(data);
-      
+
       expect(result).toBeDefined();
       expect(result.id).toBeDefined();
       expect(result.name).toBe(data.name);
@@ -22,7 +22,7 @@ describe('BancaiService', () => {
     it('should get all items', async () => {
       await service.create({ name: 'Item 1' });
       await service.create({ name: 'Item 2' });
-      
+
       const results = await service.getAll();
       expect(results).toHaveLength(2);
     });
@@ -30,7 +30,7 @@ describe('BancaiService', () => {
     it('should get item by id', async () => {
       const created = await service.create({ name: 'Test Item' });
       const found = await service.getById(created.id!);
-      
+
       expect(found).toBeDefined();
       expect(found!.name).toBe('Test Item');
     });
@@ -38,7 +38,7 @@ describe('BancaiService', () => {
     it('should update an item', async () => {
       const created = await service.create({ name: 'Original' });
       const updated = await service.update(created.id!, { name: 'Updated' });
-      
+
       expect(updated).toBeDefined();
       expect(updated!.name).toBe('Updated');
       expect(updated!.updatedAt).not.toEqual(created.createdAt);
@@ -48,7 +48,7 @@ describe('BancaiService', () => {
       const created = await service.create({ name: 'To Delete' });
       const deleted = await service.delete(created.id!);
       const found = await service.getById(created.id!);
-      
+
       expect(deleted).toBe(true);
       expect(found).toBeNull();
     });
@@ -58,7 +58,7 @@ describe('BancaiService', () => {
     it('should process business logic', async () => {
       const data = { test: 'data' };
       const result = await service.processBusinessLogic(data);
-      
+
       expect(result.processed).toBe(true);
       expect(result.data).toEqual(data);
     });
@@ -66,7 +66,7 @@ describe('BancaiService', () => {
     it('should validate data', async () => {
       const validData = { name: 'Valid Name' };
       const invalidData = { name: '' };
-      
+
       expect(await service.validateData(validData as any)).toBe(true);
       expect(await service.validateData(invalidData as any)).toBe(false);
     });
@@ -74,9 +74,9 @@ describe('BancaiService', () => {
     it('should perform analytics', async () => {
       await service.create({ name: 'Item 1' });
       await service.create({ name: 'Item 2' });
-      
+
       const analytics = await service.performAnalytics();
-      
+
       expect(analytics.totalItems).toBe(2);
       expect(analytics.service).toBe('bancai');
       expect(analytics.lastUpdate).toBeDefined();
@@ -102,7 +102,7 @@ describe('accounts API Endpoints', () => {
             isActive: true
           },
           {
-            id: 'acc-002', 
+            id: 'acc-002',
             type: 'savings',
             balance: 15750.25,
             currency: 'USD',
@@ -115,7 +115,7 @@ describe('accounts API Endpoints', () => {
 
     const response = await fetch('/api/banking/accounts')
     const data = await response.json()
-    
+
     expect(response.ok).toBe(true)
     expect(data.success).toBe(true)
     expect(data.accounts).toHaveLength(2)
@@ -150,7 +150,7 @@ describe('accounts API Endpoints', () => {
         initialDeposit: 0
       })
     })
-    
+
     const data = await response.json()
     expect(response.status).toBe(201)
     expect(data.success).toBe(true)
@@ -180,7 +180,7 @@ describe('accounts API Endpoints', () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ isActive: false })
     })
-    
+
     const data = await response.json()
     expect(response.ok).toBe(true)
     expect(data.success).toBe(true)
@@ -201,7 +201,7 @@ describe('accounts API Endpoints', () => {
     const response = await fetch('/api/banking/accounts/acc-001', {
       method: 'DELETE'
     })
-    
+
     const data = await response.json()
     expect(response.ok).toBe(true)
     expect(data.success).toBe(true)
@@ -245,7 +245,7 @@ describe('transactions API Endpoints', () => {
 
     const response = await fetch('/api/banking/transactions?accountId=acc-001')
     const data = await response.json()
-    
+
     expect(response.ok).toBe(true)
     expect(data.success).toBe(true)
     expect(data.transactions).toHaveLength(2)
@@ -281,7 +281,7 @@ describe('transactions API Endpoints', () => {
         description: 'Transfer to Savings'
       })
     })
-    
+
     const data = await response.json()
     expect(response.status).toBe(201)
     expect(data.success).toBe(true)
@@ -311,7 +311,7 @@ describe('transactions API Endpoints', () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status: 'completed' })
     })
-    
+
     const data = await response.json()
     expect(response.ok).toBe(true)
     expect(data.success).toBe(true)
@@ -332,7 +332,7 @@ describe('transactions API Endpoints', () => {
     const response = await fetch('/api/banking/transactions/txn-003', {
       method: 'DELETE'
     })
-    
+
     const data = await response.json()
     expect(response.ok).toBe(true)
     expect(data.success).toBe(true)
@@ -364,7 +364,7 @@ describe('payments API Endpoints', () => {
 
     const response = await fetch('/api/banking/payments?accountId=acc-001')
     const data = await response.json()
-    
+
     expect(response.ok).toBe(true)
     expect(data.success).toBe(true)
     expect(data.payments[0].amount).toBe(1200.00)
@@ -399,7 +399,7 @@ describe('payments API Endpoints', () => {
         description: 'Utility Bill Payment'
       })
     })
-    
+
     const data = await response.json()
     expect(response.status).toBe(201)
     expect(data.success).toBe(true)
@@ -429,7 +429,7 @@ describe('payments API Endpoints', () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status: 'cancelled' })
     })
-    
+
     const data = await response.json()
     expect(response.ok).toBe(true)
     expect(data.payment.status).toBe('cancelled')
@@ -449,7 +449,7 @@ describe('payments API Endpoints', () => {
     const response = await fetch('/api/banking/payments/pay-002', {
       method: 'DELETE'
     })
-    
+
     const data = await response.json()
     expect(response.ok).toBe(true)
     expect(data.success).toBe(true)

@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const PORT = 4050;
+const PORT = 4057;
 
 // Middleware
 app.use(cors());
@@ -15,10 +15,10 @@ app.get('/health', (req, res) => {
   res.json({ 
     status: 'healthy', 
     service: 'hub',
-    description: 'Central Service Management Platform',
+    description: 'Codai Integration & Automation Center',
     port: PORT,
-    type: 'management',
-    category: 'infrastructure',
+    type: 'undefined',
+    category: 'integration',
     timestamp: new Date().toISOString(),
     uptime: process.uptime()
   });

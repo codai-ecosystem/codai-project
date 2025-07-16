@@ -2,7 +2,7 @@
   "name": "@codai/conversai-web",
   "version": "2.0.0",
   "private": true,
-  "type": "module",
+  
   "scripts": {
     "build": "next build",
     "start": "next start -p 4034",

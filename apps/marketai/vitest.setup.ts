@@ -149,7 +149,7 @@ vi.mock('stripe', () => {
     webhooks: mockWebhooks
   }))
 
-  return { 
+  return {
     default: mockStripe,
     webhooks: mockWebhooks
   }

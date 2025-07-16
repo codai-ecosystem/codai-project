@@ -31,6 +31,7 @@ import sociaiLogger, {
   logSystem,
   logPerf
 } from '../lib/logger'
+import { SocialAIService, type SocialAnalytics } from '../services/sociaiService'
 
 interface AppMetric {
   id: string
@@ -53,6 +54,25 @@ interface FeatureCard {
 export default function SociAIPage() {
   const [currentTime, setCurrentTime] = useState(new Date())
   const [activeTab, setActiveTab] = useState<'overview' | 'features' | 'analytics' | 'settings'>('overview')
+  const [analytics, setAnalytics] = useState<SocialAnalytics | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    loadRealSocialData()
+  }, [])
+
+  const loadRealSocialData = async () => {
+    setLoading(true)
+    try {
+      const socialService = SocialAIService.getInstance()
+      const analyticsData = await socialService.getAnalytics()
+      setAnalytics(analyticsData)
+    } catch (error) {
+      console.error('Failed to load SocialAI data:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   // Initialize SociAI Logger
   useEffect(() => {
@@ -221,44 +241,51 @@ export default function SociAIPage() {
     })
   }
 
-  const [metrics] = useState<AppMetric[]>([
-    {
-      id: '1',
-      title: 'Active Users',
-      value: '12.4K',
-      change: '+8.2%',
-      trend: 'up',
-      icon: 'Share2',
-      color: 'pink'
-    },
-    {
-      id: '2',
-      title: 'Performance',
-      value: '98.5%',
-      change: '+2.1%',
-      trend: 'up',
-      icon: 'MessageCircle',
-      color: 'green'
-    },
-    {
-      id: '3',
-      title: 'Features',
-      value: '4',
-      change: '0%',
-      trend: 'stable',
-      icon: 'TrendingUp',
-      color: 'blue'
-    },
-    {
-      id: '4',
-      title: 'Satisfaction',
-      value: '4.9/5',
-      change: '+0.2',
-      trend: 'up',
-      icon: 'Zap',
-      color: 'purple'
-    }
-  ])
+  const [metrics] = useState<AppMetric[]>([])
+
+  // Generate real metrics from analytics data
+  const getRealMetrics = (): AppMetric[] => {
+    if (!analytics) return []
+
+    return [
+      {
+        id: '1',
+        title: 'Total Posts',
+        value: (analytics.contentMetrics.totalPosts / 1000).toFixed(1) + 'K',
+        change: `${analytics.contentMetrics.engagementRate.toFixed(1)}% engagement`,
+        trend: 'up',
+        icon: 'Share2',
+        color: 'pink'
+      },
+      {
+        id: '2',
+        title: 'Active Users',
+        value: (analytics.userMetrics.totalUsers / 1000).toFixed(1) + 'K',
+        change: `${analytics.userMetrics.activeUsers} active`,
+        trend: 'up',
+        icon: 'Users',
+        color: 'green'
+      },
+      {
+        id: '3',
+        title: 'Avg Engagement',
+        value: `${analytics.contentMetrics.averageEngagement.toFixed(1)}%`,
+        change: 'reach rate',
+        trend: 'up',
+        icon: 'TrendingUp',
+        color: 'blue'
+      },
+      {
+        id: '4',
+        title: 'Total Reach',
+        value: (analytics.influencerMetrics.totalReach / 1000000).toFixed(1) + 'M',
+        change: 'impressions',
+        trend: 'up',
+        icon: 'Eye',
+        color: 'purple'
+      }
+    ]
+  }
 
   const [featureCards] = useState<FeatureCard[]>([
     {
@@ -406,8 +433,8 @@ export default function SociAIPage() {
               key={tab}
               onClick={() => handleTabChange(tab)}
               className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 ${activeTab === tab
-                  ? 'bg-pink-500/30 text-pink-300 shadow-lg'
-                  : 'text-slate-400 hover:text-white hover:bg-white/10'
+                ? 'bg-pink-500/30 text-pink-300 shadow-lg'
+                : 'text-slate-400 hover:text-white hover:bg-white/10'
                 }`}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -443,7 +470,16 @@ export default function SociAIPage() {
 
               {/* Metrics Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {metrics.map((metric, index) => (
+                {loading ? (
+                  // Loading skeleton
+                  Array.from({ length: 4 }, (_, index) => (
+                    <div key={index} className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6 animate-pulse">
+                      <div className="h-12 bg-white/10 rounded mb-4"></div>
+                      <div className="h-6 bg-white/10 rounded mb-2"></div>
+                      <div className="h-4 bg-white/10 rounded w-1/2"></div>
+                    </div>
+                  ))
+                ) : getRealMetrics().map((metric, index) => (
                   <motion.div
                     key={metric.id}
                     initial={{ opacity: 0, scale: 0.9 }}

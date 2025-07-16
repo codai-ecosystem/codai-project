@@ -12,7 +12,7 @@ describe('stocai API Tests', () => {
       // Test API call
       const response = await fetch('/api/test')
       const data = await response.json()
-      
+
       expect(data.success).toBe(true)
     })
 
@@ -34,7 +34,7 @@ describe('stocai API Tests', () => {
       global.fetch = vi.fn().mockImplementation((url) => {
         const urlObj = new URL(url, 'http://localhost')
         const storageType = urlObj.searchParams.get('type')
-        
+
         if (!storageType) {
           return Promise.resolve({
             ok: false,
@@ -42,11 +42,11 @@ describe('stocai API Tests', () => {
             json: async () => ({ error: 'Missing storage type parameter' })
           })
         }
-        
+
         return Promise.resolve({
           ok: true,
-          json: async () => ({ 
-            success: true, 
+          json: async () => ({
+            success: true,
             storage: {
               id: 'store-001',
               type: storageType,
@@ -75,8 +75,8 @@ describe('stocai API Tests', () => {
       global.fetch = vi.fn().mockResolvedValue({
         ok: false,
         status: 429,
-        json: async () => ({ 
-          error: 'Storage API rate limit exceeded', 
+        json: async () => ({
+          error: 'Storage API rate limit exceeded',
           retryAfter: 30,
           limit: 1000,
           remaining: 0
@@ -85,7 +85,7 @@ describe('stocai API Tests', () => {
 
       const response = await fetch('/api/storage/upload')
       const data = await response.json()
-      
+
       expect(response.status).toBe(429)
       expect(data.error).toBe('Storage API rate limit exceeded')
       expect(data.retryAfter).toBe(30)
@@ -96,21 +96,21 @@ describe('stocai API Tests', () => {
     it('caches API responses appropriately', async () => {
       // Mock storage caching behavior
       const mockCache = new Map()
-      
+
       global.fetch = vi.fn().mockImplementation(async (url) => {
         const cacheKey = url.toString()
-        
+
         if (mockCache.has(cacheKey)) {
           return Promise.resolve({
             ok: true,
-            json: async () => ({ 
-              success: true, 
+            json: async () => ({
+              success: true,
               data: mockCache.get(cacheKey),
               cached: true
             })
           })
         }
-        
+
         const freshData = {
           storageNodes: [
             { id: 'node-1', status: 'active', capacity: '50GB', used: '25GB' },
@@ -120,13 +120,13 @@ describe('stocai API Tests', () => {
           totalUsed: '45GB',
           timestamp: Date.now()
         }
-        
+
         mockCache.set(cacheKey, freshData)
-        
+
         return Promise.resolve({
           ok: true,
-          json: async () => ({ 
-            success: true, 
+          json: async () => ({
+            success: true,
             data: freshData,
             cached: false
           })
@@ -168,12 +168,12 @@ describe('stocai API Tests', () => {
         send: vi.fn(),
         close: vi.fn()
       }
-      
+
       // Type-safe WebSocket mock
       global.WebSocket = vi.fn().mockImplementation(() => mockWebSocket) as any
-      
+
       const ws = new WebSocket('ws://localhost:3000/storage-updates')
-      
+
       expect(ws.readyState).toBe(1)
       expect(typeof ws.send).toBe('function')
       expect(typeof ws.close).toBe('function')
@@ -189,17 +189,17 @@ describe('stocai API Tests', () => {
         send: vi.fn(),
         close: vi.fn()
       }
-      
+
       // Type-safe WebSocket mock
       global.WebSocket = vi.fn().mockImplementation(() => mockWebSocket) as any
-      
+
       const ws = new WebSocket('ws://localhost:3000/storage-updates')
-      
+
       // Simulate connection close
       if (mockWebSocket.onclose) {
         mockWebSocket.onclose({ code: 1000, reason: 'Normal closure' } as any)
       }
-      
+
       expect(ws.readyState).toBe(3) // CLOSED
       expect(mockWebSocket.onclose).toBeDefined()
     })

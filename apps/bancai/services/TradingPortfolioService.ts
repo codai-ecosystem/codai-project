@@ -139,10 +139,10 @@ export class TradingPortfolioService {
         const marketData = await this.getMarketData(symbol)
         const technicalAnalysis = await this.performTechnicalAnalysis(symbol, timeframe)
         const fundamentalAnalysis = await this.performFundamentalAnalysis(symbol)
-        
+
         // Generate AI-powered signal
         const aiSignal = await this.generateAITradingSignal(symbol, marketData, technicalAnalysis, fundamentalAnalysis)
-        
+
         signals.push(aiSignal)
       }
 
@@ -200,16 +200,16 @@ export class TradingPortfolioService {
     try {
       // Analyze user profile and preferences
       const userProfile = await this.analyzeUserProfile(userId, riskTolerance, investmentGoals)
-      
+
       // Get market analysis
       const marketAnalysis = await this.getMarketAnalysis()
-      
+
       // Generate AI-powered recommendations
       const aiRecommendations = await this.generateAIInvestmentRecommendations(userProfile, marketAnalysis)
-      
+
       // Include Romanian market specific recommendations
       const romanianRecommendations = await this.generateRomanianMarketRecommendations()
-      
+
       const recommendations = {
         userProfile,
         marketOverview: marketAnalysis,

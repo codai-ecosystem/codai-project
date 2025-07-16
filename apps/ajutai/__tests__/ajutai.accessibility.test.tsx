@@ -7,10 +7,10 @@ describe('ajutai Accessibility Tests', () => {
   describe('WCAG 2.1 AA Compliance', () => {
     it('has proper heading hierarchy', () => {
       render(<AjutaiPage />)
-      
+
       const headings = screen.getAllByRole('heading')
       expect(headings.length).toBeGreaterThan(0)
-      
+
       // Should have an h1
       const h1 = headings.find(h => h.tagName === 'H1')
       expect(h1).toBeInTheDocument()
@@ -18,7 +18,7 @@ describe('ajutai Accessibility Tests', () => {
 
     it('provides alt text for images', () => {
       render(<AjutaiPage />)
-      
+
       const images = screen.queryAllByRole('img')
       images.forEach(img => {
         expect(img).toHaveAttribute('alt')
@@ -27,14 +27,14 @@ describe('ajutai Accessibility Tests', () => {
 
     it('has sufficient color contrast', () => {
       render(<AjutaiPage />)
-      
+
       // This would use a color contrast analyzer in real implementation
       expect(true).toBe(true) // Placeholder
     })
 
     it('supports keyboard navigation', () => {
       render(<AjutaiPage />)
-      
+
       const tabs = screen.getAllByRole('tab')
       tabs.forEach(tab => {
         expect(tab).toHaveAttribute('tabIndex', '0')
@@ -43,22 +43,22 @@ describe('ajutai Accessibility Tests', () => {
 
     it('provides proper ARIA labels', () => {
       render(<AjutaiPage />)
-      
+
       const interactiveElements = [
         ...screen.getAllByRole('tab')
       ]
-      
+
       interactiveElements.forEach(element => {
-        const hasLabel = element.hasAttribute('aria-label') || 
-                         element.hasAttribute('aria-labelledby') ||
-                         element.textContent?.trim()
+        const hasLabel = element.hasAttribute('aria-label') ||
+          element.hasAttribute('aria-labelledby') ||
+          element.textContent?.trim()
         expect(hasLabel).toBeTruthy()
       })
     })
 
     it('announces state changes to screen readers', () => {
       render(<AjutaiPage />)
-      
+
       // Check for aria-live regions
       const liveRegions = document.querySelectorAll('[aria-live]')
       expect(liveRegions.length).toBeGreaterThan(0)
@@ -68,14 +68,14 @@ describe('ajutai Accessibility Tests', () => {
   describe('Keyboard Accessibility', () => {
     it('supports tab navigation', () => {
       render(<AjutaiPage />)
-      
+
       const focusableElements = screen.getAllByRole('tab')
       expect(focusableElements.length).toBeGreaterThan(0)
     })
 
     it('provides skip links', () => {
       render(<AjutaiPage />)
-      
+
       // Look for skip to content links
       const skipLinks = screen.queryAllByText(/skip to/i)
       // Should have skip links for better navigation
@@ -85,14 +85,14 @@ describe('ajutai Accessibility Tests', () => {
   describe('Screen Reader Support', () => {
     it('provides meaningful page title', () => {
       render(<AjutaiPage />)
-      
+
       const title = screen.getByRole('heading', { level: 1 })
       expect(title).toHaveTextContent(/\w+/)
     })
 
     it('announces loading states', () => {
       render(<AjutaiPage />)
-      
+
       // Check for loading indicators with proper ARIA
       const loadingElements = document.querySelectorAll('[aria-busy="true"], [role="status"]')
       // Should handle loading states accessibly

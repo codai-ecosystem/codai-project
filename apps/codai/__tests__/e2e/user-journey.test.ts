@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 
 describe('User Journey E2E Tests', () => {
-  
+
   describe('New User Onboarding', () => {
     it('should guide user through initial setup', async () => {
       const onboardingSteps = [
@@ -72,8 +72,8 @@ describe('User Journey E2E Tests', () => {
       ];
 
       const currentPhase = projectLifecycle.find(p => p.completed < p.tasks);
-      const overallProgress = projectLifecycle.reduce((sum, p) => sum + p.completed, 0) / 
-                             projectLifecycle.reduce((sum, p) => sum + p.tasks, 0);
+      const overallProgress = projectLifecycle.reduce((sum, p) => sum + p.completed, 0) /
+        projectLifecycle.reduce((sum, p) => sum + p.tasks, 0);
 
       expect(currentPhase?.phase).toBe('testing');
       expect(overallProgress).toBeCloseTo(0.73, 1); // Updated to match actual calculation: 19/26 = 0.73
@@ -177,8 +177,8 @@ describe('User Journey E2E Tests', () => {
       ];
 
       const currentPhase = projectLifecycle.find(p => p.completed < p.tasks);
-      const overallProgress = projectLifecycle.reduce((sum, p) => sum + p.completed, 0) / 
-                             projectLifecycle.reduce((sum, p) => sum + p.tasks, 0);
+      const overallProgress = projectLifecycle.reduce((sum, p) => sum + p.completed, 0) /
+        projectLifecycle.reduce((sum, p) => sum + p.tasks, 0);
 
       expect(currentPhase?.phase).toBe('testing');
       expect(overallProgress).toBeCloseTo(0.76, 1); // ~76% complete

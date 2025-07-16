@@ -9,7 +9,7 @@ const kbService = new KnowledgeBaseService()
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
-    
+
     // Parse search parameters
     const params: any = {
       query: searchParams.get('query') || '',

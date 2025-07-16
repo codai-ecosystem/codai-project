@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const PORT = 4045;
+const PORT = 4060;
 
 // Middleware
 app.use(cors());
@@ -15,10 +15,10 @@ app.get('/health', (req, res) => {
   res.json({ 
     status: 'healthy', 
     service: 'kodex',
-    description: 'Code Repository & Version Control',
+    description: 'CodaiChain Core Protocol & AI Economic Layer',
     port: PORT,
-    type: 'development',
-    category: 'development',
+    type: 'undefined',
+    category: 'blockchain',
     timestamp: new Date().toISOString(),
     uptime: process.uptime()
   });

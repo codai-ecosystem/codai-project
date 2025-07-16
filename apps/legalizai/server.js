@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const PORT = 4055;
+const PORT = 4061;
 
 // Middleware
 app.use(cors());
@@ -15,10 +15,10 @@ app.get('/health', (req, res) => {
   res.json({ 
     status: 'healthy', 
     service: 'legalizai',
-    description: 'AI Legal Services Platform',
+    description: 'AI Legal & Compliance Agent',
     port: PORT,
-    type: 'legal',
-    category: 'specialized',
+    type: 'undefined',
+    category: 'legal',
     timestamp: new Date().toISOString(),
     uptime: process.uptime()
   });

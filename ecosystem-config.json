@@ -1,0 +1,110 @@
+{
+    "ecosystem": {
+        "name": "CODAI Ecosystem",
+        "version": "1.0.0",
+        "deployment_date": "2025-07-15",
+        "services": {
+            "codai": {
+                "name": "CODAI Platform",
+                "port": 4030,
+                "url": "http://localhost:4030",
+                "role": "central_hub",
+                "description": "Central Platform & Ecosystem Hub",
+                "endpoints": {
+                    "health": "/api/health",
+                    "status": "/api/status",
+                    "services": "/api/services"
+                }
+            },
+            "memorai": {
+                "name": "MEMORAI",
+                "port": 4031,
+                "url": "http://localhost:4031",
+                "role": "memory_core",
+                "description": "AI Memory & Database Core",
+                "endpoints": {
+                    "health": "/api/health",
+                    "memory": "/api/memory",
+                    "search": "/api/search",
+                    "store": "/api/store"
+                }
+            },
+            "bancai": {
+                "name": "BANCAI",
+                "port": 4033,
+                "url": "http://localhost:4033",
+                "role": "financial_services",
+                "description": "Banking & Financial Services",
+                "endpoints": {
+                    "health": "/api/health",
+                    "accounts": "/api/accounts",
+                    "transactions": "/api/transactions",
+                    "payments": "/api/payments"
+                }
+            },
+            "stocai": {
+                "name": "STOCAI",
+                "port": 4066,
+                "url": "http://localhost:4066",
+                "role": "trading_platform",
+                "description": "Stock Trading Platform",
+                "endpoints": {
+                    "health": "/api/health",
+                    "portfolio": "/api/portfolio",
+                    "trades": "/api/trades",
+                    "market": "/api/market"
+                }
+            },
+            "prezentai": {
+                "name": "PREZENTAI",
+                "port": 4081,
+                "url": "http://localhost:4081",
+                "role": "presentation_layer",
+                "description": "Presentation Platform",
+                "endpoints": {
+                    "health": "/api/health",
+                    "presentations": "/api/presentations",
+                    "templates": "/api/templates",
+                    "export": "/api/export"
+                }
+            },
+            "aide": {
+                "name": "AIDE",
+                "port": 4051,
+                "url": "http://localhost:4051",
+                "role": "development_environment",
+                "description": "AI Development Environment",
+                "endpoints": {
+                    "health": "/api/health",
+                    "projects": "/api/projects",
+                    "code": "/api/code",
+                    "deploy": "/api/deploy"
+                }
+            }
+        },
+        "integration": {
+            "api_gateway": {
+                "enabled": true,
+                "port": 8080,
+                "routes": {
+                    "/codai/*": "http://localhost:4030",
+                    "/memorai/*": "http://localhost:4031",
+                    "/bancai/*": "http://localhost:4033",
+                    "/stocai/*": "http://localhost:4066",
+                    "/prezentai/*": "http://localhost:4081",
+                    "/aide/*": "http://localhost:4051"
+                }
+            },
+            "authentication": {
+                "provider": "next-auth",
+                "shared_sessions": true,
+                "jwt_secret": "codai-ecosystem-jwt-secret"
+            },
+            "data_flow": {
+                "real_time": true,
+                "websocket_port": 8081,
+                "event_bus": "socket.io"
+            }
+        }
+    }
+}

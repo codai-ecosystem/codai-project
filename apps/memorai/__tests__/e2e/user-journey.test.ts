@@ -9,11 +9,11 @@ describe("MEMORAI User Journey E2E Tests", () => {
       tags: ["project", "notes"],
       timestamp: Date.now()
     };
-    
+
     // Mock storage success
     const storeResult = { success: true, id: newMemory.id };
     expect(storeResult.success).toBe(true);
-    
+
     // Mock retrieval
     const retrievedMemory = newMemory;
     expect(retrievedMemory.content).toBe("Important project notes");
@@ -26,7 +26,7 @@ describe("MEMORAI User Journey E2E Tests", () => {
       { id: "mem_001", content: "Project kickoff notes", relevance: 0.9 },
       { id: "mem_002", content: "Project status update", relevance: 0.8 }
     ];
-    
+
     expect(searchResults).toHaveLength(2);
     expect(searchResults[0].relevance).toBeGreaterThan(0.8);
   });
@@ -35,7 +35,7 @@ describe("MEMORAI User Journey E2E Tests", () => {
     // Mock category management
     const categories = ["work", "personal", "learning"];
     const tags = ["important", "project", "meeting"];
-    
+
     expect(categories).toContain("work");
     expect(tags).toContain("important");
   });
@@ -47,7 +47,7 @@ describe("MEMORAI User Journey E2E Tests", () => {
       sharedWith: ["user1", "user2"],
       accessLevel: "read"
     };
-    
+
     expect(shareResult.success).toBe(true);
     expect(shareResult.sharedWith).toHaveLength(2);
   });

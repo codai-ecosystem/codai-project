@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "ROMAI Dashboard - Web Interface for Romanian AI Central Intelligence",
   "private": true,
-  "type": "module",
+  
   "scripts": {
     "build": "next build",
     "dev": "next dev --port 4038",

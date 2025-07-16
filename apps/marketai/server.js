@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const PORT = 4043;
+const PORT = 4062;
 
 // Middleware
 app.use(cors());
@@ -15,10 +15,10 @@ app.get('/health', (req, res) => {
   res.json({ 
     status: 'healthy', 
     service: 'marketai',
-    description: 'AI Marketing Platform',
+    description: 'Marketplace for AI Agents & Modules',
     port: PORT,
-    type: 'marketing',
-    category: 'business',
+    type: 'undefined',
+    category: 'marketplace',
     timestamp: new Date().toISOString(),
     uptime: process.uptime()
   });

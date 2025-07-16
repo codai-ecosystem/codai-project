@@ -12,12 +12,12 @@ export const CODAI_TOKEN_ABI = [
   "function allowance(address owner, address spender) view returns (uint256)",
   "function approve(address spender, uint256 amount) returns (bool)",
   "function transferFrom(address from, address to, uint256 amount) returns (bool)",
-  
+
   // Codai specific
   "function mint(address to, uint256 amount)",
   "function getAgentEarnings(address agent) view returns (uint256)",
   "function authorizedMinters(address) view returns (bool)",
-  
+
   // Events
   "event Transfer(address indexed from, address indexed to, uint256 value)",
   "event AgentEarning(address indexed agent, uint256 amount, string serviceType)"
@@ -30,14 +30,14 @@ export const MARKETPLACE_ABI = [
   "function getAgent(uint256 agentId) view returns (tuple(address developer, string name, string description, string category, uint256 price, uint256 totalSales, uint256 totalRevenue, uint256 reputation, bool verified, bool active, string metadataURI, uint256 createdAt))",
   "function verifyAgent(uint256 agentId)",
   "function updateReputation(uint256 agentId, uint256 score)",
-  
+
   // User functions
   "function getDeveloperAgents(address developer) view returns (uint256[])",
   "function getUserPurchases(address user) view returns (uint256[])",
   "function doesUserOwnAgent(address user, uint256 agentId) view returns (bool)",
   "function withdrawEarnings()",
   "function getMarketplaceStats() view returns (uint256 totalAgents, uint256 totalPurchases, uint256 totalRevenue)",
-  
+
   // Events
   "event AgentRegistered(uint256 indexed agentId, address indexed developer, string name)",
   "event AgentPurchased(uint256 indexed agentId, address indexed buyer, uint256 amount)"
@@ -49,14 +49,14 @@ export const GOVERNANCE_ABI = [
   "function castVote(uint256 proposalId, uint8 support)",
   "function execute(uint256 proposalId) payable",
   "function cancel(uint256 proposalId)",
-  
+
   // View functions
   "function getProposalState(uint256 proposalId) view returns (uint8)",
   "function getProposal(uint256 proposalId) view returns (address proposer, string title, string description, uint256 startTime, uint256 endTime, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes, bool executed, bool cancelled)",
   "function getVotingPower(address account) view returns (uint256)",
   "function hasVoted(uint256 proposalId, address account) view returns (bool)",
   "function getGovernanceStats() view returns (uint256 totalProposals, uint256 activeProposals, uint256 totalVoters)",
-  
+
   // Events
   "event ProposalCreated(uint256 indexed proposalId, address indexed proposer, string title, string description)",
   "event VoteCast(uint256 indexed proposalId, address indexed voter, uint8 support, uint256 weight)"
@@ -70,14 +70,14 @@ export const CONTRACT_ADDRESSES = {
     MARKETPLACE: "0x0000000000000000000000000000000000000000", // Will be deployed
     GOVERNANCE: "0x0000000000000000000000000000000000000000"   // Will be deployed
   },
-  
+
   // Polygon Mumbai Testnet
   MUMBAI: {
     CODAI_TOKEN: "0x0000000000000000000000000000000000000000", // Will be deployed
     MARKETPLACE: "0x0000000000000000000000000000000000000000", // Will be deployed
     GOVERNANCE: "0x0000000000000000000000000000000000000000"   // Will be deployed
   },
-  
+
   // Local development
   LOCALHOST: {
     CODAI_TOKEN: "0x5FbDB2315678afecb367f032d93F642f64180aa3", // Hardhat default

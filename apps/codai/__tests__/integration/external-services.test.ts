@@ -95,7 +95,7 @@ describe('External Services Integration Tests', () => {
 
     it('should cleanup files after processing', async () => {
       const result = await mockServices.storage.deleteFile('file123');
-      
+
       expect(mockServices.storage.deleteFile).toHaveBeenCalledWith('file123');
       expect(result.success).toBe(true);
     });

@@ -50,7 +50,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
             aria-label="Search input"
           />
         </div>
-        
+
         <button
           onClick={handleFilterToggle}
           className="p-2 border border-gray-300 rounded-md hover:bg-gray-50"
@@ -58,7 +58,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
         >
           <Filter className="w-4 h-4" />
         </button>
-        
+
         <button
           onClick={handleSortToggle}
           className="p-2 border border-gray-300 rounded-md hover:bg-gray-50"
@@ -67,7 +67,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
           {sortOrder === 'asc' ? <SortAsc className="w-4 h-4" /> : <SortDesc className="w-4 h-4" />}
         </button>
       </div>
-      
+
       {showFilters && (
         <div className="mt-4 p-4 border border-gray-200 rounded-md bg-gray-50">
           <p>Advanced filters panel</p>

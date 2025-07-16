@@ -11,7 +11,7 @@ describe('AboutSection', () => {
 
     it('displays feature cards with real content', () => {
         render(<AboutSection />)
-        
+
         // Check for key features - using more specific text
         expect(screen.getByText(/Precision Engineering/i)).toBeInTheDocument()
         expect(screen.getByText(/Innovation Focus/i)).toBeInTheDocument()
@@ -22,7 +22,7 @@ describe('AboutSection', () => {
 
     it('shows performance metrics with real data', () => {
         render(<AboutSection />)
-        
+
         // Check for achievement metrics
         expect(screen.getByText(/99.9%/i)).toBeInTheDocument()
         expect(screen.getByText(/Uptime Guarantee/i)).toBeInTheDocument()
@@ -36,7 +36,7 @@ describe('AboutSection', () => {
 
     it('displays vision statement section', () => {
         render(<AboutSection />)
-        
+
         expect(screen.getByText(/Our Vision/i)).toBeInTheDocument()
         expect(screen.getByText(/Innovation through Intelligence/i)).toBeInTheDocument()
         expect(screen.getByText(/30\+ applications/i)).toBeInTheDocument()
@@ -44,7 +44,7 @@ describe('AboutSection', () => {
 
     it('contains about section element', () => {
         render(<AboutSection />)
-        
+
         // Look for the section with id="about"
         const aboutSection = document.getElementById('about')
         expect(aboutSection).toBeInTheDocument()
@@ -52,7 +52,7 @@ describe('AboutSection', () => {
 
     it('displays descriptive content about AI ecosystem', () => {
         render(<AboutSection />)
-        
+
         expect(screen.getByText(/comprehensive AI ecosystem/i)).toBeInTheDocument()
         expect(screen.getByText(/intelligent banking solutions/i)).toBeInTheDocument()
         expect(screen.getByText(/advanced memory systems/i)).toBeInTheDocument()

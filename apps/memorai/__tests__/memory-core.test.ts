@@ -4,7 +4,7 @@ describe('MEMORAI Memory Management', () => {
   it('creates and stores memory entries', () => {
     const memoryStore = {
       memories: new Map(),
-      add: function(id: string, content: string, metadata?: any) {
+      add: function (id: string, content: string, metadata?: any) {
         const memory = {
           id,
           content,
@@ -15,10 +15,10 @@ describe('MEMORAI Memory Management', () => {
         this.memories.set(id, memory)
         return memory
       },
-      get: function(id: string) {
+      get: function (id: string) {
         return this.memories.get(id)
       },
-      size: function() {
+      size: function () {
         return this.memories.size
       }
     }
@@ -62,13 +62,13 @@ describe('MEMORAI Memory Management', () => {
   it('manages memory tags and categories', () => {
     const tagManager = {
       tags: new Map(),
-      addTag: function(tag: string, memoryIds: string[]) {
+      addTag: function (tag: string, memoryIds: string[]) {
         this.tags.set(tag, memoryIds)
       },
-      getMemoriesByTag: function(tag: string) {
+      getMemoriesByTag: function (tag: string) {
         return this.tags.get(tag) || []
       },
-      getAllTags: function() {
+      getAllTags: function () {
         return Array.from(this.tags.keys())
       }
     }
@@ -91,13 +91,13 @@ describe('MEMORAI Memory Management', () => {
         { version: 2, content: 'Updated note with more details', timestamp: '2025-07-15T11:00:00Z' },
         { version: 3, content: 'Final version with corrections', timestamp: '2025-07-15T12:00:00Z' }
       ],
-      getCurrentVersion: function() {
+      getCurrentVersion: function () {
         return this.versions[this.versions.length - 1]
       },
-      getVersion: function(versionNumber: number) {
+      getVersion: function (versionNumber: number) {
         return this.versions.find(v => v.version === versionNumber)
       },
-      addVersion: function(content: string) {
+      addVersion: function (content: string) {
         const newVersion = {
           version: this.versions.length + 1,
           content,
@@ -110,7 +110,7 @@ describe('MEMORAI Memory Management', () => {
 
     expect(versionedMemory.getCurrentVersion().content).toBe('Final version with corrections')
     expect(versionedMemory.getVersion(2)?.content).toBe('Updated note with more details')
-    
+
     const newVersion = versionedMemory.addVersion('Another update')
     expect(newVersion.version).toBe(4)
     expect(versionedMemory.getCurrentVersion().content).toBe('Another update')
@@ -119,20 +119,20 @@ describe('MEMORAI Memory Management', () => {
   it('calculates memory importance scores', () => {
     const calculateImportance = (memory: any): number => {
       let score = 0
-      
+
       // Recency (newer = more important)
       const daysSinceCreated = Math.floor((Date.now() - new Date(memory.timestamp).getTime()) / (1000 * 60 * 60 * 24))
       score += Math.max(0, 10 - daysSinceCreated)
-      
+
       // Access frequency
       score += memory.accessCount * 2
-      
+
       // User rating
       score += memory.userRating || 0
-      
+
       // Content length (longer = potentially more important)
       score += Math.min(memory.content.length / 50, 5)
-      
+
       return Math.round(score)
     }
 
@@ -176,7 +176,7 @@ describe('MEMORAI Memory Management', () => {
 
     const originalContent = 'Confidential meeting notes about merger discussions'
     const encryptionKey = 'user-secret-key-12345'
-    
+
     const encrypted = encryptMemory(originalContent, encryptionKey)
     const decrypted = decryptMemory(encrypted, encryptionKey)
 
@@ -188,11 +188,11 @@ describe('MEMORAI Memory Management', () => {
   it('manages memory relationships and connections', () => {
     const relationshipManager = {
       relationships: new Map(),
-      addRelationship: function(fromId: string, toId: string, type: string, strength: number = 1) {
+      addRelationship: function (fromId: string, toId: string, type: string, strength: number = 1) {
         const key = `${fromId}-${toId}`
         this.relationships.set(key, { fromId, toId, type, strength })
       },
-      getRelated: function(memoryId: string) {
+      getRelated: function (memoryId: string) {
         const related = []
         for (const [key, rel] of this.relationships) {
           if (rel.fromId === memoryId) {

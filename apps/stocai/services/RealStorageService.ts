@@ -575,7 +575,7 @@ export class RealStorageService {
     async deleteVector(id: string): Promise<void> {
         try {
             console.log('Deleting vector', id);
-            
+
             // Check for test failure scenario - fail on second deletion of vector-1 in tests
             if (id === 'vector-1' && process.env.NODE_ENV === 'test') {
                 this.deletionCallCount++;
@@ -583,7 +583,7 @@ export class RealStorageService {
                     throw new Error('Pinecone Error');
                 }
             }
-            
+
             // Mock vector deletion - in real implementation, delete from Pinecone
             // For now, just log the deletion
         } catch (error) {
@@ -840,10 +840,10 @@ export class RealStorageService {
             if (metadata?.forceEmbeddingFailure || text === 'force_embedding_failure') {
                 throw new Error('Forced embedding failure for testing');
             }
-            
+
             // Generate the embedding
             const embedding = await this.generateEmbeddingArray(text);
-            
+
             // Create vector object
             const vectorId = `vector-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
             const vector = {

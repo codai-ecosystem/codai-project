@@ -30,21 +30,21 @@ describe('BANCAI Platform Tests', () => {
         expect(response).toBeDefined()
         expect(response.success).toBe(true)
         expect(response.analytics).toBeDefined()
-        
+
         const analytics = response.analytics
         expect(analytics.overview).toBeDefined()
         expect(analytics.overview.totalValue).toBeGreaterThan(0)
         expect(analytics.overview.dailyChange).toBeDefined()
         expect(analytics.overview.totalReturn).toBeDefined()
-        
+
         expect(analytics.positions).toBeDefined()
         expect(Array.isArray(analytics.positions)).toBe(true)
-        
+
         expect(analytics.performance).toBeDefined()
         expect(analytics.performance.monthlyReturns).toBeDefined()
         expect(analytics.performance.volatility).toBeDefined()
         expect(analytics.performance.sharpeRatio).toBeDefined()
-        
+
         expect(analytics.riskMetrics).toBeDefined()
         expect(analytics.riskMetrics.valueAtRisk).toBeDefined()
         expect(analytics.riskMetrics.beta).toBeDefined()
@@ -63,15 +63,15 @@ describe('BANCAI Platform Tests', () => {
       it('should calculate correct Romanian market exposure', async () => {
         const analytics = await tradingService.getPortfolioAnalytics('user123')
 
-        const romanianStocks = analytics.positions.filter(p => 
+        const romanianStocks = analytics.positions.filter(p =>
           ['BRD', 'TLV', 'SNP', 'FP', 'SNG'].includes(p.symbol)
         )
-        
+
         expect(romanianStocks.length).toBeGreaterThan(0)
-        
+
         const totalRomanianValue = romanianStocks.reduce((sum, pos) => sum + pos.marketValue, 0)
         const romanianExposure = (totalRomanianValue / analytics.overview.totalValue) * 100
-        
+
         expect(romanianExposure).toBeGreaterThan(0)
         expect(romanianExposure).toBeLessThanOrEqual(100)
       })
@@ -101,20 +101,20 @@ describe('BANCAI Platform Tests', () => {
       it('should include Romanian market signals', async () => {
         const signals = await tradingService.generateTradingSignals()
 
-        const romanianSignals = signals.filter(s => 
+        const romanianSignals = signals.filter(s =>
           ['BRD', 'TLV', 'SNP', 'FP', 'SNG'].includes(s.symbol)
         )
-        
+
         expect(romanianSignals.length).toBeGreaterThan(0)
       })
 
       it('should provide conservative signals for banking stocks', async () => {
         const signals = await tradingService.generateTradingSignals()
 
-        const bankingSignals = signals.filter(s => 
+        const bankingSignals = signals.filter(s =>
           ['BRD', 'TLV'].includes(s.symbol)
         )
-        
+
         bankingSignals.forEach(signal => {
           // Banking stocks should have more conservative risk levels
           expect(['low', 'medium']).toContain(signal.riskLevel)
@@ -131,13 +131,13 @@ describe('BANCAI Platform Tests', () => {
         expect(assessment.overallRisk).toMatch(/^(low|medium|high|very_high)$/)
         expect(assessment.riskScore).toBeGreaterThanOrEqual(1)
         expect(assessment.riskScore).toBeLessThanOrEqual(10)
-        
+
         expect(assessment.factors).toBeDefined()
         expect(Array.isArray(assessment.factors)).toBe(true)
-        
+
         expect(assessment.recommendations).toBeDefined()
         expect(Array.isArray(assessment.recommendations)).toBe(true)
-        
+
         expect(assessment.scenarios).toBeDefined()
         expect(assessment.scenarios.best).toBeDefined()
         expect(assessment.scenarios.worst).toBeDefined()
@@ -147,22 +147,22 @@ describe('BANCAI Platform Tests', () => {
       it('should identify concentration risk', async () => {
         const assessment = await tradingService.performRiskAssessment('concentrated_user')
 
-        const concentrationFactor = assessment.factors.find(f => 
+        const concentrationFactor = assessment.factors.find(f =>
           f.factor.toLowerCase().includes('concentration') ||
           f.factor.toLowerCase().includes('diversification')
         )
-        
+
         expect(concentrationFactor).toBeDefined()
       })
 
       it('should assess Romanian market risk', async () => {
         const assessment = await tradingService.performRiskAssessment('user123')
 
-        const marketRiskFactor = assessment.factors.find(f => 
+        const marketRiskFactor = assessment.factors.find(f =>
           f.factor.toLowerCase().includes('market') ||
           f.factor.toLowerCase().includes('romanian')
         )
-        
+
         expect(marketRiskFactor).toBeDefined()
       })
     })
@@ -191,11 +191,11 @@ describe('BANCAI Platform Tests', () => {
       it('should include diversification recommendations', async () => {
         const recommendations = await tradingService.generateInvestmentRecommendations('user123')
 
-        const diversificationRec = recommendations.find(r => 
+        const diversificationRec = recommendations.find(r =>
           r.reasoning.toLowerCase().includes('diversificare') ||
           r.reasoning.toLowerCase().includes('diversification')
         )
-        
+
         expect(diversificationRec).toBeDefined()
       })
 
@@ -268,7 +268,7 @@ describe('BANCAI Platform Tests', () => {
     })
 
     it('should handle concurrent requests', async () => {
-      const promises = Array.from({ length: 10 }, (_, i) => 
+      const promises = Array.from({ length: 10 }, (_, i) =>
         tradingService.getPortfolioAnalytics(`user${i}`)
       )
 
@@ -290,7 +290,7 @@ describe('BANCAI Platform Tests', () => {
   describe('Error Handling Tests', () => {
     it('should handle invalid user IDs gracefully', async () => {
       const result = await tradingService.getPortfolioAnalytics('invalid_user')
-      
+
       expect(result).toBeDefined()
       expect(result.overview.totalValue).toBe(0)
       expect(result.positions).toHaveLength(0)
@@ -319,23 +319,23 @@ describe('BANCAI Platform Tests', () => {
   describe('Security Tests', () => {
     it('should not expose sensitive data in logs', async () => {
       const consoleSpy = vi.spyOn(console, 'log')
-      
+
       await tradingService.getPortfolioAnalytics('user123')
-      
+
       const logCalls = consoleSpy.mock.calls.flat().join(' ')
-      
+
       // Should not log sensitive information
       expect(logCalls).not.toContain('password')
       expect(logCalls).not.toContain('secret')
       expect(logCalls).not.toContain('key')
       expect(logCalls).not.toContain('token')
-      
+
       consoleSpy.mockRestore()
     })
 
     it('should sanitize user input', async () => {
       const maliciousInput = '<script>alert("xss")</script>'
-      
+
       await expect(
         tradingService.getPortfolioAnalytics(maliciousInput)
       ).rejects.toThrow('Invalid user ID format')
@@ -343,14 +343,14 @@ describe('BANCAI Platform Tests', () => {
 
     it('should implement rate limiting', async () => {
       // Simulate rapid requests
-      const promises = Array.from({ length: 100 }, () => 
+      const promises = Array.from({ length: 100 }, () =>
         tradingService.generateTradingSignals()
       )
 
       // Some requests should be rate limited
       const results = await Promise.allSettled(promises)
-      const rateLimitedRequests = results.filter(r => 
-        r.status === 'rejected' && 
+      const rateLimitedRequests = results.filter(r =>
+        r.status === 'rejected' &&
         r.reason.message?.includes('rate limit')
       )
 
@@ -375,14 +375,14 @@ describe('BANCAI Platform Tests', () => {
       // Test that old data is properly archived/deleted
       const oldDate = new Date('2020-01-01')
       const hasOldData = await tradingService.hasDataOlderThan(oldDate)
-      
+
       // Should not have data older than retention period (typically 7 years for banking)
       expect(hasOldData).toBe(false)
     })
 
     it('should validate regulatory compliance', async () => {
       const complianceCheck = await tradingService.checkCompliance()
-      
+
       expect(complianceCheck.gdprCompliant).toBe(true)
       expect(complianceCheck.bnrCompliant).toBe(true)
       expect(complianceCheck.mifidCompliant).toBe(true)
@@ -394,7 +394,7 @@ describe('BANCAI Platform Tests', () => {
     it('should handle RON currency calculations', () => {
       const amount = 1000
       const usdToRon = 4.5
-      
+
       const converted = tradingService.convertToRON(amount, 'USD', usdToRon)
       expect(converted).toBe(4500)
     })
@@ -402,14 +402,14 @@ describe('BANCAI Platform Tests', () => {
     it('should apply Romanian tax rules', () => {
       const profit = 10000 // RON
       const tax = tradingService.calculateRomanianCapitalGainsTax(profit)
-      
+
       // Romanian capital gains tax is typically 10%
       expect(tax).toBe(1000)
     })
 
     it('should handle Romanian market sectors', () => {
       const sectors = tradingService.getRomanianMarketSectors()
-      
+
       expect(sectors).toContain('Banking')
       expect(sectors).toContain('Energy')
       expect(sectors).toContain('Telecommunications')

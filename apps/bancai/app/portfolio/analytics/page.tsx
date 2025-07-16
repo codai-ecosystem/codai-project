@@ -38,7 +38,7 @@ const PortfolioAnalytics = () => {
   const loadPortfolioData = async () => {
     try {
       setLoading(true)
-      
+
       // Simulate portfolio data loading
       const portfolioData: Portfolio = {
         id: 'portfolio_1',
@@ -65,7 +65,7 @@ const PortfolioAnalytics = () => {
           },
           {
             id: '2',
-            portfolioId: 'portfolio_1', 
+            portfolioId: 'portfolio_1',
             symbol: 'TLV',
             name: 'Banca Transilvania',
             quantity: 2000,
@@ -237,11 +237,10 @@ const PortfolioAnalytics = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 px-4 py-3 rounded-xl font-medium transition-all duration-300 ${
-                  activeTab === tab.id
+                className={`flex items-center space-x-2 px-4 py-3 rounded-xl font-medium transition-all duration-300 ${activeTab === tab.id
                     ? 'bg-emerald-500/30 text-emerald-300 shadow-lg'
                     : 'text-slate-400 hover:text-white hover:bg-white/10'
-                }`}
+                  }`}
               >
                 <Icon className="w-4 h-4" />
                 <span>{tab.name}</span>
@@ -406,7 +405,7 @@ const PortfolioAnalytics = () => {
             className="space-y-6"
           >
             <h3 className="text-2xl font-bold text-white">Analiză Detaliată de Risc</h3>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6">
                 <div className="flex items-center space-x-3 mb-4">
@@ -466,7 +465,7 @@ const PortfolioAnalytics = () => {
             className="space-y-6"
           >
             <h3 className="text-2xl font-bold text-white">Recomandări Investiționale AI</h3>
-            
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6">
                 <div className="flex items-center space-x-3 mb-4">

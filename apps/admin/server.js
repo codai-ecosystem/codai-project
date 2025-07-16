@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const PORT = 4052;
+const PORT = 4050;
 
 // Middleware
 app.use(cors());
@@ -15,9 +15,9 @@ app.get('/health', (req, res) => {
   res.json({
     status: 'healthy',
     service: 'admin',
-    description: 'Enterprise Admin Panel & System Management Dashboard',
+    description: 'Internal Admin & Service Health Dashboard',
     port: PORT,
-    type: 'management',
+    type: 'undefined',
     category: 'infrastructure',
     timestamp: new Date().toISOString(),
     uptime: process.uptime()

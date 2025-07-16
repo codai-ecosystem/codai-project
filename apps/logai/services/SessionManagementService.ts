@@ -98,7 +98,7 @@ export class SessionManagementService {
     }
 
     this.sessions.set(sessionId, session)
-    
+
     // Track user sessions
     if (!this.userSessions.has(userId)) {
       this.userSessions.set(userId, new Set())
@@ -112,10 +112,10 @@ export class SessionManagementService {
       type: 'login',
       severity: 'low',
       description: `New session created from ${ipAddress}`,
-      metadata: { 
-        userAgent, 
+      metadata: {
+        userAgent,
         location,
-        deviceFingerprint 
+        deviceFingerprint
       }
     })
 
@@ -124,7 +124,7 @@ export class SessionManagementService {
 
   async validateSession(sessionId: string): Promise<SessionData | null> {
     const session = this.sessions.get(sessionId)
-    
+
     if (!session) {
       return null
     }
@@ -165,7 +165,7 @@ export class SessionManagementService {
 
   async updateSessionActivity(sessionId: string, ipAddress?: string): Promise<boolean> {
     const session = this.sessions.get(sessionId)
-    
+
     if (!session || session.status !== 'active') {
       return false
     }
@@ -176,7 +176,7 @@ export class SessionManagementService {
     // Detect IP address changes
     if (ipAddress && ipAddress !== previousIP) {
       const newLocation = await this.getLocationFromIP(ipAddress)
-      
+
       session.ipAddress = ipAddress
       session.location = newLocation
 
@@ -186,8 +186,8 @@ export class SessionManagementService {
         type: 'location_change',
         severity: 'medium',
         description: `IP address changed from ${previousIP} to ${ipAddress}`,
-        metadata: { 
-          previousIP, 
+        metadata: {
+          previousIP,
           newIP: ipAddress,
           previousLocation: session.location,
           newLocation
@@ -200,13 +200,13 @@ export class SessionManagementService {
 
   async revokeSession(sessionId: string, reason: string = 'Manual revocation'): Promise<boolean> {
     const session = this.sessions.get(sessionId)
-    
+
     if (!session) {
       return false
     }
 
     session.status = 'revoked'
-    
+
     // Remove from user sessions
     const userSessions = this.userSessions.get(session.userId)
     if (userSessions) {
@@ -227,13 +227,13 @@ export class SessionManagementService {
 
   async revokeAllUserSessions(userId: string, excludeSessionId?: string): Promise<number> {
     const userSessions = this.userSessions.get(userId)
-    
+
     if (!userSessions) {
       return 0
     }
 
     let revokedCount = 0
-    
+
     for (const sessionId of userSessions) {
       if (sessionId !== excludeSessionId) {
         const success = await this.revokeSession(sessionId, 'All sessions revoked by user')
@@ -248,13 +248,13 @@ export class SessionManagementService {
 
   async suspendUserSessions(userId: string, reason: string): Promise<number> {
     const userSessions = this.userSessions.get(userId)
-    
+
     if (!userSessions) {
       return 0
     }
 
     let suspendedCount = 0
-    
+
     for (const sessionId of userSessions) {
       const session = this.sessions.get(sessionId)
       if (session && session.status === 'active') {
@@ -277,7 +277,7 @@ export class SessionManagementService {
 
   private async enforceSessionLimits(userId: string): Promise<void> {
     const userSessions = this.userSessions.get(userId)
-    
+
     if (!userSessions) {
       return
     }
@@ -290,7 +290,7 @@ export class SessionManagementService {
       // Revoke oldest session
       const oldestSession = activeSessions
         .sort((a, b) => new Date(a!.lastActivity).getTime() - new Date(b!.lastActivity).getTime())[0]
-      
+
       if (oldestSession) {
         await this.revokeSession(oldestSession.id, 'Session limit exceeded')
       }
@@ -335,7 +335,7 @@ export class SessionManagementService {
       const session = this.sessions.get(sessionId)
       if (session) {
         this.sessions.delete(sessionId)
-        
+
         const userSessions = this.userSessions.get(session.userId)
         if (userSessions) {
           userSessions.delete(sessionId)
@@ -361,7 +361,7 @@ export class SessionManagementService {
       if (activeSessions.length > 1) {
         // Check for sessions from different locations
         const locations = new Set(activeSessions.map(s => s!.location?.country))
-        
+
         if (locations.size > 1) {
           this.logSecurityEvent({
             sessionId: 'multiple',
@@ -369,7 +369,7 @@ export class SessionManagementService {
             type: 'concurrent_session',
             severity: 'high',
             description: `Multiple active sessions from different countries detected`,
-            metadata: { 
+            metadata: {
               sessionCount: activeSessions.length,
               locations: Array.from(locations)
             }
@@ -387,7 +387,7 @@ export class SessionManagementService {
     }
 
     this.securityEvents.push(event)
-    
+
     // Keep only last 1000 events
     if (this.securityEvents.length > 1000) {
       this.securityEvents = this.securityEvents.slice(-1000)
@@ -423,7 +423,7 @@ export class SessionManagementService {
 
     // Calculate today's sessions
     const today = new Date().toDateString()
-    const sessionsToday = allSessions.filter(s => 
+    const sessionsToday = allSessions.filter(s =>
       new Date(s.createdAt).toDateString() === today
     ).length
 
@@ -451,9 +451,9 @@ export class SessionManagementService {
     const completedSessions = allSessions.filter(s => s.status !== 'active')
     const averageSessionDuration = completedSessions.length > 0
       ? completedSessions.reduce((acc, session) => {
-          const duration = new Date(session.lastActivity).getTime() - new Date(session.createdAt).getTime()
-          return acc + duration
-        }, 0) / completedSessions.length
+        const duration = new Date(session.lastActivity).getTime() - new Date(session.createdAt).getTime()
+        return acc + duration
+      }, 0) / completedSessions.length
       : 0
 
     return {

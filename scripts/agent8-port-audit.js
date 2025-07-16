@@ -18,12 +18,12 @@ async function auditPortConfigurations() {
         // Read the authoritative projects.index.json
         const projectsIndexPath = path.join(ROOT_DIR, 'projects.index.json');
         const projectsIndex = JSON.parse(await fs.readFile(projectsIndexPath, 'utf8'));
-        
+
         console.log(`📋 Loaded projects.index.json - ${projectsIndex.totalApps} apps, ${projectsIndex.totalServices} services`);
-        
+
         // Create authoritative port mapping
         const authoritativePorts = new Map();
-        
+
         // Add apps
         if (projectsIndex.apps) {
             projectsIndex.apps.forEach(app => {
@@ -35,7 +35,7 @@ async function auditPortConfigurations() {
                 });
             });
         }
-        
+
         // Add services  
         if (projectsIndex.services) {
             projectsIndex.services.forEach(service => {
@@ -53,20 +53,20 @@ async function auditPortConfigurations() {
         // Audit apps directory
         const appsDir = path.join(ROOT_DIR, 'apps');
         const appDirs = await fs.readdir(appsDir);
-        
+
         const conflicts = [];
         const missing = [];
         const correct = [];
 
         for (const appDir of appDirs) {
             if (appDir === 'README.md') continue;
-            
+
             const packagePath = path.join(appsDir, appDir, 'package.json');
-            
+
             try {
                 const packageJson = JSON.parse(await fs.readFile(packagePath, 'utf8'));
                 const authInfo = authoritativePorts.get(appDir);
-                
+
                 if (!authInfo) {
                     missing.push({
                         name: appDir,
@@ -75,9 +75,9 @@ async function auditPortConfigurations() {
                     });
                     continue;
                 }
-                
+
                 const packagePort = extractPortFromScripts(packageJson.scripts);
-                
+
                 if (packagePort && packagePort !== authInfo.port) {
                     conflicts.push({
                         name: appDir,
@@ -93,7 +93,7 @@ async function auditPortConfigurations() {
                         type: authInfo.type
                     });
                 }
-                
+
             } catch (error) {
                 console.log(`⚠️ Could not read package.json for ${appDir}: ${error.message}`);
             }
@@ -127,11 +127,11 @@ async function auditPortConfigurations() {
         if (conflicts.length > 0) {
             console.log(`\\n🔧 AGENT 8 INTEGRATION REPAIR COMMANDS:`);
             console.log(`# Copy these commands to fix port conflicts\\n`);
-            
+
             conflicts.forEach(conflict => {
                 const devScript = `"dev": "next dev --port ${conflict.authoritativePort}"`;
                 const startScript = `"start": "next start --port ${conflict.authoritativePort}"`;
-                
+
                 console.log(`# Fix ${conflict.name}`);
                 console.log(`# Update dev script to: ${devScript}`);
                 console.log(`# Update start script to: ${startScript}`);
@@ -158,11 +158,11 @@ async function auditPortConfigurations() {
 
 function extractPortFromScripts(scripts) {
     if (!scripts) return null;
-    
+
     // Look for port in dev script
     const devScript = scripts.dev || '';
     const portMatch = devScript.match(/--port\\s+(\\d+)/);
-    
+
     return portMatch ? parseInt(portMatch[1]) : null;
 }
 

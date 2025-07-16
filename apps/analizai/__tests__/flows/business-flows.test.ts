@@ -11,7 +11,7 @@ describe('ANALIZAI Business Flow Tests', () => {
 
   beforeEach(() => {
     user = userEvent.setup()
-    
+
     // Mock real business services with authentic data
     mockAnalysisService = {
       initiateAnalysis: vi.fn().mockImplementation((request) => {
@@ -164,7 +164,7 @@ describe('ANALIZAI Business Flow Tests', () => {
       }
 
       const validation = await mockAnalysisService.validateBusinessInput(complianceData)
-      
+
       expect(validation.valid).toBe(true)
       expect(validation.sanitized_data.company_size).toBeDefined()
       expect(validation.sanitized_data.industry).toBeDefined()
@@ -386,10 +386,10 @@ describe('ANALIZAI Business Flow Tests', () => {
       ]
 
       expect(performanceAlerts).toHaveLength(3)
-      
+
       const warningAlerts = performanceAlerts.filter(alert => alert.severity === 'warning')
       expect(warningAlerts).toHaveLength(1)
-      
+
       performanceAlerts.forEach(alert => {
         expect(alert.recommended_action).toBeDefined()
         expect(alert.trend).toMatch(/increasing|decreasing|stable/)

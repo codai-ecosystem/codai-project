@@ -144,7 +144,7 @@ export class AgentVerificationService {
       const matches = code.match(regex);
       if (matches) {
         suspiciousPatterns.push(patternName);
-        
+
         matches.forEach((match) => {
           const severity = this.getVulnerabilitySeverity(patternName);
           vulnerabilities.push({
@@ -201,7 +201,7 @@ export class AgentVerificationService {
   private async benchmarkPerformance(filePath: string): Promise<PerformanceBenchmark> {
     // Simulate performance testing
     // In a real implementation, this would execute the agent in a sandboxed environment
-    
+
     const simulatedResults = {
       responseTime: Math.random() * 1000 + 100, // 100-1100ms
       memoryUsage: Math.random() * 100 + 10,    // 10-110MB
@@ -212,7 +212,7 @@ export class AgentVerificationService {
 
     // Calculate performance score
     let score = 100;
-    
+
     // Response time scoring
     if (simulatedResults.responseTime > 500) score -= 20;
     else if (simulatedResults.responseTime > 200) score -= 10;
@@ -261,7 +261,7 @@ export class AgentVerificationService {
 
     let documentation = Math.min(100, commentRatio * 200);
     let testCoverage = hasTests ? 70 : 0;
-    
+
     let functionality = 80; // Base score, would be determined by actual testing
     let usability = 75; // Base score, would be determined by UI/UX analysis
 
@@ -317,7 +317,7 @@ Focus on:
       // Parse AI response (simplified)
       const lines = response.split('\n').filter(line => line.trim());
       const summary = lines.find(line => line.toLowerCase().includes('summary') || lines.indexOf(line) < 3) || 'AI review completed';
-      
+
       const recommendations = lines
         .filter(line => line.includes('-') || line.includes('•'))
         .slice(0, 5)

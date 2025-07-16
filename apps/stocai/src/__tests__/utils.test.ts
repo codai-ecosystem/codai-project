@@ -152,7 +152,7 @@ describe('STOCAI Utilities', () => {
     it('should generate unique IDs', () => {
       const id1 = generateId();
       const id2 = generateId();
-      
+
       expect(id1).toBeDefined();
       expect(id2).toBeDefined();
       expect(id1).not.toBe(id2);

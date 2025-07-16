@@ -48,14 +48,14 @@ describe('Error Handling Flow Tests', () => {
     it('should handle duplicate project names', async () => {
       const project1 = await projectFlow.createProject('TestProject');
       const project2 = await projectFlow.createProject('TestProject');
-      
+
       expect(project1.id).not.toBe(project2.id);
     });
 
     it('should handle invalid task additions', async () => {
       const project = await projectFlow.createProject('TestProject');
       const task = await projectFlow.addTask(project.id, ''); // Empty task
-      
+
       expect(task).toBeDefined();
       expect(task.id).toBeTruthy();
     });
@@ -84,7 +84,7 @@ describe('Error Handling Flow Tests', () => {
 
     it('should maintain state during partial failures', async () => {
       const project = await projectFlow.createProject('ErrorTest');
-      
+
       try {
         await codeGenFlow.generateCode({ prompt: '', language: '', complexity: 'simple' }); // Should work but with empty data
       } catch (error) {

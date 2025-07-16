@@ -2,7 +2,6 @@
   "name": "bancai",
   "version": "1.0.0",
   "description": "AI Banking & Finance Platform - Intelligent financial services and analytics",
-  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev --port 4033",
@@ -30,7 +29,7 @@
     "date-fns": "^4.1.0",
     "framer-motion": "^12.23.3",
     "lucide-react": "^0.525.0",
-    "next": "15.3.5",
+    "next": "15.4.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "recharts": "3.1.0",

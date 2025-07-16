@@ -1,0 +1,16 @@
+{
+  "passed": 0,
+  "failed": 0,
+  "skipped": 0,
+  "total": 0,
+  "coverage": 0,
+  "duration": 4,
+  "services": {},
+  "errors": [
+    {
+      "type": "orchestrator",
+      "message": "Invalid project structure: Not in Codai project root directory",
+      "stack": "Error: Invalid project structure: Not in Codai project root directory\n    at TestOrchestrator.preflightChecks (file:///E:/GitHub/codai-project/scripts/test-orchestrator.js:133:13)\n    at async TestOrchestrator.run (file:///E:/GitHub/codai-project/scripts/test-orchestrator.js:94:7)"
+    }
+  ]
+}

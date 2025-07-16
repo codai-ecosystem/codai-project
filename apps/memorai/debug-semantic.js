@@ -34,7 +34,7 @@ async function test() {
     useSemanticSimilarity: true,
     semanticThreshold: 0.1 // Lower threshold to see results
   })
-  
+
   console.log('Results:', result.memories.length)
   result.memories.forEach(m => {
     console.log(`ID: ${m.id}, Relevance: ${m.relevance}, Tags: ${m.metadata.tags?.join(', ')}`)

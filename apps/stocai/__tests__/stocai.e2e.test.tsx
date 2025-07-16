@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest'
 describe('stocai End-to-End Tests', () => {
   // Note: These are E2E test specifications
   // In a real implementation, these would use Playwright or Cypress
-  
+
   describe('User Journey Tests', () => {
     it('should complete onboarding flow', () => {
       // E2E test specification: User registration -> Welcome -> Tutorial -> Dashboard

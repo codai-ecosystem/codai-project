@@ -16,7 +16,7 @@ describe('Load Performance Tests', () => {
       const startTime = Date.now();
       const concurrentRequests = 10;
 
-      const requests = Array.from({ length: concurrentRequests }, (_, i) => 
+      const requests = Array.from({ length: concurrentRequests }, (_, i) =>
         codeGenFlow.generateCode({
           prompt: `Function ${i}`,
           language: 'javascript',
@@ -58,7 +58,7 @@ describe('Load Performance Tests', () => {
 
     it('should handle memory efficiently during bulk operations', async () => {
       const initialMemory = process.memoryUsage().heapUsed;
-      
+
       const bulkRequests = Array.from({ length: 100 }, (_, i) =>
         codeGenFlow.generateCode({
           prompt: `Bulk request ${i}`,
@@ -68,7 +68,7 @@ describe('Load Performance Tests', () => {
       );
 
       await Promise.all(bulkRequests);
-      
+
       // Force garbage collection if available
       if (global.gc) {
         global.gc();
@@ -98,7 +98,7 @@ describe('Load Performance Tests', () => {
 
       expect(projects).toHaveLength(projectCount);
       expect(duration).toBeLessThan(2000); // Should complete within 2 seconds
-      
+
       // Verify all projects have unique IDs
       const ids = projects.map(p => p.id);
       const uniqueIds = new Set(ids);
@@ -161,7 +161,7 @@ describe('Load Performance Tests', () => {
 
       for (let i = 0; i < peakOperations; i++) {
         const start = Date.now();
-        
+
         await Promise.race([
           codeGenFlow.generateCode({
             prompt: `Peak test ${i}`,

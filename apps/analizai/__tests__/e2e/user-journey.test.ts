@@ -23,7 +23,7 @@ describe('ANALIZAI User Journey E2E Tests', () => {
           })
         })
       }
-      
+
       if (url.includes('/api/analysis')) {
         return Promise.resolve({
           ok: true,
@@ -237,9 +237,9 @@ describe('ANALIZAI User Journey E2E Tests', () => {
       // Mock save operation
       global.fetch = vi.fn().mockResolvedValueOnce({
         ok: true,
-        json: () => Promise.resolve({ 
-          saved: true, 
-          share_url: 'https://analizai.com/share/save-test-789' 
+        json: () => Promise.resolve({
+          saved: true,
+          share_url: 'https://analizai.com/share/save-test-789'
         })
       })
 
@@ -276,8 +276,8 @@ describe('ANALIZAI User Journey E2E Tests', () => {
 
     it('provides user feedback during long operations', async () => {
       // Mock slow API response
-      global.fetch = vi.fn().mockImplementation(() => 
-        new Promise(resolve => 
+      global.fetch = vi.fn().mockImplementation(() =>
+        new Promise(resolve =>
           setTimeout(() => resolve({
             ok: true,
             json: () => Promise.resolve({ status: 'processing' })

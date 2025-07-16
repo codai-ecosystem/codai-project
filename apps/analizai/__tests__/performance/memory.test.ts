@@ -100,7 +100,7 @@ describe('ANALIZAI Memory Performance Tests', () => {
         const { unmount } = render(<AnalizaiPage />)
         await new Promise(resolve => setTimeout(resolve, 50))
         unmount()
-        
+
         // Force garbage collection if available
         if (global.gc) {
           global.gc()
@@ -193,7 +193,7 @@ describe('ANALIZAI Memory Performance Tests', () => {
       const concurrentTasks = Array.from({ length: 10 }, async (_, i) => {
         const response = await fetch(`/api/insights?batch=${i}&limit=50`)
         const data = await response.json()
-        
+
         // Process each batch
         return data.insights.map((insight: any) => ({
           batchId: i,
@@ -236,13 +236,13 @@ describe('ANALIZAI Memory Performance Tests', () => {
       })
 
       const { unmount } = render(<AnalizaiPage />)
-      
+
       // Allow component to set up event listeners
       await new Promise(resolve => setTimeout(resolve, 100))
       const listenersAfterMount = eventListenerCount
 
       unmount()
-      
+
       // Allow cleanup
       await new Promise(resolve => setTimeout(resolve, 100))
       const listenersAfterUnmount = eventListenerCount
@@ -285,10 +285,10 @@ describe('ANALIZAI Memory Performance Tests', () => {
 
       const { unmount } = render(<AnalizaiPage />)
       await new Promise(resolve => setTimeout(resolve, 200))
-      
+
       const timersAfterMount = activeTimers
       unmount()
-      
+
       await new Promise(resolve => setTimeout(resolve, 200))
       const timersAfterUnmount = activeTimers
 
@@ -310,12 +310,12 @@ describe('ANALIZAI Memory Performance Tests', () => {
       // Stress test with rapid component mounting/unmounting
       for (let i = 0; i < 20; i++) {
         const { unmount } = render(<AnalizaiPage />)
-        
+
         // Simulate user interactions
         await new Promise(resolve => setTimeout(resolve, 10))
-        
+
         unmount()
-        
+
         // Force garbage collection periodically
         if (i % 5 === 0 && global.gc) {
           global.gc()
@@ -340,16 +340,16 @@ describe('ANALIZAI Memory Performance Tests', () => {
       for (let i = 0; i < 50; i++) {
         const response = await fetch(`/api/insights?session=${i}&limit=20`)
         const data = await response.json()
-        
+
         // Process data as if displaying in UI
         const sessionData = data.insights.slice(0, 10) // Only keep recent data
         expect(sessionData).toHaveLength(10)
-        
+
         // Cleanup older data periodically
         if (i % 10 === 0 && global.gc) {
           global.gc()
         }
-        
+
         await new Promise(resolve => setTimeout(resolve, 5))
       }
 

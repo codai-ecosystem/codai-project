@@ -77,7 +77,7 @@ export class MockCodaiRepository implements CodaiRepository {
     if (!existing) {
       throw new Error('Record not found');
     }
-    
+
     const updated: CodaiRecord = {
       ...existing,
       ...data,
@@ -95,7 +95,7 @@ export class MockCodaiRepository implements CodaiRepository {
   async findAll(pagination?: { page: number; limit: number }) {
     const allData = Array.from(this.data.values());
     const total = allData.length;
-    
+
     if (!pagination) {
       return {
         data: allData,
@@ -109,7 +109,7 @@ export class MockCodaiRepository implements CodaiRepository {
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
     const pageData = allData.slice(startIndex, endIndex);
-    
+
     return {
       data: pageData,
       total,
@@ -166,7 +166,7 @@ export class CodaiService {
       }
 
       const record = await this.repository.findById(id);
-      
+
       if (!record) {
         throw new Error('Record not found');
       }

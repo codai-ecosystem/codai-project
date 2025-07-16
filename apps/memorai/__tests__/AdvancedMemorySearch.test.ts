@@ -45,7 +45,7 @@ describe('AdvancedMemorySearch', () => {
     ]
   })
 
-describe('AdvancedMemorySearch', () => {
+  describe('AdvancedMemorySearch', () => {
     let searchService: AdvancedMemorySearch
     let mockMemories: SearchableMemory[]
 

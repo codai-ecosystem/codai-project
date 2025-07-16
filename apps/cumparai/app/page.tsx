@@ -16,7 +16,7 @@ import {
   Heart,
   ShoppingCart,
   Sparkles,
-  PresentationChart,
+  BarChart3,
   Clock,
   Activity
 } from 'lucide-react'
@@ -78,25 +78,19 @@ export default function CumparAIPage() {
     }
   ])
 
-  useEffect(() => {
-    loadRealData()
-    const interval = setInterval(updateMetrics, 5000)
-    return () => clearInterval(interval)
-  }, [])
-
   const loadRealData = async () => {
     setLoading(true)
     try {
       // Simulate API calls for real data
-      const metricsResponse = await fetch('/api/system-metrics').catch(() => ({ ok: false }))
-      const productsResponse = await fetch('/api/products').catch(() => ({ ok: false }))
+      const metricsResponse = await fetch('/api/system-metrics').catch(() => null)
+      const productsResponse = await fetch('/api/products').catch(() => null)
 
-      if (metricsResponse.ok) {
+      if (metricsResponse && metricsResponse.ok) {
         const metricsData = await metricsResponse.json()
         setStats(metricsData)
       }
 
-      if (productsResponse.ok) {
+      if (productsResponse && productsResponse.ok) {
         const productsData = await productsResponse.json()
         setProducts(productsData.products || products)
       }
@@ -131,6 +125,12 @@ export default function CumparAIPage() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    loadRealData()
+    const interval = setInterval(updateMetrics, 5000)
+    return () => clearInterval(interval)
+  }, [])
 
   const StatCard = ({ title, value, icon: Icon, color, trend, subtitle }: any) => (
     <motion.div
@@ -207,8 +207,8 @@ export default function CumparAIPage() {
 
       <button
         className={`w-full py-3 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${product.inStock
-            ? 'bg-blue-500 hover:bg-blue-600 text-white'
-            : 'bg-slate-700 text-slate-400 cursor-not-allowed'
+          ? 'bg-blue-500 hover:bg-blue-600 text-white'
+          : 'bg-slate-700 text-slate-400 cursor-not-allowed'
           }`}
         disabled={!product.inStock}
       >
@@ -219,7 +219,7 @@ export default function CumparAIPage() {
   )
 
   const tabs = [
-    { id: 'overview', label: 'Overview', icon: PresentationChart },
+    { id: 'overview', label: 'Overview', icon: BarChart3 },
     { id: 'products', label: 'Products', icon: ShoppingBag },
     { id: 'analytics', label: 'Analytics', icon: TrendingUp },
     { id: 'search', label: 'Search', icon: Search }
@@ -252,8 +252,8 @@ export default function CumparAIPage() {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 ${activeTab === tab.id
-                      ? 'bg-blue-500/30 text-blue-400 border border-blue-400/50'
-                      : 'text-slate-400 hover:text-white hover:bg-white/5'
+                    ? 'bg-blue-500/30 text-blue-400 border border-blue-400/50'
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
                     }`}
                 >
                   <Icon className="w-4 h-4" />

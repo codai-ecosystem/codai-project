@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const PORT = 4046;
+const PORT = 4058;
 
 // Middleware
 app.use(cors());
@@ -15,10 +15,10 @@ app.get('/health', (req, res) => {
   res.json({ 
     status: 'healthy', 
     service: 'id',
-    description: 'Identity Management System',
+    description: 'Codai Identity & Reputation Layer',
     port: PORT,
-    type: 'identity',
-    category: 'foundation',
+    type: 'undefined',
+    category: 'identity',
     timestamp: new Date().toISOString(),
     uptime: process.uptime()
   });

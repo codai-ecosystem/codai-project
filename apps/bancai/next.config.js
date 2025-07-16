@@ -26,11 +26,20 @@ const nextConfig = {
         tls: false,
       };
     }
+
+    // Handle ESM/CommonJS interop
+    config.resolve.extensionAlias = {
+      '.js': ['.js', '.ts', '.tsx'],
+      '.jsx': ['.jsx', '.tsx'],
+    };
+
     return config;
   },
   // Reduce memory usage
   compress: true,
   poweredByHeader: false,
+  // Fix module resolution
+  transpilePackages: ['@codai/api-keys', '@codai/azure-openai', '@codai/logai-integration', '@codai/logai-sdk'],
 };
 
-export default nextConfig;
+module.exports = nextConfig;

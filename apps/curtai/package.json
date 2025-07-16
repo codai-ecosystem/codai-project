@@ -4,9 +4,9 @@
   "description": "CurtAI - Next Generation AI-Powered Soulmate Discovery Platform",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev --port 4058",
+    "dev": "next dev --port 4041",
     "build": "next build",
-    "start": "next start --port 4058",
+    "start": "next start --port 4041",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "vercel-build": "next build",

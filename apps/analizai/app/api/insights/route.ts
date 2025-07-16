@@ -14,16 +14,16 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { data, context, type } = InsightRequestSchema.parse(body)
-    
+
     // Get user ID from headers or session
     const userId = request.headers.get('user-id') || 'demo-user'
 
     const result = await analyticsService.generateInsights(data, context, userId)
 
     if (!result.success) {
-      return NextResponse.json({ 
-        success: false, 
-        error: result.error 
+      return NextResponse.json({
+        success: false,
+        error: result.error
       }, { status: 400 })
     }
 
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Insight generation error:', error)
-    
+
     if (error instanceof z.ZodError) {
       return NextResponse.json({
         success: false,
@@ -125,11 +125,11 @@ export async function GET(request: NextRequest) {
 
     // Filter insights based on query parameters
     let filteredInsights = insights
-    
+
     if (priority) {
       filteredInsights = filteredInsights.filter(i => i.priority === priority.toUpperCase())
     }
-    
+
     if (status) {
       filteredInsights = filteredInsights.filter(i => i.status === status.toUpperCase())
     }

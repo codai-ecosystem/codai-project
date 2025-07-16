@@ -21,7 +21,7 @@ describe('AIDE Azure OpenAI Integration', () => {
   beforeEach(() => {
     // Store original environment
     originalEnv = { ...process.env };
-    
+
     // Set mock environment
     Object.assign(process.env, mockEnv);
   });
@@ -71,7 +71,7 @@ describe('AIDE Azure OpenAI Integration', () => {
     it('should identify missing configuration', () => {
       const requiredVars = [
         'AZURE_OPENAI_API_KEY',
-        'AZURE_OPENAI_ENDPOINT', 
+        'AZURE_OPENAI_ENDPOINT',
         'AZURE_OPENAI_DEPLOYMENT_NAME'
       ];
 
@@ -84,7 +84,7 @@ describe('AIDE Azure OpenAI Integration', () => {
     it('should use default API version when not specified', () => {
       delete process.env.AZURE_OPENAI_API_VERSION;
       const defaultVersion = '2024-02-15-preview';
-      
+
       // Simulate service initialization logic
       const apiVersion = process.env.AZURE_OPENAI_API_VERSION || defaultVersion;
       expect(apiVersion).toBe(defaultVersion);
@@ -95,7 +95,7 @@ describe('AIDE Azure OpenAI Integration', () => {
     it('should construct proper Azure OpenAI endpoint', () => {
       const endpoint = process.env.AZURE_OPENAI_ENDPOINT;
       const deployment = process.env.AZURE_OPENAI_DEPLOYMENT_NAME;
-      
+
       const fullEndpoint = `${endpoint}/openai/deployments/${deployment}`;
       expect(fullEndpoint).toBe('https://mock-resource.openai.azure.com/openai/deployments/gpt-4');
     });
@@ -119,11 +119,11 @@ describe('AIDE Azure OpenAI Integration', () => {
   describe('Fallback Response System', () => {
     it('should provide appropriate fallback for React component requests', () => {
       const userMessage = 'create a button component';
-      const isComponentRequest = userMessage.toLowerCase().includes('create') && 
-                                 userMessage.toLowerCase().includes('component');
-      
+      const isComponentRequest = userMessage.toLowerCase().includes('create') &&
+        userMessage.toLowerCase().includes('component');
+
       expect(isComponentRequest).toBe(true);
-      
+
       // Simulate fallback response logic
       const fallbackResponse = `I'll help you create a React component. Here's a template:
 
@@ -156,11 +156,11 @@ Would you like me to customize this component for your specific needs?`;
 
     it('should provide debugging assistance for error messages', () => {
       const userMessage = 'fix this error: Cannot read property of undefined';
-      const isErrorRequest = userMessage.toLowerCase().includes('fix') || 
-                             userMessage.toLowerCase().includes('error');
-      
+      const isErrorRequest = userMessage.toLowerCase().includes('fix') ||
+        userMessage.toLowerCase().includes('error');
+
       expect(isErrorRequest).toBe(true);
-      
+
       // Simulate debugging fallback
       const debuggingAdvice = `I can help you debug that issue. Here are some common troubleshooting steps:
 
@@ -179,7 +179,7 @@ Could you share more details about the specific error you're encountering?`;
       expect(debuggingAdvice).toContain('debug');
       expect(debuggingAdvice).toContain('Cannot read property');
       expect(debuggingAdvice).toContain('optional chaining');
-      expect(debuggingAdvice).toContain('?.'); 
+      expect(debuggingAdvice).toContain('?.');
     });
   });
 

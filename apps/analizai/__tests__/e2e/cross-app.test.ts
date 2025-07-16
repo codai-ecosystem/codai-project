@@ -25,12 +25,12 @@ describe('Cross-App Integration Tests', () => {
   describe('MEMORAI Integration', () => {
     it('stores analysis data in MEMORAI', async () => {
       mockCrossAppAPI.memorai.storeData.mockResolvedValueOnce({ success: true });
-      
+
       const result = await mockCrossAppAPI.memorai.storeData({
         type: 'analysis',
         data: { insights: ['insight1', 'insight2'] }
       });
-      
+
       expect(result.success).toBe(true);
       expect(mockCrossAppAPI.memorai.storeData).toHaveBeenCalledWith({
         type: 'analysis',
@@ -41,7 +41,7 @@ describe('Cross-App Integration Tests', () => {
     it('retrieves historical analysis from MEMORAI', async () => {
       const mockData = { analyses: [{ id: 1, insights: ['test'] }] };
       mockCrossAppAPI.memorai.retrieveData.mockResolvedValueOnce(mockData);
-      
+
       const result = await mockCrossAppAPI.memorai.retrieveData('analysis');
       expect(result).toEqual(mockData);
     });
@@ -49,45 +49,45 @@ describe('Cross-App Integration Tests', () => {
 
   describe('BANCAI Integration', () => {
     it('fetches financial data from BANCAI', async () => {
-      const mockFinancialData = { 
-        revenue: 100000, 
-        expenses: 75000, 
-        profit: 25000 
+      const mockFinancialData = {
+        revenue: 100000,
+        expenses: 75000,
+        profit: 25000
       };
       mockCrossAppAPI.bancai.getFinancialData.mockResolvedValueOnce(mockFinancialData);
-      
+
       const result = await mockCrossAppAPI.bancai.getFinancialData();
       expect(result).toEqual(mockFinancialData);
     });
 
     it('processes analysis-based transactions', async () => {
-      mockCrossAppAPI.bancai.processTransaction.mockResolvedValueOnce({ 
+      mockCrossAppAPI.bancai.processTransaction.mockResolvedValueOnce({
         transactionId: 'txn_123',
         status: 'processed'
       });
-      
+
       const result = await mockCrossAppAPI.bancai.processTransaction({
         amount: 1000,
         reason: 'analysis_investment'
       });
-      
+
       expect(result.status).toBe('processed');
     });
   });
 
   describe('CODAI Integration', () => {
     it('generates code based on analysis insights', async () => {
-      const mockCode = { 
+      const mockCode = {
         language: 'python',
         code: 'def analyze_data(): pass'
       };
       mockCrossAppAPI.codai.generateCode.mockResolvedValueOnce(mockCode);
-      
+
       const result = await mockCrossAppAPI.codai.generateCode({
         type: 'analysis_function',
         requirements: ['data processing', 'visualization']
       });
-      
+
       expect(result).toEqual(mockCode);
     });
 
@@ -97,7 +97,7 @@ describe('Cross-App Integration Tests', () => {
         suggestions: ['optimize loops', 'add caching']
       };
       mockCrossAppAPI.codai.analyzeCode.mockResolvedValueOnce(mockAnalysis);
-      
+
       const result = await mockCrossAppAPI.codai.analyzeCode('function test() {}');
       expect(result).toEqual(mockAnalysis);
     });
@@ -111,7 +111,7 @@ describe('Cross-App Integration Tests', () => {
 
     it('handles cross-app error propagation', async () => {
       mockCrossAppAPI.memorai.storeData.mockRejectedValueOnce(new Error('Storage failed'));
-      
+
       try {
         await mockCrossAppAPI.memorai.storeData({});
       } catch (error) {

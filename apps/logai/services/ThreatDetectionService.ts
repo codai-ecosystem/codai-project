@@ -133,7 +133,7 @@ export class ThreatDetectionService {
       // Brute force detection
       if (attempts >= 5) {
         this.blockIp(ip, 'Brute force attack detected', false, 3600000) // 1 hour
-        
+
         return this.createThreat({
           type: 'bruteforce',
           severity: 'critical',
@@ -172,7 +172,7 @@ export class ThreatDetectionService {
         description: `Multiple sessions detected for user from different IPs`,
         sourceIp: ip,
         userId,
-        metadata: { 
+        metadata: {
           sessionId,
           existingSessions: existingSessions.map(s => s.ip)
         }
@@ -240,8 +240,8 @@ export class ThreatDetectionService {
           }
         ])
 
-        if (analysis.success && analysis.data && 
-            (analysis.data.toLowerCase().includes('high') || analysis.data.toLowerCase().includes('critical'))) {
+        if (analysis.success && analysis.data &&
+          (analysis.data.toLowerCase().includes('high') || analysis.data.toLowerCase().includes('critical'))) {
           await this.triggerSecurityAlert(analysis)
         }
       }
@@ -253,7 +253,7 @@ export class ThreatDetectionService {
   private async triggerSecurityAlert(analysis: any): Promise<void> {
     // Send notifications to security team
     console.log('🚨 SECURITY ALERT:', analysis)
-    
+
     // In production, this would send emails/slack notifications
     // await this.notificationService.sendSecurityAlert(analysis)
   }
@@ -304,7 +304,7 @@ export class ThreatDetectionService {
 
   private cleanupExpiredBlocks(): void {
     const now = Date.now()
-    
+
     for (const [ip, entry] of this.ipBlocks.entries()) {
       if (!entry.permanent && entry.expiresAt !== 'never') {
         if (new Date(entry.expiresAt).getTime() < now) {

@@ -6,7 +6,7 @@ describe('AIDE External Services Integration Tests', () => {
   const mockApiService = {
     baseUrl: 'https://api.example.com',
     apiKey: 'test-api-key',
-    
+
     async get(endpoint: string, params?: any) {
       await new Promise(resolve => setTimeout(resolve, 50)); // Simulate network delay
       return {
@@ -79,11 +79,11 @@ describe('AIDE External Services Integration Tests', () => {
     async sendEmail(options: { to: string; subject: string; body: string; template?: string }) {
       // Simulate email sending
       await new Promise(resolve => setTimeout(resolve, 200));
-      
+
       if (!options.to.includes('@')) {
         throw new Error('Invalid email address');
       }
-      
+
       return {
         success: true,
         messageId: `msg_${Date.now()}`,
@@ -94,17 +94,17 @@ describe('AIDE External Services Integration Tests', () => {
 
     async sendTemplateEmail(template: string, data: any, recipient: string) {
       await new Promise(resolve => setTimeout(resolve, 150));
-      
+
       const templates = {
         'welcome': 'Welcome to our service!',
         'reset-password': 'Click here to reset your password',
         'notification': 'You have a new notification'
       };
-      
+
       if (!templates[template as keyof typeof templates]) {
         throw new Error('Template not found');
       }
-      
+
       return {
         success: true,
         template,
@@ -227,7 +227,7 @@ describe('AIDE External Services Integration Tests', () => {
 
     it('should handle token refresh', async () => {
       const result = await mockAuthService.refreshToken('valid-refresh-token');
-      
+
       expect(result.success).toBe(true);
       expect(result.token).toBe('new-mock-jwt-token');
       expect(result.expiresIn).toBe(3600);
@@ -416,7 +416,7 @@ describe('AIDE External Services Integration Tests', () => {
           this.lastCheck = Date.now();
           // Simulate random health status
           this.isHealthy = Math.random() > 0.3; // 70% chance of being healthy
-          
+
           return {
             status: this.isHealthy ? 'healthy' : 'unhealthy',
             timestamp: this.lastCheck,
@@ -463,7 +463,7 @@ describe('AIDE External Services Integration Tests', () => {
         isAllowed(clientId: string): boolean {
           const now = Date.now();
           const clientRequests = this.requests.get(clientId) || [];
-          
+
           // Remove old requests outside the window
           const recentRequests = clientRequests.filter(
             timestamp => now - timestamp < this.windowMs
@@ -510,10 +510,10 @@ describe('AIDE External Services Integration Tests', () => {
           if (this.callCount >= this.maxCalls) {
             throw new Error('Rate limit exceeded');
           }
-          
+
           this.callCount++;
           await new Promise(resolve => setTimeout(resolve, 50));
-          
+
           return {
             requestId,
             timestamp: Date.now(),
@@ -527,7 +527,7 @@ describe('AIDE External Services Integration Tests', () => {
       };
 
       // Make exactly the limit of requests
-      const requests = Array.from({ length: 10 }, (_, i) => 
+      const requests = Array.from({ length: 10 }, (_, i) =>
         mockRateLimitedApi.makeRequest(`request_${i}`)
       );
 

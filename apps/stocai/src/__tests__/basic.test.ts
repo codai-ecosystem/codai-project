@@ -5,12 +5,12 @@ describe('stocai Service', () => {
     // Reset environment state before each test
     global.performance = global.performance || {
       now: () => Date.now(),
-      mark: () => {},
-      measure: () => {},
+      mark: () => { },
+      measure: () => { },
       getEntriesByType: () => [],
       getEntriesByName: () => [],
-      clearMarks: () => {},
-      clearMeasures: () => {}
+      clearMarks: () => { },
+      clearMeasures: () => { }
     } as any;
   });
 
@@ -34,7 +34,7 @@ describe('stocai Service', () => {
         analytics: true
       }
     };
-    
+
     expect(config.appName).toBe('STOCAI');
     expect(config.features.vectorSearch).toBe(true);
     expect(config.features.fileStorage).toBe(true);
@@ -42,7 +42,7 @@ describe('stocai Service', () => {
 
   it('should have correct environment', () => {
     expect(process.env.NODE_ENV).toBeDefined();
-    
+
     // Validate environment-specific settings
     const env = process.env.NODE_ENV;
     const validEnvironments = ['development', 'test', 'production'];
@@ -60,7 +60,7 @@ describe('stocai Service', () => {
   it('should handle string operations', () => {
     const appName = 'STOCAI';
     const description = 'AI-Native Storage Service';
-    
+
     expect(appName.toLowerCase()).toBe('stocai');
     expect(description.includes('Storage')).toBe(true);
     expect(`${appName}: ${description}`).toBe('STOCAI: AI-Native Storage Service');
@@ -68,7 +68,7 @@ describe('stocai Service', () => {
 
   it('should handle array operations', () => {
     const storageTypes = ['vector', 'file', 'database', 'cache'];
-    
+
     expect(storageTypes.length).toBe(4);
     expect(storageTypes.includes('vector')).toBe(true);
     expect(storageTypes.find(type => type === 'file')).toBe('file');
@@ -85,7 +85,7 @@ describe('stocai Service', () => {
       status: 'active',
       lastUpdate: new Date().toISOString()
     };
-    
+
     expect(storageNode.id).toBe('node-001');
     expect(storageNode.capacity).toBe(100);
     expect(storageNode.used + storageNode.available).toBe(storageNode.capacity);
@@ -96,11 +96,11 @@ describe('stocai Service', () => {
   it('should handle async operations', async () => {
     // Test async/await functionality
     const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-    
+
     const start = Date.now();
     await delay(10);
     const end = Date.now();
-    
+
     expect(end - start).toBeGreaterThanOrEqual(10);
   });
 
@@ -109,7 +109,7 @@ describe('stocai Service', () => {
     const throwError = () => {
       throw new Error('Test error');
     };
-    
+
     expect(() => throwError()).toThrow('Test error');
     expect(() => throwError()).toThrow(Error);
   });

@@ -6,7 +6,7 @@ const marketplaceService = new MarketplaceSearchService();
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    
+
     const query = searchParams.get('q') || '';
     const category = searchParams.get('category') || undefined;
     const minPrice = searchParams.get('minPrice') ? parseFloat(searchParams.get('minPrice')!) : undefined;

@@ -26,6 +26,7 @@ import marketaiLogger, {
   logABTest,
   logSocial
 } from '../lib/logger'
+import { MarketAIService, type Analytics } from '../services/marketaiService'
 
 interface AppMetric {
   id: string
@@ -48,6 +49,25 @@ interface FeatureCard {
 export default function MarketAIPage() {
   const [currentTime, setCurrentTime] = useState(new Date())
   const [activeTab, setActiveTab] = useState<'overview' | 'features' | 'analytics' | 'settings'>('overview')
+  const [analytics, setAnalytics] = useState<Analytics | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    loadRealMarketAIData()
+  }, [])
+
+  const loadRealMarketAIData = async () => {
+    setLoading(true)
+    try {
+      const marketService = MarketAIService.getInstance()
+      const analyticsData = await marketService.getAnalytics()
+      setAnalytics(analyticsData)
+    } catch (error) {
+      console.error('Failed to load MarketAI data:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   // Initialize logger on component mount
   useEffect(() => {
@@ -86,44 +106,51 @@ export default function MarketAIPage() {
     }
   }
 
-  const [metrics] = useState<AppMetric[]>([
-    {
-      id: '1',
-      title: 'Active Users',
-      value: '12.4K',
-      change: '+8.2%',
-      trend: 'up',
-      icon: 'Target',
-      color: 'orange'
-    },
-    {
-      id: '2',
-      title: 'Performance',
-      value: '98.5%',
-      change: '+2.1%',
-      trend: 'up',
-      icon: 'TrendingUp',
-      color: 'green'
-    },
-    {
-      id: '3',
-      title: 'Features',
-      value: '4',
-      change: '0%',
-      trend: 'stable',
-      icon: 'Zap',
-      color: 'blue'
-    },
-    {
-      id: '4',
-      title: 'Satisfaction',
-      value: '4.9/5',
-      change: '+0.2',
-      trend: 'up',
-      icon: 'BarChart3',
-      color: 'purple'
-    }
-  ])
+  const [metrics] = useState<AppMetric[]>([])
+
+  // Generate real metrics from analytics data
+  const getRealMetrics = (): AppMetric[] => {
+    if (!analytics) return []
+
+    return [
+      {
+        id: '1',
+        title: 'Total Campaigns',
+        value: analytics.overview.totalCampaigns.toString(),
+        change: `${analytics.overview.activeCampaigns} active`,
+        trend: 'up',
+        icon: 'Target',
+        color: 'orange'
+      },
+      {
+        id: '2',
+        title: 'Total Revenue',
+        value: `$${(analytics.overview.totalRevenue / 1000).toFixed(1)}K`,
+        change: `${(analytics.overview.averageRoas).toFixed(1)}x ROAS`,
+        trend: 'up',
+        icon: 'TrendingUp',
+        color: 'green'
+      },
+      {
+        id: '3',
+        title: 'Total Leads',
+        value: (analytics.overview.totalLeads / 1000).toFixed(1) + 'K',
+        change: `${analytics.overview.totalConversions} conversions`,
+        trend: 'up',
+        icon: 'Users',
+        color: 'blue'
+      },
+      {
+        id: '4',
+        title: 'Average CTR',
+        value: `${(analytics.overview.averageCtr * 100).toFixed(1)}%`,
+        change: 'click rate',
+        trend: 'up',
+        icon: 'BarChart3',
+        color: 'purple'
+      }
+    ]
+  }
 
   const [featureCards] = useState<FeatureCard[]>([
     {
@@ -317,7 +344,16 @@ export default function MarketAIPage() {
 
               {/* Metrics Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {metrics.map((metric, index) => (
+                {loading ? (
+                  // Loading skeleton
+                  Array.from({ length: 4 }, (_, index) => (
+                    <div key={index} className="glassmorphism bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6 animate-pulse">
+                      <div className="h-12 bg-white/10 rounded mb-4"></div>
+                      <div className="h-6 bg-white/10 rounded mb-2"></div>
+                      <div className="h-4 bg-white/10 rounded w-1/2"></div>
+                    </div>
+                  ))
+                ) : getRealMetrics().map((metric, index) => (
                   <motion.div
                     key={metric.id}
                     initial={{ opacity: 0, scale: 0.9 }}

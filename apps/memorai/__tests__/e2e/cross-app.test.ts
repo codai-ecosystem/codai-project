@@ -9,7 +9,7 @@ describe("MEMORAI Cross-App Integration Tests", () => {
       type: "javascript",
       tags: ["function", "example"]
     };
-    
+
     expect(mockCodeMemory.id).toBe("code_001");
     expect(mockCodeMemory.type).toBe("javascript");
   });
@@ -22,7 +22,7 @@ describe("MEMORAI Cross-App Integration Tests", () => {
       type: "analysis",
       insights: ["trend1", "trend2"]
     };
-    
+
     expect(mockAnalysisMemory.id).toBe("analysis_001");
     expect(mockAnalysisMemory.insights).toHaveLength(2);
   });
@@ -34,7 +34,7 @@ describe("MEMORAI Cross-App Integration Tests", () => {
       synced: 5,
       errors: 0
     };
-    
+
     expect(syncResult.success).toBe(true);
     expect(syncResult.synced).toBeGreaterThan(0);
   });

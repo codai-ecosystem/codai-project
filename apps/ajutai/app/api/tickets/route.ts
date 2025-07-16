@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    
+
     // Validate required fields
     const requiredFields = ['title', 'description', 'priority', 'category', 'userId']
     for (const field of requiredFields) {

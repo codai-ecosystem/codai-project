@@ -27,6 +27,13 @@ const nextConfig = {
         tls: false,
       };
     }
+
+    // Handle ESM/CommonJS interop
+    config.resolve.extensionAlias = {
+      '.js': ['.js', '.ts', '.tsx'],
+      '.jsx': ['.jsx', '.tsx'],
+    };
+
     return config;
   },
   // Reduce memory usage
@@ -34,4 +41,4 @@ const nextConfig = {
   poweredByHeader: false,
 };
 
-export default nextConfig;
+module.exports = nextConfig;

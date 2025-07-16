@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { RealStorageService } from '@/services/RealStorageService'
+import { RealStorageService } from '../../../../services/RealStorageService'
 
 const storageService = RealStorageService.getInstance()
 

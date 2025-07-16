@@ -5,8 +5,7 @@ import { NextRequest } from 'next/server'
 process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co'
 process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service-role-key'
 
-import { GET, POST, DELETE } from '../../app/api/files/route'
-import { PUT, DELETE as DELETE_ID } from '../../app/api/files/[id]/route'
+import { testApiHandler } from '../setup.api'
 
 // Mock the dependencies
 const mockSupabase = {

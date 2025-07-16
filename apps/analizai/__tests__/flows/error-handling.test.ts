@@ -14,7 +14,7 @@ describe('Error Handling Tests', () => {
   describe('API Error Handling', () => {
     it('handles network errors gracefully', async () => {
       mockFetch.mockRejectedValueOnce(new Error('Network error'));
-      
+
       // Test should handle network errors
       expect(true).toBe(true);
     });
@@ -25,7 +25,7 @@ describe('Error Handling Tests', () => {
         status: 500,
         json: () => Promise.reject(new Error('Invalid JSON'))
       });
-      
+
       expect(true).toBe(true);
     });
   });

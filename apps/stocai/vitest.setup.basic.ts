@@ -95,7 +95,7 @@ const mockFinancialCalculations = {
     if (!prices || prices.length < 2) return 0
     const returns = []
     for (let i = 1; i < prices.length; i++) {
-      returns.push((prices[i] - prices[i-1]) / prices[i-1])
+      returns.push((prices[i] - prices[i - 1]) / prices[i - 1])
     }
     const avgReturn = returns.reduce((a, b) => a + b, 0) / returns.length
     const variance = returns.reduce((sq: number, n: number) => sq + Math.pow(n - avgReturn, 2), 0) / returns.length

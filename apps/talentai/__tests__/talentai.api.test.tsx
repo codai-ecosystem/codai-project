@@ -12,7 +12,7 @@ describe('talentai API Tests', () => {
       // Test API call
       const response = await fetch('/api/test')
       const data = await response.json()
-      
+
       expect(data.success).toBe(true)
     })
 
@@ -34,7 +34,7 @@ describe('talentai API Tests', () => {
       global.fetch = vi.fn().mockImplementation((url) => {
         const urlObj = new URL(url, 'http://localhost')
         const query = urlObj.searchParams.get('query')
-        
+
         if (!query) {
           return Promise.resolve({
             ok: false,
@@ -42,11 +42,11 @@ describe('talentai API Tests', () => {
             json: async () => ({ error: 'Missing query parameter' })
           })
         }
-        
+
         return Promise.resolve({
           ok: true,
-          json: async () => ({ 
-            success: true, 
+          json: async () => ({
+            success: true,
             results: [
               { id: 1, name: 'John Doe', role: 'Software Engineer', match: 95 },
               { id: 2, name: 'Jane Smith', role: 'Product Manager', match: 88 }
@@ -71,8 +71,8 @@ describe('talentai API Tests', () => {
       global.fetch = vi.fn().mockResolvedValue({
         ok: false,
         status: 429,
-        json: async () => ({ 
-          error: 'Rate limit exceeded', 
+        json: async () => ({
+          error: 'Rate limit exceeded',
           retryAfter: 60,
           limit: 100,
           remaining: 0
@@ -81,7 +81,7 @@ describe('talentai API Tests', () => {
 
       const response = await fetch('/api/talent/search?query=developer')
       const data = await response.json()
-      
+
       expect(response.status).toBe(429)
       expect(data.error).toBe('Rate limit exceeded')
       expect(data.retryAfter).toBe(60)
@@ -93,21 +93,21 @@ describe('talentai API Tests', () => {
       // Mock caching behavior
       const mockCache = new Map()
       const originalFetch = global.fetch
-      
+
       global.fetch = vi.fn().mockImplementation(async (url) => {
         const cacheKey = url.toString()
-        
+
         if (mockCache.has(cacheKey)) {
           return Promise.resolve({
             ok: true,
-            json: async () => ({ 
-              success: true, 
+            json: async () => ({
+              success: true,
               data: mockCache.get(cacheKey),
               cached: true
             })
           })
         }
-        
+
         const freshData = {
           talents: [
             { id: 1, name: 'Alice Johnson', skills: ['React', 'TypeScript'] },
@@ -115,13 +115,13 @@ describe('talentai API Tests', () => {
           ],
           timestamp: Date.now()
         }
-        
+
         mockCache.set(cacheKey, freshData)
-        
+
         return Promise.resolve({
           ok: true,
-          json: async () => ({ 
-            success: true, 
+          json: async () => ({
+            success: true,
             data: freshData,
             cached: false
           })
@@ -137,7 +137,7 @@ describe('talentai API Tests', () => {
       const secondResponse = await fetch('/api/talent/profiles')
       const secondData = await secondResponse.json()
       expect(secondData.cached).toBe(true)
-      
+
       global.fetch = originalFetch
     })
 
@@ -165,12 +165,12 @@ describe('talentai API Tests', () => {
         send: vi.fn(),
         close: vi.fn()
       }
-      
+
       // Type-safe WebSocket mock
       global.WebSocket = vi.fn().mockImplementation(() => mockWebSocket) as any
-      
+
       const ws = new WebSocket('ws://localhost:3000/talent-updates')
-      
+
       expect(ws.readyState).toBe(1)
       expect(typeof ws.send).toBe('function')
       expect(typeof ws.close).toBe('function')
@@ -186,17 +186,17 @@ describe('talentai API Tests', () => {
         send: vi.fn(),
         close: vi.fn()
       }
-      
+
       // Type-safe WebSocket mock
       global.WebSocket = vi.fn().mockImplementation(() => mockWebSocket) as any
-      
+
       const ws = new WebSocket('ws://localhost:3000/talent-updates')
-      
+
       // Simulate connection close
       if (mockWebSocket.onclose) {
         mockWebSocket.onclose({ code: 1000, reason: 'Normal closure' } as any)
       }
-      
+
       expect(ws.readyState).toBe(3) // CLOSED
       expect(mockWebSocket.onclose).toBeDefined()
     })

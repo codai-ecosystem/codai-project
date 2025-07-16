@@ -36,7 +36,7 @@ export async function PUT(
 ) {
   try {
     const body = await request.json()
-    
+
     const updatedTicket = await ajutaiService.updateTicket(params.id, {
       ...body,
       updatedAt: new Date().toISOString()

@@ -9,20 +9,20 @@ const utils = {
       currency: currency
     }).format(amount);
   },
-  
+
   formatPercentage: (value: number, decimals = 2) => {
     return `${value.toFixed(decimals)}%`;
   },
-  
+
   validateEmail: (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   },
-  
+
   sanitizeString: (input: string) => {
     return input.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
   },
-  
+
   debounce: <T extends (...args: any[]) => any>(func: T, wait: number) => {
     let timeout: NodeJS.Timeout;
     return (...args: Parameters<T>) => {

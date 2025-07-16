@@ -396,11 +396,10 @@ export default function TalentaiPage() {
             <button
               key={tab}
               onClick={() => handleTabChange(tab)}
-              className={`px-6 py-2 rounded-lg font-medium transition-all duration-300 ${
-                activeTab === tab
+              className={`px-6 py-2 rounded-lg font-medium transition-all duration-300 ${activeTab === tab
                   ? 'bg-purple-500/30 text-purple-300'
                   : 'text-slate-400 hover:text-white hover:bg-white/10'
-              }`}
+                }`}
               aria-label={`Switch to ${tab} tab`}
               role="tab"
               aria-selected={activeTab === tab}

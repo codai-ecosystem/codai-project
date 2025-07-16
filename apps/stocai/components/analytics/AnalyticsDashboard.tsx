@@ -6,12 +6,12 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Progress } from '@/components/ui/progress'
-import { 
-  BarChart3, 
-  Database, 
-  FileText, 
-  HardDrive, 
-  Upload, 
+import {
+  BarChart3,
+  Database,
+  FileText,
+  HardDrive,
+  Upload,
   Download,
   Search,
   Activity,
@@ -64,7 +64,7 @@ export default function AnalyticsDashboard() {
   const fetchAnalytics = async () => {
     try {
       setLoading(true)
-      
+
       // Fetch analytics data from multiple sources
       const [storageResponse, metricsResponse] = await Promise.all([
         fetch('/api/storage/analytics'),
@@ -281,10 +281,10 @@ export default function AnalyticsDashboard() {
                       <span className="text-sm font-medium">{category}</span>
                       <div className="flex items-center space-x-2">
                         <div className="w-32 bg-gray-200 rounded-full h-2">
-                          <div 
-                            className="bg-blue-600 h-2 rounded-full" 
-                            style={{ 
-                              width: `${((count as number) / (analytics?.storage?.totalFiles || 1)) * 100}%` 
+                          <div
+                            className="bg-blue-600 h-2 rounded-full"
+                            style={{
+                              width: `${((count as number) / (analytics?.storage?.totalFiles || 1)) * 100}%`
                             }}
                           ></div>
                         </div>
@@ -397,10 +397,10 @@ export default function AnalyticsDashboard() {
                         <span className="text-sm text-gray-600">{category.count.toLocaleString()} fișiere</span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
-                          className="bg-blue-600 h-2 rounded-full" 
-                          style={{ 
-                            width: `${(category.count / (analytics?.storage?.totalFiles || 1)) * 100}%` 
+                        <div
+                          className="bg-blue-600 h-2 rounded-full"
+                          style={{
+                            width: `${(category.count / (analytics?.storage?.totalFiles || 1)) * 100}%`
                           }}
                         ></div>
                       </div>

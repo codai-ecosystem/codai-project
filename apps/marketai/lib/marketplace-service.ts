@@ -84,22 +84,22 @@ export class MarketplaceSearchService {
     try {
       // Build search parameters
       const searchParams = this.buildSearchQuery(query, filters);
-      
+
       // TODO: Replace with actual database query
       const mockResults = await this.mockAgentSearch(query, filters);
-      
+
       // Apply sorting
       const sortedResults = this.sortResults(mockResults, filters.sortBy, filters.sortOrder);
-      
+
       // Apply pagination
       const page = filters.page || 1;
       const limit = filters.limit || 20;
       const startIndex = (page - 1) * limit;
       const paginatedResults = sortedResults.slice(startIndex, startIndex + limit);
-      
+
       // Generate filter aggregations
       const filterAggregations = this.generateFilterAggregations(mockResults);
-      
+
       return {
         results: paginatedResults,
         totalCount: sortedResults.length,
@@ -130,25 +130,25 @@ export class MarketplaceSearchService {
     try {
       // TODO: Implement ML-based recommendation system
       // For now, use rule-based recommendations
-      
+
       let recommendations: SearchResult[] = [];
-      
+
       // 1. Similar to purchase history
       if (context.purchaseHistory && context.purchaseHistory.length > 0) {
         const similarAgents = await this.findSimilarAgents(context.purchaseHistory);
         recommendations.push(...similarAgents.slice(0, 4));
       }
-      
+
       // 2. Popular in user's interests
       if (context.userInterests && context.userInterests.length > 0) {
         const interestBasedAgents = await this.findByCategories(context.userInterests);
         recommendations.push(...interestBasedAgents.slice(0, 3));
       }
-      
+
       // 3. Trending agents
       const trendingAgents = await this.getTrendingAgents();
       recommendations.push(...trendingAgents.slice(0, 3));
-      
+
       // Remove duplicates and limit results
       const uniqueRecommendations = this.removeDuplicateAgents(recommendations);
       return uniqueRecommendations.slice(0, limit);
@@ -170,7 +170,7 @@ export class MarketplaceSearchService {
         limit: 6,
         verified: true,
       });
-      
+
       return mockFeatured;
     } catch (error) {
       console.error('Featured agents fetch failed:', error);
@@ -188,7 +188,7 @@ export class MarketplaceSearchService {
       // - Rating velocity
       // - View velocity
       // - Social shares
-      
+
       // Mock trending calculation
       const allAgents = await this.mockAgentSearch('');
       return allAgents
@@ -223,7 +223,7 @@ export class MarketplaceSearchService {
         label: string;
         count?: number;
       }> = [];
-      
+
       // Agent name suggestions
       const agents = await this.mockAgentSearch(query, { limit: 5 });
       agents.forEach(agent => {
@@ -233,9 +233,9 @@ export class MarketplaceSearchService {
           label: agent.name,
         });
       });
-      
+
       // Category suggestions
-      const matchingCategories = this.CATEGORIES.filter(cat => 
+      const matchingCategories = this.CATEGORIES.filter(cat =>
         cat.toLowerCase().includes(query.toLowerCase())
       );
       matchingCategories.forEach(category => {
@@ -245,10 +245,10 @@ export class MarketplaceSearchService {
           label: `Category: ${category}`,
         });
       });
-      
+
       // Tag suggestions (mock)
       const mockTags = ['ai', 'automation', 'productivity', 'design', 'analytics'];
-      const matchingTags = mockTags.filter(tag => 
+      const matchingTags = mockTags.filter(tag =>
         tag.toLowerCase().includes(query.toLowerCase())
       );
       matchingTags.forEach(tag => {
@@ -258,7 +258,7 @@ export class MarketplaceSearchService {
           label: `Tag: ${tag}`,
         });
       });
-      
+
       return suggestions.slice(0, 10);
     } catch (error) {
       console.error('Search suggestions failed:', error);
@@ -357,7 +357,7 @@ export class MarketplaceSearchService {
 
     if (query) {
       const searchTerm = query.toLowerCase();
-      filtered = filtered.filter(agent => 
+      filtered = filtered.filter(agent =>
         agent.name.toLowerCase().includes(searchTerm) ||
         agent.description.toLowerCase().includes(searchTerm) ||
         agent.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
@@ -370,8 +370,8 @@ export class MarketplaceSearchService {
     }
 
     if (filters.priceRange) {
-      filtered = filtered.filter(agent => 
-        agent.price >= filters.priceRange!.min && 
+      filtered = filtered.filter(agent =>
+        agent.price >= filters.priceRange!.min &&
         agent.price <= filters.priceRange!.max
       );
     }
@@ -381,7 +381,7 @@ export class MarketplaceSearchService {
     }
 
     if (filters.tags && filters.tags.length > 0) {
-      filtered = filtered.filter(agent => 
+      filtered = filtered.filter(agent =>
         filters.tags!.some(tag => agent.tags.includes(tag))
       );
     }
@@ -450,8 +450,8 @@ export class MarketplaceSearchService {
 
     // Count price ranges
     const priceRanges = this.PRICE_RANGES.map(range => {
-      const count = results.filter(agent => 
-        agent.price >= range.min && 
+      const count = results.filter(agent =>
+        agent.price >= range.min &&
         (range.max === Infinity ? true : agent.price <= range.max)
       ).length;
       return { ...range, count };
@@ -473,18 +473,18 @@ export class MarketplaceSearchService {
     // - Category similarity
     // - User behavior patterns
     // - Content analysis
-    
+
     return this.mockAgentSearch('', { limit: 10 });
   }
 
   private async findByCategories(categories: string[]): Promise<SearchResult[]> {
     const allResults: SearchResult[] = [];
-    
+
     for (const category of categories) {
       const categoryResults = await this.mockAgentSearch('', { category, limit: 5 });
       allResults.push(...categoryResults);
     }
-    
+
     return this.removeDuplicateAgents(allResults);
   }
 

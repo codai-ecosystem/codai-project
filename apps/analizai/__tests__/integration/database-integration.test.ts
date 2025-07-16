@@ -19,7 +19,7 @@ describe('Database Integration Tests', () => {
   describe('Connection Management', () => {
     it('establishes database connection', async () => {
       mockDatabase.connect.mockResolvedValueOnce(true);
-      
+
       const result = await mockDatabase.connect();
       expect(result).toBe(true);
       expect(mockDatabase.connect).toHaveBeenCalledOnce();
@@ -27,7 +27,7 @@ describe('Database Integration Tests', () => {
 
     it('handles connection failures', async () => {
       mockDatabase.connect.mockRejectedValueOnce(new Error('Connection failed'));
-      
+
       try {
         await mockDatabase.connect();
       } catch (error) {
@@ -40,28 +40,28 @@ describe('Database Integration Tests', () => {
     it('performs SELECT queries', async () => {
       const mockData = [{ id: 1, name: 'Test' }];
       mockDatabase.query.mockResolvedValueOnce(mockData);
-      
+
       const result = await mockDatabase.query('SELECT * FROM test');
       expect(result).toEqual(mockData);
     });
 
     it('performs INSERT operations', async () => {
       mockDatabase.insert.mockResolvedValueOnce({ id: 1 });
-      
+
       const result = await mockDatabase.insert('test', { name: 'New Item' });
       expect(result).toEqual({ id: 1 });
     });
 
     it('performs UPDATE operations', async () => {
       mockDatabase.update.mockResolvedValueOnce({ rowsAffected: 1 });
-      
+
       const result = await mockDatabase.update('test', { name: 'Updated' }, { id: 1 });
       expect(result.rowsAffected).toBe(1);
     });
 
     it('performs DELETE operations', async () => {
       mockDatabase.delete.mockResolvedValueOnce({ rowsAffected: 1 });
-      
+
       const result = await mockDatabase.delete('test', { id: 1 });
       expect(result.rowsAffected).toBe(1);
     });

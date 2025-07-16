@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-import { azureOpenAI } from '@/lib/azure-openai'
-import { randomBytes } from 'crypto'
+import { azureOpenAI } from '../../../lib/azure-openai'
+
+// Simple ID generator without crypto dependency
+const generateId = () => {
+  return 'dataset-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now().toString(36)
+}
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -36,16 +40,16 @@ export async function GET(request: NextRequest) {
         .single()
 
       if (error) {
-        return NextResponse.json({ 
+        return NextResponse.json({
           success: false,
-          error: 'Failed to retrieve dataset' 
+          error: 'Failed to retrieve dataset'
         }, { status: 500 })
       }
 
       if (!dataset) {
-        return NextResponse.json({ 
+        return NextResponse.json({
           success: false,
-          error: 'Dataset not found' 
+          error: 'Dataset not found'
         }, { status: 404 })
       }
 
@@ -75,9 +79,9 @@ export async function GET(request: NextRequest) {
     const { data: datasets, error, count } = await query
 
     if (error) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         success: false,
-        error: 'Failed to retrieve datasets' 
+        error: 'Failed to retrieve datasets'
       }, { status: 500 })
     }
 
@@ -93,9 +97,9 @@ export async function GET(request: NextRequest) {
     })
   } catch (error) {
     console.error('Error in datasets GET:', error)
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: false,
-      error: 'Internal server error' 
+      error: 'Internal server error'
     }, { status: 500 })
   }
 }
@@ -107,14 +111,14 @@ export async function POST(request: NextRequest) {
 
     // Validate required fields
     if (!body.name) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         success: false,
-        error: 'Name is required' 
+        error: 'Name is required'
       }, { status: 400 })
     }
 
     // Generate dataset ID
-    const datasetId = randomBytes(16).toString('hex')
+    const datasetId = generateId()
 
     // Generate AI analysis for the dataset
     let aiAnalysis = null
@@ -164,9 +168,9 @@ Respond in Romanian.`
       .single()
 
     if (error) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         success: false,
-        error: 'Failed to create dataset' 
+        error: 'Failed to create dataset'
       }, { status: 500 })
     }
 
@@ -195,9 +199,9 @@ Respond in Romanian.`
     }, { status: 201 })
   } catch (error) {
     console.error('Error creating dataset:', error)
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: false,
-      error: 'Internal server error' 
+      error: 'Internal server error'
     }, { status: 500 })
   }
 }
@@ -209,9 +213,9 @@ export async function PUT(request: NextRequest) {
     const { id, name, description, category, metadata } = body
 
     if (!id) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         success: false,
-        error: 'Dataset ID is required' 
+        error: 'Dataset ID is required'
       }, { status: 400 })
     }
 
@@ -257,16 +261,16 @@ Respond in Romanian.`
       .single()
 
     if (error) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         success: false,
-        error: 'Failed to update dataset' 
+        error: 'Failed to update dataset'
       }, { status: 500 })
     }
 
     if (!dataset) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         success: false,
-        error: 'Dataset not found' 
+        error: 'Dataset not found'
       }, { status: 404 })
     }
 
@@ -277,9 +281,9 @@ Respond in Romanian.`
     })
   } catch (error) {
     console.error('Error updating dataset:', error)
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: false,
-      error: 'Internal server error' 
+      error: 'Internal server error'
     }, { status: 500 })
   }
 }
@@ -292,9 +296,9 @@ export async function DELETE(request: NextRequest) {
     const id = searchParams.get('id')
 
     if (!id) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         success: false,
-        error: 'Dataset ID is required' 
+        error: 'Dataset ID is required'
       }, { status: 400 })
     }
 
@@ -315,9 +319,9 @@ export async function DELETE(request: NextRequest) {
       .eq('id', id)
 
     if (error) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         success: false,
-        error: 'Failed to delete dataset' 
+        error: 'Failed to delete dataset'
       }, { status: 500 })
     }
 
@@ -327,9 +331,9 @@ export async function DELETE(request: NextRequest) {
     })
   } catch (error) {
     console.error('Error deleting dataset:', error)
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: false,
-      error: 'Internal server error' 
+      error: 'Internal server error'
     }, { status: 500 })
   }
 }

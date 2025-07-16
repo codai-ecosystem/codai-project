@@ -137,7 +137,7 @@ export class AideIntegrationManager {
 
   private initializeServices(): void {
     // Initialize all integration services with fallback defaults
-    
+
     this.services.set('integrationservice', new IntegrationService(
       process.env.INTEGRATIONSERVICE_API_KEY || 'test-key',
       process.env.INTEGRATIONSERVICE_BASE_URL || 'https://test.com'

@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Search, 
-  Filter, 
-  Star, 
-  Download, 
-  TrendingUp, 
-  Users, 
+import {
+  Search,
+  Filter,
+  Star,
+  Download,
+  TrendingUp,
+  Users,
   ShoppingCart,
   CreditCard,
   Shield,
@@ -56,7 +56,7 @@ interface SearchFilters {
 const CATEGORIES = [
   'All Categories',
   'Productivity',
-  'Development', 
+  'Development',
   'Design',
   'Marketing',
   'Analytics',
@@ -212,7 +212,7 @@ export default function MarketplaceAI() {
     // Apply search filter
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(agent => 
+      filtered = filtered.filter(agent =>
         agent.name.toLowerCase().includes(query) ||
         agent.description.toLowerCase().includes(query) ||
         agent.tags.some(tag => tag.toLowerCase().includes(query)) ||
@@ -228,8 +228,8 @@ export default function MarketplaceAI() {
 
     // Apply price range filter
     if (filters.priceRange) {
-      filtered = filtered.filter(agent => 
-        agent.price >= filters.priceRange!.min && 
+      filtered = filtered.filter(agent =>
+        agent.price >= filters.priceRange!.min &&
         agent.price <= filters.priceRange!.max
       );
     }
@@ -268,7 +268,7 @@ export default function MarketplaceAI() {
           default:
             return 0;
         }
-        
+
         if (filters.sortOrder === 'asc') {
           return aVal > bVal ? 1 : -1;
         } else {
@@ -285,13 +285,13 @@ export default function MarketplaceAI() {
     try {
       // Simulate payment processing
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       // TODO: Implement real Stripe payment integration
       console.log('Purchasing agent:', agent.name, 'for $', agent.price);
       alert(`Successfully purchased ${agent.name}! Check your email for download instructions.`);
-      
+
       // Update download count (in real app, this would be handled by the backend)
-      setAgents(prev => prev.map(a => 
+      setAgents(prev => prev.map(a =>
         a.id === agent.id ? { ...a, downloads: a.downloads + 1 } : a
       ));
     } catch (error) {
@@ -309,9 +309,8 @@ export default function MarketplaceAI() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -5 }}
-      className={`bg-white rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-xl transition-all duration-300 ${
-        viewMode === 'list' ? 'flex items-center space-x-6 p-6' : 'p-6'
-      }`}
+      className={`bg-white rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-xl transition-all duration-300 ${viewMode === 'list' ? 'flex items-center space-x-6 p-6' : 'p-6'
+        }`}
     >
       {/* Thumbnail */}
       <div className={`${viewMode === 'list' ? 'w-20 h-20' : 'w-full h-48'} bg-gradient-to-br from-blue-100 to-purple-100 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden`}>
@@ -479,7 +478,7 @@ export default function MarketplaceAI() {
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center">
-            <motion.h2 
+            <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="text-5xl md:text-6xl font-bold mb-6"
@@ -490,18 +489,18 @@ export default function MarketplaceAI() {
                 AI Agent Marketplace
               </span>
             </motion.h2>
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
               className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto"
             >
-              Discover, purchase, and deploy verified AI agents for every use case. 
+              Discover, purchase, and deploy verified AI agents for every use case.
               Built by developers, for developers.
             </motion.p>
-            
+
             {/* Search Bar */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
@@ -518,7 +517,7 @@ export default function MarketplaceAI() {
             </motion.div>
 
             {/* Quick Stats */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
@@ -582,7 +581,7 @@ export default function MarketplaceAI() {
                   <p className="text-gray-600 text-sm mb-4 line-clamp-2">{agent.description}</p>
                   <div className="flex items-center justify-between">
                     <span className="text-2xl font-bold text-gray-900">${agent.price}</span>
-                    <button 
+                    <button
                       onClick={() => handlePurchase(agent)}
                       className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                     >
@@ -606,13 +605,13 @@ export default function MarketplaceAI() {
                 <Filter className="w-5 h-5" />
                 <span>Filters</span>
               </h3>
-              
+
               {/* Category Filter */}
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-3">Category</label>
                 <select
                   value={filters.category || 'All Categories'}
-                  onChange={(e) => setFilters({...filters, category: e.target.value === 'All Categories' ? undefined : e.target.value})}
+                  onChange={(e) => setFilters({ ...filters, category: e.target.value === 'All Categories' ? undefined : e.target.value })}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 >
                   {CATEGORIES.map(category => (
@@ -628,11 +627,11 @@ export default function MarketplaceAI() {
                   value={filters.priceRange ? `${filters.priceRange.min}-${filters.priceRange.max}` : 'all'}
                   onChange={(e) => {
                     if (e.target.value === 'all') {
-                      setFilters({...filters, priceRange: undefined});
+                      setFilters({ ...filters, priceRange: undefined });
                     } else {
                       const range = PRICE_RANGES.find(r => `${r.min}-${r.max}` === e.target.value);
                       if (range) {
-                        setFilters({...filters, priceRange: { min: range.min, max: range.max }});
+                        setFilters({ ...filters, priceRange: { min: range.min, max: range.max } });
                       }
                     }
                   }}
@@ -651,7 +650,7 @@ export default function MarketplaceAI() {
                 <label className="block text-sm font-medium text-gray-700 mb-3">Minimum Rating</label>
                 <select
                   value={filters.rating || ''}
-                  onChange={(e) => setFilters({...filters, rating: e.target.value ? parseFloat(e.target.value) : undefined})}
+                  onChange={(e) => setFilters({ ...filters, rating: e.target.value ? parseFloat(e.target.value) : undefined })}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 >
                   <option value="">Any Rating</option>
@@ -668,7 +667,7 @@ export default function MarketplaceAI() {
                   <input
                     type="checkbox"
                     checked={filters.verified || false}
-                    onChange={(e) => setFilters({...filters, verified: e.target.checked || undefined})}
+                    onChange={(e) => setFilters({ ...filters, verified: e.target.checked || undefined })}
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                   <span className="ml-3 text-sm text-gray-700 font-medium">Verified Only</span>
@@ -701,7 +700,7 @@ export default function MarketplaceAI() {
                   {filteredAgents.length} agents
                 </span>
               </div>
-              
+
               <div className="flex items-center space-x-4">
                 {/* Mobile Filter Toggle */}
                 <button
@@ -717,7 +716,7 @@ export default function MarketplaceAI() {
                   value={`${filters.sortBy || 'rating'}-${filters.sortOrder || 'desc'}`}
                   onChange={(e) => {
                     const [sortBy, sortOrder] = e.target.value.split('-');
-                    setFilters({...filters, sortBy, sortOrder: sortOrder as 'asc' | 'desc'});
+                    setFilters({ ...filters, sortBy, sortOrder: sortOrder as 'asc' | 'desc' });
                   }}
                   className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 >
@@ -747,11 +746,10 @@ export default function MarketplaceAI() {
             </div>
 
             {/* Results Grid */}
-            <div className={`${
-              viewMode === 'grid' 
-                ? 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-6' 
+            <div className={`${viewMode === 'grid'
+                ? 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-6'
                 : 'space-y-6'
-            }`}>
+              }`}>
               {filteredAgents.map(agent => renderAgentCard(agent))}
             </div>
 
@@ -809,16 +807,16 @@ export default function MarketplaceAI() {
                   </svg>
                 </button>
               </div>
-              
+
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2">
                   <div className="w-full h-64 bg-gradient-to-br from-blue-100 to-purple-100 rounded-xl mb-6 flex items-center justify-center">
                     <div className="text-8xl font-bold text-blue-600">{selectedAgent.name.charAt(0)}</div>
                   </div>
-                  
+
                   <h3 className="text-xl font-bold text-gray-900 mb-3">Description</h3>
                   <p className="text-gray-700 mb-6 leading-relaxed">{selectedAgent.description}</p>
-                  
+
                   <div className="flex flex-wrap gap-2 mb-6">
                     {selectedAgent.tags.map(tag => (
                       <span
@@ -830,7 +828,7 @@ export default function MarketplaceAI() {
                     ))}
                   </div>
                 </div>
-                
+
                 <div className="space-y-6">
                   <div className="bg-gray-50 rounded-xl p-6">
                     <div className="text-center mb-4">
@@ -845,7 +843,7 @@ export default function MarketplaceAI() {
                         <div className="text-sm text-gray-500">one-time purchase</div>
                       )}
                     </div>
-                    
+
                     <div className="grid grid-cols-2 gap-4 mb-6 text-center">
                       <div>
                         <div className="flex items-center justify-center space-x-1 text-yellow-600 mb-1">
@@ -862,7 +860,7 @@ export default function MarketplaceAI() {
                         <div className="text-xs text-gray-500">Downloads</div>
                       </div>
                     </div>
-                    
+
                     <div className="space-y-3">
                       <button
                         onClick={() => {
@@ -889,7 +887,7 @@ export default function MarketplaceAI() {
                       </button>
                     </div>
                   </div>
-                  
+
                   <div className="bg-gray-50 rounded-xl p-6">
                     <h4 className="font-bold text-gray-900 mb-3">Agent Details</h4>
                     <div className="space-y-3 text-sm">

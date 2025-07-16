@@ -58,10 +58,10 @@ describe('BancaiPage Component', () => {
     it('handles tab switching correctly', async () => {
       const user = userEvent.setup()
       render(<BancaiPage />)
-      
+
       const analyticsTab = screen.getByText('Analytics')
       await user.click(analyticsTab)
-      
+
       await waitFor(() => {
         expect(screen.getByText('Advanced Analytics Dashboard')).toBeInTheDocument()
       })
@@ -70,10 +70,10 @@ describe('BancaiPage Component', () => {
     it('maintains active tab state', async () => {
       const user = userEvent.setup()
       render(<BancaiPage />)
-      
+
       const featuresTab = screen.getByText('Features')
       await user.click(featuresTab)
-      
+
       await waitFor(() => {
         expect(featuresTab).toHaveClass('bg-emerald-500/30') // Active state
       })
@@ -122,7 +122,7 @@ describe('BancaiPage Component', () => {
       render(<BancaiPage />)
       const headings = screen.getAllByRole('heading')
       expect(headings.length).toBeGreaterThan(0)
-      
+
       // Check h1 exists
       const h1Elements = headings.filter(h => h.tagName === 'H1')
       expect(h1Elements.length).toBeGreaterThan(0)
@@ -131,10 +131,10 @@ describe('BancaiPage Component', () => {
     it('provides keyboard navigation support', async () => {
       const user = userEvent.setup()
       render(<BancaiPage />)
-      
+
       const firstTab = screen.getByText('Dashboard')
       firstTab.focus()
-      
+
       await user.keyboard('{Tab}')
       expect(document.activeElement).not.toBe(firstTab)
     })
@@ -153,7 +153,7 @@ describe('BancaiPage Component', () => {
       const startTime = performance.now()
       render(<BancaiPage />)
       const endTime = performance.now()
-      
+
       const renderTime = endTime - startTime
       expect(renderTime).toBeLessThan(100) // Should render in under 100ms
     })
@@ -162,7 +162,7 @@ describe('BancaiPage Component', () => {
       // Test with mocked large dataset
       const mockLargeData = Array.from({ length: 1000 }, (_, i) => ({ id: i, name: `Item ${i}` }))
       render(<BancaiPage />)
-      
+
       // Should not crash with large datasets
       expect(document.body).toBeInTheDocument()
     })
@@ -176,10 +176,10 @@ describe('BancaiPage Component', () => {
 
     it('displays error boundaries correctly', () => {
       // Mock console.error to avoid noise in tests
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-      
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { })
+
       render(<BancaiPage />)
-      
+
       consoleSpy.mockRestore()
     })
   })
@@ -191,9 +191,9 @@ describe('BancaiPage Component', () => {
         configurable: true,
         value: 375,
       })
-      
+
       render(<BancaiPage />)
-      
+
       // Check mobile-specific classes
       const container = document.querySelector('.container')
       expect(container).toBeInTheDocument()
@@ -205,7 +205,7 @@ describe('BancaiPage Component', () => {
         configurable: true,
         value: 768,
       })
-      
+
       render(<BancaiPage />)
       expect(document.body).toBeInTheDocument()
     })
@@ -216,7 +216,7 @@ describe('BancaiPage Component', () => {
         configurable: true,
         value: 1920,
       })
-      
+
       render(<BancaiPage />)
       expect(document.body).toBeInTheDocument()
     })

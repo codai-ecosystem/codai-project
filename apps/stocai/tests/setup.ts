@@ -58,7 +58,7 @@ export const mockSupabase: any = {
   from: vi.fn((table: string) => {
     let insertedData: any = null;
     let updatedData: any = null;
-    
+
     const mockQuery = {
       select: vi.fn(() => mockQuery),
       insert: vi.fn((data: any) => {
@@ -79,8 +79,8 @@ export const mockSupabase: any = {
       single: vi.fn(() => {
         // Return inserted/updated data when available
         if (insertedData) {
-          const result = { 
-            id: 'test-id', 
+          const result = {
+            id: 'test-id',
             ...insertedData,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
@@ -89,8 +89,8 @@ export const mockSupabase: any = {
           return Promise.resolve({ data: result, error: null });
         }
         if (updatedData) {
-          const result = { 
-            id: 'test-id', 
+          const result = {
+            id: 'test-id',
             name: updatedData.name || 'Test Dataset',
             ...updatedData,
             updated_at: new Date().toISOString()
@@ -115,7 +115,7 @@ export const mockSupabase: any = {
         return callback ? callback(result) : result;
       })
     }
-    
+
     // Mock successful responses for different tables
     if (table === 'file_metadata') {
       mockQuery.single.mockResolvedValue({
@@ -128,7 +128,7 @@ export const mockSupabase: any = {
         error: null
       })
     }
-    
+
     return mockQuery
   }),
   storage: {

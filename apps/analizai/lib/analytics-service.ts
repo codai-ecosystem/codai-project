@@ -86,9 +86,9 @@ export class AnalyticsService {
   async executeQuery(query: DataQuery, userId: string): Promise<{ success: boolean; data?: any[]; error?: string; executionTime?: number }> {
     try {
       DataQuerySchema.parse(query)
-      
+
       const startTime = Date.now()
-      
+
       // Create query record
       const queryRecord = await prisma.query.create({
         data: {
@@ -159,7 +159,7 @@ export class AnalyticsService {
       }
 
       const prompt = this.buildInsightPrompt(data, context)
-      
+
       const response = await this.azureOpenAI.generateCompletion([
         {
           role: 'system',
@@ -175,7 +175,7 @@ export class AnalyticsService {
 
       // Store insights in database
       const storedInsights = await Promise.all(
-        insights.map(insight => 
+        insights.map(insight =>
           prisma.insight.create({
             data: {
               title: insight.title,
@@ -281,7 +281,7 @@ export class AnalyticsService {
       // Use AI to analyze anomalies
       if (anomalies.length > 0) {
         const analysisPrompt = this.buildAnomalyAnalysisPrompt(anomalies, data)
-        
+
         const aiAnalysis = await this.azureOpenAI.generateCompletion([
           {
             role: 'system',
@@ -347,7 +347,7 @@ export class AnalyticsService {
       const forecast = Array.from({ length: periods }, (_, i) => {
         const futureTimestamp = lastTimestamp + i + 1
         const predictedValue = slope * futureTimestamp + intercept
-        
+
         return {
           timestamp: new Date(Date.now() + (i + 1) * 24 * 60 * 60 * 1000), // Next days
           value: Math.max(0, predictedValue), // Ensure non-negative
@@ -358,7 +358,7 @@ export class AnalyticsService {
 
       // Use AI to enhance forecast with business context
       const forecastPrompt = this.buildForecastAnalysisPrompt(data, forecast)
-      
+
       const aiInsights = await this.azureOpenAI.generateCompletion([
         {
           role: 'system',
@@ -425,7 +425,7 @@ export class AnalyticsService {
 
       // AI-powered behavior insights
       const behaviorPrompt = this.buildBehaviorAnalysisPrompt(analysis, session.events)
-      
+
       const aiInsights = await this.azureOpenAI.generateCompletion([
         {
           role: 'system',
@@ -461,7 +461,7 @@ export class AnalyticsService {
     // Placeholder for data source-specific query execution
     // In a real implementation, this would connect to various data sources
     // and execute the appropriate query type
-    
+
     const mockData = [
       { date: '2024-01-01', value: 100, category: 'A' },
       { date: '2024-01-02', value: 120, category: 'B' },
@@ -475,7 +475,7 @@ export class AnalyticsService {
 
   private extractQueryTags(query: string): string[] {
     const keywords = ['SELECT', 'FROM', 'WHERE', 'GROUP BY', 'ORDER BY', 'JOIN']
-    return keywords.filter(keyword => 
+    return keywords.filter(keyword =>
       query.toUpperCase().includes(keyword)
     ).map(keyword => keyword.toLowerCase())
   }
@@ -503,10 +503,10 @@ Focus on actionable insights that can drive business decisions.
   private parseInsightResponse(response: string): InsightGeneration[] {
     // Simplified parsing - in production, this would be more sophisticated
     const insights: InsightGeneration[] = []
-    
+
     const lines = response.split('\n').filter(line => line.trim())
     let currentInsight: Partial<InsightGeneration> = {}
-    
+
     for (const line of lines) {
       if (line.includes('Trend:') || line.includes('Pattern:')) {
         if (currentInsight.title) {
@@ -523,11 +523,11 @@ Focus on actionable insights that can drive business decisions.
         currentInsight.description = line.replace(/^.*?:/, '').trim()
       }
     }
-    
+
     if (currentInsight.title) {
       insights.push(currentInsight as InsightGeneration)
     }
-    
+
     return insights.length > 0 ? insights : [{
       title: 'Data Analysis Complete',
       description: response.substring(0, 200),
@@ -624,14 +624,14 @@ Please provide:
 
   private calculateBounceRate(events: any[]): number {
     if (events.length <= 1) return 1
-    const engagementEvents = events.filter(e => 
+    const engagementEvents = events.filter(e =>
       ['click', 'scroll', 'form_submit', 'download'].includes(e.action || '')
     )
     return engagementEvents.length === 0 ? 1 : 0
   }
 
   private identifyConversionEvents(events: any[]): any[] {
-    return events.filter(e => 
+    return events.filter(e =>
       ['purchase', 'signup', 'subscribe', 'download'].includes(e.name?.toLowerCase() || '')
     )
   }
@@ -649,7 +649,7 @@ Please provide:
   private parseAIInsights(response: string): any {
     return {
       summary: response.substring(0, 200),
-      keyFindings: response.split('\n').filter(line => 
+      keyFindings: response.split('\n').filter(line =>
         line.includes('Key:') || line.includes('Finding:')
       ),
       recommendations: this.extractRecommendations(response)
@@ -659,13 +659,13 @@ Please provide:
   private extractRecommendations(text: string): string[] {
     const lines = text.split('\n')
     const recommendations: string[] = []
-    
+
     for (const line of lines) {
       if (line.includes('Recommend') || line.includes('Suggest') || line.includes('Should')) {
         recommendations.push(line.trim())
       }
     }
-    
+
     return recommendations.slice(0, 5) // Limit to top 5
   }
 }

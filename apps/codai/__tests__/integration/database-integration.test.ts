@@ -25,7 +25,7 @@ describe('Database Integration Tests', () => {
       };
 
       mockDatabase.projects.push(project);
-      
+
       expect(mockDatabase.projects).toHaveLength(1);
       expect(mockDatabase.projects[0].name).toBe('Test Project');
     });
@@ -40,7 +40,7 @@ describe('Database Integration Tests', () => {
 
       mockDatabase.projects.push(project);
       project.status = 'active';
-      
+
       expect(mockDatabase.projects[0].status).toBe('active');
     });
 
@@ -87,10 +87,10 @@ describe('Database Integration Tests', () => {
       };
 
       mockDatabase.users.push(user);
-      
+
       // Update preferences
       user.preferences.theme = 'light';
-      
+
       expect(mockDatabase.users[0].preferences.theme).toBe('light');
     });
   });
@@ -122,7 +122,7 @@ describe('Database Integration Tests', () => {
       };
 
       const result = await transaction();
-      
+
       expect(mockDatabase.users).toHaveLength(1);
       expect(mockDatabase.projects).toHaveLength(1);
       expect(mockDatabase.projects[0].userId).toBe(result.user.id);

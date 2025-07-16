@@ -4,17 +4,17 @@ import TalentaiPage from './page'
 
 // Mock framer-motion to avoid animation issues in tests
 vi.mock('framer-motion', () => ({
-  motion: {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    h1: ({ children, ...props }: any) => <h1 {...props}>{children}</h1>,
-    p: ({ children, ...props }: any) => <p {...props}>{children}</p>,
-  },
-  AnimatePresence: ({ children }: any) => children,
+    motion: {
+        div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+        h1: ({ children, ...props }: any) => <h1 {...props}>{children}</h1>,
+        p: ({ children, ...props }: any) => <p {...props}>{children}</p>,
+    },
+    AnimatePresence: ({ children }: any) => children,
 }))
 
 // Mock the RealTimeStats component
 vi.mock('../components/RealTimeStats', () => ({
-  RealTimeStats: () => <div data-testid="real-time-stats">Real Time Stats Component</div>
+    RealTimeStats: () => <div data-testid="real-time-stats">Real Time Stats Component</div>
 }))
 
 describe('TalentAI Dashboard Page', () => {
@@ -47,7 +47,7 @@ describe('TalentAI Dashboard Page', () => {
 
     it('displays real-time statistics cards', () => {
         render(<TalentaiPage />)
-        
+
         // Check for stats labels (numbers are randomized so we test labels)
         expect(screen.getByText('Total Users')).toBeInTheDocument()
         expect(screen.getByText('Active Now')).toBeInTheDocument()
@@ -57,7 +57,7 @@ describe('TalentAI Dashboard Page', () => {
 
     it('renders enterprise feature cards', () => {
         render(<TalentaiPage />)
-        
+
         expect(screen.getByText('Analytics Dashboard')).toBeInTheDocument()
         expect(screen.getByText('User Management')).toBeInTheDocument()
         expect(screen.getByText('Data Management')).toBeInTheDocument()
@@ -85,10 +85,10 @@ describe('TalentAI Dashboard Page', () => {
 
     it('updates stats periodically', async () => {
         render(<TalentaiPage />)
-        
+
         // Fast-forward time to trigger stats update
         vi.advanceTimersByTime(5000)
-        
+
         await waitFor(() => {
             // Stats should still be displayed (numbers may have changed)
             expect(screen.getByText('Total Users')).toBeInTheDocument()
@@ -97,10 +97,10 @@ describe('TalentAI Dashboard Page', () => {
 
     it('updates time display', async () => {
         render(<TalentaiPage />)
-        
+
         // Fast-forward time by 1 second
         vi.advanceTimersByTime(1000)
-        
+
         await waitFor(() => {
             expect(screen.getByText(/Last updated:/)).toBeInTheDocument()
         }, { timeout: 1000 })

@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { data, periods = 7 } = body
-    
+
     if (!data || !Array.isArray(data)) {
       return NextResponse.json({
         success: false,
@@ -18,9 +18,9 @@ export async function POST(request: NextRequest) {
     const result = await analyticsService.generateForecast(data, periods)
 
     if (!result.success) {
-      return NextResponse.json({ 
-        success: false, 
-        error: result.error 
+      return NextResponse.json({
+        success: false,
+        error: result.error
       }, { status: 400 })
     }
 
@@ -31,10 +31,10 @@ export async function POST(request: NextRequest) {
       summary: {
         historical_points: data.length,
         forecast_periods: periods,
-        trend_direction: result.forecast && result.forecast.length > 1 
+        trend_direction: result.forecast && result.forecast.length > 1
           ? (result.forecast[result.forecast.length - 1].value > result.forecast[0].value ? 'upward' : 'downward')
           : 'stable',
-        average_confidence: result.forecast 
+        average_confidence: result.forecast
           ? (result.forecast.reduce((sum, p) => sum + p.confidence, 0) / result.forecast.length).toFixed(2)
           : 0
       }

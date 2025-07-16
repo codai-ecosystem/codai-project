@@ -200,11 +200,11 @@ describe('AIDE Load Performance Tests', () => {
 
       while (Date.now() - startTime < sustainedDuration) {
         const intervalStart = Date.now();
-        
+
         // Simulate work
         const work = Array.from({ length: 100 }, (_, i) => i * 2);
         const sum = work.reduce((a, b) => a + b, 0);
-        
+
         intervals.push({
           duration: Date.now() - intervalStart,
           result: sum

@@ -56,7 +56,7 @@ const ComplianceKYC = () => {
   const loadComplianceData = async () => {
     try {
       setLoading(true)
-      
+
       // Simulate compliance data loading
       const mockData: ComplianceStatus = {
         level: 'enhanced',
@@ -164,7 +164,7 @@ const ComplianceKYC = () => {
             uploadDate: new Date(),
             size: `${(file.size / 1024 / 1024).toFixed(1)} MB`
           }
-          
+
           if (complianceStatus) {
             setComplianceStatus({
               ...complianceStatus,
@@ -227,11 +227,10 @@ const ComplianceKYC = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 px-4 py-3 rounded-xl font-medium transition-all duration-300 ${
-                  activeTab === tab.id
+                className={`flex items-center space-x-2 px-4 py-3 rounded-xl font-medium transition-all duration-300 ${activeTab === tab.id
                     ? 'bg-emerald-500/30 text-emerald-300 shadow-lg'
                     : 'text-slate-400 hover:text-white hover:bg-white/10'
-                }`}
+                  }`}
               >
                 <Icon className="w-4 h-4" />
                 <span>{tab.name}</span>
@@ -312,11 +311,10 @@ const ComplianceKYC = () => {
                   { step: 'Verificare Risc', status: 'pending', description: 'Evaluare profil de risc programată' }
                 ].map((item, index) => (
                   <div key={index} className="flex items-center space-x-4">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                      item.status === 'completed' ? 'bg-green-500/20 text-green-400' :
-                      item.status === 'in-progress' ? 'bg-yellow-500/20 text-yellow-400' :
-                      'bg-gray-500/20 text-gray-400'
-                    }`}>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${item.status === 'completed' ? 'bg-green-500/20 text-green-400' :
+                        item.status === 'in-progress' ? 'bg-yellow-500/20 text-yellow-400' :
+                          'bg-gray-500/20 text-gray-400'
+                      }`}>
                       {item.status === 'completed' ? (
                         <CheckCircle className="w-5 h-5" />
                       ) : item.status === 'in-progress' ? (
@@ -382,11 +380,11 @@ const ComplianceKYC = () => {
                 >
                   Selectează Fișier
                 </label>
-                
+
                 {uploading && (
                   <div className="mt-4">
                     <div className="bg-white/10 rounded-full h-2">
-                      <div 
+                      <div
                         className="bg-emerald-500 h-2 rounded-full transition-all duration-300"
                         style={{ width: `${uploadProgress}%` }}
                       />
@@ -424,7 +422,7 @@ const ComplianceKYC = () => {
                         </button>
                       </div>
                     </div>
-                    
+
                     {doc.aiAnalysis && (
                       <div className="bg-white/5 rounded-lg p-3 mt-3">
                         <div className="flex items-center justify-between mb-2">
@@ -467,7 +465,7 @@ const ComplianceKYC = () => {
           >
             <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6">
               <h3 className="text-xl font-bold text-white mb-6">Verificare AI Avansată</h3>
-              
+
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <h4 className="text-lg font-semibold text-emerald-400">Tehnologii AI Utilizate</h4>
@@ -507,7 +505,7 @@ const ComplianceKYC = () => {
                         </div>
                         <div className="text-gray-400 text-sm">{reg.description}</div>
                         <div className="mt-2 bg-white/10 rounded-full h-2">
-                          <div 
+                          <div
                             className={`h-2 rounded-full ${reg.compliance >= 95 ? 'bg-green-500' : 'bg-yellow-500'}`}
                             style={{ width: `${reg.compliance}%` }}
                           />
@@ -529,44 +527,42 @@ const ComplianceKYC = () => {
           >
             <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6">
               <h3 className="text-xl font-bold text-white mb-6">Status Conformitate Detalizat</h3>
-              
+
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2 space-y-6">
                   <div className="bg-white/5 rounded-xl p-4">
                     <h4 className="text-lg font-semibold text-white mb-4">Niveluri KYC Disponibile</h4>
                     <div className="space-y-3">
                       {[
-                        { 
-                          level: 'Basic', 
+                        {
+                          level: 'Basic',
                           requirements: ['Carte de identitate', 'Adresă email', 'Număr telefon'],
                           limits: 'Până la 1.000 RON/lună',
                           status: complianceStatus.level === 'basic' ? 'current' : 'completed'
                         },
-                        { 
-                          level: 'Enhanced', 
+                        {
+                          level: 'Enhanced',
                           requirements: ['Verificare adresă', 'Extras de cont', 'Sursă venituri'],
                           limits: 'Până la 10.000 RON/lună',
                           status: complianceStatus.level === 'enhanced' ? 'current' : complianceStatus.level === 'premium' ? 'completed' : 'available'
                         },
-                        { 
-                          level: 'Premium', 
+                        {
+                          level: 'Premium',
                           requirements: ['Verificare video', 'Declarație venituri', 'Verificare angajator'],
                           limits: 'Fără limite',
                           status: complianceStatus.level === 'premium' ? 'current' : 'available'
                         }
                       ].map((kycLevel, index) => (
-                        <div key={index} className={`p-4 rounded-lg border ${
-                          kycLevel.status === 'current' ? 'border-emerald-400 bg-emerald-500/10' : 
-                          kycLevel.status === 'completed' ? 'border-green-400 bg-green-500/10' :
-                          'border-white/20 bg-white/5'
-                        }`}>
+                        <div key={index} className={`p-4 rounded-lg border ${kycLevel.status === 'current' ? 'border-emerald-400 bg-emerald-500/10' :
+                            kycLevel.status === 'completed' ? 'border-green-400 bg-green-500/10' :
+                              'border-white/20 bg-white/5'
+                          }`}>
                           <div className="flex items-center justify-between mb-2">
                             <span className="text-white font-semibold">{kycLevel.level} Level</span>
-                            <div className={`px-2 py-1 rounded text-xs ${
-                              kycLevel.status === 'current' ? 'bg-emerald-400 text-black' :
-                              kycLevel.status === 'completed' ? 'bg-green-400 text-black' :
-                              'bg-white/20 text-gray-300'
-                            }`}>
+                            <div className={`px-2 py-1 rounded text-xs ${kycLevel.status === 'current' ? 'bg-emerald-400 text-black' :
+                                kycLevel.status === 'completed' ? 'bg-green-400 text-black' :
+                                  'bg-white/20 text-gray-300'
+                              }`}>
                               {kycLevel.status === 'current' ? 'ACTUAL' : kycLevel.status === 'completed' ? 'COMPLETAT' : 'DISPONIBIL'}
                             </div>
                           </div>
@@ -596,11 +592,10 @@ const ComplianceKYC = () => {
                             <div className="text-white text-sm font-medium">{item.action}</div>
                             <div className="text-gray-400 text-xs">{item.deadline}</div>
                           </div>
-                          <div className={`w-3 h-3 rounded-full ${
-                            item.priority === 'high' ? 'bg-red-400' :
-                            item.priority === 'medium' ? 'bg-yellow-400' :
-                            'bg-green-400'
-                          }`} />
+                          <div className={`w-3 h-3 rounded-full ${item.priority === 'high' ? 'bg-red-400' :
+                              item.priority === 'medium' ? 'bg-yellow-400' :
+                                'bg-green-400'
+                            }`} />
                         </div>
                       ))}
                     </div>

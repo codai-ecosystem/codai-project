@@ -17,15 +17,15 @@ vi.mock('framer-motion', () => {
     } catch {
       // Fallback for ESM environments
       return {
-        createElement: (tag: string, props: any, ...children: any[]) => ({ 
-          type: tag, 
-          props: { ...props, children } 
+        createElement: (tag: string, props: any, ...children: any[]) => ({
+          type: tag,
+          props: { ...props, children }
         }),
         forwardRef: (fn: any) => fn
       }
     }
   })()
-  
+
   // Animation props to filter out
   const animationProps = new Set([
     'initial',
@@ -49,7 +49,7 @@ vi.mock('framer-motion', () => {
     'onDragStart',
     'onDragEnd'
   ])
-  
+
   const filterProps = (props: any) => {
     const filtered: any = {}
     for (const [key, value] of Object.entries(props)) {
@@ -59,14 +59,14 @@ vi.mock('framer-motion', () => {
     }
     return filtered
   }
-  
+
   const createMotionComponent = (Component: string) => {
     return React.forwardRef((props: any, ref: any) => {
       const filteredProps = filterProps(props)
       return React.createElement(Component, { ...filteredProps, ref })
     })
   }
-  
+
   return {
     motion: {
       div: createMotionComponent('div'),

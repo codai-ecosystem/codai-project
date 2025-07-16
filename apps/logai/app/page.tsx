@@ -1,11 +1,39 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Activity, Users, Shield, TrendingUp, Bell, Settings, Lock, Globe, Zap, Database, AlertTriangle, Eye } from 'lucide-react'
+import { LogAIService, type LogStatistics, type Alert, type ServiceHealth } from '../services/logaiService'
 
 export default function LogaiPage() {
   const [activeTab, setActiveTab] = useState('overview')
+  const [stats, setStats] = useState<LogStatistics | null>(null)
+  const [alerts, setAlerts] = useState<Alert[]>([])
+  const [serviceHealth, setServiceHealth] = useState<ServiceHealth[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    loadRealLogData()
+  }, [])
+
+  const loadRealLogData = async () => {
+    setLoading(true)
+    try {
+      const logService = LogAIService.getInstance()
+      const [statsData, alertsData, healthData] = await Promise.all([
+        logService.getLogStatistics(),
+        logService.getAlerts(),
+        logService.getServiceHealth()
+      ])
+      setStats(statsData)
+      setAlerts(alertsData)
+      setServiceHealth(healthData)
+    } catch (error) {
+      console.error('Failed to load LogAI data:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: Activity },
@@ -39,7 +67,7 @@ export default function LogaiPage() {
             </div>
           </div>
         )
-      
+
       case 'analytics':
         return (
           <div className="space-y-6">
@@ -58,7 +86,7 @@ export default function LogaiPage() {
             </div>
           </div>
         )
-      
+
       case 'monitor':
         return (
           <div className="space-y-6">
@@ -91,7 +119,7 @@ export default function LogaiPage() {
             </div>
           </div>
         )
-      
+
       default:
         return (
           <div className="space-y-8">
@@ -112,11 +140,49 @@ export default function LogaiPage() {
 
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 container">
-              {[
-                { icon: Users, label: 'Total Users', value: '12.4K', change: '+8.2%', color: 'blue' },
-                { icon: TrendingUp, label: 'Active Now', value: '3.2K', change: '+2.1%', color: 'green' },
-                { icon: Shield, label: 'Performance', value: '98.5%', change: '0%', color: 'blue' },
-                { icon: Bell, label: 'Satisfaction', value: '4.9/5', change: '+0.2', color: 'purple' }
+              {loading ? (
+                // Loading skeleton
+                Array.from({ length: 4 }, (_, index) => (
+                  <div key={index} className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6 glassmorphism animate-pulse">
+                    <div className="h-12 bg-white/10 rounded mb-4"></div>
+                    <div className="h-6 bg-white/10 rounded mb-2"></div>
+                    <div className="h-4 bg-white/10 rounded w-1/2"></div>
+                  </div>
+                ))
+              ) : stats ? [
+                {
+                  icon: Users,
+                  label: 'Total Logs',
+                  value: (stats.totalLogs / 1000).toFixed(1) + 'K',
+                  change: `${stats.errorRate.toFixed(1)}% errors`,
+                  color: 'blue'
+                },
+                {
+                  icon: TrendingUp,
+                  label: 'Active Services',
+                  value: serviceHealth.filter(s => s.status === 'healthy').length.toString(),
+                  change: `${serviceHealth.length} total`,
+                  color: 'green'
+                },
+                {
+                  icon: Shield,
+                  label: 'System Health',
+                  value: `${Math.round(serviceHealth.reduce((acc, s) => acc + s.metrics.uptime, 0) / serviceHealth.length * 100) / 100}%`,
+                  change: 'uptime',
+                  color: 'blue'
+                },
+                {
+                  icon: Bell,
+                  label: 'Active Alerts',
+                  value: alerts.filter(a => a.isActive).length.toString(),
+                  change: `${alerts.length} total`,
+                  color: alerts.filter(a => a.isActive).length > 0 ? 'red' : 'purple'
+                }
+              ] : [
+                { icon: Users, label: 'Total Logs', value: '0', change: 'No data', color: 'gray' },
+                { icon: TrendingUp, label: 'Active Services', value: '0', change: 'No data', color: 'gray' },
+                { icon: Shield, label: 'System Health', value: '0%', change: 'No data', color: 'gray' },
+                { icon: Bell, label: 'Active Alerts', value: '0', change: 'No data', color: 'gray' }
               ].map((stat, index) => (
                 <motion.div
                   key={stat.label}
@@ -129,9 +195,8 @@ export default function LogaiPage() {
                     <div className={`p-3 rounded-xl bg-${stat.color}-500/20`}>
                       <stat.icon className={`w-6 h-6 text-${stat.color}-400`} />
                     </div>
-                    <div className={`flex items-center space-x-1 ${
-                      stat.change.startsWith('+') ? 'text-green-400' : 'text-gray-400'
-                    }`}>
+                    <div className={`flex items-center space-x-1 ${stat.change.startsWith('+') ? 'text-green-400' : 'text-gray-400'
+                      }`}>
                       <TrendingUp className="w-4 h-4 " />
                       <span className="text-sm font-medium">{stat.change}</span>
                     </div>
@@ -167,7 +232,7 @@ export default function LogaiPage() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6 glassmorphism">
                 <div className="flex items-center mb-4">
                   <Eye className="w-6 h-6 text-blue-400 mr-3" />
@@ -249,7 +314,7 @@ export default function LogaiPage() {
                 <p className="text-sm text-gray-400">AI-Powered Logging Platform</p>
               </div>
             </motion.div>
-            
+
             <motion.div
               className="flex items-center space-x-6"
               initial={{ opacity: 0, x: 50 }}
@@ -281,11 +346,10 @@ export default function LogaiPage() {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               aria-label={tab.label}
-              className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center space-x-2 ${
-                activeTab === tab.id
+              className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center space-x-2 ${activeTab === tab.id
                   ? 'bg-blue-500/30 text-blue-300 shadow-lg'
                   : 'text-slate-400 hover:text-white hover:bg-white/10'
-              }`}
+                }`}
             >
               <tab.icon className="w-4 h-4" />
               <span>{tab.label}</span>

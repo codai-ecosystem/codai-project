@@ -10,7 +10,7 @@ describe('TalentAI Dashboard Page Functionality', () => {
         subtitle: 'Enterprise Talent Management Platform',
         description: 'Advanced AI-driven recruitment and talent acquisition'
       }
-      
+
       expect(pageContent.mainHeading).toBe('TalentAI')
       expect(pageContent.subtitle).toContain('Enterprise')
       expect(pageContent.description).toContain('AI-driven')
@@ -22,7 +22,7 @@ describe('TalentAI Dashboard Page Functionality', () => {
         features: ['AI-powered matching', 'Real-time analytics', 'Scalable infrastructure'],
         targetAudience: 'Enterprise HR teams'
       }
-      
+
       expect(platformInfo.title).toContain('Enterprise')
       expect(platformInfo.features).toHaveLength(3)
       expect(platformInfo.targetAudience).toContain('Enterprise')
@@ -35,7 +35,7 @@ describe('TalentAI Dashboard Page Functionality', () => {
         lastUpdate: new Date().toISOString(),
         healthChecks: ['database', 'api', 'cache', 'search']
       }
-      
+
       expect(systemStatus.status).toBe('active')
       expect(systemStatus.uptime).toBe('99.9%')
       expect(systemStatus.healthChecks).toHaveLength(4)
@@ -48,7 +48,7 @@ describe('TalentAI Dashboard Page Functionality', () => {
         { title: 'Interviews Scheduled', value: '89', trend: '+15%' },
         { title: 'Successful Placements', value: '234', trend: '+22%' }
       ]
-      
+
       expect(statisticsCards).toHaveLength(4)
       statisticsCards.forEach(card => {
         expect(card.title).toBeDefined()
@@ -75,10 +75,10 @@ describe('TalentAI Dashboard Page Functionality', () => {
           icon: 'Calendar'
         }
       ]
-      
+
       expect(enterpriseFeatures).toHaveLength(3)
       enterpriseFeatures.forEach(feature => {
-        expect(['AI-Powered', 'Real-time', 'Automated'].some(keyword => 
+        expect(['AI-Powered', 'Real-time', 'Automated'].some(keyword =>
           feature.title.includes(keyword)
         )).toBe(true)
         expect(feature.description.length).toBeGreaterThan(20)
@@ -99,7 +99,7 @@ describe('TalentAI Dashboard Page Functionality', () => {
           throughput: '10K req/sec'
         }
       }
-      
+
       expect(indicators.security.level).toBe('Enterprise Grade')
       expect(indicators.security.certifications).toHaveLength(3)
       expect(indicators.performance.uptime).toBe('99.9%')
@@ -112,7 +112,7 @@ describe('TalentAI Dashboard Page Functionality', () => {
         updateInterval: 1000, // 1 second
         display: new Date().toLocaleTimeString()
       }
-      
+
       expect(footerTime.timezone).toBe('UTC')
       expect(footerTime.updateInterval).toBe(1000)
       expect(footerTime.display).toMatch(/\d{1,2}:\d{2}:\d{2}/)
@@ -126,7 +126,7 @@ describe('TalentAI Dashboard Page Functionality', () => {
         borderRadius: '12px',
         boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)'
       }
-      
+
       expect(glassmorphismStyles.background).toContain('rgba')
       expect(glassmorphismStyles.backdropFilter).toContain('blur')
       expect(glassmorphismStyles.border).toContain('rgba')
@@ -143,7 +143,7 @@ describe('TalentAI Dashboard Page Functionality', () => {
           interviewsScheduled: 0
         }
       }
-      
+
       expect(statsUpdateConfig.interval).toBe(30000)
       expect(statsUpdateConfig.endpoint).toBe('/api/talent-stats')
       expect(statsUpdateConfig.retryAttempts).toBe(3)
@@ -156,7 +156,7 @@ describe('TalentAI Dashboard Page Functionality', () => {
         timezone: 'local',
         showDate: true
       }
-      
+
       expect(timeDisplayConfig.updateInterval).toBe(1000)
       expect(timeDisplayConfig.format).toBe('HH:mm:ss')
       expect(timeDisplayConfig.showDate).toBe(true)
@@ -166,7 +166,7 @@ describe('TalentAI Dashboard Page Functionality', () => {
   describe('Tab Navigation', () => {
     it('should have four main navigation tabs', () => {
       const tabs = ['Overview', 'Analytics', 'Features', 'Monitor']
-      
+
       expect(tabs).toHaveLength(4)
       expect(tabs).toContain('Overview')
       expect(tabs).toContain('Analytics')
@@ -180,7 +180,7 @@ describe('TalentAI Dashboard Page Functionality', () => {
         activeTab: defaultTab,
         availableTabs: ['Overview', 'Analytics', 'Features', 'Monitor']
       }
-      
+
       expect(tabState.activeTab).toBe('Overview')
       expect(tabState.availableTabs).toContain(defaultTab)
     })

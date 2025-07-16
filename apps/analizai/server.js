@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const PORT = 4042;
+const PORT = 4053;
 
 // Middleware
 app.use(cors());
@@ -12,13 +12,13 @@ app.use(express.static('.'));
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'healthy', 
+  res.json({
+    status: 'healthy',
     service: 'analizai',
-    description: 'AI Analytics Platform',
+    description: 'Insights & Diagnostics Layer',
     port: PORT,
-    type: 'analytics',
-    category: 'business',
+    type: 'undefined',
+    category: 'analytics',
     timestamp: new Date().toISOString(),
     uptime: process.uptime()
   });
@@ -49,7 +49,7 @@ app.get('/api', (req, res) => {
     endpoints: [
       'GET /',
       'GET /health',
-      'GET /status', 
+      'GET /status',
       'GET /api'
     ],
     documentation: 'https://docs.codai.ro/analizai'

@@ -6,7 +6,7 @@ vi.mock('../../src/embedding/EmbeddingService.js', () => ({
     if (!config.api_key) {
       throw new Error('Azure OpenAI API key is required');
     }
-    
+
     return {
       embed: vi.fn().mockResolvedValue({
         embedding: new Array(1536).fill(0.1),
@@ -23,7 +23,7 @@ vi.mock('../../src/embedding/EmbeddingService.js', () => ({
       getDimension: vi.fn().mockReturnValue(1536)
     };
   }),
-  
+
   LocalEmbeddingProvider: vi.fn().mockImplementation(() => ({
     embed: vi.fn().mockResolvedValue({
       embedding: new Array(384).fill(0.1),
@@ -39,7 +39,7 @@ vi.mock('../../src/embedding/EmbeddingService.js', () => ({
     ]),
     getDimension: vi.fn().mockReturnValue(384)
   })),
-  
+
   EmbeddingService: vi.fn().mockImplementation((config: any) => {
     return {
       embed: vi.fn().mockImplementation((text: string) => {

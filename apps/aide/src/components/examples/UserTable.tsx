@@ -4,7 +4,7 @@ import { limit, orderBy } from 'firebase/firestore';
 import type { JSX } from 'react';
 import { useEffect, useState } from 'react';
 
-import { Button, Skeleton } from '@/components/ui';
+import { Button } from '@/components/ui';
 import { useFirestore } from '@/hooks';
 
 interface UserData {
@@ -89,14 +89,14 @@ export function UserTable(): JSX.Element {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold">Users</h2>
-          <Skeleton className="h-10 w-40" />
+          <div className="h-10 w-40 bg-gray-200 animate-pulse rounded" />
         </div>
 
         <div className="overflow-x-auto rounded-md border">
           <div className="min-w-full divide-y">
             {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="px-6 py-4">
-                <Skeleton className="h-6 w-full" />
+                <div className="h-6 w-full bg-gray-200 animate-pulse rounded" />
               </div>
             ))}
           </div>
@@ -121,7 +121,7 @@ export function UserTable(): JSX.Element {
         <h2 className="text-xl font-semibold">Users</h2>
         <Button
           onClick={toggleRealtime}
-          variant={isRealtime ? 'success' : 'outline'}
+          variant={isRealtime ? 'outline' : 'outline'}
         >
           {isRealtime ? 'Real-time: On' : 'Real-time: Off'}
         </Button>

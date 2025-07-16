@@ -1,36 +1,34 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    // Remove deprecated turbo config
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
+    appDir: true,
+    serverComponentsExternalPackages: ['bcryptjs'],
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
   },
   images: {
-    domains: ['localhost'],
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
-  env: {
-    SERVICE_NAME: 'stocai',
-    SERVICE_PORT: '4063',
+  typescript: {
+    ignoreBuildErrors: false,
   },
-  webpack: (config, { isServer }) => {
-    // Fix module resolution issues
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-      };
-    }
-    return config;
+  eslint: {
+    ignoreDuringBuilds: false,
   },
-  // Reduce memory usage
-  compress: true,
   poweredByHeader: false,
+  compress: true,
+  generateEtags: true,
+  httpAgentOptions: {
+    keepAlive: true,
+  },
 };
 
 module.exports = nextConfig;

@@ -35,11 +35,10 @@ export function BackendStatus({ className }: BackendStatusProps) {
             <h3 className="mb-2 font-medium">Backend Status</h3>
             <div className="flex items-center gap-2">
                 <div
-                    className={`h-3 w-3 rounded-full ${
-                        status.status === 'healthy'
+                    className={`h-3 w-3 rounded-full ${status.status === 'healthy'
                             ? 'bg-green-500'
                             : 'bg-red-500'
-                    }`}
+                        }`}
                 />
                 <span>
                     {status.status === 'healthy' ? 'Connected' : 'Disconnected'}

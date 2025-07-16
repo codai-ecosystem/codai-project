@@ -48,17 +48,17 @@ function testService(service) {
           'X-Content-Type-Options': res.headers['x-content-type-options'] || 'MISSING',
           'Content-Security-Policy': res.headers['content-security-policy'] || 'MISSING'
         };
-        
+
         let score = 100;
         let issues = 0;
-        
+
         Object.values(hasHeaders).forEach(value => {
           if (value === 'MISSING') {
             score -= 15;
             issues++;
           }
         });
-        
+
         resolve({
           name: service.name,
           port: service.port,
@@ -70,7 +70,7 @@ function testService(service) {
         });
       });
     });
-    
+
     req.on('error', () => {
       resolve({
         name: service.name,
@@ -81,7 +81,7 @@ function testService(service) {
         issues: 0
       });
     });
-    
+
     req.on('timeout', () => {
       resolve({
         name: service.name,
@@ -93,7 +93,7 @@ function testService(service) {
       });
       req.destroy();
     });
-    
+
     req.end();
   });
 }
@@ -102,14 +102,14 @@ async function runAudit() {
   console.log('Starting security audit...');
   console.log('Testing ' + services.length + ' services');
   console.log();
-  
+
   const promises = services.map(service => testService(service));
   const results = await Promise.all(promises);
-  
+
   let totalScore = 0;
   let onlineServices = 0;
   let totalIssues = 0;
-  
+
   results.forEach(result => {
     if (result.status === 'ONLINE') {
       onlineServices++;
@@ -117,10 +117,10 @@ async function runAudit() {
       totalIssues += result.issues;
     }
   });
-  
+
   const avgScore = onlineServices > 0 ? Math.round(totalScore / onlineServices) : 0;
   const grade = avgScore >= 90 ? 'A' : avgScore >= 80 ? 'B' : avgScore >= 70 ? 'C' : avgScore >= 60 ? 'D' : 'F';
-  
+
   console.log('SECURITY AUDIT RESULTS');
   console.log('======================');
   console.log('Overall Score: ' + avgScore + '/100');
@@ -128,7 +128,7 @@ async function runAudit() {
   console.log('Services Online: ' + onlineServices + '/' + services.length);
   console.log('Total Issues: ' + totalIssues);
   console.log();
-  
+
   console.log('Service Details:');
   results.forEach((result, index) => {
     const status = result.status === 'ONLINE' ? 'ONLINE' : 'OFFLINE';
@@ -136,14 +136,14 @@ async function runAudit() {
     console.log((index + 1) + '. ' + result.name + ' (Port ' + result.port + ') - ' + status + ' - ' + critical);
     console.log('   Score: ' + result.score + '/100 | Issues: ' + result.issues);
   });
-  
+
   console.log();
   console.log('Critical Services:');
   const criticalServices = results.filter(r => r.critical);
   criticalServices.forEach(service => {
     console.log('- ' + service.name + ': ' + service.status + ' (Score: ' + service.score + '/100)');
   });
-  
+
   console.log();
   console.log('Recommendations:');
   console.log('1. Implement security headers (X-Frame-Options, CSP, etc.)');
@@ -151,18 +151,18 @@ async function runAudit() {
   console.log('3. Add authentication and authorization');
   console.log('4. Implement rate limiting');
   console.log('5. Regular security audits');
-  
+
   // Save results
   const report = {
     timestamp: new Date().toISOString(),
     overall: { score: avgScore, grade: grade, issues: totalIssues },
     services: results
   };
-  
+
   fs.writeFileSync('security-audit-report.json', JSON.stringify(report, null, 2));
   console.log();
   console.log('Security audit complete! Report saved to security-audit-report.json');
-  
+
   return report;
 }
 

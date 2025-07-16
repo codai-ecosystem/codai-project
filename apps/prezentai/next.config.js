@@ -1,77 +1,34 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Performance optimizations
   experimental: {
-    optimizeCss: true,
-    optimizeServerReact: true,
-    webpackBuildWorker: true,
-  },
-  
-  // Compiler optimizations
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
-  },
-  
-  // Image optimization
-  images: {
-    domains: ['localhost'],
-    formats: ['image/webp', 'image/avif'],
-    minimumCacheTTL: 60,
-    dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-  },
-  
-  // Headers for caching
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-        ],
-      },
-    ]
-  },
-  
-  // Webpack optimizations
-  webpack: (config, { dev, isServer }) => {
-    if (!dev && !isServer) {
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        cacheGroups: {
-          vendor: {
-            test: /[\/]node_modules[\/]/,
-            name: 'vendors',
-            priority: 10,
-            reuseExistingChunk: true,
-          },
-          common: {
-            minChunks: 2,
-            priority: 5,
-            reuseExistingChunk: true,
-          },
+    appDir: true,
+    serverComponentsExternalPackages: ['bcryptjs'],
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
         },
-      }
-    }
-    
-    return config
+      },
+    },
   },
-  
-  // Bundle analysis
-  // bundleAnalyzer: {
-  //   enabled: process.env.ANALYZE === 'true',
-  // },
-}
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+  },
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+  poweredByHeader: false,
+  compress: true,
+  generateEtags: true,
+  httpAgentOptions: {
+    keepAlive: true,
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

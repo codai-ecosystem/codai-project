@@ -1,8 +1,0 @@
-{
-    "agentId": "test-agent-1",
-    "content": "This is a test memory for the Codai ecosystem demonstrating real database integration with live data.",
-    "memoryType": "EPISODIC",
-    "category": "test",
-    "importance": 0.8,
-    "metadata": "{\"source\":\"api-test\",\"timestamp\":\"2025-07-14T17:58:00Z\"}"
-}

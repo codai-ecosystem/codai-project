@@ -1,62 +1,37 @@
-﻿/// <reference types="vitest" />
-import { defineConfig } from 'vitest/config'
-import react from '@vitejs/plugin-react'
-import path from 'path'
+import { defineConfig } from 'vitest/config';
+import react from '@vitejs/plugin-react';
+import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
   test: {
-    watch: false, // Prevent watch mode by default
+    name: 'app-admin',
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./vitest.setup.ts'],
-    css: true,
-    // Comprehensive test environment variables
-    env: {
-      NODE_ENV: 'test',
-      ADMIN_API_KEY: 'test-admin-key',
-      ADMIN_SECRET: 'test-admin-secret',
-      ADMIN_DB_URL: 'test://localhost/admin-test',
-      OPENAI_API_KEY: 'test-openai-key',
-      LOG_LEVEL: 'silent',
-      DISABLE_TELEMETRY: 'true',
-      NEXT_PUBLIC_ADMIN_MODE: 'test'
-    },
+    setupFiles: ['./tests/setup.ts'],
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json', 'html', 'lcov'],
+      reporter: ['text', 'json', 'html'],
       exclude: [
         'node_modules/',
-        'dist/',
+        'tests/',
         '**/*.d.ts',
         '**/*.config.*',
-        '**/coverage/**',
-        '**/*.test.*',
-        '**/*.spec.*'
+        '**/coverage/**'
       ],
       thresholds: {
         global: {
-          branches: 70,
-          functions: 70,
-          lines: 70,
-          statements: 70
+          branches: 90,
+          functions: 90,
+          lines: 90,
+          statements: 90
         }
-      },
-      all: true,
-      include: ['app/**/*.{ts,tsx}', 'components/**/*.{ts,tsx}', 'lib/**/*.{ts,tsx}']
-    },
-    pool: 'threads',
-    poolOptions: {
-      threads: {
-        singleThread: true,
-        minThreads: 1,
-        maxThreads: 1
       }
     }
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './')
-    }
-  }
-})
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+});

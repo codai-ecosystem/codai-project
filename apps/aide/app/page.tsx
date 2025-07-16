@@ -1,5 +1,5 @@
-import AideHomepage from '../components/AideHomepage'
+import { AideDashboard } from '../src/components/aide/dashboard'
 
-export default function Page() {
-  return <AideHomepage />
+export default function HomePage() {
+    return <AideDashboard />
 }

@@ -1,7 +1,10 @@
 import { lazy, useEffect, useRef, useState } from 'react';
 import type { ComponentType, LazyExoticComponent, RefObject } from 'react';
 
-import { ErrorBoundary } from '../ErrorBoundary';
+import { ErrorBoundary } from 'export const LazyInput = createLazyComponent(
+() => import('../ui/input').then(mod => ({ default: mod.Input })),
+  { preloadDelay: 1000 }
+);rrorBoundary';
 
 /**
  * Enhanced lazy loading utility with error boundaries and loading states
@@ -120,7 +123,7 @@ export function preloadComponent<
   T extends ComponentType<Record<string, unknown>>,
 >(componentImporter: () => Promise<{ default: T }>): Promise<void> {
   return componentImporter()
-    .then(() => {})
+    .then(() => { })
     .catch(() => {
       // Ignore preload errors
     });
@@ -164,7 +167,7 @@ export function usePreloadOnInteraction<
 
 // Pre-defined lazy components for common use cases
 export const LazyButton = createLazyComponent(
-  () => import('../ui/Button').then(mod => ({ default: mod.Button })),
+  () => import('../ui/button').then(mod => ({ default: mod.Button })),
   { preloadDelay: 1000 }
 );
 

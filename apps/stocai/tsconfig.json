@@ -1,6 +1,6 @@
 {
-  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "target": "ES2017",
     "lib": ["dom", "dom.iterable", "es6"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -13,30 +13,19 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "baseUrl": ".",
-    "rootDir": ".",
     "plugins": [
       {
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./app/*", "./lib/*", "./services/*", "./src/*", "./tests/*"],
-      "lib/*": ["./lib/*"],
-      "app/*": ["./app/*"],
-      "services/*": ["./services/*"],
-      "tests/*": ["./tests/*"]
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/utils/*": ["./src/utils/*"]
     }
   },
-  "include": [
-    "next-env.d.ts", 
-    "**/*.ts", 
-    "**/*.tsx", 
-    ".next/types/**/*.ts",
-    "app/**/*",
-    "lib/**/*",
-    "tests/**/*",
-    "src/**/*"
-  ],
-  "exclude": ["node_modules", "packages"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }

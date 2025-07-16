@@ -1,5 +1,5 @@
-import Dashboard from '@/components/dashboard/Dashboard';
+import { IdDashboard } from '@/components/id/dashboard'
 
-export default function IdPage() {
-  return <Dashboard />;
+export default function Home() {
+  return <IdDashboard />
 }

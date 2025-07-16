@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const PORT = 4058;
+const PORT = 4017;
 
 // Middleware
 app.use(cors());
@@ -12,8 +12,8 @@ app.use(express.static('.'));
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'healthy', 
+  res.json({
+    status: 'healthy',
     service: 'id',
     description: 'Codai Identity & Reputation Layer',
     port: PORT,
@@ -49,7 +49,7 @@ app.get('/api', (req, res) => {
     endpoints: [
       'GET /',
       'GET /health',
-      'GET /status', 
+      'GET /status',
       'GET /api'
     ],
     documentation: 'https://docs.codai.ro/id'

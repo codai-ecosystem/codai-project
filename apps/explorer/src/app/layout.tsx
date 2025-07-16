@@ -5,18 +5,22 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-    title: 'Explorer - AI Blockchain Explorer',
-    description: 'Advanced AI-powered blockchain explorer and analytics platform',
+  title: '${APP_NAME} - CODAI Ecosystem',
+  description: '${APP_DESCRIPTION}',
 }
 
 export default function RootLayout({
-    children,
+  children,
 }: {
-    children: React.ReactNode
+  children: React.ReactNode
 }) {
-    return (
-        <html lang="en">
-            <body className={inter.className}>{children}</body>
-        </html>
-    )
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+          {children}
+        </div>
+      </body>
+    </html>
+  )
 }

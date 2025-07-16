@@ -1,9 +1,5 @@
-import dynamic from 'next/dynamic'
+import { AideDashboard } from '@/components/aide/dashboard'
 
-const AideMainInterface = dynamic(() => import('../components/AideMainInterface'), {
-  ssr: false
-})
-
-export default function Home() {
-  return <AideMainInterface />
+export default function HomePage() {
+  return <AideDashboard />
 }

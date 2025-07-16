@@ -1,39 +1,34 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Explicitly set app directory
   experimental: {
     appDir: true,
-  },
-  output: 'standalone',
-  eslint: {
-    ignoreDuringBuilds: true
-  },
-  typescript: {
-    ignoreBuildErrors: true
+    serverComponentsExternalPackages: ['bcryptjs'],
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
   },
   images: {
-    domains: ['localhost'],
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
-  env: {
-    APP_NAME: 'MEMORAI',
-    APP_DESCRIPTION: 'AI Memory & Database Core',
-    APP_PORT: '4031',
+  typescript: {
+    ignoreBuildErrors: false,
   },
-  webpack: (config, { isServer }) => {
-    // Fix module resolution issues
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-      };
-    }
-    return config;
+  eslint: {
+    ignoreDuringBuilds: false,
   },
-  // Reduce memory usage
-  compress: true,
   poweredByHeader: false,
-}
+  compress: true,
+  generateEtags: true,
+  httpAgentOptions: {
+    keepAlive: true,
+  },
+};
 
 module.exports = nextConfig;

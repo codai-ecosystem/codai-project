@@ -1,5 +1,10 @@
-import Dashboard from '@/components/dashboard/Dashboard';
+import { LegalizaiDashboard } from '../components/legalizai/dashboard'
 
-export default function LegalizaiPage() {
-  return <Dashboard />;
+export default function HomePage() {
+  return <LegalizaiDashboard />
+}
+
+export const metadata = {
+  title: 'LEGALIZAI - AI Legal & Compliance',
+  description: 'AI Legal & Compliance Management Platform - Streamline legal operations with intelligent automation',
 }

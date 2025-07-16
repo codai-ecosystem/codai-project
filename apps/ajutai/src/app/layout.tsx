@@ -1,22 +1,26 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'AJUTAI - Codai Ecosystem',
-  description: 'AI-powered ajutai service',
-};
+  title: '${APP_NAME} - CODAI Ecosystem',
+  description: '${APP_DESCRIPTION}',
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+          {children}
+        </div>
+      </body>
     </html>
-  );
+  )
 }

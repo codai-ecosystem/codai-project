@@ -3,131 +3,457 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>stocai - Codai Ecosystem</title>
+    <title>STOCAI - AI Stock Trading Platform</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0f1419 0%, #1a2332 50%, #0f1419 100%);
             min-height: 100vh;
             color: white;
-            padding: 40px 20px;
+            overflow-x: hidden;
         }
         
-        .container {
-            max-width: 1200px;
+        .trading-container {
+            max-width: 1400px;
             margin: 0 auto;
+            padding: 20px;
         }
         
         .header {
+            background: rgba(16, 185, 129, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
             text-align: center;
-            margin-bottom: 40px;
         }
         
         .header h1 {
-            font-size: 3rem;
-            font-weight: 700;
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #10b981, #06d6a0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #6ee7b7;
+            font-size: 1.2rem;
             margin-bottom: 20px;
         }
         
-        .badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
+        .live-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.2);
             padding: 8px 16px;
             border-radius: 20px;
-            margin: 5px;
+            font-size: 0.9rem;
+            color: #6ee7b7;
         }
         
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        
-        .card {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 30px;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        
-        .status {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 20px 0;
-        }
-        
-        .status-dot {
-            width: 12px;
-            height: 12px;
-            background: #4CAF50;
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
             border-radius: 50%;
             animation: pulse 2s infinite;
         }
         
         @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+            100% { opacity: 1; transform: scale(1); }
         }
         
-        .api-links {
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .widget {
+            background: rgba(16, 185, 129, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(16, 185, 129, 0.1);
+            border-radius: 16px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .widget:hover {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .widget h3 {
+            color: #6ee7b7;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
             display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .portfolio-summary {
+            grid-column: 1 / -1;
+        }
+        
+        .portfolio-value {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #10b981;
+            margin-bottom: 10px;
+        }
+        
+        .portfolio-change {
+            font-size: 1.2rem;
+            color: #6ee7b7;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .stock-list {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .stock-item {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            background: rgba(16, 185, 129, 0.08);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(16, 185, 129, 0.1);
+        }
+        
+        .stock-symbol {
+            background: linear-gradient(135deg, #10b981, #06d6a0);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .stock-info {
+            flex: 1;
+            padding: 0 15px;
+        }
+        
+        .stock-name {
+            color: #d1fae5;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .stock-price {
+            color: #6ee7b7;
+            font-size: 0.9rem;
+        }
+        
+        .stock-change {
+            text-align: right;
+            min-width: 80px;
+        }
+        
+        .positive { color: #10b981; }
+        .negative { color: #ef4444; }
+        
+        .market-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .market-index {
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .market-index h4 {
+            color: #6ee7b7;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .market-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 5px;
+        }
+        
+        .market-change {
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
             justify-content: center;
+            gap: 4px;
+        }
+        
+        .ai-insights {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 214, 160, 0.05));
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 16px;
+            padding: 25px;
             margin-top: 20px;
         }
         
-        .api-link {
-            background: rgba(255,255,255,0.2);
+        .ai-insights h3 {
+            color: #6ee7b7;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .insight-item {
+            background: rgba(16, 185, 129, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 3px solid #10b981;
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .action-btn {
+            background: linear-gradient(135deg, #10b981, #06d6a0);
             color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+        
+        .footer-link {
+            background: rgba(16, 185, 129, 0.1);
+            color: #6ee7b7;
             text-decoration: none;
             padding: 10px 20px;
             border-radius: 8px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            background: rgba(16, 185, 129, 0.2);
+            color: white;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="trading-container">
+        <!-- Header -->
         <div class="header">
-            <h1>stocai</h1>
-            <p>Stock Market & Investment AI Platform</p>
-            <div class="badge">Port: 4065</div>
-            <div class="badge">Type: undefined</div>
-            <div class="badge">Priority: undefined</div>
-        </div>
-        
-        <div class="status">
-            <div class="status-dot"></div>
-            <span>Service Operational - Port Compliant (4000+)</span>
-        </div>
-        
-        <div class="grid">
-            <div class="card">
-                <h3>🚀 Service Info</h3>
-                <p><strong>Framework:</strong> Express.js</p>
-                <p><strong>Port:</strong> 4065</p>
-                <p><strong>Status:</strong> Operational</p>
-                <p><strong>Compliance:</strong> 4000+ Policy</p>
-            </div>
-            
-            <div class="card">
-                <h3>📊 Ecosystem</h3>
-                <p><strong>Platform:</strong> Codai Ecosystem</p>
-                <p><strong>Version:</strong> 2.0.0</p>
-                <p><strong>Architecture:</strong> Microservices</p>
-                <p><strong>Policy:</strong> No ports below 4000</p>
+            <h1>STOCAI</h1>
+            <p>AI-Powered Stock Trading Platform</p>
+            <div class="live-status">
+                <div class="live-dot"></div>
+                Live Trading Dashboard
             </div>
         </div>
-        
-        <div class="api-links">
-            <a href="/health" class="api-link">🏥 Health</a>
-            <a href="/status" class="api-link">📊 Status</a>
-            <a href="/api" class="api-link">🔌 API</a>
+
+        <!-- Market Overview -->
+        <div class="market-overview">
+            <div class="market-index">
+                <h4>S&P 500</h4>
+                <div class="market-value">5,234.45</div>
+                <div class="market-change positive">+23.67 (+0.45%)</div>
+            </div>
+            <div class="market-index">
+                <h4>NASDAQ</h4>
+                <div class="market-value">16,789.23</div>
+                <div class="market-change negative">-45.78 (-0.27%)</div>
+            </div>
+            <div class="market-index">
+                <h4>DOW JONES</h4>
+                <div class="market-value">38,456.78</div>
+                <div class="market-change positive">+156.34 (+0.41%)</div>
+            </div>
+            <div class="market-index">
+                <h4>VIX</h4>
+                <div class="market-value">16.78</div>
+                <div class="market-change negative">-1.23 (-6.83%)</div>
+            </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Portfolio Summary -->
+            <div class="widget portfolio-summary">
+                <h3>💼 Portfolio Summary</h3>
+                <div class="portfolio-value">$487,234.50</div>
+                <div class="portfolio-change positive">
+                    ↗ +$12,456.78 (+2.62%) today
+                </div>
+            </div>
+
+            <!-- Top Gainers -->
+            <div class="widget">
+                <h3>📈 Top Gainers</h3>
+                <div class="stock-list">
+                    <div class="stock-item">
+                        <div class="stock-symbol">AAPL</div>
+                        <div class="stock-info">
+                            <div class="stock-name">Apple Inc.</div>
+                            <div class="stock-price">$178.25</div>
+                        </div>
+                        <div class="stock-change positive">+5.23%</div>
+                    </div>
+                    <div class="stock-item">
+                        <div class="stock-symbol">TSLA</div>
+                        <div class="stock-info">
+                            <div class="stock-name">Tesla Inc.</div>
+                            <div class="stock-price">$234.67</div>
+                        </div>
+                        <div class="stock-change positive">+4.89%</div>
+                    </div>
+                    <div class="stock-item">
+                        <div class="stock-symbol">NVDA</div>
+                        <div class="stock-info">
+                            <div class="stock-name">NVIDIA Corp.</div>
+                            <div class="stock-price">$456.12</div>
+                        </div>
+                        <div class="stock-change positive">+3.67%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Watchlist -->
+            <div class="widget">
+                <h3>👀 Watchlist</h3>
+                <div class="stock-list">
+                    <div class="stock-item">
+                        <div class="stock-symbol">GOOGL</div>
+                        <div class="stock-info">
+                            <div class="stock-name">Alphabet Inc.</div>
+                            <div class="stock-price">$142.78</div>
+                        </div>
+                        <div class="stock-change positive">+1.23%</div>
+                    </div>
+                    <div class="stock-item">
+                        <div class="stock-symbol">MSFT</div>
+                        <div class="stock-info">
+                            <div class="stock-name">Microsoft Corp.</div>
+                            <div class="stock-price">$389.45</div>
+                        </div>
+                        <div class="stock-change negative">-0.78%</div>
+                    </div>
+                    <div class="stock-item">
+                        <div class="stock-symbol">AMZN</div>
+                        <div class="stock-info">
+                            <div class="stock-name">Amazon.com Inc.</div>
+                            <div class="stock-price">$156.89</div>
+                        </div>
+                        <div class="stock-change positive">+2.34%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Insights -->
+        <div class="ai-insights">
+            <h3>🧠 AI Trading Insights</h3>
+            <div class="insight-item">
+                <strong>Market Sentiment:</strong> Bullish - AI analysis shows strong positive momentum in tech sector with 87% confidence.
+            </div>
+            <div class="insight-item">
+                <strong>Top Pick:</strong> AAPL showing strong buy signals with target price $195. Risk-adjusted return: 8.5%.
+            </div>
+            <div class="insight-item">
+                <strong>Risk Alert:</strong> VIX levels suggest increased volatility. Consider hedging positions in energy sector.
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <button class="action-btn">🔍 Stock Scanner</button>
+            <button class="action-btn">📊 Technical Analysis</button>
+            <button class="action-btn">🤖 AI Signals</button>
+            <button class="action-btn">📈 Portfolio Optimizer</button>
+        </div>
+
+        <!-- Footer Links -->
+        <div class="footer-links">
+            <a href="/health" class="footer-link">🏥 Health</a>
+            <a href="/status" class="footer-link">📊 Status</a>
+            <a href="/api" class="footer-link">🔌 API</a>
         </div>
     </div>
+
+    <script>
+        // Add real-time updates simulation
+        function updateMarketData() {
+            const elements = document.querySelectorAll('.market-value');
+            elements.forEach(el => {
+                const currentValue = parseFloat(el.textContent.replace(/,/g, ''));
+                const change = (Math.random() - 0.5) * 10;
+                const newValue = (currentValue + change).toFixed(2);
+                el.textContent = parseFloat(newValue).toLocaleString();
+            });
+        }
+
+        // Update every 5 seconds
+        setInterval(updateMarketData, 5000);
+
+        // Add click handlers for buttons
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('Feature coming soon in STOCAI v2.0!');
+            });
+        });
+
+        console.log('🚀 STOCAI Trading Platform Loaded Successfully');
+        console.log('📊 Real-time market data simulation active');
+        console.log('🤖 AI trading algorithms ready');
+    </script>
 </body>
 </html>

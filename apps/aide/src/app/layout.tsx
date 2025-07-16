@@ -1,24 +1,21 @@
-import { ReactNode } from 'react'
-import { Inter } from 'next/font/google'
-import '../styles/globals.css'
+import type { Metadata } from 'next'
+import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
-
-export const metadata = {
-    title: 'AIDE - AI Development Environment',
-    description: 'Ultimate AI Development Orchestration Platform - VS Code-like interface with GitHub Copilot chat integration',
+export const metadata: Metadata = {
+  title: 'AIDE - AI Development Environment',
+  description: 'Advanced AI-powered development assistant for the CODAI ecosystem',
 }
 
 export default function RootLayout({
-    children,
+  children,
 }: {
-    children: ReactNode
+  children: React.ReactNode
 }) {
-    return (
-        <html lang="en" className="h-full">
-            <body className={`${inter.className} h-full overflow-hidden bg-slate-900`}>
-                {children}
-            </body>
-        </html>
-    )
+  return (
+    <html lang="en">
+      <body className="min-h-screen bg-gray-50 antialiased">
+        {children}
+      </body>
+    </html>
+  )
 }

@@ -1,14 +1,43 @@
 {
   "name": "marketai",
   "version": "1.0.0",
+  "private": true,
   "description": "Marketplace for AI Agents & Modules",
-  "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "next dev --port 4054",
+    "build": "next build",
+    "start": "next start --port 4054",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5"
-  }
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.462.0",
+    "next": "15.4.1",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "tailwind-merge": "^2.5.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.17.0",
+    "eslint-config-next": "15.4.1",
+    "postcss": "^8.5.1",
+    "tailwindcss": "3.4.17",
+    "typescript": "5.8.3",
+    "jsdom": "^24.0.0",
+    "happy-dom": "^15.1.1",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/user-event": "^14.5.2"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "type": "module"
 }

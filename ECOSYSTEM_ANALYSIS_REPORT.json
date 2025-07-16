@@ -1,0 +1,2549 @@
+{
+  "startTime": "2025-07-16T05:55:09.242Z",
+  "apps": {
+    "total": 43,
+    "analyzed": 43,
+    "nextjs": [
+      {
+        "name": "acasai",
+        "path": "E:\\GitHub\\codai-project\\apps\\acasai",
+        "type": "nextjs",
+        "status": "needs_setup",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": false,
+          "hasTestsDir": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add README.md",
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "admin",
+        "path": "E:\\GitHub\\codai-project\\apps\\admin",
+        "type": "nextjs",
+        "status": "needs_tests",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": false,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add README.md",
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "aide",
+        "path": "E:\\GitHub\\codai-project\\apps\\aide",
+        "type": "nextjs",
+        "status": "needs_tests",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": false,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasEnvExample": true
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "ajutai",
+        "path": "E:\\GitHub\\codai-project\\apps\\ajutai",
+        "type": "nextjs",
+        "status": "needs_tests",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": false,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add README.md",
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "analizai",
+        "path": "E:\\GitHub\\codai-project\\apps\\analizai",
+        "type": "nextjs",
+        "status": "complete",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasEnvExample": true
+        },
+        "testing": {
+          "hasTests": true,
+          "testFiles": [
+            "basic.test.js",
+            "analizai.e2e.test.ts",
+            "analizai.integration.test.ts",
+            "analizai.test.ts"
+          ],
+          "testCount": 4,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "bancai",
+        "path": "E:\\GitHub\\codai-project\\apps\\bancai",
+        "type": "nextjs",
+        "status": "needs_setup",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": false,
+          "hasTestsDir": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasEnvExample": true
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "codai",
+        "path": "E:\\GitHub\\codai-project\\apps\\codai",
+        "type": "nextjs",
+        "status": "complete",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasEnvExample": true
+        },
+        "testing": {
+          "hasTests": true,
+          "testFiles": [
+            "codai.e2e.test.ts",
+            "codai.integration.test.ts",
+            "sample.test.js",
+            "codai.test.ts"
+          ],
+          "testCount": 4,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "cumparai",
+        "path": "E:\\GitHub\\codai-project\\apps\\cumparai",
+        "type": "nextjs",
+        "status": "needs_tests",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "curtai",
+        "path": "E:\\GitHub\\codai-project\\apps\\curtai",
+        "type": "nextjs",
+        "status": "needs_setup",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": false,
+          "hasTestsDir": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add README.md",
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "dash",
+        "path": "E:\\GitHub\\codai-project\\apps\\dash",
+        "type": "nextjs",
+        "status": "needs_tests",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": false,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add README.md",
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "dexai",
+        "path": "E:\\GitHub\\codai-project\\apps\\dexai",
+        "type": "nextjs",
+        "status": "complete",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": true,
+          "testFiles": [
+            "dictionary.test.tsx",
+            "final-comprehensive-test.spec.ts",
+            "firebase-complete-integration.spec.ts"
+          ],
+          "testCount": 3,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add .env.example",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "docs",
+        "path": "E:\\GitHub\\codai-project\\apps\\docs",
+        "type": "nextjs",
+        "status": "needs_tests",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": false,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add README.md",
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "explorer",
+        "path": "E:\\GitHub\\codai-project\\apps\\explorer",
+        "type": "nextjs",
+        "status": "needs_tests",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": false,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add README.md",
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "fabricai",
+        "path": "E:\\GitHub\\codai-project\\apps\\fabricai",
+        "type": "nextjs",
+        "status": "needs_setup",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": false,
+          "hasTestsDir": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "hub",
+        "path": "E:\\GitHub\\codai-project\\apps\\hub",
+        "type": "nextjs",
+        "status": "complete",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasEnvExample": true
+        },
+        "testing": {
+          "hasTests": true,
+          "testFiles": [
+            "basic.test.js",
+            "hub.e2e.test.ts",
+            "hub.integration.test.ts",
+            "hub.test.ts"
+          ],
+          "testCount": 4,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "id",
+        "path": "E:\\GitHub\\codai-project\\apps\\id",
+        "type": "nextjs",
+        "status": "complete",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasEnvExample": true
+        },
+        "testing": {
+          "hasTests": true,
+          "testFiles": [
+            "basic.test.js",
+            "id.e2e.test.ts",
+            "id.integration.test.ts",
+            "id.test.ts"
+          ],
+          "testCount": 4,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "jucai",
+        "path": "E:\\GitHub\\codai-project\\apps\\jucai",
+        "type": "nextjs",
+        "status": "needs_tests",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add README.md",
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "kodex",
+        "path": "E:\\GitHub\\codai-project\\apps\\kodex",
+        "type": "nextjs",
+        "status": "complete",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasEnvExample": true
+        },
+        "testing": {
+          "hasTests": true,
+          "testFiles": [
+            "basic.test.js",
+            "kodex.e2e.test.ts",
+            "kodex.integration.test.ts",
+            "kodex.test.ts"
+          ],
+          "testCount": 4,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "legalizai",
+        "path": "E:\\GitHub\\codai-project\\apps\\legalizai",
+        "type": "nextjs",
+        "status": "complete",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasEnvExample": true
+        },
+        "testing": {
+          "hasTests": true,
+          "testFiles": [
+            "basic.test.js",
+            "legalizai.e2e.test.ts",
+            "legalizai.integration.test.ts",
+            "legalizai.test.ts"
+          ],
+          "testCount": 4,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "logai",
+        "path": "E:\\GitHub\\codai-project\\apps\\logai",
+        "type": "nextjs",
+        "status": "needs_tests",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasEnvExample": true
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "marketai",
+        "path": "E:\\GitHub\\codai-project\\apps\\marketai",
+        "type": "nextjs",
+        "status": "needs_tests",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": false,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add README.md",
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "memorai",
+        "path": "E:\\GitHub\\codai-project\\apps\\memorai",
+        "type": "nextjs",
+        "status": "complete",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasEnvExample": true
+        },
+        "testing": {
+          "hasTests": true,
+          "testFiles": [
+            "basic.test.js",
+            "memorai.e2e.test.ts",
+            "memorai.integration.test.ts",
+            "memorai.test.ts"
+          ],
+          "testCount": 4,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "metu-web",
+        "path": "E:\\GitHub\\codai-project\\apps\\metu-web",
+        "type": "nextjs",
+        "status": "needs_tests",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add README.md",
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "mobile",
+        "path": "E:\\GitHub\\codai-project\\apps\\mobile",
+        "type": "nextjs",
+        "status": "needs_tests",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": false,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add README.md",
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "mod",
+        "path": "E:\\GitHub\\codai-project\\apps\\mod",
+        "type": "nextjs",
+        "status": "needs_tests",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": false,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add README.md",
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "muzicai",
+        "path": "E:\\GitHub\\codai-project\\apps\\muzicai",
+        "type": "nextjs",
+        "status": "needs_setup",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": false,
+          "hasSrcDir": false,
+          "hasTestsDir": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add README.md",
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "prezentai",
+        "path": "E:\\GitHub\\codai-project\\apps\\prezentai",
+        "type": "nextjs",
+        "status": "needs_setup",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": false,
+          "hasTestsDir": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": true,
+          "testFiles": [
+            "home.test.tsx"
+          ],
+          "testCount": 1,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add README.md",
+          "Add .env.example",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "publicai",
+        "path": "E:\\GitHub\\codai-project\\apps\\publicai",
+        "type": "nextjs",
+        "status": "complete",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": true,
+          "testFiles": [
+            "basic.test.js",
+            "publicai.e2e.test.ts",
+            "publicai.integration.test.ts",
+            "publicai.test.ts"
+          ],
+          "testCount": 4,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add .env.example",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "sociai",
+        "path": "E:\\GitHub\\codai-project\\apps\\sociai",
+        "type": "nextjs",
+        "status": "needs_tests",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "stocai",
+        "path": "E:\\GitHub\\codai-project\\apps\\stocai",
+        "type": "nextjs",
+        "status": "complete",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasEnvExample": true
+        },
+        "testing": {
+          "hasTests": true,
+          "testFiles": [
+            "core-functionality.test.ts",
+            "datasets-debug.test.ts",
+            "datasets-enhanced.test.ts",
+            "datasets.test.ts",
+            "files-enhanced.test.ts",
+            "files-simple.test.ts",
+            "files.test.ts",
+            "vectors.test.ts",
+            "cache-system.test.ts",
+            "websocket-server.test.ts"
+          ],
+          "testCount": 10,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "studiai",
+        "path": "E:\\GitHub\\codai-project\\apps\\studiai",
+        "type": "nextjs",
+        "status": "complete",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": true,
+          "testFiles": [
+            "basic.test.js",
+            "studiai.e2e.test.ts",
+            "studiai.integration.test.ts",
+            "studiai.test.ts"
+          ],
+          "testCount": 4,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add .env.example",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "sunai",
+        "path": "E:\\GitHub\\codai-project\\apps\\sunai",
+        "type": "nextjs",
+        "status": "needs_tests",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add README.md",
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "talentai",
+        "path": "E:\\GitHub\\codai-project\\apps\\talentai",
+        "type": "nextjs",
+        "status": "needs_tests",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add README.md",
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "tools",
+        "path": "E:\\GitHub\\codai-project\\apps\\tools",
+        "type": "nextjs",
+        "status": "needs_tests",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": false,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add README.md",
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "wallet",
+        "path": "E:\\GitHub\\codai-project\\apps\\wallet",
+        "type": "nextjs",
+        "status": "complete",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasEnvExample": true
+        },
+        "testing": {
+          "hasTests": true,
+          "testFiles": [
+            "basic.test.js",
+            "wallet.e2e.test.ts",
+            "wallet.integration.test.ts",
+            "wallet.test.ts"
+          ],
+          "testCount": 4,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "x",
+        "path": "E:\\GitHub\\codai-project\\apps\\x",
+        "type": "nextjs",
+        "status": "complete",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": true,
+          "hasSrcDir": true,
+          "hasTestsDir": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": true,
+          "testFiles": [
+            "basic.test.js",
+            "x.e2e.test.ts",
+            "x.integration.test.ts",
+            "x.test.ts"
+          ],
+          "testCount": 4,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add .env.example",
+          "Increase test coverage"
+        ]
+      }
+    ],
+    "express": [],
+    "other": [
+      {
+        "name": "conversai",
+        "path": "E:\\GitHub\\codai-project\\apps\\conversai",
+        "type": "unknown",
+        "status": "needs_setup",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": false,
+          "hasSrcDir": false,
+          "hasTestsDir": true,
+          "hasReadme": false,
+          "hasTsconfig": false,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add README.md",
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "donai",
+        "path": "E:\\GitHub\\codai-project\\apps\\donai",
+        "type": "unknown",
+        "status": "needs_setup",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": false,
+          "hasSrcDir": false,
+          "hasTestsDir": true,
+          "hasReadme": false,
+          "hasTsconfig": false,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add README.md",
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "glass",
+        "path": "E:\\GitHub\\codai-project\\apps\\glass",
+        "type": "unknown",
+        "status": "needs_setup",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": false,
+          "hasSrcDir": false,
+          "hasTestsDir": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasEnvExample": true
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "metu",
+        "path": "E:\\GitHub\\codai-project\\apps\\metu",
+        "type": "unknown",
+        "status": "complete",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": false,
+          "hasSrcDir": true,
+          "hasTestsDir": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": true,
+          "testFiles": [
+            "metu.integration.test.tsx",
+            "voice-engine.test.ts"
+          ],
+          "testCount": 2,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add .env.example",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "romai",
+        "path": "E:\\GitHub\\codai-project\\apps\\romai",
+        "type": "unknown",
+        "status": "needs_tests",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": false,
+          "hasSrcDir": true,
+          "hasTestsDir": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasEnvExample": true
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      }
+    ],
+    "mobile": [
+      {
+        "name": "bancai-mobile",
+        "path": "E:\\GitHub\\codai-project\\apps\\bancai-mobile",
+        "type": "mobile",
+        "status": "needs_setup",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": false,
+          "hasSrcDir": false,
+          "hasTestsDir": true,
+          "hasReadme": false,
+          "hasTsconfig": false,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add README.md",
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      },
+      {
+        "name": "codai-mobile",
+        "path": "E:\\GitHub\\codai-project\\apps\\codai-mobile",
+        "type": "mobile",
+        "status": "needs_setup",
+        "structure": {
+          "hasPackageJson": true,
+          "hasNextConfig": false,
+          "hasSrcDir": false,
+          "hasTestsDir": true,
+          "hasReadme": false,
+          "hasTsconfig": false,
+          "hasEnvExample": false
+        },
+        "testing": {
+          "hasTests": false,
+          "testFiles": [],
+          "testCount": 0,
+          "coverage": null
+        },
+        "issues": [],
+        "recommendations": [
+          "Add README.md",
+          "Add .env.example",
+          "Add comprehensive test suite",
+          "Increase test coverage"
+        ]
+      }
+    ],
+    "issues": []
+  },
+  "packages": {
+    "total": 25,
+    "analyzed": 25,
+    "core": [
+      {
+        "name": "ai",
+        "path": "E:\\GitHub\\codai-project\\packages\\ai",
+        "type": "core",
+        "status": "functional",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": true,
+          "hasIndex": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasTests": false
+        },
+        "exports": [
+          "AI_PROVIDERS"
+        ],
+        "dependencies": {
+          "dependencies": [
+            "@ai-sdk/anthropic",
+            "@ai-sdk/openai",
+            "@langchain/anthropic",
+            "@langchain/core",
+            "@langchain/openai",
+            "ai",
+            "openai",
+            "zod",
+            "zod-to-json-schema"
+          ],
+          "devDependencies": [
+            "@codai/config",
+            "@types/node",
+            "eslint",
+            "tsup",
+            "typescript",
+            "vitest"
+          ],
+          "peerDependencies": [
+            "react"
+          ]
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "analytics",
+        "path": "E:\\GitHub\\codai-project\\packages\\analytics",
+        "type": "core",
+        "status": "functional",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": true,
+          "hasIndex": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasTests": false
+        },
+        "exports": [],
+        "dependencies": {
+          "dependencies": [
+            "@codai/core",
+            "@codai/logai-sdk",
+            "@codai/realtime",
+            "@elastic/elasticsearch",
+            "@influxdata/influxdb-client",
+            "grafana-api-client",
+            "lodash",
+            "moment",
+            "node-cron",
+            "prom-client",
+            "redis",
+            "uuid",
+            "zod"
+          ],
+          "devDependencies": [
+            "@types/jest",
+            "@types/lodash",
+            "@types/node",
+            "@types/node-cron",
+            "@types/uuid",
+            "jest",
+            "tsup",
+            "typescript"
+          ],
+          "peerDependencies": [
+            "react"
+          ]
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "api",
+        "path": "E:\\GitHub\\codai-project\\packages\\api",
+        "type": "core",
+        "status": "functional",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": true,
+          "hasIndex": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasTests": false
+        },
+        "exports": [],
+        "dependencies": {
+          "dependencies": [
+            "@codai/core",
+            "@tanstack/react-query",
+            "@trpc/client",
+            "@trpc/react-query",
+            "@trpc/server",
+            "superjson",
+            "zod"
+          ],
+          "devDependencies": [
+            "@types/jest",
+            "@types/node",
+            "eslint",
+            "jest",
+            "tsup",
+            "typescript"
+          ],
+          "peerDependencies": [
+            "react",
+            "react-dom"
+          ]
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "auth",
+        "path": "E:\\GitHub\\codai-project\\packages\\auth",
+        "type": "core",
+        "status": "functional",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": true,
+          "hasIndex": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasTests": false
+        },
+        "exports": [],
+        "dependencies": {
+          "dependencies": [
+            "@codai/core",
+            "bcrypt",
+            "jsonwebtoken",
+            "next-auth",
+            "zod"
+          ],
+          "devDependencies": [
+            "@types/bcrypt",
+            "@types/jest",
+            "@types/jsonwebtoken",
+            "@types/node",
+            "eslint",
+            "jest",
+            "tsup",
+            "typescript"
+          ],
+          "peerDependencies": [
+            "react",
+            "react-dom"
+          ]
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "config",
+        "path": "E:\\GitHub\\codai-project\\packages\\config",
+        "type": "core",
+        "status": "functional",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": true,
+          "hasIndex": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasTests": false
+        },
+        "exports": [],
+        "dependencies": {
+          "dependencies": [
+            "@rollup/plugin-commonjs",
+            "@rollup/plugin-node-resolve",
+            "@rollup/plugin-terser",
+            "@rollup/plugin-typescript",
+            "@tailwindcss/aspect-ratio",
+            "@tailwindcss/forms",
+            "@tailwindcss/typography",
+            "@typescript-eslint/eslint-plugin",
+            "@typescript-eslint/parser",
+            "@vitejs/plugin-react",
+            "eslint-config-next",
+            "eslint-plugin-import",
+            "eslint-plugin-react",
+            "eslint-plugin-react-hooks",
+            "rollup",
+            "rollup-plugin-dts",
+            "tailwindcss",
+            "vite",
+            "vitest"
+          ],
+          "devDependencies": [
+            "@jest/types",
+            "@types/jest",
+            "@types/node",
+            "autoprefixer",
+            "eslint",
+            "postcss",
+            "tsup",
+            "typescript"
+          ],
+          "peerDependencies": [
+            "eslint",
+            "typescript"
+          ]
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "core",
+        "path": "E:\\GitHub\\codai-project\\packages\\core",
+        "type": "core",
+        "status": "functional",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": true,
+          "hasIndex": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasTests": false
+        },
+        "exports": [],
+        "dependencies": {
+          "dependencies": [
+            "@anthropic-ai/sdk",
+            "bcrypt",
+            "clsx",
+            "dotenv",
+            "ioredis",
+            "jsonwebtoken",
+            "openai",
+            "socket.io",
+            "tailwind-merge",
+            "zod"
+          ],
+          "devDependencies": [
+            "@types/bcrypt",
+            "@types/jsonwebtoken",
+            "@types/node",
+            "typescript"
+          ],
+          "peerDependencies": [
+            "@prisma/client"
+          ]
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "deployment",
+        "path": "E:\\GitHub\\codai-project\\packages\\deployment",
+        "type": "core",
+        "status": "functional",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": true,
+          "hasIndex": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasTests": false
+        },
+        "exports": [
+          "KubernetesProvider",
+          "VercelProvider",
+          "AWSProvider"
+        ],
+        "dependencies": {
+          "dependencies": [
+            "@codai/analytics",
+            "@codai/core",
+            "@codai/logai-sdk",
+            "@codai/service-registry",
+            "@kubernetes/client-node",
+            "aws-sdk",
+            "chalk",
+            "commander",
+            "docker-compose",
+            "inquirer",
+            "lodash",
+            "ora",
+            "uuid",
+            "vercel",
+            "yaml"
+          ],
+          "devDependencies": [
+            "@types/inquirer",
+            "@types/jest",
+            "@types/lodash",
+            "@types/node",
+            "@types/uuid",
+            "jest",
+            "tsup",
+            "typescript"
+          ],
+          "peerDependencies": []
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "security",
+        "path": "E:\\GitHub\\codai-project\\packages\\security",
+        "type": "core",
+        "status": "needs_setup",
+        "structure": {
+          "hasPackageJson": false,
+          "hasSrcDir": true,
+          "hasIndex": false,
+          "hasReadme": false,
+          "hasTsconfig": false,
+          "hasTests": false
+        },
+        "exports": [],
+        "dependencies": {},
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      }
+    ],
+    "dev_tools": [
+      {
+        "name": "eslint-config",
+        "path": "E:\\GitHub\\codai-project\\packages\\eslint-config",
+        "type": "dev-tool",
+        "status": "needs_setup",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": false,
+          "hasIndex": false,
+          "hasReadme": false,
+          "hasTsconfig": false,
+          "hasTests": false
+        },
+        "exports": [],
+        "dependencies": {
+          "dependencies": [
+            "@typescript-eslint/eslint-plugin",
+            "@typescript-eslint/parser",
+            "eslint-config-next",
+            "eslint-config-prettier",
+            "eslint-plugin-react",
+            "eslint-plugin-react-hooks",
+            "eslint-plugin-security"
+          ],
+          "devDependencies": [],
+          "peerDependencies": [
+            "eslint",
+            "typescript"
+          ]
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "prettier-config",
+        "path": "E:\\GitHub\\codai-project\\packages\\prettier-config",
+        "type": "dev-tool",
+        "status": "needs_setup",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": false,
+          "hasIndex": false,
+          "hasReadme": false,
+          "hasTsconfig": false,
+          "hasTests": false
+        },
+        "exports": [],
+        "dependencies": {
+          "dependencies": [],
+          "devDependencies": [],
+          "peerDependencies": [
+            "prettier"
+          ]
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "typescript-config",
+        "path": "E:\\GitHub\\codai-project\\packages\\typescript-config",
+        "type": "dev-tool",
+        "status": "needs_setup",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": false,
+          "hasIndex": false,
+          "hasReadme": false,
+          "hasTsconfig": false,
+          "hasTests": false
+        },
+        "exports": [],
+        "dependencies": {
+          "dependencies": [],
+          "devDependencies": [],
+          "peerDependencies": [
+            "typescript"
+          ]
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      }
+    ],
+    "integration": [
+      {
+        "name": "api-keys",
+        "path": "E:\\GitHub\\codai-project\\packages\\api-keys",
+        "type": "utility",
+        "status": "functional",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": true,
+          "hasIndex": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasTests": false
+        },
+        "exports": [
+          "ApiKeyConfig",
+          "RateLimitConfig",
+          "ApiKeyData",
+          "KeyRotation",
+          "ApiKeyValidation",
+          "RateLimitStatus",
+          "KeyUsageMetrics",
+          "ApiKeyManager",
+          "createDefaultRateLimit",
+          "generateKeyId",
+          "ApiKeyError"
+        ],
+        "dependencies": {
+          "dependencies": [
+            "@codai/core",
+            "@codai/logai-sdk",
+            "bcryptjs",
+            "crypto",
+            "dotenv",
+            "joi",
+            "jsonwebtoken",
+            "node-cache",
+            "redis",
+            "uuid"
+          ],
+          "devDependencies": [
+            "@types/bcryptjs",
+            "@types/jest",
+            "@types/jsonwebtoken",
+            "@types/node",
+            "@types/uuid",
+            "eslint",
+            "jest",
+            "rimraf",
+            "tsup",
+            "typescript"
+          ],
+          "peerDependencies": [
+            "typescript"
+          ]
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "cli",
+        "path": "E:\\GitHub\\codai-project\\packages\\cli",
+        "type": "utility",
+        "status": "functional",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": true,
+          "hasIndex": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasTests": false
+        },
+        "exports": [
+          "CodaiCLI"
+        ],
+        "dependencies": {
+          "dependencies": [
+            "@codai/core",
+            "@codai/logai-sdk",
+            "@codai/sdk",
+            "boxen",
+            "chalk",
+            "commander",
+            "execa",
+            "fs-extra",
+            "inquirer",
+            "ora",
+            "table",
+            "yaml",
+            "zod"
+          ],
+          "devDependencies": [
+            "@types/fs-extra",
+            "@types/inquirer",
+            "@types/node",
+            "eslint",
+            "rimraf",
+            "tsup",
+            "typescript",
+            "vitest"
+          ],
+          "peerDependencies": [
+            "node"
+          ]
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "logai-integration",
+        "path": "E:\\GitHub\\codai-project\\packages\\logai-integration",
+        "type": "integration",
+        "status": "functional",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": true,
+          "hasIndex": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasTests": false
+        },
+        "exports": [
+          "useLogAI"
+        ],
+        "dependencies": {
+          "dependencies": [
+            "@codai/api-keys",
+            "@codai/logai-sdk"
+          ],
+          "devDependencies": [
+            "rimraf",
+            "typescript"
+          ],
+          "peerDependencies": [
+            "react"
+          ]
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "logai-sdk",
+        "path": "E:\\GitHub\\codai-project\\packages\\logai-sdk",
+        "type": "integration",
+        "status": "functional",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": true,
+          "hasIndex": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasTests": false
+        },
+        "exports": [
+          "LogEntry",
+          "LogAIConfig",
+          "LogResponse",
+          "LogAnalytics",
+          "LogAIClient",
+          "createLogAIClient",
+          "getLogAIConfig"
+        ],
+        "dependencies": {
+          "dependencies": [],
+          "devDependencies": [
+            "@types/node",
+            "picocolors",
+            "tsup",
+            "typescript",
+            "vitest"
+          ],
+          "peerDependencies": [
+            "typescript"
+          ]
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "logai-universal",
+        "path": "E:\\GitHub\\codai-project\\packages\\logai-universal",
+        "type": "utility",
+        "status": "functional",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": true,
+          "hasIndex": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasTests": false
+        },
+        "exports": [
+          "VERSION",
+          "DEFAULT_CONFIG"
+        ],
+        "dependencies": {
+          "dependencies": [
+            "date-fns",
+            "eventemitter3",
+            "lodash",
+            "uuid",
+            "ws"
+          ],
+          "devDependencies": [
+            "@types/jest",
+            "@types/lodash",
+            "@types/node",
+            "@types/uuid",
+            "@types/ws",
+            "@typescript-eslint/eslint-plugin",
+            "@typescript-eslint/parser",
+            "eslint",
+            "jest",
+            "typescript"
+          ],
+          "peerDependencies": []
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "realtime",
+        "path": "E:\\GitHub\\codai-project\\packages\\realtime",
+        "type": "utility",
+        "status": "functional",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": true,
+          "hasIndex": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasTests": false
+        },
+        "exports": [],
+        "dependencies": {
+          "dependencies": [
+            "eventemitter3",
+            "ioredis",
+            "jsonwebtoken",
+            "redis",
+            "socket.io",
+            "socket.io-client",
+            "uuid",
+            "ws",
+            "zod"
+          ],
+          "devDependencies": [
+            "@types/jsonwebtoken",
+            "@types/uuid",
+            "@types/ws",
+            "tsup",
+            "typescript"
+          ],
+          "peerDependencies": []
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "sdk",
+        "path": "E:\\GitHub\\codai-project\\packages\\sdk",
+        "type": "integration",
+        "status": "functional",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": true,
+          "hasIndex": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasTests": false
+        },
+        "exports": [
+          "SDK_VERSION",
+          "CodaiSDK"
+        ],
+        "dependencies": {
+          "dependencies": [
+            "@codai/auth",
+            "@codai/logai-sdk",
+            "@codai/shared-types",
+            "axios",
+            "eventemitter3",
+            "uuid",
+            "zod"
+          ],
+          "devDependencies": [
+            "@types/uuid",
+            "rimraf",
+            "tsup",
+            "typescript",
+            "vitest"
+          ],
+          "peerDependencies": [
+            "react"
+          ]
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "service-discovery",
+        "path": "E:\\GitHub\\codai-project\\packages\\service-discovery",
+        "type": "utility",
+        "status": "functional",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": true,
+          "hasIndex": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasTests": false
+        },
+        "exports": [
+          "ServiceConfig",
+          "ServiceEndpoint",
+          "HealthStatus",
+          "ServiceRegistry",
+          "serviceRegistry"
+        ],
+        "dependencies": {
+          "dependencies": [
+            "@codai/core",
+            "@codai/logai-sdk",
+            "ioredis",
+            "zod"
+          ],
+          "devDependencies": [
+            "@types/node",
+            "rimraf",
+            "typescript",
+            "vitest"
+          ],
+          "peerDependencies": []
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "service-registry",
+        "path": "E:\\GitHub\\codai-project\\packages\\service-registry",
+        "type": "utility",
+        "status": "functional",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": true,
+          "hasIndex": true,
+          "hasReadme": true,
+          "hasTsconfig": true,
+          "hasTests": false
+        },
+        "exports": [
+          "ServiceConfig",
+          "ServiceHealth",
+          "ServiceInstance",
+          "DiscoveryQuery",
+          "LoadBalancingOptions",
+          "ServiceRegistry",
+          "createServiceConfig",
+          "createServiceId",
+          "ServiceRegistryError"
+        ],
+        "dependencies": {
+          "dependencies": [
+            "@codai/core",
+            "@codai/logai-sdk",
+            "axios",
+            "joi",
+            "node-cron",
+            "redis",
+            "uuid"
+          ],
+          "devDependencies": [
+            "@types/jest",
+            "@types/node",
+            "@types/node-cron",
+            "@types/uuid",
+            "@typescript-eslint/eslint-plugin",
+            "@typescript-eslint/parser",
+            "eslint",
+            "jest",
+            "tsup",
+            "typescript"
+          ],
+          "peerDependencies": []
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "shared-hooks",
+        "path": "E:\\GitHub\\codai-project\\packages\\shared-hooks",
+        "type": "shared",
+        "status": "functional",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": true,
+          "hasIndex": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasTests": false
+        },
+        "exports": [
+          "useEcosystem",
+          "useEcosystemEvents",
+          "useAuth",
+          "useRealTimeData",
+          "useAccounts",
+          "useTransactions",
+          "useBalance",
+          "useMemories",
+          "useMemorySearch",
+          "useProjects",
+          "useProjectAnalytics",
+          "useDebounce",
+          "useLocalStorage",
+          "useInterval",
+          "usePrevious",
+          "useOnline",
+          "useForm"
+        ],
+        "dependencies": {
+          "dependencies": [
+            "@codai/shared-services",
+            "@codai/shared-types"
+          ],
+          "devDependencies": [
+            "@types/react",
+            "typescript"
+          ],
+          "peerDependencies": [
+            "react"
+          ]
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "shared-services",
+        "path": "E:\\GitHub\\codai-project\\packages\\shared-services",
+        "type": "shared",
+        "status": "functional",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": true,
+          "hasIndex": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasTests": false
+        },
+        "exports": [
+          "EcosystemService",
+          "AuthService",
+          "DataSyncService",
+          "FinancialService",
+          "MemoryService",
+          "ProjectService",
+          "SocialService",
+          "ecosystemService",
+          "authService",
+          "dataSyncService",
+          "financialService",
+          "memoryService",
+          "projectService",
+          "socialService"
+        ],
+        "dependencies": {
+          "dependencies": [
+            "@codai/shared-types"
+          ],
+          "devDependencies": [
+            "typescript"
+          ],
+          "peerDependencies": [
+            "react"
+          ]
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "shared-types",
+        "path": "E:\\GitHub\\codai-project\\packages\\shared-types",
+        "type": "shared",
+        "status": "functional",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": true,
+          "hasIndex": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasTests": false
+        },
+        "exports": [
+          "CodAIApp",
+          "AppCategory",
+          "AppCapability",
+          "AppEndpoint",
+          "User",
+          "UserRole",
+          "Permission",
+          "UserPreferences",
+          "NotificationSettings",
+          "Account",
+          "Transaction",
+          "PaymentMethod",
+          "Memory",
+          "MemoryMetadata",
+          "AIModel",
+          "Project",
+          "ProjectMember",
+          "Task",
+          "SocialPost",
+          "Message",
+          "Metric",
+          "Event",
+          "DashboardWidget",
+          "DashboardLayout",
+          "APIResponse",
+          "PaginatedResponse",
+          "WebSocketMessage",
+          "Integration",
+          "MarketItem"
+        ],
+        "dependencies": {
+          "dependencies": [],
+          "devDependencies": [
+            "typescript"
+          ],
+          "peerDependencies": [
+            "react"
+          ]
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "shared-ui",
+        "path": "E:\\GitHub\\codai-project\\packages\\shared-ui",
+        "type": "shared",
+        "status": "functional",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": true,
+          "hasIndex": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasTests": false
+        },
+        "exports": [],
+        "dependencies": {
+          "dependencies": [
+            "clsx",
+            "framer-motion"
+          ],
+          "devDependencies": [
+            "@types/react",
+            "typescript"
+          ],
+          "peerDependencies": [
+            "react",
+            "react-dom"
+          ]
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      },
+      {
+        "name": "ui",
+        "path": "E:\\GitHub\\codai-project\\packages\\ui",
+        "type": "utility",
+        "status": "functional",
+        "structure": {
+          "hasPackageJson": true,
+          "hasSrcDir": true,
+          "hasIndex": true,
+          "hasReadme": false,
+          "hasTsconfig": true,
+          "hasTests": false
+        },
+        "exports": [],
+        "dependencies": {
+          "dependencies": [
+            "@radix-ui/react-dialog",
+            "@radix-ui/react-dropdown-menu",
+            "@radix-ui/react-label",
+            "@radix-ui/react-popover",
+            "@radix-ui/react-select",
+            "@radix-ui/react-separator",
+            "@radix-ui/react-slider",
+            "@radix-ui/react-slot",
+            "@radix-ui/react-switch",
+            "@radix-ui/react-tabs",
+            "@radix-ui/react-toast",
+            "@radix-ui/react-tooltip",
+            "class-variance-authority",
+            "clsx",
+            "eslint",
+            "framer-motion",
+            "lucide-react",
+            "react-hook-form",
+            "tailwind-merge",
+            "tailwindcss-animate"
+          ],
+          "devDependencies": [
+            "@types/react",
+            "@types/react-dom",
+            "@typescript-eslint/eslint-plugin",
+            "@typescript-eslint/parser",
+            "autoprefixer",
+            "postcss",
+            "tailwindcss",
+            "typescript"
+          ],
+          "peerDependencies": [
+            "react",
+            "react-dom"
+          ]
+        },
+        "testing": {},
+        "issues": [],
+        "recommendations": []
+      }
+    ],
+    "issues": []
+  },
+  "structure": {
+    "duplicates": [
+      [
+        "api-gateway.cjs",
+        "api-gateway.js"
+      ],
+      [
+        "ecosystem-comprehensive-test.cjs",
+        "ecosystem-comprehensive-test.js"
+      ],
+      [
+        "ecosystem-health-monitor.cjs",
+        "ecosystem-health-monitor.js"
+      ],
+      [
+        "jest.setup.js",
+        "jest.setup.ts"
+      ],
+      [
+        "test-results",
+        "test-results.json"
+      ]
+    ],
+    "missing_files": [],
+    "cleanup_needed": [
+      "archive",
+      "backup",
+      "backups",
+      "ecosystem-test-report.md",
+      "ecosystem-test-results.json",
+      "temp-aide-demo",
+      "temp-next",
+      "temp-real-memorai",
+      "test-app",
+      "test-logai-auth.js",
+      "test-memory-2.json",
+      "test-memory.json",
+      "test-next",
+      "test-results",
+      "test-results.json",
+      "test-stocai"
+    ],
+    "best_practices": []
+  },
+  "testing": {
+    "existing_tests": [
+      "apps/analizai/basic.test.js",
+      "apps/analizai/analizai.e2e.test.ts",
+      "apps/analizai/analizai.integration.test.ts",
+      "apps/analizai/analizai.test.ts",
+      "apps/codai/codai.e2e.test.ts",
+      "apps/codai/codai.integration.test.ts",
+      "apps/codai/sample.test.js",
+      "apps/codai/codai.test.ts",
+      "apps/dexai/dictionary.test.tsx",
+      "apps/dexai/final-comprehensive-test.spec.ts",
+      "apps/dexai/firebase-complete-integration.spec.ts",
+      "apps/hub/basic.test.js",
+      "apps/hub/hub.e2e.test.ts",
+      "apps/hub/hub.integration.test.ts",
+      "apps/hub/hub.test.ts",
+      "apps/id/basic.test.js",
+      "apps/id/id.e2e.test.ts",
+      "apps/id/id.integration.test.ts",
+      "apps/id/id.test.ts",
+      "apps/kodex/basic.test.js",
+      "apps/kodex/kodex.e2e.test.ts",
+      "apps/kodex/kodex.integration.test.ts",
+      "apps/kodex/kodex.test.ts",
+      "apps/legalizai/basic.test.js",
+      "apps/legalizai/legalizai.e2e.test.ts",
+      "apps/legalizai/legalizai.integration.test.ts",
+      "apps/legalizai/legalizai.test.ts",
+      "apps/memorai/basic.test.js",
+      "apps/memorai/memorai.e2e.test.ts",
+      "apps/memorai/memorai.integration.test.ts",
+      "apps/memorai/memorai.test.ts",
+      "apps/metu/metu.integration.test.tsx",
+      "apps/metu/voice-engine.test.ts",
+      "apps/prezentai/home.test.tsx",
+      "apps/publicai/basic.test.js",
+      "apps/publicai/publicai.e2e.test.ts",
+      "apps/publicai/publicai.integration.test.ts",
+      "apps/publicai/publicai.test.ts",
+      "apps/stocai/core-functionality.test.ts",
+      "apps/stocai/datasets-debug.test.ts",
+      "apps/stocai/datasets-enhanced.test.ts",
+      "apps/stocai/datasets.test.ts",
+      "apps/stocai/files-enhanced.test.ts",
+      "apps/stocai/files-simple.test.ts",
+      "apps/stocai/files.test.ts",
+      "apps/stocai/vectors.test.ts",
+      "apps/stocai/cache-system.test.ts",
+      "apps/stocai/websocket-server.test.ts",
+      "apps/studiai/basic.test.js",
+      "apps/studiai/studiai.e2e.test.ts",
+      "apps/studiai/studiai.integration.test.ts",
+      "apps/studiai/studiai.test.ts",
+      "apps/wallet/basic.test.js",
+      "apps/wallet/wallet.e2e.test.ts",
+      "apps/wallet/wallet.integration.test.ts",
+      "apps/wallet/wallet.test.ts",
+      "apps/x/basic.test.js",
+      "apps/x/x.e2e.test.ts",
+      "apps/x/x.integration.test.ts",
+      "apps/x/x.test.ts",
+      "tests/api-integration-flexible.test.ts",
+      "tests/api-integration.test.ts",
+      "tests/adaptive-foundation.spec.ts",
+      "tests/diagnostic.spec.ts",
+      "tests/foundation.spec.ts",
+      "tests/comprehensive-coverage.spec.ts",
+      "tests/comprehensive-flow-verification.spec.ts",
+      "tests/codai-platform.spec.ts",
+      "tests/complete-modern-app-suite.spec.ts",
+      "tests/comprehensive-flow-verification.spec.ts",
+      "tests/financial-ecosystem-integration.spec.ts",
+      "tests/trading-ecosystem-integration.spec.ts",
+      "tests/user-flow-verification.spec.ts",
+      "tests/enterprise-comprehensive.test.ts",
+      "tests/infrastructure.test.js",
+      "tests/unit-components.test.ts",
+      "tests/user-flow-verification.spec.ts"
+    ],
+    "missing_tests": [],
+    "coverage_data": {},
+    "recommendations": []
+  },
+  "dependencies": {
+    "circular": [],
+    "unused": [],
+    "outdated": [],
+    "security_issues": []
+  },
+  "recommendations": [
+    {
+      "category": "Testing",
+      "priority": "HIGH",
+      "action": "Add comprehensive tests to 40 apps",
+      "apps": [
+        "acasai",
+        "admin",
+        "aide",
+        "ajutai",
+        "analizai",
+        "bancai",
+        "codai",
+        "cumparai",
+        "curtai",
+        "dash",
+        "dexai",
+        "docs",
+        "explorer",
+        "fabricai",
+        "hub",
+        "id",
+        "jucai",
+        "kodex",
+        "legalizai",
+        "logai",
+        "marketai",
+        "memorai",
+        "metu-web",
+        "mobile",
+        "mod",
+        "muzicai",
+        "prezentai",
+        "publicai",
+        "sociai",
+        "studiai",
+        "sunai",
+        "talentai",
+        "tools",
+        "wallet",
+        "x",
+        "conversai",
+        "donai",
+        "glass",
+        "metu",
+        "romai"
+      ]
+    },
+    {
+      "category": "Structure",
+      "priority": "MEDIUM",
+      "action": "Clean up 16 unnecessary files",
+      "files": [
+        "archive",
+        "backup",
+        "backups",
+        "ecosystem-test-report.md",
+        "ecosystem-test-results.json",
+        "temp-aide-demo",
+        "temp-next",
+        "temp-real-memorai",
+        "test-app",
+        "test-logai-auth.js",
+        "test-memory-2.json",
+        "test-memory.json",
+        "test-next",
+        "test-results",
+        "test-results.json",
+        "test-stocai"
+      ]
+    },
+    {
+      "category": "Package Testing",
+      "priority": "HIGH",
+      "action": "Add tests to 25 packages",
+      "packages": [
+        "ai",
+        "analytics",
+        "api",
+        "auth",
+        "config",
+        "core",
+        "deployment",
+        "security",
+        "eslint-config",
+        "prettier-config",
+        "typescript-config",
+        "api-keys",
+        "cli",
+        "logai-integration",
+        "logai-sdk",
+        "logai-universal",
+        "realtime",
+        "sdk",
+        "service-discovery",
+        "service-registry",
+        "shared-hooks",
+        "shared-services",
+        "shared-types",
+        "shared-ui",
+        "ui"
+      ]
+    }
+  ]
+}

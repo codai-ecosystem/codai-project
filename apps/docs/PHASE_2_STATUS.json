@@ -1,8 +1,0 @@
-{
-  "coverage_percent": 27.59,
-  "timestamp": "2025-07-06T03:02:09.4736907+03:00",
-  "services_deployed_this_phase": 0,
-  "next_action": "Continue Phase 2 deployment",
-  "total_active": 8,
-  "phase": "2_APP_ACTIVATION"
-}

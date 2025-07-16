@@ -119,24 +119,40 @@ export default function CodAIPage() {
         const realMetrics = await fetchSystemMetrics()
         setSystemMetrics(realMetrics)
 
-        // Get real service status
-        setServiceStatus(realMetrics.serviceStatus)
+        // Get real service status - with safe handling
+        if (realMetrics && realMetrics.serviceStatus && Array.isArray(realMetrics.serviceStatus)) {
+          setServiceStatus(realMetrics.serviceStatus)
+        }
 
         // Get real project data
         const projectsData = await fetchProjects()
-        setProjects(projectsData.projects)
-
-        // Calculate ecosystem statistics
-        const stats = {
-          totalProjects: projectsData.totalProjects,
-          activeProjects: projectsData.activeProjects,
-          activeApps: projectsData.projects.filter(p => p.type === 'Application').length,
-          packages: projectsData.projects.filter(p => p.type === 'Library' || p.type === 'Configuration').length,
-          services: realMetrics.serviceStatus.filter(s => s.status === 'running').length,
-          lastActivity: new Date(projectsData.lastUpdated),
-          totalDependencies: projectsData.projects.length * 10 // Estimate
+        if (projectsData && projectsData.projects) {
+          setProjects(projectsData.projects)
         }
-        setEcosystemStats(stats)
+
+        // Calculate ecosystem statistics - with safe handling
+        let stats = {
+          totalProjects: 0,
+          activeProjects: 0,
+          activeApps: 0,
+          packages: 0,
+          services: 0,
+          lastActivity: new Date(),
+          totalDependencies: 0
+        }
+
+        if (realMetrics && projectsData && projectsData.projects && Array.isArray(projectsData.projects)) {
+          stats = {
+            totalProjects: projectsData.totalProjects || 0,
+            activeProjects: projectsData.activeProjects || 0,
+            activeApps: projectsData.projects.filter(p => p && p.type === 'Application').length,
+            packages: projectsData.projects.filter(p => p && (p.type === 'Library' || p.type === 'Configuration')).length,
+            services: realMetrics.serviceStatus && Array.isArray(realMetrics.serviceStatus) ? realMetrics.serviceStatus.filter(s => s && s.status === 'running').length : 0,
+            lastActivity: new Date(projectsData.lastUpdated || Date.now()),
+            totalDependencies: projectsData.projects.length * 10 // Estimate
+          }
+          setEcosystemStats(stats)
+        }
 
         // Format metrics for display
         const formatUptime = (seconds: number): string => {
@@ -145,7 +161,7 @@ export default function CodAIPage() {
           return `${days}d ${hours}h`
         }
 
-        const performance = Math.round((100 - realMetrics.cpuUsage + 100 - realMetrics.memoryUsage) / 2)
+        const performance = realMetrics && realMetrics.cpuUsage !== undefined && realMetrics.memoryUsage !== undefined ? Math.round((100 - realMetrics.cpuUsage + 100 - realMetrics.memoryUsage) / 2) : 75
         const satisfaction = Math.round((performance / 100) * 5 * 10) / 10 // Convert to 5-point scale
 
         // Update metrics with real data
@@ -153,9 +169,9 @@ export default function CodAIPage() {
           {
             id: '1',
             title: 'Active Users',
-            value: realMetrics.activeUsers.toString(),
-            change: realMetrics.activeUsers > 1 ? '+' + (realMetrics.activeUsers - 1) : '0',
-            trend: realMetrics.activeUsers > 1 ? 'up' : 'stable',
+            value: realMetrics && realMetrics.activeUsers !== undefined ? realMetrics.activeUsers.toString() : '1',
+            change: realMetrics && realMetrics.activeUsers !== undefined && realMetrics.activeUsers > 1 ? '+' + (realMetrics.activeUsers - 1) : '0',
+            trend: realMetrics && realMetrics.activeUsers !== undefined && realMetrics.activeUsers > 1 ? 'up' : 'stable',
             icon: 'Users',
             color: 'indigo'
           },
@@ -192,7 +208,7 @@ export default function CodAIPage() {
         const realFeatures: FeatureCard[] = []
 
         // Add features based on actual services
-        const runningServices = realMetrics.serviceStatus.filter(s => s.status === 'running')
+        const runningServices = realMetrics && realMetrics.serviceStatus && Array.isArray(realMetrics.serviceStatus) ? realMetrics.serviceStatus.filter(s => s && s.status === 'running') : []
 
         if (runningServices.find(s => s.name.includes('CODAI'))) {
           realFeatures.push({
@@ -204,21 +220,21 @@ export default function CodAIPage() {
           })
         }
 
-        if (projectsData.projects.some(p => p.framework.includes('React'))) {
+        if (projectsData && projectsData.projects && Array.isArray(projectsData.projects) && projectsData.projects.some(p => p && p.framework && p.framework.includes('React'))) {
           realFeatures.push({
             id: 'react',
             title: 'React Ecosystem',
-            description: `Modern React applications with ${projectsData.projects.filter(p => p.framework.includes('React')).length} React projects`,
+            description: `Modern React applications with ${projectsData.projects.filter(p => p && p.framework && p.framework.includes('React')).length} React projects`,
             icon: 'Zap',
             status: 'active'
           })
         }
 
-        if (projectsData.projects.some(p => p.language.includes('TypeScript'))) {
+        if (projectsData && projectsData.projects && Array.isArray(projectsData.projects) && projectsData.projects.some(p => p && p.language && p.language.includes('TypeScript'))) {
           realFeatures.push({
             id: 'typescript',
             title: 'TypeScript Integration',
-            description: `Type-safe development with ${projectsData.projects.filter(p => p.language.includes('TypeScript')).length} TypeScript projects`,
+            description: `Type-safe development with ${projectsData.projects.filter(p => p && p.language && p.language.includes('TypeScript')).length} TypeScript projects`,
             icon: 'Shield',
             status: 'active'
           })

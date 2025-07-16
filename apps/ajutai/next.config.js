@@ -1,37 +1,23 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    // Remove deprecated turbo config
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
+    optimizePackageImports: ['lucide-react'],
   },
   images: {
     domains: ['localhost'],
   },
-  env: {
-    SERVICE_NAME: 'AIDE',
-    SERVICE_PORT: '4030',
+  typescript: {
+    ignoreBuildErrors: false,
   },
-  webpack: (config, { isServer }) => {
-    // Fix module resolution issues
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-      };
-    }
-    return config;
+  eslint: {
+    ignoreDuringBuilds: false,
   },
-  // Reduce memory usage
-
-  compress: true,
+  swcMinify: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
   poweredByHeader: false,
-};
+  reactStrictMode: true,
+}
 
-module.exports = nextConfig;
+module.exports = nextConfig

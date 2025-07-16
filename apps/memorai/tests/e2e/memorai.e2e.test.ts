@@ -1,47 +1,54 @@
 /**
- * MEMORAI E2E Test Suite
- * Playwright-based end-to-end testing
+ * 🧪 memorai End-to-End Tests
+ * Complete user journey testing with Playwright
  */
 
-import { test, expect } from '@playwright/test'
+import { test, expect } from '@playwright/test';
 
-test.describe('MEMORAI E2E Tests', () => {
+test.describe('memorai E2E Tests', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+  });
 
-  test('should load the main page successfully', async ({ page }) => {
-    await page.goto('/')
+  test('should load homepage successfully', async ({ page }) => {
+    await expect(page).toHaveTitle(/memorai/);
+    await expect(page.locator('main')).toBeVisible();
+  });
 
-    // Check for essential elements
-    await expect(page.locator('header, nav, main')).toBeVisible()
-  })
+  test('should navigate through main sections', async ({ page }) => {
+    // Test navigation
+    await page.click('[data-testid="nav-link"]');
+    await expect(page).toHaveURL(/\/dashboard/);
+  });
 
-  test('should load without JavaScript errors', async ({ page }) => {
-    const errors: string[] = []
-    page.on('pageerror', (error) => {
-      errors.push(error.message)
-    })
+  test('should handle user interactions', async ({ page }) => {
+    // Test user interactions
+    await page.click('button');
+    await expect(page.locator('[data-testid="result"]')).toBeVisible();
+  });
 
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
+  test('should be responsive on mobile', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 667 });
+    await expect(page.locator('main')).toBeVisible();
+  });
 
-    expect(errors).toHaveLength(0)
-  })
+  test('should meet accessibility standards', async ({ page }) => {
+    // Basic accessibility check
+    await expect(page.locator('main')).toHaveAttribute('role', 'main');
+  });
 
-  test('should be responsive on mobile devices', async ({ page }) => {
-    await page.setViewportSize({ width: 375, height: 667 }) // iPhone SE
-    await page.goto('/')
+  test('should handle error states', async ({ page }) => {
+    // Test error handling
+    await page.route('**/api/**', route => route.abort());
+    await page.reload();
+    await expect(page.locator('[data-testid="error"]')).toBeVisible();
+  });
 
-    // Check mobile layout
-    await expect(page.locator('body')).toBeVisible()
-  })
-
-  test('should handle performance within limits', async ({ page }) => {
-    const startTime = Date.now()
-
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
-
-    const loadTime = Date.now() - startTime
-    expect(loadTime).toBeLessThan(10000) // Should load in less than 10 seconds
-  })
-
-})
+  test('should perform within performance budget', async ({ page }) => {
+    const startTime = Date.now();
+    await page.goto('/');
+    const loadTime = Date.now() - startTime;
+    
+    expect(loadTime).toBeLessThan(3000); // 3 second budget
+  });
+});

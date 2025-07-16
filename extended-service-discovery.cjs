@@ -7,7 +7,7 @@ const path = require('path');
 // CODAI Ecosystem Extended Service Discovery
 // Autonomous Agent Task: Discover all 30+ services
 console.log('🔍 CODAI ECOSYSTEM EXTENDED SERVICE DISCOVERY');
-console.log('=' .repeat(60));
+console.log('='.repeat(60));
 
 const DISCOVERY_CONFIG = {
   portRange: {
@@ -37,7 +37,7 @@ const failedPorts = [];
 function testService(port) {
   return new Promise((resolve) => {
     const startTime = Date.now();
-    
+
     const req = http.request({
       hostname: 'localhost',
       port: port,
@@ -46,7 +46,7 @@ function testService(port) {
       timeout: DISCOVERY_CONFIG.timeout
     }, (res) => {
       const responseTime = Date.now() - startTime;
-      
+
       let data = '';
       res.on('data', (chunk) => data += chunk);
       res.on('end', () => {
@@ -59,7 +59,7 @@ function testService(port) {
           title: extractTitle(data),
           isHealthy: res.statusCode >= 200 && res.statusCode < 400
         };
-        
+
         if (service.isHealthy) {
           discoveredServices.push(service);
           console.log(`✅ Port ${port}: ${service.title || 'Unknown Service'} (${responseTime}ms)`);
@@ -67,78 +67,78 @@ function testService(port) {
           failedPorts.push({ port, error: `HTTP ${res.statusCode}` });
           console.log(`❌ Port ${port}: HTTP ${res.statusCode} (${responseTime}ms)`);
         }
-        
+
         resolve(service);
       });
     });
-    
+
     req.on('error', (err) => {
       failedPorts.push({ port, error: err.message });
       console.log(`❌ Port ${port}: ${err.message}`);
       resolve(null);
     });
-    
+
     req.on('timeout', () => {
       failedPorts.push({ port, error: 'Timeout' });
       console.log(`⏱️ Port ${port}: Timeout`);
       req.destroy();
       resolve(null);
     });
-    
+
     req.end();
   });
 }
 
 function extractTitle(html) {
   if (!html || typeof html !== 'string') return null;
-  
+
   // Try to extract title from HTML
   const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
   if (titleMatch) return titleMatch[1].trim();
-  
+
   // Try to extract from h1
   const h1Match = html.match(/<h1[^>]*>([^<]*)<\/h1>/i);
   if (h1Match) return h1Match[1].trim();
-  
+
   // Try to extract from meta description
   const metaMatch = html.match(/<meta[^>]*name="description"[^>]*content="([^"]*)"[^>]*>/i);
   if (metaMatch) return metaMatch[1].trim();
-  
+
   return null;
 }
 
 async function runDiscovery() {
   console.log(`🚀 Scanning ports ${DISCOVERY_CONFIG.portRange.start}-${DISCOVERY_CONFIG.portRange.end}...`);
   console.log();
-  
+
   const promises = [];
-  
+
   for (let port = DISCOVERY_CONFIG.portRange.start; port <= DISCOVERY_CONFIG.portRange.end; port++) {
     promises.push(testService(port));
   }
-  
+
   // Process in batches to avoid overwhelming the system
   const batchSize = 10;
   for (let i = 0; i < promises.length; i += batchSize) {
     const batch = promises.slice(i, i + batchSize);
     await Promise.all(batch);
-    
+
     // Small delay between batches
     await new Promise(resolve => setTimeout(resolve, 100));
   }
-  
+
   console.log();
-  console.log('=' .repeat(60));
+  console.log('='.repeat(60));
   console.log('🔍 EXTENDED SERVICE DISCOVERY REPORT');
-  console.log('=' .repeat(60));
-  
+  console.log('='.repeat(60));
+
   console.log(`📊 Summary:`);
   console.log(`  • Total Services Discovered: ${discoveredServices.length}`);
   console.log(`  • Total Ports Scanned: ${DISCOVERY_CONFIG.portRange.end - DISCOVERY_CONFIG.portRange.start + 1}`);
   console.log(`  • Success Rate: ${((discoveredServices.length / (DISCOVERY_CONFIG.portRange.end - DISCOVERY_CONFIG.portRange.start + 1)) * 100).toFixed(1)}%`);
   console.log(`  • Average Response Time: ${discoveredServices.length > 0 ? Math.round(discoveredServices.reduce((sum, s) => sum + s.responseTime, 0) / discoveredServices.length) : 0}ms`);
   console.log();
-  
+
   console.log('🔍 Discovered Services:');
   discoveredServices
     .sort((a, b) => a.port - b.port)
@@ -146,7 +146,7 @@ async function runDiscovery() {
       console.log(`  ${index + 1}. Port ${service.port}: ${service.title || 'Unknown Service'}`);
       console.log(`     Status: ${service.status} | Response: ${service.responseTime}ms | Type: ${service.contentType}`);
     });
-  
+
   console.log();
   console.log('❌ Failed Ports:');
   if (failedPorts.length === 0) {
@@ -159,7 +159,7 @@ async function runDiscovery() {
       console.log(`  ... and ${failedPorts.length - 10} more`);
     }
   }
-  
+
   // Save detailed report
   const report = {
     timestamp: new Date().toISOString(),
@@ -172,16 +172,16 @@ async function runDiscovery() {
     services: discoveredServices,
     failures: failedPorts
   };
-  
+
   const reportPath = path.join(__dirname, 'extended-service-discovery-report.json');
   fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
-  
+
   console.log();
-  console.log('=' .repeat(60));
+  console.log('='.repeat(60));
   console.log(`📄 Detailed report saved to: ${reportPath}`);
   console.log('🎯 Extended Service Discovery Status: COMPLETE');
-  console.log('=' .repeat(60));
-  
+  console.log('='.repeat(60));
+
   return report;
 }
 

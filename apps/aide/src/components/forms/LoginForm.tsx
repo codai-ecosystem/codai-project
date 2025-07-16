@@ -40,7 +40,7 @@ export function LoginForm({
   onForgotPassword,
 }: LoginFormProps): JSX.Element {
   const [showPassword, setShowPassword] = useState(false);
-  const { signIn, signInWithGoogle } = useAuthContext();
+  const { login } = useAuthContext();
   const { toast } = useNotifications();
   const { t } = useTranslation();
 
@@ -61,12 +61,8 @@ export function LoginForm({
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      const result = await signIn(data);
-      if (result.error !== null && result.error !== '') {
-        toast.error(result.error);
-      } else {
-        toast.success('Welcome back!');
-      }
+      await login(data.email, data.password);
+      toast.success('Welcome back!');
     } catch (error: unknown) {
       toast.error('Failed to sign in. Please try again.');
     }
@@ -74,12 +70,9 @@ export function LoginForm({
 
   const handleGoogleSignIn = async () => {
     try {
-      const result = await signInWithGoogle();
-      if (result.error !== null && result.error !== '') {
-        toast.error(result.error);
-      } else {
-        toast.success('Welcome!');
-      }
+      // Mock Google sign in
+      console.log('Google sign in not implemented');
+      toast.info('Google sign in not implemented');
     } catch (error: unknown) {
       toast.error('Failed to sign in with Google. Please try again.');
     }

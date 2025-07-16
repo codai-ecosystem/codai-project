@@ -165,7 +165,7 @@ export default function LogaiPage() {
                 {
                   icon: Shield,
                   label: 'System Health',
-                  value: serviceHealth && serviceHealth.length > 0 ? 
+                  value: serviceHealth && serviceHealth.length > 0 ?
                     `${Math.round(serviceHealth.reduce((acc, s) => acc + s.metrics.uptime, 0) / serviceHealth.length)}%` : '0%',
                   change: 'uptime',
                   color: 'blue'

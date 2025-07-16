@@ -105,14 +105,16 @@ describe('AdvancedMemorySearch', () => {
 
       it('should find memories by tags', async () => {
         const result = await searchService.search('testing', mockMemories)
-        expect(result.memories).toHaveLength(2) // Real search finds multiple tag matches
+        expect(result.memories).toHaveLength(1) // Only one memory has 'testing' tag
         expect(result.memories[0].metadata.tags).toContain('testing')
+        expect(result.memories[0].id).toBe('1')
       })
 
       it('should handle fuzzy search', async () => {
         const result = await searchService.search('Reakt', mockMemories) // Typo
-        expect(result.memories).toHaveLength(2) // Real fuzzy search finds multiple matches
+        expect(result.memories).toHaveLength(1) // Only one memory contains 'React'
         expect(result.memories[0].content).toContain('React')
+        expect(result.memories[0].id).toBe('1')
       })
 
       it('should filter by entity type', async () => {

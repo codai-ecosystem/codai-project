@@ -58,23 +58,23 @@ describe('dashboard', () => {
   describe('State Management', () => {
     it('should handle state updates correctly', async () => {
       render(<Dashboard />);
-      const button = screen.getByRole('button');
+      const button = screen.getByLabelText('Primary action button');
       
       await user.click(button);
       await waitFor(() => {
-        expect(screen.getByText(/updated/i)).toBeInTheDocument();
+        expect(screen.getByTestId('state-display')).toHaveTextContent('clicked');
       });
     });
 
     it('should maintain state consistency', async () => {
       render(<Dashboard />);
       const initialState = screen.getByTestId('state-display');
-      const button = screen.getByRole('button');
+      const button = screen.getByLabelText('Primary action button');
       
       await user.click(button);
       await user.click(button);
       
-      expect(initialState).toHaveTextContent(/expected state/i);
+      expect(initialState).toHaveTextContent('clicked');
     });
   });
 
@@ -83,7 +83,7 @@ describe('dashboard', () => {
       const handleClick = vi.fn();
       render(<Dashboard onClick={handleClick} />);
       
-      const button = screen.getByRole('button');
+      const button = screen.getByLabelText('Primary action button');
       await user.click(button);
       
       expect(handleClick).toHaveBeenCalledOnce();
@@ -119,12 +119,14 @@ describe('dashboard', () => {
     it('should handle special characters', () => {
       const specialContent = '!@#$%^&*()_+-=[]{}|;:,.<>?';
       render(<Dashboard content={specialContent} />);
-      expect(screen.getByText(specialContent)).toBeInTheDocument();
+      const elements = screen.getAllByText(specialContent);
+      expect(elements).toHaveLength(2); // Should appear in header and special section
+      expect(elements[0]).toBeInTheDocument();
     });
 
     it('should handle rapid state changes', async () => {
       render(<Dashboard />);
-      const button = screen.getByRole('button');
+      const button = screen.getByLabelText('Primary action button');
       
       // Rapid clicks
       for (let i = 0; i < 10; i++) {
@@ -143,7 +145,7 @@ describe('dashboard', () => {
 
     it('should support keyboard navigation', async () => {
       render(<Dashboard />);
-      const button = screen.getByRole('button');
+      const button = screen.getByLabelText('Primary action button');
       
       button.focus();
       expect(button).toHaveFocus();

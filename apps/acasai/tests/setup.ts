@@ -16,7 +16,8 @@ vi.mock('next/navigation', () => ({
 
 vi.mock('next/image', () => ({
   default: ({ src, alt, ...props }: any) => {
-    return <img src={src} alt={alt} {...props} />;
+    const React = require('react');
+    return React.createElement('img', { src, alt, ...props });
   },
 }));
 

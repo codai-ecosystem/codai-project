@@ -71,16 +71,6 @@ export class RealBankingService {
         }
     }
 
-    // Missing method for transaction history - Add this to match dashboard expectations
-    public async getTransactionHistory(accountId?: string): Promise<Transaction[]> {
-        try {
-            return await this.getRealTransactionData(accountId || 'default');
-        } catch (error) {
-            console.error('Error fetching transaction history:', error);
-            return [];
-        }
-    }
-
     // Real Account Management with Live Data
     public async getAccountBalance(accountId?: string): Promise<any> {
         try {

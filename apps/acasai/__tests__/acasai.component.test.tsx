@@ -35,7 +35,7 @@ describe('AcasaiPage Component', () => {
 
     it('shows enterprise branding elements', () => {
       render(<AcasaiPage />)
-      expect(screen.getByText(/enterprise/i)).toBeInTheDocument()
+      expect(screen.getByText('Enterprise Overview')).toBeInTheDocument()
     })
 
     it('displays glassmorphism styling', () => {

@@ -109,7 +109,7 @@ describe('VoiceEngine', () => {
         test('should initialize all components', async () => {
             await voiceEngine.initialize()
             expect(voiceEngine.status.isConnected).toBe(true)
-        })
+        }, 3000)
     })
 
     describe('Speech Recognition', () => {

@@ -23,12 +23,15 @@ import {
 export default function AcasaiPage() {
   const [isOnline, setIsOnline] = useState(true)
   const [currentTime, setCurrentTime] = useState(new Date())
+  const [activeTab, setActiveTab] = useState('Overview')
   const [stats, setStats] = useState({
     totalUsers: Math.floor(Math.random() * 10000) + 1000,
     activeConnections: Math.floor(Math.random() * 500) + 50,
     dataProcessed: Math.floor(Math.random() * 1000) + 100,
     uptime: 99.9
   })
+
+  const tabs = ['Overview', 'Analytics', 'Features', 'Monitor']
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -98,10 +101,10 @@ export default function AcasaiPage() {
               <Monitor className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
+              <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
                 Acasai
-              </h1>
-              <p className="text-xs text-slate-400">Enterprise Platform</p>
+              </div>
+              <p className="text-xs text-slate-400">AI Platform</p>
             </div>
           </motion.div>
           <div className="flex items-center space-x-4">
@@ -123,7 +126,7 @@ export default function AcasaiPage() {
         {/* Hero Section */}
         <div className="text-center mb-12">
           <motion.h1
-            className="text-6xl font-bold mb-6"
+            className="text-3xl font-bold mb-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
@@ -132,7 +135,7 @@ export default function AcasaiPage() {
             </span>
           </motion.h1>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto mb-8">
-            Advanced enterprise platform with real-time analytics and intelligent automation.
+            Advanced business platform with real-time analytics and intelligent automation.
           </p>
           <div className="flex items-center justify-center space-x-2 text-blue-400 mb-8">
             <Activity className="w-5 h-5 animate-pulse" />
@@ -140,34 +143,109 @@ export default function AcasaiPage() {
           </div>
         </div>
 
-        {/* Stats Grid */}
-        <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          <div className="glassmorphism p-6 text-center rounded-xl">
-            <div className="text-3xl font-bold text-blue-400">{stats.totalUsers.toLocaleString()}</div>
-            <div className="text-sm text-slate-400">Total Users</div>
-            <div className="text-xs text-blue-300 mt-1">↗ +5.2%</div>
+        {/* Navigation Tabs */}
+        <div className="flex justify-center mb-8">
+          <div className="glassmorphism rounded-xl p-2">
+            <div className="flex space-x-2">
+              {tabs.map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  aria-label={`Switch to ${tab} tab`}
+                  className={`px-6 py-3 rounded-lg transition-all duration-300 text-sm font-medium ${
+                    activeTab === tab
+                      ? 'bg-blue-500/30 text-blue-400 shadow-lg'
+                      : 'text-slate-400 hover:text-white hover:bg-white/10'
+                  }`}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
           </div>
-          <div className="glassmorphism p-6 text-center rounded-xl">
-            <div className="text-3xl font-bold text-indigo-400">{stats.activeConnections}</div>
-            <div className="text-sm text-slate-400">Active Connections</div>
-            <div className="text-xs text-indigo-300 mt-1">↗ +2.1%</div>
-          </div>
-          <div className="glassmorphism p-6 text-center rounded-xl">
-            <div className="text-3xl font-bold text-purple-400">{stats.dataProcessed.toLocaleString()}</div>
-            <div className="text-sm text-slate-400">Data Processed</div>
-            <div className="text-xs text-purple-300 mt-1">↗ +8.7%</div>
-          </div>
-          <div className="glassmorphism p-6 text-center rounded-xl">
-            <div className="text-3xl font-bold text-emerald-400">{stats.uptime}%</div>
-            <div className="text-sm text-slate-400">Uptime</div>
-            <div className="text-xs text-emerald-300 mt-1">Excellent</div>
-          </div>
-        </motion.div>
+        </div>
+
+        {/* Tab Content */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="mb-12"
+          >
+            {activeTab === 'Overview' && (
+              <div className="text-center">
+                <h2 className="text-3xl font-bold mb-4">Enterprise Overview</h2>
+                <p className="text-slate-300 mb-8">Real-time system monitoring and enterprise security features.</p>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                  <div className="glassmorphism p-6 rounded-xl">
+                    <h3 className="text-lg font-semibold mb-2">Total Users</h3>
+                    <p className="text-2xl font-bold text-indigo-400">{stats.totalUsers}</p>
+                    <p className="text-sm text-slate-400">Registered users</p>
+                  </div>
+                  <div className="glassmorphism p-6 rounded-xl">
+                    <h3 className="text-lg font-semibold mb-2">Active Now</h3>
+                    <p className="text-2xl font-bold text-blue-400">{stats.activeConnections}</p>
+                    <p className="text-sm text-slate-400">Connected users</p>
+                  </div>
+                  <div className="glassmorphism p-6 rounded-xl">
+                    <h3 className="text-lg font-semibold mb-2">System Metrics</h3>
+                    <p className="text-2xl font-bold text-emerald-400">{stats.uptime}%</p>
+                    <p className="text-sm text-slate-400">Uptime metrics</p>
+                  </div>
+                  <div className="glassmorphism p-6 rounded-xl">
+                    <h3 className="text-lg font-semibold mb-2">Security Status</h3>
+                    <p className="text-2xl font-bold text-purple-400">Active</p>
+                    <p className="text-sm text-slate-400">Global scale protection</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'Analytics' && (
+              <div className="text-center">
+                <h2 className="text-3xl font-bold mb-4">Advanced Analytics Dashboard</h2>
+                <p className="text-slate-300 mb-8">Comprehensive analytics and performance insights.</p>
+                <div className="glassmorphism p-8 rounded-xl">
+                  <BarChart3 className="w-16 h-16 mx-auto mb-4 text-blue-400" />
+                  <p className="text-lg">Real-time analytics and reporting</p>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'Features' && (
+              <div className="text-center">
+                <h2 className="text-3xl font-bold mb-4">Enterprise Features</h2>
+                <p className="text-slate-300 mb-8">Advanced capabilities for enterprise operations.</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="glassmorphism p-6 rounded-xl">
+                    <Shield className="w-12 h-12 mx-auto mb-4 text-emerald-400" />
+                    <h3 className="text-lg font-semibold mb-2">Enterprise Security</h3>
+                    <p className="text-slate-400">Multi-layer security protocols</p>
+                  </div>
+                  <div className="glassmorphism p-6 rounded-xl">
+                    <Globe className="w-12 h-12 mx-auto mb-4 text-blue-400" />
+                    <h3 className="text-lg font-semibold mb-2">Global Scale</h3>
+                    <p className="text-slate-400">Worldwide deployment capabilities</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'Monitor' && (
+              <div className="text-center">
+                <h2 className="text-3xl font-bold mb-4">System Monitor</h2>
+                <p className="text-slate-300 mb-8">Real-time system monitoring and status.</p>
+                <div className="glassmorphism p-8 rounded-xl">
+                  <Monitor className="w-16 h-16 mx-auto mb-4 text-indigo-400" />
+                  <p className="text-lg">Continuous system monitoring</p>
+                </div>
+              </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
 
         {/* Quick Actions */}
         <motion.div
@@ -186,7 +264,7 @@ export default function AcasaiPage() {
             <h3 className="text-xl font-semibold mb-2 group-hover:text-blue-400 transition-colors">
               Analytics Dashboard
             </h3>
-            <p className="text-slate-400 mb-4">View real-time analytics and performance metrics</p>
+            <p className="text-slate-400 mb-4">View real-time analytics and system metrics</p>
             <div className="flex items-center text-blue-400 group-hover:text-blue-300 transition-colors">
               <span className="text-sm font-medium">View Dashboard</span>
               <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
@@ -220,7 +298,7 @@ export default function AcasaiPage() {
             <h3 className="text-xl font-semibold mb-2 group-hover:text-blue-400 transition-colors">
               Network Status
             </h3>
-            <p className="text-slate-400 mb-4">Monitor network performance and connectivity</p>
+            <p className="text-slate-400 mb-4">Monitor network connectivity and uptime</p>
             <div className="flex items-center text-blue-400 group-hover:text-blue-300 transition-colors">
               <span className="text-sm font-medium">Check Status</span>
               <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />

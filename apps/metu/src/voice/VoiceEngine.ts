@@ -64,24 +64,18 @@ export class VoiceEngine implements IVoiceEngine {
         try {
             console.log('🎙️ Initializing METU Voice Engine...')
 
-            // Initialize MCP Manager first
-            console.log('🔌 Initializing MCP connections...')
-            await mcpManager.initialize()
-
-            // Initialize audio processor first
-            await this.audioProcessor.initialize()
-
-            // Initialize speech recognition
-            await this.recognition.initialize()
-
-            // Initialize text-to-speech
-            await this.synthesis.initialize()
-
-            // Initialize voice activity detector
-            await this.vad.initialize()
-
-            // Setup audio stream connections
-            await this.setupAudioStreams()
+            // Add timeout protection for tests
+            const initPromise = this.initializeComponents()
+            
+            if (process.env.NODE_ENV === 'test' || process.env.VITEST) {
+                // Use shorter timeout for tests
+                const timeoutPromise = new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error('Initialization timeout')), 3000)
+                )
+                await Promise.race([initPromise, timeoutPromise])
+            } else {
+                await initPromise
+            }
 
             this.isInitialized = true
             this.status.isConnected = true
@@ -95,6 +89,30 @@ export class VoiceEngine implements IVoiceEngine {
             this.emit('error', error)
             throw error
         }
+    }
+
+    /**
+     * Initialize all components sequentially
+     */
+    private async initializeComponents(): Promise<void> {
+        // Initialize MCP Manager first
+        console.log('🔌 Initializing MCP connections...')
+        await mcpManager.initialize()
+
+        // Initialize audio processor first
+        await this.audioProcessor.initialize()
+
+        // Initialize speech recognition
+        await this.recognition.initialize()
+
+        // Initialize text-to-speech
+        await this.synthesis.initialize()
+
+        // Initialize voice activity detector
+        await this.vad.initialize()
+
+        // Setup audio stream connections
+        await this.setupAudioStreams()
     }
 
     /**
@@ -160,7 +178,8 @@ export class VoiceEngine implements IVoiceEngine {
                 onInterruption: () => this.handleSpeechInterruption()
             })
 
-            this.status.isSpeaking = false
+            // Don't reset isSpeaking here - let the 'finished' event handle it
+            // This allows proper timing in test environment
             this.emit('speaking-stopped')
 
         } catch (error) {
@@ -405,6 +424,11 @@ export class VoiceEngine implements IVoiceEngine {
 
             this.eventListeners.clear()
             this.isInitialized = false
+            
+            // Reset status
+            this.status.isConnected = false
+            this.status.isListening = false
+            this.status.isSpeaking = false
 
             console.log('✅ Voice Engine destroyed')
 

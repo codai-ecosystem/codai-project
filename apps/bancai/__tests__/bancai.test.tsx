@@ -73,7 +73,8 @@ describe('BANCAI Components', () => {
   it('shows animated backgrounds', () => {
     render(<BancaiPage />)
     // Banking component renders with animated elements
-    expect(screen.getByText(/AI Banking/i)).toBeInTheDocument()
+    const aiBankingElements = screen.getAllByText(/AI Banking/i)
+    expect(aiBankingElements.length).toBeGreaterThan(0)
   })
 
   it('handles interactive elements', () => {

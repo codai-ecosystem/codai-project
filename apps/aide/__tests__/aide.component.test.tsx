@@ -35,7 +35,9 @@ describe('AidePage Component', () => {
 
     it('shows enterprise branding elements', () => {
       render(<AidePage />)
-      expect(screen.getByText(/enterprise/i)).toBeInTheDocument()
+      const enterpriseElements = screen.getAllByText(/enterprise/i)
+      expect(enterpriseElements.length).toBeGreaterThan(0)
+      expect(enterpriseElements[0]).toBeInTheDocument()
     })
 
     it('displays glassmorphism styling', () => {

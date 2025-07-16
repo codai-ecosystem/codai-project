@@ -257,8 +257,8 @@ importers:
   packages/romai-core:
     dependencies:
       '@codai/romai-types':
-        specifier: ^0.1.2
-        version: 0.1.2
+        specifier: ^0.1.3
+        version: 0.1.3
       openai:
         specifier: ^4.78.1
         version: 4.104.0(ws@8.18.3)(zod@3.25.74)
@@ -291,11 +291,11 @@ importers:
   packages/romai-mcp:
     dependencies:
       '@codai/romai-core':
-        specifier: ^0.1.5
-        version: 0.1.5(ws@8.18.3)
+        specifier: ^0.1.6
+        version: 0.1.6(ws@8.18.3)
       '@codai/romai-types':
-        specifier: ^0.1.2
-        version: 0.1.2
+        specifier: ^0.1.3
+        version: 0.1.3
       '@modelcontextprotocol/sdk':
         specifier: ^0.6.0
         version: 0.6.1
@@ -477,11 +477,11 @@ packages:
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
-  '@codai/romai-core@0.1.5':
-    resolution: {integrity: sha512-s0m4d1uR6XqUZj/HRxC3sjaliciYn42z35WLbe2BrqqcXObtQNjkJIHtbPnEKiHyeRC1TqMaATBJdZ6ZfUHA/w==}
+  '@codai/romai-core@0.1.6':
+    resolution: {integrity: sha512-URYtM/EmAPy5jiLK0EoiaXthu0ghhosB5a7c0YyCztiNB6G4/G+sphKLSWz61CENzZx/DewAtXX8yP5FjYVH3Q==}
 
-  '@codai/romai-types@0.1.2':
-    resolution: {integrity: sha512-+KITvhPe4gR/nNWV20SHn/Zf0z0sSCGZWAPpbJHh2LXlKDSpgsU/8K4icbk1MxbL2a6pzx7S7Fv61A9BOa952Q==}
+  '@codai/romai-types@0.1.3':
+    resolution: {integrity: sha512-lvTRNiTSltOOoGcg8sM/ow+/uqy3KcuiROu6hQoQGsJFKvLIPBe9WdbGR4IAGYqkclXMpQ8y/jEBPIasWa+TlA==}
 
   '@colors/colors@1.6.0':
     resolution: {integrity: sha512-Ir+AOibqzrIsL6ajt3Rz3LskB7OiMVHqltZmspbW/TJuTVuyOMirVqAkjfY6JISiLHgyNqicAC8AyHHGzNd/dA==}
@@ -5146,9 +5146,9 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@codai/romai-core@0.1.5(ws@8.18.3)':
+  '@codai/romai-core@0.1.6(ws@8.18.3)':
     dependencies:
-      '@codai/romai-types': 0.1.2
+      '@codai/romai-types': 0.1.3
       openai: 4.104.0(ws@8.18.3)(zod@3.25.74)
       winston: 3.17.0
       zod: 3.25.74
@@ -5156,7 +5156,7 @@ snapshots:
       - encoding
       - ws
 
-  '@codai/romai-types@0.1.2': {}
+  '@codai/romai-types@0.1.3': {}
 
   '@colors/colors@1.6.0': {}
 

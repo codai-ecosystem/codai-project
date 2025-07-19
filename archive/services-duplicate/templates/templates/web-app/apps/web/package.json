@@ -10,7 +10,7 @@
     "prestart": "node ../../scripts/kill-port.js 6388",
     "start": "next start --port 4065",
     "lint": "next lint --fix",
-    "type-check": "tsc --noEmit",
+    "type-check": "pnpm exec tsc --noEmit",
     "emulators": "firebase emulators:start --only auth,firestore,database,hosting,storage --import=./firebase/seed --export-on-exit=./firebase/seed",
     "emulators:stop": "node ./scripts/stop-emulators.js",
     "emulators:restart": "pnpm emulators:stop && pnpm emulators",

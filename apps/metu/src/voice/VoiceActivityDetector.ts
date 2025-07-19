@@ -46,34 +46,34 @@ export class VoiceActivityDetector {
             if (typeof window === 'undefined' || process.env.NODE_ENV === 'test' || process.env.VITEST) {
                 // Create mock audio context for testing
                 this.audioContext = {
-                    createGain: () => ({ connect: () => {}, gain: { value: 0 } }),
-                    createAnalyser: () => ({ 
-                        connect: () => {}, 
+                    createGain: () => ({ connect: () => { }, gain: { value: 0 } }),
+                    createAnalyser: () => ({
+                        connect: () => { },
                         fftSize: 2048,
                         frequencyBinCount: 1024,
-                        getByteFrequencyData: () => {},
+                        getByteFrequencyData: () => { },
                         smoothingTimeConstant: 0.8
                     }),
                     createScriptProcessor: () => ({
-                        connect: () => {},
-                        disconnect: () => {},
+                        connect: () => { },
+                        disconnect: () => { },
                         onaudioprocess: null
                     }),
-                    createMediaStreamSource: () => ({ connect: () => {} }),
-                    destination: { connect: () => {} },
+                    createMediaStreamSource: () => ({ connect: () => { } }),
+                    destination: { connect: () => { } },
                     currentTime: 0,
                     sampleRate: 44100,
                     state: 'running',
-                    resume: async () => {},
-                    close: async () => {}
+                    resume: async () => { },
+                    close: async () => { }
                 } as any
-                
+
                 // Mock media stream for test environment
                 this.mediaStream = {
-                    getTracks: () => [{ stop: () => {} }],
-                    getAudioTracks: () => [{ stop: () => {} }]
+                    getTracks: () => [{ stop: () => { } }],
+                    getAudioTracks: () => [{ stop: () => { } }]
                 } as any
-                
+
                 console.log('✅ Voice Activity Detector initialized with test mocks')
                 return
             }

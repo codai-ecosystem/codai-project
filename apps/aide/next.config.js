@@ -1,21 +1,27 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true,
-    serverComponentsExternalPackages: ['bcryptjs'],
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
-      },
-    },
-  },
+  serverExternalPackages: ['systeminformation', 'osx-temperature-sensor'],
   images: {
-    formats: ['image/avif', 'image/webp'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+  },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        'osx-temperature-sensor': false,
+        'fs': false,
+        'net': false,
+        'tls': false,
+        'crypto': false,
+        'systeminformation': false
+      }
+    }
+    return config
   },
   typescript: {
     ignoreBuildErrors: false,
@@ -24,11 +30,6 @@ const nextConfig = {
     ignoreDuringBuilds: false,
   },
   poweredByHeader: false,
-  compress: true,
-  generateEtags: true,
-  httpAgentOptions: {
-    keepAlive: true,
-  },
 };
 
 module.exports = nextConfig;

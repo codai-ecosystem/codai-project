@@ -1,0 +1,69 @@
+import type { Metadata, Viewport } from 'next'
+import { Inter } from 'next/font/google'
+import { AppLayout } from '@codai/shared-ui'
+import GlobalErrorBoundary from './components/GlobalErrorBoundary'
+import './globals.css'
+
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata: Metadata = {
+  title: 'CONVERSAI - AI-Powered Platform',
+  description: 'Next-generation AI platform for conversai services',
+  keywords: ['AI', 'conversai', 'platform', 'automation', 'intelligence'],
+  authors: [{ name: 'CONVERSAI Team' }],
+  openGraph: {
+    title: 'CONVERSAI - AI-Powered Platform',
+    description: 'Next-generation AI platform for conversai services',
+    type: 'website',
+    siteName: 'CONVERSAI',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'CONVERSAI - AI-Powered Platform',
+    description: 'Next-generation AI platform for conversai services',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: 'white' },
+    { media: '(prefers-color-scheme: dark)', color: 'black' },
+  ],
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
+      <body className={inter.className}>
+        <GlobalErrorBoundary>
+          <AppLayout
+            appName="CONVERSAI"
+            appDescription="AI-powered platform for conversai services"
+            appTagline="Empowering conversai with AI"
+          >
+            {children}
+          </AppLayout>
+        </GlobalErrorBoundary>
+      </body>
+    </html>
+  )
+}

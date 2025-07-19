@@ -1,34 +1,24 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { createAuthMiddleware } from '@codai/shared-ui'
 
-export function middleware(request: NextRequest) {
-  // Simple middleware for protected routes
-  const { pathname } = request.nextUrl;
-
-  // Check if it's a protected route
-  const isProtectedRoute = pathname.startsWith("/dashboard") ||
-    pathname.startsWith("/api/secure") ||
-    pathname.startsWith("/settings") ||
-    pathname.startsWith("/profile");
-
-  if (isProtectedRoute) {
-    // Check for auth token in cookies or headers
-    const token = request.cookies.get('next-auth.session-token') ||
-      request.headers.get('authorization');
-
-    if (!token) {
-      // Redirect to login for protected routes
-      return NextResponse.redirect(new URL('/auth/signin', request.url));
-    }
-  }
-
-  return NextResponse.next();
-}
+export default createAuthMiddleware({
+  loginUrl: '/login',
+  dashboardUrl: '/dashboard',
+  publicRoutes: [
+    '/login',
+    '/signup',
+    '/forgot-password',
+    '/reset-password'
+  ],
+  protectedRoutes: [
+    '/dashboard',
+    '/settings',
+    '/profile',
+    '/inventory', '/reports', '/suppliers'
+  ]
+})
 
 export const config = {
   matcher: [
-    "/dashboard/:path*",
-    "/api/:path*",
-    "/settings/:path*",
-    "/profile/:path*"
-  ]
-};
+    '/((?!api|_next/static|_next/image|favicon.ico|public).*)',
+  ],
+}

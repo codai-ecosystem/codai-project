@@ -6,7 +6,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import userEvent from '@testing-library/user-event';
-import Form from '../../Form.tsx';
+import Form from '../../Form';
 
 describe('Form', () => {
   const user = userEvent.setup();
@@ -58,8 +58,8 @@ describe('Form', () => {
   describe('State Management', () => {
     it('should handle state updates correctly', async () => {
       render(<Form />);
-      const button = screen.getByRole('button');
-      
+      const button = screen.getByRole('button', { name: /update state/i });
+
       await user.click(button);
       await waitFor(() => {
         expect(screen.getByText(/updated/i)).toBeInTheDocument();
@@ -69,12 +69,13 @@ describe('Form', () => {
     it('should maintain state consistency', async () => {
       render(<Form />);
       const initialState = screen.getByTestId('state-display');
-      const button = screen.getByRole('button');
-      
+      const button = screen.getByRole('button', { name: /update state/i });
+
       await user.click(button);
       await user.click(button);
-      
-      expect(initialState).toHaveTextContent(/expected state/i);
+
+      const updatedState = screen.getByTestId('state-display');
+      expect(updatedState).toHaveTextContent(/updated 2/i);
     });
   });
 
@@ -82,29 +83,29 @@ describe('Form', () => {
     it('should handle click events', async () => {
       const handleClick = vi.fn();
       render(<Form onClick={handleClick} />);
-      
-      const button = screen.getByRole('button');
+
+      const button = screen.getByRole('button', { name: /update state/i });
       await user.click(button);
-      
+
       expect(handleClick).toHaveBeenCalledOnce();
     });
 
     it('should handle keyboard events', async () => {
       render(<Form />);
       const input = screen.getByRole('textbox');
-      
+
       await user.type(input, 'test input');
-      
+
       expect(input).toHaveValue('test input');
     });
 
     it('should handle form submission', async () => {
       const handleSubmit = vi.fn();
       render(<Form onSubmit={handleSubmit} />);
-      
+
       const form = screen.getByRole('form');
       await user.click(screen.getByRole('button', { name: /submit/i }));
-      
+
       expect(handleSubmit).toHaveBeenCalled();
     });
   });
@@ -124,13 +125,13 @@ describe('Form', () => {
 
     it('should handle rapid state changes', async () => {
       render(<Form />);
-      const button = screen.getByRole('button');
-      
+      const button = screen.getByRole('button', { name: /update state/i });
+
       // Rapid clicks
       for (let i = 0; i < 10; i++) {
         await user.click(button);
       }
-      
+
       expect(screen.getByRole('main')).toBeInTheDocument();
     });
   });
@@ -143,11 +144,11 @@ describe('Form', () => {
 
     it('should support keyboard navigation', async () => {
       render(<Form />);
-      const button = screen.getByRole('button');
-      
+      const button = screen.getByRole('button', { name: /update state/i });
+
       button.focus();
       expect(button).toHaveFocus();
-      
+
       await user.keyboard('{Enter}');
       expect(button).toHaveFocus();
     });
@@ -155,7 +156,7 @@ describe('Form', () => {
     it('should have proper contrast ratios', () => {
       render(<Form />);
       const element = screen.getByRole('main');
-      
+
       // Test would check computed styles for contrast
       expect(element).toBeInTheDocument();
     });
@@ -166,7 +167,7 @@ describe('Form', () => {
       const startTime = performance.now();
       render(<Form />);
       const endTime = performance.now();
-      
+
       expect(endTime - startTime).toBeLessThan(16); // 60fps budget
     });
 

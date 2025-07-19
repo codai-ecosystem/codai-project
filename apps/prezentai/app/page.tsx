@@ -1,44 +1,43 @@
-import { Suspense, lazy } from 'react'
-import { NavigationBar } from '@/components/layout/NavigationBar'
-import { HeroSection } from '@/components/sections/HeroSection'
-import { Footer } from '@/components/layout/Footer'
+'use client'
 
-// Lazy load non-critical sections
-const AboutSection = lazy(() => import('@/components/sections/AboutSection').then(mod => ({ default: mod.AboutSection })))
-const EcosystemShowcase = lazy(() => import('@/components/sections/EcosystemShowcase').then(mod => ({ default: mod.EcosystemShowcase })))
-const TechnicalExpertise = lazy(() => import('@/components/sections/TechnicalExpertise').then(mod => ({ default: mod.TechnicalExpertise })))
-const ContactSection = lazy(() => import('@/components/sections/ContactSection').then(mod => ({ default: mod.ContactSection })))
-
-// Loading components
-const SectionLoading = () => (
-    <div className="flex justify-center items-center py-20">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
-    </div>
-)
+import { AppRouting } from '@codai/shared-ui'
+import { Presentation, Slideshow, BarChart3, Users, Monitor, FileText } from 'lucide-react'
 
 export default function HomePage() {
-    return (
-        <main className="min-h-screen">
-            <NavigationBar />
-            <HeroSection />
-            
-            <Suspense fallback={<SectionLoading />}>
-                <AboutSection />
-            </Suspense>
-            
-            <Suspense fallback={<SectionLoading />}>
-                <EcosystemShowcase />
-            </Suspense>
-            
-            <Suspense fallback={<SectionLoading />}>
-                <TechnicalExpertise />
-            </Suspense>
-            
-            <Suspense fallback={<SectionLoading />}>
-                <ContactSection />
-            </Suspense>
-            
-            <Footer />
-        </main>
-    )
+  const features = [
+    {
+      icon: <Presentation className="w-8 h-8" />,
+      title: 'AI Presentation Builder',
+      description: 'Intelligent slide creation with automated design and content',
+      status: 'active' as const
+    },
+    {
+      icon: <Slideshow className="w-8 h-8" />,
+      title: 'Interactive Presentations',
+      description: 'Dynamic presentations with real-time audience engagement',
+      status: 'active' as const
+    },
+    {
+      icon: <BarChart3 className="w-8 h-8" />,
+      title: 'Data Visualization',
+      description: 'Automated charts and graphs from raw data',
+      status: 'active' as const
+    },
+    {
+      icon: <Monitor className="w-8 h-8" />,
+      title: 'Live Streaming',
+      description: 'Professional presentation broadcasting and recording',
+      status: 'active' as const
+    }
+  ]
+
+  return (
+    <AppRouting
+      appName="PREZENTAI"
+      appTagline="AI-Powered Presentation Platform"
+      appDescription="Transform your presentations with intelligent slide creation, automated design, and interactive audience engagement features."
+      features={features}
+      brandColor="teal"
+    />
+  )
 }

@@ -6,7 +6,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import userEvent from '@testing-library/user-event';
-import Dashboard from '../../Dashboard.tsx';
+import Dashboard from '../../Dashboard';
 
 describe('Dashboard', () => {
   const user = userEvent.setup();
@@ -58,23 +58,23 @@ describe('Dashboard', () => {
   describe('State Management', () => {
     it('should handle state updates correctly', async () => {
       render(<Dashboard />);
-      const button = screen.getByRole('button');
-      
+      const button = screen.getByRole('button', { name: /update state/i });
+
       await user.click(button);
       await waitFor(() => {
-        expect(screen.getByText(/updated/i)).toBeInTheDocument();
+        expect(screen.getByTestId('state-display')).toHaveTextContent(/updated/i);
       });
     });
 
     it('should maintain state consistency', async () => {
       render(<Dashboard />);
       const initialState = screen.getByTestId('state-display');
-      const button = screen.getByRole('button');
-      
+      const button = screen.getByRole('button', { name: /update state/i });
+
       await user.click(button);
       await user.click(button);
-      
-      expect(initialState).toHaveTextContent(/expected state/i);
+
+      expect(initialState).toHaveTextContent(/updated/i);
     });
   });
 
@@ -82,29 +82,29 @@ describe('Dashboard', () => {
     it('should handle click events', async () => {
       const handleClick = vi.fn();
       render(<Dashboard onClick={handleClick} />);
-      
-      const button = screen.getByRole('button');
+
+      const button = screen.getByRole('button', { name: /update state/i });
       await user.click(button);
-      
+
       expect(handleClick).toHaveBeenCalledOnce();
     });
 
     it('should handle keyboard events', async () => {
       render(<Dashboard />);
       const input = screen.getByRole('textbox');
-      
+
       await user.type(input, 'test input');
-      
+
       expect(input).toHaveValue('test input');
     });
 
     it('should handle form submission', async () => {
       const handleSubmit = vi.fn();
       render(<Dashboard onSubmit={handleSubmit} />);
-      
+
       const form = screen.getByRole('form');
       await user.click(screen.getByRole('button', { name: /submit/i }));
-      
+
       expect(handleSubmit).toHaveBeenCalled();
     });
   });
@@ -124,13 +124,13 @@ describe('Dashboard', () => {
 
     it('should handle rapid state changes', async () => {
       render(<Dashboard />);
-      const button = screen.getByRole('button');
-      
+      const button = screen.getByRole('button', { name: /update state/i });
+
       // Rapid clicks
       for (let i = 0; i < 10; i++) {
         await user.click(button);
       }
-      
+
       expect(screen.getByRole('main')).toBeInTheDocument();
     });
   });
@@ -143,11 +143,11 @@ describe('Dashboard', () => {
 
     it('should support keyboard navigation', async () => {
       render(<Dashboard />);
-      const button = screen.getByRole('button');
-      
+      const button = screen.getByRole('button', { name: /update state/i });
+
       button.focus();
       expect(button).toHaveFocus();
-      
+
       await user.keyboard('{Enter}');
       expect(button).toHaveFocus();
     });
@@ -155,7 +155,7 @@ describe('Dashboard', () => {
     it('should have proper contrast ratios', () => {
       render(<Dashboard />);
       const element = screen.getByRole('main');
-      
+
       // Test would check computed styles for contrast
       expect(element).toBeInTheDocument();
     });
@@ -166,7 +166,7 @@ describe('Dashboard', () => {
       const startTime = performance.now();
       render(<Dashboard />);
       const endTime = performance.now();
-      
+
       expect(endTime - startTime).toBeLessThan(16); // 60fps budget
     });
 

@@ -1,17 +1,35 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
+  serverExternalPackages: ['systeminformation', 'osx-temperature-sensor'],
   images: {
-    domains: ['localhost'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
-  eslint: {
-    dirs: ['apps/web']
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        'osx-temperature-sensor': false,
+        'fs': false,
+        'net': false,
+        'tls': false,
+        'crypto': false,
+        'systeminformation': false
+      }
+    }
+    return config
   },
   typescript: {
-    tsconfigPath: './apps/web/tsconfig.json'
-  }
-}
+    ignoreBuildErrors: false,
+  },
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+  poweredByHeader: false,
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

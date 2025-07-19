@@ -27,12 +27,12 @@ const app: Express = express();
 const server = createServer(app);
 const io = new SocketIOServer(server, {
   cors: {
-    origin: process.env.CORS_ORIGIN || 'http://localhost:4011',
+    origin: process.env.CORS_ORIGIN || 'http://localhost:5001',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
   },
 });
 
-const PORT = process.env.PORT ?? 4002;
+const PORT = process.env.PORT ?? 5101;
 
 // Security middleware
 app.use(
@@ -51,7 +51,7 @@ app.use(
 // CORS middleware
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:4011',
+    origin: process.env.CORS_ORIGIN || 'http://localhost:5001',
     credentials: true,
   })
 );

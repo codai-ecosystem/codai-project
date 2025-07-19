@@ -59,40 +59,40 @@ export class AudioProcessor {
             if (isTestEnv) {
                 // Mock audio context for test environment
                 this.audioContext = {
-                    createGain: () => ({ gain: { value: 1.0 }, connect: () => {}, disconnect: () => {} }),
-                    createDynamicsCompressor: () => ({ 
-                        threshold: { value: -24 }, 
-                        ratio: { value: 4 }, 
-                        attack: { value: 0.003 }, 
+                    createGain: () => ({ gain: { value: 1.0 }, connect: () => { }, disconnect: () => { } }),
+                    createDynamicsCompressor: () => ({
+                        threshold: { value: -24 },
+                        ratio: { value: 4 },
+                        attack: { value: 0.003 },
                         release: { value: 0.25 },
                         reduction: 0,
-                        connect: () => {}, 
-                        disconnect: () => {} 
+                        connect: () => { },
+                        disconnect: () => { }
                     }),
-                    createBiquadFilter: () => ({ 
-                        type: 'highpass', 
-                        frequency: { value: 80 }, 
+                    createBiquadFilter: () => ({
+                        type: 'highpass',
+                        frequency: { value: 80 },
                         Q: { value: 0.7 },
-                        connect: () => {}, 
-                        disconnect: () => {} 
+                        connect: () => { },
+                        disconnect: () => { }
                     }),
-                    createDelay: () => ({ 
+                    createDelay: () => ({
                         delayTime: { value: 0.005 },
-                        connect: () => {}, 
-                        disconnect: () => {} 
+                        connect: () => { },
+                        disconnect: () => { }
                     }),
-                    createAnalyser: () => ({ 
-                        fftSize: 256, 
+                    createAnalyser: () => ({
+                        fftSize: 256,
                         smoothingTimeConstant: 0.8,
                         frequencyBinCount: 128,
-                        getByteFrequencyData: () => {},
-                        connect: () => {}, 
-                        disconnect: () => {} 
+                        getByteFrequencyData: () => { },
+                        connect: () => { },
+                        disconnect: () => { }
                     }),
-                    createConvolver: () => ({ buffer: null, connect: () => {}, disconnect: () => {} }),
-                    createWaveShaper: () => ({ curve: null, oversample: '4x', connect: () => {}, disconnect: () => {} }),
+                    createConvolver: () => ({ buffer: null, connect: () => { }, disconnect: () => { } }),
+                    createWaveShaper: () => ({ curve: null, oversample: '4x', connect: () => { }, disconnect: () => { } }),
                     createBuffer: () => ({ getChannelData: () => new Float32Array(1000) }),
-                    destination: { connect: () => {}, disconnect: () => {} },
+                    destination: { connect: () => { }, disconnect: () => { } },
                     state: 'running',
                     sampleRate: this.config.sampleRate,
                     resume: () => Promise.resolve(),

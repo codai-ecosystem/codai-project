@@ -1,17 +1,24 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { createAuthMiddleware } from '@codai/shared-ui'
 
-export function middleware(request: NextRequest) {
-  // Add custom middleware logic here if needed
-  // For now, just pass through all requests
-  return NextResponse.next();
-}
+export default createAuthMiddleware({
+  loginUrl: '/login',
+  dashboardUrl: '/dashboard',
+  publicRoutes: [
+    '/login',
+    '/signup',
+    '/forgot-password',
+    '/reset-password'
+  ],
+  protectedRoutes: [
+    '/dashboard',
+    '/settings',
+    '/profile',
+    '/features', '/analytics'
+  ]
+})
 
 export const config = {
   matcher: [
-    "/dashboard/:path*",
-    "/api/:path*",
-    "/settings/:path*",
-    "/profile/:path*"
-  ]
-};
+    '/((?!api|_next/static|_next/image|favicon.ico|public).*)',
+  ],
+}

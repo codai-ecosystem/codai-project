@@ -1,7 +1,7 @@
 {
-  "name": "@codai/romai",
+  "name": "romai",
   "version": "1.0.0",
-  "description": "Romanian AI Central Intelligence System - Central Intelligence for the CODAI Ecosystem",
+  "description": "Romanian AI assistant",
   "private": true,
   "packageManager": "pnpm@9.15.9",
   "keywords": [
@@ -33,17 +33,17 @@
     "pnpm": ">=9.0.0"
   },
   "scripts": {
-    "build": "pnpm --filter './packages/*' build && pnpm --filter './apps/*' build",
-    "dev": "pnpm --filter './packages/*' dev & pnpm --filter './apps/*' dev",
+    "build": "next build",
+    "dev": "next dev -p 5033",
     "test": "pnpm --filter './packages/*' test && pnpm --filter './apps/*' test",
     "test:watch": "pnpm --filter './packages/*' test:watch",
     "test:coverage": "pnpm --filter './packages/*' test:coverage && pnpm --filter './apps/*' test:coverage",
     "test:integration": "pnpm --filter './packages/*' test:integration && pnpm --filter './apps/*' test:integration",
-    "lint": "pnpm --filter './packages/*' lint && pnpm --filter './apps/*' lint",
+    "lint": "next lint",
     "lint:fix": "pnpm --filter './packages/*' lint:fix && pnpm --filter './apps/*' lint:fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
-    "type-check": "pnpm --filter './packages/*' type-check && pnpm --filter './apps/*' type-check",
+    "type-check": "pnpm exec tsc --noEmit",
     "clean": "pnpm --filter './packages/*' clean && pnpm --filter './apps/*' clean",
     "clean:dist": "pnpm --filter './packages/*' clean && pnpm --filter './apps/*' clean",
     "reset": "pnpm clean && pnpm install",
@@ -60,16 +60,32 @@
     "dev:all": "concurrently \"pnpm mcp:dev\" \"pnpm api:dev\" \"pnpm dashboard:dev\"",
     "health:check": "node -e \"console.log('ROMAI Health Check: OK')\"",
     "version:check": "node -e \"console.log('ROMAI Version:', require('./package.json').version)\"",
-    "info": "pnpm version:check && pnpm workspace:list"
+    "info": "pnpm version:check && pnpm workspace:list",
+    "start": "next start -p 5033"
   },
   "dependencies": {
-    "dotenv": "^17.2.0"
+    "dotenv": "^17.2.0",
+    "next": "^15.4.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "typescript": "^5.8.3",
+    "framer-motion": "^12.23.6",
+    "lucide-react": "^0.525.0",
+    "geist": "^1.4.2",
+    "@codai/shared-ui": "workspace:*",
+    "@codai/translations": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^24.0.13",
+    "@types/node": "^24.0.14",
     "concurrently": "^9.2.0",
     "eslint": "^9.31.0",
     "prettier": "^3.6.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "tailwindcss": "^3.4.17",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "eslint-config-next": "^15.4.1"
   }
 }

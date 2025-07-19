@@ -1,3 +1,5 @@
-export * from './hooks';
-export * from './utils';
+// Core authentication exports
 export * from './types';
+export * from './utils';
+export * from './hooks';
+export * from './provider';

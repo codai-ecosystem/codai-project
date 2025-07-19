@@ -11,10 +11,10 @@
     "./styles": "./dist/styles.css"
   },
   "scripts": {
-    "build": "tsc --build && tsc --build tsconfig.esm.json",
+    "build": "pnpm exec tsc --build && tsc --build tsconfig.esm.json",
     "dev": "tsc --build --watch",
-    "lint": "eslint src --ext .ts,.tsx",
-    "type-check": "tsc --noEmit",
+    "lint": "pnpm exec eslint src --ext .ts,.tsx",
+    "type-check": "pnpm exec tsc --noEmit",
     "test": "vitest",
     "test:watch": "vitest --watch",
     "storybook": "storybook dev -p 6006",

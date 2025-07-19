@@ -11,28 +11,34 @@
     }
   },
   "scripts": {
-    "build": "tsc --build && tsc --build tsconfig.esm.json",
+    "build": "pnpm exec tsc --build && tsc --build tsconfig.esm.json",
     "dev": "tsc --build --watch",
-    "lint": "eslint src --ext .ts,.tsx",
+    "lint": "pnpm exec eslint src --ext .ts,.tsx",
     "test": "jest",
-    "type-check": "tsc --noEmit"
+    "type-check": "pnpm exec tsc --noEmit"
   },
   "dependencies": {
     "@codai/core": "workspace:*",
-    "bcrypt": "^6.0.0",
-    "jsonwebtoken": "^9.0.2",
-    "next-auth": "^4.24.11",
-    "zod": "^4.0.5"
+    "bcryptjs": "^2.4.3",
+    "jose": "^5.9.6",
+    "js-cookie": "^3.0.5",
+    "zustand": "^5.0.3",
+    "zod": "^3.23.8",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/js-cookie": "^3.0.6",
     "@types/jest": "^30.0.0",
-    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.0.13",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
     "eslint": "^9.31.0",
     "jest": "^30.0.4",
     "tsup": "^8.5.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
   },
   "peerDependencies": {
     "react": ">=18.0.0",

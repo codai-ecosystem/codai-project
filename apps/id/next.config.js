@@ -1,35 +1,34 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    // Remove deprecated turbo config
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+  serverExternalPackages: ['systeminformation', 'osx-temperature-sensor'],
   images: {
-    domains: ['localhost'],
-  },
-  env: {
-    SERVICE_NAME: 'id',
-    SERVICE_PORT: '4019',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
   webpack: (config, { isServer }) => {
-    // Fix module resolution issues
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-      };
+        'osx-temperature-sensor': false,
+        'fs': false,
+        'net': false,
+        'tls': false,
+        'crypto': false,
+        'systeminformation': false
+      }
     }
-    return config;
+    return config
   },
-  // Reduce memory usage
-  compress: true,
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
   poweredByHeader: false,
 };
 

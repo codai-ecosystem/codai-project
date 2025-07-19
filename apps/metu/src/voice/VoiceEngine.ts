@@ -66,7 +66,7 @@ export class VoiceEngine implements IVoiceEngine {
 
             // Add timeout protection for tests
             const initPromise = this.initializeComponents()
-            
+
             if (process.env.NODE_ENV === 'test' || process.env.VITEST) {
                 // Use shorter timeout for tests
                 const timeoutPromise = new Promise((_, reject) =>
@@ -424,7 +424,7 @@ export class VoiceEngine implements IVoiceEngine {
 
             this.eventListeners.clear()
             this.isInitialized = false
-            
+
             // Reset status
             this.status.isConnected = false
             this.status.isListening = false

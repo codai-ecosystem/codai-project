@@ -1,0 +1,344 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        /* CONVERSAI Color Palette - Communication & Conversation Theme */
+        --conversai-primary: 59 130 246;
+        /* Blue-500 - Communication */
+        --conversai-secondary: 139 92 246;
+        /* Violet-500 - AI Intelligence */
+        --conversai-accent: 6 182 212;
+        /* Cyan-500 - Digital connection */
+        --conversai-success: 34 197 94;
+        /* Green-500 - Success messages */
+        --conversai-warning: 251 191 36;
+        /* Amber-400 - Attention */
+        --conversai-error: 239 68 68;
+        /* Red-500 - Error states */
+
+        /* Neutral Palette */
+        --conversai-dark: 15 23 42;
+        /* Slate-900 - Deep professional */
+        --conversai-medium: 51 65 85;
+        /* Slate-700 - Medium contrast */
+        --conversai-light: 148 163 184;
+        /* Slate-400 - Subtle text */
+        --conversai-muted: 241 245 249;
+        /* Slate-100 - Background accents */
+        --conversai-white: 255 255 255;
+        /* Pure white */
+
+        /* Design System Variables */
+        --background: 248 250 252;
+        /* Slate-50 */
+        --foreground: 15 23 42;
+        /* Slate-900 */
+        --card: 255 255 255;
+        --card-foreground: 15 23 42;
+        --popover: 255 255 255;
+        --popover-foreground: 15 23 42;
+        --primary: 59 130 246;
+        /* Blue-500 */
+        --primary-foreground: 255 255 255;
+        --secondary: 139 92 246;
+        /* Violet-500 */
+        --secondary-foreground: 255 255 255;
+        --muted: 100 116 139;
+        /* Slate-500 */
+        --muted-foreground: 148 163 184;
+        /* Slate-400 */
+        --accent: 6 182 212;
+        /* Cyan-500 */
+        --accent-foreground: 255 255 255;
+        --destructive: 239 68 68;
+        /* Red-500 */
+        --destructive-foreground: 255 255 255;
+        --border: 226 232 240;
+        /* Slate-200 */
+        --input: 226 232 240;
+        --ring: 59 130 246;
+        /* Blue-500 */
+        --radius: 0.75rem;
+        /* Slightly more rounded for conversations */
+    }
+
+    .dark {
+        --background: 15 23 42;
+        /* Slate-900 */
+        --foreground: 248 250 252;
+        /* Slate-50 */
+        --card: 30 41 59;
+        /* Slate-800 */
+        --card-foreground: 248 250 252;
+        --popover: 30 41 59;
+        --popover-foreground: 248 250 252;
+        --primary: 96 165 250;
+        /* Blue-400 - Lighter for dark mode */
+        --primary-foreground: 15 23 42;
+        --secondary: 167 139 250;
+        /* Violet-400 */
+        --secondary-foreground: 15 23 42;
+        --muted: 71 85 105;
+        /* Slate-600 */
+        --muted-foreground: 148 163 184;
+        /* Slate-400 */
+        --accent: 34 211 238;
+        /* Cyan-400 */
+        --accent-foreground: 15 23 42;
+        --destructive: 248 113 113;
+        /* Red-400 */
+        --destructive-foreground: 15 23 42;
+        --border: 71 85 105;
+        /* Slate-600 */
+        --input: 71 85 105;
+        --ring: 96 165 250;
+        /* Blue-400 */
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        font-feature-settings: "rlig" 1, "calt" 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Enhanced typography for conversations */
+    h1 {
+        @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight;
+    }
+
+    h2 {
+        @apply text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight;
+    }
+
+    h3 {
+        @apply text-2xl md:text-3xl font-semibold tracking-tight;
+    }
+
+    h4 {
+        @apply text-xl md:text-2xl font-semibold;
+    }
+
+    h5 {
+        @apply text-lg md:text-xl font-medium;
+    }
+
+    h6 {
+        @apply text-base md:text-lg font-medium;
+    }
+}
+
+@layer components {
+
+    /* CONVERSAI Signature Effects */
+    .conversai-glass {
+        @apply backdrop-blur-md bg-white/10 border border-white/20 shadow-xl;
+    }
+
+    .conversai-glass-dark {
+        @apply backdrop-blur-md bg-black/10 border border-white/10 shadow-xl;
+    }
+
+    .conversai-gradient-text {
+        background: linear-gradient(135deg, rgb(59 130 246), rgb(139 92 246), rgb(6 182 212));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .conversai-gradient {
+        background: linear-gradient(135deg,
+                rgb(248 250 252) 0%,
+                rgb(239 246 255) 25%,
+                rgb(219 234 254) 50%,
+                rgb(59 130 246 / 0.1) 75%,
+                rgb(139 92 246 / 0.05) 100%);
+    }
+
+    .conversai-section-gradient {
+        background: linear-gradient(180deg,
+                rgb(248 250 252) 0%,
+                rgb(241 245 249) 50%,
+                rgb(248 250 252) 100%);
+    }
+
+    .conversai-card-hover {
+        @apply transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-2xl hover:-translate-y-1;
+    }
+
+    .conversai-glow {
+        box-shadow:
+            0 0 20px rgb(59 130 246 / 0.3),
+            0 0 40px rgb(139 92 246 / 0.2),
+            0 0 60px rgb(6 182 212 / 0.1);
+    }
+
+    .conversai-border-gradient {
+        border-image: linear-gradient(135deg, rgb(59 130 246), rgb(139 92 246), rgb(6 182 212)) 1;
+    }
+
+    /* Conversation-specific animations */
+    .conversai-fade-in {
+        animation: conversaiFadeIn 0.8s ease-out;
+    }
+
+    .conversai-slide-up {
+        animation: conversaiSlideUp 1s ease-out;
+    }
+
+    .conversai-scale-in {
+        animation: conversaiScaleIn 0.6s ease-out;
+    }
+
+    /* Button variants for conversations */
+    .conversai-btn-primary {
+        @apply bg-gradient-to-r from-blue-500 to-violet-500 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105;
+    }
+
+    .conversai-btn-secondary {
+        @apply bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300;
+    }
+
+    .conversai-btn-outline {
+        @apply border-2 border-blue-500 text-blue-500 px-6 py-3 rounded-lg font-medium hover:bg-blue-500 hover:text-white transition-all duration-300;
+    }
+
+    /* Navigation items */
+    .conversai-nav-item {
+        @apply hover:bg-white/30 transition-all duration-200 cursor-pointer hover:shadow-md;
+    }
+
+    /* Message and chat styles */
+    .conversai-message-bubble {
+        @apply conversai-glass rounded-2xl p-4 max-w-xs;
+    }
+
+    .conversai-message-sent {
+        @apply bg-gradient-to-r from-blue-500 to-violet-500 text-white ml-auto;
+    }
+
+    .conversai-message-received {
+        @apply bg-white/20 text-slate-800 mr-auto;
+    }
+
+    /* Metric display styles */
+    .conversai-metric-card {
+        @apply conversai-glass rounded-2xl p-6 text-center conversai-card-hover border border-white/30;
+    }
+
+    .conversai-metric-number {
+        @apply text-4xl md:text-5xl font-bold conversai-gradient-text;
+    }
+
+    .conversai-metric-label {
+        @apply text-sm md:text-base text-slate-600 dark:text-slate-300 font-medium mt-2;
+    }
+}
+
+/* Enhanced animations for conversations */
+@keyframes conversaiFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes conversaiSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes conversaiScaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes conversaiPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+}
+
+@keyframes conversaiTyping {
+    0% {
+        transform: translateY(0px);
+    }
+
+    28% {
+        transform: translateY(-5px);
+    }
+
+    44% {
+        transform: translateY(0px);
+    }
+}
+
+/* Custom scrollbar for conversations */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-slate-100 dark:bg-slate-800;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-gradient-to-b from-blue-500 to-violet-500 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    @apply from-blue-600 to-violet-600;
+}
+
+/* Responsive design enhancements */
+@media (max-width: 768px) {
+    .conversai-metric-card {
+        @apply p-4;
+    }
+
+    .conversai-metric-number {
+        @apply text-3xl;
+    }
+
+    .conversai-message-bubble {
+        @apply max-w-[85%];
+    }
+}

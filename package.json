@@ -12,6 +12,9 @@
       "@types/react-dom": "^19.1.6",
       "jest": "^30.0.4",
       "tailwindcss": "^3.4.17",
+      "vitest": "^3.2.4",
+      "@vitest/ui": "^3.2.4",
+      "@vitest/coverage-v8": "^3.2.4",
       "use-sync-external-store": "^1.2.0",
       "dmg-builder": "^26.0.12",
       "electron-builder-squirrel-windows": "^26.0.12",
@@ -22,13 +25,19 @@
         "react",
         "react-dom",
         "jest",
-        "tailwindcss"
+        "tailwindcss",
+        "vitest",
+        "@vitest/ui",
+        "@vitest/coverage-v8"
       ],
       "allowedVersions": {
         "react": "19",
         "react-dom": "19",
         "jest": "30",
-        "tailwindcss": "3"
+        "tailwindcss": "3",
+        "vitest": "3",
+        "@vitest/ui": "3",
+        "@vitest/coverage-v8": "3"
       }
     }
   },
@@ -56,7 +65,13 @@
     "deps:update": "pnpm update --interactive",
     "deps:outdated": "pnpm outdated",
     "ports:check": "node scripts/enforce-port-policy.js",
-    "ports:fix": "node scripts/enforce-port-policy.js --fix"
+    "ports:fix": "node scripts/enforce-port-policy.js --fix",
+    "orchestrator": "node scripts/orchestrator-cli.js",
+    "orchestrator:interactive": "node scripts/orchestrator-cli.js interactive",
+    "orchestrator:status": "node scripts/orchestrator-cli.js status",
+    "orchestrator:list": "node scripts/orchestrator-cli.js list",
+    "orchestrator:examples": "node scripts/orchestrator-examples.js",
+    "start:service": "node scripts/orchestrator-cli.js start"
   },
   "dependencies": {
     "@prisma/client": "^6.11.1",
@@ -69,6 +84,7 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "framer-motion": "^12.23.3",
+    "geist": "^1.4.2",
     "glob": "^11.0.3",
     "http-proxy-middleware": "^3.0.5",
     "is-stream": "^4.0.1",
@@ -83,7 +99,7 @@
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
-    "vitest": "^3.2.4"
+    "vitest": "^2.1.8"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
@@ -101,6 +117,9 @@
     "@vitejs/plugin-react": "^4.6.0",
     "@vitest/coverage-v8": "^3.2.4",
     "@vitest/ui": "^3.2.4",
+    "chalk": "^5.4.1",
+    "cli-table3": "^0.6.5",
+    "commander": "^14.0.0",
     "eslint": "^9.31.0",
     "eslint-config-next": "^15.3.5",
     "eslint-config-prettier": "^10.1.5",
@@ -113,6 +132,7 @@
     "estraverse": "^5.3.0",
     "happy-dom": "^18.0.1",
     "husky": "^9.1.7",
+    "inquirer": "^12.7.0",
     "jsdom": "^26.1.0",
     "lint-staged": "^16.1.2",
     "next": "^15.4.1",

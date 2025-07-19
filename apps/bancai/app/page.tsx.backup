@@ -1,0 +1,44 @@
+'use client'
+
+import { LandingPage } from '@codai/shared-ui'
+import { Wallet, CreditCard, TrendingUp, Shield, Users, Zap } from 'lucide-react'
+
+export default function HomePage() {
+  const features = [
+    {
+      icon: <Zap className="w-8 h-8" />,
+      title: 'AI-Powered',
+      description: 'Advanced AI capabilities for bancai automation',
+      status: 'active'
+    },
+    {
+      icon: <Users className="w-8 h-8" />,
+      title: 'Team Collaboration',
+      description: 'Built for teams and enterprise workflows',
+      status: 'active'
+    },
+    {
+      icon: <Shield className="w-8 h-8" />,
+      title: 'Secure & Reliable',
+      description: 'Enterprise-grade security for your data',
+      status: 'active'
+    }
+  ]
+
+  return (
+    <LandingPage
+      appName="BANCAI"
+      appTagline="Smart banking with AI"
+      appDescription="Revolutionary banking platform powered by AI for smarter financial management"
+      features={features}
+      onGetStarted={() => window.location.href = '/signup'}
+      onSignIn={() => window.location.href = '/login'}
+      onSignUp={() => window.location.href = '/signup'}
+      className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
+      showHero={true}
+      showFeatures={true}
+      showCTA={true}
+      brandColor="green"
+    />
+  )
+}

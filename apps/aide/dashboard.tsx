@@ -13,8 +13,8 @@ interface DashboardProps {
   onSubmit?: (e: React.FormEvent) => void;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ 
-  title = "AIDE Dashboard", 
+const Dashboard: React.FC<DashboardProps> = ({
+  title = "AIDE Dashboard",
   content = "Welcome to AI Development Environment",
   data = [],
   onClick,
@@ -45,8 +45,8 @@ const Dashboard: React.FC<DashboardProps> = ({
   };
 
   return (
-    <main 
-      role="main" 
+    <main
+      role="main"
       data-testid="dashboard"
       className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6"
       aria-label="AIDE Dashboard"
@@ -66,8 +66,8 @@ const Dashboard: React.FC<DashboardProps> = ({
         <nav aria-label="Dashboard navigation" className="mb-6">
           <ul role="menubar" className="flex space-x-4">
             <li role="none">
-              <a 
-                href="#overview" 
+              <a
+                href="#overview"
                 role="menuitem"
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 tabIndex={0}
@@ -76,8 +76,8 @@ const Dashboard: React.FC<DashboardProps> = ({
               </a>
             </li>
             <li role="none">
-              <a 
-                href="#projects" 
+              <a
+                href="#projects"
                 role="menuitem"
                 className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
                 tabIndex={0}
@@ -140,8 +140,8 @@ const Dashboard: React.FC<DashboardProps> = ({
             <h2 className="text-xl font-semibold mb-4">Data Overview</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {data.slice(0, 6).map((item, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className="p-4 border border-gray-200 rounded-lg"
                   role="article"
                 >

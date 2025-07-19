@@ -1,15 +1,22 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
-
+import { AuthProvider } from '@codai/shared-ui'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'SociAI - AI Social Platform',
-  description: 'Modern AI-powered social platform for Romanian communities',
-  keywords: ['AI', 'social', 'platform', 'romanian', 'community'],
-  authors: [{ name: 'CODAI Ecosystem' }],
+  title: 'SOCIAI - AI-Powered Platform',
+  description: 'Next-generation AI platform for sociai services',
+  keywords: ['AI', 'sociai', 'platform', 'automation', 'intelligence'],
+  authors: [{ name: 'CODAI Team' }],
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 }
 
 export default function RootLayout({
@@ -18,11 +25,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ro" className="dark">
-      <body className={`${inter.className} antialiased`}>
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-800">
-          {children}
-        </div>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className}>
+        <AuthProvider
+          apiBaseUrl="/api"
+          redirectTo="/dashboard"
+          loginPath="/login"
+        >
+          <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+            {children}
+          </div>
+        </AuthProvider>
       </body>
     </html>
   )

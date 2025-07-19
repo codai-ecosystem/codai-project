@@ -1,1 +1,1 @@
-{"root":["./src/chat.ts","./src/code-generation.ts","./src/documentation.ts","./src/index.ts","./src/monitoring.ts","./src/optimization.ts","./src/refactoring.ts","./src/review.ts","./src/security.ts","./src/testing.ts"],"errors":true,"version":"5.8.3"}
+{"root":["./src/chat.ts","./src/code-generation.ts","./src/documentation.ts","./src/index.ts","./src/monitoring.ts","./src/optimization.ts","./src/refactoring.ts","./src/review.ts","./src/security.ts","./src/testing.ts","./vitest.config.ts","./tests/unit/ai.test.ts"],"errors":true,"version":"5.8.3"}

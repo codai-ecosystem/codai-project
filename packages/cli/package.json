@@ -15,14 +15,14 @@
     }
   },
   "scripts": {
-    "build": "tsc --build && tsc --build tsconfig.esm.json",
+    "build": "pnpm exec tsc --build && tsc --build tsconfig.esm.json",
     "dev": "tsc --build --watch",
     "test": "vitest run",
     "test:watch": "vitest watch",
     "test:coverage": "vitest run --coverage",
-    "lint": "eslint src --ext .ts,.tsx",
-    "lint:fix": "eslint src --ext .ts,.tsx --fix",
-    "type-check": "tsc --noEmit",
+    "lint": "pnpm exec eslint src --ext .ts,.tsx",
+    "lint:fix": "pnpm exec eslint src --ext .ts,.tsx --fix",
+    "type-check": "pnpm exec tsc --noEmit",
     "clean": "rimraf dist"
   },
   "dependencies": {

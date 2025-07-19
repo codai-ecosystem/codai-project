@@ -6,10 +6,10 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc --build && tsc --build tsconfig.esm.json",
+    "build": "pnpm exec tsc --build && tsc --build tsconfig.esm.json",
     "dev": "tsc --build --watch",
-    "type-check": "tsc --noEmit",
-    "lint": "eslint src --ext .ts,.tsx",
+    "type-check": "pnpm exec tsc --noEmit",
+    "lint": "pnpm exec eslint src --ext .ts,.tsx",
     "test": "jest"
   },
   "keywords": [

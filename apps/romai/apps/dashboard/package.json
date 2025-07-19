@@ -3,16 +3,15 @@
   "version": "0.1.0",
   "description": "ROMAI Dashboard - Web Interface for Romanian AI Central Intelligence",
   "private": true,
-  
   "scripts": {
     "build": "next build",
-    "dev": "next dev --port 4038",
+    "dev": "next dev --port 5103",
     "start": "next start",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "type-check": "tsc --noEmit",
+    "type-check": "pnpm exec tsc --noEmit",
     "clean": "rimraf .next out"
   },
   "keywords": [

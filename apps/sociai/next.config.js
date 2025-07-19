@@ -1,31 +1,35 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
-  eslint: {
-    ignoreDuringBuilds: true,
+  serverExternalPackages: ['systeminformation', 'osx-temperature-sensor'],
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+  },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        'osx-temperature-sensor': false,
+        'fs': false,
+        'net': false,
+        'tls': false,
+        'crypto': false,
+        'systeminformation': false
+      }
+    }
+    return config
   },
   typescript: {
     ignoreBuildErrors: false,
   },
-  images: {
-    domains: ['localhost'],
+  eslint: {
+    ignoreDuringBuilds: false,
   },
-  env: {
-    APP_NAME: 'SOCIAI',
-    APP_DESCRIPTION: 'AI Social Platform',
-    APP_PORT: '4037',
-  },
-  // Exclude development files from production build
-  webpack: (config, { dev, isServer }) => {
-    if (!dev && !isServer) {
-      // Exclude Storybook stories and test files from production builds
-      config.module.rules.push({
-        test: /\.(stories|test|spec)\.(js|jsx|ts|tsx)$/,
-        use: 'ignore-loader',
-      });
-    }
-    return config;
-  },
-}
+  poweredByHeader: false,
+};
 
 module.exports = nextConfig;

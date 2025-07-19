@@ -1,6 +1,6 @@
 {
   "name": "@codai/romai-mcp",
-  "version": "0.5.7",
+  "version": "0.6.0",
   "description": "ROMAI Ultimate MCP Server - All-in-One Enterprise Solution with 26+ Integrated Tools",
   "type": "module",
   "main": "dist/index.js",
@@ -64,9 +64,9 @@
     "test:watch": "vitest --watch",
     "test:coverage": "vitest run --coverage",
     "test:ci": "vitest run --coverage",
-    "type-check": "tsc --noEmit",
-    "lint": "eslint src --ext .ts,.tsx --report-unused-disable-directives --max-warnings 0",
-    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "type-check": "pnpm exec tsc --noEmit",
+    "lint": "pnpm exec eslint src --ext .ts,.tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "pnpm exec eslint src --ext .ts,.tsx --fix",
     "clean": "rimraf dist coverage",
     "test:phase-2-3": "tsx src/validation/validate-phase-2-3.ts"
   },
@@ -94,7 +94,7 @@
     "mysql2": "^3.6.0",
     "parse-diff": "^0.11.0",
     "pg": "^8.11.0",
-    "puppeteer": "^21.0.0",
+    "playwright": "^1.53.2",
     "redis": "^4.6.0",
     "regression": "^2.0.1",
     "simple-git": "^3.19.0"

@@ -1,0 +1,353 @@
+/* CODAI Master Design System - CSS Custom Properties */
+
+:root {
+    /* === SEMANTIC COLORS === */
+
+    /* Base colors */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    /* UI colors */
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    /* Card colors */
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    /* Popover colors */
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    /* Primary colors (default brand) */
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    /* Secondary colors */
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+
+    /* Muted colors */
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    /* Accent colors */
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+
+    /* Destructive colors */
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* === STATUS COLORS === */
+
+    /* Success colors */
+    --success: 142.1 76.2% 36.3%;
+    --success-foreground: 210 40% 98%;
+    --success-light: 142.1 70.6% 45.3%;
+    --success-dark: 142.1 76.2% 26.3%;
+
+    /* Warning colors */
+    --warning: 32.1 94.6% 43.7%;
+    --warning-foreground: 222.2 84% 4.9%;
+    --warning-light: 32.1 94.6% 53.7%;
+    --warning-dark: 32.1 94.6% 33.7%;
+
+    /* Error colors */
+    --error: 0 62.8% 30.6%;
+    --error-foreground: 210 40% 98%;
+    --error-light: 0 62.8% 40.6%;
+    --error-dark: 0 62.8% 20.6%;
+
+    /* Info colors */
+    --info: 199.1 89.1% 48.4%;
+    --info-foreground: 210 40% 98%;
+    --info-light: 199.1 89.1% 58.4%;
+    --info-dark: 199.1 89.1% 38.4%;
+
+    /* === DESIGN TOKENS === */
+
+    /* Border radius */
+    --radius: 0.5rem;
+
+    /* Typography */
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Consolas', monospace;
+    --font-heading: 'Inter', system-ui, -apple-system, sans-serif;
+
+    /* Text sizes with line heights */
+    --text-xs: 0.75rem;
+    --leading-xs: 1rem;
+    --text-sm: 0.875rem;
+    --leading-sm: 1.25rem;
+    --text-base: 1rem;
+    --leading-base: 1.5rem;
+    --text-lg: 1.125rem;
+    --leading-lg: 1.75rem;
+    --text-xl: 1.25rem;
+    --leading-xl: 1.75rem;
+    --text-2xl: 1.5rem;
+    --leading-2xl: 2rem;
+    --text-3xl: 1.875rem;
+    --leading-3xl: 2.25rem;
+    --text-4xl: 2.25rem;
+    --leading-4xl: 2.5rem;
+    --text-5xl: 3rem;
+    --leading-5xl: 1;
+    --text-6xl: 3.75rem;
+    --leading-6xl: 1;
+
+    /* === APP-SPECIFIC BRAND COLORS === */
+
+    /* CODAI brand colors */
+    --codai-50: 240 249 255;
+    --codai-100: 224 242 254;
+    --codai-200: 186 230 253;
+    --codai-300: 125 211 252;
+    --codai-400: 56 189 248;
+    --codai-500: 14 165 233;
+    --codai-600: 2 132 199;
+    --codai-700: 3 105 161;
+    --codai-800: 7 89 133;
+    --codai-900: 12 74 110;
+    --codai-950: 8 47 73;
+
+    /* MEMORAI brand colors */
+    --memorai-50: 253 244 255;
+    --memorai-100: 250 232 255;
+    --memorai-200: 245 208 254;
+    --memorai-300: 240 171 252;
+    --memorai-400: 232 121 249;
+    --memorai-500: 217 70 239;
+    --memorai-600: 192 38 211;
+    --memorai-700: 162 28 175;
+    --memorai-800: 134 25 143;
+    --memorai-900: 112 26 117;
+    --memorai-950: 74 4 78;
+
+    /* BANCAI brand colors */
+    --bancai-50: 236 253 245;
+    --bancai-100: 209 250 229;
+    --bancai-200: 167 243 208;
+    --bancai-300: 110 231 183;
+    --bancai-400: 52 211 153;
+    --bancai-500: 16 185 129;
+    --bancai-600: 5 150 105;
+    --bancai-700: 4 120 87;
+    --bancai-800: 6 95 70;
+    --bancai-900: 6 78 59;
+    --bancai-950: 2 44 34;
+
+    /* STOCAI brand colors */
+    --stocai-50: 255 247 237;
+    --stocai-100: 255 237 213;
+    --stocai-200: 254 215 170;
+    --stocai-300: 253 186 116;
+    --stocai-400: 251 146 60;
+    --stocai-500: 249 115 22;
+    --stocai-600: 234 88 12;
+    --stocai-700: 194 65 12;
+    --stocai-800: 154 52 18;
+    --stocai-900: 124 45 18;
+    --stocai-950: 67 20 7;
+
+    /* TALENTAI brand colors */
+    --talentai-50: 255 241 242;
+    --talentai-100: 255 228 230;
+    --talentai-200: 254 205 211;
+    --talentai-300: 253 164 175;
+    --talentai-400: 251 113 133;
+    --talentai-500: 244 63 94;
+    --talentai-600: 225 29 72;
+    --talentai-700: 190 18 60;
+    --talentai-800: 159 18 57;
+    --talentai-900: 136 19 55;
+    --talentai-950: 76 5 25;
+
+    /* PREZENTAI brand colors */
+    --prezentai-50: 253 242 248;
+    --prezentai-100: 252 231 243;
+    --prezentai-200: 251 207 232;
+    --prezentai-300: 249 168 212;
+    --prezentai-400: 244 114 182;
+    --prezentai-500: 236 72 153;
+    --prezentai-600: 219 39 119;
+    --prezentai-700: 190 24 93;
+    --prezentai-800: 157 23 77;
+    --prezentai-900: 131 24 67;
+    --prezentai-950: 80 7 36;
+}
+
+/* === DARK MODE === */
+.dark {
+    /* Base colors */
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    /* UI colors */
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+
+    /* Card colors */
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    /* Popover colors */
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Primary colors */
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    /* Secondary colors */
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    /* Muted colors */
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    /* Accent colors */
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    /* Destructive colors */
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* Success colors */
+    --success: 142.1 76.2% 36.3%;
+    --success-foreground: 210 40% 98%;
+    --success-light: 142.1 70.6% 45.3%;
+    --success-dark: 142.1 76.2% 26.3%;
+
+    /* Warning colors */
+    --warning: 32.1 94.6% 43.7%;
+    --warning-foreground: 222.2 84% 4.9%;
+    --warning-light: 32.1 94.6% 53.7%;
+    --warning-dark: 32.1 94.6% 33.7%;
+
+    /* Error colors */
+    --error: 0 62.8% 50.6%;
+    --error-foreground: 210 40% 98%;
+    --error-light: 0 62.8% 60.6%;
+    --error-dark: 0 62.8% 40.6%;
+
+    /* Info colors */
+    --info: 199.1 89.1% 48.4%;
+    --info-foreground: 210 40% 98%;
+    --info-light: 199.1 89.1% 58.4%;
+    --info-dark: 199.1 89.1% 38.4%;
+}
+
+/* === APP-SPECIFIC CSS CLASSES === */
+
+/* App brand color classes - dynamically set via CSS custom properties */
+.app-codai {
+    --primary: var(--codai-500);
+    --primary-foreground: 210 40% 98%;
+    --brand-50: var(--codai-50);
+    --brand-500: var(--codai-500);
+    --brand-600: var(--codai-600);
+    --brand-700: var(--codai-700);
+}
+
+.app-memorai {
+    --primary: var(--memorai-500);
+    --primary-foreground: 210 40% 98%;
+    --brand-50: var(--memorai-50);
+    --brand-500: var(--memorai-500);
+    --brand-600: var(--memorai-600);
+    --brand-700: var(--memorai-700);
+}
+
+.app-bancai {
+    --primary: var(--bancai-500);
+    --primary-foreground: 210 40% 98%;
+    --brand-50: var(--bancai-50);
+    --brand-500: var(--bancai-500);
+    --brand-600: var(--bancai-600);
+    --brand-700: var(--bancai-700);
+}
+
+.app-stocai {
+    --primary: var(--stocai-500);
+    --primary-foreground: 210 40% 98%;
+    --brand-50: var(--stocai-50);
+    --brand-500: var(--stocai-500);
+    --brand-600: var(--stocai-600);
+    --brand-700: var(--stocai-700);
+}
+
+.app-talentai {
+    --primary: var(--talentai-500);
+    --primary-foreground: 210 40% 98%;
+    --brand-50: var(--talentai-50);
+    --brand-500: var(--talentai-500);
+    --brand-600: var(--talentai-600);
+    --brand-700: var(--talentai-700);
+}
+
+.app-prezentai {
+    --primary: var(--prezentai-500);
+    --primary-foreground: 210 40% 98%;
+    --brand-50: var(--prezentai-50);
+    --brand-500: var(--prezentai-500);
+    --brand-600: var(--prezentai-600);
+    --brand-700: var(--prezentai-700);
+}
+
+/* === UTILITY CLASSES === */
+
+/* Glassmorphism utilities */
+.glass-light {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-medium {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.glass-heavy {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-dark {
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Text utilities */
+.text-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.text-brand {
+    color: hsl(var(--brand-500));
+}
+
+/* Glow utilities */
+.glow {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.5);
+}
+
+.glow-soft {
+    box-shadow: 0 0 10px hsl(var(--primary) / 0.3);
+}
+
+.glow-strong {
+    box-shadow: 0 0 30px hsl(var(--primary) / 0.7);
+}

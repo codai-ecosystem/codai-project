@@ -106,13 +106,13 @@ export class TextToSpeechEngine {
             // Get Azure OpenAI credentials from environment
             const azureKey = process.env.AZURE_OPENAI_API_KEY
             const azureEndpoint = process.env.AZURE_OPENAI_ENDPOINT
-            
+
             if (!azureKey || !azureEndpoint) {
                 throw new Error('Azure OpenAI API key or endpoint not found in environment variables')
             }
 
             console.log('🔄 Initializing Azure OpenAI TTS...')
-            
+
             // Store Azure OpenAI configuration
             this.azureOpenAIConfig = {
                 apiKey: azureKey,
@@ -121,11 +121,11 @@ export class TextToSpeechEngine {
                 model: 'tts-1', // Azure OpenAI TTS model
                 voice: 'alloy' // Default voice: alloy, echo, fable, onyx, nova, shimmer
             }
-            
+
             this.isInitialized = true
-            
+
             console.log('✅ Azure OpenAI TTS initialized')
-            
+
         } catch (error) {
             console.error('❌ Failed to initialize Azure OpenAI TTS:', error)
             throw error
@@ -166,14 +166,14 @@ export class TextToSpeechEngine {
                     console.log('🗣️ Azure OpenAI TTS speaking (simulated):', text.substring(0, 50) + '...')
                     this.isCurrentlySpeaking = true
                     this.emit('started', { text })
-                    
+
                     // For tests, resolve immediately but keep speaking status active
                     // The speaking will be stopped by timeout or interruption
                     setTimeout(() => {
                         this.isCurrentlySpeaking = false
                         this.emit('finished')
                     }, 1000) // 1 second duration
-                    
+
                     // Resolve immediately so VoiceEngine doesn't reset isSpeaking
                     resolve()
                     return
@@ -211,10 +211,10 @@ export class TextToSpeechEngine {
                 // Get audio blob
                 const audioBlob = await response.blob()
                 const audioUrl = URL.createObjectURL(audioBlob)
-                
+
                 // Play audio using HTML5 Audio
                 const audio = new Audio(audioUrl)
-                
+
                 audio.onloadeddata = () => {
                     console.log('🎵 Azure OpenAI audio loaded, starting playback...')
                 }
@@ -228,10 +228,10 @@ export class TextToSpeechEngine {
                     const duration = endTime - startTime
 
                     this.isCurrentlySpeaking = false
-                    
+
                     // Track latency
                     this.trackLatency(duration)
-                    
+
                     // Cleanup
                     URL.revokeObjectURL(audioUrl)
 
@@ -243,7 +243,7 @@ export class TextToSpeechEngine {
                 audio.onerror = (event) => {
                     this.isCurrentlySpeaking = false
                     URL.revokeObjectURL(audioUrl)
-                    
+
                     const error = new Error(`Audio playback error: ${event}`)
                     console.error('❌ Azure OpenAI TTS audio error:', error)
                     this.emit('error', error)
@@ -436,13 +436,13 @@ export class TextToSpeechEngine {
                 this.currentAudioElement.currentTime = 0
                 this.currentAudioElement = null
             }
-            
+
             // Stop Web Speech API if active
             if (this.synthesis && this.synthesis.speaking) {
                 this.synthesis.cancel()
                 this.currentUtterance = null
             }
-            
+
             this.isCurrentlySpeaking = false
             this.emit('stopped')
             console.log('🛑 Speech stopped')

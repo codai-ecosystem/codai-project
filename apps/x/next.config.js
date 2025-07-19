@@ -1,15 +1,35 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
-  turbopack: true,
+  serverExternalPackages: ['systeminformation', 'osx-temperature-sensor'],
   images: {
-    domains: ['localhost'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
-  env: {
-    APP_NAME: 'X',
-    APP_DESCRIPTION: 'AI Trading Platform',
-    APP_PORT: '4039',
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        'osx-temperature-sensor': false,
+        'fs': false,
+        'net': false,
+        'tls': false,
+        'crypto': false,
+        'systeminformation': false
+      }
+    }
+    return config
   },
-}
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+  poweredByHeader: false,
+};
 
 module.exports = nextConfig;

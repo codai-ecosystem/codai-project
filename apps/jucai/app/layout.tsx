@@ -1,22 +1,22 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
+import { Inter } from 'next/font/google'
+import { AuthProvider } from '@codai/shared-ui'
 import './globals.css'
 
+const inter = Inter({ subsets: ['latin'] })
+
 export const metadata: Metadata = {
-  title: 'JucAI - AI-Native Game Platform & Marketplace',
-  description: 'Revolutionary AI-powered gaming platform with intelligent game mechanics, player analytics, and marketplace features. Experience the future of gaming.',
-  keywords: 'AI gaming, game platform, marketplace, artificial intelligence, gaming analytics, smart mechanics',
-  openGraph: {
-    title: 'JucAI - AI-Native Game Platform',
-    description: 'Revolutionary AI-powered gaming platform with intelligent game mechanics and marketplace features.',
-    url: 'https://jucai.ro',
-    siteName: 'JucAI',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'JucAI - AI-Native Game Platform',
-    description: 'Revolutionary AI-powered gaming platform with intelligent game mechanics and marketplace features.',
-  },
+  title: 'JUCAI - AI-Powered Platform',
+  description: 'Next-generation AI platform for jucai services',
+  keywords: ['AI', 'jucai', 'platform', 'automation', 'intelligence'],
+  authors: [{ name: 'CODAI Team' }],
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 }
 
 export default function RootLayout({
@@ -25,8 +25,18 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className="antialiased font-sans">{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className}>
+        <AuthProvider
+          apiBaseUrl="/api"
+          redirectTo="/dashboard"
+          loginPath="/login"
+        >
+          <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+            {children}
+          </div>
+        </AuthProvider>
+      </body>
     </html>
   )
 }

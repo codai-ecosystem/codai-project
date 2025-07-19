@@ -2,10 +2,12 @@
   "compilerOptions": {
     "target": "ES2022",
     "module": "commonjs",
-    "lib": ["ES2022"],
+    "lib": [
+      "ES2022"
+    ],
     "allowJs": true,
     "checkJs": false,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "declaration": true,
     "declarationMap": true,
     "outDir": "./dist",
@@ -38,17 +40,43 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "@romai/*": ["packages/*/src"],
-      "@romai/types": ["packages/romai-types/src"],
-      "@romai/core": ["packages/romai-core/src"],
-      "@romai/memory": ["packages/romai-memory/src"]
+      "@romai/*": [
+        "packages/*/src"
+      ],
+      "@romai/types": [
+        "packages/romai-types/src"
+      ],
+      "@romai/core": [
+        "packages/romai-core/src"
+      ],
+      "@romai/memory": [
+        "packages/romai-memory/src"
+      ]
     },
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "preserveSymlinks": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "exclude": ["node_modules", "dist", "build", ".next", "coverage"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    ".next",
+    "coverage"
+  ],
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }

@@ -171,7 +171,7 @@ export class SpeechRecognitionEngine {
             // Get real Azure OpenAI credentials from environment
             const azureApiKey = process.env.AZURE_OPENAI_API_KEY
             const azureEndpoint = process.env.AZURE_OPENAI_ENDPOINT
-            
+
             if (!azureApiKey || !azureEndpoint) {
                 throw new Error('Azure OpenAI credentials not found in environment variables')
             }
@@ -183,12 +183,12 @@ export class SpeechRecognitionEngine {
             }
 
             console.log('🔄 Initializing Azure OpenAI Whisper...')
-            
+
             // Setup audio recording for Azure OpenAI
             await this.setupAzureOpenAIRecording()
-            
+
             console.log('✅ Azure OpenAI Whisper initialized')
-            
+
         } catch (error) {
             console.error('❌ Failed to initialize Azure OpenAI:', error)
             throw error
@@ -276,7 +276,7 @@ export class SpeechRecognitionEngine {
             }
 
             const result = await response.json()
-            
+
             if (result.text && result.text.trim()) {
                 // Create structured result
                 const voiceResult: VoiceSpeechResult = {
@@ -347,7 +347,7 @@ export class SpeechRecognitionEngine {
         this.mediaRecorder.onstop = async () => {
             if (this.isRecordingForAzure) {
                 await this.processAudioWithWhisper()
-                
+
                 // Restart recording if still in continuous mode
                 if (this.config.continuous && this.isRecordingForAzure) {
                     setTimeout(() => {
@@ -492,7 +492,7 @@ export class SpeechRecognitionEngine {
         await this.stop()
         this.eventListeners.clear()
         this.recognition = null
-        
+
         // Clean up MediaRecorder
         if (this.mediaRecorder) {
             const stream = this.mediaRecorder.stream

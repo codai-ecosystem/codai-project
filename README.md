@@ -25,7 +25,42 @@ codai-project/
 └── agent.profile.json       # Global agent configuration
 ```
 
-## � Current Ecosystem Status
+## 🎼 Development Orchestrator
+
+The Codai ecosystem includes a comprehensive **Development Orchestrator CLI** for managing all services interactively:
+
+### Quick Start
+```bash
+# Launch interactive orchestrator
+pnpm orchestrator
+
+# View all available services
+pnpm orchestrator:list
+
+# Check service status
+pnpm orchestrator:status
+
+# Start a specific service
+pnpm start:service codai
+```
+
+### Features
+- 📊 **Real-time Status Table** - Live service monitoring with auto-refresh
+- 🎯 **Interactive Service Management** - Start, stop, restart services individually  
+- 🚀 **Bulk Operations** - Start multiple services with confirmation prompts
+- 🔍 **Port Conflict Detection** - Automatic port availability checking
+- 📈 **Process Health Monitoring** - Track uptime, PID, and service status
+- 🎨 **Rich CLI Interface** - Color-coded status indicators and intuitive menus
+
+### Service Discovery
+The orchestrator automatically discovers and manages **43 services**:
+- **Apps**: All applications in the `apps/` directory
+- **Services**: All microservices in the `services/` directory  
+- **Ports**: Extracted from package.json dev scripts automatically
+
+See [📚 Orchestrator Documentation](docs/ORCHESTRATOR_CLI.md) for complete usage guide.
+
+## 🎯 Current Ecosystem Status
 
 ### Port Compliance ✅ IMPLEMENTED
 - **Services**: Use ports 4001-4029 (29 microservices)

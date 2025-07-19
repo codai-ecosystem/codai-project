@@ -113,7 +113,7 @@ export class AdvancedMemorySearch {
     if (useSemanticSimilarity) {
       // Enhanced semantic search implementation
       searchResults = this.performSemanticSearch(query, filteredMemories, semanticThreshold)
-      
+
       if (combineWithFuzzy && searchResults.length < maxResults) {
         // Combine with fuzzy search for better results
         const fuseResults = this.fuse.search(query, { limit: maxResults - searchResults.length })
@@ -121,7 +121,7 @@ export class AdvancedMemorySearch {
           ...result.item,
           relevance: Math.max(0.1, 1 - (result.score || 0)) // Ensure minimum relevance
         }))
-        
+
         // Merge and deduplicate
         const existingIds = new Set(searchResults.map(r => r.id))
         const newFuzzyResults = fuzzyResults.filter(r => !existingIds.has(r.id))
@@ -134,7 +134,7 @@ export class AdvancedMemorySearch {
         ...result.item,
         relevance: Math.max(0.1, 1 - (result.score || 0)) // Ensure minimum relevance for all results
       }))
-      
+
       // If fuzzy search doesn't find enough results, try semantic search as fallback
       if (searchResults.length === 0 && query.length > 2) {
         const semanticResults = this.performSemanticSearch(query, filteredMemories, 0.1) // Lower threshold
@@ -167,35 +167,35 @@ export class AdvancedMemorySearch {
     // Enhanced semantic search using multiple techniques
     const queryLower = this.normalizeText(query)
     const queryWords = queryLower.split(/\s+/)
-    
+
     return memories.map(memory => {
       const contentLower = this.normalizeText(memory.content)
       const tags = memory.metadata.tags || []
       const entityType = memory.metadata.entityType || ''
-      
+
       let relevanceScore = 0
-      
+
       // Exact phrase matching (highest weight)
       if (contentLower.includes(queryLower)) {
         relevanceScore += 0.9
       }
-      
+
       // Word matching with context (including partial matches for Unicode)
       const contentWords = contentLower.split(/\s+/)
-      const matchingWords = queryWords.filter(qWord => 
-        contentWords.some(cWord => 
-          cWord.includes(qWord) || 
+      const matchingWords = queryWords.filter(qWord =>
+        contentWords.some(cWord =>
+          cWord.includes(qWord) ||
           qWord.includes(cWord) ||
           this.isUnicodeMatch(qWord, cWord)
         )
       )
-      
+
       if (matchingWords.length > 0) {
         relevanceScore += (matchingWords.length / queryWords.length) * 0.7
       }
-      
+
       // Tag matching (high relevance)
-      const matchingTags = tags.filter(tag => 
+      const matchingTags = tags.filter(tag =>
         queryWords.some(qWord => {
           const tagLower = this.normalizeText(tag)
           return tagLower.includes(qWord) || qWord.includes(tagLower) || this.isUnicodeMatch(qWord, tagLower)
@@ -204,40 +204,40 @@ export class AdvancedMemorySearch {
       if (matchingTags.length > 0) {
         relevanceScore += (matchingTags.length / Math.max(tags.length, 1)) * 0.8
       }
-      
+
       // Entity type matching
       const entityTypeLower = this.normalizeText(entityType)
       if (entityType && queryWords.some(qWord => entityTypeLower.includes(qWord) || this.isUnicodeMatch(qWord, entityTypeLower))) {
         relevanceScore += 0.5
       }
-      
+
       // Semantic word relationships (basic implementation)
       const semanticMatches = this.findSemanticMatches(queryWords, contentWords, tags)
       if (semanticMatches > 0) {
         relevanceScore += semanticMatches * 0.6
       }
-      
+
       // Fuzzy matching for typos (like Reaktt -> React)
       const fuzzyMatch = this.performFuzzyWordMatch(queryWords, contentWords)
       if (fuzzyMatch > 0) {
         relevanceScore += fuzzyMatch * 0.5
       }
-      
+
       // Importance boost
       if (memory.metadata.importance) {
         relevanceScore += memory.metadata.importance * 0.2
       }
-      
+
       // Normalize and ensure minimum score for any matches
       relevanceScore = Math.min(1.0, Math.max(0, relevanceScore))
-      
+
       return {
         ...memory,
         relevance: relevanceScore
       }
     })
-    .filter(memory => (memory.relevance || 0) >= threshold)
-    .sort((a, b) => (b.relevance || 0) - (a.relevance || 0))
+      .filter(memory => (memory.relevance || 0) >= threshold)
+      .sort((a, b) => (b.relevance || 0) - (a.relevance || 0))
   }
 
   private normalizeText(text: string): string {
@@ -255,22 +255,22 @@ export class AdvancedMemorySearch {
     const emojiRegex = /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu
     const queryEmojis = Array.from(query.matchAll(emojiRegex)).map(match => match[0])
     const contentEmojis = Array.from(content.matchAll(emojiRegex)).map(match => match[0])
-    
+
     // Check if any emojis match
     if (queryEmojis.length > 0 && contentEmojis.length > 0) {
       return queryEmojis.some(emoji => contentEmojis.includes(emoji))
     }
-    
+
     // Check for similar character patterns (basic)
     const normalizedQuery = this.normalizeText(query)
     const normalizedContent = this.normalizeText(content)
-    
+
     return normalizedContent.includes(normalizedQuery) || normalizedQuery.includes(normalizedContent)
   }
 
   private performFuzzyWordMatch(queryWords: string[], contentWords: string[]): number {
     let totalScore = 0
-    
+
     for (const qWord of queryWords) {
       let bestMatch = 0
       for (const cWord of contentWords) {
@@ -281,19 +281,19 @@ export class AdvancedMemorySearch {
       }
       totalScore += bestMatch
     }
-    
+
     return queryWords.length > 0 ? totalScore / queryWords.length : 0
   }
 
   private calculateLevenshteinSimilarity(str1: string, str2: string): number {
     const len1 = str1.length
     const len2 = str2.length
-    
+
     if (len1 === 0) return len2 === 0 ? 1 : 0
     if (len2 === 0) return 0
-    
+
     const matrix: number[][] = []
-    
+
     // Initialize matrix
     for (let i = 0; i <= len1; i++) {
       matrix[i] = [i]
@@ -301,7 +301,7 @@ export class AdvancedMemorySearch {
     for (let j = 0; j <= len2; j++) {
       matrix[0][j] = j
     }
-    
+
     // Fill matrix
     for (let i = 1; i <= len1; i++) {
       for (let j = 1; j <= len2; j++) {
@@ -313,7 +313,7 @@ export class AdvancedMemorySearch {
         )
       }
     }
-    
+
     const maxLen = Math.max(len1, len2)
     const distance = matrix[len1][len2]
     return 1 - (distance / maxLen)
@@ -328,27 +328,27 @@ export class AdvancedMemorySearch {
       'database': ['sql', 'postgresql', 'mysql', 'mongodb', 'data', 'storage'],
       'deployment': ['docker', 'kubernetes', 'ci', 'cd', 'production', 'staging']
     }
-    
+
     let matches = 0
     for (const qWord of queryWords) {
       for (const [group, related] of Object.entries(semanticGroups)) {
         if (related.includes(qWord) || qWord === group) {
           // Check if any related words exist in content or tags
           const hasRelated = contentWords.some(cWord => related.includes(cWord)) ||
-                           tags.some(tag => related.includes(tag.toLowerCase()))
+            tags.some(tag => related.includes(tag.toLowerCase()))
           if (hasRelated) {
             matches += 0.3
           }
         }
       }
     }
-    
+
     return Math.min(1.0, matches)
   }
 
   private sortMemories(memories: SearchableMemory[], sortBy: string = 'relevance'): SearchableMemory[] {
     const sorted = [...memories]
-    
+
     switch (sortBy) {
       case 'importance':
         return sorted.sort((a, b) => (b.metadata.importance || 0) - (a.metadata.importance || 0))

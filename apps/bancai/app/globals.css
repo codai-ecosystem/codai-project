@@ -1,238 +1,145 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 158.1 64.4% 51.6%;
-    --primary-foreground: 210 20% 98%;
-    --secondary: 215 27.9% 16.9%;
-    --secondary-foreground: 210 20% 98%;
-    --muted: 215 27.9% 16.9%;
-    --muted-foreground: 217.9 10.6% 64.9%;
-    --accent: 215 27.9% 16.9%;
-    --accent-foreground: 210 20% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 215 27.9% 16.9%;
-    --input: 215 27.9% 16.9%;
-    --ring: 158.1 64.4% 51.6%;
-  }
-}
-
-/* Custom scrollbar for banking theme */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgb(15 23 42 / 0.5);
-  border-radius: 8px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgb(16 185 129 / 0.5);
-  border-radius: 8px;
-  border: 2px solid transparent;
-  background-clip: content-box;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgb(34 197 94 / 0.7);
-  background-clip: content-box;
-}
-
-/* Banking specific styles */
-.banking-gradient {
-  background: linear-gradient(135deg, rgb(16 185 129) 0%, rgb(6 182 212) 50%, rgb(34 197 94) 100%);
-}
-
-.banking-glow {
-  box-shadow: 0 0 20px rgb(16 185 129 / 0.3), 0 0 40px rgb(6 182 212 / 0.2);
-}
-
-.account-card {
-  background: linear-gradient(135deg, rgb(15 23 42 / 0.9) 0%, rgb(30 41 59 / 0.7) 100%);
-  border: 1px solid rgb(71 85 105 / 0.3);
-  transition: all 0.3s ease;
-}
-
-.account-card:hover {
-  border-color: rgb(16 185 129 / 0.5);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgb(0 0 0 / 0.2);
-}
-
-.transaction-item {
-  transition: all 0.2s ease;
-}
-
-.transaction-item:hover {
-  background: rgb(30 41 59 / 0.5);
-  transform: scale(1.02);
-}
-
-/* Financial data animations */
-@keyframes pulse-banking {
-
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  50% {
-    opacity: 0.8;
-    transform: scale(1.05);
-  }
-}
-
-.pulse-banking {
-  animation: pulse-banking 2s ease-in-out infinite;
-}
-
-/* Security indicators */
-.security-indicator {
-  position: relative;
-  display: inline-block;
-}
-
-.security-indicator::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-
-.security-indicator.secure::before {
-  background: rgb(16 185 129 / 0.4);
-}
-
-.security-indicator.warning::before {
-  background: rgb(245 158 11 / 0.4);
-}
-
-.security-indicator.alert::before {
-  background: rgb(239 68 68 / 0.4);
-}
-
-/* Currency formatting */
-.currency-positive {
-  color: rgb(16 185 129);
-}
-
-.currency-negative {
-  color: rgb(239 68 68);
-}
-
-.currency-neutral {
-  color: rgb(148 163 184);
-}
-
-/* Goal progress bars */
-.goal-progress {
-  background: linear-gradient(90deg, rgb(16 185 129), rgb(6 182 212));
-  border-radius: 4px;
-  transition: all 0.3s ease;
-}
-
-.goal-progress:hover {
-  filter: brightness(1.1);
-}
-
-/* Chart containers */
-.chart-container {
-  background: linear-gradient(135deg, rgb(15 23 42 / 0.8) 0%, rgb(30 41 59 / 0.6) 100%);
-  border: 1px solid rgb(16 185 129 / 0.2);
-  border-radius: 12px;
-}
-
-/* Glass morphism for banking cards */
-.glass-banking {
-  background: rgba(16, 185, 129, 0.1);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(16, 185, 129, 0.2);
-  border-radius: 16px;
-}
-
-.glass-banking:hover {
-  background: rgba(16, 185, 129, 0.15);
-  border-color: rgba(16, 185, 129, 0.4);
-}
-
-/* Typography for financial data */
-.financial-heading {
-  background: linear-gradient(135deg, rgb(16 185 129), rgb(6 182 212), rgb(34 197 94));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-}
-
-/* Interactive elements */
-.banking-button {
-  background: linear-gradient(135deg, rgb(16 185 129), rgb(6 182 212));
-  transition: all 0.3s ease;
-}
-
-.banking-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgb(16 185 129 / 0.3);
-}
-
-/* Utility classes */
-.banking-shadow {
-  box-shadow:
-    0 4px 6px -1px rgba(16, 185, 129, 0.1),
-    0 2px 4px -1px rgba(16, 185, 129, 0.06);
-}
-
-.banking-shadow-lg {
-  box-shadow:
-    0 10px 15px -3px rgba(16, 185, 129, 0.1),
-    0 4px 6px -2px rgba(16, 185, 129, 0.05);
-}
-
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --brand-primary: #3b82f6;
+  --brand-secondary: #2563eb;
+  --brand-accent: #60a5fa;
+  
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 15, 23, 42;
+  --background-end-rgb: 30, 41, 59;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom,
+  background: linear-gradient(
+      to bottom,
       transparent,
-      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Glassmorphism utilities */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.glass-button {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.glass-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Brand-specific classes */
+.brand-bancai {
+  --tw-bg-opacity: 1;
+  background-color: var(--brand-primary);
+}
+
+.brand-bancai-secondary {
+  --tw-bg-opacity: 1;
+  background-color: var(--brand-secondary);
+}
+
+.brand-bancai-accent {
+  --tw-bg-opacity: 1;
+  background-color: var(--brand-accent);
+}
+
+.text-brand-bancai {
+  --tw-text-opacity: 1;
+  color: var(--brand-primary);
+}
+
+.border-brand-bancai {
+  --tw-border-opacity: 1;
+  border-color: var(--brand-primary);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(30, 41, 59, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--brand-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-secondary);
+}
+
+/* Animation utilities */
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.shimmer {
+  animation: shimmer 2s infinite;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background-size: 200px 100%;
+}
+
+.gradient-animation {
+  background: linear-gradient(-45deg, var(--brand-primary), var(--brand-secondary), var(--brand-accent), var(--brand-primary));
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }

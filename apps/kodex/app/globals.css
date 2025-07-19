@@ -1,120 +1,145 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  html {
-    @apply scroll-smooth;
+:root {
+  --brand-primary: #64748b;
+  --brand-secondary: #475569;
+  --brand-accent: #94a3b8;
+  
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 15, 23, 42;
+  --background-end-rgb: 30, 41, 59;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Glassmorphism utilities */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.glass-button {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.glass-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Brand-specific classes */
+.brand-kodex {
+  --tw-bg-opacity: 1;
+  background-color: var(--brand-primary);
+}
+
+.brand-kodex-secondary {
+  --tw-bg-opacity: 1;
+  background-color: var(--brand-secondary);
+}
+
+.brand-kodex-accent {
+  --tw-bg-opacity: 1;
+  background-color: var(--brand-accent);
+}
+
+.text-brand-kodex {
+  --tw-text-opacity: 1;
+  color: var(--brand-primary);
+}
+
+.border-brand-kodex {
+  --tw-border-opacity: 1;
+  border-color: var(--brand-primary);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(30, 41, 59, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--brand-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-secondary);
+}
+
+/* Animation utilities */
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
   }
-
-  body {
-    @apply bg-black text-white antialiased;
+  100% {
+    background-position: calc(200px + 100%) 0;
   }
 }
 
-@layer components {
-  .glass-panel {
-    @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl;
+.shimmer {
+  animation: shimmer 2s infinite;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background-size: 200px 100%;
+}
+
+.gradient-animation {
+  background: linear-gradient(-45deg, var(--brand-primary), var(--brand-secondary), var(--brand-accent), var(--brand-primary));
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
   }
-
-  .gradient-text {
-    @apply bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent;
+  50% {
+    background-position: 100% 50%;
   }
-
-  .code-editor {
-    @apply w-full h-full rounded-lg overflow-hidden;
+  100% {
+    background-position: 0% 50%;
   }
-
-  .monaco-editor {
-    @apply !bg-gray-900/50 !border-white/10;
-  }
-}
-
-@layer utilities {
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  @keyframes float {
-
-    0%,
-    100% {
-      transform: translateY(0px);
-    }
-
-    50% {
-      transform: translateY(-10px);
-    }
-  }
-}
-
-/* Monaco Editor Custom Styling */
-.monaco-editor .view-lines {
-  font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', monospace !important;
-}
-
-.monaco-editor .margin {
-  background-color: transparent !important;
-}
-
-.monaco-editor .monaco-editor-background {
-  background-color: rgba(17, 24, 39, 0.8) !important;
-}
-
-/* Prism.js Syntax Highlighting */
-.token.comment,
-.token.prolog,
-.token.doctype,
-.token.cdata {
-  color: #6b7280;
-}
-
-.token.punctuation {
-  color: #d1d5db;
-}
-
-.token.property,
-.token.tag,
-.token.constant,
-.token.symbol,
-.token.deleted {
-  color: #ef4444;
-}
-
-.token.boolean,
-.token.number {
-  color: #f59e0b;
-}
-
-.token.selector,
-.token.attr-name,
-.token.string,
-.token.char,
-.token.builtin,
-.token.inserted {
-  color: #10b981;
-}
-
-.token.operator,
-.token.entity,
-.token.url,
-.language-css .token.string,
-.style .token.string,
-.token.variable {
-  color: #06b6d4;
-}
-
-.token.atrule,
-.token.attr-value,
-.token.function,
-.token.class-name {
-  color: #8b5cf6;
-}
-
-.token.keyword {
-  color: #3b82f6;
 }

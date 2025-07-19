@@ -1,14 +1,14 @@
 {
   "name": "wallet",
   "version": "1.0.0",
-  "description": "Programmable Wallet",
+  "description": "Digital wallet and payments",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 4072",
+    "dev": "next dev -p 5039",
     "build": "next build",
-    "start": "next start --port 4072",
+    "start": "next start -p 5039",
     "lint": "next lint",
-    "type-check": "tsc --noEmit",
+    "type-check": "pnpm exec tsc --noEmit",
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
@@ -31,19 +31,27 @@
     "typescript": "^5.8.3",
     "uuid": "^11.1.0",
     "web3": "^4.16.0",
-    "next": "15.3.5"
+    "next": "^15.4.1",
+    "framer-motion": "^12.23.6",
+    "lucide-react": "^0.525.0",
+    "geist": "^1.4.2",
+    "@codai/shared-ui": "workspace:*",
+    "@codai/translations": "workspace:*"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
-    "@vitejs/plugin-react": "^4.6.0",
+    "@vitejs/plugin-react": "^4.7.0",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.31.0",
-    "eslint-config-next": "^15.3.5",
+    "eslint-config-next": "^15.4.1",
     "jsdom": "^26.1.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "@types/node": "^24.0.14",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6"
   }
 }

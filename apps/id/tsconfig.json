@@ -12,7 +12,18 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "strict": false,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "strictNullChecks": true
   },
   "include": [
     "*.js",
@@ -20,5 +31,8 @@
     "../../types/**/*",
     "src/**/*",
     ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

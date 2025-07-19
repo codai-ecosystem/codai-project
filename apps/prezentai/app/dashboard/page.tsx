@@ -1,12 +1,72 @@
-import { LiveDashboard } from '@/components/sections/LiveDashboard'
-import type { Metadata } from 'next'
+'use client'
 
-export const metadata: Metadata = {
-    title: 'Live Dashboard - PREZENTAI.RO',
-    description: 'Real-time monitoring and analytics for the CODAI ecosystem',
-    robots: 'noindex, nofollow' // Keep dashboard private
-}
+import { DashboardPage } from '@codai/shared-ui'
+import { Zap, Users, Settings, BarChart3, Plus, Shield } from 'lucide-react'
 
-export default function DashboardPage() {
-    return <LiveDashboard />
+export default function Dashboard() {
+  const stats = [
+    {
+      title: "Total Users",
+      value: "1,234",
+      change: { value: 12, trend: 'up' as const },
+      icon: <Users className="h-4 w-4" />
+    },
+    {
+      title: "Active Sessions",
+      value: "567",
+      change: { value: 5, trend: 'up' as const },
+      icon: <BarChart3 className="h-4 w-4" />
+    }
+  ]
+  const quickActions = [
+    {
+      title: "Quick Start",
+      description: "Get started with prezentai",
+      action: () => console.log("Quick start"),
+      icon: <Plus className="h-4 w-4" />,
+      variant: 'primary' as const
+    }
+  ]
+  const recentActivity = [
+    {
+      title: "System Update",
+      description: "prezentai system updated successfully",
+      time: "2 minutes ago",
+      type: 'success' as const
+    }
+  ]
+  const navigation = [
+    {
+      label: "Dashboard",
+      href: "/dashboard",
+      active: true,
+      icon: <BarChart3 className="h-4 w-4" />
+    },
+    {
+      label: "Settings",
+      href: "/settings",
+      icon: <Settings className="h-4 w-4" />
+    }
+  ]
+
+  const mockUser = {
+    name: "User Name",
+    email: "user@prezentai.dev",
+    avatar: "/placeholder-avatar.jpg"
+  }
+
+  return (
+    <DashboardPage
+      appName="PREZENTAI"
+      user={mockUser}
+      stats={stats}
+      quickActions={quickActions}
+      recentActivity={recentActivity}
+      navigation={navigation}
+      onLogout={() => {
+        console.log("Logout")
+        window.location.href = '/login'
+      }}
+    />
+  )
 }

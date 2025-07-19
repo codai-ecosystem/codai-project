@@ -1,20 +1,35 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  serverExternalPackages: ['systeminformation', 'osx-temperature-sensor'],
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+  },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        'osx-temperature-sensor': false,
+        'fs': false,
+        'net': false,
+        'tls': false,
+        'crypto': false,
+        'systeminformation': false
+      }
+    }
+    return config
+  },
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
-  images: {
-    domains: ['localhost'],
-  },
-  env: {
-    APP_NAME: 'WALLET',
-    APP_DESCRIPTION: 'Programmable Wallet',
-    APP_PORT: '4034',
-  },
-}
+  poweredByHeader: false,
+};
 
 module.exports = nextConfig;

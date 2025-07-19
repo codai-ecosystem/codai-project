@@ -14,9 +14,13 @@ vi.mock('next/navigation', () => ({
   useSearchParams: () => new URLSearchParams(),
 }));
 
+import React from 'react';
+import { vi } from 'vitest';
+
+// Mock Next.js Image component for testing
 vi.mock('next/image', () => ({
   default: ({ src, alt, ...props }: any) => {
-    return <img src={src} alt={alt} {...props} />;
+    return React.createElement('img', { src, alt, ...props });
   },
 }));
 

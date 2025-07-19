@@ -3,10 +3,10 @@
 import { useState, useEffect } from 'react'
 
 interface LiveStats {
-  totalUsers: number
-  activeNow: number
-  performance: string
-  uptime: string
+    totalUsers: number
+    activeNow: number
+    performance: string
+    uptime: string
 }
 
 export function AideDashboard() {
@@ -15,46 +15,46 @@ export function AideDashboard() {
     const [currentTime, setCurrentTime] = useState('')
     const [isOnline, setIsOnline] = useState(true)
     const [liveStats, setLiveStats] = useState<LiveStats>({
-      totalUsers: 15420,
-      activeNow: 847,
-      performance: '99.9% uptime',
-      uptime: '847 days'
+        totalUsers: 15420,
+        activeNow: 847,
+        performance: '99.9% uptime',
+        uptime: '847 days'
     })
 
     useEffect(() => {
         setMounted(true)
-        
+
         // Update time every second
         const updateTime = () => {
-          const now = new Date()
-          setCurrentTime(now.toLocaleTimeString('en-US', { 
-            hour: '2-digit', 
-            minute: '2-digit',
-            hour12: false 
-          }))
+            const now = new Date()
+            setCurrentTime(now.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            }))
         }
-        
+
         updateTime()
         const timeInterval = setInterval(updateTime, 1000)
-        
+
         // Simulate online status monitoring
         const statusInterval = setInterval(() => {
-          setIsOnline(Math.random() > 0.1) // 90% uptime simulation
+            setIsOnline(Math.random() > 0.1) // 90% uptime simulation
         }, 5000)
-        
+
         // Update live stats periodically
         const statsInterval = setInterval(() => {
-          setLiveStats(prev => ({
-            ...prev,
-            activeNow: prev.activeNow + Math.floor(Math.random() * 10 - 5),
-            totalUsers: prev.totalUsers + Math.floor(Math.random() * 3)
-          }))
+            setLiveStats(prev => ({
+                ...prev,
+                activeNow: prev.activeNow + Math.floor(Math.random() * 10 - 5),
+                totalUsers: prev.totalUsers + Math.floor(Math.random() * 3)
+            }))
         }, 3000)
 
         return () => {
-          clearInterval(timeInterval)
-          clearInterval(statusInterval)
-          clearInterval(statsInterval)
+            clearInterval(timeInterval)
+            clearInterval(statusInterval)
+            clearInterval(statsInterval)
         }
     }, [])
 
@@ -101,11 +101,10 @@ export function AideDashboard() {
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
                                 aria-label={`Switch to ${tab} tab`}
-                                className={`px-6 py-2 rounded-md font-medium transition-all duration-200 ${
-                                    activeTab === tab
+                                className={`px-6 py-2 rounded-md font-medium transition-all duration-200 ${activeTab === tab
                                         ? 'bg-white text-indigo-600 shadow-md'
                                         : 'text-gray-700 hover:text-indigo-600 hover:bg-white/50'
-                                }`}
+                                    }`}
                             >
                                 {tab}
                             </button>

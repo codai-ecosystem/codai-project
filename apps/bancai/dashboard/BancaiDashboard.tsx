@@ -96,7 +96,7 @@ export default function BancaiDashboard() {
   useEffect(() => {
     // For test environment, immediately set fallback data without async loading
     const isTestEnv = process.env.NODE_ENV === 'test' || process.env.VITEST === 'true'
-    
+
     if (isTestEnv) {
       // Immediate fallback data for tests
       const testFallbackCards: AccountCard[] = [
@@ -127,7 +127,7 @@ export default function BancaiDashboard() {
           isActive: true
         }
       ]
-      
+
       setAccounts(testFallbackCards)
       setTransactions([])
       setInsights([])
@@ -135,7 +135,7 @@ export default function BancaiDashboard() {
       setLoading(false)
       return
     }
-    
+
     // Regular async loading for production
     loadDashboardData()
     const interval = setInterval(loadRealtimeData, 10000)
@@ -151,7 +151,7 @@ export default function BancaiDashboard() {
       const timeoutDuration = isTestEnv ? 100 : 3000 // 100ms for tests, 3s for production
 
       // Add timeout wrapper for test reliability
-      const timeoutPromise = new Promise((_, reject) => 
+      const timeoutPromise = new Promise((_, reject) =>
         setTimeout(() => reject(new Error('Data loading timeout')), timeoutDuration)
       )
 
@@ -298,7 +298,7 @@ export default function BancaiDashboard() {
 
     } catch (error) {
       console.error('Error loading dashboard data:', error)
-      
+
       // Provide fallback data so component doesn't stay in loading state
       const fallbackCards: AccountCard[] = [
         {
@@ -315,7 +315,7 @@ export default function BancaiDashboard() {
           isActive: true
         }
       ]
-      
+
       setAccounts(fallbackCards)
       setTransactions([])
       setInsights([])
@@ -506,7 +506,7 @@ export default function BancaiDashboard() {
           <p className="text-2xl font-bold text-emerald-400">{accounts.length}</p>
           <p className="text-sm text-slate-400 mt-2">Active banking accounts</p>
         </div>
-        
+
         <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-white">Active Transactions</h3>
@@ -515,7 +515,7 @@ export default function BancaiDashboard() {
           <p className="text-2xl font-bold text-blue-400">247</p>
           <p className="text-sm text-slate-400 mt-2">Last 30 days</p>
         </div>
-        
+
         <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm rounded-xl p-6 border border-purple-500/20">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-white">AI Banking</h3>
@@ -567,7 +567,7 @@ export default function BancaiDashboard() {
           <p className="text-2xl font-bold text-emerald-400">{formatCurrency(calculateNetWorth())}</p>
           <p className="text-sm text-slate-400 mt-2">Total across all accounts</p>
         </div>
-        
+
         <div className="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 backdrop-blur-sm rounded-xl p-6 border border-blue-500/20">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-white">Transaction History</h3>
@@ -576,7 +576,7 @@ export default function BancaiDashboard() {
           <p className="text-2xl font-bold text-blue-400">247</p>
           <p className="text-sm text-slate-400 mt-2">Recent transactions</p>
         </div>
-        
+
         <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm rounded-xl p-6 border border-purple-500/20">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-white">Payment Processing</h3>

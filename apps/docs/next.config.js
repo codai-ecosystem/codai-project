@@ -1,10 +1,27 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    optimizePackageImports: ['lucide-react'],
-  },
+  serverExternalPackages: ['systeminformation', 'osx-temperature-sensor'],
   images: {
-    domains: ['localhost'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+  },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        'osx-temperature-sensor': false,
+        'fs': false,
+        'net': false,
+        'tls': false,
+        'crypto': false,
+        'systeminformation': false
+      }
+    }
+    return config
   },
   typescript: {
     ignoreBuildErrors: false,
@@ -12,11 +29,7 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: false,
   },
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
-  },
   poweredByHeader: false,
-  reactStrictMode: true,
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

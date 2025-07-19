@@ -4,7 +4,7 @@
   "scripts": {
     "start": "ts-node server/aide-server.ts",
     "dev": "ts-node --watch server/aide-server.ts",
-    "build": "tsc --project tsconfig.server.json",
+    "build": "pnpm exec tsc --project tsconfig.server.json",
     "prod": "node dist/server/aide-server.js"
   },
   "dependencies": {

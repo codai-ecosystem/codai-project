@@ -56,10 +56,11 @@ model User {
   preferences   UserPreferences?
   
   // Collaboration features
-  workspaceMembers WorkspaceMember[]
-  projects         Project[]
+  ownedWorkspaces       Workspace[] @relation("WorkspaceOwner")
+  workspaceMembers      WorkspaceMember[]
+  projects              Project[]
   collaborationParticipants CollaborationParticipant[]
-  presenceUpdates PresenceUpdate[]
+  presenceUpdates       PresenceUpdate[]
   
   @@map("users")
 }
@@ -106,6 +107,7 @@ model Workspace {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   
+  owner       User              @relation("WorkspaceOwner", fields: [ownerId], references: [id], onDelete: Cascade)
   members     WorkspaceMember[]
   projects    Project[]
   

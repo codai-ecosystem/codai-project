@@ -1,0 +1,49 @@
+{
+  "name": "@codai/conversai",
+  "version": "1.0.0",
+  "description": "Universal AI Conversation Management Service for CODAI Ecosystem",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "clean": "rimraf dist",
+    "prepublishOnly": "pnpm clean && pnpm build"
+  },
+  "keywords": [
+    "ai",
+    "conversation",
+    "chat",
+    "memory",
+    "context",
+    "codai"
+  ],
+  "author": "CODAI Ecosystem",
+  "license": "MIT",
+  "dependencies": {
+    "@codai/memorai": "workspace:*",
+    "@codai/auth": "workspace:*",
+    "@codai/shared-types": "workspace:*",
+    "uuid": "^9.0.1",
+    "date-fns": "^2.30.0",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/uuid": "^9.0.7",
+    "@types/lodash": "^4.14.202",
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.3",
+    "jest": "^29.7.0",
+    "@types/jest": "^29.5.8",
+    "rimraf": "^5.0.5"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "restricted"
+  }
+}

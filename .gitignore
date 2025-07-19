@@ -13,6 +13,16 @@ storybook-static/
 .env
 .env*.local
 
+# Environment configurations with sensitive data
+environment-configs/
+scripts/*env*.bat
+scripts/upload-*env*.ps1
+scripts/vercel-env-commands.bat
+scripts/env-Group*.bat
+scripts/*env*.ps1
+scripts/create-env*.ps1
+scripts/generate-env*.ps1
+
 # Testing
 coverage/
 test-results/

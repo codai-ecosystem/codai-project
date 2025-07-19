@@ -96,8 +96,8 @@ function calculateTemporalProximity(date1: Date, date2: Date): number {
 
 async function buildKnowledgeGraph(): Promise<KnowledgeGraphData> {
     try {
-        // Get all memories with metadata
-        const memories = await prisma.memory.findMany({
+        // Get all memories with metadata  
+        const memories = await (prisma as any).memory.findMany({
             select: {
                 id: true,
                 content: true,

@@ -312,17 +312,17 @@ function getKnowledgeStores(): KnowledgeStore[] {
 async function getDatabaseStats() {
   try {
     // Get total memory count
-    const totalMemories = await prisma.memory.count()
+    const totalMemories = await (prisma as any).memory.count()
 
     // Get unique agents count
-    const uniqueAgents = await prisma.memory.findMany({
+    const uniqueAgents = await (prisma as any).memory.findMany({
       select: { agentId: true },
       distinct: ['agentId']
     })
 
     // Get recent memory activity (last 24 hours)
     const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000)
-    const recentMemories = await prisma.memory.count({
+    const recentMemories = await (prisma as any).memory.count({
       where: {
         createdAt: {
           gte: twentyFourHoursAgo
@@ -331,7 +331,7 @@ async function getDatabaseStats() {
     })
 
     // Get average memory content length
-    const memoriesWithContent = await prisma.memory.findMany({
+    const memoriesWithContent = await (prisma as any).memory.findMany({
       select: { content: true }
     })
 

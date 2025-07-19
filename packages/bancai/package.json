@@ -1,0 +1,95 @@
+{
+  "name": "@codai/bancai",
+  "version": "1.0.0",
+  "description": "Financial Services Integration Package for CODAI Ecosystem",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "bancai": "dist/cli/index.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./payments": {
+      "import": "./dist/payments.mjs",
+      "require": "./dist/payments.js"
+    },
+    "./transactions": {
+      "import": "./dist/transactions.mjs",
+      "require": "./dist/transactions.js"
+    },
+    "./subscriptions": {
+      "import": "./dist/subscriptions.mjs",
+      "require": "./dist/subscriptions.js"
+    },
+    "./analytics": {
+      "import": "./dist/analytics.mjs",
+      "require": "./dist/analytics.js"
+    },
+    "./api": {
+      "import": "./dist/api.mjs",
+      "require": "./dist/api.js"
+    }
+  },
+  "scripts": {
+    "build": "pnpm exec tsc --build && tsc --build tsconfig.esm.json",
+    "dev": "tsc --build --watch",
+    "lint": "pnpm exec eslint src --ext .ts,.tsx",
+    "test": "jest",
+    "type-check": "pnpm exec tsc --noEmit"
+  },
+  "dependencies": {
+    "@codai/core": "workspace:*",
+    "@codai/shared-types": "workspace:*",
+    "@codai/memorai": "workspace:*",
+    "@codai/auth": "workspace:*",
+    "stripe": "^17.7.0",
+    "commander": "^12.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.4.1",
+    "helmet": "^8.0.0",
+    "ioredis": "^5.4.1",
+    "jose": "^5.9.6",
+    "uuid": "^11.1.0",
+    "zod": "^3.23.8",
+    "decimal.js": "^10.4.3",
+    "date-fns": "^2.30.0",
+    "papaparse": "^5.4.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.13",
+    "@types/uuid": "^10.0.0",
+    "@types/papaparse": "^5.3.14",
+    "eslint": "^9.31.0",
+    "jest": "^30.0.4",
+    "typescript": "^5.8.3"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "next": ">=14.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "codai",
+    "financial",
+    "payments",
+    "stripe",
+    "transactions",
+    "subscriptions",
+    "analytics",
+    "fraud-detection",
+    "multi-currency",
+    "compliance",
+    "typescript"
+  ],
+  "author": "CODAI Team",
+  "license": "MIT"
+}

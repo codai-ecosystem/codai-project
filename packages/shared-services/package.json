@@ -9,7 +9,8 @@
     "dev": "tsc --watch"
   },
   "dependencies": {
-    "@codai/shared-types": "workspace:*"
+    "@codai/shared-types": "workspace:*",
+    "@codai/memorai": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.8.3"

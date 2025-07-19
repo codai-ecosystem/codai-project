@@ -1,5 +1,43 @@
 // Enhanced Authentication Types for CODAI Ecosystem
 
+// Enhanced Auth User Type for centralized authentication
+export interface AuthUser {
+  id: string;
+  email: string;
+  name: string;
+  role: string;
+  permissions?: string[];
+  preferences?: {
+    theme: string;
+    language: string;
+    emailNotifications?: boolean;
+    pushNotifications?: boolean;
+  };
+  updatedAt?: Date;
+  emailVerified?: boolean;
+}
+
+// Centralized Auth Configuration
+export interface AuthConfig {
+  authUrl: string; // URL of the authentication service (e.g., https://id.codai.ro)
+  tokenKey: string; // Key for storing auth token in localStorage
+  refreshKey: string; // Key for storing refresh token in localStorage
+  redirectAfterLogin?: string; // Where to redirect after successful login
+  redirectAfterLogout?: string; // Where to redirect after logout
+}
+
+// Login/Register Credentials
+export interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
+export interface RegisterCredentials {
+  name: string;
+  email: string;
+  password: string;
+}
+
 // Core User Types
 export interface User {
   id: string;
@@ -334,4 +372,79 @@ export interface AuthContextType extends AuthState {
   isTokenExpired: (token: string) => boolean;
   getTokenPayload: (token: string) => TokenPayload | null;
   clearAuth: () => void;
+}
+
+// Enhanced Auth Types for Phase 1.3
+export interface RefreshTokenResponse {
+  accessToken: string;
+  refreshToken: string;
+  expiresIn: number;
+  user?: AuthUser;
+}
+
+export interface ApiKeyResponse {
+  id: string;
+  name: string;
+  key: string;
+  permissions: string[];
+  expiresAt?: Date;
+  createdAt: Date;
+}
+
+export interface TenantData {
+  id: string;
+  name: string;
+  domain?: string;
+  settings: Record<string, any>;
+  createdAt: Date;
+  isActive: boolean;
+}
+
+export interface UserPermission {
+  id: string;
+  name: string;
+  resource: string;
+  action: string;
+  scope?: string;
+}
+
+// OAuth Provider Configuration
+export interface OAuthConfig {
+  google?: {
+    clientId: string;
+    clientSecret: string;
+    redirectUri: string;
+  };
+  github?: {
+    clientId: string;
+    clientSecret: string;
+    redirectUri: string;
+  };
+  discord?: {
+    clientId: string;
+    clientSecret: string;
+    redirectUri: string;
+  };
+}
+
+// Multi-tenant Support
+export interface TenantUser {
+  userId: string;
+  tenantId: string;
+  role: UserRole;
+  permissions: string[];
+  joinedAt: Date;
+  isActive: boolean;
+}
+
+// 2FA Types
+export interface TwoFactorSetup {
+  qrCode: string;
+  secret: string;
+  backupCodes: string[];
+}
+
+export interface TwoFactorVerification {
+  code: string;
+  backupCode?: string;
 }

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import logger from '../lib/logger'
+import { logger } from '../lib/logger'
 import {
   Brain,
   Database,
@@ -57,7 +57,7 @@ export default function MemorAIPage() {
       status: 'active'
     },
     {
-      id: '2', 
+      id: '2',
       title: 'Knowledge Graph',
       description: '150 interconnected knowledge nodes with AI indexing and semantic search',
       icon: 'Database',
@@ -76,7 +76,7 @@ export default function MemorAIPage() {
   useEffect(() => {
     if (!isClient) return
 
-    logger.logUserAction('page-visit', {
+    logger.info('page-visit', {
       module: 'dashboard',
       context: {
         page: 'memorai-dashboard',
@@ -89,7 +89,7 @@ export default function MemorAIPage() {
   // Enhanced tab change handler with logging
   const handleTabChange = (tab: 'overview' | 'features' | 'analytics' | 'monitor') => {
     setActiveTab(tab)
-    logger.logUserAction('tab-change', {
+    logger.info('tab-change', {
       module: 'dashboard',
       context: {
         fromTab: activeTab,
@@ -117,7 +117,7 @@ export default function MemorAIPage() {
         if (process.env.NODE_ENV === 'test' || typeof window === 'undefined') {
           return;
         }
-        
+
         const response = await fetch('/api/memory-metrics')
         if (!response.ok) throw new Error('Failed to fetch memory metrics')
 
@@ -208,7 +208,7 @@ export default function MemorAIPage() {
           { id: '3', title: 'Data Streams', value: '4', change: '0', trend: 'stable', icon: 'Network', color: 'blue' },
           { id: '4', title: 'Cache Hit Rate', value: '78%', change: '0%', trend: 'stable', icon: 'Search', color: 'purple' }
         ])
-        
+
         setFeatureCards([
           {
             id: '1',
@@ -218,7 +218,7 @@ export default function MemorAIPage() {
             status: 'active'
           },
           {
-            id: '2', 
+            id: '2',
             title: 'Knowledge Graph',
             description: '150 interconnected knowledge nodes with AI indexing and semantic search',
             icon: 'Database',
@@ -519,7 +519,7 @@ export default function MemorAIPage() {
                       </div>
                     </div>
                     <div className="flex justify-end">
-                      <button 
+                      <button
                         aria-label={`Learn more about ${feature.title}`}
                         className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-4 py-2 rounded-xl hover:from-indigo-600 hover:to-purple-600 transition-all font-medium text-sm flex items-center gap-2"
                       >
@@ -543,7 +543,7 @@ export default function MemorAIPage() {
               className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-8 text-center"
             >
               <h2 className="text-2xl font-bold text-indigo-400 mb-4">
-                {activeTab === 'analytics' 
+                {activeTab === 'analytics'
                   ? 'Advanced Analytics Dashboard'
                   : 'Monitor Panel'
                 }
@@ -554,7 +554,7 @@ export default function MemorAIPage() {
                   : 'Real-time monitoring and system health analytics for comprehensive oversight.'
                 }
               </p>
-              <button 
+              <button
                 aria-label={`Access ${activeTab} features`}
                 className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-6 py-3 rounded-xl hover:from-indigo-600 hover:to-purple-600 transition-all font-medium"
               >

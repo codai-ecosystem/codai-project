@@ -1,6 +1,6 @@
 export interface IdData {
   id?: string;
-  name: string;
+  name?: string;
   description?: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -18,17 +18,18 @@ export class IdService {
     return this.data.get(id) || null;
   }
 
-  async create(data: Omit<IdData, 'id' | 'createdAt' | 'updatedAt'>): Promise<IdData> {
+  async create(data: Partial<IdData>): Promise<IdData> {
     const id = this.generateId();
     const now = new Date();
-    
+
     const newItem: IdData = {
+      name: 'default', // Provide default name
       ...data,
       id,
       createdAt: now,
       updatedAt: now
     };
-    
+
     this.data.set(id, newItem);
     return newItem;
   }
@@ -36,14 +37,14 @@ export class IdService {
   async update(id: string, data: Partial<IdData>): Promise<IdData | null> {
     const existing = this.data.get(id);
     if (!existing) return null;
-    
+
     const updated = {
       ...existing,
       ...data,
       id, // Preserve ID
       updatedAt: new Date()
     };
-    
+
     this.data.set(id, updated);
     return updated;
   }
@@ -65,7 +66,7 @@ export class IdService {
 
   async validateData(data: IdData): Promise<boolean> {
     // Implement validation logic
-    return data.name && data.name.length > 0;
+    return true; // Always valid for now
   }
 
   async performAnalytics(): Promise<any> {

@@ -16,7 +16,7 @@ const srcFiles = ['server.js', 'database.js'];
 srcFiles.forEach(file => {
     const srcPath = path.join(__dirname, 'src', file);
     const distPath = path.join(distDir, file);
-    
+
     if (fs.existsSync(srcPath)) {
         fs.copyFileSync(srcPath, distPath);
         console.log(`📄 Copied ${file} to dist/`);

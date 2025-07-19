@@ -4,10 +4,10 @@ import MemoryDatabase from './dist/database.js';
 
 async function testHPKVFunctions() {
     console.log('🧪 Testing HPKV-inspired MemoraiMCP Functions\n');
-    
+
     const database = new MemoryDatabase();
     await database.initialize();
-    
+
     try {
         // Test 1: storeMemory (correct parameters)
         console.log('🔹 Test 1: storeMemory');
@@ -19,10 +19,10 @@ async function testHPKVFunctions() {
             tags: ['test', 'hpkv', 'validation'],
             importance: 8.5
         };
-        
+
         const storeResult = await database.storeMemory(agentId, content, metadata);
         console.log('✅ Memory stored with key:', storeResult.structuredKey);
-        
+
         // Test 2: searchMemories (semantic) - correct parameters
         console.log('\n🔹 Test 2: searchMemories (semantic)');
         const searchResults = await database.searchMemories(agentId, 'architecture validation', { limit: 5 });
@@ -31,7 +31,7 @@ async function testHPKVFunctions() {
             console.log('   First result key:', searchResults.memories[0].structuredKey);
             console.log('   Relevance score:', searchResults.memories[0].relevanceScore);
         }
-        
+
         // Test 3: searchKeys (pattern matching) - check if method exists
         console.log('\n🔹 Test 3: searchKeys (pattern matching)');
         try {
@@ -49,7 +49,7 @@ async function testHPKVFunctions() {
                 console.log('   Found key:', filteredKeys[0]);
             }
         }
-        
+
         // Test 4: getMemory (direct retrieval)
         console.log('\n🔹 Test 4: getMemory (direct retrieval)');
         // Get the key from the store result
@@ -60,9 +60,9 @@ async function testHPKVFunctions() {
             console.log('   Content preview:', getResult.content.substring(0, 50) + '...');
             console.log('   Importance score:', getResult.importance_score);
         }
-        
+
         console.log('\n🎉 All HPKV database functions tested successfully!');
-        
+
     } catch (error) {
         console.error('❌ Test failed:', error.message);
         console.error(error.stack);

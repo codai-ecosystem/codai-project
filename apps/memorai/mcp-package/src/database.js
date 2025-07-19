@@ -23,10 +23,10 @@ export class MemoryDatabase {
         try {
             // Initialize SQL.js
             this.SQL = await initSqlJs();
-            
+
             // Create data directory if it doesn't exist
             await fs.mkdir(this.dataDir, { recursive: true });
-            
+
             // Load or create database
             let dbBuffer = null;
             try {
@@ -36,22 +36,22 @@ export class MemoryDatabase {
                 // Database doesn't exist, will create new one
                 console.error('📁 Creating new MemoraiMCP database');
             }
-            
+
             // Create database connection
             this.db = new this.SQL.Database(dbBuffer);
-            
+
             // Create schema if needed
             await this.createSchema();
-            
+
             // Save initial database
             if (!dbBuffer) {
                 await this.saveDatabase();
             }
-            
+
             this.isInitialized = true;
             console.error('🗄️  MemoraiMCP Database v7.0.0 initialized successfully');
             console.error(`📊 Database path: ${this.dbPath}`);
-            
+
             return true;
         } catch (error) {
             console.error('❌ Failed to initialize MemoraiMCP database:', error);
@@ -138,7 +138,7 @@ export class MemoryDatabase {
 
     async saveDatabase() {
         if (!this.db) throw new Error('Database not initialized');
-        
+
         try {
             const data = this.db.export();
             await fs.writeFile(this.dbPath, data);
@@ -154,11 +154,11 @@ export class MemoryDatabase {
     generateStructuredKey(projectName, sessionName, agentId) {
         const date = new Date().toISOString().split('T')[0].replace(/-/g, '');
         const sequenceNumber = this.getNextSequenceNumber(projectName, sessionName, date);
-        
+
         // Clean names for key format
         const cleanProject = projectName.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
         const cleanSession = sessionName.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
-        
+
         return `${cleanProject}_${date}_${cleanSession}_${sequenceNumber}`;
     }
 
@@ -195,18 +195,18 @@ export class MemoryDatabase {
             // Extract or generate project and session names
             const projectName = metadata.project || metadata.projectName || 'default';
             const sessionName = metadata.session || metadata.sessionName || agentId;
-            
+
             // Generate structured key
             const structuredKey = this.generateStructuredKey(projectName, sessionName, agentId);
-            
+
             // Calculate content hash for deduplication
             const contentHash = crypto.createHash('sha256').update(content).digest('hex');
-            
+
             // Check for existing memory with same content hash
             const existingQuery = 'SELECT id, structured_key FROM memories WHERE content_hash = ? AND agent_id = ?';
             const existingStmt = this.db.prepare(existingQuery);
             const existing = existingStmt.getAsObject([contentHash, agentId]);
-            
+
             if (existing.id) {
                 // Update access information for existing memory
                 const updateQuery = `
@@ -218,9 +218,9 @@ export class MemoryDatabase {
                 `;
                 const updateStmt = this.db.prepare(updateQuery);
                 updateStmt.run([existing.id]);
-                
+
                 await this.saveDatabase();
-                
+
                 return {
                     memoryId: existing.id,
                     structuredKey: existing.structured_key,
@@ -231,10 +231,10 @@ export class MemoryDatabase {
 
             // Get sequence number for the structured key
             const sequenceNumber = this.getNextSequenceNumber(projectName, sessionName, new Date().toISOString());
-            
+
             // Calculate importance score
             const importanceScore = this.calculateImportanceScore(content, metadata);
-            
+
             // Insert new memory
             const insertQuery = `
                 INSERT INTO memories (
@@ -243,7 +243,7 @@ export class MemoryDatabase {
                     importance_score, timestamp, last_accessed
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
             `;
-            
+
             const insertStmt = this.db.prepare(insertQuery);
             insertStmt.run([
                 structuredKey,
@@ -259,12 +259,12 @@ export class MemoryDatabase {
 
             // Get the inserted memory ID
             const memoryId = this.db.exec('SELECT last_insert_rowid() as id')[0].values[0][0];
-            
+
             // Save database
             await this.saveDatabase();
-            
+
             console.error(`💾 Memory stored: ${structuredKey} (ID: ${memoryId})`);
-            
+
             return {
                 memoryId,
                 structuredKey,
@@ -275,7 +275,7 @@ export class MemoryDatabase {
                 contentHash,
                 importanceScore
             };
-            
+
         } catch (error) {
             console.error('❌ Failed to store memory:', error);
             throw error;
@@ -298,10 +298,10 @@ export class MemoryDatabase {
                 FROM memories m
                 WHERE m.structured_key = ?
             `;
-            
+
             const stmt = this.db.prepare(query);
             const result = stmt.getAsObject([structuredKey]);
-            
+
             if (!result.id) {
                 return null;
             }
@@ -315,9 +315,9 @@ export class MemoryDatabase {
             `;
             const updateStmt = this.db.prepare(updateQuery);
             updateStmt.run([structuredKey]);
-            
+
             await this.saveDatabase();
-            
+
             // Parse metadata
             let metadata = {};
             try {
@@ -360,7 +360,7 @@ export class MemoryDatabase {
             const minImportance = options.minImportance || 0.0;
             const projectFilter = options.project || null;
             const sessionFilter = options.session || null;
-            
+
             // Build search query with full-text search simulation
             let searchQuery = `
                 SELECT m.*, 
@@ -370,33 +370,33 @@ export class MemoryDatabase {
                 FROM memories m
                 WHERE 1=1
             `;
-            
+
             const params = [];
-            
+
             // Agent filter (allow 'all' for cross-agent search)
             if (agentId && agentId !== 'all') {
                 searchQuery += ' AND m.agent_id = ?';
                 params.push(agentId);
             }
-            
+
             // Project filter
             if (projectFilter) {
                 searchQuery += ' AND m.project_name = ?';
                 params.push(projectFilter);
             }
-            
+
             // Session filter
             if (sessionFilter) {
                 searchQuery += ' AND m.session_name = ?';
                 params.push(sessionFilter);
             }
-            
+
             // Importance filter
             if (minImportance > 0) {
                 searchQuery += ' AND m.importance_score >= ?';
                 params.push(minImportance);
             }
-            
+
             // Text search (case-insensitive)
             if (query && query.trim()) {
                 const searchTerms = query.toLowerCase().split(/\s+/);
@@ -410,7 +410,7 @@ export class MemoryDatabase {
                     params.push(likePattern, likePattern, likePattern);
                 }
             }
-            
+
             // Order by relevance (importance + recency)
             searchQuery += ` 
                 ORDER BY 
@@ -420,24 +420,24 @@ export class MemoryDatabase {
                 LIMIT ?
             `;
             params.push(limit);
-            
+
             // Use sql.js exec method for complex queries
             const results = this.db.exec(searchQuery, params);
-            
+
             // Process results (sql.js exec returns array of result sets)
             let memories = [];
             if (results && results.length > 0) {
                 const resultSet = results[0];
                 const columns = resultSet.columns;
                 const values = resultSet.values;
-                
+
                 memories = values.map((row, index) => {
                     // Map row array to object using column names
                     const rowObj = {};
                     columns.forEach((col, i) => {
                         rowObj[col] = row[i];
                     });
-                    
+
                     let metadata = {};
                     try {
                         metadata = JSON.parse(rowObj.metadata || '{}');
@@ -466,7 +466,7 @@ export class MemoryDatabase {
                     };
                 });
             }
-            
+
             return {
                 memories,
                 totalFound: memories.length,
@@ -491,7 +491,7 @@ export class MemoryDatabase {
         try {
             const limit = options.limit || 20;
             const minScore = options.minScore || 0.0;
-            
+
             // For now, implement as key-based search until vector embeddings are fully integrated
             const searchQuery = `
                 SELECT structured_key, project_name, session_name, sequence_number,
@@ -504,23 +504,23 @@ export class MemoryDatabase {
                 ORDER BY importance_score DESC, timestamp DESC
                 LIMIT ?
             `;
-            
+
             const likePattern = `%${query.toLowerCase()}%`;
             const results = this.db.exec(searchQuery, [likePattern, likePattern, likePattern, limit]);
-            
+
             let keys = [];
             if (results && results.length > 0) {
                 const resultSet = results[0];
                 const columns = resultSet.columns;
                 const values = resultSet.values;
-                
+
                 keys = values.map((row, index) => {
                     // Map row array to object using column names
                     const rowObj = {};
                     columns.forEach((col, i) => {
                         rowObj[col] = row[i];
                     });
-                    
+
                     return {
                         structuredKey: rowObj.structured_key,
                         projectName: rowObj.project_name,
@@ -534,7 +534,7 @@ export class MemoryDatabase {
                     };
                 }).filter(k => k.similarityScore >= minScore);
             }
-            
+
             return {
                 keys,
                 totalFound: keys.length,
@@ -561,7 +561,7 @@ export class MemoryDatabase {
             const checkQuery = 'SELECT id FROM memories WHERE structured_key = ?';
             const checkStmt = this.db.prepare(checkQuery);
             const existing = checkStmt.getAsObject([structuredKey]);
-            
+
             if (!existing.id) {
                 return {
                     success: false,
@@ -573,9 +573,9 @@ export class MemoryDatabase {
             const deleteQuery = 'DELETE FROM memories WHERE structured_key = ?';
             const deleteStmt = this.db.prepare(deleteQuery);
             deleteStmt.run([structuredKey]);
-            
+
             await this.saveDatabase();
-            
+
             return {
                 success: true,
                 message: 'Memory deleted successfully',
@@ -605,10 +605,10 @@ export class MemoryDatabase {
                 ORDER BY m.timestamp DESC, m.importance_score DESC
                 LIMIT ?
             `;
-            
+
             const stmt = this.db.prepare(query);
             const results = stmt.all([agentId, contextSize]);
-            
+
             const context = results.map(row => {
                 let metadata = {};
                 try {
@@ -658,10 +658,10 @@ export class MemoryDatabase {
                     MAX(timestamp) as newest_memory
                 FROM memories
             `;
-            
+
             const stmt = this.db.prepare(statsQuery);
             const stats = stmt.getAsObject();
-            
+
             return {
                 totalMemories: stats.total_memories || 0,
                 uniqueAgents: stats.unique_agents || 0,
@@ -688,16 +688,16 @@ export class MemoryDatabase {
     // Helper methods
     calculateImportanceScore(content, metadata) {
         let score = 0.5; // Base score
-        
+
         // Content length factor
         if (content.length > 500) score += 0.1;
         if (content.length > 1000) score += 0.1;
-        
+
         // Metadata priority
         if (metadata.priority === 'critical') score += 0.3;
         else if (metadata.priority === 'high') score += 0.2;
         else if (metadata.priority === 'medium') score += 0.1;
-        
+
         // Special keywords that indicate importance
         const importantKeywords = ['error', 'bug', 'fix', 'critical', 'important', 'todo', 'reminder'];
         const lowerContent = content.toLowerCase();
@@ -706,18 +706,18 @@ export class MemoryDatabase {
                 score += 0.05;
             }
         }
-        
+
         return Math.min(score, 1.0);
     }
 
     calculateSimpleRelevance(query, content, importanceScore) {
         if (!query || !query.trim()) return importanceScore;
-        
+
         const queryLower = query.toLowerCase();
         const contentLower = content.toLowerCase();
-        
+
         let relevance = importanceScore * 0.3; // Base from importance
-        
+
         // Exact phrase match
         if (contentLower.includes(queryLower)) {
             relevance += 0.5;
@@ -725,13 +725,13 @@ export class MemoryDatabase {
             // Word matches
             const queryWords = queryLower.split(/\s+/);
             const contentWords = contentLower.split(/\s+/);
-            const matchCount = queryWords.filter(qw => 
+            const matchCount = queryWords.filter(qw =>
                 contentWords.some(cw => cw.includes(qw) || qw.includes(cw))
             ).length;
-            
+
             relevance += (matchCount / queryWords.length) * 0.4;
         }
-        
+
         return Math.min(relevance, 1.0);
     }
 

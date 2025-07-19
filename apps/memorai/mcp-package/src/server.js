@@ -75,7 +75,7 @@ class HPKVMemoryEngine {
         this.startupTime = Date.now();
         this.operationCount = 0;
         this.operationTimes = [];
-        
+
         // Performance tracking
         this.metrics = {
             totalOperations: 0,
@@ -106,19 +106,19 @@ class HPKVMemoryEngine {
      */
     async storeMemory(params) {
         const startTime = Date.now();
-        
+
         try {
             const validated = RememberSchema.parse(params);
-            
+
             const result = await this.database.storeMemory(
                 validated.agentId,
                 validated.content,
                 validated.metadata
             );
-            
+
             const responseTime = Date.now() - startTime;
             this.updateMetrics(responseTime);
-            
+
             return {
                 success: true,
                 memoryId: result.memoryId,
@@ -128,8 +128,8 @@ class HPKVMemoryEngine {
                 sequenceNumber: result.sequenceNumber,
                 isDuplicate: result.isDuplicate,
                 importanceScore: result.importanceScore,
-                message: result.isDuplicate ? 
-                    'Memory already exists, access updated' : 
+                message: result.isDuplicate ?
+                    'Memory already exists, access updated' :
                     'Memory stored with structured key',
                 metadata: {
                     responseTime: `${responseTime}ms`,
@@ -143,7 +143,7 @@ class HPKVMemoryEngine {
         } catch (error) {
             const responseTime = Date.now() - startTime;
             this.updateMetrics(responseTime);
-            
+
             return {
                 success: false,
                 error: error.message,
@@ -161,29 +161,29 @@ class HPKVMemoryEngine {
      */
     async searchMemory(params) {
         const startTime = Date.now();
-        
+
         try {
             const validated = RecallSchema.parse(params);
-            
+
             const searchOptions = {
                 limit: validated.limit,
                 project: validated.project,
                 session: validated.session,
                 minImportance: validated.minImportance
             };
-            
+
             const result = await this.database.searchMemories(
                 validated.agentId,
                 validated.query,
                 searchOptions
             );
-            
+
             // Generate AI-powered summary for non-empty results
             const summary = this.generateSearchSummary(result.memories, validated.query);
-            
+
             const responseTime = Date.now() - startTime;
             this.updateMetrics(responseTime);
-            
+
             return {
                 success: true,
                 memories: result.memories,
@@ -205,7 +205,7 @@ class HPKVMemoryEngine {
         } catch (error) {
             const responseTime = Date.now() - startTime;
             this.updateMetrics(responseTime);
-            
+
             return {
                 success: false,
                 error: error.message,
@@ -223,20 +223,20 @@ class HPKVMemoryEngine {
      */
     async searchKeys(params) {
         const startTime = Date.now();
-        
+
         try {
             const validated = SearchKeysSchema.parse(params);
-            
+
             const searchOptions = {
                 limit: validated.limit,
                 minScore: validated.minScore
             };
-            
+
             const result = await this.database.searchKeys(validated.query, searchOptions);
-            
+
             const responseTime = Date.now() - startTime;
             this.updateMetrics(responseTime);
-            
+
             return {
                 success: true,
                 keys: result.keys,
@@ -256,7 +256,7 @@ class HPKVMemoryEngine {
         } catch (error) {
             const responseTime = Date.now() - startTime;
             this.updateMetrics(responseTime);
-            
+
             return {
                 success: false,
                 error: error.message,
@@ -274,15 +274,15 @@ class HPKVMemoryEngine {
      */
     async getMemory(params) {
         const startTime = Date.now();
-        
+
         try {
             const validated = GetMemorySchema.parse(params);
-            
+
             const memory = await this.database.getMemory(validated.structuredKey);
-            
+
             const responseTime = Date.now() - startTime;
             this.updateMetrics(responseTime);
-            
+
             if (!memory) {
                 return {
                     success: false,
@@ -296,7 +296,7 @@ class HPKVMemoryEngine {
                     }
                 };
             }
-            
+
             return {
                 success: true,
                 memory: memory,
@@ -314,7 +314,7 @@ class HPKVMemoryEngine {
         } catch (error) {
             const responseTime = Date.now() - startTime;
             this.updateMetrics(responseTime);
-            
+
             return {
                 success: false,
                 error: error.message,
@@ -331,15 +331,15 @@ class HPKVMemoryEngine {
      */
     async forgetMemory(params) {
         const startTime = Date.now();
-        
+
         try {
             const validated = ForgetSchema.parse(params);
-            
+
             const result = await this.database.deleteMemory(validated.structuredKey);
-            
+
             const responseTime = Date.now() - startTime;
             this.updateMetrics(responseTime);
-            
+
             return {
                 success: result.success,
                 message: result.message,
@@ -356,7 +356,7 @@ class HPKVMemoryEngine {
         } catch (error) {
             const responseTime = Date.now() - startTime;
             this.updateMetrics(responseTime);
-            
+
             return {
                 success: false,
                 error: error.message,
@@ -373,18 +373,18 @@ class HPKVMemoryEngine {
      */
     async getContext(params) {
         const startTime = Date.now();
-        
+
         try {
             const validated = ContextSchema.parse(params);
-            
+
             const context = await this.database.getContext(
-                validated.agentId, 
+                validated.agentId,
                 validated.contextSize
             );
-            
+
             const responseTime = Date.now() - startTime;
             this.updateMetrics(responseTime);
-            
+
             return {
                 success: true,
                 context: context,
@@ -403,7 +403,7 @@ class HPKVMemoryEngine {
         } catch (error) {
             const responseTime = Date.now() - startTime;
             this.updateMetrics(responseTime);
-            
+
             return {
                 success: false,
                 error: error.message,
@@ -427,7 +427,7 @@ class HPKVMemoryEngine {
 
         const avgRelevance = memories.reduce((acc, m) => acc + m.relevanceScore, 0) / memories.length;
         const topRelevance = Math.max(...memories.map(m => m.relevanceScore));
-        
+
         return `Found ${memories.length} memories for "${query}". Top match: ${Math.round(topRelevance * 100)}% relevant. Average relevance: ${Math.round(avgRelevance * 100)}%.`;
     }
 
@@ -435,14 +435,14 @@ class HPKVMemoryEngine {
         if (totalFound === 0) {
             return `No memories found for "${query}". Use "memorai help" for assistance or try different search terms.`;
         }
-        
+
         return `Found ${totalFound} memories with semantic search and relevance ranking.`;
     }
 
     async getSystemCapabilities() {
         const stats = await this.database.getStatistics();
         const uptime = Date.now() - this.startupTime;
-        
+
         return {
             server: {
                 name: 'MemoraiMCP Server',
@@ -494,7 +494,7 @@ class HPKVMemoryEngine {
     async getPerformanceMetrics() {
         const stats = await this.database.getStatistics();
         const uptime = (Date.now() - this.startupTime) / 1000;
-        
+
         return {
             totalOperations: this.operationCount,
             averageResponseTime: `${Math.round(this.getAverageResponseTime())}ms`,
@@ -509,7 +509,7 @@ class HPKVMemoryEngine {
     updateMetrics(responseTime) {
         this.operationCount++;
         this.operationTimes.push(responseTime);
-        
+
         // Keep only last 100 operation times for rolling average
         if (this.operationTimes.length > 100) {
             this.operationTimes.shift();
@@ -551,7 +551,7 @@ class HPKVMCPServer {
         );
 
         this.setupToolHandlers();
-        
+
         // Graceful shutdown handling
         process.on('SIGINT', () => this.gracefulShutdown());
         process.on('SIGTERM', () => this.gracefulShutdown());
@@ -567,13 +567,13 @@ class HPKVMCPServer {
                     inputSchema: {
                         type: 'object',
                         properties: {
-                            agentId: { 
-                                type: 'string', 
-                                description: 'Agent identifier for memory isolation' 
+                            agentId: {
+                                type: 'string',
+                                description: 'Agent identifier for memory isolation'
                             },
-                            content: { 
-                                type: 'string', 
-                                description: 'Memory content to store' 
+                            content: {
+                                type: 'string',
+                                description: 'Memory content to store'
                             },
                             metadata: {
                                 type: 'object',
@@ -596,30 +596,30 @@ class HPKVMCPServer {
                     inputSchema: {
                         type: 'object',
                         properties: {
-                            agentId: { 
-                                type: 'string', 
-                                description: 'Agent identifier (use "all" for cross-agent search)' 
+                            agentId: {
+                                type: 'string',
+                                description: 'Agent identifier (use "all" for cross-agent search)'
                             },
-                            query: { 
-                                type: 'string', 
-                                description: 'Natural language search query' 
+                            query: {
+                                type: 'string',
+                                description: 'Natural language search query'
                             },
-                            limit: { 
-                                type: 'number', 
-                                description: 'Maximum results (1-100)', 
-                                minimum: 1, 
-                                maximum: 100 
+                            limit: {
+                                type: 'number',
+                                description: 'Maximum results (1-100)',
+                                minimum: 1,
+                                maximum: 100
                             },
-                            project: { 
-                                type: 'string', 
-                                description: 'Filter by project name' 
+                            project: {
+                                type: 'string',
+                                description: 'Filter by project name'
                             },
-                            session: { 
-                                type: 'string', 
-                                description: 'Filter by session name' 
+                            session: {
+                                type: 'string',
+                                description: 'Filter by session name'
                             },
-                            minImportance: { 
-                                type: 'number', 
+                            minImportance: {
+                                type: 'number',
                                 description: 'Minimum importance score (0.0-1.0)',
                                 minimum: 0,
                                 maximum: 1
@@ -634,18 +634,18 @@ class HPKVMCPServer {
                     inputSchema: {
                         type: 'object',
                         properties: {
-                            query: { 
-                                type: 'string', 
-                                description: 'Query for finding similar memory keys' 
+                            query: {
+                                type: 'string',
+                                description: 'Query for finding similar memory keys'
                             },
-                            limit: { 
-                                type: 'number', 
-                                description: 'Maximum keys to return (1-50)', 
-                                minimum: 1, 
-                                maximum: 50 
+                            limit: {
+                                type: 'number',
+                                description: 'Maximum keys to return (1-50)',
+                                minimum: 1,
+                                maximum: 50
                             },
-                            minScore: { 
-                                type: 'number', 
+                            minScore: {
+                                type: 'number',
                                 description: 'Minimum similarity score (0.0-1.0)',
                                 minimum: 0,
                                 maximum: 1
@@ -660,9 +660,9 @@ class HPKVMCPServer {
                     inputSchema: {
                         type: 'object',
                         properties: {
-                            structuredKey: { 
-                                type: 'string', 
-                                description: 'Exact structured key (project_date_session_sequence)' 
+                            structuredKey: {
+                                type: 'string',
+                                description: 'Exact structured key (project_date_session_sequence)'
                             }
                         },
                         required: ['structuredKey']
@@ -674,13 +674,13 @@ class HPKVMCPServer {
                     inputSchema: {
                         type: 'object',
                         properties: {
-                            agentId: { 
-                                type: 'string', 
-                                description: 'Agent identifier' 
+                            agentId: {
+                                type: 'string',
+                                description: 'Agent identifier'
                             },
-                            structuredKey: { 
-                                type: 'string', 
-                                description: 'Structured key of memory to delete' 
+                            structuredKey: {
+                                type: 'string',
+                                description: 'Structured key of memory to delete'
                             }
                         },
                         required: ['agentId', 'structuredKey']
@@ -692,12 +692,12 @@ class HPKVMCPServer {
                     inputSchema: {
                         type: 'object',
                         properties: {
-                            agentId: { 
-                                type: 'string', 
-                                description: 'Agent identifier' 
+                            agentId: {
+                                type: 'string',
+                                description: 'Agent identifier'
                             },
-                            contextSize: { 
-                                type: 'number', 
+                            contextSize: {
+                                type: 'number',
                                 description: 'Number of recent memories (1-20)',
                                 minimum: 1,
                                 maximum: 20
@@ -777,15 +777,15 @@ class HPKVMCPServer {
         try {
             // Initialize memory engine
             await this.memoryEngine.initialize();
-            
+
             // Connect to transport
             const transport = new StdioServerTransport();
             await this.server.connect(transport);
-            
+
             console.error('🚀 MemoraiMCP Server v7.0.0 - HPKV-Inspired Architecture');
             console.error('💡 Features: Structured keys, semantic search, vector similarity');
             console.error('📊 Ready for VS Code Copilot integration');
-            
+
         } catch (error) {
             console.error('❌ Failed to start MemoraiMCP Server:', error);
             process.exit(1);

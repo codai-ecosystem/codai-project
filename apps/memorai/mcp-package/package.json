@@ -1,7 +1,7 @@
 {
     "name": "@codai/memorai-mcp",
-    "version": "6.1.2",
-    "description": "WORLD-CLASS Enterprise MCP Server - Enhanced Recall Edition with system capability discovery, intelligent help, and comprehensive usage guidance",
+    "version": "7.1.2",
+    "description": "WORLD-CLASS Enterprise MCP Server - HPKV-Inspired Rewrite with Semantic Search, Vector Similarity, and Structured Memory Organization",
     "type": "module",
     "main": "dist/server.js",
     "bin": {
@@ -33,10 +33,12 @@
         "copilot",
         "performance",
         "world-class",
-        "greatest-of-all-time",
-        "sub-1ms",
+        "semantic-search",
+        "vector-similarity",
+        "sqlite",
+        "embeddings",
+        "hpkv-inspired",
         "production-ready",
-        "no-docker",
         "standalone",
         "latest"
     ],
@@ -49,8 +51,12 @@
     "homepage": "https://github.com/dragoscv/memorai-mcp#readme",
     "dependencies": {
         "@modelcontextprotocol/sdk": "^1.12.2",
+        "@xenova/transformers": "^2.17.1",
         "commander": "^12.0.0",
         "dotenv": "^16.4.5",
+        "openai": "^4.20.1",
+        "sql.js": "^1.10.3",
+        "uuid": "^9.0.1",
         "zod": "^3.22.4"
     },
     "engines": {

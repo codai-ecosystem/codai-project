@@ -8,11 +8,11 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "next dev -p 5013",
+    "dev": "next dev -p 4100",
     "build": "next build",
-    "start": "next start -p 5013",
+    "start": "next start -p 4100",
     "lint": "next lint",
-    "test": "pnpm --filter @codai/dexai-web test",
+    "test": "vitest",
     "type-check": "pnpm exec tsc --noEmit",
     "clean": "pnpm --filter @codai/dexai-web clean",
     "dev:mobile": "pnpm --filter mobile start",
@@ -20,7 +20,10 @@
     "setup:web": "pnpm --filter @codai/dexai-web install",
     "setup:mobile": "pnpm --filter mobile install",
     "clean:all": "pnpm -r clean && rimraf node_modules",
-    "install:all": "pnpm install"
+    "install:all": "pnpm install",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest watch"
   },
   "dependencies": {
     "@codai/logai-universal": "^2.0.0",

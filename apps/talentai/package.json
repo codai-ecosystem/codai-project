@@ -4,14 +4,16 @@
   "description": "AI talent management platform",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 5037",
+    "dev": "next dev -p 6600",
     "build": "next build",
-    "start": "next start -p 5037",
+    "start": "next start -p 6600",
     "lint": "next lint",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
-    "type-check": "pnpm exec tsc --noEmit"
+    "type-check": "pnpm exec tsc --noEmit",
+    "test:run": "vitest run",
+    "test:watch": "vitest watch"
   },
   "dependencies": {
     "@codai/api-keys": "workspace:*",
@@ -49,7 +51,8 @@
     "happy-dom": "^18.0.1",
     "@types/node": "^24.0.14",
     "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.6"
+    "@types/react-dom": "^19.1.6",
+    "typescript": "^5.8.3"
   },
   "keywords": [
     "next.js",

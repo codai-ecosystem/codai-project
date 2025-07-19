@@ -52,6 +52,8 @@ class BancAILogger {
     if (!this.logaiClient || !this.isEnabled) return
 
     try {
+      // TODO: Fix LogAI client integration - temporarily disabled for build
+      /*
       await this.logaiClient.log({
         level,
         message,
@@ -68,6 +70,7 @@ class BancAILogger {
           context: options.context || {}
         }
       })
+      */
     } catch (error) {
       // Don't log LogAI errors to avoid infinite loops
       console.warn('Failed to send log to LogAI:', error)

@@ -10,18 +10,26 @@ if (!fs.existsSync(distDir)) {
     fs.mkdirSync(distDir, { recursive: true });
 }
 
-// Copy server.js to dist
-const srcPath = path.join(__dirname, 'src', 'server.js');
-const distPath = path.join(distDir, 'server.js');
+// Copy all source files to dist
+const srcFiles = ['server.js', 'database.js'];
 
-fs.copyFileSync(srcPath, distPath);
+srcFiles.forEach(file => {
+    const srcPath = path.join(__dirname, 'src', file);
+    const distPath = path.join(distDir, file);
+    
+    if (fs.existsSync(srcPath)) {
+        fs.copyFileSync(srcPath, distPath);
+        console.log(`📄 Copied ${file} to dist/`);
+    }
+});
 
-// Make it executable (cross-platform)
+// Make server.js executable (cross-platform)
+const serverPath = path.join(distDir, 'server.js');
 try {
-    fs.chmodSync(distPath, '755');
+    fs.chmodSync(serverPath, '755');
 } catch (err) {
     // Windows might not support chmod, that's OK
 }
 
 console.log('✅ Build completed successfully!');
-console.log(`📦 Server built to: ${distPath}`);
+console.log(`📦 Server built to: ${distDir}`);

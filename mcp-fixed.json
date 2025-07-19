@@ -1,0 +1,77 @@
+{
+  "servers": {
+    "GlassMCP": {
+      "type": "http",
+      "url": "http://localhost:8001/sse",
+      "env": {
+        "GLASS_LOG_LEVEL": "info",
+        "GLASS_MAX_WINDOWS": "1000",
+        "GLASS_WINDOW_CACHE_TTL": "5000",
+        "NODE_ENV": "production"
+      }
+    },
+    "MemoraiMCP": {
+      "type": "http",
+      "url": "http://localhost:8002/sse",
+      "env": {
+        "MEMORAI_STORAGE_PATH": "C:\\Users\\vladu\\AppData\\Local\\Memorai\\memories",
+        "MEMORAI_VECTOR_DB_PATH": "C:\\Users\\vladu\\AppData\\Local\\Memorai\\vector_db",
+        "MEMORAI_CONFIG_PATH": "C:\\Users\\vladu\\AppData\\Local\\Memorai\\config",
+        "MEMORAI_METADATA_DB_PATH": "C:\\Users\\vladu\\AppData\\Local\\Memorai\\metadata_db",
+        "MEMORAI_MAX_MEMORIES": "10000",
+        "MEMORAI_PERSIST_ON_EXIT": "true",
+        "MEMORAI_EMBEDDING_MODEL": "text-embedding-3-small",
+        "MEMORAI_LOG_LEVEL": "info",
+        "NODE_ENV": "production"
+      }
+    },
+    "RomaiIntelligenceMCP": {
+      "type": "http",
+      "url": "http://localhost:8003/sse",
+      "env": {
+        "AZURE_OPENAI_API_KEY": "",
+        "AZURE_OPENAI_ENDPOINT": "https://aide-openai-dev.openai.azure.com/",
+        "AZURE_OPENAI_API_VERSION": "2024-12-01-preview",
+        "AZURE_OPENAI_DEPLOYMENT_NAME": "gpt-4o",
+        "ROMAI_LOG_LEVEL": "info",
+        "NODE_ENV": "production"
+      }
+    },
+    "PlaywrightMCP": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@executeautomation/playwright-mcp-server"
+      ]
+    },
+    "SimpleMemoryMCP": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ]
+    },
+    "Context7MCP": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ]
+    },
+    "SequentialThinkingMCP": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ]
+    },
+    "MicrosoftDocsMCP": {
+      "type": "http",
+      "url": "https://learn.microsoft.com/api/mcp"
+    }
+  }
+}

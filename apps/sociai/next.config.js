@@ -1,6 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  serverExternalPackages: ['systeminformation', 'osx-temperature-sensor'],
+  experimental: {
+    turbo: {
+      resolveAlias: {
+        canvas: './empty-module.js',
+      },
+    },
+  },
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+  swcMinify: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
   images: {
     remotePatterns: [
       {
@@ -9,27 +25,6 @@ const nextConfig = {
       },
     ],
   },
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        'osx-temperature-sensor': false,
-        'fs': false,
-        'net': false,
-        'tls': false,
-        'crypto': false,
-        'systeminformation': false
-      }
-    }
-    return config
-  },
-  typescript: {
-    ignoreBuildErrors: false,
-  },
-  eslint: {
-    ignoreDuringBuilds: false,
-  },
-  poweredByHeader: false,
 };
 
-module.exports = nextConfig;
+export default nextConfig;

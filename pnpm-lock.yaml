@@ -55,7 +55,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       glob:
         specifier: ^11.0.3
         version: 11.0.3
@@ -236,7 +236,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -333,7 +333,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -451,7 +451,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -569,7 +569,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -669,7 +669,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -760,7 +760,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -912,9 +912,15 @@ importers:
       nativewind:
         specifier: ^4.1.23
         version: 4.1.23(react-native-reanimated@3.18.0(@babel/core@7.28.0)(react-native@0.80.1(@babel/core@7.28.0)(@types/react@19.1.8)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.5.2(react-native@0.80.1(@babel/core@7.28.0)(@types/react@19.1.8)(react@19.1.0))(react@19.1.0))(react-native-svg@15.12.0(react-native@0.80.1(@babel/core@7.28.0)(@types/react@19.1.8)(react@19.1.0))(react@19.1.0))(react-native@0.80.1(@babel/core@7.28.0)(@types/react@19.1.8)(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@24.0.14)(typescript@5.8.3)))
+      next:
+        specifier: ^15.4.1
+        version: 15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react:
         specifier: ^19.1.0
         version: 19.1.0
+      react-dom:
+        specifier: ^19.1.0
+        version: 19.1.0(react@19.1.0)
       react-native:
         specifier: ^0.80.1
         version: 0.80.1(@babel/core@7.28.0)(@types/react@19.1.8)(react@19.1.0)
@@ -952,6 +958,9 @@ importers:
       '@types/react':
         specifier: ^19.1.8
         version: 19.1.8
+      '@types/react-dom':
+        specifier: ^19.1.6
+        version: 19.1.6(@types/react@19.1.8)
       '@types/react-test-renderer':
         specifier: ^19.1.0
         version: 19.1.0
@@ -997,9 +1006,6 @@ importers:
       '@codai/shared-ui':
         specifier: workspace:*
         version: link:../../packages/shared-ui
-      '@codai/translations':
-        specifier: workspace:*
-        version: link:../../packages/translations
       '@hookform/resolvers':
         specifier: ^5.1.1
         version: 5.1.1(react-hook-form@7.60.0(react@19.1.0))
@@ -1038,7 +1044,7 @@ importers:
         version: 15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       next-auth:
         specifier: ^4.24.11
-        version: 4.24.11(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 4.24.11(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -1232,9 +1238,15 @@ importers:
       nativewind:
         specifier: ^4.1.23
         version: 4.1.23(react-native-reanimated@3.18.0(@babel/core@7.28.0)(react-native@0.80.1(@babel/core@7.28.0)(@types/react@19.1.8)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.5.2(react-native@0.80.1(@babel/core@7.28.0)(@types/react@19.1.8)(react@19.1.0))(react@19.1.0))(react-native-svg@15.12.0(react-native@0.80.1(@babel/core@7.28.0)(@types/react@19.1.8)(react@19.1.0))(react@19.1.0))(react-native@0.80.1(@babel/core@7.28.0)(@types/react@19.1.8)(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@24.0.14)(typescript@5.8.3)))
+      next:
+        specifier: ^15.4.1
+        version: 15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react:
         specifier: ^19.1.0
         version: 19.1.0
+      react-dom:
+        specifier: ^19.1.0
+        version: 19.1.0(react@19.1.0)
       react-native:
         specifier: ^0.80.1
         version: 0.80.1(@babel/core@7.28.0)(@types/react@19.1.8)(react@19.1.0)
@@ -1266,6 +1278,9 @@ importers:
       '@types/react':
         specifier: ^19.1.8
         version: 19.1.8
+      '@types/react-dom':
+        specifier: ^19.1.6
+        version: 19.1.6(@types/react@19.1.8)
       '@types/react-test-renderer':
         specifier: ^19.1.0
         version: 19.1.0
@@ -1328,7 +1343,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -1455,7 +1470,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -1543,7 +1558,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       i18next:
         specifier: ^25.3.2
         version: 25.3.2(typescript@5.8.3)
@@ -1640,7 +1655,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -1752,7 +1767,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -1870,7 +1885,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -1979,7 +1994,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -2085,7 +2100,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -2203,7 +2218,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -2282,7 +2297,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -2388,7 +2403,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -2503,7 +2518,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -2618,7 +2633,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -2733,7 +2748,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -2905,7 +2920,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -3032,7 +3047,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       jsonwebtoken:
         specifier: ^9.0.2
         version: 9.0.2
@@ -3044,7 +3059,7 @@ importers:
         version: 15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       next-auth:
         specifier: ^4.24.11
-        version: 4.24.11(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 4.24.11(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react:
         specifier: ^19.1.0
         version: 19.1.0
@@ -3132,7 +3147,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -3194,12 +3209,6 @@ importers:
 
   apps/memorai:
     dependencies:
-      '@codai/shared-ui':
-        specifier: workspace:*
-        version: link:../../packages/shared-ui
-      '@codai/translations':
-        specifier: workspace:*
-        version: link:../../packages/translations
       '@prisma/client':
         specifier: ^6.12.0
         version: 6.12.0(prisma@6.12.0(typescript@5.8.3))(typescript@5.8.3)
@@ -3232,7 +3241,7 @@ importers:
         version: 7.1.0
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -3811,7 +3820,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -4044,7 +4053,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -4105,7 +4114,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -4172,7 +4181,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -4251,7 +4260,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       i18next:
         specifier: ^25.3.2
         version: 25.3.2(typescript@5.8.3)
@@ -4342,7 +4351,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -4418,7 +4427,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -4563,7 +4572,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -4590,7 +4599,7 @@ importers:
         version: 18.3.0(@types/node@24.0.14)
       styled-jsx:
         specifier: ^5.1.7
-        version: 5.1.7(@babel/core@7.28.0)(react@19.1.0)
+        version: 5.1.7(react@19.1.0)
       tailwind-merge:
         specifier: ^3.3.1
         version: 3.3.1
@@ -4675,7 +4684,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       i18next:
         specifier: ^25.3.2
         version: 25.3.2(typescript@5.8.3)
@@ -4808,7 +4817,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -4881,7 +4890,7 @@ importers:
         version: link:../../packages/translations
       '@next/font':
         specifier: ^14.2.15
-        version: 14.2.15(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 14.2.15(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -4890,7 +4899,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -4975,7 +4984,7 @@ importers:
         version: link:../../packages/translations
       '@next/font':
         specifier: ^14.2.15
-        version: 14.2.15(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 14.2.15(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       '@types/node':
         specifier: ^24.0.14
         version: 24.0.14
@@ -4993,7 +5002,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -5069,7 +5078,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -5157,7 +5166,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -5257,7 +5266,7 @@ importers:
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       geist:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+        version: 1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -23223,7 +23232,7 @@ snapshots:
     dependencies:
       fast-glob: 3.3.1
 
-  '@next/font@14.2.15(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))':
+  '@next/font@14.2.15(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))':
     dependencies:
       next: 15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
@@ -29648,7 +29657,7 @@ snapshots:
 
   fuse.js@7.1.0: {}
 
-  geist@1.4.2(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)):
+  geist@1.4.2(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)):
     dependencies:
       next: 15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
@@ -32004,7 +32013,7 @@ snapshots:
 
   nested-error-stacks@2.0.1: {}
 
-  next-auth@4.24.11(next@15.4.2(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  next-auth@4.24.11(next@15.4.2(@opentelemetry/api@1.9.0)(@playwright/test@1.54.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
       '@babel/runtime': 7.27.6
       '@panva/hkdf': 1.2.1
@@ -34193,12 +34202,10 @@ snapshots:
     optionalDependencies:
       '@babel/core': 7.28.0
 
-  styled-jsx@5.1.7(@babel/core@7.28.0)(react@19.1.0):
+  styled-jsx@5.1.7(react@19.1.0):
     dependencies:
       client-only: 0.0.1
       react: 19.1.0
-    optionalDependencies:
-      '@babel/core': 7.28.0
 
   sucrase@3.35.0:
     dependencies:

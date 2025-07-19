@@ -4,15 +4,16 @@
   "description": "AI social media management",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 5034",
+    "dev": "next dev -p 6200",
     "build": "next build",
-    "start": "next start -p 5034",
+    "start": "next start -p 6200",
     "lint": "next lint",
     "type-check": "pnpm exec tsc --noEmit",
     "test": "vitest",
-    "test:watch": "vitest --watch",
-    "test:coverage": "vitest --coverage",
-    "test:ui": "vitest --ui"
+    "test:watch": "vitest watch",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run"
   },
   "dependencies": {
     "@codai/api-keys": "workspace:*",
@@ -76,6 +77,7 @@
     "vitest": "^3.2.4",
     "@types/node": "^24.0.14",
     "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.6"
+    "@types/react-dom": "^19.1.6",
+    "typescript": "^5.8.3"
   }
 }

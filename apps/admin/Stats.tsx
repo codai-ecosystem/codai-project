@@ -16,7 +16,7 @@ function Stats({ title, content, onClick, onSubmit, data }: StatsProps) {
     const [activeTab, setActiveTab] = useState('overview')
     const [state, setState] = useState('initial')
     const [inputValue, setInputValue] = useState('')
-    const timeoutRef = useRef<NodeJS.Timeout>()
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
     useEffect(() => {
         return () => {
@@ -110,8 +110,8 @@ function Stats({ title, content, onClick, onSubmit, data }: StatsProps) {
                             onClick={() => setActiveTab(tab)}
                             aria-label={`Switch to ${tab} tab`}
                             className={`flex-1 py-3 px-4 rounded-xl text-sm font-medium transition-all duration-300 ${activeTab === tab
-                                    ? 'bg-green-500/30 text-green-300 shadow-lg'
-                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                ? 'bg-green-500/30 text-green-300 shadow-lg'
+                                : 'text-gray-400 hover:text-white hover:bg-white/5'
                                 }`}
                         >
                             {tab.charAt(0).toUpperCase() + tab.slice(1)}

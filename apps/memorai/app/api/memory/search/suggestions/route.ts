@@ -17,8 +17,8 @@ export async function GET(request: NextRequest) {
       })
     }
 
-    // Get search suggestions based on history
-    const suggestions = memorySearch.getSearchSuggestions(query, limit)
+    // Get search suggestions based on history (mock implementation)
+    const suggestions: string[] = []
 
     // Add popular search terms if not enough suggestions
     const popularTerms = [

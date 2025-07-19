@@ -4,9 +4,9 @@
   "description": "AI content publishing",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 5032",
+    "dev": "next dev -p 6000",
     "build": "next build",
-    "start": "next start -p 5032",
+    "start": "next start -p 6000",
     "lint": "next lint",
     "type-check": "pnpm exec tsc --noEmit",
     "test": "vitest",
@@ -28,7 +28,8 @@
     "vitest": "^3.2.4",
     "@types/node": "^24.0.14",
     "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.6"
+    "@types/react-dom": "^19.1.6",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
     "next": "^15.4.1",

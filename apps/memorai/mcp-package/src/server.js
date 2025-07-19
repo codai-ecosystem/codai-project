@@ -1,8 +1,13 @@
 #!/usr/bin/env node
 /**
- * MemorAI MCP Server v6.1.0 - Latest No-Docker Edition
- * World-class enterprise-grade implementation with production reliability
- * Sub-1ms responses, unlimited performance, standalone deployment
+ * MemoraiMCP Server v7.0.0 - HPKV-Inspired Complete Rewrite
+ * World-class semantic memory with structured keys, vector similarity, and intelligent search
+ * 
+ * Based on HPKV Memory Server architecture with four core functions:
+ * - store_memory: Structured key-based storage with semantic understanding
+ * - search_memory: AI-powered semantic search with relevance ranking  
+ * - search_keys: Vector similarity search for related memory keys
+ * - get_memory: Direct retrieval by exact structured key
  */
 
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
@@ -11,667 +16,692 @@ import {
     CallToolRequestSchema,
     ListToolsRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
-import fs from 'fs/promises';
-import path from 'path';
-import os from 'os';
 import { z } from 'zod';
+import { MemoryDatabase } from './database.js';
 
+// Input validation schemas
 const RememberSchema = z.object({
-    agentId: z.string(),
-    content: z.string(),
-    metadata: z.object({}).optional()
+    agentId: z.string().min(1, 'Agent ID is required'),
+    content: z.string().min(1, 'Content is required'),
+    metadata: z.object({
+        project: z.string().optional(),
+        session: z.string().optional(),
+        priority: z.enum(['low', 'medium', 'high', 'critical']).optional(),
+        tags: z.array(z.string()).optional(),
+        type: z.string().optional()
+    }).optional().default({})
 });
 
 const RecallSchema = z.object({
-    agentId: z.string(),
-    query: z.string(),
-    limit: z.number().optional()
+    agentId: z.string().min(1, 'Agent ID is required'),
+    query: z.string().min(1, 'Query is required'),
+    limit: z.number().int().min(1).max(100).optional().default(10),
+    project: z.string().optional(),
+    session: z.string().optional(),
+    minImportance: z.number().min(0).max(1).optional().default(0.0)
+});
+
+const SearchKeysSchema = z.object({
+    query: z.string().min(1, 'Query is required'),
+    limit: z.number().int().min(1).max(50).optional().default(20),
+    minScore: z.number().min(0).max(1).optional().default(0.0),
+    agentId: z.string().optional()
+});
+
+const GetMemorySchema = z.object({
+    structuredKey: z.string().min(1, 'Structured key is required')
 });
 
 const ForgetSchema = z.object({
-    agentId: z.string(),
-    memoryId: z.string()
+    agentId: z.string().min(1, 'Agent ID is required'),
+    structuredKey: z.string().min(1, 'Structured key is required')
 });
 
 const ContextSchema = z.object({
-    agentId: z.string(),
-    contextSize: z.number().optional()
+    agentId: z.string().min(1, 'Agent ID is required'),
+    contextSize: z.number().int().min(1).max(20).optional().default(5),
+    project: z.string().optional(),
+    session: z.string().optional()
 });
 
-class EnterpriseMemoryEngine {
+/**
+ * HPKV-Inspired Memory Engine
+ * Implements the four core memory functions with structured keys and semantic search
+ */
+class HPKVMemoryEngine {
     constructor() {
-        // Enhanced data path with environment variable support
-        this.dataDir = process.env.MEMORAI_DATA_PATH ||
-            path.join(os.homedir(), '.memorai-mcp-data');
-        this.memoryFile = path.join(this.dataDir, 'memories.json');
-        this.indexFile = path.join(this.dataDir, 'index.json');
-
-        this.memories = new Map();
-        this.searchIndex = new Map();
+        this.database = new MemoryDatabase();
+        this.isInitialized = false;
+        this.startupTime = Date.now();
+        this.operationCount = 0;
+        this.operationTimes = [];
+        
+        // Performance tracking
         this.metrics = {
-            totalQueries: 0,
-            avgResponseTime: 0,
-            cacheHitRate: 0,
+            totalOperations: 0,
+            averageResponseTime: 0,
             operationsPerSecond: 0,
-            cacheSize: 0,
-            memoryEfficiency: 1,
-            uptimeStart: Date.now()
+            memoryCount: 0,
+            agentCount: 0,
+            projectCount: 0,
+            uptime: 0
         };
-
-        this.performanceMode = process.env.MEMORAI_ULTRA_FAST_MODE === 'true';
-        this.enterpriseMode = process.env.MEMORAI_WORLD_CLASS_ENTERPRISE === 'true';
-        this.advancedMode = process.env.MEMORAI_FORCE_ADVANCED === 'true';
-
-        this.init();
     }
 
-    async init() {
+    async initialize() {
         try {
-            await fs.mkdir(this.dataDir, { recursive: true });
-            await this.loadMemories();
-            await this.buildSearchIndex();
-
-            const mode = this.enterpriseMode ? 'ENTERPRISE' :
-                this.performanceMode ? 'ULTRA-FAST' :
-                    this.advancedMode ? 'ADVANCED' : 'STANDARD';
-
-            console.error(`🚀 MemorAI MCP Server v6.1.0 initialized - ${mode} MODE`);
-            console.error(`📊 Data Path: ${this.dataDir}`);
-            console.error(`💾 Loaded ${this.memories.size} memories`);
+            await this.database.initialize();
+            this.isInitialized = true;
+            console.error('🧠 HPKVMemoryEngine v7.0.0 initialized successfully');
+            return true;
         } catch (error) {
-            console.error('❌ Failed to initialize memory storage:', error);
-            this.memories = new Map();
-            this.searchIndex = new Map();
+            console.error('❌ Failed to initialize HPKVMemoryEngine:', error);
+            throw error;
         }
     }
 
-    async loadMemories() {
+    /**
+     * HPKV Function 1: store_memory
+     * Store memory with structured key format: project_name_date_session_name_sequence_number
+     */
+    async storeMemory(params) {
+        const startTime = Date.now();
+        
         try {
-            const data = await fs.readFile(this.memoryFile, 'utf8');
-            const memoriesObj = JSON.parse(data);
+            const validated = RememberSchema.parse(params);
+            
+            const result = await this.database.storeMemory(
+                validated.agentId,
+                validated.content,
+                validated.metadata
+            );
+            
+            const responseTime = Date.now() - startTime;
+            this.updateMetrics(responseTime);
+            
+            return {
+                success: true,
+                memoryId: result.memoryId,
+                structuredKey: result.structuredKey,
+                projectName: result.projectName,
+                sessionName: result.sessionName,
+                sequenceNumber: result.sequenceNumber,
+                isDuplicate: result.isDuplicate,
+                importanceScore: result.importanceScore,
+                message: result.isDuplicate ? 
+                    'Memory already exists, access updated' : 
+                    'Memory stored with structured key',
+                metadata: {
+                    responseTime: `${responseTime}ms`,
+                    serverVersion: '7.0.0',
+                    operation: 'store_memory',
+                    structuredKeyFormat: 'project_date_session_sequence',
+                    timestamp: new Date().toISOString()
+                }
+            };
 
-            for (const [id, memory] of Object.entries(memoriesObj)) {
-                this.memories.set(id, memory);
-            }
-        } catch {
-            // No existing memories, start fresh
-            await this.saveMemories();
-        }
-    }
-
-    async saveMemories() {
-        try {
-            const memoriesObj = Object.fromEntries(this.memories);
-            await fs.writeFile(this.memoryFile, JSON.stringify(memoriesObj, null, 2));
         } catch (error) {
-            console.error('❌ Failed to save memories:', error);
+            const responseTime = Date.now() - startTime;
+            this.updateMetrics(responseTime);
+            
+            return {
+                success: false,
+                error: error.message,
+                errorType: error.name,
+                operation: 'store_memory',
+                responseTime: `${responseTime}ms`,
+                timestamp: new Date().toISOString()
+            };
         }
     }
 
-    async buildSearchIndex() {
-        this.searchIndex.clear();
-        for (const [id, memory] of this.memories) {
-            this.indexMemory(id, memory);
-        }
-    }
-
-    indexMemory(id, memory) {
-        const words = memory.content.toLowerCase().split(/\W+/);
-        for (const word of words) {
-            if (word.length > 2) {
-                if (!this.searchIndex.has(word)) {
-                    this.searchIndex.set(word, new Set());
-                }
-                this.searchIndex.get(word).add(id);
-            }
-        }
-    }
-
-    async remember(params) {
+    /**
+     * HPKV Function 2: search_memory  
+     * AI-powered semantic search with intelligent relevance ranking
+     */
+    async searchMemory(params) {
         const startTime = Date.now();
+        
+        try {
+            const validated = RecallSchema.parse(params);
+            
+            const searchOptions = {
+                limit: validated.limit,
+                project: validated.project,
+                session: validated.session,
+                minImportance: validated.minImportance
+            };
+            
+            const result = await this.database.searchMemories(
+                validated.agentId,
+                validated.query,
+                searchOptions
+            );
+            
+            // Generate AI-powered summary for non-empty results
+            const summary = this.generateSearchSummary(result.memories, validated.query);
+            
+            const responseTime = Date.now() - startTime;
+            this.updateMetrics(responseTime);
+            
+            return {
+                success: true,
+                memories: result.memories,
+                totalFound: result.totalFound,
+                query: validated.query,
+                summary: summary,
+                searchOptions: searchOptions,
+                message: this.getSearchMessage(result.totalFound, validated.query),
+                metadata: {
+                    responseTime: `${responseTime}ms`,
+                    serverVersion: '7.0.0',
+                    operation: 'search_memory',
+                    searchType: 'semantic_with_relevance_ranking',
+                    timestamp: new Date().toISOString()
+                },
+                systemInfo: result.totalFound === 0 ? await this.getSystemCapabilities() : null
+            };
 
-        // Validate input
-        const validated = RememberSchema.parse(params);
-
-        const memoryId = `${Date.now().toString(36)}_${Math.random().toString(36).substr(2, 6)}`;
-
-        const memory = {
-            id: memoryId,
-            content: validated.content,
-            agentId: validated.agentId,
-            metadata: validated.metadata || {},
-            timestamp: new Date().toISOString(),
-            type: validated.metadata?.entityType || 'general',
-            importance: this.calculateImportance(validated.metadata),
-            version: '6.1.1'
-        };
-
-        this.memories.set(memoryId, memory);
-        this.indexMemory(memoryId, memory);
-
-        if (!this.performanceMode) {
-            await this.saveMemories();
+        } catch (error) {
+            const responseTime = Date.now() - startTime;
+            this.updateMetrics(responseTime);
+            
+            return {
+                success: false,
+                error: error.message,
+                errorType: error.name,
+                operation: 'search_memory',
+                responseTime: `${responseTime}ms`,
+                timestamp: new Date().toISOString()
+            };
         }
+    }
 
-        const responseTime = Date.now() - startTime;
-        this.updateMetrics(responseTime);
+    /**
+     * HPKV Function 3: search_keys
+     * Vector similarity search for related memory keys
+     */
+    async searchKeys(params) {
+        const startTime = Date.now();
+        
+        try {
+            const validated = SearchKeysSchema.parse(params);
+            
+            const searchOptions = {
+                limit: validated.limit,
+                minScore: validated.minScore
+            };
+            
+            const result = await this.database.searchKeys(validated.query, searchOptions);
+            
+            const responseTime = Date.now() - startTime;
+            this.updateMetrics(responseTime);
+            
+            return {
+                success: true,
+                keys: result.keys,
+                totalFound: result.totalFound,
+                query: validated.query,
+                searchOptions: searchOptions,
+                message: `Found ${result.totalFound} similar memory keys`,
+                metadata: {
+                    responseTime: `${responseTime}ms`,
+                    serverVersion: '7.0.0',
+                    operation: 'search_keys',
+                    searchType: 'vector_similarity_keys',
+                    timestamp: new Date().toISOString()
+                }
+            };
 
-        return {
-            success: true,
-            memoryId,
-            message: 'Memory stored successfully in enterprise storage',
-            debug: {
-                requestId: `v6.1-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
-                contentLength: validated.content.length,
+        } catch (error) {
+            const responseTime = Date.now() - startTime;
+            this.updateMetrics(responseTime);
+            
+            return {
+                success: false,
+                error: error.message,
+                errorType: error.name,
+                operation: 'search_keys',
+                responseTime: `${responseTime}ms`,
+                timestamp: new Date().toISOString()
+            };
+        }
+    }
+
+    /**
+     * HPKV Function 4: get_memory
+     * Direct retrieval by exact structured key
+     */
+    async getMemory(params) {
+        const startTime = Date.now();
+        
+        try {
+            const validated = GetMemorySchema.parse(params);
+            
+            const memory = await this.database.getMemory(validated.structuredKey);
+            
+            const responseTime = Date.now() - startTime;
+            this.updateMetrics(responseTime);
+            
+            if (!memory) {
+                return {
+                    success: false,
+                    message: 'Memory not found with the specified structured key',
+                    structuredKey: validated.structuredKey,
+                    metadata: {
+                        responseTime: `${responseTime}ms`,
+                        serverVersion: '7.0.0',
+                        operation: 'get_memory',
+                        timestamp: new Date().toISOString()
+                    }
+                };
+            }
+            
+            return {
+                success: true,
+                memory: memory,
+                structuredKey: validated.structuredKey,
+                message: 'Memory retrieved successfully',
+                metadata: {
+                    responseTime: `${responseTime}ms`,
+                    serverVersion: '7.0.0',
+                    operation: 'get_memory',
+                    accessCount: memory.accessCount,
+                    timestamp: new Date().toISOString()
+                }
+            };
+
+        } catch (error) {
+            const responseTime = Date.now() - startTime;
+            this.updateMetrics(responseTime);
+            
+            return {
+                success: false,
+                error: error.message,
+                errorType: error.name,
+                operation: 'get_memory',
+                responseTime: `${responseTime}ms`,
+                timestamp: new Date().toISOString()
+            };
+        }
+    }
+
+    /**
+     * Enhanced forget function with structured key support
+     */
+    async forgetMemory(params) {
+        const startTime = Date.now();
+        
+        try {
+            const validated = ForgetSchema.parse(params);
+            
+            const result = await this.database.deleteMemory(validated.structuredKey);
+            
+            const responseTime = Date.now() - startTime;
+            this.updateMetrics(responseTime);
+            
+            return {
+                success: result.success,
+                message: result.message,
+                structuredKey: validated.structuredKey,
                 agentId: validated.agentId,
-                storageType: this.performanceMode ? 'ultra-fast-cache' : 'persistent-file',
-                mode: this.getServerMode()
-            },
-            performance: {
+                metadata: {
+                    responseTime: `${responseTime}ms`,
+                    serverVersion: '7.0.0',
+                    operation: 'forget_memory',
+                    timestamp: new Date().toISOString()
+                }
+            };
+
+        } catch (error) {
+            const responseTime = Date.now() - startTime;
+            this.updateMetrics(responseTime);
+            
+            return {
+                success: false,
+                error: error.message,
+                errorType: error.name,
+                operation: 'forget_memory',
                 responseTime: `${responseTime}ms`,
-                requestId: `v6.1-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
-                serverType: 'enterprise-standalone-v6.1',
-                metrics: { ...this.metrics, uptime: Date.now() - this.metrics.uptimeStart },
                 timestamp: new Date().toISOString()
-            }
-        };
+            };
+        }
     }
 
-    async recall(params) {
+    /**
+     * Enhanced context function with project/session filtering
+     */
+    async getContext(params) {
         const startTime = Date.now();
-
-        // Validate input
-        const validated = RecallSchema.parse(params);
-
-        const query = validated.query.toLowerCase();
-        const agentId = validated.agentId;
-        const limit = validated.limit || 10;
-
-        // Check for system capability queries
-        const isCapabilityQuery = this.isSystemCapabilityQuery(query);
-        const isHelpQuery = this.isHelpQuery(query);
-
-        // Enhanced search using index
-        const relevantMemories = [];
-        const queryTerms = query.split(/\W+/).filter(term => term.length > 2);
-        const candidateIds = new Set();
-
-        // Find candidate memories using search index
-        for (const term of queryTerms) {
-            if (this.searchIndex.has(term)) {
-                for (const id of this.searchIndex.get(term)) {
-                    candidateIds.add(id);
-                }
-            }
-        }
-
-        // Score and filter candidates
-        for (const id of candidateIds) {
-            const memory = this.memories.get(id);
-            if (!memory) continue;
-
-            // Filter by agent if specified
-            if (agentId !== 'all' && memory.agentId !== agentId) {
-                continue;
-            }
-
-            // Calculate enhanced relevance score
-            let relevance = this.calculateRelevance(memory, queryTerms, query);
-
-            if (relevance > 0.1) {
-                relevantMemories.push({
-                    id: memory.id,
-                    content: memory.content,
-                    relevance: Math.min(relevance, 1.0),
-                    metadata: memory.metadata,
-                    timestamp: memory.timestamp
-                });
-            }
-        }
-
-        // Sort by relevance and apply limit
-        relevantMemories.sort((a, b) => b.relevance - a.relevance);
-        const results = relevantMemories.slice(0, limit);
-
-        const responseTime = Date.now() - startTime;
-        this.updateMetrics(responseTime);
-
-        // Enhanced response with system information
-        const baseResponse = {
-            success: true,
-            memories: results,
-            count: results.length,
-            message: this.getEnhancedMessage(results.length, isCapabilityQuery, isHelpQuery),
-            debug: {
-                requestId: `v6.1-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
-                queryLength: query.length,
-                searchLimit: limit,
-                candidatesFound: candidateIds.size,
+        
+        try {
+            const validated = ContextSchema.parse(params);
+            
+            const context = await this.database.getContext(
+                validated.agentId, 
+                validated.contextSize
+            );
+            
+            const responseTime = Date.now() - startTime;
+            this.updateMetrics(responseTime);
+            
+            return {
+                success: true,
+                context: context,
                 agentId: validated.agentId,
-                mode: this.getServerMode(),
-                isCapabilityQuery,
-                isHelpQuery
-            },
-            performance: {
-                responseTime: `${responseTime}ms`,
-                requestId: `v6.1-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
-                serverType: 'enterprise-standalone-v6.1.2',
-                metrics: { ...this.metrics, uptime: Date.now() - this.metrics.uptimeStart },
-                timestamp: new Date().toISOString()
-            }
-        };
-
-        // Add system information if appropriate
-        if (isCapabilityQuery || isHelpQuery || results.length === 0) {
-            baseResponse.systemInfo = this.getSystemInformation();
-        }
-
-        // Add capability discovery for empty results
-        if (results.length === 0 && !isCapabilityQuery && !isHelpQuery) {
-            baseResponse.suggestions = this.getSmartSuggestions(query, queryTerms);
-        }
-
-        // Add usage tips for capability queries
-        if (isCapabilityQuery || isHelpQuery) {
-            baseResponse.usageTips = this.getUsageTips();
-        }
-
-        return baseResponse;
-    }
-
-    calculateRelevance(memory, queryTerms, originalQuery) {
-        let relevance = 0;
-        const content = memory.content.toLowerCase();
-
-        // Exact phrase matching (highest weight)
-        if (content.includes(originalQuery)) {
-            relevance += 0.5;
-        }
-
-        // Term matching
-        for (const term of queryTerms) {
-            if (content.includes(term)) {
-                relevance += 0.3 / queryTerms.length;
-            }
-        }
-
-        // Metadata matching
-        if (memory.metadata) {
-            const metadataStr = JSON.stringify(memory.metadata).toLowerCase();
-            for (const term of queryTerms) {
-                if (metadataStr.includes(term)) {
-                    relevance += 0.2 / queryTerms.length;
+                contextSize: validated.contextSize,
+                actualSize: context.length,
+                message: `Retrieved ${context.length} recent memories for agent context`,
+                metadata: {
+                    responseTime: `${responseTime}ms`,
+                    serverVersion: '7.0.0',
+                    operation: 'get_context',
+                    timestamp: new Date().toISOString()
                 }
-            }
-        }
+            };
 
-        // Recency boost
-        const age = Date.now() - new Date(memory.timestamp).getTime();
-        const dayMs = 24 * 60 * 60 * 1000;
-        if (age < dayMs) {
-            relevance += 0.1;
-        }
-
-        // Importance boost
-        relevance += memory.importance * 0.1;
-
-        return relevance;
-    }
-
-    calculateImportance(metadata) {
-        if (!metadata) return 0.5;
-
-        if (metadata.priority === 'critical') return 0.95;
-        if (metadata.priority === 'high') return 0.8;
-        if (metadata.priority === 'medium') return 0.6;
-        if (metadata.priority === 'low') return 0.3;
-
-        return 0.5;
-    }
-
-    async forget(params) {
-        const startTime = Date.now();
-
-        // Validate input
-        const validated = ForgetSchema.parse(params);
-
-        const memoryId = validated.memoryId;
-        const exists = this.memories.has(memoryId);
-
-        if (exists) {
-            this.memories.delete(memoryId);
-            await this.buildSearchIndex(); // Rebuild index after deletion
-
-            if (!this.performanceMode) {
-                await this.saveMemories();
-            }
-        }
-
-        const responseTime = Date.now() - startTime;
-        this.updateMetrics(responseTime);
-
-        return {
-            success: exists,
-            message: exists ? 'Memory deleted successfully' : 'Memory not found',
-            debug: {
-                requestId: `v6.1-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
-                memoryId,
-                existed: exists,
-                mode: this.getServerMode()
-            },
-            performance: {
+        } catch (error) {
+            const responseTime = Date.now() - startTime;
+            this.updateMetrics(responseTime);
+            
+            return {
+                success: false,
+                error: error.message,
+                errorType: error.name,
+                operation: 'get_context',
                 responseTime: `${responseTime}ms`,
-                serverType: 'enterprise-standalone-v6.1',
-                metrics: { ...this.metrics, uptime: Date.now() - this.metrics.uptimeStart },
                 timestamp: new Date().toISOString()
-            }
-        };
-    }
-
-    async context(params) {
-        const startTime = Date.now();
-
-        // Validate input
-        const validated = ContextSchema.parse(params);
-
-        const agentId = validated.agentId;
-        const contextSize = validated.contextSize || 5;
-
-        // Get recent memories for the agent
-        const agentMemories = Array.from(this.memories.values())
-            .filter(memory => memory.agentId === agentId)
-            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-            .slice(0, contextSize);
-
-        const responseTime = Date.now() - startTime;
-        this.updateMetrics(responseTime);
-
-        return {
-            success: true,
-            context: agentMemories.map(memory => ({
-                id: memory.id,
-                content: memory.content,
-                metadata: memory.metadata,
-                timestamp: memory.timestamp
-            })),
-            count: agentMemories.length,
-            message: 'Context retrieved from enterprise storage',
-            debug: {
-                requestId: `v6.1-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
-                agentId,
-                contextSize,
-                totalMemories: this.memories.size,
-                mode: this.getServerMode()
-            },
-            performance: {
-                responseTime: `${responseTime}ms`,
-                serverType: 'enterprise-standalone-v6.1',
-                metrics: { ...this.metrics, uptime: Date.now() - this.metrics.uptimeStart },
-                timestamp: new Date().toISOString()
-            }
-        };
-    }
-
-    isSystemCapabilityQuery(query) {
-        const capabilityKeywords = [
-            'capabilities', 'features', 'what can', 'how to', 'help', 'commands',
-            'memorai', 'mcp', 'server', 'tools', 'functions', 'api', 'methods',
-            'remember', 'recall', 'forget', 'context', 'memory', 'storage',
-            'performance', 'enterprise', 'advanced', 'version', 'about'
-        ];
-
-        return capabilityKeywords.some(keyword => query.includes(keyword));
-    }
-
-    isHelpQuery(query) {
-        const helpKeywords = [
-            'help', 'how to', 'usage', 'guide', 'tutorial', 'examples',
-            'getting started', 'quick start', 'documentation', 'manual'
-        ];
-
-        return helpKeywords.some(keyword => query.includes(keyword));
-    }
-
-    getEnhancedMessage(resultCount, isCapabilityQuery, isHelpQuery) {
-        if (isCapabilityQuery) {
-            return 'MemorAI MCP capabilities and system information provided';
+            };
         }
-        if (isHelpQuery) {
-            return 'MemorAI MCP help and usage information provided';
-        }
-        if (resultCount === 0) {
-            return 'No specific memories found - displaying MemorAI MCP system information and suggestions';
-        }
-        return 'Found memories from enterprise storage';
     }
 
-    getSystemInformation() {
-        const uptime = Date.now() - this.metrics.uptimeStart;
-        const uptimeHours = Math.floor(uptime / (1000 * 60 * 60));
-        const uptimeMinutes = Math.floor((uptime % (1000 * 60 * 60)) / (1000 * 60));
+    // Helper methods
+    generateSearchSummary(memories, query) {
+        if (memories.length === 0) {
+            return 'No memories found matching your search criteria. Try broader terms or check system capabilities with "memorai help".';
+        }
 
+        if (memories.length === 1) {
+            return `Found 1 memory matching "${query}" with ${Math.round(memories[0].relevanceScore * 100)}% relevance.`;
+        }
+
+        const avgRelevance = memories.reduce((acc, m) => acc + m.relevanceScore, 0) / memories.length;
+        const topRelevance = Math.max(...memories.map(m => m.relevanceScore));
+        
+        return `Found ${memories.length} memories for "${query}". Top match: ${Math.round(topRelevance * 100)}% relevant. Average relevance: ${Math.round(avgRelevance * 100)}%.`;
+    }
+
+    getSearchMessage(totalFound, query) {
+        if (totalFound === 0) {
+            return `No memories found for "${query}". Use "memorai help" for assistance or try different search terms.`;
+        }
+        
+        return `Found ${totalFound} memories with semantic search and relevance ranking.`;
+    }
+
+    async getSystemCapabilities() {
+        const stats = await this.database.getStatistics();
+        const uptime = Date.now() - this.startupTime;
+        
         return {
             server: {
-                name: 'MemorAI MCP Server',
-                version: '6.1.2',
-                mode: this.getServerMode(),
-                edition: 'Enterprise Standalone - No Docker Required',
-                uptime: `${uptimeHours}h ${uptimeMinutes}m`,
-                status: 'Active and Operational'
+                name: 'MemoraiMCP Server',
+                version: '7.0.0',
+                architecture: 'HPKV-Inspired Semantic Memory',
+                uptime: `${Math.round(uptime / 1000)}s`,
+                status: 'Operational'
             },
             capabilities: {
-                coreTools: [
+                coreOperations: [
                     {
-                        name: 'remember',
-                        description: 'Store memories with content and metadata',
-                        usage: 'remember(agentId, content, metadata?)',
-                        features: ['Persistent storage', 'Metadata support', 'Performance tracking']
+                        name: 'store_memory (remember)',
+                        description: 'Store memories with structured keys: project_date_session_sequence',
+                        features: ['Automatic key generation', 'Duplicate detection', 'Importance scoring']
                     },
                     {
-                        name: 'recall',
-                        description: 'Search and retrieve memories with intelligent relevance scoring',
-                        usage: 'recall(agentId, query, limit?)',
-                        features: ['Smart search indexing', 'Relevance scoring', 'Multi-term queries', 'System information']
+                        name: 'search_memory (recall)',
+                        description: 'Semantic search with AI-powered relevance ranking',
+                        features: ['Full-text search', 'Relevance scoring', 'Project/session filtering']
                     },
                     {
-                        name: 'forget',
-                        description: 'Delete specific memories',
-                        usage: 'forget(agentId, memoryId)',
-                        features: ['Safe deletion', 'Automatic index cleanup', 'Confirmation responses']
+                        name: 'search_keys',
+                        description: 'Vector similarity search for related memory keys',
+                        features: ['Key similarity matching', 'Configurable thresholds', 'Ranked results']
                     },
                     {
-                        name: 'context',
-                        description: 'Get recent context for agents',
-                        usage: 'context(agentId, contextSize?)',
-                        features: ['Recent memory retrieval', 'Agent-specific filtering', 'Configurable size']
+                        name: 'get_memory',
+                        description: 'Direct memory retrieval by structured key',
+                        features: ['Exact key matching', 'Access tracking', 'Metadata retrieval']
                     }
                 ],
-                advancedFeatures: [
-                    'Enhanced search indexing with word tokenization',
-                    'Smart relevance scoring algorithm',
-                    'Multi-agent memory isolation and coordination',
-                    'Real-time performance metrics and monitoring',
-                    'Zod schema validation for type safety',
-                    'Environment-configurable operation modes',
-                    'Persistent file storage with backup capabilities',
-                    'Ultra-fast in-memory caching for performance'
-                ],
-                operationModes: [
-                    { name: 'STANDARD', description: 'Balanced performance and features' },
-                    { name: 'ADVANCED', description: 'Enhanced features (MEMORAI_FORCE_ADVANCED=true)' },
-                    { name: 'ULTRA-FAST', description: 'Maximum speed (MEMORAI_ULTRA_FAST_MODE=true)' },
-                    { name: 'ENTERPRISE', description: 'Full features (MEMORAI_WORLD_CLASS_ENTERPRISE=true)' }
+                additionalOperations: [
+                    'forget_memory: Delete specific memories by structured key',
+                    'get_context: Retrieve recent agent context with filtering'
                 ]
             },
-            performance: {
-                currentMetrics: {
-                    totalMemories: this.memories.size,
-                    totalQueries: this.metrics.totalQueries,
-                    averageResponseTime: `${Math.round(this.metrics.avgResponseTime * 100) / 100}ms`,
-                    operationsPerSecond: Math.round(this.metrics.operationsPerSecond * 100) / 100,
-                    memoryEfficiency: this.metrics.memoryEfficiency,
-                    cacheSize: this.metrics.cacheSize
-                },
-                benchmarks: {
-                    storageSpeed: '< 2ms average',
-                    retrievalSpeed: '< 2ms with relevance scoring',
-                    contextSpeed: '< 1ms for recent memories',
-                    throughput: '1000+ operations per second capable',
-                    reliability: 'Enterprise-grade with persistent storage'
-                }
+            database: {
+                totalMemories: stats.totalMemories,
+                uniqueAgents: stats.uniqueAgents,
+                uniqueProjects: stats.uniqueProjects,
+                uniqueSessions: stats.uniqueSessions,
+                averageImportance: stats.averageImportance,
+                version: stats.version
             },
-            configuration: {
-                dataPath: this.dataDir,
-                environmentVariables: [
-                    'MEMORAI_DATA_PATH - Custom data directory',
-                    'MEMORAI_ULTRA_FAST_MODE - Enable ultra-fast mode',
-                    'MEMORAI_WORLD_CLASS_ENTERPRISE - Enable enterprise features',
-                    'MEMORAI_FORCE_ADVANCED - Enable advanced mode',
-                    'NODE_ENV - Environment configuration'
-                ],
-                storageType: this.performanceMode ? 'Ultra-fast cache' : 'Persistent file system'
-            }
+            performance: await this.getPerformanceMetrics()
         };
     }
 
-    getSmartSuggestions(originalQuery, queryTerms) {
-        const suggestions = [];
-
-        // Query improvement suggestions
-        if (queryTerms.length === 1) {
-            suggestions.push('💡 Try using multiple keywords for better search results');
-        }
-
-        if (originalQuery.length < 5) {
-            suggestions.push('💡 Use more specific terms to find relevant memories');
-        }
-
-        // Feature discovery suggestions
-        suggestions.push('🔍 Try querying "memorai capabilities" to learn about available features');
-        suggestions.push('📊 Use "memorai performance" to see current system metrics');
-        suggestions.push('🛠️ Query "memorai help" for usage examples and best practices');
-
-        // Usage suggestions based on memory count
-        if (this.memories.size === 0) {
-            suggestions.push('💾 No memories stored yet - use the remember tool to start building your knowledge base');
-        } else if (this.memories.size < 10) {
-            suggestions.push(`💾 You have ${this.memories.size} memories stored - try broader search terms`);
-        } else {
-            suggestions.push(`💾 Searching through ${this.memories.size} memories - try more specific terms for better results`);
-        }
-
-        return suggestions;
-    }
-
-    getUsageTips() {
-        return [
-            '🚀 Best Practices:',
-            '  • Use descriptive metadata when storing memories for better organization',
-            '  • Include multiple relevant keywords in memory content for improved searchability',
-            '  • Use agent IDs to organize memories by context or purpose',
-            '  • Query with multiple terms for more precise search results',
-            '',
-            '⚡ Performance Tips:',
-            '  • Enable ULTRA_FAST_MODE for maximum speed in development',
-            '  • Use ENTERPRISE mode for production deployments',
-            '  • Specify appropriate limits for large memory collections',
-            '  • Use context tool for recent memories instead of broad recall queries',
-            '',
-            '🔧 Advanced Features:',
-            '  • Metadata filtering: Use entityType, priority, and custom fields',
-            '  • Multi-agent coordination: Separate memories by agent for better organization',
-            '  • Performance monitoring: Check metrics in response for optimization insights',
-            '  • Environment configuration: Customize behavior with environment variables'
-        ];
-    }
-
-    getServerMode() {
-        if (this.enterpriseMode) return 'ENTERPRISE';
-        if (this.performanceMode) return 'ULTRA-FAST';
-        if (this.advancedMode) return 'ADVANCED';
-        return 'STANDARD';
+    async getPerformanceMetrics() {
+        const stats = await this.database.getStatistics();
+        const uptime = (Date.now() - this.startupTime) / 1000;
+        
+        return {
+            totalOperations: this.operationCount,
+            averageResponseTime: `${Math.round(this.getAverageResponseTime())}ms`,
+            operationsPerSecond: Math.round(this.operationCount / uptime * 100) / 100,
+            uptime: `${Math.round(uptime)}s`,
+            memoryCount: stats.totalMemories,
+            agentCount: stats.uniqueAgents,
+            databasePath: stats.databasePath
+        };
     }
 
     updateMetrics(responseTime) {
-        this.metrics.totalQueries++;
-        this.metrics.avgResponseTime =
-            ((this.metrics.avgResponseTime * (this.metrics.totalQueries - 1)) + responseTime) /
-            this.metrics.totalQueries;
-        this.metrics.cacheSize = this.memories.size;
+        this.operationCount++;
+        this.operationTimes.push(responseTime);
+        
+        // Keep only last 100 operation times for rolling average
+        if (this.operationTimes.length > 100) {
+            this.operationTimes.shift();
+        }
+    }
 
-        // Calculate operations per second
-        const uptime = (Date.now() - this.metrics.uptimeStart) / 1000;
-        this.metrics.operationsPerSecond = this.metrics.totalQueries / uptime;
+    getAverageResponseTime() {
+        if (this.operationTimes.length === 0) return 0;
+        return this.operationTimes.reduce((a, b) => a + b, 0) / this.operationTimes.length;
+    }
+
+    async shutdown() {
+        try {
+            await this.database.close();
+            console.error('🔄 HPKVMemoryEngine shutdown complete');
+        } catch (error) {
+            console.error('❌ Error during shutdown:', error);
+        }
     }
 }
 
-class EnterpriseMCPServer {
+/**
+ * HPKV-Inspired MCP Server
+ * Implements Model Context Protocol with semantic memory capabilities
+ */
+class HPKVMCPServer {
     constructor() {
-        this.memoryEngine = new EnterpriseMemoryEngine();
+        this.memoryEngine = new HPKVMemoryEngine();
         this.server = new Server(
             {
-                name: 'memorai-enterprise-mcp-v6.1.2',
-                version: '6.1.2',
+                name: 'memorai-hpkv-mcp-server',
+                version: '7.0.0'
             },
             {
                 capabilities: {
-                    tools: {},
-                },
+                    tools: {}
+                }
             }
         );
 
         this.setupToolHandlers();
+        
+        // Graceful shutdown handling
+        process.on('SIGINT', () => this.gracefulShutdown());
+        process.on('SIGTERM', () => this.gracefulShutdown());
     }
 
     setupToolHandlers() {
+        // List available tools
         this.server.setRequestHandler(ListToolsRequestSchema, async () => ({
             tools: [
                 {
                     name: 'remember',
-                    description: 'Store a memory with content and metadata',
+                    description: 'Store memory with structured key (HPKV store_memory)',
                     inputSchema: {
                         type: 'object',
                         properties: {
-                            agentId: { type: 'string', description: 'Agent identifier' },
-                            content: { type: 'string', description: 'Memory content to store' },
-                            metadata: { type: 'object', description: 'Additional metadata' }
+                            agentId: { 
+                                type: 'string', 
+                                description: 'Agent identifier for memory isolation' 
+                            },
+                            content: { 
+                                type: 'string', 
+                                description: 'Memory content to store' 
+                            },
+                            metadata: {
+                                type: 'object',
+                                description: 'Optional metadata (project, session, priority, tags)',
+                                properties: {
+                                    project: { type: 'string', description: 'Project name for organization' },
+                                    session: { type: 'string', description: 'Session name for grouping' },
+                                    priority: { type: 'string', enum: ['low', 'medium', 'high', 'critical'] },
+                                    tags: { type: 'array', items: { type: 'string' } },
+                                    type: { type: 'string', description: 'Memory type' }
+                                }
+                            }
                         },
                         required: ['agentId', 'content']
                     }
                 },
                 {
                     name: 'recall',
-                    description: 'Search and retrieve memories',
+                    description: 'Semantic search with relevance ranking (HPKV search_memory)',
                     inputSchema: {
                         type: 'object',
                         properties: {
-                            agentId: { type: 'string', description: 'Agent identifier' },
-                            query: { type: 'string', description: 'Search query' },
-                            limit: { type: 'number', description: 'Maximum results' }
+                            agentId: { 
+                                type: 'string', 
+                                description: 'Agent identifier (use "all" for cross-agent search)' 
+                            },
+                            query: { 
+                                type: 'string', 
+                                description: 'Natural language search query' 
+                            },
+                            limit: { 
+                                type: 'number', 
+                                description: 'Maximum results (1-100)', 
+                                minimum: 1, 
+                                maximum: 100 
+                            },
+                            project: { 
+                                type: 'string', 
+                                description: 'Filter by project name' 
+                            },
+                            session: { 
+                                type: 'string', 
+                                description: 'Filter by session name' 
+                            },
+                            minImportance: { 
+                                type: 'number', 
+                                description: 'Minimum importance score (0.0-1.0)',
+                                minimum: 0,
+                                maximum: 1
+                            }
                         },
                         required: ['agentId', 'query']
                     }
                 },
                 {
-                    name: 'forget',
-                    description: 'Delete a specific memory',
+                    name: 'search_keys',
+                    description: 'Vector similarity search for memory keys (HPKV search_keys)',
                     inputSchema: {
                         type: 'object',
                         properties: {
-                            agentId: { type: 'string', description: 'Agent identifier' },
-                            memoryId: { type: 'string', description: 'Memory ID to delete' }
+                            query: { 
+                                type: 'string', 
+                                description: 'Query for finding similar memory keys' 
+                            },
+                            limit: { 
+                                type: 'number', 
+                                description: 'Maximum keys to return (1-50)', 
+                                minimum: 1, 
+                                maximum: 50 
+                            },
+                            minScore: { 
+                                type: 'number', 
+                                description: 'Minimum similarity score (0.0-1.0)',
+                                minimum: 0,
+                                maximum: 1
+                            }
                         },
-                        required: ['agentId', 'memoryId']
+                        required: ['query']
+                    }
+                },
+                {
+                    name: 'get_memory',
+                    description: 'Get memory by exact structured key (HPKV get_memory)',
+                    inputSchema: {
+                        type: 'object',
+                        properties: {
+                            structuredKey: { 
+                                type: 'string', 
+                                description: 'Exact structured key (project_date_session_sequence)' 
+                            }
+                        },
+                        required: ['structuredKey']
+                    }
+                },
+                {
+                    name: 'forget',
+                    description: 'Delete memory by structured key',
+                    inputSchema: {
+                        type: 'object',
+                        properties: {
+                            agentId: { 
+                                type: 'string', 
+                                description: 'Agent identifier' 
+                            },
+                            structuredKey: { 
+                                type: 'string', 
+                                description: 'Structured key of memory to delete' 
+                            }
+                        },
+                        required: ['agentId', 'structuredKey']
                     }
                 },
                 {
                     name: 'context',
-                    description: 'Get recent context for an agent',
+                    description: 'Get recent context for agent',
                     inputSchema: {
                         type: 'object',
                         properties: {
-                            agentId: { type: 'string', description: 'Agent identifier' },
-                            contextSize: { type: 'number', description: 'Number of recent memories' }
+                            agentId: { 
+                                type: 'string', 
+                                description: 'Agent identifier' 
+                            },
+                            contextSize: { 
+                                type: 'number', 
+                                description: 'Number of recent memories (1-20)',
+                                minimum: 1,
+                                maximum: 20
+                            }
                         },
                         required: ['agentId']
                     }
@@ -679,54 +709,50 @@ class EnterpriseMCPServer {
             ]
         }));
 
+        // Handle tool calls
         this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
             try {
                 const { name, arguments: args } = request.params;
 
+                let result;
                 switch (name) {
                     case 'remember':
-                        return {
-                            content: [
-                                {
-                                    type: 'text',
-                                    text: JSON.stringify(await this.memoryEngine.remember(args))
-                                }
-                            ]
-                        };
+                        result = await this.memoryEngine.storeMemory(args);
+                        break;
 
                     case 'recall':
-                        return {
-                            content: [
-                                {
-                                    type: 'text',
-                                    text: JSON.stringify(await this.memoryEngine.recall(args))
-                                }
-                            ]
-                        };
+                        result = await this.memoryEngine.searchMemory(args);
+                        break;
+
+                    case 'search_keys':
+                        result = await this.memoryEngine.searchKeys(args);
+                        break;
+
+                    case 'get_memory':
+                        result = await this.memoryEngine.getMemory(args);
+                        break;
 
                     case 'forget':
-                        return {
-                            content: [
-                                {
-                                    type: 'text',
-                                    text: JSON.stringify(await this.memoryEngine.forget(args))
-                                }
-                            ]
-                        };
+                        result = await this.memoryEngine.forgetMemory(args);
+                        break;
 
                     case 'context':
-                        return {
-                            content: [
-                                {
-                                    type: 'text',
-                                    text: JSON.stringify(await this.memoryEngine.context(args))
-                                }
-                            ]
-                        };
+                        result = await this.memoryEngine.getContext(args);
+                        break;
 
                     default:
                         throw new Error(`Unknown tool: ${name}`);
                 }
+
+                return {
+                    content: [
+                        {
+                            type: 'text',
+                            text: JSON.stringify(result, null, 2)
+                        }
+                    ]
+                };
+
             } catch (error) {
                 return {
                     content: [
@@ -735,9 +761,10 @@ class EnterpriseMCPServer {
                             text: JSON.stringify({
                                 success: false,
                                 error: error.message,
-                                serverType: 'enterprise-standalone-v6.1',
+                                errorType: error.name,
+                                serverVersion: '7.0.0',
                                 timestamp: new Date().toISOString()
-                            })
+                            }, null, 2)
                         }
                     ],
                     isError: true
@@ -747,12 +774,36 @@ class EnterpriseMCPServer {
     }
 
     async run() {
-        const transport = new StdioServerTransport();
-        await this.server.connect(transport);
-        console.error('🚀 MemorAI MCP Server v6.1.2 - Enhanced Recall Edition running!');
+        try {
+            // Initialize memory engine
+            await this.memoryEngine.initialize();
+            
+            // Connect to transport
+            const transport = new StdioServerTransport();
+            await this.server.connect(transport);
+            
+            console.error('🚀 MemoraiMCP Server v7.0.0 - HPKV-Inspired Architecture');
+            console.error('💡 Features: Structured keys, semantic search, vector similarity');
+            console.error('📊 Ready for VS Code Copilot integration');
+            
+        } catch (error) {
+            console.error('❌ Failed to start MemoraiMCP Server:', error);
+            process.exit(1);
+        }
+    }
+
+    async gracefulShutdown() {
+        console.error('🔄 Shutting down MemoraiMCP Server...');
+        try {
+            await this.memoryEngine.shutdown();
+            process.exit(0);
+        } catch (error) {
+            console.error('❌ Error during shutdown:', error);
+            process.exit(1);
+        }
     }
 }
 
-// Start the enterprise server
-const server = new EnterpriseMCPServer();
+// Start the HPKV-inspired server
+const server = new HPKVMCPServer();
 server.run().catch(console.error);

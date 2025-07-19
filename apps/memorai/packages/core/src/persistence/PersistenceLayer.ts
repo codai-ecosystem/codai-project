@@ -117,7 +117,7 @@ export class PersistenceLayer extends EventEmitter {
 
     try {
       let data = JSON.stringify(memory);
-      let metadata: any = {
+      const metadata: any = {
         originalSize: data.length,
         compressed: false,
         encrypted: false,

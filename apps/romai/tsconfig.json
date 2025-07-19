@@ -1,82 +1,44 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "commonjs",
-    "lib": [
-      "ES2022"
-    ],
-    "allowJs": true,
-    "checkJs": false,
-    "jsx": "preserve",
-    "declaration": true,
-    "declarationMap": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "composite": true,
-    "incremental": true,
-    "removeComments": true,
-    "importHelpers": true,
-    "downlevelIteration": true,
-    "isolatedModules": true,
-    "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "strictPropertyInitialization": true,
-    "noImplicitThis": true,
-    "useUnknownInCatchVariables": true,
-    "alwaysStrict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "exactOptionalPropertyTypes": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "allowUnusedLabels": false,
-    "allowUnreachableCode": false,
-    "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "@romai/*": [
-        "packages/*/src"
+      "@/*": [
+        "./src/*"
       ],
-      "@romai/types": [
-        "packages/romai-types/src"
+      "@/components/*": [
+        "./src/components/*"
       ],
-      "@romai/core": [
-        "packages/romai-core/src"
-      ],
-      "@romai/memory": [
-        "packages/romai-memory/src"
+      "@/lib/*": [
+        "./src/lib/*"
       ]
     },
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "preserveSymlinks": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "noEmit": true,
     "plugins": [
       {
         "name": "next"
       }
-    ]
+    ],
+    "incremental": true
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "build",
-    ".next",
-    "coverage"
-  ],
   "include": [
     "next-env.d.ts",
-    ".next/types/**/*.ts",
-    "**/*.ts",
-    "**/*.tsx"
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    "dist",
+    "build",
+    "app/**/*",
+    "components/**/*",
+    "lib/**/*",
+    "pages/**/*",
+    "src-disabled/**/*",
+    "src-backup/**/*",
+    "test-app/**/*",
+    "__tests__/**/*",
+    "tests/**/*"
   ]
 }

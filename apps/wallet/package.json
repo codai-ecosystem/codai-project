@@ -4,9 +4,9 @@
   "description": "Digital wallet and payments",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 5039",
+    "dev": "next dev -p 6800",
     "build": "next build",
-    "start": "next start -p 5039",
+    "start": "next start -p 6800",
     "lint": "next lint",
     "type-check": "pnpm exec tsc --noEmit",
     "test": "vitest",
@@ -52,6 +52,7 @@
     "vitest": "^3.2.4",
     "@types/node": "^24.0.14",
     "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.6"
+    "@types/react-dom": "^19.1.6",
+    "typescript": "^5.8.3"
   }
 }

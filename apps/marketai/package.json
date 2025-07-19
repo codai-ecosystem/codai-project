@@ -4,13 +4,15 @@
   "private": true,
   "description": "AI marketing automation",
   "scripts": {
-    "dev": "next dev -p 5025",
+    "dev": "next dev -p 5300",
     "build": "next build",
-    "start": "next start -p 5025",
+    "start": "next start -p 5300",
     "lint": "next lint",
     "type-check": "pnpm exec tsc --noEmit",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "test": "vitest",
+    "test:watch": "vitest watch",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "clsx": "^2.1.1",

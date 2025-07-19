@@ -9,11 +9,11 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "next dev -p 5015",
+    "dev": "next dev -p 4300",
     "build": "next build",
-    "start": "next start -p 5015",
+    "start": "next start -p 4300",
     "lint": "next lint",
-    "test": "pnpm --filter @codai/donai-web test",
+    "test": "vitest",
     "type-check": "pnpm exec tsc --noEmit",
     "clean": "pnpm --filter @codai/donai-web clean",
     "dev:api": "pnpm --filter @codai/donai-api dev",
@@ -25,7 +25,10 @@
     "clean:all": "pnpm -r clean && rimraf node_modules",
     "install:all": "pnpm install",
     "blockchain:deploy": "pnpm --filter @codai/donai-contracts deploy",
-    "blockchain:test": "pnpm --filter @codai/donai-contracts test"
+    "blockchain:test": "pnpm --filter @codai/donai-contracts test",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest watch"
   },
   "dependencies": {
     "@codai/logai-universal": "^2.0.0",

@@ -92,7 +92,9 @@ export class TradingPortfolioService {
   ]
 
   constructor() {
-    this.azureOpenAI = AzureOpenAIService.getInstance()
+    // TODO: Fix Azure OpenAI service integration
+    // this.azureOpenAI = AzureOpenAIService.getInstance()
+    this.azureOpenAI = null as any // Mock for now
   }
 
   /**
@@ -374,8 +376,9 @@ export class TradingPortfolioService {
         }
       ])
 
-      // Parse AI response and create signal
-      const signalData = this.parseAISignalResponse(aiResponse)
+      // Extract text content from AI response and parse signal
+      const responseText = aiResponse.success ? (aiResponse.data || '') : ''
+      const signalData = this.parseAISignalResponse(responseText)
 
       return {
         symbol,

@@ -1,3 +1,44 @@
 {
-  "extends": "./apps/web/tsconfig.json"
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@/components/*": [
+        "./src/components/*"
+      ],
+      "@/lib/*": [
+        "./src/lib/*"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "incremental": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    "dist",
+    "build",
+    "app/**/*",
+    "components/**/*",
+    "lib/**/*",
+    "pages/**/*",
+    "src-disabled/**/*",
+    "src-backup/**/*",
+    "test-app/**/*",
+    "__tests__/**/*",
+    "tests/**/*"
+  ]
 }

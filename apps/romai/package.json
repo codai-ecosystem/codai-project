@@ -34,10 +34,10 @@
   },
   "scripts": {
     "build": "next build",
-    "dev": "next dev -p 5033",
-    "test": "pnpm --filter './packages/*' test && pnpm --filter './apps/*' test",
-    "test:watch": "pnpm --filter './packages/*' test:watch",
-    "test:coverage": "pnpm --filter './packages/*' test:coverage && pnpm --filter './apps/*' test:coverage",
+    "dev": "next dev -p 6100",
+    "test": "vitest",
+    "test:watch": "vitest watch",
+    "test:coverage": "vitest run --coverage",
     "test:integration": "pnpm --filter './packages/*' test:integration && pnpm --filter './apps/*' test:integration",
     "lint": "next lint",
     "lint:fix": "pnpm --filter './packages/*' lint:fix && pnpm --filter './apps/*' lint:fix",
@@ -61,7 +61,8 @@
     "health:check": "node -e \"console.log('ROMAI Health Check: OK')\"",
     "version:check": "node -e \"console.log('ROMAI Version:', require('./package.json').version)\"",
     "info": "pnpm version:check && pnpm workspace:list",
-    "start": "next start -p 5033"
+    "start": "next start -p 6100",
+    "test:run": "vitest run"
   },
   "dependencies": {
     "dotenv": "^17.2.0",

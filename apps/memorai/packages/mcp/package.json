@@ -9,7 +9,8 @@
     "memorai-mcp": "./dist/standalone-server.js",
     "memorai-mcp-standalone": "./dist/standalone-server.js",
     "memorai-mcp-ultra": "./dist/ultra-fast-server.js",
-    "memorai-mcp-enterprise": "./dist/server.js"
+    "memorai-mcp-enterprise": "./dist/server.js",
+    "memorai-mcp-http": "./dist/http-server.js"
   },
   "exports": {
     ".": {
@@ -32,6 +33,7 @@
     "build": "pnpm exec tsc",
     "dev": "tsx src/server.ts",
     "start": "node dist/server.js",
+    "start:http": "node dist/http-server.js",
     "test": "vitest run",
     "lint": "pnpm exec eslint src/**/*.ts",
     "typecheck": "pnpm exec tsc --noEmit",
@@ -74,10 +76,14 @@
     "@modelcontextprotocol/sdk": "^1.15.1",
     "commander": "^14.0.0",
     "dotenv": "^17.2.0",
-    "zod": "^4.0.5"
+    "zod": "^4.0.5",
+    "express": "^4.18.2",
+    "ws": "^8.14.2"
   },
   "devDependencies": {
     "@types/node": "^24.0.13",
+    "@types/express": "^4.17.21",
+    "@types/ws": "^8.5.10",
     "@typescript-eslint/eslint-plugin": "^8.36.0",
     "@typescript-eslint/parser": "^8.36.0",
     "eslint": "^9.31.0",

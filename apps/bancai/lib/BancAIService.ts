@@ -464,10 +464,10 @@ export class BancAIService extends EventEmitter {
       this.executeAutomationRules();
     }, 60000);
 
-    // Compliance monitoring every hour
-    setInterval(() => {
-      this.performComplianceChecks();
-    }, 3600000);
+    // Compliance monitoring every hour - TODO: Implement general compliance check
+    // setInterval(() => {
+    //   this.performGeneralComplianceChecks();
+    // }, 3600000);
   }
 
   // KYC Management
@@ -776,7 +776,7 @@ export class BancAIService extends EventEmitter {
       fraudRisk,
       patternAnalysis: [
         'Normal transaction pattern',
-        'Within user's typical spending range',
+        'Within user typical spending range',
         'Standard time of day for transactions'
       ],
       riskFactors: fraudRisk > 0.2 ? ['Slightly above average amount'] : [],

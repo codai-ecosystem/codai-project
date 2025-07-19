@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
         const agentId = searchParams.get('agentId');
         const memoryId = searchParams.get('id');
         const limit = parseInt(searchParams.get('limit') || '10');
-        const memoryType = searchParams.get('type');
+        const memoryType = searchParams.get('type') || undefined;
 
         if (memoryId) {
             // Get specific memory and update access stats
@@ -95,7 +95,8 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(memory, { status: 201 });
     } catch (error) {
         console.error('Memory creation error:', error);
-        return NextResponse.json({ error: 'Failed to create memory', details: error.message }, { status: 500 });
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        return NextResponse.json({ error: 'Failed to create memory', details: message }, { status: 500 });
     }
 }
 

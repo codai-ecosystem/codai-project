@@ -46,29 +46,22 @@ export async function GET() {
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
+        const email = body.email || `test-${Date.now()}@bancai.ro`;
 
         // Create test customer first
-        const customer = await prisma.customer.createMany({
-            data: {
-                email: body.email || `test-${Date.now()}@bancai.ro`,
+        const customer = await prisma.customer.upsert({
+            where: { email },
+            update: {},
+            create: {
+                email,
                 firstName: body.firstName || 'Test',
                 lastName: body.lastName || 'Customer',
                 nationalId: `TEST${Date.now()}`,
                 dateOfBirth: new Date('1990-01-01'),
                 kycStatus: 'VERIFIED',
                 riskLevel: 'LOW'
-            },
-            skipDuplicates: true
+            }
         });
-
-        // Find the customer
-        const createdCustomer = await prisma.customer.findUnique({
-            where: { email: body.email || `test-${Date.now()}@bancai.ro` }
-        });
-
-        if (!createdCustomer) {
-            throw new Error('Failed to create customer');
-        }
 
         // Create account
         const account = await prisma.account.create({
@@ -77,7 +70,7 @@ export async function POST(request: NextRequest) {
                 accountType: 'CURRENT',
                 currency: 'RON',
                 balance: parseFloat(body.balance || '1000.00'),
-                customerId: createdCustomer.id
+                customerId: customer.id
             },
             include: {
                 customer: {

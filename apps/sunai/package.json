@@ -4,14 +4,16 @@
   "description": "AI communication assistant",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 5036",
+    "dev": "next dev -p 6500",
     "build": "next build",
-    "start": "next start -p 5036",
+    "start": "next start -p 6500",
     "lint": "next lint",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
-    "type-check": "pnpm exec tsc --noEmit"
+    "type-check": "pnpm exec tsc --noEmit",
+    "test:run": "vitest run",
+    "test:watch": "vitest watch"
   },
   "dependencies": {
     "@codai/api-keys": "workspace:*",

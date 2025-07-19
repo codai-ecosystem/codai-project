@@ -4,9 +4,9 @@
   "description": "Admin dashboard",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 5009",
+    "dev": "next dev -p 3200",
     "build": "next build",
-    "start": "next start -p 5009",
+    "start": "next start -p 3200",
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
@@ -54,6 +54,7 @@
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "tailwindcss": "^3.4.17",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "typescript": "^5.8.3"
   }
 }

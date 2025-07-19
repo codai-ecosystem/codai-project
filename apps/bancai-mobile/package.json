@@ -4,7 +4,7 @@
   "description": "Mobile banking app",
   "main": "expo-router/entry",
   "scripts": {
-    "start": "next start -p 5041",
+    "start": "next start -p 3600",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
@@ -14,14 +14,15 @@
     "submit:android": "eas submit --platform android",
     "submit:ios": "eas submit --platform ios",
     "update": "eas update",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
+    "test": "vitest",
+    "test:watch": "vitest watch",
+    "test:coverage": "vitest run --coverage",
     "lint": "next lint",
     "type-check": "pnpm exec tsc --noEmit",
     "clean": "rm -rf .expo dist coverage",
-    "dev": "next dev -p 5041",
-    "build": "next build"
+    "dev": "next dev -p 3600",
+    "build": "next build",
+    "test:run": "vitest run"
   },
   "dependencies": {
     "@codai/api-keys": "workspace:*",
@@ -56,7 +57,9 @@
     "@codai/shared-ui": "workspace:*",
     "@codai/translations": "workspace:*",
     "framer-motion": "^12.23.6",
-    "lucide-react": "^0.525.0"
+    "lucide-react": "^0.525.0",
+    "next": "^15.4.1",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.28.0",
@@ -76,7 +79,8 @@
     "prettier": "^3.6.2",
     "react-test-renderer": "^19.1.0",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "@types/react-dom": "^19.1.6"
   },
   "engines": {
     "node": ">=18.0.0",

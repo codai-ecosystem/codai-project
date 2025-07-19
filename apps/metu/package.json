@@ -15,21 +15,22 @@
     "metu"
   ],
   "scripts": {
-    "dev": "next dev -p 5026",
+    "dev": "next dev -p 5400",
     "build": "next build",
     "build:win": "electron-builder --win",
     "build:portable": "electron-builder --win portable",
     "preview": "electron-vite preview",
     "test": "vitest",
-    "test:watch": "vitest --watch",
-    "test:coverage": "vitest --coverage",
+    "test:watch": "vitest watch",
+    "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "typecheck": "pnpm exec tsc --noEmit",
     "lint": "next lint",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx}\"",
     "clean": "rimraf dist coverage test-results",
-    "start": "next start -p 5026",
-    "type-check": "pnpm exec tsc --noEmit"
+    "start": "next start -p 5400",
+    "type-check": "pnpm exec tsc --noEmit",
+    "test:run": "vitest run"
   },
   "dependencies": {
     "@codai/shared-ui": "workspace:*",

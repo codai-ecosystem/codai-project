@@ -4,13 +4,15 @@
   "private": true,
   "description": "AI legal assistant",
   "scripts": {
-    "dev": "next dev -p 5023",
+    "dev": "next dev -p 5100",
     "build": "next build",
-    "start": "next start -p 5023",
+    "start": "next start -p 5100",
     "lint": "next lint",
     "type-check": "pnpm exec tsc --noEmit",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "test": "vitest",
+    "test:watch": "vitest watch",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.14",

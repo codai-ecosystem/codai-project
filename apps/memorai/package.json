@@ -4,9 +4,9 @@
   "description": "AI-powered memory and knowledge management",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 5002",
+    "dev": "next dev -p 3693",
     "build": "next build",
-    "start": "next start -p 5002",
+    "start": "next start -p 3693",
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
@@ -15,8 +15,6 @@
     "type-check": "pnpm exec tsc --noEmit"
   },
   "dependencies": {
-    "@codai/shared-ui": "workspace:*",
-    "@codai/translations": "workspace:*",
     "@prisma/client": "^6.12.0",
     "@types/node": "^24.0.14",
     "@types/react": "^19.1.8",
@@ -57,6 +55,7 @@
     "vitest": "^3.2.4",
     "@types/node": "^24.0.14",
     "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.6"
+    "@types/react-dom": "^19.1.6",
+    "typescript": "^5.8.3"
   }
 }

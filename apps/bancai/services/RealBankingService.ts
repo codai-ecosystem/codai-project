@@ -40,7 +40,7 @@ export class RealBankingService {
         if (this.isStripeEnabled && stripeKey) {
             try {
                 this.stripe = new Stripe(stripeKey, {
-                    apiVersion: '2024-12-18.acacia'
+                    apiVersion: '2025-06-30.basil'
                 });
                 console.log('Stripe initialized successfully');
             } catch (error) {
@@ -75,10 +75,11 @@ export class RealBankingService {
     public async getAccountBalance(accountId?: string): Promise<any> {
         try {
             // Get real-time balance from multiple sources
+            const safeAccountId = accountId || 'default-account'
             const [stripeBalance, localBalance, externalBalance] = await Promise.allSettled([
                 this.getStripeBalance(),
-                this.getLocalAccountBalance(accountId),
-                this.getExternalBankBalance(accountId)
+                this.getLocalAccountBalance(safeAccountId),
+                this.getExternalBankBalance(safeAccountId)
             ]);
 
             // Use most recent balance

@@ -4,11 +4,15 @@
   "description": "AI analytics platform",
   "main": "server.js",
   "scripts": {
-    "start": "next start -p 5003",
-    "dev": "next dev -p 5003",
+    "start": "next start -p 3500",
+    "dev": "next dev -p 3500",
     "build": "next build",
     "lint": "next lint",
-    "type-check": "pnpm exec tsc --noEmit"
+    "type-check": "pnpm exec tsc --noEmit",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest watch"
   },
   "dependencies": {
     "express": "^5.1.0",
@@ -31,7 +35,8 @@
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
     "eslint": "^9.31.0",
-    "eslint-config-next": "^15.4.1"
+    "eslint-config-next": "^15.4.1",
+    "typescript": "^5.8.3"
   },
   "private": true
 }

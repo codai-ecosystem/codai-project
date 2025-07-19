@@ -11,6 +11,7 @@ export default defineConfig({
     'src/ultimate-validation.ts',
     'src/simple-server.ts',
     'src/simple-cli.ts',
+    'src/http-server.ts',
     'src/logging/enterprise-logger.ts',
     'src/monitoring/metrics-collector.ts',
     'src/monitoring/request-tracer.ts',

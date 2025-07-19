@@ -3,10 +3,11 @@ import MemorAIService from '../../../../../services/memoraiService'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const memoryId = params.id
+    const resolvedParams = await params
+    const memoryId = resolvedParams.id
     const memoraiService = MemorAIService.getInstance()
 
     // Get memory with collaboration data
@@ -110,10 +111,11 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const memoryId = params.id
+    const resolvedParams = await params
+    const memoryId = resolvedParams.id
     const body = await request.json()
     const { action, data } = body
 

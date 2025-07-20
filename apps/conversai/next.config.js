@@ -8,10 +8,10 @@ const nextConfig = {
     },
   },
   typescript: {
-    ignoreBuildErrors: process.env.NODE_ENV === 'production',
+    ignoreBuildErrors: false, // Enable strict TypeScript checking
   },
   eslint: {
-    ignoreDuringBuilds: process.env.NODE_ENV === 'production',
+    ignoreDuringBuilds: false, // Enable strict ESLint checking
   },
   swcMinify: true,
   compiler: {

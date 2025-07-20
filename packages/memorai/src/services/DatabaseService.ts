@@ -3,11 +3,11 @@
  */
 
 import { EventEmitter } from 'events'
-import { PrismaClient } from '@prisma/client'
+// import { PrismaClient } from '@prisma/client'
 import type { DatabaseQuery, MemoraiConfig } from '../types'
 
 export class DatabaseService extends EventEmitter {
-  private prisma: PrismaClient | null = null
+  private prisma: any | null = null
   private isConnected = false
 
   constructor(private config: MemoraiConfig['database']) {
@@ -16,23 +16,24 @@ export class DatabaseService extends EventEmitter {
 
   async initialize(): Promise<void> {
     try {
-      // Initialize Prisma client
-      this.prisma = new PrismaClient({
-        datasources: {
-          db: {
-            url: this.config.url || process.env.DATABASE_URL
-          }
-        },
-        log: this.config.logging ? ['query', 'info', 'warn', 'error'] : []
-      })
+      // TODO: Initialize database client (Prisma/Better-SQLite3 pending schema setup)
+      // this.prisma = new PrismaClient({
+      //   datasources: {
+      //     db: {
+      //       url: this.config.url || process.env.DATABASE_URL
+      //     }
+      //   },
+      //   log: this.config.logging ? ['query', 'info', 'warn', 'error'] : []
+      // })
 
-      // Test connection
-      await this.prisma.$connect()
+      // Test connection - temporarily disabled
+      // await this.prisma.$connect()
 
       // Run migrations if needed in development
       if (process.env.NODE_ENV === 'development') {
         try {
-          await this.prisma.$queryRaw`SELECT 1`
+          // await this.prisma.$queryRaw`SELECT 1`
+          console.log('Database connection check - temporarily disabled')
         } catch (error) {
           console.warn('Database might need migrations:', error)
         }
@@ -51,7 +52,7 @@ export class DatabaseService extends EventEmitter {
   async shutdown(): Promise<void> {
     if (this.prisma && this.isConnected) {
       try {
-        await this.prisma.$disconnect()
+        // await this.prisma.$disconnect()
         this.isConnected = false
         this.emit('disconnected')
         console.log('🗃️  Database Service shutdown')

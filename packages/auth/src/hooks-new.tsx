@@ -235,7 +235,7 @@ const useAuthStore = create<AuthStore>()(
                     error: null,
                 });
 
-            } catch (error) {
+            } catch {
                 // Even if logout fails on server, clear local state
                 get().clearAuth();
             }
@@ -408,7 +408,7 @@ export function useAuth(): AuthContextType {
                 }
             } else {
                 try {
-                    const payload = await verifyToken(token);
+                    const _payload = await verifyToken(token);
                     // We need user data from the backend here
                     // For now, just validate the token
                     store.setLoading(false);

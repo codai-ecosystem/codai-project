@@ -1,5 +1,5 @@
 // Enhanced authentication service for centralized SSO with RBAC, Multi-tenant, OAuth
-import { AuthUser, AuthConfig, LoginCredentials, RegisterCredentials, RefreshTokenResponse, ApiKeyResponse, TenantData, UserPermission, TwoFactorSetup } from './types'
+import { AuthUser, AuthConfig, LoginCredentials, RegisterCredentials, RefreshTokenResponse, ApiKeyResponse, TenantData, TwoFactorSetup } from './types'
 
 export class EnhancedCentralizedAuthService {
   private config: AuthConfig

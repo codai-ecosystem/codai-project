@@ -1,7 +1,8 @@
 {
   "name": "docs",
-  "version": "1.0.0",
-  "description": "Documentation platform",
+  "version": "2.0.0",
+  "description": "CODAI Documentation Platform - Comprehensive ecosystem documentation",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev -p 4200",

@@ -107,10 +107,8 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const resolvedParams = await params
-    const memoryId = resolvedParams.id
     const body = await request.json()
-    const { content, position, author, parentId } = body
+    const { content, position, author } = body
 
     if (!content || !content.trim()) {
       return NextResponse.json({ error: 'Comment content is required' }, { status: 400 })

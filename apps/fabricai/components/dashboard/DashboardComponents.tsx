@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
     Code,
@@ -45,8 +45,8 @@ function StatsCard({ title, value, change, icon: Icon, color, trend }: StatsCard
                     <Icon className="w-6 h-6 text-white" />
                 </div>
                 <div className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium ${trend === 'up' ? 'bg-emerald-500/20 text-emerald-400' :
-                        trend === 'down' ? 'bg-red-500/20 text-red-400' :
-                            'bg-slate-500/20 text-slate-400'
+                    trend === 'down' ? 'bg-red-500/20 text-red-400' :
+                        'bg-slate-500/20 text-slate-400'
                     }`}>
                     <TrendingUp className={`w-3 h-3 ${trend === 'down' ? 'rotate-180' : ''}`} />
                     <span>{change}</span>

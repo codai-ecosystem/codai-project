@@ -29,6 +29,7 @@
     "test:watch": "vitest watch"
   },
   "dependencies": {
+    "@codai/auth": "workspace:*",
     "@codai/logai-universal": "^2.0.0",
     "@hookform/resolvers": "^5.1.1",
     "class-variance-authority": "^0.7.1",

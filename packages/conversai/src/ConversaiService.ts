@@ -12,9 +12,9 @@
  */
 
 import { EventEmitter } from 'events'
-import type { 
-  Conversation, 
-  ConversationMessage, 
+import type {
+  Conversation,
+  ConversationMessage,
   ConversationSettings,
   CreateConversationOptions,
   MessageOptions,
@@ -106,7 +106,7 @@ export class ConversaiService extends EventEmitter {
       // Cleanup resources
       this.conversations.clear()
       this.activeProviders.clear()
-      
+
       this.isInitialized = false
       this.emit('shutdown', { service: 'conversai', timestamp: new Date() })
 
@@ -152,7 +152,7 @@ export class ConversaiService extends EventEmitter {
   async getConversation(conversationId: string, userId: string): Promise<Conversation | null> {
     // Check memory first
     const conversation = this.conversations.get(conversationId)
-    
+
     if (conversation && conversation.userId === userId) {
       this.emit('conversation.accessed', { conversationId, userId })
       return conversation
@@ -163,12 +163,12 @@ export class ConversaiService extends EventEmitter {
   }
 
   async updateConversation(
-    conversationId: string, 
-    userId: string, 
+    conversationId: string,
+    userId: string,
     updates: Partial<Conversation>
   ): Promise<Conversation | null> {
     const conversation = await this.getConversation(conversationId, userId)
-    
+
     if (!conversation) {
       return null
     }
@@ -195,7 +195,7 @@ export class ConversaiService extends EventEmitter {
 
   async deleteConversation(conversationId: string, userId: string): Promise<boolean> {
     const conversation = await this.getConversation(conversationId, userId)
-    
+
     if (!conversation) {
       return false
     }
@@ -233,7 +233,7 @@ export class ConversaiService extends EventEmitter {
       userConversations = userConversations.filter(conv => conv.status === filters.status)
     }
     if (filters.titleContains) {
-      userConversations = userConversations.filter(conv => 
+      userConversations = userConversations.filter(conv =>
         conv.title.toLowerCase().includes(filters.titleContains!.toLowerCase())
       )
     }
@@ -273,7 +273,7 @@ export class ConversaiService extends EventEmitter {
     options: MessageOptions = {}
   ): Promise<ConversationMessage> {
     const conversation = await this.getConversation(conversationId, userId)
-    
+
     if (!conversation) {
       throw new Error('Conversation not found or access denied')
     }
@@ -330,7 +330,7 @@ export class ConversaiService extends EventEmitter {
     } = {}
   ): Promise<ConversationMessage[]> {
     const conversation = await this.getConversation(conversationId, userId)
-    
+
     if (!conversation) {
       throw new Error('Conversation not found or access denied')
     }
@@ -338,7 +338,7 @@ export class ConversaiService extends EventEmitter {
     // TODO: In a real implementation, this would fetch from a database
     // For now, we'll return a simulated message history based on conversation context
     const messages: ConversationMessage[] = []
-    
+
     // Add system message if custom instructions exist
     if (conversation.settings?.customInstructions) {
       messages.push({
@@ -354,7 +354,7 @@ export class ConversaiService extends EventEmitter {
         updatedAt: conversation.createdAt
       })
     }
-    
+
     // Add a simulated user message to represent conversation context
     if (conversation.messageCount > 0) {
       messages.push({
@@ -370,16 +370,16 @@ export class ConversaiService extends EventEmitter {
         updatedAt: conversation.createdAt
       })
     }
-    
+
     // Apply ordering
     if (options.order === 'desc') {
       messages.reverse()
     }
-    
+
     // Apply pagination
     const start = options.offset || 0
     const end = options.limit ? start + options.limit : messages.length
-    
+
     return messages.slice(start, end)
   }
 
@@ -391,20 +391,20 @@ export class ConversaiService extends EventEmitter {
     model?: string
   ): Promise<ConversationMessage> {
     const conversation = await this.getConversation(conversationId, userId)
-    
+
     if (!conversation) {
       throw new Error('Conversation not found or access denied')
     }
 
     try {
       this.emit('response:generation:started', { conversationId, userId, model })
-      
+
       // Get conversation messages for context
       const messages = await this.getMessages(conversationId, userId)
-      
+
       // Use Azure OpenAI to generate response
       const responseContent = await this.generateAIResponse(messages, conversation, model)
-      
+
       // Add the AI response to conversation
       const responseMessage = await this.addMessage(conversationId, userId, responseContent.content, {
         role: 'assistant',
@@ -419,20 +419,20 @@ export class ConversaiService extends EventEmitter {
           deployment: responseContent.deployment
         }
       })
-      
-      this.emit('response:generation:completed', { 
-        conversationId, 
-        userId, 
+
+      this.emit('response:generation:completed', {
+        conversationId,
+        userId,
         message: responseMessage,
         metadata: responseContent
       })
-      
+
       return responseMessage
-      
+
     } catch (error) {
       this.emit('response:generation:error', { conversationId, userId, error })
       console.error('❌ Failed to generate AI response:', error)
-      
+
       // Fallback to simulated response
       const fallbackContent = this.generateSimulatedResponse(conversation)
       return await this.addMessage(conversationId, userId, fallbackContent, {
@@ -463,13 +463,13 @@ export class ConversaiService extends EventEmitter {
     if (!this.azureOpenAI?.initialized) {
       throw new Error('Azure OpenAI provider not initialized')
     }
-    
+
     // Select optimal deployment
     const deployment = this.selectOptimalDeployment(preferredModel || conversation.settings?.model)
-    
+
     // Prepare messages for Azure OpenAI format
     const chatMessages = this.prepareChatMessages(messages, conversation)
-    
+
     // Create completion request
     const completionRequest = {
       messages: chatMessages,
@@ -484,7 +484,7 @@ export class ConversaiService extends EventEmitter {
 
     // Simulate Azure OpenAI API call (replace with actual HTTP client implementation)
     const startTime = Date.now()
-    
+
     // Mock response for demonstration - replace with actual Azure OpenAI API call
     const mockResponse = {
       id: `chatcmpl-${Date.now()}`,
@@ -505,12 +505,12 @@ export class ConversaiService extends EventEmitter {
         totalTokens: 0
       }
     }
-    
+
     mockResponse.usage.totalTokens = mockResponse.usage.promptTokens + mockResponse.usage.completionTokens
-    
+
     const responseTime = Date.now() - startTime
     const cost = this.calculateCost(deployment, mockResponse.usage)
-    
+
     return {
       content: mockResponse.choices[0].message.content,
       model: deployment.model,
@@ -524,24 +524,24 @@ export class ConversaiService extends EventEmitter {
   private selectOptimalDeployment(preferredModel?: string): any {
     const config = this.azureOpenAI.config
     const activeDeployments = config.deployments.filter((d: any) => d.status === 'active')
-    
+
     if (preferredModel) {
       const exactMatch = activeDeployments.find((d: any) => d.model === preferredModel)
       if (exactMatch) return exactMatch
-      
-      const partialMatch = activeDeployments.find((d: any) => 
+
+      const partialMatch = activeDeployments.find((d: any) =>
         d.model.toLowerCase().includes(preferredModel.toLowerCase())
       )
       if (partialMatch) return partialMatch
     }
-    
+
     // Default to GPT-4 Mini for optimal balance of performance and cost
     return activeDeployments.find((d: any) => d.name === 'codai-gpt4-mini') || activeDeployments[0]
   }
 
   private prepareChatMessages(messages: ConversationMessage[], conversation: Conversation): any[] {
     const chatMessages: any[] = []
-    
+
     // Add system message if custom instructions exist
     if (conversation.settings?.customInstructions) {
       chatMessages.push({
@@ -549,7 +549,7 @@ export class ConversaiService extends EventEmitter {
         content: conversation.settings.customInstructions
       })
     }
-    
+
     // Convert conversation messages to chat format
     messages.forEach(message => {
       if (message.role !== 'system') {
@@ -559,14 +559,14 @@ export class ConversaiService extends EventEmitter {
         })
       }
     })
-    
+
     return chatMessages
   }
 
   private generateContextualResponse(messages: any[], conversation: Conversation): string {
     const lastMessage = messages[messages.length - 1]
     const userMessage = lastMessage?.content || 'Hello'
-    
+
     // Generate a contextual response based on conversation settings and history
     const responses = [
       `I understand you're asking about "${userMessage}". Let me help you with that.`,
@@ -575,25 +575,25 @@ export class ConversaiService extends EventEmitter {
       `I'm here to assist with "${userMessage}". Let me break this down for you.`,
       `Thank you for your question about "${userMessage}". Here's what I think:`
     ]
-    
+
     const baseResponse = responses[Math.floor(Math.random() * responses.length)]
-    
+
     // Add conversation-specific context
     const contextualAdditions = []
-    
+
     if (conversation.settings?.enableVoice) {
       contextualAdditions.push("I can also provide voice responses if you'd prefer.")
     }
-    
+
     if (conversation.settings?.memoryIntegration) {
       contextualAdditions.push("I'll remember our conversation context for future interactions.")
     }
-    
+
     if (conversation.messageCount > 5) {
       contextualAdditions.push("Given our ongoing conversation, I'll build on our previous discussion.")
     }
-    
-    return contextualAdditions.length > 0 
+
+    return contextualAdditions.length > 0
       ? `${baseResponse}\n\n${contextualAdditions.join(' ')}`
       : baseResponse
   }
@@ -611,10 +611,10 @@ export class ConversaiService extends EventEmitter {
 
   private calculateCost(deployment: any, usage: any): number {
     if (!deployment.pricing) return 0
-    
+
     const inputCost = (usage.promptTokens || 0) * (deployment.pricing.inputTokenCost || 0) / 1000
     const outputCost = (usage.completionTokens || 0) * (deployment.pricing.outputTokenCost || 0) / 1000
-    
+
     return inputCost + outputCost
   }
 
@@ -622,7 +622,7 @@ export class ConversaiService extends EventEmitter {
 
   async getConversationAnalytics(conversationId: string, userId: string): Promise<ConversationAnalytics | null> {
     const conversation = await this.getConversation(conversationId, userId)
-    
+
     if (!conversation) {
       return null
     }
@@ -645,10 +645,10 @@ export class ConversaiService extends EventEmitter {
   private async initializeProviders(): Promise<void> {
     try {
       this.emit('providers:initialization:started')
-      
+
       // Initialize Azure OpenAI Provider
       await this.initializeAzureOpenAI()
-      
+
       // Register Azure OpenAI as primary provider
       this.activeProviders.set('azure-openai', {
         id: 'azure-openai',
@@ -663,7 +663,7 @@ export class ConversaiService extends EventEmitter {
         },
         isActive: true
       })
-      
+
       this.emit('providers:initialization:completed')
       console.log('✅ AI providers initialized successfully')
       console.log(`� Active providers: ${this.activeProviders.size}`)
@@ -746,7 +746,7 @@ export class ConversaiService extends EventEmitter {
       console.log('✅ Azure OpenAI provider configured successfully')
       console.log(`🔗 Endpoint: ${azureConfig.endpoint}`)
       console.log(`📊 Deployments: ${azureConfig.deployments.length}`)
-      
+
     } catch (error) {
       console.error('❌ Failed to initialize Azure OpenAI:', error)
       throw error
@@ -782,7 +782,7 @@ export class ConversaiService extends EventEmitter {
       "Based on our conversation, I'd recommend the following approach.",
       "Thank you for sharing that information. Here's what I think."
     ]
-    
+
     return responses[Math.floor(Math.random() * responses.length)]
   }
 
@@ -790,7 +790,7 @@ export class ConversaiService extends EventEmitter {
     // Simple topic extraction from title and description
     const text = `${conversation.title} ${conversation.description || ''}`.toLowerCase()
     const commonTopics = ['ai', 'technology', 'business', 'development', 'design', 'analytics']
-    
+
     return commonTopics.filter(topic => text.includes(topic))
   }
 

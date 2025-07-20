@@ -39,14 +39,14 @@ export class CacheService extends EventEmitter {
       if (this.config.provider === 'redis' && this.config.url) {
         await this.initializeRedis()
       }
-      
+
       // Start cleanup interval for expired items
       this.startCleanupInterval()
-      
+
       this.isInitialized = true
       this.emit('initialized')
       console.log('💾 Cache Service initialized')
-      
+
     } catch (error) {
       console.error('Failed to initialize cache service:', error)
       this.emit('error', error)
@@ -60,7 +60,7 @@ export class CacheService extends EventEmitter {
       if (this.cleanupInterval) {
         clearInterval(this.cleanupInterval)
       }
-      
+
       // Clean up connections
       this.isInitialized = false
       this.cache.clear()
@@ -76,7 +76,7 @@ export class CacheService extends EventEmitter {
 
     try {
       const item = this.cache.get(key)
-      
+
       if (!item) {
         this.stats.misses++
         this.emit('cache:miss', { key })
@@ -98,7 +98,7 @@ export class CacheService extends EventEmitter {
       this.emit('cache:hit', { key, hits: item.hits })
 
       return item.value as T
-      
+
     } catch (error) {
       console.error('Cache get error:', error)
       this.emit('cache:error', { operation: 'get', key, error })
@@ -133,9 +133,9 @@ export class CacheService extends EventEmitter {
 
       this.cache.set(key, item)
       this.stats.sets++
-      
+
       this.emit('cache:set', { key, ttl, tags })
-      
+
     } catch (error) {
       console.error('Cache set error:', error)
       this.emit('cache:error', { operation: 'set', key, error })
@@ -150,14 +150,14 @@ export class CacheService extends EventEmitter {
 
     try {
       const deleted = this.cache.delete(key)
-      
+
       if (deleted) {
         this.stats.deletes++
         this.emit('cache:delete', { key })
       }
-      
+
       return deleted
-      
+
     } catch (error) {
       console.error('Cache delete error:', error)
       this.emit('cache:error', { operation: 'delete', key, error })
@@ -181,18 +181,18 @@ export class CacheService extends EventEmitter {
       // Pattern matching with support for wildcards
       let cleared = 0
       const regex = new RegExp(pattern.replace(/\*/g, '.*'))
-      
+
       for (const key of this.cache.keys()) {
         if (regex.test(key)) {
           this.cache.delete(key)
           cleared++
         }
       }
-      
+
       this.emit('cache:clear', { count: cleared, pattern })
-      
+
       return cleared
-      
+
     } catch (error) {
       console.error('Cache clear error:', error)
       this.emit('cache:error', { operation: 'clear', pattern, error })
@@ -206,16 +206,16 @@ export class CacheService extends EventEmitter {
     }
 
     let cleared = 0
-    
+
     for (const [key, item] of this.cache.entries()) {
       if (item.tags.includes(tag)) {
         this.cache.delete(key)
         cleared++
       }
     }
-    
+
     this.emit('cache:clear_by_tag', { tag, count: cleared })
-    
+
     return cleared
   }
 
@@ -225,16 +225,16 @@ export class CacheService extends EventEmitter {
     }
 
     const item = this.cache.get(key)
-    
+
     if (!item) return false
-    
+
     // Check expiration
     if (item.expiresAt < new Date()) {
       this.cache.delete(key)
       this.stats.expired++
       return false
     }
-    
+
     return true
   }
 
@@ -244,16 +244,16 @@ export class CacheService extends EventEmitter {
     }
 
     const keys = Array.from(this.cache.keys())
-    
+
     if (!pattern) return keys
-    
+
     const regex = new RegExp(pattern.replace(/\*/g, '.*'))
     return keys.filter(key => regex.test(key))
   }
 
   async getStats(): Promise<CacheStats> {
     const totalRequests = this.stats.hits + this.stats.misses
-    
+
     return {
       totalKeys: this.cache.size,
       memoryUsage: this.calculateMemoryUsage(),
@@ -271,7 +271,7 @@ export class CacheService extends EventEmitter {
 
     try {
       const stats = await this.getStats()
-      
+
       return {
         status: 'healthy',
         details: {
@@ -282,7 +282,7 @@ export class CacheService extends EventEmitter {
           currentSize: this.cache.size
         }
       }
-      
+
     } catch (error) {
       return {
         status: 'unhealthy',
@@ -311,14 +311,14 @@ export class CacheService extends EventEmitter {
   private cleanupExpired(): void {
     const now = new Date()
     let expired = 0
-    
+
     for (const [key, item] of this.cache.entries()) {
       if (item.expiresAt < now) {
         this.cache.delete(key)
         expired++
       }
     }
-    
+
     if (expired > 0) {
       this.stats.expired += expired
       this.emit('cache:cleanup', { expired })
@@ -329,18 +329,18 @@ export class CacheService extends EventEmitter {
     // Find least recently used item (lowest hits, oldest creation)
     let lruKey: string | null = null
     let lruScore = Infinity
-    
+
     for (const [key, item] of this.cache.entries()) {
       // Score based on hits and age (lower is better for eviction)
       const age = Date.now() - item.createdAt.getTime()
       const score = item.hits - (age / 1000 / 60 / 60) // Hits minus hours of age
-      
+
       if (score < lruScore) {
         lruScore = score
         lruKey = key
       }
     }
-    
+
     if (lruKey) {
       this.cache.delete(lruKey)
       this.stats.evictions++
@@ -351,12 +351,12 @@ export class CacheService extends EventEmitter {
   private calculateMemoryUsage(): number {
     // Rough estimate of memory usage
     let size = 0
-    
+
     for (const [key, item] of this.cache.entries()) {
       size += key.length * 2 // String is 2 bytes per character
       size += JSON.stringify(item).length * 2 // Rough estimate of object size
     }
-    
+
     return size
   }
 }

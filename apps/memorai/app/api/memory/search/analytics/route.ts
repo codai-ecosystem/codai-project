@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { memorySearch } from '../../../../../lib/search/AdvancedMemorySearch'
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     // Get comprehensive search analytics
     const analytics = memorySearch.getSearchAnalytics()
@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function DELETE(request: NextRequest) {
+export async function DELETE(_request: NextRequest) {
   try {
     // Clear search history
     memorySearch.clearSearchHistory()

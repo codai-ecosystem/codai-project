@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { memorySearch } from '../../../../../lib/search/AdvancedMemorySearch'
 
 export async function GET(request: NextRequest) {
   try {

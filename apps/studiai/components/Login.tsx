@@ -38,7 +38,7 @@ export default function Login(props: any) {
 
     try {
       const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(firebaseAuth, provider);
+      const result = await signInWithPopup(getFirebaseAuth(), provider);
       if (result) {
         props.onClose();
         toast.showToast({
@@ -46,6 +46,7 @@ export default function Login(props: any) {
           title: 'Login Successful',
           message: 'You are now signed in with Google.',
           duration: 4000,
+          onClose: () => { },
         });
       }
     } catch (error: any) {
@@ -56,6 +57,7 @@ export default function Login(props: any) {
         title: 'Login Error',
         message: error.message || 'Failed to sign in with Google',
         duration: 6000,
+        onClose: () => { },
       });
     } finally {
       setLoadingGoogleLogin(false);
@@ -72,7 +74,7 @@ export default function Login(props: any) {
     setErrorMessage('');
     try {
       const result = await signInWithEmailAndPassword(
-        firebaseAuth,
+        getFirebaseAuth(),
         email,
         password
       );
@@ -83,6 +85,7 @@ export default function Login(props: any) {
           title: 'Login Successful',
           message: 'You are now signed in.',
           duration: 4000,
+          onClose: () => { },
         });
       }
     } catch (error: any) {
@@ -96,7 +99,7 @@ export default function Login(props: any) {
         try {
           // Use fetchSignInMethodsForEmail to check which providers are linked to this email
           const signInMethods = await fetchSignInMethodsForEmail(
-            firebaseAuth,
+            getFirebaseAuth(),
             email
           );
 
@@ -196,7 +199,7 @@ export default function Login(props: any) {
 
     try {
       const result = await createUserWithEmailAndPassword(
-        firebaseAuth,
+        getFirebaseAuth(),
         email,
         password
       );
@@ -207,6 +210,7 @@ export default function Login(props: any) {
           title: 'Registration Successful',
           message: 'Your account has been created. You are now signed in.',
           duration: 4000,
+          onClose: () => { },
         });
       }
     } catch (error: any) {
@@ -221,6 +225,7 @@ export default function Login(props: any) {
         title: 'Registration Error',
         message: error.message || 'Registration failed',
         duration: 6000,
+        onClose: () => { },
       });
     } finally {
       setLoadingEmailRegister(false);

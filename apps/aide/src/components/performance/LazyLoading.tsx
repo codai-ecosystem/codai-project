@@ -1,10 +1,6 @@
 import { lazy, useEffect, useRef, useState } from 'react';
 import type { ComponentType, LazyExoticComponent, RefObject } from 'react';
-
-import { ErrorBoundary } from 'export const LazyInput = createLazyComponent(
-() => import('../ui/input').then(mod => ({ default: mod.Input })),
-  { preloadDelay: 1000 }
-);rrorBoundary';
+import { ErrorBoundary } from '@codai/shared-ui';
 
 /**
  * Enhanced lazy loading utility with error boundaries and loading states

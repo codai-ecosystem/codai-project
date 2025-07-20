@@ -3,7 +3,7 @@
 import React from 'react';
 import { useContext } from 'react';
 import { AppContext } from '@/components/AppContext';
-import Button from '@/components/ui/Button';
+import { Button } from '@/components/ui/Button';
 import { ColorScheme } from '@/types';
 import { FiCheck } from '@/components/icons/FeatherIcons';
 
@@ -26,55 +26,55 @@ export default function ThemeSelector({ onThemeChange }: ThemeSelectorProps) {
     lightColor: string;
     darkColor: string;
   }[] = [
-    {
-      name: 'Black and White',
-      value: 'black-white',
-      lightColor: '#000000',
-      darkColor: '#ffffff',
-    },
-    {
-      name: 'Modern Purple',
-      value: 'modern-purple',
-      lightColor: '#6366f1',
-      darkColor: '#818cf8',
-    },
-    {
-      name: 'Green Neon',
-      value: 'green-neon',
-      lightColor: '#10b981',
-      darkColor: '#4ade80',
-    },
-    {
-      name: 'Blue Ocean',
-      value: 'blue-ocean',
-      lightColor: '#0ea5e9',
-      darkColor: '#38bdf8',
-    },
-    {
-      name: 'Brown Sunset',
-      value: 'brown-sunset',
-      lightColor: '#b45309',
-      darkColor: '#f59e0b',
-    },
-    {
-      name: 'Yellow Morning',
-      value: 'yellow-morning',
-      lightColor: '#eab308',
-      darkColor: '#facc15',
-    },
-    {
-      name: 'Red Blood',
-      value: 'red-blood',
-      lightColor: '#dc2626',
-      darkColor: '#ef4444',
-    },
-    {
-      name: 'Pink Candy',
-      value: 'pink-candy',
-      lightColor: '#db2777',
-      darkColor: '#ec4899',
-    },
-  ];
+      {
+        name: 'Black and White',
+        value: 'black-white',
+        lightColor: '#000000',
+        darkColor: '#ffffff',
+      },
+      {
+        name: 'Modern Purple',
+        value: 'modern-purple',
+        lightColor: '#6366f1',
+        darkColor: '#818cf8',
+      },
+      {
+        name: 'Green Neon',
+        value: 'green-neon',
+        lightColor: '#10b981',
+        darkColor: '#4ade80',
+      },
+      {
+        name: 'Blue Ocean',
+        value: 'blue-ocean',
+        lightColor: '#0ea5e9',
+        darkColor: '#38bdf8',
+      },
+      {
+        name: 'Brown Sunset',
+        value: 'brown-sunset',
+        lightColor: '#b45309',
+        darkColor: '#f59e0b',
+      },
+      {
+        name: 'Yellow Morning',
+        value: 'yellow-morning',
+        lightColor: '#eab308',
+        darkColor: '#facc15',
+      },
+      {
+        name: 'Red Blood',
+        value: 'red-blood',
+        lightColor: '#dc2626',
+        darkColor: '#ef4444',
+      },
+      {
+        name: 'Pink Candy',
+        value: 'pink-candy',
+        lightColor: '#db2777',
+        darkColor: '#ec4899',
+      },
+    ];
 
   const handleThemeChange = (theme: ColorScheme) => {
     setColorScheme(theme);
@@ -111,10 +111,9 @@ export default function ThemeSelector({ onThemeChange }: ThemeSelectorProps) {
               className={`
                 relative cursor-pointer rounded-md p-3 border-2 
                 transition-all duration-300 hover:shadow-md
-                ${
-                  colorScheme === theme.value
-                    ? 'border-[color:var(--ai-primary)] shadow-sm'
-                    : 'border-[color:var(--ai-card-border)]'
+                ${colorScheme === theme.value
+                  ? 'border-[color:var(--ai-primary)] shadow-sm'
+                  : 'border-[color:var(--ai-card-border)]'
                 }
               `}
             >

@@ -57,7 +57,7 @@ export default function usePaymentHistory(): PaymentHistoryData {
       try {
         // Get payments from Firestore
         const paymentsRef = collection(
-          firestoreDB,
+          getFirestoreDB(),
           `customers/${user.uid}/payments`
         );
         const q = query(paymentsRef, orderBy('created', 'desc'));

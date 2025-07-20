@@ -100,9 +100,9 @@ export const MemoraiConfigSchema = z.object({
   database: z.object({
     url: z.string().refine((url) => {
       // Allow file URLs for SQLite, regular URLs for others
-      return url.startsWith('file:') || url.startsWith('postgresql://') || 
-             url.startsWith('mysql://') || url.startsWith('mongodb://') ||
-             url.includes('://') || url.endsWith('.db')
+      return url.startsWith('file:') || url.startsWith('postgresql://') ||
+        url.startsWith('mysql://') || url.startsWith('mongodb://') ||
+        url.includes('://') || url.endsWith('.db')
     }, 'Invalid database URL'),
     type: z.enum(['postgresql', 'mysql', 'sqlite', 'mongodb']),
     maxConnections: z.number().min(1).max(100),

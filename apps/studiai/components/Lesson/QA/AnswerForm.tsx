@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import Button from '@/components/ui/Button';
+import { Button } from '@/components/ui/Button';
 import { Attachment } from '@/types';
 import RichTextEditor from './RichTextEditor';
 import {
@@ -67,7 +67,7 @@ const AnswerForm: React.FC<AnswerFormProps> = ({ onSubmit, onCancel }) => {
         const fileId = uuidv4();
         const fileExtension = file.name.split('.').pop();
         const storagePath = `attachments/${fileId}.${fileExtension}`;
-        const storageRef = ref(firebaseStorage, storagePath);
+        const storageRef = ref(getFirebaseStorage(), storagePath);
 
         // Determine attachment type
         let attachmentType: 'image' | 'video' | 'file' = 'file';

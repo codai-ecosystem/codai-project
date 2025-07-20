@@ -10,7 +10,7 @@ const ServiceConfigSchema = z.object({
     port: z.number(),
     path: z.string().optional(),
     healthEndpoint: z.string().default('/health'),
-    metadata: z.record(z.any()).optional(),
+    metadata: z.record(z.string(), z.any()).optional(),
     tags: z.array(z.string()).default([]),
 })
 
@@ -100,7 +100,8 @@ export class ServiceRegistry {
                 this.startHeartbeat()
             }
         } catch (error) {
-            await this.logger.error('Failed to register service', { error: error.message, config })
+            const errorMessage = error instanceof Error ? error.message : String(error)
+            await this.logger.error('Failed to register service', { error: errorMessage, config })
             throw error
         }
     }
@@ -129,7 +130,8 @@ export class ServiceRegistry {
 
             return selectedService
         } catch (error) {
-            await this.logger.error('Service discovery failed', { error: error.message, service: serviceName })
+            const errorMessage = error instanceof Error ? error.message : String(error)
+            await this.logger.error('Service discovery failed', { error: errorMessage, service: serviceName })
             throw error
         }
     }
@@ -157,6 +159,7 @@ export class ServiceRegistry {
                     const healthCheck = await this.performHealthCheck(config, endpoint)
                     healthStatuses.push(healthCheck)
                 } catch (error) {
+                    const errorMessage = error instanceof Error ? error.message : String(error)
                     // Return unhealthy status if health check fails
                     healthStatuses.push({
                         service: config.name,
@@ -164,7 +167,7 @@ export class ServiceRegistry {
                         checks: [{
                             name: 'connectivity',
                             status: false,
-                            message: error.message,
+                            message: errorMessage,
                         }],
                         uptime: 0,
                         version: config.version,
@@ -175,7 +178,8 @@ export class ServiceRegistry {
 
             return healthStatuses
         } catch (error) {
-            await this.logger.error('Health check failed', { error: error.message, service: serviceName })
+            const errorMessage = error instanceof Error ? error.message : String(error)
+            await this.logger.error('Health check failed', { error: errorMessage, service: serviceName })
             throw error
         }
     }
@@ -218,7 +222,8 @@ export class ServiceRegistry {
 
             await this.logger.info('Service deregistered', { service: serviceName, version })
         } catch (error) {
-            await this.logger.error('Failed to deregister service', { error: error.message, service: serviceName })
+            const errorMessage = error instanceof Error ? error.message : String(error)
+            await this.logger.error('Failed to deregister service', { error: errorMessage, service: serviceName })
             throw error
         }
     }
@@ -239,7 +244,8 @@ export class ServiceRegistry {
                 await this.redis.hset(`service:${serviceKey}`, 'endpoint', JSON.stringify(endpoint))
             }
         } catch (error) {
-            await this.logger.error('Failed to update load score', { error: error.message, service: serviceName })
+            const errorMessage = error instanceof Error ? error.message : String(error)
+            await this.logger.error('Failed to update load score', { error: errorMessage, service: serviceName })
         }
     }
 
@@ -326,6 +332,7 @@ export class ServiceRegistry {
             }
         } catch (error) {
             endpoint.health = 'unhealthy'
+            const errorMessage = error instanceof Error ? error.message : String(error)
             endpoint.lastSeen = new Date()
 
             return {
@@ -334,7 +341,7 @@ export class ServiceRegistry {
                 checks: [{
                     name: 'connectivity',
                     status: false,
-                    message: error.message,
+                    message: errorMessage,
                     duration: Date.now() - startTime,
                 }],
                 uptime: 0,
@@ -369,7 +376,8 @@ export class ServiceRegistry {
                     }
                 }
             } catch (error) {
-                await this.logger.error('Heartbeat failed', { error: error.message })
+                const errorMessage = error instanceof Error ? error.message : String(error)
+                await this.logger.error('Heartbeat failed', { error: errorMessage })
             }
         }, this.HEARTBEAT_INTERVAL * 1000)
     }

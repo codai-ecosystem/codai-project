@@ -106,3 +106,4 @@ known_hosts
 /generated/prisma
 
 .vercel
+.env*.local

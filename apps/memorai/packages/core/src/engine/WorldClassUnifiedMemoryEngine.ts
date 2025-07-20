@@ -35,10 +35,10 @@ export class WorldClassUnifiedMemoryEngine extends EventEmitter {
   private memories: Map<string, MemoryEntry> = new Map();
   private agentSharedMemories: Map<string, SharedMemoryState> = new Map();
   private config: WorldClassMemoryConfig;
-  private dashboardSync: DashboardSyncManager;
-  private persistenceLayer: PersistenceLayer;
-  private aiAnalyzer: AIMemoryAnalyzer;
-  private conflictResolver: ConflictResolver;
+  private dashboardSync!: DashboardSyncManager;
+  private persistenceLayer!: PersistenceLayer;
+  private aiAnalyzer!: AIMemoryAnalyzer;
+  private conflictResolver!: ConflictResolver;
   private isInitialized: boolean = false;
   private lastSyncTimestamp: number = 0;
   private memoryStats: MemoryStats;

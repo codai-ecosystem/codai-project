@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@codai/api-keys": "workspace:*",
+    "@codai/api-standards": "workspace:*",
     "@codai/logai-integration": "workspace:*",
     "@codai/logai-sdk": "workspace:*",
     "@codai/sdk": "workspace:*",
@@ -56,3 +57,4 @@
     "typescript": "^5.8.3"
   }
 }
+

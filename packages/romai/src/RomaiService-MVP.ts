@@ -2,7 +2,7 @@
  * RomaiService - Universal Romanian Intelligence Service (MVP)
  */
 
-import type { 
+import type {
   RomanianMarketIntelligence,
   LegalCompliance,
   LanguageAnalysis,
@@ -18,7 +18,7 @@ export class RomaiService {
   private static instance: RomaiService
   private isInitialized = false
 
-  private constructor() {}
+  private constructor() { }
 
   static getInstance(): RomaiService {
     if (!RomaiService.instance) {
@@ -116,8 +116,8 @@ export class RomaiService {
   // ==================== LANGUAGE & TRANSLATION ====================
 
   async translateToRomanian(
-    text: string, 
-    sourceLanguage: string, 
+    text: string,
+    sourceLanguage: string,
     context?: string
   ): Promise<TranslationResult> {
     // Simulated translation - in production, integrate with Romanian language models
@@ -215,8 +215,8 @@ export class RomaiService {
     // Simple topic extraction for Romanian context
     const romanianTopics = ['business', 'legal', 'market', 'technology', 'finance']
     const words = text.toLowerCase().split(/\s+/)
-    
-    return romanianTopics.filter(topic => 
+
+    return romanianTopics.filter(topic =>
       words.some(word => word.includes(topic) || topic.includes(word))
     )
   }

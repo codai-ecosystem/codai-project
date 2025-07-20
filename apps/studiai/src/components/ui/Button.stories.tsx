@@ -1,5 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
+// Storybook file disabled - not configured in this project
+// import type { Meta, StoryObj } from '@storybook/react';
+//
+// This file can be removed or storybook can be properly configured
 
+/*
 import { Button } from '@/components/ui/Button';
 
 const meta: Meta<typeof Button> = {
@@ -103,3 +107,4 @@ export const Disabled: Story = {
     disabled: true,
   },
 };
+*/

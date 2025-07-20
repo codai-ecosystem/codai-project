@@ -7,10 +7,10 @@
     "target": "ES2018",
     "declaration": true,
     "declarationMap": true,
-    "rootDir": "./src",
     "noEmit": false,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
   "include": ["src/**/*"],
   "exclude": ["dist", "node_modules", "**/*.test.ts", "**/*.spec.ts"]

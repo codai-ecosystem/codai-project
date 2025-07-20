@@ -13,8 +13,8 @@ const envSchema = z.object({
     .default('development'),
 
   // Server configuration
-  PORT: z.string().transform(Number).default('6366'),
-  WEB_PORT: z.string().transform(Number).default('6366'),
+  PORT: z.string().default('6366').transform(Number),
+  WEB_PORT: z.string().default('6366').transform(Number),
 
   // Database configuration
   QDRANT_URL: z.string().url().optional(),
@@ -32,7 +32,7 @@ const envSchema = z.object({
 
   // System configuration
   SYSTEM_TIER: z.enum(['free', 'pro', 'enterprise']).default('free'),
-  MAX_MEMORIES: z.string().transform(Number).default('1000'),
+  MAX_MEMORIES: z.string().default('1000').transform(Number),
   DEFAULT_AGENT_ID: z.string().default('default'),
 
   // Security
@@ -44,13 +44,13 @@ const envSchema = z.object({
   LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug']).default('info'),
 
   // Feature flags
-  ENABLE_ANALYTICS: z.string().transform(Boolean).default('true'),
-  ENABLE_REAL_TIME: z.string().transform(Boolean).default('true'),
-  ENABLE_CACHING: z.string().transform(Boolean).default('true'),
+  ENABLE_ANALYTICS: z.string().default('true').transform(Boolean),
+  ENABLE_REAL_TIME: z.string().default('true').transform(Boolean),
+  ENABLE_CACHING: z.string().default('true').transform(Boolean),
 
   // Performance
-  CACHE_TTL: z.string().transform(Number).default('300'), // 5 minutes
-  REQUEST_TIMEOUT: z.string().transform(Number).default('10000'), // 10 seconds
+  CACHE_TTL: z.string().default('300').transform(Number), // 5 minutes
+  REQUEST_TIMEOUT: z.string().default('10000').transform(Number), // 10 seconds
   MAX_REQUEST_SIZE: z.string().default('10mb'),
 });
 
@@ -72,7 +72,7 @@ export function getValidatedEnv(): Environment {
     return validatedEnv;
   } catch (_error) {
     if (_error instanceof z.ZodError) {
-      const errorMessage = _error.errors
+      const errorMessage = _error.issues
         .map((err: any) => `${err.path.join('.')}: ${err.message}`)
         .join('\n');
 

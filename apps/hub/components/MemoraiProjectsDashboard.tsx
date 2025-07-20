@@ -6,22 +6,22 @@
 'use client'
 
 import React, { useState } from 'react'
-import { useProjects, useMemoraiInit } from '../../lib/hooks/useMemoraiIntegration'
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
-  CardTitle 
+import { useProjects, useMemoraiInit } from '../lib/hooks/useMemoraiIntegration'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
 } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { 
-  Plus, 
-  Search, 
-  Filter, 
-  FolderOpen, 
+import {
+  Plus,
+  Search,
+  Filter,
+  FolderOpen,
   Calendar,
   Users,
   Target,
@@ -93,15 +93,15 @@ function ProjectCard({ project, onUpdate, onDelete }: ProjectCardProps) {
             </span>
           </div>
         </div>
-        
+
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
             <span>Progress</span>
             <span>{project.progress}%</span>
           </div>
           <div className="w-full bg-secondary rounded-full h-2">
-            <div 
-              className="bg-primary h-2 rounded-full transition-all duration-500" 
+            <div
+              className="bg-primary h-2 rounded-full transition-all duration-500"
               style={{ width: `${project.progress}%` }}
             />
           </div>
@@ -118,15 +118,15 @@ function ProjectCard({ project, onUpdate, onDelete }: ProjectCardProps) {
         )}
 
         <div className="flex gap-2">
-          <Button 
-            size="sm" 
+          <Button
+            size="sm"
             variant="outline"
             onClick={() => onUpdate(project.id, { status: 'ACTIVE' })}
           >
             Edit
           </Button>
-          <Button 
-            size="sm" 
+          <Button
+            size="sm"
             variant="outline"
             onClick={() => onDelete(project.id)}
           >
@@ -138,9 +138,9 @@ function ProjectCard({ project, onUpdate, onDelete }: ProjectCardProps) {
   )
 }
 
-function CreateProjectForm({ onSubmit, onCancel }: { 
+function CreateProjectForm({ onSubmit, onCancel }: {
   onSubmit: (project: any) => void
-  onCancel: () => void 
+  onCancel: () => void
 }) {
   const [formData, setFormData] = useState({
     name: '',
@@ -153,7 +153,7 @@ function CreateProjectForm({ onSubmit, onCancel }: {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     const project = {
       ...formData,
       progress: 0,
@@ -175,7 +175,7 @@ function CreateProjectForm({ onSubmit, onCancel }: {
         predictedCompletion: new Date(formData.dueDate)
       }
     }
-    
+
     onSubmit(project)
   }
 
@@ -197,7 +197,7 @@ function CreateProjectForm({ onSubmit, onCancel }: {
               required
             />
           </div>
-          
+
           <div className="space-y-2">
             <label htmlFor="description" className="text-sm font-medium">Description</label>
             <textarea
@@ -225,7 +225,7 @@ function CreateProjectForm({ onSubmit, onCancel }: {
                 <option value="CRITICAL">Critical</option>
               </select>
             </div>
-            
+
             <div className="space-y-2">
               <label htmlFor="dueDate" className="text-sm font-medium">Due Date</label>
               <Input
@@ -359,7 +359,7 @@ export function MemoraiProjectsDashboard() {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="flex items-center p-6">
             <Activity className="h-8 w-8 text-green-500 mr-4" />
@@ -371,7 +371,7 @@ export function MemoraiProjectsDashboard() {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="flex items-center p-6">
             <CheckCircle className="h-8 w-8 text-blue-500 mr-4" />
@@ -383,7 +383,7 @@ export function MemoraiProjectsDashboard() {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="flex items-center p-6">
             <TrendingUp className="h-8 w-8 text-purple-500 mr-4" />

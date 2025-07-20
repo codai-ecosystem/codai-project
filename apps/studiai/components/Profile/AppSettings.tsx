@@ -126,9 +126,9 @@ const AppSettings: React.FC<AppSettingsProps> = ({ userId }) => {
         <h1 className="text-3xl font-bold">Application Settings</h1>
 
         <Button
-          color="primary"
+
           isLoading={loading}
-          isDisabled={loading}
+          disabled={loading}
           onPress={saveSettings}
           className="bg-gradient-to-r from-[color:var(--ai-primary)] to-[color:var(--ai-secondary)] text-white font-medium shadow-sm hover:shadow-md hover:shadow-[color:var(--ai-primary)]/20 transition-all"
         >
@@ -205,11 +205,11 @@ const AppSettings: React.FC<AppSettingsProps> = ({ userId }) => {
                 </p>
               </div>
               <Switch
-                isSelected={notifications.emailNotifications}
+                checked={notifications.emailNotifications}
                 onValueChange={checked =>
                   handleNotificationChange('emailNotifications', checked)
                 }
-                color="primary"
+
               />
             </div>
 
@@ -226,11 +226,11 @@ const AppSettings: React.FC<AppSettingsProps> = ({ userId }) => {
                 </p>
               </div>
               <Switch
-                isSelected={notifications.courseUpdates}
+                checked={notifications.courseUpdates}
                 onValueChange={checked =>
                   handleNotificationChange('courseUpdates', checked)
                 }
-                color="primary"
+
               />
             </div>
 
@@ -247,11 +247,11 @@ const AppSettings: React.FC<AppSettingsProps> = ({ userId }) => {
                 </p>
               </div>
               <Switch
-                isSelected={notifications.newLessonAlerts}
+                checked={notifications.newLessonAlerts}
                 onValueChange={checked =>
                   handleNotificationChange('newLessonAlerts', checked)
                 }
-                color="primary"
+
                 isDisabled={!notifications.emailNotifications}
               />
             </div>
@@ -273,7 +273,7 @@ const AppSettings: React.FC<AppSettingsProps> = ({ userId }) => {
                 onValueChange={checked =>
                   handleNotificationChange('commentReplies', checked)
                 }
-                color="primary"
+
                 isDisabled={!notifications.emailNotifications}
               />
             </div>
@@ -294,7 +294,7 @@ const AppSettings: React.FC<AppSettingsProps> = ({ userId }) => {
                 onValueChange={checked =>
                   handleNotificationChange('certificateIssued', checked)
                 }
-                color="primary"
+
                 isDisabled={!notifications.emailNotifications}
               />
             </div>
@@ -315,7 +315,7 @@ const AppSettings: React.FC<AppSettingsProps> = ({ userId }) => {
                 onValueChange={checked =>
                   handleNotificationChange('paymentReceipts', checked)
                 }
-                color="primary"
+
                 isDisabled={true} // Always keep payment receipts on
               />
             </div>
@@ -336,7 +336,7 @@ const AppSettings: React.FC<AppSettingsProps> = ({ userId }) => {
                 onValueChange={checked =>
                   handleNotificationChange('weeklyDigest', checked)
                 }
-                color="primary"
+
                 isDisabled={!notifications.courseUpdates}
               />
             </div>
@@ -357,7 +357,7 @@ const AppSettings: React.FC<AppSettingsProps> = ({ userId }) => {
                 onValueChange={checked =>
                   handleNotificationChange('marketingEmails', checked)
                 }
-                color="primary"
+
               />
             </div>
           </div>
@@ -397,7 +397,7 @@ const AppSettings: React.FC<AppSettingsProps> = ({ userId }) => {
                 onValueChange={checked =>
                   handlePrivacyChange('showProfile', checked)
                 }
-                color="primary"
+
               />
             </div>
 
@@ -417,7 +417,7 @@ const AppSettings: React.FC<AppSettingsProps> = ({ userId }) => {
                 onValueChange={checked =>
                   handlePrivacyChange('showProgressToPublic', checked)
                 }
-                color="primary"
+
                 isDisabled={!privacySettings.showProfile}
               />
             </div>
@@ -438,7 +438,7 @@ const AppSettings: React.FC<AppSettingsProps> = ({ userId }) => {
                 onValueChange={checked =>
                   handlePrivacyChange('showAchievements', checked)
                 }
-                color="primary"
+
                 isDisabled={!privacySettings.showProfile}
               />
             </div>
@@ -459,7 +459,7 @@ const AppSettings: React.FC<AppSettingsProps> = ({ userId }) => {
                 onValueChange={checked =>
                   handlePrivacyChange('shareActivityFeed', checked)
                 }
-                color="primary"
+
                 isDisabled={!privacySettings.showProfile}
               />
             </div>
@@ -490,7 +490,7 @@ const AppSettings: React.FC<AppSettingsProps> = ({ userId }) => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Button
-                color="primary"
+
                 variant="flat"
                 className="w-full font-medium text-[color:var(--ai-primary)] bg-[color:var(--ai-primary)]/10 hover:bg-[color:var(--ai-primary)]/20"
               >

@@ -17,7 +17,7 @@ import type {
 // Create a dummy auth object for SSR scenarios
 const dummyAuth = {
   currentUser: null,
-  onAuthStateChanged: () => () => {}, // Add minimal mock implementation
+  onAuthStateChanged: () => () => { }, // Add minimal mock implementation
   signOut: async () => Promise.resolve(),
 } as unknown as Auth;
 
@@ -87,24 +87,30 @@ export function useAuth(): UseAuthReturn {
             const fallbackUser: User = {
               id: firebaseUser.uid,
               email: firebaseUser.email ?? '',
+              name: firebaseUser.displayName ?? firebaseUser.email ?? '',
+              role: 'user',
               displayName: firebaseUser.displayName ?? '',
               ...(firebaseUser.photoURL != null &&
                 firebaseUser.photoURL.length > 0 && {
-                  photoURL: firebaseUser.photoURL,
-                }),
+                photoURL: firebaseUser.photoURL,
+              }),
               emailVerified: firebaseUser.emailVerified,
               createdAt: new Date(
                 firebaseUser.metadata.creationTime ?? Date.now()
               ),
+              updatedAt: new Date(),
               lastLoginAt: new Date(
                 firebaseUser.metadata.lastSignInTime ?? Date.now()
               ),
               preferences: {
                 theme: 'system',
                 language: 'en',
+                emailNotifications: true,
+                pushNotifications: true,
                 notifications: {
                   email: true,
                   push: true,
+                  inApp: true,
                   marketing: false,
                 },
               },
@@ -152,9 +158,18 @@ export function useAuth(): UseAuthReturn {
   const updatePreferences = useCallback(
     async (preferences: Partial<UserPreferences>): Promise<void> => {
       await AuthService.updateUserPreferences(preferences);
-      if (user) {
+      if (user && user.preferences) {
+        const updatedPreferences: UserPreferences = {
+          ...user.preferences,
+          ...preferences,
+          // Ensure required properties are never undefined
+          theme: preferences.theme ?? user.preferences.theme,
+          language: preferences.language ?? user.preferences.language,
+          emailNotifications: preferences.emailNotifications ?? user.preferences.emailNotifications,
+          pushNotifications: preferences.pushNotifications ?? user.preferences.pushNotifications,
+        };
         updateUserData({
-          preferences: { ...user.preferences, ...preferences },
+          preferences: updatedPreferences,
         });
       }
     },

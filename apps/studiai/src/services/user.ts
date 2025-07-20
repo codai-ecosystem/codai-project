@@ -9,6 +9,15 @@ export interface User {
 }
 
 export interface UserProfile {
+  id?: string;
+  email?: string;
+  displayName?: string;
+  photoURL?: string;
+  role?: string;
+  emailVerified?: boolean;
+  createdAt?: any;
+  updatedAt?: any;
+  enrollments?: Record<string, any>;
   bio?: string;
   location?: string;
   website?: string;

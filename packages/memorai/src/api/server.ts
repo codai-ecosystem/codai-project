@@ -35,11 +35,11 @@ export class MemoraiAPIServer extends EventEmitter {
 
   constructor(memoraiService: MemoraiService, config: MemoraiConfig) {
     super()
-    
+
     this.memoraiService = memoraiService
     this.config = config
     this.app = express()
-    
+
     // Configure multer for file uploads
     this.upload = multer({
       storage: multer.memoryStorage(),
@@ -50,11 +50,11 @@ export class MemoraiAPIServer extends EventEmitter {
         if (config.storage.allowedTypes.length === 0) {
           return cb(null, true)
         }
-        
+
         const isAllowed = config.storage.allowedTypes.some(type =>
           file.mimetype.startsWith(type) || file.mimetype === type
         )
-        
+
         if (isAllowed) {
           cb(null, true)
         } else {
@@ -62,7 +62,7 @@ export class MemoraiAPIServer extends EventEmitter {
         }
       }
     })
-    
+
     this.setupMiddleware()
     this.setupRoutes()
     this.setupErrorHandling()
@@ -119,13 +119,13 @@ export class MemoraiAPIServer extends EventEmitter {
   private setupMiddleware(): void {
     // Security middleware
     this.app.use(helmet())
-    
+
     // CORS
     this.app.use(cors({
       origin: this.config.security.cors.origins,
       credentials: this.config.security.cors.credentials
     }))
-    
+
     // Rate limiting
     if (this.config.security.rateLimit.enabled) {
       this.app.use(rateLimit({
@@ -136,17 +136,17 @@ export class MemoraiAPIServer extends EventEmitter {
         legacyHeaders: false
       }))
     }
-    
+
     // Body parsing
     this.app.use(express.json({ limit: '10mb' }))
     this.app.use(express.urlencoded({ extended: true, limit: '10mb' }))
-    
+
     // Request logging
     this.app.use((req: Request, res: Response, next: NextFunction) => {
       console.log(`📥 ${req.method} ${req.path} - ${req.ip}`)
       next()
     })
-    
+
     // Authentication middleware (mock for now)
     this.app.use((req: AuthRequest, res: Response, next: NextFunction) => {
       // TODO: Implement real authentication with @codai/auth
@@ -156,12 +156,12 @@ export class MemoraiAPIServer extends EventEmitter {
         name: req.headers['x-user-name'] as string || 'Anonymous User',
         roles: ['user']
       }
-      
+
       req.tenant = {
         id: req.headers['x-tenant-id'] as string || 'default',
         name: 'Default Tenant'
       }
-      
+
       next()
     })
   }
@@ -171,10 +171,10 @@ export class MemoraiAPIServer extends EventEmitter {
   private setupRoutes(): void {
     // Health check
     this.app.get('/health', this.handleHealthCheck.bind(this))
-    
+
     // API info
     this.app.get('/api/info', this.handleAPIInfo.bind(this))
-    
+
     // Database routes
     this.app.post('/api/v1/database/:table', this.handleDatabaseCreate.bind(this))
     this.app.get('/api/v1/database/:table/:id', this.handleDatabaseGet.bind(this))
@@ -182,29 +182,29 @@ export class MemoraiAPIServer extends EventEmitter {
     this.app.put('/api/v1/database/:table/:id', this.handleDatabaseUpdate.bind(this))
     this.app.delete('/api/v1/database/:table/:id', this.handleDatabaseDelete.bind(this))
     this.app.post('/api/v1/database/query', this.handleDatabaseQuery.bind(this))
-    
+
     // Storage routes
     this.app.post('/api/v1/storage/upload', this.upload.single('file'), this.handleStorageUpload.bind(this))
     this.app.get('/api/v1/storage/:path(*)', this.handleStorageDownload.bind(this))
     this.app.delete('/api/v1/storage/:path(*)', this.handleStorageDelete.bind(this))
     this.app.get('/api/v1/storage', this.handleStorageList.bind(this))
-    
+
     // Memory routes
     this.app.post('/api/v1/memory', this.handleMemoryStore.bind(this))
     this.app.post('/api/v1/memory/search', this.handleMemorySearch.bind(this))
     this.app.get('/api/v1/memory/:id', this.handleMemoryGet.bind(this))
     this.app.put('/api/v1/memory/:id', this.handleMemoryUpdate.bind(this))
     this.app.delete('/api/v1/memory/:id', this.handleMemoryDelete.bind(this))
-    
+
     // Analytics routes
     this.app.post('/api/v1/analytics/track', this.handleAnalyticsTrack.bind(this))
     this.app.post('/api/v1/analytics/query', this.handleAnalyticsQuery.bind(this))
-    
+
     // Cache routes
     this.app.get('/api/v1/cache/:key', this.handleCacheGet.bind(this))
     this.app.put('/api/v1/cache/:key', this.handleCacheSet.bind(this))
     this.app.delete('/api/v1/cache/:key', this.handleCacheDelete.bind(this))
-    
+
     // Sync routes
     this.app.get('/api/v1/sync/status', this.handleSyncStatus.bind(this))
     this.app.post('/api/v1/sync/resolve-conflict', this.handleSyncResolveConflict.bind(this))
@@ -292,7 +292,7 @@ export class MemoraiAPIServer extends EventEmitter {
       const result = await this.memoraiService.find(table, [
         { field: 'id', operator: '=', value: id }
       ])
-      
+
       if (result.data && result.data.length > 0) {
         res.json({ success: true, data: result.data[0] })
       } else {
@@ -424,7 +424,7 @@ export class MemoraiAPIServer extends EventEmitter {
       const fileId = pathParts[pathParts.length - 1].split('.')[0]
 
       const result = await this.memoraiService.downloadFile(fileId, req.user!.id)
-      
+
       if (result.success && result.data) {
         // Set appropriate headers
         res.setHeader('Content-Type', 'application/octet-stream')
@@ -611,7 +611,7 @@ export class MemoraiAPIServer extends EventEmitter {
       const { key } = req.params
 
       const value = await this.memoraiService.cacheGet(key)
-      
+
       if (value !== null) {
         res.json({ success: true, data: value })
       } else {
@@ -706,7 +706,7 @@ export class MemoraiAPIServer extends EventEmitter {
     // Global error handler
     this.app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
       console.error('API Error:', error)
-      
+
       res.status(500).json({
         success: false,
         error: 'Internal server error',

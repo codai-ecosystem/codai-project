@@ -263,7 +263,7 @@ export class AzureOpenAIError extends Error {
     this.status = status
     this.code = code
     this.details = details
-    
+
     // Ensure proper prototype chain for instanceof checks
     Object.setPrototypeOf(this, AzureOpenAIError.prototype)
   }

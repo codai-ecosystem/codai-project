@@ -12,7 +12,7 @@
  */
 
 import { EventEmitter } from 'events'
-import type { 
+import type {
   RomanianMarketIntelligence,
   LegalCompliance,
   LanguageAnalysis,
@@ -30,14 +30,14 @@ import type {
 export class RomaiService extends EventEmitter {
   private static instance: RomaiService
   private isInitialized = false
-  
+
   // In-memory storage (replace with database integration)
   private marketIntelligence = new Map<string, RomanianMarketIntelligence>()
   private legalCompliance = new Map<string, LegalCompliance>()
   private marketInsights = new Map<string, MarketInsight>()
   private translationCache = new Map<string, TranslationResult>()
   private azureOpenAI: any = null // Azure OpenAI provider for Romanian intelligence
-  
+
   // Configuration
   private config = {
     enableRealTimeUpdates: true,
@@ -172,7 +172,7 @@ export class RomaiService extends EventEmitter {
 
       console.log('✅ RomAI Azure OpenAI provider configured successfully')
       console.log('🇷🇴 Romanian language and cultural intelligence enhanced')
-      
+
     } catch (error) {
       console.error('❌ Failed to initialize Azure OpenAI for RomAI:', error)
       throw error
@@ -275,13 +275,13 @@ export class RomaiService extends EventEmitter {
   // ==================== LANGUAGE & TRANSLATION ====================
 
   async translateToRomanian(
-    text: string, 
-    sourceLanguage: string, 
+    text: string,
+    sourceLanguage: string,
     context?: string
   ): Promise<TranslationResult> {
     try {
       this.emit('translation:started', { text, sourceLanguage, context })
-      
+
       // Check cache first
       const cacheKey = `${sourceLanguage}:${text}:${context || 'default'}`
       if (this.config.cacheTranslations && this.translationCache.has(cacheKey)) {
@@ -292,11 +292,11 @@ export class RomaiService extends EventEmitter {
 
       // Use Azure OpenAI for enhanced translation
       const translationResult = await this.translateWithAzureOpenAI(text, sourceLanguage, context)
-      
+
       // Cache the result
       if (this.config.cacheTranslations) {
         this.translationCache.set(cacheKey, translationResult)
-        
+
         // Manage cache size
         if (this.translationCache.size > this.config.maxCacheSize) {
           const firstKey = this.translationCache.keys().next().value
@@ -308,11 +308,11 @@ export class RomaiService extends EventEmitter {
 
       this.emit('translation:completed', { text, result: translationResult })
       return translationResult
-      
+
     } catch (error) {
       console.error('❌ Translation failed, using fallback:', error)
       this.emit('translation:error', { text, error })
-      
+
       // Fallback to simulated translation
       return {
         translatedText: `[RO] ${text}`,
@@ -325,8 +325,8 @@ export class RomaiService extends EventEmitter {
   }
 
   private async translateWithAzureOpenAI(
-    text: string, 
-    sourceLanguage: string, 
+    text: string,
+    sourceLanguage: string,
     context?: string
   ): Promise<TranslationResult> {
     if (!this.azureOpenAI?.initialized) {
@@ -335,10 +335,10 @@ export class RomaiService extends EventEmitter {
 
     // Select optimal deployment
     const deployment = this.selectTranslationDeployment()
-    
+
     // Prepare translation prompt with Romanian cultural context
     const prompt = this.prepareTranslationPrompt(text, sourceLanguage, context)
-    
+
     // Create completion request optimized for Romanian translation
     const completionRequest = {
       messages: [
@@ -370,10 +370,10 @@ Provide accurate, culturally appropriate translations that consider Romanian bus
 
     // Simulate Azure OpenAI API call (replace with actual implementation)
     const startTime = Date.now()
-    
+
     // Enhanced Romanian translation with cultural context
     const romanianTranslation = this.generateRomanianTranslation(text, sourceLanguage, context)
-    
+
     const mockResponse = {
       id: `chatcmpl-${Date.now()}`,
       object: 'chat.completion',
@@ -393,12 +393,12 @@ Provide accurate, culturally appropriate translations that consider Romanian bus
         totalTokens: 0
       }
     }
-    
+
     mockResponse.usage.totalTokens = mockResponse.usage.promptTokens + mockResponse.usage.completionTokens
-    
+
     const responseTime = Date.now() - startTime
     const cost = this.calculateTranslationCost(deployment, mockResponse.usage)
-    
+
     // Parse the response
     try {
       const parsedResult = JSON.parse(mockResponse.choices[0].message.content)
@@ -417,10 +417,10 @@ Provide accurate, culturally appropriate translations that consider Romanian bus
 
   private selectTranslationDeployment(): any {
     const config = this.azureOpenAI.config
-    const textDeployments = config.deployments.filter((d: any) => 
+    const textDeployments = config.deployments.filter((d: any) =>
       d.status === 'active' && d.capabilities.text
     )
-    
+
     // Prefer GPT-4 Turbo for better Romanian language understanding
     return textDeployments.find((d: any) => d.name === 'romai-gpt4-turbo') || textDeployments[0]
   }
@@ -453,7 +453,7 @@ Focus on:
   private generateRomanianTranslation(text: string, sourceLanguage: string, context?: string): TranslationResult {
     // Enhanced Romanian translation logic with cultural context
     const baseTranslation = this.getBaseTranslation(text, sourceLanguage)
-    
+
     return {
       translatedText: baseTranslation,
       confidence: 0.88,
@@ -482,15 +482,15 @@ Focus on:
       'client': 'client',
       'market': 'piață'
     }
-    
+
     let translation = text.toLowerCase()
-    
+
     // Apply basic word substitutions
     Object.entries(commonTranslations).forEach(([en, ro]) => {
       const regex = new RegExp(`\\b${en}\\b`, 'gi')
       translation = translation.replace(regex, ro)
     })
-    
+
     return translation
   }
 
@@ -504,68 +504,68 @@ Focus on:
 
   private getCulturalNotes(text: string, context?: string): string[] {
     const notes = ['Adaptată pentru contextul cultural românesc']
-    
+
     if (text.toLowerCase().includes('business') || context?.includes('business')) {
       notes.push('În România, relațiile de afaceri sunt importante - considerați aspectele personale')
     }
-    
+
     if (text.toLowerCase().includes('meeting') || text.toLowerCase().includes('întâlnire')) {
       notes.push('Întâlnirile în România pot începe cu conversații informale')
     }
-    
+
     return notes
   }
 
   private getBusinessContext(text: string, context?: string): string[] {
     const businessContext = ['Adaptat pentru mediul de afaceri românesc']
-    
+
     if (context?.includes('legal')) {
       businessContext.push('Consideră reglementările și legislația românească')
     }
-    
+
     if (context?.includes('contract')) {
       businessContext.push('Terminologie juridică și de contract adaptată pentru România')
     }
-    
+
     return businessContext
   }
 
   private determineFormalityLevel(text: string): 'formal' | 'informal' | 'neutral' {
     const formalWords = ['contract', 'agreement', 'legal', 'official']
     const informalWords = ['hello', 'hi', 'thanks', 'bye']
-    
+
     const lowerText = text.toLowerCase()
-    
+
     if (formalWords.some(word => lowerText.includes(word))) {
       return 'formal'
     } else if (informalWords.some(word => lowerText.includes(word))) {
       return 'informal'
     }
-    
+
     return 'neutral'
   }
 
   private getRegionalVariations(text: string): string[] {
     // Romanian regional variations
     const variations = []
-    
+
     if (text.toLowerCase().includes('companie')) {
       variations.push('Moldovă: "întreprindere"')
     }
-    
+
     if (text.toLowerCase().includes('piață')) {
       variations.push('Transilvania: "târg" (în unele contexte)')
     }
-    
+
     return variations
   }
 
   private calculateTranslationCost(deployment: any, usage: any): number {
     if (!deployment.pricing) return 0
-    
+
     const inputCost = (usage.promptTokens || 0) * (deployment.pricing.inputTokenCost || 0) / 1000
     const outputCost = (usage.completionTokens || 0) * (deployment.pricing.outputTokenCost || 0) / 1000
-    
+
     return inputCost + outputCost
   }
 
@@ -694,8 +694,8 @@ Focus on:
     // Simple topic extraction for Romanian context
     const romanianTopics = ['business', 'legal', 'market', 'technology', 'finance']
     const words = text.toLowerCase().split(/\s+/)
-    
-    return romanianTopics.filter(topic => 
+
+    return romanianTopics.filter(topic =>
       words.some(word => word.includes(topic) || topic.includes(word))
     )
   }

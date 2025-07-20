@@ -38,14 +38,14 @@ export class AnalyticsService extends EventEmitter {
     try {
       // Start batch processing
       this.startBatchProcessing()
-      
+
       // Start metrics aggregation
       this.startMetricsAggregation()
-      
+
       this.isInitialized = true
       this.emit('initialized')
       console.log('📊 Analytics Service initialized')
-      
+
     } catch (error) {
       console.error('Failed to initialize analytics service:', error)
       this.emit('error', error)
@@ -57,17 +57,17 @@ export class AnalyticsService extends EventEmitter {
     if (this.isInitialized) {
       // Flush remaining events
       await this.flushBatch()
-      
+
       // Stop processing
       if (this.processInterval) {
         clearInterval(this.processInterval)
       }
-      
+
       // Clean up data
       this.events.clear()
       this.metrics.clear()
       this.batchQueue = []
-      
+
       this.isInitialized = false
       this.emit('shutdown')
       console.log('📊 Analytics Service shutdown')
@@ -82,7 +82,7 @@ export class AnalyticsService extends EventEmitter {
     try {
       // Generate unique event ID
       const eventId = this.generateEventId(event)
-      
+
       // Create processed event
       const processedEvent: ProcessedEvent = {
         ...event,
@@ -90,26 +90,26 @@ export class AnalyticsService extends EventEmitter {
         processed: false,
         timestamp: event.timestamp || new Date()
       }
-      
+
       // Validate event
       this.validateEvent(processedEvent)
-      
+
       // Add to batch queue
       this.batchQueue.push(processedEvent)
-      
+
       // Store in memory for querying
       this.events.set(eventId, processedEvent)
-      
+
       // Update metrics
       this.updateMetrics(processedEvent)
-      
+
       this.emit('analytics:tracked', { event: processedEvent })
-      
+
       // Flush if batch is full
       if (this.batchQueue.length >= this.batchSize) {
         await this.flushBatch()
       }
-      
+
     } catch (error) {
       console.error('Analytics tracking error:', error)
       this.emit('analytics:error', { event, error })
@@ -124,19 +124,19 @@ export class AnalyticsService extends EventEmitter {
 
     try {
       const startTime = Date.now()
-      
+
       // Filter events based on query
       const filteredEvents = this.filterEvents(query)
-      
+
       // Apply aggregations
       const aggregations = this.applyAggregations(filteredEvents, query.aggregations || [])
-      
+
       // Group by specified fields
       const groupedData = this.groupEvents(filteredEvents, query.groupBy || [])
-      
+
       // Calculate summary
       const uniqueUsers = new Set(filteredEvents.map(e => e.userId).filter(Boolean)).size
-      
+
       const result: AnalyticsResult = {
         data: groupedData,
         summary: {
@@ -149,13 +149,13 @@ export class AnalyticsService extends EventEmitter {
           aggregations
         }
       }
-      
+
       const queryTime = Date.now() - startTime
-      
+
       this.emit('analytics:queried', { query, resultCount: filteredEvents.length, queryTime })
-      
+
       return result
-      
+
     } catch (error) {
       console.error('Analytics query error:', error)
       this.emit('analytics:query_error', { query, error })
@@ -165,43 +165,43 @@ export class AnalyticsService extends EventEmitter {
 
   async getEventCount(eventName?: string, userId?: string, appId?: string): Promise<number> {
     let count = 0
-    
+
     for (const event of this.events.values()) {
       if (eventName && event.eventName !== eventName) continue
       if (userId && event.userId !== userId) continue
       if (appId && event.appId !== appId) continue
-      
+
       count++
     }
-    
+
     return count
   }
 
   async getUniqueUsers(appId?: string, startDate?: Date, endDate?: Date): Promise<string[]> {
     const users = new Set<string>()
-    
+
     for (const event of this.events.values()) {
       if (appId && event.appId !== appId) continue
       if (startDate && event.timestamp < startDate) continue
       if (endDate && event.timestamp > endDate) continue
       if (!event.userId) continue
-      
+
       users.add(event.userId)
     }
-    
+
     return Array.from(users)
   }
 
   async getTopEvents(limit = 10, appId?: string): Promise<Array<{ eventName: string; count: number }>> {
     const eventCounts = new Map<string, number>()
-    
+
     for (const event of this.events.values()) {
       if (appId && event.appId !== appId) continue
-      
+
       const count = eventCounts.get(event.eventName) || 0
       eventCounts.set(event.eventName, count + 1)
     }
-    
+
     return Array.from(eventCounts.entries())
       .map(([eventName, count]) => ({ eventName, count }))
       .sort((a, b) => b.count - a.count)
@@ -210,7 +210,7 @@ export class AnalyticsService extends EventEmitter {
 
   async getMetricsSummary(): Promise<Record<string, MetricSummary>> {
     const summary: Record<string, MetricSummary> = {}
-    
+
     for (const [eventName, metric] of this.metrics.entries()) {
       summary[eventName] = {
         ...metric,
@@ -222,23 +222,23 @@ export class AnalyticsService extends EventEmitter {
         ) as any
       }
     }
-    
+
     return summary
   }
 
   async purgeOldEvents(olderThanDays = 30): Promise<number> {
     const cutoffDate = new Date(Date.now() - olderThanDays * 24 * 60 * 60 * 1000)
     let purged = 0
-    
+
     for (const [eventId, event] of this.events.entries()) {
       if (event.timestamp < cutoffDate) {
         this.events.delete(eventId)
         purged++
       }
     }
-    
+
     this.emit('analytics:purged', { count: purged, cutoffDate })
-    
+
     return purged
   }
 
@@ -249,7 +249,7 @@ export class AnalyticsService extends EventEmitter {
 
     try {
       const memoryUsage = process.memoryUsage()
-      
+
       return {
         status: 'healthy',
         details: {
@@ -263,7 +263,7 @@ export class AnalyticsService extends EventEmitter {
           }
         }
       }
-      
+
     } catch (error) {
       return {
         status: 'unhealthy',
@@ -285,15 +285,15 @@ export class AnalyticsService extends EventEmitter {
     if (!event.eventName || event.eventName.trim().length === 0) {
       throw new Error('Event name is required')
     }
-    
+
     if (!event.appId || event.appId.trim().length === 0) {
       throw new Error('App ID is required')
     }
-    
+
     if (!event.timestamp || !(event.timestamp instanceof Date)) {
       throw new Error('Valid timestamp is required')
     }
-    
+
     // Sanitize event name
     event.eventName = event.eventName.replace(/[^a-zA-Z0-9._-]/g, '_')
   }
@@ -306,10 +306,10 @@ export class AnalyticsService extends EventEmitter {
       lastSeen: event.timestamp,
       properties: {}
     }
-    
+
     metric.count++
     metric.lastSeen = event.timestamp
-    
+
     // Track unique users (approximate)
     if (event.userId) {
       const userKey = `users_${event.eventName}`
@@ -319,7 +319,7 @@ export class AnalyticsService extends EventEmitter {
       ((metric as any).userSet as Set<string>).add(event.userId)
       metric.uniqueUsers = ((metric as any).userSet as Set<string>).size
     }
-    
+
     // Track property values
     for (const [key, value] of Object.entries(event.properties)) {
       if (!metric.properties[key]) {
@@ -327,7 +327,7 @@ export class AnalyticsService extends EventEmitter {
       }
       metric.properties[key].add(value)
     }
-    
+
     this.metrics.set(event.eventName, metric)
   }
 
@@ -348,30 +348,30 @@ export class AnalyticsService extends EventEmitter {
 
   private async flushBatch(): Promise<void> {
     if (this.batchQueue.length === 0) return
-    
+
     try {
       const batch = [...this.batchQueue]
       this.batchQueue = []
-      
+
       // Generate batch ID
       const batchId = `batch_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-      
+
       // Mark events as processed
       for (const event of batch) {
         event.processed = true
         event.batchId = batchId
       }
-      
+
       // In production, this would send to external analytics service
       // (Google Analytics, Mixpanel, custom backend, etc.)
       await this.processBatch(batch, batchId)
-      
+
       this.emit('analytics:batch_processed', { batchId, count: batch.length })
-      
+
     } catch (error) {
       console.error('Batch processing error:', error)
       this.emit('analytics:batch_error', { error })
-      
+
       // Re-queue failed events
       this.batchQueue.unshift(...this.batchQueue)
     }
@@ -382,9 +382,9 @@ export class AnalyticsService extends EventEmitter {
     // 1. Send to external analytics service
     // 2. Store in database
     // 3. Update dashboards
-    
+
     console.log(`📊 Processing analytics batch ${batchId} with ${batch.length} events`)
-    
+
     // Simulate processing time
     await new Promise(resolve => setTimeout(resolve, 50))
   }
@@ -397,57 +397,57 @@ export class AnalyticsService extends EventEmitter {
 
   private filterEvents(query: AnalyticsQuery): ProcessedEvent[] {
     const events: ProcessedEvent[] = []
-    
+
     for (const event of this.events.values()) {
       // Event name filter
       if (query.eventName && event.eventName !== query.eventName) continue
-      
+
       // User filter
       if (query.userId && event.userId !== query.userId) continue
-      
+
       // App filter
       if (query.appId && event.appId !== query.appId) continue
-      
+
       // Date range filter
       if (event.timestamp < query.startDate || event.timestamp > query.endDate) continue
-      
+
       // Property filters
       if (query.filters) {
         let matchesFilters = true
-        
+
         for (const [key, value] of Object.entries(query.filters)) {
           if (event.properties[key] !== value) {
             matchesFilters = false
             break
           }
         }
-        
+
         if (!matchesFilters) continue
       }
-      
+
       events.push(event)
     }
-    
+
     return events
   }
 
   private applyAggregations(events: ProcessedEvent[], aggregations: AnalyticsAggregation[]): Record<string, number> {
     const results: Record<string, number> = {}
-    
+
     for (const aggregation of aggregations) {
       const key = `${aggregation.field}_${aggregation.operation}`
       const values: number[] = []
-      
+
       for (const event of events) {
         const value = event.properties[aggregation.field]
-        
+
         if (typeof value === 'number') {
           values.push(value)
         } else if (typeof value === 'string' && !isNaN(Number(value))) {
           values.push(Number(value))
         }
       }
-      
+
       switch (aggregation.operation) {
         case 'sum':
           results[key] = values.reduce((sum, val) => sum + val, 0)
@@ -469,7 +469,7 @@ export class AnalyticsService extends EventEmitter {
           break
       }
     }
-    
+
     return results
   }
 
@@ -481,9 +481,9 @@ export class AnalyticsService extends EventEmitter {
         events: events.slice(0, 100) // Limit for performance
       }]
     }
-    
+
     const groups = new Map<string, ProcessedEvent[]>()
-    
+
     for (const event of events) {
       const groupKey = groupBy.map(field => {
         if (field === 'eventName') return event.eventName
@@ -491,25 +491,25 @@ export class AnalyticsService extends EventEmitter {
         if (field === 'appId') return event.appId
         return event.properties[field] || 'unknown'
       }).join('|')
-      
+
       if (!groups.has(groupKey)) {
         groups.set(groupKey, [])
       }
-      
+
       groups.get(groupKey)!.push(event)
     }
-    
+
     return Array.from(groups.entries()).map(([groupKey, groupEvents]) => {
       const groupValues = groupKey.split('|')
       const result: Record<string, any> = {
         count: groupEvents.length
       }
-      
+
       // Add group fields
       groupBy.forEach((field, index) => {
         result[field] = groupValues[index]
       })
-      
+
       return result
     })
   }

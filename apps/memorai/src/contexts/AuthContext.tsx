@@ -1,7 +1,17 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { AuthContextType, User, AuthCredentials, RegisterCredentials, AuthResponse } from '@/types/auth';
+import { EnhancedCentralizedAuthService } from '@codai/auth';
+import { AuthUser, LoginCredentials, RegisterCredentials } from '@codai/auth';
+
+interface AuthContextType {
+  user: AuthUser | null;
+  loading: boolean;
+  login: (credentials: LoginCredentials) => Promise<{ success: boolean; error?: string }>;
+  register: (credentials: RegisterCredentials) => Promise<{ success: boolean; error?: string }>;
+  logout: () => Promise<void>;
+  updateProfile: (data: Partial<AuthUser>) => Promise<void>;
+}
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -17,21 +27,50 @@ interface AuthProviderProps {
   children: React.ReactNode;
 }
 
+// Initialize enhanced centralized auth service
+const authService = new EnhancedCentralizedAuthService({
+  authUrl: 'https://id.codai.ro',
+  apiUrl: 'https://id.codai.ro',
+  appId: 'memorai',
+  tokenStorageKey: 'codai_auth_token',
+  refreshTokenKey: 'codai_refresh_token',
+  sessionStorageKey: 'codai_session',
+  accessTokenExpiry: 15 * 60 * 1000, // 15 minutes
+  refreshTokenExpiry: 7 * 24 * 60 * 60 * 1000, // 7 days
+  rememberMeExpiry: 30 * 24 * 60 * 60 * 1000, // 30 days
+  maxSessions: 5,
+  enableSocialAuth: true,
+  enableBiometric: false,
+  requireEmailVerification: true,
+  enableTwoFactor: true,
+  passwordPolicy: {
+    minLength: 8,
+    requireUppercase: true,
+    requireLowercase: true,
+    requireNumbers: true,
+    requireSpecialChars: true,
+    preventCommonPasswords: true,
+    preventReuse: 5
+  },
+  rateLimiting: {
+    loginAttempts: 5,
+    loginWindow: 15,
+    passwordResetAttempts: 3,
+    passwordResetWindow: 60
+  }
+});
+
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Initialize auth state
+    // Initialize auth state with enhanced centralized service
     const initAuth = async () => {
       try {
-        // Check for existing session
-        const response = await fetch('/api/auth/session');
-        if (response.ok) {
-          const session = await response.json();
-          if (session?.user) {
-            setUser(session.user);
-          }
+        const currentUser = authService.getCurrentUser();
+        if (currentUser) {
+          setUser(currentUser);
         }
       } catch (error) {
         console.error('Auth initialization error:', error);
@@ -43,22 +82,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     initAuth();
   }, []);
 
-  const login = async (credentials: AuthCredentials): Promise<AuthResponse> => {
+  const login = async (credentials: LoginCredentials) => {
     try {
       setLoading(true);
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(credentials),
-      });
+      const resultUser = await authService.login(credentials);
 
-      const result = await response.json();
-
-      if (result.success && result.user) {
-        setUser(result.user);
-      }
-
-      return result;
+      setUser(resultUser);
+      return { success: true };
     } catch (error) {
       return {
         success: false,
@@ -69,22 +99,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const register = async (credentials: RegisterCredentials): Promise<AuthResponse> => {
+  const register = async (credentials: RegisterCredentials) => {
     try {
       setLoading(true);
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(credentials),
+      await authService.register(credentials);
+
+      // After successful registration, attempt to login
+      const loginResult = await authService.login({
+        email: credentials.email,
+        password: credentials.password
       });
 
-      const result = await response.json();
-
-      if (result.success && result.user) {
-        setUser(result.user);
-      }
-
-      return result;
+      setUser(loginResult);
+      return { success: true };
     } catch (error) {
       return {
         success: false,
@@ -97,7 +124,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = async (): Promise<void> => {
     try {
-      await fetch('/api/auth/logout', { method: 'POST' });
+      await authService.logout();
       setUser(null);
     } catch (error) {
       console.error('Logout error:', error);
@@ -106,17 +133,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const updateProfile = async (data: Partial<User>): Promise<void> => {
+  const updateProfile = async (data: Partial<AuthUser>): Promise<void> => {
     try {
-      const response = await fetch('/api/auth/profile', {
+      // Note: Profile updates should go through ID app endpoints
+      const response = await fetch('https://id.codai.ro/api/auth/profile', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authService.getAuthToken()}`
+        },
         body: JSON.stringify(data),
+        credentials: 'include'
       });
 
       if (response.ok) {
         const updatedUser = await response.json();
         setUser(prev => prev ? { ...prev, ...updatedUser } : null);
+      } else {
+        throw new Error('Failed to update profile');
       }
     } catch (error) {
       console.error('Profile update error:', error);

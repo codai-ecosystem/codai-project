@@ -86,25 +86,25 @@ const AdminAnalytics: React.FC = () => {
   // Sort and format revenue data
   const sortedMonthlyRevenue = adminAnalytics?.monthlyRevenue
     ? Object.entries(adminAnalytics.monthlyRevenue)
-        .map(([monthYear, amount]) => {
-          const [month, year] = monthYear.split('/').map(num => parseInt(num));
-          return {
-            monthYear,
-            month,
-            year,
-            amount,
-            label: `${getMonthName(month)} ${year}`,
-          };
-        })
-        .sort((a, b) => {
-          if (a.year !== b.year) return a.year - b.year;
-          return a.month - b.month;
-        })
+      .map(([monthYear, amount]) => {
+        const [month, year] = monthYear.split('/').map(num => parseInt(num));
+        return {
+          monthYear,
+          month,
+          year,
+          amount,
+          label: `${getMonthName(month)} ${year}`,
+        };
+      })
+      .sort((a, b) => {
+        if (a.year !== b.year) return a.year - b.year;
+        return a.month - b.month;
+      })
     : [];
 
   // Get max revenue for chart scaling
   const maxRevenue = sortedMonthlyRevenue.length
-    ? Math.max(...sortedMonthlyRevenue.map(item => item.amount))
+    ? Math.max(...sortedMonthlyRevenue.map(item => (item as any).amount))
     : 0;
 
   return (
@@ -121,7 +121,7 @@ const AdminAnalytics: React.FC = () => {
             <div className="h-64 flex items-end space-x-2">
               {sortedMonthlyRevenue.map(item => {
                 const heightPercentage =
-                  maxRevenue > 0 ? (item.amount / maxRevenue) * 100 : 0;
+                  maxRevenue > 0 ? ((item as any).amount / maxRevenue) * 100 : 0;
 
                 return (
                   <div
@@ -131,7 +131,7 @@ const AdminAnalytics: React.FC = () => {
                     <div
                       className="w-full bg-primary-500 rounded-t"
                       style={{ height: `${heightPercentage}%` }}
-                      title={`${item.amount.toLocaleString('ro-RO', { style: 'currency', currency: 'RON' })}`}
+                      title={`${(item as any).amount.toLocaleString('ro-RO', { style: 'currency', currency: 'RON' })}`}
                     ></div>
                     <div className="mt-2 text-xs text-gray-600 dark:text-gray-400 transform -rotate-45 origin-top-left">
                       {item.label}
@@ -168,15 +168,15 @@ const AdminAnalytics: React.FC = () => {
               </h3>
               <p className="text-2xl font-bold">
                 {adminAnalytics &&
-                adminAnalytics.totalRevenue &&
-                adminAnalytics.newSales
+                  adminAnalytics.totalRevenue &&
+                  adminAnalytics.newSales
                   ? (
-                      adminAnalytics.totalRevenue / adminAnalytics.newSales
-                    ).toLocaleString('ro-RO', {
-                      style: 'currency',
-                      currency: 'RON',
-                      maximumFractionDigits: 0,
-                    })
+                    adminAnalytics.totalRevenue / adminAnalytics.newSales
+                  ).toLocaleString('ro-RO', {
+                    style: 'currency',
+                    currency: 'RON',
+                    maximumFractionDigits: 0,
+                  })
                   : '0 RON'}
               </p>
             </div>
@@ -265,9 +265,9 @@ const AdminAnalytics: React.FC = () => {
                 <div className="text-3xl font-bold">
                   {adminAnalytics && adminAnalytics.totalCourses > 0
                     ? (
-                        adminAnalytics.totalLessons /
-                        adminAnalytics.totalCourses
-                      ).toFixed(1)
+                      adminAnalytics.totalLessons /
+                      adminAnalytics.totalCourses
+                    ).toFixed(1)
                     : 0}
                 </div>
                 <p className="text-gray-500 dark:text-gray-400 mt-2">
@@ -286,7 +286,7 @@ const AdminAnalytics: React.FC = () => {
         </CardHeader>
         <CardBody>
           {adminAnalytics?.popularCourses &&
-          adminAnalytics.popularCourses.length > 0 ? (
+            adminAnalytics.popularCourses.length > 0 ? (
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                 <thead className="bg-gray-50 dark:bg-gray-800">
@@ -318,10 +318,10 @@ const AdminAnalytics: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
-                  {adminAnalytics.popularCourses.map((course, index) => {
+                  {adminAnalytics.popularCourses.map((course: any, index: number) => {
                     const totalEnrollments =
                       adminAnalytics.popularCourses.reduce(
-                        (sum, c) => sum + c.enrollments,
+                        (sum: number, c: any) => sum + c.enrollments,
                         0
                       );
                     const percentage =

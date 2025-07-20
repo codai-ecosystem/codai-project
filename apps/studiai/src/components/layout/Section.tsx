@@ -1,12 +1,12 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import type { JSX, ReactNode } from 'react';
 
 import { cn } from '@/lib/utils';
 
 // Animation variants
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -25,12 +25,12 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { y: 20, opacity: 0 },
   visible: {
     y: 0,
     opacity: 1,
-    transition: { type: 'spring', stiffness: 300, damping: 24 },
+    transition: { type: 'spring' as const, stiffness: 300, damping: 24 },
   },
   exit: {
     y: 20,

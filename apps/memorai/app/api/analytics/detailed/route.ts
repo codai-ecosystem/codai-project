@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { timeRange = '30d', includeInsights = true, filters = {} } = body
+    const { timeRange = '30d', includeInsights = true } = body
 
     const memoraiService = MemorAIService.getInstance()
 

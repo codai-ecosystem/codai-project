@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@codai/api-keys": "workspace:*",
+    "@codai/api-standards": "workspace:*",
     "@codai/logai-integration": "workspace:*",
     "@codai/logai-sdk": "workspace:*",
     "@radix-ui/react-dialog": "^1.1.14",

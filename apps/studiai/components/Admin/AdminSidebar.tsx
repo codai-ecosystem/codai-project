@@ -12,7 +12,7 @@ import {
   FiLogOut,
 } from '@/components/icons/FeatherIcons';
 import { signOut } from 'firebase/auth';
-import { firebaseAuth } from '@/utils/firebase/firebase.config';
+import { getFirebaseAuth } from '@/lib/firebase-config';
 import { AppContext } from '@/components/AppContext';
 import { useRouter, usePathname } from 'next/navigation';
 
@@ -40,7 +40,7 @@ const AdminSidebar: React.FC = () => {
 
   // Handle sign out
   const handleSignOut = async () => {
-    await signOut(firebaseAuth);
+    await signOut(getFirebaseAuth());
     router.push('/');
   };
   return (
@@ -113,7 +113,7 @@ const AdminSidebar: React.FC = () => {
         <nav className="flex md:flex-col flex-row justify-around py-2">
           {navItems.map(item => {
             const isActive =
-              pathname === item.href || pathname.startsWith(`${item.href}/`);
+              pathname === item.href || (pathname && pathname.startsWith(`${item.href}/`));
             return (
               <Link key={item.href} href={item.href} className="block">
                 <div
@@ -121,11 +121,10 @@ const AdminSidebar: React.FC = () => {
                                       flex md:flex-row flex-col items-center md:gap-3 gap-1 
                                       md:px-6 px-2 md:py-3.5 py-3 md:mx-2 mx-0 md:my-1 my-0 transition-all duration-200 
                                       md:rounded-lg rounded-md
-                                      ${
-                                        isActive
-                                          ? 'md:bg-gradient-to-r md:from-[color:var(--ai-primary)]/20 md:to-[color:var(--ai-secondary)]/10 text-[color:var(--ai-primary)] font-medium md:shadow-sm'
-                                          : 'hover:bg-[color:var(--ai-primary)]/5 text-[color:var(--ai-foreground)] md:hover:translate-x-1'
-                                      }
+                                      ${isActive
+                      ? 'md:bg-gradient-to-r md:from-[color:var(--ai-primary)]/20 md:to-[color:var(--ai-secondary)]/10 text-[color:var(--ai-primary)] font-medium md:shadow-sm'
+                      : 'hover:bg-[color:var(--ai-primary)]/5 text-[color:var(--ai-foreground)] md:hover:translate-x-1'
+                    }
                                     `}
                 >
                   <div

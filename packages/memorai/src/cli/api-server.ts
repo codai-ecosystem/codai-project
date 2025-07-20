@@ -104,7 +104,7 @@ program
 
       // Create and start API server
       const apiServer = new MemoraiAPIServer(memoraiService, memoraiService.configuration)
-      
+
       // Setup graceful shutdown
       process.on('SIGINT', async () => {
         console.log('\n🛑 Shutting down gracefully...')
@@ -141,10 +141,10 @@ program
     try {
       const response = await fetch(`${options.url}/health`)
       const health = await response.json()
-      
+
       console.log('🏥 MEMORAI API Health Check:')
       console.log(JSON.stringify(health, null, 2))
-      
+
       if (health.status === 'healthy') {
         console.log('✅ Server is healthy!')
         process.exit(0)
@@ -152,7 +152,7 @@ program
         console.log('❌ Server is unhealthy!')
         process.exit(1)
       }
-      
+
     } catch (error) {
       console.error('❌ Failed to check server health:', error)
       process.exit(1)
@@ -166,10 +166,10 @@ program
   .action(async (options) => {
     try {
       console.log('🧪 Testing MEMORAI API endpoints...')
-      
+
       const baseUrl = options.url
       const testResults: any[] = []
-      
+
       // Test health endpoint
       console.log('Testing /health...')
       try {
@@ -188,7 +188,7 @@ program
           error: error instanceof Error ? error.message : 'Unknown error'
         })
       }
-      
+
       // Test API info endpoint
       console.log('Testing /api/info...')
       try {
@@ -207,7 +207,7 @@ program
           error: error instanceof Error ? error.message : 'Unknown error'
         })
       }
-      
+
       // Test database endpoint (simple query)
       console.log('Testing /api/v1/database/query...')
       try {
@@ -239,7 +239,7 @@ program
           error: error instanceof Error ? error.message : 'Unknown error'
         })
       }
-      
+
       // Display results
       console.log('\n📊 Test Results:')
       testResults.forEach(result => {
@@ -249,11 +249,11 @@ program
           console.log(`   Error: ${result.error}`)
         }
       })
-      
+
       const allPassed = testResults.every(r => r.success)
       console.log(allPassed ? '\n✅ All tests passed!' : '\n❌ Some tests failed!')
       process.exit(allPassed ? 0 : 1)
-      
+
     } catch (error) {
       console.error('❌ Failed to run tests:', error)
       process.exit(1)

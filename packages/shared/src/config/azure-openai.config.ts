@@ -323,20 +323,20 @@ export const getOptimalDeployment = (
   preferredModel?: string
 ): ModelDeployment | null => {
   const capableDeployments = getDeploymentByCapability(config, capability)
-  
+
   if (capableDeployments.length === 0) return null
-  
+
   // Try to match preferred model
   if (preferredModel) {
     const exactMatch = capableDeployments.find(d => d.model === preferredModel)
     if (exactMatch) return exactMatch
-    
-    const partialMatch = capableDeployments.find(d => 
+
+    const partialMatch = capableDeployments.find(d =>
       d.model.toLowerCase().includes(preferredModel.toLowerCase())
     )
     if (partialMatch) return partialMatch
   }
-  
+
   // Return deployment with best performance score
   return capableDeployments.sort((a, b) => {
     const aScore = (a.metrics?.successRate || 0) * 100 - (a.metrics?.averageResponseTime || 10000) / 100
@@ -351,10 +351,10 @@ export const estimateCost = (
   outputTokens: number = 0
 ): number => {
   if (!deployment.pricing) return 0
-  
+
   const inputCost = (deployment.pricing.inputTokenCost || 0) * inputTokens / 1000
   const outputCost = (deployment.pricing.outputTokenCost || 0) * outputTokens / 1000
-  
+
   return inputCost + outputCost
 }
 
@@ -362,38 +362,38 @@ export const estimateCost = (
 
 export const validateConfig = (config: AzureOpenAIConfig): { isValid: boolean; errors: string[] } => {
   const errors: string[] = []
-  
+
   if (!config.endpoint) {
     errors.push('Missing Azure OpenAI endpoint')
   }
-  
+
   if (!config.apiKey) {
     errors.push('Missing Azure OpenAI API key')
   }
-  
+
   if (!config.apiVersion) {
     errors.push('Missing Azure OpenAI API version')
   }
-  
+
   if (!config.deployments || config.deployments.length === 0) {
     errors.push('No model deployments configured')
   }
-  
+
   // Validate each deployment
   config.deployments?.forEach((deployment, index) => {
     if (!deployment.name) {
       errors.push(`Deployment ${index}: Missing name`)
     }
-    
+
     if (!deployment.model) {
       errors.push(`Deployment ${index}: Missing model`)
     }
-    
+
     if (!deployment.capabilities) {
       errors.push(`Deployment ${index}: Missing capabilities`)
     }
   })
-  
+
   return {
     isValid: errors.length === 0,
     errors

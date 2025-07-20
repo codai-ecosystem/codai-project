@@ -39,7 +39,7 @@ class HubServiceManager {
   private initialized = false;
   private config?: ServiceConfig;
 
-  private constructor() {}
+  private constructor() { }
 
   static getInstance(): HubServiceManager {
     if (!HubServiceManager.instance) {
@@ -60,7 +60,7 @@ class HubServiceManager {
       console.log('🚀 Initializing CODAI Hub Services...');
 
       // Initialize services in order of dependencies
-      
+
       // 1. Initialize auth service (no dependencies)
       console.log('🔐 Initializing Authentication Service...');
       this.services.auth = new CentralizedAuthService(config.auth);
@@ -226,16 +226,16 @@ class HubServiceManager {
         if (status === 'healthy') healthyCount++;
 
       } catch (error) {
-        serviceChecks.push({ 
-          name, 
-          status: 'unhealthy' as const, 
+        serviceChecks.push({
+          name,
+          status: 'unhealthy' as const,
           details: error instanceof Error ? error.message : 'Unknown error'
         });
       }
     }
 
     const overall = healthyCount === serviceChecks.length ? 'healthy' :
-                    healthyCount > serviceChecks.length / 2 ? 'degraded' : 'unhealthy';
+      healthyCount > serviceChecks.length / 2 ? 'degraded' : 'unhealthy';
 
     return { overall, services: serviceChecks };
   }

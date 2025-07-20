@@ -25,6 +25,32 @@ let firestoreDB: any = null;
 let firebaseAuth: any = null;
 let firebaseStorage: any = null;
 
+// Helper functions for safe Firebase usage
+export const getFirebaseAuth = () => {
+  if (!firebaseAuth) {
+    throw new Error('Firebase Auth not initialized. Please check your configuration.');
+  }
+  return firebaseAuth;
+};
+
+export const getFirestoreDB = () => {
+  if (!firestoreDB) {
+    throw new Error('Firestore not initialized. Please check your configuration.');
+  }
+  return firestoreDB;
+};
+
+export const getFirebaseStorage = () => {
+  if (!firebaseStorage) {
+    throw new Error('Firebase Storage not initialized. Please check your configuration.');
+  }
+  return firebaseStorage;
+};
+
+export const isFirebaseInitialized = () => {
+  return firebaseApp !== null && firebaseAuth !== null && firestoreDB !== null && firebaseStorage !== null;
+};
+
 try {
   if (firebaseConfig.apiKey !== "placeholder-api-key") {
     firebaseApp = initializeApp(firebaseConfig);

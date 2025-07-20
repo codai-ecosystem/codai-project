@@ -2,7 +2,7 @@
  * FabricaiService - Universal Content Generation & Creative AI Service (MVP)
  */
 
-import type { 
+import type {
   ContentTemplate,
   ContentGeneration,
   ContentProject,
@@ -16,7 +16,7 @@ export class FabricaiService {
   private static instance: FabricaiService
   private isInitialized = false
 
-  private constructor() {}
+  private constructor() { }
 
   static getInstance(): FabricaiService {
     if (!FabricaiService.instance) {
@@ -41,7 +41,7 @@ export class FabricaiService {
   // ==================== TEMPLATE MANAGEMENT ====================
 
   async createTemplate(
-    userId: string, 
+    userId: string,
     templateData: Omit<ContentTemplate, 'id' | 'authorId' | 'createdAt' | 'updatedAt' | 'usageCount'>
   ): Promise<ContentTemplate> {
     const templateId = `tpl_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
@@ -115,7 +115,7 @@ export class FabricaiService {
     if (!template.name) {
       errors.push({ field: 'name', message: 'Template name is required', code: 'REQUIRED' })
     }
-    
+
     if (!template.template) {
       errors.push({ field: 'template', message: 'Template content is required', code: 'REQUIRED' })
     }
@@ -137,7 +137,7 @@ export class FabricaiService {
     // Simple simulation - in production, this would call AI services
     const variables = Object.keys(options.variables)
     const content = `Generated content using template ${options.templateId} with variables: ${variables.join(', ')}`
-    
+
     switch (options.outputFormat) {
       case 'markdown':
         return `# Generated Content\n\n${content}\n\n**Variables used:** ${JSON.stringify(options.variables, null, 2)}`

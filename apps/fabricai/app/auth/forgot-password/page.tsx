@@ -16,7 +16,7 @@ export default function ForgotPasswordPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    
+
     // Simulate login - replace with actual auth logic
     setTimeout(() => {
       localStorage.setItem('auth_token', 'mock_jwt_token_' + Date.now())
@@ -194,7 +194,7 @@ export default function ForgotPasswordPage() {
           {/* Sign Up Link */}
           <div className="mt-8 text-center">
             <p className="text-gray-300">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link
                 href="/auth/register"
                 className="text-pink-400 hover:text-pink-300 font-medium transition-colors"

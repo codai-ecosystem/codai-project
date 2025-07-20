@@ -255,15 +255,15 @@ export interface TrendAnalysis {
 
 export interface LocalizationService {
   translateContent(
-    content: string, 
-    targetLanguage: 'ro' | 'en', 
+    content: string,
+    targetLanguage: 'ro' | 'en',
     options?: {
       context?: string;
       formality?: string;
       preserveFormatting?: boolean;
     }
   ): Promise<TranslationResult>;
-  
+
   analyzeLanguage(text: string): Promise<LanguageAnalysis>;
   getCulturalContext(topic: string, region?: string): Promise<CulturalContext>;
   validateBusinessName(name: string): Promise<{

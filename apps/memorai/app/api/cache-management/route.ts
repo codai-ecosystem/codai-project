@@ -73,7 +73,7 @@ class MemoryCache {
         const hotKeys = entries
             .sort((a, b) => b.accessCount - a.accessCount)
             .slice(0, 5)
-            .map(entry => Array.from(this.cache.entries()).find(([k, v]) => v === entry)?.[0])
+            .map(entry => Array.from(this.cache.entries()).find(([_k, v]) => v === entry)?.[0])
             .filter(Boolean) as string[]
 
         return {

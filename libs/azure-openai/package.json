@@ -12,10 +12,10 @@
     }
   },
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "build": "cd ../../ && npx tsc --project libs/azure-openai",
     "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
     "clean": "rm -rf dist",
-    "type-check": "pnpm exec tsc --noEmit",
+    "type-check": "cd ../../ && npx tsc --noEmit --project libs/azure-openai",
     "lint": "pnpm exec eslint src --ext .ts,.tsx",
     "test": "vitest",
     "test:run": "vitest run",

@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user) {
       return NextResponse.json(
         { message: "Unauthorized" },
@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user) {
       return NextResponse.json(
         { message: "Unauthorized" },
@@ -70,16 +70,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Generate a slug from the workspace name
+    const slug = name.toLowerCase()
+      .replace(/[^\w\s-]/g, '') // Remove special characters
+      .replace(/\s+/g, '-')     // Replace spaces with hyphens
+      .trim();
+
     const workspace = await prisma.workspace.create({
       data: {
         name,
         description,
+        slug,
         ownerId: session.user.id,
-        settings: {
-          isPublic: false,
-          allowInvites: true,
-          defaultRole: "VIEWER"
-        }
       },
       include: {
         owner: {

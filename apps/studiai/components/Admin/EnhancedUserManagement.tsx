@@ -112,54 +112,54 @@ const EnhancedUserManagement: React.FC = () => {
   // Filtered and sorted users
   const filteredUsers = users
     ? Object.values(users)
-        .filter(user => {
-          // Text search filter
-          const textMatch =
-            user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            user.displayName?.toLowerCase().includes(searchTerm.toLowerCase());
+      .filter(user => {
+        // Text search filter
+        const textMatch =
+          user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.displayName?.toLowerCase().includes(searchTerm.toLowerCase());
 
-          // Role filter
-          const roleMatch =
-            userRoleFilter === 'all' || user.role === userRoleFilter;
+        // Role filter
+        const roleMatch =
+          userRoleFilter === 'all' || user.role === userRoleFilter;
 
-          // Verification filter
-          const verificationMatch =
-            verificationFilter === 'all' ||
-            (verificationFilter === 'verified' && user.emailVerified) ||
-            (verificationFilter === 'unverified' && !user.emailVerified);
+        // Verification filter
+        const verificationMatch =
+          verificationFilter === 'all' ||
+          (verificationFilter === 'verified' && user.emailVerified) ||
+          (verificationFilter === 'unverified' && !user.emailVerified);
 
-          // Activity filter (simplified for demo - in real app would check actual activity)
-          const activityMatch =
-            activityFilter === 'all' ||
-            (activityFilter === 'active' &&
-              Object.keys(user.enrollments || {}).length > 0) ||
-            (activityFilter === 'inactive' &&
-              Object.keys(user.enrollments || {}).length === 0);
+        // Activity filter (simplified for demo - in real app would check actual activity)
+        const activityMatch =
+          activityFilter === 'all' ||
+          (activityFilter === 'active' &&
+            Object.keys(user.enrollments || {}).length > 0) ||
+          (activityFilter === 'inactive' &&
+            Object.keys(user.enrollments || {}).length === 0);
 
-          return textMatch && roleMatch && verificationMatch && activityMatch;
-        })
-        .sort((a, b) => {
-          // Convert timestamps to dates for comparison
-          const getDateValue = (user: UserProfile, field: string) => {
-            if (field === 'createdAt') {
-              const createdAt = user.createdAt;
-              if (typeof createdAt === 'object' && 'seconds' in createdAt) {
-                return new Date(createdAt.seconds * 1000);
-              }
-              return new Date(createdAt || 0);
+        return textMatch && roleMatch && verificationMatch && activityMatch;
+      })
+      .sort((a, b) => {
+        // Convert timestamps to dates for comparison
+        const getDateValue = (user: UserProfile, field: string) => {
+          if (field === 'createdAt') {
+            const createdAt = user.createdAt;
+            if (typeof createdAt === 'object' && 'seconds' in createdAt) {
+              return new Date(createdAt.seconds * 1000);
             }
-            return user.displayName || user.email || '';
-          };
-
-          const valueA = getDateValue(a, sortBy);
-          const valueB = getDateValue(b, sortBy);
-
-          if (sortDirection === 'asc') {
-            return valueA > valueB ? 1 : -1;
-          } else {
-            return valueA < valueB ? 1 : -1;
+            return new Date(createdAt || 0);
           }
-        })
+          return user.displayName || user.email || '';
+        };
+
+        const valueA = getDateValue(a, sortBy);
+        const valueB = getDateValue(b, sortBy);
+
+        if (sortDirection === 'asc') {
+          return valueA > valueB ? 1 : -1;
+        } else {
+          return valueA < valueB ? 1 : -1;
+        }
+      })
     : [];
 
   const paginatedUsers = filteredUsers.slice(
@@ -184,7 +184,7 @@ const EnhancedUserManagement: React.FC = () => {
     if (!selectedUser) return;
 
     try {
-      const db = getFirestore(firebaseApp);
+      const db = getFirestoreDB();
       const userRef = doc(db, `users/${selectedUser.id}`);
 
       await updateDoc(userRef, {
@@ -221,7 +221,7 @@ const EnhancedUserManagement: React.FC = () => {
     if (!selectedUser) return;
 
     try {
-      const db = getFirestore(firebaseApp);
+      const db = getFirestoreDB();
       const notesRef = doc(db, `users/${selectedUser.id}/metadata/notes`);
 
       await setDoc(notesRef, {
@@ -237,7 +237,7 @@ const EnhancedUserManagement: React.FC = () => {
 
   const loadUserNotes = async (userId: string) => {
     try {
-      const db = getFirestore(firebaseApp);
+      const db = getFirestoreDB();
       const notesRef = doc(db, `users/${userId}/metadata/notes`);
       const notesDoc = await getDocs(
         collection(db, `users/${userId}/metadata`)
@@ -552,7 +552,7 @@ const EnhancedUserManagement: React.FC = () => {
                     </TableCell>
                     <TableCell>
                       {user.enrollments &&
-                      Object.keys(user.enrollments).length > 0 ? (
+                        Object.keys(user.enrollments).length > 0 ? (
                         <Chip color="success" size="sm">
                           {Object.keys(user.enrollments).length} Courses
                         </Chip>
@@ -567,8 +567,8 @@ const EnhancedUserManagement: React.FC = () => {
                         ? typeof user.createdAt === 'object' &&
                           'seconds' in user.createdAt
                           ? new Date(
-                              user.createdAt.seconds * 1000
-                            ).toLocaleDateString()
+                            user.createdAt.seconds * 1000
+                          ).toLocaleDateString()
                           : new Date(user.createdAt).toLocaleDateString()
                         : 'Unknown'}
                     </TableCell>
@@ -808,14 +808,14 @@ const EnhancedUserManagement: React.FC = () => {
                                 <p className="mt-1">
                                   {selectedUser.createdAt
                                     ? typeof selectedUser.createdAt ===
-                                        'object' &&
+                                      'object' &&
                                       'seconds' in selectedUser.createdAt
                                       ? new Date(
-                                          selectedUser.createdAt.seconds * 1000
-                                        ).toLocaleString()
+                                        selectedUser.createdAt.seconds * 1000
+                                      ).toLocaleString()
                                       : new Date(
-                                          selectedUser.createdAt
-                                        ).toLocaleString()
+                                        selectedUser.createdAt
+                                      ).toLocaleString()
                                     : 'Unknown'}
                                 </p>
                               </div>
@@ -827,14 +827,14 @@ const EnhancedUserManagement: React.FC = () => {
                                 <p className="mt-1">
                                   {selectedUser.updatedAt
                                     ? typeof selectedUser.updatedAt ===
-                                        'object' &&
+                                      'object' &&
                                       'seconds' in selectedUser.updatedAt
                                       ? new Date(
-                                          selectedUser.updatedAt.seconds * 1000
-                                        ).toLocaleString()
+                                        selectedUser.updatedAt.seconds * 1000
+                                      ).toLocaleString()
                                       : new Date(
-                                          selectedUser.updatedAt
-                                        ).toLocaleString()
+                                        selectedUser.updatedAt
+                                      ).toLocaleString()
                                     : 'Never'}
                                 </p>
                               </div>
@@ -898,7 +898,7 @@ const EnhancedUserManagement: React.FC = () => {
                         </div>
 
                         {selectedUser.enrollments &&
-                        Object.keys(selectedUser.enrollments).length > 0 ? (
+                          Object.keys(selectedUser.enrollments).length > 0 ? (
                           <div className="space-y-2">
                             {Object.entries(selectedUser.enrollments).map(
                               ([courseId, enrollment]) => {
@@ -916,15 +916,15 @@ const EnhancedUserManagement: React.FC = () => {
                                         Enrolled:{' '}
                                         {enrollment.enrolledAt
                                           ? typeof enrollment.enrolledAt ===
-                                              'object' &&
+                                            'object' &&
                                             'seconds' in enrollment.enrolledAt
                                             ? new Date(
-                                                enrollment.enrolledAt.seconds *
-                                                  1000
-                                              ).toLocaleDateString()
+                                              enrollment.enrolledAt.seconds *
+                                              1000
+                                            ).toLocaleDateString()
                                             : new Date(
-                                                enrollment.enrolledAt
-                                              ).toLocaleDateString()
+                                              enrollment.enrolledAt
+                                            ).toLocaleDateString()
                                           : 'Unknown date'}
                                       </p>
                                     </div>
@@ -1022,14 +1022,14 @@ const EnhancedUserManagement: React.FC = () => {
                               <p className="text-sm text-gray-500 dark:text-gray-400">
                                 {selectedUser.createdAt
                                   ? typeof selectedUser.createdAt ===
-                                      'object' &&
+                                    'object' &&
                                     'seconds' in selectedUser.createdAt
                                     ? new Date(
-                                        selectedUser.createdAt.seconds * 1000
-                                      ).toLocaleString()
+                                      selectedUser.createdAt.seconds * 1000
+                                    ).toLocaleString()
                                     : new Date(
-                                        selectedUser.createdAt
-                                      ).toLocaleString()
+                                      selectedUser.createdAt
+                                    ).toLocaleString()
                                   : 'Unknown'}
                               </p>
                             </div>
@@ -1060,15 +1060,15 @@ const EnhancedUserManagement: React.FC = () => {
                                     <p className="text-sm text-gray-500 dark:text-gray-400">
                                       {enrollment.enrolledAt
                                         ? typeof enrollment.enrolledAt ===
-                                            'object' &&
+                                          'object' &&
                                           'seconds' in enrollment.enrolledAt
                                           ? new Date(
-                                              enrollment.enrolledAt.seconds *
-                                                1000
-                                            ).toLocaleString()
+                                            enrollment.enrolledAt.seconds *
+                                            1000
+                                          ).toLocaleString()
                                           : new Date(
-                                              enrollment.enrolledAt
-                                            ).toLocaleString()
+                                            enrollment.enrolledAt
+                                          ).toLocaleString()
                                         : 'Unknown date'}
                                     </p>
                                     <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
@@ -1151,13 +1151,13 @@ const EnhancedUserManagement: React.FC = () => {
                                   size="sm"
                                   color={
                                     selectedUser.role === 'admin' ||
-                                    selectedUser.role === 'instructor'
+                                      selectedUser.role === 'instructor'
                                       ? 'success'
                                       : 'danger'
                                   }
                                 >
                                   {selectedUser.role === 'admin' ||
-                                  selectedUser.role === 'instructor'
+                                    selectedUser.role === 'instructor'
                                     ? 'Yes'
                                     : 'No'}
                                 </Chip>
@@ -1196,13 +1196,13 @@ const EnhancedUserManagement: React.FC = () => {
                                   size="sm"
                                   color={
                                     selectedUser.role === 'admin' ||
-                                    selectedUser.role === 'instructor'
+                                      selectedUser.role === 'instructor'
                                       ? 'success'
                                       : 'danger'
                                   }
                                 >
                                   {selectedUser.role === 'admin' ||
-                                  selectedUser.role === 'instructor'
+                                    selectedUser.role === 'instructor'
                                     ? 'Yes'
                                     : 'No'}
                                 </Chip>

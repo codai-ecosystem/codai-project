@@ -88,7 +88,7 @@ export class AdvancedMemorySearch {
     const startTime = performance.now()
 
     // Apply filters first
-    let filteredMemories = this.applyFilters(memories, options.filterBy)
+    const filteredMemories = this.applyFilters(memories, options.filterBy)
 
     this.updateIndex(filteredMemories)
 

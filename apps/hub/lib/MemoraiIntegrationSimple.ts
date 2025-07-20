@@ -1,9 +1,46 @@
 /**
  * Simplified Memorai Integration Service for Hub App
  * Demonstrates basic memorai integration with project management
+ * Using mock implementation for now until package linking is fixed
  */
 
-import { memorai } from '@codai/memorai'
+// Mock memorai service for demo purposes
+const mockMemoraiService = {
+  initialize: async () => {
+    console.log('Mock memorai service initialized');
+    return Promise.resolve();
+  },
+
+  storeMemory: async (data: any) => {
+    console.log('Mock storing memory:', data);
+    return Promise.resolve({ success: true });
+  },
+
+  searchMemories: async (query: any) => {
+    console.log('Mock searching memories:', query);
+    return Promise.resolve({
+      success: true,
+      data: [] // Return empty results for now
+    });
+  },
+
+  uploadFile: async (fileData: any, userId: string) => {
+    console.log('Mock file upload:', fileData, userId);
+    return Promise.resolve({
+      success: true,
+      data: {
+        filename: fileData.filename,
+        url: `mock-url-${Date.now()}`
+      }
+    });
+  },
+
+  getHealth: async () => {
+    return Promise.resolve({ status: 'healthy', version: '1.0.0' });
+  }
+};
+
+const memorai = mockMemoraiService;
 
 // Hub-specific types
 interface HubProject {
@@ -30,7 +67,7 @@ class HubMemoraiService {
     try {
       // Initialize memorai service
       await memorai.initialize();
-      
+
       this.initialized = true;
       console.log('Hub Memorai Service initialized successfully');
     } catch (error) {
@@ -57,7 +94,7 @@ class HubMemoraiService {
       // Store project in AI memory for intelligent search
       await memorai.storeMemory({
         content: `Project: ${project.name}. Description: ${project.description}. Status: ${project.status}. Priority: ${project.priority}. Tags: ${project.tags.join(', ')}`,
-        metadata: { 
+        metadata: {
           projectId: project.id,
           tags: project.tags,
           type: 'project',
@@ -98,7 +135,7 @@ class HubMemoraiService {
       // Update AI memory
       await memorai.storeMemory({
         content: `Updated Project: ${updatedProject.name}. Description: ${updatedProject.description}. Status: ${updatedProject.status}. Priority: ${updatedProject.priority}. Progress: ${updatedProject.progress}%`,
-        metadata: { 
+        metadata: {
           projectId: updatedProject.id,
           tags: updatedProject.tags,
           type: 'project',
@@ -113,7 +150,7 @@ class HubMemoraiService {
     } catch (error) {
       console.warn('Failed to update project in AI memory:', error);
     }
-    
+
     return updatedProject;
   }
 
@@ -121,7 +158,7 @@ class HubMemoraiService {
     await this.initialize();
 
     const deleted = this.projects.delete(projectId);
-    
+
     if (deleted) {
       try {
         // Note: In a real implementation, you would use memorai.deleteMemory or similar
@@ -130,7 +167,7 @@ class HubMemoraiService {
         console.warn('Failed to remove project from AI memory:', error);
       }
     }
-    
+
     return deleted;
   }
 
@@ -143,12 +180,12 @@ class HubMemoraiService {
     await this.initialize();
 
     let projectList = Array.from(this.projects.values());
-    
+
     // Apply filters
     if (filters?.status) {
       projectList = projectList.filter(p => p.status === filters.status);
     }
-    
+
     if (filters?.priority) {
       projectList = projectList.filter(p => p.priority === filters.priority);
     }
@@ -185,7 +222,7 @@ class HubMemoraiService {
         const projectIds = searchResult.data
           .map(result => result.metadata?.projectId)
           .filter(Boolean);
-        
+
         const projects: HubProject[] = [];
         for (const projectId of projectIds) {
           const project = this.projects.get(projectId);
@@ -201,7 +238,7 @@ class HubMemoraiService {
     // Fallback to simple text search
     const allProjects = Array.from(this.projects.values());
     const searchTerms = query.toLowerCase().split(' ');
-    
+
     return allProjects.filter(project => {
       const searchText = `${project.name} ${project.description} ${project.tags.join(' ')}`.toLowerCase();
       return searchTerms.some(term => searchText.includes(term));
@@ -214,7 +251,7 @@ class HubMemoraiService {
 
     try {
       const fileName = `projects/${projectId}/${category}/${Date.now()}-${file.name}`;
-      
+
       // For demo purposes, we'll simulate file upload
       const uploadResult = await memorai.uploadFile({
         file: new Uint8Array(await file.arrayBuffer()),
@@ -227,7 +264,7 @@ class HubMemoraiService {
         // Store file reference in memory
         await memorai.storeMemory({
           content: `File uploaded: ${file.name} for project ${projectId} in category ${category}`,
-          metadata: { 
+          metadata: {
             projectId,
             fileName: uploadResult.data.filename,
             category,

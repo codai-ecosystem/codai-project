@@ -115,7 +115,7 @@ class CodaiServiceManager {
   private codaiConfig?: CodaiServiceConfig['codai'];
   private aiAssistantContext: Map<string, any> = new Map();
 
-  private constructor() {}
+  private constructor() { }
 
   static getInstance(): CodaiServiceManager {
     if (!CodaiServiceManager.instance) {
@@ -143,7 +143,7 @@ class CodaiServiceManager {
 
   private async initializeAIAssistant(): Promise<void> {
     console.log('🧠 Initializing AI Assistant...');
-    
+
     // Load AI assistant context and preferences
     const memorai = this.hubServices.memorai;
     const auth = this.hubServices.auth;
@@ -424,19 +424,19 @@ function {{this.name}}({{this.params}}) {
         const generatedCode = `// Generated code for: ${requirements}
 // Language: ${language}
 
-${requirements.includes('class') ? 
-  `class GeneratedClass {
+${requirements.includes('class') ?
+            `class GeneratedClass {
     constructor() {
       // Initialize class
     }
     
     // TODO: Implement methods based on requirements
   }` :
-  `function generatedFunction() {
+            `function generatedFunction() {
     // TODO: Implement based on requirements
     // ${requirements}
   }`
-}`;
+          }`;
 
         return {
           code: generatedCode,
@@ -458,7 +458,7 @@ ${requirements.includes('class') ?
         improvements: string[];
       }> {
         const analysis = await this.analyzeCode(code, language);
-        
+
         return {
           issues: analysis.issues,
           suggestions: analysis.suggestions,
@@ -492,11 +492,11 @@ ${requirements.includes('class') ?
   // Code Analysis
   private async analyzeCode(code: string, filePathOrLanguage: string): Promise<CodeAnalysis> {
     const language = this.detectLanguage(filePathOrLanguage);
-    
+
     // Simplified static analysis (real implementation would use AST parsing)
     const lines = code.split('\n');
     const issues: CodeIssue[] = [];
-    
+
     // Basic pattern matching for common issues
     lines.forEach((line, index) => {
       // Check for console.log (should be removed in production)
@@ -553,7 +553,7 @@ ${requirements.includes('class') ?
 
   private detectLanguage(filePath: string): string {
     const extension = filePath.split('.').pop()?.toLowerCase();
-    
+
     const languageMap: Record<string, string> = {
       'js': 'javascript',
       'jsx': 'javascript',
@@ -578,12 +578,12 @@ ${requirements.includes('class') ?
   private calculateCyclomaticComplexity(code: string): number {
     // Simplified cyclomatic complexity calculation
     const complexityKeywords = [
-      'if', 'else', 'elif', 'while', 'for', 'switch', 'case', 
+      'if', 'else', 'elif', 'while', 'for', 'switch', 'case',
       'try', 'catch', 'finally', '&&', '||', '?'
     ];
-    
+
     let complexity = 1; // Base complexity
-    
+
     complexityKeywords.forEach(keyword => {
       const matches = code.match(new RegExp(`\\b${keyword}\\b`, 'g'));
       if (matches) {

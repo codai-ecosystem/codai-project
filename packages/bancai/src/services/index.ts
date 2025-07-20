@@ -1,6 +1,6 @@
 // Placeholder service classes - to be implemented
 export class PaymentService {
-  constructor(private bancai: any) {}
+  constructor(private bancai: any) { }
   async initialize() { console.log('PaymentService initialized') }
   async healthCheck() { return true }
   async createPaymentIntent(params: any) { return { success: true, data: null } }
@@ -13,7 +13,7 @@ export class PaymentService {
 }
 
 export class TransactionService {
-  constructor(private bancai: any) {}
+  constructor(private bancai: any) { }
   async initialize() { console.log('TransactionService initialized') }
   async healthCheck() { return true }
   async getTransaction(id: string) { return { success: true, data: null } }
@@ -22,7 +22,7 @@ export class TransactionService {
 }
 
 export class SubscriptionService {
-  constructor(private bancai: any) {}
+  constructor(private bancai: any) { }
   async initialize() { console.log('SubscriptionService initialized') }
   async healthCheck() { return true }
   async createSubscription(params: any) { return { success: true, data: null } }
@@ -35,7 +35,7 @@ export class SubscriptionService {
 }
 
 export class CustomerService {
-  constructor(private bancai: any) {}
+  constructor(private bancai: any) { }
   async initialize() { console.log('CustomerService initialized') }
   async healthCheck() { return true }
   async createCustomer(params: any) { return { success: true, data: null } }
@@ -45,7 +45,7 @@ export class CustomerService {
 }
 
 export class FraudService {
-  constructor(private bancai: any) {}
+  constructor(private bancai: any) { }
   async initialize() { console.log('FraudService initialized') }
   async healthCheck() { return true }
   async assessRisk(data: any) { return { success: true, data: { riskLevel: 'low', score: 0.1 } } }
@@ -53,7 +53,7 @@ export class FraudService {
 }
 
 export class AnalyticsService {
-  constructor(private bancai: any) {}
+  constructor(private bancai: any) { }
   async initialize() { console.log('AnalyticsService initialized') }
   async healthCheck() { return true }
   async getFinancialMetrics(params: any) { return { success: true, data: {} } }
@@ -61,11 +61,11 @@ export class AnalyticsService {
 }
 
 export class CurrencyService {
-  constructor(private bancai: any) {}
+  constructor(private bancai: any) { }
   async initialize() { console.log('CurrencyService initialized') }
   async healthCheck() { return true }
-  async convert(amount: number, from: string, to: string) { 
-    return { success: true, data: { convertedAmount: amount, rate: { from, to, rate: 1 } } } 
+  async convert(amount: number, from: string, to: string) {
+    return { success: true, data: { convertedAmount: amount, rate: { from, to, rate: 1 } } }
   }
   async getExchangeRates(base?: string) { return { success: true, data: [] } }
 }

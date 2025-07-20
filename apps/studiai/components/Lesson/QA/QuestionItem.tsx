@@ -48,7 +48,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({ question }) => {
     if (!user) return;
 
     try {
-      const questionRef = doc(firestoreDB, 'questions', question.id);
+      const questionRef = doc(getFirestoreDB(), 'questions', question.id);
       const isLiked = question.likedBy?.includes(user.uid);
 
       if (isLiked) {

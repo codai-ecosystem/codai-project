@@ -133,7 +133,7 @@ export class BancaiService extends EventEmitter {
   }
 
   async confirmPaymentIntent(
-    paymentIntentId: string, 
+    paymentIntentId: string,
     paymentMethodId?: string
   ): Promise<BancaiResponse<PaymentIntent>> {
     return this.payments.confirmPaymentIntent(paymentIntentId, paymentMethodId)
@@ -167,7 +167,7 @@ export class BancaiService extends EventEmitter {
   }
 
   async updateCustomer(
-    customerId: string, 
+    customerId: string,
     updates: Partial<Customer>
   ): Promise<BancaiResponse<Customer>> {
     return this.customers.updateCustomer(customerId, updates)
@@ -183,7 +183,7 @@ export class BancaiService extends EventEmitter {
 
   // Payment Method Management
   async attachPaymentMethod(
-    paymentMethodId: string, 
+    paymentMethodId: string,
     customerId: string
   ): Promise<BancaiResponse<PaymentMethod>> {
     return this.payments.attachPaymentMethod(paymentMethodId, customerId)
@@ -194,7 +194,7 @@ export class BancaiService extends EventEmitter {
   }
 
   async listPaymentMethods(
-    customerId: string, 
+    customerId: string,
     type?: 'card' | 'bank_account'
   ): Promise<BancaiResponse<PaymentMethod[]>> {
     return this.payments.listPaymentMethods(customerId, type)
@@ -338,7 +338,7 @@ export class BancaiService extends EventEmitter {
   private async handlePaymentSucceeded(paymentIntent: any): Promise<void> {
     // Update transaction status
     await this.transactions.updateTransactionStatus(paymentIntent.id, 'succeeded')
-    
+
     // Trigger analytics update
     this.emit('payment.succeeded', { paymentIntent })
   }
@@ -346,7 +346,7 @@ export class BancaiService extends EventEmitter {
   private async handlePaymentFailed(paymentIntent: any): Promise<void> {
     // Update transaction status
     await this.transactions.updateTransactionStatus(paymentIntent.id, 'failed')
-    
+
     // Trigger fraud analysis
     await this.fraud.analyzeFailed
   }
@@ -354,21 +354,21 @@ export class BancaiService extends EventEmitter {
   private async handleSubscriptionCreated(subscription: any): Promise<void> {
     // Store subscription data
     await this.subscriptions.storeSubscription(subscription)
-    
+
     this.emit('subscription.created', { subscription })
   }
 
   private async handleSubscriptionUpdated(subscription: any): Promise<void> {
     // Update subscription data
     await this.subscriptions.updateStoredSubscription(subscription.id, subscription)
-    
+
     this.emit('subscription.updated', { subscription })
   }
 
   private async handleSubscriptionDeleted(subscription: any): Promise<void> {
     // Mark subscription as deleted
     await this.subscriptions.markSubscriptionDeleted(subscription.id)
-    
+
     this.emit('subscription.deleted', { subscription })
   }
 

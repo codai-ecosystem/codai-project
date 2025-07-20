@@ -22,7 +22,7 @@ export class StorageService extends EventEmitter {
     try {
       // Ensure storage directory exists
       await fs.mkdir(this.storagePath, { recursive: true })
-      
+
       // Create subdirectories
       const subdirs = ['uploads', 'temp', 'cache', 'backups']
       for (const subdir of subdirs) {
@@ -54,18 +54,18 @@ export class StorageService extends EventEmitter {
 
     try {
       const startTime = Date.now()
-      
+
       // Validate file
       await this.validateFile(file)
-      
+
       // Generate unique filename if needed
       const { filename, fullPath } = await this.generateFilePath(filePath, file.filename)
-      
+
       // Ensure directory exists
       await fs.mkdir(path.dirname(fullPath), { recursive: true })
-      
+
       let fileBuffer: Buffer
-      
+
       // Convert file data to Buffer
       if (file.file instanceof Buffer) {
         fileBuffer = file.file
@@ -74,33 +74,33 @@ export class StorageService extends EventEmitter {
         const chunks: Buffer[] = []
         const stream = file.file as ReadableStream
         const reader = stream.getReader()
-        
+
         while (true) {
           const { done, value } = await reader.read()
           if (done) break
           chunks.push(Buffer.from(value))
         }
-        
+
         fileBuffer = Buffer.concat(chunks)
       }
-      
+
       // Calculate file hash
       const hash = createHash('sha256').update(fileBuffer).digest('hex')
-      
+
       // Process image files (resize, optimize)
       if (this.isImageFile(file.mimeType)) {
         fileBuffer = await this.processImage(fileBuffer, file.mimeType)
       }
-      
+
       // Write file to storage
       await fs.writeFile(fullPath, fileBuffer)
-      
+
       const fileSize = fileBuffer.length
       const uploadTime = Date.now() - startTime
-      
+
       // Generate public URL
       const url = await this.generateUrl(filePath)
-      
+
       // Create storage file record
       const storageFile: StorageFile = {
         id: `file_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -126,11 +126,11 @@ export class StorageService extends EventEmitter {
           storageProvider: this.config.provider
         }
       }
-      
+
       this.emit('file:uploaded', { storageFile, uploadTime })
-      
+
       return storageFile
-      
+
     } catch (error) {
       console.error('File upload error:', error)
       this.emit('file:upload_error', { filePath, error })
@@ -145,20 +145,20 @@ export class StorageService extends EventEmitter {
 
     try {
       const fullPath = path.join(this.storagePath, filePath)
-      
+
       // Check if file exists
       try {
         await fs.access(fullPath)
       } catch {
         throw new Error(`File not found: ${filePath}`)
       }
-      
+
       const fileBuffer = await fs.readFile(fullPath)
-      
+
       this.emit('file:downloaded', { filePath, size: fileBuffer.length })
-      
+
       return fileBuffer
-      
+
     } catch (error) {
       console.error('File download error:', error)
       this.emit('file:download_error', { filePath, error })
@@ -173,7 +173,7 @@ export class StorageService extends EventEmitter {
 
     try {
       const fullPath = path.join(this.storagePath, filePath)
-      
+
       // Check if file exists
       try {
         await fs.access(fullPath)
@@ -181,13 +181,13 @@ export class StorageService extends EventEmitter {
         // File doesn't exist, consider it deleted
         return true
       }
-      
+
       await fs.unlink(fullPath)
-      
+
       this.emit('file:deleted', { filePath })
-      
+
       return true
-      
+
     } catch (error) {
       console.error('File deletion error:', error)
       this.emit('file:delete_error', { filePath, error })
@@ -210,20 +210,20 @@ export class StorageService extends EventEmitter {
     try {
       const searchPath = prefix ? path.join(this.storagePath, prefix) : this.storagePath
       const files: StorageFile[] = []
-      
+
       const scan = async (dir: string, relativePath = '') => {
         const entries = await fs.readdir(dir, { withFileTypes: true })
-        
+
         for (const entry of entries) {
           const fullPath = path.join(dir, entry.name)
           const relativeFilePath = path.join(relativePath, entry.name)
-          
+
           if (entry.isDirectory()) {
             await scan(fullPath, relativeFilePath)
           } else {
             const stats = await fs.stat(fullPath)
             const hash = await this.calculateFileHash(fullPath)
-            
+
             files.push({
               id: `file_${hash.substring(0, 16)}`,
               filename: entry.name,
@@ -247,13 +247,13 @@ export class StorageService extends EventEmitter {
           }
         }
       }
-      
+
       await scan(searchPath)
-      
+
       this.emit('files:listed', { count: files.length, prefix })
-      
+
       return files
-      
+
     } catch (error) {
       console.error('File listing error:', error)
       this.emit('files:list_error', { prefix, error })
@@ -265,16 +265,16 @@ export class StorageService extends EventEmitter {
     try {
       const fromFullPath = path.join(this.storagePath, fromPath)
       const toFullPath = path.join(this.storagePath, toPath)
-      
+
       // Ensure destination directory exists
       await fs.mkdir(path.dirname(toFullPath), { recursive: true })
-      
+
       await fs.copyFile(fromFullPath, toFullPath)
-      
+
       this.emit('file:copied', { fromPath, toPath })
-      
+
       return true
-      
+
     } catch (error) {
       console.error('File copy error:', error)
       this.emit('file:copy_error', { fromPath, toPath, error })
@@ -286,16 +286,16 @@ export class StorageService extends EventEmitter {
     try {
       const fromFullPath = path.join(this.storagePath, fromPath)
       const toFullPath = path.join(this.storagePath, toPath)
-      
+
       // Ensure destination directory exists
       await fs.mkdir(path.dirname(toFullPath), { recursive: true })
-      
+
       await fs.rename(fromFullPath, toFullPath)
-      
+
       this.emit('file:moved', { fromPath, toPath })
-      
+
       return true
-      
+
     } catch (error) {
       console.error('File move error:', error)
       this.emit('file:move_error', { fromPath, toPath, error })
@@ -311,10 +311,10 @@ export class StorageService extends EventEmitter {
     try {
       // Check if storage directory is accessible
       await fs.access(this.storagePath)
-      
+
       // Get storage statistics
       const stats = await fs.stat(this.storagePath)
-      
+
       return {
         status: 'healthy',
         details: {
@@ -325,7 +325,7 @@ export class StorageService extends EventEmitter {
           createdAt: stats.birthtime
         }
       }
-      
+
     } catch (error) {
       return {
         status: 'unhealthy',
@@ -344,23 +344,23 @@ export class StorageService extends EventEmitter {
     if (file.size && file.size > this.config.maxFileSize) {
       throw new Error(`File size exceeds limit: ${file.size} > ${this.config.maxFileSize}`)
     }
-    
+
     // Check file type
     if (this.config.allowedTypes.length > 0) {
-      const isAllowed = this.config.allowedTypes.some(type => 
+      const isAllowed = this.config.allowedTypes.some(type =>
         file.mimeType.startsWith(type) || file.mimeType === type
       )
-      
+
       if (!isAllowed) {
         throw new Error(`File type not allowed: ${file.mimeType}`)
       }
     }
-    
+
     // Check filename
     if (!file.filename || file.filename.length === 0) {
       throw new Error('Filename is required')
     }
-    
+
     // Sanitize filename
     const sanitized = file.filename.replace(/[^a-zA-Z0-9.-]/g, '_')
     if (sanitized !== file.filename) {
@@ -370,22 +370,22 @@ export class StorageService extends EventEmitter {
 
   private async generateFilePath(basePath: string, filename: string): Promise<{ filename: string; fullPath: string }> {
     const fullPath = path.join(this.storagePath, basePath, filename)
-    
+
     // Check if file already exists
     try {
       await fs.access(fullPath)
-      
+
       // Generate unique filename
       const ext = path.extname(filename)
       const base = path.basename(filename, ext)
       const timestamp = Date.now()
       const newFilename = `${base}_${timestamp}${ext}`
-      
+
       return {
         filename: newFilename,
         fullPath: path.join(this.storagePath, basePath, newFilename)
       }
-      
+
     } catch {
       // File doesn't exist, use original filename
       return { filename, fullPath }
@@ -400,16 +400,16 @@ export class StorageService extends EventEmitter {
     try {
       // Process with Sharp for optimization
       let processed = sharp(buffer)
-      
+
       // Auto-orient based on EXIF
       processed = processed.rotate()
-      
+
       // Resize if too large (max 2048px on longest side)
       processed = processed.resize(2048, 2048, {
         fit: 'inside',
         withoutEnlargement: true
       })
-      
+
       // Optimize based on format
       if (mimeType === 'image/jpeg') {
         processed = processed.jpeg({ quality: 85, progressive: true })
@@ -418,9 +418,9 @@ export class StorageService extends EventEmitter {
       } else if (mimeType === 'image/webp') {
         processed = processed.webp({ quality: 85 })
       }
-      
+
       return await processed.toBuffer()
-      
+
     } catch (error) {
       console.warn('Image processing failed, using original:', error)
       return buffer
@@ -438,7 +438,7 @@ export class StorageService extends EventEmitter {
 
   private getMimeType(filename: string): string {
     const ext = path.extname(filename).toLowerCase()
-    
+
     const mimeTypes: Record<string, string> = {
       '.txt': 'text/plain',
       '.json': 'application/json',
@@ -461,7 +461,7 @@ export class StorageService extends EventEmitter {
       '.mp4': 'video/mp4',
       '.mov': 'video/quicktime'
     }
-    
+
     return mimeTypes[ext] || 'application/octet-stream'
   }
 

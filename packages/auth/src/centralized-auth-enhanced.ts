@@ -15,7 +15,7 @@ export class EnhancedCentralizedAuthService {
   private loadStoredAuth(): void {
     try {
       const storedToken = localStorage.getItem(this.config.tokenStorageKey || 'auth_token')
-      const storedRefresh = localStorage.getItem(this.config.refreshTokenKey || 'refresh_token') 
+      const storedRefresh = localStorage.getItem(this.config.refreshTokenKey || 'refresh_token')
       const storedUser = localStorage.getItem('auth_user')
       const storedTenant = localStorage.getItem('current_tenant')
 
@@ -32,12 +32,12 @@ export class EnhancedCentralizedAuthService {
   private storeAuth(user: AuthUser, tokens: { accessToken: string; refreshToken?: string }): void {
     localStorage.setItem(this.config.tokenStorageKey || 'auth_token', tokens.accessToken)
     localStorage.setItem('auth_user', JSON.stringify(user))
-    
+
     if (tokens.refreshToken) {
       localStorage.setItem(this.config.refreshTokenKey || 'refresh_token', tokens.refreshToken)
       this.refreshToken = tokens.refreshToken
     }
-    
+
     this.currentUser = user
   }
 
@@ -46,7 +46,7 @@ export class EnhancedCentralizedAuthService {
     localStorage.removeItem(this.config.refreshTokenKey || 'refresh_token')
     localStorage.removeItem('auth_user')
     localStorage.removeItem('current_tenant')
-    
+
     this.currentUser = null
     this.refreshToken = null
     this.currentTenant = null
@@ -129,9 +129,9 @@ export class EnhancedCentralizedAuthService {
       throw new Error(data.error || 'Token refresh failed')
     }
 
-    this.storeAuth(data.user || this.currentUser!, { 
-      accessToken: data.accessToken, 
-      refreshToken: data.refreshToken 
+    this.storeAuth(data.user || this.currentUser!, {
+      accessToken: data.accessToken,
+      refreshToken: data.refreshToken
     })
 
     return data
@@ -145,7 +145,7 @@ export class EnhancedCentralizedAuthService {
           'Authorization': `Bearer ${localStorage.getItem(this.config.tokenStorageKey || 'auth_token')}`
         }
       })
-      
+
       const data = await response.json()
       return response.ok && data.hasRole
     } catch (error) {
@@ -161,7 +161,7 @@ export class EnhancedCentralizedAuthService {
           'Authorization': `Bearer ${localStorage.getItem(this.config.tokenStorageKey || 'auth_token')}`
         }
       })
-      
+
       const data = await response.json()
       return response.ok && data.hasPermission
     } catch (error) {
@@ -180,7 +180,7 @@ export class EnhancedCentralizedAuthService {
         },
         body: JSON.stringify({ userId, resource, action })
       })
-      
+
       const data = await response.json()
       return response.ok && data.hasAccess
     } catch (error) {

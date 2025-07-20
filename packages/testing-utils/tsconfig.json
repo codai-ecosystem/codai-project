@@ -16,14 +16,11 @@
     "declaration": true,
     "declarationMap": true,
     "outDir": "./dist",
-    "rootDir": "./src",
     "sourceMap": true,
-    "incremental": true,
-    "types": ["vitest/globals", "@testing-library/jest-dom"]
+    "incremental": true
   },
   "include": [
-    "src/**/*",
-    "configs/**/*"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",

@@ -1,6 +1,7 @@
 import React, { useState, useContext, useCallback, useEffect } from 'react';
 import { AppContext } from '@/components/AppContext';
 import { firestoreDB, firebaseStorage } from '@/utils/firebase/firebase.config';
+import { getFirestoreDB, getFirebaseStorage } from '@/lib/firebase-config';
 import {
   doc,
   addDoc,
@@ -27,10 +28,10 @@ import {
   FiTarget,
 } from '../icons/AdditionalIcons';
 import { LessonFormProps, CourseModule, LessonType } from '@/types';
-import Card, { CardBody, CardHeader } from '@/components/ui/Card';
-import Textarea from '@/components/ui/Textarea';
-import Input from '@/components/ui/Input';
-import Button from '@/components/ui/Button';
+import { Card, CardHeader } from '@/components/ui/Card';
+import { Textarea } from '@/components/ui/Textarea';
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
 import Select, { SelectItem } from '@/components/ui/Select';
 import Switch from '@/components/ui/Switch';
 import Chip from '@/components/ui/Chip';
@@ -242,7 +243,7 @@ export default function LessonForm({
       let downloadURL = '';
       if (file) {
         const storageRef = ref(
-          firebaseStorage,
+          getFirebaseStorage(),
           `lessons/${courseId}/${file.name}_${Date.now()}`
         );
         const snapshot = await uploadBytes(storageRef, file);
@@ -253,7 +254,7 @@ export default function LessonForm({
       const additionalFilesData = [];
       for (const addFile of additionalFiles) {
         const fileRef = ref(
-          firebaseStorage,
+          getFirebaseStorage(),
           `lessons/${courseId}/resources/${addFile.file.name}_${Date.now()}`
         );
         const fileSnapshot = await uploadBytes(fileRef, addFile.file);
@@ -322,7 +323,7 @@ export default function LessonForm({
 
       // Add the lesson to Firestore
       const lessonDocRef = await addDoc(
-        collection(firestoreDB, `courses/${courseId}/lessons`),
+        collection(getFirestoreDB(), `courses/${courseId}/lessons`),
         lesson
       );
 
@@ -1585,27 +1586,24 @@ export default function LessonForm({
                                 {question.options.map((option, oIndex) => (
                                   <div
                                     key={oIndex}
-                                    className={`p-3 rounded-lg flex items-center gap-2 ${
-                                      question.correctOption === oIndex
+                                    className={`p-3 rounded-lg flex items-center gap-2 ${question.correctOption === oIndex
                                         ? 'bg-green-100 dark:bg-green-900/20 border border-green-200 dark:border-green-800/30'
                                         : 'bg-[color:var(--ai-card-bg)]/50 border border-[color:var(--ai-card-border)]/30'
-                                    }`}
+                                      }`}
                                   >
                                     <div
-                                      className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                                        question.correctOption === oIndex
+                                      className={`w-8 h-8 rounded-full flex items-center justify-center ${question.correctOption === oIndex
                                           ? 'bg-green-200 dark:bg-green-800/30 text-green-800 dark:text-green-300'
                                           : 'bg-[color:var(--ai-primary)]/10 text-[color:var(--ai-primary)]'
-                                      } font-medium`}
+                                        } font-medium`}
                                     >
                                       {String.fromCharCode(65 + oIndex)}
                                     </div>
                                     <span
-                                      className={`${
-                                        question.correctOption === oIndex
+                                      className={`${question.correctOption === oIndex
                                           ? 'text-green-800 dark:text-green-300 font-medium'
                                           : 'text-[color:var(--ai-foreground)]'
-                                      }`}
+                                        }`}
                                     >
                                       {option}
                                     </span>

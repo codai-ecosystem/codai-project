@@ -28,7 +28,7 @@ export class DatabaseService extends EventEmitter {
 
       // Test connection
       await this.prisma.$connect()
-      
+
       // Run migrations if needed in development
       if (process.env.NODE_ENV === 'development') {
         try {
@@ -110,7 +110,7 @@ export class DatabaseService extends EventEmitter {
 
     // Build where conditions
     const where = this.buildWhereConditions(query.conditions)
-    
+
     // Build query options
     const queryOptions: any = {
       where,
@@ -163,7 +163,7 @@ export class DatabaseService extends EventEmitter {
     }
 
     const where = this.buildWhereConditions(query.conditions)
-    
+
     if (Object.keys(where).length === 0) {
       throw new Error('Update operations require WHERE conditions')
     }
@@ -187,7 +187,7 @@ export class DatabaseService extends EventEmitter {
     }
 
     const where = this.buildWhereConditions(query.conditions)
-    
+
     if (Object.keys(where).length === 0) {
       throw new Error('Delete operations require WHERE conditions')
     }
@@ -296,8 +296,8 @@ export class DatabaseService extends EventEmitter {
     try {
       // Simple health check query
       await this.prisma.$queryRaw`SELECT 1`
-      
-      return { 
+
+      return {
         status: 'healthy',
         details: {
           connected: true,
@@ -305,7 +305,7 @@ export class DatabaseService extends EventEmitter {
         }
       }
     } catch (error) {
-      return { 
+      return {
         status: 'unhealthy',
         details: {
           connected: false,

@@ -43,7 +43,7 @@ const modalVariants = {
     scale: 1,
     y: 0,
     transition: {
-      type: 'spring',
+      type: 'spring' as const,
       duration: 0.3,
       bounce: 0.3,
     },

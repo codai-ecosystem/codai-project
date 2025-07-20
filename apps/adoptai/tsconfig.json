@@ -1,5 +1,5 @@
 {
-  "extends": "@codai/tsconfig/nextjs.json",
+  "extends": "@codai/typescript-config/nextjs.json",
   "compilerOptions": {
     "plugins": [
       {

@@ -4,7 +4,12 @@
   "version": "1.0.0",
   "private": true,
   "description": "AdoptAI - AI-powered pet adoption platform",
-  "keywords": ["adoption", "pets", "ai", "matching"],
+  "keywords": [
+    "adoption",
+    "pets",
+    "ai",
+    "matching"
+  ],
   "scripts": {
     "dev": "next dev --port 7100",
     "build": "next build",
@@ -14,7 +19,7 @@
   },
   "dependencies": {
     "@codai/ui": "workspace:*",
-    "@codai/shared": "workspace:*",
+    "@codai/shared-types": "workspace:*",
     "next": "15.0.3",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
@@ -22,7 +27,7 @@
   },
   "devDependencies": {
     "@codai/eslint-config": "workspace:*",
-    "@codai/tsconfig": "workspace:*",
+    "@codai/typescript-config": "workspace:*",
     "@types/node": "^22.8.6",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",

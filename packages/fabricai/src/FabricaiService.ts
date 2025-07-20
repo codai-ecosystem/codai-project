@@ -12,7 +12,7 @@
  */
 
 import { EventEmitter } from 'events'
-import type { 
+import type {
   ContentTemplate,
   ContentGeneration,
   ContentProject,
@@ -29,7 +29,7 @@ import type {
 export class FabricaiService extends EventEmitter {
   private static instance: FabricaiService
   private isInitialized = false
-  
+
   // In-memory storage (replace with database integration)
   private templates = new Map<string, ContentTemplate>()
   private generations = new Map<string, ContentGeneration>()
@@ -60,19 +60,19 @@ export class FabricaiService extends EventEmitter {
 
     try {
       this.emit('initialization:started')
-      
+
       // Initialize Azure OpenAI for content generation
       await this.initializeAzureOpenAI()
-      
+
       // Register providers
       await this.initializeProviders()
-      
+
       // Setup event handlers
       this.setupEventHandlers()
 
       this.isInitialized = true
       this.emit('initialization:completed')
-      
+
       console.log('✅ FabricAI Service initialized with Azure OpenAI integration')
       console.log(`🎨 Active providers: ${this.activeProviders.size}`)
     } catch (error) {
@@ -150,7 +150,7 @@ export class FabricaiService extends EventEmitter {
       }
 
       console.log('✅ FabricAI Azure OpenAI provider configured successfully')
-      
+
     } catch (error) {
       console.error('❌ Failed to initialize Azure OpenAI for FabricAI:', error)
       throw error
@@ -193,7 +193,7 @@ export class FabricaiService extends EventEmitter {
   // ==================== TEMPLATE MANAGEMENT ====================
 
   async createTemplate(
-    userId: string, 
+    userId: string,
     templateData: Omit<ContentTemplate, 'id' | 'authorId' | 'createdAt' | 'updatedAt' | 'usageCount'>
   ): Promise<ContentTemplate> {
     const templateId = `tpl_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
@@ -232,15 +232,15 @@ export class FabricaiService extends EventEmitter {
     }
 
     try {
-      this.emit('content:generation:started', { 
-        generationId, 
+      this.emit('content:generation:started', {
+        generationId,
         templateId: options.templateId,
-        userId 
+        userId
       })
 
       // Generate content using Azure OpenAI
       const generatedResult = await this.generateWithAzureOpenAI(options)
-      
+
       // Update generation with results
       generation.generatedContent = generatedResult.content
       generation.status = 'completed'
@@ -255,8 +255,8 @@ export class FabricaiService extends EventEmitter {
       }
 
       this.generations.set(generationId, generation)
-      
-      this.emit('content:generation:completed', { 
+
+      this.emit('content:generation:completed', {
         generationId,
         generation,
         result: generatedResult
@@ -267,7 +267,7 @@ export class FabricaiService extends EventEmitter {
     } catch (error) {
       // Fallback to simulated content generation
       console.error('❌ Azure OpenAI generation failed, using fallback:', error)
-      
+
       generation.generatedContent = this.simulateContentGeneration(options)
       generation.status = 'completed'
       generation.completedAt = new Date()
@@ -279,8 +279,8 @@ export class FabricaiService extends EventEmitter {
       }
 
       this.generations.set(generationId, generation)
-      
-      this.emit('content:generation:error', { 
+
+      this.emit('content:generation:error', {
         generationId,
         error,
         fallbackUsed: true
@@ -304,10 +304,10 @@ export class FabricaiService extends EventEmitter {
 
     // Select optimal deployment for content generation
     const deployment = this.selectContentGenerationDeployment(options.model)
-    
+
     // Prepare the content generation prompt
     const prompt = this.prepareContentPrompt(options)
-    
+
     // Create completion request optimized for creative content
     const completionRequest = {
       messages: [
@@ -331,10 +331,10 @@ export class FabricaiService extends EventEmitter {
 
     // Simulate Azure OpenAI API call (replace with actual implementation)
     const startTime = Date.now()
-    
+
     // Enhanced mock response with creative content
     const generatedContent = this.generateCreativeContent(options)
-    
+
     const mockResponse = {
       id: `chatcmpl-${Date.now()}`,
       object: 'chat.completion',
@@ -354,12 +354,12 @@ export class FabricaiService extends EventEmitter {
         totalTokens: 0
       }
     }
-    
+
     mockResponse.usage.totalTokens = mockResponse.usage.promptTokens + mockResponse.usage.completionTokens
-    
+
     const responseTime = Date.now() - startTime
     const cost = this.calculateContentCost(deployment, mockResponse.usage)
-    
+
     return {
       content: mockResponse.choices[0].message.content,
       model: deployment.model,
@@ -372,15 +372,15 @@ export class FabricaiService extends EventEmitter {
 
   private selectContentGenerationDeployment(preferredModel?: string): any {
     const config = this.azureOpenAI.config
-    const textDeployments = config.deployments.filter((d: any) => 
+    const textDeployments = config.deployments.filter((d: any) =>
       d.status === 'active' && d.capabilities.text
     )
-    
+
     if (preferredModel) {
       const exactMatch = textDeployments.find((d: any) => d.model === preferredModel)
       if (exactMatch) return exactMatch
     }
-    
+
     // Default to GPT-4 Turbo for high-quality content generation
     return textDeployments.find((d: any) => d.name === 'fabricai-gpt4-turbo') || textDeployments[0]
   }
@@ -389,7 +389,7 @@ export class FabricaiService extends EventEmitter {
     const variablesText = Object.entries(options.variables)
       .map(([key, value]) => `${key}: ${JSON.stringify(value)}`)
       .join('\n')
-    
+
     return `Generate content with the following specifications:
 
 Template ID: ${options.templateId}
@@ -408,64 +408,64 @@ Additional Instructions:
   private generateCreativeContent(options: GenerationOptions): string {
     const outputFormat = options.outputFormat || 'markdown'
     const variables = options.variables || {}
-    
+
     // Generate contextual content based on variables and format
     let content = ''
-    
+
     if (variables.title) {
-      content += outputFormat === 'markdown' ? `# ${variables.title}\n\n` : 
-                  outputFormat === 'html' ? `<h1>${variables.title}</h1>\n\n` :
-                  `${variables.title}\n\n`
+      content += outputFormat === 'markdown' ? `# ${variables.title}\n\n` :
+        outputFormat === 'html' ? `<h1>${variables.title}</h1>\n\n` :
+          `${variables.title}\n\n`
     }
-    
+
     if (variables.topic || variables.subject) {
       const topic = variables.topic || variables.subject
       content += `This content explores the fascinating world of ${topic}. `
       content += `Through careful analysis and creative expression, we'll dive deep into the key aspects that make ${topic} both relevant and engaging.\n\n`
     }
-    
+
     if (variables.audience) {
       content += `Specifically tailored for ${variables.audience}, this content aims to provide valuable insights and actionable information.\n\n`
     }
-    
+
     // Add content sections based on common variables
     const sections = []
-    
+
     if (variables.introduction !== false) {
       sections.push("## Introduction\n\nWelcome to this comprehensive exploration. We'll begin by establishing the foundation and context necessary for understanding the topic at hand.")
     }
-    
+
     if (variables.mainPoints || variables.keyPoints) {
       const points = variables.mainPoints || variables.keyPoints
       if (Array.isArray(points)) {
         sections.push("## Key Points\n\n" + points.map((point, i) => `${i + 1}. ${point}`).join('\n'))
       }
     }
-    
+
     if (variables.examples !== false) {
       sections.push("## Examples and Applications\n\nPractical examples help illustrate the concepts and demonstrate real-world applications of the principles discussed.")
     }
-    
+
     if (variables.conclusion !== false) {
       sections.push("## Conclusion\n\nIn summary, this exploration has provided valuable insights and practical knowledge that can be applied in various contexts.")
     }
-    
+
     content += sections.join('\n\n')
-    
+
     // Add call-to-action if specified
     if (variables.callToAction) {
       content += `\n\n---\n\n**${variables.callToAction}**`
     }
-    
+
     return content || "This is a sample content generation result. In a real implementation, this would be generated by Azure OpenAI based on your template and variables."
   }
 
   private calculateContentCost(deployment: any, usage: any): number {
     if (!deployment.pricing) return 0
-    
+
     const inputCost = (usage.promptTokens || 0) * (deployment.pricing.inputTokenCost || 0) / 1000
     const outputCost = (usage.completionTokens || 0) * (deployment.pricing.outputTokenCost || 0) / 1000
-    
+
     return inputCost + outputCost
   }
 
@@ -506,7 +506,7 @@ Additional Instructions:
     if (!template.name) {
       errors.push({ field: 'name', message: 'Template name is required', code: 'REQUIRED' })
     }
-    
+
     if (!template.template) {
       errors.push({ field: 'template', message: 'Template content is required', code: 'REQUIRED' })
     }
@@ -528,7 +528,7 @@ Additional Instructions:
     // Simple simulation - in production, this would call AI services
     const variables = Object.keys(options.variables)
     const content = `Generated content using template ${options.templateId} with variables: ${variables.join(', ')}`
-    
+
     switch (options.outputFormat) {
       case 'markdown':
         return `# Generated Content\n\n${content}\n\n**Variables used:** ${JSON.stringify(options.variables, null, 2)}`

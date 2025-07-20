@@ -76,7 +76,7 @@ async function testMemoraiIntegration() {
 
     console.log('\n🎉 Memorai Integration Test Completed Successfully!')
     console.log('✅ Service initialization: Working')
-    console.log('✅ Project CRUD operations: Working') 
+    console.log('✅ Project CRUD operations: Working')
     console.log('✅ AI memory storage: Working')
     console.log('✅ AI-powered search: Working')
     console.log('✅ Health monitoring: Working')

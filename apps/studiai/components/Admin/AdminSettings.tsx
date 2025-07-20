@@ -123,7 +123,7 @@ const AdminSettings: React.FC = () => {
         <Button
           color="primary"
           isLoading={saving}
-          isDisabled={saving}
+          disabled={saving}
           onPress={handleSubmit}
           className="bg-gradient-to-r from-[color:var(--ai-primary)] to-[color:var(--ai-secondary)] text-white font-medium shadow-sm hover:shadow-md hover:shadow-[color:var(--ai-primary)]/20 transition-all"
         >
@@ -241,12 +241,11 @@ const AdminSettings: React.FC = () => {
                   </p>
                 </div>{' '}
                 <Switch
-                  isSelected={formData.allowRegistration}
+                  checked={formData.allowRegistration}
                   onValueChange={checked =>
                     handleSwitchChange('allowRegistration', checked)
                   }
                   aria-label="Allow User Registration"
-                  color="primary"
                 />
               </div>
 
@@ -263,7 +262,7 @@ const AdminSettings: React.FC = () => {
                   </p>
                 </div>
                 <Switch
-                  isSelected={formData.allowSocialLogin}
+                  checked={formData.allowSocialLogin}
                   onValueChange={checked =>
                     handleSwitchChange('allowSocialLogin', checked)
                   }
@@ -291,7 +290,7 @@ const AdminSettings: React.FC = () => {
                   </p>
                 </div>
                 <Switch
-                  isSelected={formData.paymentProcessorEnabled}
+                  checked={formData.paymentProcessorEnabled}
                   onValueChange={checked =>
                     handleSwitchChange('paymentProcessorEnabled', checked)
                   }

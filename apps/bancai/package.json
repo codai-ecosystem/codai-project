@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@codai/api-keys": "workspace:*",
+    "@codai/api-standards": "workspace:*",
     "@codai/azure-openai": "workspace:*",
     "@codai/logai-integration": "workspace:*",
     "@codai/logai-sdk": "link:..\\..\\packages\\logai-sdk",

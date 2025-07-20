@@ -33,17 +33,17 @@ class LogaiRealtimeService {
       });
 
       this.setupEventHandlers();
-      
+
       return new Promise((resolve, reject) => {
         this.socket!.on('connect', () => {
           console.log('🔐 LOGAI Real-time connection established');
           this.isConnected = true;
-          
+
           // Join LOGAI-specific channels
           this.joinChannel('logai-global');
           this.joinChannel('auth-events');
           this.joinChannel('security-alerts');
-          
+
           resolve();
         });
 
@@ -118,21 +118,21 @@ class LogaiRealtimeService {
 
   private handleAuthEvent(eventType: string, data: AuthEvent): void {
     this.emit(`auth:${eventType}`, data);
-    this.emit('auth:change', { type: eventType, ...data });
-    
+    this.emit('auth:change', { eventType, ...data });
+
     // Emit user-specific events
     if (data.userId) {
-      this.emit(`user:${data.userId}:auth`, { type: eventType, ...data });
+      this.emit(`user:${data.userId}:auth`, { eventType, ...data });
     }
   }
 
   private handleSecurityEvent(data: SecurityEvent): void {
     this.emit(`security:${data.type}`, data);
     this.emit('security:alert', data);
-    
+
     // Emit severity-specific events
     this.emit(`security:${data.severity}`, data);
-    
+
     // Emit user-specific security events
     if (data.userId) {
       this.emit(`user:${data.userId}:security`, data);

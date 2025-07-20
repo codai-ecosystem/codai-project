@@ -2,66 +2,21 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
     try {
-        // Mock workspace data
-        const workspaceData = {
-            id: '1',
-            name: 'Demo Workspace',
-            description: 'Demo workspace for PublicAI',
-            settings: {
-                theme: 'light',
-                notifications: true
-            }
-        };
-
-        return NextResponse.json({
-            success: true,
-            data: workspaceData
-        });
-
-    } catch (error) {
-        console.error("Workspace API error:", error);
-        return NextResponse.json(
-            { message: "Internal server error" },
-            { status: 500 }
-        );
-    }
-}
-
-export async function GET(request: NextRequest) {
-    try {
-        const session = await getServerSession(authOptions);
-
-        if (!session?.user) {
-            return NextResponse.json(
-                { message: "Unauthorized" },
-                { status: 401 }
-            );
-        }
-
-        // Get user's workspaces
-        const workspaces = await prisma.workspace.findMany({
-            where: {
-                OR: [
-                    { ownerId: session.user.id },
-                    { members: { some: { userId: session.user.id } } }
-                ]
-            },
-            include: {
-                owner: {
-                    select: { id: true, name: true, email: true }
+        // Mock workspace data - simplified version for demo
+        const workspaces = [
+            {
+                id: '1',
+                name: 'Demo Workspace',
+                description: 'Demo workspace for PublicAI',
+                settings: {
+                    theme: 'light',
+                    notifications: true
                 },
-                members: {
-                    include: {
-                        user: {
-                            select: { id: true, name: true, email: true }
-                        }
-                    }
-                },
-                _count: {
-                    select: { projects: true }
-                }
+                owner: { id: '1', name: 'Demo User', email: 'demo@example.com' },
+                members: [],
+                _count: { projects: 0 }
             }
-        });
+        ];
 
         return NextResponse.json({ workspaces });
     } catch (error) {
@@ -75,15 +30,6 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
     try {
-        const session = await getServerSession(authOptions);
-
-        if (!session?.user) {
-            return NextResponse.json(
-                { message: "Unauthorized" },
-                { status: 401 }
-            );
-        }
-
         const body = await request.json();
         const { name, description } = body;
 
@@ -94,23 +40,18 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const workspace = await prisma.workspace.create({
-            data: {
-                name,
-                description,
-                ownerId: session.user.id,
-                settings: {
-                    isPublic: false,
-                    allowInvites: true,
-                    defaultRole: "VIEWER"
-                }
+        // Mock workspace creation
+        const workspace = {
+            id: Date.now().toString(),
+            name,
+            description: description || '',
+            settings: {
+                isPublic: false,
+                allowInvites: true,
+                defaultRole: "VIEWER"
             },
-            include: {
-                owner: {
-                    select: { id: true, name: true, email: true }
-                }
-            }
-        });
+            owner: { id: '1', name: 'Demo User', email: 'demo@example.com' }
+        };
 
         return NextResponse.json({ workspace }, { status: 201 });
     } catch (error) {

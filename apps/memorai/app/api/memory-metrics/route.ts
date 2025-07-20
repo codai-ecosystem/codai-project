@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { readFileSync, existsSync, statSync, readdirSync } from 'fs'
+import { existsSync, readdirSync } from 'fs'
 import { join } from 'path'
 import os from 'os'
 import { PrismaClient } from '@prisma/client'
@@ -137,7 +137,6 @@ function calculateMemoryEfficiency(): number {
 
 function getQueryResponseTime(): number {
   // Simulate based on system load and complexity
-  const hour = new Date().getHours()
   const baseTime = 45 // Base response time in ms
   const variability = Math.floor(Math.random() * 20) - 10 // ±10ms variance
 

@@ -58,7 +58,7 @@ export default function HomePage() {
               <div className="p-6">
                 <h3 className="font-semibold mb-2">Eco-Friendly Tech Startup</h3>
                 <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
-                  <div className="bg-green-500 h-2 rounded-full" style={{width: '65%'}}></div>
+                  <div className="bg-green-500 h-2 rounded-full" style={{ width: '65%' }}></div>
                 </div>
                 <p className="text-sm text-gray-600">$32,500 raised of $50,000 goal</p>
               </div>
@@ -69,7 +69,7 @@ export default function HomePage() {
               <div className="p-6">
                 <h3 className="font-semibold mb-2">Community Art Project</h3>
                 <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
-                  <div className="bg-green-500 h-2 rounded-full" style={{width: '85%'}}></div>
+                  <div className="bg-green-500 h-2 rounded-full" style={{ width: '85%' }}></div>
                 </div>
                 <p className="text-sm text-gray-600">$17,000 raised of $20,000 goal</p>
               </div>
@@ -80,7 +80,7 @@ export default function HomePage() {
               <div className="p-6">
                 <h3 className="font-semibold mb-2">Educational Initiative</h3>
                 <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
-                  <div className="bg-green-500 h-2 rounded-full" style={{width: '42%'}}></div>
+                  <div className="bg-green-500 h-2 rounded-full" style={{ width: '42%' }}></div>
                 </div>
                 <p className="text-sm text-gray-600">$8,400 raised of $20,000 goal</p>
               </div>

@@ -36,6 +36,7 @@
     "@codai/translations": "workspace:*",
     "@codai/memorai": "workspace:*",
     "@codai/auth": "workspace:*",
+    "@codai/api-standards": "workspace:*",
     "@codai/conversai": "workspace:*",
     "@codai/fabricai": "workspace:*",
     "@codai/romai": "workspace:*",

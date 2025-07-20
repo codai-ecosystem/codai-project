@@ -63,7 +63,7 @@ export const CodaiConfigSchema = z.object({
   startTime: z.number().optional(),
 
   // Custom configuration
-  custom: z.record(z.unknown()).optional()
+  custom: z.record(z.string(), z.unknown()).optional()
 });
 
 export type CodaiConfig = z.infer<typeof CodaiConfigSchema>;
@@ -93,8 +93,8 @@ export const CodaiSDKOptionsSchema = z.object({
   config: CodaiConfigSchema,
   plugins: z.array(z.any()).optional(),
   interceptors: z.object({
-    request: z.array(z.function()).optional(),
-    response: z.array(z.function()).optional()
+    request: z.array(z.any()).optional(),
+    response: z.array(z.any()).optional()
   }).optional()
 });
 

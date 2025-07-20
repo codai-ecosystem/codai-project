@@ -1,0 +1,73 @@
+{
+  "name": "@codai/glass-browser-automation",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Browser automation extension for Glass MCP with Edge/Chrome support",
+  "keywords": [
+    "browser",
+    "automation",
+    "edge",
+    "chrome",
+    "mcp",
+    "glass",
+    "codai"
+  ],
+  "author": "CODAI Contributors",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CodAI-Project/codai-project.git"
+  },
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "test": "vitest",
+    "test:watch": "vitest watch",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write src",
+    "format:check": "prettier --check src",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "demo": "npm run build && node dist/demo.js",
+    "enhanced-demo": "npm run build && node dist/enhanced-demo.js",
+    "debug-page": "npm run build && node -e \"require('./dist/enhanced-demo.js').debugCurrentPage()\"",
+    "glass-test": "npm run build && node dist/glass-test.js"
+  },
+  "dependencies": {
+    "@codai/core": "workspace:*",
+    "@codai/logai-sdk": "workspace:*",
+    "chrome-remote-interface": "^0.33.2",
+    "puppeteer-core": "^24.14.0",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@codai/eslint-config": "workspace:*",
+    "@codai/prettier-config": "workspace:*",
+    "@codai/typescript-config": "workspace:*",
+    "@types/node": "^24.0.14",
+    "@types/ws": "^8.5.13",
+    "eslint": "^9.31.0",
+    "prettier": "^3.6.2",
+    "tsup": "^8.1.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "typescript": "^5.7.0",
+      "eslint": "^9.17.0"
+    }
+  }
+}

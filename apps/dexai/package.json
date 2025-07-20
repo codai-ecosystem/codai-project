@@ -41,9 +41,7 @@
     "zod": "^4.0.5",
     "zustand": "^5.0.6",
     "next": "^15.4.1",
-    "geist": "^1.4.2",
-    "@codai/shared-ui": "workspace:*",
-    "@codai/translations": "workspace:*"
+    "geist": "^1.4.2"
   },
   "devDependencies": {
     "@playwright/test": "^1.54.1",

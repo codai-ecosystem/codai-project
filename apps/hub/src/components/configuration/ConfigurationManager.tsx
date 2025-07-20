@@ -2,15 +2,15 @@
 
 import React, { useState } from 'react';
 import {
-  CogIcon,
-  KeyIcon,
-  CircleStackIcon,
-  ShieldCheckIcon,
-  DocumentTextIcon,
-  CloudIcon,
-  BellIcon,
-  ChartBarIcon,
-} from '@heroicons/react/24/outline';
+  Settings,
+  Key,
+  Database,
+  ShieldCheck,
+  FileText,
+  Cloud,
+  Bell,
+  BarChart3,
+} from 'lucide-react';
 
 interface ConfigSection {
   id: string;
@@ -34,7 +34,7 @@ const configSections: ConfigSection[] = [
   {
     id: 'database',
     name: 'Database',
-    icon: <CircleStackIcon className="w-6 h-6" />,
+    icon: <Database className="w-6 h-6" />,
     description: 'Database connection and configuration settings',
     configs: [
       {
@@ -85,7 +85,7 @@ const configSections: ConfigSection[] = [
   {
     id: 'security',
     name: 'Security',
-    icon: <ShieldCheckIcon className="w-6 h-6" />,
+    icon: <ShieldCheck className="w-6 h-6" />,
     description: 'Authentication and security configuration',
     configs: [
       {
@@ -123,7 +123,7 @@ const configSections: ConfigSection[] = [
   {
     id: 'api',
     name: 'API Keys',
-    icon: <KeyIcon className="w-6 h-6" />,
+    icon: <Key className="w-6 h-6" />,
     description: 'External API keys and integrations',
     configs: [
       {
@@ -161,7 +161,7 @@ const configSections: ConfigSection[] = [
   {
     id: 'monitoring',
     name: 'Monitoring',
-    icon: <ChartBarIcon className="w-6 h-6" />,
+    icon: <BarChart3 className="w-6 h-6" />,
     description: 'Logging and monitoring configuration',
     configs: [
       {
@@ -199,7 +199,7 @@ const configSections: ConfigSection[] = [
   {
     id: 'notifications',
     name: 'Notifications',
-    icon: <BellIcon className="w-6 h-6" />,
+    icon: <Bell className="w-6 h-6" />,
     description: 'Notification and alerting settings',
     configs: [
       {
@@ -236,7 +236,7 @@ const configSections: ConfigSection[] = [
   {
     id: 'cloud',
     name: 'Cloud Services',
-    icon: <CloudIcon className="w-6 h-6" />,
+    icon: <Cloud className="w-6 h-6" />,
     description: 'Cloud provider configuration',
     configs: [
       {
@@ -427,7 +427,7 @@ export default function ConfigurationManager() {
             onClick={handleExport}
             className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors flex items-center space-x-2"
           >
-            <DocumentTextIcon className="w-4 h-4" />
+            <FileText className="w-4 h-4" />
             <span>Export Config</span>
           </button>
           <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
@@ -447,11 +447,10 @@ export default function ConfigurationManager() {
               <button
                 key={section.id}
                 onClick={() => setActiveSection(section.id)}
-                className={`w-full flex items-center space-x-3 px-3 py-2 rounded-md text-left transition-colors ${
-                  activeSection === section.id
+                className={`w-full flex items-center space-x-3 px-3 py-2 rounded-md text-left transition-colors ${activeSection === section.id
                     ? 'bg-blue-100 text-blue-700'
                     : 'text-gray-700 hover:bg-gray-100'
-                }`}
+                  }`}
               >
                 {section.icon}
                 <span className="font-medium">{section.name}</span>
@@ -515,7 +514,7 @@ export default function ConfigurationManager() {
                         className="p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
                         title="Edit"
                       >
-                        <CogIcon className="w-4 h-4" />
+                        <Settings className="w-4 h-4" />
                       </button>
                     </div>
                   </div>

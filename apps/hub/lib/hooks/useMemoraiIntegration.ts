@@ -43,7 +43,7 @@ export function useProjects() {
       setError(null);
       const updatedProject = await hubMemoraiService.updateProject(projectId, updates);
       if (updatedProject) {
-        setProjects(prev => 
+        setProjects(prev =>
           prev.map(p => p.id === projectId ? updatedProject : p)
         );
       }
@@ -141,16 +141,16 @@ export function useProjectFiles(projectId: string | null) {
 
   const uploadFile = useCallback(async (file: File, category: string = 'documents') => {
     if (!projectId) throw new Error('Project ID required for file upload');
-    
+
     try {
       setUploading(true);
       setError(null);
       const fileUrl = await hubMemoraiService.uploadProjectFile(projectId, file, category);
-      
+
       // Refresh file list
       const updatedFiles = await hubMemoraiService.getProjectFiles(projectId);
       setFiles(updatedFiles);
-      
+
       return fileUrl;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to upload file';
@@ -163,7 +163,7 @@ export function useProjectFiles(projectId: string | null) {
 
   const loadFiles = useCallback(async () => {
     if (!projectId) return;
-    
+
     try {
       setError(null);
       const projectFiles = await hubMemoraiService.getProjectFiles(projectId);

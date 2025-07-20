@@ -1,6 +1,7 @@
 {
   "name": "hub",
   "version": "1.0.0",
+  "type": "module",
   "description": "Central hub",
   "private": true,
   "scripts": {
@@ -18,6 +19,7 @@
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-dropdown-menu": "^2.1.15",
     "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-tabs": "^1.1.2",
     "@radix-ui/react-toast": "^1.2.14",
     "@radix-ui/react-tooltip": "^1.2.7",
     "class-variance-authority": "^0.7.1",
@@ -36,6 +38,7 @@
     "@codai/translations": "workspace:*",
     "@codai/memorai": "workspace:*",
     "@codai/auth": "workspace:*",
+    "@codai/api-standards": "workspace:*",
     "@codai/conversai": "workspace:*",
     "@codai/fabricai": "workspace:*",
     "@codai/romai": "workspace:*",

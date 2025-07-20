@@ -11,8 +11,8 @@
  */
 
 import { EventEmitter } from 'events'
-import { 
-  AzureOpenAIConfig, 
+import {
+  AzureOpenAIConfig,
   ModelDeployment,
   CompletionRequest,
   CompletionResponse,
@@ -58,19 +58,19 @@ export class AzureOpenAIProvider extends EventEmitter {
   async initialize(): Promise<void> {
     try {
       this.emit('initialization:started')
-      
+
       // Load model deployments
       await this.loadDeployments()
-      
+
       // Validate API connectivity
       await this.validateConnection()
-      
+
       // Initialize token tracking
       this.initializeTokenTracking()
-      
+
       this.isInitialized = true
       this.emit('initialization:completed')
-      
+
       console.log('✅ Azure OpenAI Provider initialized successfully')
       console.log(`📊 Loaded ${this.deployments.size} model deployments`)
     } catch (error) {
@@ -91,7 +91,7 @@ export class AzureOpenAIProvider extends EventEmitter {
     try {
       // Validate deployment availability
       const isAvailable = await this.checkDeploymentHealth(deployment)
-      
+
       if (isAvailable) {
         deployment.status = 'active'
         deployment.lastHealthCheck = new Date()
@@ -129,7 +129,7 @@ export class AzureOpenAIProvider extends EventEmitter {
 
   async createCompletion(request: CompletionRequest): Promise<CompletionResponse> {
     this.validateInitialization()
-    
+
     try {
       const deployment = this.selectOptimalDeployment('text', request.model)
       if (!deployment) {
@@ -137,7 +137,7 @@ export class AzureOpenAIProvider extends EventEmitter {
       }
 
       this.emit('completion:started', { deployment: deployment.name, request })
-      
+
       const startTime = Date.now()
       const response = await this.makeRequest({
         deployment: deployment.name,
@@ -173,10 +173,10 @@ export class AzureOpenAIProvider extends EventEmitter {
 
       // Track token usage
       this.trackTokenUsage(deployment.name, response.data.usage, result.cost)
-      
+
       this.emit('completion:completed', { deployment: deployment.name, result })
       return result
-      
+
     } catch (error) {
       this.emit('completion:error', { error, request })
       throw this.handleAPIError(error)
@@ -187,7 +187,7 @@ export class AzureOpenAIProvider extends EventEmitter {
 
   async generateImage(request: ImageGenerationRequest): Promise<ImageGenerationResponse> {
     this.validateInitialization()
-    
+
     try {
       const deployment = this.selectOptimalDeployment('image', request.model || 'dall-e-3')
       if (!deployment) {
@@ -195,7 +195,7 @@ export class AzureOpenAIProvider extends EventEmitter {
       }
 
       this.emit('image:generation:started', { deployment: deployment.name, request })
-      
+
       const startTime = Date.now()
       const response = await this.makeRequest({
         deployment: deployment.name,
@@ -225,7 +225,7 @@ export class AzureOpenAIProvider extends EventEmitter {
 
       this.emit('image:generation:completed', { deployment: deployment.name, result })
       return result
-      
+
     } catch (error) {
       this.emit('image:generation:error', { error, request })
       throw this.handleAPIError(error)
@@ -236,7 +236,7 @@ export class AzureOpenAIProvider extends EventEmitter {
 
   async createSpeech(request: SpeechRequest): Promise<SpeechResponse> {
     this.validateInitialization()
-    
+
     try {
       const deployment = this.selectOptimalDeployment('speech', 'tts-1')
       if (!deployment) {
@@ -244,7 +244,7 @@ export class AzureOpenAIProvider extends EventEmitter {
       }
 
       this.emit('speech:creation:started', { deployment: deployment.name, request })
-      
+
       const startTime = Date.now()
       const response = await this.makeRequest({
         deployment: deployment.name,
@@ -271,7 +271,7 @@ export class AzureOpenAIProvider extends EventEmitter {
 
       this.emit('speech:creation:completed', { deployment: deployment.name, result })
       return result
-      
+
     } catch (error) {
       this.emit('speech:creation:error', { error, request })
       throw this.handleAPIError(error)
@@ -280,7 +280,7 @@ export class AzureOpenAIProvider extends EventEmitter {
 
   async createTranscription(request: TranscriptionRequest): Promise<TranscriptionResponse> {
     this.validateInitialization()
-    
+
     try {
       const deployment = this.selectOptimalDeployment('transcription', 'whisper-1')
       if (!deployment) {
@@ -288,7 +288,7 @@ export class AzureOpenAIProvider extends EventEmitter {
       }
 
       this.emit('transcription:started', { deployment: deployment.name, request })
-      
+
       const startTime = Date.now()
       const formData = new FormData()
       formData.append('file', request.file)
@@ -317,7 +317,7 @@ export class AzureOpenAIProvider extends EventEmitter {
 
       this.emit('transcription:completed', { deployment: deployment.name, result })
       return result
-      
+
     } catch (error) {
       this.emit('transcription:error', { error, request })
       throw this.handleAPIError(error)
@@ -336,21 +336,21 @@ export class AzureOpenAIProvider extends EventEmitter {
 
   selectOptimalDeployment(capability: keyof ModelCapabilities, preferredModel?: string): ModelDeployment | null {
     const activeDeployments = this.getActiveDeployments()
-    
+
     // Filter by capability
     const capableDeployments = activeDeployments.filter(d => d.capabilities[capability])
-    
+
     if (capableDeployments.length === 0) return null
-    
+
     // Try to match preferred model
     if (preferredModel) {
       const exactMatch = capableDeployments.find(d => d.model === preferredModel)
       if (exactMatch) return exactMatch
-      
+
       const modelMatch = capableDeployments.find(d => d.model.includes(preferredModel))
       if (modelMatch) return modelMatch
     }
-    
+
     // Return deployment with best performance metrics
     return capableDeployments.sort((a, b) => {
       const aScore = (a.metrics?.successRate || 0) - (a.metrics?.averageResponseTime || 1000)
@@ -363,30 +363,30 @@ export class AzureOpenAIProvider extends EventEmitter {
 
   private calculateCost(deployment: ModelDeployment, usage: any): number {
     if (!deployment.pricing) return 0
-    
+
     const promptCost = (usage.prompt_tokens || 0) * (deployment.pricing.inputTokenCost || 0) / 1000
     const completionCost = (usage.completion_tokens || 0) * (deployment.pricing.outputTokenCost || 0) / 1000
-    
+
     return promptCost + completionCost
   }
 
   private calculateImageCost(deployment: ModelDeployment, request: ImageGenerationRequest): number {
     if (!deployment.pricing?.imageCost) return 0
-    
+
     const imageCount = request.n || 1
     return imageCount * deployment.pricing.imageCost
   }
 
   private calculateSpeechCost(deployment: ModelDeployment, request: SpeechRequest): number {
     if (!deployment.pricing?.speechCost) return 0
-    
+
     const characterCount = request.input.length
     return characterCount * deployment.pricing.speechCost / 1000
   }
 
   private calculateTranscriptionCost(deployment: ModelDeployment, request: TranscriptionRequest): number {
     if (!deployment.pricing?.transcriptionCost) return 0
-    
+
     // Estimate based on file size (rough approximation)
     const estimatedMinutes = request.file.size / (1024 * 1024 * 2) // Rough estimate: 2MB per minute
     return estimatedMinutes * deployment.pricing.transcriptionCost
@@ -396,7 +396,7 @@ export class AzureOpenAIProvider extends EventEmitter {
 
   private trackTokenUsage(deploymentName: string, usage: any, cost: number): void {
     if (!usage) return
-    
+
     const existing = this.tokenUsage.get(deploymentName) || {
       deploymentName,
       totalTokens: 0,
@@ -406,14 +406,14 @@ export class AzureOpenAIProvider extends EventEmitter {
       requestCount: 0,
       lastUsed: new Date()
     }
-    
+
     existing.totalTokens += usage.total_tokens || 0
     existing.promptTokens += usage.prompt_tokens || 0
     existing.completionTokens += usage.completion_tokens || 0
     existing.totalCost += cost
     existing.requestCount += 1
     existing.lastUsed = new Date()
-    
+
     this.tokenUsage.set(deploymentName, existing)
     this.emit('usage:updated', existing)
   }
@@ -440,13 +440,13 @@ export class AzureOpenAIProvider extends EventEmitter {
       }
       this.emit('usage:reset')
     }
-    
+
     // Reset at midnight
     const now = new Date()
     const tomorrow = new Date(now)
     tomorrow.setDate(tomorrow.getDate() + 1)
     tomorrow.setHours(0, 0, 0, 0)
-    
+
     setTimeout(() => {
       resetUsage()
       setInterval(resetUsage, 24 * 60 * 60 * 1000) // Every 24 hours
@@ -460,7 +460,7 @@ export class AzureOpenAIProvider extends EventEmitter {
     if (activeDeployments.length === 0) {
       throw new AzureOpenAIError('No active deployments available')
     }
-    
+
     // Test connection with a simple request
     try {
       const testDeployment = activeDeployments[0]
@@ -490,9 +490,9 @@ export class AzureOpenAIProvider extends EventEmitter {
     responseType?: 'json' | 'arraybuffer'
   }): Promise<any> {
     const { deployment, endpoint, method, data, headers = {}, responseType = 'json' } = options
-    
+
     const url = `${this.config.endpoint}/openai/deployments/${deployment}/${endpoint}?api-version=${this.config.apiVersion}`
-    
+
     const requestHeaders = {
       'api-key': this.config.apiKey,
       'Content-Type': 'application/json',
@@ -511,7 +511,7 @@ export class AzureOpenAIProvider extends EventEmitter {
       error.code || 'UNKNOWN_ERROR',
       error.details
     )
-    
+
     this.emit('api:error', azureError)
     return azureError
   }
@@ -520,7 +520,7 @@ export class AzureOpenAIProvider extends EventEmitter {
 
   async healthCheck(): Promise<{ status: string; deployments: any[] }> {
     const deploymentStatus = []
-    
+
     for (const deployment of this.deployments.values()) {
       const isHealthy = await this.checkDeploymentHealth(deployment)
       deploymentStatus.push({
@@ -531,9 +531,9 @@ export class AzureOpenAIProvider extends EventEmitter {
         lastHealthCheck: deployment.lastHealthCheck
       })
     }
-    
+
     const overallStatus = deploymentStatus.every(d => d.healthy) ? 'healthy' : 'degraded'
-    
+
     return {
       status: overallStatus,
       deployments: deploymentStatus

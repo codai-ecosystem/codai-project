@@ -1,4 +1,5 @@
 import { ethers } from 'ethers';
+import type { EthereumProvider } from '../types/ethereum';
 import {
   CODAI_TOKEN_ABI,
   MARKETPLACE_ABI,
@@ -83,7 +84,9 @@ export class CodaiBlockchainService {
 
       if (window.ethereum) {
         await window.ethereum.request({ method: 'eth_requestAccounts' });
-        this.signer = await this.provider.getSigner();
+        if (this.provider instanceof ethers.BrowserProvider) {
+          this.signer = await this.provider.getSigner();
+        }
         await this.initializeContracts();
         return true;
       }

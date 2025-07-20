@@ -28,18 +28,18 @@ export class SyncService extends EventEmitter {
       if (this.config.enabled) {
         // Initialize real-time connection based on provider
         await this.initializeRealtimeProvider()
-        
+
         // Start processing queue
         this.startProcessingQueue()
-        
+
         // Start heartbeat to check online status
         this.startHeartbeat()
       }
-      
+
       this.isInitialized = true
       this.emit('initialized')
       console.log('🔄 Sync Service initialized')
-      
+
     } catch (error) {
       console.error('Failed to initialize sync service:', error)
       this.emit('error', error)
@@ -53,11 +53,11 @@ export class SyncService extends EventEmitter {
       if (this.processInterval) {
         clearInterval(this.processInterval)
       }
-      
+
       // Clean up queues
       this.syncQueues.clear()
       this.statusMap.clear()
-      
+
       this.isInitialized = false
       this.emit('shutdown')
       console.log('🔄 Sync Service shutdown')
@@ -72,7 +72,7 @@ export class SyncService extends EventEmitter {
     try {
       // Get or create sync queue for user
       const queue = this.getOrCreateQueue(operation.userId)
-      
+
       // Add operation to queue
       queue.operations.set(operation.id, {
         ...operation,
@@ -80,17 +80,17 @@ export class SyncService extends EventEmitter {
         createdAt: new Date(),
         updatedAt: new Date()
       })
-      
+
       // Update status
       this.updateSyncStatus(operation.userId, operation.appId)
-      
+
       this.emit('sync:scheduled', { operation })
-      
+
       // Process immediately if high priority
       if (operation.priority >= 50) {
         await this.processOperation(operation)
       }
-      
+
     } catch (error) {
       console.error('Sync schedule error:', error)
       this.emit('sync:error', { operation, error })
@@ -101,19 +101,19 @@ export class SyncService extends EventEmitter {
   async getSyncStatus(userId: string, appId?: string): Promise<SyncStatus[]> {
     if (!appId) {
       // Return all app statuses for user
-      return Array.from(this.statusMap.values()).filter(status => 
+      return Array.from(this.statusMap.values()).filter(status =>
         status.appId.startsWith(userId)
       )
     }
-    
+
     const statusKey = `${userId}:${appId}`
     const status = this.statusMap.get(statusKey)
-    
+
     return status ? [status] : []
   }
 
   async resolveConflict(
-    conflictId: string, 
+    conflictId: string,
     resolution: 'use_local' | 'use_remote' | 'merge' | 'manual',
     resolvedData?: Record<string, any>,
     userId?: string
@@ -122,7 +122,7 @@ export class SyncService extends EventEmitter {
       // Find conflict across all queues
       for (const [queueUserId, queue] of this.syncQueues.entries()) {
         const conflict = queue.conflicts.get(conflictId)
-        
+
         if (conflict) {
           // Apply resolution
           conflict.resolution = resolution
@@ -130,16 +130,16 @@ export class SyncService extends EventEmitter {
           conflict.resolvedAt = new Date()
           conflict.resolvedBy = userId
           conflict.updatedAt = new Date()
-          
+
           // Remove from conflicts
           queue.conflicts.delete(conflictId)
-          
+
           // Create new sync operation based on resolution
           if (resolution === 'use_local' || resolution === 'use_remote' || resolution === 'merge') {
             const data = resolution === 'use_local' ? conflict.localData :
-                        resolution === 'use_remote' ? conflict.remoteData :
-                        resolvedData || conflict.localData
-            
+              resolution === 'use_remote' ? conflict.remoteData :
+                resolvedData || conflict.localData
+
             const newOperation: SyncOperation = {
               id: `sync_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
               userId: queueUserId,
@@ -159,18 +159,18 @@ export class SyncService extends EventEmitter {
                 resolution
               }
             }
-            
+
             await this.scheduleOperation(newOperation)
           }
-          
+
           this.emit('sync:conflict_resolved', { conflict, resolution })
-          
+
           return true
         }
       }
-      
+
       return false
-      
+
     } catch (error) {
       console.error('Conflict resolution error:', error)
       this.emit('sync:conflict_error', { conflictId, resolution, error })
@@ -180,7 +180,7 @@ export class SyncService extends EventEmitter {
 
   async pauseSync(userId: string, appId?: string): Promise<void> {
     const statusKey = appId ? `${userId}:${appId}` : userId
-    
+
     for (const [key, status] of this.statusMap.entries()) {
       if (key.startsWith(statusKey)) {
         status.syncInProgress = false
@@ -191,12 +191,12 @@ export class SyncService extends EventEmitter {
 
   async resumeSync(userId: string, appId?: string): Promise<void> {
     const statusKey = appId ? `${userId}:${appId}` : userId
-    
+
     for (const [key, status] of this.statusMap.entries()) {
       if (key.startsWith(statusKey)) {
         status.syncInProgress = true
         this.emit('sync:resumed', { userId, appId })
-        
+
         // Process pending operations
         const queue = this.syncQueues.get(userId)
         if (queue) {
@@ -218,10 +218,10 @@ export class SyncService extends EventEmitter {
     try {
       const totalOperations = Array.from(this.syncQueues.values())
         .reduce((total, queue) => total + queue.operations.size, 0)
-      
+
       const totalConflicts = Array.from(this.syncQueues.values())
         .reduce((total, queue) => total + queue.conflicts.size, 0)
-      
+
       return {
         status: this.isOnline ? 'healthy' : 'degraded',
         details: {
@@ -235,7 +235,7 @@ export class SyncService extends EventEmitter {
           activeUsers: this.syncQueues.size
         }
       }
-      
+
     } catch (error) {
       return {
         status: 'unhealthy',
@@ -287,7 +287,7 @@ export class SyncService extends EventEmitter {
         conflicts: new Map()
       })
     }
-    
+
     return this.syncQueues.get(userId)!
   }
 
@@ -300,7 +300,7 @@ export class SyncService extends EventEmitter {
 
   private async processAllQueues(): Promise<void> {
     if (!this.isOnline) return
-    
+
     for (const [userId, queue] of this.syncQueues.entries()) {
       // Process pending operations
       for (const operation of queue.operations.values()) {
@@ -308,7 +308,7 @@ export class SyncService extends EventEmitter {
           await this.processOperation(operation)
         }
       }
-      
+
       // Retry failed operations
       for (const operation of queue.operations.values()) {
         if (operation.status === 'failed' && operation.retryCount < 3) {
@@ -320,39 +320,39 @@ export class SyncService extends EventEmitter {
 
   private async processOperation(operation: SyncOperation): Promise<void> {
     const queue = this.getOrCreateQueue(operation.userId)
-    
+
     if (queue.processing.has(operation.id)) {
       return // Already processing
     }
-    
+
     queue.processing.add(operation.id)
-    
+
     try {
       // Mark as processing
       operation.status = 'pending'
       operation.updatedAt = new Date()
-      
+
       // Simulate sync operation
       const success = await this.executeSync(operation)
-      
+
       if (success) {
         operation.status = 'synced'
         operation.syncedAt = new Date()
         queue.operations.delete(operation.id)
-        
+
         this.emit('sync:completed', { operation })
       } else {
         operation.status = 'failed'
         operation.retryCount++
-        
+
         this.emit('sync:failed', { operation })
       }
-      
+
     } catch (error) {
       operation.status = 'failed'
       operation.error = error instanceof Error ? error.message : 'Unknown error'
       operation.retryCount++
-      
+
       this.emit('sync:error', { operation, error })
     } finally {
       queue.processing.delete(operation.id)
@@ -363,7 +363,7 @@ export class SyncService extends EventEmitter {
   private async retryOperation(operation: SyncOperation): Promise<void> {
     // Exponential backoff
     const delay = Math.min(1000 * Math.pow(2, operation.retryCount), 30000)
-    
+
     setTimeout(async () => {
       await this.processOperation(operation)
     }, delay)
@@ -374,10 +374,10 @@ export class SyncService extends EventEmitter {
     // 1. Send data to remote service/database
     // 2. Handle conflicts
     // 3. Update local state
-    
+
     // Simulate network delay
     await new Promise(resolve => setTimeout(resolve, 100))
-    
+
     // Simulate success rate (95%)
     return Math.random() > 0.05
   }
@@ -385,16 +385,16 @@ export class SyncService extends EventEmitter {
   private updateSyncStatus(userId: string, appId: string): void {
     const statusKey = `${userId}:${appId}`
     const queue = this.getOrCreateQueue(userId)
-    
+
     const pendingOps = Array.from(queue.operations.values())
       .filter(op => op.appId === appId && op.status === 'pending').length
-    
+
     const failedOps = Array.from(queue.operations.values())
       .filter(op => op.appId === appId && op.status === 'failed').length
-    
+
     const conflicts = queue.conflicts.size
     const syncInProgress = queue.processing.size > 0
-    
+
     const status: SyncStatus = {
       appId,
       lastSync: new Date(),
@@ -404,9 +404,9 @@ export class SyncService extends EventEmitter {
       isOnline: this.isOnline,
       syncInProgress
     }
-    
+
     this.statusMap.set(statusKey, status)
-    
+
     this.emit('sync:status_updated', { userId, appId, status })
   }
 
@@ -423,7 +423,7 @@ export class SyncService extends EventEmitter {
       // Simulate network check
       const wasOnline = this.isOnline
       this.isOnline = true // In production: await this.pingServer()
-      
+
       if (!wasOnline && this.isOnline) {
         this.emit('sync:online')
         console.log('🔄 Sync service back online')
@@ -431,7 +431,7 @@ export class SyncService extends EventEmitter {
         this.emit('sync:offline')
         console.log('🔄 Sync service offline')
       }
-      
+
     } catch (error) {
       this.isOnline = false
       this.emit('sync:offline')

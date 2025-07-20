@@ -1,0 +1,33 @@
+{
+    "name": "@codai/ecosystem-testing",
+    "version": "1.0.0",
+    "description": "Comprehensive testing suite for CODAI ecosystem authentication and integration",
+    "scripts": {
+        "test": "playwright test",
+        "test:auth": "playwright test tests/auth/",
+        "test:auth:headed": "playwright test tests/auth/ --headed",
+        "test:auth:debug": "playwright test tests/auth/ --debug",
+        "test:install": "playwright install",
+        "test:report": "playwright show-report",
+        "test:ui": "playwright test --ui"
+    },
+    "dependencies": {
+        "@playwright/test": "^1.40.1",
+        "@codai/auth": "workspace:*",
+        "@codai/shared-ui": "workspace:*"
+    },
+    "devDependencies": {
+        "@types/node": "^20.10.4",
+        "typescript": "^5.3.3"
+    },
+    "keywords": [
+        "testing",
+        "authentication",
+        "codai",
+        "ecosystem",
+        "e2e",
+        "playwright"
+    ],
+    "author": "CODAI Team",
+    "license": "MIT"
+}

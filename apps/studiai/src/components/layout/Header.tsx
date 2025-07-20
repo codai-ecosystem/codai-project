@@ -98,7 +98,7 @@ export function Header(): JSX.Element {
                       />
                     ) : null}
                     <AvatarFallback>
-                      {user.displayName !== null && user.displayName !== ''
+                      {user.displayName
                         ? user.displayName.charAt(0).toUpperCase()
                         : 'U'}
                     </AvatarFallback>

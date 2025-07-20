@@ -27,7 +27,7 @@ export const DEFAULT_AUTH_CONFIG: AuthConfig = {
     authUrl: process.env.NEXT_PUBLIC_AUTH_URL || 'https://id.codai.ro',
     tokenKey: 'codai_access_token',
     refreshKey: 'codai_refresh_token',
-    
+
     // Enhanced fields
     apiUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4800/api',
     appId: 'codai',

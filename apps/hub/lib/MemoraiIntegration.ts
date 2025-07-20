@@ -94,10 +94,10 @@ class HubMemoraiService {
     try {
       // Initialize memorai service (no parameters needed, uses default config)
       await memorai.initialize();
-      
+
       // Create hub-specific database tables if they don't exist
       await this.createTables();
-      
+
       this.initialized = true;
       console.log('Hub Memorai Service initialized successfully');
     } catch (error) {
@@ -149,7 +149,7 @@ class HubMemoraiService {
     // Store project in AI memory for intelligent search
     await memorai.storeMemory({
       content: `Project: ${project.name}. Description: ${project.description}. Status: ${project.status}. Priority: ${project.priority}.`,
-      metadata: { 
+      metadata: {
         projectId: project.id,
         tags: project.tags,
         type: 'project'
@@ -169,10 +169,10 @@ class HubMemoraiService {
 
     // Get team members
     const teamMembers = await this.getProjectTeamMembers(projectId);
-    
+
     // Get tasks
     const tasks = await this.getProjectTasks(projectId);
-    
+
     // Get milestones
     const milestones = await this.getProjectMilestones(projectId);
 
@@ -207,7 +207,7 @@ class HubMemoraiService {
     }
 
     await memorai.database.update('hub_projects', projectId, updateData);
-    
+
     return this.getProject(projectId);
   }
 
@@ -219,13 +219,13 @@ class HubMemoraiService {
       await memorai.database.execute('DELETE FROM hub_project_members WHERE project_id = ?', [projectId]);
       await memorai.database.execute('DELETE FROM hub_tasks WHERE project_id = ?', [projectId]);
       await memorai.database.execute('DELETE FROM hub_milestones WHERE project_id = ?', [projectId]);
-      
+
       // Delete project
       await memorai.database.delete('hub_projects', projectId);
-      
+
       // Remove from AI memory
       await memorai.memory.forget('hub-projects', `project-${projectId}`);
-      
+
       return true;
     } catch (error) {
       console.error('Failed to delete project:', error);
@@ -250,7 +250,7 @@ class HubMemoraiService {
       conditions.push('status = ?');
       params.push(filters.status);
     }
-    
+
     if (filters?.priority) {
       conditions.push('priority = ?');
       params.push(filters.priority);
@@ -276,7 +276,7 @@ class HubMemoraiService {
       const teamMembers = await this.getProjectTeamMembers(record.id);
       const tasks = await this.getProjectTasks(record.id);
       const milestones = await this.getProjectMilestones(record.id);
-      
+
       projects.push(this.mapRecordToProject(record, teamMembers, tasks, milestones));
     }
 
@@ -322,7 +322,7 @@ class HubMemoraiService {
       JOIN hub_project_members pm ON tm.id = pm.member_id
       WHERE pm.project_id = ?
     `;
-    
+
     const records = await memorai.database.query(query, [projectId]);
     return records.map(record => ({
       id: record.id,
@@ -342,7 +342,7 @@ class HubMemoraiService {
       'SELECT * FROM hub_tasks WHERE project_id = ? ORDER BY created_at DESC',
       [projectId]
     );
-    
+
     return records.map(record => ({
       id: record.id,
       projectId: record.project_id,
@@ -366,7 +366,7 @@ class HubMemoraiService {
       'SELECT * FROM hub_milestones WHERE project_id = ? ORDER BY due_date ASC',
       [projectId]
     );
-    
+
     return records.map(record => ({
       id: record.id,
       projectId: record.project_id,
@@ -421,7 +421,7 @@ class HubMemoraiService {
     // Use memorai's AI-powered search
     const searchResults = await memorai.memory.recall('hub-projects', query);
     const projectIds = searchResults.map(result => result.metadata?.projectId).filter(Boolean);
-    
+
     const projects: HubProject[] = [];
     for (const projectId of projectIds) {
       const project = await this.getProject(projectId);
@@ -437,11 +437,11 @@ class HubMemoraiService {
 
     const fileName = `projects/${projectId}/${category}/${Date.now()}-${file.name}`;
     const uploadResult = await memorai.storage.upload(file, fileName);
-    
+
     // Store file reference in memory for search
-    await memorai.memory.store('hub-files', 
+    await memorai.memory.store('hub-files',
       `File: ${file.name} for project ${projectId} in category ${category}`,
-      { 
+      {
         projectId,
         fileName,
         category,

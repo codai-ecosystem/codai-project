@@ -14,7 +14,7 @@ const AudioVisualizer: React.FC<AudioVisualizerProps> = ({
     className = ''
 }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const animationRef = useRef<number>();
+    const animationRef = useRef<number | undefined>(undefined);
     const [bars, setBars] = useState<number[]>(new Array(32).fill(0));
 
     useEffect(() => {

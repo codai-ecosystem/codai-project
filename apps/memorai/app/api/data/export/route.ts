@@ -102,7 +102,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { memories, format, options } = body
+    const { memories, options } = body
 
     // Validate import data
     if (!memories || !Array.isArray(memories)) {
@@ -112,15 +112,13 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Process import options
+    // Process import options - removing unused variables
     const {
-      overwriteExisting = false,
-      preserveIds = false,
       validateData = true
     } = options || {}
 
     let imported = 0
-    let errors: string[] = []
+    const errors: string[] = []
 
     for (const memory of memories) {
       try {

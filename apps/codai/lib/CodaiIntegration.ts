@@ -81,7 +81,7 @@ class CodaiIntegrationService {
 
     // Store in memorai database
     const result = await memorai.database.create('codai_projects', project)
-    
+
     // Store AI-searchable memory for project
     await memorai.memory.store(
       'codai-assistant',
@@ -135,7 +135,7 @@ class CodaiIntegrationService {
   async deleteProject(projectId: string): Promise<boolean> {
     try {
       await memorai.database.delete('codai_projects', projectId)
-      
+
       // Store deletion memory
       await memorai.memory.store(
         'codai-assistant',
@@ -154,7 +154,7 @@ class CodaiIntegrationService {
     try {
       // Use AI-powered search through memorai
       const searchResults = await memorai.memory.recall('codai-assistant', query)
-      
+
       if (searchResults.memories.length === 0) {
         return []
       }
@@ -211,7 +211,7 @@ class CodaiIntegrationService {
   async getCodeFile(fileId: string): Promise<CodeFile | null> {
     try {
       const file = await memorai.database.findById('codai_code_files', fileId) as CodeFile
-      
+
       // If content was stored in file storage, retrieve it
       if (!file.content && file.size > 10000) {
         const fileName = `${file.projectId}/${file.path}`
@@ -291,7 +291,7 @@ class CodaiIntegrationService {
       // Store performance memory
       await memorai.memory.store(
         'codai-system',
-        `AI Assistant metrics updated for ${assistant.name}: ${Object.entries(metrics).map(([k,v]) => `${k}: ${v}`).join(', ')}`,
+        `AI Assistant metrics updated for ${assistant.name}: ${Object.entries(metrics).map(([k, v]) => `${k}: ${v}`).join(', ')}`,
         {
           type: 'metrics_update',
           assistantId,
@@ -370,7 +370,7 @@ class CodaiIntegrationService {
   async getAIContext(query: string): Promise<string> {
     try {
       const searchResults = await memorai.memory.recall('codai-assistant', query)
-      
+
       const context = searchResults.memories
         .slice(0, 10)
         .map(memory => memory.content)

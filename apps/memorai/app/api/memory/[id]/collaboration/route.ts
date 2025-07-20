@@ -114,12 +114,8 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const resolvedParams = await params
-    const memoryId = resolvedParams.id
     const body = await request.json()
     const { action, data } = body
-
-    const memoraiService = MemorAIService.getInstance()
 
     switch (action) {
       case 'update_permissions':

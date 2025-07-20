@@ -1,4 +1,5 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",
@@ -18,7 +19,8 @@
     "strict": false,
     "noImplicitAny": false,
     "noImplicitReturns": false,
-    "noImplicitThis": false
+    "noImplicitThis": false,
+    "incremental": false
   },
   "include": [
     "src/**/*"
@@ -28,6 +30,8 @@
     "node_modules",
     "test",
     "**/*.test.ts",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "**/*.test.tsx",
+    "**/*.spec.tsx"
   ]
 }

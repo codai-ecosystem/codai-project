@@ -27,6 +27,7 @@ import {
   limit,
 } from 'firebase/firestore';
 import { firebaseApp } from '@/utils/firebase/firebase.config';
+import { getFirestoreDB } from '@/lib/firebase-config';
 import { Course, Lesson } from '@/types';
 
 interface CourseEngagementData {
@@ -64,7 +65,7 @@ const CourseEngagement: React.FC = () => {
     const fetchEngagementData = async () => {
       setLoading(true);
       try {
-        const db = getFirestore(firebaseApp);
+        const db = getFirestoreDB();
         const courseEngagementData: CourseEngagementData[] = [];
 
         // Process each course to get engagement metrics

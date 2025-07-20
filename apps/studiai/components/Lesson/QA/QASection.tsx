@@ -30,7 +30,7 @@ function QASection({ lessonId, courseId }: QAProps) {
     if (!lessonId || !courseId) return;
 
     const q = query(
-      collection(firestoreDB, 'questions'),
+      collection(getFirestoreDB(), 'questions'),
       where('lessonId', '==', lessonId),
       where('courseId', '==', courseId),
       orderBy('createdAt', 'desc')
@@ -65,7 +65,7 @@ function QASection({ lessonId, courseId }: QAProps) {
     if (!user || !title.trim() || !content.trim()) return;
 
     try {
-      await addDoc(collection(firestoreDB, 'questions'), {
+      await addDoc(collection(getFirestoreDB(), 'questions'), {
         lessonId,
         courseId,
         userId: user.uid,

@@ -17,7 +17,7 @@ class AdminServiceManager {
   private hubServices = hubServices;
   private adminConfig?: AdminServiceConfig['admin'];
 
-  private constructor() {}
+  private constructor() { }
 
   static getInstance(): AdminServiceManager {
     if (!AdminServiceManager.instance) {
@@ -33,7 +33,7 @@ class AdminServiceManager {
     await this.hubServices.initialize(config);
 
     console.log('🛠️ Admin Service Manager initialized with enhanced permissions');
-    
+
     if (config.admin.enableSystemAdmin) {
       console.log('⚠️ System admin mode enabled - Full access granted');
     }
@@ -94,10 +94,10 @@ class AdminServiceManager {
 
         const users = await memorai.db.findMany('users');
         const totalUsers = users.length;
-        const activeUsers = users.filter((u: any) => u.lastActiveAt && 
+        const activeUsers = users.filter((u: any) => u.lastActiveAt &&
           new Date(u.lastActiveAt) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
         ).length;
-        
+
         const usersByRole = users.reduce((acc: any, user: any) => {
           acc[user.role] = (acc[user.role] || 0) + 1;
           return acc;
@@ -141,7 +141,7 @@ class AdminServiceManager {
         if (!this.hubServices.auth.hasPermission('services.restart')) {
           throw new Error('Insufficient permissions to restart services');
         }
-        
+
         console.warn(`⚠️ Restarting service: ${serviceName}`);
         // Implementation would depend on service architecture
         throw new Error('Service restart not implemented - requires infrastructure support');
@@ -152,7 +152,7 @@ class AdminServiceManager {
         if (!this.hubServices.auth.hasPermission('services.logs.read')) {
           throw new Error('Insufficient permissions to read service logs');
         }
-        
+
         // This would fetch logs from logging service
         return {
           service: serviceName,
@@ -247,8 +247,8 @@ class AdminServiceManager {
 
       // Safer database utilities
       async getTables() {
-        return ['users', 'conversations', 'content_templates', 'content_generations', 
-                'legal_compliance', 'market_intelligence', 'translation_requests'];
+        return ['users', 'conversations', 'content_templates', 'content_generations',
+          'legal_compliance', 'market_intelligence', 'translation_requests'];
       },
 
       async getTableSchema(tableName: string) {
@@ -308,14 +308,14 @@ class AdminServiceManager {
   async validateAdminUser(userId: string): Promise<boolean> {
     const auth = this.hubServices.auth;
     const user = auth.getCurrentUser();
-    
+
     if (!user) return false;
     if (user.id !== userId) return false;
-    
+
     // Check for admin role or permissions
-    return auth.hasRole('admin') || 
-           auth.hasRole('system_admin') || 
-           auth.hasPermission('admin.access');
+    return auth.hasRole('admin') ||
+      auth.hasRole('system_admin') ||
+      auth.hasPermission('admin.access');
   }
 
   // Emergency access (for system recovery)

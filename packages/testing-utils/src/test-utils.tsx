@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, RenderOptions, RenderResult } from '@testing-library/react'
-import { vi } from 'vitest'
+import { vi, expect } from 'vitest'
 import { BrowserRouter } from 'react-router-dom'
 
 // Mock providers for testing
@@ -42,11 +42,11 @@ function customRender(
 
 // Component test utilities
 export function createMockComponent(name: string) {
-  const MockComponent = vi.fn(({ children, ...props }) => (
+  const MockComponent = vi.fn(({ children, ...props }: any) => (
     <div data-testid={`mock-${name.toLowerCase()}`} {...props}>
       {children}
     </div>
-  ))
+  )) as any
   MockComponent.displayName = `Mock${name}`
   return MockComponent
 }
@@ -138,8 +138,9 @@ export function measureRenderTime(component: React.ReactElement): number {
 
 // Accessibility testing utilities
 export async function checkAccessibility(container: HTMLElement) {
-  const { axe } = await import('axe-core')
-  const results = await axe(container)
+  const axeModule = await import('axe-core')
+  const axe = axeModule.default || axeModule
+  const results = await axe.run(container)
 
   if (results.violations.length > 0) {
     console.error('Accessibility violations:', results.violations)

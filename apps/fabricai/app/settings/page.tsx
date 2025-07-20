@@ -483,7 +483,7 @@ export default function SettingsPage() {
                     </div>
                 )
 
-            case 'api_key':
+            case 'api_key': {
                 const isVisible = showApiKeys.has(setting.id)
                 return (
                     <div className="flex items-center space-x-2">
@@ -512,6 +512,7 @@ export default function SettingsPage() {
                         </button>
                     </div>
                 )
+            }
 
             default:
                 return null
@@ -580,8 +581,8 @@ export default function SettingsPage() {
 
                         <motion.button
                             className={`px-6 py-2 rounded-lg text-white font-medium transition-all ${isSaving || !hasUnsavedChanges
-                                    ? 'bg-slate-600 cursor-not-allowed'
-                                    : 'bg-gradient-to-r from-purple-500 to-emerald-500 hover:from-purple-600 hover:to-emerald-600'
+                                ? 'bg-slate-600 cursor-not-allowed'
+                                : 'bg-gradient-to-r from-purple-500 to-emerald-500 hover:from-purple-600 hover:to-emerald-600'
                                 }`}
                             whileHover={hasUnsavedChanges && !isSaving ? { scale: 1.05 } : {}}
                             whileTap={hasUnsavedChanges && !isSaving ? { scale: 0.95 } : {}}

@@ -12,8 +12,8 @@ export interface Money {
   formatted?: string
 }
 
-export type Currency = 
-  | 'USD' | 'EUR' | 'GBP' | 'JPY' | 'RON' | 'CAD' | 'AUD' 
+export type Currency =
+  | 'USD' | 'EUR' | 'GBP' | 'JPY' | 'RON' | 'CAD' | 'AUD'
   | 'CHF' | 'CNY' | 'SEK' | 'NOK' | 'MXN' | 'BRL' | 'ZAR'
 
 export interface ExchangeRate {
@@ -116,12 +116,12 @@ export interface Transaction {
   updatedAt: Date
 }
 
-export type TransactionType = 
-  | 'payment' | 'refund' | 'chargeback' | 'fee' 
+export type TransactionType =
+  | 'payment' | 'refund' | 'chargeback' | 'fee'
   | 'transfer' | 'payout' | 'adjustment' | 'subscription'
 
 export type TransactionStatus =
-  | 'pending' | 'processing' | 'succeeded' | 'failed' 
+  | 'pending' | 'processing' | 'succeeded' | 'failed'
   | 'canceled' | 'disputed' | 'refunded' | 'partially_refunded'
 
 export interface TransactionFee {
@@ -152,8 +152,8 @@ export interface Dispute {
   updatedAt: Date
 }
 
-export type DisputeReason = 
-  | 'duplicate' | 'fraudulent' | 'subscription_canceled' 
+export type DisputeReason =
+  | 'duplicate' | 'fraudulent' | 'subscription_canceled'
   | 'product_unacceptable' | 'product_not_received' | 'unrecognized'
   | 'credit_not_processed' | 'general' | 'incorrect_account_details'
 

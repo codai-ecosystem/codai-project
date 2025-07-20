@@ -7,7 +7,7 @@ export * from './lib/env';
 export * from './lib/types';
 
 // Main User interface with permissions (overrides lib/types User)
-export type { User, Session, ServiceDefinition } from './types';
+export type { User, Session, ServiceDefinition, ApiResponse, PaginatedResponse } from './types';
 
 // Specific exports from utils to avoid conflicts
 export { getServiceUrl, createApiResponse, createErrorResponse, isValidUrl, sanitizeInput, sleep, retry } from './utils';

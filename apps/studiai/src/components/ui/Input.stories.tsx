@@ -1,5 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
+// Storybook file disabled - not configured in this project
+// import type { Meta, StoryObj } from '@storybook/react';
+//
+// This file can be removed or storybook can be properly configured
 
+/*
 import { Input } from '@/components/ui/Input';
 
 const meta: Meta<typeof Input> = {
@@ -63,3 +67,4 @@ export const WithError: Story = {
     className: 'border-red-500 focus:border-red-500',
   },
 };
+*/

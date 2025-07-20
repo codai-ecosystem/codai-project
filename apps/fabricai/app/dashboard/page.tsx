@@ -1,6 +1,6 @@
 'use client'
 
-import { DashboardPage } from '@codai/shared-ui'
+import FabricAILayout from '../../components/layout/FabricAILayout'
 import { Zap, Users, Settings, BarChart3, Plus, Shield } from 'lucide-react'
 
 export default function Dashboard() {
@@ -27,46 +27,52 @@ export default function Dashboard() {
       variant: 'primary' as const
     }
   ]
-  const recentActivity = [
-    {
-      title: "System Update",
-      description: "fabricai system updated successfully",
-      time: "2 minutes ago",
-      type: 'success' as const
-    }
-  ]
-  const navigation = [
-    {
-      label: "Dashboard",
-      href: "/dashboard",
-      active: true,
-      icon: <BarChart3 className="h-4 w-4" />
-    },
-    {
-      label: "Settings",
-      href: "/settings",
-      icon: <Settings className="h-4 w-4" />
-    }
-  ]
-
-  const mockUser = {
-    name: "User Name",
-    email: "user@fabricai.dev",
-    avatar: "/placeholder-avatar.jpg"
-  }
 
   return (
-    <DashboardPage
-      appName="FABRICAI"
-      user={mockUser}
-      stats={stats}
-      quickActions={quickActions}
-      recentActivity={recentActivity}
-      navigation={navigation}
-      onLogout={() => {
-        console.log("Logout")
-        window.location.href = '/login'
-      }}
-    />
+    <FabricAILayout>
+      <div className="p-6">
+        <h1 className="text-2xl font-bold mb-6 text-white">FabricAI Dashboard</h1>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {stats.map((stat, index) => (
+            <div key={index} className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-gray-400 text-sm">{stat.title}</p>
+                  <p className="text-2xl font-bold text-white">{stat.value}</p>
+                  <p className="text-green-400 text-xs">+{stat.change.value}% from last month</p>
+                </div>
+                <div className="text-purple-400">
+                  {stat.icon}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl p-6">
+          <h2 className="text-xl font-semibold text-white mb-4">Quick Actions</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {quickActions.map((action, index) => (
+              <button
+                key={index}
+                onClick={action.action}
+                className="p-4 bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors text-left"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="text-purple-200">
+                    {action.icon}
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white">{action.title}</h3>
+                    <p className="text-purple-200 text-sm">{action.description}</p>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </FabricAILayout>
   )
 }

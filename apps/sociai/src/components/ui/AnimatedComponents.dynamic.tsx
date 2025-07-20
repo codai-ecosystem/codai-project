@@ -1,10 +1,11 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import type { ComponentType } from 'react';
 import { LoadingSpinner } from './LoadingSpinner';
 
 // Import individual animated components dynamically
-export const AnimatedDiv = dynamic(
+export const AnimatedDiv: ComponentType<any> = dynamic(
   () => import('./AnimatedComponents').then(mod => ({ default: mod.AnimatedDiv })),
   {
     loading: () => <LoadingSpinner className="h-8 w-8" />,
@@ -12,7 +13,7 @@ export const AnimatedDiv = dynamic(
   }
 );
 
-export const PageWrapper = dynamic(
+export const PageWrapper: ComponentType<any> = dynamic(
   () => import('./AnimatedComponents').then(mod => ({ default: mod.PageWrapper })),
   {
     loading: () => <LoadingSpinner className="h-8 w-8" />,
@@ -20,7 +21,7 @@ export const PageWrapper = dynamic(
   }
 );
 
-export const FadeIn = dynamic(
+export const FadeIn: ComponentType<any> = dynamic(
   () => import('./AnimatedComponents').then(mod => ({ default: mod.FadeIn })),
   {
     loading: () => <LoadingSpinner className="h-8 w-8" />,
@@ -28,7 +29,7 @@ export const FadeIn = dynamic(
   }
 );
 
-export const SlideIn = dynamic(
+export const SlideIn: ComponentType<any> = dynamic(
   () => import('./AnimatedComponents').then(mod => ({ default: mod.SlideIn })),
   {
     loading: () => <LoadingSpinner className="h-8 w-8" />,
@@ -36,7 +37,7 @@ export const SlideIn = dynamic(
   }
 );
 
-export const ScaleIn = dynamic(
+export const ScaleIn: ComponentType<any> = dynamic(
   () => import('./AnimatedComponents').then(mod => ({ default: mod.ScaleIn })),
   {
     loading: () => <LoadingSpinner className="h-8 w-8" />,

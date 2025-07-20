@@ -1,7 +1,8 @@
 {
   "name": "sociai",
-  "version": "1.0.0",
-  "description": "AI social media management",
+  "version": "2.0.0",
+  "type": "module",
+  "description": "Professional Social Media Platform - CODAI Ecosystem",
   "private": true,
   "scripts": {
     "dev": "next dev -p 6200",
@@ -16,13 +17,6 @@
     "test:run": "vitest run"
   },
   "dependencies": {
-    "@codai/api-keys": "workspace:*",
-    "@codai/logai-integration": "workspace:*",
-    "@codai/logai-sdk": "workspace:*",
-    "@codai/shared-hooks": "workspace:*",
-    "@codai/shared-services": "workspace:*",
-    "@codai/shared-types": "workspace:*",
-    "@codai/shared-ui": "workspace:*",
     "@hookform/resolvers": "^5.1.1",
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-checkbox": "^1.3.2",

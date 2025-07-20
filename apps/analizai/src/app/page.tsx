@@ -1,230 +1,582 @@
-'use client';
+'use client'
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react'
+import { motion } from 'framer-motion'
+import { 
+  BarChart, 
+  Bar, 
+  LineChart, 
+  Line, 
+  AreaChart, 
+  Area, 
+  PieChart, 
+  Pie, 
+  Cell, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  Legend, 
+  ResponsiveContainer 
+} from 'recharts'
+import { 
+  TrendingUp, 
+  TrendingDown, 
+  Users, 
+  Target, 
+  Zap, 
+  AlertTriangle, 
+  Brain, 
+  Database,
+  Activity,
+  DollarSign,
+  Eye,
+  Clock,
+  CheckCircle,
+  XCircle,
+  Download,
+  RefreshCw
+} from 'lucide-react'
+import AnalizaiService, { AnalyticsMetric, AIInsight, DataSource, AnalyticsChart } from '../services/analizaiService'
 
-export default function AnalizaiPage() {
-  const [activeTab, setActiveTab] = useState('overview');
-  const [isOnline, setIsOnline] = useState(true);
-  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+// Color palette for charts
+const CHART_COLORS = [
+  '#8b5cf6', '#06b6d4', '#10b981', '#f59e0b', 
+  '#ef4444', '#8b5a2b', '#6366f1', '#ec4899',
+  '#14b8a6', '#f97316'
+]
 
-  useEffect(() => {
-    const updateTime = () => {
-      setCurrentTime(new Date().toLocaleTimeString());
-      timeoutRef.current = setTimeout(updateTime, 1000);
-    };
-    updateTime();
+// Utility function to format numbers
+const formatValue = (value: number, format: string): string => {
+  switch (format) {
+    case 'currency':
+      return new Intl.NumberFormat('ro-RO', { 
+        style: 'currency', 
+        currency: 'RON',
+        minimumFractionDigits: 0 
+      }).format(value)
+    case 'percentage':
+      return `${value.toFixed(1)}%`
+    case 'duration':
+      return `${value}ms`
+    case 'number':
+    default:
+      return new Intl.NumberFormat('ro-RO').format(value)
+  }
+}
 
-    const handleOnline = () => setIsOnline(true);
-    const handleOffline = () => setIsOnline(false);
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
+// Get icon component by name
+const getIconComponent = (iconName: string) => {
+  const icons: Record<string, any> = {
+    TrendingUp, TrendingDown, Users, Target, Zap, AlertTriangle, 
+    Brain, Database, Activity, DollarSign, Eye, Clock
+  }
+  return icons[iconName] || Activity
+}
 
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
-    };
-  }, []);
-
-  const tabContent = {
-    overview: {
-      title: 'Advanced Analytics Overview',
-      content: 'Experience enterprise intelligent analytics with our powerful platform designed for business environments.',
-    },
-    analytics: {
-      title: 'Advanced Analytics Dashboard',
-      content: 'Comprehensive analytics dashboard with real-time data processing and intelligent insights.',
-    },
-    features: {
-      title: 'Platform Features',
-      content: 'Explore powerful features including Enterprise Security, High Performance analytics, and Global Scale deployment.',
-    },
-    monitor: {
-      title: 'Monitor Dashboard',
-      content: 'Real-time monitoring with advanced system performance tracking and global status indicators.',
-    },
-  };
+// Metric Card Component
+const MetricCard: React.FC<{ metric: AnalyticsMetric }> = ({ metric }) => {
+  const IconComponent = getIconComponent(metric.icon)
+  const isPositive = metric.changeType === 'increase'
+  const changeColor = metric.changeType === 'increase' ? 'text-green-600' : 
+                     metric.changeType === 'decrease' ? 'text-red-600' : 'text-gray-600'
+  const bgColor = `bg-${metric.color}-50`
+  const iconColor = `text-${metric.color}-600`
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 glassmorphism container">
-      <div className="p-6">
-        {/* Header Section */}
-        <div className="bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-800 rounded-2xl p-8 text-white mb-8">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className={`${bgColor} rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200`}
+    >
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm text-gray-600 mb-1">{metric.name}</p>
+          <p className="text-2xl font-bold text-gray-900">
+            {formatValue(metric.value, metric.format)}
+          </p>
+          <div className={`flex items-center mt-2 ${changeColor}`}>
+            {isPositive ? <TrendingUp className="h-4 w-4 mr-1" /> : <TrendingDown className="h-4 w-4 mr-1" />}
+            <span className="text-sm font-medium">
+              {Math.abs(metric.change)}% vs last period
+            </span>
+          </div>
+        </div>
+        <div className={`p-3 rounded-full ${iconColor} bg-white`}>
+          <IconComponent className="h-6 w-6" />
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
+// Chart Component
+const ChartComponent: React.FC<{ chart: AnalyticsChart }> = ({ chart }) => {
+  const renderChart = () => {
+    const commonProps = {
+      data: chart.data,
+      margin: { top: 20, right: 30, left: 20, bottom: 20 }
+    }
+
+    switch (chart.type) {
+      case 'line':
+        return (
+          <LineChart {...commonProps}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+            <XAxis 
+              dataKey="label" 
+              stroke="#6b7280"
+              tick={{ fontSize: 12 }}
+            />
+            <YAxis 
+              stroke="#6b7280"
+              tick={{ fontSize: 12 }}
+            />
+            <Tooltip 
+              contentStyle={{
+                backgroundColor: '#fff',
+                border: '1px solid #e5e7eb',
+                borderRadius: '8px',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+              }}
+            />
+            <Line 
+              type="monotone" 
+              dataKey="value" 
+              stroke={CHART_COLORS[0]} 
+              strokeWidth={2}
+              dot={{ fill: CHART_COLORS[0], r: 4 }}
+              activeDot={{ r: 6, stroke: CHART_COLORS[0] }}
+            />
+          </LineChart>
+        )
+      
+      case 'area':
+        return (
+          <AreaChart {...commonProps}>
+            <defs>
+              <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor={CHART_COLORS[1]} stopOpacity={0.3} />
+                <stop offset="95%" stopColor={CHART_COLORS[1]} stopOpacity={0.05} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+            <XAxis dataKey="label" stroke="#6b7280" tick={{ fontSize: 12 }} />
+            <YAxis stroke="#6b7280" tick={{ fontSize: 12 }} />
+            <Tooltip 
+              contentStyle={{
+                backgroundColor: '#fff',
+                border: '1px solid #e5e7eb',
+                borderRadius: '8px',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+              }}
+            />
+            <Area 
+              type="monotone" 
+              dataKey="value" 
+              stroke={CHART_COLORS[1]} 
+              strokeWidth={2}
+              fill="url(#areaGradient)"
+            />
+          </AreaChart>
+        )
+      
+      case 'bar':
+        return (
+          <BarChart {...commonProps}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+            <XAxis dataKey="label" stroke="#6b7280" tick={{ fontSize: 12 }} />
+            <YAxis stroke="#6b7280" tick={{ fontSize: 12 }} />
+            <Tooltip 
+              contentStyle={{
+                backgroundColor: '#fff',
+                border: '1px solid #e5e7eb',
+                borderRadius: '8px',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+              }}
+            />
+            <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+              {chart.data.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+              ))}
+            </Bar>
+          </BarChart>
+        )
+      
+      case 'pie':
+        return (
+          <PieChart>
+            <Pie
+              data={chart.data}
+              cx="50%"
+              cy="50%"
+              outerRadius={80}
+              dataKey="value"
+              label={({ label, value }) => `${label}: ${value}`}
+            >
+              {chart.data.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend />
+          </PieChart>
+        )
+      
+      default:
+        return <div className="text-center text-gray-500">Chart type not supported</div>
+    }
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200"
+    >
+      <div className="mb-4">
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">{chart.title}</h3>
+        {chart.description && (
+          <p className="text-sm text-gray-600 mb-3">{chart.description}</p>
+        )}
+      </div>
+      <div className="h-64">
+        <ResponsiveContainer width="100%" height="100%">
+          {renderChart()}
+        </ResponsiveContainer>
+      </div>
+      {chart.insights && chart.insights.length > 0 && (
+        <div className="mt-4 pt-4 border-t border-gray-100">
+          <h4 className="text-sm font-medium text-gray-900 mb-2 flex items-center">
+            <Brain className="h-4 w-4 mr-1 text-purple-600" />
+            Key Insights
+          </h4>
+          <ul className="space-y-1">
+            {chart.insights.map((insight, index) => (
+              <li key={index} className="text-sm text-gray-600 flex items-start">
+                <span className="w-1.5 h-1.5 bg-purple-600 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                {insight}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </motion.div>
+  )
+}
+
+// AI Insight Card Component
+const InsightCard: React.FC<{ insight: AIInsight }> = ({ insight }) => {
+  const getInsightIcon = () => {
+    switch (insight.type) {
+      case 'trend': return <TrendingUp className="h-5 w-5" />
+      case 'anomaly': return <AlertTriangle className="h-5 w-5" />
+      case 'prediction': return <Brain className="h-5 w-5" />
+      case 'alert': return <XCircle className="h-5 w-5" />
+      default: return <CheckCircle className="h-5 w-5" />
+    }
+  }
+
+  const getInsightColor = () => {
+    switch (insight.impact) {
+      case 'high': return 'border-red-200 bg-red-50'
+      case 'medium': return 'border-yellow-200 bg-yellow-50'
+      default: return 'border-blue-200 bg-blue-50'
+    }
+  }
+
+  const getTypeColor = () => {
+    switch (insight.type) {
+      case 'alert': return 'text-red-600'
+      case 'anomaly': return 'text-orange-600'
+      case 'prediction': return 'text-purple-600'
+      case 'trend': return 'text-green-600'
+      default: return 'text-blue-600'
+    }
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      className={`${getInsightColor()} rounded-xl p-4 border shadow-sm`}
+    >
+      <div className="flex items-start justify-between mb-3">
+        <div className={`${getTypeColor()} flex items-center`}>
+          {getInsightIcon()}
+          <span className="ml-2 text-sm font-medium capitalize">{insight.type}</span>
+        </div>
+        <div className="flex items-center text-xs text-gray-500">
+          <Clock className="h-3 w-3 mr-1" />
+          {new Date(insight.timestamp).toLocaleTimeString('ro-RO', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+          })}
+        </div>
+      </div>
+      
+      <h4 className="font-semibold text-gray-900 mb-2">{insight.title}</h4>
+      <p className="text-sm text-gray-700 mb-3">{insight.description}</p>
+      
+      <div className="flex items-center justify-between text-xs text-gray-600 mb-3">
+        <span>Confidence: {(insight.confidence * 100).toFixed(0)}%</span>
+        <span className={`px-2 py-1 rounded-full ${
+          insight.impact === 'high' ? 'bg-red-100 text-red-700' :
+          insight.impact === 'medium' ? 'bg-yellow-100 text-yellow-700' :
+          'bg-blue-100 text-blue-700'
+        }`}>
+          {insight.impact.toUpperCase()} impact
+        </span>
+      </div>
+
+      {insight.actionSuggestions && insight.actionSuggestions.length > 0 && (
+        <div>
+          <h5 className="text-xs font-medium text-gray-900 mb-2">Suggested Actions:</h5>
+          <ul className="space-y-1">
+            {insight.actionSuggestions.map((action, index) => (
+              <li key={index} className="text-xs text-gray-600 flex items-start">
+                <span className="w-1 h-1 bg-gray-400 rounded-full mt-1.5 mr-2 flex-shrink-0"></span>
+                {action}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </motion.div>
+  )
+}
+
+// Data Source Status Component
+const DataSourceStatus: React.FC<{ dataSource: DataSource }> = ({ dataSource }) => {
+  const getStatusColor = () => {
+    switch (dataSource.status) {
+      case 'connected': return 'text-green-600 bg-green-100'
+      case 'error': return 'text-red-600 bg-red-100'
+      case 'syncing': return 'text-blue-600 bg-blue-100'
+      default: return 'text-gray-600 bg-gray-100'
+    }
+  }
+
+  const getStatusIcon = () => {
+    switch (dataSource.status) {
+      case 'connected': return <CheckCircle className="h-4 w-4" />
+      case 'error': return <XCircle className="h-4 w-4" />
+      case 'syncing': return <RefreshCw className="h-4 w-4 animate-spin" />
+      default: return <Clock className="h-4 w-4" />
+    }
+  }
+
+  return (
+    <div className="bg-white rounded-lg p-4 border border-gray-200">
+      <div className="flex items-center justify-between mb-2">
+        <h4 className="font-medium text-gray-900">{dataSource.name}</h4>
+        <div className={`flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor()}`}>
+          {getStatusIcon()}
+          <span className="ml-1 capitalize">{dataSource.status}</span>
+        </div>
+      </div>
+      
+      <div className="text-sm text-gray-600 space-y-1">
+        <div className="flex justify-between">
+          <span>Type:</span>
+          <span className="font-medium capitalize">{dataSource.type}</span>
+        </div>
+        <div className="flex justify-between">
+          <span>Records:</span>
+          <span className="font-medium">{dataSource.recordCount.toLocaleString('ro-RO')}</span>
+        </div>
+        <div className="flex justify-between">
+          <span>Quality:</span>
+          <span className="font-medium">{(dataSource.dataQuality * 100).toFixed(1)}%</span>
+        </div>
+        <div className="flex justify-between">
+          <span>Last Sync:</span>
+          <span className="font-medium">
+            {new Date(dataSource.lastSync).toLocaleString('ro-RO', { 
+              hour: '2-digit', 
+              minute: '2-digit' 
+            })}
+          </span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Main Dashboard Component
+export default function AnalizaiDashboard() {
+  const [metrics, setMetrics] = useState<AnalyticsMetric[]>([])
+  const [insights, setInsights] = useState<AIInsight[]>([])
+  const [dataSources, setDataSources] = useState<DataSource[]>([])
+  const [charts, setCharts] = useState<AnalyticsChart[]>([])
+  const [realTimeData, setRealTimeData] = useState<Record<string, number>>({})
+  const [isLoading, setIsLoading] = useState(true)
+
+  const analizaiService = useMemo(() => AnalizaiService.getInstance(), [])
+
+  useEffect(() => {
+    const loadDashboardData = async () => {
+      const [metricsData, insightsData, dataSourcesData] = await Promise.all([
+        analizaiService.getMetrics(),
+        analizaiService.getInsights(),
+        analizaiService.getDataSources()
+      ])
+      setMetrics(metricsData)
+      setInsights(insightsData.slice(0, 5)) // Show top 5 insights
+      setDataSources(dataSourcesData)
+      setIsLoading(false)
+    }
+
+    const loadRealTimeData = async () => {
+      const realTimeMetrics = await analizaiService.getRealTimeMetrics()
+      setRealTimeData(realTimeMetrics)
+    }
+
+    loadDashboardData()
+    
+    // Set up real-time updates
+    const interval = setInterval(loadRealTimeData, 5000)
+    
+    return () => clearInterval(interval)
+  }, [analizaiService])
+
+  const handleRefresh = async () => {
+    setIsLoading(true)
+    const [metricsData, insightsData, dataSourcesData] = await Promise.all([
+      analizaiService.getMetrics(),
+      analizaiService.getInsights(),
+      analizaiService.getDataSources()
+    ])
+    setMetrics(metricsData)
+    setInsights(insightsData.slice(0, 5))
+    setDataSources(dataSourcesData)
+    setIsLoading(false)
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading AnalizAI Dashboard...</p>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold mb-2">ANALIZAI Enterprise</h1>
-              <p className="text-purple-100 text-lg">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                AnalizAI Dashboard
+              </h1>
+              <p className="text-gray-600">
                 Advanced Analytics & Business Intelligence Platform
               </p>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="text-right">
-                <div className="text-sm text-purple-200">Status</div>
-                <div className={`text-sm font-medium ${isOnline ? 'text-green-300' : 'text-red-300'}`}>
-                  {isOnline ? 'Online' : 'Offline'}
-                </div>
-              </div>
-              <button
-                aria-label="Refresh dashboard data"
-                className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
+              <button className="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                <Download className="h-4 w-4 mr-2" />
+                Export
+              </button>
+              <button 
+                onClick={handleRefresh}
+                className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors"
               >
-                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-                <span>Refresh</span>
+                <RefreshCw className="h-4 w-4 mr-2" />
+                Refresh
               </button>
             </div>
           </div>
+        </motion.div>
+
+        {/* Key Metrics Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {metrics.map((metric, index) => (
+            <MetricCard key={metric.id} metric={metric} />
+          ))}
         </div>
 
-        {/* Navigation Tabs */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-          <div className="flex space-x-4 border-b border-gray-200 mb-6">
-            {['overview', 'analytics', 'features', 'monitor'].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                aria-label={`Switch to ${tab} tab`}
-                className={`px-4 py-2 font-medium text-sm rounded-lg transition-colors ${activeTab === tab
-                    ? 'bg-blue-500/30 text-blue-700 border-b-2 border-blue-500'
-                    : 'text-gray-600 hover:text-blue-600'
-                  }`}
-              >
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
-              </button>
+        {/* Real-time Metrics */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm mb-8"
+        >
+          <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+            <Activity className="h-5 w-5 mr-2 text-green-600" />
+            Real-time Metrics
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {Object.entries(realTimeData).map(([key, value]) => (
+              <div key={key} className="text-center">
+                <p className="text-sm text-gray-600 capitalize">
+                  {key.replace(/([A-Z])/g, ' $1').toLowerCase()}
+                </p>
+                <p className="text-xl font-bold text-gray-900">
+                  {typeof value === 'number' ? 
+                    (key.includes('Rate') ? `${value.toFixed(2)}%` : 
+                     key.includes('Time') ? `${Math.round(value)}ms` : 
+                     value.toLocaleString('ro-RO')) : 
+                    value
+                  }
+                </p>
+              </div>
             ))}
           </div>
+        </motion.div>
 
-          {/* Tab Content */}
-          <div className="min-h-[200px]">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">{tabContent[activeTab as keyof typeof tabContent].title}</h2>
-            <p className="text-gray-700 mb-4">{tabContent[activeTab as keyof typeof tabContent].content}</p>
-            <div className="text-sm text-gray-500">Current time: {currentTime}</div>
-          </div>
-        </div>
-
-        {/* Live Statistics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-3 rounded-lg">
-                <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
-                </svg>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Charts Section */}
+          <div className="lg:col-span-2 space-y-8">
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">Analytics Charts</h2>
+              <div className="space-y-6">
+                {charts.map((chart, index) => (
+                  <ChartComponent key={chart.id} chart={chart} />
+                ))}
               </div>
-              <span className="text-green-600 text-sm font-medium">+15.3%</span>
-            </div>
-            <h3 className="text-gray-600 text-sm font-medium">Total Users</h3>
-            <p className="text-2xl font-bold text-gray-900 mt-1">24,847</p>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="bg-gradient-to-r from-green-500 to-green-600 p-3 rounded-lg">
-                <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <span className="text-green-600 text-sm font-medium">Live</span>
-            </div>
-            <h3 className="text-gray-600 text-sm font-medium">Active Now</h3>
-            <p className="text-2xl font-bold text-gray-900 mt-1">2,847</p>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="bg-gradient-to-r from-purple-500 to-purple-600 p-3 rounded-lg">
-                <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-              </div>
-              <span className="text-blue-600 text-sm font-medium">98.5%</span>
-            </div>
-            <h3 className="text-gray-600 text-sm font-medium">Processing Power</h3>
-            <p className="text-2xl font-bold text-gray-900 mt-1">Optimal</p>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="bg-gradient-to-r from-indigo-500 to-indigo-600 p-3 rounded-lg">
-                <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <span className="text-purple-600 text-sm font-medium">Global</span>
-            </div>
-            <h3 className="text-gray-600 text-sm font-medium">Worldwide Reach</h3>
-            <p className="text-2xl font-bold text-gray-900 mt-1">190+ Countries</p>
-          </div>
-        </div>
-
-        {/* Enterprise Features Grid */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Business Features</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
-              <div className="flex items-center mb-3">
-                <div className="bg-red-100 p-2 rounded-lg mr-3">
-                  <svg className="h-5 w-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                  </svg>
-                </div>
-                <h3 className="font-semibold text-gray-900">Enterprise Security</h3>
-              </div>
-              <p className="text-gray-600 text-sm">Advanced security protocols and encryption for business environments.</p>
-            </div>
-
-            <div className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
-              <div className="flex items-center mb-3">
-                <div className="bg-blue-100 p-2 rounded-lg mr-3">
-                  <svg className="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
-                <h3 className="font-semibold text-gray-900">High Performance</h3>
-              </div>
-              <p className="text-gray-600 text-sm">Ultra-fast processing with optimized algorithms and caching.</p>
-            </div>
-
-            <div className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
-              <div className="flex items-center mb-3">
-                <div className="bg-green-100 p-2 rounded-lg mr-3">
-                  <svg className="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h3 className="font-semibold text-gray-900">Global Scale</h3>
-              </div>
-              <p className="text-gray-600 text-sm">Worldwide deployment with regional data centers and edge computing.</p>
             </div>
           </div>
-        </div>
 
-        {/* Action Buttons */}
-        <div className="flex flex-wrap gap-4">
-          <button
-            aria-label="Start analytics analysis"
-            className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
-          >
-            Start Analysis
-          </button>
-          <button
-            aria-label="View detailed analytics"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
-          >
-            View Analytics
-          </button>
-          <button
-            aria-label="Access enterprise dashboard"
-            className="border border-purple-600 text-purple-600 hover:bg-purple-50 px-6 py-3 rounded-lg font-medium transition-colors"
-          >
-            Enterprise Dashboard
-          </button>
+          {/* Sidebar */}
+          <div className="space-y-8">
+            {/* AI Insights */}
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                <Brain className="h-5 w-5 mr-2 text-purple-600" />
+                AI Insights
+              </h2>
+              <div className="space-y-4 max-h-96 overflow-y-auto">
+                {insights.slice(0, 5).map((insight) => (
+                  <InsightCard key={insight.id} insight={insight} />
+                ))}
+              </div>
+            </div>
+
+            {/* Data Sources */}
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                <Database className="h-5 w-5 mr-2 text-blue-600" />
+                Data Sources
+              </h2>
+              <div className="space-y-4">
+                {dataSources.map((source) => (
+                  <DataSourceStatus key={source.id} dataSource={source} />
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  );
+  )
 }

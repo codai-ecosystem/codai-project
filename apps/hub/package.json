@@ -33,16 +33,7 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.8.3",
     "zustand": "^5.0.6",
-    "geist": "^1.4.2",
-    "@codai/shared-ui": "workspace:*",
-    "@codai/translations": "workspace:*",
-    "@codai/memorai": "workspace:*",
-    "@codai/auth": "workspace:*",
-    "@codai/api-standards": "workspace:*",
-    "@codai/conversai": "workspace:*",
-    "@codai/fabricai": "workspace:*",
-    "@codai/romai": "workspace:*",
-    "@codai/logai-universal": "workspace:*"
+    "geist": "^1.4.2"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",

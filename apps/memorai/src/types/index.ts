@@ -21,25 +21,43 @@ export interface User {
 // Re-export auth types
 export * from './auth';
 
-// Memory and Knowledge Management Types
+// Memory and Knowledge Management Types - Compatible with MemoryService
 export interface MemoryEntity {
   id: string;
+  type: 'project' | 'global' | 'agent' | 'conversation' | 'personal' | 'memory' | 'knowledge' | 'note' | 'document';
+  title: string;
   content: string;
-  type: 'memory' | 'knowledge' | 'note' | 'document';
   tags: string[];
-  metadata?: Record<string, any>;
-  createdAt: Date;
-  updatedAt: Date;
+  created: string; // ISO string
+  updated: string; // ISO string
+  relevance: number; // 0-1 scale
+  connections: number;
+  size: number; // Size in KB
+  agentId: string;
+  contextWindow: number;
+  metadata: Record<string, any>;
+  // Additional fields for backward compatibility
+  createdAt?: Date;
+  updatedAt?: Date;
   userId?: string;
   embeddings?: number[];
   importance?: number;
 }
 
 export interface MemoryStats {
-  totalMemories: number;
-  recentMemories: number;
-  memoryTypes: Record<string, number>;
-  averageImportance?: number;
+  totalMemories?: number; // Legacy field
+  recentMemories?: number; // Legacy field
+  memoryTypes?: Record<string, number>; // Legacy field
+  averageImportance?: number; // Legacy field
+  // Current MemoryService fields
+  totalEntities: number;
+  totalSize: number;
+  activeConnections: number;
+  queryCount: number;
+  avgRelevance: number;
+  memoryUsage: number;
+  activeAgents: number;
+  mcpConnections: number;
 }
 
 export interface MCPConnection {
@@ -50,31 +68,57 @@ export interface MCPConnection {
   config?: Record<string, any>;
 }
 
-// Request/Response Types
+// Query and Memory Management Types - Compatible with MemoryService
 export interface QueryRequest {
+  agentId: string;
   query: string;
-  filters?: Record<string, any>;
+  type?: string;
   limit?: number;
+  contextSize?: number;
+  // Additional fields for backward compatibility
+  filters?: Record<string, any>;
   offset?: number;
 }
 
 export interface QueryResponse {
-  results: MemoryEntity[];
-  total: number;
-  hasMore: boolean;
+  success: boolean;
+  memories: MemoryEntity[];
+  totalFound: number;
+  queryTime: number;
+  relevanceThreshold: number;
+  // Additional fields for backward compatibility
+  results?: MemoryEntity[];
+  total?: number;
+  hasMore?: boolean;
 }
 
 export interface MemoryRequest {
+  agentId: string;
+  title?: string;
   content: string;
-  type?: MemoryEntity['type'];
+  type: MemoryEntity['type'];
   tags?: string[];
   metadata?: Record<string, any>;
 }
 
 export interface MemoryResponse {
   success: boolean;
+  memoryId?: string;
+  message: string;
   memory?: MemoryEntity;
   error?: string;
+}
+
+// Database Configuration
+export interface DatabaseConfig {
+  type: 'postgresql' | 'mysql' | 'sqlite';
+  url?: string;
+  provider?: 'postgresql' | 'mysql' | 'sqlite';
+  ssl?: boolean;
+  pool?: {
+    min: number;
+    max: number;
+  };
 }
 
 // PWA Types
@@ -116,15 +160,4 @@ export interface UseServiceWorkerReturn {
   registration: ServiceWorkerRegistration | null;
   update: () => Promise<void>;
   unregister: () => Promise<boolean>;
-}
-
-// Database Configuration
-export interface DatabaseConfig {
-  url: string;
-  provider: 'postgresql' | 'mysql' | 'sqlite';
-  ssl?: boolean;
-  pool?: {
-    min: number;
-    max: number;
-  };
 }

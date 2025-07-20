@@ -1416,27 +1416,30 @@ importers:
 
   apps/conversai:
     dependencies:
-      '@codai/auth':
-        specifier: workspace:*
-        version: link:../../packages/auth
-      '@codai/logai-universal':
-        specifier: ^2.0.0
-        version: 2.0.0
-      '@codai/shared-ui':
-        specifier: workspace:*
-        version: link:../../packages/shared-ui
-      '@codai/translations':
-        specifier: workspace:*
-        version: link:../../packages/translations
       '@hookform/resolvers':
         specifier: ^5.1.1
         version: 5.1.1(react-hook-form@7.60.0(react@19.1.0))
+      '@radix-ui/react-dialog':
+        specifier: ^1.1.14
+        version: 1.1.14(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@radix-ui/react-dropdown-menu':
+        specifier: ^2.1.15
+        version: 2.1.15(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@radix-ui/react-select':
+        specifier: ^2.1.13
+        version: 2.2.5(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@radix-ui/react-tabs':
+        specifier: ^1.1.2
+        version: 1.1.12(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
       framer-motion:
         specifier: ^12.23.6
         version: 12.23.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -1458,6 +1461,9 @@ importers:
       react-hook-form:
         specifier: ^7.60.0
         version: 7.60.0(react@19.1.0)
+      react-hot-toast:
+        specifier: ^2.5.2
+        version: 2.5.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       tailwind-merge:
         specifier: ^3.3.1
         version: 3.3.1
@@ -2555,33 +2561,6 @@ importers:
 
   apps/hub:
     dependencies:
-      '@codai/api-standards':
-        specifier: workspace:*
-        version: link:../../packages/api-standards
-      '@codai/auth':
-        specifier: workspace:*
-        version: link:../../packages/auth
-      '@codai/conversai':
-        specifier: workspace:*
-        version: link:../../packages/conversai
-      '@codai/fabricai':
-        specifier: workspace:*
-        version: link:../../packages/fabricai
-      '@codai/logai-universal':
-        specifier: workspace:*
-        version: link:../../packages/logai-universal
-      '@codai/memorai':
-        specifier: workspace:*
-        version: link:../../packages/memorai
-      '@codai/romai':
-        specifier: workspace:*
-        version: link:../../packages/romai
-      '@codai/shared-ui':
-        specifier: workspace:*
-        version: link:../../packages/shared-ui
-      '@codai/translations':
-        specifier: workspace:*
-        version: link:../../packages/translations
       '@radix-ui/react-dialog':
         specifier: ^1.1.14
         version: 1.1.14(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -3447,33 +3426,6 @@ importers:
       '@auth/prisma-adapter':
         specifier: ^2.10.0
         version: 2.10.0(@prisma/client@6.12.0(prisma@6.12.0(typescript@5.8.3))(typescript@5.8.3))
-      '@codai/api-standards':
-        specifier: workspace:*
-        version: link:../../packages/api-standards
-      '@codai/auth':
-        specifier: workspace:*
-        version: link:../../packages/auth
-      '@codai/conversai':
-        specifier: workspace:*
-        version: link:../../packages/conversai
-      '@codai/fabricai':
-        specifier: workspace:*
-        version: link:../../packages/fabricai
-      '@codai/logai-universal':
-        specifier: workspace:*
-        version: link:../../packages/logai-universal
-      '@codai/memorai':
-        specifier: workspace:*
-        version: link:../../packages/memorai
-      '@codai/romai':
-        specifier: workspace:*
-        version: link:../../packages/romai
-      '@codai/shared-services':
-        specifier: workspace:*
-        version: link:../../packages/shared-services
-      '@codai/shared-ui':
-        specifier: workspace:*
-        version: link:../../packages/shared-ui
       '@prisma/client':
         specifier: ^6.12.0
         version: 6.12.0(prisma@6.12.0(typescript@5.8.3))(typescript@5.8.3)
@@ -4745,27 +4697,6 @@ importers:
 
   apps/sociai:
     dependencies:
-      '@codai/api-keys':
-        specifier: workspace:*
-        version: link:../../packages/api-keys
-      '@codai/logai-integration':
-        specifier: workspace:*
-        version: link:../../packages/logai-integration
-      '@codai/logai-sdk':
-        specifier: workspace:*
-        version: link:../../packages/logai-sdk
-      '@codai/shared-hooks':
-        specifier: workspace:*
-        version: link:../../packages/shared-hooks
-      '@codai/shared-services':
-        specifier: workspace:*
-        version: link:../../packages/shared-services
-      '@codai/shared-types':
-        specifier: workspace:*
-        version: link:../../packages/shared-types
-      '@codai/shared-ui':
-        specifier: workspace:*
-        version: link:../../packages/shared-ui
       '@codai/translations':
         specifier: workspace:*
         version: link:../../packages/translations

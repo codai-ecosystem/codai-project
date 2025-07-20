@@ -1,19 +1,26 @@
-import { analizaiService } from '../lib/services/analizaiService';
+import AnalizaiService from '../services/analizaiService';
 
 describe('analizaiService', () => {
-  test('should initialize', async () => {
-    const result = await analizaiService.initialize();
-    expect(result.status).toBe('initialized');
+  const analizaiService = AnalizaiService.getInstance();
+
+  test('should get metrics', async () => {
+    const metrics = await analizaiService.getMetrics();
+    expect(Array.isArray(metrics)).toBe(true);
   });
 
-  test('should create item', async () => {
-    const item = await analizaiService.createItem({ name: 'Test' });
-    expect(item.name).toBe('Test');
-    expect(item.id).toBeDefined();
+  test('should get insights', async () => {
+    const insights = await analizaiService.getInsights();
+    expect(Array.isArray(insights)).toBe(true);
   });
 
-  test('should get health', async () => {
-    const health = await analizaiService.healthCheck();
-    expect(health.status).toBe('healthy');
+  test('should get data sources', async () => {
+    const dataSources = await analizaiService.getDataSources();
+    expect(Array.isArray(dataSources)).toBe(true);
+  });
+
+  test('should get real-time metrics', async () => {
+    const realTimeMetrics = await analizaiService.getRealTimeMetrics();
+    expect(typeof realTimeMetrics).toBe('object');
+    expect(typeof realTimeMetrics.activeUsers).toBe('number');
   });
 });

@@ -29,8 +29,6 @@
     "test:watch": "vitest watch"
   },
   "dependencies": {
-    "@codai/auth": "workspace:*",
-    "@codai/logai-universal": "^2.0.0",
     "@hookform/resolvers": "^5.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -45,8 +43,12 @@
     "zustand": "^5.0.6",
     "next": "^15.4.1",
     "geist": "^1.4.2",
-    "@codai/shared-ui": "workspace:*",
-    "@codai/translations": "workspace:*"
+    "@radix-ui/react-dialog": "^1.1.14",
+    "@radix-ui/react-dropdown-menu": "^2.1.15",
+    "@radix-ui/react-select": "^2.1.13",
+    "@radix-ui/react-tabs": "^1.1.2",
+    "date-fns": "^4.1.0",
+    "react-hot-toast": "^2.5.2"
   },
   "devDependencies": {
     "@types/node": "^24.0.14",

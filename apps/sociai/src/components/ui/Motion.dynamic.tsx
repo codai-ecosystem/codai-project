@@ -1,10 +1,11 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import type { ComponentType } from 'react';
 import { LoadingSpinner } from './LoadingSpinner';
 
 // Export PageTransition as dynamic component
-export const PageTransition = dynamic(
+export const PageTransition: ComponentType<any> = dynamic(
   () => import('./Motion').then(mod => ({ default: mod.PageTransition })),
   {
     loading: () => <LoadingSpinner className="h-8 w-8" />,
@@ -13,7 +14,7 @@ export const PageTransition = dynamic(
 );
 
 // Export FadeTransition as dynamic component
-export const FadeTransition = dynamic(
+export const FadeTransition: ComponentType<any> = dynamic(
   () => import('./Motion').then(mod => ({ default: mod.FadeTransition })),
   {
     loading: () => <LoadingSpinner className="h-8 w-8" />,

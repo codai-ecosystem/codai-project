@@ -1,7 +1,8 @@
 {
   "name": "admin",
-  "version": "1.0.0",
-  "description": "Admin dashboard",
+  "version": "2.0.0",
+  "description": "CODAI Admin Dashboard - Professional Administration Platform",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev -p 3200",

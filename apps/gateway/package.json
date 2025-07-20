@@ -1,7 +1,7 @@
 {
     "name": "@codai/gateway",
-    "version": "1.0.0",
-    "description": "CODAI Ecosystem API Gateway - Centralized routing and management for all CODAI services",
+    "version": "2.0.0",
+    "description": "CODAI Ecosystem API Gateway - Production-ready centralized routing and management for all CODAI services",
     "main": "dist/api-gateway.js",
     "types": "dist/api-gateway.d.ts",
     "scripts": {

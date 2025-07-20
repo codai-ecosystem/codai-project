@@ -18,7 +18,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": ["node"]
   },
   "include": [
     "src/**/*"
@@ -26,7 +27,9 @@
   "exclude": [
     "node_modules",
     "dist",
-    "**/*.test.ts",
-    "**/*.spec.ts"
+    "tests",
+    "**/*.test.*",
+    "**/*.spec.*",
+    "jest.*"
   ]
 }

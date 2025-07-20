@@ -11,14 +11,12 @@ const nextConfig = {
   basePath: '',
 
   eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
-    ignoreDuringBuilds: true,
+    // Enable strict ESLint checking
+    ignoreDuringBuilds: false,
   },
   typescript: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has type errors.
-    ignoreBuildErrors: true,
+    // Enable strict TypeScript checking
+    ignoreBuildErrors: false,
   },
   images: {
     domains: ['localhost'],

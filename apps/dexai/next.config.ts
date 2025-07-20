@@ -2,12 +2,12 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   eslint: {
-    // Disable ESLint during builds for demo deployment
-    ignoreDuringBuilds: true,
+    // Enable strict ESLint checking
+    ignoreDuringBuilds: false,
   },
   typescript: {
-    // Disable TypeScript errors for demo deployment
-    ignoreBuildErrors: true,
+    // Enable strict TypeScript checking
+    ignoreBuildErrors: false,
   },
   // Override distDir to point to apps/web/.next
   distDir: 'apps/web/.next',

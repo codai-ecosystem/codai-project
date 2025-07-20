@@ -6,10 +6,10 @@ const nextConfig = {
     },
   },
   typescript: {
-    ignoreBuildErrors: true, // Allow build with TypeScript errors
+    ignoreBuildErrors: false, // Enable strict TypeScript checking
   },
   eslint: {
-    ignoreDuringBuilds: true, // Allow build with ESLint errors
+    ignoreDuringBuilds: false, // Enable strict ESLint checking
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',

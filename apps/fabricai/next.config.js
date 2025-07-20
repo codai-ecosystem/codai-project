@@ -11,7 +11,7 @@ const nextConfig = {
     ignoreBuildErrors: false,
   },
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false, // Enable strict ESLint checking
   },
   swcMinify: true,
   compiler: {

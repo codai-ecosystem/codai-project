@@ -19,6 +19,9 @@ import swaggerUi from 'swagger-ui-express';
 import { z } from 'zod';
 
 const app = express();
+
+// Helper function to wrap Zod schemas for validation middleware
+const wrapSchema = (schema: z.ZodSchema) => schema as any;
 const config = createStandardApiConfig('codai', 4006);
 
 // Setup universal CODAI middleware
@@ -34,7 +37,7 @@ const CodaiSchemas = {
         framework: z.string().optional(),
         language: z.enum(['TYPESCRIPT', 'JAVASCRIPT', 'PYTHON', 'GO', 'RUST', 'JAVA']),
         features: z.array(z.string()).optional(),
-        settings: z.record(z.any()).optional(),
+        settings: z.record(z.string(), z.any()).optional(),
         isPrivate: z.boolean().default(false),
         tags: z.array(z.string()).optional()
     }),
@@ -44,7 +47,7 @@ const CodaiSchemas = {
         description: z.string().optional(),
         framework: z.string().optional(),
         features: z.array(z.string()).optional(),
-        settings: z.record(z.any()).optional(),
+        settings: z.record(z.string(), z.any()).optional(),
         isPrivate: z.boolean().optional(),
         tags: z.array(z.string()).optional()
     }),
@@ -55,7 +58,7 @@ const CodaiSchemas = {
         type: z.enum(['COMPONENT', 'FUNCTION', 'CLASS', 'API', 'TEST', 'FULL_FEATURE']),
         language: z.enum(['TYPESCRIPT', 'JAVASCRIPT', 'PYTHON', 'GO', 'RUST', 'JAVA']).optional(),
         framework: z.string().optional(),
-        options: z.record(z.any()).optional()
+        options: z.record(z.string(), z.any()).optional()
     }),
 
     analyzeCode: z.object({
@@ -63,7 +66,7 @@ const CodaiSchemas = {
         filePath: z.string().min(1).optional(),
         code: z.string().min(1).optional(),
         analysisType: z.enum(['QUALITY', 'SECURITY', 'PERFORMANCE', 'COMPLEXITY', 'DEPENDENCIES']),
-        options: z.record(z.any()).optional()
+        options: z.record(z.string(), z.any()).optional()
     }),
 
     createTemplate: z.object({
@@ -74,7 +77,7 @@ const CodaiSchemas = {
         language: z.enum(['TYPESCRIPT', 'JAVASCRIPT', 'PYTHON', 'GO', 'RUST', 'JAVA']),
         framework: z.string().optional(),
         tags: z.array(z.string()).optional(),
-        content: z.record(z.any()),
+        content: z.record(z.string(), z.any()),
         isPublic: z.boolean().default(false)
     })
 };
@@ -919,7 +922,7 @@ app.get('/api/v1/projects', async (req, res) => {
 });
 
 app.post('/api/v1/projects',
-    validate({ body: CodaiSchemas.createProject }),
+    validate({ body: wrapSchema(CodaiSchemas.createProject) }),
     async (req, res) => {
         // Mock implementation
         const newProject = {
@@ -960,7 +963,7 @@ app.get('/api/v1/projects/:id', async (req, res) => {
 
 // AI endpoints
 app.post('/api/v1/ai/generate',
-    validate({ body: CodaiSchemas.generateCode }),
+    validate({ body: wrapSchema(CodaiSchemas.generateCode) }),
     async (req, res) => {
         // Mock implementation
         const generatedCode = {
@@ -985,7 +988,7 @@ export const generatedFunction = () => {
 );
 
 app.post('/api/v1/ai/analyze',
-    validate({ body: CodaiSchemas.analyzeCode }),
+    validate({ body: wrapSchema(CodaiSchemas.analyzeCode) }),
     async (req, res) => {
         // Mock implementation
         const analysis = {
@@ -1064,7 +1067,7 @@ app.get('/api/v1/templates', async (req, res) => {
 });
 
 app.post('/api/v1/templates',
-    validate({ body: CodaiSchemas.createTemplate }),
+    validate({ body: wrapSchema(CodaiSchemas.createTemplate) }),
     async (req, res) => {
         // Mock implementation
         const newTemplate = {

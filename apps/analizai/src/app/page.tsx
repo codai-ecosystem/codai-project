@@ -2,31 +2,31 @@
 
 import React, { useState, useEffect, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  BarChart, 
-  Bar, 
-  LineChart, 
-  Line, 
-  AreaChart, 
-  Area, 
-  PieChart, 
-  Pie, 
-  Cell, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  Legend, 
-  ResponsiveContainer 
+import {
+  BarChart,
+  Bar,
+  LineChart,
+  Line,
+  AreaChart,
+  Area,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer
 } from 'recharts'
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  Users, 
-  Target, 
-  Zap, 
-  AlertTriangle, 
-  Brain, 
+import {
+  TrendingUp,
+  TrendingDown,
+  Users,
+  Target,
+  Zap,
+  AlertTriangle,
+  Brain,
   Database,
   Activity,
   DollarSign,
@@ -41,7 +41,7 @@ import AnalizaiService, { AnalyticsMetric, AIInsight, DataSource, AnalyticsChart
 
 // Color palette for charts
 const CHART_COLORS = [
-  '#8b5cf6', '#06b6d4', '#10b981', '#f59e0b', 
+  '#8b5cf6', '#06b6d4', '#10b981', '#f59e0b',
   '#ef4444', '#8b5a2b', '#6366f1', '#ec4899',
   '#14b8a6', '#f97316'
 ]
@@ -50,10 +50,10 @@ const CHART_COLORS = [
 const formatValue = (value: number, format: string): string => {
   switch (format) {
     case 'currency':
-      return new Intl.NumberFormat('ro-RO', { 
-        style: 'currency', 
+      return new Intl.NumberFormat('ro-RO', {
+        style: 'currency',
         currency: 'RON',
-        minimumFractionDigits: 0 
+        minimumFractionDigits: 0
       }).format(value)
     case 'percentage':
       return `${value.toFixed(1)}%`
@@ -68,7 +68,7 @@ const formatValue = (value: number, format: string): string => {
 // Get icon component by name
 const getIconComponent = (iconName: string) => {
   const icons: Record<string, any> = {
-    TrendingUp, TrendingDown, Users, Target, Zap, AlertTriangle, 
+    TrendingUp, TrendingDown, Users, Target, Zap, AlertTriangle,
     Brain, Database, Activity, DollarSign, Eye, Clock
   }
   return icons[iconName] || Activity
@@ -78,8 +78,8 @@ const getIconComponent = (iconName: string) => {
 const MetricCard: React.FC<{ metric: AnalyticsMetric }> = ({ metric }) => {
   const IconComponent = getIconComponent(metric.icon)
   const isPositive = metric.changeType === 'increase'
-  const changeColor = metric.changeType === 'increase' ? 'text-green-600' : 
-                     metric.changeType === 'decrease' ? 'text-red-600' : 'text-gray-600'
+  const changeColor = metric.changeType === 'increase' ? 'text-green-600' :
+    metric.changeType === 'decrease' ? 'text-red-600' : 'text-gray-600'
   const bgColor = `bg-${metric.color}-50`
   const iconColor = `text-${metric.color}-600`
 
@@ -123,16 +123,16 @@ const ChartComponent: React.FC<{ chart: AnalyticsChart }> = ({ chart }) => {
         return (
           <LineChart {...commonProps}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-            <XAxis 
-              dataKey="label" 
+            <XAxis
+              dataKey="label"
               stroke="#6b7280"
               tick={{ fontSize: 12 }}
             />
-            <YAxis 
+            <YAxis
               stroke="#6b7280"
               tick={{ fontSize: 12 }}
             />
-            <Tooltip 
+            <Tooltip
               contentStyle={{
                 backgroundColor: '#fff',
                 border: '1px solid #e5e7eb',
@@ -140,17 +140,17 @@ const ChartComponent: React.FC<{ chart: AnalyticsChart }> = ({ chart }) => {
                 boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
               }}
             />
-            <Line 
-              type="monotone" 
-              dataKey="value" 
-              stroke={CHART_COLORS[0]} 
+            <Line
+              type="monotone"
+              dataKey="value"
+              stroke={CHART_COLORS[0]}
               strokeWidth={2}
               dot={{ fill: CHART_COLORS[0], r: 4 }}
               activeDot={{ r: 6, stroke: CHART_COLORS[0] }}
             />
           </LineChart>
         )
-      
+
       case 'area':
         return (
           <AreaChart {...commonProps}>
@@ -163,7 +163,7 @@ const ChartComponent: React.FC<{ chart: AnalyticsChart }> = ({ chart }) => {
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
             <XAxis dataKey="label" stroke="#6b7280" tick={{ fontSize: 12 }} />
             <YAxis stroke="#6b7280" tick={{ fontSize: 12 }} />
-            <Tooltip 
+            <Tooltip
               contentStyle={{
                 backgroundColor: '#fff',
                 border: '1px solid #e5e7eb',
@@ -171,23 +171,23 @@ const ChartComponent: React.FC<{ chart: AnalyticsChart }> = ({ chart }) => {
                 boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
               }}
             />
-            <Area 
-              type="monotone" 
-              dataKey="value" 
-              stroke={CHART_COLORS[1]} 
+            <Area
+              type="monotone"
+              dataKey="value"
+              stroke={CHART_COLORS[1]}
               strokeWidth={2}
               fill="url(#areaGradient)"
             />
           </AreaChart>
         )
-      
+
       case 'bar':
         return (
           <BarChart {...commonProps}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
             <XAxis dataKey="label" stroke="#6b7280" tick={{ fontSize: 12 }} />
             <YAxis stroke="#6b7280" tick={{ fontSize: 12 }} />
-            <Tooltip 
+            <Tooltip
               contentStyle={{
                 backgroundColor: '#fff',
                 border: '1px solid #e5e7eb',
@@ -202,7 +202,7 @@ const ChartComponent: React.FC<{ chart: AnalyticsChart }> = ({ chart }) => {
             </Bar>
           </BarChart>
         )
-      
+
       case 'pie':
         return (
           <PieChart>
@@ -222,7 +222,7 @@ const ChartComponent: React.FC<{ chart: AnalyticsChart }> = ({ chart }) => {
             <Legend />
           </PieChart>
         )
-      
+
       default:
         return <div className="text-center text-gray-500">Chart type not supported</div>
     }
@@ -308,23 +308,22 @@ const InsightCard: React.FC<{ insight: AIInsight }> = ({ insight }) => {
         </div>
         <div className="flex items-center text-xs text-gray-500">
           <Clock className="h-3 w-3 mr-1" />
-          {new Date(insight.timestamp).toLocaleTimeString('ro-RO', { 
-            hour: '2-digit', 
-            minute: '2-digit' 
+          {new Date(insight.timestamp).toLocaleTimeString('ro-RO', {
+            hour: '2-digit',
+            minute: '2-digit'
           })}
         </div>
       </div>
-      
+
       <h4 className="font-semibold text-gray-900 mb-2">{insight.title}</h4>
       <p className="text-sm text-gray-700 mb-3">{insight.description}</p>
-      
+
       <div className="flex items-center justify-between text-xs text-gray-600 mb-3">
         <span>Confidence: {(insight.confidence * 100).toFixed(0)}%</span>
-        <span className={`px-2 py-1 rounded-full ${
-          insight.impact === 'high' ? 'bg-red-100 text-red-700' :
-          insight.impact === 'medium' ? 'bg-yellow-100 text-yellow-700' :
-          'bg-blue-100 text-blue-700'
-        }`}>
+        <span className={`px-2 py-1 rounded-full ${insight.impact === 'high' ? 'bg-red-100 text-red-700' :
+            insight.impact === 'medium' ? 'bg-yellow-100 text-yellow-700' :
+              'bg-blue-100 text-blue-700'
+          }`}>
           {insight.impact.toUpperCase()} impact
         </span>
       </div>
@@ -375,7 +374,7 @@ const DataSourceStatus: React.FC<{ dataSource: DataSource }> = ({ dataSource }) 
           <span className="ml-1 capitalize">{dataSource.status}</span>
         </div>
       </div>
-      
+
       <div className="text-sm text-gray-600 space-y-1">
         <div className="flex justify-between">
           <span>Type:</span>
@@ -392,9 +391,9 @@ const DataSourceStatus: React.FC<{ dataSource: DataSource }> = ({ dataSource }) 
         <div className="flex justify-between">
           <span>Last Sync:</span>
           <span className="font-medium">
-            {new Date(dataSource.lastSync).toLocaleString('ro-RO', { 
-              hour: '2-digit', 
-              minute: '2-digit' 
+            {new Date(dataSource.lastSync).toLocaleString('ro-RO', {
+              hour: '2-digit',
+              minute: '2-digit'
             })}
           </span>
         </div>
@@ -433,10 +432,10 @@ export default function AnalizaiDashboard() {
     }
 
     loadDashboardData()
-    
+
     // Set up real-time updates
     const interval = setInterval(loadRealTimeData, 5000)
-    
+
     return () => clearInterval(interval)
   }, [analizaiService])
 
@@ -487,7 +486,7 @@ export default function AnalizaiDashboard() {
                 <Download className="h-4 w-4 mr-2" />
                 Export
               </button>
-              <button 
+              <button
                 onClick={handleRefresh}
                 className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors"
               >
@@ -522,10 +521,10 @@ export default function AnalizaiDashboard() {
                   {key.replace(/([A-Z])/g, ' $1').toLowerCase()}
                 </p>
                 <p className="text-xl font-bold text-gray-900">
-                  {typeof value === 'number' ? 
-                    (key.includes('Rate') ? `${value.toFixed(2)}%` : 
-                     key.includes('Time') ? `${Math.round(value)}ms` : 
-                     value.toLocaleString('ro-RO')) : 
+                  {typeof value === 'number' ?
+                    (key.includes('Rate') ? `${value.toFixed(2)}%` :
+                      key.includes('Time') ? `${Math.round(value)}ms` :
+                        value.toLocaleString('ro-RO')) :
                     value
                   }
                 </p>

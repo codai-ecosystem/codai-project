@@ -4,15 +4,15 @@ export const db = {
     console.log(`Mock DB Query: ${sql}`, params);
     return { rows: [] };
   },
-  
+
   async close(): Promise<void> {
     console.log('Mock DB: Connection closed');
   },
-  
+
   async destroy(): Promise<void> {
     console.log('Mock DB: Connection destroyed');
   },
-  
+
   async transaction<T>(callback: (tx: any) => Promise<T>): Promise<T> {
     const tx = {
       query: this.query,
@@ -21,7 +21,7 @@ export const db = {
     };
     return callback(tx);
   },
-  
+
   migrate: {
     async latest(): Promise<any[]> {
       console.log('Mock DB: Migrations run');
@@ -32,7 +32,7 @@ export const db = {
       return [];
     }
   },
-  
+
   seed: {
     async run(): Promise<any[]> {
       console.log('Mock DB: Seeds run');

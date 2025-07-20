@@ -222,9 +222,9 @@ The LinkedIn Team`,
 
   const filteredEmails = emails.filter(email => {
     const matchesSearch = email.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         email.from.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         email.content.toLowerCase().includes(searchTerm.toLowerCase())
-    
+      email.from.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      email.content.toLowerCase().includes(searchTerm.toLowerCase())
+
     switch (selectedFolder) {
       case 'starred': return email.starred && matchesSearch
       case 'important': return email.important && matchesSearch
@@ -235,7 +235,7 @@ The LinkedIn Team`,
   const formatTime = (date: Date) => {
     const now = new Date()
     const diffInHours = Math.abs(now.getTime() - date.getTime()) / (1000 * 60 * 60)
-    
+
     if (diffInHours < 1) {
       const minutes = Math.floor(diffInHours * 60)
       return `${minutes}m ago`
@@ -329,11 +329,10 @@ The LinkedIn Team`,
             {folders.map((folder) => (
               <motion.button
                 key={folder.id}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-left transition-colors ${
-                  selectedFolder === folder.id
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-left transition-colors ${selectedFolder === folder.id
                     ? 'bg-blue-100 text-blue-700'
                     : 'hover:bg-gray-100 text-gray-700'
-                }`}
+                  }`}
                 onClick={() => setSelectedFolder(folder.id)}
                 whileHover={{ x: 2 }}
               >
@@ -389,9 +388,8 @@ The LinkedIn Team`,
             {filteredEmails.map((email) => (
               <motion.div
                 key={email.id}
-                className={`p-4 border-b border-gray-100 cursor-pointer hover:bg-white/60 transition-colors ${
-                  selectedEmail?.id === email.id ? 'bg-blue-50 border-blue-200' : ''
-                } ${!email.read ? 'bg-blue-50/50' : ''}`}
+                className={`p-4 border-b border-gray-100 cursor-pointer hover:bg-white/60 transition-colors ${selectedEmail?.id === email.id ? 'bg-blue-50 border-blue-200' : ''
+                  } ${!email.read ? 'bg-blue-50/50' : ''}`}
                 onClick={() => {
                   setSelectedEmail(email)
                   handleEmailAction('read', email.id)
@@ -456,9 +454,8 @@ The LinkedIn Team`,
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => handleEmailAction('star', selectedEmail.id)}
-                      className={`p-2 rounded-lg hover:bg-gray-100 transition-colors ${
-                        selectedEmail.starred ? 'text-yellow-500' : 'text-gray-400'
-                      }`}
+                      className={`p-2 rounded-lg hover:bg-gray-100 transition-colors ${selectedEmail.starred ? 'text-yellow-500' : 'text-gray-400'
+                        }`}
                     >
                       <Star className={`h-5 w-5 ${selectedEmail.starred ? 'fill-current' : ''}`} />
                     </button>

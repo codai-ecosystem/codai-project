@@ -302,13 +302,13 @@ export default class AnalizaiService {
     const generateTimeSeriesData = (days: number, baseValue: number, variance: number): AnalyticsDataPoint[] => {
       const data: AnalyticsDataPoint[] = []
       const now = new Date()
-      
+
       for (let i = days; i >= 0; i--) {
         const date = new Date(now.getTime() - (i * 24 * 60 * 60 * 1000))
         const randomVariance = (Math.random() - 0.5) * variance * 2
         const trendValue = baseValue + (days - i) * 10 // Slight upward trend
         const value = Math.max(0, Math.round(trendValue + randomVariance))
-        
+
         data.push({
           timestamp: date.toISOString(),
           value,
@@ -452,7 +452,7 @@ export default class AnalizaiService {
 
   // AI Insights Management
   public async getInsights(): Promise<AIInsight[]> {
-    return Array.from(this.insights.values()).sort((a, b) => 
+    return Array.from(this.insights.values()).sort((a, b) =>
       new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
     )
   }
@@ -497,7 +497,7 @@ export default class AnalizaiService {
   public async exportData(format: 'csv' | 'json' | 'xlsx', dataType: string, filters?: Record<string, any>): Promise<Blob> {
     const data = await this.getMetrics()
     const jsonData = JSON.stringify(data, null, 2)
-    
+
     if (format === 'json') {
       return new Blob([jsonData], { type: 'application/json' })
     } else if (format === 'csv') {

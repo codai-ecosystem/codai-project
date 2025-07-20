@@ -1,7 +1,8 @@
 {
   "name": "logai",
-  "version": "1.0.0",
-  "description": "AI logging and monitoring",
+  "version": "2.0.0",
+  "description": "LOGAI - Professional Logging and Analytics Platform",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev -p 5200",

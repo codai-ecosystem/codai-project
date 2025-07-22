@@ -1,6 +1,14 @@
-# Dependencies
+# ================================
+# CODAI ECOSYSTEM GITIGNORE
+# ================================
+
+# ================================
+# Node.js / JavaScript / TypeScript
+# ================================
 node_modules/
 .pnpm-store/
+.npm/
+.yarn/
 
 # Build outputs
 .next/
@@ -8,10 +16,151 @@ out/
 dist/
 build/
 storybook-static/
+lib/
+esm/
+cjs/
 
-# Environment variables
+# TypeScript
+*.tsbuildinfo
+**/tsconfig.tsbuildinfo
+tsconfig.tsbuildinfo
+*.d.ts.map
+*.js.map
+
+# Testing
+coverage/
+test-results/
+playwright-report/
+playwright/.cache/
+.nyc_output/
+
+# ================================
+# Rust
+# ================================
+# Build artifacts
+target/
+**/target/
+**/*.rs.bk
+Cargo.lock
+# Debug files
+**/*.pdb
+# Test artifacts
+*.rs.tmp
+*.profraw
+
+# ================================
+# Python  
+# ================================
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+.Python
+.pytest_cache/
+.coverage
+.tox/
+.venv/
+venv/
+pip-log.txt
+pip-delete-this-directory.txt
+*.pyc
+*.pyo
+.env.python
+
+# ================================
+# Java
+# ================================
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+target/
+.gradle/
+build/
+
+# ================================
+# Go
+# ================================
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+vendor/
+
+# ================================
+# Swift
+# ================================
+.build/
+*.xcodeproj/
+*.xcworkspace/
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# ================================
+# C/C++
+# ================================
+*.o
+*.so
+*.dll
+*.lib
+*.a
+*.exe
+*.out
+*.app
+*.dSYM/
+*.su
+*.idb
+*.pdb
+*.ilk
+
+# ================================
+# .NET / C#
+# ================================
+bin/
+obj/
+*.user
+*.suo
+*.sln.docstates
+.vs/
+packages/
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# ================================
+# Shell Scripts & System Files
+# ================================
+*.sh.bak
+*.bat.bak
+*.ps1.bak
+*.command
+.bash_history
+.zsh_history
+
+# ================================
+# Environment & Secrets
+# ================================
 .env
 .env*.local
+.env.production
+.env.development
+.env.staging
+.env.test
 
 # Environment configurations with sensitive data
 environment-configs/
@@ -23,41 +172,124 @@ scripts/*env*.ps1
 scripts/create-env*.ps1
 scripts/generate-env*.ps1
 
-# Testing
-coverage/
-test-results/
-playwright-report/
-playwright/.cache/
+# Scripts with secrets
+scripts/update-all-env-vars.ps1
+setup-vercel.ps1
 
-# IDE
+# ================================
+# Development Tools & IDEs
+# ================================
 .vscode/
 .idea/
 *.swp
 *.swo
+*.sublime-*
+.vs/
 
-# OS
+# Generated configs
+**/eslint.config.js
+**/eslint.config.cjs
+**/.eslintrc.js
+**/.eslintrc.cjs
+**/.eslintrc.json
+
+# ================================
+# Package Managers
+# ================================
+# Lock files in individual apps (use root pnpm-lock.yaml only)
+apps/*/pnpm-lock.yaml
+packages/*/pnpm-lock.yaml
+apps/*/package-lock.json
+packages/*/package-lock.json
+apps/*/yarn.lock
+packages/*/yarn.lock
+
+# ================================
+# Operating Systems
+# ================================
+# macOS
 .DS_Store
-Thumbs.db
+.AppleDouble
+.LSOverride
 
-# Logs
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# ================================
+# Logs & Debug
+# ================================
 logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Temporary
+# ================================
+# Cache & Temporary
+# ================================
+.cache/
 .tmp/
 .temp/
+.turbo/
+.parcel-cache/
+.nuxt/
 
+# ================================
+# Build & Deployment
+# ================================
+.vercel
+.netlify/
+.firebase/
+
+# Docker
+.docker/
+docker-compose.override.yml
+docker-compose.local.yml
+.dockerignore.local
+
+# Build artifacts from CI/CD
+.github/artifacts/
+.circleci/artifacts/
+
+# ================================
+# CODAI Project Specific
+# ================================
 # Agent specific
 .agent/local/*
 .agent/temp/*
 
-# Codai Project
+# Project temp
 apps-backup/
 temp-*/
 temp/
+
+# Generated reports
+build-check-results*.json
+build-test-results*.txt
+build-status*.json
+build-status*.log
+ecosystem-health-monitor.js
+production-readiness-results.json
+lint-results.txt
+
+# Analysis and documentation files (project-specific reports)
+*ANALYSIS*.md
+*STATUS_REPORT*.md
+*COMPLETION_REPORT*.md
+*MASTER_PLAN*.md
+*IMPLEMENTATION_PLAN*.md
 
 # Submodules and Git conflicts
 **/.git/
@@ -67,49 +299,13 @@ temp/
 # Services (if they are separate repos)
 services/*/
 
-# Dependencies
-node_modules/
-.pnpm-store/
-
-# Next.js
-.next/
-out/
-
-# Environment
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-.env.production
-
-# Scripts with secrets
-scripts/update-all-env-vars.ps1
-setup-vercel.ps1
-
-# IDE
-.vscode/settings.json
-.idea/
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# Build
-dist/
-build/
-coverage/
-.vercel
-
-# Cache and temporary files
-.cache/
-.tmp/
-.temp/
-.turbo/
+# ================================
+# Security & Compliance
+# ================================
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+secrets/
+credentials/

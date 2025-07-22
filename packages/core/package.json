@@ -7,8 +7,9 @@
   "scripts": {
     "build": "pnpm exec tsc",
     "dev": "tsc --watch",
-    "clean": "rm -rf dist",
-    "typecheck": "pnpm exec tsc --noEmit"
+    "clean": "rimraf dist",
+    "type-check": "pnpm exec tsc --noEmit",
+    "lint": "pnpm exec eslint src --ext .ts,.tsx"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.56.0",

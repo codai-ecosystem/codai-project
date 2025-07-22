@@ -18,17 +18,17 @@ export class StocaiService {
     return this.data.get(id) || null;
   }
 
-  async create(data: Omit<StocaiData, 'id' | 'createdAt' | 'updatedAt'>): Promise<StocaiData> {
+  async create(data: Pick<StocaiData, 'name'> & Partial<Omit<StocaiData, 'id' | 'name' | 'createdAt' | 'updatedAt'>>): Promise<StocaiData> {
     const id = this.generateId();
     const now = new Date();
-    
+
     const newItem: StocaiData = {
       ...data,
       id,
       createdAt: now,
       updatedAt: now
     };
-    
+
     this.data.set(id, newItem);
     return newItem;
   }
@@ -36,14 +36,14 @@ export class StocaiService {
   async update(id: string, data: Partial<StocaiData>): Promise<StocaiData | null> {
     const existing = this.data.get(id);
     if (!existing) return null;
-    
+
     const updated = {
       ...existing,
       ...data,
       id, // Preserve ID
       updatedAt: new Date()
     };
-    
+
     this.data.set(id, updated);
     return updated;
   }
@@ -65,7 +65,7 @@ export class StocaiService {
 
   async validateData(data: StocaiData): Promise<boolean> {
     // Implement validation logic
-    return data.name && data.name.length > 0;
+    return Boolean(data.name && data.name.length > 0);
   }
 
   async performAnalytics(): Promise<any> {

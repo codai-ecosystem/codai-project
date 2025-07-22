@@ -1,4 +1,26 @@
-import { hubServices, ServiceConfig } from '../../../hub/lib/services/HubServiceManager';
+import { HubServiceManager } from '../../../hub/lib/services/HubServiceManager';
+
+// Service configuration type (redefined to avoid import issues)
+interface ServiceConfig {
+  memorai: {
+    databaseUrl: string;
+    redisUrl?: string;
+    vectorDbUrl?: string;
+    storageProvider: 'local' | 's3' | 'azure';
+    storageConfig: Record<string, any>;
+  };
+  auth: {
+    authUrl: string;
+    tokenKey: string;
+    refreshKey: string;
+    oauthProviders?: ('google' | 'github' | 'discord')[];
+  };
+  logging: {
+    level: 'debug' | 'info' | 'warn' | 'error';
+    enableRemoteLogging: boolean;
+    remoteEndpoint?: string;
+  };
+}
 
 // Extended admin configuration
 interface AdminServiceConfig extends ServiceConfig {
@@ -14,7 +36,7 @@ interface AdminServiceConfig extends ServiceConfig {
 
 class AdminServiceManager {
   private static instance: AdminServiceManager;
-  private hubServices = hubServices;
+  private hubServices = HubServiceManager.getInstance();
   private adminConfig?: AdminServiceConfig['admin'];
 
   private constructor() { }
@@ -118,27 +140,30 @@ class AdminServiceManager {
       throw new Error('Service management not enabled in admin config');
     }
 
+    // Capture 'this' reference for use in returned methods
+    const self = this;
+
     return {
       // Service health monitoring
       async getServiceHealth() {
-        return await this.hubServices.getServiceHealth();
+        return await self.hubServices.getServiceHealth();
       },
 
       // Service configuration
       async getServiceConfig() {
-        if (!this.hubServices.auth.hasPermission('services.config.read')) {
+        if (!self.hubServices.auth?.hasPermission('services.config.read')) {
           throw new Error('Insufficient permissions to read service config');
         }
         return {
-          memorai: await this.getMemoraiConfig(),
-          auth: await this.getAuthConfig(),
-          conversai: await this.getConversaiConfig()
+          memorai: await self.getMemoraiConfig(),
+          auth: await self.getAuthConfig(),
+          conversai: await self.getConversaiConfig()
         };
       },
 
       // Service restart (dangerous operation)
       async restartService(serviceName: string) {
-        if (!this.hubServices.auth.hasPermission('services.restart')) {
+        if (!self.hubServices.auth?.hasPermission('services.restart')) {
           throw new Error('Insufficient permissions to restart services');
         }
 
@@ -149,7 +174,7 @@ class AdminServiceManager {
 
       // Service logs
       async getServiceLogs(serviceName: string, lines: number = 100) {
-        if (!this.hubServices.auth.hasPermission('services.logs.read')) {
+        if (!self.hubServices.auth?.hasPermission('services.logs.read')) {
           throw new Error('Insufficient permissions to read service logs');
         }
 
@@ -343,7 +368,8 @@ class AdminServiceManager {
 
   // Check if specific admin feature is enabled
   hasAdminFeature(feature: keyof AdminServiceConfig['admin']): boolean {
-    return this.adminConfig?.[feature] ?? false;
+    const value = this.adminConfig?.[feature];
+    return typeof value === 'boolean' ? value : false;
   }
 }
 

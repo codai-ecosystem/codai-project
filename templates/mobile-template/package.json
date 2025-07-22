@@ -19,7 +19,7 @@
     "test:coverage": "jest --coverage",
     "lint": "pnpm exec eslint . --ext .js,.jsx,.ts,.tsx",
     "type-check": "pnpm exec tsc --noEmit",
-    "clean": "rm -rf .expo dist coverage"
+    "clean": "rimraf .expo dist coverage"
   },
   "dependencies": {
     "@codai/core": "workspace:*",

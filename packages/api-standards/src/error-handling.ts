@@ -4,8 +4,6 @@
  */
 
 import { Request, Response, NextFunction } from 'express';
-import { CodaiApiResponse } from './standards';
-import { sendCodaiResponse } from './response';
 
 export class CodaiError extends Error {
     public code: string;
@@ -74,7 +72,7 @@ export class RateLimitError extends CodaiError {
 /**
  * Async error wrapper for Express route handlers
  */
-export const asyncHandler = (fn: Function) => {
+export const asyncHandler = (fn: (req: Request, res: Response, next: NextFunction) => Promise<void>) => {
     return (req: Request, res: Response, next: NextFunction) => {
         Promise.resolve(fn(req, res, next)).catch(next);
     };

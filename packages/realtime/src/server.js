@@ -1,18 +1,25 @@
-import { Server as SocketIOServer } from 'socket.io';
-import { createServer } from 'http';
-import Redis from 'ioredis';
-import jwt from 'jsonwebtoken';
-import { RealtimeEventBus, CODAI_EVENTS } from './events';
-import { DataSynchronizer } from './sync';
-import { generateId, validateChannel, RateLimiter } from './utils';
-export class RealtimeServer {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RealtimeServer = void 0;
+exports.createRealtimeServer = createRealtimeServer;
+const socket_io_1 = require("socket.io");
+const http_1 = require("http");
+const ioredis_1 = __importDefault(require("ioredis"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const events_1 = require("./events");
+const sync_1 = require("./sync");
+const utils_1 = require("./utils");
+class RealtimeServer {
     constructor(config) {
         this.connections = new Map();
         this.rooms = new Map();
         this.config = config;
-        this.eventBus = new RealtimeEventBus(config.channels.messageHistory);
-        this.synchronizer = new DataSynchronizer(config.sync.conflictResolution);
-        this.rateLimiter = new RateLimiter(100, 60 * 1000); // 100 requests per minute
+        this.eventBus = new events_1.RealtimeEventBus(config.channels.messageHistory);
+        this.synchronizer = new sync_1.DataSynchronizer(config.sync.conflictResolution);
+        this.rateLimiter = new utils_1.RateLimiter(100, 60 * 1000); // 100 requests per minute
         this.metrics = {
             connections: { active: 0, total: 0, byApp: {} },
             messages: { sent: 0, received: 0, failed: 0, rate: 0 },
@@ -24,16 +31,16 @@ export class RealtimeServer {
     }
     initializeServer() {
         // Create HTTP server
-        this.httpServer = createServer();
+        this.httpServer = (0, http_1.createServer)();
         // Create Socket.IO server
-        this.io = new SocketIOServer(this.httpServer, {
+        this.io = new socket_io_1.Server(this.httpServer, {
             cors: this.config.server.cors,
             transports: ['websocket', 'polling'],
             allowEIO3: true,
         });
         // Initialize Redis if configured
         if (this.config.server.redis) {
-            this.redis = new Redis(this.config.server.redis);
+            this.redis = new ioredis_1.default(this.config.server.redis);
             try {
                 // Try to use socket.io-redis adapter if available
                 const redisAdapter = require('socket.io-redis');
@@ -47,7 +54,7 @@ export class RealtimeServer {
     setupEventHandlers() {
         // Handle new connections
         this.io.on('connection', (socket) => {
-            const connectionId = generateId();
+            const connectionId = (0, utils_1.generateId)();
             console.log(`New connection: ${connectionId}`);
             // Initialize connection info
             const connectionInfo = {
@@ -65,7 +72,7 @@ export class RealtimeServer {
             socket.on('authenticate', async (data) => {
                 try {
                     const { token } = data;
-                    const decoded = jwt.verify(token, this.config.auth.secret);
+                    const decoded = jsonwebtoken_1.default.verify(token, this.config.auth.secret);
                     connectionInfo.userId = decoded.sub || decoded.userId;
                     connectionInfo.roles = decoded.roles || [];
                     connectionInfo.permissions = decoded.permissions || [];
@@ -79,7 +86,7 @@ export class RealtimeServer {
                     // Emit authentication success
                     socket.emit('connected', { connectionId });
                     // Broadcast user connected event
-                    this.eventBus.emitEvent(CODAI_EVENTS.USER_AUTHENTICATED, { userId: connectionInfo.userId, connectionId }, 'system');
+                    this.eventBus.emitEvent(events_1.CODAI_EVENTS.USER_AUTHENTICATED, { userId: connectionInfo.userId, connectionId }, 'system');
                 }
                 catch (error) {
                     socket.emit('error', {
@@ -139,7 +146,7 @@ export class RealtimeServer {
             socket.on('subscribe', (data) => {
                 const { channels } = data;
                 channels.forEach(channel => {
-                    if (validateChannel(channel)) {
+                    if ((0, utils_1.validateChannel)(channel)) {
                         socket.join(`channel:${channel}`);
                     }
                 });
@@ -148,7 +155,7 @@ export class RealtimeServer {
             socket.on('unsubscribe', (data) => {
                 const { channels } = data;
                 channels.forEach(channel => {
-                    if (validateChannel(channel)) {
+                    if ((0, utils_1.validateChannel)(channel)) {
                         socket.leave(`channel:${channel}`);
                     }
                 });
@@ -217,7 +224,7 @@ export class RealtimeServer {
                 this.updateMetrics('connection', { type: 'disconnected' });
                 // Broadcast disconnection event
                 if (connectionInfo.userId) {
-                    this.eventBus.emitEvent(CODAI_EVENTS.USER_DISCONNECTED, { userId: connectionInfo.userId, reason }, 'system');
+                    this.eventBus.emitEvent(events_1.CODAI_EVENTS.USER_DISCONNECTED, { userId: connectionInfo.userId, reason }, 'system');
                 }
                 socket.emit('disconnected', { reason });
             });
@@ -330,7 +337,7 @@ export class RealtimeServer {
             .filter(conn => conn.appId === appId);
         connections.forEach(conn => {
             this.io.to(conn.id).emit('message', {
-                id: generateId(),
+                id: (0, utils_1.generateId)(),
                 type,
                 payload,
                 timestamp: Date.now(),
@@ -341,7 +348,7 @@ export class RealtimeServer {
     }
     broadcastToUser(userId, type, payload) {
         this.io.to(`user:${userId}`).emit('message', {
-            id: generateId(),
+            id: (0, utils_1.generateId)(),
             type,
             payload,
             timestamp: Date.now(),
@@ -351,7 +358,7 @@ export class RealtimeServer {
     }
     broadcastToChannel(channel, type, payload) {
         this.io.to(`channel:${channel}`).emit('message', {
-            id: generateId(),
+            id: (0, utils_1.generateId)(),
             type,
             payload,
             timestamp: Date.now(),
@@ -361,7 +368,7 @@ export class RealtimeServer {
     }
     broadcastSystemMessage(type, payload) {
         this.io.emit('message', {
-            id: generateId(),
+            id: (0, utils_1.generateId)(),
             type,
             payload,
             timestamp: Date.now(),
@@ -370,7 +377,8 @@ export class RealtimeServer {
         });
     }
 }
+exports.RealtimeServer = RealtimeServer;
 // Factory function to create and configure server
-export function createRealtimeServer(config) {
+function createRealtimeServer(config) {
     return new RealtimeServer(config);
 }

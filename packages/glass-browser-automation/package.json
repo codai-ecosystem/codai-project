@@ -39,7 +39,7 @@
     "format": "prettier --write src",
     "format:check": "prettier --check src",
     "type-check": "tsc --noEmit",
-    "clean": "rm -rf dist",
+    "clean": "rimraf dist",
     "demo": "npm run build && node dist/demo.js",
     "enhanced-demo": "npm run build && node dist/enhanced-demo.js",
     "debug-page": "npm run build && node -e \"require('./dist/enhanced-demo.js').debugCurrentPage()\"",

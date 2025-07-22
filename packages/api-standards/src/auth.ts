@@ -5,7 +5,6 @@
 
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { CodaiResponseBuilder } from './response';
 
 export interface CodaiJwtPayload {
     userId: string;
@@ -98,7 +97,7 @@ export const optionalJwtAuthMiddleware = (config: AuthConfig) => {
             }
 
             next();
-        } catch (error) {
+        } catch (_error) {
             // If token is invalid, just continue without user info
             next();
         }

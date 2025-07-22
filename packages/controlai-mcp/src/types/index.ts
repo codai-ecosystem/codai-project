@@ -8,7 +8,7 @@ export interface Project {
     updatedAt: Date;
     completedAt?: Date;
     tags: string[];
-    metadata: Record<string, any>;
+    metadata: Record<string, unknown>;
 }
 
 export interface Task {
@@ -250,7 +250,7 @@ export interface AgentSuggestion {
 // WebSocket message types
 export interface WebSocketMessage {
     type: MessageType;
-    payload: any;
+    payload: unknown;
     timestamp: Date;
 }
 
@@ -272,7 +272,7 @@ export enum MessageType {
 // WebSocket message types (legacy)
 export interface LegacyWebSocketMessage {
     type: WebSocketMessageType;
-    payload: any;
+    payload: unknown;
     timestamp: Date;
 }
 

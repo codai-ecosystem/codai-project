@@ -18,8 +18,8 @@ export interface DeploymentResult {
 
 export interface DeploymentProvider {
     deploy(): Promise<DeploymentResult>;
-    rollback(deploymentId: string): Promise<DeploymentResult>;
-    getStatus(deploymentId: string): Promise<any>;
+    rollback(_deploymentId: string): Promise<DeploymentResult>;
+    getStatus(_deploymentId: string): Promise<any>;
 }
 
 export interface OrchestrationOptions {

@@ -29,16 +29,28 @@ const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {}
+  VariantProps<typeof buttonVariants> {
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+  fullWidth?: boolean;
+}
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, ...props }, ref) => {
+  ({ className, variant, size, leftIcon, rightIcon, fullWidth, children, ...props }, ref) => {
     return (
       <button
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(
+          buttonVariants({ variant, size, className }),
+          fullWidth && "w-full",
+          "gap-2"
+        )}
         ref={ref}
         {...props}
-      />
+      >
+        {leftIcon && <span className="flex-shrink-0">{leftIcon}</span>}
+        {children}
+        {rightIcon && <span className="flex-shrink-0">{rightIcon}</span>}
+      </button>
     );
   }
 );

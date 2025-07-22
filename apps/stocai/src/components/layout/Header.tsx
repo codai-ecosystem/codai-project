@@ -6,7 +6,7 @@ import { useCallback } from 'react';
 import { LanguageSwitcher } from '@/components/i18n';
 import { ThemeToggle } from '@/components/theme';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -87,18 +87,18 @@ export function Header(): JSX.Element {
                 >
                   {' '}
                   <Avatar className="h-8 w-8">
-                    {user.photoURL !== undefined && user.photoURL !== '' ? (
+                    {user.photoURL !== null && user.photoURL !== undefined && user.photoURL !== '' ? (
                       <AvatarImage
                         src={user.photoURL}
                         alt={
-                          user.displayName !== null && user.displayName !== ''
+                          user.displayName !== null && user.displayName !== undefined && user.displayName !== ''
                             ? user.displayName
                             : undefined
                         }
                       />
                     ) : null}
                     <AvatarFallback>
-                      {user.displayName !== null && user.displayName !== ''
+                      {user.displayName !== null && user.displayName !== undefined && user.displayName !== ''
                         ? user.displayName.charAt(0).toUpperCase()
                         : 'U'}
                     </AvatarFallback>
@@ -138,16 +138,16 @@ export function Header(): JSX.Element {
             </DropdownMenu>
           ) : firebaseEnabled ? (
             <div className="flex items-center gap-2">
-              <Button variant="ghost" size="sm" asChild>
-                <Link href="/auth/login" data-testid="header-sign-in">
+              <Link href="/auth/login" data-testid="header-sign-in">
+                <Button variant="ghost" size="sm">
                   Sign In
-                </Link>
-              </Button>
-              <Button size="sm" asChild>
-                <Link href="/auth/register" data-testid="header-sign-up">
+                </Button>
+              </Link>
+              <Link href="/auth/register" data-testid="header-sign-up">
+                <Button size="sm">
                   Get Started
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             </div>
           ) : null}
 

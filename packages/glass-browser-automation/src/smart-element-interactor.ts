@@ -39,8 +39,8 @@ export class SmartElementInteractor {
         attributes?: Record<string, string>;
     }, options: InteractionOptions = {}): Promise<ClickResult> {
         const {
-            waitForElement = true,
-            timeout = 5000,
+            waitForElement: _waitForElement = true,
+            timeout: _timeout = 5000,
             retryCount = 3,
             scrollToElement = true,
             method = 'auto'
@@ -119,21 +119,21 @@ export class SmartElementInteractor {
         // Method 1: Try coordinate click
         try {
             return await this.clickElementByMethod(element, 'coordinate');
-        } catch (error) {
+        } catch (_error) {
             console.log('Coordinate click failed, trying selector method');
         }
 
         // Method 2: Try selector-based automation
         try {
             return await this.clickElementByMethod(element, 'selector');
-        } catch (error) {
+        } catch (_error) {
             console.log('Selector click failed, trying keyboard method');
         }
 
         // Method 3: Try keyboard navigation
         try {
             return await this.clickElementByMethod(element, 'keyboard');
-        } catch (error) {
+        } catch (_error) {
             console.log('Keyboard method failed, using basic automation');
         }
 

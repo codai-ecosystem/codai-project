@@ -40,13 +40,13 @@ export class WebSocketService {
     if (!this.io) return;
 
     this.io.on('connection', (socket) => {
-      console.log(`Client connected: ${socket.id}`);
+      console.warn(`Client connected: ${socket.id}`);
       this.connections.set(socket.id, socket);
 
       // Join user-specific room
       socket.on('join-user-room', (userId: string) => {
         socket.join(`user:${userId}`);
-        console.log(`User ${userId} joined room`);
+        console.warn(`User ${userId} joined room`);
       });
 
       // Join project-specific room

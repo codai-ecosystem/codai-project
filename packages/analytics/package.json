@@ -8,7 +8,8 @@
     "build": "pnpm exec tsc --build && tsc --build tsconfig.esm.json",
     "dev": "tsc --build --watch",
     "test": "jest",
-    "lint": "pnpm exec eslint src --ext .ts,.tsx"
+    "lint": "pnpm exec eslint src --ext .ts,.tsx",
+    "type-check": "pnpm exec tsc --noEmit"
   },
   "dependencies": {
     "@codai/core": "workspace:*",

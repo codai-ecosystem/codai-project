@@ -3,7 +3,7 @@
  * Consistent response formatting across all CODAI services
  */
 
-import { CodaiApiResponse, CodaiApiError, CodaiApiMeta, CodaiPagination } from './standards';
+import { CodaiApiResponse, CodaiApiError, CodaiPagination } from './standards';
 
 export class CodaiResponseBuilder {
     public requestId: string;
@@ -46,7 +46,7 @@ export class CodaiResponseBuilder {
         message: string,
         details?: any,
         field?: string,
-        statusCode: number = 500
+        _statusCode: number = 500
     ): CodaiApiResponse {
         const duration = Date.now() - this.startTime;
 

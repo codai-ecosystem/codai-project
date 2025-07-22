@@ -98,3 +98,9 @@
 .language-selector {
     @apply bg-gradient-to-r from-orange-400 to-amber-400 text-white rounded-full px-4 py-2 font-medium;
 }
+
+.glassmorphism {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}

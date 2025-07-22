@@ -39,7 +39,7 @@
     "dev": "tsc --build --watch",
     "lint": "pnpm exec eslint src --ext .ts,.tsx",
     "test": "jest",
-    "type-check": "cd ../../ && npx tsc --noEmit --project packages/memorai"
+    "type-check": "pnpm exec tsc --noEmit"
   },
   "dependencies": {
     "@codai/core": "workspace:*",

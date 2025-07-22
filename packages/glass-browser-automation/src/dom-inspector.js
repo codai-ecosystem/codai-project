@@ -6,74 +6,74 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DOMInspector = void 0;
 class DOMInspector {
-    windowHandle;
-    constructor(windowHandle) {
-        this.windowHandle = windowHandle;
-    }
-    /**
-     * Get comprehensive page content including all interactive elements
-     */
-    async getPageContent() {
-        // Inject DOM inspection script into the browser
-        const inspectionScript = this.generateInspectionScript();
-        // This would be executed via browser automation
-        const rawContent = await this.executeScript(inspectionScript);
-        return this.parsePageContent(rawContent);
-    }
-    /**
-     * Find elements by various criteria
-     */
-    async findElements(criteria) {
-        const pageContent = await this.getPageContent();
-        return pageContent.elements.filter(element => {
-            if (criteria.text && !element.text.toLowerCase().includes(criteria.text.toLowerCase())) {
-                return false;
-            }
-            if (criteria.tag && element.tagName.toLowerCase() !== criteria.tag.toLowerCase()) {
-                return false;
-            }
-            if (criteria.role && element.role !== criteria.role) {
-                return false;
-            }
-            if (criteria.containsText && !element.text.toLowerCase().includes(criteria.containsText.toLowerCase())) {
-                return false;
-            }
-            if (criteria.clickable && !element.isClickable) {
-                return false;
-            }
-            if (criteria.attributes) {
-                for (const [key, value] of Object.entries(criteria.attributes)) {
-                    if (element.attributes[key] !== value) {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        });
-    }
-    /**
-     * Find the best clickable element based on text content
-     */
-    async findBestClickableElement(searchText) {
-        const elements = await this.findElements({
-            containsText: searchText,
-            clickable: true
-        });
-        if (elements.length === 0) {
-            return null;
+  windowHandle;
+  constructor(windowHandle) {
+    this.windowHandle = windowHandle;
+  }
+  /**
+   * Get comprehensive page content including all interactive elements
+   */
+  async getPageContent() {
+    // Inject DOM inspection script into the browser
+    const inspectionScript = this.generateInspectionScript();
+    // This would be executed via browser automation
+    const rawContent = await this.executeScript(inspectionScript);
+    return this.parsePageContent(rawContent);
+  }
+  /**
+   * Find elements by various criteria
+   */
+  async findElements(criteria) {
+    const pageContent = await this.getPageContent();
+    return pageContent.elements.filter(element => {
+      if (criteria.text && !element.text.toLowerCase().includes(criteria.text.toLowerCase())) {
+        return false;
+      }
+      if (criteria.tag && element.tagName.toLowerCase() !== criteria.tag.toLowerCase()) {
+        return false;
+      }
+      if (criteria.role && element.role !== criteria.role) {
+        return false;
+      }
+      if (criteria.containsText && !element.text.toLowerCase().includes(criteria.containsText.toLowerCase())) {
+        return false;
+      }
+      if (criteria.clickable && !element.isClickable) {
+        return false;
+      }
+      if (criteria.attributes) {
+        for (const [key, value] of Object.entries(criteria.attributes)) {
+          if (element.attributes[key] !== value) {
+            return false;
+          }
         }
-        // Sort by text similarity and visibility
-        return elements.sort((a, b) => {
-            const aScore = this.calculateElementScore(a, searchText);
-            const bScore = this.calculateElementScore(b, searchText);
-            return bScore - aScore;
-        })[0];
+      }
+      return true;
+    });
+  }
+  /**
+   * Find the best clickable element based on text content
+   */
+  async findBestClickableElement(searchText) {
+    const elements = await this.findElements({
+      containsText: searchText,
+      clickable: true
+    });
+    if (elements.length === 0) {
+      return null;
     }
-    /**
-     * Generate JavaScript for DOM inspection
-     */
-    generateInspectionScript() {
-        return `
+    // Sort by text similarity and visibility
+    return elements.sort((a, b) => {
+      const aScore = this.calculateElementScore(a, searchText);
+      const bScore = this.calculateElementScore(b, searchText);
+      return bScore - aScore;
+    })[0];
+  }
+  /**
+   * Generate JavaScript for DOM inspection
+   */
+  generateInspectionScript() {
+    return `
     (function() {
       const elements = [];
       const allElements = document.querySelectorAll('*');
@@ -188,73 +188,73 @@ class DOMInspector {
       }
     })();
     `;
+  }
+  /**
+   * Execute script in browser (placeholder - would integrate with actual browser automation)
+   */
+  async executeScript(/* _script */) {
+    // This would be implemented to execute JavaScript in the browser
+    // For now, return mock data
+    console.log('Executing script in browser:', this.windowHandle);
+    // In real implementation, this would:
+    // 1. Inject script into browser
+    // 2. Execute it
+    // 3. Return results
+    return {
+      url: 'https://vercel.com/codai-ro/codai/settings/environment-variables',
+      title: 'Environment Variables - Vercel',
+      elements: [
+        {
+          id: 'add-env-var-button',
+          tagName: 'BUTTON',
+          text: 'Add',
+          attributes: { class: 'add-button', type: 'button' },
+          bounds: { x: 100, y: 200, width: 80, height: 32 },
+          isVisible: true,
+          isClickable: true,
+          selector: 'button.add-button',
+          xpath: '//button[@class="add-button"]',
+          role: 'button'
+        }
+      ]
+    };
+  }
+  /**
+   * Parse raw page content into structured format
+   */
+  parsePageContent(rawContent) {
+    return rawContent;
+  }
+  /**
+   * Calculate element relevance score
+   */
+  calculateElementScore(element, searchText) {
+    let score = 0;
+    // Exact text match gets highest score
+    if (element.text.toLowerCase() === searchText.toLowerCase()) {
+      score += 100;
     }
-    /**
-     * Execute script in browser (placeholder - would integrate with actual browser automation)
-     */
-    async executeScript(script) {
-        // This would be implemented to execute JavaScript in the browser
-        // For now, return mock data
-        console.log('Executing script in browser:', this.windowHandle);
-        // In real implementation, this would:
-        // 1. Inject script into browser
-        // 2. Execute it
-        // 3. Return results
-        return {
-            url: 'https://vercel.com/codai-ro/codai/settings/environment-variables',
-            title: 'Environment Variables - Vercel',
-            elements: [
-                {
-                    id: 'add-env-var-button',
-                    tagName: 'BUTTON',
-                    text: 'Add',
-                    attributes: { class: 'add-button', type: 'button' },
-                    bounds: { x: 100, y: 200, width: 80, height: 32 },
-                    isVisible: true,
-                    isClickable: true,
-                    selector: 'button.add-button',
-                    xpath: '//button[@class="add-button"]',
-                    role: 'button'
-                }
-            ]
-        };
+    // Text contains search term
+    if (element.text.toLowerCase().includes(searchText.toLowerCase())) {
+      score += 50;
     }
-    /**
-     * Parse raw page content into structured format
-     */
-    parsePageContent(rawContent) {
-        return rawContent;
+    // Clickable elements get bonus
+    if (element.isClickable) {
+      score += 25;
     }
-    /**
-     * Calculate element relevance score
-     */
-    calculateElementScore(element, searchText) {
-        let score = 0;
-        // Exact text match gets highest score
-        if (element.text.toLowerCase() === searchText.toLowerCase()) {
-            score += 100;
-        }
-        // Text contains search term
-        if (element.text.toLowerCase().includes(searchText.toLowerCase())) {
-            score += 50;
-        }
-        // Clickable elements get bonus
-        if (element.isClickable) {
-            score += 25;
-        }
-        // Visible elements get bonus
-        if (element.isVisible) {
-            score += 15;
-        }
-        // Button elements get bonus for action-oriented searches
-        if (element.tagName === 'BUTTON') {
-            score += 20;
-        }
-        // Elements with IDs get slight bonus
-        if (element.id && !element.id.startsWith('element_')) {
-            score += 5;
-        }
-        return score;
+    // Visible elements get bonus
+    if (element.isVisible) {
+      score += 15;
     }
+    // Button elements get bonus for action-oriented searches
+    if (element.tagName === 'BUTTON') {
+      score += 20;
+    }
+    // Elements with IDs get slight bonus
+    if (element.id && !element.id.startsWith('element_')) {
+      score += 5;
+    }
+    return score;
+  }
 }
 exports.DOMInspector = DOMInspector;

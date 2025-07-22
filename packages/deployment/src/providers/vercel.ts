@@ -2,7 +2,7 @@ import { DeploymentProvider, DeploymentConfig, DeploymentResult } from '../types
 import { logDeployment } from '../utils/logger';
 
 export class VercelProvider implements DeploymentProvider {
-    constructor(private config: DeploymentConfig) { }
+    constructor(private _config: DeploymentConfig) { }
 
     async deploy(): Promise<DeploymentResult> {
         try {
@@ -13,7 +13,7 @@ export class VercelProvider implements DeploymentProvider {
                 success: true,
                 message: 'Vercel deployment successful',
                 deploymentId: `vercel-${Date.now()}`,
-                url: this.config.url || 'https://codai.vercel.app'
+                url: this._config.url || 'https://codai.vercel.app'
             };
 
             return result;

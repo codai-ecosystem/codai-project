@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "node",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
     "strict": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -16,8 +16,14 @@
     "noEmit": false,
     "isolatedModules": true,
     "verbatimModuleSyntax": false,
-    "lib": ["ES2022", "DOM"],
-    "types": ["node", "ws"]
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
+    "types": [
+      "node",
+      "ws"
+    ]
   },
   "include": [
     "src/**/*"

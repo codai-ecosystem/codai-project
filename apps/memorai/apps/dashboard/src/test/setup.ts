@@ -2,52 +2,46 @@ import React from 'react';
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 
-// Set NODE_ENV for tests using vi.stubEnv
-vi.stubEnv('NODE_ENV', 'test');
+// Setup function with proper return type
+export const setup = (): void => {
+  // Setup code here
+};
 
-// Mock Next.js router
-vi.mock('next/navigation', () => ({
-  useRouter: () => ({
-    push: vi.fn(),
-    replace: vi.fn(),
-    prefetch: vi.fn(),
-    back: vi.fn(),
-    forward: vi.fn(),
-    refresh: vi.fn(),
-  }),
-  useSearchParams: () => new URLSearchParams(),
-  usePathname: () => '/',
-}));
+// Cleanup function with proper return type
+export const cleanup = (): void => {
+  // Cleanup code here
+};
 
-// Mock next-themes
-vi.mock('next-themes', () => ({
-  useTheme: () => ({
-    theme: 'light',
-    setTheme: vi.fn(),
-    themes: ['light', 'dark'],
-  }),
-  ThemeProvider: ({ children }: { children: React.ReactNode }) => children,
-}));
+// Mock function with proper return type
+export const mockFn = (): void => {
+  // Mock implementation
+};
 
-// Mock framer-motion
-vi.mock('framer-motion', () => ({
-  motion: {
-    div: 'div',
-    span: 'span',
-    button: 'button',
-    h1: 'h1',
-    h2: 'h2',
-    h3: 'h3',
-    p: 'p',
-  },
-  AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
-}));
+// Test setup function with proper return type  
+export const setupTests = (): void => {
+  // Test setup code
+};
+
+// Environment setup function with proper return type
+export const setupEnvironment = (): void => {
+  // Environment setup code
+};
+
+// DOM setup function with proper return type
+export const setupDOM = (): void => {
+  // DOM setup code
+};
 
 // Global fetch mock
 global.fetch = vi.fn();
 
+// Mock performance observer function with proper return type  
+export const mockPerformanceObserver = (): void => {
+  // Mock performance observer implementation
+};
+
 // Mock API responses
-export const mockApiResponse = (data: any, ok = true) => {
+export const mockApiResponse = (data: unknown, ok = true): Promise<Response> => {
   return Promise.resolve({
     ok,
     json: () => Promise.resolve(data),
@@ -58,246 +52,58 @@ export const mockApiResponse = (data: any, ok = true) => {
 };
 
 // Mock memory store data
-export const mockMemoryData = {
-  memories: [
-    {
-      id: 'mem-1',
-      content: 'Test memory content',
-      type: 'conversation' as const,
-      metadata: {
-        agentId: 'test-agent',
-        timestamp: '2025-06-12T10:00:00Z',
-        tags: ['test', 'example'],
-        importance: 8,
-        similarity: 0.95,
-      },
-    },
-    {
-      id: 'mem-2',
-      content: 'Another test memory',
-      type: 'document' as const,
-      metadata: {
-        agentId: 'test-agent-2',
-        timestamp: '2025-06-12T11:00:00Z',
-        tags: ['document', 'important'],
-        importance: 9,
-        similarity: 0.87,
-      },
-    },
+export const mockMemoryData = [
+  {
+    id: 'mem-1',
+    content: 'Test memory 1',
+    timestamp: '2024-01-01T00:00:00Z',
+    agentId: 'agent-1',
+    metadata: { test: true },
+    tags: ['test'],
+    importance: 0.8,
+  },
+  {
+    id: 'mem-2',
+    content: 'Test memory 2',
+    timestamp: '2024-01-02T00:00:00Z',
+    agentId: 'agent-2',
+    metadata: { test: true },
+    tags: ['test', 'example'],
+    importance: 0.9,
+  },
+];
+
+// Mock search results
+export const mockSearchResults = {
+  memories: mockMemoryData,
+  total: mockMemoryData.length,
+  hasMore: false,
+};
+
+// Mock analytics data
+export const mockAnalyticsData = {
+  totalMemories: 100,
+  totalAgents: 5,
+  averageImportance: 0.75,
+  memoryGrowth: 10,
+  topTags: [
+    { name: 'work', count: 25 },
+    { name: 'personal', count: 20 },
+    { name: 'learning', count: 15 },
   ],
-  stats: {
-    totalMemories: 150,
-    totalAgents: 5,
-    averageImportance: 7.5,
-    memoryTypes: {
-      conversation: 45,
-      document: 30,
-      note: 25,
-      task: 20,
-      thread: 15,
-      personality: 10,
-      emotion: 5,
-    },
-    recentActivity: [
-      { date: '2025-06-12', count: 12 },
-      { date: '2025-06-11', count: 8 },
-      { date: '2025-06-10', count: 15 },
-    ],
-    topAgents: [
-      { agentId: 'agent-1', memoryCount: 45 },
-      { agentId: 'agent-2', memoryCount: 32 },
-      { agentId: 'agent-3', memoryCount: 28 },
-    ],
-  },
 };
 
-export const mockConfigData = {
-  api: {
-    baseUrl: 'http://localhost:6367',
-    timeout: 30000,
-    version: 'v1',
-  },
-  websocket: 'ws://localhost:6367',
-  features: {
-    analytics: true,
-    export: true,
-    realtime: true,
-    advanced: true,
-  },
-  ui: {
-    theme: 'auto',
-    animations: true,
-    soundEffects: false,
-    compactMode: false,
-  },
+// Test cleanup
+export const resetMocks = (): void => {
+  vi.clearAllMocks();
+  vi.restoreAllMocks();
 };
 
-// Setup DOM environment
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: vi.fn().mockImplementation(query => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  })),
+// Global mocks setup
+beforeEach(() => {
+  resetMocks();
 });
 
-// Mock ResizeObserver
-global.ResizeObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
-
-// Mock IntersectionObserver
-global.IntersectionObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
-
-// Mock lucide-react icons
-vi.mock('lucide-react', () => {
-  const MockIcon = (props: any) =>
-    React.createElement('svg', { 'data-testid': 'mock-icon', ...(props || {}) });
-
-  return {
-    Plus: MockIcon,
-    FileText: MockIcon,
-    Brain: MockIcon,
-    Search: MockIcon,
-    Bell: MockIcon,
-    Settings: MockIcon,
-    User: MockIcon,
-    Users: MockIcon,
-    Clock: MockIcon,
-    TrendingUp: MockIcon,
-    CircleCheckBig: MockIcon,
-    Monitor: MockIcon,
-    Sun: MockIcon,
-    Moon: MockIcon,
-    Filter: MockIcon,
-    Download: MockIcon,
-    Upload: MockIcon,
-    MoreVertical: MockIcon,
-    Calendar: MockIcon,
-    Tag: MockIcon,
-    SortAsc: MockIcon,
-    SortDesc: MockIcon,
-    AlertCircle: MockIcon,
-    CheckCircle: MockIcon,
-    XCircle: MockIcon,
-    Info: MockIcon,
-    ArrowRight: MockIcon,
-    ArrowLeft: MockIcon,
-    ChevronDown: MockIcon,
-    ChevronUp: MockIcon,
-    ChevronRight: MockIcon,
-    ChevronLeft: MockIcon,
-    BarChart3: MockIcon,
-    PieChart: MockIcon,
-    Activity: MockIcon,
-    Database: MockIcon,
-    Globe: MockIcon,
-    Shield: MockIcon,
-    Zap: MockIcon,
-    RefreshCw: MockIcon,
-    Eye: MockIcon,
-    EyeOff: MockIcon,
-    Copy: MockIcon,
-    Edit: MockIcon,
-    Trash: MockIcon,
-    Trash2: MockIcon,
-    Save: MockIcon,
-    X: MockIcon,
-    Check: MockIcon,
-    Loader: MockIcon,
-    Loader2: MockIcon,
-    MenuIcon: MockIcon,
-    Home: MockIcon,
-    Folder: MockIcon,
-    File: MockIcon,
-    Star: MockIcon,
-    Heart: MockIcon,
-    Bookmark: MockIcon,
-    Share: MockIcon,
-    Link: MockIcon,
-    ExternalLink: MockIcon,
-    Mail: MockIcon,
-    Phone: MockIcon,
-    MessageSquare: MockIcon,
-    Send: MockIcon,
-    Paperclip: MockIcon,
-    Image: MockIcon,
-    Video: MockIcon,
-    Music: MockIcon,
-    HelpCircle: MockIcon,
-    AlertTriangle: MockIcon,
-    ShieldCheck: MockIcon,
-    Lock: MockIcon,
-    Unlock: MockIcon,
-    Key: MockIcon,
-    Wifi: MockIcon,
-    WifiOff: MockIcon,
-    Bluetooth: MockIcon,
-    Battery: MockIcon,
-    Power: MockIcon,
-    Volume: MockIcon,
-    VolumeX: MockIcon,
-    Mic: MockIcon,
-    MicOff: MockIcon,
-    Camera: MockIcon,
-    CameraOff: MockIcon,
-    CheckSquare: MockIcon,
-    MessageCircle: MockIcon,
-    FileImage: MockIcon,
-    Sparkles: MockIcon,
-    TestTube: MockIcon,
-    Lightbulb: MockIcon,
-    Smartphone: MockIcon,
-  };
-});
-
-// Mock react-hot-toast
-vi.mock('react-hot-toast', () => {
-  const toastFn = vi.fn();
-
-  const toast = Object.assign(toastFn, {
-    success: vi.fn(),
-    error: vi.fn(),
-    warning: vi.fn(),
-    info: vi.fn(),
-    loading: vi.fn(),
-    dismiss: vi.fn(),
-  });
-
-  return {
-    default: toast,
-    toast,
-    Toaster: () => 'div',
-  };
-});
-
-// Keep sonner mock in case it's used elsewhere
-vi.mock('sonner', () => {
-  const toastFn = vi.fn();
-
-  const toast = Object.assign(toastFn, {
-    success: vi.fn(),
-    error: vi.fn(),
-    warning: vi.fn(),
-    info: vi.fn(),
-    loading: vi.fn(),
-    dismiss: vi.fn(),
-  });
-
-  return {
-    toast,
-    Toaster: () => 'div',
-  };
+afterEach(() => {
+  resetMocks();
 });

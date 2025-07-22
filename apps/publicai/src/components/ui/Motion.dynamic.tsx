@@ -3,10 +3,15 @@
 import dynamic from 'next/dynamic';
 import { LoadingSpinner } from './LoadingSpinner';
 
-const Motion = dynamic(() => import('./Motion'), {
-  loading: () => <LoadingSpinner className="h-8 w-8" />,
-  ssr: false,
-});
+// Export types
+export type { TransitionProps } from './Motion';
 
-export default Motion;
-export { Motion };
+export const PageTransition = dynamic(
+  () => import('./Motion').then(mod => ({ default: mod.PageTransition })),
+  { loading: () => <LoadingSpinner className="h-8 w-8" />, ssr: false }
+);
+
+export const FadeTransition = dynamic(
+  () => import('./Motion').then(mod => ({ default: mod.FadeTransition })),
+  { loading: () => <LoadingSpinner className="h-8 w-8" />, ssr: false }
+);

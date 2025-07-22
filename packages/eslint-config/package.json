@@ -3,12 +3,16 @@
   "version": "1.0.0",
   "description": "Shared ESLint configuration for Codai ecosystem",
   "main": "index.js",
-  "type": "module",
   "files": [
     "index.js",
     "react.js",
     "next.js"
   ],
+  "scripts": {
+    "build": "echo 'No build step needed for ESLint config'",
+    "lint": "eslint .",
+    "type-check": "echo 'No TypeScript files to check in ESLint config'"
+  },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^8.36.0",
     "@typescript-eslint/parser": "^8.36.0",

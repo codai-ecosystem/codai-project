@@ -37,6 +37,7 @@
   "author": "Codai Ecosystem",
   "license": "MIT",
   "devDependencies": {
+    "@codai/eslint-config": "workspace:*",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
@@ -51,6 +52,10 @@
     "tailwindcss": "^3.4.17",
     "eslint": "^9.31.0",
     "eslint-config-next": "^15.4.1",
+    "@typescript-eslint/eslint-plugin": "^8.19.0",
+    "@typescript-eslint/parser": "^8.19.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "typescript": "^5.8.3"
   },
   "private": true

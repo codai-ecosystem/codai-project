@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { authOptions } from '../../lib/auth';
 import { memoraiService } from '@/lib/services/memoraiService';
 import { z } from 'zod';
 
@@ -25,11 +25,11 @@ export async function GET(request: NextRequest) {
       case 'healthCheck':
         const health = await memoraiService.healthCheck();
         return NextResponse.json(health);
-        
+
       case 'getStats':
         const stats = await memoraiService.getServiceStats();
         return NextResponse.json(stats);
-        
+
       default:
         return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
     }

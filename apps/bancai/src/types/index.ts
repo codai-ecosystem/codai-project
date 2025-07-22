@@ -43,6 +43,34 @@ export interface Transfer {
   exchangeRate?: number
 }
 
+export interface TransferRequest {
+  fromAccountId: string
+  toAccountId?: string
+  toExternalAccount?: {
+    accountNumber: string
+    bankName: string
+    bankCode: string
+    accountHolderName: string
+    country: string
+  }
+  amount: number
+  currency: string
+  description: string
+  scheduledDate?: Date
+}
+
+export interface TransactionFilters {
+  accountId?: string
+  type?: 'debit' | 'credit'
+  category?: string
+  startDate?: Date
+  endDate?: Date
+  minAmount?: number
+  maxAmount?: number
+  status?: 'completed' | 'pending' | 'failed'
+  search?: string
+}
+
 export interface ExternalAccount {
   id: string
   accountNumber: string

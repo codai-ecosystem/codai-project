@@ -5,6 +5,7 @@
 
 import React, { forwardRef, useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { cn } from './lib/utils'
 
 // ==================== BUTTON COMPONENTS ====================
 
@@ -391,9 +392,3 @@ export const MetricCard: React.FC<MetricCardProps> = ({ title, value, change, ic
 // ==================== SPECTACULAR GLASSMORPHISM ====================
 
 export * from './spectacular'
-
-// ==================== UTILITY FUNCTIONS ====================
-
-export function cn(...classes: (string | undefined | null | boolean)[]): string {
-  return classes.filter(Boolean).join(' ')
-}

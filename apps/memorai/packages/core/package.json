@@ -29,7 +29,7 @@
     "lint": "pnpm exec eslint src/**/*.ts",
     "lint:fix": "pnpm exec eslint src/**/*.ts --fix",
     "type-check": "pnpm exec tsc --noEmit",
-    "clean": "rm -rf dist *.tsbuildinfo"
+    "clean": "rimraf dist && rimraf tsconfig.tsbuildinfo"
   },
   "dependencies": {
     "@octokit/rest": "^22.0.0",

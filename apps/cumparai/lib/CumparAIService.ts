@@ -1012,11 +1012,12 @@ export class CumparAIService extends EventEmitter {
       case 'category': return product.category;
       case 'brand': return product.brand;
       case 'price': return product.pricing.basePrice;
-      case 'rating':
+      case 'rating': {
         const avgRating = product.reviews.length > 0
           ? product.reviews.reduce((sum, r) => sum + r.rating, 0) / product.reviews.length
           : 0;
         return avgRating;
+      }
       default: return null;
     }
   }
@@ -1438,7 +1439,7 @@ export class CumparAIService extends EventEmitter {
       users: {
         total: users.length,
         activeInLastMonth: users.filter(u =>
-          (Date.now() - u.lastActivity.getTime()) < (30 * 24 * 60 * 60 * 1000)
+          u && u.lastActivity && (Date.now() - u.lastActivity.getTime()) < (30 * 24 * 60 * 60 * 1000)
         ).length
       },
       orders: {

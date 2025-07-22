@@ -4,7 +4,7 @@
  */
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { CodaiApiResponse, CODAI_SERVICES, getServiceUrl } from './standards';
+import { CodaiApiResponse, CODAI_SERVICES } from './standards';
 
 export interface CodaiClientConfig {
     baseURL?: string;

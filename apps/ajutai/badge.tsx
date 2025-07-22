@@ -20,7 +20,7 @@ function Badge({ title, content, data, onClick, onSubmit }: BadgeProps) {
         performance: 87,
         satisfaction: 92
     });
-    const timeoutRef = useRef<NodeJS.Timeout>();
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -169,8 +169,8 @@ function Badge({ title, content, data, onClick, onSubmit }: BadgeProps) {
                             key={tab}
                             onClick={() => setActiveTab(tab)}
                             className={`px-4 py-2 rounded-md transition-all duration-200 ${activeTab === tab
-                                    ? 'bg-purple-500/30 text-purple-900 dark:text-purple-100'
-                                    : 'text-purple-700 dark:text-purple-300 hover:bg-purple-200/30'
+                                ? 'bg-purple-500/30 text-purple-900 dark:text-purple-100'
+                                : 'text-purple-700 dark:text-purple-300 hover:bg-purple-200/30'
                                 }`}
                         >
                             {tab}

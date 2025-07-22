@@ -8,13 +8,13 @@ import chalk from 'chalk';
 import { CodaiCLI } from './index.js';
 
 const cli = new CodaiCLI();
-const pkg = require('../package.json');
+import packageJson from '../package.json' assert { type: 'json' };
 
 // Configure main program
 program
   .name('codai')
   .description('Universal CLI for CODAI Ecosystem')
-  .version(pkg.version)
+  .version(packageJson.version)
   .option('-v, --verbose', 'Enable verbose output')
   .option('--debug', 'Enable debug mode')
   .hook('preAction', (thisCommand: Command) => {

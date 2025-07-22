@@ -20,7 +20,7 @@ export function AuthGuard({
   requireAuth = true,
   fallbackPath = '/auth/login',
 }: AuthGuardProps): JSX.Element | null {
-  const { user, isLoading } = useAuthContext();
+  const { user, loading } = useAuthContext();
   const router = useRouter();
   const firebaseEnabled = isFirebaseEnabled();
 
@@ -30,7 +30,7 @@ export function AuthGuard({
       return;
     }
 
-    if (!isLoading) {
+    if (!loading) {
       if (requireAuth && !user) {
         // User is not authenticated but auth is required
         const currentPath = window.location.pathname;
@@ -75,10 +75,10 @@ export function AuthGuard({
         }, delay);
       }
     }
-  }, [user, isLoading, requireAuth, router, fallbackPath, firebaseEnabled]);
+  }, [user, loading, requireAuth, router, fallbackPath, firebaseEnabled]);
 
   // Show loading spinner while checking authentication (only if Firebase is enabled)
-  if (firebaseEnabled && isLoading) {
+  if (firebaseEnabled && loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <LoadingSpinner className="h-8 w-8" />
@@ -128,12 +128,12 @@ export function useAuthGuard(requireAuth: boolean = true): {
   canAccess: boolean;
   user: User | null;
 } {
-  const { user, isLoading } = useAuthContext();
+  const { user, loading } = useAuthContext();
   const firebaseEnabled = isFirebaseEnabled();
 
   return {
     isAuthenticated: Boolean(user),
-    isLoading: firebaseEnabled ? isLoading : false,
+    isLoading: firebaseEnabled ? loading : false,
     canAccess: firebaseEnabled ? (requireAuth ? Boolean(user) : true) : true,
     user,
   };

@@ -60,6 +60,7 @@
   },
   "devDependencies": {
     "@jest/types": "^30.0.1",
+    "@testing-library/jest-dom": "^6.4.2",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.13",
     "autoprefixer": "^10.4.21",

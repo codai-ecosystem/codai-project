@@ -244,7 +244,7 @@ export class DOMInspector {
     /**
      * Execute script in browser (placeholder - would integrate with actual browser automation)
      */
-    private async executeScript(script: string): Promise<any> {
+    private async executeScript(_script: string): Promise<any> {
         // This would be implemented to execute JavaScript in the browser
         // For now, return mock data
         console.log('Executing script in browser:', this.windowHandle);

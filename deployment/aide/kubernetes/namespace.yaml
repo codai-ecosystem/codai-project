@@ -1,0 +1,84 @@
+# AIDE Kubernetes Namespace Configuration
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: aide-production
+  labels:
+    name: aide-production
+    environment: production
+    project: aide-ecosystem
+    managed-by: kubernetes
+  annotations:
+    description: "AIDE Production Environment Namespace"
+    contact: "devops@aide.com"
+    cost-center: "engineering"
+---
+# Network Policy for Namespace Isolation
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: aide-network-policy
+  namespace: aide-production
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: aide-production
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: monitoring
+      ports:
+        - protocol: TCP
+          port: 9090
+  egress:
+    - {}  # Allow all egress traffic within namespace
+---
+# Resource Quota for Production Namespace
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: aide-resource-quota
+  namespace: aide-production
+spec:
+  hard:
+    requests.cpu: "10"
+    requests.memory: 20Gi
+    limits.cpu: "20"
+    limits.memory: 40Gi
+    persistentvolumeclaims: "10"
+    pods: "20"
+    services: "10"
+    secrets: "20"
+    configmaps: "20"
+---
+# Limit Range for Pod Resources
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: aide-limit-range
+  namespace: aide-production
+spec:
+  limits:
+    - type: Container
+      default:
+        cpu: "1"
+        memory: "1Gi"
+      defaultRequest:
+        cpu: "100m"
+        memory: "256Mi"
+      max:
+        cpu: "4"
+        memory: "8Gi"
+      min:
+        cpu: "50m"
+        memory: "128Mi"
+    - type: Pod
+      max:
+        cpu: "8"
+        memory: "16Gi"

@@ -148,8 +148,8 @@ export const registerSchema = z
     password: passwordSchema,
     confirmPassword: z.string().min(1, 'Please confirm your password'),
     displayName: nameSchema,
-    acceptTerms: z.literal(true, {
-      errorMap: () => ({ message: 'You must accept the terms and conditions' }),
+    acceptTerms: z.literal(true).refine((val) => val === true, {
+      message: 'You must accept the terms and conditions',
     }),
   })
   .refine(data => data.password === data.confirmPassword, {
@@ -209,9 +209,9 @@ export const createFormError = (
 export const parseFirebaseAuthError = (
   error:
     | {
-        code?: string;
-        message?: string;
-      }
+      code?: string;
+      message?: string;
+    }
     | null
     | undefined
 ): FormError => {

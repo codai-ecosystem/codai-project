@@ -3,22 +3,27 @@
 The Codai OS is a production-ready monorepo orchestration system designed to manage the entire Codai ecosystem of AI-native applications. Built with Turbo, TypeScript, and modern development practices.
 
 **Current Status**: 🚀 PRODUCTION READY - 26+ services operational, comprehensive ecosystem deployed  
-**Last Updated**: January 16, 2025  
+**Last Updated**: July 22, 2025  
 **Port Policy**: All services use ports 4000+ (Apps: 4030-4081, Services: 4001-4066)  
-**Validation**: ✅ PASSED - World-class AI ecosystem confirmed operational
+**MCP Infrastructure**: 6 Core + 3 External = 9 MCP Servers with 50+ AI tools  
+**Validation**: ✅ PASSED - World-class AI ecosystem with complete MCP integration
 
 ## 🏗️ Architecture
 
 ```
 codai-project/
 ├── apps/                    # 11 Individual Codai applications (ports 4030-4040)
+│   ├── [app]/packages/[app]-mcp/  # 4 MCP servers for specialized AI tools
 ├── services/                # 29 Microservices (ports 4001-4029)
 ├── packages/                # Shared packages and utilities
+│   ├── ai-mcp/              # Core AI MCP server (Azure OpenAI)
+│   ├── controlai-mcp/       # Project management MCP server
 ├── .github/                 # CI/CD workflows and templates
 ├── .vscode/                 # VS Code configuration
 ├── .agent/                  # AI agent configuration and memory
 ├── scripts/                 # Automation and integration scripts
 ├── docs/                    # Documentation
+│   ├── MCP_ECOSYSTEM_COMPLETE.md  # Complete MCP documentation
 ├── package.json             # Root workspace configuration
 ├── turbo.json               # Turborepo pipeline configuration
 ├── projects.index.json      # Central app registry (40 projects)
@@ -47,6 +52,14 @@ codai-project/
 - **PREZENTAI Portfolio** (4081): Professional ecosystem showcase
 - **18+ Microservices** (4050-4066): Extended functionality services
 
+### MCP Infrastructure ✅ PRODUCTION READY
+- **6 Core MCP Servers**: AI, BancAI, ControlAI, ConversAI, StocAI, TalentAI
+- **3 External MCP Servers**: Glass, Memorai, Romai (ports 8001-8003)
+- **50+ AI Tools**: Specialized tools for development, business, and automation
+- **Azure OpenAI Integration**: Enterprise-grade AI capabilities
+- **VS Code Optimized**: stdio transport for seamless IDE integration
+- **Documentation**: See `docs/MCP_ECOSYSTEM_COMPLETE.md` for full details
+
 ### Quick Health Check
 ```bash
 # Test major applications
@@ -55,6 +68,10 @@ curl http://localhost:4031  # MEMORAI Core
 curl http://localhost:4033  # BANCAI Financial
 curl http://localhost:4065  # STOCAI Trading
 curl http://localhost:4081  # PREZENTAI Portfolio
+
+# Test MCP servers (stdio mode examples)
+cd packages/ai-mcp && echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | node dist/server.js
+cd apps/bancai/packages/bancai-mcp && echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | node dist/server.js
 
 # Check all running services in 4000+ range
 netstat -an | findstr "LISTENING" | findstr ":40"

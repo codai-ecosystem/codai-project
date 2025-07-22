@@ -2,14 +2,16 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "target": "ES2020",
-    "module": "ESNext",
-    "moduleResolution": "node",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
     "declaration": true,
     "outDir": "./dist",
     "strict": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "incremental": false
+    "incremental": false,
+    "noEmit": false,
+    "rootDir": "src"
   },
   "include": [
     "src/**/*"
@@ -17,8 +19,7 @@
   "exclude": [
     "dist",
     "node_modules",
-    "**/*.test.ts",
-    "**/*.spec.ts",
-    "tests/**/*"
+    "***.spec.ts",
+    "tests*"
   ]
 }

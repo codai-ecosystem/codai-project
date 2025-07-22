@@ -22,7 +22,6 @@ import type {
   Transaction,
   Customer,
   Subscription,
-  Invoice,
   FinancialMetrics,
   PaymentAnalytics,
   BancaiResponse,
@@ -78,7 +77,7 @@ export class BancaiService extends EventEmitter {
     if (this._isInitialized) return
 
     try {
-      console.log('🏦 Initializing BancaiService...')
+      console.warn('🏦 Initializing BancaiService...')
 
       // Initialize payment providers
       await this.initializeProviders()
@@ -97,7 +96,7 @@ export class BancaiService extends EventEmitter {
       this._isInitialized = true
       this.emit('initialized', { service: 'bancai', timestamp: new Date() })
 
-      console.log('✅ BancaiService initialized successfully')
+      console.warn('✅ BancaiService initialized successfully')
     } catch (error) {
       console.error('❌ BancaiService initialization failed:', error)
       this.emit('error', { service: 'bancai', error, operation: 'initialize' })
@@ -111,7 +110,7 @@ export class BancaiService extends EventEmitter {
       this.stripe = new Stripe(this.config.providers.stripe.secretKey, {
         apiVersion: this.config.providers.stripe.apiVersion as any,
       })
-      console.log('🔷 Stripe provider initialized')
+      console.warn('🔷 Stripe provider initialized')
     }
 
     // Initialize other providers (PayPal, Square, etc.)
@@ -299,7 +298,7 @@ export class BancaiService extends EventEmitter {
 
   async handleWebhook(event: any): Promise<void> {
     try {
-      console.log(`📨 Handling webhook: ${event.type}`)
+      console.warn(`📨 Handling webhook: ${event.type}`)
 
       switch (event.type) {
         case 'payment_intent.succeeded':
@@ -324,7 +323,7 @@ export class BancaiService extends EventEmitter {
           await this.handleInvoicePaymentFailed(event.data.object)
           break
         default:
-          console.log(`⚠️ Unhandled webhook event type: ${event.type}`)
+          console.warn(`⚠️ Unhandled webhook event type: ${event.type}`)
       }
 
       this.emit('webhook', { type: event.type, data: event.data })

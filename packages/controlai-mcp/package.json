@@ -49,6 +49,7 @@
     },
     "devDependencies": {
         "@types/node-cache": "^4.2.5",
+        "@types/sql.js": "^1.4.9",
         "@types/uuid": "^10.0.0",
         "eslint": "^9.31.0",
         "rimraf": "^6.0.1",

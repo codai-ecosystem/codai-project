@@ -26,7 +26,7 @@ export interface ConversationMessage {
   type: 'text' | 'voice' | 'image' | 'file' | 'code'
   role: 'user' | 'assistant' | 'system'
   tokens?: number
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
   createdAt: Date
   updatedAt: Date
 }
@@ -50,7 +50,7 @@ export interface ConversationSettings {
 }
 
 export interface ConversationContext {
-  [key: string]: any
+  [key: string]: unknown
 }
 
 export interface ConversationAnalytics {
@@ -69,7 +69,7 @@ export interface ConversationMemory {
   content: string
   relevanceScore: number
   timestamp: Date
-  context?: Record<string, any>
+  context?: Record<string, unknown>
 }
 
 // ==================== REQUEST/RESPONSE TYPES ====================
@@ -84,7 +84,7 @@ export interface CreateConversationOptions {
 export interface MessageOptions {
   type?: 'text' | 'voice' | 'image' | 'file' | 'code'
   role?: 'user' | 'assistant' | 'system'
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 export interface SearchFilters {
@@ -92,7 +92,7 @@ export interface SearchFilters {
   createdAfter?: Date
   createdBefore?: Date
   titleContains?: string
-  [key: string]: any
+  [key: string]: unknown
 }
 
 export interface PaginatedResponse<T> {
@@ -143,7 +143,7 @@ export interface ConversationTemplateVariable {
   type: 'string' | 'number' | 'boolean' | 'select' | 'multiselect'
   description?: string
   required: boolean
-  defaultValue?: any
+  defaultValue?: unknown
   options?: string[] // for select/multiselect
   validation?: {
     min?: number
@@ -167,21 +167,21 @@ export interface ConversationWorkflowStep {
   id: string
   type: 'message' | 'condition' | 'action' | 'delay'
   name: string
-  config: Record<string, any>
+  config: Record<string, unknown>
   nextSteps?: string[]
   conditions?: ConversationCondition[]
 }
 
 export interface ConversationWorkflowTrigger {
   type: 'keyword' | 'sentiment' | 'time' | 'user_action'
-  value: any
+  value: unknown
   conditions?: ConversationCondition[]
 }
 
 export interface ConversationCondition {
   field: string
   operator: 'equals' | 'contains' | 'greater' | 'less' | 'regex'
-  value: any
+  value: unknown
 }
 
 export interface ConversationExport {

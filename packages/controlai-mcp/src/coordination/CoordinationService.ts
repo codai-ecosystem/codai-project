@@ -3,8 +3,6 @@ import { AIService } from '../ai/AIService.js';
 import {
     Task,
     Agent,
-    TaskAssignment,
-    TaskStatus,
     AgentStatus,
     AgentCapability
 } from '../types/index.js';

@@ -43,7 +43,7 @@ const mockMemoraiService = {
 const memorai = mockMemoraiService;
 
 // Hub-specific types
-interface HubProject {
+export interface HubProject {
   id: string;
   name: string;
   description: string;
@@ -220,7 +220,7 @@ class HubMemoraiService {
 
       if (searchResult.success && searchResult.data) {
         const projectIds = searchResult.data
-          .map(result => result.metadata?.projectId)
+          .map((result: any) => result.metadata?.projectId)
           .filter(Boolean);
 
         const projects: HubProject[] = [];
@@ -296,7 +296,7 @@ class HubMemoraiService {
       });
 
       if (searchResult.success && searchResult.data) {
-        return searchResult.data.map(result => ({
+        return searchResult.data.map((result: any) => ({
           id: result.id,
           fileName: result.metadata?.fileName || 'unknown',
           category: result.metadata?.category || 'documents',
@@ -325,7 +325,7 @@ class HubMemoraiService {
     } catch (error) {
       return {
         status: 'unhealthy',
-        details: { error: error.message }
+        details: { error: (error as Error).message }
       };
     }
   }

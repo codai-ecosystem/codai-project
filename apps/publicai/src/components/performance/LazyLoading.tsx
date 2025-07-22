@@ -120,7 +120,7 @@ export function preloadComponent<
   T extends ComponentType<Record<string, unknown>>,
 >(componentImporter: () => Promise<{ default: T }>): Promise<void> {
   return componentImporter()
-    .then(() => {})
+    .then(() => { })
     .catch(() => {
       // Ignore preload errors
     });
@@ -164,12 +164,12 @@ export function usePreloadOnInteraction<
 
 // Pre-defined lazy components for common use cases
 export const LazyButton = createLazyComponent(
-  () => import('../ui/Button').then(mod => ({ default: mod.Button })),
+  () => import('../ui/button').then(mod => ({ default: mod.Button })),
   { preloadDelay: 1000 }
 );
 
 export const LazyInput = createLazyComponent(
-  () => import('../ui/Input').then(mod => ({ default: mod.Input })),
+  () => import('../ui/input').then(mod => ({ default: mod.Input })),
   { preloadDelay: 1500 }
 );
 

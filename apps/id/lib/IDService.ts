@@ -252,7 +252,12 @@ export class IDService {
         subscription: {
           plan: 'enterprise',
           status: 'active',
-          features: ['unlimited_sessions', 'advanced_analytics', 'premium_support']
+          features: ['unlimited_sessions', 'advanced_analytics', 'premium_support'],
+          billing: {
+            nextPayment: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+            amount: 99,
+            currency: 'USD'
+          }
         }
       },
       {
@@ -276,7 +281,12 @@ export class IDService {
         subscription: {
           plan: 'pro',
           status: 'active',
-          features: ['multi_device', 'priority_support']
+          features: ['multi_device', 'priority_support'],
+          billing: {
+            nextPayment: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+            amount: 29,
+            currency: 'USD'
+          }
         }
       }
     ];
@@ -333,7 +343,12 @@ export class IDService {
       subscription: userData.subscription || {
         plan: 'free',
         status: 'active',
-        features: ['basic_auth']
+        features: ['basic_auth'],
+        billing: {
+          nextPayment: undefined,
+          amount: undefined,
+          currency: undefined
+        }
       },
       aiInsights: {
         riskScore: Math.random() * 30, // Low risk for new users

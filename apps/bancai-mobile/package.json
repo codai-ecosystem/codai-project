@@ -19,7 +19,7 @@
     "test:coverage": "vitest run --coverage",
     "lint": "next lint",
     "type-check": "pnpm exec tsc --noEmit",
-    "clean": "rm -rf .expo dist coverage",
+    "clean": "rimraf .expo dist coverage",
     "dev": "next dev -p 3600",
     "build": "next build",
     "test:run": "vitest run"

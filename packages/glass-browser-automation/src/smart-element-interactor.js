@@ -17,7 +17,7 @@ class SmartElementInteractor {
      * Smart click that tries multiple methods to interact with an element
      */
     async smartClick(searchCriteria, options = {}) {
-        const { waitForElement = true, timeout = 5000, retryCount = 3, scrollToElement = true, method = 'auto' } = options;
+        const { retryCount = 3, scrollToElement = true, method = 'auto' } = options;
         let attempt = 0;
         let lastError;
         while (attempt < retryCount) {
@@ -78,22 +78,22 @@ class SmartElementInteractor {
         try {
             return await this.clickElementByMethod(element, 'coordinate');
         }
-        catch (error) {
+        catch {
             console.log('Coordinate click failed, trying selector method');
         }
         // Method 2: Try selector-based automation
         try {
             return await this.clickElementByMethod(element, 'selector');
         }
-        catch (error) {
+        catch {
             console.log('Selector click failed, trying keyboard method');
         }
         // Method 3: Try keyboard navigation
         try {
             return await this.clickElementByMethod(element, 'keyboard');
         }
-        catch (error) {
-            console.log('Keyboard method failed, using basic automation');
+        catch {
+            console.log('Keyboard interaction failed, trying accessibility method');
         }
         // Method 4: Basic automation fallback
         return await this.clickElementByMethod(element, 'automation');
@@ -274,10 +274,10 @@ class SmartElementInteractor {
         const suggestedElements = clickableElements
             .filter(el => el.text.toLowerCase().includes('add') || el.text.toLowerCase().includes('create') || el.text.toLowerCase().includes('new'))
             .map(el => ({
-            element: el,
-            confidence: this.domInspector['calculateElementScore'](el, 'add'),
-            reason: `Contains action word in text: "${el.text}"`
-        }))
+                element: el,
+                confidence: this.domInspector['calculateElementScore'](el, 'add'),
+                reason: `Contains action word in text: "${el.text}"`
+            }))
             .sort((a, b) => b.confidence - a.confidence);
         return {
             pageContent,

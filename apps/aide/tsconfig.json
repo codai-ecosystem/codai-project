@@ -1,44 +1,38 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@/components/*": [
-        "./src/components/*"
-      ],
-      "@/lib/*": [
-        "./src/lib/*"
-      ]
-    },
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "incremental": true
-  },
-  "include": [
-    "next-env.d.ts",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    ".next",
-    "dist",
-    "build",
-    "app/**/*",
-    "components/**/*",
-    "lib/**/*",
-    "pages/**/*",
-    "src-disabled/**/*",
-    "src-backup/**/*",
-    "test-app/**/*",
-    "__tests__/**/*",
-    "tests/**/*"
-  ]
+	"extends": "./tsconfig.base.json",
+	"compilerOptions": {
+		"allowJs": true,
+		"resolveJsonModule": true,
+		"noEmit": true,
+		"jsx": "react-jsx",
+		"downlevelIteration": true,
+		"incremental": true,
+		"tsBuildInfoFile": ".tsbuildinfo",
+		"baseUrl": ".",		"paths": {			"@codai/*": ["packages/*/src"],
+			"@codai/memory-graph": ["packages/memory-graph/src"],
+			"@codai/agent-runtime": ["packages/agent-runtime/src"],
+			"@codai/ui-components": ["packages/ui-components/src"]
+		}
+	},	"include": ["packages/*/src/**/*", "apps/*/src/**/*"],
+	"exclude": [
+		"node_modules",
+		"packages/*/dist/**",
+		"packages/*/build/**",
+		"packages/*/out/**",
+		"apps/*/dist/**",
+		"apps/*/build/**",
+		"apps/*/out/**",
+		"**/dist/**",
+		"**/build/**",
+		"**/out/**",
+		"extensions",
+		"**/*.tsbuildinfo",
+		"**/.turbo/**",
+		"**/.next/**"
+	],
+	"references": [
+		{ "path": "./packages/memory-graph" },
+		{ "path": "./packages/agent-runtime" },
+		{ "path": "./packages/ui-components" }
+	]
 }

@@ -15,7 +15,7 @@ export interface Memory {
     tags?: string[];
     source?: string;
     similarity?: number;
-    [key: string]: any;
+    [key: string]: unknown;
   };
 }
 
@@ -173,7 +173,7 @@ export interface MemoryEvent {
 
 export interface SystemEvent {
   type: 'system:status' | 'system:error' | 'system:config';
-  data: any;
+  data: unknown;
   timestamp: string;
 }
 
@@ -182,7 +182,7 @@ export class MemoryError extends Error {
   constructor(
     message: string,
     public code: string,
-    public details?: any
+    public details?: unknown
   ) {
     super(message);
     this.name = 'MemoryError';
@@ -193,7 +193,7 @@ export class ConfigError extends Error {
   constructor(
     message: string,
     public code: string,
-    public details?: any
+    public details?: unknown
   ) {
     super(message);
     this.name = 'ConfigError';

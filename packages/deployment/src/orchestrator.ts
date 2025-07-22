@@ -47,7 +47,7 @@ export class DeploymentOrchestrator {
         return result;
     }
 
-    async getStatus(environment: string): Promise<any> {
+    async getStatus(_environment: string): Promise<any> {
         return {
             healthy: true,
             services: {
@@ -65,7 +65,7 @@ export class DeploymentOrchestrator {
         };
     }
 
-    async rollback(options: {
+    async rollback(_options: {
         environment: string;
         version?: string;
     }): Promise<any> {
@@ -76,26 +76,26 @@ export class DeploymentOrchestrator {
         };
     }
 
-    async scale(options: {
+    async scale(_options: {
         service: string;
         replicas: number;
         environment: string;
     }): Promise<void> {
         // Mock scaling
-        console.log(`Scaling ${options.service} to ${options.replicas} replicas`);
+        console.warn(`Scaling ${_options.service} to ${_options.replicas} replicas`);
     }
 
-    async getLogs(options: {
+    async getLogs(_options: {
         service: string;
         environment: string;
         follow?: boolean;
         tail?: number;
     }): Promise<void> {
         // Mock logs
-        console.log(`[${new Date().toISOString()}] ${options.service}: Service started successfully`);
+        console.warn(`[${new Date().toISOString()}] ${_options.service}: Service started successfully`);
     }
 
-    async healthCheck(options: {
+    async healthCheck(_options: {
         environment: string;
         autoFix?: boolean;
     }): Promise<any> {

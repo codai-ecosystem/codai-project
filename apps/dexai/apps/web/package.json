@@ -10,7 +10,7 @@
     "lint:fix": "next lint --fix",
     "type-check": "pnpm exec tsc --noEmit",
     "test:e2e": "playwright test",
-    "clean": "rm -rf .next .turbo node_modules",
+    "clean": "rimraf .next .turbo node_modules",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

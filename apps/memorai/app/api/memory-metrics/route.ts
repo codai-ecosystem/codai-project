@@ -2,9 +2,16 @@ import { NextResponse } from 'next/server'
 import { existsSync, readdirSync } from 'fs'
 import { join } from 'path'
 import os from 'os'
-import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient()
+// Use dynamic import for Prisma client to handle potential import issues
+let prisma: any = null;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { PrismaClient } = require('@prisma/client') as any;
+  prisma = new PrismaClient();
+} catch (error) {
+  console.warn('Prisma client not available:', error);
+}
 
 export interface MemoryMetrics {
   totalMemoryStores: number

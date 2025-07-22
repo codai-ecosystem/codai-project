@@ -63,7 +63,7 @@ AZURE_OPENAI_API_KEY=your-api-key-here
 AZURE_OPENAI_DEPLOYMENT=gpt-4o
 
 # ControlAI Configuration (Optional)
-CONTROLAI_PORT=6001
+CONTROLAI_PORT=7001
 CONTROLAI_HOST=localhost
 CONTROLAI_DATABASE_PATH=/path/to/your/database
 CONTROLAI_CORS_ORIGIN=*
@@ -168,7 +168,7 @@ Retrieve real-time dashboard metrics and insights.
 Connect to the WebSocket server for live updates:
 
 ```javascript
-const ws = new WebSocket('ws://localhost:6001');
+const ws = new WebSocket('ws://localhost:7001');
 
 ws.on('message', (data) => {
   const message = JSON.parse(data);
@@ -254,7 +254,7 @@ pnpm run test:watch
 | `AZURE_OPENAI_ENDPOINT` | Azure OpenAI endpoint URL | - | ✅ |
 | `AZURE_OPENAI_API_KEY` | Azure OpenAI API key | - | ✅ |
 | `AZURE_OPENAI_DEPLOYMENT` | Model deployment name | `gpt-4o` | ❌ |
-| `CONTROLAI_PORT` | HTTP server port | `6001` | ❌ |
+| `CONTROLAI_PORT` | HTTP server port | `7001` | ❌ |
 | `CONTROLAI_HOST` | Server host | `localhost` | ❌ |
 | `CONTROLAI_DATABASE_PATH` | Database file path | `~/.controlai-mcp/` | ❌ |
 | `CONTROLAI_CORS_ORIGIN` | CORS origin | `*` | ❌ |
@@ -266,7 +266,7 @@ Create `controlai.config.js`:
 ```javascript
 export default {
   server: {
-    port: 6001,
+    port: 7001,
     host: 'localhost',
     cors: { origin: '*' }
   },

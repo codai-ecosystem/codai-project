@@ -4,7 +4,7 @@ export interface ConversationMessage {
   role: 'user' | 'assistant' | 'system';
   content: string;
   timestamp: Date;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
   tokens?: number;
   model?: string;
 }
@@ -15,7 +15,7 @@ export interface Conversation {
   title?: string;
   description?: string;
   status: 'active' | 'archived' | 'deleted';
-  context?: Record<string, any>;
+  context?: Record<string, unknown>;
   settings?: ConversationSettings;
   createdAt: Date;
   updatedAt: Date;
@@ -39,7 +39,7 @@ export interface ConversationContext {
   id: string;
   conversationId: string;
   key: string;
-  value: any;
+  value: unknown;
   type: 'system' | 'user' | 'assistant' | 'memory';
   priority: number;
   expiresAt?: Date;
@@ -53,7 +53,7 @@ export interface ConversationMemory {
   importance: number;
   categories: string[];
   embedding?: number[];
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
   createdAt: Date;
   lastAccessedAt: Date;
   accessCount: number;

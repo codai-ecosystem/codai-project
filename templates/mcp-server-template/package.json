@@ -1,0 +1,78 @@
+{
+    "name": "@codai/mcp-server-template",
+    "version": "1.0.0",
+    "description": "Enterprise-grade MCP server template for the CODAI ecosystem",
+    "type": "module",
+    "main": "dist/server.js",
+    "bin": {
+        "mcp-template": "dist/server.js"
+    },
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        },
+        "./server": {
+            "types": "./dist/server.d.ts",
+            "import": "./dist/server.js"
+        }
+    },
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsx watch src/server.ts",
+        "start": "node dist/server.js",
+        "test": "vitest",
+        "test:run": "vitest run",
+        "test:coverage": "vitest run --coverage",
+        "test:watch": "vitest watch",
+        "lint": "eslint src --ext .ts",
+        "lint:fix": "eslint src --ext .ts --fix",
+        "format": "prettier --write src/**/*.ts",
+        "type-check": "tsc --noEmit",
+        "clean": "rimraf dist",
+        "docker:build": "docker build -t mcp-server-template .",
+        "docker:run": "docker run -p 3000:3000 mcp-server-template"
+    },
+    "keywords": [
+        "mcp",
+        "model-context-protocol",
+        "template",
+        "enterprise",
+        "codai",
+        "typescript",
+        "server"
+    ],
+    "author": "CODAI Ecosystem",
+    "license": "MIT",
+    "dependencies": {
+        "@modelcontextprotocol/sdk": "^0.6.0",
+        "@types/node": "^22.7.9",
+        "dotenv": "^16.4.7",
+        "winston": "^3.11.0",
+        "zod": "^3.23.8",
+        "express": "^4.21.1",
+        "cors": "^2.8.5",
+        "helmet": "^7.1.0",
+        "express-rate-limit": "^7.1.0"
+    },
+    "devDependencies": {
+        "@types/cors": "^2.8.17",
+        "@types/express": "^4.17.21",
+        "@typescript-eslint/eslint-plugin": "^8.36.0",
+        "@typescript-eslint/parser": "^8.36.0",
+        "@vitest/coverage-v8": "^2.1.8",
+        "eslint": "^9.31.0",
+        "prettier": "^3.3.3",
+        "rimraf": "^6.0.1",
+        "tsx": "^4.19.2",
+        "typescript": "^5.8.3",
+        "vitest": "^2.1.8"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/",
+        "access": "public"
+    }
+}

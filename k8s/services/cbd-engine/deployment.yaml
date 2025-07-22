@@ -1,0 +1,159 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cbd-engine
+  namespace: cbd-memorai-prod
+  labels:
+    app: cbd-engine
+    version: v1
+    component: database
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: cbd-engine
+  template:
+    metadata:
+      labels:
+        app: cbd-engine
+        version: v1
+        component: database
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: cbd-engine-sa
+      securityContext:
+        fsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+      containers:
+      - name: cbd-engine
+        image: codai/cbd-engine:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        - containerPort: 9090
+          name: metrics
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: CBD_LOG_LEVEL
+          value: "info"
+        - name: CBD_CORS_ENABLED
+          value: "true"
+        - name: CBD_RATE_LIMITING
+          value: "true"
+        - name: CBD_DATABASE_PATH
+          value: "/app/data"
+        - name: CBD_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: cbd-engine-secrets
+              key: api-key
+        - name: CBD_ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: cbd-engine-secrets
+              key: encryption-key
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 2000m
+            memory: 4Gi
+        volumeMounts:
+        - name: cbd-data
+          mountPath: /app/data
+        - name: cbd-config
+          mountPath: /app/config
+          readOnly: true
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+      volumes:
+      - name: cbd-data
+        persistentVolumeClaim:
+          claimName: cbd-engine-pvc
+      - name: cbd-config
+        configMap:
+          name: cbd-engine-config
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - cbd-engine
+              topologyKey: kubernetes.io/hostname
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cbd-engine-service
+  namespace: cbd-memorai-prod
+  labels:
+    app: cbd-engine
+    component: database
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: http
+    protocol: TCP
+    name: http
+  - port: 9090
+    targetPort: metrics
+    protocol: TCP
+    name: metrics
+  selector:
+    app: cbd-engine
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cbd-engine-pvc
+  namespace: cbd-memorai-prod
+  labels:
+    app: cbd-engine
+    component: database
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: fast-ssd

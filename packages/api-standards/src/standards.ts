@@ -263,7 +263,7 @@ export const getServiceUrl = (serviceName: string, endpoint: string = '') => {
 };
 
 // API Route Helpers
-export const createStandardRoutes = (serviceName: string) => ({
+export const createStandardRoutes = (_serviceName: string) => ({
     // Health endpoints
     health: `/health`,
     ready: `/ready`,

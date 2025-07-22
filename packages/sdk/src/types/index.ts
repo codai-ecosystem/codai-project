@@ -68,6 +68,14 @@ export const CodaiConfigSchema = z.object({
 
 export type CodaiConfig = z.infer<typeof CodaiConfigSchema>;
 
+// Base service interface for SDK services
+export interface CodaiService {
+  initialize?(): Promise<void>;
+  healthCheck?(): Promise<void>;
+  updateConfig?(config: CodaiConfig): void;
+  destroy?(): Promise<void>;
+}
+
 // Event map for type-safe event handling
 export interface CodaiEventMap {
   'sdk:init:start': { version: string; config: CodaiConfig; timestamp: Date };

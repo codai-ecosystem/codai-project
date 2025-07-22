@@ -2,23 +2,17 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
-
-interface User {
-    id: string;
-    email: string;
-    displayName?: string;
-    photoURL?: string;
-    emailVerified: boolean;
-}
+import type { User, AuthCredentials, RegisterCredentials, AuthResponse } from '@/types/auth';
 
 interface AuthContextType {
     user: User | null;
     loading: boolean;
     error: string | null;
-    signIn: (email: string, password: string) => Promise<void>;
-    signUp: (email: string, password: string, displayName?: string) => Promise<void>;
+    signIn: (credentials: AuthCredentials) => Promise<AuthResponse>;
+    signUp: (credentials: RegisterCredentials) => Promise<AuthResponse>;
+    signInWithGoogle: () => Promise<AuthResponse>;
     signOut: () => Promise<void>;
-    resetPassword: (email: string) => Promise<void>;
+    sendPasswordReset: (email: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -40,43 +34,76 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const signIn = async (email: string, password: string) => {
+    const signIn = async (credentials: AuthCredentials): Promise<AuthResponse> => {
         setLoading(true);
         setError(null);
         try {
             // Mock authentication - replace with real implementation
             const mockUser: User = {
                 id: '1',
-                email,
+                email: credentials.email,
                 displayName: 'Test User',
                 emailVerified: true,
+                createdAt: new Date(),
+                lastLoginAt: new Date(),
             };
             setUser(mockUser);
             localStorage.setItem('user', JSON.stringify(mockUser));
+            return { user: null, error: null }; // Mock success
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Authentication failed');
-            throw err;
+            const errorMessage = err instanceof Error ? err.message : 'Authentication failed';
+            setError(errorMessage);
+            return { user: null, error: errorMessage };
         } finally {
             setLoading(false);
         }
     };
 
-    const signUp = async (email: string, password: string, displayName?: string) => {
+    const signUp = async (credentials: RegisterCredentials): Promise<AuthResponse> => {
         setLoading(true);
         setError(null);
         try {
             // Mock authentication - replace with real implementation
             const mockUser: User = {
                 id: '1',
-                email,
-                displayName: displayName || 'New User',
+                email: credentials.email,
+                displayName: credentials.displayName,
                 emailVerified: false,
+                createdAt: new Date(),
+                lastLoginAt: new Date(),
             };
             setUser(mockUser);
             localStorage.setItem('user', JSON.stringify(mockUser));
+            return { user: null, error: null }; // Mock success
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Registration failed');
-            throw err;
+            const errorMessage = err instanceof Error ? err.message : 'Registration failed';
+            setError(errorMessage);
+            return { user: null, error: errorMessage };
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const signInWithGoogle = async (): Promise<AuthResponse> => {
+        setLoading(true);
+        setError(null);
+        try {
+            // Mock Google authentication - replace with real implementation
+            const mockUser: User = {
+                id: 'google-user-1',
+                email: 'user@gmail.com',
+                displayName: 'Google User',
+                emailVerified: true,
+                createdAt: new Date(),
+                lastLoginAt: new Date(),
+            };
+            setUser(mockUser);
+            localStorage.setItem('user', JSON.stringify(mockUser));
+            return { user: null, error: null }; // Mock success
+        } catch (err) {
+            const errorMessage = err instanceof Error ? err.message : 'Google authentication failed';
+            setError(errorMessage);
+            return { user: null, error: errorMessage };
         } finally {
             setLoading(false);
         }
@@ -94,7 +121,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
     };
 
-    const resetPassword = async (email: string) => {
+    const sendPasswordReset = async (email: string) => {
         setLoading(true);
         setError(null);
         try {
@@ -128,8 +155,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         error,
         signIn,
         signUp,
+        signInWithGoogle,
         signOut,
-        resetPassword,
+        sendPasswordReset,
     };
 
     return (

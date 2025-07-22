@@ -6,17 +6,96 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-// NextAuth.js required models
+// ===========================================
+// CORE USER MANAGEMENT
+// ===========================================
+
+model User {
+  id                String    @id @default(cuid())
+  email             String    @unique
+  emailVerified     DateTime?
+  phoneNumber       String?   @unique
+  phoneVerified     DateTime?
+  
+  // Identity
+  firstName         String?
+  lastName          String?
+  displayName       String?
+  username          String?   @unique
+  avatar            String?
+  
+  // Security
+  password          String?   // For credentials-based auth
+  passwordChangedAt DateTime?
+  lastLoginAt       DateTime?
+  failedLoginAttempts Int     @default(0)
+  lockedUntil       DateTime?
+  
+  // Status
+  status            UserStatus @default(ACTIVE)
+  emailSubscribed   Boolean    @default(true)
+  
+  // Legacy role for NextAuth compatibility
+  role              String     @default("USER")
+  
+  // Metadata
+  locale            String     @default("en")
+  timezone          String     @default("UTC")
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  deletedAt         DateTime?  // Soft delete for GDPR compliance
+  
+  // Authentication Relations
+  accounts          Account[]
+  sessions          Session[]
+  mfaDevices        MfaDevice[]
+  trustedDevices    TrustedDevice[]
+  securityEvents    SecurityEvent[]
+  auditLogs         AuditLog[]
+  
+  // Authorization Relations
+  userRoles         UserRole[]
+  userPermissions   UserPermission[]
+  
+  // Legacy relations (keeping for compatibility)
+  preferences       UserPreferences?
+  ownedWorkspaces   Workspace[] @relation("WorkspaceOwner")
+  workspaceMembers  WorkspaceMember[]
+  projects          Project[]
+  collaborationParticipants CollaborationParticipant[]
+  presenceUpdates   PresenceUpdate[]
+  
+  @@map("users")
+  @@index([email])
+  @@index([username])
+  @@index([phoneNumber])
+  @@index([status])
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  PENDING_VERIFICATION
+  DELETED
+}
+
+// ===========================================
+// AUTHENTICATION & SESSIONS
+// ===========================================
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
-  type              String
-  provider          String
+  type              String  // oauth, email, credentials
+  provider          String  // google, github, azure, local
   providerAccountId String
+  
+  // OAuth specific
   refresh_token     String?
   access_token      String?
   expires_at        Int?
@@ -24,9 +103,16 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Metadata
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  lastUsedAt        DateTime?
+  
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@map("accounts")
 }
 
 model Session {
@@ -34,43 +120,288 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
+  
+  // Enhanced session data
+  ipAddress    String?
+  userAgent    String?
+  deviceId     String?
+  location     String?  // JSON: { country, city, lat, lng }
+  
+  // Security
+  isActive     Boolean  @default(true)
+  revokedAt    DateTime?
+  revokedBy    String?  // User ID who revoked
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
 
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
-  emailVerified DateTime?
-  image         String?
-  password      String?   // For credentials-based authentication
-  role          String    @default("USER")
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  
-  // Authentication relations
-  accounts      Account[]
-  sessions      Session[]
-  
-  // User preferences and settings
-  preferences   UserPreferences?
-  
-  // Collaboration features
-  ownedWorkspaces       Workspace[] @relation("WorkspaceOwner")
-  workspaceMembers      WorkspaceMember[]
-  projects              Project[]
-  collaborationParticipants CollaborationParticipant[]
-  presenceUpdates       PresenceUpdate[]
-  
-  @@map("users")
+  @@map("sessions")
+  @@index([userId])
+  @@index([expires])
 }
 
 model VerificationToken {
   identifier String
   token      String   @unique
   expires    DateTime
-
+  type       TokenType @default(EMAIL_VERIFICATION)
+  
+  createdAt  DateTime @default(now())
+  usedAt     DateTime?
+  
   @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+enum TokenType {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+  PHONE_VERIFICATION
+  MFA_BACKUP
+}
+
+// ===========================================
+// MULTI-FACTOR AUTHENTICATION
+// ===========================================
+
+model MfaDevice {
+  id            String    @id @default(cuid())
+  userId        String
+  type          MfaType
+  name          String    // User-friendly name
+  secret        String?   // For TOTP
+  backupCodes   String[]  // Encrypted backup codes
+  
+  // Device specific data
+  deviceData    Json?     // Hardware token data, phone info, etc.
+  
+  // Status
+  isActive      Boolean   @default(true)
+  isVerified    Boolean   @default(false)
+  lastUsedAt    DateTime?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("mfa_devices")
+  @@index([userId])
+  @@unique([userId, type])
+}
+
+// ===========================================
+// ZERO TRUST & DEVICE MANAGEMENT
+// ===========================================
+
+model TrustedDevice {
+  id               String    @id @default(cuid())
+  userId           String
+  deviceId         String    // Client-generated device ID
+  fingerprint      String    // Device fingerprint hash
+  name             String    // User-friendly device name
+  
+  // Device Information
+  userAgent        String
+  platform         String?
+  metadata         Json?     // Screen, timezone, language, etc.
+  
+  // Verification
+  isVerified       Boolean   @default(false)
+  verificationCode String?   // For device verification
+  verifiedAt       DateTime?
+  expiresAt        DateTime? // For unverified devices
+  
+  // Activity
+  lastSeenAt       DateTime  @default(now())
+  ipAddress        String?   // Last known IP
+  location         String?   // JSON location data
+  
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("trusted_devices")
+  @@index([userId])
+  @@index([fingerprint])
+  @@unique([userId, deviceId])
+}
+
+model SecurityEvent {
+  id          String    @id @default(cuid())
+  userId      String?   // Null for system events
+  eventType   String    // suspicious_login, device_change, location_anomaly, etc.
+  severity    String    // low, medium, high, critical
+  
+  // Context
+  ipAddress   String?
+  userAgent   String?
+  deviceId    String?
+  location    String?   // JSON location data
+  
+  // Risk Assessment
+  riskScore   Float?    // 0.0 to 1.0
+  riskFactors String[]  // Array of risk factors
+  
+  // Resolution
+  status      String    @default("open") // open, investigating, resolved, false_positive
+  resolvedAt  DateTime?
+  resolvedBy  String?   // User ID who resolved
+  resolution  String?   // Description of resolution
+  
+  // Details
+  details     Json?     // Event-specific data
+  metadata    Json?     // Additional context
+  
+  timestamp   DateTime  @default(now())
+  
+  user        User?     @relation(fields: [userId], references: [id])
+  
+  @@map("security_events")
+  @@index([userId])
+  @@index([eventType])
+  @@index([severity])
+  @@index([timestamp])
+  @@index([status])
+}
+
+enum MfaType {
+  TOTP           // Time-based OTP (Google Authenticator)
+  SMS            // SMS OTP
+  EMAIL          // Email OTP
+  HARDWARE_TOKEN // YubiKey, etc.
+  PUSH           // Mobile app push notification
+  BACKUP_CODES   // Recovery codes
+}
+
+// ===========================================
+// ROLE-BASED ACCESS CONTROL (RBAC)
+// ===========================================
+
+model Role {
+  id          String @id @default(cuid())
+  name        String @unique
+  displayName String
+  description String?
+  
+  // Hierarchy
+  parentId    String?
+  parent      Role?   @relation("RoleHierarchy", fields: [parentId], references: [id])
+  children    Role[]  @relation("RoleHierarchy")
+  
+  // Status
+  isActive    Boolean @default(true)
+  isSystem    Boolean @default(false) // System roles cannot be deleted
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  userRoles     UserRole[]
+  rolePermissions RolePermission[]
+  
+  @@map("roles")
+}
+
+model Permission {
+  id          String @id @default(cuid())
+  name        String @unique
+  displayName String
+  description String?
+  resource    String // e.g., 'user', 'application', 'organization'
+  action      String // e.g., 'read', 'write', 'delete', 'admin'
+  
+  createdAt   DateTime @default(now())
+  
+  rolePermissions RolePermission[]
+  userPermissions UserPermission[]
+  
+  @@map("permissions")
+  @@unique([resource, action])
+}
+
+model UserRole {
+  id        String    @id @default(cuid())
+  userId    String
+  roleId    String
+  
+  // Scope (optional - for multi-tenant)
+  scope     String?   // organization, application, etc.
+  
+  assignedAt DateTime @default(now())
+  assignedBy String?  // User ID who assigned
+  expiresAt  DateTime? // Optional expiration
+  
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      Role      @relation(fields: [roleId], references: [id])
+  
+  @@unique([userId, roleId, scope])
+  @@map("user_roles")
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  
+  createdAt    DateTime @default(now())
+  
+  role         Role       @relation(fields: [roleId], references: [id])
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  
+  @@id([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+model UserPermission {
+  id           String    @id @default(cuid())
+  userId       String
+  permissionId String
+  
+  // Direct permission assignment (bypass roles)
+  scope        String?   // Optional scope
+  grantedBy    String?   // User ID who granted
+  grantedAt    DateTime  @default(now())
+  expiresAt    DateTime? // Optional expiration
+  
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  
+  @@map("user_permissions")
+  @@index([userId])
+}
+
+// ===========================================
+// AUDIT LOGGING & COMPLIANCE
+// ===========================================
+
+model AuditLog {
+  id        String    @id @default(cuid())
+  userId    String?   // Null for system events
+  action    String    // login, logout, permission_grant, etc.
+  resource  String?   // What was affected
+  resourceId String?  // ID of affected resource
+  
+  // Context
+  ipAddress String?
+  userAgent String?
+  location  String?   // JSON location data
+  
+  // Details
+  details   Json?     // Additional event data
+  outcome   String    // success, failure, error
+  
+  timestamp DateTime  @default(now())
+  
+  user      User?     @relation(fields: [userId], references: [id])
+  
+  @@map("audit_logs")
+  @@index([userId])
+  @@index([action])
+  @@index([timestamp])
+  @@index([resource, resourceId])
 }
 
 // User preferences model for personalization

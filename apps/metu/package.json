@@ -1,6 +1,7 @@
 {
   "name": "metu",
   "version": "1.0.0",
+  "type": "module",
   "description": "Meeting and team utilities",
   "main": "dist/main/index.js",
   "author": "D C <dc@codai.ro>",

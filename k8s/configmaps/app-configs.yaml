@@ -1,0 +1,115 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cbd-engine-config
+  namespace: cbd-memorai-prod
+data:
+  config.toml: |
+    [server]
+    host = "0.0.0.0"
+    port = 8080
+    workers = 4
+    max_connections = 1000
+    
+    [database]
+    type = "cbd-engine"
+    path = "/app/data"
+    max_connections = 100
+    connection_timeout = 30
+    query_timeout = 300
+    
+    [vector_search]
+    enabled = true
+    dimensions = 1536
+    similarity_threshold = 0.7
+    max_results = 100
+    index_type = "hnsw"
+    
+    [security]
+    cors_enabled = true
+    cors_origins = ["https://codai.app", "https://memorai.codai.app"]
+    rate_limiting = true
+    max_requests_per_minute = 1000
+    api_key_required = true
+    
+    [monitoring]
+    metrics_enabled = true
+    metrics_port = 9090
+    health_check_interval = 30
+    performance_logging = true
+    
+    [compliance]
+    audit_logging = true
+    data_retention_days = 2555  # 7 years
+    encryption_at_rest = true
+    pii_detection = true
+    gdpr_compliance = true
+    
+    [backup]
+    enabled = true
+    interval = "0 2 * * *"  # Daily at 2 AM
+    retention_days = 90
+    compression = true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memorai-mcp-config
+  namespace: cbd-memorai-prod
+data:
+  config.json: |
+    {
+      "server": {
+        "host": "0.0.0.0",
+        "port": 3000,
+        "cors": {
+          "enabled": true,
+          "origins": ["https://codai.app", "https://memorai.codai.app"],
+          "credentials": true
+        }
+      },
+      "cbd": {
+        "host": "cbd-engine-service",
+        "port": 8080,
+        "database": "memorai_production",
+        "timeout": 30000,
+        "retries": 3,
+        "pool_size": 20
+      },
+      "redis": {
+        "host": "redis-service",
+        "port": 6379,
+        "db": 0,
+        "password": "",
+        "ttl": 3600,
+        "max_memory": "256mb"
+      },
+      "logging": {
+        "level": "info",
+        "format": "json",
+        "structured": true,
+        "include_stack_trace": false
+      },
+      "security": {
+        "rate_limiting": {
+          "enabled": true,
+          "window_ms": 60000,
+          "max_requests": 100
+        },
+        "input_validation": true,
+        "output_sanitization": true,
+        "csrf_protection": true
+      },
+      "performance": {
+        "cache_enabled": true,
+        "compression": true,
+        "keep_alive": true,
+        "max_payload_size": "10mb"
+      },
+      "monitoring": {
+        "metrics_enabled": true,
+        "metrics_port": 9091,
+        "health_checks": true,
+        "performance_tracking": true
+      }
+    }

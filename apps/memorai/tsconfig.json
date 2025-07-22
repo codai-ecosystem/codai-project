@@ -1,22 +1,48 @@
-// Emergency TypeScript configuration for production deployment
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "strict": false, // Temporarily disable strict mode for production emergency
-    "noImplicitAny": false,
-    "strictNullChecks": false,
-    "skipLibCheck": true, // Skip type checking of declaration files
-    "forceConsistentCasingInFileNames": false // Temporarily disable casing check
+    "target": "ES2020",
+    "lib": ["dom", "dom.iterable", "es6"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/types/*": ["./src/types/*"]
+    },
+    "typeRoots": [
+      "../../node_modules/@types",
+      "../../types",
+      "./src/types"
+    ]
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
     ".next/types/**/*.ts"
   ],
   "exclude": [
-    "src/**/*.stories.tsx", // Exclude Storybook files from build
-    "src/**/*.test.tsx",
-    "src/**/*.spec.tsx",
-    "node_modules"
+    "node_modules",
+    ".next",
+    "out",
+    "dist"
   ]
 }

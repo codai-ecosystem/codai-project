@@ -108,6 +108,7 @@ export function usePWA(): UsePWAReturn {
   return {
     isSupported,
     isInstalled,
+    isInstallable: canInstall,
     isOnline,
     canInstall,
     install,
@@ -120,6 +121,9 @@ export function useServiceWorker(): UseServiceWorkerReturn {
   const [isRegistered, setIsRegistered] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [hasUpdate, setHasUpdate] = useState(false);
+  const [registration, setRegistration] = useState<ServiceWorkerRegistration | null>(null);
+
+  const isSupported = typeof window !== 'undefined' && 'serviceWorker' in navigator;
 
   useEffect(() => {
     if (typeof window === 'undefined' || !('serviceWorker' in navigator)) {
@@ -168,10 +172,38 @@ export function useServiceWorker(): UseServiceWorkerReturn {
     }
   }, []);
 
+  const register = useCallback(async () => {
+    if (!isSupported) return;
+
+    try {
+      const reg = await navigator.serviceWorker.register('/sw.js');
+      setRegistration(reg);
+      setIsRegistered(true);
+    } catch (error) {
+      logger.error('Service worker registration failed', { context: { error } });
+    }
+  }, [isSupported]);
+
+  const unregister = useCallback(async () => {
+    if (!isSupported || !registration) return;
+
+    try {
+      await registration.unregister();
+      setIsRegistered(false);
+      setRegistration(null);
+    } catch (error) {
+      logger.error('Service worker unregistration failed', { context: { error } });
+    }
+  }, [isSupported, registration]);
+
   return {
+    isSupported,
     isRegistered,
     isUpdating,
     hasUpdate,
+    registration,
+    register,
+    unregister,
     updateServiceWorker,
   };
 }
@@ -184,6 +216,7 @@ export function usePushNotifications(): UsePushNotificationsReturn {
   const [subscription, setSubscription] = useState<PushSubscription | null>(
     null
   );
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -251,6 +284,7 @@ export function usePushNotifications(): UsePushNotificationsReturn {
 
   return {
     isSupported,
+    isSubscribed,
     permission,
     subscription,
     requestPermission,

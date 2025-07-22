@@ -19,7 +19,7 @@
     "test:coverage": "vitest run --coverage",
     "lint": "next lint",
     "type-check": "pnpm exec tsc --noEmit",
-    "clean": "rm -rf .expo dist coverage",
+    "clean": "rimraf .expo dist coverage",
     "dev": "next dev -p 3050",
     "build": "next build",
     "test:run": "vitest run"
@@ -62,6 +62,7 @@
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
+    "@codai/eslint-config": "workspace:*",
     "@babel/core": "^7.28.0",
     "@types/jest": "^30.0.0",
     "@types/react": "^19.1.8",

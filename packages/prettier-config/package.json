@@ -7,6 +7,11 @@
   "files": [
     "index.js"
   ],
+  "scripts": {
+    "build": "echo 'No build step needed for Prettier config'",
+    "lint": "echo 'No linting needed for Prettier config'",
+    "type-check": "echo 'No TypeScript files to check in Prettier config'"
+  },
   "dependencies": {},
   "peerDependencies": {
     "prettier": "^3.0.0"

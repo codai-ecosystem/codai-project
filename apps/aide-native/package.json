@@ -1,0 +1,46 @@
+{
+  "name": "@codai/aide-native",
+  "version": "1.0.0",
+  "description": "AIDE Native App - Cross-platform native application for the CODAI AIDE platform. Provides desktop and mobile interfaces with full offline capabilities.",
+  "main": "dist/index.js",
+  "private": true,
+  "scripts": {
+    "dev": "electron dist/main.js",
+    "dev:web": "next dev -p 42434",
+    "build": "next build && electron-builder",
+    "build:web": "next build",
+    "build:electron": "tsc && electron-builder",
+    "start": "electron dist/main.js",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@codai/shared-ui": "workspace:*",
+    "@codai/shared-types": "workspace:*",
+    "@codai/config": "workspace:*",
+    "@codai/analytics": "workspace:*",
+    "@codai/auth": "workspace:*",
+    "electron": "^25.9.8",
+    "next": "^15.3.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "framer-motion": "^11.11.17",
+    "tailwindcss": "^3.4.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "electron-builder": "^24.6.4",
+    "typescript": "^5.6.3",
+    "vitest": "^1.6.0",
+    "eslint": "^9.11.1",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.35"
+  }
+}

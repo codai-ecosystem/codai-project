@@ -29,7 +29,7 @@ const nextConfig: NextConfig = {
         path: false,
       };
     }
-    
+
     // Ignore gRPC modules that cause issues with Next.js
     config.externals = config.externals || [];
     config.externals.push({

@@ -107,6 +107,7 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const resolvedParams = await params;
     const body = await request.json()
     const { content, position, author } = body
 
@@ -121,7 +122,7 @@ export async function POST(
     // Create new comment
     const newComment = {
       id: `comment-${Date.now()}`,
-      memoryId,
+      memoryId: resolvedParams.id,
       content: content.trim(),
       author,
       timestamp: new Date().toISOString(),

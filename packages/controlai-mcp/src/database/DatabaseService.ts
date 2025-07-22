@@ -6,14 +6,9 @@ import {
     Project,
     Task,
     Agent,
-    TaskAssignment,
-    TaskDependency,
-    AgentSession,
     ProjectStatus,
     TaskStatus,
-    AgentStatus,
-    AssignmentStatus,
-    SessionStatus
+    AgentStatus
 } from '../types/index.js';
 
 export class DatabaseService {
@@ -43,7 +38,7 @@ export class DatabaseService {
                 dbBuffer = new Uint8Array(dbData);
             } catch (error) {
                 // Database doesn't exist, will create new one
-                console.log('Creating new ControlAI database');
+                console.log('Creating new ControlAI database', error instanceof Error ? error.message : 'Unknown error');
             }
 
             // Create database connection

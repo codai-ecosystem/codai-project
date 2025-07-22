@@ -1,6 +1,7 @@
 {
   "name": "@codai/azure-openai",
   "version": "1.0.0",
+  "type": "module",
   "description": "Centralized Azure OpenAI service for Codai ecosystem",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,10 +13,10 @@
     }
   },
   "scripts": {
-    "build": "cd ../../ && npx tsc --project libs/azure-openai",
+    "build": "pnpm exec tsc --project .",
     "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
-    "clean": "rm -rf dist",
-    "type-check": "cd ../../ && npx tsc --noEmit --project libs/azure-openai",
+    "clean": "rimraf dist",
+    "type-check": "pnpm exec tsc --noEmit",
     "lint": "pnpm exec eslint src --ext .ts,.tsx",
     "test": "vitest",
     "test:run": "vitest run",
@@ -25,7 +26,12 @@
     "openai": "^4.104.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.31.0",
+    "@testing-library/jest-dom": "^6.4.2",
     "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.36.0",
+    "@typescript-eslint/parser": "^8.36.0",
+    "eslint": "^9.31.0",
     "tsup": "^8.5.0",
     "typescript": "^5.8.3",
     "vitest": "^3.2.4"

@@ -1,5 +1,5 @@
 import { OpenAI } from 'openai';
-import { PlanAnalysis, TaskAnalysis, AgentSuggestion, AgentType, TaskCategory, Priority, AgentCapability } from '../types/index.js';
+import { PlanAnalysis, AgentSuggestion, AgentType, AgentCapability } from '../types/index.js';
 import NodeCache from 'node-cache';
 
 interface AIServiceConfig {
@@ -9,12 +9,6 @@ interface AIServiceConfig {
     apiVersion?: string;
     maxRetries?: number;
     timeout?: number;
-}
-
-interface CachedResult<T> {
-    result: T;
-    timestamp: number;
-    ttl: number;
 }
 
 interface RetryConfig {
@@ -456,7 +450,7 @@ Suggest additional tasks that would improve this project:`
             const startTime = Date.now();
 
             // Simple test request
-            const completion = await this.client.chat.completions.create({
+            await this.client.chat.completions.create({
                 model: this.config.deploymentName,
                 messages: [{ role: 'user', content: 'Hello' }],
                 max_tokens: 5

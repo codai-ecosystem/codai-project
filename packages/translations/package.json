@@ -15,7 +15,7 @@
     "lint:fix": "pnpm exec eslint src --ext .ts,.tsx --fix",
     "test": "vitest",
     "test:watch": "vitest --watch",
-    "clean": "rm -rf dist",
+    "clean": "rimraf dist",
     "validate-translations": "node scripts/validate-translations.js"
   },
   "dependencies": {

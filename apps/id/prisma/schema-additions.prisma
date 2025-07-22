@@ -1,0 +1,165 @@
+// ===========================================
+// MULTI-FACTOR AUTHENTICATION
+// ===========================================
+
+model MfaDevice {
+  id            String    @id @default(cuid())
+  userId        String
+  type          MfaType
+  name          String    // User-friendly name
+  secret        String?   // For TOTP
+  backupCodes   String[]  // Encrypted backup codes
+  
+  // Device specific data
+  deviceData    Json?     // Hardware token data, phone info, etc.
+  
+  // Status
+  isActive      Boolean   @default(true)
+  isVerified    Boolean   @default(false)
+  lastUsedAt    DateTime?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("mfa_devices")
+  @@index([userId])
+  @@unique([userId, type])
+}
+
+enum MfaType {
+  TOTP           // Time-based OTP (Google Authenticator)
+  SMS            // SMS OTP
+  EMAIL          // Email OTP
+  HARDWARE_TOKEN // YubiKey, etc.
+  PUSH           // Mobile app push notification
+  BACKUP_CODES   // Recovery codes
+}
+
+// ===========================================
+// ROLE-BASED ACCESS CONTROL (RBAC)
+// ===========================================
+
+model Role {
+  id          String @id @default(cuid())
+  name        String @unique
+  displayName String
+  description String?
+  
+  // Hierarchy
+  parentId    String?
+  parent      Role?   @relation("RoleHierarchy", fields: [parentId], references: [id])
+  children    Role[]  @relation("RoleHierarchy")
+  
+  // Status
+  isActive    Boolean @default(true)
+  isSystem    Boolean @default(false) // System roles cannot be deleted
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  userRoles     UserRole[]
+  rolePermissions RolePermission[]
+  
+  @@map("roles")
+}
+
+model Permission {
+  id          String @id @default(cuid())
+  name        String @unique
+  displayName String
+  description String?
+  resource    String // e.g., 'user', 'application', 'organization'
+  action      String // e.g., 'read', 'write', 'delete', 'admin'
+  
+  createdAt   DateTime @default(now())
+  
+  rolePermissions RolePermission[]
+  userPermissions UserPermission[]
+  
+  @@map("permissions")
+  @@unique([resource, action])
+}
+
+model UserRole {
+  id        String    @id @default(cuid())
+  userId    String
+  roleId    String
+  
+  // Scope (optional - for multi-tenant)
+  scope     String?   // organization, application, etc.
+  
+  assignedAt DateTime @default(now())
+  assignedBy String?  // User ID who assigned
+  expiresAt  DateTime? // Optional expiration
+  
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      Role      @relation(fields: [roleId], references: [id])
+  
+  @@unique([userId, roleId, scope])
+  @@map("user_roles")
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  
+  createdAt    DateTime @default(now())
+  
+  role         Role       @relation(fields: [roleId], references: [id])
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  
+  @@id([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+model UserPermission {
+  id           String    @id @default(cuid())
+  userId       String
+  permissionId String
+  
+  // Direct permission assignment (bypass roles)
+  scope        String?   // Optional scope
+  grantedBy    String?   // User ID who granted
+  grantedAt    DateTime  @default(now())
+  expiresAt    DateTime? // Optional expiration
+  
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  
+  @@map("user_permissions")
+  @@index([userId])
+}
+
+// ===========================================
+// AUDIT LOGGING & COMPLIANCE
+// ===========================================
+
+model AuditLog {
+  id        String    @id @default(cuid())
+  userId    String?   // Null for system events
+  action    String    // login, logout, permission_grant, etc.
+  resource  String?   // What was affected
+  resourceId String?  // ID of affected resource
+  
+  // Context
+  ipAddress String?
+  userAgent String?
+  location  String?   // JSON location data
+  
+  // Details
+  details   Json?     // Additional event data
+  outcome   String    // success, failure, error
+  
+  timestamp DateTime  @default(now())
+  
+  user      User?     @relation(fields: [userId], references: [id])
+  
+  @@map("audit_logs")
+  @@index([userId])
+  @@index([action])
+  @@index([timestamp])
+  @@index([resource, resourceId])
+}

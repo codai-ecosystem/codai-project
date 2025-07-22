@@ -63,7 +63,7 @@ export class ServiceCommunicator {
     }
 
     // This is a simplified example - actual implementation would depend on the specific procedures
-    // @ts-ignore - This is a dynamic call that depends on the actual router structure
+    // @ts-expect-error - Dynamic configuration based on environment
     return client[procedure](input);
   }
 }

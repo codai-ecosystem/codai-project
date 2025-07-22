@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { generateObject, generateText } from 'ai';
+import { generateObject } from 'ai';
 import { AI_PROVIDERS } from './index';
 
 // Security Vulnerability Assessment

@@ -257,14 +257,14 @@ export const FadeIn = forwardRef<HTMLDivElement, FadeInProps>(
       () =>
         inView
           ? {
-              initial: { opacity: 0 },
-              whileInView: { opacity: 1 },
-              viewport: { once: true, margin: '-50px' },
-            }
+            initial: { opacity: 0 },
+            whileInView: { opacity: 1 },
+            viewport: { once: true, margin: '-50px' },
+          }
           : {
-              initial: { opacity: 0 },
-              animate: { opacity: 1 },
-            },
+            initial: { opacity: 0 },
+            animate: { opacity: 1 },
+          },
       [inView]
     );
 
@@ -360,16 +360,16 @@ export const SlideIn = forwardRef<HTMLDivElement, SlideInProps>(
       () =>
         inView
           ? {
-              variants,
-              initial: 'hidden',
-              whileInView: 'visible',
-              viewport: { once: true, margin: '-100px' },
-            }
+            variants,
+            initial: 'hidden',
+            whileInView: 'visible',
+            viewport: { once: true, margin: '-100px' },
+          }
           : {
-              variants,
-              initial: 'hidden',
-              animate: 'visible',
-            },
+            variants,
+            initial: 'hidden',
+            animate: 'visible',
+          },
       [inView, variants]
     );
 
@@ -447,16 +447,16 @@ export const ScaleIn = forwardRef<HTMLDivElement, ScaleInProps>(
       () =>
         inView
           ? {
-              variants,
-              initial: 'hidden',
-              whileInView: 'visible',
-              viewport: { once: true, margin: '-50px' },
-            }
+            variants,
+            initial: 'hidden',
+            whileInView: 'visible',
+            viewport: { once: true, margin: '-50px' },
+          }
           : {
-              variants,
-              initial: 'hidden',
-              animate: 'visible',
-            },
+            variants,
+            initial: 'hidden',
+            animate: 'visible',
+          },
       [inView, variants]
     );
 
@@ -527,16 +527,16 @@ export const StaggerContainer = forwardRef<
       () =>
         inView
           ? {
-              variants: staggerVariants,
-              initial: 'hidden',
-              whileInView: 'visible',
-              viewport: { once: true, margin: '-100px' },
-            }
+            variants: staggerVariants,
+            initial: 'hidden',
+            whileInView: 'visible',
+            viewport: { once: true, margin: '-100px' },
+          }
           : {
-              variants: staggerVariants,
-              initial: 'hidden',
-              animate: 'visible',
-            },
+            variants: staggerVariants,
+            initial: 'hidden',
+            animate: 'visible',
+          },
       [inView, staggerVariants]
     );
 
@@ -674,3 +674,19 @@ export {
   type HoverScaleProps,
   type PulseProps,
 };
+
+// Default export for dynamic imports
+const AnimatedComponents = {
+  AnimatedDiv,
+  PageWrapper,
+  FadeIn,
+  SlideIn,
+  ScaleIn,
+  StaggerContainer,
+  StaggerItem,
+  HoverScale,
+  Pulse,
+  ANIMATION_CONFIG,
+};
+
+export default AnimatedComponents;

@@ -8,7 +8,8 @@
         "build": "tsup src/index.ts --format esm,cjs --dts",
         "dev": "tsup src/index.ts --format esm,cjs --dts --watch",
         "clean": "rimraf dist",
-        "typecheck": "tsc --noEmit"
+        "type-check": "tsc --noEmit",
+        "lint": "pnpm exec eslint src --ext .ts,.tsx"
     },
     "dependencies": {
         "@codai/auth": "workspace:*",

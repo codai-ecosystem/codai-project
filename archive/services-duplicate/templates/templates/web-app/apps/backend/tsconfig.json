@@ -6,7 +6,7 @@
     "rootDir": ".",
     "module": "CommonJS",
     "target": "ES2020",
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
@@ -22,6 +22,13 @@
     "exactOptionalPropertyTypes": true,
     "noUncheckedIndexedAccess": true
   },
-  "include": ["src/**/*", "tests/**/*", "*.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src*",
+    "tests*",
+    "*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

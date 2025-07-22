@@ -1,20 +1,23 @@
-import { z } from 'zod';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.EventSchema = exports.MessageSchema = void 0;
+const zod_1 = require("zod");
 // Message Types
-export const MessageSchema = z.object({
-    id: z.string(),
-    type: z.string(),
-    payload: z.any(),
-    timestamp: z.number(),
-    sender: z.string(),
-    target: z.string().optional(),
-    channel: z.string().optional(),
-    priority: z.enum(['low', 'normal', 'high', 'critical']).default('normal'),
+exports.MessageSchema = zod_1.z.object({
+    id: zod_1.z.string(),
+    type: zod_1.z.string(),
+    payload: zod_1.z.any(),
+    timestamp: zod_1.z.number(),
+    sender: zod_1.z.string(),
+    target: zod_1.z.string().optional(),
+    channel: zod_1.z.string().optional(),
+    priority: zod_1.z.enum(['low', 'normal', 'high', 'critical']).default('normal'),
 });
 // Event Types
-export const EventSchema = z.object({
-    type: z.string(),
-    data: z.any(),
-    source: z.string(),
-    timestamp: z.number(),
-    metadata: z.record(z.string(), z.any()).optional(),
+exports.EventSchema = zod_1.z.object({
+    type: zod_1.z.string(),
+    data: zod_1.z.any(),
+    source: zod_1.z.string(),
+    timestamp: zod_1.z.number(),
+    metadata: zod_1.z.record(zod_1.z.string(), zod_1.z.any()).optional(),
 });

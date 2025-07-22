@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  aide-landing:
+    build:
+      context: .
+      dockerfile: Dockerfile.aide-landing
+    container_name: aide-landing-page
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+      - NEXT_PUBLIC_CONTROL_PANEL_URL=http://localhost:8080
+      - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:-}
+    networks:
+      - aide-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/health", "||", "curl", "-f", "http://localhost:3001/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  aide-network:
+    external: true

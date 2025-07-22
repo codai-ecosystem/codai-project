@@ -22,7 +22,7 @@
     "dev": "tsc --watch",
     "test": "vitest",
     "test:run": "vitest run",
-    "clean": "rm -rf dist",
+    "clean": "rimraf dist",
     "prepublishOnly": "pnpm clean && pnpm build"
   },
   "keywords": [

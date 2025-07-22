@@ -1,70 +1,75 @@
-import js from '@eslint/js';
-import tsPlugin from '@typescript-eslint/eslint-plugin';
-import tsParser from '@typescript-eslint/parser';
-import reactPlugin from 'eslint-plugin-react';
+import typescriptEslint from '@typescript-eslint/eslint-plugin';
+import typescriptParser from '@typescript-eslint/parser';
 
 export default [
-    js.configs.recommended,
-    {
-        files: ['**/*.{js,jsx,ts,tsx}'],
-        languageOptions: {
-            parser: tsParser,
-            parserOptions: {
-                ecmaVersion: 2022,
-                sourceType: 'module',
-                ecmaFeatures: {
-                    jsx: true
-                }
-            },
-            globals: {
-                console: 'readonly',
-                process: 'readonly',
-                Buffer: 'readonly',
-                __dirname: 'readonly',
-                __filename: 'readonly',
-                exports: 'writable',
-                global: 'readonly',
-                module: 'readonly',
-                require: 'readonly',
-                window: 'readonly',
-                document: 'readonly',
-                fetch: 'readonly',
-                setInterval: 'readonly',
-                clearInterval: 'readonly',
-                setTimeout: 'readonly',
-                clearTimeout: 'readonly',
-                crypto: 'readonly',
-                React: 'readonly',
-            },
+  {
+    files: ['src/**/*.{js,jsx,ts,tsx}', '*.{js,jsx,ts,tsx}'], // Only lint files included in tsconfig
+    languageOptions: {
+      parser: typescriptParser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
         },
-        plugins: {
-            '@typescript-eslint': tsPlugin,
-            'react': reactPlugin,
-        },
-        rules: {
-            ...tsPlugin.configs.recommended.rules,
-            ...reactPlugin.configs.recommended.rules,
-            'no-console': 'off',
-            'prefer-const': 'warn',
-            'no-var': 'warn',
-            'react/react-in-jsx-scope': 'off',
-            '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
-            '@typescript-eslint/no-explicit-any': 'warn', // Allow any but warn
-            'no-undef': 'off', // TypeScript handles this
-        },
-        settings: {
-            react: {
-                version: 'detect'
-            }
-        }
+        project: './tsconfig.json',
+      },
+      globals: {
+        React: 'readonly',
+        JSX: 'readonly',
+        console: 'readonly',
+        process: 'readonly',
+        Buffer: 'readonly',
+        window: 'readonly',
+        document: 'readonly',
+        localStorage: 'readonly',
+        sessionStorage: 'readonly',
+        fetch: 'readonly',
+        FormData: 'readonly',
+        URLSearchParams: 'readonly',
+        AbortController: 'readonly',
+        RequestInit: 'readonly',
+        Response: 'readonly'
+      }
     },
-    {
-        ignores: [
-            'node_modules/',
-            'dist/',
-            '.next/',
-            '.turbo/',
-            'coverage/',
-        ],
+    plugins: {
+      '@typescript-eslint': typescriptEslint,
     },
+    rules: {
+      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-empty-object-type': 'warn',
+      '@typescript-eslint/no-require-imports': 'warn',
+      '@typescript-eslint/no-empty-interface': 'warn',
+      'no-console': 'warn',
+      'prefer-const': 'warn',
+      'no-var': 'error',
+      'no-undef': 'off', // TypeScript handles this
+      'no-unused-vars': 'off', // Use @typescript-eslint version
+      'no-constant-binary-expression': 'warn',
+      'no-useless-escape': 'warn',
+      'no-empty-function': 'warn',
+    },
+  },
+  {
+    ignores: [
+      'node_modules/**',
+      '.next/**',
+      'out/**',
+      'build/**',
+      'dist/**',
+      'coverage/**',
+      '.turbo/**',
+      // Align with tsconfig excludes - these directories are excluded from TypeScript
+      'app/**/*',
+      'components/**/*',
+      'lib/**/*',
+      'pages/**/*',
+      'src-disabled/**/*',
+      'src-backup/**/*',
+      'test-app/**/*',
+      '__tests__/**/*',
+      'tests/**/*'
+    ],
+  },
 ];

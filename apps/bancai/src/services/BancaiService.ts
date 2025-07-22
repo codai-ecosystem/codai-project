@@ -217,11 +217,11 @@ export class BancaiService {
             if (filters.category) {
                 transactions = transactions.filter(t => t.category === filters.category)
             }
-            if (filters.dateFrom) {
-                transactions = transactions.filter(t => t.date >= filters.dateFrom!)
+            if (filters.startDate) {
+                transactions = transactions.filter(t => t.date >= filters.startDate!)
             }
-            if (filters.dateTo) {
-                transactions = transactions.filter(t => t.date <= filters.dateTo!)
+            if (filters.endDate) {
+                transactions = transactions.filter(t => t.date <= filters.endDate!)
             }
             if (filters.minAmount) {
                 transactions = transactions.filter(t => t.amount >= filters.minAmount!)
@@ -311,7 +311,10 @@ export class BancaiService {
                 id: `transfer_${Date.now()}`,
                 fromAccountId: transferRequest.fromAccountId,
                 toAccountId: transferRequest.toAccountId,
-                toExternalAccount: transferRequest.toExternalAccount,
+                toExternalAccount: transferRequest.toExternalAccount ? {
+                    id: `ext_${Date.now()}`,
+                    ...transferRequest.toExternalAccount
+                } : undefined,
                 amount: transferRequest.amount,
                 currency: transferRequest.currency,
                 description: transferRequest.description,

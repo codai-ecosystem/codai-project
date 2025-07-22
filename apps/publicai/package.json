@@ -15,31 +15,39 @@
     "test:watch": "vitest watch"
   },
   "devDependencies": {
+    "@codai/eslint-config": "workspace:*",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^24.0.14",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@typescript-eslint/eslint-plugin": "^8.37.0",
+    "@typescript-eslint/parser": "^8.37.0",
     "@vitejs/plugin-react": "^4.7.0",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.31.0",
     "eslint-config-next": "^15.4.1",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "jsdom": "^26.1.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
-    "vitest": "^3.2.4",
-    "@types/node": "^24.0.14",
-    "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.6",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
+    "@codai/core": "workspace:*",
+    "@codai/shared-ui": "workspace:*",
+    "@codai/translations": "workspace:*",
+    "@hookform/resolvers": "^5.1.1",
+    "framer-motion": "^12.23.6",
+    "geist": "^1.4.2",
+    "lucide-react": "^0.525.0",
     "next": "^15.4.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-hook-form": "^7.56.2",
     "typescript": "^5.8.3",
-    "framer-motion": "^12.23.6",
-    "lucide-react": "^0.525.0",
-    "geist": "^1.4.2",
-    "@codai/shared-ui": "workspace:*",
-    "@codai/translations": "workspace:*"
+    "zod": "^4.0.5"
   }
 }

@@ -96,7 +96,7 @@ class EnhancedVercelAutomation {
                 { tag: 'button', containsText: 'add' },
                 { role: 'button', containsText: 'add' }
             ];
-            let bestResults = [];
+            const bestResults = [];
             for (const pattern of searchPatterns) {
                 const searchResult = await this.browser.searchForElements(pattern);
                 if (searchResult.found && searchResult.elements.length > 0) {

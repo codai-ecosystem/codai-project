@@ -224,8 +224,6 @@ class EnhancedGlassBrowser extends glass_mcp_connector_1.GlassMCPConnector {
             const elements = await this.searchForElements({ containsText: selector });
             if (elements.found && elements.bestMatch) {
                 const element = elements.bestMatch;
-                // Calculate scroll position
-                const scrollScript = `window.scrollTo(0, ${element.bounds.y - 100})`;
                 // For now, we'll use keyboard scrolling as a fallback
                 const currentY = element.bounds.y;
                 const viewportHeight = 800; // Approximate viewport height
@@ -259,7 +257,7 @@ class EnhancedGlassBrowser extends glass_mcp_connector_1.GlassMCPConnector {
                 }
                 await this.delay(500);
             }
-            catch (error) {
+            catch {
                 // Continue waiting on errors
             }
         }

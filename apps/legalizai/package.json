@@ -15,6 +15,8 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@codai/shared-ui": "workspace:*",
+    "@codai/translations": "workspace:*",
     "@radix-ui/react-alert-dialog": "^1.1.14",
     "@radix-ui/react-aspect-ratio": "^1.1.7",
     "@radix-ui/react-avatar": "^1.1.10",
@@ -42,18 +44,23 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.6",
+    "geist": "^1.4.2",
     "lucide-react": "^0.525.0",
     "next": "^15.4.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
-    "typescript": "^5.8.3",
-    "geist": "^1.4.2",
-    "@codai/shared-ui": "workspace:*",
-    "@codai/translations": "workspace:*"
+    "typescript": "^5.8.3"
   },
   "devDependencies": {
+    "@codai/eslint-config": "workspace:*",
+    "@eslint/compat": "^1.3.1",
+    "@eslint/js": "^9.31.0",
+    "@next/eslint-plugin-next": "^15.4.2",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^24.0.14",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
@@ -65,15 +72,14 @@
     "eslint-config-next": "^15.4.1",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
+    "globals": "^16.3.0",
+    "happy-dom": "^18.0.1",
+    "jsdom": "^26.1.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
-    "vitest": "^3.2.4",
-    "jsdom": "^26.1.0",
-    "happy-dom": "^18.0.1",
-    "@testing-library/react": "^16.3.0",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/user-event": "^14.6.1"
+    "typescript-eslint": "^8.37.0",
+    "vitest": "^3.2.4"
   },
   "engines": {
     "node": ">=18"

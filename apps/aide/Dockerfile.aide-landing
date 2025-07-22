@@ -1,0 +1,105 @@
+# Multi-stage build for AIDE Landing Page
+# Based on the structure of Dockerfile.aide-control
+
+# Base stage
+FROM node:18-alpine AS base
+
+# Dependencies stage
+FROM base AS deps
+RUN apk add --no-cache libc6-compat curl
+WORKDIR /app
+
+# Enable pnpm
+RUN corepack enable pnpm
+
+# Copy dependency files
+COPY pnpm-lock.yaml ./
+COPY package.json ./
+
+# Create workspace configuration
+RUN printf 'packages:\n  - "packages/*"\n  - "apps/*"\n' > pnpm-workspace.yaml
+
+# Copy package.json files from packages and apps
+COPY packages/*/package.json ./packages/*/
+COPY apps/aide-landing/package.json ./apps/aide-landing/
+
+# Copy shared packages
+COPY packages/ ./packages/
+
+# Install dependencies
+RUN npm_config_script_shell=false pnpm install --no-frozen-lockfile --ignore-scripts
+
+# Builder stage
+FROM base AS builder
+WORKDIR /app
+
+# Enable pnpm
+RUN corepack enable pnpm
+
+# Copy dependencies
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/packages ./packages
+
+# Copy configuration files
+COPY pnpm-lock.yaml ./
+COPY package.json ./
+COPY tsconfig.base.json ./
+
+# Create workspace configuration
+RUN printf 'packages:\n  - "packages/*"\n  - "apps/*"\n' > pnpm-workspace.yaml
+
+# Copy aide-landing source
+COPY apps/aide-landing ./apps/aide-landing
+
+# Install dependencies again in the builder
+RUN npm_config_script_shell=false pnpm install --no-frozen-lockfile --ignore-scripts
+
+# Change to aide-landing directory and build
+WORKDIR /app/apps/aide-landing
+
+# Build the application
+RUN NODE_ENV=production pnpm run build
+
+# Add build info
+RUN echo "AIDE Landing Page - Build date: $(date)" > ./build-info.txt
+
+# Runner stage
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Create user for security
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
+
+# Copy public assets and build info
+COPY --from=builder /app/apps/aide-landing/public ./public
+COPY --from=builder /app/apps/aide-landing/build-info.txt ./
+
+# Create .next directory
+RUN mkdir .next && chown nextjs:nodejs .next
+
+# Copy build output (server.js is included in standalone directory)
+COPY --from=builder --chown=nextjs:nodejs /app/apps/aide-landing/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/apps/aide-landing/.next/static ./.next/static
+
+# Create health check endpoint
+RUN echo '// Simple health check endpoint\nmodule.exports = function(req, res) { res.status(200).send("OK"); };' > ./health.js
+
+# Set ownership
+RUN chown -R nextjs:nodejs /app
+
+USER nextjs
+
+EXPOSE 3000
+
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:3000/api/health || curl -f http://localhost:3000/ || exit 1
+
+CMD ["node", "server.js"]

@@ -909,4 +909,25 @@ export class XService {
       last_update: new Date()
     };
   }
+
+  async healthCheck(): Promise<any> {
+    return {
+      status: 'healthy',
+      service: 'x-ai-trading',
+      timestamp: new Date(),
+      uptime: process.uptime(),
+      version: '2.0.0',
+      components: {
+        portfolios: { status: 'operational', count: this.portfolios.size },
+        trades: { status: 'operational', count: this.trades.size },
+        strategies: { status: 'operational', active: Array.from(this.strategies.values()).filter(s => s.is_active).length },
+        market_data: { status: 'operational', symbols: this.marketData.size },
+        ai_signals: { status: 'operational', count: this.signals.size }
+      },
+      memory: {
+        used: process.memoryUsage().heapUsed,
+        total: process.memoryUsage().heapTotal
+      }
+    };
+  }
 }

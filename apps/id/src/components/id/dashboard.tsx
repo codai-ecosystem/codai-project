@@ -119,6 +119,10 @@ export function IdDashboard() {
                             {stats.securityLevel} Security
                         </Badge>
                         <Badge variant="outline">Trust Score: {stats.trustScore}%</Badge>
+                        <Badge variant="secondary" className="bg-orange-100 text-orange-700 hover:bg-orange-200 animate-pulse">
+                            <Eye className="mr-1 h-3 w-3" />
+                            Live Development
+                        </Badge>
                     </div>
                 </div>
 

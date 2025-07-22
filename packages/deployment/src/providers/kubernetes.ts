@@ -6,7 +6,7 @@ export class KubernetesProvider implements DeploymentProvider {
     private k8sApi: k8s.CoreV1Api;
     private appsApi: k8s.AppsV1Api;
 
-    constructor(private config: DeploymentConfig) {
+    constructor(private _config: DeploymentConfig) {
         const kc = new k8s.KubeConfig();
         kc.loadFromDefault();
         this.k8sApi = kc.makeApiClient(k8s.CoreV1Api);
@@ -22,7 +22,7 @@ export class KubernetesProvider implements DeploymentProvider {
                 success: true,
                 message: 'Kubernetes deployment successful',
                 deploymentId: `k8s-${Date.now()}`,
-                url: this.config.url || 'https://k8s.codai.ro'
+                url: this._config.url || 'https://k8s.codai.ro'
             };
 
             return result;

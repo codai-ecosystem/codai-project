@@ -17,3 +17,11 @@ export interface User {
   name: string;
   role: 'admin' | 'user';
 }
+
+export interface PWAInstallerProps {
+  className?: string;
+}
+
+export interface ServiceWorkerProviderProps {
+  children: React.ReactNode;
+}

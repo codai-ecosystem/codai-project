@@ -17,7 +17,7 @@ import {
     ListToolsRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
-import { MemoryDatabase } from './database.js';
+import { MemoryDatabase } from './cbd-database-adapter.js';
 
 // Input validation schemas
 const RememberSchema = z.object({

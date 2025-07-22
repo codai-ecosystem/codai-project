@@ -1,83 +1,51 @@
 import { NextAuthOptions } from "next-auth"
 import { PrismaAdapter } from "@auth/prisma-adapter"
-import GoogleProvider from "next-auth/providers/google"
-import GithubProvider from "next-auth/providers/github"
-import CredentialsProvider from "next-auth/providers/credentials"
+import { createKeycloakProvider, createCodaiSSOConfig } from '@codai/sso-sdk';
 import prisma from "@/lib/prisma";
-import { compare } from "bcryptjs"
+
+// Create SSO configuration for MEMORAI application
+const ssoConfig = createCodaiSSOConfig({
+  appName: 'memorai',
+  clientId: process.env.KEYCLOAK_CLIENT_ID || 'memorai-client',
+  clientSecret: process.env.KEYCLOAK_CLIENT_SECRET || 'your-client-secret',
+  environment: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+  port: 4002, // MEMORAI enterprise port
+  customConfig: {
+    // MEMORAI-specific configuration
+    scopes: ['openid', 'profile', 'email', 'roles', 'memory'],
+    sessionTimeout: 7200, // 2 hours for memory research work
+    enableZeroTrust: true,
+    enableAuditLogging: true,
+    refreshTokenRotation: true
+  }
+});
+
+// Get the CODAI enterprise auth configuration and merge with MEMORAI-specific settings
+const codaiAuthOptions = createKeycloakProvider(ssoConfig);
 
 export const authOptions: NextAuthOptions = {
+  ...codaiAuthOptions,
+  // Add Prisma adapter for MEMORAI's existing database
   adapter: PrismaAdapter(prisma) as any,
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-    GithubProvider({
-      clientId: process.env.GITHUB_CLIENT_ID!,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-    }),
-    CredentialsProvider({
-      name: "credentials",
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" }
-      },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          return null
-        }
 
-        const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email
-          }
-        })
-
-        if (!user) {
-          return null
-        }
-
-        // For OAuth users, password might not be set
-        if (!user.password) {
-          return null
-        }
-
-        const isPasswordValid = await compare(credentials.password, user.password)
-
-        if (!isPasswordValid) {
-          return null
-        }
-
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          image: user.image,
-          role: user.role,
-        }
-      }
-    })
-  ],
-  session: {
-    strategy: "jwt",
-  },
-  pages: {
-    signIn: "/auth/signin",
-  },
+  // Merge callbacks to preserve existing functionality
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.role = user.role
-      }
-      return token
-    },
+    ...codaiAuthOptions.callbacks,
     async session({ session, token }) {
-      if (session?.user) {
-        session.user.id = token.sub!
-        session.user.role = token.role as string
+      // Call the CODAI callback first
+      if (codaiAuthOptions.callbacks?.session) {
+        session = await codaiAuthOptions.callbacks.session({ session, token });
       }
-      return session
+
+      // Add MEMORAI-specific session data
+      if (session?.user) {
+        session.user.id = token.sub!;
+        // Preserve any existing role information
+        if (!session.user.role && token.role) {
+          session.user.role = token.role as string;
+        }
+      }
+      return session;
     },
   },
-}
+};

@@ -115,12 +115,12 @@ export function ForgotPasswordForm({
           </Button>
 
           <div className="flex items-center justify-center gap-4">
-            <Button variant="ghost" onClick={onBack} asChild>
-              <Link href="/auth/login">
+            <Link href="/auth/login">
+              <Button variant="ghost" onClick={onBack}>
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Sign In
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           </div>
         </CardContent>
       </Card>
@@ -148,12 +148,11 @@ export function ForgotPasswordForm({
             {...register('email')}
             type="email"
             placeholder="Enter your email"
-            leftIcon={<Mail className="h-4 w-4" />}
             {...(errors.email?.message != null && {
               error: errors.email.message,
             })}
             disabled={isSubmitting}
-            // Removed autoFocus for better accessibility
+          // Removed autoFocus for better accessibility
           />
 
           <Button type="submit" className="w-full" disabled={isSubmitting}>
@@ -165,12 +164,12 @@ export function ForgotPasswordForm({
         </form>
 
         <div className="flex items-center justify-center">
-          <Button variant="ghost" onClick={onBack} asChild>
-            <Link href="/auth/login">
+          <Link href="/auth/login">
+            <Button variant="ghost" onClick={onBack}>
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Sign In
-            </Link>
-          </Button>
+            </Button>
+          </Link>
         </div>
 
         <div className="text-center text-sm text-muted-foreground">

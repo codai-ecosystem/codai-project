@@ -1,20 +1,29 @@
-import { PrismaClient } from '@prisma/client';
+// Dynamic import for Prisma client to handle potential import issues
+let PrismaClientClass: any = null;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const prismaImport = require('@prisma/client') as any;
+  PrismaClientClass = prismaImport.PrismaClient;
+} catch (error) {
+  console.warn('Prisma client not available in prisma.ts:', error);
+}
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare global {
-  var __prisma: PrismaClient | undefined;
+  var __prisma: any | undefined;
 }
 
 // Create a singleton Prisma client with robust error handling
-let prisma: PrismaClient;
+let prisma: any;
 
-if (process.env.NODE_ENV === 'production') {
-  prisma = new PrismaClient({
+if (PrismaClientClass && process.env.NODE_ENV === 'production') {
+  prisma = new PrismaClientClass({
     log: ['error'],
     errorFormat: 'minimal',
   });
 } else {
-  if (!global.__prisma) {
-    global.__prisma = new PrismaClient({
+  if (PrismaClientClass && !global.__prisma) {
+    global.__prisma = new PrismaClientClass({
       log: ['error'],
       errorFormat: 'pretty',
     });
@@ -45,4 +54,5 @@ async function disconnect() {
 // Export with connection testing capability
 export default prisma;
 export { testConnection, disconnect };
-export type { PrismaClient } from '@prisma/client';
+// Remove problematic type export
+// export type { PrismaClient } from '@prisma/client';

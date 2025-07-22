@@ -1,12 +1,13 @@
 {
   "name": "@codai/memorai-mcp",
-  "version": "7.0.2",
+  "version": "7.2.0",
   "description": "WORLD-CLASS Enterprise MCP Server - Greatest of All Time achievement with sub-2ms responses, bank-grade security, and unlimited performance capabilities",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
-    "memorai-mcp": "./dist/standalone-server.js",
+    "memorai-mcp": "./dist/persistent-server.js",
+    "memorai-mcp-persistent": "./dist/persistent-server.js",
     "memorai-mcp-standalone": "./dist/standalone-server.js",
     "memorai-mcp-ultra": "./dist/ultra-fast-server.js",
     "memorai-mcp-enterprise": "./dist/server.js",
@@ -76,6 +77,7 @@
     "@codai/memorai-core": "workspace:*",
     "@codai/memorai-server": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.15.1",
+    "better-sqlite3": "^11.5.0",
     "commander": "^14.0.0",
     "dotenv": "^17.2.0",
     "zod": "^4.0.5",
@@ -84,6 +86,7 @@
   },
   "devDependencies": {
     "@types/node": "^24.0.13",
+    "@types/better-sqlite3": "^7.6.11",
     "@types/express": "^4.17.21",
     "@types/ws": "^8.5.10",
     "@typescript-eslint/eslint-plugin": "^8.36.0",

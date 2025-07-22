@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import CodaiSessionProvider from '../components/providers/CodaiSessionProvider';
 
 export const metadata: Metadata = {
-  title: 'Codai - CODAI Ecosystem',
-  description: 'Part of the CODAI ecosystem',
+  title: 'Codai - CODAI Ecosystem Enterprise',
+  description: 'AI-native development environment with enterprise SSO integration',
 };
 
 export default function RootLayout({
@@ -13,7 +14,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <CodaiSessionProvider>
+          {children}
+        </CodaiSessionProvider>
+      </body>
     </html>
   );
 }

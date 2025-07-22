@@ -122,7 +122,7 @@ export class EnhancedVercelAutomation {
                 { role: 'button', containsText: 'add' }
             ];
 
-            let bestResults: any[] = [];
+            const bestResults: Array<{ pattern: any; result: any; confidence: number; accuracy: number }> = [];
 
             for (const pattern of searchPatterns) {
                 const searchResult = await this.browser.searchForElements(pattern);
@@ -131,7 +131,8 @@ export class EnhancedVercelAutomation {
                     bestResults.push({
                         pattern,
                         result: searchResult,
-                        confidence: searchResult.suggestions[0]?.confidence || 0
+                        confidence: searchResult.suggestions[0]?.confidence || 0.5,
+                        accuracy: searchResult.suggestions[0]?.confidence || 0.5
                     });
                 }
             }

@@ -11,7 +11,7 @@
     "./styles": "./dist/styles.css"
   },
   "scripts": {
-    "build": "pnpm exec tsc --build && tsc --build tsconfig.esm.json",
+    "build": "pnpm exec tsc --build && pnpm exec tsc --build tsconfig.esm.json",
     "dev": "tsc --build --watch",
     "lint": "pnpm exec eslint src --ext .ts,.tsx",
     "type-check": "pnpm exec tsc --noEmit",

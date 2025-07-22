@@ -8,8 +8,11 @@
     "sourceMap": true,
     "target": "ES2020",
     "module": "CommonJS",
-    "lib": ["ES2020", "DOM"],
-    "moduleResolution": "node",
+    "lib": [
+      "ES2020",
+      "DOM"
+    ],
+    "moduleResolution": "Node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
@@ -20,7 +23,8 @@
     "noImplicitAny": false,
     "noImplicitReturns": false,
     "noImplicitThis": false,
-    "incremental": false
+    "incremental": false,
+    "noEmit": false
   },
   "include": [
     "src/**/*"
@@ -29,9 +33,7 @@
     "dist",
     "node_modules",
     "test",
-    "**/*.test.ts",
-    "**/*.spec.ts",
-    "**/*.test.tsx",
-    "**/*.spec.tsx"
+    "***.spec.ts",
+    "***.spec.tsx"
   ]
 }

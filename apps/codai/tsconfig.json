@@ -1,24 +1,37 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@/components/*": [
-        "./src/components/*"
-      ],
-      "@/lib/*": [
-        "./src/lib/*"
-      ]
-    },
+    "target": "ES2020",
+    "lib": ["dom", "dom.iterable", "es6"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
     "plugins": [
       {
         "name": "next"
       }
     ],
-    "incremental": true
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/types/*": ["./src/types/*"]
+    },
+    "typeRoots": [
+      "../../node_modules/@types",
+      "../../types",
+      "./src/types"
+    ]
   },
   "include": [
     "next-env.d.ts",
@@ -29,16 +42,24 @@
   "exclude": [
     "node_modules",
     ".next",
+    "out",
     "dist",
+    "vitest.setup.ts",
+    "vitest.config.ts",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "apps",
+    "packages",
+    "archive",
     "build",
-    "app/**/*",
-    "components/**/*",
-    "lib/**/*",
-    "pages/**/*",
-    "src-disabled/**/*",
-    "src-backup/**/*",
-    "test-app/**/*",
-    "__tests__/**/*",
-    "tests/**/*"
+    "cli",
+    "extensions",
+    "remote",
+    "scripts",
+    "test",
+    "tests",
+    "__tests__"
   ]
 }

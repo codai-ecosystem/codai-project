@@ -25,7 +25,7 @@
     "test:watch": "jest --watch",
     "lint": "pnpm exec eslint src --ext .ts,.tsx",
     "lint:fix": "pnpm exec eslint src --ext .ts,.tsx --fix",
-    "type-check": "cd ../../ && npx tsc --noEmit --project packages/api-keys"
+    "type-check": "pnpm exec tsc --noEmit"
   },
   "keywords": [
     "api-keys",

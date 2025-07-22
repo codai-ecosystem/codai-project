@@ -19,14 +19,10 @@ import { DatabaseService } from './database/DatabaseService.js';
 import { AIService } from './ai/AIService.js';
 import { CoordinationService } from './coordination/CoordinationService.js';
 import {
-    Project,
-    Task,
-    Agent,
     TaskStatus,
     AgentStatus,
     ProjectStatus,
     Priority,
-    TaskCategory,
     AgentType,
     AgentCapability,
     WebSocketMessage,
@@ -63,7 +59,7 @@ class ControlAIMCPServer {
         // Enhanced configuration for v1.1.0
         this.config = {
             server: {
-                port: parseInt(process.env.CONTROLAI_PORT || '3001'),
+                port: parseInt(process.env.CONTROLAI_PORT || '7001'),
                 host: process.env.CONTROLAI_HOST || 'localhost'
             },
             database: {
@@ -467,7 +463,7 @@ class ControlAIMCPServer {
             const { uri } = request.params;
 
             switch (uri) {
-                case 'controlai://projects':
+                case 'controlai://projects': {
                     const projects = await this.database.getAllProjects();
                     return {
                         contents: [
@@ -478,8 +474,9 @@ class ControlAIMCPServer {
                             }
                         ]
                     };
+                }
 
-                case 'controlai://agents':
+                case 'controlai://agents': {
                     const agents = await this.database.getAllAgents();
                     return {
                         contents: [
@@ -490,8 +487,9 @@ class ControlAIMCPServer {
                             }
                         ]
                     };
+                }
 
-                case 'controlai://performance':
+                case 'controlai://performance': {
                     return {
                         contents: [
                             {
@@ -515,6 +513,7 @@ class ControlAIMCPServer {
                             }
                         ]
                     };
+                }
 
                 default:
                     throw new Error(`Resource not found: ${uri}`);
@@ -636,7 +635,7 @@ USAGE:
 ENVIRONMENT VARIABLES:
   CONTROLAI_DB_PATH              Database file path
   CONTROLAI_HTTP_ENABLED         Enable HTTP server (true/false)
-  CONTROLAI_PORT                 HTTP server port (default: 3001)
+  CONTROLAI_PORT                 HTTP server port (default: 7001)
   AZURE_OPENAI_ENDPOINT          Azure OpenAI endpoint
   AZURE_OPENAI_KEY               Azure OpenAI API key
   AZURE_OPENAI_DEPLOYMENT        Azure OpenAI deployment name

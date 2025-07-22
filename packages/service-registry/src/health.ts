@@ -20,7 +20,7 @@ export interface HealthCheckOptions {
  */
 export class HealthMonitor extends EventEmitter {
   private healthStatuses: Map<string, HealthStatus> = new Map();
-  private healthCheckIntervals: Map<string, NodeJS.Timer> = new Map();
+  private healthCheckIntervals: Map<string, NodeJS.Timeout> = new Map();
 
   constructor(
     private redis: Redis.RedisClientType,
@@ -107,7 +107,7 @@ export class HealthMonitor extends EventEmitter {
         status: 'unhealthy',
         timestamp: healthStatus.timestamp.toISOString(),
         responseTime: responseTime.toString(),
-        error: healthStatus.error,
+        error: healthStatus.error || '',
       });
 
       this.emit('health-changed', serviceName, healthStatus);

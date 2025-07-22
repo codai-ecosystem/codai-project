@@ -3,7 +3,7 @@
  * Complete ecosystem integration for all CODAI services
  */
 
-import type { CodaiConfig, CodaiEventMap } from './types';
+import type { CodaiConfig, CodaiEventMap, CodaiService } from './types';
 import { CodaiEventBus } from './events';
 import { StorageUtils, CryptoUtils, DateUtils, ErrorUtils } from './utils';
 
@@ -76,7 +76,7 @@ export const SDK_VERSION = '1.0.0';
 export class CodaiSDK {
   private config: CodaiConfig;
   private eventBus: CodaiEventBus;
-  private services: Map<string, any> = new Map();
+  private services: Map<string, unknown> = new Map();
   private initialized = false;
 
   // Service instances
@@ -126,7 +126,7 @@ export class CodaiSDK {
     this.services.set('identity', this.identity);
 
     if (this.config.debug) {
-      console.log(`[CodaiSDK] Initialized v${SDK_VERSION} with ${this.services.size} services`);
+      console.warn(`[CodaiSDK] Initialized v${SDK_VERSION} with ${this.services.size} services`);
     }
   }
 
@@ -141,7 +141,7 @@ export class CodaiSDK {
       }
 
       if (this.config.debug) {
-        console.log('[CodaiSDK] Starting initialization...');
+        console.warn('[CodaiSDK] Starting initialization...');
       }
 
       // Emit initialization event
@@ -154,12 +154,12 @@ export class CodaiSDK {
       // Initialize each service
       const initPromises = Array.from(this.services.entries()).map(async ([name, service]) => {
         try {
-          if (typeof service.initialize === 'function') {
-            await service.initialize();
+          if (typeof (service as CodaiService).initialize === 'function') {
+            await (service as CodaiService).initialize!();
           }
 
           if (this.config.debug) {
-            console.log(`[CodaiSDK] Service ${name} initialized successfully`);
+            console.warn(`[CodaiSDK] Service ${name} initialized successfully`);
           }
 
           return { name, status: 'success' };
@@ -174,7 +174,7 @@ export class CodaiSDK {
       const failed = results.filter(r => r.status === 'rejected').length;
 
       if (this.config.debug) {
-        console.log(`[CodaiSDK] Initialization complete: ${successful} successful, ${failed} failed`);
+        console.warn(`[CodaiSDK] Initialization complete: ${successful} successful, ${failed} failed`);
       }
 
       this.initialized = true;
@@ -219,8 +219,8 @@ export class CodaiSDK {
         const start = Date.now();
         try {
           // Health check method if available
-          if (typeof service.healthCheck === 'function') {
-            await service.healthCheck();
+          if (typeof (service as CodaiService).healthCheck === 'function') {
+            await (service as CodaiService).healthCheck!();
           }
 
           return {
@@ -241,15 +241,20 @@ export class CodaiSDK {
       })
     );
 
-    const services: Record<string, any> = {};
-    let onlineCount = 0;
+    const services: Record<string, {
+      status: 'error' | 'online' | 'offline';
+      responseTime?: number;
+      lastCheck: Date;
+      error?: string;
+    }> = {};
+    let _onlineCount = 0;
     let errorCount = 0;
 
-    healthChecks.forEach((result, index) => {
+    healthChecks.forEach((result, _index) => {
       if (result.status === 'fulfilled') {
         const { name, ...serviceHealth } = result.value;
         services[name] = serviceHealth;
-        if (serviceHealth.status === 'online') onlineCount++;
+        if (serviceHealth.status === 'online') _onlineCount++;
         if (serviceHealth.status === 'error') errorCount++;
       }
     });
@@ -288,9 +293,9 @@ export class CodaiSDK {
     this.config = { ...this.config, ...updates };
 
     // Propagate config updates to services
-    this.services.forEach((service, name) => {
-      if (typeof service.updateConfig === 'function') {
-        service.updateConfig(this.config);
+    this.services.forEach((service, _name) => {
+      if (typeof (service as CodaiService).updateConfig === 'function') {
+        (service as CodaiService).updateConfig!(this.config);
       }
     });
 
@@ -310,8 +315,8 @@ export class CodaiSDK {
   /**
    * Get service by name
    */
-  getService<T = any>(name: string): T | undefined {
-    return this.services.get(name);
+  getService<T = unknown>(name: string): T | undefined {
+    return this.services.get(name) as T | undefined;
   }
 
   /**
@@ -334,7 +339,7 @@ export class CodaiSDK {
   async destroy(): Promise<void> {
     try {
       if (this.config.debug) {
-        console.log('[CodaiSDK] Starting cleanup...');
+        console.warn('[CodaiSDK] Starting cleanup...');
       }
 
       this.eventBus.emit('sdk:destroy:start', {
@@ -347,11 +352,11 @@ export class CodaiSDK {
       // Cleanup services
       const cleanupPromises = Array.from(this.services.entries()).map(async ([name, service]) => {
         try {
-          if (typeof service.destroy === 'function') {
-            await service.destroy();
+          if (typeof (service as CodaiService).destroy === 'function') {
+            await (service as CodaiService).destroy!();
           }
           if (this.config.debug) {
-            console.log(`[CodaiSDK] Service ${name} cleaned up`);
+            console.warn(`[CodaiSDK] Service ${name} cleaned up`);
           }
         } catch (error) {
           console.error(`[CodaiSDK] Failed to cleanup service ${name}:`, error);
@@ -369,7 +374,7 @@ export class CodaiSDK {
       });
 
       if (this.config.debug) {
-        console.log('[CodaiSDK] Cleanup complete');
+        console.warn('[CodaiSDK] Cleanup complete');
       }
 
     } catch (error) {

@@ -12,8 +12,13 @@ import type {
   Project
 } from '@codai/shared-types'
 
-// Import MEMORAI Service
-import { memorai, type MemoraiService } from '@codai/memorai'
+// Import MEMORAI Service (commented out for now due to module resolution issues)
+// import { memorai, MemoraiService } from '@codai/memorai'
+
+// Placeholder for MemoraiService type
+interface MemoraiService {
+  // Add methods as needed
+}
 
 // Temporary type definitions for missing types
 interface SocialPost {
@@ -311,7 +316,7 @@ export class MemoryService {
   // Universal Database Operations
   async store<T = any>(table: string, data: T): Promise<APIResponse<T>> {
     try {
-      // Try MEMORAI first if available
+      // Try MEMORAI package first
       if (typeof require !== 'undefined') {
         try {
           const { memorai } = require('@codai/memorai')
@@ -328,7 +333,7 @@ export class MemoryService {
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Store operation failed',
-        timestamp: new Date(),
+        timestamp: new Date().toISOString(),
         requestId: this.generateRequestId()
       }
     }
@@ -358,7 +363,7 @@ export class MemoryService {
         success: false,
         error: error instanceof Error ? error.message : 'Find operation failed',
         data: [],
-        timestamp: new Date(),
+        timestamp: new Date().toISOString(),
         requestId: this.generateRequestId()
       }
     }
@@ -384,7 +389,7 @@ export class MemoryService {
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Store memory failed',
-        timestamp: new Date(),
+        timestamp: new Date().toISOString(),
         requestId: this.generateRequestId()
       }
     }
@@ -414,7 +419,7 @@ export class MemoryService {
         success: false,
         error: error instanceof Error ? error.message : 'Search memories failed',
         data: [],
-        timestamp: new Date(),
+        timestamp: new Date().toISOString(),
         requestId: this.generateRequestId()
       }
     }
@@ -449,7 +454,7 @@ export class MemoryService {
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Upload file failed',
-        timestamp: new Date(),
+        timestamp: new Date().toISOString(),
         requestId: this.generateRequestId()
       }
     }
@@ -481,7 +486,7 @@ export class MemoryService {
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Update memory failed',
-        timestamp: new Date(),
+        timestamp: new Date().toISOString(),
         requestId: this.generateRequestId()
       }
     }
@@ -506,7 +511,7 @@ export class MemoryService {
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Delete memory failed',
-        timestamp: new Date(),
+        timestamp: new Date().toISOString(),
         requestId: this.generateRequestId()
       }
     }

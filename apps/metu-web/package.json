@@ -30,6 +30,7 @@
     "@codai/translations": "workspace:*"
   },
   "devDependencies": {
+    "@codai/eslint-config": "workspace:*",
     "@tailwindcss/postcss": "^4.1.11",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",

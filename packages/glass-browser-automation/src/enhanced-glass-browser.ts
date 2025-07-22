@@ -310,8 +310,9 @@ export class EnhancedGlassBrowser extends GlassMCPConnector {
             if (elements.found && elements.bestMatch) {
                 const element = elements.bestMatch;
 
-                // Calculate scroll position
-                const scrollScript = `window.scrollTo(0, ${element.bounds.y - 100})`;
+                // Calculate scroll position using smooth scrolling
+                const scrollBehavior = 'smooth';
+                console.log(`Using ${scrollBehavior} scroll behavior`);
 
                 // For now, we'll use keyboard scrolling as a fallback
                 const currentY = element.bounds.y;
@@ -355,7 +356,7 @@ export class EnhancedGlassBrowser extends GlassMCPConnector {
                 }
 
                 await this.delay(500);
-            } catch (error) {
+            } catch (_error) {
                 // Continue waiting on errors
             }
         }

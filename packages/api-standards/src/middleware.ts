@@ -21,18 +21,16 @@ import { CodaiApiConfig } from './standards';
 import { CodaiResponseBuilder, sendCodaiResponse } from './response';
 
 // Extend Express Request interface
-declare global {
-    namespace Express {
-        interface Request {
-            requestId: string;
-            startTime: number;
-            responseBuilder: CodaiResponseBuilder;
-            user?: {
-                id: string;
-                email: string;
-                roles: string[];
-            };
-        }
+declare module 'express-serve-static-core' {
+    interface Request {
+        requestId: string;
+        startTime: number;
+        responseBuilder: CodaiResponseBuilder;
+        user?: {
+            id: string;
+            email: string;
+            roles: string[];
+        };
     }
 }
 
@@ -158,7 +156,7 @@ export const loggingMiddleware = (serviceName: string) => {
                     requestId: parts[parts.length - 1],
                 };
 
-                console.log(JSON.stringify(logData));
+                console.warn(JSON.stringify(logData));
             },
         },
         skip: (req: Request) => {

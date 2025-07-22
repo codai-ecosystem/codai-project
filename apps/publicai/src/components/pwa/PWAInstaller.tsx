@@ -46,12 +46,12 @@ export function PWAInstaller({
         }}
         variant="outline"
         size="sm"
-        isLoading={isInstalling}
+        disabled={isInstalling}
         className={cn('fixed bottom-4 right-4 z-50 shadow-lg', className)}
         data-testid="pwa-installer"
       >
         {!isInstalling && <Download className="mr-2 h-4 w-4" />}
-        Install App
+        {isInstalling ? 'Installing...' : 'Install App'}
       </Button>
     );
   }

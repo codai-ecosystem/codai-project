@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
+import BancaiSessionProvider from '../components/BancaiSessionProvider'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Bancai - CODAI Ecosystem',
-  description: 'Part of the CODAI ecosystem',
+  title: 'Bancai - AI Banking Platform',
+  description: 'Secure AI-powered banking with enterprise SSO authentication',
 }
 
 export default function RootLayout({
@@ -13,7 +14,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <BancaiSessionProvider>
+          {children}
+        </BancaiSessionProvider>
+      </body>
     </html>
   )
 }

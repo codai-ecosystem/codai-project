@@ -25,7 +25,6 @@ import {
     AgentStatus,
     ProjectStatus,
     Priority,
-    TaskCategory,
     AgentType,
     AgentCapability,
     WebSocketMessage,
@@ -96,7 +95,7 @@ class ControlAIMCPServer {
         this.setupHandlers();
     }
 
-    private setupHandlers() {
+    private setupHandlers(): void {
         // List available tools
         this.server.setRequestHandler(ListToolsRequestSchema, async () => {
             return {
@@ -657,7 +656,7 @@ class ControlAIMCPServer {
     }
 
     // WebSocket broadcasting
-    private broadcast(message: WebSocketMessage) {
+    private broadcast(message: WebSocketMessage): void {
         if (!this.wsServer || this.clients.size === 0) return;
 
         const messageStr = JSON.stringify(message);
@@ -746,7 +745,7 @@ class ControlAIMCPServer {
         }
     }
 
-    async start() {
+    async start(): Promise<void> {
         try {
             console.log('Initializing ControlAI MCP Server...');
 
@@ -783,7 +782,7 @@ class ControlAIMCPServer {
         }
     }
 
-    async shutdown() {
+    async shutdown(): Promise<void> {
         console.log('Shutting down ControlAI MCP Server...');
 
         if (this.database) {

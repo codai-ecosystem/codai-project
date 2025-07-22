@@ -8,6 +8,9 @@ interface I18nContextType {
     availableLanguages: string[];
     setLanguage: (language: string) => void;
     t: (key: string, params?: Record<string, string | number>) => string;
+    locale: string;
+    setLocale: (locale: string) => void;
+    isLoading: boolean;
 }
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
@@ -93,6 +96,9 @@ export function I18nProvider({ children, defaultLanguage = 'en' }: I18nProviderP
         availableLanguages,
         setLanguage,
         t,
+        locale: currentLanguage,
+        setLocale: setLanguage,
+        isLoading: false,
     };
 
     return (

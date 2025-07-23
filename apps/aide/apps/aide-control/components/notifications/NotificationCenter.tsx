@@ -74,7 +74,7 @@ export function NotificationCenter({ userId, projectId }: NotificationCenterProp
 
   const loadNotifications = async () => {
     setLoading(true)
-    
+
     // Mock notifications
     const mockNotifications: Notification[] = [
       {
@@ -181,7 +181,7 @@ export function NotificationCenter({ userId, projectId }: NotificationCenterProp
         source: 'integration'
       }
     ]
-    
+
     setNotifications(mockNotifications)
     setLoading(false)
   }
@@ -243,7 +243,7 @@ export function NotificationCenter({ userId, projectId }: NotificationCenterProp
     const minutes = Math.floor(diff / (1000 * 60))
     const hours = Math.floor(minutes / 60)
     const days = Math.floor(hours / 24)
-    
+
     if (minutes < 1) return 'Just now'
     if (minutes < 60) return `${minutes}m ago`
     if (hours < 24) return `${hours}h ago`
@@ -276,7 +276,7 @@ export function NotificationCenter({ userId, projectId }: NotificationCenterProp
               className="fixed inset-0 z-40"
               onClick={() => setIsOpen(false)}
             />
-            
+
             {/* Panel */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: -10 }}
@@ -297,18 +297,17 @@ export function NotificationCenter({ userId, projectId }: NotificationCenterProp
                     <XMarkIcon className="w-5 h-5" />
                   </button>
                 </div>
-                
+
                 {/* Filters */}
                 <div className="flex space-x-2">
                   {(['all', 'unread', 'actionable'] as const).map(filterOption => (
                     <button
                       key={filterOption}
                       onClick={() => setFilter(filterOption)}
-                      className={`px-3 py-1 text-sm rounded-lg capitalize transition-colors ${
-                        filter === filterOption
+                      className={`px-3 py-1 text-sm rounded-lg capitalize transition-colors ${filter === filterOption
                           ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
                           : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
-                      }`}
+                        }`}
                     >
                       {filterOption}
                       {filterOption === 'unread' && unreadCount > 0 && (
@@ -317,7 +316,7 @@ export function NotificationCenter({ userId, projectId }: NotificationCenterProp
                     </button>
                   ))}
                 </div>
-                
+
                 {unreadCount > 0 && (
                   <button
                     onClick={markAllAsRead}
@@ -339,9 +338,9 @@ export function NotificationCenter({ userId, projectId }: NotificationCenterProp
                   <div className="p-8 text-center">
                     <BellIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                     <p className="text-gray-500 dark:text-gray-400">
-                      {filter === 'unread' ? 'No unread notifications' : 
-                       filter === 'actionable' ? 'No actionable notifications' : 
-                       'No notifications'}
+                      {filter === 'unread' ? 'No unread notifications' :
+                        filter === 'actionable' ? 'No actionable notifications' :
+                          'No notifications'}
                     </p>
                   </div>
                 ) : (
@@ -349,26 +348,24 @@ export function NotificationCenter({ userId, projectId }: NotificationCenterProp
                     {filteredNotifications.map(notification => (
                       <div
                         key={notification.id}
-                        className={`p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors ${
-                          !notification.read ? 'bg-blue-50/50 dark:bg-blue-900/10' : ''
-                        }`}
+                        className={`p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors ${!notification.read ? 'bg-blue-50/50 dark:bg-blue-900/10' : ''
+                          }`}
                         onClick={() => !notification.read && markAsRead(notification.id)}
                       >
                         <div className="flex items-start space-x-3">
                           <div className="flex-shrink-0 mt-1">
                             {getNotificationIcon(notification.type)}
                           </div>
-                          
+
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between mb-1">
-                              <h4 className={`text-sm font-medium ${
-                                !notification.read 
-                                  ? 'text-gray-900 dark:text-white' 
+                              <h4 className={`text-sm font-medium ${!notification.read
+                                  ? 'text-gray-900 dark:text-white'
                                   : 'text-gray-700 dark:text-gray-300'
-                              }`}>
+                                }`}>
                                 {notification.title}
                               </h4>
-                              
+
                               <div className="flex items-center space-x-2">
                                 <div className="flex items-center space-x-1">
                                   {getSourceIcon(notification.source)}
@@ -376,11 +373,11 @@ export function NotificationCenter({ userId, projectId }: NotificationCenterProp
                                     {formatTimestamp(notification.timestamp)}
                                   </span>
                                 </div>
-                                
+
                                 {!notification.read && (
                                   <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                                 )}
-                                
+
                                 <button
                                   onClick={(e) => {
                                     e.stopPropagation()
@@ -392,11 +389,11 @@ export function NotificationCenter({ userId, projectId }: NotificationCenterProp
                                 </button>
                               </div>
                             </div>
-                            
+
                             <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                               {notification.message}
                             </p>
-                            
+
                             {notification.actions && notification.actions.length > 0 && (
                               <div className="flex space-x-2">
                                 {notification.actions.map(action => (
@@ -406,13 +403,12 @@ export function NotificationCenter({ userId, projectId }: NotificationCenterProp
                                       e.stopPropagation()
                                       action.handler()
                                     }}
-                                    className={`px-3 py-1 text-xs rounded transition-colors ${
-                                      action.type === 'primary'
+                                    className={`px-3 py-1 text-xs rounded transition-colors ${action.type === 'primary'
                                         ? 'bg-blue-600 hover:bg-blue-700 text-white'
                                         : action.type === 'danger'
-                                        ? 'bg-red-600 hover:bg-red-700 text-white'
-                                        : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
-                                    }`}
+                                          ? 'bg-red-600 hover:bg-red-700 text-white'
+                                          : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                                      }`}
                                   >
                                     {action.label}
                                   </button>
@@ -504,7 +500,7 @@ export function IntegrationsHub() {
         }
       }
     ]
-    
+
     setIntegrations(mockIntegrations)
   }
 
@@ -544,7 +540,7 @@ export function IntegrationsHub() {
         status: 'disconnected'
       }
     ]
-    
+
     setAvailableIntegrations(mockAvailable)
   }
 
@@ -585,34 +581,34 @@ export function IntegrationsHub() {
 
   const handleConnect = async (integrationId: string) => {
     setLoading(true)
-    
+
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000))
-    
+
     // Move from available to connected
     const integration = availableIntegrations.find(i => i.id === integrationId)
     if (integration) {
       setAvailableIntegrations(prev => prev.filter(i => i.id !== integrationId))
       setIntegrations(prev => [...prev, { ...integration, status: 'connected', lastSync: new Date() }])
     }
-    
+
     setLoading(false)
   }
 
   const handleDisconnect = async (integrationId: string) => {
     if (confirm('Are you sure you want to disconnect this integration?')) {
       setLoading(true)
-      
+
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 500))
-      
+
       // Move from connected to available
       const integration = integrations.find(i => i.id === integrationId)
       if (integration) {
         setIntegrations(prev => prev.filter(i => i.id !== integrationId))
         setAvailableIntegrations(prev => [...prev, { ...integration, status: 'disconnected', lastSync: undefined }])
       }
-      
+
       setLoading(false)
     }
   }
@@ -648,11 +644,10 @@ export function IntegrationsHub() {
           <button
             key={category.id}
             onClick={() => setSelectedCategory(category.id)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              selectedCategory === category.id
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${selectedCategory === category.id
                 ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
                 : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-            }`}
+              }`}
           >
             {category.name}
             <span className="ml-2 text-xs opacity-75">({category.count})</span>
@@ -666,7 +661,7 @@ export function IntegrationsHub() {
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
             Connected ({filteredConnected.length})
           </h3>
-          
+
           <div className="space-y-4">
             {filteredConnected.map(integration => (
               <div
@@ -685,7 +680,7 @@ export function IntegrationsHub() {
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center space-x-2">
                     <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(integration.status)}`}>
                       {integration.status}
@@ -693,13 +688,13 @@ export function IntegrationsHub() {
                     {getStatusIcon(integration.status)}
                   </div>
                 </div>
-                
+
                 {integration.lastSync && (
                   <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
                     Last synced: {integration.lastSync.toLocaleString()}
                   </p>
                 )}
-                
+
                 <div className="flex space-x-2">
                   <button className="flex-1 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
                     Configure
@@ -714,7 +709,7 @@ export function IntegrationsHub() {
                 </div>
               </div>
             ))}
-            
+
             {filteredConnected.length === 0 && (
               <div className="text-center py-8">
                 <PuzzlePieceIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
@@ -731,7 +726,7 @@ export function IntegrationsHub() {
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
             Available ({filteredAvailable.length})
           </h3>
-          
+
           <div className="space-y-4">
             {filteredAvailable.map(integration => (
               <div
@@ -751,7 +746,7 @@ export function IntegrationsHub() {
                     </div>
                   </div>
                 </div>
-                
+
                 <button
                   onClick={() => handleConnect(integration.id)}
                   disabled={loading}
@@ -761,7 +756,7 @@ export function IntegrationsHub() {
                 </button>
               </div>
             ))}
-            
+
             {filteredAvailable.length === 0 && (
               <div className="text-center py-8">
                 <CheckCircleIcon className="w-12 h-12 text-green-400 mx-auto mb-4" />

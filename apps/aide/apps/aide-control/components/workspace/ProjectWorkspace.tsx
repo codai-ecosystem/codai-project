@@ -37,7 +37,7 @@ export function ProjectWorkspace({ project, onProjectUpdate }: ProjectWorkspaceP
   const [liveUsers, setLiveUsers] = useState<SessionParticipant[]>([])
   const [recentActivity, setRecentActivity] = useState<ActivityEvent[]>([])
   const [fileComments, setFileComments] = useState<Record<string, Comment[]>>({})
-  
+
   const editorRef = useRef<HTMLDivElement>(null)
 
   // Mock project structure
@@ -88,7 +88,7 @@ export function ProjectWorkspace({ project, onProjectUpdate }: ProjectWorkspaceP
   const closeFile = (filePath: string) => {
     const newOpenFiles = openFiles.filter(f => f !== filePath)
     setOpenFiles(newOpenFiles)
-    
+
     if (activeFile === filePath) {
       setActiveFile(newOpenFiles[newOpenFiles.length - 1] || '')
     }
@@ -162,9 +162,8 @@ export function ProjectWorkspace({ project, onProjectUpdate }: ProjectWorkspaceP
         {regularFiles.map(file => (
           <div
             key={file.path}
-            className={`flex items-center px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-sm ${
-              activeFile === file.path ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300' : ''
-            }`}
+            className={`flex items-center px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-sm ${activeFile === file.path ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300' : ''
+              }`}
             onClick={() => openFile(file.path)}
           >
             <div className="w-5 mr-1" />
@@ -299,7 +298,7 @@ export function ProjectWorkspace({ project, onProjectUpdate }: ProjectWorkspaceP
               {project.status}
             </span>
           </div>
-          
+
           {/* Live collaborators */}
           <div className="flex items-center space-x-2">
             {liveUsers.slice(0, 3).map(user => (
@@ -350,16 +349,15 @@ export function ProjectWorkspace({ project, onProjectUpdate }: ProjectWorkspaceP
               <button
                 key={id}
                 onClick={() => setSidebarPanel(id as any)}
-                className={`w-8 h-8 flex items-center justify-center rounded hover:bg-gray-200 dark:hover:bg-gray-700 ${
-                  sidebarPanel === id ? 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400'
-                }`}
+                className={`w-8 h-8 flex items-center justify-center rounded hover:bg-gray-200 dark:hover:bg-gray-700 ${sidebarPanel === id ? 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400'
+                  }`}
                 title={tooltip}
               >
                 <Icon className="w-5 h-5" />
               </button>
             ))}
           </div>
-          
+
           <div className="flex-1 overflow-y-auto">
             {sidebarPanels[sidebarPanel]}
           </div>
@@ -373,11 +371,10 @@ export function ProjectWorkspace({ project, onProjectUpdate }: ProjectWorkspaceP
               {openFiles.map(filePath => (
                 <div
                   key={filePath}
-                  className={`flex items-center px-3 py-2 border-r border-gray-200 dark:border-gray-700 cursor-pointer min-w-0 ${
-                    activeFile === filePath 
-                      ? 'bg-gray-50 dark:bg-gray-900 border-b-2 border-blue-500' 
+                  className={`flex items-center px-3 py-2 border-r border-gray-200 dark:border-gray-700 cursor-pointer min-w-0 ${activeFile === filePath
+                      ? 'bg-gray-50 dark:bg-gray-900 border-b-2 border-blue-500'
                       : 'hover:bg-gray-50 dark:hover:bg-gray-700'
-                  }`}
+                    }`}
                   onClick={() => setActiveFile(filePath)}
                 >
                   {getFileIcon(filePath)}
@@ -409,7 +406,7 @@ export function ProjectWorkspace({ project, onProjectUpdate }: ProjectWorkspaceP
                     {activeFileContent}
                   </pre>
                 </div>
-                
+
                 {/* Comments sidebar */}
                 <div className="w-80 bg-gray-50 dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 p-4">
                   <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-4">
@@ -438,11 +435,10 @@ export function ProjectWorkspace({ project, onProjectUpdate }: ProjectWorkspaceP
                   <button
                     key={panel}
                     onClick={() => setBottomPanel(panel as any)}
-                    className={`px-4 py-2 text-sm border-r border-gray-200 dark:border-gray-700 ${
-                      bottomPanel === panel 
-                        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border-b-2 border-blue-500' 
+                    className={`px-4 py-2 text-sm border-r border-gray-200 dark:border-gray-700 ${bottomPanel === panel
+                        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border-b-2 border-blue-500'
                         : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700'
-                    }`}
+                      }`}
                   >
                     {panel.charAt(0).toUpperCase() + panel.slice(1)}
                   </button>

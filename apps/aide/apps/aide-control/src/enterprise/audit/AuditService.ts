@@ -25,7 +25,7 @@ export interface AuditEvent {
   compliance: ComplianceFlags
 }
 
-export type AuditEventType = 
+export type AuditEventType =
   | 'authentication'
   | 'authorization'
   | 'data_access'
@@ -112,18 +112,18 @@ export class EnterpriseAudit {
 
     // Store the event
     this.events.set(auditEvent.id, auditEvent)
-    
+
     // Update indexes for faster querying
     this.updateIndexes(auditEvent)
-    
+
     // Check compliance requirements
     await this.checkCompliance(auditEvent)
-    
+
     // Handle real-time alerts
     await this.checkAlertConditions(auditEvent)
 
     console.log(`Audit event logged: ${auditEvent.eventType} - ${auditEvent.action} - ${auditEvent.outcome}`)
-    
+
     return auditEvent.id
   }
 
@@ -318,7 +318,7 @@ export class EnterpriseAudit {
 
     if (filter.searchText) {
       const searchLower = filter.searchText.toLowerCase()
-      filteredEvents = filteredEvents.filter(event => 
+      filteredEvents = filteredEvents.filter(event =>
         event.resource.toLowerCase().includes(searchLower) ||
         event.action.toLowerCase().includes(searchLower) ||
         JSON.stringify(event.details).toLowerCase().includes(searchLower)
@@ -339,7 +339,7 @@ export class EnterpriseAudit {
    */
   async generateReport(filters: AuditFilter, reportName: string, description: string, generatedBy: string): Promise<AuditReport> {
     const { events, total } = await this.queryEvents(filters, 10000) // Get more events for reporting
-    
+
     const report: AuditReport = {
       id: this.generateReportId(),
       name: reportName,
@@ -362,13 +362,13 @@ export class EnterpriseAudit {
     switch (format) {
       case 'json':
         return Buffer.from(JSON.stringify(report, null, 2))
-      
+
       case 'csv':
         return this.exportToCSV(report)
-      
+
       case 'pdf':
         return this.exportToPDF(report)
-      
+
       default:
         throw new Error(`Unsupported export format: ${format}`)
     }
@@ -493,21 +493,21 @@ export class EnterpriseAudit {
     events.forEach(event => {
       // By type
       eventsByType[event.eventType] = (eventsByType[event.eventType] || 0) + 1
-      
+
       // By outcome
       eventsByOutcome[event.outcome] = (eventsByOutcome[event.outcome] || 0) + 1
-      
+
       // By severity
       eventsBySeverity[event.severity] = (eventsBySeverity[event.severity] || 0) + 1
-      
+
       // By resource
       resourceCounts[event.resource] = (resourceCounts[event.resource] || 0) + 1
-      
+
       // By user
       if (event.userId) {
         userCounts[event.userId] = (userCounts[event.userId] || 0) + 1
       }
-      
+
       // By date
       const dateKey = event.timestamp.toISOString().split('T')[0]
       dailyCounts[dateKey] = (dailyCounts[dateKey] || 0) + 1
@@ -519,11 +519,11 @@ export class EnterpriseAudit {
       eventsByOutcome,
       eventsBySeverity,
       topResources: Object.entries(resourceCounts)
-        .sort(([,a], [,b]) => b - a)
+        .sort(([, a], [, b]) => b - a)
         .slice(0, 10)
         .map(([resource, count]) => ({ resource, count })),
       topUsers: Object.entries(userCounts)
-        .sort(([,a], [,b]) => b - a)
+        .sort(([, a], [, b]) => b - a)
         .slice(0, 10)
         .map(([userId, count]) => ({ userId, count })),
       timeDistribution: Object.entries(dailyCounts)
@@ -579,12 +579,12 @@ export class EnterpriseAudit {
 export function auditMiddleware(auditService: EnterpriseAudit) {
   return async (req: any, res: any, next: Function) => {
     const startTime = Date.now()
-    
+
     // Capture request details
     const originalJson = res.json
-    res.json = function(data: any) {
+    res.json = function (data: any) {
       const duration = Date.now() - startTime
-      
+
       // Log the API access
       auditService.logDataAccess(
         req.session?.userId || 'anonymous',

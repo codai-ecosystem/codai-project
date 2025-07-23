@@ -15,6 +15,7 @@
     "test:watch": "vitest watch"
   },
   "dependencies": {
+    "@codai/security": "workspace:*",
     "@codai/shared-ui": "workspace:*",
     "@codai/translations": "workspace:*",
     "@hookform/resolvers": "^5.1.1",

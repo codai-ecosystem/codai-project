@@ -223,8 +223,8 @@ export function CommunicationHub({ userId, teamId, projectId }: CommunicationHub
 
   const getNotificationIcon = (type: Notification['type'], priority: Notification['priority']) => {
     const iconClass = priority === 'critical' ? 'text-red-500' :
-                     priority === 'high' ? 'text-orange-500' :
-                     priority === 'medium' ? 'text-yellow-500' : 'text-blue-500'
+      priority === 'high' ? 'text-orange-500' :
+        priority === 'medium' ? 'text-yellow-500' : 'text-blue-500'
 
     switch (type) {
       case 'mention':
@@ -274,14 +274,14 @@ export function CommunicationHub({ userId, teamId, projectId }: CommunicationHub
     if (filter === 'unread' && notification.isRead) return false
     if (filter === 'starred' && !notification.isStarred) return false
     if (filter === 'mentions' && notification.type !== 'mention') return false
-    
+
     if (searchQuery) {
       const query = searchQuery.toLowerCase()
       return notification.title.toLowerCase().includes(query) ||
-             notification.message.toLowerCase().includes(query) ||
-             notification.source.name.toLowerCase().includes(query)
+        notification.message.toLowerCase().includes(query) ||
+        notification.source.name.toLowerCase().includes(query)
     }
-    
+
     return true
   })
 
@@ -291,7 +291,7 @@ export function CommunicationHub({ userId, teamId, projectId }: CommunicationHub
   }
 
   const handleMarkAsRead = (notificationId: string) => {
-    setNotifications(prev => prev.map(n => 
+    setNotifications(prev => prev.map(n =>
       n.id === notificationId ? { ...n, isRead: true } : n
     ))
     setUnreadCount(prev => Math.max(0, prev - 1))
@@ -303,7 +303,7 @@ export function CommunicationHub({ userId, teamId, projectId }: CommunicationHub
   }
 
   const handleToggleStar = (notificationId: string) => {
-    setNotifications(prev => prev.map(n => 
+    setNotifications(prev => prev.map(n =>
       n.id === notificationId ? { ...n, isStarred: !n.isStarred } : n
     ))
   }
@@ -325,21 +325,21 @@ export function CommunicationHub({ userId, teamId, projectId }: CommunicationHub
   }
 
   const tabs = [
-    { 
-      id: 'notifications', 
-      name: 'Notifications', 
-      icon: BellIcon, 
-      count: unreadCount 
+    {
+      id: 'notifications',
+      name: 'Notifications',
+      icon: BellIcon,
+      count: unreadCount
     },
-    { 
-      id: 'chat', 
-      name: 'Team Chat', 
-      icon: ChatBubbleLeftRightIcon 
+    {
+      id: 'chat',
+      name: 'Team Chat',
+      icon: ChatBubbleLeftRightIcon
     },
-    { 
-      id: 'inbox', 
-      name: 'Inbox', 
-      icon: InboxIcon 
+    {
+      id: 'inbox',
+      name: 'Inbox',
+      icon: InboxIcon
     }
   ]
 
@@ -356,7 +356,7 @@ export function CommunicationHub({ userId, teamId, projectId }: CommunicationHub
               </div>
             )}
           </div>
-          
+
           <div className="flex items-center space-x-2">
             <button
               onClick={handleMarkAllAsRead}
@@ -378,11 +378,10 @@ export function CommunicationHub({ userId, teamId, projectId }: CommunicationHub
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center space-x-2 pb-2 border-b-2 font-medium text-sm ${
-                  activeTab === tab.id
+                className={`flex items-center space-x-2 pb-2 border-b-2 font-medium text-sm ${activeTab === tab.id
                     ? 'border-blue-500 text-blue-600 dark:text-blue-400'
                     : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
-                }`}
+                  }`}
               >
                 <Icon className="w-5 h-5" />
                 <span>{tab.name}</span>
@@ -414,7 +413,7 @@ export function CommunicationHub({ userId, teamId, projectId }: CommunicationHub
                 <option value="mentions">Mentions</option>
               </select>
             </div>
-            
+
             <div className="relative flex-1 max-w-md">
               <MagnifyingGlassIcon className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input
@@ -443,15 +442,14 @@ export function CommunicationHub({ userId, teamId, projectId }: CommunicationHub
               {filteredNotifications.map(notification => (
                 <div
                   key={notification.id}
-                  className={`p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${
-                    !notification.isRead ? 'bg-blue-50 dark:bg-blue-900/10 border-l-4 border-blue-500' : ''
-                  }`}
+                  className={`p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${!notification.isRead ? 'bg-blue-50 dark:bg-blue-900/10 border-l-4 border-blue-500' : ''
+                    }`}
                 >
                   <div className="flex items-start space-x-3">
                     <div className="flex-shrink-0 mt-1">
                       {getNotificationIcon(notification.type, notification.priority)}
                     </div>
-                    
+
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center space-x-2 mb-1">
                         <p className={`text-sm font-medium ${!notification.isRead ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'}`}>
@@ -461,18 +459,18 @@ export function CommunicationHub({ userId, teamId, projectId }: CommunicationHub
                           {notification.priority}
                         </span>
                       </div>
-                      
+
                       <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                         {notification.message}
                       </p>
-                      
+
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-4 text-xs text-gray-500 dark:text-gray-400">
                           <span>{notification.source.name}</span>
                           {notification.actor && <span>by {notification.actor.name}</span>}
                           <span>{formatTimeAgo(notification.timestamp)}</span>
                         </div>
-                        
+
                         <div className="flex items-center space-x-2">
                           <button
                             onClick={() => handleToggleStar(notification.id)}
@@ -480,7 +478,7 @@ export function CommunicationHub({ userId, teamId, projectId }: CommunicationHub
                           >
                             <StarIcon className="w-4 h-4" />
                           </button>
-                          
+
                           {!notification.isRead && (
                             <button
                               onClick={() => handleMarkAsRead(notification.id)}
@@ -489,26 +487,25 @@ export function CommunicationHub({ userId, teamId, projectId }: CommunicationHub
                               <CheckCircleIcon className="w-4 h-4" />
                             </button>
                           )}
-                          
+
                           <button className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded">
                             <EllipsisVerticalIcon className="w-4 h-4" />
                           </button>
                         </div>
                       </div>
-                      
+
                       {notification.actions && notification.actions.length > 0 && (
                         <div className="flex items-center space-x-2 mt-3">
                           {notification.actions.map(action => (
                             <button
                               key={action.id}
                               onClick={() => handleNotificationAction(notification.id, action.id)}
-                              className={`px-3 py-1 text-xs rounded ${
-                                action.type === 'primary' 
+                              className={`px-3 py-1 text-xs rounded ${action.type === 'primary'
                                   ? 'bg-blue-600 text-white hover:bg-blue-700'
                                   : action.type === 'danger'
-                                  ? 'bg-red-600 text-white hover:bg-red-700'
-                                  : 'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
-                              }`}
+                                    ? 'bg-red-600 text-white hover:bg-red-700'
+                                    : 'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                                }`}
                             >
                               {action.label}
                             </button>
@@ -519,7 +516,7 @@ export function CommunicationHub({ userId, teamId, projectId }: CommunicationHub
                   </div>
                 </div>
               ))}
-              
+
               {filteredNotifications.length === 0 && (
                 <div className="p-8 text-center">
                   <BellIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
@@ -544,7 +541,7 @@ export function CommunicationHub({ userId, teamId, projectId }: CommunicationHub
                     <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
                       {message.author.name[0]}
                     </div>
-                    
+
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-1">
                         <span className="font-medium text-gray-900 dark:text-white">{message.author.name}</span>
@@ -552,7 +549,7 @@ export function CommunicationHub({ userId, teamId, projectId }: CommunicationHub
                           {message.timestamp.toLocaleTimeString()}
                         </span>
                       </div>
-                      
+
                       {message.type === 'code' ? (
                         <pre className="bg-gray-100 dark:bg-gray-800 rounded p-3 text-sm overflow-x-auto">
                           <code>{message.content}</code>
@@ -560,7 +557,7 @@ export function CommunicationHub({ userId, teamId, projectId }: CommunicationHub
                       ) : (
                         <p className="text-gray-700 dark:text-gray-300">{message.content}</p>
                       )}
-                      
+
                       {message.reactions && message.reactions.length > 0 && (
                         <div className="flex items-center space-x-2 mt-2">
                           {message.reactions.map((reaction, index) => (
@@ -577,7 +574,7 @@ export function CommunicationHub({ userId, teamId, projectId }: CommunicationHub
                     </div>
                   </div>
                 ))}
-                
+
                 {isTyping && (
                   <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
                     <div className="flex space-x-1">
@@ -589,7 +586,7 @@ export function CommunicationHub({ userId, teamId, projectId }: CommunicationHub
                   </div>
                 )}
               </div>
-              
+
               {/* Chat input */}
               <div className="border-t border-gray-200 dark:border-gray-700 p-4">
                 <div className="flex items-end space-x-3">

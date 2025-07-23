@@ -1,14 +1,12 @@
 /**
  * CODAI Ecosystem API Gateway
  * Centralized routing and management for all CODAI services
+ * Enhanced with Phase 2 Security Infrastructure
  */
 
 import express from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
-import rateLimit from 'express-rate-limit';
-import helmet from 'helmet';
-import cors from 'cors';
-import compression from 'compression';
+import { setupSecurity } from '@codai/security';
 import jwt from 'jsonwebtoken';
 import swaggerUi from 'swagger-ui-express';
 import { z } from 'zod';
@@ -17,30 +15,41 @@ const app = express();
 const PORT = process.env.GATEWAY_PORT || 4000;
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
-// Security middleware
-app.use(helmet());
-app.use(cors({
-    origin: process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000'],
-    credentials: true
-}));
-app.use(compression());
+// Enhanced security setup for gateway
+async function initializeSecurity() {
+    console.log('🔒 Initializing API Gateway security...');
 
-// Body parsing
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+    const securityConfig = {
+        serviceName: 'api-gateway',
+        port: PORT,
+        app: app,
+        httpsEnabled: process.env.NODE_ENV === 'production' || process.env.FORCE_HTTPS === 'true',
+        wafEnabled: true,
+        rateLimitEnabled: true,
+        // Gateway-specific security configuration
+        wafConfig: {
+            enabled: true,
+            logAllRequests: true,
+            blockByDefault: false,
+            rateLimitEnabled: true,
+            challengeEnabled: true,
+            customRules: [
+                {
+                    id: 'GATEWAY_001',
+                    name: 'API Key Validation',
+                    pattern: /^\/api\/(?!health|status).*$/,
+                    action: 'log',
+                    description: 'Log all API endpoint access attempts',
+                    category: 'custom',
+                    severity: 'medium',
+                    enabled: true
+                }
+            ]
+        }
+    };
 
-// Rate limiting
-const globalRateLimit = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 1000, // Limit each IP to 1000 requests per windowMs
-    message: {
-        error: 'Too many requests',
-        message: 'Rate limit exceeded. Please try again later.',
-        code: 'RATE_LIMIT_EXCEEDED'
-    }
-});
-
-app.use(globalRateLimit);
+    return await setupSecurity(securityConfig);
+}
 
 // Service registry with health status
 interface ServiceConfig {
@@ -624,28 +633,64 @@ app.use((error: any, req: express.Request, res: express.Response, next: express.
     });
 });
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-    console.log('[GATEWAY] Received SIGTERM, shutting down gracefully');
-    process.exit(0);
-});
+// Start the gateway with security
+async function startGateway() {
+    try {
+        console.log('🚀 Starting CODAI API Gateway...');
 
-process.on('SIGINT', () => {
-    console.log('[GATEWAY] Received SIGINT, shutting down gracefully');
-    process.exit(0);
-});
+        // Initialize security first
+        const securityIntegration = await initializeSecurity();
+
+        // Health endpoints (before other routing)
+        app.get('/health', (req, res) => {
+            res.json({
+                service: 'api-gateway',
+                status: 'healthy',
+                description: 'CODAI Ecosystem API Gateway',
+                timestamp: new Date().toISOString(),
+                security: securityIntegration.getSecurityStats(),
+                uptime: process.uptime(),
+                version: '2.0.0',
+                registeredServices: Object.keys(serviceRegistry).length
+            });
+        });
+
+        app.get('/security/status', async (req, res) => {
+            const healthCheck = await securityIntegration.performSecurityHealthCheck();
+            res.json(healthCheck);
+        });
+
+        // Graceful shutdown
+        process.on('SIGTERM', async () => {
+            console.log('[GATEWAY] Received SIGTERM, shutting down gracefully');
+            await securityIntegration.shutdown();
+            process.exit(0);
+        });
+
+        process.on('SIGINT', async () => {
+            console.log('[GATEWAY] Received SIGINT, shutting down gracefully');
+            await securityIntegration.shutdown();
+            process.exit(0);
+        });
+
+        console.log(`🚀 CODAI API Gateway running on port ${PORT} (HTTP) and ${Number(PORT) + 443} (HTTPS)`);
+        console.log(`🔒 Enhanced security enabled with WAF protection`);
+        console.log(`📚 Gateway Documentation: http://localhost:${PORT}/docs`);
+        console.log(`❤️  Gateway Health Check: http://localhost:${PORT}/health`);
+        console.log(`🔍 Service Discovery: http://localhost:${PORT}/api/gateway/services`);
+        console.log(`\n🌐 Registered Services:`);
+        Object.entries(serviceRegistry).forEach(([id, config]) => {
+            console.log(`   ${config.name}: http://localhost:${PORT}/api/v1/${id}`);
+        });
+        console.log(`\n✅ Gateway ready to route requests to ${Object.keys(serviceRegistry).length} services`);
+
+    } catch (error) {
+        console.error('❌ Failed to start API Gateway:', error);
+        process.exit(1);
+    }
+}
 
 // Start the gateway
-app.listen(PORT, () => {
-    console.log(`🚀 CODAI API Gateway running on port ${PORT}`);
-    console.log(`📚 Gateway Documentation: http://localhost:${PORT}/docs`);
-    console.log(`❤️  Gateway Health Check: http://localhost:${PORT}/api/gateway/health`);
-    console.log(`🔍 Service Discovery: http://localhost:${PORT}/api/gateway/services`);
-    console.log(`\n🌐 Registered Services:`);
-    Object.entries(serviceRegistry).forEach(([id, config]) => {
-        console.log(`   ${config.name}: http://localhost:${PORT}/api/v1/${id}`);
-    });
-    console.log(`\n✅ Gateway ready to route requests to ${Object.keys(serviceRegistry).length} services`);
-});
+startGateway();
 
 export default app;

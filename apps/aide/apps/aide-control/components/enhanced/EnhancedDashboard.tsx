@@ -67,7 +67,7 @@ export function EnhancedDashboard() {
       metadata: {},
     }
   ]);
-  
+
   const [chatInput, setChatInput] = useState('');
   const [showCommandPalette, setShowCommandPalette] = useState(false);
   const [projectContext, setProjectContext] = useState<ProjectContext>({
@@ -105,7 +105,7 @@ export function EnhancedDashboard() {
         deploymentStatus: 'none',
       },
     };
-    
+
     setTabs(prev => prev.map(tab => ({ ...tab, isActive: false })).concat(newTab));
     setActiveTab(newTab.id);
   }, []);
@@ -126,7 +126,7 @@ export function EnhancedDashboard() {
   // Send chat message
   const sendMessage = useCallback(() => {
     if (!chatInput.trim()) return;
-    
+
     const newMessage: ChatMessage = {
       id: `msg-${Date.now()}`,
       content: chatInput,
@@ -201,7 +201,7 @@ export function EnhancedDashboard() {
               <BoltIcon className="w-8 h-8 text-indigo-600" />
               <h1 className="text-xl font-bold text-gray-900 dark:text-white">AIDE</h1>
             </div>
-            
+
             {/* Project Tabs */}
             <div className="flex items-center space-x-1">
               {tabs.map((tab) => (
@@ -210,8 +210,8 @@ export function EnhancedDashboard() {
                   className={`
                     relative flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium cursor-pointer
                     transition-all duration-200 group
-                    ${tab.isActive 
-                      ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300' 
+                    ${tab.isActive
+                      ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
                       : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
                     }
                   `}
@@ -252,7 +252,7 @@ export function EnhancedDashboard() {
               </button>
             </div>
           </div>
-          
+
           {/* Right side controls */}
           <div className="flex items-center space-x-3">
             {/* Collaborators */}
@@ -262,9 +262,8 @@ export function EnhancedDashboard() {
                   <div className="w-8 h-8 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
                     {collaborator.name[0]}
                   </div>
-                  <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-white dark:border-gray-800 ${
-                    collaborator.status === 'online' ? 'bg-green-400' : 'bg-gray-400'
-                  }`}></div>
+                  <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-white dark:border-gray-800 ${collaborator.status === 'online' ? 'bg-green-400' : 'bg-gray-400'
+                    }`}></div>
                 </div>
               ))}
               {projectContext.collaborators.length > 3 && (
@@ -273,7 +272,7 @@ export function EnhancedDashboard() {
                 </div>
               )}
             </div>
-            
+
             <button
               onClick={() => setShowCommandPalette(true)}
               className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
@@ -413,18 +412,16 @@ export function EnhancedDashboard() {
                 className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[80%] rounded-2xl px-4 py-3 ${
-                    message.sender === 'user'
+                  className={`max-w-[80%] rounded-2xl px-4 py-3 ${message.sender === 'user'
                       ? 'bg-indigo-600 text-white'
                       : message.sender === 'ai'
-                      ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
-                      : 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200'
-                  }`}
+                        ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
+                        : 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200'
+                    }`}
                 >
                   <p className="text-sm">{message.content}</p>
-                  <span className={`text-xs mt-1 block ${
-                    message.sender === 'user' ? 'text-indigo-200' : 'text-gray-500 dark:text-gray-400'
-                  }`}>
+                  <span className={`text-xs mt-1 block ${message.sender === 'user' ? 'text-indigo-200' : 'text-gray-500 dark:text-gray-400'
+                    }`}>
                     {message.timestamp.toLocaleTimeString()}
                   </span>
                 </div>

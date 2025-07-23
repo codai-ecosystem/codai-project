@@ -147,10 +147,10 @@ export class AICodeAssistant {
       })
 
       const generatedCode = response.choices[0]?.message?.content || ''
-      
+
       // Parse and validate the generated code
       const suggestions = await this.parseGeneratedCode(generatedCode, request)
-      
+
       // Analyze and score the suggestions
       const analyzedSuggestions = await Promise.all(
         suggestions.map(s => this.analyzeSuggestion(s, request.context))
@@ -181,7 +181,7 @@ export class AICodeAssistant {
     }
 
     const completions = await this.generateCode(request)
-    
+
     // Filter and rank based on context
     return completions
       .filter(c => this.isValidCompletion(c, codeBeforeCursor, codeAfterCursor))
@@ -404,7 +404,7 @@ export class AICodeAssistant {
 
   private buildUserPrompt(request: GenerationRequest): string {
     let prompt = `Generate ${request.type}: ${request.prompt}\n`
-    
+
     if (request.context.existingCode) {
       prompt += `\nExisting code context:\n\`\`\`${request.context.language}\n${request.context.existingCode}\n\`\`\`\n`
     }
@@ -446,7 +446,7 @@ export class AICodeAssistant {
   private async analyzeSuggestion(suggestion: CodeSuggestion, context: CodeContext): Promise<CodeSuggestion> {
     // Analyze the suggestion for quality and confidence
     const analysis = await this.analyzeCode(suggestion.code, context)
-    
+
     // Adjust confidence based on analysis
     let confidence = suggestion.confidence
     if (analysis.complexity > 15) confidence -= 0.2
@@ -602,12 +602,12 @@ export class AICodeAssistant {
     return codeBlocks[0] || response
   }
 
-  private extractImprovements(response: string): Array<{type: string, description: string, impact: string}> {
+  private extractImprovements(response: string): Array<{ type: string, description: string, impact: string }> {
     // Parse improvements from AI response
     return []
   }
 
-  private async measurePerformance(code: string, context: CodeContext): Promise<{performance: number, complexity: number}> {
+  private async measurePerformance(code: string, context: CodeContext): Promise<{ performance: number, complexity: number }> {
     // Measure code performance metrics
     return { performance: 80, complexity: 5 }
   }

@@ -197,7 +197,7 @@ function DashboardOverview() {
 						</button>
 					</div>
 				</div>
-				
+
 				<div className="p-6">
 					<div className="space-y-4">
 						{recentActivity.map((activity) => (
@@ -239,7 +239,7 @@ export default function DashboardPage() {
 				e.preventDefault()
 				setShowCommandPalette(true)
 			}
-			
+
 			// Toggle enhanced view (Ctrl/Cmd + Shift + E)
 			if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'E') {
 				e.preventDefault()
@@ -281,11 +281,10 @@ export default function DashboardPage() {
 										<button
 											key={tab.id}
 											onClick={() => setActiveTab(tab.id as any)}
-											className={`flex items-center space-x-2 pb-4 px-1 border-b-2 font-medium text-sm ${
-												activeTab === tab.id
+											className={`flex items-center space-x-2 pb-4 px-1 border-b-2 font-medium text-sm ${activeTab === tab.id
 													? 'border-blue-500 text-blue-600 dark:text-blue-400'
 													: 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
-											}`}
+												}`}
 										>
 											<tab.icon className="w-5 h-5" />
 											<span>{tab.label}</span>
@@ -303,8 +302,8 @@ export default function DashboardPage() {
 							</div>
 						</div>
 					</div>
-					
-					<CommandPalette 
+
+					<CommandPalette
 						isOpen={showCommandPalette}
 						onClose={() => setShowCommandPalette(false)}
 						onCommand={(command) => {
@@ -602,7 +601,7 @@ function Home() {
 					<h2 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard Overview</h2>
 					<div className="flex items-center">
 						<div className={`w-2.5 h-2.5 rounded-full ${stats.systemStatus === 'operational' ? 'bg-green-500' :
-								stats.systemStatus === 'degraded' ? 'bg-yellow-500' : 'bg-red-500'
+							stats.systemStatus === 'degraded' ? 'bg-yellow-500' : 'bg-red-500'
 							}`}></div>
 						<span className="ml-2 text-sm font-medium text-gray-600 dark:text-gray-400 capitalize">
 							System Status: {stats.systemStatus}

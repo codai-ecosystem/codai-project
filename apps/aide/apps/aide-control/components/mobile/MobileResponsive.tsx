@@ -37,13 +37,13 @@ interface AccessibilityIssue {
 export function MobilePreview({ children, className = '' }: MobilePreviewProps) {
   const [orientation, setOrientation] = useState<'portrait' | 'landscape'>('portrait')
   const [device, setDevice] = useState<'iphone' | 'android' | 'tablet'>('iphone')
-  
+
   const deviceDimensions = {
     iphone: { width: 375, height: 812 },
     android: { width: 360, height: 800 },
     tablet: { width: 768, height: 1024 }
   }
-  
+
   const currentDimensions = deviceDimensions[device]
   const width = orientation === 'portrait' ? currentDimensions.width : currentDimensions.height
   const height = orientation === 'portrait' ? currentDimensions.height : currentDimensions.width
@@ -55,36 +55,33 @@ export function MobilePreview({ children, className = '' }: MobilePreviewProps) 
         <div className="flex items-center space-x-2">
           <button
             onClick={() => setDevice('iphone')}
-            className={`px-3 py-1 rounded text-sm ${
-              device === 'iphone' 
-                ? 'bg-blue-600 text-white' 
+            className={`px-3 py-1 rounded text-sm ${device === 'iphone'
+                ? 'bg-blue-600 text-white'
                 : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-            }`}
+              }`}
           >
             iPhone
           </button>
           <button
             onClick={() => setDevice('android')}
-            className={`px-3 py-1 rounded text-sm ${
-              device === 'android' 
-                ? 'bg-blue-600 text-white' 
+            className={`px-3 py-1 rounded text-sm ${device === 'android'
+                ? 'bg-blue-600 text-white'
                 : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-            }`}
+              }`}
           >
             Android
           </button>
           <button
             onClick={() => setDevice('tablet')}
-            className={`px-3 py-1 rounded text-sm ${
-              device === 'tablet' 
-                ? 'bg-blue-600 text-white' 
+            className={`px-3 py-1 rounded text-sm ${device === 'tablet'
+                ? 'bg-blue-600 text-white'
                 : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-            }`}
+              }`}
           >
             Tablet
           </button>
         </div>
-        
+
         <div className="flex items-center space-x-2">
           <span className="text-sm text-gray-600 dark:text-gray-400">
             {width} × {height}
@@ -117,7 +114,7 @@ export function MobilePreview({ children, className = '' }: MobilePreviewProps) 
               <span>●●●●●</span>
               <span>100%</span>
             </div>
-            
+
             {/* Content */}
             <div className="h-full overflow-hidden">
               {children}
@@ -174,7 +171,7 @@ export function ResponsiveDesignTools({ currentBreakpoint = 'desktop', onBreakpo
         suggestion: 'Add aria-label for buttons with only icons'
       }
     ]
-    
+
     setAccessibilityIssues(mockIssues)
   }, [])
 
@@ -212,11 +209,10 @@ export function ResponsiveDesignTools({ currentBreakpoint = 'desktop', onBreakpo
                 <button
                   key={breakpoint.id}
                   onClick={() => onBreakpointChange?.(breakpoint.id as any)}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
-                    currentBreakpoint === breakpoint.id
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${currentBreakpoint === breakpoint.id
                       ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-2 border-blue-200 dark:border-blue-700'
                       : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600'
-                  }`}
+                    }`}
                 >
                   <Icon className="w-4 h-4" />
                   <span className="text-sm font-medium">{breakpoint.name}</span>
@@ -238,11 +234,10 @@ export function ResponsiveDesignTools({ currentBreakpoint = 'desktop', onBreakpo
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => setDarkMode(!darkMode)}
-                className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
-                  darkMode 
+                className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${darkMode
                     ? 'bg-gray-800 text-white border border-gray-600'
                     : 'bg-gray-100 text-gray-900 border border-gray-300'
-                }`}
+                  }`}
               >
                 {darkMode ? (
                   <MoonIcon className="w-4 h-4" />
@@ -265,9 +260,8 @@ export function ResponsiveDesignTools({ currentBreakpoint = 'desktop', onBreakpo
                 <button
                   key={theme.id}
                   onClick={() => setColorTheme(theme.id)}
-                  className={`w-8 h-8 rounded-full ${theme.color} ${
-                    colorTheme === theme.id ? 'ring-2 ring-offset-2 ring-gray-400' : ''
-                  }`}
+                  className={`w-8 h-8 rounded-full ${theme.color} ${colorTheme === theme.id ? 'ring-2 ring-offset-2 ring-gray-400' : ''
+                    }`}
                   title={theme.name}
                 />
               ))}
@@ -333,7 +327,7 @@ export function ResponsiveDesignTools({ currentBreakpoint = 'desktop', onBreakpo
             <SwatchIcon className="w-4 h-4" />
             <span>Export Theme</span>
           </button>
-          
+
           <div className="flex space-x-2">
             <button className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200">
               Reset

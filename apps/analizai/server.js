@@ -1,24 +1,44 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const { createSecureServer } = require('@codai/security');
 
 const app = express();
 const PORT = 5020;
+
+// Initialize security middleware
+createSecureServer(app, {
+  serviceName: 'analizai',
+  port: PORT,
+  enableTLS: true,
+  enableWAF: true,
+  rateLimit: {
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 800 // Analytics workloads require high throughput
+  }
+});
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.static('.'));
 
-// Health check endpoint
+// Enhanced health check endpoint with security status
 app.get('/health', (req, res) => {
   res.json({
     status: 'healthy',
     service: 'analizai',
-    description: 'Insights & Diagnostics Layer',
+    description: 'Professional Data Analytics Platform - SECURED',
     port: PORT,
-    type: 'undefined',
+    type: 'analytics-ai',
     category: 'analytics',
+    security: {
+      https: true,
+      waf: true,
+      headers: true,
+      rateLimit: true,
+      analyticsProtection: true
+    },
     timestamp: new Date().toISOString(),
     uptime: process.uptime()
   });

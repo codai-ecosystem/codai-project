@@ -130,7 +130,7 @@ export function DeploymentManagement({ projectId, onDeploy, onRollback }: Deploy
 
   const loadEnvironments = async () => {
     setLoading(true)
-    
+
     // Mock environments data
     const mockEnvironments: Environment[] = [
       {
@@ -295,7 +295,7 @@ export function DeploymentManagement({ projectId, onDeploy, onRollback }: Deploy
         }
       }
     ]
-    
+
     setEnvironments(mockEnvironments)
     if (!selectedEnvironment && mockEnvironments.length > 0) {
       setSelectedEnvironment(mockEnvironments[0])
@@ -418,36 +418,36 @@ export function DeploymentManagement({ projectId, onDeploy, onRollback }: Deploy
         ]
       }
     ]
-    
+
     setDeployments(mockDeployments)
   }
 
   const deploy = async (environmentId: string, config: DeploymentConfig) => {
     setLoading(true)
-    
+
     if (onDeploy) {
       await onDeploy(environmentId, config)
     }
-    
+
     // Simulate deployment
     await new Promise(resolve => setTimeout(resolve, 2000))
     await loadDeployments()
-    
+
     setLoading(false)
     setShowDeployModal(false)
   }
 
   const rollback = async (deploymentId: string) => {
     setLoading(true)
-    
+
     if (onRollback) {
       await onRollback(deploymentId)
     }
-    
+
     // Simulate rollback
     await new Promise(resolve => setTimeout(resolve, 1500))
     await loadDeployments()
-    
+
     setLoading(false)
   }
 
@@ -528,7 +528,7 @@ export function DeploymentManagement({ projectId, onDeploy, onRollback }: Deploy
             </p>
           </div>
         </div>
-        
+
         <button
           onClick={() => setShowDeployModal(true)}
           className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
@@ -547,15 +547,14 @@ export function DeploymentManagement({ projectId, onDeploy, onRollback }: Deploy
                 Environments
               </h3>
             </div>
-            
+
             <div className="divide-y divide-gray-200 dark:divide-gray-700">
               {environments.map(environment => (
                 <div
                   key={environment.id}
                   onClick={() => setSelectedEnvironment(environment)}
-                  className={`p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 ${
-                    selectedEnvironment?.id === environment.id ? 'bg-blue-50 dark:bg-blue-900/20' : ''
-                  }`}
+                  className={`p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 ${selectedEnvironment?.id === environment.id ? 'bg-blue-50 dark:bg-blue-900/20' : ''
+                    }`}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center space-x-2">
@@ -566,17 +565,17 @@ export function DeploymentManagement({ projectId, onDeploy, onRollback }: Deploy
                     </div>
                     {getStatusIcon(environment.status)}
                   </div>
-                  
+
                   <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
                     <span>{environment.branch}</span>
                     <span className={`px-2 py-1 rounded-full ${getStatusColor(environment.status)}`}>
                       {environment.status}
                     </span>
                   </div>
-                  
+
                   {environment.lastDeployment && (
                     <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                      Last: {environment.lastDeployment.version} • 
+                      Last: {environment.lastDeployment.version} •
                       {environment.lastDeployment.completedAt?.toLocaleDateString()}
                     </div>
                   )}
@@ -604,7 +603,7 @@ export function DeploymentManagement({ projectId, onDeploy, onRollback }: Deploy
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center space-x-2">
                     {selectedEnvironment.url && (
                       <a
@@ -617,7 +616,7 @@ export function DeploymentManagement({ projectId, onDeploy, onRollback }: Deploy
                         <span>Visit</span>
                       </a>
                     )}
-                    
+
                     <button
                       onClick={() => deploy(selectedEnvironment.id, { branch: selectedEnvironment.branch })}
                       disabled={loading}
@@ -639,7 +638,7 @@ export function DeploymentManagement({ projectId, onDeploy, onRollback }: Deploy
                       Uptime
                     </div>
                   </div>
-                  
+
                   <div className="text-center">
                     <div className="text-2xl font-bold text-blue-600">
                       {selectedEnvironment.metrics.responseTime}ms
@@ -648,7 +647,7 @@ export function DeploymentManagement({ projectId, onDeploy, onRollback }: Deploy
                       Avg Response
                     </div>
                   </div>
-                  
+
                   <div className="text-center">
                     <div className="text-2xl font-bold text-orange-600">
                       {(selectedEnvironment.metrics.errorRate * 100).toFixed(3)}%
@@ -657,7 +656,7 @@ export function DeploymentManagement({ projectId, onDeploy, onRollback }: Deploy
                       Error Rate
                     </div>
                   </div>
-                  
+
                   <div className="text-center">
                     <div className="text-2xl font-bold text-purple-600">
                       {selectedEnvironment.metrics.deploymentFrequency}/week
@@ -676,11 +675,10 @@ export function DeploymentManagement({ projectId, onDeploy, onRollback }: Deploy
                     <button
                       key={tab}
                       onClick={() => setActiveTab(tab)}
-                      className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                        activeTab === tab
+                      className={`py-4 px-1 border-b-2 font-medium text-sm ${activeTab === tab
                           ? 'border-blue-500 text-blue-600'
                           : 'border-transparent text-gray-500 hover:text-gray-700'
-                      }`}
+                        }`}
                     >
                       {tab.charAt(0).toUpperCase() + tab.slice(1)}
                     </button>
@@ -704,7 +702,7 @@ export function DeploymentManagement({ projectId, onDeploy, onRollback }: Deploy
                         <h4 className="font-medium text-gray-900 dark:text-white mb-4">
                           Health Checks
                         </h4>
-                        
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           {selectedEnvironment.config.healthChecks.map(check => (
                             <div key={check.id} className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
@@ -719,7 +717,7 @@ export function DeploymentManagement({ projectId, onDeploy, onRollback }: Deploy
                                   <CheckCircleIcon className="w-4 h-4 text-green-500" />
                                 </div>
                               </div>
-                              
+
                               <div className="text-sm text-gray-600 dark:text-gray-400">
                                 Type: {check.type}
                                 {check.config.url && <span> • URL: {check.config.url}</span>}
@@ -736,7 +734,7 @@ export function DeploymentManagement({ projectId, onDeploy, onRollback }: Deploy
                           <h4 className="font-medium text-gray-900 dark:text-white mb-4">
                             Last Deployment
                           </h4>
-                          
+
                           <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                             <div className="flex items-center justify-between mb-3">
                               <div className="flex items-center space-x-3">
@@ -750,7 +748,7 @@ export function DeploymentManagement({ projectId, onDeploy, onRollback }: Deploy
                                   </div>
                                 </div>
                               </div>
-                              
+
                               <div className="text-right">
                                 <div className="text-sm text-gray-600 dark:text-gray-400">
                                   {selectedEnvironment.lastDeployment.completedAt?.toLocaleString()}
@@ -762,12 +760,12 @@ export function DeploymentManagement({ projectId, onDeploy, onRollback }: Deploy
                                 )}
                               </div>
                             </div>
-                            
+
                             <div className="flex items-center justify-between">
                               <div className="text-sm text-gray-600 dark:text-gray-400">
                                 Deploy by: {selectedEnvironment.lastDeployment.deployedBy}
                               </div>
-                              
+
                               <div className="flex items-center space-x-2">
                                 {selectedEnvironment.lastDeployment.status === 'success' && (
                                   <button
@@ -788,7 +786,7 @@ export function DeploymentManagement({ projectId, onDeploy, onRollback }: Deploy
                         <h4 className="font-medium text-gray-900 dark:text-white mb-4">
                           Configuration
                         </h4>
-                        
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                             <h5 className="font-medium text-gray-900 dark:text-white mb-2">
@@ -802,7 +800,7 @@ export function DeploymentManagement({ projectId, onDeploy, onRollback }: Deploy
                               )}
                             </div>
                           </div>
-                          
+
                           <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                             <h5 className="font-medium text-gray-900 dark:text-white mb-2">
                               Environment Variables
@@ -858,7 +856,7 @@ export function DeploymentManagement({ projectId, onDeploy, onRollback }: Deploy
                                   </div>
                                 </div>
                               </div>
-                              
+
                               <div className="text-right">
                                 <div className="text-sm text-gray-600 dark:text-gray-400">
                                   {deployment.startedAt.toLocaleString()}
@@ -886,7 +884,7 @@ export function DeploymentManagement({ projectId, onDeploy, onRollback }: Deploy
                               <div className="text-sm text-gray-600 dark:text-gray-400">
                                 Deployed by: {deployment.deployedBy}
                               </div>
-                              
+
                               <div className="flex items-center space-x-2">
                                 {deployment.status === 'success' && (
                                   <button

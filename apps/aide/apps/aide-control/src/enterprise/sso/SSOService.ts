@@ -183,7 +183,7 @@ export class EnterpriseSSO {
     }
 
     const response = await this.azureClient.acquireTokenByCode(tokenRequest)
-    
+
     const user = await this.createUser({
       id: response.uniqueId,
       email: response.account?.username || '',
@@ -216,7 +216,7 @@ export class EnterpriseSSO {
   async validateSession(token: string): Promise<SSOSession | null> {
     try {
       const decoded = jwt.verify(token, this.jwtSecret) as any
-      
+
       // Check if token is expired
       if (decoded.exp && Date.now() >= decoded.exp * 1000) {
         return null
@@ -281,7 +281,7 @@ export class EnterpriseSSO {
     }
 
     const response = await this.azureClient.acquireTokenByRefreshToken(tokenRequest)
-    
+
     const user = await this.getUserById(response.uniqueId)
     if (!user) throw new Error('User not found')
 
@@ -297,7 +297,7 @@ export class EnterpriseSSO {
       if (session) {
         // Add token to blacklist
         await this.blacklistToken(token)
-        
+
         // Provider-specific logout
         await this.providerLogout(session)
       }
@@ -329,7 +329,7 @@ export class EnterpriseSSO {
 
   private mapRoles(claims: any): string[] {
     if (!this.config.roleMapping || !claims.roles) return ['user']
-    
+
     return claims.roles
       .map((role: string) => this.config.roleMapping![role] || role)
       .filter(Boolean)
@@ -353,7 +353,7 @@ export class EnterpriseSSO {
 
   private createSession(user: User, accessToken: string, refreshToken?: string): SSOSession {
     const expiresAt = new Date(Date.now() + (24 * 60 * 60 * 1000)) // 24 hours
-    
+
     const token = jwt.sign({
       userId: user.id,
       email: user.email,
@@ -409,14 +409,14 @@ export function requireAuth(requiredRoles: string[] = []) {
     if (requiredRoles.length > 0) {
       const userRoles = (session.metadata.roles || []) as string[]
       const hasRequiredRole = requiredRoles.some(role => userRoles.includes(role))
-      
+
       if (!hasRequiredRole) {
         return res.status(403).json({ error: 'Insufficient permissions' })
       }
     }
 
     // Attach session to request
-    ;(req as any).session = session
+    ; (req as any).session = session
     next()
   }
 }

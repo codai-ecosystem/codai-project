@@ -15,10 +15,12 @@
     "type-check": "pnpm exec tsc --noEmit"
   },
   "dependencies": {
+    "@codai/cnd": "workspace:*",
     "@codai/api-standards": "workspace:*",
     "@codai/shared-ui": "workspace:*",
     "@codai/memorai": "workspace:*",
     "@codai/auth": "workspace:*",
+    "@codai/security": "workspace:*",
     "@codai/conversai": "workspace:*",
     "@codai/fabricai": "workspace:*",
     "@codai/romai": "workspace:*",

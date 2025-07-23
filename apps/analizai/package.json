@@ -17,6 +17,7 @@
     "clean": "rimraf .next out dist"
   },
   "dependencies": {
+    "@codai/security": "workspace:*",
     "@hookform/resolvers": "^5.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

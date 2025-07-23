@@ -39,19 +39,19 @@ interface DashboardMetrics {
   pullRequests: { value: number; change: number; trend: 'up' | 'down' | 'stable' }
   codeReviews: { value: number; change: number; trend: 'up' | 'down' | 'stable' }
   deployments: { value: number; change: number; trend: 'up' | 'down' | 'stable' }
-  
+
   // Quality Metrics
   codeQuality: { score: number; change: number }
   testCoverage: { percentage: number; change: number }
   bugReports: { value: number; change: number; severity: Record<string, number> }
   performance: { score: number; change: number }
-  
+
   // Team Metrics
   activeUsers: { value: number; change: number }
   collaboration: { score: number; change: number }
   productivity: { score: number; change: number }
   satisfaction: { score: number; change: number }
-  
+
   // Business Metrics
   costs: { value: number; change: number; currency: string }
   roi: { percentage: number; change: number }
@@ -73,17 +73,17 @@ export function AnalyticsDashboard({ projectId, teamId, timeframe = '7d' }: Anal
       pullRequests: { value: 32, change: -8.3, trend: 'down' },
       codeReviews: { value: 28, change: 15.2, trend: 'up' },
       deployments: { value: 18, change: 22.1, trend: 'up' },
-      
+
       codeQuality: { score: 87, change: 3.2 },
       testCoverage: { percentage: 84, change: 1.8 },
       bugReports: { value: 12, change: -25.5, severity: { critical: 1, high: 3, medium: 5, low: 3 } },
       performance: { score: 92, change: 5.1 },
-      
+
       activeUsers: { value: 24, change: 8.7 },
       collaboration: { score: 78, change: -2.1 },
       productivity: { score: 85, change: 7.3 },
       satisfaction: { score: 91, change: 4.2 },
-      
+
       costs: { value: 2850, change: 12.3, currency: 'USD' },
       roi: { percentage: 285, change: 15.7 },
       timeToMarket: { days: 12, change: -18.5 },
@@ -140,7 +140,7 @@ export function AnalyticsDashboard({ projectId, teamId, timeframe = '7d' }: Anal
     if (trend === 'stable' || Math.abs(change) < 1) {
       return <div className="w-4 h-4 bg-gray-400 rounded-full" />
     }
-    
+
     if (change > 0) {
       return <ArrowUpIcon className="w-4 h-4 text-green-500" />
     } else {
@@ -150,7 +150,7 @@ export function AnalyticsDashboard({ projectId, teamId, timeframe = '7d' }: Anal
 
   const getChangeColor = (change: number, inverse = false) => {
     if (Math.abs(change) < 1) return 'text-gray-500'
-    
+
     const isPositive = inverse ? change < 0 : change > 0
     return isPositive ? 'text-green-600' : 'text-red-600'
   }
@@ -166,15 +166,15 @@ export function AnalyticsDashboard({ projectId, teamId, timeframe = '7d' }: Anal
     )
   }
 
-  const MetricCard = ({ 
-    title, 
-    value, 
-    change, 
-    icon: Icon, 
-    trend, 
+  const MetricCard = ({
+    title,
+    value,
+    change,
+    icon: Icon,
+    trend,
     suffix = '',
     prefix = '',
-    inverse = false 
+    inverse = false
   }: {
     title: string
     value: string | number
@@ -224,7 +224,7 @@ export function AnalyticsDashboard({ projectId, teamId, timeframe = '7d' }: Anal
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Analytics Dashboard</h1>
             <p className="text-gray-600 dark:text-gray-400">Performance insights and metrics</p>
           </div>
-          
+
           <div className="flex items-center space-x-3">
             <select
               value={selectedTimeframe}
@@ -237,7 +237,7 @@ export function AnalyticsDashboard({ projectId, teamId, timeframe = '7d' }: Anal
               <option value="90d">Last 90 days</option>
               <option value="1y">Last year</option>
             </select>
-            
+
             <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center space-x-2">
               <DocumentTextIcon className="w-4 h-4" />
               <span>Export Report</span>
@@ -256,11 +256,10 @@ export function AnalyticsDashboard({ projectId, teamId, timeframe = '7d' }: Anal
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`flex items-center space-x-2 py-4 border-b-2 font-medium text-sm ${
-                    activeTab === tab.id
+                  className={`flex items-center space-x-2 py-4 border-b-2 font-medium text-sm ${activeTab === tab.id
                       ? 'border-blue-500 text-blue-600 dark:text-blue-400'
                       : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:border-gray-300'
-                  }`}
+                    }`}
                 >
                   <Icon className="w-5 h-5" />
                   <span>{tab.name}</span>
@@ -440,12 +439,11 @@ export function AnalyticsDashboard({ projectId, teamId, timeframe = '7d' }: Anal
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {Object.entries(metrics.bugReports.severity).map(([severity, count]) => (
                     <div key={severity} className="text-center">
-                      <div className={`w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center ${
-                        severity === 'critical' ? 'bg-red-100 text-red-600' :
-                        severity === 'high' ? 'bg-orange-100 text-orange-600' :
-                        severity === 'medium' ? 'bg-yellow-100 text-yellow-600' :
-                        'bg-green-100 text-green-600'
-                      }`}>
+                      <div className={`w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center ${severity === 'critical' ? 'bg-red-100 text-red-600' :
+                          severity === 'high' ? 'bg-orange-100 text-orange-600' :
+                            severity === 'medium' ? 'bg-yellow-100 text-yellow-600' :
+                              'bg-green-100 text-green-600'
+                        }`}>
                         {count}
                       </div>
                       <p className="text-sm capitalize font-medium text-gray-700 dark:text-gray-300">{severity}</p>

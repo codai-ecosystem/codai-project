@@ -189,7 +189,7 @@ export class AdvancedRBAC {
     const systemPermissions: Permission[] = [
       // System permissions
       { id: 'system:admin', name: 'System Administration', description: 'Full system access', resource: 'system', action: '*' },
-      
+
       // Organization permissions
       { id: 'org:create', name: 'Create Organization', description: 'Create new organizations', resource: 'organization', action: 'create' },
       { id: 'org:read', name: 'Read Organization', description: 'View organization details', resource: 'organization', action: 'read' },
@@ -284,7 +284,7 @@ export class AdvancedRBAC {
 
     // Check permissions
     const hasPermission = await this.hasPermission(allPermissions, context.resource, context.action)
-    
+
     if (hasPermission.allowed) {
       appliedPermissions.push(...hasPermission.permissions)
       appliedRoles.push(...user.roles)
@@ -351,7 +351,7 @@ export class AdvancedRBAC {
   /**
    * Check if user has specific permission
    */
-  private async hasPermission(userPermissions: string[], resource: string, action: string): Promise<{allowed: boolean, permissions: string[]}> {
+  private async hasPermission(userPermissions: string[], resource: string, action: string): Promise<{ allowed: boolean, permissions: string[] }> {
     const matchedPermissions: string[] = []
 
     for (const permissionId of userPermissions) {
@@ -383,8 +383,8 @@ export class AdvancedRBAC {
       }
 
       // Check resource pattern matching (e.g., project:123 matches project:*)
-      if (this.matchesPattern(resource, permission.resource) && 
-          (permission.action === action || permission.action === '*')) {
+      if (this.matchesPattern(resource, permission.resource) &&
+        (permission.action === action || permission.action === '*')) {
         matchedPermissions.push(permissionId)
         return { allowed: true, permissions: matchedPermissions }
       }
@@ -396,7 +396,7 @@ export class AdvancedRBAC {
   /**
    * Evaluate policies for access decision
    */
-  private async evaluatePolicies(context: AccessContext): Promise<{effect: 'allow' | 'deny' | 'neutral', policies: string[]}> {
+  private async evaluatePolicies(context: AccessContext): Promise<{ effect: 'allow' | 'deny' | 'neutral', policies: string[] }> {
     const applicablePolicies: Policy[] = []
 
     // Find applicable policies
@@ -424,8 +424,8 @@ export class AdvancedRBAC {
 
   private policyApplies(policy: Policy, context: AccessContext): boolean {
     // Check if resource matches
-    const resourceMatch = policy.resources.some(resource => 
-      resource === '*' || 
+    const resourceMatch = policy.resources.some(resource =>
+      resource === '*' ||
       resource === context.resource ||
       this.matchesPattern(context.resource, resource)
     )
@@ -453,7 +453,7 @@ export class AdvancedRBAC {
 
   private evaluateCondition(condition: PolicyCondition, context: AccessContext): boolean {
     const fieldValue = this.getFieldValue(condition.field, context)
-    
+
     switch (condition.operator) {
       case 'equals':
         return fieldValue === condition.value
@@ -496,14 +496,14 @@ export class AdvancedRBAC {
     const regexPattern = pattern
       .replace(/\*/g, '.*')
       .replace(/\?/g, '.')
-    
+
     return new RegExp(`^${regexPattern}$`).test(value)
   }
 
   /**
    * Management methods
    */
-  
+
   async createRole(role: Omit<Role, 'id' | 'createdAt' | 'updatedAt'>): Promise<Role> {
     const newRole: Role = {
       ...role,
@@ -511,7 +511,7 @@ export class AdvancedRBAC {
       createdAt: new Date(),
       updatedAt: new Date()
     }
-    
+
     this.roles.set(newRole.id, newRole)
     return newRole
   }
@@ -544,7 +544,7 @@ export class AdvancedRBAC {
       ...permission,
       id: `perm_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
     }
-    
+
     this.permissions.set(newPermission.id, newPermission)
     return newPermission
   }

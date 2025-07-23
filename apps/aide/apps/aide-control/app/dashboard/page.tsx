@@ -28,11 +28,11 @@ import { useEffect, useState } from 'react'
  */
 
 interface Command {
-  id: string;
-  title: string;
-  description: string;
-  category: 'project' | 'file' | 'ai' | 'deployment' | 'settings' | 'collaboration';
-  action: () => void;
+	id: string;
+	title: string;
+	description: string;
+	category: 'project' | 'file' | 'ai' | 'deployment' | 'settings' | 'collaboration';
+	action: () => void;
 }
 
 export default function AIDEDashboard() {
@@ -48,7 +48,7 @@ export default function AIDEDashboard() {
 				e.preventDefault()
 				setShowCommandPalette(true)
 			}
-			
+
 			// Quick Project Creation (Ctrl/Cmd + N)
 			if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
 				e.preventDefault()
@@ -75,7 +75,7 @@ export default function AIDEDashboard() {
 	// Handle command execution
 	const handleQuickCommand = (command: Command) => {
 		console.log('Executing command:', command.title)
-		
+
 		// Announce action for accessibility
 		const announcement = document.createElement('div')
 		announcement.setAttribute('aria-live', 'polite')
@@ -83,7 +83,7 @@ export default function AIDEDashboard() {
 		announcement.className = 'sr-only'
 		announcement.textContent = `${command.title} activated`
 		document.body.appendChild(announcement)
-		
+
 		setTimeout(() => {
 			document.body.removeChild(announcement)
 		}, 1000)
@@ -95,7 +95,7 @@ export default function AIDEDashboard() {
 	// Phase 3 Status indicator (development only)
 	const Phase3StatusIndicator = () => {
 		if (!isDevelopmentMode) return null
-		
+
 		return (
 			<div className="fixed bottom-4 right-4 z-50 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded-lg shadow-lg">
 				<div className="flex items-center space-x-2 text-sm font-medium">
@@ -109,18 +109,18 @@ export default function AIDEDashboard() {
 	return (
 		<AccessibilityProvider>
 			<SkipToContent />
-			
+
 			{/* Main Application Shell */}
 			<main id="main-content" className="h-screen overflow-hidden">
 				<EnhancedDashboard />
-				
+
 				{/* Global Command Palette */}
-				<CommandPalette 
+				<CommandPalette
 					isOpen={showCommandPalette}
 					onClose={() => setShowCommandPalette(false)}
 					onCommand={handleQuickCommand}
 				/>
-				
+
 				{/* Development Status Indicator */}
 				<Phase3StatusIndicator />
 			</main>

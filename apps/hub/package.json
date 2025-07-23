@@ -5,9 +5,9 @@
   "description": "Central hub",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 4700",
+    "dev": "next dev -p 4003",
     "build": "next build",
-    "start": "next start -p 4700",
+    "start": "next start -p 4003",
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
@@ -16,6 +16,8 @@
     "type-check": "pnpm exec tsc --noEmit"
   },
   "dependencies": {
+    "@codai/cnd": "workspace:*",
+    "@codai/security": "workspace:*",
     "@codai/api-standards": "workspace:*",
     "@codai/auth": "workspace:*",
     "@codai/conversai": "workspace:*",

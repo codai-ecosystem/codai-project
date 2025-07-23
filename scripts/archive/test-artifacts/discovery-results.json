@@ -1,0 +1,921 @@
+{
+  "timestamp": "2025-07-22T19:06:54.072Z",
+  "services": {
+    "gateway": {
+      "name": "gateway",
+      "port": 4000,
+      "status": "proxy",
+      "appPath": "E:\\GitHub\\codai-project\\apps\\gateway",
+      "pages": [],
+      "apis": [],
+      "routes": [],
+      "capabilities": [],
+      "healthCheck": null
+    },
+    "codai": {
+      "name": "codai",
+      "port": 4001,
+      "status": "degraded",
+      "appPath": "E:\\GitHub\\codai-project\\apps\\codai",
+      "pages": [
+        "/"
+      ],
+      "apis": [
+        {
+          "path": "/auth/[...nextauth]",
+          "file": "E:\\GitHub\\codai-project\\apps\\codai\\src\\app\\api\\auth\\[...nextauth]\\route.ts",
+          "methods": [
+            "GET",
+            "POST"
+          ]
+        }
+      ],
+      "routes": [],
+      "capabilities": [
+        "Next.js",
+        "React",
+        "Authentication",
+        "SSO",
+        "Shared UI"
+      ],
+      "healthCheck": null
+    },
+    "admin": {
+      "name": "admin",
+      "port": 4002,
+      "status": "operational",
+      "appPath": "E:\\GitHub\\codai-project\\apps\\admin",
+      "pages": [
+        "/",
+        "/health"
+      ],
+      "apis": [
+        {
+          "path": "/health",
+          "file": "E:\\GitHub\\codai-project\\apps\\admin\\src\\app\\api\\health\\route.ts",
+          "methods": [
+            "GET"
+          ]
+        },
+        {
+          "path": "/status",
+          "file": "E:\\GitHub\\codai-project\\apps\\admin\\src\\app\\api\\status\\route.ts",
+          "methods": [
+            "GET"
+          ]
+        }
+      ],
+      "routes": [],
+      "capabilities": [
+        "Next.js",
+        "React",
+        "Shared UI",
+        "Administration",
+        "Monitoring"
+      ],
+      "healthCheck": {
+        "url": "http://localhost:4002/api/health",
+        "status": 200,
+        "ok": true,
+        "timestamp": "2025-07-22T19:06:54.376Z",
+        "data": {
+          "status": "healthy",
+          "timestamp": "2025-07-22T19:06:54.372Z",
+          "service": "${APP_NAME}",
+          "port": "${PORT}",
+          "version": "1.0.0",
+          "framework": "Next.js 15",
+          "uptime": 2878.6169298,
+          "memory": {
+            "rss": 444657664,
+            "heapTotal": 290492416,
+            "heapUsed": 244838616,
+            "external": 403863769,
+            "arrayBuffers": 399659782
+          },
+          "environment": "development"
+        }
+      }
+    },
+    "hub": {
+      "name": "hub",
+      "port": 4003,
+      "status": "operational",
+      "appPath": "E:\\GitHub\\codai-project\\apps\\hub",
+      "pages": [
+        "/",
+        "/auth/signin",
+        "/auth/signup"
+      ],
+      "apis": [
+        {
+          "path": "/hub",
+          "file": "E:\\GitHub\\codai-project\\apps\\hub\\src\\app\\api\\hub\\route.ts",
+          "methods": [
+            "GET",
+            "POST"
+          ]
+        }
+      ],
+      "routes": [],
+      "capabilities": [
+        "Next.js",
+        "React",
+        "Shared UI",
+        "Central Hub",
+        "Service Discovery"
+      ],
+      "healthCheck": {
+        "url": "http://localhost:4003/api/health",
+        "status": 404,
+        "ok": false,
+        "timestamp": "2025-07-22T19:06:54.400Z"
+      }
+    },
+    "id": {
+      "name": "id",
+      "port": 4004,
+      "status": "degraded",
+      "appPath": "E:\\GitHub\\codai-project\\apps\\id",
+      "pages": [
+        "/",
+        "/auth/signin",
+        "/auth/signup",
+        "/forgot",
+        "/login",
+        "/logout",
+        "/register"
+      ],
+      "apis": [
+        {
+          "path": "/ai",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\ai\\route.ts",
+          "methods": [
+            "GET",
+            "POST"
+          ]
+        },
+        {
+          "path": "/auth/forgot-password",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\auth\\forgot-password\\route.ts",
+          "methods": [
+            "POST"
+          ]
+        },
+        {
+          "path": "/auth/login",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\auth\\login\\route.ts",
+          "methods": [
+            "POST"
+          ]
+        },
+        {
+          "path": "/auth/logout",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\auth\\logout\\route.ts",
+          "methods": [
+            "POST"
+          ]
+        },
+        {
+          "path": "/auth/mfa/backup-codes",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\auth\\mfa\\backup-codes\\route.ts",
+          "methods": [
+            "GET",
+            "POST"
+          ]
+        },
+        {
+          "path": "/auth/mfa/devices",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\auth\\mfa\\devices\\route.ts",
+          "methods": [
+            "GET"
+          ]
+        },
+        {
+          "path": "/auth/mfa/setup/totp",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\auth\\mfa\\setup\\totp\\route.ts",
+          "methods": [
+            "POST"
+          ]
+        },
+        {
+          "path": "/auth/mfa/verify",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\auth\\mfa\\verify\\route.ts",
+          "methods": [
+            "POST"
+          ]
+        },
+        {
+          "path": "/auth/mfa/verify/totp",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\auth\\mfa\\verify\\totp\\route.ts",
+          "methods": [
+            "POST"
+          ]
+        },
+        {
+          "path": "/auth/register",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\auth\\register\\route.ts",
+          "methods": [
+            "POST"
+          ]
+        },
+        {
+          "path": "/auth/validate",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\auth\\validate\\route.ts",
+          "methods": [
+            "GET"
+          ]
+        },
+        {
+          "path": "/auth/zero-trust/devices",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\auth\\zero-trust\\devices\\route.ts",
+          "methods": [
+            "GET",
+            "POST"
+          ]
+        },
+        {
+          "path": "/auth/[...nextauth]",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\auth\\[...nextauth]\\route.ts",
+          "methods": [
+            "GET",
+            "POST"
+          ]
+        },
+        {
+          "path": "/id",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\id\\route.ts",
+          "methods": [
+            "GET",
+            "POST"
+          ]
+        },
+        {
+          "path": "/oauth2/authorize",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\oauth2\\authorize\\route.ts",
+          "methods": [
+            "GET",
+            "POST"
+          ]
+        },
+        {
+          "path": "/oauth2/jwks",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\oauth2\\jwks\\route.ts",
+          "methods": [
+            "GET"
+          ]
+        },
+        {
+          "path": "/oauth2/token",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\oauth2\\token\\route.ts",
+          "methods": [
+            "POST"
+          ]
+        },
+        {
+          "path": "/oauth2/userinfo",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\oauth2\\userinfo\\route.ts",
+          "methods": [
+            "GET",
+            "POST"
+          ]
+        },
+        {
+          "path": "/sso/oidc/callback",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\sso\\oidc\\callback\\route.ts",
+          "methods": [
+            "GET",
+            "POST"
+          ]
+        },
+        {
+          "path": "/sso/oidc",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\sso\\oidc\\route.ts",
+          "methods": [
+            "GET",
+            "POST"
+          ]
+        },
+        {
+          "path": "/sso/providers",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\sso\\providers\\route.ts",
+          "methods": [
+            "GET",
+            "POST"
+          ]
+        },
+        {
+          "path": "/user",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\user\\route.ts",
+          "methods": [
+            "GET",
+            "PUT",
+            "DELETE"
+          ]
+        },
+        {
+          "path": "/workspace",
+          "file": "E:\\GitHub\\codai-project\\apps\\id\\src\\app\\api\\workspace\\route.ts",
+          "methods": [
+            "GET",
+            "POST"
+          ]
+        }
+      ],
+      "routes": [],
+      "capabilities": [
+        "Next.js",
+        "React",
+        "Shared UI",
+        "OAuth2",
+        "Identity Provider"
+      ],
+      "healthCheck": {
+        "url": "http://localhost:4004/api/health",
+        "status": 404,
+        "ok": false,
+        "timestamp": "2025-07-22T19:06:54.431Z"
+      }
+    },
+    "bancai": {
+      "name": "bancai",
+      "port": 4005,
+      "status": "offline",
+      "appPath": "E:\\GitHub\\codai-project\\apps\\bancai",
+      "pages": [
+        "/",
+        "/dashboard"
+      ],
+      "apis": [
+        {
+          "path": "/auth/[...nextauth]",
+          "file": "E:\\GitHub\\codai-project\\apps\\bancai\\src\\app\\api\\auth\\[...nextauth]\\route.ts",
+          "methods": [
+            "GET",
+            "POST"
+          ]
+        }
+      ],
+      "routes": [],
+      "capabilities": [
+        "Next.js",
+        "React",
+        "Authentication",
+        "Payments",
+        "SSO",
+        "Shared UI"
+      ],
+      "healthCheck": null
+    }
+  },
+  "summary": {
+    "totalServices": 6,
+    "operationalServices": 2,
+    "degradedServices": 2,
+    "totalPages": 15,
+    "totalApis": 28,
+    "totalRoutes": 0
+  },
+  "testData": {
+    "pageTests": [
+      {
+        "service": "codai",
+        "port": 4001,
+        "path": "/",
+        "url": "http://localhost:4001/",
+        "type": "page",
+        "testId": "codai-page-_"
+      },
+      {
+        "service": "admin",
+        "port": 4002,
+        "path": "/",
+        "url": "http://localhost:4002/",
+        "type": "page",
+        "testId": "admin-page-_"
+      },
+      {
+        "service": "admin",
+        "port": 4002,
+        "path": "/health",
+        "url": "http://localhost:4002/health",
+        "type": "page",
+        "testId": "admin-page-_health"
+      },
+      {
+        "service": "hub",
+        "port": 4003,
+        "path": "/",
+        "url": "http://localhost:4003/",
+        "type": "page",
+        "testId": "hub-page-_"
+      },
+      {
+        "service": "hub",
+        "port": 4003,
+        "path": "/auth/signin",
+        "url": "http://localhost:4003/auth/signin",
+        "type": "page",
+        "testId": "hub-page-_auth_signin"
+      },
+      {
+        "service": "hub",
+        "port": 4003,
+        "path": "/auth/signup",
+        "url": "http://localhost:4003/auth/signup",
+        "type": "page",
+        "testId": "hub-page-_auth_signup"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/",
+        "url": "http://localhost:4004/",
+        "type": "page",
+        "testId": "id-page-_"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/auth/signin",
+        "url": "http://localhost:4004/auth/signin",
+        "type": "page",
+        "testId": "id-page-_auth_signin"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/auth/signup",
+        "url": "http://localhost:4004/auth/signup",
+        "type": "page",
+        "testId": "id-page-_auth_signup"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/forgot",
+        "url": "http://localhost:4004/forgot",
+        "type": "page",
+        "testId": "id-page-_forgot"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/login",
+        "url": "http://localhost:4004/login",
+        "type": "page",
+        "testId": "id-page-_login"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/logout",
+        "url": "http://localhost:4004/logout",
+        "type": "page",
+        "testId": "id-page-_logout"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/register",
+        "url": "http://localhost:4004/register",
+        "type": "page",
+        "testId": "id-page-_register"
+      },
+      {
+        "service": "bancai",
+        "port": 4005,
+        "path": "/",
+        "url": "http://localhost:4005/",
+        "type": "page",
+        "testId": "bancai-page-_"
+      },
+      {
+        "service": "bancai",
+        "port": 4005,
+        "path": "/dashboard",
+        "url": "http://localhost:4005/dashboard",
+        "type": "page",
+        "testId": "bancai-page-_dashboard"
+      }
+    ],
+    "apiTests": [
+      {
+        "service": "codai",
+        "port": 4001,
+        "path": "/auth/[...nextauth]",
+        "url": "http://localhost:4001/api/auth/[...nextauth]",
+        "method": "GET",
+        "type": "api",
+        "testId": "codai-api-get-_auth_[...nextauth]"
+      },
+      {
+        "service": "codai",
+        "port": 4001,
+        "path": "/auth/[...nextauth]",
+        "url": "http://localhost:4001/api/auth/[...nextauth]",
+        "method": "POST",
+        "type": "api",
+        "testId": "codai-api-post-_auth_[...nextauth]"
+      },
+      {
+        "service": "admin",
+        "port": 4002,
+        "path": "/health",
+        "url": "http://localhost:4002/api/health",
+        "method": "GET",
+        "type": "api",
+        "testId": "admin-api-get-_health"
+      },
+      {
+        "service": "admin",
+        "port": 4002,
+        "path": "/status",
+        "url": "http://localhost:4002/api/status",
+        "method": "GET",
+        "type": "api",
+        "testId": "admin-api-get-_status"
+      },
+      {
+        "service": "hub",
+        "port": 4003,
+        "path": "/hub",
+        "url": "http://localhost:4003/api/hub",
+        "method": "GET",
+        "type": "api",
+        "testId": "hub-api-get-_hub"
+      },
+      {
+        "service": "hub",
+        "port": 4003,
+        "path": "/hub",
+        "url": "http://localhost:4003/api/hub",
+        "method": "POST",
+        "type": "api",
+        "testId": "hub-api-post-_hub"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/ai",
+        "url": "http://localhost:4004/api/ai",
+        "method": "GET",
+        "type": "api",
+        "testId": "id-api-get-_ai"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/ai",
+        "url": "http://localhost:4004/api/ai",
+        "method": "POST",
+        "type": "api",
+        "testId": "id-api-post-_ai"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/auth/forgot-password",
+        "url": "http://localhost:4004/api/auth/forgot-password",
+        "method": "POST",
+        "type": "api",
+        "testId": "id-api-post-_auth_forgot-password"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/auth/login",
+        "url": "http://localhost:4004/api/auth/login",
+        "method": "POST",
+        "type": "api",
+        "testId": "id-api-post-_auth_login"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/auth/logout",
+        "url": "http://localhost:4004/api/auth/logout",
+        "method": "POST",
+        "type": "api",
+        "testId": "id-api-post-_auth_logout"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/auth/mfa/backup-codes",
+        "url": "http://localhost:4004/api/auth/mfa/backup-codes",
+        "method": "GET",
+        "type": "api",
+        "testId": "id-api-get-_auth_mfa_backup-codes"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/auth/mfa/backup-codes",
+        "url": "http://localhost:4004/api/auth/mfa/backup-codes",
+        "method": "POST",
+        "type": "api",
+        "testId": "id-api-post-_auth_mfa_backup-codes"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/auth/mfa/devices",
+        "url": "http://localhost:4004/api/auth/mfa/devices",
+        "method": "GET",
+        "type": "api",
+        "testId": "id-api-get-_auth_mfa_devices"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/auth/mfa/setup/totp",
+        "url": "http://localhost:4004/api/auth/mfa/setup/totp",
+        "method": "POST",
+        "type": "api",
+        "testId": "id-api-post-_auth_mfa_setup_totp"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/auth/mfa/verify",
+        "url": "http://localhost:4004/api/auth/mfa/verify",
+        "method": "POST",
+        "type": "api",
+        "testId": "id-api-post-_auth_mfa_verify"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/auth/mfa/verify/totp",
+        "url": "http://localhost:4004/api/auth/mfa/verify/totp",
+        "method": "POST",
+        "type": "api",
+        "testId": "id-api-post-_auth_mfa_verify_totp"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/auth/register",
+        "url": "http://localhost:4004/api/auth/register",
+        "method": "POST",
+        "type": "api",
+        "testId": "id-api-post-_auth_register"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/auth/validate",
+        "url": "http://localhost:4004/api/auth/validate",
+        "method": "GET",
+        "type": "api",
+        "testId": "id-api-get-_auth_validate"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/auth/zero-trust/devices",
+        "url": "http://localhost:4004/api/auth/zero-trust/devices",
+        "method": "GET",
+        "type": "api",
+        "testId": "id-api-get-_auth_zero-trust_devices"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/auth/zero-trust/devices",
+        "url": "http://localhost:4004/api/auth/zero-trust/devices",
+        "method": "POST",
+        "type": "api",
+        "testId": "id-api-post-_auth_zero-trust_devices"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/auth/[...nextauth]",
+        "url": "http://localhost:4004/api/auth/[...nextauth]",
+        "method": "GET",
+        "type": "api",
+        "testId": "id-api-get-_auth_[...nextauth]"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/auth/[...nextauth]",
+        "url": "http://localhost:4004/api/auth/[...nextauth]",
+        "method": "POST",
+        "type": "api",
+        "testId": "id-api-post-_auth_[...nextauth]"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/id",
+        "url": "http://localhost:4004/api/id",
+        "method": "GET",
+        "type": "api",
+        "testId": "id-api-get-_id"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/id",
+        "url": "http://localhost:4004/api/id",
+        "method": "POST",
+        "type": "api",
+        "testId": "id-api-post-_id"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/oauth2/authorize",
+        "url": "http://localhost:4004/api/oauth2/authorize",
+        "method": "GET",
+        "type": "api",
+        "testId": "id-api-get-_oauth2_authorize"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/oauth2/authorize",
+        "url": "http://localhost:4004/api/oauth2/authorize",
+        "method": "POST",
+        "type": "api",
+        "testId": "id-api-post-_oauth2_authorize"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/oauth2/jwks",
+        "url": "http://localhost:4004/api/oauth2/jwks",
+        "method": "GET",
+        "type": "api",
+        "testId": "id-api-get-_oauth2_jwks"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/oauth2/token",
+        "url": "http://localhost:4004/api/oauth2/token",
+        "method": "POST",
+        "type": "api",
+        "testId": "id-api-post-_oauth2_token"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/oauth2/userinfo",
+        "url": "http://localhost:4004/api/oauth2/userinfo",
+        "method": "GET",
+        "type": "api",
+        "testId": "id-api-get-_oauth2_userinfo"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/oauth2/userinfo",
+        "url": "http://localhost:4004/api/oauth2/userinfo",
+        "method": "POST",
+        "type": "api",
+        "testId": "id-api-post-_oauth2_userinfo"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/sso/oidc/callback",
+        "url": "http://localhost:4004/api/sso/oidc/callback",
+        "method": "GET",
+        "type": "api",
+        "testId": "id-api-get-_sso_oidc_callback"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/sso/oidc/callback",
+        "url": "http://localhost:4004/api/sso/oidc/callback",
+        "method": "POST",
+        "type": "api",
+        "testId": "id-api-post-_sso_oidc_callback"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/sso/oidc",
+        "url": "http://localhost:4004/api/sso/oidc",
+        "method": "GET",
+        "type": "api",
+        "testId": "id-api-get-_sso_oidc"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/sso/oidc",
+        "url": "http://localhost:4004/api/sso/oidc",
+        "method": "POST",
+        "type": "api",
+        "testId": "id-api-post-_sso_oidc"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/sso/providers",
+        "url": "http://localhost:4004/api/sso/providers",
+        "method": "GET",
+        "type": "api",
+        "testId": "id-api-get-_sso_providers"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/sso/providers",
+        "url": "http://localhost:4004/api/sso/providers",
+        "method": "POST",
+        "type": "api",
+        "testId": "id-api-post-_sso_providers"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/user",
+        "url": "http://localhost:4004/api/user",
+        "method": "GET",
+        "type": "api",
+        "testId": "id-api-get-_user"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/user",
+        "url": "http://localhost:4004/api/user",
+        "method": "PUT",
+        "type": "api",
+        "testId": "id-api-put-_user"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/user",
+        "url": "http://localhost:4004/api/user",
+        "method": "DELETE",
+        "type": "api",
+        "testId": "id-api-delete-_user"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/workspace",
+        "url": "http://localhost:4004/api/workspace",
+        "method": "GET",
+        "type": "api",
+        "testId": "id-api-get-_workspace"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "path": "/workspace",
+        "url": "http://localhost:4004/api/workspace",
+        "method": "POST",
+        "type": "api",
+        "testId": "id-api-post-_workspace"
+      },
+      {
+        "service": "bancai",
+        "port": 4005,
+        "path": "/auth/[...nextauth]",
+        "url": "http://localhost:4005/api/auth/[...nextauth]",
+        "method": "GET",
+        "type": "api",
+        "testId": "bancai-api-get-_auth_[...nextauth]"
+      },
+      {
+        "service": "bancai",
+        "port": 4005,
+        "path": "/auth/[...nextauth]",
+        "url": "http://localhost:4005/api/auth/[...nextauth]",
+        "method": "POST",
+        "type": "api",
+        "testId": "bancai-api-post-_auth_[...nextauth]"
+      }
+    ],
+    "integrationTests": [
+      {
+        "service": "admin",
+        "port": 4002,
+        "type": "health_check",
+        "testId": "admin-health-check"
+      },
+      {
+        "service": "hub",
+        "port": 4003,
+        "type": "health_check",
+        "testId": "hub-health-check"
+      },
+      {
+        "service": "id",
+        "port": 4004,
+        "type": "health_check",
+        "testId": "id-health-check"
+      }
+    ]
+  }
+}

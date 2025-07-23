@@ -54,7 +54,7 @@ export function TeamManagement({ projectId, currentUser, onUserInvite, onUserRem
   const [activities, setActivities] = useState<UserActivity[]>([])
 
   const roles: Role[] = ['owner', 'admin', 'developer', 'designer', 'viewer']
-  
+
   const rolePermissions: Record<Role, Permission[]> = {
     owner: ['all'],
     admin: ['project_manage', 'team_manage', 'code_write', 'code_review', 'deploy'],
@@ -78,7 +78,7 @@ export function TeamManagement({ projectId, currentUser, onUserInvite, onUserRem
 
   const loadTeamMembers = async () => {
     setLoading(true)
-    
+
     // Mock team members data
     const mockMembers: TeamMember[] = [
       {
@@ -146,7 +146,7 @@ export function TeamManagement({ projectId, currentUser, onUserInvite, onUserRem
         }
       }
     ]
-    
+
     setTeamMembers(mockMembers)
     setLoading(false)
   }
@@ -179,13 +179,13 @@ export function TeamManagement({ projectId, currentUser, onUserInvite, onUserRem
         details: { removedBy: 'Jane Smith', reason: 'Project completed' }
       }
     ]
-    
+
     setActivities(mockActivities)
   }
 
   const handleInviteUser = async () => {
     if (!inviteEmail || !onUserInvite) return
-    
+
     setLoading(true)
     try {
       await onUserInvite(inviteEmail, inviteRole)
@@ -202,7 +202,7 @@ export function TeamManagement({ projectId, currentUser, onUserInvite, onUserRem
 
   const handleRemoveUser = async (userId: string) => {
     if (!onUserRemove) return
-    
+
     if (confirm('Are you sure you want to remove this user from the project?')) {
       setLoading(true)
       try {
@@ -218,7 +218,7 @@ export function TeamManagement({ projectId, currentUser, onUserInvite, onUserRem
 
   const handleRoleUpdate = async (userId: string, newRole: Role) => {
     if (!onRoleUpdate) return
-    
+
     setLoading(true)
     try {
       await onRoleUpdate(userId, newRole)
@@ -242,13 +242,13 @@ export function TeamManagement({ projectId, currentUser, onUserInvite, onUserRem
 
   const formatLastActive = (date: Date | null) => {
     if (!date) return 'Never'
-    
+
     const now = new Date()
     const diff = now.getTime() - date.getTime()
     const minutes = Math.floor(diff / (1000 * 60))
     const hours = Math.floor(minutes / 60)
     const days = Math.floor(hours / 24)
-    
+
     if (minutes < 5) return 'Online now'
     if (minutes < 60) return `${minutes}m ago`
     if (hours < 24) return `${hours}h ago`
@@ -270,7 +270,7 @@ export function TeamManagement({ projectId, currentUser, onUserInvite, onUserRem
             </p>
           </div>
         </div>
-        
+
         <button
           onClick={() => setShowInviteModal(true)}
           className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
@@ -289,7 +289,7 @@ export function TeamManagement({ projectId, currentUser, onUserInvite, onUserRem
                 Team Members ({teamMembers.length})
               </h3>
             </div>
-            
+
             <div className="divide-y divide-gray-200 dark:divide-gray-700">
               {teamMembers.map(member => (
                 <div key={member.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50">
@@ -298,7 +298,7 @@ export function TeamManagement({ projectId, currentUser, onUserInvite, onUserRem
                       <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
                         {member.user.name.charAt(0)}
                       </div>
-                      
+
                       <div>
                         <div className="flex items-center space-x-2">
                           <h4 className="font-medium text-gray-900 dark:text-white">
@@ -319,7 +319,7 @@ export function TeamManagement({ projectId, currentUser, onUserInvite, onUserRem
                         </p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center space-x-2">
                       <button
                         onClick={() => setSelectedUser(member)}
@@ -358,7 +358,7 @@ export function TeamManagement({ projectId, currentUser, onUserInvite, onUserRem
                 <span>Recent Activity</span>
               </h3>
             </div>
-            
+
             <div className="p-4 space-y-4">
               {activities.map(activity => (
                 <div key={activity.id} className="flex space-x-3">
@@ -379,7 +379,7 @@ export function TeamManagement({ projectId, currentUser, onUserInvite, onUserRem
                       </div>
                     )}
                   </div>
-                  
+
                   <div className="flex-1">
                     <p className="text-sm text-gray-900 dark:text-white">
                       <span className="font-medium">{activity.userName}</span>
@@ -416,7 +416,7 @@ export function TeamManagement({ projectId, currentUser, onUserInvite, onUserRem
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 Invite Team Member
               </h3>
-              
+
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -430,7 +430,7 @@ export function TeamManagement({ projectId, currentUser, onUserInvite, onUserRem
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Role
@@ -447,7 +447,7 @@ export function TeamManagement({ projectId, currentUser, onUserInvite, onUserRem
                     ))}
                   </select>
                 </div>
-                
+
                 <div className="text-sm text-gray-600 dark:text-gray-400">
                   <p className="mb-2">This role will have the following permissions:</p>
                   <ul className="list-disc list-inside space-y-1">
@@ -457,7 +457,7 @@ export function TeamManagement({ projectId, currentUser, onUserInvite, onUserRem
                   </ul>
                 </div>
               </div>
-              
+
               <div className="flex space-x-3 mt-6">
                 <button
                   onClick={() => setShowInviteModal(false)}
@@ -518,7 +518,7 @@ function UserRoleEditor({ user, availableRoles, onRoleChange, onPermissionChange
             <XCircleIcon className="w-6 h-6" />
           </button>
         </div>
-        
+
         <div className="space-y-6">
           {/* User Info */}
           <div className="flex items-center space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
@@ -534,7 +534,7 @@ function UserRoleEditor({ user, availableRoles, onRoleChange, onPermissionChange
               </p>
             </div>
           </div>
-          
+
           {/* Role Selection */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
@@ -545,11 +545,10 @@ function UserRoleEditor({ user, availableRoles, onRoleChange, onPermissionChange
                 <button
                   key={role}
                   onClick={() => onRoleChange(user.id, role)}
-                  className={`p-3 border-2 rounded-lg text-left ${
-                    user.role === role
+                  className={`p-3 border-2 rounded-lg text-left ${user.role === role
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30'
                       : 'border-gray-200 dark:border-gray-600 hover:border-gray-300'
-                  }`}
+                    }`}
                 >
                   <div className="font-medium text-gray-900 dark:text-white">
                     {role.charAt(0).toUpperCase() + role.slice(1)}
@@ -565,7 +564,7 @@ function UserRoleEditor({ user, availableRoles, onRoleChange, onPermissionChange
               ))}
             </div>
           </div>
-          
+
           {/* Permissions */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
@@ -588,7 +587,7 @@ function UserRoleEditor({ user, availableRoles, onRoleChange, onPermissionChange
             </div>
           </div>
         </div>
-        
+
         <div className="flex space-x-3 mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
           <button className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
             Cancel

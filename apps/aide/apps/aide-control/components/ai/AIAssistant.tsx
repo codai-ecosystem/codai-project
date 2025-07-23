@@ -57,7 +57,7 @@ export function AIAssistant({ projectId, currentFile, selectedCode, onSuggestion
   const [query, setQuery] = useState('')
   const [context, setContext] = useState<AIContext>({})
   const [activeTab, setActiveTab] = useState<'suggestions' | 'chat' | 'analysis'>('suggestions')
-  const [chatMessages, setChatMessages] = useState<Array<{id: string; role: 'user' | 'assistant'; content: string; timestamp: Date}>>([])
+  const [chatMessages, setChatMessages] = useState<Array<{ id: string; role: 'user' | 'assistant'; content: string; timestamp: Date }>>([])
   const inputRef = useRef<HTMLInputElement>(null)
 
   // Mock AI suggestions based on context
@@ -69,10 +69,10 @@ export function AIAssistant({ projectId, currentFile, selectedCode, onSuggestion
 
   const generateAISuggestions = async () => {
     setLoading(true)
-    
+
     // Simulate AI processing delay
     await new Promise(resolve => setTimeout(resolve, 1500))
-    
+
     const mockSuggestions: AISuggestion[] = [
       {
         id: '1',
@@ -220,14 +220,14 @@ const useLocalStorage = (key, initialValue) => {
 }`
       }
     ]
-    
+
     setSuggestions(mockSuggestions)
     setLoading(false)
   }
 
   const handleSuggestionApply = (suggestion: AISuggestion) => {
     onSuggestionApply?.(suggestion)
-    
+
     // Add success message to chat
     setChatMessages(prev => [...prev, {
       id: Date.now().toString(),
@@ -239,7 +239,7 @@ const useLocalStorage = (key, initialValue) => {
 
   const handleChatSubmit = async (message: string) => {
     if (!message.trim()) return
-    
+
     // Add user message
     setChatMessages(prev => [...prev, {
       id: Date.now().toString(),
@@ -247,10 +247,10 @@ const useLocalStorage = (key, initialValue) => {
       content: message,
       timestamp: new Date()
     }])
-    
+
     setQuery('')
     setLoading(true)
-    
+
     // Simulate AI response
     setTimeout(() => {
       const responses = [
@@ -260,14 +260,14 @@ const useLocalStorage = (key, initialValue) => {
         "I notice you're working with async operations. Let me suggest some best practices for handling loading states and errors.",
         "For better TypeScript support, consider adding more specific type definitions. This will help catch errors at compile time."
       ]
-      
+
       setChatMessages(prev => [...prev, {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
         content: responses[Math.floor(Math.random() * responses.length)],
         timestamp: new Date()
       }])
-      
+
       setLoading(false)
     }, 1000)
   }
@@ -310,15 +310,14 @@ const useLocalStorage = (key, initialValue) => {
               AI Assistant
             </h3>
           </div>
-          
+
           <div className="flex items-center space-x-2">
-            <div className={`px-2 py-1 rounded-full text-xs font-medium ${
-              isActive ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 
-              'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
-            }`}>
+            <div className={`px-2 py-1 rounded-full text-xs font-medium ${isActive ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' :
+                'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
+              }`}>
               {isActive ? 'Active' : 'Standby'}
             </div>
-            
+
             <button
               onClick={() => setIsActive(!isActive)}
               className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
@@ -336,11 +335,10 @@ const useLocalStorage = (key, initialValue) => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  activeTab === tab.id
+                className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${activeTab === tab.id
                     ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm'
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-                }`}
+                  }`}
               >
                 <Icon className="w-4 h-4" />
                 <span>{tab.name}</span>
@@ -382,7 +380,7 @@ const useLocalStorage = (key, initialValue) => {
                         <div className="flex-shrink-0 mt-1">
                           {getSuggestionIcon(suggestion.type)}
                         </div>
-                        
+
                         <div className="flex-1">
                           <div className="flex items-center justify-between mb-2">
                             <h4 className="font-medium text-gray-900 dark:text-white">
@@ -398,18 +396,18 @@ const useLocalStorage = (key, initialValue) => {
                               </div>
                             </div>
                           </div>
-                          
+
                           <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                             {suggestion.description}
                           </p>
-                          
+
                           <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-2">
                               <div className="flex items-center space-x-1 text-xs text-gray-500 dark:text-gray-400">
                                 <span>Confidence:</span>
                                 <span className="font-medium">{Math.round(suggestion.confidence * 100)}%</span>
                               </div>
-                              
+
                               <div className="flex space-x-1">
                                 {suggestion.tags.slice(0, 3).map(tag => (
                                   <span
@@ -421,7 +419,7 @@ const useLocalStorage = (key, initialValue) => {
                                 ))}
                               </div>
                             </div>
-                            
+
                             <div className="flex space-x-2">
                               <button className="px-3 py-1 text-xs text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200">
                                 Preview
@@ -439,7 +437,7 @@ const useLocalStorage = (key, initialValue) => {
                       </div>
                     </div>
                   ))}
-                  
+
                   {suggestions.length === 0 && !loading && (
                     <div className="text-center py-8">
                       <SparklesIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
@@ -474,18 +472,17 @@ const useLocalStorage = (key, initialValue) => {
                     </p>
                   </div>
                 )}
-                
+
                 {chatMessages.map(message => (
                   <div
                     key={message.id}
                     className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                        message.role === 'user'
+                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${message.role === 'user'
                           ? 'bg-blue-600 text-white'
                           : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
-                      }`}
+                        }`}
                     >
                       <p className="text-sm">{message.content}</p>
                       <p className="text-xs mt-1 opacity-70">
@@ -494,7 +491,7 @@ const useLocalStorage = (key, initialValue) => {
                     </div>
                   </div>
                 ))}
-                
+
                 {loading && (
                   <div className="flex justify-start">
                     <div className="bg-gray-100 dark:bg-gray-700 rounded-lg px-4 py-2">

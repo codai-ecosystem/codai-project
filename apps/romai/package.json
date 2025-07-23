@@ -65,6 +65,7 @@
     "test:run": "vitest run"
   },
   "dependencies": {
+    "@codai/security": "workspace:*",
     "dotenv": "^17.2.0",
     "next": "^15.4.1",
     "react": "^19.1.0",

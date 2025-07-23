@@ -252,7 +252,7 @@ export function TeamCollaboration({ teamId, currentUserId }: TeamCollaborationPr
               <p className="text-gray-600 dark:text-gray-400">{team.description}</p>
             </div>
           </div>
-          
+
           <div className="flex items-center space-x-3">
             {liveSession && (
               <div className="flex items-center space-x-2 px-3 py-2 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg">
@@ -260,7 +260,7 @@ export function TeamCollaboration({ teamId, currentUserId }: TeamCollaborationPr
                 <span className="text-sm font-medium">Live: {liveSession.participants.length} active</span>
               </div>
             )}
-            
+
             <button
               onClick={() => setShowInviteModal(true)}
               className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center space-x-2"
@@ -303,11 +303,10 @@ export function TeamCollaboration({ teamId, currentUserId }: TeamCollaborationPr
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`flex items-center space-x-2 py-4 border-b-2 font-medium text-sm ${
-                    activeTab === tab.id
+                  className={`flex items-center space-x-2 py-4 border-b-2 font-medium text-sm ${activeTab === tab.id
                       ? 'border-blue-500 text-blue-600 dark:text-blue-400'
                       : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:border-gray-300'
-                  }`}
+                    }`}
                 >
                   <Icon className="w-5 h-5" />
                   <span>{tab.name}</span>
@@ -415,7 +414,7 @@ export function TeamCollaboration({ teamId, currentUserId }: TeamCollaborationPr
                     {team.members.length} member{team.members.length !== 1 ? 's' : ''}
                   </span>
                 </div>
-                
+
                 <div className="space-y-4">
                   {team.members.map(member => (
                     <div key={member.id} className="flex items-center justify-between py-3 border-b border-gray-200 dark:border-gray-700 last:border-b-0">
@@ -426,7 +425,7 @@ export function TeamCollaboration({ teamId, currentUserId }: TeamCollaborationPr
                           </div>
                           <div className={`absolute -bottom-1 -right-1 w-3 h-3 ${getStatusColor(member.user.status)} rounded-full ring-2 ring-white dark:ring-gray-800`} />
                         </div>
-                        
+
                         <div>
                           <div className="flex items-center space-x-2">
                             <p className="font-medium text-gray-900 dark:text-white">{member.user.name}</p>
@@ -440,7 +439,7 @@ export function TeamCollaboration({ teamId, currentUserId }: TeamCollaborationPr
                           </p>
                         </div>
                       </div>
-                      
+
                       <div className="flex items-center space-x-2">
                         {canManageTeam(team.members.find(m => m.userId === currentUserId)!) && member.userId !== currentUserId && (
                           <>

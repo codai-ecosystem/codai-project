@@ -15,6 +15,7 @@
     "type-check": "pnpm exec tsc --noEmit"
   },
   "dependencies": {
+    "@codai/security": "workspace:*",
     "@codai/shared-ui": "workspace:*",
     "@codai/translations": "workspace:*",
     "@radix-ui/react-dialog": "^1.1.14",

@@ -15,6 +15,7 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@codai/security": "workspace:*",
     "@codai/shared-ui": "workspace:*",
     "@codai/translations": "workspace:*",
     "@radix-ui/react-alert-dialog": "^1.1.14",

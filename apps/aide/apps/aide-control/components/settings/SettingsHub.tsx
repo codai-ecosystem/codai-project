@@ -144,7 +144,7 @@ export function SettingsHub({ level, onClose }: SettingsHubProps) {
   ])
 
   const registry = new SettingsRegistry()
-  
+
   // Initialize settings sections
   useEffect(() => {
     settingsSections.forEach(section => {
@@ -157,7 +157,7 @@ export function SettingsHub({ level, onClose }: SettingsHubProps) {
   )
 
   const filteredSections = availableSections.filter(section =>
-    searchQuery === '' || 
+    searchQuery === '' ||
     section.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     section.description.toLowerCase().includes(searchQuery.toLowerCase())
   )
@@ -192,14 +192,13 @@ export function SettingsHub({ level, onClose }: SettingsHubProps) {
                 </button>
               )}
             </div>
-            
+
             {/* Level indicator */}
             <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400 mb-4">
-              <div className={`w-2 h-2 rounded-full ${
-                level.level === 'global' ? 'bg-purple-500' :
-                level.level === 'organization' ? 'bg-blue-500' :
-                level.level === 'project' ? 'bg-green-500' : 'bg-orange-500'
-              }`}></div>
+              <div className={`w-2 h-2 rounded-full ${level.level === 'global' ? 'bg-purple-500' :
+                  level.level === 'organization' ? 'bg-blue-500' :
+                    level.level === 'project' ? 'bg-green-500' : 'bg-orange-500'
+                }`}></div>
               <span className="capitalize">{level.level} Settings</span>
               <span>•</span>
               <span>{level.name}</span>
@@ -227,11 +226,10 @@ export function SettingsHub({ level, onClose }: SettingsHubProps) {
                     setActiveSection(section.id)
                     setActiveSubSection('')
                   }}
-                  className={`w-full flex items-center space-x-3 px-6 py-3 text-left hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
-                    activeSection === section.id 
-                      ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 border-r-2 border-indigo-500' 
+                  className={`w-full flex items-center space-x-3 px-6 py-3 text-left hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${activeSection === section.id
+                      ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 border-r-2 border-indigo-500'
                       : 'text-gray-700 dark:text-gray-300'
-                  }`}
+                    }`}
                 >
                   <section.icon className="w-5 h-5" />
                   <div className="flex-1">
@@ -241,9 +239,8 @@ export function SettingsHub({ level, onClose }: SettingsHubProps) {
                     </div>
                   </div>
                   {section.subSections && section.subSections.length > 0 && (
-                    <ChevronRightIcon className={`w-4 h-4 transition-transform ${
-                      activeSection === section.id ? 'rotate-90' : ''
-                    }`} />
+                    <ChevronRightIcon className={`w-4 h-4 transition-transform ${activeSection === section.id ? 'rotate-90' : ''
+                      }`} />
                   )}
                 </button>
 
@@ -258,11 +255,10 @@ export function SettingsHub({ level, onClose }: SettingsHubProps) {
                         <button
                           key={subSection.id}
                           onClick={() => setActiveSubSection(subSection.id)}
-                          className={`w-full flex items-center space-x-3 px-12 py-2 text-left hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors ${
-                            activeSubSection === subSection.id 
-                              ? 'bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-300' 
+                          className={`w-full flex items-center space-x-3 px-12 py-2 text-left hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors ${activeSubSection === subSection.id
+                              ? 'bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-300'
                               : 'text-gray-600 dark:text-gray-400'
-                          }`}
+                            }`}
                         >
                           <div className="text-sm">{subSection.name}</div>
                         </button>
@@ -309,7 +305,7 @@ function GeneralSettings({ level }: { level: SettingsLevel }) {
         <p className="text-gray-600 dark:text-gray-400 mb-8">
           Basic platform settings and preferences for {level.name}
         </p>
-        
+
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
             <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-4">

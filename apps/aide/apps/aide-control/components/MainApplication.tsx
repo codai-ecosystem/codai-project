@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { 
+import {
   Cog6ToothIcon,
   FolderIcon,
   UserGroupIcon,
@@ -262,15 +262,15 @@ export function MainApplication({ user, currentProjectId, currentTeamId }: MainA
         )
       case 'analytics':
         return (
-          <AnalyticsDashboard 
-            projectId={currentProjectId} 
+          <AnalyticsDashboard
+            projectId={currentProjectId}
             teamId={currentTeamId}
             timeframe="7d"
           />
         )
       case 'communication':
         return (
-          <CommunicationHub 
+          <CommunicationHub
             userId={user.id}
             teamId={currentTeamId}
             projectId={currentProjectId}
@@ -284,9 +284,8 @@ export function MainApplication({ user, currentProjectId, currentTeamId }: MainA
   return (
     <div className="h-screen bg-gray-50 dark:bg-gray-900 flex">
       {/* Sidebar */}
-      <div className={`bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ${
-        sidebarCollapsed ? 'w-16' : 'w-64'
-      }`}>
+      <div className={`bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ${sidebarCollapsed ? 'w-16' : 'w-64'
+        }`}>
         {/* Sidebar Header */}
         <div className="p-4 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between">
@@ -319,20 +318,19 @@ export function MainApplication({ user, currentProjectId, currentTeamId }: MainA
                 key={item.id}
                 onClick={() => !isDisabled && setActiveView(item.view)}
                 disabled={isDisabled}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${
-                  isActive
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${isActive
                     ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800'
                     : isDisabled
-                    ? 'text-gray-400 dark:text-gray-600 cursor-not-allowed'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
-                }`}
+                      ? 'text-gray-400 dark:text-gray-600 cursor-not-allowed'
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                  }`}
                 title={sidebarCollapsed ? `${item.name} (${item.shortcut})` : ''}
               >
                 <div className="flex items-center space-x-3">
                   <Icon className="w-5 h-5" />
                   {!sidebarCollapsed && <span>{item.name}</span>}
                 </div>
-                
+
                 {!sidebarCollapsed && (
                   <div className="flex items-center space-x-2">
                     {item.count && item.count > 0 && (
@@ -365,11 +363,10 @@ export function MainApplication({ user, currentProjectId, currentTeamId }: MainA
                   {user.email}
                 </p>
               </div>
-              <div className={`w-2 h-2 rounded-full ${
-                user.status === 'online' ? 'bg-green-400' :
-                user.status === 'away' ? 'bg-yellow-400' :
-                user.status === 'busy' ? 'bg-red-400' : 'bg-gray-400'
-              }`} />
+              <div className={`w-2 h-2 rounded-full ${user.status === 'online' ? 'bg-green-400' :
+                  user.status === 'away' ? 'bg-yellow-400' :
+                    user.status === 'busy' ? 'bg-red-400' : 'bg-gray-400'
+                }`} />
             </div>
           </div>
         )}
@@ -387,17 +384,16 @@ export function MainApplication({ user, currentProjectId, currentTeamId }: MainA
                   <span className="text-sm font-medium text-gray-900 dark:text-white">
                     {currentProject.name}
                   </span>
-                  <span className={`px-2 py-1 text-xs rounded-full ${
-                    currentProject.status === 'active' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' :
-                    currentProject.status === 'deploying' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' :
-                    'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300'
-                  }`}>
+                  <span className={`px-2 py-1 text-xs rounded-full ${currentProject.status === 'active' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' :
+                      currentProject.status === 'deploying' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' :
+                        'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300'
+                    }`}>
                     {currentProject.status}
                   </span>
                 </div>
               )}
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => setCommandPaletteOpen(true)}
@@ -409,7 +405,7 @@ export function MainApplication({ user, currentProjectId, currentTeamId }: MainA
                   ⌘K
                 </kbd>
               </button>
-              
+
               <button className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 relative">
                 <BellIcon className="w-5 h-5" />
                 {notifications > 0 && (
@@ -460,7 +456,7 @@ export function MainApplication({ user, currentProjectId, currentTeamId }: MainA
                   />
                 </div>
               </div>
-              
+
               <div className="max-h-64 overflow-y-auto">
                 <div className="p-2">
                   {navigationItems.map(item => {
@@ -475,11 +471,10 @@ export function MainApplication({ user, currentProjectId, currentTeamId }: MainA
                           }
                         }}
                         disabled={item.disabled}
-                        className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-left transition-colors ${
-                          item.disabled
+                        className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-left transition-colors ${item.disabled
                             ? 'text-gray-400 dark:text-gray-600 cursor-not-allowed'
                             : 'hover:bg-gray-100 dark:hover:bg-gray-700'
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center space-x-3">
                           <Icon className="w-5 h-5" />

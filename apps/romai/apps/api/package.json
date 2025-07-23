@@ -27,6 +27,7 @@
   "author": "CODAI Contributors",
   "license": "MIT",
   "dependencies": {
+    "@codai/security": "workspace:*",
     "@codai/romai-api": "workspace:*",
     "@codai/romai-core": "workspace:*",
     "@codai/romai-types": "workspace:*",

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@9.15.9",
+  "packageManager": "pnpm@10.13.1",
   "pnpm": {
     "overrides": {
       "react": "^19.1.0",
@@ -82,7 +82,7 @@
     "orchestrator:list": "node scripts/orchestrator-cli.js list",
     "orchestrator:examples": "node scripts/orchestrator-examples.js",
     "start:service": "node scripts/orchestrator-cli.js start",
-    "dev:primary": "turbo dev --filter=codai --filter=admin --filter=hub --filter=id --filter=bancai --filter=memorai",
+    "dev:primary": "turbo dev --filter=gateway --filter=codai --filter=admin --filter=hub --filter=id --filter=bancai --filter=memorai --filter=cbd",
     "build:primary": "turbo build --filter=codai --filter=admin --filter=hub --filter=id --filter=bancai --filter=memorai",
     "build:check": "turbo build --dry-run",
     "build:force": "turbo build --force",
@@ -92,7 +92,13 @@
     "validate:primary": "pnpm run type-check:primary && pnpm run build:primary",
     "health-check": "node scripts/health-check.js",
     "deploy:check": "pnpm run validate && pnpm run build",
-    "deploy:primary": "pnpm run validate:primary && echo 'Primary apps ready for deployment!'"
+    "deploy:primary": "pnpm run validate:primary && echo 'Primary apps ready for deployment!'",
+    "orchestrator:enhanced": "node scripts/dev-orchestrator-enhanced.js",
+    "orchestrator:enhanced:start": "node scripts/dev-orchestrator-enhanced.js start",
+    "orchestrator:enhanced:status": "node scripts/dev-orchestrator-enhanced.js status",
+    "test:comprehensive:full": "node scripts/comprehensive-test-runner.js run",
+    "dev:orchestrated": "node scripts/dev-orchestrator-enhanced.js start",
+    "test:with-services": "node scripts/comprehensive-test-runner.js run"
   },
   "dependencies": {
     "@prisma/client": "^6.11.1",

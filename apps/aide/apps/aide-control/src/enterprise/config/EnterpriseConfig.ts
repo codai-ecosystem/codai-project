@@ -469,7 +469,7 @@ export class EnterpriseConfigManager {
   private notifyWatchers(path: string, value: any): void {
     // Notify specific path watchers
     this.watchers.get(path)?.forEach(callback => callback(value, path))
-    
+
     // Notify wildcard watchers
     this.watchers.get('*')?.forEach(callback => callback(value, path))
   }

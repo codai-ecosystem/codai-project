@@ -37,7 +37,7 @@ export function CommandPalette({ isOpen, onClose, onCommand }: CommandPalettePro
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
-  
+
   const commands: Command[] = [
     // Project commands
     {
@@ -60,7 +60,7 @@ export function CommandPalette({ isOpen, onClose, onCommand }: CommandPalettePro
       priority: 9,
       action: () => console.log('Opening project...'),
     },
-    
+
     // AI commands
     {
       id: 'ai-generate-code',
@@ -90,7 +90,7 @@ export function CommandPalette({ isOpen, onClose, onCommand }: CommandPalettePro
       priority: 6,
       action: () => console.log('Optimizing code...'),
     },
-    
+
     // File commands
     {
       id: 'new-file',
@@ -112,7 +112,7 @@ export function CommandPalette({ isOpen, onClose, onCommand }: CommandPalettePro
       priority: 7,
       action: () => console.log('Searching files...'),
     },
-    
+
     // Deployment commands
     {
       id: 'deploy-project',
@@ -134,7 +134,7 @@ export function CommandPalette({ isOpen, onClose, onCommand }: CommandPalettePro
       priority: 7,
       action: () => console.log('Starting preview...'),
     },
-    
+
     // Collaboration commands
     {
       id: 'invite-collaborator',
@@ -154,7 +154,7 @@ export function CommandPalette({ isOpen, onClose, onCommand }: CommandPalettePro
       priority: 5,
       action: () => console.log('Sharing project...'),
     },
-    
+
     // Settings commands
     {
       id: 'project-settings',
@@ -179,7 +179,7 @@ export function CommandPalette({ isOpen, onClose, onCommand }: CommandPalettePro
 
   // Filter commands based on query
   const filteredCommands = commands
-    .filter(command => 
+    .filter(command =>
       command.title.toLowerCase().includes(query.toLowerCase()) ||
       command.description.toLowerCase().includes(query.toLowerCase()) ||
       command.category.toLowerCase().includes(query.toLowerCase())
@@ -311,8 +311,8 @@ export function CommandPalette({ isOpen, onClose, onCommand }: CommandPalettePro
                     onClick={() => handleCommandSelect(command)}
                     className={`
                       w-full flex items-center justify-between p-3 rounded-xl text-left transition-colors
-                      ${index === selectedIndex 
-                        ? 'bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800' 
+                      ${index === selectedIndex
+                        ? 'bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800'
                         : 'hover:bg-gray-50 dark:hover:bg-gray-700/50'
                       }
                     `}
@@ -332,7 +332,7 @@ export function CommandPalette({ isOpen, onClose, onCommand }: CommandPalettePro
                         </p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center space-x-2">
                       {command.shortcut && (
                         <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs font-mono text-gray-600 dark:text-gray-400">

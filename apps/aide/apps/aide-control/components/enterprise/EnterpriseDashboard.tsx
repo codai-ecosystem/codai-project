@@ -6,14 +6,14 @@
 
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { 
-  Shield, 
-  Users, 
-  Activity, 
-  Bot, 
-  Settings, 
-  AlertTriangle, 
-  CheckCircle, 
+import {
+  Shield,
+  Users,
+  Activity,
+  Bot,
+  Settings,
+  AlertTriangle,
+  CheckCircle,
   Clock,
   Eye,
   Lock,
@@ -82,7 +82,7 @@ export default function EnterpriseDashboard() {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000))
-      
+
       setMetrics({
         sso: {
           enabled: true,
@@ -176,8 +176,8 @@ export default function EnterpriseDashboard() {
         value: metrics.security.threatLevel.toUpperCase(),
         subtitle: `Last scan: ${metrics.security.lastScan}`,
         icon: <AlertTriangle className="h-6 w-6" />,
-        status: metrics.security.threatLevel === 'low' ? 'success' : 
-               metrics.security.threatLevel === 'medium' ? 'warning' : 'error'
+        status: metrics.security.threatLevel === 'low' ? 'success' :
+          metrics.security.threatLevel === 'medium' ? 'warning' : 'error'
       }
     ]
   }
@@ -254,11 +254,10 @@ export default function EnterpriseDashboard() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`flex items-center space-x-2 py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
-                activeTab === tab.id
+              className={`flex items-center space-x-2 py-2 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === tab.id
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
+                }`}
             >
               {tab.icon}
               <span>{tab.label}</span>
@@ -292,15 +291,14 @@ export default function EnterpriseDashboard() {
                       {card.icon}
                     </div>
                     {card.trend && (
-                      <div className={`flex items-center text-xs ${
-                        card.trend > 0 ? 'text-green-600' : 'text-red-600'
-                      }`}>
+                      <div className={`flex items-center text-xs ${card.trend > 0 ? 'text-green-600' : 'text-red-600'
+                        }`}>
                         <TrendingUp className={`h-3 w-3 mr-1 ${card.trend < 0 ? 'rotate-180' : ''}`} />
                         {Math.abs(card.trend)}%
                       </div>
                     )}
                   </div>
-                  
+
                   <div className="mt-4">
                     <h3 className="text-sm font-medium text-gray-600">{card.title}</h3>
                     <p className="text-2xl font-bold text-gray-900 mt-1">{card.value}</p>
@@ -319,37 +317,36 @@ export default function EnterpriseDashboard() {
                   <h2 className="text-lg font-semibold">Security Overview</h2>
                   <Shield className="h-5 w-5 text-green-500" />
                 </div>
-                
+
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Security Score</span>
                     <div className="flex items-center space-x-2">
                       <div className="w-32 bg-gray-200 rounded-full h-2">
-                        <div 
-                          className="bg-green-500 h-2 rounded-full" 
+                        <div
+                          className="bg-green-500 h-2 rounded-full"
                           style={{ width: `${metrics?.security.score || 0}%` }}
                         ></div>
                       </div>
                       <span className="text-sm font-medium">{metrics?.security.score}%</span>
                     </div>
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Threat Level</span>
-                    <span className={`px-2 py-1 rounded text-xs font-medium ${
-                      metrics?.security.threatLevel === 'low' ? 'bg-green-100 text-green-800' :
-                      metrics?.security.threatLevel === 'medium' ? 'bg-yellow-100 text-yellow-800' :
-                      'bg-red-100 text-red-800'
-                    }`}>
+                    <span className={`px-2 py-1 rounded text-xs font-medium ${metrics?.security.threatLevel === 'low' ? 'bg-green-100 text-green-800' :
+                        metrics?.security.threatLevel === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                          'bg-red-100 text-red-800'
+                      }`}>
                       {metrics?.security.threatLevel?.toUpperCase()}
                     </span>
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Vulnerabilities</span>
                     <span className="text-sm font-medium">{metrics?.security.vulnerabilities}</span>
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Last Scan</span>
                     <span className="text-sm text-gray-500">{metrics?.security.lastScan}</span>
@@ -363,7 +360,7 @@ export default function EnterpriseDashboard() {
                   <h2 className="text-lg font-semibold">SSO Status</h2>
                   <Key className="h-5 w-5 text-blue-500" />
                 </div>
-                
+
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Status</span>
@@ -372,17 +369,17 @@ export default function EnterpriseDashboard() {
                       <span className="text-sm font-medium text-green-600">Active</span>
                     </div>
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Active Users</span>
                     <span className="text-sm font-medium">{metrics?.sso.activeUsers}</span>
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Success Rate</span>
                     <span className="text-sm font-medium">{metrics?.sso.successRate}%</span>
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Last Sync</span>
                     <span className="text-sm text-gray-500">{metrics?.sso.lastSync}</span>
@@ -400,35 +397,34 @@ export default function EnterpriseDashboard() {
                   <h2 className="text-lg font-semibold">Audit Overview</h2>
                   <Activity className="h-5 w-5 text-purple-500" />
                 </div>
-                
+
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Events Today</span>
                     <span className="text-sm font-medium">{metrics?.audit.eventsToday}</span>
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Compliance Score</span>
                     <div className="flex items-center space-x-2">
                       <div className="w-32 bg-gray-200 rounded-full h-2">
-                        <div 
-                          className="bg-purple-500 h-2 rounded-full" 
+                        <div
+                          className="bg-purple-500 h-2 rounded-full"
                           style={{ width: `${metrics?.audit.complianceScore || 0}%` }}
                         ></div>
                       </div>
                       <span className="text-sm font-medium">{metrics?.audit.complianceScore}%</span>
                     </div>
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Critical Issues</span>
-                    <span className={`text-sm font-medium ${
-                      (metrics?.audit.criticalIssues || 0) === 0 ? 'text-green-600' : 'text-red-600'
-                    }`}>
+                    <span className={`text-sm font-medium ${(metrics?.audit.criticalIssues || 0) === 0 ? 'text-green-600' : 'text-red-600'
+                      }`}>
                       {metrics?.audit.criticalIssues}
                     </span>
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Last Report</span>
                     <span className="text-sm text-gray-500">{metrics?.audit.lastReport}</span>
@@ -442,28 +438,27 @@ export default function EnterpriseDashboard() {
                   <h2 className="text-lg font-semibold">RBAC Status</h2>
                   <Lock className="h-5 w-5 text-orange-500" />
                 </div>
-                
+
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Active Roles</span>
                     <span className="text-sm font-medium">{metrics?.rbac.roles}</span>
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Permissions</span>
                     <span className="text-sm font-medium">{metrics?.rbac.permissions}</span>
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Policies</span>
                     <span className="text-sm font-medium">{metrics?.rbac.policies}</span>
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Violations</span>
-                    <span className={`text-sm font-medium ${
-                      (metrics?.rbac.violations || 0) === 0 ? 'text-green-600' : 'text-red-600'
-                    }`}>
+                    <span className={`text-sm font-medium ${(metrics?.rbac.violations || 0) === 0 ? 'text-green-600' : 'text-red-600'
+                      }`}>
                       {metrics?.rbac.violations}
                     </span>
                   </div>
@@ -480,19 +475,19 @@ export default function EnterpriseDashboard() {
                   <h2 className="text-lg font-semibold">AI Usage</h2>
                   <Bot className="h-5 w-5 text-blue-500" />
                 </div>
-                
+
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Requests Today</span>
                     <span className="text-sm font-medium">{metrics?.ai.requests}</span>
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Tokens Used</span>
                     <div className="flex items-center space-x-2">
                       <div className="w-32 bg-gray-200 rounded-full h-2">
-                        <div 
-                          className="bg-blue-500 h-2 rounded-full" 
+                        <div
+                          className="bg-blue-500 h-2 rounded-full"
                           style={{ width: `${((metrics?.ai.tokensUsed || 0) / (metrics?.ai.dailyLimit || 1)) * 100}%` }}
                         ></div>
                       </div>
@@ -501,14 +496,14 @@ export default function EnterpriseDashboard() {
                       </span>
                     </div>
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Daily Limit</span>
                     <span className="text-sm font-medium">
                       {((metrics?.ai.dailyLimit || 0) / 1000).toFixed(0)}k
                     </span>
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Avg Response Time</span>
                     <span className="text-sm text-gray-500">{metrics?.ai.avgResponseTime}s</span>
@@ -522,7 +517,7 @@ export default function EnterpriseDashboard() {
                   <h2 className="text-lg font-semibold">AI Features</h2>
                   <Cpu className="h-5 w-5 text-green-500" />
                 </div>
-                
+
                 <div className="space-y-3">
                   {[
                     { name: 'Code Generation', status: 'active' },
@@ -533,11 +528,10 @@ export default function EnterpriseDashboard() {
                   ].map((feature) => (
                     <div key={feature.name} className="flex justify-between items-center">
                       <span className="text-gray-600">{feature.name}</span>
-                      <span className={`px-2 py-1 rounded text-xs font-medium ${
-                        feature.status === 'active' ? 'bg-green-100 text-green-800' :
-                        feature.status === 'beta' ? 'bg-blue-100 text-blue-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${feature.status === 'active' ? 'bg-green-100 text-green-800' :
+                          feature.status === 'beta' ? 'bg-blue-100 text-blue-800' :
+                            'bg-gray-100 text-gray-800'
+                        }`}>
                         {feature.status.toUpperCase()}
                       </span>
                     </div>

@@ -145,7 +145,7 @@ export function WorkflowManagement({ projectId, onWorkflowCreate, onWorkflowUpda
 
   const loadWorkflows = async () => {
     setLoading(true)
-    
+
     // Mock workflows data
     const mockWorkflows: Workflow[] = [
       {
@@ -294,7 +294,7 @@ export function WorkflowManagement({ projectId, onWorkflowCreate, onWorkflowUpda
         }
       }
     ]
-    
+
     setWorkflows(mockWorkflows)
     setLoading(false)
   }
@@ -370,7 +370,7 @@ export function WorkflowManagement({ projectId, onWorkflowCreate, onWorkflowUpda
         artifacts: []
       }
     ]
-    
+
     setRuns(mockRuns)
   }
 
@@ -449,7 +449,7 @@ export function WorkflowManagement({ projectId, onWorkflowCreate, onWorkflowUpda
             </p>
           </div>
         </div>
-        
+
         <button
           onClick={() => setShowCreateModal(true)}
           className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
@@ -468,15 +468,14 @@ export function WorkflowManagement({ projectId, onWorkflowCreate, onWorkflowUpda
                 Workflows ({workflows.length})
               </h3>
             </div>
-            
+
             <div className="divide-y divide-gray-200 dark:divide-gray-700 max-h-96 overflow-y-auto">
               {workflows.map(workflow => (
                 <div
                   key={workflow.id}
                   onClick={() => setSelectedWorkflow(workflow)}
-                  className={`p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 ${
-                    selectedWorkflow?.id === workflow.id ? 'bg-blue-50 dark:bg-blue-900/20' : ''
-                  }`}
+                  className={`p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 ${selectedWorkflow?.id === workflow.id ? 'bg-blue-50 dark:bg-blue-900/20' : ''
+                    }`}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-medium text-gray-900 dark:text-white">
@@ -486,17 +485,17 @@ export function WorkflowManagement({ projectId, onWorkflowCreate, onWorkflowUpda
                       {workflow.status}
                     </span>
                   </div>
-                  
+
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                     {workflow.description}
                   </p>
-                  
+
                   <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
                     <div className="flex items-center space-x-1">
                       {getTriggerIcon(workflow.trigger.type)}
                       <span>{workflow.trigger.type}</span>
                     </div>
-                    
+
                     <div className="flex items-center space-x-2">
                       <span>{workflow.stats.totalRuns} runs</span>
                       <span>•</span>
@@ -524,7 +523,7 @@ export function WorkflowManagement({ projectId, onWorkflowCreate, onWorkflowUpda
                       {selectedWorkflow.description}
                     </p>
                   </div>
-                  
+
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={() => runWorkflow(selectedWorkflow.id)}
@@ -534,7 +533,7 @@ export function WorkflowManagement({ projectId, onWorkflowCreate, onWorkflowUpda
                       <PlayIcon className="w-4 h-4" />
                       <span>Run</span>
                     </button>
-                    
+
                     <button className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
                       <PencilSquareIcon className="w-4 h-4" />
                     </button>
@@ -551,7 +550,7 @@ export function WorkflowManagement({ projectId, onWorkflowCreate, onWorkflowUpda
                       Total Runs
                     </div>
                   </div>
-                  
+
                   <div className="text-center">
                     <div className="text-2xl font-bold text-green-600">
                       {Math.round(selectedWorkflow.stats.successRate * 100)}%
@@ -560,7 +559,7 @@ export function WorkflowManagement({ projectId, onWorkflowCreate, onWorkflowUpda
                       Success Rate
                     </div>
                   </div>
-                  
+
                   <div className="text-center">
                     <div className="text-2xl font-bold text-blue-600">
                       {formatDuration(selectedWorkflow.stats.averageDuration)}
@@ -569,7 +568,7 @@ export function WorkflowManagement({ projectId, onWorkflowCreate, onWorkflowUpda
                       Avg Duration
                     </div>
                   </div>
-                  
+
                   <div className="text-center">
                     <div className="text-2xl font-bold text-red-600">
                       {selectedWorkflow.stats.failureCount}
@@ -588,11 +587,10 @@ export function WorkflowManagement({ projectId, onWorkflowCreate, onWorkflowUpda
                     <button
                       key={tab}
                       onClick={() => setActiveTab(tab)}
-                      className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                        activeTab === tab
+                      className={`py-4 px-1 border-b-2 font-medium text-sm ${activeTab === tab
                           ? 'border-blue-500 text-blue-600'
                           : 'border-transparent text-gray-500 hover:text-gray-700'
-                      }`}
+                        }`}
                     >
                       {tab.charAt(0).toUpperCase() + tab.slice(1)}
                     </button>
@@ -616,7 +614,7 @@ export function WorkflowManagement({ projectId, onWorkflowCreate, onWorkflowUpda
                         <h4 className="font-medium text-gray-900 dark:text-white mb-4">
                           Workflow Steps
                         </h4>
-                        
+
                         <div className="space-y-4">
                           {selectedWorkflow.steps.map((step, index) => (
                             <div
@@ -628,7 +626,7 @@ export function WorkflowManagement({ projectId, onWorkflowCreate, onWorkflowUpda
                                   {index + 1}
                                 </div>
                               </div>
-                              
+
                               <div className="flex-1">
                                 <h5 className="font-medium text-gray-900 dark:text-white">
                                   {step.name}
@@ -637,7 +635,7 @@ export function WorkflowManagement({ projectId, onWorkflowCreate, onWorkflowUpda
                                   Type: {step.type} • Command: {step.config.command || 'N/A'}
                                 </p>
                               </div>
-                              
+
                               <div className="flex items-center space-x-2">
                                 {step.status && getStatusIcon(step.status)}
                               </div>
@@ -651,7 +649,7 @@ export function WorkflowManagement({ projectId, onWorkflowCreate, onWorkflowUpda
                         <h4 className="font-medium text-gray-900 dark:text-white mb-4">
                           Trigger Configuration
                         </h4>
-                        
+
                         <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                           <div className="flex items-center space-x-2 mb-2">
                             {getTriggerIcon(selectedWorkflow.trigger.type)}
@@ -659,7 +657,7 @@ export function WorkflowManagement({ projectId, onWorkflowCreate, onWorkflowUpda
                               {selectedWorkflow.trigger.type}
                             </span>
                           </div>
-                          
+
                           <div className="text-sm text-gray-600 dark:text-gray-400">
                             {selectedWorkflow.trigger.type === 'push' && (
                               <span>Triggers on push to branch: {selectedWorkflow.trigger.config.branch}</span>
@@ -711,7 +709,7 @@ export function WorkflowManagement({ projectId, onWorkflowCreate, onWorkflowUpda
                                 </div>
                               </div>
                             </div>
-                            
+
                             <div className="text-right">
                               <div className="text-sm text-gray-600 dark:text-gray-400">
                                 {run.triggeredAt.toLocaleString()}
@@ -737,7 +735,7 @@ export function WorkflowManagement({ projectId, onWorkflowCreate, onWorkflowUpda
                                     {selectedWorkflow.steps.find(s => s.id === stepRun.stepId)?.name}
                                   </span>
                                 </div>
-                                
+
                                 {stepRun.duration && (
                                   <span className="text-xs text-gray-500 dark:text-gray-400">
                                     {formatDuration(stepRun.duration)}

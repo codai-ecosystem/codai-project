@@ -1,7 +1,7 @@
 {
   "name": "@codai/memorai",
   "version": "1.0.0",
-  "type": "commonjs",
+  "type": "module",
   "description": "Universal Database & Storage Service for CODAI Ecosystem",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

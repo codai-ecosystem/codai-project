@@ -1,24 +1,43 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const { createSecureServer } = require('@codai/security');
 
 const app = express();
 const PORT = 4018;
+
+// Initialize security middleware
+createSecureServer(app, {
+  serviceName: 'hub',
+  port: PORT,
+  enableTLS: true,
+  enableWAF: true,
+  rateLimit: {
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 1000 // Central hub needs high throughput
+  }
+});
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.static('.'));
 
-// Health check endpoint
+// Enhanced health check endpoint with security status
 app.get('/health', (req, res) => {
   res.json({
     status: 'healthy',
     service: 'hub',
-    description: 'Codai Integration & Automation Center',
+    description: 'CODAI Integration & Automation Center - SECURED',
     port: PORT,
-    type: 'undefined',
+    type: 'integration-platform',
     category: 'integration',
+    security: {
+      https: true,
+      waf: true,
+      headers: true,
+      rateLimit: true
+    },
     timestamp: new Date().toISOString(),
     uptime: process.uptime()
   });

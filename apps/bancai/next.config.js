@@ -1,10 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    turbo: {
-      resolveAlias: {
-        canvas: './empty-module.js',
-      },
+  transpilePackages: ['@codai/cnd'],
+  turbopack: {
+    resolveAlias: {
+      canvas: './empty-module.js',
     },
   },
   typescript: {
@@ -13,7 +12,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: false,
   },
-  swcMinify: true,
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },

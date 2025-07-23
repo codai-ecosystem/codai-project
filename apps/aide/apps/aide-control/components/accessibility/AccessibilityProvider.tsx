@@ -10,16 +10,16 @@ interface AccessibilityContextType {
   reducedMotion: boolean;
   fontSize: 'small' | 'medium' | 'large' | 'extra-large';
   colorBlindMode: 'none' | 'protanopia' | 'deuteranopia' | 'tritanopia';
-  
+
   // Interaction preferences
   focusMode: boolean;
   keyboardNavigation: boolean;
   screenReaderMode: boolean;
-  
+
   // Content preferences
   autoplay: boolean;
   animations: boolean;
-  
+
   // Actions
   toggleHighContrast: () => void;
   setFontSize: (size: AccessibilityContextType['fontSize']) => void;
@@ -102,8 +102,8 @@ export function AccessibilityProvider({ children }: AccessibilityProviderProps) 
 
     // Detect screen reader
     const isScreenReader = window.navigator.userAgent.includes('NVDA') ||
-                          window.navigator.userAgent.includes('JAWS') ||
-                          window.speechSynthesis;
+      window.navigator.userAgent.includes('JAWS') ||
+      window.speechSynthesis;
     setScreenReaderMode(!!isScreenReader);
 
     return () => {
@@ -129,7 +129,7 @@ export function AccessibilityProvider({ children }: AccessibilityProviderProps) 
   // Apply CSS custom properties
   useEffect(() => {
     const root = document.documentElement;
-    
+
     // Font size
     const fontSizes = {
       small: '0.875rem',
@@ -185,9 +185,9 @@ export function AccessibilityProvider({ children }: AccessibilityProviderProps) 
     announcement.setAttribute('aria-atomic', 'true');
     announcement.className = 'sr-only';
     announcement.textContent = message;
-    
+
     document.body.appendChild(announcement);
-    
+
     setTimeout(() => {
       document.body.removeChild(announcement);
     }, 1000);
@@ -272,12 +272,12 @@ export function AccessibleButton({
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (loading || disabled) return;
-    
+
     // Announce action to screen readers
     if (typeof children === 'string') {
       announceToScreenReader(`${children} activated`);
     }
-    
+
     props.onClick?.(e);
   };
 
@@ -339,7 +339,7 @@ export function AccessibleInput({
           <span className="text-red-500 ml-1" aria-label="required">*</span>
         )}
       </label>
-      
+
       <input
         {...props}
         id={inputId}
@@ -358,13 +358,13 @@ export function AccessibleInput({
         ].filter(Boolean).join(' ') || undefined}
         aria-invalid={error ? 'true' : 'false'}
       />
-      
+
       {helpText && (
         <p id={helpId} className="text-sm text-gray-600 dark:text-gray-400">
           {helpText}
         </p>
       )}
-      
+
       {error && (
         <p
           id={errorId}

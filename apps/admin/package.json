@@ -5,9 +5,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3200",
+    "dev": "next dev -p 4002",
     "build": "next build",
-    "start": "next start -p 3200",
+    "start": "next start -p 4002",
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
@@ -16,6 +16,7 @@
     "type-check": "pnpm exec tsc --noEmit"
   },
   "dependencies": {
+    "@codai/cnd": "workspace:*",
     "@codai/api-standards": "workspace:*",
     "@codai/auth": "workspace:*",
     "@codai/bancai": "workspace:*",

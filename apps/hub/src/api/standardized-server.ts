@@ -3,7 +3,7 @@
  * Standardized service discovery and orchestration API using CODAI standards
  */
 
-import express from 'express';
+import express, { Express } from 'express';
 import {
     setupCodaiMiddleware,
     createStandardApiConfig,
@@ -18,7 +18,7 @@ import { OpenAPIV3 } from 'openapi-types';
 import swaggerUi from 'swagger-ui-express';
 import { z } from 'zod';
 
-const app = express();
+const app: Express = express();
 const config = createStandardApiConfig('hub', 4003);
 
 // Setup universal CODAI middleware

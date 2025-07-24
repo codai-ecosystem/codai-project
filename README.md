@@ -18,12 +18,16 @@ codai-project/
 ├── packages/                # Shared packages and utilities
 │   ├── ai-mcp/              # Core AI MCP server (Azure OpenAI)
 │   ├── controlai-mcp/       # Project management MCP server
+│   ├── cbd/                 # 🚀 CBD: High-Performance Vector Database
+│   ├── cnd/                 # 🗄️ CND: Multi-Paradigm Enterprise Database
 ├── .github/                 # CI/CD workflows and templates
 ├── .vscode/                 # VS Code configuration
 ├── .agent/                  # AI agent configuration and memory
 ├── scripts/                 # Automation and integration scripts
 ├── docs/                    # Documentation
 │   ├── MCP_ECOSYSTEM_COMPLETE.md  # Complete MCP documentation
+├── CBD_ECOSYSTEM.md         # 🚀 CBD Database System Documentation
+├── CND_ECOSYSTEM.md         # 🗄️ CND Database Platform Documentation
 ├── package.json             # Root workspace configuration
 ├── turbo.json               # Turborepo pipeline configuration
 ├── projects.index.json      # Central app registry (40 projects)

@@ -659,11 +659,11 @@ export class CNDHubService {
             return {
                 status: 'operational',
                 services: {
-                    registered: parseInt(servicesCount.data[0].count),
-                    healthy: parseInt(healthyServices.data[0].count),
+                    registered: parseInt(servicesCount.data?.[0]?.count || '0'),
+                    healthy: parseInt(healthyServices.data?.[0]?.count || '0'),
                 },
                 crossServiceRequests: {
-                    lastHour: parseInt(recentRequests.data[0].count),
+                    lastHour: parseInt(recentRequests.data?.[0]?.count || '0'),
                 },
                 hubService: {
                     uptime: process.uptime(),

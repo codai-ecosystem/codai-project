@@ -7,3 +7,5 @@ onlyBuiltDependencies:
   - '@prisma/engines'
   - better-sqlite3
   - prisma
+overrides:
+  '@codai/shared-ui': link:../../packages/shared-ui

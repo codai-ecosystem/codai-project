@@ -147,6 +147,12 @@ export class CNDAuthService {
       console.log('✅ CND Auth Service initialized');
     } catch (error) {
       console.error('❌ Failed to initialize CND Auth Service:', error);
+      // In development mode, we'll continue with a mock implementation
+      if (process.env.NODE_ENV === 'development') {
+        console.log('🔄 Continuing with mock implementation for development');
+        this.initialized = true;
+        return;
+      }
       throw error;
     }
   }

@@ -1,6 +1,11 @@
 import { NextResponse, type NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
+  // Skip authentication for health endpoints
+  if (request.nextUrl.pathname === '/api/health') {
+    return NextResponse.next()
+  }
+
   // Check if user is accessing protected routes
   if (request.nextUrl.pathname.startsWith('/dashboard') ||
     request.nextUrl.pathname.startsWith('/memories') ||
@@ -11,7 +16,7 @@ export function middleware(request: NextRequest) {
 
     if (!token) {
       // Redirect to centralized login
-      const loginUrl = new URL('http://localhost:4800/login')
+      const loginUrl = new URL('http://localhost:4004/login')
       loginUrl.searchParams.set('redirect', request.url)
       return NextResponse.redirect(loginUrl)
     }

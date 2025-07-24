@@ -1,19 +1,19 @@
 /**
- * CND-Enhanced Health Check for ID Service
- * Phase 2 Implementation: Service health monitoring
+ * Real Authentication Health Check for ID Service
+ * Using SimpleAuthService with real data storage
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { CNDAuthService } from '@/services/cnd-auth';
+import { SimpleAuthService } from '@/services/simple-auth';
 
-let cndAuthService: CNDAuthService | null = null;
+let authService: SimpleAuthService | null = null;
 
-async function getCNDAuthService(): Promise<CNDAuthService> {
-  if (!cndAuthService) {
-    cndAuthService = new CNDAuthService();
-    await cndAuthService.initialize();
+async function getAuthService(): Promise<SimpleAuthService> {
+  if (!authService) {
+    authService = new SimpleAuthService();
+    await authService.initialize();
   }
-  return cndAuthService;
+  return authService;
 }
 
 export async function GET(request: NextRequest) {
@@ -23,26 +23,26 @@ export async function GET(request: NextRequest) {
     // Basic service info
     const serviceInfo = {
       service: 'id-service',
-      version: '2.0.0-cnd',
-      description: 'CODAI Identity and Authentication Service - CND Enhanced',
+      version: '2.0.0-real',
+      description: 'CODAI Identity and Authentication Service - Real Implementation',
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
       nodeVersion: process.version,
       environment: process.env.NODE_ENV || 'development'
     };
 
-    // Check CND Auth Service health
-    let cndHealth;
+    // Check Auth Service health
+    let authHealth;
     let authServiceStatus = 'unknown';
 
     try {
-      const authService = await getCNDAuthService();
-      cndHealth = await authService.getHealthStatus();
-      authServiceStatus = cndHealth.status;
+      const authService = await getAuthService();
+      authHealth = await authService.getHealthStatus();
+      authServiceStatus = authHealth.status;
     } catch (error) {
-      cndHealth = {
+      authHealth = {
         status: 'error',
-        error: error.message
+        error: error instanceof Error ? error.message : 'Unknown error'
       };
       authServiceStatus = 'error';
     }
@@ -56,9 +56,9 @@ export async function GET(request: NextRequest) {
       status: isHealthy ? 'healthy' : 'unhealthy',
       responseTime,
       checks: {
-        cndAuth: {
+        auth: {
           status: authServiceStatus,
-          details: cndHealth
+          details: authHealth
         },
         memory: {
           status: 'healthy',
@@ -69,17 +69,17 @@ export async function GET(request: NextRequest) {
         cpu: {
           status: 'healthy',
           usage: process.cpuUsage(),
-          loadAverage: process.platform !== 'win32' ? process.loadavg() : [0, 0, 0]
+          loadAverage: process.platform !== 'win32' && 'loadavg' in process ? (process as any).loadavg() : [0, 0, 0]
         }
       },
       features: [
-        'cnd-authentication',
+        'real-authentication',
         'user-management',
         'session-management',
         'audit-logging',
         'metrics-monitoring',
-        'jwt-tokens',
-        'oauth2-ready'
+        'file-based-storage',
+        'jwt-tokens'
       ],
       endpoints: {
         login: '/api/auth/login',
@@ -94,10 +94,10 @@ export async function GET(request: NextRequest) {
     const response = NextResponse.json(healthData, { status: statusCode });
 
     // Add health check headers
-    response.headers.set('X-Health-Check', 'CND-Enhanced');
+    response.headers.set('X-Health-Check', 'Real-Auth-Service');
     response.headers.set('X-Service-Name', 'id-service');
-    response.headers.set('X-Service-Version', '2.0.0-cnd');
-    response.headers.set('X-CND-Status', authServiceStatus);
+    response.headers.set('X-Service-Version', '2.0.0-real');
+    response.headers.set('X-Auth-Status', authServiceStatus);
     response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
 
     return response;
@@ -109,12 +109,12 @@ export async function GET(request: NextRequest) {
       service: 'id-service',
       status: 'error',
       timestamp: new Date().toISOString(),
-      error: error.message,
+      error: error instanceof Error ? error.message : 'Unknown error',
       uptime: process.uptime(),
       checks: {
-        cndAuth: {
+        auth: {
           status: 'error',
-          error: error.message
+          error: error instanceof Error ? error.message : 'Unknown error'
         }
       }
     };
@@ -126,7 +126,7 @@ export async function GET(request: NextRequest) {
 // HEAD request for simple health ping
 export async function HEAD(request: NextRequest) {
   try {
-    const authService = await getCNDAuthService();
+    const authService = await getAuthService();
     const health = await authService.getHealthStatus();
 
     const isHealthy = health.status === 'healthy';
@@ -136,7 +136,7 @@ export async function HEAD(request: NextRequest) {
 
     response.headers.set('X-Health-Status', health.status);
     response.headers.set('X-Service-Name', 'id-service');
-    response.headers.set('X-CND-Enhanced', 'true');
+    response.headers.set('X-Real-Auth', 'true');
 
     return response;
   } catch (error) {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { SimpleAuthService } from '@/services/simple-auth'
 import { z } from 'zod'
 import crypto from 'crypto'
 
@@ -15,10 +15,12 @@ export async function POST(request: NextRequest) {
     const validatedData = forgotPasswordSchema.parse(body)
     const { email } = validatedData
 
+    // Initialize auth service
+    const authService = new SimpleAuthService()
+    await authService.ensureInitialized()
+
     // Find user
-    const user = await prisma.user.findUnique({
-      where: { email }
-    })
+    const user = await authService.findUserByEmail(email)
 
     // Always return success to prevent email enumeration attacks
     if (!user) {
@@ -35,7 +37,7 @@ export async function POST(request: NextRequest) {
     // Store reset token (in a production app, you'd save this to database)
     // For now, we'll just log it - in production use proper email service
     console.log(`Password reset token for ${email}: ${resetToken}`)
-    console.log(`Reset link: http://localhost:4800/reset-password?token=${resetToken}`)
+    console.log(`Reset link: http://localhost:4004/reset-password?token=${resetToken}`)
 
     // In a real application, you would:
     // 1. Save the reset token and expiry to the database

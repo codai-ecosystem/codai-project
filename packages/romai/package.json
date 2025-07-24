@@ -1,6 +1,6 @@
 {
   "name": "@codai/romai",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Universal Romanian Intelligence Service for CODAI Ecosystem",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -43,6 +43,6 @@
     "README.md"
   ],
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   }
 }

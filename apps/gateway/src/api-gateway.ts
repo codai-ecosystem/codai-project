@@ -12,7 +12,7 @@ import swaggerUi from 'swagger-ui-express';
 import { z } from 'zod';
 
 const app = express();
-const PORT = process.env.GATEWAY_PORT || 4000;
+const PORT = parseInt(process.env.GATEWAY_PORT || '4000', 10);
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 // Enhanced security setup for gateway
@@ -66,28 +66,28 @@ interface ServiceConfig {
 }
 
 const serviceRegistry: Record<string, ServiceConfig> = {
-    // Core Services
-    'id': {
-        name: 'ID Service',
+    // Core Services - CORRECTED PORT MAPPINGS
+    'codai': {
+        name: 'CODAI Service',
         url: 'http://localhost:4001',
         port: 4001,
-        path: '/api/v1/id',
-        healthPath: '/health',
+        path: '/api/v1/codai',
+        healthPath: '/health', // CODAI uses /health NOT /api/health
         isHealthy: true,
         lastHealthCheck: new Date(),
-        description: 'Authentication and user management',
+        description: 'AI-native development platform',
         version: '1.0.0',
         category: 'core'
     },
-    'memorai': {
-        name: 'MEMORAI Service',
+    'admin': {
+        name: 'ADMIN Service',
         url: 'http://localhost:4002',
         port: 4002,
-        path: '/api/v1/memorai',
-        healthPath: '/health',
+        path: '/api/v1/admin',
+        healthPath: '/api/health', // Admin uses /api/health
         isHealthy: true,
         lastHealthCheck: new Date(),
-        description: 'Memory storage and recall',
+        description: 'Administration and user management',
         version: '1.0.0',
         category: 'core'
     },
@@ -96,57 +96,31 @@ const serviceRegistry: Record<string, ServiceConfig> = {
         url: 'http://localhost:4003',
         port: 4003,
         path: '/api/v1/hub',
-        healthPath: '/health',
+        healthPath: '/api/health', // Hub uses /api/health
         isHealthy: true,
         lastHealthCheck: new Date(),
         description: 'Service discovery and routing',
         version: '1.0.0',
         category: 'core'
     },
-    'logai': {
-        name: 'LOGAI Service',
+    'id': {
+        name: 'ID Service',
         url: 'http://localhost:4004',
         port: 4004,
-        path: '/api/v1/logai',
-        healthPath: '/health',
-        isHealthy: true,
+        path: '/api/v1/id',
+        healthPath: '/api/health', // ID uses /api/health but returns 503 (cndAuth issue)
+        isHealthy: false, // Currently unhealthy due to cndAuth not_initialized
         lastHealthCheck: new Date(),
-        description: 'Logging and analytics',
-        version: '1.0.0',
-        category: 'utility'
-    },
-    'admin': {
-        name: 'ADMIN Service',
-        url: 'http://localhost:4005',
-        port: 4005,
-        path: '/api/v1/admin',
-        healthPath: '/health',
-        isHealthy: true,
-        lastHealthCheck: new Date(),
-        description: 'User and system administration',
-        version: '1.0.0',
+        description: 'Authentication and identity management',
+        version: '2.0.0-cnd',
         category: 'core'
-    },
-
-    // Business Platform Services
-    'codai': {
-        name: 'CODAI Service',
-        url: 'http://localhost:4006',
-        port: 4006,
-        path: '/api/v1/codai',
-        healthPath: '/health',
-        isHealthy: true,
-        lastHealthCheck: new Date(),
-        description: 'Platform and project management',
-        version: '1.0.0',
-        category: 'business'
     },
     'bancai': {
         name: 'BANCAI Service',
-        url: 'http://localhost:4007',
-        port: 4007,
+        url: 'http://localhost:4005',
+        port: 4005,
         path: '/api/v1/bancai',
-        healthPath: '/health',
+        healthPath: '/api/health', // BancAI uses /api/health
         isHealthy: true,
         lastHealthCheck: new Date(),
         description: 'Financial services and banking',
@@ -200,6 +174,18 @@ const serviceRegistry: Record<string, ServiceConfig> = {
         description: 'Content creation and templates',
         version: '1.0.0',
         category: 'business'
+    },
+    'memorai': {
+        name: 'MEMORAI Service',
+        url: 'http://localhost:4006',
+        port: 4006,
+        path: '/api/v1/memorai',
+        healthPath: '/api/health', // MemorAI uses /api/health
+        isHealthy: true,
+        lastHealthCheck: new Date(),
+        description: 'Memory storage and recall system',
+        version: '7.2.1',
+        category: 'core'
     }
 };
 
@@ -302,8 +288,21 @@ const createServiceProxy = (serviceId: string) => {
     return createProxyMiddleware({
         target: serviceRegistry[serviceId].url,
         changeOrigin: true,
-        pathRewrite: {
-            [`^/api/v1/${serviceId}`]: '/api/v1'
+        pathRewrite: (path, req) => {
+            // Handle health endpoint specifically for each service
+            if (path.includes('/health')) {
+                return serviceRegistry[serviceId].healthPath;
+            }
+            // Handle ready endpoint
+            if (path.includes('/ready')) {
+                return '/ready';
+            }
+            // Handle docs endpoint
+            if (path.includes('/docs')) {
+                return '/docs';
+            }
+            // For other endpoints, rewrite /api/v1/serviceid to /api or root based on service
+            return path.replace(`/api/v1/${serviceId}`, '');
         },
         onProxyReq: (proxyReq, req, res) => {
             // Add custom headers

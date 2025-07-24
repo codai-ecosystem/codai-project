@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
-import { prisma } from '@/lib/prisma'
+import { SimpleAuthService } from '@/services/simple-auth'
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key'
 const JWT_ISSUER = process.env.OAUTH2_ISSUER || 'https://id.codai.ro'

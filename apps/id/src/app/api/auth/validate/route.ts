@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import jwt from 'jsonwebtoken'
-import { prisma } from '@/lib/prisma'
-
-const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key'
+import { SimpleAuthService } from '@/services/simple-auth'
 
 export async function GET(request: NextRequest) {
   try {
@@ -20,38 +17,27 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Verify token
-    const decoded = jwt.verify(token, JWT_SECRET) as any
+    // Initialize auth service
+    const authService = new SimpleAuthService()
+    await authService.ensureInitialized()
 
-    if (!decoded.userId) {
+    // Validate token
+    const validationResult = await authService.validateToken(token)
+
+    if (!validationResult.success || !validationResult.user) {
       return NextResponse.json(
-        { error: 'Invalid token format', isValid: false },
-        { status: 401 }
-      )
-    }
-
-    // Get fresh user data
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.userId },
-      include: {
-        preferences: true
-      }
-    })
-
-    if (!user) {
-      return NextResponse.json(
-        { error: 'User not found', isValid: false },
+        { error: 'Invalid or expired token', isValid: false },
         { status: 401 }
       )
     }
 
     // Return user data (without password)
     const userData = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      preferences: user.preferences
+      id: validationResult.user.id,
+      name: validationResult.user.profile?.name || validationResult.user.username,
+      email: validationResult.user.email,
+      username: validationResult.user.username,
+      profile: validationResult.user.profile
     }
 
     return NextResponse.json({
@@ -61,20 +47,6 @@ export async function GET(request: NextRequest) {
 
   } catch (error: any) {
     console.error('Token validation error:', error)
-
-    if (error.name === 'JsonWebTokenError') {
-      return NextResponse.json(
-        { error: 'Invalid token', isValid: false },
-        { status: 401 }
-      )
-    }
-
-    if (error.name === 'TokenExpiredError') {
-      return NextResponse.json(
-        { error: 'Token expired', isValid: false },
-        { status: 401 }
-      )
-    }
 
     return NextResponse.json(
       { error: 'Internal server error', isValid: false },

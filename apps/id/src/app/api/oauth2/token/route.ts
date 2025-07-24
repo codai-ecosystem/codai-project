@@ -3,7 +3,7 @@ import { z } from 'zod'
 import jwt from 'jsonwebtoken'
 import crypto from 'crypto'
 import { compare } from 'bcryptjs'
-import { prisma } from '@/lib/prisma'
+import { SimpleAuthService } from '@/services/simple-auth'
 
 // OAuth2 Token Request Schema
 const tokenSchema = z.object({

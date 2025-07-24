@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Identity and authentication",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev -p 4004",
     "build": "next build",

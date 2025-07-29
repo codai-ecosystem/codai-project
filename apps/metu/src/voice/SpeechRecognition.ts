@@ -168,9 +168,10 @@ export class SpeechRecognitionEngine {
      */
     private async initializeAzureOpenAI(): Promise<void> {
         try {
-            // Get real Azure OpenAI credentials from environment
-            const azureApiKey = process.env.AZURE_OPENAI_API_KEY
-            const azureEndpoint = process.env.AZURE_OPENAI_ENDPOINT
+            // Get real Azure OpenAI credentials from Electron API
+            const electronAPI = (window as any).electronAPI;
+            const azureApiKey = electronAPI?.env?.AZURE_OPENAI_API_KEY
+            const azureEndpoint = electronAPI?.env?.AZURE_OPENAI_ENDPOINT
 
             if (!azureApiKey || !azureEndpoint) {
                 throw new Error('Azure OpenAI credentials not found in environment variables')
@@ -501,13 +502,5 @@ export class SpeechRecognitionEngine {
             }
             this.mediaRecorder = null
         }
-    }
-}
-
-// Extend window for TypeScript
-declare global {
-    interface Window {
-        SpeechRecognition: SpeechRecognitionConstructor
-        webkitSpeechRecognition: SpeechRecognitionConstructor
     }
 }

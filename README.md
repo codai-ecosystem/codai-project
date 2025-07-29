@@ -8,6 +8,200 @@ The Codai OS is a production-ready monorepo orchestration system designed to man
 **MCP Infrastructure**: 6 Core + 3 External = 9 MCP Servers with 50+ AI tools  
 **Validation**: ✅ PASSED - World-class AI ecosystem with complete MCP integration
 
+## 🧠 Azure AI Services Complete Architecture
+
+The CODAI ecosystem supports **Azure AI Services** with access to **1900+ AI models** from multiple providers. Complete deployment guide and automation tools available.
+
+📖 **[Complete Deployment Guide](docs/AZURE_AI_SERVICES_COMPLETE_GUIDE.md)** | 🛠️ **[Automation Scripts](scripts/)** | 🏗️ **[Infrastructure as Code](infrastructure/azure-ai-services.bicep)**
+
+### 📊 Service Architecture Overview
+
+| Service | Purpose | Models | Deployment Method |
+|---------|---------|--------|------------------|
+| **Azure AI Foundry** | Primary AI service (recommended) | 16 Azure OpenAI + Serverless open source | Standard |
+| **Azure AI Hub** | Advanced ML & open source models | 1900+ models (Meta, Mistral, Cohere, HF) | Managed Compute |
+| **Azure OpenAI** | Specialized OpenAI-only access | 16 Azure OpenAI models | Standard + Provisioned |
+| **Azure AI Search** | RAG & intelligent search | Vector & semantic search | Standard |
+
+### 🚀 Quick Deployment Options
+
+#### 1. Automated CLI Deployment (Recommended)
+```bash
+# PowerShell (Windows)
+.\scripts\deploy-azure-ai-services.ps1
+
+# Bash (Linux/macOS/WSL)  
+./scripts/deploy-azure-ai-services.sh
+
+# Custom deployment
+.\scripts\deploy-azure-ai-services.ps1 -ProjectName "codai" -Location "your-region"
+```
+
+#### 2. Infrastructure as Code (Bicep)
+```bash
+az deployment group create \
+  --template-file infrastructure/azure-ai-services.bicep \
+  --parameters projectName=codai environment=prod
+```
+
+### 🎯 Azure OpenAI Models (16 Total)
+
+Deploy using simple naming convention: `{model-name}` (no environment suffixes).
+
+#### Tier 1: Critical Priority
+
+#### 1. GPT-4o - Primary Multimodal AI
+```
+Deployment Name: gpt-4o
+Model: gpt-4o (2024-11-20)
+Purpose: Primary conversational AI with advanced multimodal capabilities
+Used By: METU voice assistant, main chat interfaces, core AI operations
+Capabilities: Chat, Voice, Vision, Function-calling, Structured outputs
+Max Tokens: 131,072 input / 16,384 output
+```
+
+#### 2. GPT-4o Realtime - Ultra-Low Latency Voice
+```
+Deployment Name: gpt-4o-realtime
+Model: gpt-4o-realtime-preview (2024-10-01)
+Purpose: Real-time voice conversations with ultra-low latency
+Used By: METU real-time voice, interactive voice applications
+Capabilities: Real-time voice, Function-calling, Streaming
+Max Tokens: 131,072 input / 16,384 output
+```
+
+#### 3. Whisper - Speech Recognition
+```
+Deployment Name: whisper
+Model: whisper (001)
+Purpose: Speech-to-text transcription for voice interfaces
+Used By: METU voice input, audio processing services
+Capabilities: Speech-to-text, Multilingual, Real-time
+```
+
+#### 4. TTS & TTS-HD - Voice Synthesis
+```
+Deployment Name: tts, tts-hd
+Models: tts (001), tts-hd (001)
+Purpose: Text-to-speech for voice responses (standard & high-definition)
+Used By: METU voice responses, premium voice experiences
+Voices: alloy, echo, fable, onyx, nova, shimmer
+```
+
+### 🧠 Tier 2: Advanced Reasoning
+
+#### 5. o1-preview - Advanced Reasoning
+```
+Deployment Name: o1-preview
+Model: o1-preview (2024-09-12)
+Purpose: Advanced reasoning and complex problem solving
+Capabilities: Chain-of-thought reasoning, Complex mathematical problems
+Max Tokens: 128,000 input / 32,768 output
+```
+
+#### 6. o1-mini - Cost-Effective Reasoning
+```
+Deployment Name: o1-mini
+Model: o1-mini (2024-09-12)
+Purpose: Cost-effective reasoning for lighter tasks
+Capabilities: Reasoning, Problem-solving, Educational applications
+Max Tokens: 128,000 input / 65,536 output
+```
+
+#### 7. GPT-4o-mini - Fast Multimodal
+```
+Deployment Name: gpt-4o-mini
+Model: gpt-4o-mini (2024-07-18)
+Purpose: Fast, cost-effective multimodal model
+Capabilities: Chat, Vision, Audio, Function-calling, High-volume processing
+Max Tokens: 131,072 input / 16,384 output
+```
+
+### 🔧 Tier 3: Specialized Models
+
+#### 8-10. GPT-4 Turbo & GPT-3.5 Variants
+- **gpt-4-turbo**: GPT-4 Turbo with vision (legacy compatibility)
+- **gpt-35-turbo**: Cost-effective chat model for high-volume requests
+- **gpt-35-turbo-instruct**: Instruction-following model for specific tasks
+
+### 📊 Tier 4: Embedding Models
+
+#### 11-13. Text Embedding Suite
+- **text-embedding-3-large**: High-performance embeddings (3,072 dimensions)
+- **text-embedding-3-small**: Cost-effective embeddings (1,536 dimensions)
+- **text-embedding-ada-002**: Legacy embeddings for compatibility
+
+### � Tier 5: Creative Models
+
+#### 14. DALL-E-3 - Image Generation
+```
+Deployment Name: dall-e-3
+Model: dall-e-3 (3.0)
+Purpose: High-quality image generation for UI/UX and creative content
+Used By: Astral animations for METU, UI design, marketing materials
+```
+
+#### 15. SORA - Video Generation ⭐ NEW
+```
+Deployment Name: sora
+Model: sora (2025-05-02)
+Purpose: Video generation and editing capabilities
+Used By: Dynamic visual content, animated UI elements, marketing videos
+Note: Limited availability - check region support
+```
+
+### 🌍 Regional Deployment Strategy
+
+**🏆 Recommended Region: Sweden Central**
+- Broadest model availability (13/16 models)
+- Includes all advanced models: o1-preview, o1-mini, SORA, TTS-HD
+- Best for comprehensive AI ecosystem deployment
+
+**Alternative Regions:**
+- **East US**: Good coverage for most models
+- **East US 2**: SORA availability + core models
+- **North Central US**: Strong TTS/voice model support
+
+### 📝 Quick Deployment Checklist
+
+1. **Create deployments in Azure OpenAI Studio**
+2. **Use simple naming**: `gpt-4o`, `whisper`, `tts`, etc.
+3. **Start with Tier 1 models** for immediate functionality
+4. **Deploy embeddings** for semantic search capabilities
+5. **Add creative models** for enhanced features
+
+### 🔧 Environment Configuration
+
+Update your `.env` file:
+
+```env
+# Primary models
+AZURE_OPENAI_API_DEPLOYMENT_NAME=gpt-4o
+AZURE_OPENAI_REALTIME_DEPLOYMENT_NAME=gpt-4o-realtime
+AZURE_OPENAI_WHISPER_DEPLOYMENT_NAME=whisper
+AZURE_OPENAI_TTS_DEPLOYMENT_NAME=tts
+
+# Advanced reasoning
+AZURE_OPENAI_O1_DEPLOYMENT_NAME=o1-preview
+AZURE_OPENAI_O1_MINI_DEPLOYMENT_NAME=o1-mini
+
+# Embeddings
+AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME=text-embedding-3-large
+
+# Creative
+AZURE_OPENAI_DALLE_DEPLOYMENT_NAME=dall-e-3
+AZURE_OPENAI_SORA_DEPLOYMENT_NAME=sora
+```
+
+### � Cost Optimization
+
+- **Fallback Chain**: gpt-4o → gpt-4o-mini → gpt-4-turbo → gpt-35-turbo
+- **Embedding Chain**: text-embedding-3-large → text-embedding-3-small
+- **Voice Quality**: tts-hd for premium, tts for standard use
+- **Reasoning**: o1-preview for complex tasks, o1-mini for lighter reasoning
+
+> **📋 Complete Configuration**: See `config/azure-openai-deployments.json` for detailed deployment specifications, regional availability, use cases, and monitoring setup.
+
 ## 🏗️ Architecture
 
 ```
@@ -60,9 +254,20 @@ codai-project/
 - **6 Core MCP Servers**: AI, BancAI, ControlAI, ConversAI, StocAI, TalentAI
 - **3 External MCP Servers**: Glass, Memorai, Romai (ports 8001-8003)
 - **50+ AI Tools**: Specialized tools for development, business, and automation
-- **Azure OpenAI Integration**: Enterprise-grade AI capabilities
+- **Azure OpenAI Integration**: Enterprise-grade AI capabilities with 8+ model deployments
 - **VS Code Optimized**: stdio transport for seamless IDE integration
 - **Documentation**: See `docs/MCP_ECOSYSTEM_COMPLETE.md` for full details
+
+### Azure OpenAI Model Deployments ✅ ENTERPRISE READY
+- **16 Total Models**: Complete Azure OpenAI catalog including advanced models
+- **Tier 1 Critical**: GPT-4o, GPT-4o-Realtime, Whisper, TTS, TTS-HD (voice + multimodal)
+- **Tier 2 Reasoning**: o1-preview, o1-mini, GPT-4o-mini (advanced reasoning)
+- **Tier 3 Specialized**: GPT-4-Turbo, GPT-3.5-turbo variants (specialized tasks)
+- **Tier 4 Embeddings**: Text-embedding-3-large, 3-small, ADA-002 (semantic search)
+- **Tier 5 Creative**: DALL-E-3, SORA (image + video generation)
+- **Deployment Naming**: Simple convention without dev/prod suffixes
+- **Recommended Region**: Sweden Central (broadest model availability)
+- **Configuration**: See `config/azure-openai-deployments.json` for complete setup
 
 ### Quick Health Check
 ```bash

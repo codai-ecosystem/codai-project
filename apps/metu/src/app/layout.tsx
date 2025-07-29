@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Metu - CODAI Ecosystem',
-  description: 'Part of the CODAI ecosystem',
+  title: 'METU - Voice AI Assistant',
+  description: 'Intelligent voice assistant powered by Advanced AI',
 };
 
 export default function RootLayout({
@@ -13,7 +13,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="antialiased">
+        {children}
+      </body>
     </html>
   );
 }

@@ -1,0 +1,46 @@
+# Simple Production Dockerfile for METU Application
+FROM node:20-alpine
+
+# Install system dependencies
+RUN apk add --no-cache curl
+
+# Set working directory
+WORKDIR /app
+
+# Copy package.json and install dependencies
+COPY package*.json ./
+RUN npm ci --only=production && npm cache clean --force
+
+# Copy built application (assuming Next.js build is done locally)
+COPY .next ./.next
+COPY public ./public
+COPY src ./src
+COPY next.config.js ./
+
+# Create non-root user
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
+
+# Set ownership
+RUN chown -R nextjs:nodejs /app
+
+# Switch to non-root user
+USER nextjs
+
+# Expose ports
+EXPOSE 4400
+EXPOSE 4402
+EXPOSE 5353/udp
+
+# Environment variables
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=4400
+ENV HOSTNAME="0.0.0.0"
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD curl -f http://localhost:4400/health || exit 1
+
+# Start the production server
+CMD ["node", "src/server/index.js"]

@@ -1,6 +1,8 @@
 import { app, BrowserWindow, ipcMain, dialog, shell, Menu } from 'electron'
 import { join } from 'path'
-import { is } from '@electron-toolkit/utils'
+
+// Simple development detection (replaces @electron-toolkit/utils)
+const isDev = process.env.NODE_ENV === 'development' || !app.isPackaged
 
 /**
  * METU Electron Main Process
@@ -33,7 +35,7 @@ function createWindow(): void {
         darkTheme: true,
         icon: join(__dirname, '../../resources/icon.png'),
         webPreferences: {
-            preload: join(__dirname, '../preload/index.js'),
+            preload: join(__dirname, '../preload/index.mjs'),
             nodeIntegration: false, // Security: Disable node integration
             contextIsolation: true, // Security: Enable context isolation
             allowRunningInsecureContent: false, // Security: Block insecure content
@@ -53,7 +55,7 @@ function createWindow(): void {
             mainWindow.focus()
 
             // Open DevTools in development
-            if (is.dev) {
+            if (isDev) {
                 mainWindow.webContents.openDevTools()
             }
         }
@@ -94,7 +96,7 @@ function createWindow(): void {
     })
 
     // Load the application
-    if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
+    if (isDev && process.env['ELECTRON_RENDERER_URL']) {
         // Development mode: Load from dev server
         mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
     } else {
@@ -350,7 +352,7 @@ if (process.platform === 'darwin') {
 // Handle certificate errors
 app.on('certificate-error', (event, _webContents, url, _error, _certificate, callback) => {
     // In development, ignore certificate errors for localhost
-    if (is.dev && url.includes('localhost')) {
+    if (isDev && url.includes('localhost')) {
         event.preventDefault()
         callback(true)
     } else {

@@ -10,7 +10,7 @@
     }
 
     body {
-        @apply h-full m-0 p-0 font-sans antialiased bg-gray-900 text-white overflow-hidden;
+        @apply min-h-full m-0 p-0 font-sans antialiased bg-gray-900 text-white overflow-x-hidden overflow-y-auto;
     }
 
     #root {

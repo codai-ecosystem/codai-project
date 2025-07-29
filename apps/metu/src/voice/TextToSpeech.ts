@@ -103,9 +103,10 @@ export class TextToSpeechEngine {
      */
     private async initializeAzureOpenAI(): Promise<void> {
         try {
-            // Get Azure OpenAI credentials from environment
-            const azureKey = process.env.AZURE_OPENAI_API_KEY
-            const azureEndpoint = process.env.AZURE_OPENAI_ENDPOINT
+            // Get Azure OpenAI credentials from Electron API
+            const electronAPI = (window as any).electronAPI;
+            const azureKey = electronAPI?.env?.AZURE_OPENAI_API_KEY
+            const azureEndpoint = electronAPI?.env?.AZURE_OPENAI_ENDPOINT
 
             if (!azureKey || !azureEndpoint) {
                 throw new Error('Azure OpenAI API key or endpoint not found in environment variables')

@@ -6,7 +6,16 @@ export default defineConfig({
     main: {
         plugins: [externalizeDepsPlugin()],
         build: {
-            outDir: 'dist/main'
+            lib: {
+                entry: 'src/main/index.ts'
+            },
+            outDir: 'dist/main',
+            rollupOptions: {
+                output: {
+                    format: 'cjs',
+                    entryFileNames: 'index.cjs'
+                }
+            }
         },
         resolve: {
             alias: {
@@ -21,7 +30,16 @@ export default defineConfig({
     preload: {
         plugins: [externalizeDepsPlugin()],
         build: {
-            outDir: 'dist/preload'
+            lib: {
+                entry: 'src/preload/index.ts'
+            },
+            outDir: 'dist/preload',
+            rollupOptions: {
+                output: {
+                    format: 'es',
+                    entryFileNames: 'index.mjs'
+                }
+            }
         },
         resolve: {
             alias: {
@@ -35,8 +53,7 @@ export default defineConfig({
         build: {
             outDir: 'dist/renderer',
             rollupOptions: {
-                input: 'src/renderer/index.html',
-                external: ['react', 'react-dom', 'react/jsx-runtime']
+                input: 'src/renderer/index.html'
             }
         },
         server: {

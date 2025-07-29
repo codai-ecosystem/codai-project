@@ -1,0 +1,344 @@
+{
+    "azureAIEcosystem": {
+        "overview": "Complete Azure AI service architecture for CODAI ecosystem with 1900+ models",
+        "recommendedRegion": "your-region",
+        "totalModels": "1900+",
+        "lastUpdated": "2025-07-25"
+    },
+    "requiredAzureServices": {
+        "primary": {
+            "azureAIFoundry": {
+                "name": "Azure AI Foundry",
+                "type": "Microsoft.CognitiveServices/accounts",
+                "kind": "AIServices",
+                "purpose": "Primary AI service resource - recommended for most applications",
+                "capabilities": [
+                    "Agent service access",
+                    "Serverless model deployments",
+                    "Azure OpenAI integration",
+                    "Model evaluations",
+                    "Project organization",
+                    "Unified API endpoint"
+                ],
+                "pricing": "Pay-as-you-go for API calls",
+                "deployment": "Standard deployment option",
+                "cli": "az deployment group create --template-file ai-foundry.bicep"
+            },
+            "azureAIHub": {
+                "name": "Azure AI Hub",
+                "type": "Microsoft.MachineLearningServices/workspaces",
+                "kind": "Hub",
+                "purpose": "Advanced AI resource for open source models and ML capabilities",
+                "capabilities": [
+                    "Open source model hosting",
+                    "Model fine-tuning",
+                    "Managed compute deployments",
+                    "Azure Machine Learning integration",
+                    "Custom model deployments",
+                    "Enterprise security features"
+                ],
+                "pricing": "Compute-based billing for managed endpoints",
+                "deployment": "Managed compute deployment",
+                "cli": "az deployment group create --template-file ai-hub.bicep",
+                "note": "Automatically provisions Azure AI Foundry resource"
+            },
+            "azureOpenAI": {
+                "name": "Azure OpenAI",
+                "type": "Microsoft.CognitiveServices/accounts",
+                "kind": "OpenAI",
+                "purpose": "Specialized resource for OpenAI models only",
+                "capabilities": [
+                    "OpenAI models (GPT, DALL-E, Whisper, TTS)",
+                    "Fine-tuning",
+                    "Content filtering",
+                    "Batch processing",
+                    "Dedicated access"
+                ],
+                "pricing": "Token-based pricing",
+                "deployment": "Standard + Provisioned Throughput",
+                "cli": "az cognitiveservices account create --kind OpenAI",
+                "note": "Subset of AI Foundry capabilities, OpenAI-specific"
+            },
+            "azureAISearch": {
+                "name": "Azure AI Search",
+                "type": "Microsoft.Search/searchServices",
+                "purpose": "Intelligent search and RAG (Retrieval-Augmented Generation)",
+                "capabilities": [
+                    "Vector search",
+                    "Semantic search",
+                    "Knowledge mining",
+                    "RAG pattern support",
+                    "Document indexing",
+                    "AI-powered search"
+                ],
+                "pricing": "Based on search units and storage",
+                "deployment": "Standard search service",
+                "cli": "az search service create"
+            }
+        }
+    },
+    "modelCatalog": {
+        "totalAvailable": "1900+",
+        "categories": {
+            "azureOpenAI": {
+                "provider": "Microsoft/OpenAI",
+                "count": 16,
+                "support": "First-party Microsoft support",
+                "deployment": [
+                    "Standard",
+                    "Provisioned"
+                ],
+                "models": [
+                    "gpt-4o",
+                    "gpt-4o-realtime",
+                    "gpt-4o-mini",
+                    "o1-preview",
+                    "o1-mini",
+                    "gpt-4-turbo",
+                    "gpt-35-turbo",
+                    "gpt-35-turbo-instruct",
+                    "text-embedding-3-large",
+                    "text-embedding-3-small",
+                    "text-embedding-ada-002",
+                    "dall-e-3",
+                    "sora",
+                    "whisper",
+                    "tts",
+                    "tts-hd"
+                ]
+            },
+            "metaLlama": {
+                "provider": "Meta",
+                "models": [
+                    "Llama-3.3-70B-Instruct",
+                    "Llama-3.1-8B-Instruct",
+                    "Llama-3.1-70B-Instruct",
+                    "Llama-3.1-405B-Instruct",
+                    "Llama-2-7B",
+                    "Llama-2-13B",
+                    "Llama-2-70B"
+                ],
+                "deployment": [
+                    "Serverless API",
+                    "Managed Compute"
+                ],
+                "pricing": "Pay-as-you-go or compute-based"
+            },
+            "mistralAI": {
+                "provider": "Mistral AI",
+                "categories": {
+                    "premium": [
+                        "Mistral Large",
+                        "Mistral Small",
+                        "Mistral-OCR-2503",
+                        "Mistral Medium 3",
+                        "Ministral 3B"
+                    ],
+                    "open": [
+                        "Mistral-small-2503",
+                        "Codestral-2501",
+                        "Mistral Nemo",
+                        "Mixtral-8x7B-Instruct",
+                        "Mistral-7B-Instruct"
+                    ]
+                },
+                "deployment": [
+                    "Serverless API",
+                    "Managed Compute"
+                ],
+                "pricing": "Pay-as-you-go or self-hosted"
+            },
+            "cohere": {
+                "provider": "Cohere",
+                "models": [
+                    "Cohere Command R+",
+                    "Cohere Command R",
+                    "Cohere Embed"
+                ],
+                "deployment": [
+                    "Serverless API"
+                ],
+                "pricing": "Pay-as-you-go"
+            },
+            "huggingFace": {
+                "provider": "Hugging Face",
+                "count": "Hundreds",
+                "deployment": [
+                    "Managed Compute"
+                ],
+                "pricing": "Compute-based billing",
+                "support": "Community support via Hugging Face",
+                "categories": [
+                    "Foundation Models",
+                    "Small Language Models",
+                    "Multimodal Models",
+                    "Domain Specific Models",
+                    "Industry Models"
+                ]
+            },
+            "nvidiaNIM": {
+                "provider": "NVIDIA",
+                "models": [
+                    "Llama-3.3-70B-Instruct-NIM",
+                    "Llama-3.1-8B-Instruct-NIM",
+                    "Mistral-7B-Instruct-v0.3-NIM"
+                ],
+                "deployment": [
+                    "Managed Compute"
+                ],
+                "pricing": "Pay-as-you-go billing",
+                "features": [
+                    "Security scanning",
+                    "Enterprise-grade containers"
+                ]
+            },
+            "otherProviders": {
+                "deepseek": [
+                    "DeepSeek models"
+                ],
+                "xai": [
+                    "xAI models"
+                ],
+                "ai21labs": [
+                    "AI21 Labs models"
+                ],
+                "core42": [
+                    "Core42 models"
+                ],
+                "nttdata": [
+                    "NTT Data models"
+                ]
+            }
+        }
+    },
+    "deploymentOptions": {
+        "serverlessAPI": {
+            "description": "Pay-as-you-go API calls without infrastructure management",
+            "billing": "Per API call",
+            "useCase": "Variable workloads, experimentation, cost optimization",
+            "availability": "Regional deployments only",
+            "requirement": "Azure AI Hub resource",
+            "models": [
+                "Most non-OpenAI models",
+                "Premium Mistral",
+                "Meta Llama",
+                "Cohere"
+            ]
+        },
+        "managedCompute": {
+            "description": "Dedicated virtual machines for model hosting",
+            "billing": "Compute uptime + hourly rates",
+            "useCase": "Consistent high-volume workloads, custom models",
+            "availability": "Requires VM quota in subscription",
+            "requirement": "Azure AI Hub resource",
+            "models": [
+                "Hugging Face models",
+                "Open source models",
+                "NVIDIA NIM"
+            ]
+        },
+        "standardDeployment": {
+            "description": "Standard Azure AI Foundry model deployments",
+            "billing": "Token-based pricing",
+            "useCase": "Azure OpenAI models, production workloads",
+            "availability": "Regional, data zone, or global processing",
+            "requirement": "Azure AI Foundry resource",
+            "models": [
+                "All Azure OpenAI models",
+                "Flagship models"
+            ]
+        },
+        "provisionedThroughput": {
+            "description": "Reserved capacity for high-volume consistent workloads",
+            "billing": "Monthly reservation fees",
+            "useCase": "Predictable high-volume workloads",
+            "availability": "Regional deployments",
+            "requirement": "Azure AI Foundry resource",
+            "models": [
+                "Azure OpenAI models",
+                "Select flagship models"
+            ]
+        }
+    },
+    "recommendedArchitecture": {
+        "starter": {
+            "services": [
+                "Azure AI Foundry"
+            ],
+            "models": [
+                "Azure OpenAI models"
+            ],
+            "deployment": [
+                "Standard"
+            ],
+            "useCase": "Getting started, basic AI features"
+        },
+        "production": {
+            "services": [
+                "Azure AI Foundry",
+                "Azure AI Hub",
+                "Azure AI Search"
+            ],
+            "models": [
+                "Azure OpenAI + Open Source"
+            ],
+            "deployment": [
+                "Standard",
+                "Serverless API",
+                "Managed Compute"
+            ],
+            "useCase": "Full-featured AI applications with RAG"
+        },
+        "enterprise": {
+            "services": [
+                "Azure AI Foundry",
+                "Azure AI Hub",
+                "Azure AI Search",
+                "Azure OpenAI"
+            ],
+            "models": [
+                "Complete model catalog"
+            ],
+            "deployment": [
+                "All deployment options"
+            ],
+            "features": [
+                "Private networking",
+                "Customer-managed keys",
+                "Enterprise security"
+            ],
+            "useCase": "Large-scale enterprise AI platform"
+        }
+    },
+    "automationCLI": {
+        "azureCLI": {
+            "installation": "az extension add --name ai-foundry",
+            "commands": {
+                "createFoundry": "az cognitiveservices account create --kind AIServices",
+                "createHub": "az ml workspace create --kind Hub",
+                "createOpenAI": "az cognitiveservices account create --kind OpenAI",
+                "deployModel": "az ml model deploy",
+                "listModels": "az ml model list"
+            }
+        },
+        "bicepTemplates": {
+            "repository": "https://github.com/Azure-AI-Foundry/foundry-samples",
+            "templates": [
+                "00-basic: Basic AI Foundry setup",
+                "01-security: Network isolation + CMK encryption",
+                "02-enterprise: Full enterprise configuration"
+            ],
+            "deployment": "az deployment group create --template-file main.bicep"
+        },
+        "multiRegion": {
+            "strategy": "Deploy resources across multiple regions for redundancy",
+            "regions": [
+                "your-region",
+                "eastus",
+                "eastus2",
+                "westus3"
+            ],
+            "automation": "Use Bicep loops for multi-region deployment"
+        }
+    }
+}

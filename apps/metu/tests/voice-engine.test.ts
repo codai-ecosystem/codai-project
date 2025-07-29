@@ -8,6 +8,99 @@ import type { VoiceConfig } from '../src/types/voice'
  * Comprehensive test suite for the revolutionary voice interaction system.
  */
 
+// Mock Azure OpenAI SDK completely
+vi.mock('@azure/openai', () => ({
+    OpenAIClient: vi.fn().mockImplementation(() => ({
+        getChatCompletions: vi.fn().mockResolvedValue({
+            choices: [{ message: { content: 'Mocked response' } }]
+        }),
+        audio: {
+            transcriptions: {
+                create: vi.fn().mockResolvedValue({ text: 'mocked transcription' })
+            },
+            speech: {
+                create: vi.fn().mockResolvedValue({ body: 'mocked audio data' })
+            }
+        }
+    })),
+    AzureKeyCredential: vi.fn().mockImplementation(() => ({})),
+    AzureOpenAI: vi.fn().mockImplementation(() => ({
+        audio: {
+            transcriptions: {
+                create: vi.fn().mockResolvedValue({ text: 'mocked transcription' })
+            },
+            speech: {
+                create: vi.fn().mockResolvedValue({ body: 'mocked audio data' })
+            }
+        },
+        chat: {
+            completions: {
+                create: vi.fn().mockResolvedValue({
+                    choices: [{ message: { content: 'Mocked chat response' } }]
+                })
+            }
+        }
+    }))
+}))
+
+// Mock all voice engine dependencies
+vi.mock('../src/voice/SpeechRecognition', () => ({
+    SpeechRecognitionEngine: vi.fn().mockImplementation(() => ({
+        initialize: vi.fn().mockResolvedValue(true),
+        startListening: vi.fn().mockResolvedValue(true),
+        startContinuous: vi.fn().mockResolvedValue(true),
+        stop: vi.fn().mockResolvedValue(true),
+        stopListening: vi.fn().mockResolvedValue(true),
+        destroy: vi.fn().mockResolvedValue(true),
+        isListening: false,
+        on: vi.fn(),
+        off: vi.fn(),
+        emit: vi.fn()
+    }))
+}))
+
+vi.mock('../src/voice/AudioProcessor', () => ({
+    AudioProcessor: vi.fn().mockImplementation(() => ({
+        initialize: vi.fn().mockResolvedValue(true),
+        start: vi.fn().mockResolvedValue(true),
+        stop: vi.fn().mockResolvedValue(true),
+        processAudio: vi.fn().mockResolvedValue('processed audio'),
+        destroy: vi.fn().mockResolvedValue(true),
+        on: vi.fn(),
+        off: vi.fn(),
+        emit: vi.fn()
+    }))
+}))
+
+vi.mock('../src/voice/TextToSpeech', () => ({
+    TextToSpeechEngine: vi.fn().mockImplementation(() => ({
+        initialize: vi.fn().mockResolvedValue(true),
+        speak: vi.fn().mockResolvedValue(true),
+        stop: vi.fn().mockResolvedValue(true),
+        destroy: vi.fn().mockResolvedValue(true),
+        isSpeaking: false,
+        isPlaying: false,
+        currentPlaybackId: null,
+        on: vi.fn(),
+        off: vi.fn(),
+        emit: vi.fn()
+    }))
+}))
+
+vi.mock('../src/mcp/MCPManager', () => ({
+    MCPManager: vi.fn().mockImplementation(() => ({
+        initialize: vi.fn().mockResolvedValue(true),
+        destroy: vi.fn().mockResolvedValue(true),
+        connectedServers: ['PlaywrightMCPServer', 'MemoraiMCPServer', 'GlassMCPServer', 'RomaiUltimateMCPServer'],
+        on: vi.fn(),
+        off: vi.fn(),
+        emit: vi.fn()
+    }))
+}))
+
+// Environment variables are now loaded from vitest.config.ts
+// which reads real Azure OpenAI credentials from root .env file
+
 // Mock Web Speech API
 const mockSpeechRecognition = {
     start: vi.fn(),

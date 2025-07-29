@@ -1,0 +1,543 @@
+{
+    "environment": "development",
+    "endpoint": "https://aide-openai-dev.openai.azure.com/",
+    "apiVersion": "2025-04-01-preview",
+    "deploymentNamingConvention": "{model-name}",
+    "requiredDeployments": {
+        "tier1_critical": {
+            "gpt-4o": {
+                "deploymentName": "gpt-4o",
+                "modelName": "gpt-4o",
+                "version": "2024-11-20",
+                "purpose": "Primary conversational AI with multimodal capabilities",
+                "capabilities": [
+                    "chat",
+                    "voice",
+                    "vision",
+                    "function-calling",
+                    "structured-outputs"
+                ],
+                "usedBy": [
+                    "apps/metu (voice assistant)",
+                    "packages/romai-agi (core intelligence)",
+                    "apps/codai (main chat interface)",
+                    "Real-time voice conversations"
+                ],
+                "maxTokens": {
+                    "input": 131072,
+                    "output": 16384
+                },
+                "priority": "critical"
+            },
+            "gpt-4o-realtime-preview": {
+                "deploymentName": "gpt-4o-realtime",
+                "modelName": "gpt-4o-realtime-preview",
+                "version": "2024-10-01",
+                "purpose": "Real-time voice conversations with ultra-low latency",
+                "capabilities": [
+                    "real-time",
+                    "voice",
+                    "function-calling",
+                    "streaming"
+                ],
+                "usedBy": [
+                    "apps/metu (real-time voice)",
+                    "Real-time audio processing",
+                    "Interactive voice applications"
+                ],
+                "maxTokens": {
+                    "input": 131072,
+                    "output": 16384
+                },
+                "priority": "critical"
+            },
+            "whisper": {
+                "deploymentName": "whisper",
+                "modelName": "whisper",
+                "version": "001",
+                "purpose": "Speech-to-text transcription for voice interfaces",
+                "capabilities": [
+                    "speech-to-text",
+                    "multilingual",
+                    "real-time"
+                ],
+                "usedBy": [
+                    "apps/metu (voice input)",
+                    "Voice interaction components",
+                    "Audio processing services"
+                ],
+                "priority": "critical"
+            },
+            "tts": {
+                "deploymentName": "tts",
+                "modelName": "tts",
+                "version": "001",
+                "purpose": "Text-to-speech for voice responses",
+                "capabilities": [
+                    "text-to-speech",
+                    "multiple-voices",
+                    "real-time"
+                ],
+                "usedBy": [
+                    "apps/metu (voice responses)",
+                    "Voice interface components"
+                ],
+                "voices": [
+                    "alloy",
+                    "echo",
+                    "fable",
+                    "onyx",
+                    "nova",
+                    "shimmer"
+                ],
+                "priority": "critical"
+            },
+            "tts-hd": {
+                "deploymentName": "tts-hd",
+                "modelName": "tts-hd",
+                "version": "001",
+                "purpose": "High-definition text-to-speech for premium voice experiences",
+                "capabilities": [
+                    "text-to-speech",
+                    "high-quality",
+                    "multiple-voices"
+                ],
+                "usedBy": [
+                    "Premium voice experiences",
+                    "High-quality audio output",
+                    "Professional voice applications"
+                ],
+                "voices": [
+                    "alloy",
+                    "echo",
+                    "fable",
+                    "onyx",
+                    "nova",
+                    "shimmer"
+                ],
+                "priority": "high"
+            }
+        },
+        "tier2_reasoning": {
+            "o1-preview": {
+                "deploymentName": "o1-preview",
+                "modelName": "o1-preview",
+                "version": "2024-09-12",
+                "purpose": "Advanced reasoning and complex problem solving",
+                "capabilities": [
+                    "advanced-reasoning",
+                    "complex-problems",
+                    "chain-of-thought"
+                ],
+                "usedBy": [
+                    "Complex reasoning tasks",
+                    "Mathematical problem solving",
+                    "Advanced analysis workflows"
+                ],
+                "maxTokens": {
+                    "input": 128000,
+                    "output": 32768
+                },
+                "priority": "high"
+            },
+            "o1-mini": {
+                "deploymentName": "o1-mini",
+                "modelName": "o1-mini",
+                "version": "2024-09-12",
+                "purpose": "Cost-effective reasoning model for lighter tasks",
+                "capabilities": [
+                    "reasoning",
+                    "cost-effective",
+                    "problem-solving"
+                ],
+                "usedBy": [
+                    "Lightweight reasoning tasks",
+                    "Cost-optimized complex queries",
+                    "Educational applications"
+                ],
+                "maxTokens": {
+                    "input": 128000,
+                    "output": 65536
+                },
+                "priority": "medium"
+            },
+            "gpt-4o-mini": {
+                "deploymentName": "gpt-4o-mini",
+                "modelName": "gpt-4o-mini",
+                "version": "2024-07-18",
+                "purpose": "Fast, cost-effective multimodal model",
+                "capabilities": [
+                    "chat",
+                    "vision",
+                    "audio",
+                    "function-calling",
+                    "cost-effective"
+                ],
+                "usedBy": [
+                    "Quick multimodal queries",
+                    "Cost-optimized operations",
+                    "High-volume processing"
+                ],
+                "maxTokens": {
+                    "input": 131072,
+                    "output": 16384
+                },
+                "priority": "high"
+            }
+        },
+        "tier3_specialized": {
+            "gpt-4-turbo": {
+                "deploymentName": "gpt-4-turbo",
+                "modelName": "gpt-4",
+                "version": "turbo-2024-04-09",
+                "purpose": "GPT-4 Turbo with vision capabilities",
+                "capabilities": [
+                    "chat",
+                    "vision",
+                    "function-calling",
+                    "large-context"
+                ],
+                "usedBy": [
+                    "Legacy compatibility",
+                    "Vision-specific tasks",
+                    "Large context processing"
+                ],
+                "maxTokens": {
+                    "input": 128000,
+                    "output": 4096
+                },
+                "priority": "medium"
+            },
+            "gpt-35-turbo": {
+                "deploymentName": "gpt-35-turbo",
+                "modelName": "gpt-35-turbo",
+                "version": "0125",
+                "purpose": "Lightweight operations, quick responses, cost optimization",
+                "capabilities": [
+                    "chat",
+                    "function-calling",
+                    "fast-response",
+                    "cost-effective"
+                ],
+                "usedBy": [
+                    "Quick queries",
+                    "Cost-optimized operations",
+                    "High-volume requests"
+                ],
+                "maxTokens": {
+                    "input": 16385,
+                    "output": 4096
+                },
+                "priority": "medium"
+            },
+            "gpt-35-turbo-instruct": {
+                "deploymentName": "gpt-35-turbo-instruct",
+                "modelName": "gpt-35-turbo-instruct",
+                "version": "0914",
+                "purpose": "Instruction-following model for specific tasks",
+                "capabilities": [
+                    "instruction-following",
+                    "completion",
+                    "legacy-support"
+                ],
+                "usedBy": [
+                    "Specific instruction tasks",
+                    "Legacy application support",
+                    "Completion-based workflows"
+                ],
+                "maxTokens": {
+                    "input": 4096,
+                    "output": 4096
+                },
+                "priority": "low"
+            }
+        },
+        "tier4_embeddings": {
+            "text-embedding-3-large": {
+                "deploymentName": "text-embedding-3-large",
+                "modelName": "text-embedding-3-large",
+                "version": "1",
+                "purpose": "High-performance embeddings for advanced semantic search",
+                "capabilities": [
+                    "text-embedding",
+                    "high-performance",
+                    "large-dimensions"
+                ],
+                "usedBy": [
+                    "Advanced semantic search",
+                    "High-precision similarity matching",
+                    "Enterprise knowledge systems"
+                ],
+                "dimensions": 3072,
+                "maxTokens": 8191,
+                "priority": "high"
+            },
+            "text-embedding-3-small": {
+                "deploymentName": "text-embedding-3-small",
+                "modelName": "text-embedding-3-small",
+                "version": "1",
+                "purpose": "Cost-effective embeddings for general semantic search",
+                "capabilities": [
+                    "text-embedding",
+                    "cost-effective",
+                    "general-purpose"
+                ],
+                "usedBy": [
+                    "General semantic search",
+                    "Cost-optimized embeddings",
+                    "Standard similarity tasks"
+                ],
+                "dimensions": 1536,
+                "maxTokens": 8191,
+                "priority": "high"
+            },
+            "text-embedding-ada-002": {
+                "deploymentName": "text-embedding-ada-002",
+                "modelName": "text-embedding-ada-002",
+                "version": "2",
+                "purpose": "Legacy embeddings for compatibility",
+                "capabilities": [
+                    "text-embedding",
+                    "legacy-support",
+                    "compatibility"
+                ],
+                "usedBy": [
+                    "Legacy system compatibility",
+                    "Migration scenarios",
+                    "Existing embedding databases"
+                ],
+                "dimensions": 1536,
+                "maxTokens": 8191,
+                "priority": "medium"
+            }
+        },
+        "tier5_creative": {
+            "dall-e-3": {
+                "deploymentName": "dall-e-3",
+                "modelName": "dall-e-3",
+                "version": "3.0",
+                "purpose": "High-quality image generation",
+                "capabilities": [
+                    "image-generation",
+                    "high-quality",
+                    "creative",
+                    "detailed-prompts"
+                ],
+                "usedBy": [
+                    "UI/UX design generation",
+                    "Creative content creation",
+                    "Marketing materials",
+                    "Astral animations for METU"
+                ],
+                "priority": "medium"
+            },
+            "sora": {
+                "deploymentName": "sora",
+                "modelName": "sora",
+                "version": "2025-05-02",
+                "purpose": "Video generation and editing capabilities",
+                "capabilities": [
+                    "video-generation",
+                    "video-editing",
+                    "creative",
+                    "high-quality"
+                ],
+                "usedBy": [
+                    "Video content creation",
+                    "Animated UI elements",
+                    "Marketing videos",
+                    "Dynamic visual content"
+                ],
+                "priority": "experimental",
+                "note": "Limited availability - check region support"
+            }
+        }
+    },
+    "deploymentPriority": [
+        "gpt-4o",
+        "gpt-4o-realtime",
+        "whisper",
+        "tts",
+        "tts-hd",
+        "text-embedding-3-large",
+        "text-embedding-3-small",
+        "gpt-4o-mini",
+        "o1-preview",
+        "o1-mini",
+        "gpt-4-turbo",
+        "gpt-35-turbo",
+        "text-embedding-ada-002",
+        "dall-e-3",
+        "gpt-35-turbo-instruct",
+        "sora"
+    ],
+    "regionalAvailability": {
+        "eastus": [
+            "o1-preview",
+            "o1-mini",
+            "gpt-4o",
+            "gpt-4o-mini",
+            "gpt-4-turbo",
+            "gpt-35-turbo",
+            "gpt-35-turbo-instruct",
+            "text-embedding-3-small",
+            "text-embedding-3-large",
+            "text-embedding-ada-002",
+            "dall-e-3"
+        ],
+        "eastus2": [
+            "sora",
+            "o1-preview",
+            "o1-mini",
+            "gpt-4o",
+            "gpt-4o-mini",
+            "gpt-4-turbo",
+            "gpt-35-turbo",
+            "text-embedding-3-small",
+            "text-embedding-3-large",
+            "text-embedding-ada-002",
+            "whisper"
+        ],
+        "northcentralus": [
+            "o1-preview",
+            "o1-mini",
+            "gpt-4o",
+            "gpt-4o-mini",
+            "gpt-4-turbo",
+            "gpt-35-turbo",
+            "text-embedding-ada-002",
+            "tts",
+            "tts-hd",
+            "whisper"
+        ],
+        "southcentralus": [
+            "o1-preview",
+            "o1-mini",
+            "gpt-4o",
+            "gpt-4o-mini",
+            "gpt-4-turbo",
+            "gpt-35-turbo",
+            "text-embedding-ada-002"
+        ],
+        "westus": [
+            "o1-preview",
+            "o1-mini",
+            "gpt-4o",
+            "gpt-4o-mini",
+            "gpt-4-turbo",
+            "gpt-35-turbo",
+            "text-embedding-3-small",
+            "text-embedding-ada-002"
+        ],
+        "westus3": [
+            "o1-preview",
+            "o1-mini",
+            "gpt-4o",
+            "gpt-4o-mini",
+            "gpt-4-turbo",
+            "gpt-35-turbo",
+            "text-embedding-3-large",
+            "text-embedding-ada-002",
+            "tts",
+            "tts-hd"
+        ],
+        "your-region": [
+            "o1-preview",
+            "o1-mini",
+            "gpt-4o",
+            "gpt-4o-mini",
+            "gpt-4-turbo",
+            "gpt-35-turbo",
+            "gpt-35-turbo-instruct",
+            "text-embedding-3-large",
+            "text-embedding-ada-002",
+            "dall-e-3",
+            "tts",
+            "tts-hd",
+            "whisper"
+        ]
+    },
+    "recommendedRegion": "your-region",
+    "recommendedRegionReason": "Broadest model availability including all advanced models",
+    "costOptimization": {
+        "primaryModels": [
+            "gpt-4o",
+            "whisper",
+            "tts"
+        ],
+        "fallbackChain": [
+            "gpt-4o",
+            "gpt-4o-mini",
+            "gpt-4-turbo",
+            "gpt-35-turbo"
+        ],
+        "embeddingChain": [
+            "text-embedding-3-large",
+            "text-embedding-3-small",
+            "text-embedding-ada-002"
+        ],
+        "costEffectiveAlternatives": {
+            "gpt-4o": "gpt-4o-mini",
+            "o1-preview": "o1-mini",
+            "gpt-4-turbo": "gpt-35-turbo",
+            "text-embedding-3-large": "text-embedding-3-small",
+            "tts-hd": "tts"
+        }
+    },
+    "useCases": {
+        "voice_assistant": [
+            "gpt-4o",
+            "gpt-4o-realtime",
+            "whisper",
+            "tts",
+            "tts-hd"
+        ],
+        "advanced_reasoning": [
+            "o1-preview",
+            "o1-mini",
+            "gpt-4o"
+        ],
+        "cost_effective": [
+            "gpt-4o-mini",
+            "gpt-35-turbo",
+            "text-embedding-3-small"
+        ],
+        "creative_content": [
+            "dall-e-3",
+            "sora",
+            "gpt-4o"
+        ],
+        "semantic_search": [
+            "text-embedding-3-large",
+            "text-embedding-3-small"
+        ],
+        "multimodal": [
+            "gpt-4o",
+            "gpt-4o-mini",
+            "gpt-4-turbo"
+        ],
+        "real_time": [
+            "gpt-4o-realtime",
+            "whisper",
+            "tts"
+        ]
+    },
+    "monitoring": {
+        "healthCheckEndpoints": [
+            "/api/models/health",
+            "/api/deployments/status"
+        ],
+        "alertThresholds": {
+            "responseTime": 5000,
+            "errorRate": 0.05,
+            "tokenUsage": 0.8
+        },
+        "recommendedMetrics": [
+            "requests_per_minute",
+            "tokens_per_minute",
+            "error_rate",
+            "response_latency",
+            "model_availability"
+        ]
+    }
+}

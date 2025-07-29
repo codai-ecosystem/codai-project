@@ -26,23 +26,23 @@ const SERVICES = {
     pages: ['/', '/signin', '/signup', '/dashboard', '/profile', '/settings']
   },
   HUB: {
-    name: 'Hub Service',
-    port: 4003,
-    baseUrl: 'http://localhost:4003',
+    name: 'Hub Service', 
+    port: 4700,
+    baseUrl: 'http://localhost:4700',
     healthCheck: '/api/health',
     pages: ['/', '/dashboard', '/projects', '/analytics', '/integrations', '/settings']
   },
   ADMIN: {
     name: 'Admin Service',
-    port: 4002,
-    baseUrl: 'http://localhost:4002',
+    port: 3200, 
+    baseUrl: 'http://localhost:3200',
     healthCheck: '/api/health',
     pages: ['/', '/dashboard', '/users', '/systems', '/analytics', '/settings', '/logs']
   },
   CODAI: {
     name: 'CODAI Service',
     port: 4001,
-    baseUrl: 'http://localhost:4001',
+    baseUrl: 'http://localhost:4001', 
     healthCheck: '/api/health',
     pages: ['/', '/dashboard', '/projects', '/code', '/ai-assistant', '/templates', '/settings']
   },
@@ -71,7 +71,7 @@ const PERFORMANCE_THRESHOLDS = {
 
 const ACCESSIBILITY_RULES = [
   'color-contrast',
-  'heading-order',
+  'heading-order', 
   'image-alt',
   'label',
   'link-name',
@@ -79,7 +79,7 @@ const ACCESSIBILITY_RULES = [
 ];
 
 test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
-
+  
   // Global setup for all tests
   test.beforeAll(async () => {
     console.log('🎯 Starting Comprehensive CODAI Ecosystem Tests');
@@ -87,7 +87,7 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
   });
 
   test.describe('🔧 Service Health & Connectivity', () => {
-
+    
     test('Service startup and health checks', async ({ page }) => {
       const results = {
         total: Object.keys(SERVICES).length,
@@ -97,18 +97,18 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
 
       for (const [key, service] of Object.entries(SERVICES)) {
         console.log(`🔍 Checking ${service.name} health...`);
-
+        
         try {
           // Test service availability
           const response = await page.goto(service.baseUrl, {
             waitUntil: 'domcontentloaded',
             timeout: 10000
           });
-
+          
           if (response?.ok()) {
             console.log(`✅ ${service.name} is responding`);
             results.healthy++;
-
+            
             // Check health endpoint if available
             try {
               const healthResponse = await page.request.get(`${service.baseUrl}${service.healthCheck}`);
@@ -139,7 +139,7 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
   });
 
   test.describe('🌐 Cross-Service Navigation & UI', () => {
-
+    
     test('All service pages load successfully', async ({ page }) => {
       const results = {
         totalPages: 0,
@@ -149,34 +149,34 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
 
       for (const [key, service] of Object.entries(SERVICES)) {
         console.log(`\n📱 Testing ${service.name} pages...`);
-
+        
         for (const pagePath of service.pages) {
           const fullUrl = `${service.baseUrl}${pagePath}`;
           results.totalPages++;
-
+          
           try {
             console.log(`  🔍 Testing: ${fullUrl}`);
-
+            
             const response = await page.goto(fullUrl, {
               waitUntil: 'networkidle',
               timeout: PERFORMANCE_THRESHOLDS.pageLoad
             });
-
+            
             // Basic response check
             if (!response?.ok() && response?.status() !== 404) {
               throw new Error(`HTTP ${response?.status()}`);
             }
-
+            
             // Check for basic page elements
             await expect(page.locator('body')).toBeVisible();
-
+            
             // Check page title exists
             const title = await page.title();
             expect(title.length).toBeGreaterThan(0);
-
+            
             console.log(`    ✅ Page loaded successfully (Title: "${title}")`);
             results.successfulPages++;
-
+            
           } catch (error) {
             console.log(`    ❌ Page failed: ${error}`);
             results.failedPages.push(`${fullUrl}: ${error}`);
@@ -185,7 +185,7 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
       }
 
       console.log(`\n📊 Page Load Summary: ${results.successfulPages}/${results.totalPages} successful`);
-
+      
       // Report failed pages
       if (results.failedPages.length > 0) {
         console.log('❌ Failed pages:');
@@ -209,9 +209,9 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
 
       for (const device of devices) {
         console.log(`📱 Testing ${device.name} (${device.width}x${device.height})`);
-
+        
         await page.setViewportSize({ width: device.width, height: device.height });
-
+        
         // Test key service pages for responsive behavior
         const testPages = [
           SERVICES.CODAI.baseUrl,
@@ -222,24 +222,24 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
         for (const url of testPages) {
           try {
             await page.goto(url, { waitUntil: 'networkidle', timeout: 5000 });
-
+            
             // Check viewport is properly set
             const viewport = page.viewportSize();
             expect(viewport?.width).toBe(device.width);
-
+            
             // Check basic responsive elements
             const body = page.locator('body');
             await expect(body).toBeVisible();
-
+            
             // Check for common responsive issues
             const horizontalScroll = await page.evaluate(() => {
               return document.body.scrollWidth > window.innerWidth;
             });
-
+            
             expect(horizontalScroll).toBe(false); // No horizontal scroll
-
+            
             console.log(`  ✅ ${url} - Responsive on ${device.name}`);
-
+            
           } catch (error) {
             console.log(`  ❌ ${url} - Responsive issue on ${device.name}: ${error}`);
             testResults.push({ device: device.name, url, error: error.toString() });
@@ -253,17 +253,17 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
   });
 
   test.describe('🔐 Authentication & Security', () => {
-
+    
     test('Authentication flows across services', async ({ page, context }) => {
       console.log('🔐 Testing authentication flows...');
-
+      
       // Test ID service authentication (primary auth service)
       const idService = SERVICES.ID;
-
+      
       try {
         // Navigate to ID service
         await page.goto(idService.baseUrl);
-
+        
         // Look for sign-in elements
         const signInSelectors = [
           'a[href*="signin"]',
@@ -273,7 +273,7 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
           '.signin-button',
           '#signin-button'
         ];
-
+        
         let signInFound = false;
         for (const selector of signInSelectors) {
           try {
@@ -288,12 +288,12 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
             // Continue trying other selectors
           }
         }
-
+        
         if (!signInFound) {
           // Try direct navigation to signin page
           await page.goto(`${idService.baseUrl}/signin`);
         }
-
+        
         // Look for authentication form elements
         const authElements = [
           'input[type="email"]',
@@ -302,7 +302,7 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
           'input[name="password"]',
           'form'
         ];
-
+        
         let authFormFound = false;
         for (const selector of authElements) {
           try {
@@ -316,27 +316,27 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
             // Continue
           }
         }
-
+        
         console.log(`📊 Authentication UI: ${authFormFound ? 'Present' : 'Not Found'}`);
-
+        
       } catch (error) {
         console.log(`⚠️ Auth flow test encountered: ${error}`);
       }
-
+      
       // Test should pass if we can at least navigate to auth-related pages
       expect(true).toBe(true); // Basic navigation test
     });
 
     test('Security headers and HTTPS readiness', async ({ page }) => {
       console.log('🔒 Testing security configurations...');
-
+      
       for (const [key, service] of Object.entries(SERVICES)) {
         try {
           const response = await page.goto(service.baseUrl);
-
+          
           if (response) {
             const headers = response.headers();
-
+            
             // Check for basic security headers (for production readiness)
             const securityHeaders = {
               'x-frame-options': false,
@@ -344,7 +344,7 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
               'x-xss-protection': false,
               'content-security-policy': false
             };
-
+            
             Object.keys(securityHeaders).forEach(header => {
               if (headers[header]) {
                 securityHeaders[header] = true;
@@ -354,34 +354,34 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
               }
             });
           }
-
+          
         } catch (error) {
           console.log(`❌ Security check failed for ${service.name}: ${error}`);
         }
       }
-
+      
       expect(true).toBe(true); // Security awareness test
     });
   });
 
   test.describe('⚡ Performance & Load Testing', () => {
-
+    
     test('Page load performance metrics', async ({ page }) => {
       console.log('⚡ Testing page load performance...');
-
+      
       const performanceResults = [];
-
+      
       for (const [key, service] of Object.entries(SERVICES)) {
         try {
           const startTime = Date.now();
-
+          
           await page.goto(service.baseUrl, {
             waitUntil: 'networkidle',
             timeout: PERFORMANCE_THRESHOLDS.pageLoad
           });
-
+          
           const loadTime = Date.now() - startTime;
-
+          
           // Measure additional performance metrics
           const metrics = await page.evaluate(() => {
             const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
@@ -391,7 +391,7 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
               firstContentfulPaint: 0 // Would need additional setup for real FCP
             };
           });
-
+          
           const result = {
             service: service.name,
             totalLoadTime: loadTime,
@@ -399,15 +399,15 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
             loadComplete: metrics.loadComplete,
             passesThreshold: loadTime <= PERFORMANCE_THRESHOLDS.pageLoad
           };
-
+          
           performanceResults.push(result);
-
+          
           console.log(`📊 ${service.name}:`);
           console.log(`  - Total load time: ${loadTime}ms`);
           console.log(`  - DOM content loaded: ${metrics.domContentLoaded}ms`);
           console.log(`  - Load complete: ${metrics.loadComplete}ms`);
           console.log(`  - Passes threshold: ${result.passesThreshold ? '✅' : '❌'}`);
-
+          
         } catch (error) {
           console.log(`❌ Performance test failed for ${service.name}: ${error}`);
           performanceResults.push({
@@ -417,11 +417,11 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
           });
         }
       }
-
+      
       // Count services that meet performance thresholds
       const passingServices = performanceResults.filter(r => r.passesThreshold).length;
       console.log(`\n📊 Performance Summary: ${passingServices}/${performanceResults.length} services meet performance thresholds`);
-
+      
       // Expect at least 60% of services to meet performance thresholds
       const performanceRate = (passingServices / performanceResults.length) * 100;
       expect(performanceRate).toBeGreaterThanOrEqual(60);
@@ -429,25 +429,25 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
   });
 
   test.describe('♿ Accessibility Testing', () => {
-
+    
     test('Basic accessibility compliance', async ({ page }) => {
       console.log('♿ Testing accessibility compliance...');
-
+      
       const accessibilityResults = [];
-
+      
       for (const [key, service] of Object.entries(SERVICES)) {
         try {
           await page.goto(service.baseUrl, { waitUntil: 'networkidle' });
-
+          
           // Basic accessibility checks
           const accessibilityIssues = [];
-
+          
           // Check for images without alt text
           const imagesWithoutAlt = await page.locator('img:not([alt])').count();
           if (imagesWithoutAlt > 0) {
             accessibilityIssues.push(`${imagesWithoutAlt} images without alt text`);
           }
-
+          
           // Check for buttons without accessible names
           const unnamedButtons = await page.locator('button:not([aria-label]):not([title])').filter({
             hasNotText: /.+/
@@ -455,7 +455,7 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
           if (unnamedButtons > 0) {
             accessibilityIssues.push(`${unnamedButtons} buttons without accessible names`);
           }
-
+          
           // Check for form inputs without labels
           const unlabeledInputs = await page.locator('input:not([aria-label]):not([title])').filter({
             hasNot: page.locator('label')
@@ -463,7 +463,7 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
           if (unlabeledInputs > 0) {
             accessibilityIssues.push(`${unlabeledInputs} inputs without labels`);
           }
-
+          
           // Check heading structure
           const headings = await page.locator('h1, h2, h3, h4, h5, h6').all();
           let hasH1 = false;
@@ -474,19 +474,19 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
               break;
             }
           }
-
+          
           if (!hasH1 && headings.length > 0) {
             accessibilityIssues.push('Missing H1 heading');
           }
-
+          
           const result = {
             service: service.name,
             issues: accessibilityIssues,
             score: Math.max(0, 100 - (accessibilityIssues.length * 20)) // Simple scoring
           };
-
+          
           accessibilityResults.push(result);
-
+          
           console.log(`♿ ${service.name}:`);
           if (accessibilityIssues.length === 0) {
             console.log(`  ✅ No basic accessibility issues found`);
@@ -495,7 +495,7 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
             accessibilityIssues.forEach(issue => console.log(`    - ${issue}`));
           }
           console.log(`  📊 Accessibility score: ${result.score}/100`);
-
+          
         } catch (error) {
           console.log(`❌ Accessibility test failed for ${service.name}: ${error}`);
           accessibilityResults.push({
@@ -505,25 +505,25 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
           });
         }
       }
-
+      
       // Calculate average accessibility score
       const totalScore = accessibilityResults.reduce((sum, r) => sum + (r.score || 0), 0);
       const averageScore = totalScore / accessibilityResults.length;
-
+      
       console.log(`\n📊 Accessibility Summary: Average score ${averageScore.toFixed(1)}/100`);
-
+      
       // Expect reasonable accessibility compliance
       expect(averageScore).toBeGreaterThanOrEqual(60);
     });
   });
 
   test.describe('🧪 API & Integration Testing', () => {
-
+    
     test('API endpoints availability', async ({ page, request }) => {
       console.log('🔗 Testing API endpoints...');
-
+      
       const apiResults = [];
-
+      
       for (const [key, service] of Object.entries(SERVICES)) {
         const serviceResults = {
           service: service.name,
@@ -531,7 +531,7 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
           successCount: 0,
           totalCount: 0
         };
-
+        
         // Test common API endpoints
         const commonEndpoints = [
           '/api/health',
@@ -540,27 +540,27 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
           '/health',
           '/status'
         ];
-
+        
         for (const endpoint of commonEndpoints) {
           serviceResults.totalCount++;
-
+          
           try {
             const response = await request.get(`${service.baseUrl}${endpoint}`);
             const success = response.ok();
-
+            
             if (success) {
               serviceResults.successCount++;
               console.log(`  ✅ ${endpoint} - ${response.status()}`);
             } else {
               console.log(`  ❌ ${endpoint} - ${response.status()}`);
             }
-
+            
             serviceResults.endpoints.push({
               endpoint,
               status: response.status(),
               success
             });
-
+            
           } catch (error) {
             console.log(`  ❌ ${endpoint} - Error: ${error}`);
             serviceResults.endpoints.push({
@@ -570,37 +570,37 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
             });
           }
         }
-
-        const successRate = serviceResults.totalCount > 0 ?
+        
+        const successRate = serviceResults.totalCount > 0 ? 
           (serviceResults.successCount / serviceResults.totalCount) * 100 : 0;
-
+        
         console.log(`📊 ${service.name}: ${serviceResults.successCount}/${serviceResults.totalCount} endpoints (${successRate.toFixed(1)}%)`);
-
+        
         apiResults.push(serviceResults);
       }
-
+      
       // API testing is informational - services may not have standard endpoints in dev mode
       expect(apiResults.length).toBe(Object.keys(SERVICES).length);
     });
   });
 
   test.describe('🛠️ Error Handling & Edge Cases', () => {
-
+    
     test('404 error page handling', async ({ page }) => {
       console.log('🛠️ Testing 404 error handling...');
-
+      
       for (const [key, service] of Object.entries(SERVICES)) {
         try {
           const response = await page.goto(`${service.baseUrl}/nonexistent-page-test-404`, {
             waitUntil: 'networkidle',
             timeout: 5000
           });
-
+          
           const status = response?.status();
-
+          
           if (status === 404) {
             console.log(`✅ ${service.name}: Proper 404 handling`);
-
+            
             // Check if custom 404 page exists
             const hasCustom404 = await page.locator('body').textContent();
             if (hasCustom404?.includes('404') || hasCustom404?.includes('Not Found')) {
@@ -609,22 +609,22 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
           } else {
             console.log(`⚠️ ${service.name}: 404 returns ${status} instead of 404`);
           }
-
+          
         } catch (error) {
           console.log(`⚠️ ${service.name}: 404 test encountered: ${error}`);
         }
       }
-
+      
       expect(true).toBe(true); // Error handling awareness test
     });
 
     test('Network interruption handling', async ({ page, context }) => {
       console.log('🌐 Testing network interruption handling...');
-
+      
       // Test offline behavior
       try {
         await context.setOffline(true);
-
+        
         for (const [key, service] of Object.entries(SERVICES)) {
           try {
             await page.goto(service.baseUrl, { timeout: 3000 });
@@ -632,65 +632,65 @@ test.describe('🚀 CODAI Ecosystem - Comprehensive Test Suite', () => {
             console.log(`✅ ${service.name}: Properly handles offline state`);
           }
         }
-
+        
         // Restore connectivity
         await context.setOffline(false);
-
+        
       } catch (error) {
         console.log(`⚠️ Network interruption test: ${error}`);
       }
-
+      
       expect(true).toBe(true); // Network handling awareness test
     });
   });
 
   test.describe('🎯 Cross-Service Integration', () => {
-
+    
     test('Service-to-service communication patterns', async ({ page }) => {
       console.log('🔗 Testing cross-service integration...');
-
+      
       // Test if services can reference each other
       const integrationTests = [];
-
+      
       for (const [key, service] of Object.entries(SERVICES)) {
         try {
           await page.goto(service.baseUrl);
-
+          
           // Look for links or references to other services
           const links = await page.locator('a[href]').all();
           const externalLinks = [];
-
+          
           for (const link of links) {
             const href = await link.getAttribute('href');
             if (href) {
               // Check if link references another service
               const referencesOtherService = Object.values(SERVICES).some(
-                otherService => otherService.baseUrl !== service.baseUrl &&
-                  href.includes(`:${otherService.port}`)
+                otherService => otherService.baseUrl !== service.baseUrl && 
+                              href.includes(`:${otherService.port}`)
               );
-
+              
               if (referencesOtherService) {
                 externalLinks.push(href);
               }
             }
           }
-
+          
           console.log(`🔗 ${service.name}: Found ${externalLinks.length} cross-service links`);
-
+          
           integrationTests.push({
             service: service.name,
             crossServiceLinks: externalLinks.length,
             hasIntegration: externalLinks.length > 0
           });
-
+          
         } catch (error) {
           console.log(`❌ Integration test failed for ${service.name}: ${error}`);
         }
       }
-
+      
       const servicesWithIntegration = integrationTests.filter(t => t.hasIntegration).length;
       console.log(`📊 Integration Summary: ${servicesWithIntegration}/${integrationTests.length} services show cross-service integration`);
-
+      
       expect(integrationTests.length).toBe(Object.keys(SERVICES).length);
     });
   });

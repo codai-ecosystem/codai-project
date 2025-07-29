@@ -1,0 +1,118 @@
+{
+    "app": {
+        "title": "{{assistantName}} Asistent Vocal",
+        "subtitle": "Asistent Conversațional Inteligent",
+        "powered_by": "Alimentat de Inteligență Artificială Avansată • Recunoaștere Vocală în Timp Real",
+        "welcome": "Bun venit la {{assistantName}} - parte din ecosistemul CODAI"
+    },
+    "voice": {
+        "states": {
+            "idle": "Gata să ascult",
+            "listening": "Ascult...",
+            "processing": "Procesez...",
+            "speaking": "Vorbesc..."
+        },
+        "controls": {
+            "activate": "Apasă Ctrl+Spațiu sau fă clic pentru a activa",
+            "settings": "Setări",
+            "test_voice": "Testează Vocea",
+            "stop": "Oprește",
+            "start": "Pornește"
+        },
+        "errors": {
+            "not_supported": "Recunoașterea vocală nu este suportată în acest browser",
+            "try_browsers": "Încearcă să folosești Chrome, Edge sau Safari",
+            "microphone_access": "Este necesar accesul la microfon",
+            "connection_failed": "Conexiunea la serviciul vocal a eșuat"
+        }
+    },
+    "settings": {
+        "title": "Setări",
+        "assistant_name": "Numele Asistentului",
+        "assistant_name_placeholder": "Introdu numele asistentului",
+        "language": "Limba",
+        "voice_recognition": "Recunoaștere Vocală",
+        "volume": "Volum: {{volume}}%",
+        "theme": "Tema",
+        "voice_profile": "Profilul Vocal",
+        "save": "Salvează",
+        "cancel": "Anulează",
+        "reset": "Resetează la Implicit",
+        "advanced": "Setări Avansate"
+    },
+    "conversation": {
+        "title": "Conversație",
+        "clear": "Curăță",
+        "export": "Exportă",
+        "start_message": "Începe o conversație cu {{assistantName}}",
+        "click_to_begin": "Fă clic pe microfon pentru a începe",
+        "no_conversations": "Încă nu există conversații",
+        "user": "Tu",
+        "assistant": "{{assistantName}}"
+    },
+    "assistant": {
+        "character": {
+            "listening": "👂",
+            "processing": "🧠",
+            "speaking": "💬",
+            "idle": "🤖"
+        },
+        "personality": {
+            "friendly": "Prietenos",
+            "professional": "Profesional",
+            "casual": "Casual",
+            "formal": "Formal"
+        },
+        "capabilities": "Asistentul tău AI",
+        "status": {
+            "online": "Online",
+            "offline": "Offline",
+            "connecting": "Se conectează...",
+            "error": "Eroare de Conexiune"
+        }
+    },
+    "audio": {
+        "activity": "Activitate Audio",
+        "visualizer": "Vizualizator Audio",
+        "quality": {
+            "excellent": "Excelent",
+            "good": "Bun",
+            "fair": "Acceptabil",
+            "poor": "Slab"
+        }
+    },
+    "server": {
+        "status": {
+            "running": "Server în Funcțiune",
+            "stopped": "Server Oprit",
+            "error": "Eroare Server",
+            "starting": "Pornește Serverul..."
+        },
+        "connections": "{{count}} conexiuni active",
+        "port": "Port: {{port}}"
+    },
+    "mobile": {
+        "qr_code": "Scanează codul QR pentru a conecta dispozitivul mobil",
+        "connection_status": "Starea Dispozitivului Mobil",
+        "sync": "Sincronizează cu Mobilul",
+        "pair_device": "Împerechează Dispozitiv Nou"
+    },
+    "errors": {
+        "general": "A apărut o eroare",
+        "network": "Conexiunea de rețea a eșuat",
+        "timeout": "Cererea a expirat",
+        "unauthorized": "Acces neautorizat",
+        "not_found": "Resursa nu a fost găsită",
+        "server_error": "A apărut o eroare de server"
+    },
+    "actions": {
+        "retry": "Reîncearcă",
+        "refresh": "Reîmprospătează",
+        "close": "Închide",
+        "minimize": "Minimizează",
+        "maximize": "Maximizează",
+        "back": "Înapoi",
+        "forward": "Înainte",
+        "home": "Acasă"
+    }
+}

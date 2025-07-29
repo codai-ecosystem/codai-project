@@ -1,0 +1,114 @@
+{
+    "deployedServices": {
+        "deploymentDate": "2025-07-25",
+        "resourceGroup": "your-resource-group",
+        "subscription": "your-subscription-id-here",
+        "region": "your-region",
+        "environment": "development"
+    },
+    "azureAIFoundry": {
+        "name": "codai-dev-ai-foundry",
+        "endpoint": "https://your-region.api.cognitive.microsoft.com/",
+        "key": "your-azure-ai-key-here",
+        "purpose": "Primary AI service - recommended for most applications",
+        "status": "deployed",
+        "capabilities": [
+            "Agent service access",
+            "Serverless model deployments",
+            "Azure OpenAI integration",
+            "Model evaluations",
+            "Unified API endpoint"
+        ]
+    },
+    "azureOpenAI": {
+        "name": "codai-dev-openai",
+        "endpoint": "https://your-region.api.cognitive.microsoft.com/",
+        "key": "your-azure-ai-key-here",
+        "apiVersion": "2024-12-01-preview",
+        "purpose": "Specialized OpenAI-only service",
+        "status": "deployed",
+        "deployedModels": {
+            "gpt-4o": {
+                "deployment": "gpt-4o",
+                "version": "2024-11-20",
+                "capacity": 10,
+                "purpose": "Advanced reasoning and generation"
+            },
+            "gpt-4o-mini": {
+                "deployment": "gpt-4o-mini",
+                "version": "2024-07-18",
+                "capacity": 10,
+                "purpose": "Fast, cost-effective processing"
+            },
+            "whisper": {
+                "deployment": "whisper",
+                "version": "001",
+                "capacity": 10,
+                "purpose": "Speech-to-text conversion"
+            },
+            "gpt-35-turbo": {
+                "deployment": "gpt-35-turbo",
+                "version": "0125",
+                "capacity": 10,
+                "purpose": "Balanced performance and cost"
+            }
+        }
+    },
+    "azureAISearch": {
+        "name": "your-search-service-name",
+        "endpoint": "https://your-search-service-name.search.windows.net",
+        "key": "your-azure-search-admin-key-here",
+        "purpose": "RAG and semantic search capabilities",
+        "status": "deployed",
+        "tier": "Basic",
+        "capabilities": [
+            "Vector search",
+            "Semantic search",
+            "AI-powered indexing",
+            "RAG integration"
+        ]
+    },
+    "azureAIHub": {
+        "name": "codai-dev-ai-hub",
+        "status": "pending",
+        "note": "Deployment pending KeyVault provider registration",
+        "purpose": "Access to 1900+ open source models",
+        "capabilities": [
+            "Open source model hosting",
+            "Model fine-tuning",
+            "Custom model deployments"
+        ]
+    },
+    "usageRecommendations": {
+        "metu": {
+            "voiceAssistant": {
+                "primaryService": "azureOpenAI",
+                "speechToText": "whisper",
+                "textGeneration": "gpt-4o-mini",
+                "complexReasoning": "gpt-4o"
+            }
+        },
+        "general": {
+            "rapidPrototyping": "azureAIFoundry",
+            "production": "azureOpenAI",
+            "search": "azureAISearch",
+            "openSourceModels": "azureAIHub"
+        }
+    },
+    "integrationExamples": {
+        "nodejs": {
+            "azureOpenAI": {
+                "endpoint": "process.env.AZURE_OPENAI_ENDPOINT",
+                "key": "process.env.AZURE_OPENAI_KEY",
+                "deployment": "process.env.AZURE_OPENAI_GPT4O_DEPLOYMENT"
+            }
+        },
+        "python": {
+            "azureOpenAI": {
+                "endpoint": "os.getenv('AZURE_OPENAI_ENDPOINT')",
+                "key": "os.getenv('AZURE_OPENAI_KEY')",
+                "deployment": "os.getenv('AZURE_OPENAI_GPT4O_DEPLOYMENT')"
+            }
+        }
+    }
+}

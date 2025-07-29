@@ -243,29 +243,29 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             {/* Panel */}
             <div className={`
         fixed top-0 right-0 z-30 h-full w-80 max-w-sm
-        bg-white/95 backdrop-blur-md border-l border-gray-200
+        bg-slate-900/98 backdrop-blur-md border-l border-slate-700
         shadow-2xl transform transition-transform duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : 'translate-x-full'}
         ${className}
       `}>
                 <div className="h-full overflow-y-auto">
                     {/* Header with Tabs */}
-                    <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                    <div className="flex items-center justify-between p-6 border-b border-slate-700">
                         <div className="flex items-center space-x-3">
-                            <div className="text-gray-600">
+                            <div className="text-slate-300">
                                 <SettingsIcon />
                             </div>
-                            <h2 className="text-xl font-semibold text-gray-800">METU Settings</h2>
+                            <h2 className="text-xl font-semibold text-slate-100">METU Settings</h2>
                         </div>
                     </div>
 
                     {/* Tab Navigation */}
-                    <div className="flex border-b border-gray-200">
+                    <div className="flex border-b border-slate-700">
                         <button
                             onClick={() => setActiveTab('general')}
                             className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === 'general'
-                                    ? 'border-blue-500 text-blue-600'
-                                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                                ? 'border-blue-400 text-blue-300 bg-slate-800/50'
+                                : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30'
                                 }`}
                         >
                             🔧 General
@@ -273,8 +273,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                         <button
                             onClick={() => setActiveTab('audio')}
                             className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === 'audio'
-                                    ? 'border-blue-500 text-blue-600'
-                                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                                ? 'border-blue-400 text-blue-300 bg-slate-800/50'
+                                : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30'
                                 }`}
                         >
                             🎤 Audio
@@ -282,8 +282,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                         <button
                             onClick={() => setActiveTab('mcp')}
                             className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === 'mcp'
-                                    ? 'border-blue-500 text-blue-600'
-                                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                                ? 'border-blue-400 text-blue-300 bg-slate-800/50'
+                                : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30'
                                 }`}
                         >
                             🔌 MCP Config
@@ -299,16 +299,16 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
 
                                 {/* Language Selection */}
                                 <div className="space-y-3">
-                                    <label className="block text-sm font-medium text-gray-700">
+                                    <label className="block text-sm font-medium text-slate-200">
                                         Voice Recognition Language
                                     </label>
                                     <select
                                         value={localSettings.language}
                                         onChange={(e) => handleSettingChange('language', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                                        className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-100 text-sm"
                                     >
                                         {languages.map((lang) => (
-                                            <option key={lang.code} value={lang.code}>
+                                            <option key={lang.code} value={lang.code} className="bg-slate-800 text-slate-100">
                                                 {lang.name}
                                             </option>
                                         ))}
@@ -317,23 +317,23 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
 
                                 {/* Theme Selection */}
                                 <div className="space-y-3">
-                                    <label className="block text-sm font-medium text-gray-700">
+                                    <label className="block text-sm font-medium text-slate-200">
                                         Theme
                                     </label>
                                     <select
                                         value={localSettings.theme}
                                         onChange={(e) => handleSettingChange('theme', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                                        className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-100 text-sm"
                                     >
-                                        <option value="light">☀️ Light</option>
-                                        <option value="dark">🌙 Dark</option>
-                                        <option value="auto">🌗 Auto</option>
+                                        <option value="light" className="bg-slate-800 text-slate-100">☀️ Light</option>
+                                        <option value="dark" className="bg-slate-800 text-slate-100">🌙 Dark</option>
+                                        <option value="auto" className="bg-slate-800 text-slate-100">🌗 Auto</option>
                                     </select>
                                 </div>
 
                                 {/* Confidence Threshold */}
                                 <div className="space-y-3">
-                                    <label className="block text-sm font-medium text-gray-700">
+                                    <label className="block text-sm font-medium text-slate-200">
                                         Confidence Threshold: {Math.round(localSettings.confidenceThreshold * 100)}%
                                     </label>
                                     <input
@@ -343,9 +343,9 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                                         step="0.05"
                                         value={localSettings.confidenceThreshold}
                                         onChange={(e) => handleSettingChange('confidenceThreshold', parseFloat(e.target.value))}
-                                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                        className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer slider-thumb-blue"
                                     />
-                                    <div className="flex justify-between text-xs text-gray-500">
+                                    <div className="flex justify-between text-xs text-slate-400">
                                         <span>More Permissive</span>
                                         <span>More Strict</span>
                                     </div>
@@ -353,7 +353,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
 
                                 {/* Voice Speed */}
                                 <div className="space-y-3">
-                                    <label className="block text-sm font-medium text-gray-700">
+                                    <label className="block text-sm font-medium text-slate-200">
                                         Voice Response Speed: {localSettings.voiceSpeed}x
                                     </label>
                                     <input
@@ -363,9 +363,9 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                                         step="0.1"
                                         value={localSettings.voiceSpeed}
                                         onChange={(e) => handleSettingChange('voiceSpeed', parseFloat(e.target.value))}
-                                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                        className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer slider-thumb-blue"
                                     />
-                                    <div className="flex justify-between text-xs text-gray-500">
+                                    <div className="flex justify-between text-xs text-slate-400">
                                         <span>Slow</span>
                                         <span>Fast</span>
                                     </div>
@@ -373,7 +373,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
 
                                 {/* Wakeup Keyword */}
                                 <div className="space-y-3">
-                                    <label className="block text-sm font-medium text-gray-700">
+                                    <label className="block text-sm font-medium text-slate-200">
                                         Wakeup Keyword
                                     </label>
                                     <input
@@ -381,21 +381,21 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                                         value={localSettings.wakeupKeyword}
                                         onChange={(e) => handleSettingChange('wakeupKeyword', e.target.value)}
                                         placeholder="e.g., Hey METU"
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                                        className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-100 placeholder-slate-400 text-sm"
                                     />
                                 </div>
 
                                 {/* Toggles */}
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-700">
 
                                     <label className="flex items-center space-x-3 cursor-pointer">
                                         <input
                                             type="checkbox"
                                             checked={localSettings.autoStartListening}
                                             onChange={(e) => handleSettingChange('autoStartListening', e.target.checked)}
-                                            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                            className="w-4 h-4 text-blue-600 bg-slate-800 border-slate-600 rounded focus:ring-blue-500 focus:ring-2"
                                         />
-                                        <span className="text-sm text-gray-700">Auto-start listening</span>
+                                        <span className="text-sm text-slate-200">Auto-start listening</span>
                                     </label>
 
                                     <label className="flex items-center space-x-3 cursor-pointer">
@@ -403,9 +403,9 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                                             type="checkbox"
                                             checked={localSettings.enableNotifications}
                                             onChange={(e) => handleSettingChange('enableNotifications', e.target.checked)}
-                                            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                            className="w-4 h-4 text-blue-600 bg-slate-800 border-slate-600 rounded focus:ring-blue-500 focus:ring-2"
                                         />
-                                        <span className="text-sm text-gray-700">Enable notifications</span>
+                                        <span className="text-sm text-slate-200">Enable notifications</span>
                                     </label>
 
                                     <label className="flex items-center space-x-3 cursor-pointer">
@@ -413,9 +413,9 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                                             type="checkbox"
                                             checked={localSettings.enableKeywordWakeup}
                                             onChange={(e) => handleSettingChange('enableKeywordWakeup', e.target.checked)}
-                                            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                            className="w-4 h-4 text-blue-600 bg-slate-800 border-slate-600 rounded focus:ring-blue-500 focus:ring-2"
                                         />
-                                        <span className="text-sm text-gray-700">Keyword wakeup</span>
+                                        <span className="text-sm text-slate-200">Keyword wakeup</span>
                                     </label>
 
                                 </div>
@@ -428,17 +428,18 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
 
                                 {/* Input Device Selection */}
                                 <div className="space-y-3">
-                                    <label className="block text-sm font-medium text-gray-700">
+                                    <label htmlFor="microphone-select" className="block text-sm font-medium text-slate-200">
                                         🎤 Microphone
                                     </label>
                                     <select
+                                        id="microphone-select"
                                         value={localSettings.selectedInputDevice}
                                         onChange={(e) => handleSettingChange('selectedInputDevice', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                                        className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-100 text-sm"
                                     >
-                                        <option value="default">System Default</option>
+                                        <option value="default" className="bg-slate-800 text-slate-100">System Default</option>
                                         {audioDevices.input.map((device) => (
-                                            <option key={device.deviceId} value={device.deviceId}>
+                                            <option key={device.deviceId} value={device.deviceId} className="bg-slate-800 text-slate-100">
                                                 {device.label}
                                             </option>
                                         ))}
@@ -448,7 +449,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                                             const device = audioDevices.input.find(d => d.deviceId === localSettings.selectedInputDevice);
                                             if (device) testAudioDevice(device);
                                         }}
-                                        className="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors"
+                                        className="px-3 py-1 text-xs bg-blue-600 text-blue-100 rounded hover:bg-blue-700 transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900"
                                     >
                                         Test Microphone
                                     </button>
@@ -456,17 +457,18 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
 
                                 {/* Output Device Selection */}
                                 <div className="space-y-3">
-                                    <label className="block text-sm font-medium text-gray-700">
+                                    <label htmlFor="speakers-select" className="block text-sm font-medium text-slate-200">
                                         🔊 Speakers
                                     </label>
                                     <select
+                                        id="speakers-select"
                                         value={localSettings.selectedOutputDevice}
                                         onChange={(e) => handleSettingChange('selectedOutputDevice', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                                        className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-100 text-sm"
                                     >
-                                        <option value="default">System Default</option>
+                                        <option value="default" className="bg-slate-800 text-slate-100">System Default</option>
                                         {audioDevices.output.map((device) => (
-                                            <option key={device.deviceId} value={device.deviceId}>
+                                            <option key={device.deviceId} value={device.deviceId} className="bg-slate-800 text-slate-100">
                                                 {device.label}
                                             </option>
                                         ))}
@@ -476,7 +478,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                                             const device = audioDevices.output.find(d => d.deviceId === localSettings.selectedOutputDevice);
                                             if (device) testAudioDevice(device);
                                         }}
-                                        className="px-3 py-1 text-xs bg-green-100 text-green-700 rounded hover:bg-green-200 transition-colors"
+                                        className="px-3 py-1 text-xs bg-green-600 text-green-100 rounded hover:bg-green-700 transition-colors focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-slate-900"
                                     >
                                         Test Speakers
                                     </button>
@@ -484,36 +486,37 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
 
                                 {/* Audio Gain */}
                                 <div className="space-y-3">
-                                    <label className="block text-sm font-medium text-gray-700">
+                                    <label htmlFor="audio-gain-slider" className="block text-sm font-medium text-slate-200">
                                         Audio Gain: {localSettings.audioGain}x
                                     </label>
                                     <input
+                                        id="audio-gain-slider"
                                         type="range"
                                         min="0.1"
                                         max="3"
                                         step="0.1"
                                         value={localSettings.audioGain}
                                         onChange={(e) => handleSettingChange('audioGain', parseFloat(e.target.value))}
-                                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                        className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer slider-thumb-blue"
                                     />
-                                    <div className="flex justify-between text-xs text-gray-500">
+                                    <div className="flex justify-between text-xs text-slate-400">
                                         <span>Quiet</span>
                                         <span>Loud</span>
                                     </div>
                                 </div>
 
                                 {/* Audio Processing Options */}
-                                <div className="space-y-4 pt-4 border-t border-gray-200">
-                                    <h4 className="text-sm font-medium text-gray-700">Audio Processing</h4>
+                                <div className="space-y-4 pt-4 border-t border-slate-700">
+                                    <h4 className="text-sm font-medium text-slate-200">Audio Processing</h4>
 
                                     <label className="flex items-center space-x-3 cursor-pointer">
                                         <input
                                             type="checkbox"
                                             checked={localSettings.noiseCancellation}
                                             onChange={(e) => handleSettingChange('noiseCancellation', e.target.checked)}
-                                            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                            className="w-4 h-4 text-blue-600 bg-slate-800 border-slate-600 rounded focus:ring-blue-500 focus:ring-2"
                                         />
-                                        <span className="text-sm text-gray-700">Noise Cancellation</span>
+                                        <span className="text-sm text-slate-200">Noise Cancellation</span>
                                     </label>
 
                                     <label className="flex items-center space-x-3 cursor-pointer">
@@ -521,9 +524,9 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                                             type="checkbox"
                                             checked={localSettings.echoCancellation}
                                             onChange={(e) => handleSettingChange('echoCancellation', e.target.checked)}
-                                            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                            className="w-4 h-4 text-blue-600 bg-slate-800 border-slate-600 rounded focus:ring-blue-500 focus:ring-2"
                                         />
-                                        <span className="text-sm text-gray-700">Echo Cancellation</span>
+                                        <span className="text-sm text-slate-200">Echo Cancellation</span>
                                     </label>
                                 </div>
                             </div>
@@ -532,35 +535,35 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                         {/* MCP Configuration Tab */}
                         {activeTab === 'mcp' && (
                             <div className="space-y-6">
-                                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                                    <h4 className="text-sm font-semibold text-blue-800 mb-2">Model Context Protocol Configuration</h4>
-                                    <p className="text-xs text-blue-700">
+                                <div className="bg-blue-900/50 border border-blue-700 rounded-lg p-4">
+                                    <h4 className="text-sm font-semibold text-blue-200 mb-2">Model Context Protocol Configuration</h4>
+                                    <p className="text-xs text-blue-300">
                                         Configure MCP services: Memorai (memory), Glass (window management), Romai (Romanian AI), and Playwright (automation).
                                     </p>
                                 </div>
 
                                 {/* JSON Editor */}
                                 <div className="space-y-3">
-                                    <label className="block text-sm font-medium text-gray-700">
+                                    <label className="block text-sm font-medium text-slate-200">
                                         MCP Services Configuration (JSON)
                                     </label>
                                     <textarea
                                         value={mcpConfigText}
                                         onChange={(e) => handleMcpConfigChange(e.target.value)}
-                                        className={`w-full h-80 px-3 py-2 font-mono text-xs border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${mcpConfigError ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                                        className={`w-full h-80 px-3 py-2 font-mono text-xs bg-slate-800 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-100 placeholder-slate-400 ${mcpConfigError ? 'border-red-500 bg-red-900/30' : 'border-slate-600'
                                             }`}
                                         placeholder="Enter MCP configuration as JSON..."
                                     />
                                     {mcpConfigError && (
-                                        <div className="text-xs text-red-600 bg-red-50 border border-red-200 rounded p-2">
+                                        <div className="text-xs text-red-300 bg-red-900/50 border border-red-700 rounded p-2">
                                             {mcpConfigError}
                                         </div>
                                     )}
                                 </div>
 
                                 {/* Quick MCP Service Controls */}
-                                <div className="space-y-4 pt-4 border-t border-gray-200">
-                                    <h4 className="text-sm font-medium text-gray-700">Quick Controls</h4>
+                                <div className="space-y-4 pt-4 border-t border-slate-700">
+                                    <h4 className="text-sm font-medium text-slate-200">Quick Controls</h4>
 
                                     <div className="grid grid-cols-2 gap-4">
                                         <label className="flex items-center space-x-3 cursor-pointer">
@@ -571,9 +574,9 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                                                     ...localSettings.mcpConfig,
                                                     memorai: { ...localSettings.mcpConfig.memorai, enabled: e.target.checked }
                                                 })}
-                                                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                                className="w-4 h-4 text-blue-600 bg-slate-800 border-slate-600 rounded focus:ring-blue-500 focus:ring-2"
                                             />
-                                            <span className="text-sm text-gray-700">🧠 Memorai</span>
+                                            <span className="text-sm text-slate-200">🧠 Memorai</span>
                                         </label>
 
                                         <label className="flex items-center space-x-3 cursor-pointer">
@@ -584,9 +587,9 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                                                     ...localSettings.mcpConfig,
                                                     glass: { ...localSettings.mcpConfig.glass, enabled: e.target.checked }
                                                 })}
-                                                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                                className="w-4 h-4 text-blue-600 bg-slate-800 border-slate-600 rounded focus:ring-blue-500 focus:ring-2"
                                             />
-                                            <span className="text-sm text-gray-700">🪟 Glass</span>
+                                            <span className="text-sm text-slate-200">🪟 Glass</span>
                                         </label>
 
                                         <label className="flex items-center space-x-3 cursor-pointer">
@@ -597,9 +600,9 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                                                     ...localSettings.mcpConfig,
                                                     romai: { ...localSettings.mcpConfig.romai, enabled: e.target.checked }
                                                 })}
-                                                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                                className="w-4 h-4 text-blue-600 bg-slate-800 border-slate-600 rounded focus:ring-blue-500 focus:ring-2"
                                             />
-                                            <span className="text-sm text-gray-700">🇷🇴 Romai</span>
+                                            <span className="text-sm text-slate-200">🇷🇴 Romai</span>
                                         </label>
 
                                         <label className="flex items-center space-x-3 cursor-pointer">
@@ -610,9 +613,9 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                                                     ...localSettings.mcpConfig,
                                                     playwright: { ...localSettings.mcpConfig.playwright, enabled: e.target.checked }
                                                 })}
-                                                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                                className="w-4 h-4 text-blue-600 bg-slate-800 border-slate-600 rounded focus:ring-blue-500 focus:ring-2"
                                             />
-                                            <span className="text-sm text-gray-700">🎭 Playwright</span>
+                                            <span className="text-sm text-slate-200">🎭 Playwright</span>
                                         </label>
                                     </div>
                                 </div>
@@ -621,14 +624,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                     </div>
                 </div>
             </div>
-
-            {/* Overlay */}
-            {isOpen && (
-                <div
-                    className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30"
-                    onClick={onToggle}
-                />
-            )}
         </>
     );
 };

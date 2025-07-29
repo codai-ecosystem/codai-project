@@ -1,6 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { VoiceEngine } from '../voice/VoiceEngine'
+import { AstralCharacter } from './AstralCharacter'
+import { StreamingConversation, ConversationMessage } from './StreamingText'
+import { AudioVisualizer, type AudioAnalysis, type AudioVisualizerHandle } from './AudioVisualization'
 import type { VoiceEngineStatus, VoiceInterruption, SpeechRecognitionResult } from '../types/voice'
+import '../styles/scrollbar.css'
+import '../styles/glassmorphism.css'
 
 /**
  * METU Voice Interface - Revolutionary Continuous Voice Chat
@@ -39,6 +44,23 @@ export const VoiceInterface: React.FC = () => {
     // UI state
     const [isInitialized, setIsInitialized] = useState(false)
     const [error, setError] = useState<string | null>(null)
+
+    // Audio analysis state and refs
+    const [audioAnalysis, setAudioAnalysis] = useState<AudioAnalysis | null>(null)
+    const audioVisualizerRef = useRef<AudioVisualizerHandle>(null)
+
+    // Convert conversation history to StreamingConversation format
+    const getConversationMessages = (): ConversationMessage[] => {
+        return conversationHistory.map((item, index) => ({
+            id: `${item.type}-${index}-${item.timestamp}`,
+            type: item.type,
+            text: item.text,
+            timestamp: item.timestamp,
+            isStreaming: false,
+            isComplete: true,
+            interrupted: item.interrupted
+        }))
+    }
 
     /**
      * Initialize voice engine
@@ -199,38 +221,38 @@ export const VoiceInterface: React.FC = () => {
     return (
         <div className="flex flex-col h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 text-white">
             {/* Header */}
-            <header className="bg-black bg-opacity-30 backdrop-blur-sm p-4 border-b border-white border-opacity-20">
+            <header className="glass-nav backdrop-blur-md p-4 border-b border-white border-opacity-20 glass-fade-in">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
                         <div className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
                             METU
                         </div>
-                        <div className="text-sm text-gray-300">
+                        <div className="text-sm glass-text-muted">
                             Revolutionary Voice AI
                         </div>
                     </div>
 
                     {/* Status indicators */}
                     <div className="flex items-center space-x-4">
-                        <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs ${status.isConnected
-                                ? 'bg-green-500 bg-opacity-20 text-green-300 border border-green-500 border-opacity-30'
-                                : 'bg-red-500 bg-opacity-20 text-red-300 border border-red-500 border-opacity-30'
+                        <div className={`glass-status flex items-center space-x-2 px-3 py-1 rounded-full text-xs ${status.isConnected
+                            ? 'glass-green text-green-300'
+                            : 'glass-subtle text-red-300 border-red-500 border-opacity-30'
                             }`}>
                             <div className={`w-2 h-2 rounded-full ${status.isConnected ? 'bg-green-400' : 'bg-red-400'}`} />
                             {status.isConnected ? 'Connected' : 'Disconnected'}
                         </div>
 
-                        <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs ${status.isListening
-                                ? 'bg-blue-500 bg-opacity-20 text-blue-300 border border-blue-500 border-opacity-30'
-                                : 'bg-gray-500 bg-opacity-20 text-gray-300 border border-gray-500 border-opacity-30'
+                        <div className={`glass-status flex items-center space-x-2 px-3 py-1 rounded-full text-xs ${status.isListening
+                            ? 'glass-blue text-blue-300'
+                            : 'glass-subtle text-gray-300'
                             }`}>
                             <div className={`w-2 h-2 rounded-full ${status.isListening ? 'bg-blue-400 animate-pulse' : 'bg-gray-400'}`} />
                             {status.isListening ? 'Listening' : 'Silent'}
                         </div>
 
-                        <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs ${status.isSpeaking
-                                ? 'bg-purple-500 bg-opacity-20 text-purple-300 border border-purple-500 border-opacity-30'
-                                : 'bg-gray-500 bg-opacity-20 text-gray-300 border border-gray-500 border-opacity-30'
+                        <div className={`glass-status flex items-center space-x-2 px-3 py-1 rounded-full text-xs ${status.isSpeaking
+                            ? 'glass-purple text-purple-300'
+                            : 'glass-subtle text-gray-300'
                             }`}>
                             <div className={`w-2 h-2 rounded-full ${status.isSpeaking ? 'bg-purple-400 animate-pulse' : 'bg-gray-400'}`} />
                             {status.isSpeaking ? 'Speaking' : 'Quiet'}
@@ -241,7 +263,7 @@ export const VoiceInterface: React.FC = () => {
 
             {/* Error display */}
             {error && (
-                <div className="bg-red-500 bg-opacity-20 border border-red-500 border-opacity-30 text-red-300 p-4 m-4 rounded-lg">
+                <div className="glass-subtle m-4 p-4 rounded-lg border-red-500 border-opacity-30 text-red-300 glass-slide-up">
                     <div className="flex items-center space-x-2">
                         <span className="text-red-400">⚠️</span>
                         <span className="font-medium">Error:</span>
@@ -249,7 +271,7 @@ export const VoiceInterface: React.FC = () => {
                     </div>
                     <button
                         onClick={() => setError(null)}
-                        className="mt-2 text-xs text-red-400 hover:text-red-300 underline"
+                        className="mt-2 text-xs text-red-400 hover:text-red-300 underline glass-button"
                     >
                         Dismiss
                     </button>
@@ -260,66 +282,57 @@ export const VoiceInterface: React.FC = () => {
             <div className="flex-1 flex">
                 {/* Conversation area */}
                 <div className="flex-1 flex flex-col">
-                    {/* Conversation history */}
-                    <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                        {conversationHistory.length === 0 ? (
-                            <div className="flex items-center justify-center h-full text-gray-400">
-                                <div className="text-center">
-                                    <div className="text-6xl mb-4">🎤</div>
-                                    <div className="text-xl mb-2">Ready for conversation</div>
-                                    <div className="text-sm">
-                                        {isInitialized
-                                            ? 'Click "Start Listening" to begin talking with METU'
-                                            : 'Initializing voice engine...'
+                    {/* Conversation history with streaming */}
+                    {conversationHistory.length === 0 ? (
+                        <div className="flex-1 flex items-center justify-center text-gray-400">
+                            <div className="text-center">
+                                <div className="flex justify-center mb-6">
+                                    <AstralCharacter
+                                        state={
+                                            !isInitialized ? 'idle' :
+                                                status.isProcessing ? 'processing' :
+                                                    status.isSpeaking ? 'speaking' :
+                                                        status.isListening ? 'listening' :
+                                                            'idle'
                                         }
-                                    </div>
+                                        volume={status.volume}
+                                        size="large"
+                                        audioAnalysis={audioAnalysis || undefined}
+                                    />
+                                </div>
+                                <div className="text-xl mb-2">Ready for conversation</div>
+                                <div className="text-sm">
+                                    {isInitialized
+                                        ? 'Click "Start Listening" to begin talking with METU'
+                                        : 'Initializing voice engine...'
+                                    }
                                 </div>
                             </div>
-                        ) : (
-                            conversationHistory.map((item, index) => (
-                                <div
-                                    key={index}
-                                    className={`flex ${item.type === 'user' ? 'justify-end' : 'justify-start'}`}
-                                >
-                                    <div className={`max-w-xs lg:max-w-md px-4 py-3 rounded-lg ${item.type === 'user'
-                                            ? 'bg-blue-500 bg-opacity-20 text-blue-100 border border-blue-500 border-opacity-30'
-                                            : `bg-purple-500 bg-opacity-20 text-purple-100 border border-purple-500 border-opacity-30 ${item.interrupted ? 'opacity-60 border-dashed' : ''
-                                            }`
-                                        }`}>
-                                        <div className="text-sm">{item.text}</div>
-                                        <div className="text-xs text-gray-400 mt-1">
-                                            {new Date(item.timestamp).toLocaleTimeString()}
-                                            {item.interrupted && <span className="ml-2 text-yellow-400">✂️ Interrupted</span>}
-                                        </div>
-                                    </div>
-                                </div>
-                            ))
-                        )}
+                        </div>
+                    ) : (
+                        <StreamingConversation
+                            messages={getConversationMessages()}
+                            currentStreamingText={currentResponse}
+                            isTyping={status.isProcessing && !currentResponse}
+                            maxHeight="calc(100vh - 300px)"
+                            showTimestamps={true}
+                            showStatus={true}
+                        />
+                    )}
 
-                        {/* Current transcript */}
-                        {transcript && (
+                    {/* Current transcript display */}
+                    {transcript && (
+                        <div className="p-4 border-t border-white border-opacity-10">
                             <div className="flex justify-end">
-                                <div className="max-w-xs lg:max-w-md px-4 py-3 rounded-lg bg-blue-500 bg-opacity-10 text-blue-200 border border-blue-500 border-opacity-20 border-dashed">
-                                    <div className="text-sm">{transcript}</div>
-                                    <div className="text-xs text-gray-400 mt-1">
+                                <div className="glass-blue max-w-xs lg:max-w-md px-4 py-3 rounded-lg border-dashed glass-slide-up">
+                                    <div className="text-sm glass-text">{transcript}</div>
+                                    <div className="text-xs glass-text-muted mt-1">
                                         <span className="animate-pulse">🎙️ Listening...</span>
                                     </div>
                                 </div>
                             </div>
-                        )}
-
-                        {/* Current AI response */}
-                        {currentResponse && (
-                            <div className="flex justify-start">
-                                <div className="max-w-xs lg:max-w-md px-4 py-3 rounded-lg bg-purple-500 bg-opacity-10 text-purple-200 border border-purple-500 border-opacity-20 border-dashed">
-                                    <div className="text-sm">{currentResponse}</div>
-                                    <div className="text-xs text-gray-400 mt-1">
-                                        <span className="animate-pulse">🗣️ Speaking...</span>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
+                        </div>
+                    )}
 
                     {/* Voice controls */}
                     <div className="p-4 bg-black bg-opacity-30 backdrop-blur-sm border-t border-white border-opacity-20">
@@ -329,14 +342,14 @@ export const VoiceInterface: React.FC = () => {
                                     <button
                                         onClick={startListening}
                                         disabled={!isInitialized}
-                                        className="px-6 py-3 bg-green-500 hover:bg-green-600 disabled:bg-gray-500 disabled:cursor-not-allowed rounded-lg font-medium transition-colors"
+                                        className="glass-button glass-green disabled:glass-subtle disabled:cursor-not-allowed"
                                     >
                                         🎤 Start Listening
                                     </button>
                                 ) : (
                                     <button
                                         onClick={stopListening}
-                                        className="px-6 py-3 bg-red-500 hover:bg-red-600 rounded-lg font-medium transition-colors"
+                                        className="glass-button glass-pink"
                                     >
                                         🔇 Stop Listening
                                     </button>
@@ -344,22 +357,22 @@ export const VoiceInterface: React.FC = () => {
 
                                 <button
                                     onClick={clearHistory}
-                                    className="px-4 py-3 bg-gray-600 hover:bg-gray-700 rounded-lg font-medium transition-colors"
+                                    className="glass-button glass-subtle"
                                 >
                                     🗑️ Clear
                                 </button>
                             </div>
 
                             {/* Volume indicator */}
-                            <div className="flex items-center space-x-2">
-                                <span className="text-sm text-gray-400">Volume:</span>
-                                <div className="w-20 h-2 bg-gray-700 rounded-full overflow-hidden">
+                            <div className="glass-panel flex items-center space-x-2 p-3">
+                                <span className="text-sm glass-text-muted">Volume:</span>
+                                <div className="w-20 h-2 glass-subtle rounded-full overflow-hidden">
                                     <div
                                         className="h-full bg-gradient-to-r from-green-400 to-blue-400 transition-all duration-100"
                                         style={{ width: `${Math.min(status.volume * 100, 100)}%` }}
                                     />
                                 </div>
-                                <span className="text-xs text-gray-400 w-8">
+                                <span className="text-xs glass-text-muted w-8">
                                     {Math.round(status.volume * 100)}%
                                 </span>
                             </div>
@@ -367,7 +380,7 @@ export const VoiceInterface: React.FC = () => {
 
                         {/* Test inputs for development */}
                         <div className="mt-4 pt-4 border-t border-white border-opacity-10">
-                            <div className="text-xs text-gray-400 mb-2">Development Test Inputs:</div>
+                            <div className="text-xs glass-text-muted mb-2">Development Test Inputs:</div>
                             <div className="flex space-x-2">
                                 {[
                                     'Hello METU, how are you?',
@@ -379,7 +392,7 @@ export const VoiceInterface: React.FC = () => {
                                         key={index}
                                         onClick={() => testVoiceInput(testInput)}
                                         disabled={!isInitialized}
-                                        className="px-3 py-1 text-xs bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:cursor-not-allowed rounded border border-gray-600 transition-colors"
+                                        className="glass-button text-xs disabled:glass-subtle disabled:cursor-not-allowed px-3 py-1"
                                     >
                                         {testInput}
                                     </button>
@@ -395,37 +408,37 @@ export const VoiceInterface: React.FC = () => {
 
                     <div className="space-y-4">
                         {/* Interruption stats */}
-                        <div className="bg-white bg-opacity-5 rounded-lg p-3">
+                        <div className="glass-card glass-purple">
                             <div className="text-sm font-medium text-purple-300 mb-2">Interruptions</div>
-                            <div className="text-2xl font-bold">{interruptionCount}</div>
+                            <div className="text-2xl font-bold glass-text">{interruptionCount}</div>
                             {lastInterruption && (
-                                <div className="text-xs text-gray-400 mt-2">
+                                <div className="text-xs glass-text-muted mt-2">
                                     Last: {lastInterruption.interruptionType} interruption
                                 </div>
                             )}
                         </div>
 
                         {/* Conversation stats */}
-                        <div className="bg-white bg-opacity-5 rounded-lg p-3">
+                        <div className="glass-card glass-blue">
                             <div className="text-sm font-medium text-blue-300 mb-2">Messages</div>
-                            <div className="flex justify-between text-sm">
+                            <div className="flex justify-between text-sm glass-text">
                                 <span>User: {conversationHistory.filter(m => m.type === 'user').length}</span>
                                 <span>AI: {conversationHistory.filter(m => m.type === 'ai').length}</span>
                             </div>
                         </div>
 
                         {/* Engine status */}
-                        <div className="bg-white bg-opacity-5 rounded-lg p-3">
+                        <div className="glass-card glass-green">
                             <div className="text-sm font-medium text-green-300 mb-2">Engine Status</div>
                             <div className="space-y-1 text-xs">
                                 <div className="flex justify-between">
-                                    <span>Processing:</span>
-                                    <span className={status.isProcessing ? 'text-green-400' : 'text-gray-400'}>
+                                    <span className="glass-text">Processing:</span>
+                                    <span className={status.isProcessing ? 'text-green-400' : 'glass-text-muted'}>
                                         {status.isProcessing ? 'Yes' : 'No'}
                                     </span>
                                 </div>
                                 <div className="flex justify-between">
-                                    <span>Connected:</span>
+                                    <span className="glass-text">Connected:</span>
                                     <span className={status.isConnected ? 'text-green-400' : 'text-red-400'}>
                                         {status.isConnected ? 'Yes' : 'No'}
                                     </span>
@@ -434,18 +447,29 @@ export const VoiceInterface: React.FC = () => {
                         </div>
 
                         {/* Revolutionary features info */}
-                        <div className="bg-gradient-to-r from-purple-500 to-blue-500 bg-opacity-20 rounded-lg p-3 border border-purple-500 border-opacity-30">
+                        <div className="glass-card glass-gradient-overlay glass-blue">
                             <div className="text-sm font-medium text-cyan-300 mb-2">🚀 Revolutionary Features</div>
-                            <div className="text-xs text-gray-300 space-y-1">
+                            <div className="text-xs glass-text space-y-1">
                                 <div>✓ Continuous listening during AI speech</div>
                                 <div>✓ Natural interruption handling</div>
                                 <div>✓ Zero conversation delays</div>
                                 <div>✓ Context preservation</div>
                                 <div>✓ Real-time voice activity detection</div>
+                                <div>✓ Glassmorphism UI design</div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            {/* Hidden audio visualizer for analysis */}
+            <div className="fixed top-0 left-0 w-0 h-0 overflow-hidden pointer-events-none">
+                <AudioVisualizer
+                    ref={audioVisualizerRef}
+                    isActive={status.isListening || status.isSpeaking}
+                    mode="bars"
+                    onAudioAnalysis={setAudioAnalysis}
+                />
             </div>
         </div>
     )

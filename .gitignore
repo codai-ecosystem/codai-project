@@ -29,8 +29,8 @@ tsconfig.tsbuildinfo
 
 # Testing
 coverage/
-test-results/
-playwright-report/
+tests/results/
+tests/e2e/playwright-report/
 playwright/.cache/
 .nyc_output/
 
@@ -274,6 +274,9 @@ docker-compose.local.yml
 apps-backup/
 temp-*/
 temp/
+
+# Historical archives (may contain embedded git repos)
+docs/historical/AIDE-original/
 
 # Generated reports
 build-check-results*.json

@@ -70,7 +70,7 @@
         "components/**/*.{ts,tsx,js,jsx}",
         "lib/**/*.{ts,tsx,js,jsx}",
         ".eslintrc.*",
-        "eslint.config.*",
+        "config/dev/eslint.config.*",
         "package.json"
       ]
     },
@@ -102,8 +102,8 @@
         "tests/**/*.{ts,tsx,js,jsx}",
         "**/*.test.{ts,tsx,js,jsx}",
         "**/*.spec.{ts,tsx,js,jsx}",
-        "vitest.config.*",
-        "jest.config.*",
+        "config/test/vitest.config.*",
+        "config/test/jest.config.*",
         "package.json"
       ],
       "outputs": [

@@ -7,9 +7,9 @@
         "environment": "development"
     },
     "azureAIFoundry": {
-        "name": "codai-dev-ai-foundry",
+        "name": "your-ai-foundry-name",
         "endpoint": "https://your-region.api.cognitive.microsoft.com/",
-        "key": "your-azure-ai-key-here",
+        "key": "your-azure-ai-foundry-key-here",
         "purpose": "Primary AI service - recommended for most applications",
         "status": "deployed",
         "capabilities": [
@@ -21,9 +21,9 @@
         ]
     },
     "azureOpenAI": {
-        "name": "codai-dev-openai",
+        "name": "your-openai-name",
         "endpoint": "https://your-region.api.cognitive.microsoft.com/",
-        "key": "your-azure-ai-key-here",
+        "key": "your-azure-openai-key-here",
         "apiVersion": "2024-12-01-preview",
         "purpose": "Specialized OpenAI-only service",
         "status": "deployed",
@@ -56,7 +56,7 @@
     },
     "azureAISearch": {
         "name": "your-search-service-name",
-        "endpoint": "https://your-search-service-name.search.windows.net",
+        "endpoint": "https://your-search-service.search.windows.net",
         "key": "your-azure-search-admin-key-here",
         "purpose": "RAG and semantic search capabilities",
         "status": "deployed",

@@ -1,0 +1,50 @@
+{
+  "frameworks": {
+    "lighthouse": {
+      "enabled": true,
+      "thresholds": {
+        "performance": 90,
+        "accessibility": 90,
+        "bestPractices": 90,
+        "seo": 90
+      }
+    },
+    "loadTesting": {
+      "enabled": true,
+      "tool": "artillery",
+      "scenarios": {
+        "api": {
+          "target": "http://localhost:4000",
+          "phases": [
+            {
+              "duration": "2m",
+              "arrivalRate": 10
+            },
+            {
+              "duration": "5m",
+              "arrivalRate": 20
+            },
+            {
+              "duration": "2m",
+              "arrivalRate": 10
+            }
+          ]
+        }
+      }
+    }
+  },
+  "metrics": {
+    "responseTime": {
+      "threshold": "< 200ms"
+    },
+    "throughput": {
+      "threshold": "> 100 rps"
+    },
+    "errorRate": {
+      "threshold": "< 1%"
+    },
+    "memoryUsage": {
+      "threshold": "< 512MB"
+    }
+  }
+}

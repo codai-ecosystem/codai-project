@@ -16,7 +16,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 // Mock dependencies to prevent external calls during unit testing
-vi.mock('@codai/cnd', () => ({
+// ARCHIVED: vi.mock('@codai/cnd', () => ({
   CNDHubService: vi.fn(() => ({
     initialize: vi.fn().mockResolvedValue(true),
     getServiceStatus: vi.fn().mockResolvedValue('operational'),

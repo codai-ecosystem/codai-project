@@ -3,7 +3,7 @@
  * Phase 2 Implementation: Replace Prisma with CND for user management
  */
 
-import { CND } from '@codai/cnd';
+// MIGRATED TO CBD: import { CND } from '@codai/cnd';
 import { compare, hash } from 'bcryptjs';
 
 export interface User {

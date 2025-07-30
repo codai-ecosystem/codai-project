@@ -10,7 +10,7 @@ import {
     CallToolRequestSchema,
     ListToolsRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
-import { CND } from '@codai/cnd';
+// MIGRATED TO CBD: import { CND } from '@codai/cnd';
 
 class EnterpriseMemoryEngine {
     constructor() {

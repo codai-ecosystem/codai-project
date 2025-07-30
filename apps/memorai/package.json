@@ -16,8 +16,8 @@
     "type-check": "pnpm exec tsc --noEmit"
   },
   "dependencies": {
-    "@auth/prisma-adapter": "^2.10.0",
-    "@prisma/client": "^6.12.0",
+    "@codai/cbd": "workspace:*",
+    "@codai/memorai": "workspace:*",
     "@codai/shared-ui": "workspace:*",
     "@codai/sso-sdk": "workspace:*",
     "@codai/security": "workspace:*",
@@ -59,7 +59,6 @@
     "happy-dom": "^18.0.1",
     "jsdom": "^26.1.0",
     "postcss": "^8.5.6",
-    "prisma": "^6.12.0",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
     "vitest": "^3.2.4"

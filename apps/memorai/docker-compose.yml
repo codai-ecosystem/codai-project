@@ -3,19 +3,20 @@ services:
   memorai:
     build: .
     ports:
-      - "3693:3693"
+      - "4006:4006"
     environment:
       - NODE_ENV=production
-      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/memorai
+      - MEMORAI_CBD_PATH=/app/memorai-cbd-data
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
       - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
-      - NEXTAUTH_URL=http://localhost:3693
-      - REDIS_URL=redis://redis:6379
-    depends_on:
-      - postgres
-      - redis
+      - NEXTAUTH_URL=http://localhost:4006
+      - MEMORAI_LOG_LEVEL=info
+      - MEMORAI_CACHE_SIZE=10000
+      - MEMORAI_DIMENSIONS=1536
     restart: unless-stopped
     volumes:
-      - memorai_data:/app/data
+      - memorai_cbd_data:/app/memorai-cbd-data
+      - memorai_app_data:/app/data
     networks:
       - memorai_network
     labels:
@@ -23,32 +24,6 @@ services:
       - "traefik.http.routers.memorai.rule=Host(`memorai.yourdomain.com`)"
       - "traefik.http.routers.memorai.tls=true"
       - "traefik.http.routers.memorai.tls.certresolver=letsencrypt"
-
-  postgres:
-    image: postgres:15-alpine
-    environment:
-      - POSTGRES_DB=memorai
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./prisma/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
-    ports:
-      - "5432:5432"
-    restart: unless-stopped
-    networks:
-      - memorai_network
-
-  redis:
-    image: redis:7-alpine
-    command: redis-server --appendonly yes
-    volumes:
-      - redis_data:/data
-    ports:
-      - "6379:6379"
-    restart: unless-stopped
-    networks:
-      - memorai_network
 
   traefik:
     image: traefik:v2.10
@@ -74,9 +49,10 @@ services:
       - memorai_network
 
 volumes:
-  memorai_data:
-  postgres_data:
-  redis_data:
+  memorai_cbd_data:
+    driver: local
+  memorai_app_data:
+    driver: local
   letsencrypt:
 
 networks:

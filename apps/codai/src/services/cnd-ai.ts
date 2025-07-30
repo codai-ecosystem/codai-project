@@ -4,7 +4,7 @@
  * and training data storage using CND enterprise features
  */
 
-import { CND } from '@codai/cnd';
+// MIGRATED TO CBD: import { CND } from '@codai/cnd';
 import { z } from 'zod';
 
 // AI Model schemas

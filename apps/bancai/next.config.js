@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ['@codai/cnd'],
+  transpilePackages: [],
   turbopack: {
     resolveAlias: {
       canvas: './empty-module.js',

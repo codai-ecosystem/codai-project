@@ -1,8 +1,8 @@
 {
   "name": "@codai/memorai",
-  "version": "1.1.0",
+  "version": "8.0.0-cbd",
   "type": "module",
-  "description": "Universal Database & Storage Service for CODAI Ecosystem",
+  "description": "Universal Database & Storage Service for CODAI Ecosystem - CBD Backend",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
@@ -39,21 +39,22 @@
     "dev": "tsc --build --watch",
     "lint": "pnpm exec eslint src --ext .ts,.tsx",
     "test": "jest",
-    "type-check": "pnpm exec tsc --noEmit"
+    "type-check": "pnpm exec tsc --noEmit",
+    "migrate": "tsx ../../apps/memorai/migrate-to-cbd.ts",
+    "mcp:cbd": "tsx ../../apps/memorai/cbd-mcp-server.ts",
+    "emergency:recovery": "node ../../apps/memorai/emergency-recovery.js"
   },
   "dependencies": {
     "@codai/core": "workspace:*",
     "@codai/shared-types": "workspace:*",
-    "@prisma/client": "^6.12.0",
-    "@supabase/supabase-js": "^2.48.1",
-    "better-sqlite3": "^11.5.0",
+    "@codai/cbd": "workspace:*",
+    "@modelcontextprotocol/sdk": "^0.6.0",
     "commander": "^12.1.0",
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "express-rate-limit": "^7.4.1",
     "fuse.js": "^7.1.0",
     "helmet": "^8.0.0",
-    "ioredis": "^5.4.1",
     "jose": "^5.9.6",
     "multer": "^1.4.5-lts.1",
     "sharp": "^0.33.5",
@@ -63,7 +64,6 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "^7.6.11",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/jest": "^30.0.0",
@@ -73,7 +73,7 @@
     "@types/uuid": "^10.0.0",
     "eslint": "^9.31.0",
     "jest": "^30.0.4",
-    "prisma": "^6.12.0",
+    "tsx": "^4.7.1",
     "typescript": "^5.8.3"
   },
   "peerDependencies": {

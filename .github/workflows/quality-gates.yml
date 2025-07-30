@@ -1,0 +1,17 @@
+name: CODAI Quality Gates
+
+on: ["push","pull_request"]
+
+jobs:
+  quality-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - run: npm ci
+      - run: npm run quality:check
+        name: Run Quality Gates
+      - run: npm run test:coverage
+        name: Check Coverage

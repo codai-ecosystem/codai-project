@@ -1,0 +1,115 @@
+{
+    "servers": {
+        "MemoraiMCP-CBD": {
+            "type": "stdio",
+            "command": "tsx",
+            "args": [
+                "apps/memorai/cbd-mcp-server.ts"
+            ],
+            "cwd": "E:\\GitHub\\codai-project",
+            "env": {
+                "MEMORAI_CBD_PATH": "./memorai-cbd-data",
+                "OPENAI_API_KEY": "${env:OPENAI_API_KEY}",
+                "MEMORAI_LOG_LEVEL": "info",
+                "MEMORAI_CACHE_SIZE": "10000",
+                "MEMORAI_DIMENSIONS": "1536",
+                "MEMORAI_MAX_MEMORIES": "100000",
+                "MEMORAI_PERSIST_ON_EXIT": "true",
+                "MEMORAI_EMBEDDING_MODEL": "text-embedding-ada-002",
+                "NODE_ENV": "development"
+            },
+            "dev": {
+                "debug": {
+                    "type": "node"
+                }
+            }
+        },
+        "GlassMCP": {
+            "type": "stdio",
+            "command": "node",
+            "args": [
+                "E:\\GitHub\\codai-project\\apps\\glass\\packages\\mcp\\dist\\mcp-server-enhanced.js"
+            ],
+            "cwd": "E:\\GitHub\\codai-project\\apps\\glass\\packages\\mcp",
+            "env": {
+                "GLASS_LOG_LEVEL": "debug",
+                "GLASS_MAX_WINDOWS": "1000",
+                "GLASS_WINDOW_CACHE_TTL": "5000",
+                "NODE_ENV": "development"
+            },
+            "dev": {
+                "debug": {
+                    "type": "node"
+                }
+            }
+        },
+        "RomaiIntelligenceMCP": {
+            "type": "http",
+            "url": "http://localhost:8003/sse",
+            "env": {
+                "AZURE_OPENAI_API_KEY": "",
+                "AZURE_OPENAI_ENDPOINT": "https://aide-openai-dev.openai.azure.com/",
+                "AZURE_OPENAI_API_VERSION": "2024-12-01-preview",
+                "AZURE_OPENAI_DEPLOYMENT_NAME": "gpt-4o",
+                "ROMAI_LOG_LEVEL": "debug",
+                "NODE_ENV": "development"
+            }
+        },
+        "PlaywrightMCP": {
+            "type": "stdio",
+            "command": "npx",
+            "args": [
+                "-y",
+                "@executeautomation/playwright-mcp-server"
+            ],
+            "dev": {
+                "debug": {
+                    "type": "node"
+                }
+            }
+        },
+        "SimpleMemoryMCP": {
+            "type": "stdio",
+            "command": "npx",
+            "args": [
+                "-y",
+                "@modelcontextprotocol/server-memory"
+            ],
+            "dev": {
+                "debug": {
+                    "type": "node"
+                }
+            }
+        },
+        "Context7MCP": {
+            "type": "stdio",
+            "command": "npx",
+            "args": [
+                "-y",
+                "@upstash/context7-mcp"
+            ],
+            "dev": {
+                "debug": {
+                    "type": "node"
+                }
+            }
+        },
+        "SequentialThinkingMCP": {
+            "type": "stdio",
+            "command": "npx",
+            "args": [
+                "-y",
+                "@modelcontextprotocol/server-sequential-thinking"
+            ],
+            "dev": {
+                "debug": {
+                    "type": "node"
+                }
+            }
+        },
+        "MicrosoftDocsMCP": {
+            "type": "http",
+            "url": "https://learn.microsoft.com/api/mcp"
+        }
+    }
+}

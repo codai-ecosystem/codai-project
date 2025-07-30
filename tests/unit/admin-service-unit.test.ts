@@ -9,7 +9,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 // Mock dependencies
-vi.mock('@codai/cnd', () => ({
+// ARCHIVED: vi.mock('@codai/cnd', () => ({
   CNDDatabase: vi.fn().mockImplementation(() => ({
     connect: vi.fn().mockResolvedValue(true),
     disconnect: vi.fn().mockResolvedValue(true),

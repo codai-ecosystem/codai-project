@@ -1,0 +1,40 @@
+{
+  "name": "@codai/event-driven-architecture",
+  "version": "1.0.0",
+  "description": "Event-driven architecture system for reactive microservice patterns with distributed messaging and event streaming",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "eventemitter3": "^5.0.1",
+    "ws": "^8.14.2",
+    "redis": "^4.6.7",
+    "chalk": "^5.3.0",
+    "ora": "^7.0.1",
+    "uuid": "^9.0.0",
+    "lodash": "^4.17.21",
+    "node-cron": "^3.0.2",
+    "ajv": "^8.12.0",
+    "bull": "^4.11.3",
+    "amqplib": "^0.10.3"
+  },
+  "keywords": [
+    "event-driven",
+    "microservices",
+    "messaging",
+    "event-streaming",
+    "reactive",
+    "distributed-systems",
+    "pub-sub",
+    "codai"
+  ],
+  "author": "CODAI Ecosystem",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

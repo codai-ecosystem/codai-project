@@ -1,0 +1,5 @@
+{
+  "quality:pre-commit": "node -e \"const QualityGatesEngine = require('./libs/quality-gates').default; const engine = new QualityGatesEngine(); engine.initialize().then(() => engine.runQualityGate('pre-commit'));\"",
+  "quality:pre-push": "node -e \"const QualityGatesEngine = require('./libs/quality-gates').default; const engine = new QualityGatesEngine(); engine.initialize().then(() => engine.runQualityGate('pre-push'));\"",
+  "quality:ci": "node -e \"const QualityGatesEngine = require('./libs/quality-gates').default; const engine = new QualityGatesEngine(); engine.initialize().then(() => engine.runQualityGate('ci-build'));\""
+}

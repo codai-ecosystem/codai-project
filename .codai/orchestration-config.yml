@@ -1,0 +1,79 @@
+orchestration:
+  engine:
+    enabled: true
+    maxConcurrentProjects: 10
+    maxConcurrentWorkflows: 50
+    resourceOptimization: true
+    autoScaling: true
+  services:
+    registry:
+      enabled: true
+      healthCheckInterval: 30000
+      autoDiscovery: true
+      loadBalancing: true
+    gateway:
+      port: 4000
+      health: /health
+    codai:
+      port: 4001
+      health: /api/health
+    admin:
+      port: 4002
+      health: /admin/health
+    hub:
+      port: 4003
+      health: /hub/health
+    id:
+      port: 4004
+      health: /id/health
+    bancai:
+      port: 4005
+      health: /bancai/health
+    memorai:
+      port: 4006
+      health: /memorai/health
+    cbd:
+      port: 4007
+      health: /cbd/health
+  workflows:
+    enabled: true
+    parallelExecution: true
+    failureHandling: retry
+    maxRetries: 3
+    timeoutMinutes: 60
+  deployment:
+    enabled: true
+    strategy: rolling
+    healthChecks: true
+    rollbackOnFailure: true
+    canaryDeployment: false
+  resources:
+    allocation:
+      enabled: true
+      strategy: balanced
+      optimization: true
+      monitoring: true
+    limits:
+      cpu: 80%
+      memory: 85%
+      network: 90%
+      storage: 75%
+  monitoring:
+    enabled: true
+    metrics:
+      - performance
+      - resources
+      - health
+      - progress
+    alerting: true
+    reporting: true
+    retention: 30d
+communication:
+  websocket:
+    enabled: true
+    port: 8081
+    maxConnections: 100
+  events:
+    enabled: true
+    persistence: true
+    replication: false

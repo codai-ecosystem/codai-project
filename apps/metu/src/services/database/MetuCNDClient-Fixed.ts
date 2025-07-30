@@ -5,7 +5,7 @@
  */
 
 import { EventEmitter } from 'events';
-import { CND, CNDConfig } from '@codai/cnd';
+// MIGRATED TO CBD: import { CND, CNDConfig } from '@codai/cnd';
 
 // Helper function to normalize query results
 function normalizeQueryResult<T>(result: any): T[] {

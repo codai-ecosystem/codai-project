@@ -14,7 +14,7 @@ import express from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { setupSecurity } from '@codai/security';
 import swaggerUi from 'swagger-ui-express';
-import { CND } from '@codai/cnd';
+// MIGRATED TO CBD: import { CND } from '@codai/cnd';
 import { z } from 'zod';
 
 const app = express();

@@ -1,0 +1,22 @@
+{
+  "timestamp": "2025-07-29T18:30:29.069Z",
+  "system": {
+    "activeWorkflows": 3,
+    "configuredWorkflows": 3,
+    "monitoringEnabled": true,
+    "performanceTracking": true
+  },
+  "execution": {
+    "totalWorkflows": 1,
+    "successfulWorkflows": 1,
+    "successRate": 100,
+    "averageExecutionTime": 7944
+  },
+  "performance": {
+    "currentMetrics": {},
+    "trends": {
+      "trend": "insufficient_data"
+    }
+  },
+  "recommendations": []
+}

@@ -1,0 +1,125 @@
+{
+  "name": "@codai/metu-stabilization",
+  "version": "1.0.0",
+  "description": "Phase 2.2 METU Application Stabilization - Web & Desktop App Optimization",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./web": {
+      "import": "./dist/web/index.esm.js",
+      "require": "./dist/web/index.js",
+      "types": "./dist/web/index.d.ts"
+    },
+    "./desktop": {
+      "import": "./dist/desktop/index.esm.js",
+      "require": "./dist/desktop/index.js",
+      "types": "./dist/desktop/index.d.ts"
+    },
+    "./performance": {
+      "import": "./dist/performance/index.esm.js",
+      "require": "./dist/performance/index.js",
+      "types": "./dist/performance/index.d.ts"
+    },
+    "./ui": {
+      "import": "./dist/ui/index.esm.js",
+      "require": "./dist/ui/index.js",
+      "types": "./dist/ui/index.d.ts"
+    }
+  },
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsc && vite build",
+    "dev": "vite build --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/**/*.{ts,tsx}",
+    "lint:fix": "eslint src/**/*.{ts,tsx} --fix"
+  },
+  "keywords": [
+    "metu",
+    "stabilization",
+    "performance",
+    "electron",
+    "next.js",
+    "react",
+    "ui-optimization",
+    "cross-platform",
+    "real-time",
+    "voice-ai"
+  ],
+  "author": "CODAI Team",
+  "license": "MIT",
+  "dependencies": {
+    "@codai/advanced-security": "workspace:*",
+    "@codai/ai-chatbot": "workspace:*",
+    "@codai/service-stability": "workspace:*",
+    "@codai/code-analysis": "workspace:*",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "next": "^15.4.1",
+    "typescript": "^5.8.3",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "express": "^4.18.2",
+    "redis": "^4.7.0",
+    "ioredis": "^5.4.1",
+    "ws": "^8.18.3",
+    "uuid": "^10.0.0",
+    "lodash": "^4.17.21",
+    "date-fns": "^3.8.0",
+    "zod": "^3.25.1",
+    "framer-motion": "^11.13.6",
+    "react-query": "^3.39.3",
+    "@tanstack/react-query": "^5.70.1",
+    "react-window": "^1.8.10",
+    "react-virtualized-auto-sizer": "^1.0.25",
+    "web-vitals": "^4.2.5"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@types/node": "^24.0.14",
+    "@types/lodash": "^4.17.13",
+    "@types/uuid": "^10.0.0",
+    "@types/ws": "^8.5.13",
+    "@types/react-window": "^1.8.8",
+    "@vitejs/plugin-react": "^4.7.0",
+    "@playwright/test": "^1.54.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/user-event": "^14.6.1",
+    "vitest": "^3.2.4",
+    "vite": "^6.0.7",
+    "eslint": "^9.17.0",
+    "@typescript-eslint/parser": "^8.18.2",
+    "@typescript-eslint/eslint-plugin": "^8.18.2",
+    "jsdom": "^26.1.0"
+  },
+  "peerDependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "next": "^15.4.1",
+    "electron": "^37.2.3"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  }
+}

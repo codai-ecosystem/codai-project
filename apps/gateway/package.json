@@ -34,8 +34,7 @@
         "winston": "^3.11.0",
         "prom-client": "^15.1.0",
         "@codai/api-standards": "workspace:*",
-        "@codai/security": "workspace:*",
-        "@codai/cnd": "workspace:*"
+        "@codai/security": "workspace:*"
     },
     "devDependencies": {
         "@types/express": "^4.17.21",

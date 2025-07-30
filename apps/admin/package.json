@@ -16,7 +16,6 @@
     "type-check": "pnpm exec tsc --noEmit"
   },
   "dependencies": {
-    "@codai/cnd": "workspace:*",
     "@codai/api-standards": "workspace:*",
     "@codai/auth": "workspace:*",
     "@codai/bancai": "workspace:*",

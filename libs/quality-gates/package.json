@@ -1,0 +1,31 @@
+{
+  "name": "@codai/quality-gates",
+  "version": "1.0.0",
+  "description": "Advanced automated quality gates and continuous integration for CODAI ecosystem",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "scripts": {
+    "test": "node --test",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "keywords": [
+    "quality-gates",
+    "automation",
+    "ci-cd",
+    "git-hooks",
+    "continuous-integration",
+    "code-quality"
+  ],
+  "author": "CODAI Ecosystem",
+  "license": "MIT",
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

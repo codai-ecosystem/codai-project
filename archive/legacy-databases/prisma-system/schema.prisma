@@ -1,0 +1,169 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// AI Memory & Database Core Models
+model Agent {
+  id          String   @id @default(cuid())
+  name        String
+  type        String   @default("PERSONAL") // AgentType
+  description String?
+  capabilities String? // JSON array of capabilities
+  maxContextSize Int   @default(10000)
+  settings    String? // JSON configuration
+  status      String   @default("ACTIVE") // AgentStatus
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  memories    Memory[]
+  sessions    MemorySession[]
+  contexts    ContextWindow[]
+  embeddings  MemoryEmbedding[]
+  retrievals  MemoryRetrieval[]
+  
+  @@map("agents")
+}
+
+model Memory {
+  id          String   @id @default(cuid())
+  content     String   // The actual memory content
+  summary     String?  // AI-generated summary
+  importance  Float    @default(0.5) // 0.0 to 1.0 importance score
+  confidence  Float    @default(0.8) // 0.0 to 1.0 confidence score
+  memoryType  String @default("EPISODIC") // MemoryType
+  category    String?  // User-defined category
+  tags        String?  // JSON array of tags
+  metadata    String?  // JSON metadata
+  expiresAt   DateTime?
+  lastAccessed DateTime @default(now())
+  accessCount Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  agentId     String
+  agent       Agent    @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  
+  sessionId   String?
+  session     MemorySession? @relation(fields: [sessionId], references: [id])
+  
+  embeddings  MemoryEmbedding[]
+  associations MemoryAssociation[] @relation("SourceMemory")
+  connectedTo  MemoryAssociation[] @relation("TargetMemory")
+  retrievals   MemoryRetrieval[]
+  
+  @@index([agentId, importance])
+  @@index([agentId, lastAccessed])
+  @@index([memoryType, category])
+  @@map("memories")
+}
+
+model MemorySession {
+  id          String   @id @default(cuid())
+  name        String?
+  description String?
+  contextSize Int      @default(5000)
+  sessionType String @default("CONVERSATION") // SessionType
+  status      String @default("ACTIVE") // SessionStatus
+  metadata    String?  // JSON metadata
+  startedAt   DateTime @default(now())
+  endedAt     DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  agentId     String
+  agent       Agent    @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  
+  memories    Memory[]
+  contexts    ContextWindow[]
+  retrievals  MemoryRetrieval[]
+  
+  @@map("memory_sessions")
+}
+
+model ContextWindow {
+  id          String   @id @default(cuid())
+  windowSize  Int      @default(5)
+  currentMemories String // JSON array of memory IDs in current context
+  relevanceScores String // JSON array of relevance scores
+  timestamp   DateTime @default(now())
+  
+  agentId     String
+  agent       Agent    @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  
+  sessionId   String?
+  session     MemorySession? @relation(fields: [sessionId], references: [id])
+  
+  @@map("context_windows")
+}
+
+model MemoryEmbedding {
+  id          String   @id @default(cuid())
+  vector      String   // JSON array of embedding values
+  model       String   @default("text-embedding-3-small")
+  dimensions  Int      @default(1536)
+  chunkIndex  Int      @default(0)
+  createdAt   DateTime @default(now())
+  
+  memoryId    String
+  memory      Memory   @relation(fields: [memoryId], references: [id], onDelete: Cascade)
+  
+  agentId     String
+  agent       Agent    @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  
+  @@index([agentId, model])
+  @@map("memory_embeddings")
+}
+
+model MemoryAssociation {
+  id          String   @id @default(cuid())
+  strength    Float    @default(0.5) // 0.0 to 1.0 association strength
+  associationType String // AssociationType @default(RELATED)
+  context     String?  // Context of the association
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  sourceMemoryId String
+  sourceMemory   Memory @relation("SourceMemory", fields: [sourceMemoryId], references: [id], onDelete: Cascade)
+  
+  targetMemoryId String
+  targetMemory   Memory @relation("TargetMemory", fields: [targetMemoryId], references: [id], onDelete: Cascade)
+  
+  @@unique([sourceMemoryId, targetMemoryId])
+  @@map("memory_associations")
+}
+
+model MemoryRetrieval {
+  id          String   @id @default(cuid())
+  query       String   // The search query used
+  method      String // RetrievalMethod @default(SEMANTIC)
+  results     String   // JSON array of retrieved memory IDs with scores
+  resultCount Int      @default(0)
+  executionTime Float  // Milliseconds
+  timestamp   DateTime @default(now())
+  
+  agentId     String
+  agent       Agent    @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  
+  memoryId    String?
+  memory      Memory?  @relation(fields: [memoryId], references: [id])
+  
+  sessionId   String?
+  session     MemorySession? @relation(fields: [sessionId], references: [id])
+  
+  @@index([agentId, timestamp])
+  @@map("memory_retrievals")
+}
+
+// String constants for SQLite compatibility (no enum support)
+// AgentType: PERSONAL, TEAM, ORGANIZATION, SYSTEM, SPECIALIZED
+// AgentStatus: ACTIVE, INACTIVE, LEARNING, MAINTENANCE  
+// MemoryType: EPISODIC, SEMANTIC, PROCEDURAL, WORKING, CONTEXTUAL
+// SessionType: CONVERSATION, TASK, LEARNING, ANALYSIS, CREATIVE
+// SessionStatus: ACTIVE, PAUSED, COMPLETED, ARCHIVED
+// AssociationType: RELATED, CAUSAL, TEMPORAL, SPATIAL, CONCEPTUAL, CONTRADICTORY
+// RetrievalMethod: SEMANTIC, KEYWORD, TEMPORAL, ASSOCIATIVE, IMPORTANCE, RECENT, HYBRID

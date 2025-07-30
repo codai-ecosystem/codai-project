@@ -12,7 +12,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 // Mock external dependencies
-vi.mock('@codai/cnd', () => ({
+// ARCHIVED: vi.mock('@codai/cnd', () => ({
   CND: vi.fn().mockImplementation(() => ({
     connect: vi.fn().mockResolvedValue(undefined),
     sql: vi.fn().mockReturnValue({

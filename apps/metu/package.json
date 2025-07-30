@@ -45,7 +45,6 @@
   },
   "dependencies": {
     "@codai/romai-agi": "workspace:*",
-    "@codai/cnd": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.16.0",
     "bonjour-service": "^1.2.1",
     "cors": "^2.8.5",

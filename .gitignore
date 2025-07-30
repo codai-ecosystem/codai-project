@@ -312,3 +312,8 @@ services/*/
 *.pfx
 secrets/
 credentials/
+
+# Electron cache files
+**/.electron-cache/
+*.electron-cache
+

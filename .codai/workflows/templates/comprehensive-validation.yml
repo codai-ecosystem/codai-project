@@ -1,0 +1,11 @@
+name: Comprehensive Validation Workflow
+description: Full validation with security, testing, and quality checks
+steps:
+  - action: security_scan
+    timeout: 180
+  - action: full_test_suite
+    timeout: 300
+  - action: code_quality_analysis
+    timeout: 120
+  - action: performance_validation
+    timeout: 240

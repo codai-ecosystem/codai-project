@@ -478,7 +478,7 @@ export default function Admin() {
                 <h3 className="text-xl font-semibold mb-4">Lessons</h3>
                 <div className="overflow-hidden">
                   {lessons[selectedCourse.id] &&
-                  Object.keys(lessons[selectedCourse.id]).length > 0 ? (
+                    Object.keys(lessons[selectedCourse.id]).length > 0 ? (
                     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                       <thead className="bg-gray-50 dark:bg-gray-700">
                         <tr>
@@ -509,7 +509,7 @@ export default function Admin() {
                         </tr>
                       </thead>
                       <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                        {Object.values(lessons[selectedCourse.id])
+                        {(Object.values(lessons[selectedCourse.id]) as Lesson[])
                           .sort(
                             (a: Lesson, b: Lesson) =>
                               (a.order || 0) - (b.order || 0)

@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 
 import { LoadingSpinner } from './LoadingSpinner';
 
-const ComboBox = dynamic(() => import('./ComboBox'), {
+const ComboBox = dynamic(() => import('./ComboBox.default'), {
   loading: () => <LoadingSpinner className="h-8 w-8" />,
   ssr: false,
 });

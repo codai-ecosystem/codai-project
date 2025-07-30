@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, Variants } from 'framer-motion'
 import {
   ShoppingCart,
   Heart,
@@ -129,11 +129,11 @@ const CumparAILayout: React.FC<CumparAILayoutProps> = ({ children }) => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  const sidebarVariants = {
+  const sidebarVariants: Variants = {
     open: {
       x: 0,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 300,
         damping: 30
       }
@@ -141,7 +141,7 @@ const CumparAILayout: React.FC<CumparAILayoutProps> = ({ children }) => {
     closed: {
       x: "-100%",
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 300,
         damping: 30
       }

@@ -2,7 +2,7 @@ const http = require('http');
 const url = require('url');
 const path = require('path');
 
-const PORT = process.env.PORT || 3005;
+const PORT = process.env.PORT || 4005;
 const SERVICE_NAME = 'fabricai';
 
 // Simple HTTP server without Express dependencies
@@ -24,8 +24,8 @@ const server = http.createServer((req, res) => {
   // Health check endpoint
   if (pathname === '/health') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ 
-      status: 'healthy', 
+    res.end(JSON.stringify({
+      status: 'healthy',
       service: SERVICE_NAME,
       description: 'AI Services Platform - Machine learning infrastructure and model deployment',
       timestamp: new Date().toISOString(),
@@ -55,7 +55,7 @@ const server = http.createServer((req, res) => {
       service: SERVICE_NAME,
       description: 'AI Services Platform - Machine learning infrastructure and model deployment',
       port: PORT,
-      features: ["ML Model Deployment","AI Pipeline Management","Model Training","API Gateway"],
+      features: ["ML Model Deployment", "AI Pipeline Management", "Model Training", "API Gateway"],
       status: 'operational',
       uptime: process.uptime()
     }));
@@ -112,7 +112,7 @@ const server = http.createServer((req, res) => {
             <p>AI Services Platform - Machine learning infrastructure and model deployment</p>
             <div>
               <span class="badge">App Category</span>
-              <span class="badge">Port: 3005</span>
+              <span class="badge">Port: 4005</span>
               <span class="badge">Cycling Fix Applied</span>
             </div>
           </div>
@@ -204,13 +204,13 @@ server.listen(PORT, () => {
   console.log(`🚀 [${SERVICE_NAME}] HTTP Service running on port ${PORT}`);
   console.log(`🔗 Dashboard: http://localhost:${PORT}`);
   console.log(`✅ Cycling issue FIXED - stable operation guaranteed`);
-  
+
   // Heartbeat to prevent clean exit + show activity
   const heartbeat = setInterval(() => {
     const uptime = Math.floor(process.uptime());
     console.log(`[${SERVICE_NAME}] ❤️  Heartbeat - Uptime: ${uptime}s - ${new Date().toISOString()}`);
   }, 60000);
-  
+
   // Cleanup heartbeat on server close
   server.on('close', () => {
     clearInterval(heartbeat);

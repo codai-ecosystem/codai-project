@@ -11,7 +11,7 @@ import type {
 
 import { cn } from '@/lib/utils';
 
-import { Label } from './Label';
+import { Label } from './label';
 
 interface FormProps<T extends FieldValues = FieldValues> {
   form: UseFormReturn<T>;
@@ -42,7 +42,7 @@ function FormField<
   );
 }
 
-interface FormItemProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface FormItemProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 function FormItem({ className, ...props }: FormItemProps): React.ReactElement {
   return <div className={cn('space-y-2', className)} {...props} />;
@@ -72,7 +72,7 @@ function FormLabel({
 }
 
 interface FormDescriptionProps
-  extends React.HTMLAttributes<HTMLParagraphElement> {}
+  extends React.HTMLAttributes<HTMLParagraphElement> { }
 
 function FormDescription({
   className,
@@ -83,7 +83,7 @@ function FormDescription({
   );
 }
 
-interface FormControlProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface FormControlProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 function FormControl({ ...props }: FormControlProps): React.ReactElement {
   const { name } = React.useContext(FormFieldContext);

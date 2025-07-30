@@ -1,0 +1,107 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cbd-engine-sa
+  namespace: cbd-memorai-prod
+  labels:
+    app: cbd-engine
+    component: database
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: memorai-mcp-sa
+  namespace: cbd-memorai-prod
+  labels:
+    app: memorai-mcp
+    component: api
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: redis-sa
+  namespace: cbd-memorai-prod
+  labels:
+    app: redis
+    component: cache
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: cbd-memorai-prod
+  name: cbd-engine-role
+rules:
+- apiGroups: [""]
+  resources: ["configmaps", "secrets"]
+  verbs: ["get", "list"]
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: cbd-memorai-prod
+  name: memorai-mcp-role
+rules:
+- apiGroups: [""]
+  resources: ["configmaps", "secrets"]
+  verbs: ["get", "list"]
+- apiGroups: [""]
+  resources: ["pods", "services"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: cbd-memorai-prod
+  name: redis-role
+rules:
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["get", "list"]
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: cbd-engine-rb
+  namespace: cbd-memorai-prod
+subjects:
+- kind: ServiceAccount
+  name: cbd-engine-sa
+  namespace: cbd-memorai-prod
+roleRef:
+  kind: Role
+  name: cbd-engine-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: memorai-mcp-rb
+  namespace: cbd-memorai-prod
+subjects:
+- kind: ServiceAccount
+  name: memorai-mcp-sa
+  namespace: cbd-memorai-prod
+roleRef:
+  kind: Role
+  name: memorai-mcp-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: redis-rb
+  namespace: cbd-memorai-prod
+subjects:
+- kind: ServiceAccount
+  name: redis-sa
+  namespace: cbd-memorai-prod
+roleRef:
+  kind: Role
+  name: redis-role
+  apiGroup: rbac.authorization.k8s.io

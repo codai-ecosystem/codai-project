@@ -21,14 +21,15 @@ export class PublicaiService {
   async create(data: Omit<PublicaiData, 'id' | 'createdAt' | 'updatedAt'>): Promise<PublicaiData> {
     const id = this.generateId();
     const now = new Date();
-    
+
     const newItem: PublicaiData = {
+      name: 'Untitled', // Default name if not provided
       ...data,
       id,
       createdAt: now,
       updatedAt: now
     };
-    
+
     this.data.set(id, newItem);
     return newItem;
   }
@@ -36,14 +37,14 @@ export class PublicaiService {
   async update(id: string, data: Partial<PublicaiData>): Promise<PublicaiData | null> {
     const existing = this.data.get(id);
     if (!existing) return null;
-    
+
     const updated = {
       ...existing,
       ...data,
       id, // Preserve ID
       updatedAt: new Date()
     };
-    
+
     this.data.set(id, updated);
     return updated;
   }
@@ -65,7 +66,7 @@ export class PublicaiService {
 
   async validateData(data: PublicaiData): Promise<boolean> {
     // Implement validation logic
-    return data.name && data.name.length > 0;
+    return Boolean(data.name && data.name.length > 0);
   }
 
   async performAnalytics(): Promise<any> {

@@ -13,7 +13,7 @@ import {
   FiAward,
 } from '@/components/icons/FeatherIcons';
 import { signOut } from 'firebase/auth';
-import { firebaseAuth } from '@/utils/firebase/firebase.config';
+import { getFirebaseAuth } from '@/lib/firebase-config';
 import { AppContext } from '@/components/AppContext';
 import { useRouter } from 'next/navigation';
 
@@ -72,7 +72,7 @@ const ProfileSidebar: React.FC = () => {
 
   // Handle sign out
   const handleSignOut = async () => {
-    await signOut(firebaseAuth);
+    await signOut(getFirebaseAuth());
     router.push('/');
   };
   return (
@@ -157,11 +157,10 @@ const ProfileSidebar: React.FC = () => {
                 <div
                   className={`
                                       flex items-center gap-3 px-4 py-2.5 md:px-6 md:py-3.5 mx-2 my-1 transition-all duration-200 rounded-lg
-                                      ${
-                                        isActive
-                                          ? 'bg-gradient-to-r from-[color:var(--ai-primary)]/20 to-[color:var(--ai-secondary)]/10 text-[color:var(--ai-primary)] font-medium shadow-sm'
-                                          : 'hover:bg-[color:var(--ai-primary)]/5 text-[color:var(--ai-foreground)] hover:translate-x-1'
-                                      }
+                                      ${isActive
+                      ? 'bg-gradient-to-r from-[color:var(--ai-primary)]/20 to-[color:var(--ai-secondary)]/10 text-[color:var(--ai-primary)] font-medium shadow-sm'
+                      : 'hover:bg-[color:var(--ai-primary)]/5 text-[color:var(--ai-foreground)] hover:translate-x-1'
+                    }
                                     `}
                 >
                   <div

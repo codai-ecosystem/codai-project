@@ -20,11 +20,11 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "lint": "eslint src --ext .ts,.tsx",
-    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "lint": "pnpm exec eslint src --ext .ts,.tsx",
+    "lint:fix": "pnpm exec eslint src --ext .ts,.tsx --fix",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
-    "type-check": "tsc --noEmit"
+    "type-check": "pnpm exec tsc --noEmit"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.0.2",

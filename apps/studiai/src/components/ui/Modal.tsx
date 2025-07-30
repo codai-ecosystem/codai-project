@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, type Variants } from 'framer-motion';
 import { X } from 'lucide-react';
 import type { JSX } from 'react';
 import React, { useEffect, type ReactNode } from 'react';
@@ -32,7 +32,7 @@ const backdropVariants = {
   exit: { opacity: 0 },
 };
 
-const modalVariants = {
+const modalVariants: Variants = {
   hidden: {
     opacity: 0,
     scale: 0.75,
@@ -43,7 +43,7 @@ const modalVariants = {
     scale: 1,
     y: 0,
     transition: {
-      type: 'spring',
+      type: 'spring' as const,
       duration: 0.3,
       bounce: 0.3,
     },

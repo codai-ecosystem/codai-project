@@ -1,6 +1,14 @@
-import { PrismaClient } from '@prisma/client';
+// Dynamic import for Prisma client to handle potential import issues
+let PrismaClientClass: any = null;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const prismaImport = require('@prisma/client') as any;
+  PrismaClientClass = prismaImport.PrismaClient;
+} catch (error) {
+  console.warn('Prisma client not available in ai-memory-service.ts:', error);
+}
 
-const prisma = new PrismaClient();
+const prisma = PrismaClientClass ? new PrismaClientClass() : null;
 
 export class AIMemoryService {
 

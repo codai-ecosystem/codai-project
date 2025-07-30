@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { authOptions } from "../../../lib/auth";
 import { OpenAI } from "openai";
 
 const openai = new OpenAI({
@@ -10,7 +10,7 @@ const openai = new OpenAI({
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user) {
       return NextResponse.json(
         { message: "Unauthorized" },
@@ -55,14 +55,14 @@ export async function POST(request: NextRequest) {
 
   } catch (error: any) {
     console.error("AI API error:", error);
-    
+
     if (error.status === 401) {
       return NextResponse.json(
         { message: "Invalid API key" },
         { status: 401 }
       );
     }
-    
+
     if (error.status === 429) {
       return NextResponse.json(
         { message: "Rate limit exceeded" },
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user) {
       return NextResponse.json(
         { message: "Unauthorized" },

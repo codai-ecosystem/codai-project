@@ -263,7 +263,7 @@ export class LogAI extends EventEmitter<LogAIEventMap> {
   flush() {
     if (this.logBuffer.length > 0 || this.metricsBuffer.length > 0) {
       // In a real implementation, this would send to a backend service
-      console.log('LogAI Flush:', {
+      console.warn('LogAI Flush:', {
         logs: this.logBuffer.length,
         metrics: this.metricsBuffer.length,
         app: this.config.app
@@ -277,7 +277,7 @@ export class LogAI extends EventEmitter<LogAIEventMap> {
   private sendRealtime(type: string, data: any) {
     // In a real implementation, this would use WebSocket to send real-time data
     if (typeof window !== 'undefined' && window.console) {
-      console.log(`LogAI Real-time [${type}]:`, data)
+      console.warn(`LogAI Real-time [${type}]:`, data)
     }
   }
 

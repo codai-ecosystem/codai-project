@@ -6,7 +6,7 @@ import { useCallback } from 'react';
 import { LanguageSwitcher } from '@/components/i18n';
 import { ThemeToggle } from '@/components/theme';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -91,16 +91,16 @@ export function Header(): JSX.Element {
                       <AvatarImage
                         src={user.photoURL}
                         alt={
-                          user.displayName !== null && user.displayName !== ''
+                          user.displayName && user.displayName !== ''
                             ? user.displayName
-                            : undefined
+                            : user.name || 'User'
                         }
                       />
                     ) : null}
                     <AvatarFallback>
-                      {user.displayName !== null && user.displayName !== ''
+                      {user.displayName && user.displayName !== ''
                         ? user.displayName.charAt(0).toUpperCase()
-                        : 'U'}
+                        : user.name ? user.name.charAt(0).toUpperCase() : 'U'}
                     </AvatarFallback>
                   </Avatar>
                 </Button>
@@ -138,16 +138,20 @@ export function Header(): JSX.Element {
             </DropdownMenu>
           ) : firebaseEnabled ? (
             <div className="flex items-center gap-2">
-              <Button variant="ghost" size="sm" asChild>
-                <Link href="/auth/login" data-testid="header-sign-in">
-                  Sign In
-                </Link>
-              </Button>
-              <Button size="sm" asChild>
-                <Link href="/auth/register" data-testid="header-sign-up">
-                  Get Started
-                </Link>
-              </Button>
+              <Link
+                href="/auth/login"
+                data-testid="header-sign-in"
+                className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3"
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/auth/register"
+                data-testid="header-sign-up"
+                className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 rounded-md px-3"
+              >
+                Get Started
+              </Link>
             </div>
           ) : null}
 

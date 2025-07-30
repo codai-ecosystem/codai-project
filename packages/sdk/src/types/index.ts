@@ -63,10 +63,18 @@ export const CodaiConfigSchema = z.object({
   startTime: z.number().optional(),
 
   // Custom configuration
-  custom: z.record(z.unknown()).optional()
+  custom: z.record(z.string(), z.unknown()).optional()
 });
 
 export type CodaiConfig = z.infer<typeof CodaiConfigSchema>;
+
+// Base service interface for SDK services
+export interface CodaiService {
+  initialize?(): Promise<void>;
+  healthCheck?(): Promise<void>;
+  updateConfig?(config: CodaiConfig): void;
+  destroy?(): Promise<void>;
+}
 
 // Event map for type-safe event handling
 export interface CodaiEventMap {
@@ -93,8 +101,8 @@ export const CodaiSDKOptionsSchema = z.object({
   config: CodaiConfigSchema,
   plugins: z.array(z.any()).optional(),
   interceptors: z.object({
-    request: z.array(z.function()).optional(),
-    response: z.array(z.function()).optional()
+    request: z.array(z.any()).optional(),
+    response: z.array(z.any()).optional()
   }).optional()
 });
 

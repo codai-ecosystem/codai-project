@@ -1,35 +1,51 @@
 {
-  "name": "@codai/acasai",
+  "name": "acasai",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 4030",
+    "dev": "next dev -p 3100",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3100",
     "test": "vitest",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest run --coverage",
+    "lint": "next lint",
+    "type-check": "pnpm exec tsc --noEmit",
+    "test:run": "vitest run",
+    "test:watch": "vitest watch"
   },
   "dependencies": {
-    "framer-motion": "^12.23.3",
+    "framer-motion": "^12.23.6",
     "lucide-react": "^0.525.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "next": "15.3.5"
+    "next": "^15.4.1",
+    "typescript": "^5.8.3",
+    "geist": "^1.4.2",
+    "@codai/shared-ui": "workspace:*",
+    "@codai/translations": "workspace:*"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.11",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
-    "@types/node": "^24.0.13",
+    "@types/node": "^24.0.14",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "@vitejs/plugin-react": "^4.6.0",
+    "@vitejs/plugin-react": "^4.7.0",
     "autoprefixer": "^10.4.21",
     "jsdom": "^26.1.0",
     "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.11",
+    "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
-    "vitest": "^3.2.4"
-  }
+    "vitest": "^3.2.4",
+    "eslint": "^9.31.0",
+    "eslint-config-next": "^15.4.1",
+    "@codai/eslint-config": "workspace:*",
+    "@typescript-eslint/eslint-plugin": "^8.21.0",
+    "@typescript-eslint/parser": "^8.21.0",
+    "eslint-plugin-react": "^7.35.2",
+    "eslint-plugin-react-hooks": "^5.1.0"
+  },
+  "description": "Home automation"
 }

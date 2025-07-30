@@ -10,15 +10,8 @@ import type { z } from 'zod';
  * @param defaultValues - Default values for the form
  * @param options - Additional options for useForm
  */
-export function useFormFields<
-  TSchema extends z.ZodType<
-    Record<string, unknown>,
-    z.ZodTypeDef,
-    Record<string, unknown>
-  >,
-  TFieldValues extends FieldValues = z.infer<TSchema>,
->(
-  schema: TSchema,
+export function useFormFields<TFieldValues extends FieldValues = any>(
+  schema: z.ZodSchema<TFieldValues>,
   defaultValues?: UseFormProps<TFieldValues>['defaultValues'],
   options: Omit<UseFormProps<TFieldValues>, 'resolver' | 'defaultValues'> = {}
 ): {
@@ -41,8 +34,11 @@ export function useFormFields<
   watch: UseFormReturn<TFieldValues>['watch'];
   control: UseFormReturn<TFieldValues>['control'];
 } {
-  const [serverErrors, setServerErrors] = useState<Record<string, string>>({}); // Initialize react-hook-form with zod resolver
+  const [serverErrors, setServerErrors] = useState<Record<string, string>>({});
+
+  // Initialize react-hook-form with zod resolver
   const form = useForm<TFieldValues>({
+    // @ts-expect-error - Complex Zod resolver type conflicts with react-hook-form generics
     resolver: zodResolver(schema),
     ...(defaultValues !== undefined && { defaultValues }),
     ...options,

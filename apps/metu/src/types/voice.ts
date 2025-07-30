@@ -9,6 +9,9 @@ export interface VoiceMessage {
     text: string;
     timestamp: Date;
     type: 'user' | 'assistant';
+    confidence?: number;
+    audioData?: ArrayBuffer;
+    duration?: number;
 }
 
 // Voice settings interface

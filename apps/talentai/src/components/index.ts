@@ -25,7 +25,7 @@ export { ThemeToggle } from './theme/ThemeToggle';
 export { LanguageSwitcher } from './i18n/LanguageSwitcher';
 
 // PWA Components
-export { PWAInstaller } from './pwa/PWAInstaller';
+export { PWAInstaller, ServiceWorkerProvider } from './pwa';
 
 // Examples
 // export { FileUploader } from './examples/FileUploader';

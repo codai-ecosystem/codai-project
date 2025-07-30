@@ -1,0 +1,398 @@
+{
+	"name": "aide-core",
+	"displayName": "codai.ro Core",
+	"description": "AI-native development environment core functionality for codai.ro",
+	"version": "1.0.0",
+	"publisher": "codai",
+	"engines": {
+		"vscode": "^1.85.0"
+	},
+	"categories": [
+		"AI",
+		"Chat",
+		"Other"
+	],
+	"keywords": [
+		"ai",
+		"assistant",
+		"chat",
+		"copilot",
+		"development"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "aide.openConversation",
+				"title": "Open AIDE Conversation",
+				"category": "AIDE"
+			},
+			{
+				"command": "aide.showMemoryGraph",
+				"title": "Show Memory Graph",
+				"category": "AIDE"
+			},
+			{
+				"command": "aide.showHealthStatus",
+				"title": "Show System Health",
+				"category": "AIDE"
+			},
+			{
+				"command": "aide.planFeature",
+				"title": "Plan New Feature",
+				"category": "AIDE"
+			},
+			{
+				"command": "aide.buildProject",
+				"title": "Build Project",
+				"category": "AIDE"
+			},
+			{
+				"command": "aide.deployProject",
+				"title": "Deploy Project",
+				"category": "AIDE"
+			},
+			{
+				"command": "aide.createProject",
+				"title": "Create New Project",
+				"category": "AIDE"
+			},
+			{
+				"command": "aide.showProjectPreview",
+				"title": "Show Live Preview",
+				"category": "AIDE"
+			},
+			{
+				"command": "aide.startConversation",
+				"title": "Start Enhanced Conversation",
+				"category": "AIDE"
+			},
+			{
+				"command": "aide.showConversationHistory",
+				"title": "Show Conversation History",
+				"category": "AIDE"
+			},
+			{
+				"command": "aide.createPlugin",
+				"title": "Create New Plugin",
+				"category": "AIDE Plugins"
+			},
+			{
+				"command": "aide.reloadPlugins",
+				"title": "Reload All Plugins",
+				"category": "AIDE Plugins"
+			},
+			{
+				"command": "aide.listPlugins",
+				"title": "List Loaded Plugins",
+				"category": "AIDE Plugins"
+			},
+			{
+				"command": "aide.setupDeployment",
+				"title": "Setup Deployment",
+				"category": "AIDE Deployment"
+			},
+			{
+				"command": "aide.deployWithCI",
+				"title": "Setup CI/CD Pipeline",
+				"category": "AIDE Deployment"
+			},
+			{
+				"command": "aide.viewDeploymentHistory",
+				"title": "View Deployment History",
+				"category": "AIDE Deployment"
+			},
+			{
+				"command": "aide.manageDeploymentTargets",
+				"title": "Manage Deployment Targets",
+				"category": "AIDE Deployment"
+			},
+			{
+				"command": "aide.setupMonitoring",
+				"title": "Setup Deployment Monitoring",
+				"category": "AIDE Deployment"
+			},
+			{
+				"command": "aide.showVersionHistory",
+				"title": "Show Version History",
+				"category": "AIDE Version"
+			},
+			{
+				"command": "aide.generateVersionBump",
+				"title": "Generate Version Bump",
+				"category": "AIDE Version"
+			},
+			{
+				"command": "aide.viewChangelog",
+				"title": "View Changelog",
+				"category": "AIDE Version"
+			},
+			{
+				"command": "aide.checkUpstreamUpdates",
+				"title": "Check VS Code Updates",
+				"category": "AIDE Version"
+			},
+			{
+				"command": "aide.configureAI",
+				"title": "Configure AI Provider",
+				"category": "AIDE AI"
+			},
+			{
+				"command": "aide.testAIConnection",
+				"title": "Test AI Connection",
+				"category": "AIDE AI"
+			},
+			{
+				"command": "aide.switchAIProvider",
+				"title": "Switch AI Provider",
+				"category": "AIDE AI"
+			},
+			{
+				"command": "aide.predictiveAnalysis",
+				"title": "Run Predictive Analysis",
+				"category": "AIDE Predictive"
+			},
+			{
+				"command": "aide.showPredictiveInsights",
+				"title": "Show Predictive Insights",
+				"category": "AIDE Predictive"
+			},
+			{
+				"command": "aide.runSecurityScan",
+				"title": "Run Security Scan",
+				"category": "AIDE Predictive"
+			},
+			{
+				"command": "aide.runPerformanceAnalysis",
+				"title": "Run Performance Analysis",
+				"category": "AIDE Predictive"
+			},
+			{
+				"command": "aide.runDependencyAnalysis",
+				"title": "Run Dependency Analysis",
+				"category": "AIDE Predictive"
+			},
+			{
+				"command": "aide.runBugPrevention",
+				"title": "Run Bug Prevention Analysis",
+				"category": "AIDE Predictive"
+			},
+			{
+				"command": "aide.getCodeSuggestions",
+				"title": "Get AI Code Suggestions",
+				"category": "AIDE Predictive"
+			},
+			{
+				"command": "aide.configurePDE",
+				"title": "Configure Predictive Engine",
+				"category": "AIDE Predictive"
+			}
+		],
+		"views": {
+			"aide": [
+				{
+					"id": "aide.conversation",
+					"name": "Conversation",
+					"type": "webview",
+					"when": "aide.active",
+					"icon": "$(comment-discussion)"
+				},
+				{
+					"id": "aide.memoryGraph",
+					"name": "Memory Graph",
+					"type": "webview",
+					"when": "aide.active",
+					"icon": "$(graph)"
+				},
+				{
+					"id": "aide.projectStatus",
+					"name": "Project Status",
+					"type": "tree",
+					"when": "aide.active",
+					"icon": "$(checklist)"
+				},
+				{
+					"id": "aide.predictiveInsights",
+					"name": "Predictive Insights",
+					"type": "webview",
+					"when": "aide.active",
+					"icon": "$(lightbulb)"
+				}
+			]
+		},
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "aide",
+					"title": "AIDE",
+					"icon": "$(robot)"
+				}
+			]
+		},
+		"keybindings": [
+			{
+				"command": "aide.openConversation",
+				"key": "ctrl+shift+a",
+				"mac": "cmd+shift+a",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "aide.showMemoryGraph",
+				"key": "ctrl+shift+m",
+				"mac": "cmd+shift+m"
+			},
+			{
+				"command": "aide.showHealthStatus",
+				"key": "ctrl+shift+h",
+				"mac": "cmd+shift+h"
+			},
+			{
+				"command": "aide.showProjectStatus",
+				"key": "ctrl+shift+p",
+				"mac": "cmd+shift+p"
+			},
+			{
+				"command": "aide.startConversation",
+				"key": "ctrl+alt+a",
+				"mac": "cmd+alt+a"
+			},
+			{
+				"command": "aide.planFeature",
+				"key": "ctrl+alt+f",
+				"mac": "cmd+alt+f",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "aide.predictiveAnalysis",
+				"key": "ctrl+shift+i",
+				"mac": "cmd+shift+i",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "aide.showPredictiveInsights",
+				"key": "ctrl+alt+i",
+				"mac": "cmd+alt+i"
+			},
+			{
+				"command": "aide.runSecurityScan",
+				"key": "ctrl+alt+s",
+				"mac": "cmd+alt+s",
+				"when": "editorTextFocus"
+			}
+		],
+		"configuration": {
+			"title": "AIDE",
+			"properties": {
+				"aide.memoryPersistence": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable persistent memory across sessions"
+				},
+				"aide.agentTimeout": {
+					"type": "number",
+					"default": 30000,
+					"description": "Agent response timeout in milliseconds"
+				},
+				"aide.maxMemoryNodes": {
+					"type": "number",
+					"default": 1000,
+					"description": "Maximum number of memory graph nodes"
+				},
+				"aide.logging.level": {
+					"type": "string",
+					"enum": [
+						"debug",
+						"info",
+						"warn",
+						"error"
+					],
+					"default": "info",
+					"description": "Logging level for AIDE Core output"
+				},
+				"aide.logging.enableFileOutput": {
+					"type": "boolean",
+					"default": false,
+					"description": "Enable logging to file in workspace .aide/logs/ directory"
+				},
+				"aide.predictive.enabled": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable Predictive Development Engine"
+				},
+				"aide.predictive.autoAnalysis": {
+					"type": "boolean",
+					"default": true,
+					"description": "Run predictive analysis automatically on file save"
+				},
+				"aide.predictive.analysisTimeout": {
+					"type": "number",
+					"default": 10000,
+					"description": "Timeout for predictive analysis in milliseconds"
+				},
+				"aide.predictive.enabledAnalyzers": {
+					"type": "array",
+					"items": {
+						"type": "string",
+						"enum": [
+							"performance",
+							"security",
+							"bugPrevention",
+							"code",
+							"dependency"
+						]
+					},
+					"default": [
+						"performance",
+						"security",
+						"bugPrevention",
+						"code",
+						"dependency"
+					],
+					"description": "List of enabled analyzer types"
+				},
+				"aide.predictive.confidenceThreshold": {
+					"type": "number",
+					"default": 0.7,
+					"minimum": 0.0,
+					"maximum": 1.0,
+					"description": "Minimum confidence threshold for displaying predictions (0.0 to 1.0)"
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "pnpm run build",
+		"build": "tsc -p ./",
+		"dev": "tsc -watch -p ./",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"clean": "rimraf out"
+	},
+	"devDependencies": {
+		"@stylistic/eslint-plugin-ts": "^4.4.0",
+		"@types/node": "^20.x",
+		"@types/semver": "^5.5.0",
+		"@types/sinon": "^10.0.20",
+		"@types/vscode": "^1.85.0",
+		"glob": "^10.3.10",
+		"rimraf": "^5.0.7",
+		"sinon": "^17.0.2",
+		"typescript": "^5.4.5",
+		"vitest": "^1.6.0"
+	},
+	"dependencies": {
+		"@codai/memory-graph": "workspace:*",
+		"@codai/agent-runtime": "workspace:*",
+		"@octokit/rest": "^20.0.0",
+		"@types/js-yaml": "^4.0.5",
+		"@types/uuid": "^9.0.0",
+		"js-yaml": "^4.1.0",
+		"rxjs": "^7.8.1",
+		"semver": "7.5.2",
+		"uuid": "^9.0.0",
+		"zod": "^3.23.8"
+	}
+}

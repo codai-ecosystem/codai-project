@@ -1,49 +1,49 @@
 {
   "name": "mod",
   "version": "1.0.0",
-  "description": "Modular Automation & Extension Platform",
+  "private": true,
+  "description": "Modular development platform",
   "scripts": {
-    "dev": "next dev --port 4074",
+    "dev": "next dev -p 5700",
     "build": "next build",
-    "start": "next start --port 4074",
+    "start": "next start -p 5700",
     "lint": "next lint",
+    "type-check": "pnpm exec tsc --noEmit",
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest watch"
   },
   "dependencies": {
-    "@codai/api-keys": "workspace:*",
-    "@codai/logai-integration": "workspace:*",
-    "@codai/logai-sdk": "workspace:*",
-    "@headlessui/react": "^2.2.4",
-    "@monaco-editor/react": "^4.7.0",
-    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "framer-motion": "^12.23.3",
     "lucide-react": "^0.525.0",
-    "monaco-editor": "^0.52.2",
+    "next": "^15.4.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-flow-renderer": "^10.3.17",
     "tailwind-merge": "^3.3.1",
-    "yaml": "^2.8.0"
+    "typescript": "^5.8.3",
+    "framer-motion": "^12.23.6",
+    "geist": "^1.4.2",
+    "@codai/shared-ui": "workspace:*",
+    "@codai/translations": "workspace:*"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.3.0",
-    "@testing-library/user-event": "^14.6.1",
-    "@types/node": "^24.0.13",
+    "@codai/eslint-config": "workspace:*",
+    "@types/node": "^24.0.14",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "@vitejs/plugin-react": "^4.6.0",
+    "@typescript-eslint/eslint-plugin": "^8.21.0",
+    "@typescript-eslint/parser": "^8.21.0",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.31.0",
-    "eslint-config-next": "^15.3.5",
-    "jsdom": "^26.1.0",
+    "eslint-config-next": "^15.4.1",
+    "eslint-plugin-react": "^7.35.2",
+    "eslint-plugin-react-hooks": "^5.1.0",
     "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.11",
-    "typescript": "^5.8.3",
-    "vitest": "^3.2.4"
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

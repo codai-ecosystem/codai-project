@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom'
-import { expect, vi } from 'vitest'
+import { expect, vi, beforeEach } from 'vitest'
 
 // Mock framer-motion for test compatibility
 vi.mock('framer-motion', () => ({
@@ -33,6 +33,18 @@ vi.mock('framer-motion', () => ({
     useInView: () => true,
     useMotionValue: () => ({ get: () => 0, set: vi.fn() }),
     useTransform: () => 0
+}))
+
+// Mock next-themes for test compatibility
+vi.mock('next-themes', () => ({
+    ThemeProvider: ({ children }: { children: React.ReactNode }) => children,
+    useTheme: () => ({
+        theme: 'light',
+        setTheme: vi.fn(),
+        resolvedTheme: 'light',
+        themes: ['light', 'dark'],
+        systemTheme: 'light'
+    })
 }))
 
 // Mock DOM APIs

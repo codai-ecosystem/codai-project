@@ -1,27 +1,48 @@
-import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import nextPlugin from '@next/eslint-plugin-next';
+const typescriptEslint = require('@typescript-eslint/eslint-plugin');
+const typescriptParser = require('@typescript-eslint/parser');
 
-export default tseslint.config(
-  eslint.configs.recommended,
-  ...tseslint.configs.recommended,
+module.exports = [
   {
-    plugins: {
-      '@next/next': nextPlugin,
-    },
-    rules: {
-      // Add overrides for specific rules here
-      '@next/next/no-html-link-for-pages': 'off',
-      'no-unused-vars': 'warn',
-      '@typescript-eslint/no-unused-vars': 'warn',
-      '@typescript-eslint/no-explicit-any': 'warn',
-      'no-empty': 'warn',
-      'no-empty-function': 'warn',
-    },
+    files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
+      parser: typescriptParser,
       parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+        },
         project: './tsconfig.json',
       },
     },
-  }
-);
+    plugins: {
+      '@typescript-eslint': typescriptEslint,
+    },
+    rules: {
+      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-empty-object-type': 'warn',
+      '@typescript-eslint/no-require-imports': 'warn',
+      '@typescript-eslint/no-empty-interface': 'warn',
+      'no-console': 'warn',
+      'prefer-const': 'warn',
+      'no-var': 'error',
+      'no-undef': 'off', // TypeScript handles this
+      'no-unused-vars': 'off', // Use @typescript-eslint version
+      'no-constant-binary-expression': 'warn',
+      'no-useless-escape': 'warn',
+      'no-empty-function': 'warn',
+    },
+  },
+  {
+    ignores: [
+      'node_modules/**',
+      '.next/**',
+      'out/**',
+      'build/**',
+      'dist/**',
+      'coverage/**',
+      '.turbo/**',
+    ],
+  },
+];

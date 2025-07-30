@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import FabricAILayout from '../../components/layout/FabricAILayout'
 import FabricAIService from '../../services/fabricaiService'
@@ -420,8 +420,8 @@ Execution time: ${Math.floor(Math.random() * 1000)}ms`
                                     <div
                                         key={session.id}
                                         className={`flex items-center space-x-2 px-3 py-2 rounded-lg cursor-pointer transition-all ${session.id === activeSession
-                                                ? 'bg-emerald-500/20 text-emerald-400'
-                                                : 'bg-white/10 text-slate-400 hover:bg-white/15'
+                                            ? 'bg-emerald-500/20 text-emerald-400'
+                                            : 'bg-white/10 text-slate-400 hover:bg-white/15'
                                             }`}
                                         onClick={() => setActiveSession(session.id)}
                                     >

@@ -1,6 +1,18 @@
-import NextAuth from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { NextRequest, NextResponse } from "next/server";
 
-const handler = NextAuth(authOptions);
+// NextAuth endpoints are now handled by SimpleAuthService
+// This route is kept for compatibility but redirects to new endpoints
 
-export { handler as GET, handler as POST };
+export async function GET(request: NextRequest) {
+  return NextResponse.json({ 
+    error: "This endpoint has been migrated to SimpleAuthService",
+    redirectTo: "/api/auth/login" 
+  }, { status: 410 });
+}
+
+export async function POST(request: NextRequest) {
+  return NextResponse.json({ 
+    error: "This endpoint has been migrated to SimpleAuthService",
+    redirectTo: "/api/auth/login" 
+  }, { status: 410 });
+}

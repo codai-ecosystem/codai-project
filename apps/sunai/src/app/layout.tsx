@@ -1,6 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { useEffect } from 'react'
 
 import { useLogAI, setupGlobalErrorHandling, logPerformanceMetrics } from '@codai/logai-integration'
 
@@ -17,21 +18,21 @@ export default function RootLayout({
 }: {
     children: React.ReactNode
 }) {
-  // Initialize LogAI integration
-  const { logEvent, logError, logUserAction } = useLogAI()
-  
-  useEffect(() => {
-    // Setup global error handling and performance monitoring
-    setupGlobalErrorHandling('sunai')
-    logPerformanceMetrics('sunai')
-    
-    // Log app initialization
-    logEvent('app_initialized', {
-      service: 'sunai',
-      version: process.env.npm_package_version || '1.0.0',
-      timestamp: new Date().toISOString()
-    })
-  }, [])
+    // Initialize LogAI integration
+    const { logEvent, logError, logUserAction } = useLogAI()
+
+    useEffect(() => {
+        // Setup global error handling and performance monitoring
+        setupGlobalErrorHandling('sunai')
+        logPerformanceMetrics('sunai')
+
+        // Log app initialization
+        logEvent('app_initialized', {
+            service: 'sunai',
+            version: process.env.npm_package_version || '1.0.0',
+            timestamp: new Date().toISOString()
+        })
+    }, [])
 
     return (
         <html lang="en">

@@ -1,0 +1,533 @@
+{
+    "completeModelCatalog": {
+        "overview": {
+            "totalModels": "1900+",
+            "azureOpenAIModels": 16,
+            "openSourceModels": "1884+",
+            "providers": 12,
+            "recommendedRegion": "your-region",
+            "lastUpdated": "2025-07-25"
+        },
+        "deploymentStrategy": {
+            "phase1": "Azure OpenAI models (16) - Production ready",
+            "phase2": "Serverless API models (Meta, Mistral, Cohere) - Pay-as-you-go",
+            "phase3": "Managed Compute models (Hugging Face) - Custom deployments",
+            "phase4": "Fine-tuned models - Domain-specific adaptations"
+        }
+    },
+    "azureOpenAIModels": {
+        "count": 16,
+        "deploymentType": "Standard + Provisioned",
+        "pricing": "Token-based",
+        "support": "Microsoft first-party",
+        "models": {
+            "tier1Critical": {
+                "gpt-4o": {
+                    "model": "gpt-4o",
+                    "version": "2024-11-20",
+                    "capabilities": [
+                        "chat",
+                        "vision",
+                        "function-calling",
+                        "structured-output"
+                    ],
+                    "maxTokens": {
+                        "input": 131072,
+                        "output": 16384
+                    },
+                    "useCase": "Primary conversational AI, METU voice assistant"
+                },
+                "gpt-4o-realtime": {
+                    "model": "gpt-4o-realtime-preview",
+                    "version": "2024-10-01",
+                    "capabilities": [
+                        "real-time-voice",
+                        "function-calling",
+                        "streaming"
+                    ],
+                    "maxTokens": {
+                        "input": 131072,
+                        "output": 16384
+                    },
+                    "useCase": "Ultra-low latency voice conversations"
+                },
+                "whisper": {
+                    "model": "whisper",
+                    "version": "001",
+                    "capabilities": [
+                        "speech-to-text",
+                        "multilingual",
+                        "real-time"
+                    ],
+                    "useCase": "Voice input processing for all applications"
+                },
+                "tts": {
+                    "model": "tts",
+                    "version": "001",
+                    "capabilities": [
+                        "text-to-speech",
+                        "multiple-voices"
+                    ],
+                    "useCase": "Standard voice synthesis"
+                },
+                "tts-hd": {
+                    "model": "tts-hd",
+                    "version": "001",
+                    "capabilities": [
+                        "text-to-speech",
+                        "high-definition",
+                        "premium-voices"
+                    ],
+                    "useCase": "Premium voice experiences"
+                }
+            },
+            "tier2Reasoning": {
+                "o1-preview": {
+                    "model": "o1-preview",
+                    "version": "2024-09-12",
+                    "capabilities": [
+                        "advanced-reasoning",
+                        "chain-of-thought",
+                        "complex-problem-solving"
+                    ],
+                    "maxTokens": {
+                        "input": 200000,
+                        "output": 100000
+                    },
+                    "useCase": "Complex reasoning tasks, advanced problem solving"
+                },
+                "o1-mini": {
+                    "model": "o1-mini",
+                    "version": "2024-09-12",
+                    "capabilities": [
+                        "reasoning",
+                        "cost-effective",
+                        "faster-processing"
+                    ],
+                    "maxTokens": {
+                        "input": 200000,
+                        "output": 65536
+                    },
+                    "useCase": "Lightweight reasoning tasks"
+                }
+            },
+            "tier3Specialized": {
+                "gpt-4-turbo": {
+                    "model": "gpt-4",
+                    "version": "turbo-2024-04-09",
+                    "capabilities": [
+                        "high-performance",
+                        "vision",
+                        "function-calling"
+                    ],
+                    "maxTokens": {
+                        "input": 128000,
+                        "output": 4096
+                    },
+                    "useCase": "High-performance specialized tasks"
+                },
+                "gpt-35-turbo": {
+                    "model": "gpt-35-turbo",
+                    "version": "0125",
+                    "capabilities": [
+                        "cost-effective",
+                        "fast",
+                        "function-calling"
+                    ],
+                    "maxTokens": {
+                        "input": 16385,
+                        "output": 4096
+                    },
+                    "useCase": "Cost-effective conversational AI"
+                },
+                "gpt-35-turbo-instruct": {
+                    "model": "gpt-35-turbo-instruct",
+                    "version": "0914",
+                    "capabilities": [
+                        "instruction-following",
+                        "completion"
+                    ],
+                    "maxTokens": {
+                        "input": 4096,
+                        "output": 4096
+                    },
+                    "useCase": "Instruction-following tasks"
+                }
+            },
+            "tier4Embeddings": {
+                "text-embedding-3-large": {
+                    "model": "text-embedding-3-large",
+                    "version": "1",
+                    "capabilities": [
+                        "high-dimensional-embeddings",
+                        "semantic-search"
+                    ],
+                    "dimensions": 3072,
+                    "useCase": "High-precision semantic search and RAG"
+                },
+                "text-embedding-3-small": {
+                    "model": "text-embedding-3-small",
+                    "version": "1",
+                    "capabilities": [
+                        "compact-embeddings",
+                        "cost-effective"
+                    ],
+                    "dimensions": 1536,
+                    "useCase": "Cost-effective embeddings for search"
+                },
+                "text-embedding-ada-002": {
+                    "model": "text-embedding-ada-002",
+                    "version": "2",
+                    "capabilities": [
+                        "legacy-embeddings",
+                        "stable"
+                    ],
+                    "dimensions": 1536,
+                    "useCase": "Legacy compatibility and stable embeddings"
+                }
+            },
+            "tier5Creative": {
+                "dall-e-3": {
+                    "model": "dall-e-3",
+                    "version": "3.0",
+                    "capabilities": [
+                        "image-generation",
+                        "creative",
+                        "high-quality"
+                    ],
+                    "useCase": "Creative image generation and visual content"
+                },
+                "sora": {
+                    "model": "sora",
+                    "version": "preview",
+                    "capabilities": [
+                        "video-generation",
+                        "ai-cinematography"
+                    ],
+                    "status": "Preview - Limited availability",
+                    "useCase": "Video content generation (when available)"
+                }
+            }
+        }
+    },
+    "openSourceModels": {
+        "count": "1884+",
+        "deploymentTypes": [
+            "Serverless API",
+            "Managed Compute"
+        ],
+        "pricing": "Pay-as-you-go or compute-based",
+        "support": "Community + Provider support",
+        "metaLlamaFamily": {
+            "provider": "Meta",
+            "count": 15,
+            "deploymentType": "Serverless API",
+            "models": {
+                "llama-3.3-70b-instruct": {
+                    "parameters": "70B",
+                    "capabilities": [
+                        "advanced-reasoning",
+                        "multilingual",
+                        "function-calling"
+                    ],
+                    "useCase": "Advanced conversational AI with reasoning"
+                },
+                "llama-3.1-405b-instruct": {
+                    "parameters": "405B",
+                    "capabilities": [
+                        "frontier-model",
+                        "complex-reasoning",
+                        "multilingual"
+                    ],
+                    "useCase": "Most capable open source model for complex tasks"
+                },
+                "llama-3.1-70b-instruct": {
+                    "parameters": "70B",
+                    "capabilities": [
+                        "high-performance",
+                        "multilingual",
+                        "reasoning"
+                    ],
+                    "useCase": "High-performance general purpose AI"
+                },
+                "llama-3.1-8b-instruct": {
+                    "parameters": "8B",
+                    "capabilities": [
+                        "efficient",
+                        "fast",
+                        "cost-effective"
+                    ],
+                    "useCase": "Efficient deployment for resource-constrained environments"
+                },
+                "llama-2-series": {
+                    "models": [
+                        "Llama-2-7B",
+                        "Llama-2-13B",
+                        "Llama-2-70B"
+                    ],
+                    "capabilities": [
+                        "stable",
+                        "well-tested",
+                        "community-supported"
+                    ],
+                    "useCase": "Stable and well-tested models for production use"
+                }
+            }
+        },
+        "mistralAIFamily": {
+            "provider": "Mistral AI",
+            "count": 12,
+            "deploymentType": "Serverless API + Managed Compute",
+            "categories": {
+                "premium": {
+                    "mistral-large": {
+                        "capabilities": [
+                            "advanced-reasoning",
+                            "multilingual",
+                            "function-calling"
+                        ],
+                        "useCase": "Premium conversational AI with advanced capabilities"
+                    },
+                    "mistral-small": {
+                        "capabilities": [
+                            "efficient",
+                            "multilingual",
+                            "cost-effective"
+                        ],
+                        "useCase": "Efficient general-purpose AI tasks"
+                    },
+                    "mistral-ocr-2503": {
+                        "capabilities": [
+                            "document-processing",
+                            "ocr",
+                            "vision"
+                        ],
+                        "useCase": "Document analysis and OCR tasks"
+                    },
+                    "ministral-3b": {
+                        "parameters": "3B",
+                        "capabilities": [
+                            "ultra-efficient",
+                            "edge-deployment"
+                        ],
+                        "useCase": "Edge computing and mobile applications"
+                    }
+                },
+                "openSource": {
+                    "mistral-7b-instruct": {
+                        "parameters": "7B",
+                        "capabilities": [
+                            "instruction-following",
+                            "efficient"
+                        ],
+                        "useCase": "Lightweight instruction-following tasks"
+                    },
+                    "mixtral-8x7b-instruct": {
+                        "architecture": "Mixture of Experts",
+                        "capabilities": [
+                            "efficient",
+                            "high-performance",
+                            "multilingual"
+                        ],
+                        "useCase": "Efficient high-performance AI with MoE architecture"
+                    },
+                    "codestral-2501": {
+                        "capabilities": [
+                            "code-generation",
+                            "programming",
+                            "debugging"
+                        ],
+                        "useCase": "Programming assistance and code generation"
+                    }
+                }
+            }
+        },
+        "cohereFamily": {
+            "provider": "Cohere",
+            "count": 8,
+            "deploymentType": "Serverless API",
+            "models": {
+                "command-r-plus": {
+                    "capabilities": [
+                        "advanced-rag",
+                        "multilingual",
+                        "enterprise-grade"
+                    ],
+                    "useCase": "Advanced RAG applications and enterprise AI"
+                },
+                "command-r": {
+                    "capabilities": [
+                        "rag-optimized",
+                        "retrieval-augmented",
+                        "efficient"
+                    ],
+                    "useCase": "RAG-optimized conversational AI"
+                },
+                "cohere-embed": {
+                    "capabilities": [
+                        "multilingual-embeddings",
+                        "semantic-search"
+                    ],
+                    "useCase": "Multilingual semantic search and embeddings"
+                }
+            }
+        },
+        "huggingFaceEcosystem": {
+            "provider": "Hugging Face",
+            "count": "1000+",
+            "deploymentType": "Managed Compute",
+            "categories": {
+                "foundationModels": {
+                    "examples": [
+                        "BLOOM",
+                        "FLAN-T5",
+                        "GPT-J",
+                        "OPT"
+                    ],
+                    "useCase": "Large-scale foundational language models"
+                },
+                "smallLanguageModels": {
+                    "examples": [
+                        "DistilBERT",
+                        "TinyBERT",
+                        "MobileBERT"
+                    ],
+                    "useCase": "Efficient models for resource-constrained environments"
+                },
+                "multimodalModels": {
+                    "examples": [
+                        "CLIP",
+                        "BLIP",
+                        "LayoutLM",
+                        "DALL-E Mini"
+                    ],
+                    "useCase": "Vision-language tasks and multimodal applications"
+                },
+                "domainSpecificModels": {
+                    "examples": [
+                        "BioBERT",
+                        "FinBERT",
+                        "LegalBERT",
+                        "ClinicalBERT"
+                    ],
+                    "useCase": "Specialized models for specific domains"
+                },
+                "industryModels": {
+                    "examples": [
+                        "Manufacturing AI",
+                        "Healthcare AI",
+                        "Finance AI"
+                    ],
+                    "useCase": "Industry-specific AI applications"
+                }
+            }
+        },
+        "nvidiaNIMFamily": {
+            "provider": "NVIDIA",
+            "count": 25,
+            "deploymentType": "Managed Compute",
+            "features": [
+                "security-scanning",
+                "enterprise-containers",
+                "optimized-inference"
+            ],
+            "models": {
+                "llama-3.3-70b-instruct-nim": {
+                    "capabilities": [
+                        "optimized-inference",
+                        "enterprise-grade",
+                        "secure"
+                    ],
+                    "useCase": "Enterprise-grade Llama deployment with NVIDIA optimization"
+                },
+                "mistral-7b-instruct-nim": {
+                    "capabilities": [
+                        "secure-deployment",
+                        "optimized-performance"
+                    ],
+                    "useCase": "Secure and optimized Mistral deployment"
+                }
+            }
+        },
+        "otherProviders": {
+            "deepSeek": {
+                "models": [
+                    "DeepSeek-Coder",
+                    "DeepSeek-Math",
+                    "DeepSeek-Chat"
+                ],
+                "useCase": "Specialized models for coding and mathematical reasoning"
+            },
+            "xAI": {
+                "models": [
+                    "Grok models"
+                ],
+                "useCase": "Real-time information and conversational AI"
+            },
+            "ai21Labs": {
+                "models": [
+                    "Jurassic-2",
+                    "Contextual Answers"
+                ],
+                "useCase": "Long-context understanding and enterprise applications"
+            },
+            "core42": {
+                "models": [
+                    "Jais models"
+                ],
+                "useCase": "Arabic language specialized models"
+            }
+        }
+    },
+    "deploymentRecommendations": {
+        "starter": {
+            "services": [
+                "Azure AI Foundry"
+            ],
+            "models": [
+                "gpt-4o",
+                "gpt-4o-mini",
+                "whisper",
+                "tts",
+                "text-embedding-3-small"
+            ],
+            "cost": "$50-200/month",
+            "useCase": "Getting started with AI capabilities"
+        },
+        "production": {
+            "services": [
+                "Azure AI Foundry",
+                "Azure AI Hub"
+            ],
+            "models": [
+                "All Azure OpenAI",
+                "Llama-3.1-70B",
+                "Mistral-Large",
+                "Command-R+"
+            ],
+            "cost": "$200-1000/month",
+            "useCase": "Production applications with diverse model needs"
+        },
+        "enterprise": {
+            "services": [
+                "Azure AI Foundry",
+                "Azure AI Hub",
+                "Azure AI Search",
+                "Azure OpenAI"
+            ],
+            "models": [
+                "Complete catalog access"
+            ],
+            "cost": "$1000-5000/month",
+            "useCase": "Enterprise-scale AI platform with compliance and security"
+        }
+    },
+    "integrationGuide": {
+        "primaryEndpoint": "Azure AI Foundry - Unified API for most models",
+        "embeddingService": "text-embedding-3-large for high-precision RAG",
+        "voiceServices": "whisper (STT) + tts-hd (TTS) for premium voice experiences",
+        "reasoningTasks": "o1-preview for complex problem solving",
+        "costOptimization": "Use serverless API for variable workloads, managed compute for consistent usage",
+        "multiRegion": "Deploy across Sweden Central, East US, West Europe for redundancy"
+    }
+}

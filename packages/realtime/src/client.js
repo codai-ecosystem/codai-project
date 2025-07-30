@@ -1,6 +1,11 @@
-import { io } from 'socket.io-client';
-import { RealtimeEventBus, CODAI_EVENTS } from './events';
-export class RealtimeClient {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RealtimeClient = void 0;
+exports.createRealtimeClient = createRealtimeClient;
+exports.useRealtimeClient = useRealtimeClient;
+const socket_io_client_1 = require("socket.io-client");
+const events_1 = require("./events");
+class RealtimeClient {
     constructor(config) {
         var _a, _b, _c, _d, _e;
         this.connectionState = 'disconnected';
@@ -10,8 +15,8 @@ export class RealtimeClient {
         this.latency = 0;
         this.lastPingTime = 0;
         this.config = config;
-        this.eventBus = new RealtimeEventBus();
-        this.socket = io(config.url, {
+        this.eventBus = new events_1.RealtimeEventBus();
+        this.socket = (0, socket_io_client_1.io)(config.url, {
             autoConnect: ((_a = config.options) === null || _a === void 0 ? void 0 : _a.autoConnect) !== false,
             reconnection: ((_b = config.options) === null || _b === void 0 ? void 0 : _b.reconnection) !== false,
             reconnectionDelay: ((_c = config.options) === null || _c === void 0 ? void 0 : _c.reconnectionDelay) || 1000,
@@ -43,13 +48,13 @@ export class RealtimeClient {
             this.processMessageQueue();
             // Start ping monitoring
             this.startPingMonitoring();
-            this.eventBus.emitEvent(CODAI_EVENTS.USER_CONNECTED, { socketId: this.socket.id }, 'client');
+            this.eventBus.emitEvent(events_1.CODAI_EVENTS.USER_CONNECTED, { socketId: this.socket.id }, 'client');
         });
         this.socket.on('disconnect', (reason) => {
             console.log('Disconnected from realtime server:', reason);
             this.connectionState = 'disconnected';
             this.stopPingMonitoring();
-            this.eventBus.emitEvent(CODAI_EVENTS.USER_DISCONNECTED, { reason }, 'client');
+            this.eventBus.emitEvent(events_1.CODAI_EVENTS.USER_DISCONNECTED, { reason }, 'client');
         });
         this.socket.on('connect_error', (error) => {
             console.error('Connection error:', error);
@@ -85,10 +90,10 @@ export class RealtimeClient {
         });
         // Room events
         this.socket.on('join', (data) => {
-            this.eventBus.emitEvent(CODAI_EVENTS.COLLAB_JOIN, data, 'server');
+            this.eventBus.emitEvent(events_1.CODAI_EVENTS.COLLAB_JOIN, data, 'server');
         });
         this.socket.on('leave', (data) => {
-            this.eventBus.emitEvent(CODAI_EVENTS.COLLAB_LEAVE, data, 'server');
+            this.eventBus.emitEvent(events_1.CODAI_EVENTS.COLLAB_LEAVE, data, 'server');
         });
         // System events
         this.socket.on('connected', (data) => {
@@ -96,7 +101,7 @@ export class RealtimeClient {
         });
         this.socket.on('error', (error) => {
             console.error('Server error:', error);
-            this.eventBus.emitEvent(CODAI_EVENTS.SYSTEM_ERROR, error, 'server');
+            this.eventBus.emitEvent(events_1.CODAI_EVENTS.SYSTEM_ERROR, error, 'server');
         });
         // Ping/Pong for latency measurement
         this.socket.on('pong', () => {
@@ -252,12 +257,13 @@ export class RealtimeClient {
         this.eventBus.removeAllListeners();
     }
 }
+exports.RealtimeClient = RealtimeClient;
 // Factory function to create client
-export function createRealtimeClient(config) {
+function createRealtimeClient(config) {
     return new RealtimeClient(config);
 }
 // React hook for realtime client (if using React)
-export function useRealtimeClient(config) {
+function useRealtimeClient(config) {
     const client = new RealtimeClient(config);
     // Cleanup on unmount
     if (typeof window !== 'undefined') {

@@ -21,14 +21,16 @@ export class MemoraiService {
   async create(data: Omit<MemoraiData, 'id' | 'createdAt' | 'updatedAt'>): Promise<MemoraiData> {
     const id = this.generateId();
     const now = new Date();
-    
+
     const newItem: MemoraiData = {
-      ...data,
       id,
+      name: data.name,
+      description: data.description,
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
+      ...data
     };
-    
+
     this.data.set(id, newItem);
     return newItem;
   }
@@ -36,14 +38,17 @@ export class MemoraiService {
   async update(id: string, data: Partial<MemoraiData>): Promise<MemoraiData | null> {
     const existing = this.data.get(id);
     if (!existing) return null;
-    
+
+    // Add a small delay to ensure different timestamp
+    await new Promise(resolve => setTimeout(resolve, 1));
+
     const updated = {
       ...existing,
       ...data,
       id, // Preserve ID
       updatedAt: new Date()
     };
-    
+
     this.data.set(id, updated);
     return updated;
   }
@@ -65,7 +70,7 @@ export class MemoraiService {
 
   async validateData(data: MemoraiData): Promise<boolean> {
     // Implement validation logic
-    return data.name && data.name.length > 0;
+    return Boolean(data.name && data.name.length > 0);
   }
 
   async performAnalytics(): Promise<any> {

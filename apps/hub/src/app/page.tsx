@@ -1,5 +1,5 @@
-import Dashboard from '@/components/dashboard/Dashboard';
+import { HubDashboard } from '@/components/hub/dashboard'
 
-export default function HubPage() {
-  return <Dashboard />;
+export default function Home() {
+  return <HubDashboard />
 }

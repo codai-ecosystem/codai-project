@@ -1,0 +1,36 @@
+{
+  "mcpServers": {
+    "memorai-cbd": {
+      "command": "tsx",
+      "args": [
+        "apps/memorai/cbd-mcp-server.ts"
+      ],
+      "env": {
+        "MEMORAI_CBD_PATH": "./memorai-cbd-data",
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
+        "MEMORAI_LOG_LEVEL": "info",
+        "MEMORAI_CACHE_SIZE": "10000",
+        "MEMORAI_DIMENSIONS": "1536"
+      }
+    }
+  },
+  "version": "8.0.0-cbd",
+  "description": "MemorAI CBD-Based MCP Server Configuration",
+  "features": [
+    "Vector-based semantic memory storage using CBD",
+    "High-performance embedding search with FAISS",
+    "Intelligent memory clustering and relationships",
+    "Production-ready reliability and error handling",
+    "Legacy data migration and backward compatibility"
+  ],
+  "migration": {
+    "from": [
+      "memorai-json-v7.0.0",
+      "memorai-enhanced-v7.0.0",
+      "memorai-enterprise-v7.0.0"
+    ],
+    "to": "memorai-cbd-v8.0.0",
+    "status": "ready",
+    "backupRequired": true
+  }
+}

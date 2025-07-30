@@ -1,14 +1,30 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  experimental: {
+    turbo: {
+      resolveAlias: {
+        canvas: './empty-module.js',
+      },
+    },
+  },
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+  swcMinify: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
   images: {
-    domains: ['localhost'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
-  env: {
-    APP_NAME: 'STUDIAI',
-    APP_DESCRIPTION: 'AI Education Platform',
-    APP_PORT: '4036',
-  },
-}
+};
 
-module.exports = nextConfig;
+export default nextConfig;

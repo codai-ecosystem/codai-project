@@ -1,24 +1,19 @@
-// Main type exports for METU
-// This file consolidates all type definitions to avoid conflicts
+// Common types for CODAI ecosystem apps
+export interface AppConfig {
+  name: string;
+  version: string;
+  description: string;
+}
 
-// Voice Engine core types
-export type {
-    InterruptionContext,
-    AudioProcessorConfig,
-    VoiceActivityDetection
-} from './voice'
+export interface ApiResponse<T = any> {
+  success: boolean;
+  data?: T;
+  error?: string;
+}
 
-// AI Integration types  
-export type {
-    AIConfig
-} from './ai'
-
-// Application types
-export type {
-    AppConfig,
-    AppState,
-    SystemMetrics,
-    AppError,
-    WindowState,
-    NotificationData
-} from './app'
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  role: 'admin' | 'user';
+}

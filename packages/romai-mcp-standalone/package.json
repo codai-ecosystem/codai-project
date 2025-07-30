@@ -1,0 +1,46 @@
+{
+    "name": "@codai/romai-mcp-standalone",
+    "version": "1.0.1",
+    "description": "ROMAI MCP Server - Standalone Romanian AI Intelligence Server",
+    "type": "module",
+    "main": "dist/server.js",
+    "bin": {
+        "romai-mcp": "dist/server.js"
+    },
+    "files": [
+        "dist/**/*",
+        "README.md"
+    ],
+    "scripts": {
+        "build": "node build.js",
+        "prepublishOnly": "npm run build"
+    },
+    "keywords": [
+        "romai",
+        "mcp",
+        "server",
+        "romanian",
+        "ai",
+        "codai",
+        "intelligence",
+        "model-context-protocol",
+        "standalone"
+    ],
+    "author": "CODAI Contributors",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/CodAI-Project/codai-project.git",
+        "directory": "packages/romai-mcp-standalone"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.15.1",
+        "dotenv": "^16.4.7"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}

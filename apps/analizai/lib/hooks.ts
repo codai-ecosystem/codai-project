@@ -10,6 +10,24 @@ interface RealtimeStats {
   lastUpdated: Date
 }
 
+interface SystemService {
+  name: string
+  status: string
+}
+
+interface SystemAlert {
+  id: string
+  type: string
+  message: string
+  timestamp: Date
+}
+
+interface SystemHealth {
+  status: string
+  services: SystemService[]
+  alerts: SystemAlert[]
+}
+
 export function useRealtimeStats() {
   const [stats, setStats] = useState<RealtimeStats>({
     users: 0,
@@ -24,7 +42,7 @@ export function useRealtimeStats() {
   useEffect(() => {
     // Simulate WebSocket connection
     setIsConnected(true)
-    
+
     const interval = setInterval(() => {
       setStats(prev => ({
         users: Math.max(0, prev.users + Math.floor(Math.random() * 20) - 10),
@@ -45,7 +63,7 @@ export function useRealtimeStats() {
 }
 
 export function useSystemHealth() {
-  const [health, setHealth] = useState({
+  const [health, setHealth] = useState<SystemHealth>({
     status: 'healthy',
     services: [],
     alerts: []
@@ -71,8 +89,8 @@ export function useSystemHealth() {
         }))
 
       setHealth({
-        status: alerts.some(alert => alert.type === 'error') ? 'unhealthy' : 
-                alerts.length > 0 ? 'degraded' : 'healthy',
+        status: alerts.some(alert => alert.type === 'error') ? 'unhealthy' :
+          alerts.length > 0 ? 'degraded' : 'healthy',
         services,
         alerts
       })

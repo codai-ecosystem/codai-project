@@ -6,7 +6,6 @@ import {
   updateDoc,
   deleteDoc,
   getDocs,
-  getDoc,
   query,
   orderBy,
   limit,
@@ -19,7 +18,6 @@ import { v4 as uuidv4 } from 'uuid'
 
 // Collections
 const MEMORIES_COLLECTION = 'memories'
-const STATS_COLLECTION = 'stats'
 const MCP_SERVERS_COLLECTION = 'mcp_servers'
 
 export class MemoraiService {

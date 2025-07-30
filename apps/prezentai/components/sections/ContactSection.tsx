@@ -86,15 +86,43 @@ export function ContactSection() {
         e.preventDefault()
         setIsSubmitting(true)
 
-        // Simulate form submission
-        await new Promise(resolve => setTimeout(resolve, 2000))
+        try {
+            // Submit form data to our API
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: formData.name,
+                    email: formData.email,
+                    company: formData.company,
+                    subject: formData.service || 'General Inquiry',
+                    message: formData.message,
+                    interesse: formData.service ? [formData.service] : [],
+                    timeline: 'ASAP'
+                })
+            })
 
-        setIsSubmitting(false)
-        setIsSubmitted(true)
-        setFormData({ name: '', email: '', company: '', service: '', message: '' })
+            if (response.ok) {
+                const result = await response.json()
+                console.log('[PREZENTAI CONTACT] Submission successful:', result)
+                setIsSubmitted(true)
+                setFormData({ name: '', email: '', company: '', service: '', message: '' })
 
-        // Reset success message after 5 seconds
-        setTimeout(() => setIsSubmitted(false), 5000)
+                // Reset success message after 5 seconds
+                setTimeout(() => setIsSubmitted(false), 5000)
+            } else {
+                const error = await response.json()
+                console.error('[PREZENTAI CONTACT] Submission failed:', error)
+                alert('Failed to send message. Please try again.')
+            }
+        } catch (error) {
+            console.error('[PREZENTAI CONTACT] Network error:', error)
+            alert('Network error. Please check your connection and try again.')
+        } finally {
+            setIsSubmitting(false)
+        }
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {

@@ -1,4 +1,7 @@
-export class DataSynchronizer {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.globalSynchronizer = exports.DataSynchronizer = void 0;
+class DataSynchronizer {
     constructor(conflictResolution = { strategy: 'last-write-wins' }) {
         this.localData = new Map();
         this.versions = new Map();
@@ -241,5 +244,6 @@ export class DataSynchronizer {
         }
     }
 }
+exports.DataSynchronizer = DataSynchronizer;
 // Global synchronizer instance
-export const globalSynchronizer = new DataSynchronizer();
+exports.globalSynchronizer = new DataSynchronizer();

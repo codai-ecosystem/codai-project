@@ -1,14 +1,12 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "target": "ES2020",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "ES6"
-    ],
+    "lib": ["dom", "dom.iterable", "es6"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": false,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -24,14 +22,16 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*",
-        "./app/*",
-        "./components/*",
-        "./lib/*"
-      ]
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/types/*": ["./src/types/*"]
     },
-    "strictNullChecks": true
+    "typeRoots": [
+      "../../node_modules/@types",
+      "../../types",
+      "./src/types"
+    ]
   },
   "include": [
     "next-env.d.ts",
@@ -40,6 +40,15 @@
     ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    ".next",
+    "out",
+    "dist",
+    "**/*.test.*",
+    "**/*.spec.*",
+    "tests/**/*",
+    "vitest.setup.ts",
+    "dashboard/LogAIDashboard.tsx",
+    "lib/hooks.ts"
   ]
 }

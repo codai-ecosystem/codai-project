@@ -1,14 +1,14 @@
 {
-  "name": "@codai/muzicai",
+  "name": "muzicai",
   "version": "1.0.0",
-  "description": "MuzicAI - AI Music Platform (Purpose TBD)",
+  "description": "AI music creation platform",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev --port 4060",
+    "dev": "next dev -p 5800",
     "build": "next build",
-    "start": "next start --port 4060",
+    "start": "next start -p 5800",
     "lint": "next lint",
-    "type-check": "tsc --noEmit",
+    "type-check": "pnpm exec tsc --noEmit",
     "vercel-build": "next build",
     "test": "vitest",
     "test:run": "vitest run",
@@ -16,13 +16,18 @@
     "test:watch": "vitest watch"
   },
   "dependencies": {
-    "@types/node": "^24.0.13",
+    "@types/node": "^24.0.14",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "next": "^15.3.5",
+    "next": "^15.4.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "framer-motion": "^12.23.6",
+    "lucide-react": "^0.525.0",
+    "geist": "^1.4.2",
+    "@codai/shared-ui": "workspace:*",
+    "@codai/translations": "workspace:*"
   },
   "keywords": [
     "AI",
@@ -32,13 +37,26 @@
   "author": "Codai Ecosystem",
   "license": "MIT",
   "devDependencies": {
+    "@codai/eslint-config": "workspace:*",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
-    "@vitejs/plugin-react": "^4.6.0",
+    "@vitejs/plugin-react": "^4.7.0",
     "autoprefixer": "^10.4.21",
     "jsdom": "^26.1.0",
     "postcss": "^8.5.6",
-    "vitest": "^3.2.4"
-  }
+    "vitest": "^3.2.4",
+    "@types/node": "^24.0.14",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "tailwindcss": "^3.4.17",
+    "eslint": "^9.31.0",
+    "eslint-config-next": "^15.4.1",
+    "@typescript-eslint/eslint-plugin": "^8.19.0",
+    "@typescript-eslint/parser": "^8.19.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "typescript": "^5.8.3"
+  },
+  "private": true
 }

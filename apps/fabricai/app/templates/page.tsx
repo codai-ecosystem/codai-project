@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import FabricAILayout from '../../components/layout/FabricAILayout'
 import FabricAIService from '../../services/fabricaiService'
 import {
-    FileTemplate,
+    File as FileTemplate,
     Plus,
     Search,
     Filter,
@@ -281,8 +281,8 @@ export default function TemplatesPage() {
                     <div className="flex items-center space-x-2">
                         <motion.button
                             className={`p-2 rounded-lg transition-all ${likedTemplates.has(template.id)
-                                    ? 'bg-red-500/20 text-red-400'
-                                    : 'bg-white/10 text-slate-400 hover:text-red-400'
+                                ? 'bg-red-500/20 text-red-400'
+                                : 'bg-white/10 text-slate-400 hover:text-red-400'
                                 }`}
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}

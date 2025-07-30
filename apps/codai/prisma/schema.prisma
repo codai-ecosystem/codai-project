@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -45,6 +45,14 @@ model User {
   image         String?
   password      String?   // For credentials-based authentication
   role          String    @default("USER")
+  
+  // Additional user fields
+  username      String?   @unique
+  fullName      String?
+  avatarUrl     String?
+  planType      String    @default("free") // free, pro, enterprise
+  lastActive    DateTime  @default(now())
+  
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   
@@ -54,10 +62,15 @@ model User {
   
   // User preferences and settings
   preferences   UserPreferences?
+  workspace     UserWorkspace?
+  
+  // Core application features
+  projects         Project[]
+  aiSessions       AiSession[]
+  projectTemplates ProjectTemplate[]
   
   // Collaboration features
   workspaceMembers WorkspaceMember[]
-  projects         Project[]
   collaborationParticipants CollaborationParticipant[]
   presenceUpdates PresenceUpdate[]
   
@@ -130,16 +143,107 @@ model Project {
   id          String    @id @default(cuid())
   name        String
   description String?
-  workspaceId String
+  workspaceId String?   // Optional - can be personal projects
   ownerId     String
   isPublic    Boolean   @default(false)
+  
+  // Technical details
+  framework   String?   // react, nextjs, vue, angular, etc
+  language    String?   // typescript, javascript, python, etc
+  template    String?   // starter template used
+  gitRepository String? // git repository URL
+  deploymentUrl String? // deployment URL
+  status      String    @default("active") // active, archived, deployed
+  settings    String    @default("{}") // JSON string for project settings
+  
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   
-  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspace   Workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   owner       User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   
+  // Relations
+  files       ProjectFile[]
+  aiSessions  AiSession[]
+  
   @@map("projects")
+}
+
+// Project Files table
+model ProjectFile {
+  id          String    @id @default(cuid())
+  projectId   String
+  path        String    // relative path within project
+  content     String?   // file content
+  mimeType    String?   // file mime type
+  sizeBytes   Int       @default(0)
+  checksum    String?   // for change detection
+  isBinary    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  @@unique([projectId, path])
+  @@map("project_files")
+}
+
+// AI Sessions table
+model AiSession {
+  id          String    @id @default(cuid())
+  userId      String
+  projectId   String?   // Optional - can be general AI sessions
+  title       String?
+  conversation String   @default("[]") // JSON string array of messages
+  context     String    @default("{}") // JSON string session context/state
+  tokensUsed  Int       @default(0)
+  modelUsed   String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project     Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  
+  @@map("ai_sessions")
+}
+
+// User Workspaces (personal workspace settings)
+model UserWorkspace {
+  id            String    @id @default(cuid())
+  userId        String    @unique
+  name          String    @default("My Workspace")
+  layout        String    @default("{}") // JSON string workspace layout configuration
+  theme         String    @default("dark")
+  settings      String    @default("{}") // JSON string user preferences
+  pinnedProjects String   @default("[]") // JSON string array of project IDs
+  recentFiles   String    @default("[]") // JSON string array of recently opened files
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("user_workspaces")
+}
+
+// Project Templates table
+model ProjectTemplate {
+  id            String    @id @default(cuid())
+  name          String
+  description   String?
+  framework     String    // react, nextjs, vue, angular, etc
+  language      String    // typescript, javascript, python, etc
+  category      String?   // web, mobile, api, fullstack, etc
+  files         String    @default("[]") // JSON string template file structure
+  dependencies  String    @default("{}") // JSON string package.json dependencies
+  configuration String    @default("{}") // JSON string template-specific config
+  isPublic      Boolean   @default(true)
+  createdBy     String?
+  usageCount    Int       @default(0)
+  createdAt     DateTime  @default(now())
+  
+  creator       User?     @relation(fields: [createdBy], references: [id], onDelete: SetNull)
+  
+  @@map("project_templates")
 }
 
 // Real-time collaboration models

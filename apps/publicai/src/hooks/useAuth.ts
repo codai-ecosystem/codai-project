@@ -17,7 +17,7 @@ import type {
 // Create a dummy auth object for SSR scenarios
 const dummyAuth = {
   currentUser: null,
-  onAuthStateChanged: () => () => {}, // Add minimal mock implementation
+  onAuthStateChanged: () => () => { }, // Add minimal mock implementation
   signOut: async () => Promise.resolve(),
 } as unknown as Auth;
 
@@ -87,11 +87,13 @@ export function useAuth(): UseAuthReturn {
             const fallbackUser: User = {
               id: firebaseUser.uid,
               email: firebaseUser.email ?? '',
+              name: firebaseUser.displayName ?? firebaseUser.email ?? 'User',
               displayName: firebaseUser.displayName ?? '',
+              role: 'user', // Default role for new users
               ...(firebaseUser.photoURL != null &&
                 firebaseUser.photoURL.length > 0 && {
-                  photoURL: firebaseUser.photoURL,
-                }),
+                photoURL: firebaseUser.photoURL,
+              }),
               emailVerified: firebaseUser.emailVerified,
               createdAt: new Date(
                 firebaseUser.metadata.creationTime ?? Date.now()
@@ -154,7 +156,13 @@ export function useAuth(): UseAuthReturn {
       await AuthService.updateUserPreferences(preferences);
       if (user) {
         updateUserData({
-          preferences: { ...user.preferences, ...preferences },
+          preferences: {
+            theme: 'system',
+            language: 'en',
+            notifications: { email: true, push: true, marketing: false },
+            ...user.preferences,
+            ...preferences
+          },
         });
       }
     },

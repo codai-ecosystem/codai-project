@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import prisma from "@/lib/prisma";
+import prisma from "../../../../lib/prisma";
 import { z } from "zod";
 
 const registerSchema = z.object({
@@ -43,7 +43,6 @@ export async function POST(request: NextRequest) {
           create: {
             theme: "light",
             language: "en",
-            notifications: true,
             notifications: true,
           },
         },

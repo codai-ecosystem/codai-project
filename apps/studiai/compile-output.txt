@@ -1,0 +1,1539 @@
+components/Admin.tsx(265,36): error TS2339: Property 'status' does not exist on type 'CourseWithPriceProduct'.
+components/Admin.tsx(269,35): error TS2339: Property 'status' does not exist on type 'CourseWithPriceProduct'.
+components/Admin.tsx(405,46): error TS2339: Property 'status' does not exist on type 'CourseWithPriceProduct'.
+components/Admin.tsx(411,45): error TS2339: Property 'status' does not exist on type 'CourseWithPriceProduct'.
+components/Admin.tsx(514,29): error TS2345: Argument of type '(a: Lesson, b: Lesson) => number' is not assignable to parameter of type '(a: unknown, b: unknown) => number'.
+  Types of parameters 'a' and 'a' are incompatible.
+    Type 'unknown' is not assignable to type 'Lesson'.
+components/Admin.tsx(517,32): error TS2345: Argument of type '(lesson: Lesson, index: number) => React.JSX.Element' is not assignable to parameter of type '(value: unknown, index: number, array: unknown[]) => Element'.
+  Types of parameters 'lesson' and 'value' are incompatible.
+    Type 'unknown' is not assignable to type 'Lesson'.
+components/Admin/AdminAnalytics.tsx(107,16): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'number'.
+components/Admin/AdminAnalytics.tsx(124,37): error TS18046: 'item.amount' is of type 'unknown'.
+components/Admin/AdminAnalytics.tsx(134,33): error TS18046: 'item.amount' is of type 'unknown'.
+components/Admin/AdminAnalytics.tsx(321,55): error TS7006: Parameter 'course' implicitly has an 'any' type.
+components/Admin/AdminAnalytics.tsx(321,63): error TS7006: Parameter 'index' implicitly has an 'any' type.
+components/Admin/AdminAnalytics.tsx(324,26): error TS7006: Parameter 'sum' implicitly has an 'any' type.
+components/Admin/AdminAnalytics.tsx(324,31): error TS7006: Parameter 'c' implicitly has an 'any' type.
+components/Admin/AdminDashboardTabs.tsx(46,13): error TS18046: 'c' is of type 'unknown'.
+components/Admin/AdminDashboardTabs.tsx(46,31): error TS18046: 'c' is of type 'unknown'.
+components/Admin/AdminDashboardTabs.tsx(46,56): error TS18046: 'c' is of type 'unknown'.
+components/Admin/AdminSettings.tsx(12,25): error TS2305: Module '"@/components/ui"' has no exported member 'Switch'.
+components/Admin/AdminSettings.tsx(12,41): error TS2305: Module '"@/components/ui"' has no exported member 'Textarea'.
+components/Admin/AdminSettings.tsx(30,5): error TS2353: Object literal may only specify known properties, and 'contactEmail' does not exist in type 'AdminSettings | (() => AdminSettings)'.
+components/Admin/AdminSettings.tsx(126,11): error TS2322: Type '{ children: string; color: string; isLoading: boolean; isDisabled: boolean; onPress: (e: any) => Promise<void>; className: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps & RefAttributes<HTMLButtonElement>'.
+  Property 'isDisabled' does not exist on type 'IntrinsicAttributes & ButtonProps & RefAttributes<HTMLButtonElement>'. Did you mean 'disabled'?
+components/Admin/AdminSettings.tsx(218,35): error TS2339: Property 'contactEmail' does not exist on type 'AdminSettings'.
+components/Admin/AdminSettings.tsx(244,40): error TS2339: Property 'allowRegistration' does not exist on type 'AdminSettings'.
+components/Admin/AdminSettings.tsx(245,34): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/Admin/AdminSettings.tsx(266,40): error TS2339: Property 'allowSocialLogin' does not exist on type 'AdminSettings'.
+components/Admin/AdminSettings.tsx(267,34): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/Admin/AdminSettings.tsx(294,40): error TS2339: Property 'paymentProcessorEnabled' does not exist on type 'AdminSettings'.
+components/Admin/AdminSettings.tsx(295,34): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/Admin/AdminSettings.tsx(309,35): error TS2339: Property 'currencyCode' does not exist on type 'AdminSettings'.
+components/Admin/AdminSettings.tsx(310,19): error TS2322: Type '{ children: Element[]; value: any; onChange: (e: ChangeEvent<HTMLSelectElement>) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & SelectSharedProps & { value?: string | undefined; defaultValue?: string | undefined; onValueChange?(value: string): void; }'.
+  Property 'onChange' does not exist on type 'IntrinsicAttributes & SelectSharedProps & { value?: string | undefined; defaultValue?: string | undefined; onValueChange?(value: string): void; }'.
+components/Admin/AdminSettings.tsx(344,35): error TS2339: Property 'taxRate' does not exist on type 'AdminSettings'.
+components/Admin/AdminSidebar.tsx(43,19): error TS2345: Argument of type 'Auth | null' is not assignable to parameter of type 'Auth'.
+  Type 'null' is not assignable to type 'Auth'.
+components/Admin/AdminSidebar.tsx(116,41): error TS18047: 'pathname' is possibly 'null'.
+components/Admin/AdminTabs.tsx(46,13): error TS18046: 'c' is of type 'unknown'.
+components/Admin/AdminTabs.tsx(46,31): error TS18046: 'c' is of type 'unknown'.
+components/Admin/AdminTabs.tsx(46,56): error TS18046: 'c' is of type 'unknown'.
+components/Admin/AdminUsers.tsx(70,11): error TS18046: 'user' is of type 'unknown'.
+components/Admin/AdminUsers.tsx(71,11): error TS18046: 'user' is of type 'unknown'.
+components/Admin/AdminUsers.tsx(88,22): error TS2339: Property 'id' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(190,26): error TS18046: 'user' is of type 'unknown'.
+components/Admin/AdminUsers.tsx(192,51): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'UserProfile'.
+components/Admin/AdminUsers.tsx(197,32): error TS18046: 'user' is of type 'unknown'.
+components/Admin/AdminUsers.tsx(198,33): error TS18046: 'user' is of type 'unknown'.
+components/Admin/AdminUsers.tsx(198,53): error TS18046: 'user' is of type 'unknown'.
+components/Admin/AdminUsers.tsx(203,30): error TS18046: 'user' is of type 'unknown'.
+components/Admin/AdminUsers.tsx(206,34): error TS18046: 'user' is of type 'unknown'.
+components/Admin/AdminUsers.tsx(211,33): error TS18046: 'user' is of type 'unknown'.
+components/Admin/AdminUsers.tsx(213,24): error TS18046: 'user' is of type 'unknown'.
+components/Admin/AdminUsers.tsx(225,32): error TS18046: 'user' is of type 'unknown'.
+components/Admin/AdminUsers.tsx(228,26): error TS18046: 'user' is of type 'unknown'.
+components/Admin/AdminUsers.tsx(238,43): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'SetStateAction<UserProfile | null>'.
+components/Admin/AdminUsers.tsx(313,43): error TS2339: Property 'photoURL' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(314,44): error TS2339: Property 'displayName' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(314,72): error TS2339: Property 'email' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(320,41): error TS2339: Property 'displayName' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(323,41): error TS2339: Property 'email' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(328,44): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(335,43): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(337,41): error TS2339: Property 'emailVerified' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(362,43): error TS2339: Property 'id' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(370,43): error TS2339: Property 'createdAt' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(371,53): error TS2339: Property 'createdAt' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(372,59): error TS2339: Property 'createdAt' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(374,50): error TS2339: Property 'createdAt' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(377,50): error TS2339: Property 'createdAt' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(412,37): error TS2339: Property 'enrollments' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(413,48): error TS2339: Property 'enrollments' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(415,56): error TS2339: Property 'enrollments' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(429,40): error TS18046: 'enrollment' is of type 'unknown'.
+components/Admin/AdminUsers.tsx(430,50): error TS18046: 'enrollment' is of type 'unknown'.
+components/Admin/AdminUsers.tsx(432,56): error TS18046: 'enrollment' is of type 'unknown'.
+components/Admin/AdminUsers.tsx(434,47): error TS18046: 'enrollment' is of type 'unknown'.
+components/Admin/AdminUsers.tsx(438,47): error TS18046: 'enrollment' is of type 'unknown'.
+components/Admin/AdminUsers.tsx(446,41): error TS18046: 'enrollment' is of type 'unknown'.
+components/Admin/AdminUsers.tsx(453,40): error TS18046: 'enrollment' is of type 'unknown'.
+components/Admin/AdminUsers.tsx(598,40): error TS2339: Property 'displayName' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(598,69): error TS2339: Property 'email' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(620,49): error TS2339: Property 'photoURL' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(622,46): error TS2339: Property 'displayName' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(622,74): error TS2339: Property 'email' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(629,47): error TS2339: Property 'displayName' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(632,47): error TS2339: Property 'email' does not exist on type 'UserProfile'.
+components/Admin/AdminUsers.tsx(658,57): error TS2345: Argument of type '(course: Course) => React.JSX.Element' is not assignable to parameter of type '(value: unknown, index: number, array: unknown[]) => Element'.
+  Types of parameters 'course' and 'value' are incompatible.
+    Type 'unknown' is not assignable to type 'Course'.
+components/Admin/AdminUsers.tsx(662,33): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+components/Admin/BatchOperations.tsx(63,27): error TS2769: No overload matches this call.
+  Overload 1 of 4, '(app: FirebaseApp): Firestore', gave the following error.
+    Argument of type 'FirebaseApp | null' is not assignable to parameter of type 'FirebaseApp'.
+      Type 'null' is not assignable to type 'FirebaseApp'.
+  Overload 2 of 4, '(databaseId: string): Firestore', gave the following error.
+    Argument of type 'FirebaseApp | null' is not assignable to parameter of type 'string'.
+      Type 'null' is not assignable to type 'string'.
+components/Admin/BatchOperations.tsx(174,25): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(o: ArrayLike<unknown> | { [s: string]: unknown; }): unknown[]', gave the following error.
+    Argument of type 'unknown' is not assignable to parameter of type 'ArrayLike<unknown> | { [s: string]: unknown; }'.
+  Overload 2 of 2, '(o: {}): any[]', gave the following error.
+    Argument of type 'unknown' is not assignable to parameter of type '{}'.
+components/Admin/BatchOperations.tsx(201,51): error TS18046: 'item' is of type 'unknown'.
+components/Admin/BatchOperations.tsx(445,32): error TS18046: 'item' is of type 'unknown'.
+components/Admin/BatchOperations.tsx(450,66): error TS18046: 'item' is of type 'unknown'.
+components/Admin/BatchOperations.tsx(452,50): error TS18046: 'item' is of type 'unknown'.
+components/Admin/BatchOperations.tsx(454,53): error TS18046: 'item' is of type 'unknown'.
+components/Admin/BatchOperations.tsx(458,59): error TS18046: 'item' is of type 'unknown'.
+components/Admin/BatchOperations.tsx(470,33): error TS18046: 'item' is of type 'unknown'.
+components/Admin/BatchOperations.tsx(472,37): error TS18046: 'item' is of type 'unknown'.
+components/Admin/BatchOperations.tsx(478,32): error TS18046: 'item' is of type 'unknown'.
+components/Admin/BatchOperations.tsx(483,43): error TS18046: 'item' is of type 'unknown'.
+components/Admin/BatchOperations.tsx(490,47): error TS18046: 'item' is of type 'unknown'.
+components/Admin/CourseEngagement.tsx(67,33): error TS2769: No overload matches this call.
+  Overload 1 of 4, '(app: FirebaseApp): Firestore', gave the following error.
+    Argument of type 'FirebaseApp | null' is not assignable to parameter of type 'FirebaseApp'.
+      Type 'null' is not assignable to type 'FirebaseApp'.
+  Overload 2 of 4, '(databaseId: string): Firestore', gave the following error.
+    Argument of type 'FirebaseApp | null' is not assignable to parameter of type 'string'.
+      Type 'null' is not assignable to type 'string'.
+components/Admin/Courses/AdminCoursesHeader.tsx(2,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' has no default export. Did you mean to use 'import { Button } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' instead?
+components/Admin/Courses/CoursesGridView.tsx(36,31): error TS2339: Property 'status' does not exist on type 'CourseWithPriceProduct'.
+components/Admin/Courses/CoursesGridView.tsx(39,25): error TS2339: Property 'status' does not exist on type 'CourseWithPriceProduct'.
+components/Admin/Courses/CoursesGridView.tsx(50,25): error TS2339: Property 'repoUrl' does not exist on type 'CourseWithPriceProduct'.
+components/Admin/Courses/CoursesGridView.tsx(52,34): error TS2339: Property 'repoUrl' does not exist on type 'CourseWithPriceProduct'.
+components/Admin/Courses/CoursesListView.tsx(70,35): error TS2339: Property 'status' does not exist on type 'CourseWithPriceProduct'.
+components/Admin/Courses/CoursesListView.tsx(73,29): error TS2339: Property 'status' does not exist on type 'CourseWithPriceProduct'.
+components/Admin/Courses/ViewToggle.tsx(2,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' has no default export. Did you mean to use 'import { Button } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' instead?
+components/Admin/EnhancedUserManagement.tsx(118,13): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(119,13): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(123,41): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(128,51): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(129,54): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(135,27): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(137,27): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(145,38): error TS2339: Property 'createdAt' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(151,25): error TS2339: Property 'displayName' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(151,45): error TS2339: Property 'email' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(154,39): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(155,39): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(176,9): error TS2353: Object literal may only specify known properties, and 'displayName' does not exist in type 'SetStateAction<Partial<UserProfile>>'.
+components/Admin/EnhancedUserManagement.tsx(176,35): error TS2339: Property 'displayName' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(177,28): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(187,31): error TS2769: No overload matches this call.
+  Overload 1 of 4, '(app: FirebaseApp): Firestore', gave the following error.
+    Argument of type 'FirebaseApp | null' is not assignable to parameter of type 'FirebaseApp'.
+      Type 'null' is not assignable to type 'FirebaseApp'.
+  Overload 2 of 4, '(databaseId: string): Firestore', gave the following error.
+    Argument of type 'FirebaseApp | null' is not assignable to parameter of type 'string'.
+      Type 'null' is not assignable to type 'string'.
+components/Admin/EnhancedUserManagement.tsx(188,53): error TS2339: Property 'id' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(199,9): error TS2353: Object literal may only specify known properties, and 'updatedAt' does not exist in type 'UserProfile | ((prevState: UserProfile | null) => UserProfile | null)'.
+components/Admin/EnhancedUserManagement.tsx(224,31): error TS2769: No overload matches this call.
+  Overload 1 of 4, '(app: FirebaseApp): Firestore', gave the following error.
+    Argument of type 'FirebaseApp | null' is not assignable to parameter of type 'FirebaseApp'.
+      Type 'null' is not assignable to type 'FirebaseApp'.
+  Overload 2 of 4, '(databaseId: string): Firestore', gave the following error.
+    Argument of type 'FirebaseApp | null' is not assignable to parameter of type 'string'.
+      Type 'null' is not assignable to type 'string'.
+components/Admin/EnhancedUserManagement.tsx(225,54): error TS2339: Property 'id' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(240,31): error TS2769: No overload matches this call.
+  Overload 1 of 4, '(app: FirebaseApp): Firestore', gave the following error.
+    Argument of type 'FirebaseApp | null' is not assignable to parameter of type 'FirebaseApp'.
+      Type 'null' is not assignable to type 'FirebaseApp'.
+  Overload 2 of 4, '(databaseId: string): Firestore', gave the following error.
+    Argument of type 'FirebaseApp | null' is not assignable to parameter of type 'string'.
+      Type 'null' is not assignable to type 'string'.
+components/Admin/EnhancedUserManagement.tsx(260,24): error TS2339: Property 'id' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(502,26): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(504,51): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(509,32): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(510,33): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(510,53): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(515,30): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(518,34): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(525,32): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(531,27): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(533,31): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(539,26): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(543,24): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(554,24): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(555,35): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(557,40): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(566,24): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(567,34): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(568,40): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(570,31): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(572,38): error TS18046: 'user' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(582,42): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(634,43): error TS2339: Property 'photoURL' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(635,44): error TS2339: Property 'displayName' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(635,72): error TS2339: Property 'email' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(641,41): error TS2339: Property 'displayName' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(641,69): error TS2339: Property 'email' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(644,41): error TS2339: Property 'email' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(682,55): error TS2339: Property 'displayName' does not exist on type 'Partial<UserProfile>'.
+components/Admin/EnhancedUserManagement.tsx(707,55): error TS2339: Property 'role' does not exist on type 'Partial<UserProfile>'.
+components/Admin/EnhancedUserManagement.tsx(763,49): error TS2339: Property 'displayName' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(771,67): error TS2339: Property 'email' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(781,52): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(783,56): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(788,51): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(809,49): error TS2339: Property 'createdAt' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(810,59): error TS2339: Property 'createdAt' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(812,65): error TS2339: Property 'createdAt' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(814,56): error TS2339: Property 'createdAt' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(817,56): error TS2339: Property 'createdAt' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(828,49): error TS2339: Property 'updatedAt' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(829,59): error TS2339: Property 'updatedAt' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(831,65): error TS2339: Property 'updatedAt' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(833,56): error TS2339: Property 'updatedAt' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(836,56): error TS2339: Property 'updatedAt' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(847,49): error TS2339: Property 'emailVerified' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(900,39): error TS2339: Property 'enrollments' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(901,50): error TS2339: Property 'enrollments' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(903,58): error TS2339: Property 'enrollments' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(917,42): error TS18046: 'enrollment' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(918,52): error TS18046: 'enrollment' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(920,58): error TS18046: 'enrollment' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(922,49): error TS18046: 'enrollment' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(926,49): error TS18046: 'enrollment' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(934,43): error TS18046: 'enrollment' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(940,42): error TS18046: 'enrollment' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(946,43): error TS18046: 'enrollment' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(952,42): error TS18046: 'enrollment' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(1023,47): error TS2339: Property 'createdAt' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1024,57): error TS2339: Property 'createdAt' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1026,63): error TS2339: Property 'createdAt' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1028,54): error TS2339: Property 'createdAt' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1031,54): error TS2339: Property 'createdAt' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1038,41): error TS2339: Property 'emailVerified' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1050,41): error TS2339: Property 'enrollments' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1051,57): error TS2339: Property 'enrollments' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1061,40): error TS18046: 'enrollment' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(1062,50): error TS18046: 'enrollment' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(1064,56): error TS18046: 'enrollment' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(1066,47): error TS18046: 'enrollment' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(1070,47): error TS18046: 'enrollment' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(1076,40): error TS18046: 'enrollment' is of type 'unknown'.
+components/Admin/EnhancedUserManagement.tsx(1112,49): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1114,52): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1121,48): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1123,52): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1128,47): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1140,50): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1145,49): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1153,50): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1154,50): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1159,49): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1160,48): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1170,50): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1175,49): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1185,50): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1190,49): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1198,50): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1199,50): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1204,49): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/EnhancedUserManagement.tsx(1205,48): error TS2339: Property 'role' does not exist on type 'UserProfile'.
+components/Admin/LessonsTable.tsx(4,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' has no default export. Did you mean to use 'import { Button } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' instead?
+components/Breadcrumbs.tsx(19,26): error TS18047: 'pathname' is possibly 'null'.
+components/Breadcrumbs.tsx(38,34): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Breadcrumbs.tsx(55,34): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/CacheStatus.tsx(34,12): error TS2678: Type 'string' is not comparable to type 'CacheStatus'.
+components/CacheStatus.tsx(36,12): error TS2678: Type 'string' is not comparable to type 'CacheStatus'.
+components/CacheStatus.tsx(38,12): error TS2678: Type 'string' is not comparable to type 'CacheStatus'.
+components/CacheStatus.tsx(47,12): error TS2678: Type 'string' is not comparable to type 'CacheStatus'.
+components/CacheStatus.tsx(49,12): error TS2678: Type 'string' is not comparable to type 'CacheStatus'.
+components/CacheStatus.tsx(51,12): error TS2678: Type 'string' is not comparable to type 'CacheStatus'.
+components/CacheStatus.tsx(73,23): error TS2367: This comparison appears to be unintentional because the types 'CacheStatus' and 'string' have no overlap.
+components/CacheStatus.tsx(84,23): error TS2367: This comparison appears to be unintentional because the types 'CacheStatus' and 'string' have no overlap.
+components/CacheStatus.tsx(84,47): error TS2367: This comparison appears to be unintentional because the types 'CacheStatus' and 'string' have no overlap.
+components/CallToActionSection.tsx(5,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' has no default export. Did you mean to use 'import { Button } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' instead?
+components/contexts/appReducer.ts(22,21): error TS2352: Conversion of type 'string' to type 'CacheStatus' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+components/contexts/appReducer.ts(24,31): error TS2352: Conversion of type 'string' to type 'CacheStatus' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+components/contexts/appReducer.ts(26,30): error TS2352: Conversion of type 'string' to type 'CacheStatus' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+components/contexts/appReducer.ts(28,26): error TS2352: Conversion of type 'string' to type 'CacheStatus' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+components/contexts/appReducer.ts(30,25): error TS2352: Conversion of type 'string' to type 'CacheStatus' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+components/Course/AddCourse.tsx(27,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Card"' has no default export. Did you mean to use 'import { Card } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Card"' instead?
+components/Course/AddCourse.tsx(27,16): error TS2305: Module '"@/components/ui/Card"' has no exported member 'CardBody'.
+components/Course/AddCourse.tsx(28,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Textarea"' has no default export. Did you mean to use 'import { Textarea } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Textarea"' instead?
+components/Course/AddCourse.tsx(29,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Input"' has no default export. Did you mean to use 'import { Input } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Input"' instead?
+components/Course/AddCourse.tsx(30,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' has no default export. Did you mean to use 'import { Button } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' instead?
+components/Course/AddCourse.tsx(32,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/select"' has no default export. Did you mean to use 'import { Select } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/select"' instead?
+components/Course/AddCourse.tsx(32,36): error TS1149: File name 'E:/GitHub/codai-project/apps/studiai/src/components/ui/Select.tsx' differs from already included file name 'E:/GitHub/codai-project/apps/studiai/src/components/ui/select.tsx' only in casing.
+  The file is in the program because:
+    Imported via './select' from file 'E:/GitHub/codai-project/apps/studiai/src/components/ui/index.ts'
+    Matched by include pattern 'src/**/*.tsx' in 'tsconfig.json'
+    Imported via '@/components/ui/Select' from file 'E:/GitHub/codai-project/apps/studiai/components/Lesson/LessonForm.tsx'
+    Imported via '@/components/ui/Select' from file 'E:/GitHub/codai-project/apps/studiai/components/Course/AddCourse.tsx'
+components/Course/AddCourse.tsx(36,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Tooltip"' has no default export. Did you mean to use 'import { Tooltip } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Tooltip"' instead?
+components/Course/AddCourse.tsx(167,11): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(storage: FirebaseStorage, url?: string | undefined): StorageReference', gave the following error.
+    Argument of type 'FirebaseStorage | null' is not assignable to parameter of type 'FirebaseStorage'.
+      Type 'null' is not assignable to type 'FirebaseStorage'.
+  Overload 2 of 2, '(storageOrRef: FirebaseStorage | StorageReference, path?: string | undefined): StorageReference', gave the following error.
+    Argument of type 'FirebaseStorage | null' is not assignable to parameter of type 'FirebaseStorage | StorageReference'.
+      Type 'null' is not assignable to type 'FirebaseStorage | StorageReference'.
+components/Course/AddCourse.tsx(176,31): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(firestore: Firestore, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'Firestore'.
+      Type 'null' is not assignable to type 'Firestore'.
+  Overload 2 of 3, '(reference: CollectionReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'CollectionReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'CollectionReference<unknown, DocumentData>'.
+  Overload 3 of 3, '(reference: DocumentReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'DocumentReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'DocumentReference<unknown, DocumentData>'.
+components/Course/AddCourse.tsx(208,29): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(firestore: Firestore, path: string, ...pathSegments: string[]): DocumentReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'Firestore'.
+      Type 'null' is not assignable to type 'Firestore'.
+  Overload 2 of 3, '(reference: CollectionReference<unknown, DocumentData>, path?: string | undefined, ...pathSegments: string[]): DocumentReference<unknown, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'CollectionReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'CollectionReference<unknown, DocumentData>'.
+  Overload 3 of 3, '(reference: DocumentReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): DocumentReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'DocumentReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'DocumentReference<unknown, DocumentData>'.
+components/Course/AddCourse.tsx(239,11): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(storage: FirebaseStorage, url?: string | undefined): StorageReference', gave the following error.
+    Argument of type 'FirebaseStorage | null' is not assignable to parameter of type 'FirebaseStorage'.
+      Type 'null' is not assignable to type 'FirebaseStorage'.
+  Overload 2 of 2, '(storageOrRef: FirebaseStorage | StorageReference, path?: string | undefined): StorageReference', gave the following error.
+    Argument of type 'FirebaseStorage | null' is not assignable to parameter of type 'FirebaseStorage | StorageReference'.
+      Type 'null' is not assignable to type 'FirebaseStorage | StorageReference'.
+components/Course/AddCourse.tsx(378,31): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/Course/AddCourse.tsx(385,29): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/Course/AddCourse.tsx(391,31): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/Course/AddCourse.tsx(464,23): error TS2322: Type '{ children: string; itemKey: string; value: string; startContent: Element; }' is not assignable to type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+  Property 'itemKey' does not exist on type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+components/Course/AddCourse.tsx(475,23): error TS2322: Type '{ children: string; itemKey: string; value: string; startContent: Element; }' is not assignable to type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+  Property 'itemKey' does not exist on type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+components/Course/AddCourse.tsx(486,23): error TS2322: Type '{ children: string; itemKey: string; value: string; startContent: Element; }' is not assignable to type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+  Property 'itemKey' does not exist on type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+components/Course/AddCourse.tsx(586,23): error TS2322: Type '{ children: string; itemKey: string; value: string; startContent: Element; }' is not assignable to type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+  Property 'itemKey' does not exist on type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+components/Course/AddCourse.tsx(597,23): error TS2322: Type '{ children: string; itemKey: string; value: string; startContent: Element; }' is not assignable to type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+  Property 'itemKey' does not exist on type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+components/Course/AddCourse.tsx(608,23): error TS2322: Type '{ children: string; itemKey: string; value: string; startContent: Element; }' is not assignable to type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+  Property 'itemKey' does not exist on type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+components/Course/AddCourse.tsx(687,27): error TS2322: Type '{ children: string; itemKey: string; value: string; }' is not assignable to type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+  Property 'itemKey' does not exist on type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+components/Course/AddCourse.tsx(697,25): error TS2322: Type '{ children: any[]; itemKey: any; value: any; key: any; }' is not assignable to type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+  Property 'itemKey' does not exist on type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+components/Course/AddCourse.tsx(999,29): error TS18046: 'course' is of type 'unknown'.
+components/Course/AddCourse.tsx(1001,59): error TS18046: 'course' is of type 'unknown'.
+components/Course/AddCourse.tsx(1004,40): error TS18046: 'course' is of type 'unknown'.
+components/Course/AddCourse.tsx(1004,58): error TS18046: 'course' is of type 'unknown'.
+components/Course/AddCourse.tsx(1005,30): error TS18046: 'course' is of type 'unknown'.
+components/Course/AddLesson.tsx(20,39): error TS2322: Type '{ courseId: string; lessonId: string | undefined; onClose: () => void; }' is not assignable to type 'IntrinsicAttributes & LessonFormProps'.
+  Property 'lessonId' does not exist on type 'IntrinsicAttributes & LessonFormProps'. Did you mean 'lesson'?
+components/Course/CaptionsSection.tsx(3,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Card"' has no default export. Did you mean to use 'import { Card } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Card"' instead?
+components/Course/CaptionsSection.tsx(3,16): error TS2305: Module '"@/components/ui/Card"' has no exported member 'CardBody'.
+components/Course/CaptionsSection.tsx(4,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' has no default export. Did you mean to use 'import { Button } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' instead?
+components/Course/Course.tsx(10,18): error TS2305: Module '"@/components/ui"' has no exported member 'Divider'.
+components/Course/Course.tsx(10,33): error TS2305: Module '"@/components/ui"' has no exported member 'Chip'.
+components/Course/Course.tsx(11,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/tabs"' has no default export. Did you mean to use 'import { Tabs } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/tabs"' instead?
+components/Course/Course.tsx(11,16): error TS2724: '"@/components/ui/Tabs"' has no exported member named 'Tab'. Did you mean 'Tabs'?
+components/Course/Course.tsx(11,27): error TS1149: File name 'E:/GitHub/codai-project/apps/studiai/src/components/ui/Tabs.tsx' differs from already included file name 'E:/GitHub/codai-project/apps/studiai/src/components/ui/tabs.tsx' only in casing.
+  The file is in the program because:
+    Imported via './tabs' from file 'E:/GitHub/codai-project/apps/studiai/src/components/ui/index.ts'
+    Matched by include pattern 'src/**/*.tsx' in 'tsconfig.json'
+    Imported via '@/components/ui/Tabs' from file 'E:/GitHub/codai-project/apps/studiai/components/Lesson/LessonForm.tsx'
+    Imported via "@/components/ui/Tabs" from file 'E:/GitHub/codai-project/apps/studiai/components/Course/Course.tsx'
+components/Course/Course.tsx(16,10): error TS2614: Module '"firewand"' has no exported member 'createCheckoutSession'. Did you mean to use 'import createCheckoutSession from "firewand"' instead?
+components/Course/Course.tsx(17,32): error TS2307: Cannot find module '@/utils/firebase/stripe' or its corresponding type declarations.
+components/Course/Course.tsx(36,20): error TS2339: Property 'isAdmin' does not exist on type 'AppContextProps'.
+components/Course/Course.tsx(36,29): error TS2339: Property 'openModal' does not exist on type 'AppContextProps'.
+components/Course/Course.tsx(36,40): error TS2339: Property 'closeModal' does not exist on type 'AppContextProps'.
+components/Course/Course.tsx(36,61): error TS2339: Property 'getCourseLessons' does not exist on type 'AppContextProps'.
+components/Course/Course.tsx(36,79): error TS2339: Property 'userPaidProducts' does not exist on type 'AppContextProps'.
+components/Course/Course.tsx(36,97): error TS2339: Property 'getCourseReviews' does not exist on type 'AppContextProps'.
+components/Course/Course.tsx(36,115): error TS2339: Property 'lessonProgress' does not exist on type 'AppContextProps'.
+components/Course/Course.tsx(36,131): error TS2339: Property 'products' does not exist on type 'AppContextProps'.
+components/Course/Course.tsx(38,28): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(40,25): error TS2339: Property 'metadata' does not exist on type 'UserPaidProduct'.
+components/Course/Course.tsx(50,41): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(51,33): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(51,65): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(56,22): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(63,21): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(64,48): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(76,47): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(83,46): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(83,84): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(89,35): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(90,36): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(91,35): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(91,69): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(93,50): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(96,83): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(128,22): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(132,35): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(133,36): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(135,48): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(141,49): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(142,23): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(143,35): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Course/Course.tsx(204,29): error TS2322: Type '{ children: string; color: string; onClick: () => any; startContent: Element; }' is not assignable to type 'IntrinsicAttributes & ButtonProps & RefAttributes<HTMLButtonElement>'.
+  Property 'startContent' does not exist on type 'IntrinsicAttributes & ButtonProps & RefAttributes<HTMLButtonElement>'.
+components/Course/Course.tsx(379,51): error TS2339: Property 'name' does not exist on type 'Resource'.
+components/Course/Course.tsx(418,66): error TS2339: Property 'getIdToken' does not exist on type 'User'.
+components/Course/Course.tsx(441,33): error TS2322: Type '{ children: string; color: string; size: "lg"; onClick: () => Promise<void>; startContent: Element; }' is not assignable to type 'IntrinsicAttributes & ButtonProps & RefAttributes<HTMLButtonElement>'.
+  Property 'startContent' does not exist on type 'IntrinsicAttributes & ButtonProps & RefAttributes<HTMLButtonElement>'.
+components/Course/CourseContent.tsx(55,31): error TS2339: Property 'moduleId' does not exist on type 'Lesson'.
+components/Course/CourseContent.tsx(72,26): error TS2339: Property 'modules' does not exist on type 'Course'.
+components/Course/CourseContent.tsx(198,27): error TS7006: Parameter 'module' implicitly has an 'any' type.
+components/Course/CourseContent.tsx(198,35): error TS7006: Parameter 'moduleIndex' implicitly has an 'any' type.
+components/Course/CourseContent.tsx(201,17): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; damping: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; damping: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; damping: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; damping: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/Course/CourseContent.tsx(243,19): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; damping: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; damping: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; damping: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; damping: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/Course/CourseContent.tsx(274,13): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; damping: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; damping: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; damping: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; damping: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/Course/CourseDetail.tsx(7,46): error TS2307: Cannot find module '@/utils/metadata' or its corresponding type declarations.
+components/Course/CourseDetail.tsx(62,5): error TS7006: Parameter 'product' implicitly has an 'any' type.
+components/Course/CourseDetail.tsx(105,26): error TS2339: Property 'title' does not exist on type '{}'.
+components/Course/CourseDetail.tsx(105,43): error TS2339: Property 'name' does not exist on type '{}'.
+components/Course/CourseDetail.tsx(107,28): error TS2339: Property 'duration' does not exist on type '{}'.
+components/Course/CourseDetail.tsx(108,33): error TS2339: Property 'duration' does not exist on type '{}'.
+components/Course/CourseDetail.tsx(109,25): error TS2339: Property 'duration' does not exist on type '{}'.
+components/Course/CourseDetails.tsx(2,10): error TS2305: Module '"../../types"' has no exported member 'Course'.
+components/Course/CourseDetails.tsx(2,18): error TS2305: Module '"../../types"' has no exported member 'Lesson'.
+components/Course/CourseDetails.tsx(24,20): error TS18047: 'searchParams' is possibly 'null'.
+components/Course/CourseDetails.tsx(105,15): error TS2322: Type '{ hidden: { opacity: number; y: number; transition: { duration: number; }; }; visible: { opacity: number; y: number; transition: { duration: number; ease: number[]; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ opacity: number; y: number; transition: { duration: number; ease: number[]; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; y: number; transition: { duration: number; ease: number[]; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; y: number; transition: { duration: number; ease: number[]; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ duration: number; ease: number[]; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ duration: number; ease: number[]; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ duration: number; ease: number[]; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'ease' are incompatible.
+                    Type 'number[]' is not assignable to type 'Easing | Easing[] | undefined'.
+                      Type 'number[]' is not assignable to type 'EasingFunction | Easing[]'.
+                        Type 'number[]' is not assignable to type 'Easing[]'.
+                          Type 'number' is not assignable to type 'Easing'.
+components/Course/CourseDetails.tsx(146,15): error TS2322: Type '{ hidden: { opacity: number; y: number; transition: { duration: number; }; }; visible: { opacity: number; y: number; transition: { duration: number; ease: number[]; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ opacity: number; y: number; transition: { duration: number; ease: number[]; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; y: number; transition: { duration: number; ease: number[]; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; y: number; transition: { duration: number; ease: number[]; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ duration: number; ease: number[]; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ duration: number; ease: number[]; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ duration: number; ease: number[]; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'ease' are incompatible.
+                    Type 'number[]' is not assignable to type 'Easing | Easing[] | undefined'.
+                      Type 'number[]' is not assignable to type 'EasingFunction | Easing[]'.
+                        Type 'number[]' is not assignable to type 'Easing[]'.
+                          Type 'number' is not assignable to type 'Easing'.
+components/Course/CourseDetails.tsx(166,40): error TS7006: Parameter 'module' implicitly has an 'any' type.
+components/Course/CourseDetails.tsx(166,48): error TS7006: Parameter 'index' implicitly has an 'any' type.
+components/Course/CourseDetails.tsx(315,15): error TS2322: Type '{ hidden: { opacity: number; y: number; transition: { duration: number; }; }; visible: { opacity: number; y: number; transition: { duration: number; ease: number[]; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ opacity: number; y: number; transition: { duration: number; ease: number[]; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; y: number; transition: { duration: number; ease: number[]; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; y: number; transition: { duration: number; ease: number[]; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ duration: number; ease: number[]; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ duration: number; ease: number[]; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ duration: number; ease: number[]; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'ease' are incompatible.
+                    Type 'number[]' is not assignable to type 'Easing | Easing[] | undefined'.
+                      Type 'number[]' is not assignable to type 'EasingFunction | Easing[]'.
+                        Type 'number[]' is not assignable to type 'Easing[]'.
+                          Type 'number' is not assignable to type 'Easing'.
+components/Course/CourseDetails.tsx(322,40): error TS7006: Parameter 'review' implicitly has an 'any' type.
+components/Course/CourseDetails.tsx(322,48): error TS7006: Parameter 'index' implicitly has an 'any' type.
+components/Course/CourseDetailView.tsx(79,9): error TS7006: Parameter 'product' implicitly has an 'any' type.
+components/Course/CourseEnrollment.tsx(2,10): error TS2305: Module '"../../types"' has no exported member 'Course'.
+components/Course/CourseEnrollment.tsx(2,18): error TS2305: Module '"../../types"' has no exported member 'ModalProps'.
+components/Course/CourseEnrollment.tsx(19,10): error TS2614: Module '"firewand"' has no exported member 'createCheckoutSession'. Did you mean to use 'import createCheckoutSession from "firewand"' instead?
+components/Course/CourseEnrollment.tsx(20,32): error TS2307: Cannot find module '@/utils/firebase/stripe' or its corresponding type declarations.
+components/Course/CourseEnrollment.tsx(64,15): error TS7006: Parameter 'product' implicitly has an 'any' type.
+components/Course/CourseEnrollment.tsx(65,12): error TS7006: Parameter 'product' implicitly has an 'any' type.
+components/Course/CourseEnrollment.tsx(69,7): error TS7006: Parameter 'prerequisiteId' implicitly has an 'any' type.
+components/Course/CourseEnrollment.tsx(73,53): error TS7006: Parameter 'id' implicitly has an 'any' type.
+components/Course/CourseEnrollment.tsx(529,41): error TS7006: Parameter 'prerequisiteId' implicitly has an 'any' type.
+components/Course/CourseEnrollment.tsx(534,19): error TS7006: Parameter 'product' implicitly has an 'any' type.
+components/Course/CourseHeader.tsx(2,10): error TS2305: Module '"../../types"' has no exported member 'Course'.
+components/Course/CourseOverview.tsx(17,10): error TS2305: Module '"@/types"' has no exported member 'CourseOverviewProps'.
+components/Course/CourseOverview.tsx(97,11): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; damping: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; damping: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; damping: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; damping: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/Course/CourseOverview.tsx(108,30): error TS7006: Parameter 'benefit' implicitly has an 'any' type.
+components/Course/CourseOverview.tsx(108,39): error TS7006: Parameter 'index' implicitly has an 'any' type.
+components/Course/CourseOverview.tsx(111,19): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; damping: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; damping: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; damping: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; damping: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/Course/CourseOverview.tsx(132,11): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; damping: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; damping: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; damping: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; damping: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/Course/CourseOverview.tsx(143,34): error TS7006: Parameter 'requirement' implicitly has an 'any' type.
+components/Course/CourseOverview.tsx(143,47): error TS7006: Parameter 'index' implicitly has an 'any' type.
+components/Course/CourseOverview.tsx(146,19): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; damping: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; damping: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; damping: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; damping: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/Course/CourseOverview.tsx(166,13): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; damping: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; damping: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; damping: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; damping: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/Course/CourseOverview.tsx(178,44): error TS7006: Parameter 'prerequisiteId' implicitly has an 'any' type.
+components/Course/CourseOverview.tsx(178,60): error TS7006: Parameter 'index' implicitly has an 'any' type.
+components/Course/CourseOverview.tsx(185,23): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; damping: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; damping: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; damping: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; damping: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/Course/CourseOverview.tsx(227,13): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; damping: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; damping: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; damping: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; damping: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/Course/CourseOverview.tsx(253,13): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; damping: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; damping: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; damping: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; damping: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/Course/fields/CourseDescriptionField.tsx(3,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Textarea"' has no default export. Did you mean to use 'import { Textarea } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Textarea"' instead?
+components/Course/fields/CourseDescriptionField.tsx(4,10): error TS2305: Module '"@/types"' has no exported member 'CourseDescriptionFieldProps'.
+components/Course/fields/CourseImageField.tsx(1,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' has no default export. Did you mean to use 'import { Button } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' instead?
+components/Course/fields/CourseImageField.tsx(3,10): error TS2305: Module '"@/types"' has no exported member 'CourseImageFieldProps'.
+components/Course/fields/CourseNameField.tsx(3,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Input"' has no default export. Did you mean to use 'import { Input } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Input"' instead?
+components/Course/fields/CourseNameField.tsx(5,10): error TS2305: Module '"@/types"' has no exported member 'CourseNameFieldProps'.
+components/Course/fields/InstructorNameField.tsx(3,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Input"' has no default export. Did you mean to use 'import { Input } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Input"' instead?
+components/Course/fields/InstructorNameField.tsx(5,10): error TS2305: Module '"@/types"' has no exported member 'InstructorNameFieldProps'.
+components/Course/fields/ObjectivesField.tsx(1,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Input"' has no default export. Did you mean to use 'import { Input } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Input"' instead?
+components/Course/fields/ObjectivesField.tsx(2,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' has no default export. Did you mean to use 'import { Button } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' instead?
+components/Course/fields/ObjectivesField.tsx(4,10): error TS2305: Module '"@/types"' has no exported member 'ObjectivesFieldProps'.
+components/Course/fields/ObjectivesField.tsx(21,27): error TS7006: Parameter 'objective' implicitly has an 'any' type.
+components/Course/fields/ObjectivesField.tsx(21,38): error TS7006: Parameter 'index' implicitly has an 'any' type.
+components/Course/fields/PrerequisitesField.tsx(67,42): error TS2339: Property 'difficulty' does not exist on type 'Course'.
+components/Course/fields/PrerequisitesField.tsx(69,45): error TS2339: Property 'difficulty' does not exist on type 'Course'.
+components/Course/fields/PrerequisitesField.tsx(114,24): error TS2339: Property 'status' does not exist on type 'Course'.
+components/Course/fields/RequirementsField.tsx(1,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Input"' has no default export. Did you mean to use 'import { Input } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Input"' instead?
+components/Course/fields/RequirementsField.tsx(2,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' has no default export. Did you mean to use 'import { Button } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' instead?
+components/Course/fields/RequirementsField.tsx(4,10): error TS2305: Module '"@/types"' has no exported member 'RequirementsFieldProps'.
+components/Course/fields/RequirementsField.tsx(21,29): error TS7006: Parameter 'requirement' implicitly has an 'any' type.
+components/Course/fields/RequirementsField.tsx(21,42): error TS7006: Parameter 'index' implicitly has an 'any' type.
+components/Course/fields/TagsField.tsx(1,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Input"' has no default export. Did you mean to use 'import { Input } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Input"' instead?
+components/Course/fields/TagsField.tsx(2,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' has no default export. Did you mean to use 'import { Button } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' instead?
+components/Course/fields/TagsField.tsx(5,10): error TS2305: Module '"@/types"' has no exported member 'TagsFieldProps'.
+components/Course/fields/TagsField.tsx(21,20): error TS7006: Parameter 'tag' implicitly has an 'any' type.
+components/Course/Lesson.tsx(23,3): error TS2305: Module '"@/types"' has no exported member 'LessonProps'.
+components/Course/Lesson.tsx(47,5): error TS2339: Property 'lessonProgress' does not exist on type 'AppContextProps'.
+components/Course/Lesson.tsx(48,5): error TS2339: Property 'saveLessonProgress' does not exist on type 'AppContextProps'.
+components/Course/Lesson.tsx(49,5): error TS2339: Property 'markLessonComplete' does not exist on type 'AppContextProps'.
+components/Course/Lesson.tsx(50,5): error TS2339: Property 'bookmarkedLessons' does not exist on type 'AppContextProps'.
+components/Course/Lesson.tsx(51,5): error TS2339: Property 'toggleBookmarkLesson' does not exist on type 'AppContextProps'.
+components/Course/Lesson.tsx(173,23): error TS2345: Argument of type '{ type: "success"; title: string; message: string; duration: number; }' is not assignable to parameter of type 'Omit<ToastProps, "id">'.
+  Property 'onClose' is missing in type '{ type: "success"; title: string; message: string; duration: number; }' but required in type 'Omit<ToastProps, "id">'.
+components/Course/Lesson.tsx(180,23): error TS2345: Argument of type '{ type: "error"; title: string; message: string; duration: number; }' is not assignable to parameter of type 'Omit<ToastProps, "id">'.
+  Property 'onClose' is missing in type '{ type: "error"; title: string; message: string; duration: number; }' but required in type 'Omit<ToastProps, "id">'.
+components/Course/Lesson.tsx(374,25): error TS2339: Property 'name' does not exist on type 'LessonResource'.
+components/Course/LessonsList.tsx(30,37): error TS18047: 'params' is possibly 'null'.
+components/Course/LessonsList.tsx(205,17): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; damping: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; damping: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; damping: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; damping: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; damping: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/Course/Reviews.tsx(41,36): error TS18047: 'params' is possibly 'null'.
+components/Course/Reviews.tsx(48,20): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(firestore: Firestore, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'Firestore'.
+      Type 'null' is not assignable to type 'Firestore'.
+  Overload 2 of 3, '(reference: CollectionReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'CollectionReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'CollectionReference<unknown, DocumentData>'.
+  Overload 3 of 3, '(reference: DocumentReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'DocumentReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'DocumentReference<unknown, DocumentData>'.
+components/Course/Reviews.tsx(82,13): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(firestore: Firestore, path: string, ...pathSegments: string[]): DocumentReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'Firestore'.
+      Type 'null' is not assignable to type 'Firestore'.
+  Overload 2 of 3, '(reference: CollectionReference<unknown, DocumentData>, path?: string | undefined, ...pathSegments: string[]): DocumentReference<unknown, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'CollectionReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'CollectionReference<unknown, DocumentData>'.
+  Overload 3 of 3, '(reference: DocumentReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): DocumentReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'DocumentReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'DocumentReference<unknown, DocumentData>'.
+components/Course/Reviews.tsx(136,9): error TS2322: Type '{ hidden: { opacity: number; y: number; }; visible: { opacity: number; y: number; transition: { type: string; damping: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ opacity: number; y: number; transition: { type: string; damping: number; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; y: number; transition: { type: string; damping: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; y: number; transition: { type: string; damping: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; damping: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; damping: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; damping: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/Course/Reviews.tsx(228,9): error TS2322: Type '{ hidden: { opacity: number; y: number; }; visible: { opacity: number; y: number; transition: { type: string; damping: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ opacity: number; y: number; transition: { type: string; damping: number; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; y: number; transition: { type: string; damping: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; y: number; transition: { type: string; damping: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; damping: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; damping: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; damping: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/Courses.tsx(12,10): error TS2614: Module '"firewand"' has no exported member 'createCheckoutSession'. Did you mean to use 'import createCheckoutSession from "firewand"' instead?
+components/Courses.tsx(13,32): error TS2307: Cannot find module '@/utils/firebase/stripe' or its corresponding type declarations.
+components/Courses.tsx(86,25): error TS2345: Argument of type '{ type: "success"; title: string; message: string; duration: number; }' is not assignable to parameter of type 'Omit<ToastProps, "id">'.
+  Property 'onClose' is missing in type '{ type: "success"; title: string; message: string; duration: number; }' but required in type 'Omit<ToastProps, "id">'.
+components/Courses.tsx(96,25): error TS2345: Argument of type '{ type: "error"; title: string; message: string; duration: number; }' is not assignable to parameter of type 'Omit<ToastProps, "id">'.
+  Property 'onClose' is missing in type '{ type: "error"; title: string; message: string; duration: number; }' but required in type 'Omit<ToastProps, "id">'.
+components/Courses.tsx(462,17): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; damping: number; stiffness: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; damping: number; stiffness: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; damping: number; stiffness: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; damping: number; stiffness: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; damping: number; stiffness: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; damping: number; stiffness: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; damping: number; stiffness: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/Courses/CoursesFilter.tsx(11,10): error TS2305: Module '"../../types"' has no exported member 'Course'.
+components/Courses/CoursesFilter.tsx(177,25): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+components/Courses/CoursesList.tsx(7,10): error TS2614: Module '"firewand"' has no exported member 'createCheckoutSession'. Did you mean to use 'import createCheckoutSession from "firewand"' instead?
+components/Courses/CoursesList.tsx(8,32): error TS2307: Cannot find module '@/utils/firebase/stripe' or its corresponding type declarations.
+components/Courses/CoursesList.tsx(232,13): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; damping: number; stiffness: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; damping: number; stiffness: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; damping: number; stiffness: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; damping: number; stiffness: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; damping: number; stiffness: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; damping: number; stiffness: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; damping: number; stiffness: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/FeaturedCoursesSection.tsx(71,27): error TS2339: Property 'difficulty' does not exist on type 'Course'.
+components/FeaturedReviews.tsx(6,10): error TS2305: Module '"@/types"' has no exported member 'Review'.
+components/FeaturedReviews.tsx(219,15): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; damping: number; stiffness: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; damping: number; stiffness: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; damping: number; stiffness: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; damping: number; stiffness: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; damping: number; stiffness: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; damping: number; stiffness: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; damping: number; stiffness: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/FeaturedReviews.tsx(329,13): error TS2322: Type '"primary"' is not assignable to type '"link" | "default" | "secondary" | "destructive" | "outline" | "ghost" | undefined'.
+components/FeaturedReviewsSection/fallbackReviewData.ts(1,10): error TS2305: Module '"@/types"' has no exported member 'Review'.
+components/FeaturedReviewsSection/hooks/useFeaturedReviews.tsx(4,10): error TS2305: Module '"@/types"' has no exported member 'Review'.
+components/FeaturedReviewsSection/hooks/useFeaturedReviews.tsx(45,22): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(firestore: Firestore, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'Firestore'.
+      Type 'null' is not assignable to type 'Firestore'.
+  Overload 2 of 3, '(reference: CollectionReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'CollectionReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'CollectionReference<unknown, DocumentData>'.
+  Overload 3 of 3, '(reference: DocumentReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'DocumentReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'DocumentReference<unknown, DocumentData>'.
+components/FeaturedReviewsSection/index.tsx(9,10): error TS2305: Module '"@/types"' has no exported member 'Review'.
+components/FeaturedReviewsSection/ReviewCard.tsx(5,10): error TS2305: Module '"@/types"' has no exported member 'Review'.
+components/Footer.tsx(7,24): error TS1261: Already included file name 'E:/GitHub/codai-project/apps/studiai/components/icons/GitHubIcon.tsx' differs from file name 'E:/GitHub/codai-project/apps/studiai/components/icons/GithubIcon.tsx' only in casing.
+  The file is in the program because:
+    Imported via './icons/GitHubIcon' from file 'E:/GitHub/codai-project/apps/studiai/components/Footer.tsx'
+    Imported via '@/components/icons/GitHubIcon' from file 'E:/GitHub/codai-project/apps/studiai/components/Header/SocialIcons.tsx'
+    Matched by include pattern 'components/**/*.tsx' in 'tsconfig.json'
+components/Footer.tsx(18,11): error TS2339: Property 'isDark' does not exist on type 'AppContextProps'.
+components/Footer.tsx(18,19): error TS2339: Property 'toggleTheme' does not exist on type 'AppContextProps'.
+components/Footer.tsx(74,19): error TS2322: Type '"light"' is not assignable to type '"link" | "default" | "secondary" | "destructive" | "outline" | "ghost" | undefined'.
+components/Header/AuthActions.tsx(5,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' has no default export. Did you mean to use 'import { Button } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' instead?
+components/Header/BottomNavigation.tsx(18,24): error TS18047: 'pathname' is possibly 'null'.
+components/Header/BottomNavigation.tsx(40,41): error TS18047: 'pathname' is possibly 'null'.
+components/Header/MobileBreadcrumbs/index.tsx(14,32): error TS18047: 'pathname' is possibly 'null'.
+components/Header/NavbarBrand/index.tsx(16,32): error TS18047: 'pathname' is possibly 'null'.
+components/Header/NavbarLinks/index.tsx(14,32): error TS18047: 'pathname' is possibly 'null'.
+components/Header/UserDropdown/index.tsx(42,19): error TS2345: Argument of type 'Auth | null' is not assignable to parameter of type 'Auth'.
+  Type 'null' is not assignable to type 'Auth'.
+components/Header/UserProfileSection.tsx(32,15): error TS2353: Object literal may only specify known properties, and 'id' does not exist in type 'ModalProps'.
+components/HeroSection.tsx(4,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' has no default export. Did you mean to use 'import { Button } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' instead?
+components/HeroSection.tsx(62,30): error TS7006: Parameter 'product' implicitly has an 'any' type.
+components/HeroSection.tsx(89,31): error TS7006: Parameter 'tag' implicitly has an 'any' type.
+components/HeroSection.tsx(436,15): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; stiffness: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; stiffness: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; stiffness: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; stiffness: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/HeroSection.tsx(446,15): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; stiffness: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; stiffness: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; stiffness: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; stiffness: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/HeroSection.tsx(455,15): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; stiffness: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; stiffness: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; stiffness: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; stiffness: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/HeroSection.tsx(480,43): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; stiffness: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; stiffness: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; stiffness: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; stiffness: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/HeroSection.tsx(508,15): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; stiffness: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; stiffness: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; stiffness: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; stiffness: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/HeroSection.tsx(524,13): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; stiffness: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; stiffness: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; stiffness: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; stiffness: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/HeroSection/index.tsx(4,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' has no default export. Did you mean to use 'import { Button } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' instead?
+components/icons/FeatherIcons/FiDownload.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/FeatherIcons/FiEdit.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/FeatherIcons/FiEdit3.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/FeatherIcons/FiExternalLink.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/FeatherIcons/FiFileText.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/FeatherIcons/FiLink.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/FeatherIcons/FiMessageCircle.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/FeatherIcons/FiSave.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/AlertIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/ArrowLeftIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/ArrowRightIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/AutoplayIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/AwardIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/BarChartIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/BellIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/BookIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/CalendarIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/CaptionsIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/CartIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/CheckCircleIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/ChevronDownIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/ChevronRightIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/ClockIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/CreditCardIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/DownloadIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/ErrorIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/ExitFullscreenIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/ExternalLinkIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/FilesIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/FileTextIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/FilterIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/ForwardIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/FullscreenIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/GlobeIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/GridIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/HomeIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/InfoIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/LayersIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/LessonIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/LikeIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/ListIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/LoadingIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/LockIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/LogoutIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/MailIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/MessageIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/ModuleIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/MoneyIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/MuteIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/PauseIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/PlaybackSpeedIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/PlayIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/PlusIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/QuestionAnswerIcon.tsx(3,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/ReplyIcon.tsx(3,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/RewindIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/SearchIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/SettingsIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/StarIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/SuccessIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/TagIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/TrendingUpIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/UserIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/UsersIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/icons/svg/VolumeIcon.tsx(2,10): error TS2305: Module '"@/types"' has no exported member 'IconProps'.
+components/layout/StudiAILayout.tsx(145,9): error TS2322: Type '{ hidden: { x: number; opacity: number; }; visible: { x: number; opacity: number; transition: { type: string; stiffness: number; damping: number; staggerChildren: number; delayChildren: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ x: number; opacity: number; transition: { type: string; stiffness: number; damping: number; staggerChildren: number; delayChildren: number; }; }' is not assignable to type 'Variant'.
+      Type '{ x: number; opacity: number; transition: { type: string; stiffness: number; damping: number; staggerChildren: number; delayChildren: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ x: number; opacity: number; transition: { type: string; stiffness: number; damping: number; staggerChildren: number; delayChildren: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; stiffness: number; damping: number; staggerChildren: number; delayChildren: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; stiffness: number; damping: number; staggerChildren: number; delayChildren: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; stiffness: number; damping: number; staggerChildren: number; delayChildren: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/layout/StudiAILayout.tsx(153,13): error TS2322: Type '{ hidden: { x: number; opacity: number; }; visible: { x: number; opacity: number; transition: { type: string; stiffness: number; damping: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ x: number; opacity: number; transition: { type: string; stiffness: number; damping: number; }; }' is not assignable to type 'Variant'.
+      Type '{ x: number; opacity: number; transition: { type: string; stiffness: number; damping: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ x: number; opacity: number; transition: { type: string; stiffness: number; damping: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; stiffness: number; damping: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; stiffness: number; damping: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; stiffness: number; damping: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/layout/StudiAILayout.tsx(182,13): error TS2322: Type '{ hidden: { x: number; opacity: number; }; visible: { x: number; opacity: number; transition: { type: string; stiffness: number; damping: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ x: number; opacity: number; transition: { type: string; stiffness: number; damping: number; }; }' is not assignable to type 'Variant'.
+      Type '{ x: number; opacity: number; transition: { type: string; stiffness: number; damping: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ x: number; opacity: number; transition: { type: string; stiffness: number; damping: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; stiffness: number; damping: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; stiffness: number; damping: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; stiffness: number; damping: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/layout/StudiAILayout.tsx(204,19): error TS2322: Type '{ hidden: { x: number; opacity: number; }; visible: { x: number; opacity: number; transition: { type: string; stiffness: number; damping: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ x: number; opacity: number; transition: { type: string; stiffness: number; damping: number; }; }' is not assignable to type 'Variant'.
+      Type '{ x: number; opacity: number; transition: { type: string; stiffness: number; damping: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ x: number; opacity: number; transition: { type: string; stiffness: number; damping: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; stiffness: number; damping: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; stiffness: number; damping: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; stiffness: number; damping: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/layout/StudiAILayout.tsx(236,13): error TS2322: Type '{ hidden: { x: number; opacity: number; }; visible: { x: number; opacity: number; transition: { type: string; stiffness: number; damping: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ x: number; opacity: number; transition: { type: string; stiffness: number; damping: number; }; }' is not assignable to type 'Variant'.
+      Type '{ x: number; opacity: number; transition: { type: string; stiffness: number; damping: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ x: number; opacity: number; transition: { type: string; stiffness: number; damping: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; stiffness: number; damping: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; stiffness: number; damping: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; stiffness: number; damping: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/layout/StudiAILayout.tsx(270,11): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; stiffness: number; damping: number; delay: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; damping: number; delay: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; damping: number; delay: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; damping: number; delay: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; stiffness: number; damping: number; delay: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; stiffness: number; damping: number; delay: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; stiffness: number; damping: number; delay: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/layout/StudiAILayout.tsx(340,11): error TS2322: Type '{ hidden: { opacity: number; y: number; }; visible: { opacity: number; y: number; transition: { type: string; stiffness: number; damping: number; delay: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ opacity: number; y: number; transition: { type: string; stiffness: number; damping: number; delay: number; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; y: number; transition: { type: string; stiffness: number; damping: number; delay: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; y: number; transition: { type: string; stiffness: number; damping: number; delay: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; stiffness: number; damping: number; delay: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; stiffness: number; damping: number; delay: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; stiffness: number; damping: number; delay: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/LearningPathSection.tsx(93,23): error TS2322: Type '{ hidden: { opacity: number; y: number; }; visible: { opacity: number; y: number; transition: { duration: number; ease: number[]; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ opacity: number; y: number; transition: { duration: number; ease: number[]; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; y: number; transition: { duration: number; ease: number[]; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; y: number; transition: { duration: number; ease: number[]; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ duration: number; ease: number[]; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ duration: number; ease: number[]; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ duration: number; ease: number[]; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'ease' are incompatible.
+                    Type 'number[]' is not assignable to type 'Easing | Easing[] | undefined'.
+                      Type 'number[]' is not assignable to type 'EasingFunction | Easing[]'.
+                        Type 'number[]' is not assignable to type 'Easing[]'.
+                          Type 'number' is not assignable to type 'Easing'.
+components/Lesson/LessonContent.tsx(69,5): error TS2339: Property 'lessonProgress' does not exist on type 'AppContextProps'.
+components/Lesson/LessonContent.tsx(70,5): error TS2339: Property 'saveLessonProgress' does not exist on type 'AppContextProps'.
+components/Lesson/LessonContent.tsx(71,5): error TS2339: Property 'markLessonComplete' does not exist on type 'AppContextProps'.
+components/Lesson/LessonContent.tsx(188,43): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Lesson/LessonContent.tsx(191,31): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Lesson/LessonContent.tsx(192,35): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Lesson/LessonContent.tsx(194,45): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Lesson/LessonContent.tsx(221,43): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Lesson/LessonContent.tsx(223,46): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Lesson/LessonContent.tsx(227,49): error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+components/Lesson/LessonContent.tsx(228,22): error TS18046: 'a' is of type 'unknown'.
+components/Lesson/LessonContent.tsx(229,22): error TS18046: 'b' is of type 'unknown'.
+components/Lesson/LessonContent.tsx(235,55): error TS18046: 'l' is of type 'unknown'.
+components/Lesson/LessonDetailComponent.tsx(170,11): error TS7006: Parameter 'product' implicitly has an 'any' type.
+components/Lesson/LessonDetailComponent.tsx(367,24): error TS18046: 'a' is of type 'unknown'.
+components/Lesson/LessonDetailComponent.tsx(368,24): error TS18046: 'b' is of type 'unknown'.
+components/Lesson/LessonForm.tsx(30,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Card"' has no default export. Did you mean to use 'import { Card } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Card"' instead?
+components/Lesson/LessonForm.tsx(30,16): error TS2305: Module '"@/components/ui/Card"' has no exported member 'CardBody'.
+components/Lesson/LessonForm.tsx(31,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Textarea"' has no default export. Did you mean to use 'import { Textarea } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Textarea"' instead?
+components/Lesson/LessonForm.tsx(32,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Input"' has no default export. Did you mean to use 'import { Input } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Input"' instead?
+components/Lesson/LessonForm.tsx(33,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' has no default export. Did you mean to use 'import { Button } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' instead?
+components/Lesson/LessonForm.tsx(34,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/select"' has no default export. Did you mean to use 'import { Select } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/select"' instead?
+components/Lesson/LessonForm.tsx(34,36): error TS1149: File name 'E:/GitHub/codai-project/apps/studiai/src/components/ui/Select.tsx' differs from already included file name 'E:/GitHub/codai-project/apps/studiai/src/components/ui/select.tsx' only in casing.
+  The file is in the program because:
+    Imported via './select' from file 'E:/GitHub/codai-project/apps/studiai/src/components/ui/index.ts'
+    Matched by include pattern 'src/**/*.tsx' in 'tsconfig.json'
+    Imported via '@/components/ui/Select' from file 'E:/GitHub/codai-project/apps/studiai/components/Lesson/LessonForm.tsx'
+    Imported via '@/components/ui/Select' from file 'E:/GitHub/codai-project/apps/studiai/components/Course/AddCourse.tsx'
+components/Lesson/LessonForm.tsx(37,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Tooltip"' has no default export. Did you mean to use 'import { Tooltip } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Tooltip"' instead?
+components/Lesson/LessonForm.tsx(38,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/tabs"' has no default export. Did you mean to use 'import { Tabs } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/tabs"' instead?
+components/Lesson/LessonForm.tsx(38,16): error TS2724: '"@/components/ui/Tabs"' has no exported member named 'Tab'. Did you mean 'Tabs'?
+components/Lesson/LessonForm.tsx(38,27): error TS1149: File name 'E:/GitHub/codai-project/apps/studiai/src/components/ui/Tabs.tsx' differs from already included file name 'E:/GitHub/codai-project/apps/studiai/src/components/ui/tabs.tsx' only in casing.
+  The file is in the program because:
+    Imported via './tabs' from file 'E:/GitHub/codai-project/apps/studiai/src/components/ui/index.ts'
+    Matched by include pattern 'src/**/*.tsx' in 'tsconfig.json'
+    Imported via '@/components/ui/Tabs' from file 'E:/GitHub/codai-project/apps/studiai/components/Lesson/LessonForm.tsx'
+    Imported via "@/components/ui/Tabs" from file 'E:/GitHub/codai-project/apps/studiai/components/Course/Course.tsx'
+components/Lesson/LessonForm.tsx(40,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Checkbox"' has no default export. Did you mean to use 'import { Checkbox } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Checkbox"' instead?
+components/Lesson/LessonForm.tsx(45,3): error TS2339: Property 'lessonId' does not exist on type 'LessonFormProps'.
+components/Lesson/LessonForm.tsx(46,3): error TS2339: Property 'onClose' does not exist on type 'LessonFormProps'.
+components/Lesson/LessonForm.tsx(123,11): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(firestore: Firestore, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'Firestore'.
+      Type 'null' is not assignable to type 'Firestore'.
+  Overload 2 of 3, '(reference: CollectionReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'CollectionReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'CollectionReference<unknown, DocumentData>'.
+  Overload 3 of 3, '(reference: DocumentReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'DocumentReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'DocumentReference<unknown, DocumentData>'.
+components/Lesson/LessonForm.tsx(163,33): error TS7006: Parameter 'r' implicitly has an 'any' type.
+components/Lesson/LessonForm.tsx(180,15): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(firestore: Firestore, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'Firestore'.
+      Type 'null' is not assignable to type 'Firestore'.
+  Overload 2 of 3, '(reference: CollectionReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'CollectionReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'CollectionReference<unknown, DocumentData>'.
+  Overload 3 of 3, '(reference: DocumentReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'DocumentReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'DocumentReference<unknown, DocumentData>'.
+components/Lesson/LessonForm.tsx(245,11): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(storage: FirebaseStorage, url?: string | undefined): StorageReference', gave the following error.
+    Argument of type 'FirebaseStorage | null' is not assignable to parameter of type 'FirebaseStorage'.
+      Type 'null' is not assignable to type 'FirebaseStorage'.
+  Overload 2 of 2, '(storageOrRef: FirebaseStorage | StorageReference, path?: string | undefined): StorageReference', gave the following error.
+    Argument of type 'FirebaseStorage | null' is not assignable to parameter of type 'FirebaseStorage | StorageReference'.
+      Type 'null' is not assignable to type 'FirebaseStorage | StorageReference'.
+components/Lesson/LessonForm.tsx(256,11): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(storage: FirebaseStorage, url?: string | undefined): StorageReference', gave the following error.
+    Argument of type 'FirebaseStorage | null' is not assignable to parameter of type 'FirebaseStorage'.
+      Type 'null' is not assignable to type 'FirebaseStorage'.
+  Overload 2 of 2, '(storageOrRef: FirebaseStorage | StorageReference, path?: string | undefined): StorageReference', gave the following error.
+    Argument of type 'FirebaseStorage | null' is not assignable to parameter of type 'FirebaseStorage | StorageReference'.
+      Type 'null' is not assignable to type 'FirebaseStorage | StorageReference'.
+components/Lesson/LessonForm.tsx(325,20): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(firestore: Firestore, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'Firestore'.
+      Type 'null' is not assignable to type 'Firestore'.
+  Overload 2 of 3, '(reference: CollectionReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'CollectionReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'CollectionReference<unknown, DocumentData>'.
+  Overload 3 of 3, '(reference: DocumentReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'DocumentReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'DocumentReference<unknown, DocumentData>'.
+components/Lesson/LessonForm.tsx(332,11): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(firestore: Firestore, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'Firestore'.
+      Type 'null' is not assignable to type 'Firestore'.
+  Overload 2 of 3, '(reference: CollectionReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'CollectionReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'CollectionReference<unknown, DocumentData>'.
+  Overload 3 of 3, '(reference: DocumentReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'DocumentReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'DocumentReference<unknown, DocumentData>'.
+components/Lesson/LessonForm.tsx(403,11): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(storage: FirebaseStorage, url?: string | undefined): StorageReference', gave the following error.
+    Argument of type 'FirebaseStorage | null' is not assignable to parameter of type 'FirebaseStorage'.
+      Type 'null' is not assignable to type 'FirebaseStorage'.
+  Overload 2 of 2, '(storageOrRef: FirebaseStorage | StorageReference, path?: string | undefined): StorageReference', gave the following error.
+    Argument of type 'FirebaseStorage | null' is not assignable to parameter of type 'FirebaseStorage | StorageReference'.
+      Type 'null' is not assignable to type 'FirebaseStorage | StorageReference'.
+components/Lesson/LessonForm.tsx(418,15): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(storage: FirebaseStorage, url?: string | undefined): StorageReference', gave the following error.
+    Argument of type 'FirebaseStorage | null' is not assignable to parameter of type 'FirebaseStorage'.
+      Type 'null' is not assignable to type 'FirebaseStorage'.
+  Overload 2 of 2, '(storageOrRef: FirebaseStorage | StorageReference, path?: string | undefined): StorageReference', gave the following error.
+    Argument of type 'FirebaseStorage | null' is not assignable to parameter of type 'FirebaseStorage | StorageReference'.
+      Type 'null' is not assignable to type 'FirebaseStorage | StorageReference'.
+components/Lesson/LessonForm.tsx(467,9): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(firestore: Firestore, path: string, ...pathSegments: string[]): DocumentReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'Firestore'.
+      Type 'null' is not assignable to type 'Firestore'.
+  Overload 2 of 3, '(reference: CollectionReference<unknown, DocumentData>, path?: string | undefined, ...pathSegments: string[]): DocumentReference<unknown, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'CollectionReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'CollectionReference<unknown, DocumentData>'.
+  Overload 3 of 3, '(reference: DocumentReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): DocumentReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'DocumentReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'DocumentReference<unknown, DocumentData>'.
+components/Lesson/LessonForm.tsx(476,11): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(firestore: Firestore, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'Firestore'.
+      Type 'null' is not assignable to type 'Firestore'.
+  Overload 2 of 3, '(reference: CollectionReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'CollectionReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'CollectionReference<unknown, DocumentData>'.
+  Overload 3 of 3, '(reference: DocumentReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'DocumentReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'DocumentReference<unknown, DocumentData>'.
+components/Lesson/LessonForm.tsx(826,44): error TS2322: Type '{ children: string; key: string; itemKey: string; value: string; }' is not assignable to type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+  Property 'itemKey' does not exist on type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+components/Lesson/LessonForm.tsx(832,29): error TS2322: Type '{ children: any; key: string; itemKey: string; value: string; }' is not assignable to type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+  Property 'itemKey' does not exist on type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+components/Lesson/LessonForm.tsx(835,37): error TS2339: Property 'title' does not exist on type 'CourseModule'.
+components/Lesson/LessonForm.tsx(889,49): error TS2322: Type '{ children: string; key: string; itemKey: string; value: string; }' is not assignable to type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+  Property 'itemKey' does not exist on type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+components/Lesson/LessonForm.tsx(892,48): error TS2322: Type '{ children: string; key: string; itemKey: string; value: string; }' is not assignable to type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+  Property 'itemKey' does not exist on type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+components/Lesson/LessonForm.tsx(895,48): error TS2322: Type '{ children: string; key: string; itemKey: string; value: string; }' is not assignable to type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+  Property 'itemKey' does not exist on type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+components/Lesson/LessonForm.tsx(900,27): error TS2322: Type '{ children: string; key: string; itemKey: string; value: string; }' is not assignable to type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+  Property 'itemKey' does not exist on type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+components/Lesson/LessonForm.tsx(907,27): error TS2322: Type '{ children: string; key: string; itemKey: string; value: string; }' is not assignable to type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+  Property 'itemKey' does not exist on type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+components/Lesson/LessonForm.tsx(933,27): error TS2322: Type '{ children: string; key: string; itemKey: string; value: string; }' is not assignable to type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+  Property 'itemKey' does not exist on type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+components/Lesson/LessonForm.tsx(938,49): error TS2322: Type '{ children: string; key: string; itemKey: string; value: string; }' is not assignable to type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+  Property 'itemKey' does not exist on type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+components/Lesson/LessonForm.tsx(943,27): error TS2322: Type '{ children: string; key: string; itemKey: string; value: string; }' is not assignable to type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+  Property 'itemKey' does not exist on type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+components/Lesson/LessonForm.tsx(1184,25): error TS2322: Type '{ children: string; key: string; itemKey: string; value: string; }' is not assignable to type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+  Property 'itemKey' does not exist on type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+components/Lesson/LessonForm.tsx(1191,25): error TS2322: Type '{ children: string; key: string; itemKey: string; value: string; }' is not assignable to type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+  Property 'itemKey' does not exist on type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+components/Lesson/LessonForm.tsx(1196,48): error TS2322: Type '{ children: string; key: string; itemKey: string; value: string; }' is not assignable to type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+  Property 'itemKey' does not exist on type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+components/Lesson/LessonForm.tsx(1199,47): error TS2322: Type '{ children: string; key: string; itemKey: string; value: string; }' is not assignable to type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+  Property 'itemKey' does not exist on type 'IntrinsicAttributes & Omit<SelectItemProps & RefAttributes<HTMLDivElement>, "ref"> & RefAttributes<...>'.
+components/Lesson/LessonHeader.tsx(5,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' has no default export. Did you mean to use 'import { Button } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' instead?
+components/Lesson/QA/AnswerForm.tsx(4,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' has no default export. Did you mean to use 'import { Button } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' instead?
+components/Lesson/QA/AnswerForm.tsx(70,32): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(storage: FirebaseStorage, url?: string | undefined): StorageReference', gave the following error.
+    Argument of type 'FirebaseStorage | null' is not assignable to parameter of type 'FirebaseStorage'.
+      Type 'null' is not assignable to type 'FirebaseStorage'.
+  Overload 2 of 2, '(storageOrRef: FirebaseStorage | StorageReference, path?: string | undefined): StorageReference', gave the following error.
+    Argument of type 'FirebaseStorage | null' is not assignable to parameter of type 'FirebaseStorage | StorageReference'.
+      Type 'null' is not assignable to type 'FirebaseStorage | StorageReference'.
+components/Lesson/QA/AnswerForm.tsx(102,17): error TS2353: Object literal may only specify known properties, and 'type' does not exist in type 'Attachment'.
+components/Lesson/QA/AnswerForm.tsx(181,27): error TS2339: Property 'type' does not exist on type 'Attachment'.
+components/Lesson/QA/AnswerForm.tsx(185,37): error TS2339: Property 'name' does not exist on type 'Attachment'.
+components/Lesson/QA/AnswerForm.tsx(200,30): error TS2339: Property 'type' does not exist on type 'Attachment'.
+components/Lesson/QA/AnswersList.tsx(50,31): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(firestore: Firestore, path: string, ...pathSegments: string[]): DocumentReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'Firestore'.
+      Type 'null' is not assignable to type 'Firestore'.
+  Overload 2 of 3, '(reference: CollectionReference<unknown, DocumentData>, path?: string | undefined, ...pathSegments: string[]): DocumentReference<unknown, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'CollectionReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'CollectionReference<unknown, DocumentData>'.
+  Overload 3 of 3, '(reference: DocumentReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): DocumentReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'DocumentReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'DocumentReference<unknown, DocumentData>'.
+components/Lesson/QA/AnswersList.tsx(58,34): error TS2339: Property 'likes' does not exist on type 'Answer'.
+components/Lesson/QA/AnswersList.tsx(58,50): error TS2339: Property 'likes' does not exist on type 'Answer'.
+components/Lesson/QA/AnswersList.tsx(91,29): error TS2339: Property 'userAvatar' does not exist on type 'Answer'.
+components/Lesson/QA/AnswersList.tsx(92,30): error TS2339: Property 'userName' does not exist on type 'Answer'.
+components/Lesson/QA/AnswersList.tsx(94,47): error TS2339: Property 'isAuthorOrAdmin' does not exist on type 'Answer'.
+components/Lesson/QA/AnswersList.tsx(99,29): error TS2339: Property 'userName' does not exist on type 'Answer'.
+components/Lesson/QA/AnswersList.tsx(101,27): error TS2339: Property 'userRole' does not exist on type 'Answer'.
+components/Lesson/QA/AnswersList.tsx(104,32): error TS2339: Property 'userRole' does not exist on type 'Answer'.
+components/Lesson/QA/AnswersList.tsx(105,32): error TS2339: Property 'userRole' does not exist on type 'Answer'.
+components/Lesson/QA/AnswersList.tsx(110,31): error TS2339: Property 'userRole' does not exist on type 'Answer'.
+components/Lesson/QA/AnswersList.tsx(123,21): error TS2339: Property 'htmlContent' does not exist on type 'Answer'.
+components/Lesson/QA/AnswersList.tsx(126,59): error TS2339: Property 'htmlContent' does not exist on type 'Answer'.
+components/Lesson/QA/AnswersList.tsx(140,31): error TS2339: Property 'type' does not exist on type 'Attachment'.
+components/Lesson/QA/AnswersList.tsx(149,41): error TS2339: Property 'name' does not exist on type 'Attachment'.
+components/Lesson/QA/AnswersList.tsx(154,31): error TS2339: Property 'type' does not exist on type 'Attachment'.
+components/Lesson/QA/AnswersList.tsx(161,31): error TS2339: Property 'type' does not exist on type 'Attachment'.
+components/Lesson/QA/AnswersList.tsx(169,61): error TS2339: Property 'name' does not exist on type 'Attachment'.
+components/Lesson/QA/AnswersList.tsx(198,23): error TS2339: Property 'likes' does not exist on type 'Answer'.
+components/Lesson/QA/AskQuestionForm.tsx(5,25): error TS2305: Module '"@/components/ui"' has no exported member 'Textarea'.
+components/Lesson/QA/AskQuestionForm.tsx(77,11): error TS2322: Type '{ type: "text"; label: string; placeholder: string; value: string; onChange: (e: ChangeEvent<HTMLInputElement>) => void; className: string; isInvalid: boolean; errorMessage: string | undefined; description: string; }' is not assignable to type 'IntrinsicAttributes & InputProps & RefAttributes<HTMLInputElement>'.
+  Property 'isInvalid' does not exist on type 'IntrinsicAttributes & InputProps & RefAttributes<HTMLInputElement>'.
+components/Lesson/QA/AskQuestionForm.tsx(101,11): error TS2322: Type '"flat"' is not assignable to type '"success" | "default" | "primary" | "secondary" | "destructive" | "outline" | "ghost" | null | undefined'.
+components/Lesson/QA/QASection.tsx(33,18): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(firestore: Firestore, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'Firestore'.
+      Type 'null' is not assignable to type 'Firestore'.
+  Overload 2 of 3, '(reference: CollectionReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'CollectionReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'CollectionReference<unknown, DocumentData>'.
+  Overload 3 of 3, '(reference: DocumentReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'DocumentReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'DocumentReference<unknown, DocumentData>'.
+components/Lesson/QA/QASection.tsx(68,31): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(firestore: Firestore, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'Firestore'.
+      Type 'null' is not assignable to type 'Firestore'.
+  Overload 2 of 3, '(reference: CollectionReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'CollectionReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'CollectionReference<unknown, DocumentData>'.
+  Overload 3 of 3, '(reference: DocumentReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'DocumentReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'DocumentReference<unknown, DocumentData>'.
+components/Lesson/QA/QuestionItem.tsx(51,31): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(firestore: Firestore, path: string, ...pathSegments: string[]): DocumentReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'Firestore'.
+      Type 'null' is not assignable to type 'Firestore'.
+  Overload 2 of 3, '(reference: CollectionReference<unknown, DocumentData>, path?: string | undefined, ...pathSegments: string[]): DocumentReference<unknown, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'CollectionReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'CollectionReference<unknown, DocumentData>'.
+  Overload 3 of 3, '(reference: DocumentReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): DocumentReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'DocumentReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'DocumentReference<unknown, DocumentData>'.
+components/Lesson/QA/QuestionItem.tsx(52,32): error TS2339: Property 'likedBy' does not exist on type 'Question'.
+components/Lesson/QA/QuestionItem.tsx(74,31): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(firestore: Firestore, path: string, ...pathSegments: string[]): DocumentReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'Firestore'.
+      Type 'null' is not assignable to type 'Firestore'.
+  Overload 2 of 3, '(reference: CollectionReference<unknown, DocumentData>, path?: string | undefined, ...pathSegments: string[]): DocumentReference<unknown, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'CollectionReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'CollectionReference<unknown, DocumentData>'.
+  Overload 3 of 3, '(reference: DocumentReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): DocumentReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'DocumentReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'DocumentReference<unknown, DocumentData>'.
+components/Lesson/QA/QuestionItem.tsx(92,31): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(firestore: Firestore, path: string, ...pathSegments: string[]): DocumentReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'Firestore'.
+      Type 'null' is not assignable to type 'Firestore'.
+  Overload 2 of 3, '(reference: CollectionReference<unknown, DocumentData>, path?: string | undefined, ...pathSegments: string[]): DocumentReference<unknown, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'CollectionReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'CollectionReference<unknown, DocumentData>'.
+  Overload 3 of 3, '(reference: DocumentReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): DocumentReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'DocumentReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'DocumentReference<unknown, DocumentData>'.
+components/Lesson/QA/QuestionItem.tsx(102,9): error TS2740: Type 'Timestamp' is missing the following properties from type 'Date': toDateString, toTimeString, toLocaleDateString, toLocaleTimeString, and 36 more.
+components/Lesson/QA/QuestionItem.tsx(105,9): error TS2322: Type 'Attachment[] | undefined' is not assignable to type 'Attachment[]'.
+  Type 'undefined' is not assignable to type 'Attachment[]'.
+components/Lesson/QA/QuestionItem.tsx(130,29): error TS2339: Property 'userAvatar' does not exist on type 'Question'.
+components/Lesson/QA/QuestionItem.tsx(131,30): error TS2339: Property 'userName' does not exist on type 'Question'.
+components/Lesson/QA/QuestionItem.tsx(137,27): error TS2339: Property 'userName' does not exist on type 'Question'.
+components/Lesson/QA/QuestionItem.tsx(171,24): error TS2339: Property 'likedBy' does not exist on type 'Question'.
+components/Lesson/QA/QuestionItem.tsx(177,24): error TS2339: Property 'likedBy' does not exist on type 'Question'.
+components/Lesson/QA/QuestionItem.tsx(182,23): error TS2339: Property 'likes' does not exist on type 'Question'.
+components/Lesson/QA/QuestionsList.tsx(80,13): error TS2322: Type '"flat" | "primary"' is not assignable to type '"success" | "default" | "primary" | "secondary" | "destructive" | "outline" | "ghost" | null | undefined'.
+  Type '"flat"' is not assignable to type '"success" | "default" | "primary" | "secondary" | "destructive" | "outline" | "ghost" | null | undefined'.
+components/Lesson/QA/QuestionsList.tsx(93,13): error TS2322: Type '"success" | "flat"' is not assignable to type '"success" | "default" | "primary" | "secondary" | "destructive" | "outline" | "ghost" | null | undefined'.
+  Type '"flat"' is not assignable to type '"success" | "default" | "primary" | "secondary" | "destructive" | "outline" | "ghost" | null | undefined'.
+components/Lesson/QA/QuestionsList.tsx(106,13): error TS2322: Type '"warning" | "flat"' is not assignable to type '"success" | "default" | "primary" | "secondary" | "destructive" | "outline" | "ghost" | null | undefined'.
+  Type '"warning"' is not assignable to type '"success" | "default" | "primary" | "secondary" | "destructive" | "outline" | "ghost" | null | undefined'.
+components/Lesson/QA/RichTextEditor.tsx(33,18): error TS7006: Parameter 'evt' implicitly has an 'any' type.
+components/Lesson/QA/RichTextEditor.tsx(33,23): error TS7006: Parameter 'editor' implicitly has an 'any' type.
+components/Lesson/Resources/LessonResources.tsx(48,29): error TS2339: Property 'name' does not exist on type 'LessonResource'.
+components/Lesson/Resources/LessonResources.tsx(66,21): error TS2367: This comparison appears to be unintentional because the types '"video" | "document" | "link" | "image"' and '"pdf"' have no overlap.
+components/Lesson/Resources/LessonResources.tsx(73,20): error TS2367: This comparison appears to be unintentional because the types '"video" | "document" | "link" | "image"' and '"pdf"' have no overlap.
+components/Lesson/Resources/ResourcesList.tsx(66,31): error TS2339: Property 'name' does not exist on type 'Resource'.
+components/Lesson/Video/VideoPlayer.tsx(25,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' has no default export. Did you mean to use 'import { Button } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' instead?
+components/Lessons/CourseProgressHeader.tsx(2,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' has no default export. Did you mean to use 'import { Button } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' instead?
+components/Login.tsx(41,44): error TS2345: Argument of type 'Auth | null' is not assignable to parameter of type 'Auth'.
+  Type 'null' is not assignable to type 'Auth'.
+components/Login.tsx(44,25): error TS2345: Argument of type '{ type: "success"; title: string; message: string; duration: number; }' is not assignable to parameter of type 'Omit<ToastProps, "id">'.
+  Property 'onClose' is missing in type '{ type: "success"; title: string; message: string; duration: number; }' but required in type 'Omit<ToastProps, "id">'.
+components/Login.tsx(54,23): error TS2345: Argument of type '{ type: "error"; title: string; message: any; duration: number; }' is not assignable to parameter of type 'Omit<ToastProps, "id">'.
+  Property 'onClose' is missing in type '{ type: "error"; title: string; message: any; duration: number; }' but required in type 'Omit<ToastProps, "id">'.
+components/Login.tsx(75,9): error TS2345: Argument of type 'Auth | null' is not assignable to parameter of type 'Auth'.
+  Type 'null' is not assignable to type 'Auth'.
+components/Login.tsx(81,25): error TS2345: Argument of type '{ type: "success"; title: string; message: string; duration: number; }' is not assignable to parameter of type 'Omit<ToastProps, "id">'.
+  Property 'onClose' is missing in type '{ type: "success"; title: string; message: string; duration: number; }' but required in type 'Omit<ToastProps, "id">'.
+components/Login.tsx(99,13): error TS2345: Argument of type 'Auth | null' is not assignable to parameter of type 'Auth'.
+  Type 'null' is not assignable to type 'Auth'.
+components/Login.tsx(199,9): error TS2345: Argument of type 'Auth | null' is not assignable to parameter of type 'Auth'.
+  Type 'null' is not assignable to type 'Auth'.
+components/Login.tsx(205,25): error TS2345: Argument of type '{ type: "success"; title: string; message: string; duration: number; }' is not assignable to parameter of type 'Omit<ToastProps, "id">'.
+  Property 'onClose' is missing in type '{ type: "success"; title: string; message: string; duration: number; }' but required in type 'Omit<ToastProps, "id">'.
+components/Login.tsx(219,23): error TS2345: Argument of type '{ type: "error"; title: string; message: any; duration: number; }' is not assignable to parameter of type 'Omit<ToastProps, "id">'.
+  Property 'onClose' is missing in type '{ type: "error"; title: string; message: any; duration: number; }' but required in type 'Omit<ToastProps, "id">'.
+components/Modal.tsx(35,3): error TS2339: Property 'hideCloseIcon' does not exist on type 'ModalProps'.
+components/Modal.tsx(36,3): error TS2339: Property 'hideCloseButton' does not exist on type 'ModalProps'.
+components/Modal.tsx(37,3): error TS2339: Property 'backdrop' does not exist on type 'ModalProps'.
+components/Modal.tsx(38,3): error TS2339: Property 'size' does not exist on type 'ModalProps'.
+components/Modal.tsx(39,3): error TS2339: Property 'scrollBehavior' does not exist on type 'ModalProps'.
+components/Modal.tsx(40,3): error TS2339: Property 'isDismissable' does not exist on type 'ModalProps'.
+components/Modal.tsx(41,3): error TS2339: Property 'modalHeader' does not exist on type 'ModalProps'.
+components/Modal.tsx(42,3): error TS2339: Property 'modalBody' does not exist on type 'ModalProps'.
+components/Modal.tsx(43,3): error TS2339: Property 'footerDisabled' does not exist on type 'ModalProps'.
+components/Modal.tsx(44,3): error TS2339: Property 'footerButtonClick' does not exist on type 'ModalProps'.
+components/Modal.tsx(45,3): error TS2339: Property 'footerButtonText' does not exist on type 'ModalProps'.
+components/Modal.tsx(46,3): error TS2339: Property 'modalBottomComponent' does not exist on type 'ModalProps'.
+components/Modal.tsx(47,3): error TS2339: Property 'classNames' does not exist on type 'ModalProps'.
+components/Policy/PolicyContent.tsx(30,37): error TS2339: Property 'type' does not exist on type 'PolicyListProps'.
+components/Profile/AppSettings.tsx(5,18): error TS2305: Module '"@/components/ui"' has no exported member 'Switch'.
+components/Profile/AppSettings.tsx(131,11): error TS2322: Type '{ children: string; color: string; isLoading: boolean; isDisabled: boolean; onPress: () => Promise<void>; className: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps & RefAttributes<HTMLButtonElement>'.
+  Property 'isDisabled' does not exist on type 'IntrinsicAttributes & ButtonProps & RefAttributes<HTMLButtonElement>'. Did you mean 'disabled'?
+components/Profile/AppSettings.tsx(209,32): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/Profile/AppSettings.tsx(230,32): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/Profile/AppSettings.tsx(251,32): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/Profile/AppSettings.tsx(273,32): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/Profile/AppSettings.tsx(294,32): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/Profile/AppSettings.tsx(315,32): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/Profile/AppSettings.tsx(336,32): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/Profile/AppSettings.tsx(357,32): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/Profile/AppSettings.tsx(397,32): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/Profile/AppSettings.tsx(417,32): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/Profile/AppSettings.tsx(438,32): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/Profile/AppSettings.tsx(459,32): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/Profile/AppSettings.tsx(494,17): error TS2322: Type '"flat"' is not assignable to type '"success" | "default" | "primary" | "secondary" | "destructive" | "outline" | "ghost" | null | undefined'.
+components/Profile/AppSettings.tsx(514,17): error TS2322: Type '"flat"' is not assignable to type '"success" | "default" | "primary" | "secondary" | "destructive" | "outline" | "ghost" | null | undefined'.
+components/Profile/EmptyState.tsx(4,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' has no default export. Did you mean to use 'import { Button } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' instead?
+components/Profile/hooks/useAchievements.ts(139,5): error TS2339: Property 'lessonProgress' does not exist on type 'AppContextProps'.
+components/Profile/hooks/useAchievements.ts(140,5): error TS2339: Property 'reviews' does not exist on type 'AppContextProps'.
+components/Profile/hooks/useAchievements.ts(157,9): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(firestore: Firestore, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'Firestore'.
+      Type 'null' is not assignable to type 'Firestore'.
+  Overload 2 of 3, '(reference: CollectionReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'CollectionReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'CollectionReference<unknown, DocumentData>'.
+  Overload 3 of 3, '(reference: DocumentReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'DocumentReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'DocumentReference<unknown, DocumentData>'.
+components/Profile/hooks/useAchievements.ts(158,23): error TS2339: Property 'uid' does not exist on type 'User'.
+components/Profile/hooks/useAchievements.ts(208,49): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(o: ArrayLike<unknown> | { [s: string]: unknown; }): unknown[]', gave the following error.
+    Argument of type 'unknown' is not assignable to parameter of type 'ArrayLike<unknown> | { [s: string]: unknown; }'.
+  Overload 2 of 2, '(o: {}): any[]', gave the following error.
+    Argument of type 'unknown' is not assignable to parameter of type '{}'.
+components/Profile/hooks/useAchievements.ts(209,29): error TS18046: 'progress' is of type 'unknown'.
+components/Profile/hooks/useAchievements.ts(218,32): error TS18046: 'progress' is of type 'unknown'.
+components/Profile/hooks/useAchievements.ts(231,23): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(o: ArrayLike<unknown> | { [s: string]: unknown; }): unknown[]', gave the following error.
+    Argument of type 'unknown' is not assignable to parameter of type 'ArrayLike<unknown> | { [s: string]: unknown; }'.
+  Overload 2 of 2, '(o: {}): any[]', gave the following error.
+    Argument of type 'unknown' is not assignable to parameter of type '{}'.
+components/Profile/hooks/useAchievements.ts(231,53): error TS18046: 'review' is of type 'unknown'.
+components/Profile/hooks/useAchievements.ts(231,76): error TS2339: Property 'uid' does not exist on type 'User'.
+components/Profile/hooks/useAchievements.ts(236,9): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(firestore: Firestore, path: string, ...pathSegments: string[]): DocumentReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'Firestore'.
+      Type 'null' is not assignable to type 'Firestore'.
+  Overload 2 of 3, '(reference: CollectionReference<unknown, DocumentData>, path?: string | undefined, ...pathSegments: string[]): DocumentReference<unknown, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'CollectionReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'CollectionReference<unknown, DocumentData>'.
+  Overload 3 of 3, '(reference: DocumentReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): DocumentReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'DocumentReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'DocumentReference<unknown, DocumentData>'.
+components/Profile/hooks/useAchievements.ts(237,23): error TS2339: Property 'uid' does not exist on type 'User'.
+components/Profile/hooks/useAchievements.ts(250,11): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(firestore: Firestore, path: string, ...pathSegments: string[]): DocumentReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'Firestore'.
+      Type 'null' is not assignable to type 'Firestore'.
+  Overload 2 of 3, '(reference: CollectionReference<unknown, DocumentData>, path?: string | undefined, ...pathSegments: string[]): DocumentReference<unknown, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'CollectionReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'CollectionReference<unknown, DocumentData>'.
+  Overload 3 of 3, '(reference: DocumentReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): DocumentReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'DocumentReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'DocumentReference<unknown, DocumentData>'.
+components/Profile/hooks/useAchievements.ts(251,25): error TS2339: Property 'uid' does not exist on type 'User'.
+components/Profile/hooks/useLearningPath.ts(36,5): error TS2339: Property 'userPaidProducts' does not exist on type 'AppContextProps'.
+components/Profile/hooks/useLearningPath.ts(38,5): error TS2339: Property 'lessonProgress' does not exist on type 'AppContextProps'.
+components/Profile/hooks/useLearningPath.ts(60,19): error TS7006: Parameter 'product' implicitly has an 'any' type.
+components/Profile/hooks/useLearningPath.ts(61,16): error TS7006: Parameter 'product' implicitly has an 'any' type.
+components/Profile/hooks/useLearningPath.ts(86,26): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+components/Profile/hooks/useLearningPath.ts(97,26): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+components/Profile/hooks/useLearningPath.ts(104,25): error TS18046: 'progress' is of type 'unknown'.
+components/Profile/hooks/useLearningPath.ts(175,15): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+components/Profile/hooks/useLearningPath.ts(177,38): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+components/Profile/hooks/useOfflineContent.ts(15,8): error TS2307: Cannot find module '@/utils/offline/offlineStorage' or its corresponding type declarations.
+components/Profile/hooks/useOfflineContent.ts(64,19): error TS2345: Argument of type '{ type: "error"; message: string; }' is not assignable to parameter of type 'Omit<ToastProps, "id">'.
+  Type '{ type: "error"; message: string; }' is missing the following properties from type 'Omit<ToastProps, "id">': title, onClose
+components/Profile/hooks/useOfflineContent.ts(105,19): error TS2345: Argument of type '{ type: "info"; message: string; }' is not assignable to parameter of type 'Omit<ToastProps, "id">'.
+  Type '{ type: "info"; message: string; }' is missing the following properties from type 'Omit<ToastProps, "id">': title, onClose
+components/Profile/hooks/useOfflineContent.ts(144,19): error TS2345: Argument of type '{ type: "success"; message: string; }' is not assignable to parameter of type 'Omit<ToastProps, "id">'.
+  Type '{ type: "success"; message: string; }' is missing the following properties from type 'Omit<ToastProps, "id">': title, onClose
+components/Profile/hooks/useOfflineContent.ts(150,19): error TS2345: Argument of type '{ type: "error"; message: string; }' is not assignable to parameter of type 'Omit<ToastProps, "id">'.
+  Type '{ type: "error"; message: string; }' is missing the following properties from type 'Omit<ToastProps, "id">': title, onClose
+components/Profile/hooks/useOfflineContent.ts(179,19): error TS2345: Argument of type '{ type: "success"; message: string; }' is not assignable to parameter of type 'Omit<ToastProps, "id">'.
+  Type '{ type: "success"; message: string; }' is missing the following properties from type 'Omit<ToastProps, "id">': title, onClose
+components/Profile/hooks/useOfflineContent.ts(185,19): error TS2345: Argument of type '{ type: "error"; message: string; }' is not assignable to parameter of type 'Omit<ToastProps, "id">'.
+  Type '{ type: "error"; message: string; }' is missing the following properties from type 'Omit<ToastProps, "id">': title, onClose
+components/Profile/hooks/useOfflineContent.ts(237,17): error TS2345: Argument of type '{ type: "success"; message: string; }' is not assignable to parameter of type 'Omit<ToastProps, "id">'.
+  Type '{ type: "success"; message: string; }' is missing the following properties from type 'Omit<ToastProps, "id">': title, onClose
+components/Profile/hooks/useOfflineContent.ts(243,17): error TS2345: Argument of type '{ type: "error"; message: string; }' is not assignable to parameter of type 'Omit<ToastProps, "id">'.
+  Type '{ type: "error"; message: string; }' is missing the following properties from type 'Omit<ToastProps, "id">': title, onClose
+components/Profile/hooks/usePaymentHistory.ts(41,5): error TS2339: Property 'userPaidProducts' does not exist on type 'AppContextProps'.
+components/Profile/hooks/usePaymentHistory.ts(60,11): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(firestore: Firestore, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'Firestore'.
+      Type 'null' is not assignable to type 'Firestore'.
+  Overload 2 of 3, '(reference: CollectionReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'CollectionReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'CollectionReference<unknown, DocumentData>'.
+  Overload 3 of 3, '(reference: DocumentReference<unknown, DocumentData>, path: string, ...pathSegments: string[]): CollectionReference<DocumentData, DocumentData>', gave the following error.
+    Argument of type 'Firestore | null' is not assignable to parameter of type 'DocumentReference<unknown, DocumentData>'.
+      Type 'null' is not assignable to type 'DocumentReference<unknown, DocumentData>'.
+components/Profile/hooks/usePaymentHistory.ts(61,29): error TS2339: Property 'uid' does not exist on type 'User'.
+components/Profile/hooks/usePaymentHistory.ts(71,37): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+components/Profile/hooks/usePaymentHistory.ts(124,24): error TS2339: Property 'uid' does not exist on type 'User'.
+components/Profile/hooks/useProfileStats.tsx(47,30): error TS7006: Parameter 'product' implicitly has an 'any' type.
+components/Profile/hooks/useProfileStats.tsx(61,30): error TS18046: 'progress' is of type 'unknown'.
+components/Profile/hooks/useProfileStats.tsx(85,19): error TS18046: 'progress' is of type 'unknown'.
+components/Profile/hooks/useProfileStats.tsx(87,28): error TS18046: 'progress' is of type 'unknown'.
+components/Profile/hooks/useProfileStats.tsx(88,31): error TS18046: 'progress' is of type 'unknown'.
+components/Profile/hooks/useProfileStats.tsx(89,41): error TS18046: 'progress' is of type 'unknown'.
+components/Profile/hooks/useProfileStats.tsx(91,40): error TS18046: 'progress' is of type 'unknown'.
+components/Profile/hooks/useProfileStats.tsx(93,31): error TS18046: 'progress' is of type 'unknown'.
+components/Profile/LearningPathSection.tsx(27,11): error TS2339: Property 'openModal' does not exist on type 'AppContextProps'.
+components/Profile/ProfileActionButtons.tsx(3,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' has no default export. Did you mean to use 'import { Button } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' instead?
+components/Profile/ProfileCoursesFilter.tsx(2,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' has no default export. Did you mean to use 'import { Button } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' instead?
+components/Profile/ProfileDashboard.tsx(41,5): error TS2339: Property 'userPaidProducts' does not exist on type 'AppContextProps'.
+components/Profile/ProfileDashboard.tsx(43,5): error TS2339: Property 'lessonProgress' does not exist on type 'AppContextProps'.
+components/Profile/ProfileDashboard.tsx(53,9): error TS2322: Type '{ title: string; description: string; }' is not assignable to type 'IntrinsicAttributes & ProfileHeaderProps'.
+  Property 'title' does not exist on type 'IntrinsicAttributes & ProfileHeaderProps'.
+components/Profile/ProfileHeader.tsx(8,3): error TS2339: Property 'title' does not exist on type 'ProfileHeaderProps'.
+components/Profile/ProfileHeader.tsx(9,3): error TS2339: Property 'description' does not exist on type 'ProfileHeaderProps'.
+components/Profile/ProfileHeader.tsx(10,3): error TS2339: Property 'actions' does not exist on type 'ProfileHeaderProps'.
+components/Profile/ProfileSidebar.tsx(75,19): error TS2345: Argument of type 'Auth | null' is not assignable to parameter of type 'Auth'.
+  Type 'null' is not assignable to type 'Auth'.
+components/Profile/ThemeSelector.tsx(6,8): error TS2613: Module '"E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' has no default export. Did you mean to use 'import { Button } from "E:/GitHub/codai-project/apps/studiai/src/components/ui/Button"' instead?
+components/Profile/ThemeSelector.tsx(31,7): error TS2322: Type 'string' is not assignable to type 'ColorScheme'.
+components/Profile/ThemeSelector.tsx(37,7): error TS2322: Type 'string' is not assignable to type 'ColorScheme'.
+components/Profile/ThemeSelector.tsx(43,7): error TS2322: Type 'string' is not assignable to type 'ColorScheme'.
+components/Profile/ThemeSelector.tsx(49,7): error TS2322: Type 'string' is not assignable to type 'ColorScheme'.
+components/Profile/ThemeSelector.tsx(55,7): error TS2322: Type 'string' is not assignable to type 'ColorScheme'.
+components/Profile/ThemeSelector.tsx(61,7): error TS2322: Type 'string' is not assignable to type 'ColorScheme'.
+components/Profile/ThemeSelector.tsx(67,7): error TS2322: Type 'string' is not assignable to type 'ColorScheme'.
+components/Profile/ThemeSelector.tsx(73,7): error TS2322: Type 'string' is not assignable to type 'ColorScheme'.
+components/Profile/ThemeSelector.tsx(109,15): error TS2322: Type 'ColorScheme' is not assignable to type 'Key | null | undefined'.
+components/RecommendedCoursesSection.tsx(18,32): error TS7006: Parameter 'p' implicitly has an 'any' type.
+components/RecommendedCoursesSection.tsx(26,31): error TS7006: Parameter 'id' implicitly has an 'any' type.
+components/StatisticsSection.tsx(145,19): error TS2322: Type '{ hidden: { opacity: number; scale: number; }; visible: { opacity: number; scale: number; transition: { type: string; stiffness: number; damping: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ opacity: number; scale: number; transition: { type: string; stiffness: number; damping: number; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; scale: number; transition: { type: string; stiffness: number; damping: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; scale: number; transition: { type: string; stiffness: number; damping: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; stiffness: number; damping: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; stiffness: number; damping: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; stiffness: number; damping: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/StatisticsSection/StatCounter.tsx(39,7): error TS2322: Type '{ hidden: { opacity: number; scale: number; }; visible: { opacity: number; scale: number; transition: { type: string; stiffness: number; damping: number; delay: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ opacity: number; scale: number; transition: { type: string; stiffness: number; damping: number; delay: number; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; scale: number; transition: { type: string; stiffness: number; damping: number; delay: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; scale: number; transition: { type: string; stiffness: number; damping: number; delay: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; stiffness: number; damping: number; delay: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; stiffness: number; damping: number; delay: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; stiffness: number; damping: number; delay: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/TechStackSection/TechItem.tsx(35,7): error TS2322: Type '{ hidden: { opacity: number; y: number; }; visible: { opacity: number; y: number; transition: { type: string; stiffness: number; delay: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ opacity: number; y: number; transition: { type: string; stiffness: number; delay: number; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; y: number; transition: { type: string; stiffness: number; delay: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; y: number; transition: { type: string; stiffness: number; delay: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; stiffness: number; delay: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; stiffness: number; delay: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; stiffness: number; delay: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/Toast/ToastContainer.tsx(126,17): error TS2322: Type '{ initial: { opacity: number; y: number; }; animate: { opacity: number; y: number; transition: { type: string; stiffness: number; damping: number; }; }; exit: { opacity: number; x: number; transition: { duration: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'animate' is incompatible with index signature.
+    Type '{ opacity: number; y: number; transition: { type: string; stiffness: number; damping: number; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; y: number; transition: { type: string; stiffness: number; damping: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; y: number; transition: { type: string; stiffness: number; damping: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; stiffness: number; damping: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; stiffness: number; damping: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; stiffness: number; damping: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+components/Toast/ToastContainer.tsx(145,26): error TS2339: Property 'action' does not exist on type 'Toast'.
+components/Toast/ToastContainer.tsx(145,42): error TS2339: Property 'actionLabel' does not exist on type 'Toast'.
+components/Toast/ToastContainer.tsx(147,38): error TS2339: Property 'action' does not exist on type 'Toast'.
+components/Toast/ToastContainer.tsx(150,30): error TS2339: Property 'actionLabel' does not exist on type 'Toast'.
+components/Toast/ToastContainer.tsx(155,24): error TS2339: Property 'isClosable' does not exist on type 'Toast'.
+components/Toast/ToastContext.tsx(30,7): error TS2353: Object literal may only specify known properties, and 'isClosable' does not exist in type 'Toast'.
+components/Toast/ToastContext.tsx(30,25): error TS2339: Property 'isClosable' does not exist on type 'Omit<ToastProps, "id">'.
+components/Toast/ToastContext.tsx(31,21): error TS2339: Property 'action' does not exist on type 'Omit<ToastProps, "id">'.
+components/Toast/ToastContext.tsx(32,26): error TS2339: Property 'actionLabel' does not exist on type 'Omit<ToastProps, "id">'.
+components/Toast/ToastContext.tsx(52,26): error TS2339: Property 'onClose' does not exist on type 'Toast'.
+components/Toast/ToastContext.tsx(53,15): error TS2339: Property 'onClose' does not exist on type 'Toast'.
+components/ui/index.ts(51,15): error TS2614: Module '"./Select"' has no exported member 'SelectProps'. Did you mean to use 'import SelectProps from "./Select"' instead?
+components/ui/Navbar.tsx(131,6): error TS2322: Type '{ defaultChecked?: boolean | undefined; defaultValue?: string | number | readonly string[] | undefined; suppressContentEditableWarning?: boolean | undefined; suppressHydrationWarning?: boolean | undefined; ... 275 more ...; justify: "center" | ... 1 more ... | "end"; }' is not assignable to type 'IntrinsicAttributes & MergeWithAs<Omit<DetailedHTMLProps<HTMLAttributes<HTMLUListElement>, HTMLUListElement>, "ref">, Omit<...>, NavbarContentProps, "ul">'.
+  Type '{ defaultChecked?: boolean | undefined; defaultValue?: string | number | readonly string[] | undefined; suppressContentEditableWarning?: boolean | undefined; suppressHydrationWarning?: boolean | undefined; ... 275 more ...; justify: "center" | ... 1 more ... | "end"; }' is not assignable to type 'NavbarContentProps'.
+    Types of property 'onCopy' are incompatible.
+      Type 'ClipboardEventHandler<HTMLDivElement> | undefined' is not assignable to type 'ClipboardEventHandler<HTMLUListElement> | undefined'.
+        Type 'ClipboardEventHandler<HTMLDivElement>' is not assignable to type 'ClipboardEventHandler<HTMLUListElement>'.
+          Type 'HTMLDivElement' is missing the following properties from type 'HTMLUListElement': compact, type
+components/ui/Navbar.tsx(186,6): error TS2322: Type '{ defaultChecked?: boolean | undefined; defaultValue?: string | number | readonly string[] | undefined; suppressContentEditableWarning?: boolean | undefined; suppressHydrationWarning?: boolean | undefined; ... 274 more ...; className: string; }' is not assignable to type 'IntrinsicAttributes & MergeWithAs<Omit<DetailedHTMLProps<HTMLAttributes<HTMLUListElement>, HTMLUListElement>, "ref">, Omit<...>, NavbarMenuProps, "ul">'.
+  Type '{ defaultChecked?: boolean | undefined; defaultValue?: string | number | readonly string[] | undefined; suppressContentEditableWarning?: boolean | undefined; suppressHydrationWarning?: boolean | undefined; ... 274 more ...; className: string; }' is not assignable to type 'NavbarMenuProps'.
+    Types of property 'onCopy' are incompatible.
+      Type 'ClipboardEventHandler<HTMLDivElement> | undefined' is not assignable to type 'ClipboardEventHandler<HTMLUListElement> | undefined'.
+        Type 'ClipboardEventHandler<HTMLDivElement>' is not assignable to type 'ClipboardEventHandler<HTMLUListElement>'.
+          Type 'HTMLDivElement' is missing the following properties from type 'HTMLUListElement': compact, type
+components/WhyChooseUsSection/FeatureCard.tsx(34,7): error TS2322: Type '{ hidden: { y: number; opacity: number; }; visible: { y: number; opacity: number; transition: { type: string; stiffness: number; delay: number; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; delay: number; }; }' is not assignable to type 'Variant'.
+      Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; delay: number; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ y: number; opacity: number; transition: { type: string; stiffness: number; delay: number; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ type: string; stiffness: number; delay: number; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ type: string; stiffness: number; delay: number; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; stiffness: number; delay: number; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' are incompatible.
+                    Type 'string' is not assignable to type 'AnimationGeneratorType | undefined'.
+lib/flows/learning-analytics.ts(16,28): error TS2304: Cannot find name 'flowName'.
+lib/flows/learning-analytics.ts(16,44): error TS2304: Cannot find name 'appName'.
+lib/flows/performance-prediction.ts(16,28): error TS2304: Cannot find name 'flowName'.
+lib/flows/performance-prediction.ts(16,44): error TS2304: Cannot find name 'appName'.
+lib/hooks.ts(76,9): error TS2322: Type '{ name: string; status: string; }[]' is not assignable to type 'never[]'.
+  Type '{ name: string; status: string; }' is not assignable to type 'never'.
+lib/hooks.ts(77,9): error TS2322: Type '{ id: string; type: string; message: string; timestamp: Date; }[]' is not assignable to type 'never[]'.
+  Type '{ id: string; type: string; message: string; timestamp: Date; }' is not assignable to type 'never'.
+lib/logger.ts(1,10): error TS2614: Module '"@codai/logai-sdk"' has no exported member 'LogAISDK'. Did you mean to use 'import LogAISDK from "@codai/logai-sdk"' instead?

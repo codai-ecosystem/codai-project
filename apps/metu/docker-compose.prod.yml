@@ -1,0 +1,108 @@
+# 🐳 Docker Compose Configuration for METU Production
+
+version: '3.8'
+
+services:
+  metu-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: metu-production
+    ports:
+      - "4400:4400"  # Web interface
+      - "4402:4402"  # Device server
+      - "5353:5353/udp"  # mDNS discovery
+    environment:
+      - NODE_ENV=production
+      - PORT=4400
+      - DEVICE_SERVER_PORT=4402
+      - AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT}
+      - AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}
+      - AZURE_OPENAI_DEPLOYMENT_NAME=${AZURE_OPENAI_DEPLOYMENT_NAME}
+      - AZURE_OPENAI_API_VERSION=2024-10-01-preview
+      - MCP_PLAYWRIGHT_ENABLED=true
+      - MCP_MEMORAI_ENABLED=true
+      - MCP_GLASS_ENABLED=true
+      - MCP_ROMAI_ENABLED=true
+      - LOG_LEVEL=info
+      - CORS_ORIGIN=*
+      - RATE_LIMIT_WINDOW=900000
+      - RATE_LIMIT_MAX_REQUESTS=100
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+    networks:
+      - metu-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4400/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  metu-monitor:
+    image: prom/prometheus:latest
+    container_name: metu-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - metu-network
+    restart: unless-stopped
+
+  metu-grafana:
+    image: grafana/grafana:latest
+    container_name: metu-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=metu-admin-2025
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+    networks:
+      - metu-network
+    restart: unless-stopped
+    depends_on:
+      - metu-monitor
+
+  metu-redis:
+    image: redis:7-alpine
+    container_name: metu-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - metu-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+networks:
+  metu-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  prometheus-data:
+  grafana-data:
+  redis-data:

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
@@ -9,7 +9,7 @@ import {
     Sparkles,
     FolderOpen,
     Bot,
-    FileTemplate,
+    File as FileTemplate,
     Settings,
     Menu,
     X,

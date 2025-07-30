@@ -1,0 +1,57 @@
+{
+  "servers": {
+    "GlassMCPServer": {
+      "transport": {
+        "type": "sse",
+        "url": "http://localhost:8001/sse"
+      },
+      "env": {
+        "GLASS_LOG_LEVEL": "info",
+        "GLASS_MAX_WINDOWS": "1000",
+        "GLASS_WINDOW_CACHE_TTL": "5000",
+        "NODE_ENV": "production",
+        "DOTENV_CONFIG_PATH": "e:\\\\GitHub\\\\workspace-ai\\\\.env"
+      }
+    },
+    "MemoraiMCPServer": {
+      "transport": {
+        "type": "sse",
+        "url": "http://localhost:8002/sse"
+      },
+      "env": {
+        "NODE_ENV": "production",
+        "MEMORAI_METADATA_DB_PATH": "C:\\\\Users\\\\vladu\\\\AppData\\\\Local\\\\Memorai\\\\metadata_db",
+        "MEMORAI_MAX_MEMORIES": "10000",
+        "MEMORAI_VECTOR_DB_PATH": "C:\\\\Users\\\\vladu\\\\AppData\\\\Local\\\\Memorai\\\\vector_db",
+        "MEMORAI_STORAGE_PATH": "C:\\\\Users\\\\vladu\\\\AppData\\\\Local\\\\Memorai\\\\storage",
+        "MEMORAI_PERSIST_ON_EXIT": "true",
+        "MEMORAI_EMBEDDING_MODEL": "text-embedding-3-small",
+        "MEMORAI_CONFIG_PATH": "C:\\\\Users\\\\vladu\\\\AppData\\\\Local\\\\Memorai\\\\config",
+        "DOTENV_CONFIG_PATH": "e:\\\\GitHub\\\\workspace-ai\\\\.env",
+        "MEMORAI_LOG_LEVEL": "info"
+      }
+    },
+    "RomaiUltimateMCPServer": {
+      "transport": {
+        "type": "sse",
+        "url": "http://localhost:8003/sse"
+      },
+      "env": {
+        "NODE_ENV": "production",
+        "DOTENV_CONFIG_PATH": "e:\\\\GitHub\\\\workspace-ai\\\\.env",
+        "ROMAI_LOG_LEVEL": "info",
+        "AZURE_OPENAI_API_KEY": "",
+        "AZURE_OPENAI_ENDPOINT": "https://aide-openai-dev.openai.azure.com/",
+        "AZURE_OPENAI_API_VERSION": "2024-12-01-preview",
+        "AZURE_OPENAI_DEPLOYMENT_NAME": "gpt-4o"
+      }
+    },
+    "PlaywrightMCPServer": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@executeautomation/playwright-mcp-server"
+      ]
+    }
+  }
+}

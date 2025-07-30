@@ -1,11 +1,12 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import type { ComponentType } from 'react';
 
 import { LoadingSpinner } from './LoadingSpinner';
 
 // Export EnhancedDataTable as dynamic component
-export const EnhancedDataTable = dynamic(
+export const EnhancedDataTable: ComponentType<any> = dynamic(
   () => import('./EnhancedDataTable').then(mod => ({ default: mod.EnhancedDataTable })),
   {
     loading: () => <LoadingSpinner className="h-8 w-8" />,

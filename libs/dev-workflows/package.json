@@ -1,0 +1,27 @@
+{
+  "name": "@codai/dev-workflows",
+  "version": "1.0.0",
+  "description": "Advanced development workflow orchestration and automation for CODAI ecosystem",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node index.js",
+    "test": "node test.js"
+  },
+  "keywords": [
+    "codai",
+    "development",
+    "workflows",
+    "orchestration",
+    "automation",
+    "developer-experience"
+  ],
+  "dependencies": {
+    "chokidar": "^3.5.3",
+    "chalk": "^5.3.0",
+    "ora": "^7.0.1",
+    "yaml": "^2.3.4"
+  },
+  "author": "CODAI Ecosystem",
+  "license": "MIT"
+}

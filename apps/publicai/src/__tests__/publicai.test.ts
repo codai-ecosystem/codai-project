@@ -3,7 +3,8 @@ import { publicaiService } from '../lib/services/publicaiService';
 describe('publicaiService', () => {
   test('should initialize', async () => {
     const result = await publicaiService.initialize();
-    expect(result.status).toBe('initialized');
+    expect(result.success).toBe(true);
+    expect(result.data?.status).toBe('initialized');
   });
 
   test('should create item', async () => {

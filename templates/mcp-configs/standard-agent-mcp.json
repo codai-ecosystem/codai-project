@@ -1,0 +1,73 @@
+{
+    "ControlAIMCP": {
+        "type": "stdio",
+        "command": "npx",
+        "args": [
+            "-y",
+            "controlai-mcp@latest"
+        ],
+        "env": {
+            "DOTENV_CONFIG_PATH": "E:\\GitHub\\codai-project\\.env"
+        }
+    },
+    "MemoraiMCP": {
+        "type": "stdio",
+        "command": "npx",
+        "args": [
+            "-y",
+            "memorai-mcp@latest"
+        ],
+        "env": {
+            "MEMORAI_DATABASE_PATH": "E:\\GitHub\\codai-project\\data\\memorai-persistent.db",
+            "NODE_ENV": "production"
+        }
+    },
+    "PlaywrightMCP": {
+        "type": "stdio",
+        "command": "npx",
+        "args": [
+            "-y",
+            "@executeautomation/playwright-mcp-server"
+        ]
+    },
+    "GlassMCP": {
+        "type": "stdio",
+        "command": "npx",
+        "args": [
+            "-y",
+            "glass-mcp@latest"
+        ]
+    },
+    "RomaiMCP": {
+        "type": "stdio",
+        "command": "npx",
+        "args": [
+            "-y",
+            "romai-mcp@latest"
+        ]
+    },
+    "SequentialThinkingMCP": {
+        "type": "stdio",
+        "command": "npx",
+        "args": [
+            "-y",
+            "@modelcontextprotocol/server-sequential-thinking"
+        ]
+    },
+    "Context7MCP": {
+        "type": "stdio",
+        "command": "npx",
+        "args": [
+            "-y",
+            "@upstash/context7-mcp"
+        ]
+    },
+    "SimpleMemoryMCP": {
+        "type": "stdio",
+        "command": "npx",
+        "args": [
+            "-y",
+            "@modelcontextprotocol/server-memory"
+        ]
+    }
+}

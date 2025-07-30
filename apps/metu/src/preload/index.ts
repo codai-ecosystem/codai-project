@@ -31,6 +31,15 @@ export interface ElectronAPI {
     isWindows: boolean
     isMacOS: boolean
     isLinux: boolean
+
+    // Environment variables (safely exposed)
+    env: {
+        AZURE_OPENAI_API_KEY?: string
+        AZURE_OPENAI_ENDPOINT?: string
+        AZURE_OPENAI_GPT4O_DEPLOYMENT?: string
+        ROMAI_AGI_ENDPOINT?: string
+        ROMAI_AGI_API_KEY?: string
+    }
 }
 
 // Expose protected methods that allow the renderer process to use
@@ -63,7 +72,16 @@ const electronAPI: ElectronAPI = {
     platform: process.platform,
     isWindows: process.platform === 'win32',
     isMacOS: process.platform === 'darwin',
-    isLinux: process.platform === 'linux'
+    isLinux: process.platform === 'linux',
+
+    // Environment variables (safely exposed)
+    env: {
+        AZURE_OPENAI_API_KEY: process.env.AZURE_OPENAI_API_KEY,
+        AZURE_OPENAI_ENDPOINT: process.env.AZURE_OPENAI_ENDPOINT,
+        AZURE_OPENAI_GPT4O_DEPLOYMENT: process.env.AZURE_OPENAI_GPT4O_DEPLOYMENT,
+        ROMAI_AGI_ENDPOINT: process.env.ROMAI_AGI_ENDPOINT,
+        ROMAI_AGI_API_KEY: process.env.ROMAI_AGI_API_KEY
+    }
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

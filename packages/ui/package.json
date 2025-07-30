@@ -11,10 +11,10 @@
     "./styles": "./dist/styles.css"
   },
   "scripts": {
-    "build": "tsc --build && tsc --build tsconfig.esm.json",
+    "build": "pnpm exec tsc --build && pnpm exec tsc --build tsconfig.esm.json",
     "dev": "tsc --build --watch",
-    "lint": "eslint src --ext .ts,.tsx",
-    "type-check": "tsc --noEmit",
+    "lint": "pnpm exec eslint src --ext .ts,.tsx",
+    "type-check": "pnpm exec tsc --noEmit",
     "test": "vitest",
     "test:watch": "vitest --watch",
     "storybook": "storybook dev -p 6006",
@@ -49,7 +49,7 @@
     "@typescript-eslint/parser": "^8.36.0",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.11",
+    "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3"
   },
   "peerDependencies": {

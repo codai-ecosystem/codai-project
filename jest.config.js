@@ -1,46 +1,39 @@
-// Strategic Testing Configuration
-// This file is maintained for backward compatibility
-// Current testing framework: Vitest (configured in vitest.config.ts)
-
-export default {
-  preset: 'ts-jest/presets/default-esm',
-  extensionsToTreatAsEsm: ['.ts'],
-  testEnvironment: 'node',
-  testMatch: [
-    '**/tests/**/*.{test,spec}.{js,ts}',
-    '**/__tests__/**/*.{test,spec}.{js,ts}',
+module.exports = {
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "roots": [
+    "<rootDir>/src",
+    "<rootDir>/tests"
   ],
-  testPathIgnorePatterns: [
-    'node_modules',
-    'dist',
-    'build',
-    'packages/',
-    'apps/',
-    'services/',
-    'tests/e2e/',
-    'tests/browser/',
-    '.spec.ts',
+  "testMatch": [
+    "**/__tests__/**/*.+(ts|tsx|js)",
+    "**/*.(test|spec).(ts|tsx|js)"
   ],
-  collectCoverageFrom: [
-    'tests/**/*.{js,ts}',
-    '!**/*.d.ts',
-    '!**/node_modules/**',
-    '!**/dist/**',
-    '!**/build/**',
-  ],
-  moduleFileExtensions: ['ts', 'js', 'json'],
-  transform: {
-    '^.+\\.(ts|tsx)$': [
-      'ts-jest',
-      {
-        useESM: true,
-      },
-    ],
+  "transform": {
+    "^.+\\.(ts|tsx)$": "ts-jest"
   },
-  passWithNoTests: true,
-  globals: {
-    'ts-jest': {
-      useESM: true,
-    },
+  "collectCoverageFrom": [
+    "src/**/*.{js,ts,tsx}",
+    "!src/**/*.d.ts",
+    "!src/**/*.stories.*",
+    "!src/**/index.ts"
+  ],
+  "coverageDirectory": "coverage",
+  "coverageReporters": [
+    "text",
+    "lcov",
+    "html"
+  ],
+  "coverageThreshold": {
+    "global": {
+      "branches": 80,
+      "functions": 80,
+      "lines": 80,
+      "statements": 80
+    }
   },
+  "setupFilesAfterEnv": [
+    "<rootDir>/jest.setup.js"
+  ],
+  "testTimeout": 10000
 };

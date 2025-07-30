@@ -1,0 +1,43 @@
+# Auto normalize line endings for all text files
+* text=auto
+
+# Force LF for specific file types (Unix-style)
+*.sh text eol=lf
+*.bash text eol=lf
+*.zsh text eol=lf
+Dockerfile text eol=lf
+Makefile text eol=lf
+
+# Ensure CRLF for Windows-specific files
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.pdf binary
+*.zip binary
+*.tar.gz binary
+*.tgz binary
+
+# Generated files (treat as binary to avoid conflicts)
+package-lock.json binary
+pnpm-lock.yaml -text
+yarn.lock -text
+
+# Linguist overrides for proper language detection
+*.ts linguist-language=TypeScript
+*.tsx linguist-language=TypeScript
+*.js linguist-language=JavaScript
+*.jsx linguist-language=JavaScript
+docs/* linguist-documentation
+examples/* linguist-documentation

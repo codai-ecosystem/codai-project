@@ -1,6 +1,9 @@
-import { EventEmitter } from 'events';
-import { v4 as uuidv4 } from 'uuid';
-export class RealtimeEventBus extends EventEmitter {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CODAI_EVENTS = exports.globalEventBus = exports.RealtimeEventBus = void 0;
+const events_1 = require("events");
+const uuid_1 = require("uuid");
+class RealtimeEventBus extends events_1.EventEmitter {
     constructor(maxHistorySize) {
         super();
         this.messageHistory = [];
@@ -24,7 +27,7 @@ export class RealtimeEventBus extends EventEmitter {
     // Send a message
     sendMessage(type, payload, sender, target, channel, priority = 'normal') {
         const message = {
-            id: uuidv4(),
+            id: (0, uuid_1.v4)(),
             type,
             payload,
             timestamp: Date.now(),
@@ -106,10 +109,11 @@ export class RealtimeEventBus extends EventEmitter {
         };
     }
 }
+exports.RealtimeEventBus = RealtimeEventBus;
 // Global event bus instance
-export const globalEventBus = new RealtimeEventBus();
+exports.globalEventBus = new RealtimeEventBus();
 // Event types for the CODAI ecosystem
-export const CODAI_EVENTS = {
+exports.CODAI_EVENTS = {
     // User events
     USER_CONNECTED: 'user:connected',
     USER_DISCONNECTED: 'user:disconnected',

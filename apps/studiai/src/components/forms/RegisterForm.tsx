@@ -67,11 +67,12 @@ export function RegisterForm({
       const result = await signUp({
         email: data.email,
         password: data.password,
+        name: data.displayName,
         displayName: data.displayName,
         confirmPassword: data.confirmPassword,
       });
 
-      if (result.error !== null && result.error !== '') {
+      if (result.error) {
         // Handle Firebase Auth errors
         if (result.error.includes('email-already-in-use')) {
           setError('email', { message: 'This email is already registered' });

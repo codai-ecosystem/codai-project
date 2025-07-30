@@ -1,13 +1,13 @@
 // Mock Prisma client for development
 export class PrismaClient {
-  constructor(options?: any) { }
+  constructor(_options?: any) { }
 
   async $connect(): Promise<void> {
-    console.log('✅ Database connected (mock)');
+    console.warn('✅ Database connected (mock)');
   }
 
   async $disconnect(): Promise<void> {
-    console.log('📪 Database disconnected (mock)');
+    console.warn('📪 Database disconnected (mock)');
   }
 }
 
@@ -59,7 +59,7 @@ if (env.NODE_ENV !== 'production') {
 export async function connectDatabase(): Promise<void> {
   try {
     await db.$connect();
-    console.log('✅ Database connected successfully');
+    console.warn('✅ Database connected successfully');
   } catch (error) {
     console.error('❌ Database connection failed:', error);
     throw error;

@@ -1,0 +1,161 @@
+/**
+ * Docker Compose configuration for CODAI API Gateway and services
+ */
+
+version: '3.8'
+
+services:
+  # API Gateway
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      - GATEWAY_PORT=4000
+      - JWT_SECRET=${JWT_SECRET:-your-jwt-secret}
+      - ALLOWED_ORIGINS=http://localhost:3000,https://codai.ro
+    depends_on:
+      - id-service
+      - memorai-service
+      - hub-service
+      - logai-service
+      - admin-service
+      - codai-service
+      - bancai-service
+      - cumparai-service
+      - wallet-service
+      - marketai-service
+      - fabricai-service
+    networks:
+      - codai-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/api/gateway/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Core Services
+  id-service:
+    image: codai/id-service:latest
+    ports:
+      - "4001:4001"
+    environment:
+      - PORT=4001
+      - JWT_SECRET=${JWT_SECRET:-your-jwt-secret}
+    networks:
+      - codai-network
+    restart: unless-stopped
+
+  memorai-service:
+    image: codai/memorai-service:latest
+    ports:
+      - "4002:4002"
+    environment:
+      - PORT=4002
+    networks:
+      - codai-network
+    restart: unless-stopped
+
+  hub-service:
+    image: codai/hub-service:latest
+    ports:
+      - "4003:4003"
+    environment:
+      - PORT=4003
+    networks:
+      - codai-network
+    restart: unless-stopped
+
+  logai-service:
+    image: codai/logai-service:latest
+    ports:
+      - "4004:4004"
+    environment:
+      - PORT=4004
+    networks:
+      - codai-network
+    restart: unless-stopped
+
+  admin-service:
+    image: codai/admin-service:latest
+    ports:
+      - "4005:4005"
+    environment:
+      - PORT=4005
+    networks:
+      - codai-network
+    restart: unless-stopped
+
+  # Business Platform Services
+  codai-service:
+    image: codai/codai-service:latest
+    ports:
+      - "4006:4006"
+    environment:
+      - PORT=4006
+    networks:
+      - codai-network
+    restart: unless-stopped
+
+  bancai-service:
+    image: codai/bancai-service:latest
+    ports:
+      - "4007:4007"
+    environment:
+      - PORT=4007
+    networks:
+      - codai-network
+    restart: unless-stopped
+
+  cumparai-service:
+    image: codai/cumparai-service:latest
+    ports:
+      - "4008:4008"
+    environment:
+      - PORT=4008
+    networks:
+      - codai-network
+    restart: unless-stopped
+
+  wallet-service:
+    image: codai/wallet-service:latest
+    ports:
+      - "4009:4009"
+    environment:
+      - PORT=4009
+    networks:
+      - codai-network
+    restart: unless-stopped
+
+  marketai-service:
+    image: codai/marketai-service:latest
+    ports:
+      - "4010:4010"
+    environment:
+      - PORT=4010
+    networks:
+      - codai-network
+    restart: unless-stopped
+
+  fabricai-service:
+    image: codai/fabricai-service:latest
+    ports:
+      - "4011:4011"
+    environment:
+      - PORT=4011
+    networks:
+      - codai-network
+    restart: unless-stopped
+
+networks:
+  codai-network:
+    driver: bridge
+    name: codai-ecosystem
+
+volumes:
+  gateway-logs:
+    driver: local

@@ -1,0 +1,8 @@
+{
+  "test:all": "pnpm test:unit && pnpm test:integration && pnpm test:e2e",
+  "test:unit": "vitest run --config vitest.config.optimized.ts",
+  "test:integration": "jest --config jest.config.optimized.js",
+  "test:e2e": "playwright test --config playwright.config.optimized.ts",
+  "test:coverage": "vitest run --coverage",
+  "test:watch": "vitest --config vitest.config.optimized.ts"
+}

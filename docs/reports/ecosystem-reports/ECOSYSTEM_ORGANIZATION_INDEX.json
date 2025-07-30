@@ -1,0 +1,2368 @@
+{
+  "timestamp": "2025-07-16T06:02:13.114Z",
+  "structure": {
+    "apps": {
+      "acasai": {
+        "files": [
+          ".gitignore",
+          "next-env.d.ts",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "tsconfig.json",
+          "vercel.json",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".turbo",
+          ".vercel",
+          "app",
+          "components",
+          "deployment",
+          "docs",
+          "lib",
+          "node_modules",
+          "tests",
+          "__tests__"
+        ],
+        "size": 5397,
+        "structure": "clean"
+      },
+      "admin": {
+        "files": [
+          ".env.example",
+          ".gitignore",
+          "next-env.d.ts",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "README.md",
+          "tailwind.config.js",
+          "tsconfig.json",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "docs",
+          "public",
+          "src",
+          "tests"
+        ],
+        "size": 8951,
+        "structure": "clean"
+      },
+      "aide": {
+        "files": [
+          ".aide-projects.json",
+          ".env",
+          ".env.example",
+          ".env.local",
+          ".env.test",
+          ".eslintrc.cjs",
+          ".gitignore",
+          ".npmrc",
+          "agent.project.json",
+          "index.html",
+          "index.js",
+          "jest.setup.js",
+          "middleware.ts.disabled",
+          "next-env.d.ts",
+          "next.config.js",
+          "package-express.json",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.js",
+          "README.md",
+          "server.js",
+          "tailwind.config.js",
+          "test-setup.ts",
+          "tsconfig.json",
+          "tsconfig.server.json",
+          "vercel.json",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".vercel",
+          "app-new",
+          "config",
+          "deployment",
+          "docs",
+          "pages-old",
+          "playwright-report",
+          "prisma",
+          "projects",
+          "public",
+          "server",
+          "src",
+          "test-results",
+          "tests",
+          "types",
+          "__tests__"
+        ],
+        "size": 38483,
+        "structure": "clean"
+      },
+      "ajutai": {
+        "files": [
+          ".env.example",
+          ".gitignore",
+          ".npmrc",
+          "next-env.d.ts",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "README.md",
+          "tailwind.config.js",
+          "tsconfig.json",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "desktop-template",
+          "docs",
+          "public",
+          "src",
+          "tests"
+        ],
+        "size": 8974,
+        "structure": "clean"
+      },
+      "analizai": {
+        "files": [
+          ".env",
+          ".env.example",
+          ".env.local",
+          ".env.test",
+          ".eslintrc.cjs",
+          ".eslintrc.json",
+          ".gitignore",
+          ".npmrc",
+          "agent.project.json",
+          "copilot-instructions.md",
+          "index.html",
+          "index.js",
+          "middleware.ts",
+          "next-env.d.ts",
+          "next.config.cjs",
+          "next.config.js",
+          "package-express.json",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.cjs",
+          "postcss.config.js",
+          "README.md",
+          "server.js",
+          "tailwind.config.js",
+          "tailwind.config.ts",
+          "tsconfig.json",
+          "tsconfig.tsbuildinfo",
+          "vercel.json",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".turbo",
+          ".vercel",
+          ".vscode",
+          "components",
+          "config",
+          "dashboard",
+          "deployment",
+          "docs",
+          "layout",
+          "lib",
+          "node_modules",
+          "public",
+          "services",
+          "src",
+          "styles",
+          "tests",
+          "types",
+          "__tests__"
+        ],
+        "size": 513166,
+        "structure": "clean"
+      },
+      "bancai": {
+        "files": [
+          ".env",
+          ".env.example",
+          ".env.local",
+          ".env.test",
+          ".eslintrc.js",
+          ".eslintrc.json",
+          ".gitignore",
+          ".npmrc",
+          "agent.project.json",
+          "jest.setup.js",
+          "middleware.ts",
+          "next-env.d.ts",
+          "next.config.cjs",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.js",
+          "README.md",
+          "tailwind.config.js",
+          "tsconfig.json",
+          "vercel.json",
+          "vitest.config.ts",
+          "vitest.setup.basic.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".turbo",
+          ".vercel",
+          ".vscode",
+          "app",
+          "components",
+          "config",
+          "dashboard",
+          "deployment",
+          "docs",
+          "layout",
+          "lib",
+          "node_modules",
+          "pages",
+          "prisma",
+          "public",
+          "services",
+          "tests",
+          "types",
+          "__tests__"
+        ],
+        "size": 35662,
+        "structure": "clean"
+      },
+      "bancai-mobile": {
+        "files": [
+          "app.json",
+          "babel.config.js",
+          "jest.config.js",
+          "jest.setup.js",
+          "package.json",
+          "playwright.config.ts",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "app",
+          "deployment",
+          "docs",
+          "node_modules",
+          "tests",
+          "__tests__"
+        ],
+        "size": 8760,
+        "structure": "clean"
+      },
+      "codai": {
+        "files": [
+          ".editorconfig",
+          ".env",
+          ".env.example",
+          ".env.local",
+          ".env.test",
+          ".eslint-ignore",
+          ".eslintrc.cjs",
+          ".eslintrc.js",
+          ".git-blame-ignore-revs",
+          ".gitattributes",
+          ".gitignore",
+          ".lintstagedrc.json",
+          ".lsifrc.json",
+          ".mailmap",
+          ".mention-bot",
+          ".nvmrc",
+          ".prettierrc",
+          ".prettierrc.json",
+          ".vscode-test.js",
+          "agent-test.md",
+          "agent.project.json",
+          "cglicenses.json",
+          "cgmanifest.json",
+          "cleanup-extensions.ps1",
+          "CodeQL.yml",
+          "CODE_REVIEW_CHECKLIST.md",
+          "CODING_EXAMPLES.md",
+          "CODING_STANDARDS.md",
+          "CONTRIBUTING.md",
+          "convert-spaces-to-tabs.ps1",
+          "DEPLOYMENT_INSTRUCTIONS.md",
+          "eslint.config.js",
+          "firebase.json",
+          "fix-eslint-local-rules.js",
+          "gulpfile.js",
+          "IMPLEMENTATION_ROADMAP.md",
+          "integration-test-setup.ts",
+          "jest.setup.js",
+          "JSDOC_TEMPLATES.md",
+          "LICENSE.txt",
+          "middleware.ts",
+          "MULTI_ENVIRONMENT_DEPLOYMENT.md",
+          "next-env.d.ts",
+          "next.config.cjs",
+          "next.config.js",
+          "package.json",
+          "PHASE2-COMPLETE.md",
+          "playwright.config.ts",
+          "pnpm-lock.yaml",
+          "pnpm-workspace.yaml",
+          "postcss.config.cjs",
+          "postcss.config.js",
+          "product.json",
+          "PROJECT_IMPROVEMENTS.md",
+          "README.md",
+          "README_CODAI.md",
+          "README_OLD.md",
+          "settings-implementation-complete.md",
+          "tailwind.config.js",
+          "tailwind.config.ts",
+          "test-settings-functionality.md",
+          "ThirdPartyNotices.txt",
+          "tsconfig.base.json",
+          "tsconfig.json",
+          "tsconfig.tsbuildinfo",
+          "tsfmt.json",
+          "vercel.json",
+          "vitest.config.aide.ts",
+          "vitest.config.local.ts",
+          "vitest.config.root.ts",
+          "vitest.config.ts",
+          "vitest.integration.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".config",
+          ".devcontainer",
+          ".eslint-plugin-local",
+          ".github",
+          ".husky",
+          ".turbo",
+          ".vercel",
+          ".vscode",
+          "app",
+          "apps",
+          "backup",
+          "build",
+          "cli",
+          "cloud-functions",
+          "components",
+          "config",
+          "data",
+          "deployment",
+          "docs",
+          "extensions",
+          "hooks",
+          "lib",
+          "node_modules",
+          "packages",
+          "pages",
+          "pages-old",
+          "prisma",
+          "public",
+          "remote",
+          "resources",
+          "scripts",
+          "src",
+          "src-backup",
+          "src-disabled",
+          "styles",
+          "test",
+          "test-app",
+          "test-workspace",
+          "tests",
+          "__tests__"
+        ],
+        "size": 1224706,
+        "structure": "clean"
+      },
+      "codai-mobile": {
+        "files": [
+          "app.json",
+          "package.json",
+          "playwright.config.ts",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          ".expo",
+          "app",
+          "deployment",
+          "docs",
+          "node_modules",
+          "tests"
+        ],
+        "size": 5783,
+        "structure": "clean"
+      },
+      "conversai": {
+        "files": [
+          "package.json",
+          "playwright.config.ts",
+          "turbo.json",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          ".turbo",
+          "apps",
+          "deployment",
+          "docs",
+          "node_modules",
+          "tests"
+        ],
+        "size": 4177,
+        "structure": "clean"
+      },
+      "cumparai": {
+        "files": [
+          ".env",
+          ".env.local",
+          ".env.test",
+          ".eslintrc.cjs",
+          ".eslintrc.js",
+          ".gitignore",
+          "agent.project.json",
+          "debug-next.js",
+          "next-env.d.ts",
+          "next.config.cjs",
+          "next.config.js",
+          "package-express.json",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.cjs",
+          "postcss.config.js",
+          "README.md",
+          "server.cjs",
+          "tailwind.config.js",
+          "tsconfig.json",
+          "vercel.json",
+          "vitest.config.ts",
+          "vitest.jsx-runtime-mock.js",
+          "vitest.react-dom-mock.js",
+          "vitest.react-mock.js",
+          "vitest.setup.minimal.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".turbo",
+          ".vercel",
+          ".vscode",
+          "app",
+          "components",
+          "config",
+          "deployment",
+          "docs",
+          "lib",
+          "node_modules",
+          "public",
+          "services",
+          "src",
+          "tests",
+          "types",
+          "__tests__"
+        ],
+        "size": 44164,
+        "structure": "clean"
+      },
+      "curtai": {
+        "files": [
+          ".gitignore",
+          "next-env.d.ts",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "tsconfig.json",
+          "vercel.json",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".turbo",
+          ".vercel",
+          "app",
+          "components",
+          "deployment",
+          "docs",
+          "lib",
+          "node_modules",
+          "tests",
+          "__tests__"
+        ],
+        "size": 6480,
+        "structure": "clean"
+      },
+      "dash": {
+        "files": [
+          ".env.example",
+          ".gitignore",
+          ".npmrc",
+          "next-env.d.ts",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "README.md",
+          "tailwind.config.js",
+          "tsconfig.json",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "desktop-template",
+          "docs",
+          "public",
+          "src",
+          "tests"
+        ],
+        "size": 9042,
+        "structure": "clean"
+      },
+      "dexai": {
+        "files": [
+          ".env",
+          ".env.local",
+          ".eslintrc.js",
+          ".firebaserc",
+          ".gitattributes",
+          ".gitignore",
+          ".npmrc",
+          ".prettierrc",
+          "debug-dictionary.spec.ts",
+          "debug-search-results.png",
+          "firebase.json",
+          "jest.config.enhanced.js",
+          "jest.config.js",
+          "LICENSE",
+          "next-env.d.ts",
+          "next.config.js",
+          "next.config.ts",
+          "package.json",
+          "package.standalone.json",
+          "playwright.config.enhanced.ts",
+          "playwright.config.ts",
+          "pnpm-lock.yaml",
+          "pnpm-workspace.yaml",
+          "populate-dictionary.mjs",
+          "README.md",
+          "start-dev.ps1",
+          "tsconfig.json",
+          "tsconfig.test.json",
+          "vercel.json",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".husky",
+          ".storybook",
+          ".turbo",
+          ".vercel",
+          ".vscode",
+          "app",
+          "apps",
+          "components",
+          "contexts",
+          "coverage",
+          "deployment",
+          "docs",
+          "e2e",
+          "e2e-tests",
+          "firebase",
+          "functions",
+          "lib",
+          "locales",
+          "node_modules",
+          "playwright-report",
+          "public",
+          "scripts",
+          "secrets",
+          "src",
+          "test-results",
+          "test-results-final",
+          "tests",
+          "__tests__"
+        ],
+        "size": 474685,
+        "structure": "clean"
+      },
+      "docs": {
+        "files": [
+          ".env.example",
+          ".gitignore",
+          ".npmrc",
+          "next-env.d.ts",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "README.md",
+          "tailwind.config.js",
+          "tsconfig.json",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "docs",
+          "public",
+          "src",
+          "tests"
+        ],
+        "size": 8963,
+        "structure": "clean"
+      },
+      "donai": {
+        "files": [
+          "package.json",
+          "playwright.config.ts",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          ".turbo",
+          "apps",
+          "deployment",
+          "docs",
+          "node_modules",
+          "tests"
+        ],
+        "size": 4158,
+        "structure": "clean"
+      },
+      "explorer": {
+        "files": [
+          ".env.example",
+          ".gitignore",
+          ".npmrc",
+          "next-env.d.ts",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "README.md",
+          "tailwind.config.js",
+          "tsconfig.json",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "docs",
+          "public",
+          "src",
+          "tests"
+        ],
+        "size": 8965,
+        "structure": "clean"
+      },
+      "fabricai": {
+        "files": [
+          ".env",
+          ".env.local",
+          ".env.test",
+          ".eslintrc.cjs",
+          ".eslintrc.js",
+          ".gitignore",
+          "agent.project.json",
+          "next-env.d.ts",
+          "next.config.cjs",
+          "next.config.js",
+          "package-express.json",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.cjs",
+          "postcss.config.js",
+          "README.md",
+          "server.cjs",
+          "tailwind.config.js",
+          "tsconfig.json",
+          "vercel.json",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".turbo",
+          ".vercel",
+          ".vscode",
+          "app",
+          "components",
+          "config",
+          "deployment",
+          "docs",
+          "lib",
+          "node_modules",
+          "pages",
+          "prisma",
+          "public",
+          "services",
+          "test-results",
+          "tests",
+          "types",
+          "__tests__"
+        ],
+        "size": 31116,
+        "structure": "clean"
+      },
+      "glass": {
+        "files": [
+          ".dockerignore",
+          ".editorconfig",
+          ".env.example",
+          ".eslintrc.js",
+          ".gitignore",
+          ".prettierrc.json",
+          "CHANGELOG.md",
+          "CODE_OF_CONDUCT.md",
+          "CONTRIBUTING.md",
+          "LICENSE",
+          "package.json",
+          "playwright.config.ts",
+          "pnpm-lock.yaml",
+          "pnpm-workspace.yaml",
+          "README.md",
+          "SECURITY.md",
+          "tsconfig.json",
+          "tsup.config.ts",
+          "USAGE_EXAMPLES.md",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          ".changeset",
+          ".git",
+          ".github",
+          ".husky",
+          ".turbo",
+          "backups",
+          "deployment",
+          "docs",
+          "node_modules",
+          "packages",
+          "plugins",
+          "tests"
+        ],
+        "size": 297020,
+        "structure": "clean"
+      },
+      "hub": {
+        "files": [
+          ".env",
+          ".env.example",
+          ".env.local",
+          ".env.test",
+          ".eslintrc.cjs",
+          ".gitignore",
+          ".npmrc",
+          "agent.project.json",
+          "index.html",
+          "index.js",
+          "jest.setup.js",
+          "middleware.ts",
+          "next-env.d.ts",
+          "next.config.cjs",
+          "next.config.js",
+          "package-express.json",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.cjs",
+          "postcss.config.js",
+          "README.md",
+          "server.js",
+          "server_new.js",
+          "server_old.js",
+          "tailwind.config.js",
+          "tsconfig.json",
+          "vercel.json",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".turbo",
+          ".vercel",
+          "app",
+          "components",
+          "config",
+          "deployment",
+          "docs",
+          "lib",
+          "node_modules",
+          "pages",
+          "prisma",
+          "public",
+          "services",
+          "src",
+          "tests",
+          "types",
+          "__tests__"
+        ],
+        "size": 108065,
+        "structure": "clean"
+      },
+      "id": {
+        "files": [
+          ".env",
+          ".env.example",
+          ".env.local",
+          ".env.test",
+          ".eslintrc.cjs",
+          ".gitignore",
+          ".npmrc",
+          "agent.project.json",
+          "index.html",
+          "index.js",
+          "middleware.ts",
+          "next-env.d.ts",
+          "next.config.cjs",
+          "next.config.js",
+          "package-express.json",
+          "package-lock.json",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.cjs",
+          "postcss.config.js",
+          "README.md",
+          "server-simple.js",
+          "server.js",
+          "tailwind.config.js",
+          "tsconfig.json",
+          "vercel.json",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".vercel",
+          "app",
+          "components",
+          "config",
+          "deployment",
+          "docs",
+          "lib",
+          "pages",
+          "prisma",
+          "public",
+          "src",
+          "tests",
+          "types",
+          "__tests__"
+        ],
+        "size": 366466,
+        "structure": "clean"
+      },
+      "jucai": {
+        "files": [
+          ".env.example",
+          ".gitignore",
+          ".npmrc",
+          "index.html",
+          "next-env.d.ts",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.js",
+          "README.md",
+          "server.js",
+          "tailwind.config.js",
+          "tsconfig.json",
+          "vercel.json",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".vercel",
+          "app",
+          "components",
+          "deployment",
+          "docs",
+          "lib",
+          "public",
+          "src",
+          "tests",
+          "__tests__"
+        ],
+        "size": 14609,
+        "structure": "clean"
+      },
+      "kodex": {
+        "files": [
+          ".env",
+          ".env.example",
+          ".env.local",
+          ".env.test",
+          ".eslintrc.cjs",
+          ".gitignore",
+          ".npmrc",
+          "agent.project.json",
+          "index.html",
+          "index.js",
+          "middleware.ts",
+          "next-env.d.ts",
+          "next.config.cjs",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.cjs",
+          "postcss.config.js",
+          "README.md",
+          "server.js",
+          "tailwind.config.js",
+          "tsconfig.json",
+          "vercel.json",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".vercel",
+          "app",
+          "components",
+          "config",
+          "contracts",
+          "deployment",
+          "docs",
+          "lib",
+          "pages",
+          "prisma",
+          "public",
+          "src",
+          "tests",
+          "types",
+          "__tests__"
+        ],
+        "size": 31011,
+        "structure": "clean"
+      },
+      "legalizai": {
+        "files": [
+          ".env",
+          ".env.example",
+          ".env.local",
+          ".env.test",
+          ".eslintrc.cjs",
+          ".gitignore",
+          ".npmrc",
+          "agent.project.json",
+          "index.html",
+          "index.js",
+          "middleware.ts",
+          "next-env.d.ts",
+          "next.config.cjs",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.cjs",
+          "postcss.config.js",
+          "README.md",
+          "server.js",
+          "tailwind.config.js",
+          "tailwind.config.ts",
+          "tsconfig.json",
+          "vercel.json",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".turbo",
+          ".vercel",
+          "components",
+          "config",
+          "deployment",
+          "docs",
+          "lib",
+          "node_modules",
+          "prisma",
+          "public",
+          "services",
+          "src",
+          "styles",
+          "tests",
+          "types",
+          "__tests__"
+        ],
+        "size": 33161,
+        "structure": "clean"
+      },
+      "logai": {
+        "files": [
+          ".env.example",
+          ".env.local",
+          ".env.test",
+          ".eslintrc.cjs",
+          ".eslintrc.js",
+          ".gitignore",
+          "agent.project.json",
+          "jest.setup.js",
+          "next-env.d.ts",
+          "next.config.cjs",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.cjs",
+          "postcss.config.js",
+          "README.md",
+          "tailwind.config.js",
+          "tsconfig.json",
+          "utils.ts",
+          "vercel.json",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".turbo",
+          ".vercel",
+          ".vscode",
+          "app",
+          "components",
+          "config",
+          "dashboard",
+          "deployment",
+          "docs",
+          "layout",
+          "lib",
+          "node_modules",
+          "prisma",
+          "public",
+          "services",
+          "src",
+          "tests",
+          "types",
+          "__tests__"
+        ],
+        "size": 28200,
+        "structure": "clean"
+      },
+      "marketai": {
+        "files": [
+          ".env.example",
+          ".gitignore",
+          ".npmrc",
+          "next-env.d.ts",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.js",
+          "README.md",
+          "tailwind.config.ts",
+          "tsconfig.json",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "docs",
+          "public",
+          "src",
+          "tests"
+        ],
+        "size": 6116,
+        "structure": "clean"
+      },
+      "memorai": {
+        "files": [
+          ".env.example",
+          ".env.production",
+          ".gitignore",
+          ".npmrc",
+          "CHANGELOG.md",
+          "COMPREHENSIVE_TEST_RESULTS.md",
+          "CONTRIBUTING.md",
+          "debug-semantic.js",
+          "ENTERPRISE_PROGRESS_SUMMARY.md",
+          "eslint.config.js",
+          "jest.setup.js",
+          "LICENSE",
+          "mcp-test-config.json",
+          "MEMORAI_100_PERCENT_COMPLETION_REPORT.md",
+          "middleware.ts",
+          "next-env.d.ts",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "pnpm-lock.yaml",
+          "pnpm-workspace.yaml",
+          "postcss.config.js",
+          "production-mcp-package.json",
+          "production-mcp-server.js",
+          "README.md",
+          "tailwind.config.js",
+          "test-framer-motion.test.tsx",
+          "test-icons.test.tsx",
+          "test-memory-store.test.tsx",
+          "test-simple-component.test.tsx",
+          "test-simple-memory-actions.test.tsx",
+          "test-simple.ts",
+          "test-stored-react-nodes.test.tsx",
+          "tsconfig.json",
+          "turbo.json",
+          "vercel.json",
+          "vitest.config.ts",
+          "vitest.setup.basic.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".github",
+          ".vercel",
+          ".vscode",
+          "app",
+          "apps",
+          "components",
+          "config",
+          "deployment",
+          "docs",
+          "lib",
+          "logs",
+          "mcp-package",
+          "node_modules",
+          "packages",
+          "pages.backup",
+          "prisma",
+          "scripts",
+          "services",
+          "src",
+          "test-results",
+          "tests",
+          "tools",
+          "types",
+          "__tests__"
+        ],
+        "size": 484320,
+        "structure": "clean"
+      },
+      "metu": {
+        "files": [
+          "electron.vite.config.ts",
+          "index.html",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.js",
+          "README.md",
+          "tailwind.config.js",
+          "tsconfig.json",
+          "vite.config.ts",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".turbo",
+          "deployment",
+          "dist",
+          "docs",
+          "node_modules",
+          "out",
+          "src",
+          "tests",
+          "__tests__"
+        ],
+        "size": 34367,
+        "structure": "clean"
+      },
+      "metu-web": {
+        "files": [
+          "next-env.d.ts",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.js",
+          "tailwind.config.js",
+          "tsconfig.json",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".turbo",
+          "app",
+          "deployment",
+          "docs",
+          "node_modules",
+          "pages",
+          "src",
+          "tests",
+          "__tests__"
+        ],
+        "size": 18439,
+        "structure": "clean"
+      },
+      "mobile": {
+        "files": [
+          ".env.example",
+          ".gitignore",
+          ".npmrc",
+          "next-env.d.ts",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.js",
+          "README.md",
+          "tailwind.config.ts",
+          "tsconfig.json",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "docs",
+          "public",
+          "src",
+          "tests"
+        ],
+        "size": 6037,
+        "structure": "clean"
+      },
+      "mod": {
+        "files": [
+          ".env.example",
+          ".gitignore",
+          ".npmrc",
+          "next-env.d.ts",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.js",
+          "README.md",
+          "tailwind.config.ts",
+          "tsconfig.json",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "docs",
+          "public",
+          "src",
+          "tests"
+        ],
+        "size": 6027,
+        "structure": "clean"
+      },
+      "muzicai": {
+        "files": [
+          ".gitignore",
+          "next-env.d.ts",
+          "package.json",
+          "playwright.config.ts",
+          "tsconfig.json",
+          "tsconfig.tsbuildinfo",
+          "vercel.json",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".turbo",
+          ".vercel",
+          "app",
+          "components",
+          "deployment",
+          "docs",
+          "lib",
+          "node_modules",
+          "tests",
+          "__tests__"
+        ],
+        "size": 268753,
+        "structure": "clean"
+      },
+      "prezentai": {
+        "files": [
+          "next-env.d.ts",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.js",
+          "tailwind.config.ts",
+          "tsconfig.json",
+          "tsconfig.tsbuildinfo",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".turbo",
+          "app",
+          "components",
+          "deployment",
+          "docs",
+          "lib",
+          "node_modules",
+          "tests",
+          "__tests__"
+        ],
+        "size": 57038,
+        "structure": "clean"
+      },
+      "publicai": {
+        "files": [
+          ".env",
+          ".env.local",
+          ".env.test",
+          ".eslintrc.cjs",
+          ".eslintrc.js",
+          ".gitignore",
+          "agent.project.json",
+          "middleware.ts",
+          "next-env.d.ts",
+          "next.config.cjs",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.cjs",
+          "postcss.config.js",
+          "README.md",
+          "tailwind.config.js",
+          "tsconfig.json",
+          "tsconfig.tsbuildinfo",
+          "vercel.json",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".turbo",
+          ".vercel",
+          ".vscode",
+          "app",
+          "components",
+          "config",
+          "deployment",
+          "docs",
+          "lib",
+          "node_modules",
+          "pages",
+          "prisma",
+          "public",
+          "src",
+          "tests",
+          "types",
+          "__tests__"
+        ],
+        "size": 335637,
+        "structure": "clean"
+      },
+      "romai": {
+        "files": [
+          ".env",
+          ".env.example",
+          ".env.production",
+          ".gitignore",
+          "api-test-suite.ps1",
+          "CHANGELOG.md",
+          "CONTRIBUTING.md",
+          "LICENSE",
+          "package.json",
+          "playwright.config.ts",
+          "pnpm-lock.yaml",
+          "pnpm-workspace.yaml",
+          "README.md",
+          "SECURITY.md",
+          "test_request.json",
+          "tsconfig.json",
+          "turbo.json",
+          "ULTIMATE_MCP_CHALLENGE_COMPLETED.md",
+          "vitest.config.ts",
+          "WEEK4_DAY25_CLOUD_DEPLOYMENT_START.md"
+        ],
+        "directories": [
+          ".github",
+          ".turbo",
+          "apps",
+          "configs",
+          "deployment",
+          "docs",
+          "infrastructure",
+          "logs",
+          "mcp-standalone",
+          "node_modules",
+          "packages",
+          "prompts",
+          "scripts",
+          "src",
+          "tests",
+          "tools",
+          "workflows"
+        ],
+        "size": 408994,
+        "structure": "clean"
+      },
+      "sociai": {
+        "files": [
+          ".env",
+          ".env.local",
+          ".env.test",
+          ".eslintrc.cjs",
+          ".eslintrc.js",
+          ".gitignore",
+          "agent.project.json",
+          "next-env.d.ts",
+          "next.config.cjs",
+          "next.config.js",
+          "package-express.json",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.cjs",
+          "postcss.config.js",
+          "README.md",
+          "server.cjs",
+          "tailwind.config.js",
+          "tsconfig.json",
+          "vercel.json",
+          "verify-component.mjs",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".turbo",
+          ".vercel",
+          ".vscode",
+          "app",
+          "components",
+          "config",
+          "deployment",
+          "docs",
+          "lib",
+          "node_modules",
+          "pages",
+          "prisma",
+          "public",
+          "services",
+          "src",
+          "tests",
+          "types",
+          "__tests__"
+        ],
+        "size": 35074,
+        "structure": "clean"
+      },
+      "stocai": {
+        "files": [
+          ".env",
+          ".env.example",
+          ".env.local",
+          ".env.logai",
+          ".env.test",
+          ".eslintrc.cjs",
+          ".gitignore",
+          "agent.project.json",
+          "index.html",
+          "index.js",
+          "INTEGRATION_GUIDE.md",
+          "middleware.ts",
+          "next-env.d.ts",
+          "next.config.cjs",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.cjs",
+          "postcss.config.js",
+          "PRODUCTION_OPTIMIZATION.md",
+          "README.md",
+          "server.js",
+          "tailwind.config.js",
+          "tailwind.config.ts",
+          "tsconfig.json",
+          "vercel.json",
+          "vitest.config.api.ts",
+          "vitest.config.ts",
+          "vitest.setup.api.ts",
+          "vitest.setup.basic.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".vercel",
+          "app",
+          "deployment",
+          "docs",
+          "pages",
+          "prisma",
+          "public",
+          "src",
+          "tests",
+          "types",
+          "__tests__"
+        ],
+        "size": 73335,
+        "structure": "clean"
+      },
+      "studiai": {
+        "files": [
+          ".env",
+          ".env.local",
+          ".env.test",
+          ".eslintignore",
+          ".eslintrc.cjs",
+          ".eslintrc.js",
+          ".eslintrc.json",
+          ".gitignore",
+          "clean-unused-imports.ps1",
+          "copilot-instructions.md",
+          "CURRENT_DEPLOYMENT_STATUS.json",
+          "eslint.config.js",
+          "firestore.rules",
+          "folder-tree.txt",
+          "next-env.d.ts",
+          "next.config.cjs",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.cjs",
+          "postcss.config.js",
+          "Project-Summary-2025-05-02.md",
+          "README.md",
+          "storage.rules",
+          "tailwind.config.js",
+          "tailwind.config.ts",
+          "temp-lesson-page.tsx",
+          "TODO.md",
+          "ts-fix.md",
+          "tsconfig.json",
+          "vercel.json",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".github",
+          ".turbo",
+          ".vercel",
+          "app",
+          "components",
+          "config",
+          "deployment",
+          "docs",
+          "lib",
+          "node_modules",
+          "pages",
+          "prisma",
+          "public",
+          "services",
+          "src",
+          "temp",
+          "test-results",
+          "tests",
+          "types",
+          "utils",
+          "__tests__"
+        ],
+        "size": 72124,
+        "structure": "clean"
+      },
+      "sunai": {
+        "files": [
+          "basic-test.js",
+          "next-env.d.ts",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.js",
+          "tailwind.config.js",
+          "tsconfig.json",
+          "vercel.json",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".turbo",
+          "app",
+          "components",
+          "deployment",
+          "docs",
+          "lib",
+          "node_modules",
+          "src",
+          "tests",
+          "types",
+          "__tests__"
+        ],
+        "size": 12139,
+        "structure": "clean"
+      },
+      "talentai": {
+        "files": [
+          ".npmrc",
+          "basic-test.js",
+          "next-env.d.ts",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.js",
+          "tailwind.config.js",
+          "test-import.js",
+          "test-imports.js",
+          "test-integration.js",
+          "test-working-only.js",
+          "tsconfig.json",
+          "vercel.json",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".turbo",
+          "app",
+          "apps",
+          "components",
+          "deployment",
+          "docs",
+          "lib",
+          "node_modules",
+          "pages",
+          "src",
+          "tests",
+          "types",
+          "__tests__"
+        ],
+        "size": 17093,
+        "structure": "clean"
+      },
+      "tools": {
+        "files": [
+          ".env.example",
+          ".gitignore",
+          ".npmrc",
+          "next-env.d.ts",
+          "next.config.js",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.js",
+          "README.md",
+          "tailwind.config.ts",
+          "tsconfig.json",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "docs",
+          "public",
+          "src",
+          "tests"
+        ],
+        "size": 6042,
+        "structure": "clean"
+      },
+      "wallet": {
+        "files": [
+          ".env.example",
+          ".env.local",
+          ".env.test",
+          ".eslintrc.cjs",
+          ".eslintrc.js",
+          ".gitignore",
+          "agent.project.json",
+          "jest.setup.js",
+          "next-env.d.ts",
+          "next.config.cjs",
+          "next.config.js",
+          "package-express.json",
+          "package.json",
+          "page.tsx",
+          "playwright.config.ts",
+          "postcss.config.cjs",
+          "postcss.config.js",
+          "README.md",
+          "server.cjs",
+          "tailwind.config.js",
+          "tsconfig.json",
+          "vercel.json",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".turbo",
+          ".vercel",
+          ".vscode",
+          "app",
+          "components",
+          "config",
+          "deployment",
+          "docs",
+          "lib",
+          "node_modules",
+          "pages",
+          "prisma",
+          "public",
+          "services",
+          "src",
+          "tests",
+          "types",
+          "__tests__"
+        ],
+        "size": 35242,
+        "structure": "clean"
+      },
+      "x": {
+        "files": [
+          ".env.local",
+          ".env.test",
+          ".eslintrc.cjs",
+          ".eslintrc.js",
+          ".gitignore",
+          "agent.project.json",
+          "middleware.ts",
+          "next-env.d.ts",
+          "next.config.cjs",
+          "next.config.js",
+          "package-express.json",
+          "package.json",
+          "playwright.config.ts",
+          "postcss.config.cjs",
+          "postcss.config.js",
+          "README.md",
+          "server.cjs",
+          "tailwind.config.js",
+          "tsconfig.json",
+          "vercel.json",
+          "vitest.config.ts",
+          "vitest.setup.ts"
+        ],
+        "directories": [
+          ".turbo",
+          ".vercel",
+          ".vscode",
+          "app",
+          "components",
+          "config",
+          "deployment",
+          "docs",
+          "lib",
+          "node_modules",
+          "pages",
+          "prisma",
+          "public",
+          "services",
+          "src",
+          "tests",
+          "types",
+          "__tests__"
+        ],
+        "size": 29880,
+        "structure": "clean"
+      }
+    },
+    "packages": {
+      "ai": {
+        "files": [
+          "package.json",
+          "tsconfig.json",
+          "tsconfig.tsbuildinfo",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          ".turbo",
+          "dist",
+          "node_modules",
+          "src",
+          "tests"
+        ],
+        "size": 3353,
+        "structure": "clean"
+      },
+      "analytics": {
+        "files": [
+          "package.json",
+          "tsconfig.esm.json",
+          "tsconfig.json",
+          "tsconfig.tsbuildinfo",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "node_modules",
+          "src",
+          "tests"
+        ],
+        "size": 198774,
+        "structure": "clean"
+      },
+      "api": {
+        "files": [
+          "package.json",
+          "tsconfig.esm.json",
+          "tsconfig.json",
+          "tsconfig.tsbuildinfo",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          ".turbo",
+          "dist",
+          "node_modules",
+          "src",
+          "tests"
+        ],
+        "size": 2924,
+        "structure": "clean"
+      },
+      "api-keys": {
+        "files": [
+          "package.json",
+          "README.md",
+          "tsconfig.json",
+          "tsup.config.ts",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "node_modules",
+          "src",
+          "tests"
+        ],
+        "size": 14577,
+        "structure": "clean"
+      },
+      "auth": {
+        "files": [
+          "package.json",
+          "tsconfig.esm.json",
+          "tsconfig.json",
+          "tsconfig.tsbuildinfo",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "node_modules",
+          "src",
+          "tests"
+        ],
+        "size": 174113,
+        "structure": "clean"
+      },
+      "cli": {
+        "files": [
+          "package.json",
+          "tsconfig.json",
+          "tsconfig.tsbuildinfo",
+          "tsup.config.ts",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          ".turbo",
+          "dist",
+          "node_modules",
+          "src",
+          "tests"
+        ],
+        "size": 3714,
+        "structure": "clean"
+      },
+      "config": {
+        "files": [
+          "package.json",
+          "tsconfig.esm.json",
+          "tsconfig.json",
+          "tsconfig.tsbuildinfo",
+          "tsup.config.ts",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          ".turbo",
+          "dist",
+          "node_modules",
+          "src",
+          "tests"
+        ],
+        "size": 228736,
+        "structure": "clean"
+      },
+      "core": {
+        "files": [
+          "package.json",
+          "tsconfig.json",
+          "tsconfig.tsbuildinfo",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "node_modules",
+          "src",
+          "tests"
+        ],
+        "size": 82697,
+        "structure": "clean"
+      },
+      "deployment": {
+        "files": [
+          "package.json",
+          "tsconfig.json",
+          "tsconfig.tsbuildinfo",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          ".turbo",
+          "dist",
+          "node_modules",
+          "src",
+          "tests"
+        ],
+        "size": 2902,
+        "structure": "clean"
+      },
+      "eslint-config": {
+        "files": [
+          "index.js",
+          "next.js",
+          "package.json",
+          "react.js",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "node_modules",
+          "rules",
+          "tests"
+        ],
+        "size": 3581,
+        "structure": "clean"
+      },
+      "logai-integration": {
+        "files": [
+          "package.json",
+          "tsconfig.json",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          ".turbo",
+          "dist",
+          "node_modules",
+          "src",
+          "tests"
+        ],
+        "size": 1665,
+        "structure": "clean"
+      },
+      "logai-sdk": {
+        "files": [
+          "package.json",
+          "tsconfig.json",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          ".turbo",
+          "dist",
+          "node_modules",
+          "src",
+          "tests"
+        ],
+        "size": 2548,
+        "structure": "clean"
+      },
+      "logai-universal": {
+        "files": [
+          "package-lock.json",
+          "package.json",
+          "tsconfig.json",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "node_modules",
+          "server",
+          "src",
+          "tests"
+        ],
+        "size": 190732,
+        "structure": "clean"
+      },
+      "prettier-config": {
+        "files": [
+          "index.js",
+          "package.json",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "node_modules",
+          "tests"
+        ],
+        "size": 1473,
+        "structure": "clean"
+      },
+      "realtime": {
+        "files": [
+          "package.json",
+          "tsconfig.esm.json",
+          "tsconfig.json",
+          "tsconfig.tsbuildinfo",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          ".turbo",
+          "dist",
+          "node_modules",
+          "src",
+          "tests"
+        ],
+        "size": 68784,
+        "structure": "clean"
+      },
+      "sdk": {
+        "files": [
+          "package.json",
+          "PHASE_1_COMPLETION_REPORT.md",
+          "PHASE_2_MASTER_PLAN.md",
+          "README.md",
+          "tsconfig.esm.json",
+          "tsconfig.json",
+          "tsconfig.tsbuildinfo",
+          "tsup.config.ts",
+          "validate-phase1.js",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          ".turbo",
+          "dist",
+          "examples",
+          "node_modules",
+          "src",
+          "tests"
+        ],
+        "size": 359543,
+        "structure": "clean"
+      },
+      "security": {
+        "files": [
+          ".gitignore",
+          "README.md",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "docs",
+          "src",
+          "tests"
+        ],
+        "size": 2138,
+        "structure": "clean"
+      },
+      "service-discovery": {
+        "files": [
+          "package.json",
+          "tsconfig.json",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          ".turbo",
+          "dist",
+          "node_modules",
+          "src",
+          "tests"
+        ],
+        "size": 1895,
+        "structure": "clean"
+      },
+      "service-registry": {
+        "files": [
+          "package.json",
+          "README.md",
+          "tsconfig.esm.json",
+          "tsconfig.json",
+          "tsconfig.tsbuildinfo",
+          "tsup.config.ts",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          ".turbo",
+          "dist",
+          "node_modules",
+          "src",
+          "tests"
+        ],
+        "size": 222020,
+        "structure": "clean"
+      },
+      "shared-hooks": {
+        "files": [
+          "index.ts",
+          "package.json",
+          "tsconfig.json",
+          "tsconfig.tsbuildinfo",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          ".turbo",
+          "dist",
+          "node_modules",
+          "src",
+          "tests"
+        ],
+        "size": 52734,
+        "structure": "clean"
+      },
+      "shared-services": {
+        "files": [
+          "package.json",
+          "tsconfig.json",
+          "tsconfig.tsbuildinfo",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "node_modules",
+          "src",
+          "tests"
+        ],
+        "size": 38079,
+        "structure": "clean"
+      },
+      "shared-types": {
+        "files": [
+          "package.json",
+          "tsconfig.json",
+          "tsconfig.tsbuildinfo",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "node_modules",
+          "src",
+          "tests"
+        ],
+        "size": 37598,
+        "structure": "clean"
+      },
+      "shared-ui": {
+        "files": [
+          "package.json",
+          "tsconfig.json",
+          "tsconfig.tsbuildinfo",
+          "utils.ts",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "node_modules",
+          "src",
+          "tests"
+        ],
+        "size": 45843,
+        "structure": "clean"
+      },
+      "typescript-config": {
+        "files": [
+          "base.json",
+          "nextjs.json",
+          "package.json",
+          "react.json",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "node_modules",
+          "tests"
+        ],
+        "size": 2917,
+        "structure": "clean"
+      },
+      "ui": {
+        "files": [
+          ".eslintrc.js",
+          "eslint.config.js",
+          "package.json",
+          "tailwind.config.js",
+          "tailwind.config.ts",
+          "tsconfig.esm.json",
+          "tsconfig.json",
+          "tsconfig.tsbuildinfo",
+          "tsup.config.ts",
+          "vitest.config.ts"
+        ],
+        "directories": [
+          "-p",
+          ".turbo",
+          "dist",
+          "node_modules",
+          "src",
+          "tests"
+        ],
+        "size": 63703,
+        "structure": "clean"
+      }
+    },
+    "scripts": {},
+    "docs": {},
+    "configs": {}
+  },
+  "stats": {
+    "filesRemoved": 899788,
+    "directoriesRemoved": 94057,
+    "duplicatesResolved": 3,
+    "structuresFixed": 4,
+    "errors": [
+      {
+        "target": "test-stocai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\test-stocai\\node_modules\\.pnpm\\@babel+core@7.28.0\\node_modules\\@ampproject\\remapping'"
+      },
+      {
+        "app": "acasai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\acasai\\node_modules\\@tailwindcss\\postcss'"
+      },
+      {
+        "app": "analizai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\analizai\\node_modules\\@codai\\api-keys\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "app": "bancai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\bancai\\node_modules\\@codai\\api-keys\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "app": "bancai-mobile",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\bancai-mobile\\node_modules\\@babel\\core'"
+      },
+      {
+        "app": "codai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\codai\\node_modules\\.pnpm\\@babel+core@7.28.0\\node_modules\\@ampproject\\remapping'"
+      },
+      {
+        "app": "codai-mobile",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\codai-mobile\\node_modules\\@babel\\core'"
+      },
+      {
+        "app": "conversai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\conversai\\node_modules\\@codai\\conversai-web\\node_modules\\@codai\\logai-universal'"
+      },
+      {
+        "app": "cumparai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\cumparai\\node_modules\\@codai\\api-keys\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "app": "curtai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\curtai\\node_modules\\@testing-library\\jest-dom'"
+      },
+      {
+        "app": "dexai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\dexai\\node_modules\\.pnpm\\@babel+core@7.28.0\\node_modules\\@ampproject\\remapping'"
+      },
+      {
+        "app": "donai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\donai\\node_modules\\@codai\\logai-universal\\node_modules\\@types\\jest'"
+      },
+      {
+        "app": "fabricai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\fabricai\\node_modules\\@codai\\api-keys\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "app": "glass",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\glass\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "app": "hub",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\hub\\node_modules\\@codai\\api-keys\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "app": "legalizai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\legalizai\\node_modules\\@codai\\api-keys\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "app": "logai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\logai\\node_modules\\@codai\\api-keys\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "app": "memorai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\memorai\\node_modules\\.pnpm\\@babel+core@7.28.0\\node_modules\\@ampproject\\remapping'"
+      },
+      {
+        "app": "metu",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\metu\\node_modules\\@codai\\shared-ui\\node_modules\\@types\\react'"
+      },
+      {
+        "app": "metu-web",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\metu-web\\node_modules\\@codai\\api-keys\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "app": "muzicai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\muzicai\\node_modules\\@testing-library\\jest-dom'"
+      },
+      {
+        "app": "prezentai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\prezentai\\node_modules\\@tailwindcss\\nesting'"
+      },
+      {
+        "app": "publicai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\publicai\\node_modules\\@testing-library\\jest-dom'"
+      },
+      {
+        "app": "romai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\romai\\node_modules\\.pnpm\\@babel+types@7.28.1\\node_modules\\@babel\\helper-string-parser'"
+      },
+      {
+        "app": "sociai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\sociai\\node_modules\\@codai\\api-keys\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "app": "studiai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\studiai\\node_modules\\@codai\\api-keys\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "app": "sunai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\sunai\\node_modules\\@codai\\api-keys\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "app": "talentai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\talentai\\node_modules\\@codai\\api-keys\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "app": "wallet",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\wallet\\node_modules\\@codai\\api-keys\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "app": "x",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\apps\\x\\node_modules\\@codai\\api-keys\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "package": "ai",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\ai\\node_modules\\@ai-sdk\\anthropic'"
+      },
+      {
+        "package": "analytics",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\analytics\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "package": "api",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\api\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "package": "api-keys",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\api-keys\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "package": "auth",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\auth\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "package": "cli",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\cli\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "package": "config",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\config\\node_modules\\@jest\\types'"
+      },
+      {
+        "package": "core",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "package": "deployment",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\deployment\\node_modules\\@codai\\analytics\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "package": "eslint-config",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\eslint-config\\node_modules\\@typescript-eslint\\eslint-plugin'"
+      },
+      {
+        "package": "logai-integration",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\logai-integration\\node_modules\\@codai\\api-keys\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "package": "logai-sdk",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\logai-sdk\\node_modules\\@types\\node'"
+      },
+      {
+        "package": "logai-universal",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\logai-universal\\node_modules\\@types\\jest'"
+      },
+      {
+        "package": "prettier-config",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\prettier-config\\node_modules\\prettier'"
+      },
+      {
+        "package": "realtime",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\realtime\\node_modules\\@types\\jsonwebtoken'"
+      },
+      {
+        "package": "sdk",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\sdk\\node_modules\\@codai\\auth\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "package": "service-discovery",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\service-discovery\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "package": "service-registry",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\service-registry\\node_modules\\@codai\\core\\node_modules\\@anthropic-ai\\sdk'"
+      },
+      {
+        "package": "shared-hooks",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\shared-hooks\\node_modules\\@codai\\shared-services\\node_modules\\@codai\\shared-types\\node_modules\\react'"
+      },
+      {
+        "package": "shared-services",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\shared-services\\node_modules\\@codai\\shared-types\\node_modules\\react'"
+      },
+      {
+        "package": "shared-types",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\shared-types\\node_modules\\react'"
+      },
+      {
+        "package": "shared-ui",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\shared-ui\\node_modules\\@types\\react'"
+      },
+      {
+        "package": "typescript-config",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\typescript-config\\node_modules\\typescript'"
+      },
+      {
+        "package": "ui",
+        "error": "ENOENT: no such file or directory, stat 'E:\\GitHub\\codai-project\\packages\\ui\\node_modules\\@radix-ui\\react-dialog'"
+      }
+    ]
+  }
+}

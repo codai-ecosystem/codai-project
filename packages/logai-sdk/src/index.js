@@ -1,8 +1,11 @@
+"use strict";
 /**
  * LogAI SDK - Universal logging client for CODAI ecosystem
  * Provides seamless integration with LogAI service for all ecosystem apps
  */
-export class LogAIClient {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getLogAIConfig = exports.createLogAIClient = exports.LogAIClient = void 0;
+class LogAIClient {
     constructor(config) {
         var _a;
         this.logQueue = [];
@@ -191,16 +194,18 @@ export class LogAIClient {
         return `trace_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     }
 }
+exports.LogAIClient = LogAIClient;
 /**
  * Default LogAI instance for quick usage
  */
-export const createLogAIClient = (config) => {
+const createLogAIClient = (config) => {
     return new LogAIClient(config);
 };
+exports.createLogAIClient = createLogAIClient;
 /**
  * Environment-aware configuration helper
  */
-export const getLogAIConfig = (service) => {
+const getLogAIConfig = (service) => {
     const isDevelopment = process.env.NODE_ENV === 'development';
     const isProduction = process.env.NODE_ENV === 'production';
     return {
@@ -217,3 +222,4 @@ export const getLogAIConfig = (service) => {
         flushInterval: isDevelopment ? 3000 : 10000
     };
 };
+exports.getLogAIConfig = getLogAIConfig;

@@ -4,7 +4,7 @@ export { useTheme } from './useTheme';
 export { useNotifications } from './useNotifications';
 export { usePWA } from './usePWA';
 export { useFormFields } from './useFormFields';
-export { useI18n, useTranslation } from '@/contexts/I18nContext';
+// export { useI18n, useTranslation } from '@/contexts/I18nContext'; // TODO: Create I18nContext
 export * from './common';
 
 // Data handling hooks

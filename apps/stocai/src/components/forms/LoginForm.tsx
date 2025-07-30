@@ -62,7 +62,7 @@ export function LoginForm({
   const onSubmit = async (data: LoginFormData) => {
     try {
       const result = await signIn(data);
-      if (result.error !== null && result.error !== '') {
+      if (result.error) {
         toast.error(result.error);
       } else {
         toast.success('Welcome back!');
@@ -75,7 +75,7 @@ export function LoginForm({
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithGoogle();
-      if (result.error !== null && result.error !== '') {
+      if (result.error) {
         toast.error(result.error);
       } else {
         toast.success('Welcome!');
@@ -104,35 +104,33 @@ export function LoginForm({
             {...register('email')}
             type="email"
             placeholder="Enter your email"
-            leftIcon={<Mail className="h-4 w-4" />}
             {...(errors.email?.message != null && {
               error: errors.email.message,
             })}
             disabled={isSubmitting}
           />
-          <Input
-            {...register('password')}
-            type={showPassword ? 'text' : 'password'}
-            placeholder="Enter your password"
-            leftIcon={<Lock className="h-4 w-4" />}
-            rightIcon={
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-                className="text-muted-foreground hover:text-foreground"
-              >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4" />
-                ) : (
-                  <Eye className="h-4 w-4" />
-                )}
-              </button>
-            }
-            {...(errors.password?.message != null && {
-              error: errors.password.message,
-            })}
-            disabled={isSubmitting}
-          />
+          <div className="relative">
+            <Input
+              {...register('password')}
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Enter your password"
+              disabled={isSubmitting}
+              {...(errors.password?.message != null && {
+                error: errors.password.message,
+              })}
+            />
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            >
+              {showPassword ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
+            </button>
+          </div>
           <div className="flex items-center justify-between">
             <label className="flex items-center space-x-2 text-sm">
               <input type="checkbox" className="rounded border-gray-300" />
@@ -146,8 +144,8 @@ export function LoginForm({
               Forgot password?
             </button>
           </div>
-          <Button type="submit" fullWidth isLoading={isSubmitting}>
-            Sign In
+          <Button type="submit" fullWidth disabled={isSubmitting}>
+            {isSubmitting ? 'Signing In...' : 'Sign In'}
           </Button>
         </form>
 

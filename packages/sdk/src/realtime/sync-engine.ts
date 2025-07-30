@@ -319,7 +319,7 @@ export class SyncEngine extends EventEmitter<SyncEvents> {
     const startTime = Date.now();
     let successful = 0;
     let failed = 0;
-    let totalConflicts = 0;
+    const totalConflicts = 0;
 
     this.emit('sync:started', { batchSize: this.pendingChanges.size });
 

@@ -1,31 +1,27 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
-  eslint: {
-    ignoreDuringBuilds: true,
+  turbopack: {
+    resolveAlias: {
+      canvas: './empty-module.js',
+    },
   },
   typescript: {
     ignoreBuildErrors: false,
   },
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
   images: {
-    domains: ['localhost'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
-  env: {
-    APP_NAME: 'SOCIAI',
-    APP_DESCRIPTION: 'AI Social Platform',
-    APP_PORT: '4037',
-  },
-  // Exclude development files from production build
-  webpack: (config, { dev, isServer }) => {
-    if (!dev && !isServer) {
-      // Exclude Storybook stories and test files from production builds
-      config.module.rules.push({
-        test: /\.(stories|test|spec)\.(js|jsx|ts|tsx)$/,
-        use: 'ignore-loader',
-      });
-    }
-    return config;
-  },
-}
+};
 
-module.exports = nextConfig;
+export default nextConfig;

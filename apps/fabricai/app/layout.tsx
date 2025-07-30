@@ -1,16 +1,23 @@
-import type { Metadata } from 'next'
+import React from 'react'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
+import { AuthProvider } from '@codai/shared-ui'
 import './globals.css'
-import FabricAILayout from './FabricAILayout'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'FabricAI - AI Development Platform',
-  description: 'Advanced AI development platform with code generation, workflows, and automation tools',
-  keywords: ['AI', 'development', 'platform', 'code generation', 'workflows', 'automation', 'fabricai'],
-  authors: [{ name: 'Codai Team' }],
-  viewport: 'width=device-width, initial-scale=1',
+  title: 'FABRICAI - AI-Powered Platform',
+  description: 'Next-generation AI platform for fabricai services',
+  keywords: ['AI', 'fabricai', 'platform', 'automation', 'intelligence'],
+  authors: [{ name: 'CODAI Team' }],
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 }
 
 export default function RootLayout({
@@ -19,11 +26,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <FabricAILayout>
-          {children}
-        </FabricAILayout>
+        <AuthProvider
+          apiBaseUrl="/api"
+          redirectTo="/dashboard"
+          loginPath="/login"
+        >
+          <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+            {children}
+          </div>
+        </AuthProvider>
       </body>
     </html>
   )

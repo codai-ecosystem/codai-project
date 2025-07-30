@@ -1,0 +1,47 @@
+{
+  "timestamp": "2025-07-29T18:41:23.642Z",
+  "system": {
+    "activeProjects": 0,
+    "workflowTemplates": 4,
+    "deploymentStrategies": 3,
+    "registeredServices": 8,
+    "connectedClients": 0
+  },
+  "workflows": {
+    "total": 0,
+    "completed": 0,
+    "running": 0,
+    "failed": 0
+  },
+  "services": {
+    "healthy": 0,
+    "unhealthy": 0,
+    "errors": 0
+  },
+  "resources": {
+    "cpu": {
+      "allocated": 0,
+      "available": 100,
+      "optimization": "optimal"
+    },
+    "memory": {
+      "allocated": 0,
+      "available": 100,
+      "optimization": "optimal"
+    },
+    "network": {
+      "allocated": 0,
+      "available": 100,
+      "optimization": "optimal"
+    },
+    "storage": {
+      "allocated": 0,
+      "available": 100,
+      "optimization": "optimal"
+    }
+  },
+  "performance": {
+    "status": "insufficient_data"
+  },
+  "recommendations": []
+}

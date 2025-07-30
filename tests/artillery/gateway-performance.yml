@@ -1,0 +1,69 @@
+config:
+  target: 'http://localhost:4000'
+  phases:
+    - duration: 60
+      arrivalRate: 5
+      name: "Warm up phase"
+    - duration: 120
+      arrivalRate: 10
+      name: "Sustained load"
+    - duration: 60
+      arrivalRate: 20
+      name: "Peak load"
+  ensure:
+    p95: 500
+    p99: 800
+    maxErrorRate: 5
+
+scenarios:
+  - name: "Gateway Service Load Test"
+    weight: 100
+    flow:
+      - get:
+          url: "/api/gateway/health"
+          capture:
+            - json: "$.status"
+              as: "healthStatus"
+      - think: 1
+      - get:
+          url: "/api/v1/codai/health"
+          headers:
+            Accept: "application/json"
+      - think: 2
+      - get:
+          url: "/health"
+          headers:
+            Accept: "application/json"
+      - think: 1
+      - get:
+          url: "/api/nonexistent"
+          headers:
+            Accept: "application/json"
+
+  - name: "Service Discovery Load Test"
+    weight: 30
+    flow:
+      - loop:
+          - get:
+              url: "/api/v1/{{ $randomChoice('codai', 'admin', 'hub', 'id', 'bancai', 'memorai') }}/health"
+              headers:
+                Accept: "application/json"
+          - think: 1
+        count: 5
+
+  - name: "Authentication Flow Load Test"
+    weight: 20
+    flow:
+      - post:
+          url: "/api/v1/id/auth/login"
+          headers:
+            Content-Type: "application/json"
+          json:
+            email: "test@example.com"
+            password: "testpassword"
+      - think: 2
+      - get:
+          url: "/api/v1/admin/health"
+          headers:
+            Authorization: "Bearer {{ token }}"
+            Accept: "application/json"

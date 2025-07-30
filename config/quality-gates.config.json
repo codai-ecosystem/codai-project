@@ -1,0 +1,114 @@
+{
+  "gates": {
+    "pre-commit": {
+      "enabled": true,
+      "checks": [
+        {
+          "tool": "prettier",
+          "action": "check",
+          "failOnError": true
+        },
+        {
+          "tool": "eslint",
+          "action": "lint",
+          "failOnError": true
+        },
+        {
+          "tool": "typescript",
+          "action": "check",
+          "failOnError": true
+        }
+      ]
+    },
+    "pre-push": {
+      "enabled": true,
+      "checks": [
+        {
+          "tool": "eslint",
+          "action": "lint",
+          "failOnError": true
+        },
+        {
+          "tool": "typescript",
+          "action": "build",
+          "failOnError": true
+        },
+        {
+          "tool": "tests",
+          "action": "unit",
+          "failOnError": true
+        }
+      ]
+    },
+    "pull-request": {
+      "enabled": true,
+      "checks": [
+        {
+          "tool": "code-analysis",
+          "action": "analyze",
+          "failOnError": false
+        },
+        {
+          "tool": "coverage",
+          "action": "check",
+          "threshold": 80,
+          "failOnError": true
+        },
+        {
+          "tool": "complexity",
+          "action": "check",
+          "threshold": 10,
+          "failOnError": true
+        },
+        {
+          "tool": "security",
+          "action": "scan",
+          "failOnError": true
+        }
+      ]
+    },
+    "release": {
+      "enabled": true,
+      "checks": [
+        {
+          "tool": "eslint",
+          "action": "lint",
+          "failOnError": true
+        },
+        {
+          "tool": "typescript",
+          "action": "build",
+          "failOnError": true
+        },
+        {
+          "tool": "tests",
+          "action": "all",
+          "failOnError": true
+        },
+        {
+          "tool": "code-analysis",
+          "action": "analyze",
+          "failOnError": true
+        },
+        {
+          "tool": "security",
+          "action": "audit",
+          "failOnError": true
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "quality:check": "npm run lint && npm run typecheck && npm run test:unit",
+    "quality:fix": "npm run format && npm run lint:fix",
+    "quality:analyze": "npm run analyze && npm run complexity",
+    "quality:full": "npm run quality:check && npm run quality:analyze"
+  },
+  "thresholds": {
+    "coverage": 80,
+    "complexity": 10,
+    "duplicates": 3,
+    "maintainability": 70,
+    "security": 0
+  }
+}

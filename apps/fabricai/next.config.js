@@ -1,20 +1,30 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
-  eslint: {
-    ignoreDuringBuilds: true
+  experimental: {
+    turbo: {
+      resolveAlias: {
+        canvas: './empty-module.js',
+      },
+    },
   },
   typescript: {
-    ignoreBuildErrors: true
+    ignoreBuildErrors: false,
+  },
+  eslint: {
+    ignoreDuringBuilds: false, // Enable strict ESLint checking
+  },
+  swcMinify: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
   },
   images: {
-    domains: ['localhost'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
-  env: {
-    APP_NAME: 'FABRICAI',
-    APP_DESCRIPTION: 'AI Services Platform',
-    APP_PORT: '4035',
-  },
-}
+};
 
-module.exports = nextConfig;
+export default nextConfig;

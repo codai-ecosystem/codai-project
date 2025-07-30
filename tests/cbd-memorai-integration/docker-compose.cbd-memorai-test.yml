@@ -1,0 +1,165 @@
+version: '3.8'
+
+services:
+  # CBD Engine Service
+  cbd-engine:
+    build:
+      context: ../../packages/cbd-engine
+      dockerfile: Dockerfile
+    container_name: cbd-engine-test
+    ports:
+      - "8080:8080"
+    environment:
+      NODE_ENV: test
+      CBD_LOG_LEVEL: debug
+      CBD_CORS_ENABLED: true
+      CBD_RATE_LIMITING: false
+    volumes:
+      - cbd-test-data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    networks:
+      - cbd-memorai-test
+
+  # MemoraiMCP Service with CBD Backend
+  memorai-mcp:
+    build:
+      context: ../../packages/memorai-mcp
+      dockerfile: Dockerfile
+    container_name: memorai-mcp-test
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: test
+      CBD_HOST: cbd-engine
+      CBD_PORT: 8080
+      CBD_DATABASE: memorai_test_db
+      MEMORAI_BACKEND: cbd-engine
+      MEMORAI_LOG_LEVEL: debug
+      PORT: 3000
+    depends_on:
+      cbd-engine:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 45s
+    networks:
+      - cbd-memorai-test
+
+  # Redis for Caching (Test Environment)
+  redis-test:
+    image: redis:7-alpine
+    container_name: redis-cbd-test
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis-test-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+    networks:
+      - cbd-memorai-test
+
+  # Test Runner Service
+  test-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: cbd-memorai-test-runner
+    environment:
+      CBD_HOST: cbd-engine
+      CBD_PORT: 8080
+      MEMORAI_MCP_HOST: memorai-mcp
+      MEMORAI_MCP_PORT: 3000
+      REDIS_HOST: redis-test
+      REDIS_PORT: 6379
+      NODE_ENV: test
+    volumes:
+      - ./tests:/app/tests
+      - ./results:/app/results
+    depends_on:
+      cbd-engine:
+        condition: service_healthy
+      memorai-mcp:
+        condition: service_healthy
+      redis-test:
+        condition: service_healthy
+    command: |
+      sh -c "
+        echo 'Waiting for services to be fully ready...'
+        sleep 10
+        echo 'Running CBD-MemoraiMCP Integration Tests...'
+        npm run test:integration
+        echo 'Running Performance Benchmarks...'
+        npm run test:performance
+        echo 'Running Enterprise Validation...'
+        npm run test:enterprise
+        echo 'Generating Test Reports...'
+        npm run test:report
+      "
+    networks:
+      - cbd-memorai-test
+
+  # Performance Monitor
+  performance-monitor:
+    image: prom/prometheus:latest
+    container_name: cbd-test-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus-test.yml:/etc/prometheus/prometheus.yml
+      - prometheus-test-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=1h'
+      - '--web.enable-lifecycle'
+    networks:
+      - cbd-memorai-test
+
+  # Metrics Visualization
+  grafana-test:
+    image: grafana/grafana:latest
+    container_name: cbd-test-grafana
+    ports:
+      - "3001:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: testpassword
+      GF_INSTALL_PLUGINS: grafana-clock-panel,grafana-simple-json-datasource
+    volumes:
+      - grafana-test-data:/var/lib/grafana
+      - ./monitoring/grafana-test.ini:/etc/grafana/grafana.ini
+      - ./monitoring/dashboards:/etc/grafana/provisioning/dashboards
+    depends_on:
+      - performance-monitor
+    networks:
+      - cbd-memorai-test
+
+volumes:
+  cbd-test-data:
+    driver: local
+  redis-test-data:
+    driver: local
+  prometheus-test-data:
+    driver: local
+  grafana-test-data:
+    driver: local
+
+networks:
+  cbd-memorai-test:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

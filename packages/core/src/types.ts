@@ -22,6 +22,15 @@ export interface ApiResponse<T = any> {
   timestamp: string;
 }
 
+export interface PaginatedResponse<T = any> extends ApiResponse<T> {
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
+}
+
 export interface User {
   id: string;
   email: string;

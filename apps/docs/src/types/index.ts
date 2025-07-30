@@ -1,6 +1,19 @@
-export * from './api';
-export * from './auth';
-export * from './common';
-export * from './global';
-export * from './i18n';
-export * from './pwa';
+// Common types for CODAI ecosystem apps
+export interface AppConfig {
+  name: string;
+  version: string;
+  description: string;
+}
+
+export interface ApiResponse<T = any> {
+  success: boolean;
+  data?: T;
+  error?: string;
+}
+
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  role: 'admin' | 'user';
+}

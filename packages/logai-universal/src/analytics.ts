@@ -194,7 +194,7 @@ export class LogAIAnalytics extends EventEmitter {
     }
   }
 
-  private generateInsights(data: Array<{ timestamp: Date; value: number }>, query: AnalyticsQuery): string[] {
+  private generateInsights(data: Array<{ timestamp: Date; value: number }>, _query: AnalyticsQuery): string[] {
     const insights: string[] = []
 
     if (data.length === 0) {

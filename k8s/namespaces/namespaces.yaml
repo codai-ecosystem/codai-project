@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cbd-memorai-prod
+  labels:
+    name: cbd-memorai-prod
+    environment: production
+    project: codai
+    tier: backend
+  annotations:
+    description: "Production namespace for CBD-MemoraiMCP integration system"
+    owner: "codai-ecosystem"
+    compliance: "soc2-type2,gdpr"
+spec: {}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cbd-memorai-staging
+  labels:
+    name: cbd-memorai-staging
+    environment: staging
+    project: codai
+    tier: backend
+  annotations:
+    description: "Staging namespace for CBD-MemoraiMCP integration system"
+    owner: "codai-ecosystem"
+    compliance: "testing-validation"
+spec: {}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cbd-memorai-monitoring
+  labels:
+    name: cbd-memorai-monitoring
+    environment: production
+    project: codai
+    tier: observability
+  annotations:
+    description: "Monitoring and observability namespace for CBD-MemoraiMCP system"
+    owner: "codai-ecosystem"
+    compliance: "logging-audit"
+spec: {}

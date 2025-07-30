@@ -3,6 +3,7 @@
 import { useState, useContext, useEffect, useCallback } from 'react';
 import { AppContext } from '@/components/AppContext';
 import { firestoreDB, firebaseStorage } from '@/utils/firebase/firebase.config';
+import { getFirestoreDB, getFirebaseStorage } from '@/lib/firebase-config';
 import { doc, addDoc, collection, updateDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { motion } from 'framer-motion';
@@ -24,16 +25,16 @@ import {
 } from '../icons/FeatherIconsExtended';
 import { Course } from '@/types';
 // Import UI components
-import Card, { CardBody, CardHeader } from '@/components/ui/Card';
-import Textarea from '@/components/ui/Textarea';
-import Input from '@/components/ui/Input';
-import Button from '@/components/ui/Button';
+import { Card, CardHeader } from '@/components/ui/Card';
+import { Textarea } from '@/components/ui/Textarea';
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
 import Divider from '@/components/ui/Divider';
-import Select, { SelectItem } from '@/components/ui/Select';
+import { Select, SelectItem } from '@/components/ui/select';
 import LoadingButton from '../Buttons/LoadingButton';
-import Switch from '@/components/ui/Switch';
+import { Switch } from '@/components/ui/Switch';
 import Chip from '@/components/ui/Chip';
-import Tooltip from '@/components/ui/Tooltip';
+import { Tooltip } from '@/components/ui/Tooltip';
 import CourseNameField from './fields/CourseNameField';
 import CourseDescriptionField from './fields/CourseDescriptionField';
 import InstructorNameField from './fields/InstructorNameField';
@@ -164,7 +165,7 @@ export default function AddCourse(props: AddCourseProps) {
       // If image is provided, upload it first
       if (courseImage) {
         const storageRef = ref(
-          firebaseStorage,
+          getFirebaseStorage(),
           `courses/${courseImage.name}_${Date.now()}`
         );
         const snapshot = await uploadBytes(storageRef, courseImage);
@@ -173,7 +174,7 @@ export default function AddCourse(props: AddCourseProps) {
       }
 
       // Add the course to Firestore
-      await addDoc(collection(firestoreDB, 'courses'), courseData);
+      await addDoc(collection(getFirestoreDB(), 'courses'), courseData);
       setLoading(false);
       onClose();
     } catch (error) {
@@ -205,7 +206,7 @@ export default function AddCourse(props: AddCourseProps) {
 
     setLoading(true);
     try {
-      const courseRef = doc(firestoreDB, `courses/${courseId}`);
+      const courseRef = doc(getFirestoreDB(), `courses/${courseId}`);
       const priceProduct = products.find((product: any) =>
         product.prices.find((price: any) => price.id === coursePrice)
       );
@@ -236,7 +237,7 @@ export default function AddCourse(props: AddCourseProps) {
       // If a new image is selected, upload it first
       if (courseImage) {
         const storageRef = ref(
-          firebaseStorage,
+          getFirebaseStorage(),
           `courses/${courseId}/${courseImage.name}_${Date.now()}`
         );
         const snapshot = await uploadBytes(storageRef, courseImage);

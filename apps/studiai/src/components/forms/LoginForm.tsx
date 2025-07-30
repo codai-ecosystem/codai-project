@@ -63,7 +63,7 @@ export function LoginForm({
     try {
       const result = await signIn(data);
       if (result.error !== null && result.error !== '') {
-        toast.error(result.error);
+        toast.error(result.error || 'Login failed');
       } else {
         toast.success('Welcome back!');
       }
@@ -76,7 +76,7 @@ export function LoginForm({
     try {
       const result = await signInWithGoogle();
       if (result.error !== null && result.error !== '') {
-        toast.error(result.error);
+        toast.error(result.error || 'Sign in failed');
       } else {
         toast.success('Welcome!');
       }

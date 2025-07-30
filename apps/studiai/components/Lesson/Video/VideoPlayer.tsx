@@ -22,7 +22,7 @@ import {
 import CaptionsIcon from '@/components/icons/svg/CaptionsIcon';
 import VolumeIcon from '@/components/icons/svg/VolumeIcon';
 import MuteIcon from '@/components/icons/svg/MuteIcon';
-import Button from '@/components/ui/Button';
+import { Button } from '@/components/ui/Button';
 
 interface VideoPlayerProps {
   lesson: Lesson;
@@ -220,15 +220,14 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
           <div
             className="absolute left-0 top-0 h-1.5 bg-[color:var(--ai-card-border)]/20 pointer-events-none rounded-full"
             style={{
-              width: `${
-                videoRef.current && videoRef.current.buffered.length > 0
+              width: `${videoRef.current && videoRef.current.buffered.length > 0
                   ? (videoRef.current.buffered.end(
-                      videoRef.current.buffered.length - 1
-                    ) /
-                      videoRef.current.duration) *
-                    100
+                    videoRef.current.buffered.length - 1
+                  ) /
+                    videoRef.current.duration) *
+                  100
                   : 0
-              }%`,
+                }%`,
             }}
           ></div>
         </div>

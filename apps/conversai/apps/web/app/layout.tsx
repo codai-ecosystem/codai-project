@@ -1,16 +1,16 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import './globals.css'
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter'
-})
-
 export const metadata: Metadata = {
-  title: 'ConversAI - Professional Email with AI',
-  description: 'Professional email service with AI-powered features for Romanian users',
-  keywords: ['email', 'ai', 'professional', 'romanian', 'codai'],
+  title: 'CONVERSAI - Intelligent Conversation Platform',
+  description: 'Advanced AI-powered conversations and chat management',
+  keywords: ['AI', 'Chat', 'Conversations', 'CONVERSAI', 'CODAI'],
+  authors: [{ name: 'CODAI Ecosystem' }],
+  openGraph: {
+    title: 'CONVERSAI - Intelligent Conversation Platform',
+    description: 'Advanced AI-powered conversations and chat management',
+    type: 'website',
+  },
 }
 
 export default function RootLayout({
@@ -19,12 +19,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ro">
-      <body className={`${inter.variable} font-sans antialiased`}>
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-          {children}
-        </div>
-      </body>
+    <html lang="en">
+      <body className="antialiased">{children}</body>
     </html>
   )
 }

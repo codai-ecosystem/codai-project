@@ -1,247 +1,99 @@
+/**
+ * System Metrics API Routes
+ * Handles metrics collection, recording, and retrieval
+ */
+
 import { NextRequest, NextResponse } from 'next/server';
+import CNDHubService from '@/services/cnd-hub';
+import { z } from 'zod';
 
-interface SystemMetrics {
-  timestamp: Date;
-  cpu: {
-    usage: number;
-    cores: number;
-    frequency: number;
-  };
-  memory: {
-    used: number;
-    total: number;
-    free: number;
-    usage: number;
-  };
-  disk: {
-    used: number;
-    total: number;
-    free: number;
-    usage: number;
-  };
-  network: {
-    bytesIn: number;
-    bytesOut: number;
-    packetsIn: number;
-    packetsOut: number;
-  };
-  services: {
-    total: number;
-    running: number;
-    stopped: number;
-    degraded: number;
-  };
-}
-
-// Mock metrics data - in production this would come from monitoring systems
-const generateMockMetrics = (): SystemMetrics => ({
-  timestamp: new Date(),
-  cpu: {
-    usage: Math.floor(Math.random() * 80) + 10,
-    cores: 8,
-    frequency: 2.4,
-  },
-  memory: {
-    used: Math.floor(Math.random() * 12) + 4,
-    total: 16,
-    free: 0,
-    usage: 0,
-  },
-  disk: {
-    used: Math.floor(Math.random() * 200) + 50,
-    total: 500,
-    free: 0,
-    usage: 0,
-  },
-  network: {
-    bytesIn: Math.floor(Math.random() * 1000000) + 100000,
-    bytesOut: Math.floor(Math.random() * 800000) + 80000,
-    packetsIn: Math.floor(Math.random() * 10000) + 1000,
-    packetsOut: Math.floor(Math.random() * 8000) + 800,
-  },
-  services: {
-    total: 8,
-    running: 6,
-    stopped: 1,
-    degraded: 1,
-  },
+const MetricSchema = z.object({
+    metricName: z.string(),
+    value: z.number(),
+    labels: z.record(z.any()).default({}),
 });
 
-// Calculate derived values
-const calculateDerivedMetrics = (metrics: SystemMetrics): SystemMetrics => {
-  metrics.memory.free = metrics.memory.total - metrics.memory.used;
-  metrics.memory.usage = Math.round(
-    (metrics.memory.used / metrics.memory.total) * 100
-  );
+let hubService: CNDHubService | null = null;
 
-  metrics.disk.free = metrics.disk.total - metrics.disk.used;
-  metrics.disk.usage = Math.round(
-    (metrics.disk.used / metrics.disk.total) * 100
-  );
-
-  return metrics;
-};
-
-// Store recent metrics for time series data
-const metricsHistory: SystemMetrics[] = [];
-const MAX_HISTORY = 100;
-
-export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const timeRange = searchParams.get('range') || '1h';
-    const interval = searchParams.get('interval') || '1m';
-
-    // Generate current metrics
-    const currentMetrics = calculateDerivedMetrics(generateMockMetrics());
-
-    // Add to history
-    metricsHistory.push(currentMetrics);
-    if (metricsHistory.length > MAX_HISTORY) {
-      metricsHistory.shift();
+async function getHubService(): Promise<CNDHubService> {
+    if (!hubService) {
+        hubService = new CNDHubService();
+        await hubService.initialize();
     }
-
-    // Generate time series data based on request
-    const timeSeriesData = generateTimeSeriesData(timeRange, interval);
-
-    // Calculate health score
-    const healthScore = calculateHealthScore(currentMetrics);
-
-    // Generate alerts
-    const alerts = generateAlerts(currentMetrics);
-
-    return NextResponse.json({
-      success: true,
-      data: {
-        current: currentMetrics,
-        timeSeries: timeSeriesData,
-        healthScore,
-        alerts,
-        summary: {
-          systemHealth:
-            healthScore >= 80
-              ? 'healthy'
-              : healthScore >= 60
-                ? 'warning'
-                : 'critical',
-          uptime: '99.9%',
-          totalRequests: Math.floor(Math.random() * 1000000) + 500000,
-          avgResponseTime: Math.floor(Math.random() * 200) + 100,
-          errorRate: Math.random() * 2,
-        },
-      },
-    });
-  } catch (error) {
-    console.error('Error fetching metrics:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to fetch metrics' },
-      { status: 500 }
-    );
-  }
+    return hubService;
 }
 
-function generateTimeSeriesData(timeRange: string, interval: string) {
-  const now = new Date();
-  const dataPoints = [];
+// GET /api/metrics - Get system metrics
+export async function GET(request: NextRequest) {
+    try {
+        const hub = await getHubService();
+        const { searchParams } = new URL(request.url);
+        const metricName = searchParams.get('metricName');
+        const timeWindow = searchParams.get('timeWindow');
 
-  // Determine number of points based on range and interval
-  let points = 60; // Default to 60 points
-  let intervalMs = 60000; // Default to 1 minute
+        const metrics = await hub.getSystemMetrics(
+            metricName || undefined,
+            timeWindow || undefined
+        );
 
-  switch (timeRange) {
-    case '1h':
-      points = 60;
-      intervalMs = 60000; // 1 minute
-      break;
-    case '6h':
-      points = 72;
-      intervalMs = 300000; // 5 minutes
-      break;
-    case '24h':
-      points = 96;
-      intervalMs = 900000; // 15 minutes
-      break;
-    case '7d':
-      points = 168;
-      intervalMs = 3600000; // 1 hour
-      break;
-  }
+        return NextResponse.json({
+            success: true,
+            metrics,
+            count: metrics.length,
+            filters: {
+                metricName: metricName || 'all',
+                timeWindow: timeWindow || 'all',
+            },
+            timestamp: new Date().toISOString(),
+        });
+    } catch (error) {
+        console.error('❌ Failed to get metrics:', error);
 
-  for (let i = points; i >= 0; i--) {
-    const timestamp = new Date(now.getTime() - i * intervalMs);
-    const metrics = calculateDerivedMetrics(generateMockMetrics());
-    dataPoints.push({
-      timestamp,
-      cpu: metrics.cpu.usage,
-      memory: metrics.memory.usage,
-      disk: metrics.disk.usage,
-      networkIn: metrics.network.bytesIn,
-      networkOut: metrics.network.bytesOut,
-    });
-  }
-
-  return dataPoints;
+        return NextResponse.json({
+            success: false,
+            error: error instanceof Error ? error.message : 'Unknown error',
+            timestamp: new Date().toISOString(),
+        }, { status: 500 });
+    }
 }
 
-function calculateHealthScore(metrics: SystemMetrics): number {
-  let score = 100;
+// POST /api/metrics - Record a metric
+export async function POST(request: NextRequest) {
+    try {
+        const hub = await getHubService();
+        const body = await request.json();
 
-  // Deduct points for high resource usage
-  if (metrics.cpu.usage > 80) score -= 20;
-  else if (metrics.cpu.usage > 60) score -= 10;
+        // Validate request body
+        const metric = MetricSchema.parse(body);
 
-  if (metrics.memory.usage > 85) score -= 20;
-  else if (metrics.memory.usage > 70) score -= 10;
+        await hub.recordMetric(metric.metricName, metric.value, metric.labels);
 
-  if (metrics.disk.usage > 90) score -= 15;
-  else if (metrics.disk.usage > 80) score -= 5;
+        return NextResponse.json({
+            success: true,
+            message: `Metric ${metric.metricName} recorded successfully`,
+            metric: {
+                name: metric.metricName,
+                value: metric.value,
+                labels: metric.labels,
+            },
+            timestamp: new Date().toISOString(),
+        }, { status: 201 });
+    } catch (error) {
+        console.error('❌ Failed to record metric:', error);
 
-  // Deduct points for service issues
-  const serviceHealthRatio = metrics.services.running / metrics.services.total;
-  if (serviceHealthRatio < 0.8) score -= 25;
-  else if (serviceHealthRatio < 0.9) score -= 15;
+        if (error instanceof z.ZodError) {
+            return NextResponse.json({
+                success: false,
+                error: 'Invalid metric data',
+                details: error.errors,
+                timestamp: new Date().toISOString(),
+            }, { status: 400 });
+        }
 
-  return Math.max(0, score);
-}
-
-function generateAlerts(metrics: SystemMetrics) {
-  const alerts = [];
-
-  if (metrics.cpu.usage > 80) {
-    alerts.push({
-      type: 'warning',
-      title: 'High CPU Usage',
-      message: `CPU usage is at ${metrics.cpu.usage}%`,
-      timestamp: new Date(),
-    });
-  }
-
-  if (metrics.memory.usage > 85) {
-    alerts.push({
-      type: 'error',
-      title: 'High Memory Usage',
-      message: `Memory usage is at ${metrics.memory.usage}%`,
-      timestamp: new Date(),
-    });
-  }
-
-  if (metrics.disk.usage > 90) {
-    alerts.push({
-      type: 'error',
-      title: 'Disk Space Critical',
-      message: `Disk usage is at ${metrics.disk.usage}%`,
-      timestamp: new Date(),
-    });
-  }
-
-  if (metrics.services.running < metrics.services.total) {
-    alerts.push({
-      type: 'warning',
-      title: 'Service Degradation',
-      message: `${metrics.services.total - metrics.services.running} services are not running`,
-      timestamp: new Date(),
-    });
-  }
-
-  return alerts;
+        return NextResponse.json({
+            success: false,
+            error: error instanceof Error ? error.message : 'Unknown error',
+            timestamp: new Date().toISOString(),
+        }, { status: 500 });
+    }
 }

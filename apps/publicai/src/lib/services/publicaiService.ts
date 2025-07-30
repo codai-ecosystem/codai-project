@@ -2,6 +2,38 @@ import { ApiResponse, PaginatedResponse } from '@codai/core';
 import { db } from '../database';
 
 export class PublicaiService {
+  private createResponse<T>(success: boolean, data?: T, error?: string): ApiResponse<T> {
+    return {
+      success,
+      data,
+      error,
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  private createPaginatedResponse<T>(
+    success: boolean,
+    data?: T[],
+    pagination?: any,
+    error?: string
+  ): PaginatedResponse<T[]> {
+    return {
+      success,
+      data,
+      error,
+      pagination: pagination || { page: 1, limit: 10, total: 0, pages: 0 },
+      timestamp: new Date().toISOString()
+    };
+  }
+  async initialize(): Promise<ApiResponse> {
+    try {
+      // Initialize service dependencies, configurations, etc.
+      return this.createResponse(true, { status: 'initialized' });
+    } catch (error) {
+      return this.createResponse(false, undefined, error instanceof Error ? error.message : 'Unknown error');
+    }
+  }
+
   async healthCheck(): Promise<any> {
     try {
       return {
@@ -20,7 +52,11 @@ export class PublicaiService {
   async createItem(data: any): Promise<any> {
     try {
       // Implement creation logic
-      const result = { id: 'generated-id', ...data };
+      const result = {
+        id: 'generated-id',
+        name: data.name || 'Untitled',
+        ...data
+      };
       return result;
     } catch (error) {
       throw new Error(error instanceof Error ? error.message : 'Unknown error');
@@ -31,23 +67,37 @@ export class PublicaiService {
     try {
       // Implement creation logic
       const result = { id: 'generated-id', ...data };
-      return { success: true, data: result };
+      return {
+        success: true,
+        data: result,
+        timestamp: new Date().toISOString()
+      };
     } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        timestamp: new Date().toISOString()
+      };
     }
   }
 
   async getAll(params?: any): Promise<PaginatedResponse<any[]>> {
     try {
       // Implement fetch all logic
-      const data = [];
+      const data: any[] = [];
       return {
         success: true,
         data,
-        pagination: { page: 1, limit: 20, total: 0, pages: 0 }
+        pagination: { page: 1, limit: 20, total: 0, pages: 0 },
+        timestamp: new Date().toISOString()
       };
     } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+      return this.createPaginatedResponse(
+        false,
+        undefined,
+        undefined,
+        error instanceof Error ? error.message : 'Unknown error'
+      );
     }
   }
 
@@ -55,9 +105,9 @@ export class PublicaiService {
     try {
       // Implement fetch by ID logic
       const data = { id, name: 'Sample data' };
-      return { success: true, data };
+      return this.createResponse(true, data);
     } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+      return this.createResponse(false, undefined, error instanceof Error ? error.message : 'Unknown error');
     }
   }
 
@@ -65,27 +115,27 @@ export class PublicaiService {
     try {
       // Implement update logic
       const result = { id, ...data };
-      return { success: true, data: result };
+      return this.createResponse(true, result);
     } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+      return this.createResponse(false, undefined, error instanceof Error ? error.message : 'Unknown error');
     }
   }
 
   async delete(id: string): Promise<ApiResponse> {
     try {
       // Implement delete logic
-      return { success: true, message: 'Item deleted successfully' };
+      return this.createResponse(true, { message: 'Item deleted successfully' });
     } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+      return this.createResponse(false, undefined, error instanceof Error ? error.message : 'Unknown error');
     }
   }
 
   async processBusinessLogic(data: any): Promise<ApiResponse> {
     try {
       // Implement business logic
-      return { success: true, data: { processed: true, timestamp: Date.now() } };
+      return this.createResponse(true, { processed: true, timestamp: Date.now() });
     } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+      return this.createResponse(false, undefined, error instanceof Error ? error.message : 'Unknown error');
     }
   }
 
@@ -93,18 +143,18 @@ export class PublicaiService {
     try {
       // Implement validation logic
       const isValid = data && typeof data === 'object';
-      return { success: true, data: { valid: isValid } };
+      return this.createResponse(true, { valid: isValid });
     } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+      return this.createResponse(false, undefined, error instanceof Error ? error.message : 'Unknown error');
     }
   }
 
   async performAnalytics(data: any): Promise<ApiResponse> {
     try {
       // Implement analytics logic
-      return { success: true, data: { analytics: 'completed', insights: [] } };
+      return this.createResponse(true, { analytics: 'completed', insights: [] });
     } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+      return this.createResponse(false, undefined, error instanceof Error ? error.message : 'Unknown error');
     }
   }
 }

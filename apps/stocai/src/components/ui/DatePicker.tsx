@@ -11,9 +11,8 @@ import type { JSX } from 'react';
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-
-import { Button } from './Button';
-import { Input } from './Input';
+import { Button } from './button';
+import { Input } from './input';
 
 // Calendar component for date selection
 interface CalendarProps {
@@ -197,7 +196,7 @@ function Calendar({
                   'h-full w-full p-0 font-normal',
                   isDateSelected(date) && 'bg-primary text-primary-foreground',
                   isDateDisabled(date) &&
-                    'cursor-not-allowed text-muted-foreground opacity-50'
+                  'cursor-not-allowed text-muted-foreground opacity-50'
                 )}
                 onClick={() => handleDateClick(date)}
                 disabled={isDateDisabled(date)}
@@ -312,7 +311,6 @@ export function DatePicker({
       ) : null}
 
       <div className="relative">
-        {' '}
         <Input
           value={inputValue}
           onChange={handleInputChange}
@@ -320,21 +318,18 @@ export function DatePicker({
           placeholder={placeholder}
           disabled={disabled}
           className={cn('pr-10', className)}
-          error={error ?? undefined}
-          rightIcon={
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              className="h-6 w-6 p-0 hover:bg-transparent"
-              onClick={() => setOpen(!open)}
-              disabled={disabled}
-              aria-label="Open calendar"
-            >
-              <CalendarIcon className="h-4 w-4 text-muted-foreground" />
-            </Button>
-          }
         />
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          className="absolute right-2 top-1/2 h-6 w-6 -translate-y-1/2 p-0 hover:bg-transparent"
+          onClick={() => setOpen(!open)}
+          disabled={disabled}
+          aria-label="Open calendar"
+        >
+          <CalendarIcon className="h-4 w-4 text-muted-foreground" />
+        </Button>
         {open ? (
           <div className="absolute left-0 top-full z-50 mt-1">
             <div className="rounded-md border bg-popover text-popover-foreground shadow-md">
@@ -357,8 +352,8 @@ export function DatePicker({
       </div>
 
       {description !== undefined &&
-      description !== '' &&
-      (error === undefined || error === '') ? (
+        description !== '' &&
+        (error === undefined || error === '') ? (
         <p className="text-sm text-muted-foreground">{description}</p>
       ) : null}
       {error !== undefined && error !== '' ? (

@@ -1,36 +1,30 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    // Remove deprecated turbo config
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
+    turbo: {
+      resolveAlias: {
+        canvas: './empty-module.js',
+      },
+    },
   },
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
+  },
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+  swcMinify: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
   },
   images: {
-    domains: ['localhost'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
-  env: {
-    SERVICE_NAME: 'mod',
-    SERVICE_PORT: '4025',
-  },
-  webpack: (config, { isServer }) => {
-    // Fix module resolution issues
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-      };
-    }
-    return config;
-  },
-  // Reduce memory usage
-  compress: true,
-  poweredByHeader: false,
 };
 
 export default nextConfig;

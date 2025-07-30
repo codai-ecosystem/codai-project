@@ -1,10 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    appDir: true,
-  },
-  images: {
-    domains: ['localhost'],
+    turbo: {
+      resolveAlias: {
+        canvas: './empty-module.js',
+      },
+    },
   },
   typescript: {
     ignoreBuildErrors: false,
@@ -12,6 +13,18 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: false,
   },
-}
+  swcMinify: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+  },
+};
 
-module.exports = nextConfig
+export default nextConfig;

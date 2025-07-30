@@ -1,46 +1,47 @@
 {
-    "name": "@codai/deployment",
-    "version": "1.0.0",
-    "description": "Production deployment and orchestration system for CODAI ecosystem",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "bin": {
-        "codai-deploy": "./dist/cli.js"
-    },
-    "scripts": {
-        "build": "tsc --build && tsc --build tsconfig.esm.json",
-        "dev": "tsc --build --watch",
-        "test": "jest",
-        "lint": "eslint src --ext .ts,.tsx"
-    },
-    "dependencies": {
-        "@codai/analytics": "workspace:*",
-        "@codai/core": "workspace:*",
-        "@codai/logai-sdk": "workspace:*",
-        "@codai/service-registry": "workspace:*",
-        "@kubernetes/client-node": "^1.3.0",
-        "aws-sdk": "^2.1692.0",
-        "chalk": "^5.4.1",
-        "commander": "^14.0.0",
-        "docker-compose": "^1.2.0",
-        "inquirer": "^12.7.0",
-        "lodash": "^4.17.21",
-        "ora": "^8.2.0",
-        "uuid": "^11.1.0",
-        "vercel": "^44.4.1",
-        "yaml": "^2.8.0"
-    },
-    "devDependencies": {
-        "@types/inquirer": "^9.0.8",
-        "@types/jest": "^30.0.0",
-        "@types/lodash": "^4.17.20",
-        "@types/node": "^24.0.13",
-        "@types/uuid": "^10.0.0",
-        "jest": "^30.0.4",
-        "tsup": "^8.5.0",
-        "typescript": "^5.8.3"
-    },
-    "publishConfig": {
-        "access": "public"
-    }
+  "name": "@codai/deployment",
+  "version": "1.0.0",
+  "description": "Production deployment and orchestration system for CODAI ecosystem",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "codai-deploy": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "pnpm exec tsc --build && tsc --build tsconfig.esm.json",
+    "dev": "tsc --build --watch",
+    "test": "jest",
+    "lint": "pnpm exec eslint src --ext .ts,.tsx",
+    "type-check": "pnpm exec tsc --noEmit"
+  },
+  "dependencies": {
+    "@codai/analytics": "workspace:*",
+    "@codai/core": "workspace:*",
+    "@codai/logai-sdk": "workspace:*",
+    "@codai/service-registry": "workspace:*",
+    "@kubernetes/client-node": "^1.3.0",
+    "aws-sdk": "^2.1692.0",
+    "chalk": "^5.4.1",
+    "commander": "^14.0.0",
+    "docker-compose": "^1.2.0",
+    "inquirer": "^12.7.0",
+    "lodash": "^4.17.21",
+    "ora": "^8.2.0",
+    "uuid": "^11.1.0",
+    "vercel": "^44.4.1",
+    "yaml": "^2.8.0"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.8",
+    "@types/jest": "^30.0.0",
+    "@types/lodash": "^4.17.20",
+    "@types/node": "^24.0.13",
+    "@types/uuid": "^10.0.0",
+    "jest": "^30.0.4",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

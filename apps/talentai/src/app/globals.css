@@ -65,11 +65,12 @@
 
 @layer base {
     * {
-        @apply border-border;
+        border-color: hsl(var(--border));
     }
 
     body {
-        @apply bg-background text-foreground;
+        background-color: hsl(var(--background));
+        color: hsl(var(--foreground));
     }
 }
 
@@ -78,10 +79,44 @@
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
+.glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
 .chat-message {
-    @apply animate-fade-in;
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .talent-card {
-    @apply transform transition-all duration-300 hover:scale-105 hover:shadow-lg;
+    transform: translateZ(0);
+    transition: all 0.3s ease;
+}
+
+.talent-card:hover {
+    transform: scale(1.05) translateZ(0);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
 }

@@ -3,7 +3,7 @@
  * Provides intelligent web scraping and monitoring with Romanian business context
  */
 
-import puppeteer, { Browser, Page } from 'puppeteer';
+import { chromium, Browser, Page } from 'playwright';
 import * as cheerio from 'cheerio';
 import axios from 'axios';
 import { Logger } from '../../utils/logger.js';
@@ -53,11 +53,11 @@ export class WebIntegration {
     this.logger.info('Initializing web integration...');
 
     try {
-      this.browser = await puppeteer.launch({
+      this.browser = await chromium.launch({
         headless: this.config.headless !== false,
         args: ['--no-sandbox', '--disable-setuid-sandbox']
       });
-      this.logger.info('Puppeteer browser launched');
+      this.logger.info('Playwright browser launched');
     } catch (error) {
       this.logger.error('Failed to launch browser:', error);
       this.logger.info('Web integration will continue without browser (some features disabled)');
@@ -88,7 +88,7 @@ export class WebIntegration {
       page.setDefaultTimeout(this.config.timeout || 30000);
 
       // Navigate to the page
-      const response = await page.goto(url, { waitUntil: 'networkidle0' });
+      const response = await page.goto(url, { waitUntil: 'networkidle' });
 
       if (!response) {
         throw new Error('Failed to load page');

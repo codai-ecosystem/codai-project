@@ -5,7 +5,10 @@
     "rootDir": "src",
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "moduleResolution": "Node",
+    "module": "CommonJS",
+    "noEmit": false
   },
   "include": [
     "src/**/*"
@@ -13,7 +16,6 @@
   "exclude": [
     "dist",
     "node_modules",
-    "**/*.test.*",
-    "**/*.spec.*"
+    "***.spec.*"
   ]
 }

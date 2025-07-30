@@ -1,4 +1,11 @@
 packages:
-  - 'packages/*'
-  - 'apps/*'
+  - packages/*
+  - apps/*
   - '!apps/web-dashboard-nextjs'
+onlyBuiltDependencies:
+  - '@prisma/client'
+  - '@prisma/engines'
+  - better-sqlite3
+  - prisma
+overrides:
+  '@codai/shared-ui': link:../../packages/shared-ui

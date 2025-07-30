@@ -12,6 +12,14 @@ import type {
   Project
 } from '@codai/shared-types'
 
+// Import MEMORAI Service (commented out for now due to module resolution issues)
+// import { memorai, MemoraiService } from '@codai/memorai'
+
+// Placeholder for MemoraiService type
+interface MemoraiService {
+  // Add methods as needed
+}
+
 // Temporary type definitions for missing types
 interface SocialPost {
   id?: string
@@ -300,31 +308,250 @@ export class FinancialService {
   }
 }
 
-// ==================== MEMORY SERVICE ====================
+// ==================== ENHANCED MEMORY SERVICE ====================
 
 export class MemoryService {
   private ecosystem = EcosystemService.getInstance()
 
-  async storeMemory(memory: Partial<Memory>): Promise<APIResponse> {
-    return this.ecosystem.callApp('memorai', '/api/memories', 'POST', memory)
+  // Universal Database Operations
+  async store<T = any>(table: string, data: T): Promise<APIResponse<T>> {
+    try {
+      // Try MEMORAI package first
+      if (typeof require !== 'undefined') {
+        try {
+          const { memorai } = require('@codai/memorai')
+          return await memorai.insert(table, data)
+        } catch (err) {
+          console.log('MEMORAI not available, falling back to ecosystem call')
+        }
+      }
+
+      // Fallback to MEMORAI app API
+      return this.ecosystem.callApp('memorai', '/api/database/store', 'POST', { table, data })
+    } catch (error) {
+      console.error('Store operation failed:', error)
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Store operation failed',
+        timestamp: new Date().toISOString(),
+        requestId: this.generateRequestId()
+      }
+    }
   }
 
-  async searchMemories(query: string, limit = 10): Promise<APIResponse> {
-    return this.ecosystem.callApp('memorai', `/api/search?q=${encodeURIComponent(query)}&limit=${limit}`)
+  async find<T = any>(table: string, conditions?: Record<string, any>): Promise<APIResponse<T[]>> {
+    try {
+      // Try MEMORAI package first
+      if (typeof require !== 'undefined') {
+        try {
+          const { memorai } = require('@codai/memorai')
+          return await memorai.find(table, conditions ? Object.entries(conditions).map(([field, value]) => ({
+            field,
+            operator: '=' as const,
+            value
+          })) : undefined)
+        } catch (err) {
+          console.log('MEMORAI not available, falling back to ecosystem call')
+        }
+      }
+
+      // Fallback to MEMORAI app API
+      return this.ecosystem.callApp('memorai', '/api/database/find', 'POST', { table, conditions })
+    } catch (error) {
+      console.error('Find operation failed:', error)
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Find operation failed',
+        data: [],
+        timestamp: new Date().toISOString(),
+        requestId: this.generateRequestId()
+      }
+    }
   }
 
-  async getMemories(userId: string, type?: string): Promise<APIResponse> {
-    const params = new URLSearchParams({ userId })
-    if (type) params.append('type', type)
-    return this.ecosystem.callApp('memorai', `/api/memories?${params}`)
+  // AI Memory Operations
+  async storeMemory(memory: Partial<Memory>): Promise<APIResponse<Memory>> {
+    try {
+      // Try MEMORAI package first
+      if (typeof require !== 'undefined') {
+        try {
+          const { memorai } = require('@codai/memorai')
+          return await memorai.storeMemory(memory)
+        } catch (err) {
+          console.log('MEMORAI not available, falling back to ecosystem call')
+        }
+      }
+
+      // Fallback to MEMORAI app API
+      return this.ecosystem.callApp('memorai', '/api/memories', 'POST', memory)
+    } catch (error) {
+      console.error('Store memory failed:', error)
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Store memory failed',
+        timestamp: new Date().toISOString(),
+        requestId: this.generateRequestId()
+      }
+    }
   }
 
-  async updateMemory(id: string, updates: Partial<Memory>): Promise<APIResponse> {
-    return this.ecosystem.callApp('memorai', `/api/memories/${id}`, 'PUT', updates)
+  async searchMemories(query: string, limit = 10): Promise<APIResponse<Memory[]>> {
+    try {
+      // Try MEMORAI package first
+      if (typeof require !== 'undefined') {
+        try {
+          const { memorai } = require('@codai/memorai')
+          const result = await memorai.searchMemories({ text: query, limit })
+          return {
+            ...result,
+            data: result.data?.map((r: any) => r.memory) || []
+          }
+        } catch (err) {
+          console.log('MEMORAI not available, falling back to ecosystem call')
+        }
+      }
+
+      // Fallback to MEMORAI app API
+      return this.ecosystem.callApp('memorai', `/api/search?q=${encodeURIComponent(query)}&limit=${limit}`)
+    } catch (error) {
+      console.error('Search memories failed:', error)
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Search memories failed',
+        data: [],
+        timestamp: new Date().toISOString(),
+        requestId: this.generateRequestId()
+      }
+    }
   }
 
-  async deleteMemory(id: string): Promise<APIResponse> {
-    return this.ecosystem.callApp('memorai', `/api/memories/${id}`, 'DELETE')
+  // File Storage Operations
+  async uploadFile(file: File | Buffer, filename: string, userId: string): Promise<APIResponse<any>> {
+    try {
+      // Try MEMORAI package first
+      if (typeof require !== 'undefined') {
+        try {
+          const { memorai } = require('@codai/memorai')
+          const upload = {
+            file,
+            filename,
+            mimeType: file instanceof File ? file.type : 'application/octet-stream',
+            size: file instanceof File ? file.size : (file as Buffer).length
+          }
+          return await memorai.uploadFile(upload, userId)
+        } catch (err) {
+          console.log('MEMORAI not available, falling back to ecosystem call')
+        }
+      }
+
+      // Fallback to MEMORAI app API (would need FormData handling)
+      return this.ecosystem.callApp('memorai', '/api/storage/upload', 'POST', {
+        filename,
+        userId
+      })
+    } catch (error) {
+      console.error('Upload file failed:', error)
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Upload file failed',
+        timestamp: new Date().toISOString(),
+        requestId: this.generateRequestId()
+      }
+    }
+  }
+
+  async getMemories(userId: string, type?: string): Promise<APIResponse<Memory[]>> {
+    const conditions: Record<string, any> = { userId }
+    if (type) conditions.type = type
+
+    return this.find<Memory>('memories', conditions)
+  }
+
+  async updateMemory(id: string, updates: Partial<Memory>): Promise<APIResponse<Memory>> {
+    try {
+      // Try MEMORAI package first
+      if (typeof require !== 'undefined') {
+        try {
+          const { memorai } = require('@codai/memorai')
+          return await memorai.update('memories', id, updates)
+        } catch (err) {
+          console.log('MEMORAI not available, falling back to ecosystem call')
+        }
+      }
+
+      // Fallback to MEMORAI app API
+      return this.ecosystem.callApp('memorai', `/api/memories/${id}`, 'PUT', updates)
+    } catch (error) {
+      console.error('Update memory failed:', error)
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Update memory failed',
+        timestamp: new Date().toISOString(),
+        requestId: this.generateRequestId()
+      }
+    }
+  }
+
+  async deleteMemory(id: string): Promise<APIResponse<boolean>> {
+    try {
+      // Try MEMORAI package first
+      if (typeof require !== 'undefined') {
+        try {
+          const { memorai } = require('@codai/memorai')
+          return await memorai.delete('memories', id)
+        } catch (err) {
+          console.log('MEMORAI not available, falling back to ecosystem call')
+        }
+      }
+
+      // Fallback to MEMORAI app API
+      return this.ecosystem.callApp('memorai', `/api/memories/${id}`, 'DELETE')
+    } catch (error) {
+      console.error('Delete memory failed:', error)
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Delete memory failed',
+        timestamp: new Date().toISOString(),
+        requestId: this.generateRequestId()
+      }
+    }
+  }
+
+  // Cache Operations
+  async cacheGet<T = any>(key: string): Promise<T | null> {
+    try {
+      if (typeof require !== 'undefined') {
+        try {
+          const { memorai } = require('@codai/memorai')
+          return await memorai.cacheGet(key) as T | null
+        } catch (err) {
+          console.log('MEMORAI cache not available')
+        }
+      }
+      return null
+    } catch (error) {
+      console.error('Cache get failed:', error)
+      return null
+    }
+  }
+
+  async cacheSet<T = any>(key: string, value: T, ttl?: number): Promise<void> {
+    try {
+      if (typeof require !== 'undefined') {
+        try {
+          const { memorai } = require('@codai/memorai')
+          await memorai.cacheSet(key, value, { ttl })
+        } catch (err) {
+          console.log('MEMORAI cache not available')
+        }
+      }
+    } catch (error) {
+      console.error('Cache set failed:', error)
+    }
+  }
+
+  private generateRequestId(): string {
+    return `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
   }
 }
 

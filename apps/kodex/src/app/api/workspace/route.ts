@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user) {
       return NextResponse.json(
         { message: "Unauthorized" },
@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user) {
       return NextResponse.json(
         { message: "Unauthorized" },
@@ -75,11 +75,7 @@ export async function POST(request: NextRequest) {
         name,
         description,
         ownerId: session.user.id,
-        settings: {
-          isPublic: false,
-          allowInvites: true,
-          defaultRole: "VIEWER"
-        }
+        slug: name.toLowerCase().replace(/[^a-z0-9]+/g, '-')
       },
       include: {
         owner: {

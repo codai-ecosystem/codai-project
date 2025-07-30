@@ -29,6 +29,31 @@ import type {
 
 export class AuthService {
   /**
+   * Convert Firebase User to our User interface
+   */
+  private static convertFirebaseUser(firebaseUser: FirebaseUser): User {
+    return {
+      id: firebaseUser.uid,
+      email: firebaseUser.email || '',
+      displayName: firebaseUser.displayName || undefined,
+      photoURL: firebaseUser.photoURL,
+      emailVerified: firebaseUser.emailVerified,
+      role: 'user', // Default role
+      createdAt: new Date(firebaseUser.metadata.creationTime || Date.now()),
+      lastLoginAt: new Date(firebaseUser.metadata.lastSignInTime || Date.now()),
+      preferences: {
+        theme: 'system' as const,
+        language: 'en',
+        notifications: {
+          email: true,
+          push: true,
+          marketing: false,
+        },
+      },
+    };
+  }
+
+  /**
    * Check if Firebase is initialized
    */
   private static isFirebaseInitialized(): boolean {
@@ -44,6 +69,7 @@ export class AuthService {
     if (!this.isFirebaseInitialized() || !auth) {
       return {
         user: null,
+        success: false,
         error: 'Firebase not initialized',
       };
     }
@@ -54,10 +80,11 @@ export class AuthService {
         credentials.email,
         credentials.password
       );
-      return { user: result.user, error: null };
+      return { user: this.convertFirebaseUser(result.user), success: true, error: undefined };
     } catch (error: unknown) {
       return {
         user: null,
+        success: false,
         error: this.getErrorMessage(error),
       };
     }
@@ -72,6 +99,7 @@ export class AuthService {
     if (!this.isFirebaseInitialized() || !auth) {
       return {
         user: null,
+        success: false,
         error: 'Firebase not initialized',
       };
     }
@@ -93,10 +121,11 @@ export class AuthService {
         displayName: credentials.displayName,
       });
 
-      return { user: result.user, error: null };
+      return { user: this.convertFirebaseUser(result.user), success: true, error: undefined };
     } catch (error: unknown) {
       return {
         user: null,
+        success: false,
         error: this.getErrorMessage(error),
       };
     }
@@ -109,6 +138,7 @@ export class AuthService {
     if (!this.isFirebaseInitialized() || !auth) {
       return {
         user: null,
+        success: false,
         error: 'Firebase not initialized',
       };
     }
@@ -123,10 +153,11 @@ export class AuthService {
       // Create or update user document
       await this.createUserDocument(result.user);
 
-      return { user: result.user, error: null };
+      return { user: this.convertFirebaseUser(result.user), success: true, error: undefined };
     } catch (error: unknown) {
       return {
         user: null,
+        success: false,
         error: this.getErrorMessage(error),
       };
     }
@@ -255,6 +286,7 @@ export class AuthService {
     if (!this.isFirebaseInitialized() || !auth) {
       return {
         user: null,
+        success: false,
         error: 'Firebase not initialized',
       };
     }
@@ -267,10 +299,11 @@ export class AuthService {
         await this.createUserDocument(result.user);
       }
 
-      return { user: result.user, error: null };
+      return { user: this.convertFirebaseUser(result.user), success: true, error: undefined };
     } catch (error: unknown) {
       return {
         user: null,
+        success: false,
         error: this.getErrorMessage(error),
       };
     }
@@ -405,7 +438,7 @@ export class AuthService {
         return {
           id: uid,
           email: data['email'] as string,
-          displayName: data['displayName'] as string | null,
+          displayName: (data['displayName'] as string | null) || undefined,
           photoURL: data['photoURL'] as string | undefined,
           emailVerified: data['emailVerified'] as boolean,
           createdAt:
@@ -467,8 +500,8 @@ export class AuthService {
         displayName:
           firebaseUser.displayName ??
           (additionalData &&
-          typeof additionalData === 'object' &&
-          'displayName' in additionalData
+            typeof additionalData === 'object' &&
+            'displayName' in additionalData
             ? String(additionalData['displayName'])
             : ''),
         photoURL: firebaseUser.photoURL ?? '',

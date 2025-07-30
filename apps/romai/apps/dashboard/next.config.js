@@ -8,10 +8,9 @@ const nextConfig = {
     ROMAI_API_URL: process.env.ROMAI_API_URL || 'http://localhost:3000',
   },
   eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
-    ignoreDuringBuilds: true,
+    // Enable strict ESLint checking
+    ignoreDuringBuilds: false,
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;

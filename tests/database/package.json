@@ -1,0 +1,39 @@
+{
+    "name": "@codai/database-storage-tests",
+    "version": "1.0.0",
+    "description": "Comprehensive database and storage testing suite for CODAI ecosystem",
+    "type": "module",
+    "scripts": {
+        "test": "playwright test",
+        "test:memorai": "playwright test --grep \"MEMORAI Operations\"",
+        "test:files": "playwright test --grep \"File Operations\"",
+        "test:cache": "playwright test --grep \"Cache Operations\"",
+        "test:sync": "playwright test --grep \"Real-time Sync\"",
+        "test:performance": "playwright test --grep \"Performance\"",
+        "test:headed": "playwright test --headed",
+        "test:ui": "playwright test --ui",
+        "report": "playwright show-report",
+        "install": "playwright install"
+    },
+    "dependencies": {
+        "@playwright/test": "^1.40.1",
+        "axios": "^1.6.2",
+        "form-data": "^4.0.0",
+        "ws": "^8.14.2"
+    },
+    "devDependencies": {
+        "@types/node": "^20.10.4",
+        "@types/ws": "^8.5.10",
+        "typescript": "^5.3.3"
+    },
+    "keywords": [
+        "codai",
+        "database",
+        "storage",
+        "testing",
+        "memorai",
+        "file-upload",
+        "caching",
+        "real-time"
+    ]
+}

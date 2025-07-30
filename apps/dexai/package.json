@@ -1,5 +1,5 @@
 {
-  "name": "@codai/dexai",
+  "name": "dexai",
   "version": "2.0.0",
   "private": true,
   "type": "module",
@@ -8,27 +8,30 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "pnpm --filter @codai/dexai-web dev",
-    "build": "pnpm --filter @codai/dexai-web build",
-    "start": "pnpm --filter @codai/dexai-web start",
-    "lint": "pnpm --filter @codai/dexai-web lint",
-    "test": "pnpm --filter @codai/dexai-web test",
-    "type-check": "pnpm --filter @codai/dexai-web type-check",
+    "dev": "next dev -p 4100",
+    "build": "next build",
+    "start": "next start -p 4100",
+    "lint": "next lint",
+    "test": "vitest",
+    "type-check": "pnpm exec tsc --noEmit",
     "clean": "pnpm --filter @codai/dexai-web clean",
     "dev:mobile": "pnpm --filter mobile start",
     "setup": "pnpm install",
     "setup:web": "pnpm --filter @codai/dexai-web install",
     "setup:mobile": "pnpm --filter mobile install",
     "clean:all": "pnpm -r clean && rimraf node_modules",
-    "install:all": "pnpm install"
+    "install:all": "pnpm install",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest watch"
   },
   "dependencies": {
-    "@codai/logai-universal": "file:..\\..\\packages\\logai-universal",
+    "@codai/logai-universal": "^2.0.0",
     "@hookform/resolvers": "^5.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "firebase": "^11.10.0",
-    "framer-motion": "12.23.3",
+    "firebase": "^12.0.0",
+    "framer-motion": "^12.23.6",
     "lucide-react": "^0.525.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
@@ -36,33 +39,35 @@
     "tailwind-merge": "^3.3.1",
     "typescript": "^5.8.3",
     "zod": "^4.0.5",
-    "zustand": "^5.0.6"
+    "zustand": "^5.0.6",
+    "next": "^15.4.1",
+    "geist": "^1.4.2"
   },
   "devDependencies": {
     "@playwright/test": "^1.54.1",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
-    "@types/node": "^24.0.13",
+    "@types/node": "^24.0.14",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "@typescript-eslint/eslint-plugin": "^8.36.0",
-    "@typescript-eslint/parser": "^8.36.0",
+    "@typescript-eslint/eslint-plugin": "^8.37.0",
+    "@typescript-eslint/parser": "^8.37.0",
     "autoprefixer": "^10.4.21",
     "concurrently": "^9.2.0",
     "eslint": "^9.31.0",
-    "eslint-config-next": "^15.3.5",
+    "eslint-config-next": "^15.4.1",
     "jest": "^30.0.4",
     "jest-environment-jsdom": "^30.0.4",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
-    "tailwindcss": "^4.1.11",
-    "typescript": "^5"
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.3"
   },
   "engines": {
     "node": ">=18.0.0"
   },
-  "description": "DEXAI - Romanian Dictionary with AI assistance (Multi-platform)",
+  "description": "AI data exchange platform",
   "repository": {
     "type": "git",
     "url": "https://github.com/your-username/dexai.git"

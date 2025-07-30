@@ -15,7 +15,7 @@ export function getRedisClient(): Redis {
     });
 
     redis.on('connect', () => {
-      console.log('✅ Redis connected successfully');
+      console.warn('✅ Redis connected successfully');
     });
 
     redis.on('error', (error) => {

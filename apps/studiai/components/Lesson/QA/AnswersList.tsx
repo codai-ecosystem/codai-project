@@ -47,7 +47,7 @@ const AnswersList: React.FC<AnswersListProps> = ({
     if (!user) return;
 
     try {
-      const questionRef = doc(firestoreDB, 'questions', questionId);
+      const questionRef = doc(getFirestoreDB(), 'questions', questionId);
       const isLiked = answer.likedBy?.includes(user.uid);
 
       // Find the answer in the array and update its likes
@@ -100,12 +100,11 @@ const AnswersList: React.FC<AnswersListProps> = ({
                   </h4>
                   {answer.userRole && (
                     <span
-                      className={`text-xs px-2 py-0.5 rounded-full ${
-                        answer.userRole === 'Instructor' ||
-                        answer.userRole === 'Admin'
+                      className={`text-xs px-2 py-0.5 rounded-full ${answer.userRole === 'Instructor' ||
+                          answer.userRole === 'Admin'
                           ? 'bg-[color:var(--ai-secondary)]/10 text-[color:var(--ai-secondary)]'
                           : 'bg-[color:var(--ai-primary)]/10 text-[color:var(--ai-primary)]'
-                      }`}
+                        }`}
                     >
                       {answer.userRole}
                     </span>

@@ -121,7 +121,7 @@ export function UserTable(): JSX.Element {
         <h2 className="text-xl font-semibold">Users</h2>
         <Button
           onClick={toggleRealtime}
-          variant={isRealtime ? 'success' : 'outline'}
+          variant={isRealtime ? 'default' : 'outline'}
         >
           {isRealtime ? 'Real-time: On' : 'Real-time: Off'}
         </Button>

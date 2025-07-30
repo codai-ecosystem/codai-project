@@ -1,0 +1,80 @@
+{
+  "name": "@codai/cnd",
+  "version": "0.1.0",
+  "description": "CODAI Next Database - Multi-paradigm database with TypeScript-first developer experience",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/index.ts",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.tsx",
+    "clean": "rm -rf dist",
+    "demo": "tsx enterprise-config.example.ts",
+    "demo:enterprise": "tsx -e \"import('./enterprise-config.example.js').then(m => m.usageExamples.enterprise())\"",
+    "demo:monitoring": "tsx -e \"import('./enterprise-config.example.js').then(m => m.usageExamples.monitoring())\"",
+    "demo:service-discovery": "tsx -e \"import('./enterprise-config.example.js').then(m => m.usageExamples.serviceDiscovery())\""
+  },
+  "keywords": [
+    "database",
+    "typescript",
+    "multi-paradigm",
+    "sql",
+    "nosql",
+    "graph",
+    "vector",
+    "real-time",
+    "next-generation",
+    "enterprise",
+    "authentication",
+    "service-discovery",
+    "monitoring",
+    "audit",
+    "security"
+  ],
+  "author": "CODAI Project",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^8.16.0",
+    "uuid": "^9.0.1",
+    "zod": "^3.22.4",
+    "rxjs": "^7.8.1",
+    "jsonwebtoken": "^9.0.2",
+    "bcrypt": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "@types/ws": "^8.5.10",
+    "@types/uuid": "^9.0.7",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/bcrypt": "^5.0.2",
+    "typescript": "^5.3.3",
+    "tsx": "^4.7.0",
+    "vitest": "^1.2.1",
+    "@vitest/coverage-v8": "^1.2.1",
+    "eslint": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "@typescript-eslint/parser": "^6.19.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codai-project/codai-project.git",
+    "directory": "packages/cnd"
+  },
+  "bugs": {
+    "url": "https://github.com/codai-project/codai-project/issues"
+  },
+  "homepage": "https://github.com/codai-project/codai-project/tree/main/packages/cnd#readme"
+}

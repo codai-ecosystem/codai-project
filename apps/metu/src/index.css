@@ -10,7 +10,7 @@
     }
 
     body {
-        @apply h-full m-0 p-0 font-sans antialiased bg-gray-900 text-white overflow-hidden;
+        @apply min-h-full m-0 p-0 font-sans antialiased bg-gray-900 text-white overflow-x-hidden overflow-y-auto;
     }
 
     #root {
@@ -29,7 +29,7 @@
     }
 
     .voice-card {
-        @apply glass-dark rounded-xl p-6 shadow-2xl transition-all duration-300 hover:shadow-3xl;
+        @apply glass-dark rounded-xl p-6 shadow-2xl transition-all duration-300 hover:shadow-xl;
     }
 
     .voice-button-secondary {

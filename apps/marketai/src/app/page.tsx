@@ -1,5 +1,10 @@
-import Dashboard from '@/components/dashboard/Dashboard';
-
-export default function MarketaiPage() {
-  return <Dashboard />;
+export default function HomePage() {
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-center p-24">
+      <h1 className="text-4xl font-bold">Marketai</h1>
+      <p className="mt-4 text-lg text-gray-600">
+        Welcome to marketai - part of the CODAI ecosystem
+      </p>
+    </main>
+  );
 }

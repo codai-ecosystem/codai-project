@@ -1,0 +1,37 @@
+{
+  "name": "@codai/translations",
+  "version": "1.0.0",
+  "description": "Translation infrastructure and locales for CODAI ecosystem",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "locales"
+  ],
+  "scripts": {
+    "build": "pnpm exec tsc",
+    "dev": "tsc --watch",
+    "lint": "pnpm exec eslint src --ext .ts,.tsx",
+    "lint:fix": "pnpm exec eslint src --ext .ts,.tsx --fix",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "clean": "rimraf dist",
+    "validate-translations": "node scripts/validate-translations.js"
+  },
+  "dependencies": {
+    "i18next": "^24.2.0",
+    "i18next-browser-languagedetector": "^8.0.0",
+    "i18next-http-backend": "^3.0.1",
+    "react-i18next": "^15.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.14",
+    "@types/react": "^19.1.8",
+    "eslint": "^9.31.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  }
+}

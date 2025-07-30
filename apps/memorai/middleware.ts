@@ -1,42 +1,31 @@
-// DISABLED DURING DASHBOARD DEVELOPMENT
-// import { withAuth } from "next-auth/middleware";
+import { NextRequest, NextResponse } from 'next/server'
 
-// export default withAuth(
-//     function middleware(req) {
-//         // Add custom middleware logic here if needed
-//     },
-//     {
-//         callbacks: {
-//             authorized: ({ token, req }) => {
-//                 // Check if user is authenticated for protected routes
-//                 if (req.nextUrl.pathname.startsWith("/dashboard")) {
-//                     return !!token;
-//                 }
-//                 // DO NOT PROTECT API ROUTES FOR NOW
-//                 if (req.nextUrl.pathname.startsWith("/api/")) {
-//                     return true; // Allow all API routes without auth
-//                 }
-//                 return true;
-//             },
-//         },
-//     }
-// );
+// Temporary inline auth middleware until shared-ui dependency is resolved
+export default function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
 
-// export const config = {
-//     matcher: [
-//         "/dashboard/:path*",
-//         "/settings/:path*",
-//         "/profile/:path*"
-//         // REMOVED /api/:path* from matcher to disable auth on API routes
-//     ]
-// };
+  // Public routes that don't require authentication
+  const publicRoutes = [
+    '/login', 
+    '/signup', 
+    '/forgot-password', 
+    '/reset-password', 
+    '/api/auth',
+    '/api/health',
+    '/health'
+  ]
 
-// Temporary: Disable all middleware for dashboard development
-export default function middleware() {
-    // Allow all requests during development
-    return;
+  // Check if it's a public route
+  if (publicRoutes.some(route => pathname.startsWith(route))) {
+    return NextResponse.next()
+  }
+
+  // For now, allow all requests - will be replaced with proper auth
+  return NextResponse.next()
 }
 
 export const config = {
-    matcher: [] // Empty matcher = no routes protected
-};
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico|public).*)',
+  ],
+}

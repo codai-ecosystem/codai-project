@@ -1,149 +1,108 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import { describe, it, expect, beforeEach, vi } from 'vitest'
-import TalentAIPage from '../app/page'
+import { render, screen, waitFor } from '@testing-library/react'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import TalentaiPage from './page'
 
-// Mock Next.js modules
-vi.mock('next/font/google', () => ({
-    Inter: () => ({ className: 'inter-font' }),
+// Mock framer-motion to avoid animation issues in tests
+vi.mock('framer-motion', () => ({
+    motion: {
+        div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+        h1: ({ children, ...props }: any) => <h1 {...props}>{children}</h1>,
+        p: ({ children, ...props }: any) => <p {...props}>{children}</p>,
+    },
+    AnimatePresence: ({ children }: any) => children,
 }))
 
-describe('TalentAI Page', () => {
+// Mock the RealTimeStats component
+vi.mock('../components/RealTimeStats', () => ({
+    RealTimeStats: () => <div data-testid="real-time-stats">Real Time Stats Component</div>
+}))
+
+describe('TalentAI Dashboard Page', () => {
     beforeEach(() => {
         vi.clearAllMocks()
+        // Mock Date to avoid time-dependent test failures
+        vi.useFakeTimers()
+        vi.setSystemTime(new Date('2024-01-01T14:00:00Z'))
     })
 
-    it('renders the main heading', () => {
-        render(<TalentAIPage />)
-        expect(screen.getByText('TalentAI')).toBeInTheDocument()
+    afterEach(() => {
+        vi.useRealTimers()
     })
 
-    it('renders the subtitle', () => {
-        render(<TalentAIPage />)
-        expect(screen.getByText('AI-Powered HR Recruitment Platform for Top Tech Talent')).toBeInTheDocument()
+    it('renders the main TalentAI heading', () => {
+        render(<TalentaiPage />)
+        expect(screen.getAllByText(/Talent AI Recruitment/)[0]).toBeInTheDocument()
     })
 
-    it('displays statistics cards', () => {
-        render(<TalentAIPage />)
-        expect(screen.getByText('500+')).toBeInTheDocument()
-        expect(screen.getByText('Candidates Screened')).toBeInTheDocument()
-        expect(screen.getByText('150+')).toBeInTheDocument()
-        expect(screen.getByText('Positions Filled')).toBeInTheDocument()
-        expect(screen.getByText('98%')).toBeInTheDocument()
-        expect(screen.getByText('Match Success Rate')).toBeInTheDocument()
-        expect(screen.getByText('24h')).toBeInTheDocument()
-        expect(screen.getByText('Avg. Response Time')).toBeInTheDocument()
+    it('displays enterprise platform subtitle', () => {
+        render(<TalentaiPage />)
+        expect(screen.getByText('AI-driven talent acquisition and human resource management')).toBeInTheDocument()
     })
 
-    it('shows initial welcome message', () => {
-        render(<TalentAIPage />)
-        expect(screen.getByText(/Hello! I'm TalentAI, your AI-powered HR assistant/)).toBeInTheDocument()
+    it('shows system status as active', () => {
+        render(<TalentaiPage />)
+        expect(screen.getByText('System Active')).toBeInTheDocument()
+        expect(screen.getByText('Online')).toBeInTheDocument()
     })
 
-    it('has an input field for messages', () => {
-        render(<TalentAIPage />)
-        const input = screen.getByPlaceholderText('Describe the role you\'re looking to fill...')
-        expect(input).toBeInTheDocument()
+    it('displays real-time statistics cards', () => {
+        render(<TalentaiPage />)
+
+        // Check for stats labels (numbers are randomized so we test labels)
+        expect(screen.getByText('Total Users')).toBeInTheDocument()
+        expect(screen.getByText('Active Now')).toBeInTheDocument()
+        expect(screen.getByText('Data Processed (GB)')).toBeInTheDocument()
+        expect(screen.getByText('Uptime')).toBeInTheDocument()
     })
 
-    it('has a send button', () => {
-        render(<TalentAIPage />)
-        const sendButton = screen.getByRole('button', { name: /send/i })
-        expect(sendButton).toBeInTheDocument()
+    it('renders enterprise feature cards', () => {
+        render(<TalentaiPage />)
+
+        expect(screen.getByText('Analytics Dashboard')).toBeInTheDocument()
+        expect(screen.getByText('User Management')).toBeInTheDocument()
+        expect(screen.getByText('Data Management')).toBeInTheDocument()
     })
 
-    it('allows typing in the input field', () => {
-        render(<TalentAIPage />)
-        const input = screen.getByPlaceholderText('Describe the role you\'re looking to fill...')
-        fireEvent.change(input, { target: { value: 'Looking for a senior prompt engineer' } })
-        expect(input).toHaveValue('Looking for a senior prompt engineer')
+    it('displays security and performance indicators', () => {
+        render(<TalentaiPage />)
+        expect(screen.getByText('Enterprise Security')).toBeInTheDocument()
+        expect(screen.getByText('High Performance')).toBeInTheDocument()
+        expect(screen.getByText('Global Scale')).toBeInTheDocument()
     })
 
-    it('disables send button when input is empty', () => {
-        render(<TalentAIPage />)
-        const sendButton = screen.getByRole('button', { name: /send/i })
-        expect(sendButton).toBeDisabled()
+    it('shows current time in footer', () => {
+        render(<TalentaiPage />)
+        expect(screen.getByText(/Last updated:/)).toBeInTheDocument()
     })
 
-    it('enables send button when input has content', () => {
-        render(<TalentAIPage />)
-        const input = screen.getByPlaceholderText('Describe the role you\'re looking to fill...')
-        const sendButton = screen.getByRole('button', { name: /send/i })
-
-        fireEvent.change(input, { target: { value: 'Test message' } })
-        expect(sendButton).not.toBeDisabled()
+    it('applies glassmorphism styling', () => {
+        render(<TalentaiPage />)
+        // Check that glassmorphism CSS is applied
+        const style = document.querySelector('style')
+        expect(style?.textContent).toContain('glassmorphism')
+        expect(style?.textContent).toContain('backdrop-filter: blur(20px)')
     })
 
-    it('sends message and receives AI response', async () => {
-        render(<TalentAIPage />)
-        const input = screen.getByPlaceholderText('Describe the role you\'re looking to fill...')
-        const sendButton = screen.getByRole('button', { name: /send/i })
+    it('updates stats periodically', async () => {
+        render(<TalentaiPage />)
 
-        fireEvent.change(input, { target: { value: 'Looking for prompt engineer' } })
-        fireEvent.click(sendButton)
-
-        expect(screen.getByText('Looking for prompt engineer')).toBeInTheDocument()
+        // Fast-forward time to trigger stats update
+        vi.advanceTimersByTime(5000)
 
         await waitFor(() => {
-            expect(screen.getByText(/I understand you're looking for/)).toBeInTheDocument()
-        }, { timeout: 2000 })
+            // Stats should still be displayed (numbers may have changed)
+            expect(screen.getByText('Total Users')).toBeInTheDocument()
+        }, { timeout: 1000 })
     })
 
-    it('clears input after sending message', () => {
-        render(<TalentAIPage />)
-        const input = screen.getByPlaceholderText('Describe the role you\'re looking to fill...')
-        const sendButton = screen.getByRole('button', { name: /send/i })
+    it('updates time display', async () => {
+        render(<TalentaiPage />)
 
-        fireEvent.change(input, { target: { value: 'Test message' } })
-        fireEvent.click(sendButton)
+        // Fast-forward time by 1 second
+        vi.advanceTimersByTime(1000)
 
-        expect(input).toHaveValue('')
-    })
-
-    it('shows typing indicator during AI response', async () => {
-        render(<TalentAIPage />)
-        const input = screen.getByPlaceholderText('Describe the role you\'re looking to fill...')
-        const sendButton = screen.getByRole('button', { name: /send/i })
-
-        fireEvent.change(input, { target: { value: 'Test message' } })
-        fireEvent.click(sendButton)
-
-        // Check for typing indicator (animated dots)
-        expect(screen.getByText('Test message')).toBeInTheDocument()
-
-        // Wait for response to appear
         await waitFor(() => {
-            expect(screen.getByText(/I understand you're looking for/)).toBeInTheDocument()
-        }, { timeout: 2000 })
-    })
-
-    it('handles form submission with Enter key', () => {
-        render(<TalentAIPage />)
-        const input = screen.getByPlaceholderText('Describe the role you\'re looking to fill...')
-
-        fireEvent.change(input, { target: { value: 'Test message' } })
-        fireEvent.submit(input.closest('form')!)
-
-        expect(screen.getByText('Test message')).toBeInTheDocument()
-    })
-
-    it('displays chat interface header', () => {
-        render(<TalentAIPage />)
-        expect(screen.getByText('AI Recruitment Assistant')).toBeInTheDocument()
-        expect(screen.getByText('Let\'s find your perfect tech talent')).toBeInTheDocument()
-    })
-
-    it('scrolls to bottom when new messages are added', () => {
-        // Mock scrollIntoView
-        const mockScrollIntoView = vi.fn()
-        Element.prototype.scrollIntoView = mockScrollIntoView
-
-        render(<TalentAIPage />)
-        const input = screen.getByPlaceholderText('Describe the role you\'re looking to fill...')
-        const sendButton = screen.getByRole('button', { name: /send/i })
-
-        fireEvent.change(input, { target: { value: 'Test message' } })
-        fireEvent.click(sendButton)
-
-        expect(mockScrollIntoView).toHaveBeenCalled()
+            expect(screen.getByText(/Last updated:/)).toBeInTheDocument()
+        }, { timeout: 1000 })
     })
 })

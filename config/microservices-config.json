@@ -1,0 +1,77 @@
+{
+  "gateway": {
+    "port": 3000,
+    "routes": {
+      "/codai": "http://localhost:4000",
+      "/memorai": "http://localhost:4001",
+      "/bancai": "http://localhost:5002",
+      "/stocai": "http://localhost:4003",
+      "/talentai": "http://localhost:4004",
+      "/prezentai": "http://localhost:4005"
+    },
+    "loadBalancing": true,
+    "rateLimiting": true
+  },
+  "services": {
+    "codai": {
+      "port": 4000,
+      "health": "http://localhost:4000/health",
+      "api": "http://localhost:4000/api",
+      "replicas": 3,
+      "resources": {
+        "cpu": "500m",
+        "memory": "512Mi"
+      }
+    },
+    "memorai": {
+      "port": 4001,
+      "health": "http://localhost:4001/health",
+      "api": "http://localhost:4001/api",
+      "replicas": 3,
+      "resources": {
+        "cpu": "500m",
+        "memory": "512Mi"
+      }
+    },
+    "bancai": {
+      "port": 5002,
+      "health": "http://localhost:5002/health",
+      "api": "http://localhost:5002/api",
+      "replicas": 3,
+      "resources": {
+        "cpu": "500m",
+        "memory": "512Mi"
+      }
+    },
+    "stocai": {
+      "port": 4003,
+      "health": "http://localhost:4003/health",
+      "api": "http://localhost:4003/api",
+      "replicas": 3,
+      "resources": {
+        "cpu": "500m",
+        "memory": "512Mi"
+      }
+    },
+    "talentai": {
+      "port": 4004,
+      "health": "http://localhost:4004/health",
+      "api": "http://localhost:4004/api",
+      "replicas": 3,
+      "resources": {
+        "cpu": "500m",
+        "memory": "512Mi"
+      }
+    },
+    "prezentai": {
+      "port": 4005,
+      "health": "http://localhost:4005/health",
+      "api": "http://localhost:4005/api",
+      "replicas": 3,
+      "resources": {
+        "cpu": "500m",
+        "memory": "512Mi"
+      }
+    }
+  }
+}

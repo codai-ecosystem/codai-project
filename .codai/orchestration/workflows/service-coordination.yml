@@ -1,0 +1,11 @@
+name: Multi-Service Coordination Workflow
+description: Coordinate complex multi-service operations
+steps:
+  - action: analyze_dependencies
+    timeout: 120
+  - action: plan_execution_order
+    timeout: 60
+  - action: coordinate_services
+    timeout: 600
+  - action: validate_coordination
+    timeout: 180

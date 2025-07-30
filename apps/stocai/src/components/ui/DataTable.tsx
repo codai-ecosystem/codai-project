@@ -5,9 +5,9 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
-import { Button } from './Button';
-import { Card, CardContent, CardHeader, CardTitle } from './Card';
-import { Input } from './Input';
+import { Button } from './button';
+import { Card, CardContent, CardHeader, CardTitle } from './card';
+import { Input } from './input';
 
 export interface DataTableColumn<T> {
   header: string;
@@ -161,7 +161,7 @@ export function DataTable<T extends Record<string, unknown>>({
                       )}
                     >
                       {column.enableSorting !== false &&
-                      column.accessorKey !== undefined ? (
+                        column.accessorKey !== undefined ? (
                         <Button
                           variant="ghost"
                           size="sm"

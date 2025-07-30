@@ -14,7 +14,7 @@ export interface CodeGenerationResponse {
 export class CodeGenerationFlow {
   async generateCode(request: CodeGenerationRequest): Promise<CodeGenerationResponse> {
     const generatedCode = await this.processGeneration(request);
-    const explanation = `Generated ${request.language} code for: ${request.prompt}`;
+    const explanation = `Generated ${request.complexity} ${request.language} code for: ${request.prompt}`;
     const testCases = [`// Test: ${request.prompt}`];
 
     return { generatedCode, explanation, testCases };

@@ -1,16 +1,66 @@
-# Codai Ecosystem Documentation
+# 📚 CODAI Ecosystem Documentation
 
-## Overview
+**Complete documentation for the unified CODAI ecosystem with universal authentication, database/storage, SDK, CLI, and REST API integration.**
 
-Welcome to the comprehensive documentation for the Codai ecosystem - a production-ready, enterprise-grade platform consisting of 40 microservices.
+## 🏗️ Architecture Overview
 
-## Quick Navigation
+The CODAI ecosystem is a fully integrated platform consisting of 32+ applications with:
+- **Universal Authentication**: Single sign-on via ID service
+- **Universal Database/Storage**: Centralized data management via MEMORAI
+- **Comprehensive SDKs**: TypeScript/JavaScript SDKs for all services
+- **Unified CLI Tools**: Command-line interface for all operations
+- **Standardized REST APIs**: Consistent API endpoints across all services
+- **Complete Testing**: 700+ tests ensuring system reliability
 
-### 🏗️ Architecture
+## 📖 Documentation Sections
 
-- [System Overview](architecture/overview.md) - Complete architectural documentation
-- [Service Catalog](services.md) - All 40 services and their purposes
-- [Technology Stack](tech-stack.md) - Technologies and frameworks used
+### 🔐 [Authentication Documentation](./authentication/)
+Complete guide to the universal authentication system:
+- Authentication flows and token management
+- Integration patterns for all applications
+- Security implementation details
+- Cross-domain cookie configuration
+- Role-based access control
+
+### 🗄️ [Database & Storage Documentation](./database-storage/)
+Comprehensive guide to data management:
+- MEMORAI service integration patterns
+- Database operations and transactions
+- File storage and retrieval
+- Caching strategies
+- Real-time synchronization
+
+### ⚡ [SDK Documentation](./sdk/)
+Developer guides for all service SDKs:
+- Core SDK usage and examples
+- Service-specific SDK documentation
+- Authentication integration
+- Error handling and best practices
+- TypeScript definitions and examples
+
+### 🛠️ [CLI Documentation](./cli/)
+Command-line interface guides:
+- Installation and setup
+- Command reference for all services
+- Automation and scripting examples
+- Configuration management
+- Troubleshooting guides
+
+### 🌐 [API Documentation](./api/)
+REST API references and examples:
+- Endpoint documentation for all services
+- Authentication requirements
+- Request/response examples
+- Rate limiting and best practices
+- OpenAPI specifications
+
+### 🔗 [Integration Guides](./integration-guides/)
+Step-by-step integration tutorials:
+- New application integration
+- Migration from legacy systems
+- Best practices and patterns
+- Common troubleshooting
+- Performance optimization
 
 ### 📖 API Documentation
 

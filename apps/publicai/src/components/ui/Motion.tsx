@@ -6,7 +6,7 @@ import React, { type ReactNode } from 'react';
 
 import { pageTransition, pageVariants } from '@/lib/animations';
 
-interface TransitionProps {
+export interface TransitionProps {
   children: ReactNode;
   className?: string;
 }

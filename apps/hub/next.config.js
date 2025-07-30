@@ -1,36 +1,35 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    // Remove deprecated turbo config
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
+  transpilePackages: ['@codai/security', '@codai/api-standards'],
+  turbopack: {
+    resolveAlias: {
+      canvas: './empty-module.js',
+    },
   },
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: true, // Temporarily ignore TypeScript errors for testing
+  },
+  eslint: {
+    ignoreDuringBuilds: true, // Temporarily ignore ESLint errors for testing
+  },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
   },
   images: {
-    domains: ['localhost'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
-  env: {
-    SERVICE_NAME: 'hub',
-    SERVICE_PORT: '4048',
+  // Production optimizations
+  experimental: {
+    optimizeCss: true,
+    scrollRestoration: true,
   },
-  webpack: (config, { isServer }) => {
-    // Fix module resolution issues
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-      };
-    }
-    return config;
-  },
-  // Reduce memory usage
-  compress: true,
-  poweredByHeader: false,
+  // Output configuration for deployment
+  output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
 };
 
 export default nextConfig;

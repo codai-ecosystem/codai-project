@@ -1,0 +1,222 @@
+# AIDE Web Application Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: aide-web-service
+  namespace: aide-production
+  labels:
+    app: aide-web
+    tier: frontend
+    environment: production
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "3000"
+    prometheus.io/path: "/metrics"
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+      protocol: TCP
+  selector:
+    app: aide-web
+  sessionAffinity: None
+
+---
+# AIDE API Backend Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: aide-api-service
+  namespace: aide-production
+  labels:
+    app: aide-api
+    tier: backend
+    environment: production
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9090"
+    prometheus.io/path: "/metrics"
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+    - name: metrics
+      port: 9090
+      targetPort: 9090
+      protocol: TCP
+  selector:
+    app: aide-api
+  sessionAffinity: None
+
+---
+# PostgreSQL Database Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: aide-postgres-service
+  namespace: aide-production
+  labels:
+    app: aide-postgres
+    tier: database
+    environment: production
+spec:
+  type: ClusterIP
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: 5432
+      protocol: TCP
+  selector:
+    app: aide-postgres
+  sessionAffinity: None
+
+---
+# Redis Cache Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: aide-redis-service
+  namespace: aide-production
+  labels:
+    app: aide-redis
+    tier: cache
+    environment: production
+spec:
+  type: ClusterIP
+  ports:
+    - name: redis
+      port: 6379
+      targetPort: 6379
+      protocol: TCP
+  selector:
+    app: aide-redis
+  sessionAffinity: None
+
+---
+# Elasticsearch Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: aide-elasticsearch-service
+  namespace: aide-production
+  labels:
+    app: aide-elasticsearch
+    tier: search
+    environment: production
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 9200
+      targetPort: 9200
+      protocol: TCP
+    - name: transport
+      port: 9300
+      targetPort: 9300
+      protocol: TCP
+  selector:
+    app: aide-elasticsearch
+  sessionAffinity: None
+
+---
+# Prometheus Monitoring Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: aide-prometheus-service
+  namespace: aide-production
+  labels:
+    app: aide-prometheus
+    tier: monitoring
+    environment: production
+spec:
+  type: ClusterIP
+  ports:
+    - name: web
+      port: 9090
+      targetPort: 9090
+      protocol: TCP
+  selector:
+    app: aide-prometheus
+  sessionAffinity: None
+
+---
+# Grafana Dashboard Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: aide-grafana-service
+  namespace: aide-production
+  labels:
+    app: aide-grafana
+    tier: monitoring
+    environment: production
+spec:
+  type: ClusterIP
+  ports:
+    - name: web
+      port: 3000
+      targetPort: 3000
+      protocol: TCP
+  selector:
+    app: aide-grafana
+  sessionAffinity: None
+
+---
+# LoadBalancer Service for External Access
+apiVersion: v1
+kind: Service
+metadata:
+  name: aide-loadbalancer
+  namespace: aide-production
+  labels:
+    app: aide
+    tier: loadbalancer
+    environment: production
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:region:account:certificate/cert-id"
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP
+    - name: https
+      port: 443
+      targetPort: 443
+      protocol: TCP
+  selector:
+    app: nginx-proxy
+  loadBalancerPolicy: Local
+  externalTrafficPolicy: Local
+
+---
+# Headless Service for StatefulSets
+apiVersion: v1
+kind: Service
+metadata:
+  name: aide-headless
+  namespace: aide-production
+  labels:
+    app: aide
+    environment: production
+spec:
+  clusterIP: None
+  ports:
+    - name: web
+      port: 3000
+      targetPort: 3000
+    - name: api
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: aide

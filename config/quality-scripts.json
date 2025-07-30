@@ -1,0 +1,6 @@
+{
+  "quality:check": "npm run lint && npm run typecheck && npm run test:unit",
+  "quality:fix": "npm run format && npm run lint:fix",
+  "quality:analyze": "npm run analyze && npm run complexity",
+  "quality:full": "npm run quality:check && npm run quality:analyze"
+}

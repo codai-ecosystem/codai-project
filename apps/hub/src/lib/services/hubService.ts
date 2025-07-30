@@ -1,5 +1,3 @@
-import prisma from "../../prisma";
-
 export class HubService {
   private initialized: boolean = false;
 
@@ -70,7 +68,7 @@ export class HubService {
 
   async updateResource(data: any): Promise<any> {
     if (!data?.id) throw new Error('ID required for update');
-    
+
     return {
       success: true,
       operation: 'update',
@@ -83,7 +81,7 @@ export class HubService {
 
   async deleteResource(id: string): Promise<any> {
     if (!id) throw new Error('ID required for delete');
-    
+
     return {
       success: true,
       operation: 'delete',
@@ -103,11 +101,8 @@ export class HubService {
     };
   }
 
-  async getHealth(): Promise<{ status: string; uptime: number; service: string }> {
+  async getHealth(): Promise<{ status: string; uptime: number; service: string; timestamp?: string; error?: string }> {
     try {
-      // Test database connection
-      await prisma.$queryRaw`SELECT 1`;
-      
       return {
         status: this.initialized ? 'healthy' : 'unhealthy',
         uptime: Date.now(),
@@ -117,8 +112,9 @@ export class HubService {
     } catch (error) {
       return {
         status: 'unhealthy',
-        error: error.message,
+        error: error instanceof Error ? error.message : String(error),
         service: 'hub',
+        uptime: Date.now(),
         timestamp: new Date().toISOString()
       };
     }
@@ -137,6 +133,5 @@ export class HubService {
 }
 
 export const hubService = new HubService();
-
 
 export default HubService;

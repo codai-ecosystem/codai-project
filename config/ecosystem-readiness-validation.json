@@ -1,0 +1,86 @@
+{
+  "timestamp": "2025-07-15T13:04:44.067Z",
+  "phase": "ECOSYSTEM_FINAL_VALIDATION",
+  "status": "INITIALIZING",
+  "services": {
+    "ports": {
+      "3001": {
+        "port": 3001,
+        "available": true
+      },
+      "4030": {
+        "port": 4030,
+        "available": false
+      },
+      "4031": {
+        "port": 4031,
+        "available": false
+      },
+      "4033": {
+        "port": 4033,
+        "available": true
+      },
+      "4066": {
+        "port": 4066,
+        "available": true
+      },
+      "4074": {
+        "port": 4074,
+        "available": true
+      },
+      "8080": {
+        "port": 8080,
+        "available": true
+      }
+    }
+  },
+  "infrastructure": {
+    "api-gateway.cjs": {
+      "exists": true,
+      "size": 3347,
+      "modified": "2025-07-15T12:54:44.961Z"
+    },
+    "ecosystem-config.json": {
+      "exists": true,
+      "size": 3227,
+      "modified": "2025-07-15T12:43:09.654Z"
+    },
+    "ecosystem-comprehensive-test.cjs": {
+      "exists": true,
+      "size": 7985,
+      "modified": "2025-07-15T13:02:24.046Z"
+    },
+    "package.json": {
+      "exists": true,
+      "size": 3838,
+      "modified": "2025-07-15T12:50:42.251Z"
+    },
+    "pnpm-workspace.yaml": {
+      "exists": true,
+      "size": 376,
+      "modified": "2025-07-14T23:40:44.840Z"
+    }
+  },
+  "dependencies": {
+    "pnpmAvailable": true,
+    "installedPackages": "MISSING",
+    "status": "READY"
+  },
+  "testing": {
+    "ecosystemTest": {
+      "success": false,
+      "output": "🚀 Starting CODAI Ecosystem Comprehensive Test...\n\n🔍 Testing CODAI at http://localhost:4030...\n❌ CODAI: DOWN (10115ms)\n🔍 Testing MEMORAI at http://localhost:4031...\n❌ MEMORAI: DOWN (10009ms)\n🔍 Testing BANCAI at http://localhost:4033...\n❌ BANCAI: DOWN (2ms)\n🔍 Testing STOCAI at http://localhost:4066...\n❌ STOCAI: DOWN (2ms)\n🔍 Testing PREZENTAI at http://localhost:3001...\n❌ PREZENTAI: DOWN (1ms)\n🔍 Testing AIDE at http://localhost:4074...\n❌ AIDE: DOWN (1ms)\n\n🌐 Testing API Gateway...\n❌ API Gateway: DOWN\n\n============================================================\n🚀 CODAI ECOSYSTEM COMPREHENSIVE TEST REPORT\n============================================================\n\n📊 Summary:\n  • Services: 0/6 healthy (0%)\n  • API Gateway: DOWN\n  • Average Response Time: 3355ms\n  • Ecosystem Health: DEGRADED\n\n🔍 Service Details:\n  ❌ CODAI:\n    - URL: http://localhost:4030\n    - Status: N/A\n    - Response Time: 10115ms\n    - Error: Request timeout\n  ❌ MEMORAI:\n    - URL: http://localhost:4031\n    - Status: N/A\n    - Response Time: 10009ms\n    - Error: Request timeout\n  ❌ BANCAI:\n    - URL: http://localhost:4033\n    - Status: N/A\n    - Response Time: 2ms\n    - Error: None\n  ❌ STOCAI:\n    - URL: http://localhost:4066\n    - Status: N/A\n    - Response Time: 2ms\n    - Error: None\n  ❌ PREZENTAI:\n    - URL: http://localhost:3001\n    - Status: N/A\n    - Response Time: 1ms\n    - Error: None\n  ❌ AIDE:\n    - URL: http://localhost:4074\n    - Status: N/A\n    - Response Time: 1ms\n    - Error: None\n\n============================================================\n\n📄 Full report saved to: E:\\GitHub\\codai-project\\ecosystem-test-results.json\n\n🎯 Ecosystem Status: NOT READY\n",
+      "errors": ""
+    }
+  },
+  "summary": {
+    "ready": false,
+    "dependencies": true,
+    "infrastructure": true,
+    "testing": false,
+    "status": "NEEDS_ATTENTION",
+    "nextSteps": [
+      "Start services and run tests"
+    ]
+  }
+}

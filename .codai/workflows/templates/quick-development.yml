@@ -1,0 +1,9 @@
+name: Quick Development Workflow
+description: Fast development cycle with essential checks
+steps:
+  - action: code_analysis
+    timeout: 30
+  - action: quick_tests
+    timeout: 60
+  - action: build_check
+    timeout: 120

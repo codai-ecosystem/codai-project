@@ -43,7 +43,7 @@ export class AuthService {
   ): Promise<AuthResponse> {
     if (!this.isFirebaseInitialized() || !auth) {
       return {
-        user: null,
+        success: false,
         error: 'Firebase not initialized',
       };
     }
@@ -54,10 +54,25 @@ export class AuthService {
         credentials.email,
         credentials.password
       );
-      return { user: result.user, error: null };
+
+      // Convert Firebase User to our User interface
+      const user: User = {
+        id: result.user.uid,
+        email: result.user.email || '',
+        name: result.user.displayName || result.user.email?.split('@')[0] || '',
+        role: 'user',
+        avatar: result.user.photoURL || undefined,
+        photoURL: result.user.photoURL || undefined,
+        displayName: result.user.displayName || undefined,
+        emailVerified: result.user.emailVerified,
+        createdAt: result.user.metadata.creationTime ? new Date(result.user.metadata.creationTime) : undefined,
+        lastLoginAt: result.user.metadata.lastSignInTime ? new Date(result.user.metadata.lastSignInTime) : undefined,
+      };
+
+      return { success: true, user };
     } catch (error: unknown) {
       return {
-        user: null,
+        success: false,
         error: this.getErrorMessage(error),
       };
     }
@@ -71,7 +86,7 @@ export class AuthService {
   ): Promise<AuthResponse> {
     if (!this.isFirebaseInitialized() || !auth) {
       return {
-        user: null,
+        success: false,
         error: 'Firebase not initialized',
       };
     }
@@ -85,18 +100,32 @@ export class AuthService {
 
       // Update display name
       await updateProfile(result.user, {
-        displayName: credentials.displayName,
+        displayName: credentials.name,
       });
 
       // Create user document in Firestore
       await this.createUserDocument(result.user, {
-        displayName: credentials.displayName,
+        displayName: credentials.name,
       });
 
-      return { user: result.user, error: null };
+      // Convert Firebase User to our User interface
+      const user: User = {
+        id: result.user.uid,
+        email: result.user.email || '',
+        name: credentials.name,
+        role: 'user',
+        avatar: result.user.photoURL || undefined,
+        photoURL: result.user.photoURL || undefined,
+        displayName: credentials.name,
+        emailVerified: result.user.emailVerified,
+        createdAt: result.user.metadata.creationTime ? new Date(result.user.metadata.creationTime) : undefined,
+        lastLoginAt: result.user.metadata.lastSignInTime ? new Date(result.user.metadata.lastSignInTime) : undefined,
+      };
+
+      return { success: true, user };
     } catch (error: unknown) {
       return {
-        user: null,
+        success: false,
         error: this.getErrorMessage(error),
       };
     }
@@ -108,7 +137,7 @@ export class AuthService {
   static async signInWithGoogle(): Promise<AuthResponse> {
     if (!this.isFirebaseInitialized() || !auth) {
       return {
-        user: null,
+        success: false,
         error: 'Firebase not initialized',
       };
     }
@@ -123,10 +152,24 @@ export class AuthService {
       // Create or update user document
       await this.createUserDocument(result.user);
 
-      return { user: result.user, error: null };
+      // Convert Firebase User to our User interface
+      const user: User = {
+        id: result.user.uid,
+        email: result.user.email || '',
+        name: result.user.displayName || result.user.email?.split('@')[0] || '',
+        role: 'user',
+        avatar: result.user.photoURL || undefined,
+        photoURL: result.user.photoURL || undefined,
+        displayName: result.user.displayName || undefined,
+        emailVerified: result.user.emailVerified,
+        createdAt: result.user.metadata.creationTime ? new Date(result.user.metadata.creationTime) : undefined,
+        lastLoginAt: result.user.metadata.lastSignInTime ? new Date(result.user.metadata.lastSignInTime) : undefined,
+      };
+
+      return { success: true, user };
     } catch (error: unknown) {
       return {
-        user: null,
+        success: false,
         error: this.getErrorMessage(error),
       };
     }
@@ -254,7 +297,7 @@ export class AuthService {
   ): Promise<AuthResponse> {
     if (!this.isFirebaseInitialized() || !auth) {
       return {
-        user: null,
+        success: false,
         error: 'Firebase not initialized',
       };
     }
@@ -267,10 +310,24 @@ export class AuthService {
         await this.createUserDocument(result.user);
       }
 
-      return { user: result.user, error: null };
+      // Convert Firebase User to our User interface
+      const user: User = {
+        id: result.user.uid,
+        email: result.user.email || '',
+        name: result.user.displayName || result.user.phoneNumber || '',
+        role: 'user',
+        avatar: result.user.photoURL || undefined,
+        photoURL: result.user.photoURL || undefined,
+        displayName: result.user.displayName || undefined,
+        emailVerified: result.user.emailVerified,
+        createdAt: result.user.metadata.creationTime ? new Date(result.user.metadata.creationTime) : undefined,
+        lastLoginAt: result.user.metadata.lastSignInTime ? new Date(result.user.metadata.lastSignInTime) : undefined,
+      };
+
+      return { success: true, user };
     } catch (error: unknown) {
       return {
-        user: null,
+        success: false,
         error: this.getErrorMessage(error),
       };
     }
@@ -405,7 +462,9 @@ export class AuthService {
         return {
           id: uid,
           email: data['email'] as string,
-          displayName: data['displayName'] as string | null,
+          name: data['displayName'] as string || data['email'] as string || '',
+          role: data['role'] as string || 'user',
+          displayName: data['displayName'] as string | undefined,
           photoURL: data['photoURL'] as string | undefined,
           emailVerified: data['emailVerified'] as boolean,
           createdAt:
@@ -467,8 +526,8 @@ export class AuthService {
         displayName:
           firebaseUser.displayName ??
           (additionalData &&
-          typeof additionalData === 'object' &&
-          'displayName' in additionalData
+            typeof additionalData === 'object' &&
+            'displayName' in additionalData
             ? String(additionalData['displayName'])
             : ''),
         photoURL: firebaseUser.photoURL ?? '',

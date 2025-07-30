@@ -2,7 +2,7 @@ import { Github, Twitter, Linkedin } from 'lucide-react';
 import Link from 'next/link';
 import type { JSX } from 'react';
 
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 export function Footer(): JSX.Element {
   return (
@@ -22,21 +22,21 @@ export function Footer(): JSX.Element {
               CSS. Built for developers who want to ship fast.
             </p>
             <div className="flex gap-2">
-              <Button variant="ghost" size="sm" asChild>
-                <Link href="https://github.com" aria-label="GitHub">
+              <Link href="https://github.com" aria-label="GitHub">
+                <Button variant="ghost" size="sm">
                   <Github className="h-4 w-4" />
-                </Link>
-              </Button>
-              <Button variant="ghost" size="sm" asChild>
-                <Link href="https://twitter.com" aria-label="Twitter">
+                </Button>
+              </Link>
+              <Link href="https://twitter.com" aria-label="Twitter">
+                <Button variant="ghost" size="sm">
                   <Twitter className="h-4 w-4" />
-                </Link>
-              </Button>
-              <Button variant="ghost" size="sm" asChild>
-                <Link href="https://linkedin.com" aria-label="LinkedIn">
+                </Button>
+              </Link>
+              <Link href="https://linkedin.com" aria-label="LinkedIn">
+                <Button variant="ghost" size="sm">
                   <Linkedin className="h-4 w-4" />
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             </div>
           </div>
 

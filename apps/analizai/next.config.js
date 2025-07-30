@@ -1,36 +1,27 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    // Remove deprecated turbo config
+  typescript: {
+    ignoreBuildErrors: false,
   },
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
-  typescript: {
-    ignoreBuildErrors: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
   },
   images: {
-    domains: ['localhost'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
-  env: {
-    SERVICE_NAME: 'analizai',
-    SERVICE_PORT: '4014',
+  turbopack: {
+    resolveAlias: {
+      canvas: './empty-module.js',
+    },
   },
-  webpack: (config, { isServer }) => {
-    // Fix module resolution issues
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-      };
-    }
-    return config;
-  },
-  // Reduce memory usage
-  compress: true,
-  poweredByHeader: false,
-};
+}
 
-export default nextConfig;
+export default nextConfig

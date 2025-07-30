@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FiFileText } from '../icons/FeatherIcons';
-import Card, { CardBody, CardHeader } from '@/components/ui/Card';
-import Button from '@/components/ui/Button';
+import { Card, CardHeader } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import Chip from '@/components/ui/Chip';
 
 // Language display names for captions
@@ -69,8 +69,8 @@ const CaptionsSection: React.FC<CaptionsSectionProps> = ({
         {' '}
         {/* Check for valid caption data with actual content - not just presence of an empty object */}
         {!captionsData ||
-        Object.keys(captionsData).length === 0 ||
-        !transcriptionText ? (
+          Object.keys(captionsData).length === 0 ||
+          !transcriptionText ? (
           // No captions yet - show generate button
           <div className="flex flex-col items-center justify-center py-8">
             <div className="w-16 h-16 rounded-full bg-[color:var(--ai-primary)]/10 flex items-center justify-center mb-4">

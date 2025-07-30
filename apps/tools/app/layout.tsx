@@ -1,12 +1,22 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
+import { AuthProvider } from '@codai/shared-ui'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Tools Hub - AI Development Utilities',
-  description: 'Comprehensive suite of AI development tools and utilities for CodaiChain ecosystem',
+  title: 'TOOLS - AI-Powered Platform',
+  description: 'Next-generation AI platform for tools services',
+  keywords: ['AI', 'tools', 'platform', 'automation', 'intelligence'],
+  authors: [{ name: 'CODAI Team' }],
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 }
 
 export default function RootLayout({
@@ -15,9 +25,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${inter.className} bg-black text-white min-h-screen`}>
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className}>
+        <AuthProvider
+          apiBaseUrl="/api"
+          redirectTo="/dashboard"
+          loginPath="/login"
+        >
+          <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+            {children}
+          </div>
+        </AuthProvider>
       </body>
     </html>
   )

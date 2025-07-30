@@ -1,23 +1,68 @@
 {
   "name": "@codai/shared-ui",
   "version": "1.0.0",
-  "description": "Shared UI components for CodAI ecosystem",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "description": "Shared UI components and design system for CODAI ecosystem",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "styles"
+  ],
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch"
+    "build": "pnpm exec tsc",
+    "dev": "tsc --watch",
+    "lint": "pnpm exec eslint src --ext .ts,.tsx",
+    "lint:fix": "pnpm exec eslint src --ext .ts,.tsx --fix",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "clean": "rimraf dist",
+    "generate-tailwind-configs": "tsx scripts/generate-tailwind-configs.ts"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.14",
+    "@radix-ui/react-dropdown-menu": "^2.1.15",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-toast": "^1.2.14",
+    "@radix-ui/react-tooltip": "^1.2.7",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "framer-motion": "^12.23.3"
+    "framer-motion": "^12.23.3",
+    "i18next": "^24.2.1",
+    "i18next-browser-languagedetector": "^8.0.2",
+    "lucide-react": "^0.468.0",
+    "next": "^15.4.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-i18next": "^15.6.0",
+    "tailwind-merge": "^2.5.4",
+    "tailwindcss": "^3.4.17"
   },
   "devDependencies": {
+    "@types/node": "^24.0.14",
     "@types/react": "^19.1.8",
-    "typescript": "^5.8.3"
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.31.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
+    "tsx": "^4.19.2",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
   },
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./styles": "./styles/globals.css",
+    "./styles/design-system": "./styles/design-system.css",
+    "./tailwind": "./tailwind.config.ts",
+    "./tailwind-master": "./tailwind-master.config.ts"
   }
 }

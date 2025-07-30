@@ -32,6 +32,7 @@ import {
   deleteDoc,
 } from 'firebase/firestore';
 import { firebaseApp } from '@/utils/firebase/firebase.config';
+import { getFirestoreDB } from '@/lib/firebase-config';
 import { Course, Lesson } from '@/types';
 
 type ContentType = 'course' | 'lesson';
@@ -60,7 +61,7 @@ const BatchOperations: React.FC = () => {
   const itemsPerPage = 10;
 
   // Firestore instance
-  const db = getFirestore(firebaseApp);
+  const db = getFirestoreDB();
 
   // Options for batch actions dropdown
   const actionOptions = [
@@ -171,18 +172,18 @@ const BatchOperations: React.FC = () => {
   const lessonItems =
     contentType === 'lesson' && lessons
       ? Object.values(lessons).flatMap(courseLessons =>
-          Object.values(courseLessons).map(lesson => {
-            // Ensure lesson is typed correctly
-            const typedLesson = lesson as Lesson;
-            return {
-              ...typedLesson,
-              courseName:
-                typedLesson.courseId && courses && courses[typedLesson.courseId]
-                  ? courses[typedLesson.courseId].name
-                  : 'Unknown Course',
-            };
-          })
-        )
+        Object.values(courseLessons).map(lesson => {
+          // Ensure lesson is typed correctly
+          const typedLesson = lesson as Lesson;
+          return {
+            ...typedLesson,
+            courseName:
+              typedLesson.courseId && courses && courses[typedLesson.courseId]
+                ? courses[typedLesson.courseId].name
+                : 'Unknown Course',
+          };
+        })
+      )
       : [];
 
   const items = contentType === 'course' ? courseItems : lessonItems;
@@ -489,8 +490,8 @@ const BatchOperations: React.FC = () => {
                             <div className="text-sm text-gray-500 dark:text-gray-400">
                               {'createdAt' in item && item.createdAt
                                 ? new Date(
-                                    item.createdAt.toString()
-                                  ).toLocaleDateString()
+                                  item.createdAt.toString()
+                                ).toLocaleDateString()
                                 : 'Unknown'}
                             </div>
                           </td>

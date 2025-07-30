@@ -1,20 +1,30 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    output: 'standalone',
-    eslint: {
-        ignoreDuringBuilds: true
+  experimental: {
+    turbo: {
+      resolveAlias: {
+        canvas: './empty-module.js',
+      },
     },
-    typescript: {
-        ignoreBuildErrors: true
-    },
-    images: {
-        domains: ['localhost'],
-    },
-    env: {
-        APP_NAME: 'CURTAI',
-        APP_DESCRIPTION: 'AI-Powered Soulmate Discovery Platform',
-        APP_PORT: '4015',
-    },
-}
+  },
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+  swcMinify: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+  },
+};
 
-module.exports = nextConfig;
+export default nextConfig;

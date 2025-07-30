@@ -1,0 +1,211 @@
+# AIDE ConfigMap for Application Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aide-config
+  namespace: aide-production
+  labels:
+    app: aide
+    environment: production
+data:
+  # Application Configuration
+  NODE_ENV: "production"
+  API_VERSION: "v1"
+  LOG_LEVEL: "info"
+  
+  # Web Application Config
+  NEXT_PUBLIC_APP_ENV: "production"
+  NEXT_PUBLIC_API_URL: "http://aide-api-service:8080"
+  NEXT_PUBLIC_WS_URL: "ws://aide-api-service:8080"
+  
+  # API Configuration
+  HOST: "0.0.0.0"
+  PORT: "8080"
+  API_RATE_LIMIT: "1000"
+  API_TIMEOUT: "30000"
+  
+  # Database Configuration
+  DB_HOST: "aide-postgres-service"
+  DB_PORT: "5432"
+  DB_NAME: "aide_prod"
+  DB_USER: "aide_user"
+  DB_POOL_MIN: "2"
+  DB_POOL_MAX: "20"
+  DB_TIMEOUT: "30000"
+  
+  # Redis Configuration
+  REDIS_HOST: "aide-redis-service"
+  REDIS_PORT: "6379"
+  REDIS_DB: "0"
+  REDIS_TIMEOUT: "5000"
+  
+  # Elasticsearch Configuration
+  ELASTICSEARCH_HOST: "aide-elasticsearch-service"
+  ELASTICSEARCH_PORT: "9200"
+  ELASTICSEARCH_INDEX: "aide-logs"
+  
+  # Monitoring Configuration
+  PROMETHEUS_PORT: "9090"
+  METRICS_ENABLED: "true"
+  HEALTH_CHECK_INTERVAL: "30"
+  
+  # Security Configuration
+  CORS_ORIGINS: "https://aide.com,https://www.aide.com"
+  SESSION_TIMEOUT: "86400"
+  RATE_LIMIT_WINDOW: "900"
+  
+  # Feature Flags
+  FEATURE_ENTERPRISE: "true"
+  FEATURE_ANALYTICS: "true"
+  FEATURE_AI_ASSISTANT: "true"
+  FEATURE_OPTIMIZATION: "true"
+  
+  # CLI Configuration
+  CLI_CONFIG_PATH: "/app/config"
+  CLI_WORKSPACE_PATH: "/app/workspace"
+  CLI_LOG_PATH: "/app/logs"
+  
+  # Nginx Configuration
+  nginx.conf: |
+    user nginx;
+    worker_processes auto;
+    error_log /var/log/nginx/error.log warn;
+    pid /var/run/nginx.pid;
+
+    events {
+        worker_connections 1024;
+        use epoll;
+        multi_accept on;
+    }
+
+    http {
+        include /etc/nginx/mime.types;
+        default_type application/octet-stream;
+        
+        # Logging
+        log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                        '$status $body_bytes_sent "$http_referer" '
+                        '"$http_user_agent" "$http_x_forwarded_for"';
+        access_log /var/log/nginx/access.log main;
+        
+        # Performance
+        sendfile on;
+        tcp_nopush on;
+        tcp_nodelay on;
+        keepalive_timeout 65;
+        types_hash_max_size 2048;
+        
+        # Gzip
+        gzip on;
+        gzip_vary on;
+        gzip_min_length 1024;
+        gzip_types
+            text/plain
+            text/css
+            text/xml
+            text/javascript
+            application/javascript
+            application/xml+rss
+            application/json;
+        
+        # Rate limiting
+        limit_req_zone $binary_remote_addr zone=api:10m rate=10r/s;
+        
+        # Upstream servers
+        upstream aide-web {
+            server aide-web-service:3000;
+        }
+        
+        upstream aide-api {
+            server aide-api-service:8080;
+        }
+        
+        # Main server block
+        server {
+            listen 80;
+            server_name aide.com www.aide.com;
+            
+            # Security headers
+            add_header X-Frame-Options DENY;
+            add_header X-Content-Type-Options nosniff;
+            add_header X-XSS-Protection "1; mode=block";
+            
+            # Web application
+            location / {
+                proxy_pass http://aide-web;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection 'upgrade';
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_cache_bypass $http_upgrade;
+            }
+            
+            # API endpoints
+            location /api/ {
+                limit_req zone=api burst=20 nodelay;
+                proxy_pass http://aide-api;
+                proxy_http_version 1.1;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+            }
+            
+            # Health check
+            location /health {
+                access_log off;
+                return 200 "healthy\n";
+                add_header Content-Type text/plain;
+            }
+        }
+    }
+
+---
+# AIDE Secrets Configuration
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aide-secrets
+  namespace: aide-production
+  labels:
+    app: aide
+    environment: production
+type: Opaque
+stringData:
+  # Database Secrets
+  DATABASE_URL: "postgresql://aide_user:CHANGE_ME@aide-postgres-service:5432/aide_prod"
+  POSTGRES_PASSWORD: "CHANGE_ME_STRONG_PASSWORD"
+  
+  # Redis Secrets
+  REDIS_URL: "redis://:CHANGE_ME_REDIS_PASSWORD@aide-redis-service:6379/0"
+  REDIS_PASSWORD: "CHANGE_ME_REDIS_PASSWORD"
+  
+  # Application Secrets
+  JWT_SECRET: "CHANGE_ME_JWT_SECRET_32_CHARS_MIN"
+  NEXTAUTH_SECRET: "CHANGE_ME_NEXTAUTH_SECRET"
+  NEXTAUTH_URL: "https://aide.com"
+  WEBHOOK_SECRET: "CHANGE_ME_WEBHOOK_SECRET"
+  
+  # External API Keys
+  OPENAI_API_KEY: "CHANGE_ME_OPENAI_KEY"
+  
+  # OAuth Credentials
+  AZURE_CLIENT_ID: "CHANGE_ME_AZURE_CLIENT_ID"
+  AZURE_CLIENT_SECRET: "CHANGE_ME_AZURE_CLIENT_SECRET"
+  AZURE_TENANT_ID: "CHANGE_ME_AZURE_TENANT_ID"
+  GOOGLE_CLIENT_ID: "CHANGE_ME_GOOGLE_CLIENT_ID"
+  GOOGLE_CLIENT_SECRET: "CHANGE_ME_GOOGLE_CLIENT_SECRET"
+  
+  # Elasticsearch Secrets
+  ELASTIC_PASSWORD: "CHANGE_ME_ELASTIC_PASSWORD"
+  ELASTICSEARCH_URL: "http://elastic:CHANGE_ME_ELASTIC_PASSWORD@aide-elasticsearch-service:9200"
+  
+  # Monitoring Secrets
+  GRAFANA_ADMIN_PASSWORD: "CHANGE_ME_GRAFANA_PASSWORD"
+  
+  # SSL/TLS Certificates (base64 encoded)
+  TLS_CERT: ""  # Add your certificate here
+  TLS_KEY: ""   # Add your private key here

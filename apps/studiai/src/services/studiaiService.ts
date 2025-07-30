@@ -21,14 +21,15 @@ export class StudiaiService {
   async create(data: Omit<StudiaiData, 'id' | 'createdAt' | 'updatedAt'>): Promise<StudiaiData> {
     const id = this.generateId();
     const now = new Date();
-    
+
     const newItem: StudiaiData = {
+      name: data.name || 'Untitled',
       ...data,
       id,
       createdAt: now,
       updatedAt: now
     };
-    
+
     this.data.set(id, newItem);
     return newItem;
   }
@@ -36,14 +37,14 @@ export class StudiaiService {
   async update(id: string, data: Partial<StudiaiData>): Promise<StudiaiData | null> {
     const existing = this.data.get(id);
     if (!existing) return null;
-    
+
     const updated = {
       ...existing,
       ...data,
       id, // Preserve ID
       updatedAt: new Date()
     };
-    
+
     this.data.set(id, updated);
     return updated;
   }
@@ -65,7 +66,7 @@ export class StudiaiService {
 
   async validateData(data: StudiaiData): Promise<boolean> {
     // Implement validation logic
-    return data.name && data.name.length > 0;
+    return !!(data.name && data.name.length > 0);
   }
 
   async performAnalytics(): Promise<any> {

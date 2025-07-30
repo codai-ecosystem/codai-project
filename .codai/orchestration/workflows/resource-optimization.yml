@@ -1,0 +1,11 @@
+name: Resource Optimization Workflow
+description: Optimize resource allocation and performance
+steps:
+  - action: analyze_resource_usage
+    timeout: 180
+  - action: identify_optimization_opportunities
+    timeout: 120
+  - action: implement_optimizations
+    timeout: 300
+  - action: validate_improvements
+    timeout: 180

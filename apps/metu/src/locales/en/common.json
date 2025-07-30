@@ -1,0 +1,118 @@
+{
+    "app": {
+        "title": "{{assistantName}} Voice AI",
+        "subtitle": "Intelligent Conversational Assistant",
+        "powered_by": "Powered by Advanced AI • Real-time Voice Recognition",
+        "welcome": "Welcome to {{assistantName}} - part of the CODAI ecosystem"
+    },
+    "voice": {
+        "states": {
+            "idle": "Ready to listen",
+            "listening": "Listening...",
+            "processing": "Processing...",
+            "speaking": "Speaking..."
+        },
+        "controls": {
+            "activate": "Press Ctrl+Space or click to activate",
+            "settings": "Settings",
+            "test_voice": "Test Voice",
+            "stop": "Stop",
+            "start": "Start"
+        },
+        "errors": {
+            "not_supported": "Voice recognition not supported in this browser",
+            "try_browsers": "Try using Chrome, Edge, or Safari",
+            "microphone_access": "Microphone access required",
+            "connection_failed": "Voice service connection failed"
+        }
+    },
+    "settings": {
+        "title": "Settings",
+        "assistant_name": "Assistant Name",
+        "assistant_name_placeholder": "Enter assistant name",
+        "language": "Language",
+        "voice_recognition": "Voice Recognition",
+        "volume": "Volume: {{volume}}%",
+        "theme": "Theme",
+        "voice_profile": "Voice Profile",
+        "save": "Save",
+        "cancel": "Cancel",
+        "reset": "Reset to Defaults",
+        "advanced": "Advanced Settings"
+    },
+    "conversation": {
+        "title": "Conversation",
+        "clear": "Clear",
+        "export": "Export",
+        "start_message": "Start a conversation with {{assistantName}}",
+        "click_to_begin": "Click the microphone to begin",
+        "no_conversations": "No conversations yet",
+        "user": "You",
+        "assistant": "{{assistantName}}"
+    },
+    "assistant": {
+        "character": {
+            "listening": "👂",
+            "processing": "🧠",
+            "speaking": "💬",
+            "idle": "🤖"
+        },
+        "personality": {
+            "friendly": "Friendly",
+            "professional": "Professional",
+            "casual": "Casual",
+            "formal": "Formal"
+        },
+        "capabilities": "Your AI Assistant",
+        "status": {
+            "online": "Online",
+            "offline": "Offline",
+            "connecting": "Connecting...",
+            "error": "Connection Error"
+        }
+    },
+    "audio": {
+        "activity": "Audio Activity",
+        "visualizer": "Audio Visualizer",
+        "quality": {
+            "excellent": "Excellent",
+            "good": "Good",
+            "fair": "Fair",
+            "poor": "Poor"
+        }
+    },
+    "server": {
+        "status": {
+            "running": "Server Running",
+            "stopped": "Server Stopped",
+            "error": "Server Error",
+            "starting": "Starting Server..."
+        },
+        "connections": "{{count}} active connections",
+        "port": "Port: {{port}}"
+    },
+    "mobile": {
+        "qr_code": "Scan QR code to connect mobile device",
+        "connection_status": "Mobile Device Status",
+        "sync": "Sync with Mobile",
+        "pair_device": "Pair New Device"
+    },
+    "errors": {
+        "general": "An error occurred",
+        "network": "Network connection failed",
+        "timeout": "Request timed out",
+        "unauthorized": "Unauthorized access",
+        "not_found": "Resource not found",
+        "server_error": "Server error occurred"
+    },
+    "actions": {
+        "retry": "Retry",
+        "refresh": "Refresh",
+        "close": "Close",
+        "minimize": "Minimize",
+        "maximize": "Maximize",
+        "back": "Back",
+        "forward": "Forward",
+        "home": "Home"
+    }
+}

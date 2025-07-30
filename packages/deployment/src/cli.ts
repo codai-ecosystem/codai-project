@@ -49,16 +49,16 @@ program
 
             spinner.succeed(chalk.green('Deployment completed successfully!'));
 
-            console.log(chalk.cyan('\\n📊 Deployment Summary:'));
-            console.log(`✅ Services deployed: ${result.deployed.length}`);
-            console.log(`⚠️  Services with warnings: ${result.warnings.length}`);
-            console.log(`❌ Failed deployments: ${result.failed.length}`);
-            console.log(`⏱️  Total time: ${result.duration}ms`);
+            console.warn(chalk.cyan('\\n📊 Deployment Summary:'));
+            console.warn(`✅ Services deployed: ${result.deployed.length}`);
+            console.warn(`⚠️  Services with warnings: ${result.warnings.length}`);
+            console.warn(`❌ Failed deployments: ${result.failed.length}`);
+            console.warn(`⏱️  Total time: ${result.duration}ms`);
 
             if (result.failed.length > 0) {
-                console.log(chalk.red('\\n❌ Failed Services:'));
+                console.warn(chalk.red('\\n❌ Failed Services:'));
                 result.failed.forEach(failure => {
-                    console.log(`  • ${failure.service}: ${failure.error}`);
+                    console.warn(`  • ${failure.service}: ${failure.error}`);
                 });
                 process.exit(1);
             }
@@ -92,16 +92,16 @@ program
 
             spinner.succeed(chalk.green('Status check completed!'));
 
-            console.log(chalk.cyan('\\n🔍 Deployment Status:'));
-            console.log(`Environment: ${chalk.yellow(options.environment)}`);
-            console.log(`Overall Health: ${status.healthy ? chalk.green('✅ Healthy') : chalk.red('❌ Unhealthy')}`);
-            console.log(`Services Running: ${status.services.running}/${status.services.total}`);
-            console.log(`Last Deployment: ${new Date(status.lastDeployment).toLocaleString()}`);
+            console.warn(chalk.cyan('\\n🔍 Deployment Status:'));
+            console.warn(`Environment: ${chalk.yellow(options.environment)}`);
+            console.warn(`Overall Health: ${status.healthy ? chalk.green('✅ Healthy') : chalk.red('❌ Unhealthy')}`);
+            console.warn(`Services Running: ${status.services.running}/${status.services.total}`);
+            console.warn(`Last Deployment: ${new Date(status.lastDeployment).toLocaleString()}`);
 
-            console.log(chalk.cyan('\\n📋 Services:'));
+            console.warn(chalk.cyan('\\n📋 Services:'));
             status.services.details.forEach((service: any) => {
                 const statusIcon = service.status === 'running' ? '✅' : service.status === 'deploying' ? '🔄' : '❌';
-                console.log(`  ${statusIcon} ${service.name}: ${service.status} (${service.replicas} replicas)`);
+                console.warn(`  ${statusIcon} ${service.name}: ${service.status} (${service.replicas} replicas)`);
             });
 
         } catch (error) {
@@ -137,10 +137,10 @@ program
 
             spinner.succeed(chalk.green('Rollback completed successfully!'));
 
-            console.log(chalk.cyan('\\n↩️  Rollback Summary:'));
-            console.log(`Previous version: ${result.previousVersion}`);
-            console.log(`Rolled back to: ${result.rolledBackTo}`);
-            console.log(`Services affected: ${result.servicesAffected}`);
+            console.warn(chalk.cyan('\\n↩️  Rollback Summary:'));
+            console.warn(`Previous version: ${result.previousVersion}`);
+            console.warn(`Rolled back to: ${result.rolledBackTo}`);
+            console.warn(`Services affected: ${result.servicesAffected}`);
 
         } catch (error) {
             spinner.fail(chalk.red('Rollback failed!'));
@@ -203,7 +203,7 @@ program
                 }
             });
 
-            console.log(chalk.cyan(`📄 Logs for ${service} (last ${options.tail} lines):\\n`));
+            console.warn(chalk.cyan(`📄 Logs for ${service} (last ${options.tail} lines):\\n`));
 
             await orchestrator.getLogs({
                 service,
@@ -249,12 +249,12 @@ program
                 spinner.warn(chalk.yellow('Issues detected!'));
             }
 
-            console.log(chalk.cyan('\\n🏥 Health Report:'));
-            console.log(`Overall Status: ${healthReport.overall === 'healthy' ? chalk.green('✅ Healthy') : chalk.red('❌ Unhealthy')}`);
+            console.warn(chalk.cyan('\\n🏥 Health Report:'));
+            console.warn(`Overall Status: ${healthReport.overall === 'healthy' ? chalk.green('✅ Healthy') : chalk.red('❌ Unhealthy')}`);
 
             healthReport.checks.forEach((check: any) => {
                 const icon = check.status === 'pass' ? '✅' : check.status === 'warn' ? '⚠️' : '❌';
-                console.log(`  ${icon} ${check.name}: ${check.message}`);
+                console.warn(`  ${icon} ${check.name}: ${check.message}`);
             });
 
         } catch (error) {

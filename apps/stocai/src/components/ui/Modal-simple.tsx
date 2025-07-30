@@ -8,7 +8,7 @@ import { createPortal } from 'react-dom';
 
 import { cn } from '@/lib/utils';
 
-import { Button } from './Button';
+import { Button } from './button';
 
 interface ModalProps {
   isOpen: boolean;
@@ -43,7 +43,7 @@ const modalVariants = {
     scale: 1,
     y: 0,
     transition: {
-      type: 'spring',
+      type: 'spring' as const,
       duration: 0.3,
       bounce: 0.3,
     },

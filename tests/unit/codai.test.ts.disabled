@@ -1,0 +1,328 @@
+import { describe, it, expect, beforeAll, afterAll } from 'vitest'
+import request from 'supertest'
+
+// CODAI Service Integration Tests - Fixed to match actual architecture
+describe('CODAI Service - Integration Tests (Fixed)', () => {
+  const CODAI_URL = 'http://localhost:4001'
+  const GATEWAY_URL = 'http://localhost:4000'
+
+  describe('Health Check & Service Info', () => {
+    it('should respond to health check via Gateway (not direct)', async () => {
+      // CODAI is a Next.js app - health checks go through Gateway
+      const response = await request(GATEWAY_URL)
+        .get('/api/v1/codai/health')
+        .expect(200)
+
+      expect(response.body).toHaveProperty('status')
+      expect(response.body.status).toBe('healthy')
+      expect(response.body).toHaveProperty('service')
+      expect(response.body.service).toBe('codai')
+      expect(response.body).toHaveProperty('timestamp')
+      expect(response.body).toHaveProperty('port')
+      expect(response.body.port).toBe(4001)
+      expect(response.body).toHaveProperty('version')
+      expect(response.body).toHaveProperty('features')
+      expect(Array.isArray(response.body.features)).toBe(true)
+    })
+
+    it('should respond to health check via Gateway', async () => {
+      const response = await request(GATEWAY_URL)
+        .get('/api/v1/codai/health')
+        .expect(200)
+
+      expect(response.body).toHaveProperty('status')
+      expect(response.body.status).toBe('healthy')
+      expect(response.body).toHaveProperty('service')
+      expect(response.body.service).toBe('codai')
+    })
+
+    it('should include all required service features', async () => {
+      const response = await request(CODAI_URL)
+        .get('/api/health')
+        .expect(200)
+
+      const expectedFeatures = [
+        'ai-assistant',
+        'code-generation',
+        'natural-language-processing',
+        'intelligent-automation'
+      ]
+
+      expectedFeatures.forEach(feature => {
+        expect(response.body.features).toContain(feature)
+      })
+    })
+
+    it('should provide service metadata', async () => {
+      const response = await request(CODAI_URL)
+        .get('/api/health')
+        .expect(200)
+
+      expect(response.body).toHaveProperty('version')
+      expect(typeof response.body.version).toBe('string')
+      expect(response.body).toHaveProperty('timestamp')
+      expect(new Date(response.body.timestamp)).toBeInstanceOf(Date)
+    })
+  })
+
+  describe('API Endpoints', () => {
+    it('should handle root path appropriately', async () => {
+      const response = await request(CODAI_URL)
+        .get('/')
+
+      // Should either provide service info or redirect
+      expect([200, 404, 302]).toContain(response.status)
+    })
+
+    it('should handle API root path', async () => {
+      const response = await request(CODAI_URL)
+        .get('/api')
+
+      // Should provide API documentation or service info
+      expect([200, 404]).toContain(response.status)
+    })
+
+    it('should handle invalid endpoints gracefully', async () => {
+      const response = await request(CODAI_URL)
+        .get('/api/nonexistent-endpoint')
+        .expect(404)
+
+      expect(response.body).toBeDefined()
+    })
+
+    it('should validate API versioning', async () => {
+      const response = await request(CODAI_URL)
+        .get('/api/v1')
+
+      // Should handle versioned API access
+      expect([200, 404]).toContain(response.status)
+    })
+  })
+
+  describe('CORS & Security Headers', () => {
+    it('should handle CORS preflight requests', async () => {
+      const response = await request(CODAI_URL)
+        .options('/api/health')
+
+      expect([200, 204]).toContain(response.status)
+    })
+
+    it('should include appropriate headers', async () => {
+      const response = await request(CODAI_URL)
+        .get('/api/health')
+        .expect(200)
+
+      // Check for common headers
+      expect(response.headers).toHaveProperty('content-type')
+      expect(response.headers['content-type']).toContain('application/json')
+    })
+
+    it('should handle different HTTP methods appropriately', async () => {
+      // POST to health endpoint should be rejected
+      const postResponse = await request(CODAI_URL)
+        .post('/api/health')
+
+      expect([405, 404]).toContain(postResponse.status)
+
+      // PUT to health endpoint should be rejected  
+      const putResponse = await request(CODAI_URL)
+        .put('/api/health')
+
+      expect([405, 404]).toContain(putResponse.status)
+    })
+  })
+
+  describe('Performance & Reliability', () => {
+    it('should respond within acceptable time limits', async () => {
+      const startTime = Date.now()
+
+      await request(CODAI_URL)
+        .get('/api/health')
+        .expect(200)
+
+      const responseTime = Date.now() - startTime
+      expect(responseTime).toBeLessThan(1000) // 1 second for direct access
+    })
+
+    it('should handle concurrent requests', async () => {
+      const requests = Array(10).fill(null).map(() =>
+        request(CODAI_URL).get('/api/health')
+      )
+
+      const responses = await Promise.all(requests)
+
+      responses.forEach(response => {
+        expect(response.status).toBe(200)
+        expect(response.body.status).toBe('healthy')
+        expect(response.body.service).toBe('codai')
+      })
+    })
+
+    it('should maintain consistent response format', async () => {
+      const responses = await Promise.all([
+        request(CODAI_URL).get('/api/health'),
+        request(CODAI_URL).get('/api/health'),
+        request(CODAI_URL).get('/api/health')
+      ])
+
+      const firstResponse = responses[0].body
+      responses.forEach(response => {
+        expect(response.status).toBe(200)
+        // All responses should have same structure
+        expect(response.body).toHaveProperty('status')
+        expect(response.body).toHaveProperty('service')
+        expect(response.body).toHaveProperty('port')
+        expect(response.body).toHaveProperty('version')
+        expect(response.body).toHaveProperty('features')
+        
+        // Core values should be consistent
+        expect(response.body.status).toBe(firstResponse.status)
+        expect(response.body.service).toBe(firstResponse.service)
+        expect(response.body.port).toBe(firstResponse.port)
+        expect(response.body.version).toBe(firstResponse.version)
+        expect(response.body.features).toEqual(firstResponse.features)
+      })
+    })
+
+    it('should handle rapid sequential requests', async () => {
+      const startTime = Date.now()
+      
+      for (let i = 0; i < 5; i++) {
+        const response = await request(CODAI_URL)
+          .get('/api/health')
+          .expect(200)
+
+        expect(response.body.status).toBe('healthy')
+      }
+
+      const totalTime = Date.now() - startTime
+      expect(totalTime).toBeLessThan(3000) // Should complete 5 requests in under 3 seconds
+    })
+  })
+
+  describe('Error Handling & Edge Cases', () => {
+    it('should handle malformed requests', async () => {
+      const response = await request(CODAI_URL)
+        .get('/api/health?invalid=parameter&test=malformed')
+        .expect(200) // Health endpoint should still work with query params
+
+      expect(response.body.status).toBe('healthy')
+    })
+
+    it('should handle requests with invalid headers', async () => {
+      const response = await request(CODAI_URL)
+        .get('/api/health')
+        .set('Invalid-Header', 'invalid-value')
+        .set('Content-Type', 'invalid/type')
+
+      // Should still respond to health check regardless of headers
+      expect([200, 400]).toContain(response.status)
+    })
+
+    it('should validate service consistency', async () => {
+      // Multiple requests should return consistent service info
+      const responses = await Promise.all([
+        request(CODAI_URL).get('/api/health'),
+        request(GATEWAY_URL).get('/api/v1/codai/health')
+      ])
+
+      const directResponse = responses[0].body
+      const gatewayResponse = responses[1].body
+
+      // Both should indicate healthy status
+      expect(directResponse.status).toBe('healthy')
+      expect(gatewayResponse.status).toBe('healthy')
+      
+      // Both should identify as codai service
+      expect(directResponse.service).toBe('codai')
+      expect(gatewayResponse.service).toBe('codai')
+      
+      // Both should report same port
+      expect(directResponse.port).toBe(gatewayResponse.port)
+    })
+  })
+
+  describe('Service Features Validation', () => {
+    it('should validate AI assistant capabilities', async () => {
+      const response = await request(CODAI_URL)
+        .get('/api/health')
+        .expect(200)
+
+      expect(response.body.features).toContain('ai-assistant')
+    })
+
+    it('should validate code generation capabilities', async () => {
+      const response = await request(CODAI_URL)
+        .get('/api/health')
+        .expect(200)
+
+      expect(response.body.features).toContain('code-generation')
+    })
+
+    it('should validate natural language processing capabilities', async () => {
+      const response = await request(CODAI_URL)
+        .get('/api/health')
+        .expect(200)
+
+      expect(response.body.features).toContain('natural-language-processing')
+    })
+
+    it('should validate intelligent automation capabilities', async () => {
+      const response = await request(CODAI_URL)
+        .get('/api/health')
+        .expect(200)
+
+      expect(response.body.features).toContain('intelligent-automation')
+    })
+
+    it('should not include unexpected features', async () => {
+      const response = await request(CODAI_URL)
+        .get('/api/health')
+        .expect(200)
+
+      // Features array should only contain expected features
+      const unexpectedFeatures = response.body.features.filter(feature => 
+        !['ai-assistant', 'code-generation', 'natural-language-processing', 'intelligent-automation'].includes(feature)
+      )
+
+      expect(unexpectedFeatures).toHaveLength(0)
+    })
+  })
+
+  describe('Service Integration', () => {
+    it('should be accessible via Gateway proxy', async () => {
+      const gatewayResponse = await request(GATEWAY_URL)
+        .get('/api/v1/codai/health')
+        .expect(200)
+
+      const directResponse = await request(CODAI_URL)
+        .get('/api/health')
+        .expect(200)
+
+      // Responses should be functionally equivalent
+      expect(gatewayResponse.body.status).toBe(directResponse.body.status)
+      expect(gatewayResponse.body.service).toBe(directResponse.body.service)
+      expect(gatewayResponse.body.port).toBe(directResponse.body.port)
+    })
+
+    it('should maintain service availability', async () => {
+      // Service should be consistently available
+      const availability = []
+      
+      for (let i = 0; i < 10; i++) {
+        try {
+          const response = await request(CODAI_URL)
+            .get('/api/health')
+            .timeout(1000)
+
+          availability.push(response.status === 200)
+        } catch (error) {
+          availability.push(false)
+        }
+      }
+
+      const successRate = availability.filter(Boolean).length / availability.length
+      expect(successRate).toBeGreaterThanOrEqual(0.9) // 90% availability minimum
+    })
+  })
+})

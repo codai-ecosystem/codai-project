@@ -1,0 +1,76 @@
+# AIDE CLI Tools Production Dockerfile
+# Lightweight Alpine-based CLI container
+
+# Stage 1: Dependencies installation
+FROM node:20-alpine AS deps
+WORKDIR /app
+
+# Install pnpm
+RUN npm install -g pnpm@latest
+
+# Copy package files
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/aide-cli/package.json ./apps/aide-cli/
+COPY packages/aide-*/package.json ./packages/aide-*/
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile --production=false
+
+# Stage 2: Build stage
+FROM node:20-alpine AS builder
+WORKDIR /app
+
+# Install pnpm
+RUN npm install -g pnpm@latest
+
+# Copy dependencies from deps stage
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/apps/aide-cli/node_modules ./apps/aide-cli/node_modules
+
+# Copy source code
+COPY . .
+
+# Build the CLI application
+RUN pnpm build --filter=aide-cli
+
+# Stage 3: Production runtime
+FROM node:20-alpine AS runner
+WORKDIR /app
+
+# Install additional tools needed for CLI operations
+RUN apk add --no-cache \
+    git \
+    openssh-client \
+    curl \
+    jq \
+    bash
+
+# Create non-root user
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 cliuser
+
+# Copy built application
+COPY --from=builder --chown=cliuser:nodejs /app/apps/aide-cli/dist ./dist
+COPY --from=builder --chown=cliuser:nodejs /app/node_modules ./node_modules
+COPY --from=deps --chown=cliuser:nodejs /app/apps/aide-cli/package.json ./package.json
+
+# Create global symlink for aide command
+RUN npm link
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV CLI_HOME=/app
+
+# Create directories for CLI operations
+RUN mkdir -p /app/workspace /app/logs /app/config
+RUN chown -R cliuser:nodejs /app
+
+# Switch to non-root user
+USER cliuser
+
+# Health check (verify CLI is available)
+HEALTHCHECK --interval=60s --timeout=10s --start-period=30s --retries=3 \
+  CMD aide --version || exit 1
+
+# Default command (interactive shell with aide CLI available)
+CMD ["sh", "-c", "echo 'AIDE CLI Ready' && exec sh"]

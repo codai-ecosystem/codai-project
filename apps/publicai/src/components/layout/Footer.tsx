@@ -2,7 +2,7 @@ import { Github, Twitter, Linkedin } from 'lucide-react';
 import Link from 'next/link';
 import type { JSX } from 'react';
 
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 export function Footer(): JSX.Element {
   return (
@@ -22,21 +22,27 @@ export function Footer(): JSX.Element {
               CSS. Built for developers who want to ship fast.
             </p>
             <div className="flex gap-2">
-              <Button variant="ghost" size="sm" asChild>
-                <Link href="https://github.com" aria-label="GitHub">
-                  <Github className="h-4 w-4" />
-                </Link>
-              </Button>
-              <Button variant="ghost" size="sm" asChild>
-                <Link href="https://twitter.com" aria-label="Twitter">
-                  <Twitter className="h-4 w-4" />
-                </Link>
-              </Button>
-              <Button variant="ghost" size="sm" asChild>
-                <Link href="https://linkedin.com" aria-label="LinkedIn">
-                  <Linkedin className="h-4 w-4" />
-                </Link>
-              </Button>
+              <Link
+                href="https://github.com"
+                aria-label="GitHub"
+                className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3"
+              >
+                <Github className="h-4 w-4" />
+              </Link>
+              <Link
+                href="https://twitter.com"
+                aria-label="Twitter"
+                className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3"
+              >
+                <Twitter className="h-4 w-4" />
+              </Link>
+              <Link
+                href="https://linkedin.com"
+                aria-label="LinkedIn"
+                className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3"
+              >
+                <Linkedin className="h-4 w-4" />
+              </Link>
             </div>
           </div>
 

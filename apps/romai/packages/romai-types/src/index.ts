@@ -7,8 +7,8 @@ export interface RomaiConfig {
 }
 
 export interface AzureOpenAIConfig {
-  apiKey: string;
-  endpoint: string;
+  apiKey?: string;
+  endpoint?: string;
   apiVersion?: string;
   deploymentName?: string;
 }

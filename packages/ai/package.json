@@ -7,20 +7,20 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.js"
     }
   },
   "scripts": {
-    "build": "tsc --build && tsc --build tsconfig.esm.json",
+    "build": "pnpm exec tsc --build && tsc --build tsconfig.esm.json",
     "dev": "tsc --build --watch",
-    "lint": "eslint src --ext .ts,.tsx --report-unused-disable-directives --max-warnings 0",
-    "lint:fix": "eslint src --ext .ts,.tsx --fix",
-    "typecheck": "tsc --noEmit",
+    "lint": "pnpm exec eslint src --ext .ts,.tsx --report-unused-disable-directives",
+    "lint:fix": "pnpm exec eslint src --ext .ts,.tsx --fix",
+    "type-check": "pnpm exec tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "clean": "rm -rf dist"
+    "clean": "rimraf dist"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.2.12",

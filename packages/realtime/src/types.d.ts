@@ -8,10 +8,10 @@ export declare const MessageSchema: z.ZodObject<{
     target: z.ZodOptional<z.ZodString>;
     channel: z.ZodOptional<z.ZodString>;
     priority: z.ZodDefault<z.ZodEnum<{
-        critical: "critical";
         low: "low";
         normal: "normal";
         high: "high";
+        critical: "critical";
     }>>;
 }, z.core.$strip>;
 export type Message = z.infer<typeof MessageSchema>;

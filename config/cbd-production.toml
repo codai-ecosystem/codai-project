@@ -1,0 +1,80 @@
+# CBD Engine Production Configuration
+# Enterprise-grade settings for CBD-MemoraiMCP integration
+
+[server]
+host = "0.0.0.0"
+port = 8080
+workers = 4
+max_connections = 1000
+keep_alive_timeout = 75
+request_timeout = 30
+
+[database]
+name = "memorai_enterprise"
+engine = "cbd-enterprise"
+data_dir = "/data/cbd"
+wal_enabled = true
+checkpoint_interval = 300
+max_memory = "2GB"
+cache_size = "512MB"
+
+[memory_storage]
+enabled = true
+default_ttl = 3600
+max_entries = 1000000
+compression = "lz4"
+encryption = true
+
+[vector_search]
+enabled = true
+engine = "faiss"
+index_type = "HNSW"
+dimensions = 384
+ef_construction = 200
+m = 16
+ef_search = 100
+
+[security]
+enabled = true
+jwt_secret = "${CBD_JWT_SECRET}"
+api_key_required = true
+encryption_key = "${CBD_ENCRYPTION_KEY}"
+audit_logging = true
+
+[performance]
+query_cache_size = "256MB"
+index_cache_size = "128MB"
+parallel_queries = true
+batch_size = 1000
+connection_pool_size = 20
+
+[monitoring]
+metrics_enabled = true
+prometheus_endpoint = "0.0.0.0:9090"
+health_check_endpoint = "/health"
+log_level = "info"
+structured_logging = true
+
+[clustering]
+enabled = false
+node_id = "cbd-memorai-1"
+cluster_name = "cbd-memorai-cluster"
+
+[backup]
+enabled = true
+interval = "6h"
+retention = "30d"
+storage_path = "/data/backups"
+compression = true
+
+[compliance]
+gdpr_enabled = true
+hipaa_enabled = true
+sox_enabled = true
+audit_trail_enabled = true
+
+[transaction]
+isolation_level = "READ_COMMITTED"
+timeout = 30
+max_retry_attempts = 3
+deadlock_timeout = 5

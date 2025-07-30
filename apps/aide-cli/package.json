@@ -1,0 +1,42 @@
+{
+  "name": "@codai/aide-cli",
+  "version": "1.0.0",
+  "description": "AIDE CLI - Command-line interface for the CODAI AIDE platform. Provides project scaffolding, deployment automation, and development workflow management.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "aide": "dist/cli.js"
+  },
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/cli.ts",
+    "build": "tsc",
+    "start": "node dist/cli.js",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@codai/shared-types": "workspace:*",
+    "@codai/config": "workspace:*",
+    "@codai/auth": "workspace:*",
+    "@codai/sdk": "workspace:*",
+    "commander": "^11.1.0",
+    "inquirer": "^9.2.12",
+    "ora": "^7.0.1",
+    "chalk": "^5.3.0",
+    "zod": "^3.23.8",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "@types/inquirer": "^9.0.7",
+    "tsx": "^4.7.1",
+    "typescript": "^5.6.3",
+    "vitest": "^1.6.0",
+    "eslint": "^9.11.1"
+  }
+}

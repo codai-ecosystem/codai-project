@@ -15,8 +15,8 @@ export const pageVariants = {
 };
 
 export const pageTransition = {
-  type: 'tween',
-  ease: 'anticipate',
+  type: 'tween' as const,
+  ease: [0.22, 1, 0.36, 1] as const,
   duration: 0.4,
 };
 
@@ -101,7 +101,7 @@ export const modalVariants = {
     opacity: 1,
     scale: 1,
     transition: {
-      type: 'spring',
+      type: 'spring' as const,
       duration: 0.3,
     },
   },

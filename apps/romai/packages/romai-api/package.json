@@ -20,9 +20,9 @@
     "test": "vitest",
     "test:watch": "vitest --watch",
     "test:coverage": "vitest run --coverage",
-    "lint": "eslint src --ext .ts,.tsx --report-unused-disable-directives --max-warnings 0",
-    "lint:fix": "eslint src --ext .ts,.tsx --fix",
-    "type-check": "tsc --noEmit"
+    "lint": "pnpm exec eslint src --ext .ts,.tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "pnpm exec eslint src --ext .ts,.tsx --fix",
+    "type-check": "pnpm exec tsc --noEmit"
   },
   "keywords": [
     "romai",

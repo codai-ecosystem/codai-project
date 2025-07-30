@@ -1,0 +1,26 @@
+{
+  "name": "@codai/service-monitor",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Advanced performance monitoring and optimization tools for CODAI ecosystem services",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js",
+    "monitor": "node monitor.js",
+    "demo": "node demo.js"
+  },
+  "keywords": [
+    "performance",
+    "monitoring",
+    "optimization",
+    "codai",
+    "services"
+  ],
+  "author": "CODAI Team",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

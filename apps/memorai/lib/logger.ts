@@ -1,9 +1,7 @@
 /**
- * MemorAI LogAI Integration
- * Enhanced logging system for the Memory & Database Platform
+ * MemorAI Enhanced Logging System
+ * Memory & Database Platform logging without external dependencies
  */
-
-import { LogAIClient } from '@codai/logai-sdk'
 
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error' | 'critical'
 
@@ -21,22 +19,12 @@ interface MemorAILogOptions {
 
 class MemorAILogger {
   private static instance: MemorAILogger | undefined
-  private logaiClient: LogAIClient | null = null
+  private logaiClient: any = null
   private isEnabled: boolean = true
 
   private constructor() {
-    try {
-      this.logaiClient = new LogAIClient({
-        apiKey: process.env.LOGAI_API_KEY || 'dev-key-memorai',
-        environment: (process.env.NODE_ENV === 'production' ? 'production' : 'development') as 'development' | 'production',
-        service: 'memorai',
-        baseUrl: process.env.LOGAI_ENDPOINT || 'http://localhost:4032',
-        enableConsole: true // Keep console output for development
-      })
-    } catch (error) {
-      console.warn('Failed to initialize LogAI client for MemorAI:', error)
-      this.logaiClient = null
-    }
+    // LogAI client removed for now - using console logging
+    console.log('MemorAI Logger initialized for development mode')
   }
 
   public static getInstance(): MemorAILogger {
@@ -267,6 +255,25 @@ class MemorAILogger {
   }
 
   /**
+   * Log analytics event
+   */
+  public async logAnalytics(event: string, data: Record<string, any> = {}, options: MemorAILogOptions = {}): Promise<void> {
+    const message = `[ANALYTICS] ${event}`
+    console.log(message, data)
+
+    await this.sendToLogAI('info', message, {
+      ...options,
+      module: 'analytics',
+      context: {
+        ...options.context,
+        event,
+        data,
+        timestamp: Date.now()
+      }
+    })
+  }
+
+  /**
    * Get module-specific logger
    */
   public getModuleLogger(module: string) {
@@ -309,5 +316,6 @@ export const logSearch = memoraiLogger.logSearch.bind(memoraiLogger)
 export const logAPI = memoraiLogger.logAPIRequest.bind(memoraiLogger)
 export const logSync = memoraiLogger.logDataSync.bind(memoraiLogger)
 export const logWarn = memoraiLogger.logWarning.bind(memoraiLogger)
+export const logAnalytics = memoraiLogger.logAnalytics.bind(memoraiLogger)
 
 export default memoraiLogger

@@ -71,7 +71,7 @@ export function RegisterForm({
         confirmPassword: data.confirmPassword,
       });
 
-      if (result.error !== null && result.error !== '') {
+      if (result.error !== null && result.error !== '' && result.error !== undefined) {
         // Handle Firebase Auth errors
         if (result.error.includes('email-already-in-use')) {
           setError('email', { message: 'This email is already registered' });
@@ -136,7 +136,6 @@ export function RegisterForm({
             {...register('displayName')}
             type="text"
             placeholder="Enter your full name"
-            leftIcon={<User className="h-4 w-4" />}
             {...(errors.displayName?.message != null && {
               error: errors.displayName.message,
             })}
@@ -147,60 +146,57 @@ export function RegisterForm({
             {...register('email')}
             type="email"
             placeholder="Enter your email"
-            leftIcon={<Mail className="h-4 w-4" />}
             {...(errors.email?.message != null && {
               error: errors.email.message,
             })}
             disabled={isSubmitting}
           />
 
-          <Input
-            {...register('password')}
-            type={showPassword ? 'text' : 'password'}
-            placeholder="Create a password"
-            leftIcon={<Lock className="h-4 w-4" />}
-            rightIcon={
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-                className="text-muted-foreground hover:text-foreground"
-              >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4" />
-                ) : (
-                  <Eye className="h-4 w-4" />
-                )}
-              </button>
-            }
-            {...(errors.password?.message != null && {
-              error: errors.password.message,
-            })}
-            disabled={isSubmitting}
-          />
+          <div className="relative">
+            <Input
+              {...register('password')}
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Create a password"
+              {...(errors.password?.message != null && {
+                error: errors.password.message,
+              })}
+              disabled={isSubmitting}
+            />
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            >
+              {showPassword ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
+            </button>
+          </div>
 
-          <Input
-            {...register('confirmPassword')}
-            type={showConfirmPassword ? 'text' : 'password'}
-            placeholder="Confirm your password"
-            leftIcon={<Lock className="h-4 w-4" />}
-            rightIcon={
-              <button
-                type="button"
-                onClick={toggleConfirmPasswordVisibility}
-                className="text-muted-foreground hover:text-foreground"
-              >
-                {showConfirmPassword ? (
-                  <EyeOff className="h-4 w-4" />
-                ) : (
-                  <Eye className="h-4 w-4" />
-                )}
-              </button>
-            }
-            {...(errors.confirmPassword?.message != null && {
-              error: errors.confirmPassword.message,
-            })}
-            disabled={isSubmitting}
-          />
+          <div className="relative">
+            <Input
+              {...register('confirmPassword')}
+              type={showConfirmPassword ? 'text' : 'password'}
+              placeholder="Confirm your password"
+              {...(errors.confirmPassword?.message != null && {
+                error: errors.confirmPassword.message,
+              })}
+              disabled={isSubmitting}
+            />
+            <button
+              type="button"
+              onClick={toggleConfirmPasswordVisibility}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            >
+              {showConfirmPassword ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
+            </button>
+          </div>
 
           <Button type="submit" className="w-full" disabled={isSubmitting}>
             {isSubmitting ? (

@@ -23,6 +23,31 @@ beforeAll(() => {
 vi.mock('openai', () => ({
   default: vi.fn().mockImplementation(() => ({
     embeddings: {
+      create: vi.fn().mockImplementation(({ input }) => {
+        // Simulate failure for specific test text
+        if (input === 'Test text' || input === 'force_embedding_failure') {
+          return Promise.reject(new Error('API Error'));
+        }
+
+        return Promise.resolve({
+          data: [{ embedding: new Array(1536).fill(0.1) }]
+        });
+      })
+    },
+    chat: {
+      completions: {
+        create: vi.fn().mockResolvedValue({
+          choices: [{ message: { content: 'Test response' } }]
+        })
+      }
+    }
+  }))
+}))
+
+// Mock Azure OpenAI
+vi.mock('@/lib/azure-openai', () => ({
+  azureOpenAI: {
+    embeddings: {
       create: vi.fn().mockResolvedValue({
         data: [{ embedding: new Array(1536).fill(0.1) }]
       })
@@ -34,7 +59,7 @@ vi.mock('openai', () => ({
         })
       }
     }
-  }))
+  }
 }))
 
 // Mock Pinecone SDK
@@ -51,7 +76,14 @@ vi.mock('@pinecone-database/pinecone', () => ({
           }
         ]
       }),
-      delete: vi.fn().mockResolvedValue({}),
+      delete: vi.fn().mockImplementation(() => Promise.resolve({})),
+      deleteOne: vi.fn().mockImplementation((id) => {
+        // Simulate failure for specific test ID
+        if (id === 'vector-1' && process.env.FORCE_PINECONE_FAILURE === 'true') {
+          return Promise.reject(new Error('Pinecone Error'));
+        }
+        return Promise.resolve({});
+      }),
       fetch: vi.fn().mockResolvedValue({
         vectors: {
           'test-vector-1': {
@@ -76,12 +108,26 @@ vi.mock('@supabase/supabase-js', () => ({
             error: null
           })
         }),
+        range: vi.fn().mockReturnValue({
+          or: vi.fn().mockResolvedValue({
+            data: [{ id: 1, name: 'Test Dataset', file_name: 'test.txt', file_size: 1024 }],
+            error: null
+          })
+        }),
+        or: vi.fn().mockResolvedValue({
+          data: [{ id: 1, name: 'Test Dataset' }],
+          error: null
+        }),
         data: [{ id: 1, name: 'Test Dataset' }],
         error: null
       }),
-      insert: vi.fn().mockResolvedValue({
-        data: [{ id: 1, name: 'Test Dataset' }],
-        error: null
+      insert: vi.fn().mockReturnValue({
+        select: vi.fn().mockReturnValue({
+          single: vi.fn().mockResolvedValue({
+            data: { id: 1, name: 'Test Dataset' },
+            error: null
+          })
+        })
       }),
       update: vi.fn().mockReturnValue({
         eq: vi.fn().mockResolvedValue({
@@ -109,6 +155,9 @@ vi.mock('@supabase/supabase-js', () => ({
         remove: vi.fn().mockResolvedValue({
           data: [],
           error: null
+        }),
+        getPublicUrl: vi.fn().mockReturnValue({
+          data: { publicUrl: 'https://mock-url.com/test-file.txt' }
         })
       })
     }
@@ -118,6 +167,13 @@ vi.mock('@supabase/supabase-js', () => ({
 // Mock LogAI SDK
 vi.mock('@codai/logai-sdk', () => ({
   LogAI: vi.fn().mockImplementation(() => ({
+    log: vi.fn().mockResolvedValue({ success: true }),
+    error: vi.fn().mockResolvedValue({ success: true }),
+    info: vi.fn().mockResolvedValue({ success: true }),
+    warn: vi.fn().mockResolvedValue({ success: true }),
+    debug: vi.fn().mockResolvedValue({ success: true })
+  })),
+  LogAIClient: vi.fn().mockImplementation(() => ({
     log: vi.fn().mockResolvedValue({ success: true }),
     error: vi.fn().mockResolvedValue({ success: true }),
     info: vi.fn().mockResolvedValue({ success: true }),

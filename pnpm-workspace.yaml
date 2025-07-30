@@ -2,12 +2,18 @@ packages:
   # Core applications (active development)
   - "apps/*"
   
+  # AIDE ecosystem
+  - "apps/aide/apps/*"
+  - "apps/aide/packages/*"
+  - "packages/aide-*"
+  
   # Memorai subpackages
   - "apps/memorai/apps/*"
   - "apps/memorai/packages/*"
   
-  # Shared packages
+  # Shared packages and libraries
   - "packages/*"
+  - "libs/*"
   
   # Analytics and monitoring
   - "analytics"

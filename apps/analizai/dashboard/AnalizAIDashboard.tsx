@@ -306,8 +306,8 @@ export default function AnalizAIDashboard() {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center space-x-2 px-6 py-4 font-medium transition-all ${activeTab === tab.id
-                  ? 'text-purple-400 border-b-2 border-purple-500'
-                  : 'text-slate-400 hover:text-white'
+                ? 'text-purple-400 border-b-2 border-purple-500'
+                : 'text-slate-400 hover:text-white'
                 }`}
             >
               {tab.icon}
@@ -415,8 +415,8 @@ export default function AnalizAIDashboard() {
                             <Zap className="w-4 h-4 text-yellow-400" />
                             <span className="text-sm font-medium text-white">{insight.type}</span>
                             <span className={`text-xs px-2 py-1 rounded-full ${insight.severity === 'high' ? 'bg-red-500/20 text-red-400' :
-                                insight.severity === 'medium' ? 'bg-yellow-500/20 text-yellow-400' :
-                                  'bg-blue-500/20 text-blue-400'
+                              insight.severity === 'medium' ? 'bg-yellow-500/20 text-yellow-400' :
+                                'bg-blue-500/20 text-blue-400'
                               }`}>
                               {insight.severity}
                             </span>
@@ -445,9 +445,9 @@ export default function AnalizAIDashboard() {
                       <div className="flex items-center justify-between mb-3">
                         <h4 className="font-semibold text-white">{model.name}</h4>
                         <span className={`px-2 py-1 text-xs rounded-full ${model.status === 'deployed' ? 'bg-emerald-500/20 text-emerald-400' :
-                            model.status === 'training' ? 'bg-blue-500/20 text-blue-400' :
-                              model.status === 'ready' ? 'bg-purple-500/20 text-purple-400' :
-                                'bg-slate-500/20 text-slate-400'
+                          model.status === 'training' ? 'bg-blue-500/20 text-blue-400' :
+                            model.status === 'ready' ? 'bg-purple-500/20 text-purple-400' :
+                              'bg-slate-500/20 text-slate-400'
                           }`}>
                           {model.status}
                         </span>
@@ -504,9 +504,9 @@ export default function AnalizAIDashboard() {
                         </div>
                         <div className="flex items-center space-x-3">
                           <span className={`px-3 py-1 text-xs rounded-full ${pipeline.status === 'running' ? 'bg-blue-500/20 text-blue-400' :
-                              pipeline.status === 'completed' ? 'bg-emerald-500/20 text-emerald-400' :
-                                pipeline.status === 'failed' ? 'bg-red-500/20 text-red-400' :
-                                  'bg-slate-500/20 text-slate-400'
+                            pipeline.status === 'completed' ? 'bg-emerald-500/20 text-emerald-400' :
+                              pipeline.status === 'failed' ? 'bg-red-500/20 text-red-400' :
+                                'bg-slate-500/20 text-slate-400'
                             }`}>
                             {pipeline.status}
                           </span>
@@ -520,14 +520,14 @@ export default function AnalizAIDashboard() {
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {pipeline.steps.map((step, stepIndex) => (
+                        {pipeline.steps.map((step: any, stepIndex: number) => (
                           <div key={step.id} className="bg-slate-800/30 rounded-lg p-3">
                             <div className="flex items-center justify-between mb-2">
                               <span className="text-sm font-medium text-white">{step.name}</span>
                               <div className={`w-2 h-2 rounded-full ${step.status === 'completed' ? 'bg-emerald-400' :
-                                  step.status === 'running' ? 'bg-blue-400 animate-pulse' :
-                                    step.status === 'failed' ? 'bg-red-400' :
-                                      'bg-slate-400'
+                                step.status === 'running' ? 'bg-blue-400 animate-pulse' :
+                                  step.status === 'failed' ? 'bg-red-400' :
+                                    'bg-slate-400'
                                 }`} />
                             </div>
                             <p className="text-xs text-slate-400">{step.type}</p>

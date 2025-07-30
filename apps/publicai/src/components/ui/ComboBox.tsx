@@ -6,8 +6,8 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
-import { Button } from './Button';
-import { Input } from './Input';
+import { Button } from './button';
+import { Input } from './input';
 import { Popover, PopoverContent, PopoverTrigger } from './Popover';
 
 export interface ComboBoxOption {
@@ -17,7 +17,7 @@ export interface ComboBoxOption {
   disabled?: boolean;
 }
 
-interface ComboBoxProps {
+export interface ComboBoxProps {
   options: ComboBoxOption[];
   value?: string;
   onValueChange?: (value: string) => void;
@@ -148,7 +148,7 @@ export function ComboBox({
               'w-full justify-between font-normal',
               selectedValues.length === 0 && 'text-muted-foreground',
               error !== undefined &&
-                'border-destructive focus-visible:ring-destructive',
+              'border-destructive focus-visible:ring-destructive',
               className
             )}
             disabled={disabled}
@@ -205,7 +205,7 @@ export function ComboBox({
                           'w-full justify-start font-normal',
                           isSelected === true && 'bg-accent',
                           option.disabled === true &&
-                            'cursor-not-allowed opacity-50'
+                          'cursor-not-allowed opacity-50'
                         )}
                         onClick={() => handleSelect(option.value)}
                         disabled={option.disabled}
@@ -260,7 +260,7 @@ export function ComboBox({
 }
 
 // Multi-select variant with chips display
-interface MultiSelectProps extends Omit<ComboBoxProps, 'multiple'> {
+export interface MultiSelectProps extends Omit<ComboBoxProps, 'multiple'> {
   values?: string[];
   onValuesChange?: (values: string[]) => void;
   maxDisplay?: number;
@@ -351,7 +351,7 @@ export function MultiSelect({
               'h-auto min-h-10 w-full justify-between py-2 font-normal',
               values.length === 0 && 'text-muted-foreground',
               error !== undefined &&
-                'border-destructive focus-visible:ring-destructive',
+              'border-destructive focus-visible:ring-destructive',
               className
             )}
           >
@@ -375,8 +375,8 @@ export function MultiSelect({
       </Popover>
 
       {description !== undefined &&
-      description !== '' &&
-      (error === undefined || error === '') ? (
+        description !== '' &&
+        (error === undefined || error === '') ? (
         <p className="text-sm text-muted-foreground">{description}</p>
       ) : null}
       {error !== undefined && error !== '' ? (

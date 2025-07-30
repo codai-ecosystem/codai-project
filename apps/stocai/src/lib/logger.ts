@@ -3,8 +3,6 @@
  * Enhanced with LogAI integration for centralized logging across CODAI ecosystem.
  */
 
-import { LogAIClient } from '@codai/logai-sdk'
-
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
 interface LogOptions {
@@ -19,7 +17,6 @@ class Logger {
   private static instance: Logger | undefined;
   private isEnabled: boolean;
   private minLevel: LogLevel;
-  private logaiClient: LogAIClient | null = null;
   private readonly levels: { [key in LogLevel]: number } = {
     debug: 0,
     info: 1,
@@ -31,20 +28,6 @@ class Logger {
     this.isEnabled = process.env['NODE_ENV'] !== 'production';
     this.minLevel =
       (process.env['NEXT_PUBLIC_LOG_LEVEL'] as LogLevel | undefined) ?? 'info';
-
-    // Initialize LogAI client for centralized logging
-    try {
-      this.logaiClient = new LogAIClient({
-        apiKey: process.env.LOGAI_API_KEY || 'dev-key-stocai',
-        environment: (process.env.NODE_ENV === 'production' ? 'production' : 'development') as 'development' | 'production',
-        service: 'stocai',
-        baseUrl: process.env.LOGAI_ENDPOINT || 'http://localhost:4032',
-        enableConsole: false // We handle console logging separately
-      })
-    } catch (error) {
-      console.warn('Failed to initialize LogAI client:', error)
-      this.logaiClient = null
-    }
   }
 
   public static getInstance(): Logger {
@@ -103,44 +86,11 @@ class Logger {
   }
 
   /**
-   * Send log to LogAI service asynchronously
+   * Send log to LogAI service asynchronously (placeholder)
    */
-  private async sendToLogAI(level: LogLevel, message: string, options: LogOptions = {}, error?: Error): Promise<void> {
-    if (!this.logaiClient) return
-
-    try {
-      const metadata = {
-        module: options.module,
-        traceId: options.traceId,
-        sessionId: options.sessionId,
-        timestamp: Date.now(),
-        ...(options.context || {})
-      }
-
-      switch (level) {
-        case 'debug':
-          await this.logaiClient.debug(message, metadata)
-          break
-        case 'info':
-          await this.logaiClient.info(message, metadata)
-          break
-        case 'warn':
-          await this.logaiClient.warn(message, metadata)
-          break
-        case 'error':
-          await this.logaiClient.error(message, {
-            ...metadata,
-            error: error?.message,
-            stack: error?.stack
-          })
-          break
-      }
-    } catch (logaiError) {
-      // Silently fail - don't break application if logging fails
-      if (this.isEnabled) {
-        console.warn('Failed to send log to LogAI:', logaiError)
-      }
-    }
+  private async sendToLogAI(_level: LogLevel, _message: string, _options: LogOptions = {}, _error?: Error): Promise<void> {
+    // TODO: Integrate with logai-integration package when available in static context
+    return Promise.resolve();
   }
 
   /**

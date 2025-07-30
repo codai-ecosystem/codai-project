@@ -4,10 +4,9 @@ import { Download, WifiOff } from 'lucide-react';
 import { useEffect } from 'react';
 
 import { Button } from '@/components/ui';
-import { usePWA, useServiceWorker } from '@/hooks/usePWA';
+import { usePWA, useServiceWorker } from '../../hooks/usePWA';
 import { logger } from '@/lib/logger';
 import { cn } from '@/lib/utils';
-import { useNotificationStore } from '@/stores/notifications';
 import type { PWAInstallerProps, ServiceWorkerProviderProps } from '@/types';
 
 export function PWAInstaller({
@@ -15,27 +14,23 @@ export function PWAInstaller({
 }: PWAInstallerProps): JSX.Element | null {
   const { canInstall, install, isInstalling, isOnline } = usePWA();
   const { hasUpdate, updateServiceWorker } = useServiceWorker();
-  const { addNotification } = useNotificationStore();
 
   // Show update notification
   useEffect(() => {
     if (hasUpdate === true) {
-      addNotification({
-        type: 'info',
-        title: 'App Update Available',
-        message: 'A new version of the app is available. Click to update.',
-        persistent: true,
-        action: {
-          label: 'Update',
-          onClick: updateServiceWorker,
-        },
-      });
+      // Simple browser notification instead of using the store
+      if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification('App Update Available', {
+          body: 'A new version of the app is available.',
+          icon: '/icon-192x192.png',
+        });
+      }
 
       logger.info('PWA update available', {
         context: { timestamp: new Date().toISOString() },
       });
     }
-  }, [hasUpdate, addNotification, updateServiceWorker]);
+  }, [hasUpdate, updateServiceWorker]);
 
   // Show install prompt
   if (canInstall === true) {
@@ -46,12 +41,12 @@ export function PWAInstaller({
         }}
         variant="outline"
         size="sm"
-        isLoading={isInstalling}
+        disabled={isInstalling}
         className={cn('fixed bottom-4 right-4 z-50 shadow-lg', className)}
         data-testid="pwa-installer"
       >
         {!isInstalling && <Download className="mr-2 h-4 w-4" />}
-        Install App
+        {isInstalling ? 'Installing...' : 'Install App'}
       </Button>
     );
   }

@@ -1,0 +1,696 @@
+{
+  "common": {
+    "welcome": "Bine ai venit",
+    "getStarted": "Începe",
+    "signIn": "Conectează-te",
+    "signOut": "Deconectează-te",
+    "signUp": "Înregistrează-te",
+    "save": "Salvează",
+    "cancel": "Anulează",
+    "delete": "Șterge",
+    "edit": "Editează",
+    "create": "Creează",
+    "update": "Actualizează",
+    "submit": "Trimite",
+    "reset": "Resetează",
+    "clear": "Șterge",
+    "search": "Caută",
+    "filter": "Filtrează",
+    "sort": "Sortează",
+    "export": "Exportă",
+    "import": "Importă",
+    "download": "Descarcă",
+    "upload": "Încarcă",
+    "copy": "Copiază",
+    "paste": "Lipește",
+    "cut": "Taie",
+    "undo": "Anulează",
+    "redo": "Refă",
+    "refresh": "Actualizează",
+    "reload": "Reîncarcă",
+    "loading": "Se încarcă...",
+    "error": "Eroare",
+    "success": "Succes",
+    "warning": "Avertisment",
+    "info": "Informație",
+    "yes": "Da",
+    "no": "Nu",
+    "ok": "OK",
+    "close": "Închide",
+    "next": "Următorul",
+    "previous": "Precedentul",
+    "first": "Primul",
+    "last": "Ultimul",
+    "page": "Pagina",
+    "of": "din",
+    "total": "Total",
+    "showing": "Se afișează",
+    "results": "rezultate",
+    "noResults": "Nu au fost găsite rezultate",
+    "selectAll": "Selectează Tot",
+    "deselectAll": "Deselectează Tot",
+    "actions": "Acțiuni",
+    "options": "Opțiuni",
+    "settings": "Setări",
+    "preferences": "Preferințe",
+    "profile": "Profil",
+    "account": "Cont",
+    "dashboard": "Tablou de Bord",
+    "home": "Acasă",
+    "about": "Despre",
+    "contact": "Contact",
+    "help": "Ajutor",
+    "support": "Suport",
+    "documentation": "Documentație",
+    "faq": "Întrebări Frecvente",
+    "terms": "Termeni și Condiții",
+    "privacy": "Politica de Confidențialitate",
+    "cookies": "Politica Cookie-urilor"
+  },
+  "navigation": {
+    "home": "Acasă",
+    "dashboard": "Tablou de Bord",
+    "apps": "Aplicații",
+    "services": "Servicii",
+    "ecosystem": "Ecosistem",
+    "analytics": "Analiză",
+    "settings": "Setări",
+    "profile": "Profil",
+    "account": "Cont",
+    "billing": "Facturare",
+    "security": "Securitate",
+    "notifications": "Notificări",
+    "integrations": "Integrări",
+    "api": "API",
+    "documentation": "Documentație",
+    "support": "Suport",
+    "marketplace": "Magazin",
+    "templates": "Șabloane",
+    "projects": "Proiecte"
+  },
+  "auth": {
+    "signIn": "Conectează-te",
+    "signUp": "Înregistrează-te",
+    "signOut": "Deconectează-te",
+    "email": "Email",
+    "password": "Parolă",
+    "confirmPassword": "Confirmă Parola",
+    "forgotPassword": "Ai uitat parola?",
+    "resetPassword": "Resetează Parola",
+    "rememberMe": "Ține-mă minte",
+    "createAccount": "Creează Cont",
+    "alreadyHaveAccount": "Ai deja un cont?",
+    "dontHaveAccount": "Nu ai un cont?",
+    "signInWith": "Conectează-te cu",
+    "signUpWith": "Înregistrează-te cu",
+    "continueWith": "Continuă cu",
+    "orContinueWith": "Sau continuă cu",
+    "google": "Google",
+    "github": "GitHub",
+    "microsoft": "Microsoft",
+    "apple": "Apple",
+    "facebook": "Facebook",
+    "twitter": "Twitter",
+    "linkedin": "LinkedIn",
+    "discord": "Discord",
+    "emailSent": "Email trimis",
+    "checkEmail": "Verifică emailul pentru linkul de resetare",
+    "passwordUpdated": "Parola a fost actualizată cu succes",
+    "welcomeBack": "Bine ai revenit!",
+    "accountCreated": "Contul a fost creat cu succes",
+    "invalidCredentials": "Email sau parolă incorectă",
+    "emailRequired": "Emailul este obligatoriu",
+    "passwordRequired": "Parola este obligatorie",
+    "passwordTooShort": "Parola trebuie să aibă cel puțin 8 caractere",
+    "passwordMismatch": "Parolele nu se potrivesc",
+    "invalidEmail": "Adresă de email invalidă"
+  },
+  "errors": {
+    "general": "Ceva nu a mers bine. Te rugăm să încerci din nou.",
+    "network": "Eroare de rețea. Te rugăm să verifici conexiunea.",
+    "unauthorized": "Nu ești autorizat să accesezi această resursă.",
+    "forbidden": "Acces interzis.",
+    "notFound": "Resursa solicitată nu a fost găsită.",
+    "serverError": "Eroare internă de server. Te rugăm să încerci din nou mai târziu.",
+    "validationError": "Te rugăm să verifici datele introduse și să încerci din nou.",
+    "fileTooBig": "Fișierul este prea mare. Dimensiunea maximă este {{maxSize}}.",
+    "invalidFileType": "Tip de fișier invalid. Tipuri acceptate: {{types}}.",
+    "uploadFailed": "Încărcarea fișierului a eșuat. Te rugăm să încerci din nou.",
+    "sessionExpired": "Sesiunea ta a expirat. Te rugăm să te conectezi din nou.",
+    "rateLimited": "Prea multe cereri. Te rugăm să încerci din nou mai târziu.",
+    "maintenance": "Serviciul este temporar indisponibil pentru mentenanță."
+  },
+  "success": {
+    "saved": "Modificările au fost salvate cu succes",
+    "created": "Creat cu succes",
+    "updated": "Actualizat cu succes",
+    "deleted": "Șters cu succes",
+    "uploaded": "Fișierul a fost încărcat cu succes",
+    "copied": "Copiat în clipboard",
+    "emailSent": "Email trimis cu succes",
+    "passwordChanged": "Parola a fost schimbată cu succes",
+    "profileUpdated": "Profilul a fost actualizat cu succes",
+    "settingsSaved": "Setările au fost salvate cu succes"
+  },
+  "validation": {
+    "required": "Acest câmp este obligatoriu",
+    "email": "Te rugăm să introduci o adresă de email validă",
+    "minLength": "Trebuie să aibă cel puțin {{min}} caractere",
+    "maxLength": "Trebuie să aibă cel mult {{max}} caractere",
+    "pattern": "Te rugăm să introduci un format valid",
+    "number": "Te rugăm să introduci un număr valid",
+    "integer": "Te rugăm să introduci un număr întreg",
+    "positive": "Te rugăm să introduci un număr pozitiv",
+    "url": "Te rugăm să introduci un URL valid",
+    "date": "Te rugăm să introduci o dată validă",
+    "time": "Te rugăm să introduci o oră validă",
+    "phone": "Te rugăm să introduci un număr de telefon valid",
+    "alphanumeric": "Sunt permise doar litere și cifre",
+    "noSpaces": "Spațiile nu sunt permise",
+    "strongPassword": "Parola trebuie să conțină cel puțin o literă mare, o literă mică, o cifră și un caracter special"
+  },
+  "brand": {
+    "tagline": "Sistem de Operare AI-Native",
+    "description": "Noua generație de aplicații inteligente",
+    "mission": "Împuternicind dezvoltatorii și afacerile cu soluții AI-first",
+    "vision": "O lume în care AI îmbunătățește potențialul uman",
+    "values": {
+      "innovation": "Inovație",
+      "transparency": "Transparență",
+      "collaboration": "Colaborare",
+      "excellence": "Excelență",
+      "integrity": "Integritate"
+    }
+  },
+  "home": {
+    "welcome": "Bine ai revenit",
+    "welcomeDesc": "Iată ce se întâmplă cu {{appName}} tău astăzi",
+    "viewDashboard": "Vezi Tabloul de Bord",
+    "viewActivity": "Vezi Activitatea",
+    "quickActions": {
+      "title": "Acțiuni Rapide",
+      "newProject": "Creează Proiect Nou",
+      "newProjectDesc": "Începe un nou proiect de la zero",
+      "viewDashboard": "Vezi Tabloul de Bord",
+      "viewDashboardDesc": "Accesează tabloul tău principal",
+      "settings": "Setări",
+      "settingsDesc": "Gestionează preferințele tale"
+    },
+    "features": {
+      "title": "Funcționalități Cheie",
+      "modern": "Tehnologie Modernă",
+      "modernDesc": "Construit cu cele mai noi tehnologii",
+      "secure": "Securitate Enterprise",
+      "secureDesc": "Securitate și criptare de nivel bancar",
+      "scalable": "Foarte Scalabil",
+      "scalableDesc": "Proiectat să crească cu nevoile tale"
+    },
+    "activity": {
+      "title": "Activitate Recentă",
+      "welcome": "Bine ai venit pe platformă",
+      "welcomeDesc": "Te-ai alăturat cu succes la {{appName}}",
+      "profileComplete": "Configurare profil completă",
+      "profileCompleteDesc": "Profilul tău a fost configurat"
+    }
+  },
+  "time": {
+    "now": "Chiar acum",
+    "fewMinutesAgo": "Acum câteva minute",
+    "anHourAgo": "Acum o oră",
+    "today": "Astăzi",
+    "yesterday": "Ieri",
+    "thisWeek": "Săptămâna aceasta",
+    "lastWeek": "Săptămâna trecută",
+    "thisMonth": "Luna aceasta",
+    "lastMonth": "Luna trecută"
+  },
+  "apps": {
+    "codai": {
+      "name": "CODAI",
+      "description": "Platformă Centrală și Hub AIDE",
+      "tagline": "Companionul Tău de Dezvoltare AI"
+    },
+    "memorai": {
+      "name": "MEMORAI",
+      "description": "Memorie AI și Nucleu de Baze de Date",
+      "tagline": "Nu Uita Niciodată Nimic"
+    },
+    "bancai": {
+      "name": "BANCAI",
+      "description": "Platformă Bancară și Financiară AI",
+      "tagline": "Servicii Financiare Inteligente"
+    },
+    "stocai": {
+      "name": "STOCAI",
+      "description": "Piața de Acțiuni și AI de Investiții",
+      "tagline": "Decizii de Investiții Inteligente"
+    },
+    "logai": {
+      "name": "LOGAI",
+      "description": "Identitate și Control de Acces",
+      "tagline": "Identitate Digitală Sigură"
+    },
+    "fabricai": {
+      "name": "FABRICAI",
+      "description": "Platformă de Servicii AI",
+      "tagline": "Construiește Soluții AI"
+    },
+    "studiai": {
+      "name": "STUDIAI",
+      "description": "Platformă de Educație AI",
+      "tagline": "Învață cu AI"
+    },
+    "sociai": {
+      "name": "SOCIAI",
+      "description": "Platformă Socială AI",
+      "tagline": "Conectează-te Inteligent"
+    },
+    "cumparai": {
+      "name": "CUMPARAI",
+      "description": "Platformă de Cumpărături AI",
+      "tagline": "Asistent de Cumpărături Inteligent"
+    },
+    "publicai": {
+      "name": "PUBLICAI",
+      "description": "Tehnologie Civică și Transparență",
+      "tagline": "AI pentru Binele Public"
+    },
+    "curtai": {
+      "name": "CURTAI",
+      "description": "Descoperirea Sufletului Pereche cu AI",
+      "tagline": "Găsește Perechea Perfectă"
+    },
+    "talentai": {
+      "name": "TALENTAI",
+      "description": "Achiziția de Talente AI",
+      "tagline": "Găsește Talentul Potrivit"
+    },
+    "sunai": {
+      "name": "SUNAI",
+      "description": "Optimizarea Energiei Solare",
+      "tagline": "Valorifică Puterea Solară"
+    },
+    "muzicai": {
+      "name": "MUZICAI",
+      "description": "Platformă Muzicală AI",
+      "tagline": "Creează Muzică cu AI"
+    },
+    "acasai": {
+      "name": "ACASAI",
+      "description": "AI Cămin și Viață",
+      "tagline": "Inteligența Casei Inteligente"
+    }
+  },
+  "codai": {
+    "title": "CodAI",
+    "subtitle": "Platformă de Codare AI",
+    "description": "Platformă de dezvoltare alimentată de AI",
+    "tabs": {
+      "overview": "Prezentare Generală",
+      "features": "Funcționalități",
+      "analytics": "Analiză",
+      "settings": "Setări"
+    },
+    "panels": {
+      "analyticsTitle": "Panoul de Analiză",
+      "analyticsDesc": "Analize avansate și informații despre utilizarea platformei și indicii de performanță.",
+      "settingsTitle": "Panoul de Setări",
+      "settingsDesc": "Configurează setările platformei și preferințele pentru performanță optimă."
+    },
+    "metrics": {
+      "activeUsers": "Utilizatori Activi",
+      "performance": "Performanță",
+      "activeApps": "Aplicații Active",
+      "systemScore": "Scorul Sistemului"
+    },
+    "status": {
+      "live": "Live",
+      "active": "Activ",
+      "maintenance": "Mentenanță",
+      "archived": "Arhivat"
+    },
+    "actions": {
+      "learnMore": "Află Mai Multe",
+      "viewAll": "Vezi Tot",
+      "refresh": "Actualizează",
+      "comingSoon": "În Curând"
+    },
+    "ecosystem": {
+      "description": "Platformă de Dezvoltare AI Live cu {{totalProjects}} Proiecte Active",
+      "subtitle": "Monitorizare în timp real a {{activeApps}} aplicații active, {{packages}} pachete și {{services}} servicii în ecosistemul nostru de dezvoltare.",
+      "stats": {
+        "lastActivity": "Ultima Activitate",
+        "dependencies": "Dependențe",
+        "uptime": "Timp de Funcționare"
+      }
+    },
+    "features": {
+      "codeDevTitle": "Dezvoltare de Cod",
+      "codeDevDesc": "Platformă de dezvoltare alimentată de AI cu {{projectCount}} proiecte",
+      "reactTitle": "Ecosistem React",
+      "reactDesc": "Aplicații React moderne cu {{reactProjectCount}} proiecte React",
+      "typescriptTitle": "Integrare TypeScript",
+      "typescriptDesc": "Dezvoltare type-safe cu {{typescriptProjectCount}} proiecte TypeScript",
+      "packagesTitle": "Ecosistem de Pachete",
+      "packagesDesc": "Pachete și biblioteci partajate cu {{packageCount}} componente reutilizabile"
+    }
+  },
+  "memorai": {
+    "title": "MemorAI",
+    "subtitle": "Nucleu AI pentru Memorie și Bază de Date",
+    "status": {
+      "live": "Live"
+    },
+    "tabs": {
+      "overview": "Prezentare Generală",
+      "features": "Funcționalități",
+      "analytics": "Analiză",
+      "monitor": "Monitorizare"
+    },
+    "ecosystem": {
+      "title": "Ecosistem de Memorie",
+      "description": "Gestionarea inteligentă a memoriei și cunoștințelor cu {{totalMemories}} memorii active",
+      "subtitle": "Gestionarea {{activeStores}} depozite de cunoștințe, {{totalQueries}} interogări și {{connections}} conexiuni"
+    },
+    "metrics": {
+      "totalMemories": "Total Memorii",
+      "querySpeed": "Viteza Interogărilor",
+      "storageUsed": "Stocare Utilizată",
+      "memoryScore": "Scorul Memoriei"
+    },
+    "features": {
+      "knowledgeTitle": "Gestiunea Cunoștințelor",
+      "knowledgeDesc": "Memorie AI avansată cu {{memoryCount}} memorii stocate",
+      "searchTitle": "Căutare Semantică",
+      "searchDesc": "Căutare inteligentă în {{storeCount}} depozite de cunoștințe",
+      "analyticsTitle": "Analiză de Memorie",
+      "analyticsDesc": "Informații profunde cu {{queryCount}} interogări procesate",
+      "networkTitle": "Rețeaua de Memorie",
+      "networkDesc": "Sistem de memorie conectat cu {{connectionCount}} conexiuni active"
+    },
+    "actions": {
+      "searchMemories": "Caută Memorii",
+      "addMemory": "Adaugă Memorie",
+      "viewStores": "Vezi Depozitele",
+      "analyze": "Analizează"
+    }
+  },
+  "bancai": {
+    "title": "BANCAI",
+    "subtitle": "Platformă Bancară AI",
+    "status": "Online",
+    "nav": {
+      "dashboard": "Tablou de Bord",
+      "accounts": "Conturi",
+      "transactions": "Tranzacții",
+      "analytics": "Analiză"
+    },
+    "metrics": {
+      "totalAccounts": "Total Conturi",
+      "totalAccountsDesc": "Conturi bancare active",
+      "activeTransactions": "Tranzacții Active",
+      "activeTransactionsDesc": "Ultimele 30 zile",
+      "aiBanking": "Banking AI",
+      "aiBankingDesc": "Informații inteligente activate",
+      "netWorth": "Valoarea Netă Totală",
+      "netWorthChange": "+$3,240.25 luna aceasta",
+      "netWorthGrowth": "+2.1% rată de creștere"
+    },
+    "features": {
+      "accountBalance": "Sold Cont",
+      "accountBalanceDesc": "Total pe toate conturile",
+      "transactionHistory": "Istoric Tranzacții",
+      "transactionHistoryDesc": "Tranzacții recente",
+      "paymentProcessing": "Procesare Plăți",
+      "paymentProcessingDesc": "Plăți securizate activate"
+    },
+    "actions": {
+      "hideBalances": "Ascunde Soldurile",
+      "showBalances": "Arată Soldurile",
+      "refresh": "Reîmprospătează",
+      "export": "Exportă",
+      "filter": "Filtrează",
+      "addGoal": "Adaugă Obiectiv"
+    },
+    "security": {
+      "bankGrade": "Securitate de Nivel Bancar Activată",
+      "encryption": "Criptare 256-bit Activă",
+      "lastUpdated": "Ultima actualizare"
+    },
+    "tabs": {
+      "transactions": "Tranzacții Recente",
+      "goals": "Obiective Financiare",
+      "insights": "Informații AI",
+      "analytics": "Analiză"
+    }
+  },
+  "stocai": {
+    "title": "STOCAI",
+    "subtitle": "Platformă de Tranzacționare AI",
+    "description": "Platformă avansată de tranzacționare alimentată de AI pentru ecosistemul CODAI cu securitate și scalabilitate enterprise",
+    "nav": {
+      "overview": "Prezentare",
+      "analytics": "Analiză",
+      "features": "Funcționalități",
+      "monitor": "Monitorizare"
+    },
+    "metrics": {
+      "totalUsers": "Utilizatori Totali",
+      "activeNow": "Activi Acum",
+      "uptime": "Timp de Funcționare",
+      "globalScale": "Scară Globală",
+      "countries": "Țări"
+    },
+    "features": {
+      "aiTradingBot": {
+        "title": "Bot de Tranzacționare AI",
+        "subtitle": "Algoritmi de tranzacționare automată",
+        "description": "Obțineți asistență în tranzacționare alimentată de AI cu algoritmi avansați de învățare automată"
+      },
+      "enterpriseSecurity": {
+        "title": "Securitate Enterprise",
+        "subtitle": "Protecție avansată",
+        "description": "Criptare de nivel militar și conformitate cu reglementările financiare"
+      },
+      "realtimeAnalytics": {
+        "title": "Analiză în Timp Real",
+        "subtitle": "Date de piață live",
+        "description": "Monitorizați tendințele pieței cu analiză în timp real și predicții AI"
+      },
+      "fastExecution": {
+        "title": "Execuție Rapidă",
+        "subtitle": "Tranzacții fulgerătoare",
+        "description": "Executați tranzacții în milisecunde cu infrastructură optimizată de tranzacționare"
+      },
+      "portfolioManagement": {
+        "title": "Gestionarea Portofoliului",
+        "subtitle": "Diversificare inteligentă",
+        "description": "Gestionați portofoliile cu evaluarea riscurilor și optimizarea condusă de AI"
+      },
+      "globalMarkets": {
+        "title": "Piețe Globale",
+        "subtitle": "Acces mondial",
+        "description": "Accesați piețele globale cu capacități de tranzacționare 24/7"
+      }
+    },
+    "actions": {
+      "startTrading": "Începe Tranzacționarea",
+      "viewAnalytics": "Vezi Analiza",
+      "startTradingAria": "Începe tranzacționarea cu asistență AI",
+      "viewAnalyticsAria": "Vezi panoul de analiză a tranzacționării"
+    },
+    "status": {
+      "live": "Live",
+      "online": "Online",
+      "currentTime": "Ora curentă",
+      "platformStatus": "Platforma de Tranzacționare STOCAI - Next.js 15.4.1 + TailwindCSS 3"
+    },
+    "content": {
+      "overviewTitle": "Prezentare Generală Tranzacționare AI",
+      "overviewDesc": "Transformarea piețelor financiare cu algoritmi avansați de tranzacționare AI",
+      "analyticsTitle": "Panou de Analiză Avansată",
+      "analyticsDesc": "Analiză de piață în timp real și indicatori de performanță a tranzacționării",
+      "featuresTitle": "Funcționalități de Tranzacționare",
+      "featuresDesc": "Instrumente și capabilități complete de tranzacționare alimentate de AI",
+      "monitorTitle": "Monitor de Performanță",
+      "monitorDesc": "Monitorizarea în timp real a performanței tranzacționării și sănătății sistemului",
+      "statisticsTitle": "Statistici de Tranzacționare Live"
+    }
+  },
+  "prezentai": {
+    "title": "PREZENTAI",
+    "subtitle": "Platformă Premium de Portofoliu",
+    "description": "Prezintă ecosistemul nostru AI cu prezentări uimitoare",
+    "nav": {
+      "home": "Acasă",
+      "about": "Despre",
+      "portfolio": "Portofoliu",
+      "services": "Servicii",
+      "contact": "Contact"
+    },
+    "hero": {
+      "title": "Prezentări Premium",
+      "subtitle": "Prezintă Soluțiile Tale AI",
+      "description": "Platformă profesională de prezentări pentru ecosistemul AI modern"
+    },
+    "features": {
+      "title": "Funcționalități Platformă",
+      "showcase": {
+        "title": "Vitrină AI",
+        "description": "Afișează soluțiile tale AI cu prezentări interactive"
+      },
+      "portfolio": {
+        "title": "Galerie Portofoliu",
+        "description": "Management și afișare profesională de portofoliu"
+      },
+      "presentations": {
+        "title": "Prezentări Dinamice",
+        "description": "Creează prezentări captivante cu funcționalități AI"
+      },
+      "analytics": {
+        "title": "Analitica Engagement-ului",
+        "description": "Urmărește performanța prezentărilor și implicarea vizualizatorilor"
+      }
+    },
+    "stats": {
+      "presentations": "Prezentări Create",
+      "views": "Vizualizări Totale",
+      "engagement": "Engagement Mediu",
+      "clients": "Clienți Mulțumiți"
+    }
+  },
+  "conversai": {
+    "title": "CONVERSAI",
+    "subtitle": "Platformă Inteligentă de Conversație",
+    "description": "Conversații avansate și management chat cu tehnologie AI",
+    "nav": {
+      "home": "Acasă",
+      "chat": "Chat",
+      "conversations": "Conversații",
+      "analytics": "Analitica",
+      "settings": "Setări"
+    },
+    "hero": {
+      "title": "Conversații Inteligente",
+      "subtitle": "Platformă Chat cu AI",
+      "description": "Experimentează viitorul comunicării inteligente cu sistemul nostru avansat de conversații AI"
+    },
+    "features": {
+      "title": "Funcționalități Platformă",
+      "aiChat": {
+        "title": "Motor Chat AI",
+        "description": "Procesare avansată a limbajului natural pentru conversații inteligente"
+      },
+      "realtime": {
+        "title": "Comunicare în Timp Real",
+        "description": "Mesagerie instantanee cu asistență AI și sugestii inteligente"
+      },
+      "analytics": {
+        "title": "Analitica Conversațiilor",
+        "description": "Perspective profunde asupra modelelor de conversație și metricilor de engagement"
+      },
+      "automation": {
+        "title": "Automatizare Inteligentă",
+        "description": "Răspunsuri automatizate și optimizarea fluxurilor de lucru pentru eficiență îmbunătățită"
+      }
+    },
+    "metrics": {
+      "conversations": "Conversații Active",
+      "messages": "Mesaje Procesate",
+      "users": "Utilizatori Activi",
+      "satisfaction": "Satisfacția Utilizatorilor"
+    },
+    "chat": {
+      "placeholder": "Scrie mesajul tău...",
+      "send": "Trimite",
+      "newChat": "Conversație Nouă",
+      "thinking": "AI-ul se gândește...",
+      "error": "Eșec la trimiterea mesajului",
+      "retry": "Reîncearcă"
+    }
+  },
+  "curtai": {
+    "title": "CURTAI",
+    "subtitle": "Descoperire Suflete Pereche cu AI",
+    "description": "Platformă de dating de generație nouă cu potrivire inteligentă a compatibilității",
+    "nav": {
+      "home": "Acasă",
+      "discover": "Descoperă",
+      "matches": "Potriviri",
+      "chat": "Chat",
+      "profile": "Profil"
+    },
+    "hero": {
+      "title": "Găsește-ți Perechea Perfectă",
+      "subtitle": "Descoperire Suflete Pereche cu AI",
+      "description": "Experimentează dating-ul inteligent cu analiză avansată de compatibilitate AI și potrivire personalizată"
+    },
+    "features": {
+      "title": "Funcții Dating",
+      "aiMatching": {
+        "title": "Motor Compatibilitate AI",
+        "description": "Algoritmi avansați analizează personalitatea, interesele și valorile pentru potriviri perfecte"
+      },
+      "smartChat": {
+        "title": "Conversații Inteligente",
+        "description": "Sugestii de chat și inițiatori de conversație cu AI pentru conexiuni semnificative"
+      },
+      "compatibility": {
+        "title": "Analiză Profundă Compatibilitate",
+        "description": "Profilare psihologică și evaluare personalitate pentru relații durabile"
+      },
+      "privacy": {
+        "title": "Confidențialitate și Siguranță",
+        "description": "Măsuri avansate de securitate și sisteme de verificare pentru dating sigur"
+      }
+    },
+    "metrics": {
+      "matches": "Potriviri Totale",
+      "conversations": "Conversații Active",
+      "compatibility": "Compatibilitate Medie",
+      "success": "Rata de Succes"
+    },
+    "discover": {
+      "newProfiles": "Profiluri Noi",
+      "compatibility": "Scor Compatibilitate",
+      "like": "Îmi place",
+      "pass": "Treci",
+      "superLike": "Super Like",
+      "match": "E Potrivire!",
+      "noMoreProfiles": "Nu mai sunt profiluri în zona ta"
+    }
+  },
+  "fabricai": {
+    "title": "FabricAI",
+    "nav": {
+      "dashboard": "Tablou de Bord",
+      "development": "Dezvoltare",
+      "workflows": "Fluxuri de Lucru",
+      "analytics": "Analiză"
+    },
+    "metrics": {
+      "total_users": "Total Utilizatori",
+      "active_now": "Activi Acum",
+      "system_uptime": "Timp de Funcționare",
+      "success_rate": "Rata de Succes"
+    },
+    "features": {
+      "code_generation": {
+        "title": "Generare Cod AI",
+        "description": "Generare inteligentă de cod cu optimizare AI"
+      },
+      "workflow_automation": {
+        "title": "Automatizare Flux de Lucru",
+        "description": "Fluxuri de dezvoltare optimizate cu asistență AI"
+      },
+      "smart_debugging": {
+        "title": "Depanare Inteligentă",
+        "description": "Instrumente avansate de depanare cu perspective AI"
+      },
+      "performance_optimization": {
+        "title": "Optimizare Performanță",
+        "description": "Optimizare automată și monitorizare performanței"
+      }
+    }
+  }
+}

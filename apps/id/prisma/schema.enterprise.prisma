@@ -1,0 +1,605 @@
+// CODAI ID - Enterprise PostgreSQL Schema
+// Supports millions of users with full audit, MFA, RBAC, and compliance
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ===========================================
+// CORE USER MANAGEMENT
+// ===========================================
+
+model User {
+  id                String    @id @default(cuid())
+  email             String    @unique
+  emailVerified     DateTime?
+  phoneNumber       String?   @unique
+  phoneVerified     DateTime?
+  
+  // Identity
+  firstName         String?
+  lastName          String?
+  displayName       String?
+  username          String?   @unique
+  avatar            String?
+  
+  // Security
+  password          String?   // For credentials-based auth
+  passwordChangedAt DateTime?
+  lastLoginAt       DateTime?
+  failedLoginAttempts Int     @default(0)
+  lockedUntil       DateTime?
+  
+  // Status
+  status            UserStatus @default(ACTIVE)
+  emailSubscribed   Boolean    @default(true)
+  
+  // Metadata
+  locale            String     @default("en")
+  timezone          String     @default("UTC")
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  deletedAt         DateTime?  // Soft delete for GDPR compliance
+  
+  // Authentication Relations
+  accounts          Account[]
+  sessions          Session[]
+  mfaDevices        MfaDevice[]
+  biometricData     BiometricData[]
+  auditLogs         AuditLog[]
+  
+  // Authorization Relations
+  userRoles         UserRole[]
+  permissions       UserPermission[]
+  
+  // Ecosystem Relations
+  organizations     OrganizationMember[]
+  applications      ApplicationAccess[]
+  
+  // Compliance & Privacy
+  privacySettings   PrivacySettings?
+  gdprConsents      GdprConsent[]
+  dataExports       DataExport[]
+  
+  @@map("users")
+  @@index([email])
+  @@index([username])
+  @@index([phoneNumber])
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  PENDING_VERIFICATION
+  DELETED
+}
+
+// ===========================================
+// AUTHENTICATION & SESSIONS
+// ===========================================
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String  // oauth, email, credentials
+  provider          String  // google, github, azure, local
+  providerAccountId String
+  
+  // OAuth specific
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  
+  // Metadata
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  lastUsedAt        DateTime?
+  
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  
+  // Enhanced session data
+  ipAddress    String?
+  userAgent    String?
+  deviceId     String?
+  location     String?  // JSON: { country, city, lat, lng }
+  
+  // Security
+  isActive     Boolean  @default(true)
+  revokedAt    DateTime?
+  revokedBy    String?  // User ID who revoked
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+  @@index([userId])
+  @@index([expires])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  type       TokenType @default(EMAIL_VERIFICATION)
+  
+  createdAt  DateTime @default(now())
+  usedAt     DateTime?
+  
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+enum TokenType {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+  PHONE_VERIFICATION
+  MFA_BACKUP
+}
+
+// ===========================================
+// MULTI-FACTOR AUTHENTICATION
+// ===========================================
+
+model MfaDevice {
+  id            String    @id @default(cuid())
+  userId        String
+  type          MfaType
+  name          String    // User-friendly name
+  secret        String?   // For TOTP
+  backupCodes   String[]  // Encrypted backup codes
+  
+  // Device specific data
+  deviceData    Json?     // Hardware token data, phone info, etc.
+  
+  // Status
+  isActive      Boolean   @default(true)
+  isVerified    Boolean   @default(false)
+  lastUsedAt    DateTime?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("mfa_devices")
+  @@index([userId])
+}
+
+enum MfaType {
+  TOTP           // Time-based OTP (Google Authenticator)
+  SMS            // SMS OTP
+  EMAIL          // Email OTP
+  HARDWARE_TOKEN // YubiKey, etc.
+  PUSH           // Mobile app push notification
+  BACKUP_CODES   // Recovery codes
+}
+
+// ===========================================
+// BIOMETRIC AUTHENTICATION
+// ===========================================
+
+model BiometricData {
+  id            String      @id @default(cuid())
+  userId        String
+  type          BiometricType
+  template      String      // Encrypted biometric template
+  confidence    Float       // Recognition confidence score
+  
+  // Metadata
+  deviceInfo    Json?       // Device used for enrollment
+  isActive      Boolean     @default(true)
+  enrolledAt    DateTime    @default(now())
+  lastUsedAt    DateTime?
+  
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("biometric_data")
+  @@index([userId, type])
+}
+
+enum BiometricType {
+  FINGERPRINT
+  FACE
+  VOICE
+  IRIS
+}
+
+// ===========================================
+// ROLE-BASED ACCESS CONTROL (RBAC)
+// ===========================================
+
+model Role {
+  id          String @id @default(cuid())
+  name        String @unique
+  displayName String
+  description String?
+  
+  // Hierarchy
+  parentId    String?
+  parent      Role?   @relation("RoleHierarchy", fields: [parentId], references: [id])
+  children    Role[]  @relation("RoleHierarchy")
+  
+  // Status
+  isActive    Boolean @default(true)
+  isSystem    Boolean @default(false) // System roles cannot be deleted
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  userRoles     UserRole[]
+  rolePermissions RolePermission[]
+  
+  @@map("roles")
+}
+
+model Permission {
+  id          String @id @default(cuid())
+  name        String @unique
+  displayName String
+  description String?
+  resource    String // e.g., 'user', 'application', 'organization'
+  action      String // e.g., 'read', 'write', 'delete', 'admin'
+  
+  createdAt   DateTime @default(now())
+  
+  rolePermissions RolePermission[]
+  userPermissions UserPermission[]
+  
+  @@map("permissions")
+  @@unique([resource, action])
+}
+
+model UserRole {
+  id        String    @id @default(cuid())
+  userId    String
+  roleId    String
+  
+  // Scope (optional - for multi-tenant)
+  scope     String?   // organization, application, etc.
+  
+  assignedAt DateTime @default(now())
+  assignedBy String?  // User ID who assigned
+  expiresAt  DateTime? // Optional expiration
+  
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      Role      @relation(fields: [roleId], references: [id])
+  
+  @@unique([userId, roleId, scope])
+  @@map("user_roles")
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  
+  createdAt    DateTime @default(now())
+  
+  role         Role       @relation(fields: [roleId], references: [id])
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  
+  @@id([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+model UserPermission {
+  id           String    @id @default(cuid())
+  userId       String
+  permissionId String
+  
+  // Direct permission assignment (bypass roles)
+  scope        String?   // Optional scope
+  grantedBy    String?   // User ID who granted
+  grantedAt    DateTime  @default(now())
+  expiresAt    DateTime? // Optional expiration
+  
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  
+  @@map("user_permissions")
+  @@index([userId])
+}
+
+// ===========================================
+// ORGANIZATIONS & MULTI-TENANCY
+// ===========================================
+
+model Organization {
+  id          String @id @default(cuid())
+  name        String
+  slug        String @unique
+  domain      String? @unique // For SSO domain verification
+  
+  // Configuration
+  settings    Json?   // Organization-specific settings
+  branding    Json?   // Logo, colors, etc.
+  
+  // Status
+  isActive    Boolean @default(true)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  members     OrganizationMember[]
+  applications ApplicationAccess[]
+  
+  @@map("organizations")
+}
+
+model OrganizationMember {
+  id             String   @id @default(cuid())
+  organizationId String
+  userId         String
+  role           String   @default("member") // owner, admin, member
+  
+  joinedAt       DateTime @default(now())
+  invitedBy      String?
+  
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  user           User         @relation(fields: [userId], references: [id])
+  
+  @@unique([organizationId, userId])
+  @@map("organization_members")
+}
+
+// ===========================================
+// APPLICATION REGISTRY & SSO
+// ===========================================
+
+model Application {
+  id           String @id @default(cuid())
+  name         String
+  slug         String @unique
+  description  String?
+  
+  // OAuth/OIDC Configuration
+  clientId     String @unique
+  clientSecret String
+  redirectUris String[] // Allowed redirect URIs
+  scopes       String[] // Available scopes
+  
+  // Configuration
+  logoUrl      String?
+  websiteUrl   String?
+  privacyUrl   String?
+  termsUrl     String?
+  
+  // Settings
+  requiresConsent Boolean @default(true)
+  isActive        Boolean @default(true)
+  isFirstParty    Boolean @default(false) // CODAI ecosystem apps
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  access       ApplicationAccess[]
+  
+  @@map("applications")
+}
+
+model ApplicationAccess {
+  id             String    @id @default(cuid())
+  userId         String
+  applicationId  String
+  organizationId String?   // Optional organization context
+  
+  // Granted scopes
+  scopes         String[]
+  
+  // Status
+  isActive       Boolean   @default(true)
+  grantedAt      DateTime  @default(now())
+  lastAccessedAt DateTime?
+  revokedAt      DateTime?
+  
+  user           User          @relation(fields: [userId], references: [id])
+  application    Application   @relation(fields: [applicationId], references: [id])
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  
+  @@unique([userId, applicationId, organizationId])
+  @@map("application_access")
+}
+
+// ===========================================
+// AUDIT LOGGING & COMPLIANCE
+// ===========================================
+
+model AuditLog {
+  id        String    @id @default(cuid())
+  userId    String?   // Null for system events
+  action    String    // login, logout, permission_grant, etc.
+  resource  String?   // What was affected
+  resourceId String?  // ID of affected resource
+  
+  // Context
+  ipAddress String?
+  userAgent String?
+  location  String?   // JSON location data
+  
+  // Details
+  details   Json?     // Additional event data
+  outcome   String    // success, failure, error
+  
+  timestamp DateTime  @default(now())
+  
+  user      User?     @relation(fields: [userId], references: [id])
+  
+  @@map("audit_logs")
+  @@index([userId])
+  @@index([action])
+  @@index([timestamp])
+  @@index([resource, resourceId])
+}
+
+// ===========================================
+// PRIVACY & GDPR COMPLIANCE
+// ===========================================
+
+model PrivacySettings {
+  id                    String  @id @default(cuid())
+  userId                String  @unique
+  
+  // Data processing consents
+  profileDataConsent    Boolean @default(false)
+  marketingConsent      Boolean @default(false)
+  analyticsConsent      Boolean @default(false)
+  thirdPartyConsent     Boolean @default(false)
+  
+  // Communication preferences
+  emailNotifications    Boolean @default(true)
+  smsNotifications      Boolean @default(false)
+  pushNotifications     Boolean @default(true)
+  
+  updatedAt             DateTime @updatedAt
+  
+  user                  User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("privacy_settings")
+}
+
+model GdprConsent {
+  id          String   @id @default(cuid())
+  userId      String
+  type        String   // Type of consent
+  version     String   // Version of terms/policy
+  granted     Boolean
+  grantedAt   DateTime @default(now())
+  ipAddress   String?
+  userAgent   String?
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("gdpr_consents")
+  @@index([userId, type])
+}
+
+model DataExport {
+  id          String      @id @default(cuid())
+  userId      String
+  status      ExportStatus @default(PENDING)
+  format      String       @default("json") // json, csv, xml
+  
+  // Request details
+  requestedAt DateTime    @default(now())
+  completedAt DateTime?
+  expiresAt   DateTime    // Download link expiration
+  
+  // File details
+  fileName    String?
+  fileSize    BigInt?     // Bytes
+  downloadUrl String?     // Temporary signed URL
+  
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("data_exports")
+  @@index([userId])
+}
+
+enum ExportStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  EXPIRED
+}
+
+// ===========================================
+// SECURITY & FRAUD DETECTION
+// ===========================================
+
+model SecurityEvent {
+  id          String       @id @default(cuid())
+  userId      String?
+  type        SecurityEventType
+  severity    Severity     @default(LOW)
+  
+  // Context
+  ipAddress   String?
+  userAgent   String?
+  location    String?      // JSON location data
+  
+  // Details
+  description String
+  metadata    Json?        // Additional event data
+  
+  // Status
+  status      String       @default("open") // open, investigating, resolved, false_positive
+  resolvedAt  DateTime?
+  resolvedBy  String?      // Admin user ID
+  
+  timestamp   DateTime     @default(now())
+  
+  @@map("security_events")
+  @@index([userId])
+  @@index([type])
+  @@index([severity])
+  @@index([timestamp])
+}
+
+enum SecurityEventType {
+  FAILED_LOGIN
+  SUSPICIOUS_LOCATION
+  MULTIPLE_DEVICES
+  UNUSUAL_ACTIVITY
+  BRUTE_FORCE_ATTEMPT
+  ACCOUNT_TAKEOVER
+  DATA_BREACH_ATTEMPT
+}
+
+enum Severity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+model RateLimitEntry {
+  id          String   @id @default(cuid())
+  identifier  String   // IP, user ID, etc.
+  window      DateTime // Time window start
+  count       Int      @default(1)
+  
+  @@unique([identifier, window])
+  @@map("rate_limit_entries")
+}
+
+// ===========================================
+// SYSTEM CONFIGURATION
+// ===========================================
+
+model SystemSetting {
+  key         String   @id
+  value       String
+  type        String   @default("string") // string, number, boolean, json
+  description String?
+  isPublic    Boolean  @default(false)    // Can be accessed by clients
+  
+  updatedAt   DateTime @updatedAt
+  updatedBy   String?  // Admin user ID
+  
+  @@map("system_settings")
+}

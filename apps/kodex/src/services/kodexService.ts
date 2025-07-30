@@ -21,14 +21,21 @@ export class KodexService {
   async create(data: Omit<KodexData, 'id' | 'createdAt' | 'updatedAt'>): Promise<KodexData> {
     const id = this.generateId();
     const now = new Date();
-    
+
+    // Ensure we have required fields
+    if (!data.name) {
+      throw new Error('Name is required for KodexData');
+    }
+
     const newItem: KodexData = {
-      ...data,
       id,
+      name: data.name,
+      description: data.description,
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
+      ...data  // Include any additional properties
     };
-    
+
     this.data.set(id, newItem);
     return newItem;
   }
@@ -36,14 +43,14 @@ export class KodexService {
   async update(id: string, data: Partial<KodexData>): Promise<KodexData | null> {
     const existing = this.data.get(id);
     if (!existing) return null;
-    
+
     const updated = {
       ...existing,
       ...data,
       id, // Preserve ID
       updatedAt: new Date()
     };
-    
+
     this.data.set(id, updated);
     return updated;
   }
@@ -65,7 +72,7 @@ export class KodexService {
 
   async validateData(data: KodexData): Promise<boolean> {
     // Implement validation logic
-    return data.name && data.name.length > 0;
+    return !!(data.name && data.name.length > 0);
   }
 
   async performAnalytics(): Promise<any> {

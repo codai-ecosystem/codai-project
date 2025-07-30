@@ -19,11 +19,11 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "lint": "eslint src --ext .ts",
-    "lint:fix": "eslint src --ext .ts --fix",
+    "lint": "pnpm exec eslint src --ext .ts",
+    "lint:fix": "pnpm exec eslint src --ext .ts --fix",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
-    "type-check": "tsc --noEmit"
+    "type-check": "pnpm exec tsc --noEmit"
   },
   "dependencies": {
     "date-fns": "^2.30.0",

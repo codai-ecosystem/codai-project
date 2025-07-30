@@ -1,0 +1,27 @@
+{
+  "name": "@codai/dev-environment",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Advanced development environment management and optimization for CODAI ecosystem",
+  "main": "index.js",
+  "scripts": {
+    "analyze": "node analyze.js",
+    "setup": "node setup.js",
+    "health": "node health.js",
+    "test": "node test.js"
+  },
+  "keywords": [
+    "development",
+    "environment",
+    "setup",
+    "codai",
+    "devops"
+  ],
+  "author": "CODAI Team",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

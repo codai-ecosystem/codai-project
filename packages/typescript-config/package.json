@@ -8,6 +8,11 @@
     "nextjs.json",
     "react.json"
   ],
+  "scripts": {
+    "build": "echo 'No build step needed for TypeScript config'",
+    "lint": "echo 'No linting needed for TypeScript config files'",
+    "type-check": "echo 'No TypeScript files to check in TypeScript config'"
+  },
   "dependencies": {},
   "peerDependencies": {
     "typescript": "^5.0.0"

@@ -1,36 +1,29 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    // Remove deprecated turbo config
+  transpilePackages: ['@codai/shared-ui', '@codai/memorai', '@codai/auth'],
+  // Enable strict type and lint checking
+  typescript: {
+    ignoreBuildErrors: false,
   },
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  images: {
-    domains: ['localhost'],
-  },
-  env: {
-    SERVICE_NAME: 'CodAI',
-    SERVICE_PORT: '4030',
-  },
-  webpack: (config, { isServer }) => {
-    // Fix module resolution issues
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-      };
-    }
+  // Fix webpack module resolution for pnpm workspaces
+  webpack: (config, { dev, isServer }) => {
+    // Prevent webpack from resolving modules from global pnpm cache
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+    };
+
+    // Force webpack to resolve modules from workspace node_modules
+    config.resolve.modules = [
+      'node_modules',
+      '../../node_modules', // workspace root
+      ...config.resolve.modules
+    ];
+
     return config;
   },
-  // Reduce memory usage
-  compress: true,
-  poweredByHeader: false,
-};
+}
 
-export default nextConfig;
+module.exports = nextConfig

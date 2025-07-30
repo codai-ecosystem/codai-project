@@ -66,9 +66,12 @@ export class SettingsService {
 
     private loadSettings(): SettingsData {
         try {
-            const saved = localStorage.getItem('metu-settings');
-            if (saved) {
-                return { ...DEFAULT_SETTINGS, ...JSON.parse(saved) };
+            // Check if we're in browser environment
+            if (typeof window !== 'undefined' && window.localStorage) {
+                const saved = localStorage.getItem('metu-settings');
+                if (saved) {
+                    return { ...DEFAULT_SETTINGS, ...JSON.parse(saved) };
+                }
             }
         } catch (error) {
             console.warn('Failed to load settings:', error);
@@ -78,7 +81,10 @@ export class SettingsService {
 
     private saveSettings(): void {
         try {
-            localStorage.setItem('metu-settings', JSON.stringify(this.settings));
+            // Check if we're in browser environment
+            if (typeof window !== 'undefined' && window.localStorage) {
+                localStorage.setItem('metu-settings', JSON.stringify(this.settings));
+            }
         } catch (error) {
             console.error('Failed to save settings:', error);
         }

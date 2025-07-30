@@ -1,0 +1,205 @@
+{
+	"name": "aide-installer",
+	"displayName": "AIDE Installer",
+	"description": "Easy installation and setup of the AIDE development environment",
+	"version": "1.1.0",
+	"publisher": "codai",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/codai-io/aide"
+	},
+	"engines": {
+		"vscode": "^1.85.0"
+	},
+	"categories": [
+		"AI",
+		"Extension Packs",
+		"Other"
+	],
+	"keywords": [
+		"ai",
+		"assistant",
+		"installation",
+		"development",
+		"aide",
+		"setup",
+		"profile"
+	],
+	"icon": "resources/aide-icon.png",
+	"galleryBanner": {
+		"color": "#1e1e1e",
+		"theme": "dark"
+	},
+	"activationEvents": [
+		"onStartupFinished"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "aide-installer.startInstallation",
+				"title": "Install AIDE Environment",
+				"category": "AIDE"
+			},
+			{
+				"command": "aide-installer.showConfiguration",
+				"title": "Configure AIDE Installation",
+				"category": "AIDE"
+			},
+			{
+				"command": "aide-installer.createProfile",
+				"title": "Create AIDE Profile",
+				"category": "AIDE"
+			},
+			{
+				"command": "aide-installer.launchAIDE",
+				"title": "Launch AIDE Environment",
+				"category": "AIDE"
+			},
+			{
+				"command": "aide-installer.uninstallAIDE",
+				"title": "Uninstall AIDE Environment",
+				"category": "AIDE"
+			},
+			{
+				"command": "aide-installer.sendFeedback",
+				"title": "Send Feedback",
+				"category": "AIDE"
+			},
+			{
+				"command": "aide-installer.toggleTelemetry",
+				"title": "Toggle Telemetry",
+				"category": "AIDE"
+			},
+			{
+				"command": "aide-installer.showDiagnostics",
+				"title": "Show Diagnostics",
+				"category": "AIDE"
+			},
+			{
+				"command": "aide-installer.quickFeedback",
+				"title": "Quick Feedback",
+				"category": "AIDE"
+			}
+		],
+		"menus": {
+			"commandPalette": [
+				{
+					"command": "aide-installer.startInstallation"
+				},
+				{
+					"command": "aide-installer.showConfiguration"
+				},
+				{
+					"command": "aide-installer.createProfile"
+				},
+				{
+					"command": "aide-installer.launchAIDE"
+				},
+				{
+					"command": "aide-installer.uninstallAIDE"
+				},
+				{
+					"command": "aide-installer.sendFeedback"
+				},
+				{
+					"command": "aide-installer.toggleTelemetry"
+				},
+				{
+					"command": "aide-installer.showDiagnostics"
+				},
+				{
+					"command": "aide-installer.quickFeedback"
+				}
+			]
+		},
+		"configuration": {
+			"title": "AIDE Installer",
+			"properties": {
+				"aide-installer.autoLaunchAfterInstall": {
+					"type": "boolean",
+					"default": true,
+					"description": "Automatically launch AIDE environment after installation"
+				},
+				"aide-installer.createDesktopShortcut": {
+					"type": "boolean",
+					"default": true,
+					"description": "Create desktop shortcut for AIDE environment"
+				},
+				"aide-installer.installationPath": {
+					"type": "string",
+					"default": "",
+					"description": "Custom installation path for AIDE components"
+				},
+				"aide-installer.profileName": {
+					"type": "string",
+					"default": "AIDE",
+					"description": "Name for the AIDE VS Code profile"
+				},
+				"aide-installer.enableTelemetry": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable anonymous usage analytics to help improve AIDE"
+				}
+			}
+		},
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "aide-installer",
+					"title": "AIDE Installer",
+					"icon": "$(extensions)"
+				}
+			]
+		},
+		"views": {
+			"aide-installer": [
+				{
+					"id": "aide-installer.welcome",
+					"name": "Welcome",
+					"when": "!aide-installer.installed"
+				},
+				{
+					"id": "aide-installer.progress",
+					"name": "Installation Progress",
+					"when": "aide-installer.installing"
+				},
+				{
+					"id": "aide-installer.management",
+					"name": "AIDE Management",
+					"when": "aide-installer.installed"
+				}
+			]
+		},
+		"viewsWelcome": [
+			{
+				"view": "aide-installer.welcome",
+				"contents": "Welcome to AIDE Installer!\n\nThis extension will help you set up a complete AIDE development environment.\n\n[Install AIDE Environment](command:aide-installer.startInstallation)\n\n[Learn More](https://codai.ro/docs)"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"lint": "eslint src/**/*.ts",
+		"test": "node ./out/test/runTest.js",
+		"package": "vsce package",
+		"install-local": "code --install-extension aide-installer-1.0.0.vsix"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.85.0",
+		"@types/node": "^20.0.0",
+		"@typescript-eslint/eslint-plugin": "^6.0.0",
+		"@typescript-eslint/parser": "^6.0.0",
+		"eslint": "^8.0.0",
+		"typescript": "^5.0.0",
+		"@vscode/test-electron": "^2.3.0"
+	},
+	"dependencies": {
+		"node-fetch": "^3.3.0",
+		"tar": "^6.2.0",
+		"rimraf": "^5.0.0"
+	}
+}

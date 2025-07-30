@@ -24,7 +24,7 @@ export function useRealtimeStats() {
   useEffect(() => {
     // Simulate WebSocket connection
     setIsConnected(true)
-    
+
     const interval = setInterval(() => {
       setStats(prev => ({
         users: Math.max(0, prev.users + Math.floor(Math.random() * 20) - 10),
@@ -46,9 +46,9 @@ export function useRealtimeStats() {
 
 export function useSystemHealth() {
   const [health, setHealth] = useState({
-    status: 'healthy',
-    services: [],
-    alerts: []
+    status: 'healthy' as 'healthy' | 'degraded' | 'unhealthy',
+    services: [] as Array<{ name: string; status: string }>,
+    alerts: [] as Array<{ id: string; type: string; message: string; timestamp: Date }>
   })
 
   useEffect(() => {
@@ -71,8 +71,8 @@ export function useSystemHealth() {
         }))
 
       setHealth({
-        status: alerts.some(alert => alert.type === 'error') ? 'unhealthy' : 
-                alerts.length > 0 ? 'degraded' : 'healthy',
+        status: alerts.some(alert => alert.type === 'error') ? 'unhealthy' :
+          alerts.length > 0 ? 'degraded' : 'healthy',
         services,
         alerts
       })

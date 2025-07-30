@@ -1,0 +1,260 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: system-ui, sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-slate-900 text-slate-100;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
+
+@layer components {
+
+  /* Custom scrollbar styles */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(71 85 105) rgb(30 41 59);
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    @apply bg-slate-800;
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-slate-600;
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    @apply bg-slate-500;
+  }
+
+  /* Custom range slider styles */
+  .slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #8b5cf6;
+    cursor: pointer;
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+  }
+
+  .slider::-webkit-slider-thumb:hover {
+    background: #7c3aed;
+  }
+
+  .slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #8b5cf6;
+    cursor: pointer;
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+  }
+
+  /* Gradient background animation */
+  .animate-gradient-x {
+    animation: gradient-x 15s ease infinite;
+    background-size: 400% 400%;
+  }
+
+  /* Custom patterns */
+  .pattern-dots {
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  /* Animation keyframes */
+  @keyframes gradient-x {
+
+    0%,
+    100% {
+      transform: translateX(0%);
+    }
+
+    50% {
+      transform: translateX(-100%);
+    }
+  }
+
+  /* Glass effect utilities */
+  .glass {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+
+  .glass-dark {
+    @apply bg-slate-800/50 backdrop-blur-sm border border-slate-700/50;
+  }
+
+  /* Voice activity animations */
+  .voice-pulse {
+    animation: voicePulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes voicePulse {
+
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    50% {
+      transform: scale(1.05);
+      opacity: 0.8;
+    }
+  }
+
+  /* Loading animations */
+  .spin-slow {
+    animation: spin 3s linear infinite;
+  }
+
+  /* Custom button animations */
+  .btn-voice {
+    @apply transition-all duration-300 transform;
+  }
+
+  .btn-voice:active {
+    @apply scale-95;
+  }
+
+  .btn-voice:hover:not(:disabled) {
+    @apply shadow-lg;
+  }
+
+  /* Message bubble animations */
+  .message-enter {
+    animation: messageEnter 0.3s ease-out;
+  }
+
+  @keyframes messageEnter {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Audio visualizer */
+  .audio-bar {
+    @apply bg-gradient-to-t from-blue-600 to-purple-600 rounded-full transition-all duration-150;
+  }
+
+  .audio-bar.active {
+    animation: audioBar 0.5s ease-in-out infinite alternate;
+  }
+
+  @keyframes audioBar {
+    from {
+      height: 0.5rem;
+    }
+
+    to {
+      height: 2rem;
+    }
+  }
+}
+
+@layer utilities {
+
+  /* Custom height utilities */
+  .min-h-screen-safe {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  /* Focus styles */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900;
+  }
+
+  /* Responsive text utilities */
+  .text-responsive {
+    @apply text-sm sm:text-base lg:text-lg;
+  }
+
+  .text-responsive-lg {
+    @apply text-lg sm:text-xl lg:text-2xl;
+  }
+
+  /* Gradient text utilities */
+  .gradient-text {
+    @apply bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent;
+  }
+
+  .gradient-text-alt {
+    @apply bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent;
+  }
+}
+
+/* Media queries for better responsive design */
+@media (max-width: 640px) {
+  .container {
+    @apply px-4;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-responsive {
+    @apply grid-cols-1;
+  }
+}
+
+@media (min-width: 1280px) {
+  .grid-responsive {
+    @apply grid-cols-3;
+  }
+}
+
+/* Custom range slider styles */
+.slider-thumb-blue::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background-color: #3b82f6;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 0 2px #1e293b, 0 0 0 4px rgba(59, 130, 246, 0.3);
+}
+
+.slider-thumb-blue::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background-color: #3b82f6;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 0;
+  box-shadow: 0 0 0 2px #1e293b, 0 0 0 4px rgba(59, 130, 246, 0.3);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

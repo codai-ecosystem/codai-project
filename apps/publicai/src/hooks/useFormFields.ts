@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import type { FieldValues, UseFormProps, UseFormReturn } from 'react-hook-form';
-import type { z } from 'zod';
+import { z, ZodError } from 'zod';
 
 /**
  * Custom hook for managing forms with validation using Zod
@@ -10,40 +10,44 @@ import type { z } from 'zod';
  * @param defaultValues - Default values for the form
  * @param options - Additional options for useForm
  */
-export function useFormFields<
-  TSchema extends z.ZodType<
-    Record<string, unknown>,
-    z.ZodTypeDef,
-    Record<string, unknown>
-  >,
-  TFieldValues extends FieldValues = z.infer<TSchema>,
->(
-  schema: TSchema,
-  defaultValues?: UseFormProps<TFieldValues>['defaultValues'],
-  options: Omit<UseFormProps<TFieldValues>, 'resolver' | 'defaultValues'> = {}
-): {
-  form: UseFormReturn<TFieldValues>;
-  FormProvider: typeof FormProvider;
-  serverErrors: Record<string, string>;
-  setServerValidationErrors: (errors: Record<string, string>) => void;
-  clearServerErrors: () => void;
-  submitWithErrorHandling: (
-    onSubmit: (
-      values: TFieldValues
-    ) => Promise<void | boolean | Record<string, string>>
-  ) => (e?: React.BaseSyntheticEvent) => Promise<void>;
-  register: UseFormReturn<TFieldValues>['register'];
-  handleSubmit: UseFormReturn<TFieldValues>['handleSubmit'];
-  formState: UseFormReturn<TFieldValues>['formState'];
-  reset: UseFormReturn<TFieldValues>['reset'];
-  setValue: UseFormReturn<TFieldValues>['setValue'];
-  getValues: UseFormReturn<TFieldValues>['getValues'];
-  watch: UseFormReturn<TFieldValues>['watch'];
-  control: UseFormReturn<TFieldValues>['control'];
-} {
+export function useFormFields(
+  schema: z.ZodType<any>,
+  defaultValues?: any,
+  options: any = {}
+) {
   const [serverErrors, setServerErrors] = useState<Record<string, string>>({}); // Initialize react-hook-form with zod resolver
-  const form = useForm<TFieldValues>({
-    resolver: zodResolver(schema),
+
+  // Create a custom resolver to work around type compatibility issues
+  const resolver = async (values: any, context: any, options: any) => {
+    try {
+      const result = await schema.parseAsync(values);
+      return {
+        values: result,
+        errors: {},
+      };
+    } catch (error) {
+      if (error instanceof ZodError) {
+        const errors: Record<string, any> = {};
+        error.issues.forEach((issue) => {
+          if (issue.path && issue.path.length > 0) {
+            const fieldName = issue.path.join('.');
+            errors[fieldName] = {
+              type: 'validation',
+              message: issue.message,
+            };
+          }
+        });
+        return {
+          values: {},
+          errors,
+        };
+      }
+      throw error;
+    }
+  };
+
+  const form = useForm({
+    resolver,
     ...(defaultValues !== undefined && { defaultValues }),
     ...options,
   });
@@ -77,7 +81,7 @@ export function useFormFields<
   const submitWithErrorHandling = useCallback(
     (
       onSubmit: (
-        values: TFieldValues
+        values: any
       ) => Promise<void | boolean | Record<string, string>>
     ) => {
       return form.handleSubmit(async values => {
@@ -86,7 +90,7 @@ export function useFormFields<
           clearServerErrors();
 
           // Call the submit function
-          const result = await onSubmit(values as TFieldValues);
+          const result = await onSubmit(values);
 
           // If result is an object with errors, set them
           if (

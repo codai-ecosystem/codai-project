@@ -1,0 +1,29 @@
+{
+  "connectionPool": {
+    "min": 5,
+    "max": 20,
+    "acquireTimeoutMillis": 30000,
+    "createTimeoutMillis": 30000,
+    "destroyTimeoutMillis": 5000,
+    "idleTimeoutMillis": 600000,
+    "reapIntervalMillis": 1000,
+    "createRetryIntervalMillis": 100
+  },
+  "performance": {
+    "indexing": {
+      "autoIndex": true,
+      "optimizeQueries": true,
+      "analyzeSlow": true
+    },
+    "caching": {
+      "enabled": true,
+      "ttl": 300,
+      "maxSize": "500MB"
+    }
+  },
+  "backup": {
+    "enabled": true,
+    "interval": "6h",
+    "retention": "30d"
+  }
+}

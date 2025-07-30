@@ -1,24 +1,43 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const { createSecureServer } = require('@codai/security');
 
 const app = express();
-const PORT = 4053;
+const PORT = 4065;
+
+// Initialize security middleware
+createSecureServer(app, {
+  serviceName: 'stocai',
+  port: PORT,
+  enableTLS: true,
+  enableWAF: true,
+  rateLimit: {
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 1000 // Financial data requires higher rate limits
+  }
+});
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.static('.'));
 
-// Health check endpoint
+// Enhanced health check endpoint with security status
 app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'healthy', 
+  res.json({
+    status: 'healthy',
     service: 'stocai',
-    description: 'AI Stock Trading Platform',
+    description: 'Stock Market & Investment AI Platform - SECURED',
     port: PORT,
-    type: 'trading',
-    category: 'business',
+    type: 'financial-ai',
+    category: 'finance',
+    security: {
+      https: true,
+      waf: true,
+      headers: true,
+      rateLimit: true
+    },
     timestamp: new Date().toISOString(),
     uptime: process.uptime()
   });
@@ -49,7 +68,7 @@ app.get('/api', (req, res) => {
     endpoints: [
       'GET /',
       'GET /health',
-      'GET /status', 
+      'GET /status',
       'GET /api'
     ],
     documentation: 'https://docs.codai.ro/stocai'

@@ -1,0 +1,13 @@
+name: Automated Deployment Pipeline
+description: Complete deployment workflow with validation
+steps:
+  - action: pre_deployment_checks
+    timeout: 300
+  - action: build_application
+    timeout: 600
+  - action: run_tests
+    timeout: 900
+  - action: deploy_services
+    timeout: 300
+  - action: post_deployment_validation
+    timeout: 180

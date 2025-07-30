@@ -1,0 +1,322 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== CODAI DESIGN SYSTEM CSS VARIABLES ===== */
+
+@layer base {
+  :root {
+    /* ===== CORE COLORS ===== */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.75rem;
+
+    /* ===== CODAI BRAND COLORS ===== */
+    --codai-50: 220 100% 97%;
+    --codai-100: 220 100% 94%;
+    --codai-200: 220 100% 88%;
+    --codai-300: 220 100% 82%;
+    --codai-400: 220 100% 74%;
+    --codai-500: 221.2 83.2% 53.3%;
+    --codai-600: 221 100% 48%;
+    --codai-700: 221 100% 42%;
+    --codai-800: 221 100% 36%;
+    --codai-900: 221 100% 28%;
+    --codai-950: 221 100% 20%;
+
+    /* ===== STATUS COLORS ===== */
+    --success: 142 76% 36%;
+    --success-foreground: 138 76% 97%;
+    --warning: 48 96% 53%;
+    --warning-foreground: 48 96% 10%;
+    --error: 0 84% 60%;
+    --error-foreground: 0 84% 98%;
+    --info: 204 94% 94%;
+    --info-foreground: 204 94% 10%;
+
+    /* ===== TYPOGRAPHY ===== */
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+    --font-heading: 'Lexend', 'Inter', system-ui, sans-serif;
+
+    /* ===== FONT SIZES ===== */
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.25rem;
+    --text-2xl: 1.5rem;
+    --text-3xl: 1.875rem;
+    --text-4xl: 2.25rem;
+    --text-5xl: 3rem;
+    --text-6xl: 3.75rem;
+
+    /* ===== LINE HEIGHTS ===== */
+    --leading-xs: 1rem;
+    --leading-sm: 1.25rem;
+    --leading-base: 1.5rem;
+    --leading-lg: 1.75rem;
+    --leading-xl: 1.75rem;
+    --leading-2xl: 2rem;
+    --leading-3xl: 2.25rem;
+    --leading-4xl: 2.5rem;
+    --leading-5xl: 1;
+    --leading-6xl: 1;
+
+    /* ===== SPACING ===== */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+    --space-3xl: 4rem;
+
+    /* ===== SHADOWS ===== */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    --shadow-glow: 0 0 20px rgb(59 130 246 / 0.5);
+
+    /* ===== TRANSITIONS ===== */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* ===== Z-INDEX ===== */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+    --z-popover: 1060;
+    --z-tooltip: 1070;
+    --z-toast: 1080;
+  }
+
+  /* ===== DARK MODE ===== */
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+
+    /* ===== DARK MODE BRAND COLORS ===== */
+    --codai-50: 221 100% 5%;
+    --codai-100: 221 100% 10%;
+    --codai-200: 221 100% 15%;
+    --codai-300: 221 100% 25%;
+    --codai-400: 221 100% 35%;
+    --codai-500: 217.2 91.2% 59.8%;
+    --codai-600: 220 100% 70%;
+    --codai-700: 220 100% 80%;
+    --codai-800: 220 100% 85%;
+    --codai-900: 220 100% 90%;
+    --codai-950: 220 100% 95%;
+
+    /* ===== DARK MODE STATUS COLORS ===== */
+    --success: 142 76% 50%;
+    --success-foreground: 138 76% 10%;
+    --warning: 48 96% 65%;
+    --warning-foreground: 48 96% 5%;
+    --error: 0 84% 70%;
+    --error-foreground: 0 84% 5%;
+    --info: 204 94% 60%;
+    --info-foreground: 204 94% 5%;
+
+    /* ===== DARK MODE SHADOWS ===== */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.3), 0 8px 10px -6px rgb(0 0 0 / 0.3);
+    --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.5);
+    --shadow-glow: 0 0 20px rgb(99 102 241 / 0.6);
+  }
+}
+
+/* ===== GLOBAL STYLES ===== */
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ===== FOCUS STYLES ===== */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background;
+  }
+
+  /* ===== SCROLLBAR STYLES ===== */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground)) hsl(var(--muted));
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground));
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--accent-foreground));
+  }
+
+  /* ===== GLASS MORPHISM ===== */
+  .glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .dark .glass {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* ===== GRADIENT TEXT ===== */
+  .gradient-text {
+    background: linear-gradient(135deg, hsl(var(--codai-500)), hsl(var(--codai-700)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ===== UTILITY CLASSES ===== */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-pulse-subtle {
+    animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+}
+
+/* ===== COMPONENT LAYER ===== */
+@layer components {
+
+  /* ===== BUTTON VARIANTS ===== */
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 focus-ring;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 focus-ring;
+  }
+
+  .btn-destructive {
+    @apply bg-destructive text-destructive-foreground hover:bg-destructive/90 focus-ring;
+  }
+
+  .btn-outline {
+    @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground focus-ring;
+  }
+
+  .btn-ghost {
+    @apply hover:bg-accent hover:text-accent-foreground focus-ring;
+  }
+
+  .btn-link {
+    @apply text-primary underline-offset-4 hover:underline focus-ring;
+  }
+
+  /* ===== CARD VARIANTS ===== */
+  .card-elevated {
+    @apply bg-card text-card-foreground shadow-lg border border-border rounded-lg;
+  }
+
+  .card-flat {
+    @apply bg-card text-card-foreground border border-border rounded-lg;
+  }
+
+  .card-glass {
+    @apply glass text-foreground rounded-lg;
+  }
+
+  /* ===== INPUT VARIANTS ===== */
+  .input-base {
+    @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+}
+
+/* ===== ANIMATIONS ===== */
+@layer utilities {
+  .animate-fade-in {
+    animation: fade-in var(--transition-normal) ease-out;
+  }
+
+  .animate-slide-in-up {
+    animation: slide-in-up var(--transition-normal) ease-out;
+  }
+
+  .animate-slide-in-down {
+    animation: slide-in-down var(--transition-normal) ease-out;
+  }
+
+  .animate-slide-in-left {
+    animation: slide-in-left var(--transition-normal) ease-out;
+  }
+
+  .animate-slide-in-right {
+    animation: slide-in-right var(--transition-normal) ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scale-in var(--transition-fast) ease-out;
+  }
+}

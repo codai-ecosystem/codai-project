@@ -10,10 +10,10 @@
     "start": "node dist/server.js",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "lint": "eslint src --ext .ts,.tsx --report-unused-disable-directives --max-warnings 0",
-    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "lint": "pnpm exec eslint src --ext .ts,.tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "pnpm exec eslint src --ext .ts,.tsx --fix",
     "clean": "rimraf dist",
-    "type-check": "tsc --noEmit"
+    "type-check": "pnpm exec tsc --noEmit"
   },
   "keywords": [
     "romai",
@@ -27,6 +27,7 @@
   "author": "CODAI Contributors",
   "license": "MIT",
   "dependencies": {
+    "@codai/security": "workspace:*",
     "@codai/romai-api": "workspace:*",
     "@codai/romai-core": "workspace:*",
     "@codai/romai-types": "workspace:*",

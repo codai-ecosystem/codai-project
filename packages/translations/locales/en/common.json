@@ -1,0 +1,696 @@
+{
+  "common": {
+    "welcome": "Welcome",
+    "getStarted": "Get Started",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "signUp": "Sign Up",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "update": "Update",
+    "submit": "Submit",
+    "reset": "Reset",
+    "clear": "Clear",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "export": "Export",
+    "import": "Import",
+    "download": "Download",
+    "upload": "Upload",
+    "copy": "Copy",
+    "paste": "Paste",
+    "cut": "Cut",
+    "undo": "Undo",
+    "redo": "Redo",
+    "refresh": "Refresh",
+    "reload": "Reload",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Information",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "close": "Close",
+    "next": "Next",
+    "previous": "Previous",
+    "first": "First",
+    "last": "Last",
+    "page": "Page",
+    "of": "of",
+    "total": "Total",
+    "showing": "Showing",
+    "results": "results",
+    "noResults": "No results found",
+    "selectAll": "Select All",
+    "deselectAll": "Deselect All",
+    "actions": "Actions",
+    "options": "Options",
+    "settings": "Settings",
+    "preferences": "Preferences",
+    "profile": "Profile",
+    "account": "Account",
+    "dashboard": "Dashboard",
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact",
+    "help": "Help",
+    "support": "Support",
+    "documentation": "Documentation",
+    "faq": "FAQ",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "cookies": "Cookie Policy"
+  },
+  "navigation": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "apps": "Apps",
+    "services": "Services",
+    "ecosystem": "Ecosystem",
+    "analytics": "Analytics",
+    "settings": "Settings",
+    "profile": "Profile",
+    "account": "Account",
+    "billing": "Billing",
+    "security": "Security",
+    "notifications": "Notifications",
+    "integrations": "Integrations",
+    "api": "API",
+    "documentation": "Documentation",
+    "support": "Support",
+    "marketplace": "Marketplace",
+    "templates": "Templates",
+    "projects": "Projects"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot Password?",
+    "resetPassword": "Reset Password",
+    "rememberMe": "Remember Me",
+    "createAccount": "Create Account",
+    "alreadyHaveAccount": "Already have an account?",
+    "dontHaveAccount": "Don't have an account?",
+    "signInWith": "Sign in with",
+    "signUpWith": "Sign up with",
+    "continueWith": "Continue with",
+    "orContinueWith": "Or continue with",
+    "google": "Google",
+    "github": "GitHub",
+    "microsoft": "Microsoft",
+    "apple": "Apple",
+    "facebook": "Facebook",
+    "twitter": "Twitter",
+    "linkedin": "LinkedIn",
+    "discord": "Discord",
+    "emailSent": "Email sent",
+    "checkEmail": "Check your email for a reset link",
+    "passwordUpdated": "Password updated successfully",
+    "welcomeBack": "Welcome back!",
+    "accountCreated": "Account created successfully",
+    "invalidCredentials": "Invalid email or password",
+    "emailRequired": "Email is required",
+    "passwordRequired": "Password is required",
+    "passwordTooShort": "Password must be at least 8 characters",
+    "passwordMismatch": "Passwords do not match",
+    "invalidEmail": "Invalid email address"
+  },
+  "errors": {
+    "general": "Something went wrong. Please try again.",
+    "network": "Network error. Please check your connection.",
+    "unauthorized": "You are not authorized to access this resource.",
+    "forbidden": "Access forbidden.",
+    "notFound": "The requested resource was not found.",
+    "serverError": "Internal server error. Please try again later.",
+    "validationError": "Please check your input and try again.",
+    "fileTooBig": "File is too large. Maximum size is {{maxSize}}.",
+    "invalidFileType": "Invalid file type. Supported types: {{types}}.",
+    "uploadFailed": "File upload failed. Please try again.",
+    "sessionExpired": "Your session has expired. Please sign in again.",
+    "rateLimited": "Too many requests. Please try again later.",
+    "maintenance": "The service is temporarily unavailable for maintenance."
+  },
+  "success": {
+    "saved": "Changes saved successfully",
+    "created": "Created successfully",
+    "updated": "Updated successfully",
+    "deleted": "Deleted successfully",
+    "uploaded": "File uploaded successfully",
+    "copied": "Copied to clipboard",
+    "emailSent": "Email sent successfully",
+    "passwordChanged": "Password changed successfully",
+    "profileUpdated": "Profile updated successfully",
+    "settingsSaved": "Settings saved successfully"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Please enter a valid email address",
+    "minLength": "Must be at least {{min}} characters",
+    "maxLength": "Must be no more than {{max}} characters",
+    "pattern": "Please enter a valid format",
+    "number": "Please enter a valid number",
+    "integer": "Please enter a whole number",
+    "positive": "Please enter a positive number",
+    "url": "Please enter a valid URL",
+    "date": "Please enter a valid date",
+    "time": "Please enter a valid time",
+    "phone": "Please enter a valid phone number",
+    "alphanumeric": "Only letters and numbers are allowed",
+    "noSpaces": "Spaces are not allowed",
+    "strongPassword": "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+  },
+  "brand": {
+    "tagline": "AI-Native Operating System",
+    "description": "The next generation of intelligent applications",
+    "mission": "Empowering developers and businesses with AI-first solutions",
+    "vision": "A world where AI enhances human potential",
+    "values": {
+      "innovation": "Innovation",
+      "transparency": "Transparency",
+      "collaboration": "Collaboration",
+      "excellence": "Excellence",
+      "integrity": "Integrity"
+    }
+  },
+  "home": {
+    "welcome": "Welcome back",
+    "welcomeDesc": "Here's what's happening with your {{appName}} today",
+    "viewDashboard": "View Dashboard",
+    "viewActivity": "View Activity",
+    "quickActions": {
+      "title": "Quick Actions",
+      "newProject": "Create New Project",
+      "newProjectDesc": "Start a new project from scratch",
+      "viewDashboard": "View Dashboard",
+      "viewDashboardDesc": "Access your main dashboard",
+      "settings": "Settings",
+      "settingsDesc": "Manage your preferences"
+    },
+    "features": {
+      "title": "Key Features",
+      "modern": "Modern Technology",
+      "modernDesc": "Built with the latest technologies",
+      "secure": "Enterprise Security",
+      "secureDesc": "Bank-grade security and encryption",
+      "scalable": "Highly Scalable",
+      "scalableDesc": "Designed to grow with your needs"
+    },
+    "activity": {
+      "title": "Recent Activity",
+      "welcome": "Welcome to the platform",
+      "welcomeDesc": "You've successfully joined {{appName}}",
+      "profileComplete": "Profile setup complete",
+      "profileCompleteDesc": "Your profile has been configured"
+    }
+  },
+  "time": {
+    "now": "Just now",
+    "fewMinutesAgo": "A few minutes ago",
+    "anHourAgo": "An hour ago",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "thisWeek": "This week",
+    "lastWeek": "Last week",
+    "thisMonth": "This month",
+    "lastMonth": "Last month"
+  },
+  "apps": {
+    "codai": {
+      "name": "CODAI",
+      "description": "Central Platform & AIDE Hub",
+      "tagline": "Your AI Development Companion"
+    },
+    "memorai": {
+      "name": "MEMORAI",
+      "description": "AI Memory & Database Core",
+      "tagline": "Never Forget Anything"
+    },
+    "bancai": {
+      "name": "BANCAI",
+      "description": "AI Banking & Finance Platform",
+      "tagline": "Intelligent Financial Services"
+    },
+    "stocai": {
+      "name": "STOCAI",
+      "description": "Stock Market & Investment AI",
+      "tagline": "Smart Investment Decisions"
+    },
+    "logai": {
+      "name": "LOGAI",
+      "description": "Identity & Access Control",
+      "tagline": "Secure Digital Identity"
+    },
+    "fabricai": {
+      "name": "FABRICAI",
+      "description": "AI Services Platform",
+      "tagline": "Build AI-Powered Solutions"
+    },
+    "studiai": {
+      "name": "STUDIAI",
+      "description": "AI Education Platform",
+      "tagline": "Learn with AI"
+    },
+    "sociai": {
+      "name": "SOCIAI",
+      "description": "AI Social Platform",
+      "tagline": "Connect Intelligently"
+    },
+    "cumparai": {
+      "name": "CUMPARAI",
+      "description": "AI Shopping Platform",
+      "tagline": "Smart Shopping Assistant"
+    },
+    "publicai": {
+      "name": "PUBLICAI",
+      "description": "Civic Tech & Transparency",
+      "tagline": "AI for the Public Good"
+    },
+    "curtai": {
+      "name": "CURTAI",
+      "description": "AI-Powered Soulmate Discovery",
+      "tagline": "Find Your Perfect Match"
+    },
+    "talentai": {
+      "name": "TALENTAI",
+      "description": "AI Talent Acquisition",
+      "tagline": "Find the Right Talent"
+    },
+    "sunai": {
+      "name": "SUNAI",
+      "description": "Solar Energy Optimization",
+      "tagline": "Harness Solar Power"
+    },
+    "muzicai": {
+      "name": "MUZICAI",
+      "description": "AI Music Platform",
+      "tagline": "Create Music with AI"
+    },
+    "acasai": {
+      "name": "ACASAI",
+      "description": "AI Home & Living",
+      "tagline": "Smart Home Intelligence"
+    }
+  },
+  "codai": {
+    "title": "CodAI",
+    "subtitle": "AI Coding Platform",
+    "description": "AI-powered development platform",
+    "tabs": {
+      "overview": "Overview",
+      "features": "Features",
+      "analytics": "Analytics",
+      "settings": "Settings"
+    },
+    "panels": {
+      "analyticsTitle": "Analytics Panel",
+      "analyticsDesc": "Advanced analytics and insights for your platform usage and performance metrics.",
+      "settingsTitle": "Settings Panel",
+      "settingsDesc": "Configure your platform settings and preferences for optimal performance."
+    },
+    "metrics": {
+      "activeUsers": "Active Users",
+      "performance": "Performance",
+      "activeApps": "Active Apps",
+      "systemScore": "System Score"
+    },
+    "status": {
+      "live": "Live",
+      "active": "Active",
+      "maintenance": "Maintenance",
+      "archived": "Archived"
+    },
+    "actions": {
+      "learnMore": "Learn More",
+      "viewAll": "View All",
+      "refresh": "Refresh",
+      "comingSoon": "Coming Soon"
+    },
+    "ecosystem": {
+      "description": "Live AI Development Platform with {{totalProjects}} Active Projects",
+      "subtitle": "Real-time monitoring of {{activeApps}} active applications, {{packages}} packages, and {{services}} services in our development ecosystem.",
+      "stats": {
+        "lastActivity": "Last Activity",
+        "dependencies": "Dependencies",
+        "uptime": "Uptime"
+      }
+    },
+    "features": {
+      "codeDevTitle": "Code Development",
+      "codeDevDesc": "AI-powered development platform with {{projectCount}} projects",
+      "reactTitle": "React Ecosystem",
+      "reactDesc": "Modern React applications with {{reactProjectCount}} React projects",
+      "typescriptTitle": "TypeScript Integration",
+      "typescriptDesc": "Type-safe development with {{typescriptProjectCount}} TypeScript projects",
+      "packagesTitle": "Package Ecosystem",
+      "packagesDesc": "Shared packages and libraries with {{packageCount}} reusable components"
+    }
+  },
+  "memorai": {
+    "title": "MemorAI",
+    "subtitle": "AI Memory & Database Core",
+    "status": {
+      "live": "Live"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "features": "Features",
+      "analytics": "Analytics",
+      "monitor": "Monitor"
+    },
+    "ecosystem": {
+      "title": "Memory Ecosystem",
+      "description": "Intelligent memory and knowledge management with {{totalMemories}} active memories",
+      "subtitle": "Managing {{activeStores}} knowledge stores, {{totalQueries}} queries, and {{connections}} connections"
+    },
+    "metrics": {
+      "totalMemories": "Total Memories",
+      "querySpeed": "Query Speed",
+      "storageUsed": "Storage Used",
+      "memoryScore": "Memory Score"
+    },
+    "features": {
+      "knowledgeTitle": "Knowledge Management",
+      "knowledgeDesc": "Advanced AI memory with {{memoryCount}} stored memories",
+      "searchTitle": "Semantic Search",
+      "searchDesc": "Intelligent search across {{storeCount}} knowledge stores",
+      "analyticsTitle": "Memory Analytics",
+      "analyticsDesc": "Deep insights with {{queryCount}} processed queries",
+      "networkTitle": "Memory Network",
+      "networkDesc": "Connected memory system with {{connectionCount}} active connections"
+    },
+    "actions": {
+      "searchMemories": "Search Memories",
+      "addMemory": "Add Memory",
+      "viewStores": "View Stores",
+      "analyze": "Analyze"
+    }
+  },
+  "bancai": {
+    "title": "BANCAI",
+    "subtitle": "AI Banking Platform",
+    "status": "Online",
+    "nav": {
+      "dashboard": "Dashboard",
+      "accounts": "Accounts",
+      "transactions": "Transactions",
+      "analytics": "Analytics"
+    },
+    "metrics": {
+      "totalAccounts": "Total Accounts",
+      "totalAccountsDesc": "Active banking accounts",
+      "activeTransactions": "Active Transactions",
+      "activeTransactionsDesc": "Last 30 days",
+      "aiBanking": "AI Banking",
+      "aiBankingDesc": "Smart insights enabled",
+      "netWorth": "Total Net Worth",
+      "netWorthChange": "+$3,240.25 this month",
+      "netWorthGrowth": "+2.1% growth rate"
+    },
+    "features": {
+      "accountBalance": "Account Balance",
+      "accountBalanceDesc": "Total across all accounts",
+      "transactionHistory": "Transaction History",
+      "transactionHistoryDesc": "Recent transactions",
+      "paymentProcessing": "Payment Processing",
+      "paymentProcessingDesc": "Secure payments enabled"
+    },
+    "actions": {
+      "hideBalances": "Hide Balances",
+      "showBalances": "Show Balances",
+      "refresh": "Refresh",
+      "export": "Export",
+      "filter": "Filter",
+      "addGoal": "Add Goal"
+    },
+    "security": {
+      "bankGrade": "Bank-Grade Security Enabled",
+      "encryption": "256-bit Encryption Active",
+      "lastUpdated": "Last updated"
+    },
+    "tabs": {
+      "transactions": "Recent Transactions",
+      "goals": "Financial Goals",
+      "insights": "AI Insights",
+      "analytics": "Analytics"
+    }
+  },
+  "stocai": {
+    "title": "STOCAI",
+    "subtitle": "AI Trading Platform",
+    "description": "Advanced AI-powered trading platform for the CODAI ecosystem with enterprise security and scalability",
+    "nav": {
+      "overview": "Overview",
+      "analytics": "Analytics",
+      "features": "Features",
+      "monitor": "Monitor"
+    },
+    "metrics": {
+      "totalUsers": "Total Users",
+      "activeNow": "Active Now",
+      "uptime": "Uptime",
+      "globalScale": "Global Scale",
+      "countries": "Countries"
+    },
+    "features": {
+      "aiTradingBot": {
+        "title": "AI Trading Bot",
+        "subtitle": "Automated trading algorithms",
+        "description": "Get AI-powered trading assistance with advanced machine learning algorithms"
+      },
+      "enterpriseSecurity": {
+        "title": "Enterprise Security",
+        "subtitle": "Advanced protection",
+        "description": "Military-grade encryption and compliance with financial regulations"
+      },
+      "realtimeAnalytics": {
+        "title": "Real-time Analytics",
+        "subtitle": "Live market data",
+        "description": "Monitor market trends with real-time analytics and AI predictions"
+      },
+      "fastExecution": {
+        "title": "Fast Execution",
+        "subtitle": "Lightning-fast trades",
+        "description": "Execute trades in milliseconds with optimized trading infrastructure"
+      },
+      "portfolioManagement": {
+        "title": "Portfolio Management",
+        "subtitle": "Smart diversification",
+        "description": "Manage portfolios with AI-driven risk assessment and optimization"
+      },
+      "globalMarkets": {
+        "title": "Global Markets",
+        "subtitle": "Worldwide access",
+        "description": "Access global markets with 24/7 trading capabilities"
+      }
+    },
+    "actions": {
+      "startTrading": "Start Trading",
+      "viewAnalytics": "View Analytics",
+      "startTradingAria": "Start trading with AI assistance",
+      "viewAnalyticsAria": "View trading analytics dashboard"
+    },
+    "status": {
+      "live": "Live",
+      "online": "Online",
+      "currentTime": "Current time",
+      "platformStatus": "STOCAI Trading Platform - Next.js 15.4.1 + TailwindCSS 3"
+    },
+    "content": {
+      "overviewTitle": "AI Trading Overview",
+      "overviewDesc": "Transforming financial markets with advanced AI trading algorithms",
+      "analyticsTitle": "Advanced Analytics Dashboard",
+      "analyticsDesc": "Real-time market analysis and trading performance metrics",
+      "featuresTitle": "Trading Features",
+      "featuresDesc": "Comprehensive AI-powered trading tools and capabilities",
+      "monitorTitle": "Performance Monitor",
+      "monitorDesc": "Real-time monitoring of trading performance and system health",
+      "statisticsTitle": "Live Trading Statistics"
+    }
+  },
+  "prezentai": {
+    "title": "PREZENTAI",
+    "subtitle": "Premium Portfolio Platform",
+    "description": "Showcase our AI ecosystem with stunning presentations",
+    "nav": {
+      "home": "Home",
+      "about": "About",
+      "portfolio": "Portfolio",
+      "services": "Services",
+      "contact": "Contact"
+    },
+    "hero": {
+      "title": "Premium Presentations",
+      "subtitle": "Showcase Your AI Solutions",
+      "description": "Professional presentation platform for the modern AI ecosystem"
+    },
+    "features": {
+      "title": "Platform Features",
+      "showcase": {
+        "title": "AI Showcase",
+        "description": "Display your AI solutions with interactive presentations"
+      },
+      "portfolio": {
+        "title": "Portfolio Gallery",
+        "description": "Professional portfolio management and display"
+      },
+      "presentations": {
+        "title": "Dynamic Presentations",
+        "description": "Create engaging presentations with AI-powered features"
+      },
+      "analytics": {
+        "title": "Engagement Analytics",
+        "description": "Track presentation performance and viewer engagement"
+      }
+    },
+    "stats": {
+      "presentations": "Presentations Created",
+      "views": "Total Views",
+      "engagement": "Average Engagement",
+      "clients": "Satisfied Clients"
+    }
+  },
+  "conversai": {
+    "title": "CONVERSAI",
+    "subtitle": "Intelligent Conversation Platform",
+    "description": "Advanced AI-powered conversations and chat management",
+    "nav": {
+      "home": "Home",
+      "chat": "Chat",
+      "conversations": "Conversations",
+      "analytics": "Analytics",
+      "settings": "Settings"
+    },
+    "hero": {
+      "title": "Smart Conversations",
+      "subtitle": "AI-Powered Chat Platform",
+      "description": "Experience the future of intelligent communication with our advanced AI conversation system"
+    },
+    "features": {
+      "title": "Platform Features",
+      "aiChat": {
+        "title": "AI Chat Engine",
+        "description": "Advanced natural language processing for intelligent conversations"
+      },
+      "realtime": {
+        "title": "Real-time Communication",
+        "description": "Instant messaging with AI assistance and smart suggestions"
+      },
+      "analytics": {
+        "title": "Conversation Analytics",
+        "description": "Deep insights into conversation patterns and engagement metrics"
+      },
+      "automation": {
+        "title": "Smart Automation",
+        "description": "Automated responses and workflow optimization for better efficiency"
+      }
+    },
+    "metrics": {
+      "conversations": "Active Conversations",
+      "messages": "Messages Processed",
+      "users": "Active Users",
+      "satisfaction": "User Satisfaction"
+    },
+    "chat": {
+      "placeholder": "Type your message...",
+      "send": "Send",
+      "newChat": "New Conversation",
+      "thinking": "AI is thinking...",
+      "error": "Failed to send message",
+      "retry": "Retry"
+    }
+  },
+  "curtai": {
+    "title": "CURTAI",
+    "subtitle": "AI-Powered Soulmate Discovery",
+    "description": "Next generation dating platform with intelligent compatibility matching",
+    "nav": {
+      "home": "Home",
+      "discover": "Discover",
+      "matches": "Matches",
+      "chat": "Chat",
+      "profile": "Profile"
+    },
+    "hero": {
+      "title": "Find Your Perfect Match",
+      "subtitle": "AI-Powered Soulmate Discovery",
+      "description": "Experience intelligent dating with advanced AI compatibility analysis and personalized matching"
+    },
+    "features": {
+      "title": "Dating Features",
+      "aiMatching": {
+        "title": "AI Compatibility Engine",
+        "description": "Advanced algorithms analyze personality, interests, and values for perfect matches"
+      },
+      "smartChat": {
+        "title": "Intelligent Conversations",
+        "description": "AI-powered chat suggestions and conversation starters for meaningful connections"
+      },
+      "compatibility": {
+        "title": "Deep Compatibility Analysis",
+        "description": "Psychological profiling and personality assessment for lasting relationships"
+      },
+      "privacy": {
+        "title": "Privacy & Safety",
+        "description": "Advanced security measures and verification systems for safe dating"
+      }
+    },
+    "metrics": {
+      "matches": "Total Matches",
+      "conversations": "Active Conversations",
+      "compatibility": "Avg Compatibility",
+      "success": "Success Rate"
+    },
+    "discover": {
+      "newProfiles": "New Profiles",
+      "compatibility": "Compatibility Score",
+      "like": "Like",
+      "pass": "Pass",
+      "superLike": "Super Like",
+      "match": "It's a Match!",
+      "noMoreProfiles": "No more profiles in your area"
+    }
+  },
+  "fabricai": {
+    "title": "FabricAI",
+    "nav": {
+      "dashboard": "Dashboard",
+      "development": "Development",
+      "workflows": "Workflows",
+      "analytics": "Analytics"
+    },
+    "metrics": {
+      "total_users": "Total Users",
+      "active_now": "Active Now",
+      "system_uptime": "System Uptime",
+      "success_rate": "Success Rate"
+    },
+    "features": {
+      "code_generation": {
+        "title": "AI Code Generation",
+        "description": "Intelligent code generation with AI-powered optimization"
+      },
+      "workflow_automation": {
+        "title": "Workflow Automation",
+        "description": "Streamlined development workflows with AI assistance"
+      },
+      "smart_debugging": {
+        "title": "Smart Debugging",
+        "description": "Advanced debugging tools with AI-powered insights"
+      },
+      "performance_optimization": {
+        "title": "Performance Optimization",
+        "description": "Automated performance optimization and monitoring"
+      }
+    }
+  }
+}

@@ -1,256 +1,89 @@
-# MemorAI Tool Name Fix Plan
+# MemorAI MCP Server Fix - Correct Approach
 
-## Current Issue
-The MemorAI MCP server has inconsistent tool naming that causes conflicts and confusion:
+## Problem Analysis ✅
 
-### Problematic Tool Names
-- `mcp_memoraimcp_remember` (too verbose)
-- `mcp_memoraimcp_recall` (redundant prefix)
-- `mcp_memoraimcp_forget` (unclear prefix)
-- `mcp_memoraimcp_context` (inconsistent)
+I now understand the root issue:
 
-### Expected Tool Names
-- `remember` (simple, clear)
-- `recall` (intuitive)
-- `forget` (direct)
-- `context` (concise)
+1. **VS Code MCP configuration** expects tools named: `mcp_memoraimcp_remember`, `mcp_memoraimcp_recall`, etc.
+2. **Existing MCP server** (`apps/memorai/packages/mcp/src/server.js`) uses old names: `remember`, `recall`, etc.
+3. **CBD server** (`apps/memorai/cbd-mcp-server.ts`) also uses old names: `remember`, `recall`, etc.
+4. **Current system** is looking for the `mcp_memoraimcp_*` tool names
 
-## Root Cause Analysis
+## Root Cause: Tool Name Mismatch ❌
 
-### 1. MCP Server Registration
+The "0 memories" issue is caused by VS Code MCP looking for:
+- `mcp_memoraimcp_remember` 
+- `mcp_memoraimcp_recall`
+- `mcp_memoraimcp_forget`
+- `mcp_memoraimcp_context`
+- `mcp_memoraimcp_get_memory`
+- `mcp_memoraimcp_search_keys`
+
+But the existing servers provide:
+- `remember` 
+- `recall`
+- `forget`
+- `context`
+- `get_memory`
+- `search_keys`
+
+## Correct Fix Strategy 🎯
+
+**Update the existing MCP package** (`apps/memorai/packages/mcp/`) to:
+
+1. ✅ **Change tool names** to match VS Code MCP expectations
+2. ✅ **Keep the existing package structure** 
+3. ✅ **Integrate CBD backend** for reliability
+4. ✅ **Publish as v8.0.0** to maintain continuity
+5. ✅ **Clean up duplicate packages** I created
+
+## Implementation Plan 📋
+
+### Phase 1: Fix Tool Names in Existing Package
 ```javascript
-// Current (problematic)
-server.setRequestHandler(ListToolsRequestSchema, async () => ({
-  tools: [
-    {
-      name: "mcp_memoraimcp_remember",
-      description: "Store information in memory"
-    }
-  ]
-}));
-
-// Should be
-server.setRequestHandler(ListToolsRequestSchema, async () => ({
-  tools: [
-    {
-      name: "remember",
-      description: "Store information in memory"
-    }
-  ]
-}));
+// In apps/memorai/packages/mcp/src/server.js
+{
+    name: 'mcp_memoraimcp_remember',  // was 'remember'
+    description: 'Store memory with structured key',
+    // ... rest of implementation
+}
 ```
 
-### 2. Tool Handler Registration
-```javascript
-// Current (problematic)
-server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  const { name, arguments: args } = request.params;
-  
-  switch (name) {
-    case "mcp_memoraimcp_remember":
-      return await handleRemember(args);
-  }
-});
+### Phase 2: Integrate CBD Backend
+- Replace SQLite with CBD backend for reliability
+- Use our working CBD server implementation
+- Maintain all existing functionality
 
-// Should be
-server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  const { name, arguments: args } = request.params;
-  
-  switch (name) {
-    case "remember":
-      return await handleRemember(args);
-  }
-});
+### Phase 3: Update Package Version
+```json
+{
+    "name": "@codai/memorai-mcp",
+    "version": "8.0.0-cbd",
+    // ... rest of package.json
+}
 ```
 
-## Fix Implementation
+### Phase 4: Clean Up Duplicates
+- Remove `packages/@codai/memorai-mcp/`
+- Remove cleanup documentation files
+- Publish fixed package
 
-### Phase 1: Tool Name Normalization
-1. **Update Tool Definitions**
-   ```javascript
-   const TOOL_DEFINITIONS = {
-     remember: {
-       name: "remember",
-       description: "Store information in memory with optional metadata",
-       inputSchema: {
-         type: "object",
-         properties: {
-           content: { type: "string" },
-           metadata: { type: "object" }
-         },
-         required: ["content"]
-       }
-     },
-     recall: {
-       name: "recall",
-       description: "Search and retrieve stored information",
-       inputSchema: {
-         type: "object",
-         properties: {
-           query: { type: "string" },
-           limit: { type: "number" }
-         },
-         required: ["query"]
-       }
-     },
-     forget: {
-       name: "forget",
-       description: "Delete specific memories",
-       inputSchema: {
-         type: "object",
-         properties: {
-           structuredKey: { type: "string" }
-         },
-         required: ["structuredKey"]
-       }
-     },
-     context: {
-       name: "context",
-       description: "Get contextual information for current task",
-       inputSchema: {
-         type: "object",
-         properties: {
-           agentId: { type: "string" },
-           contextSize: { type: "number" }
-         },
-         required: ["agentId"]
-       }
-     }
-   };
-   ```
+## Next Actions 🚀
 
-### Phase 2: Handler Updates
-1. **Simplify Tool Handlers**
-   ```javascript
-   server.setRequestHandler(CallToolRequestSchema, async (request) => {
-     const { name, arguments: args } = request.params;
-     
-     try {
-       switch (name) {
-         case "remember":
-           return await handleRemember(args);
-         case "recall":
-           return await handleRecall(args);
-         case "forget":
-           return await handleForget(args);
-         case "context":
-           return await handleContext(args);
-         default:
-           throw new Error(`Unknown tool: ${name}`);
-       }
-     } catch (error) {
-       return {
-         content: [{
-           type: "text",
-           text: `Error: ${error.message}`
-         }],
-         isError: true
-       };
-     }
-   });
-   ```
+1. **Manual cleanup** of duplicate package directory
+2. **Update existing MCP server** with correct tool names
+3. **Integrate CBD backend** into existing package
+4. **Test and publish** updated package
+5. **Verify VS Code MCP** works correctly
 
-### Phase 3: Backward Compatibility
-1. **Alias Support** (temporary during transition)
-   ```javascript
-   const TOOL_ALIASES = {
-     "mcp_memoraimcp_remember": "remember",
-     "mcp_memoraimcp_recall": "recall",
-     "mcp_memoraimcp_forget": "forget",
-     "mcp_memoraimcp_context": "context"
-   };
-   
-   // In tool handler
-   const toolName = TOOL_ALIASES[name] || name;
-   ```
+## Expected Resolution ✅
 
-## Testing Strategy
+Once fixed:
+- VS Code MCP will find `mcp_memoraimcp_*` tools
+- CBD backend will provide reliable storage
+- Memory operations will work correctly
+- "0 memories" issue will be resolved
 
-### Unit Tests
-```javascript
-describe('Tool Name Fixes', () => {
-  test('should handle simple tool names', async () => {
-    const response = await callTool('remember', { content: 'test' });
-    expect(response.isError).toBe(false);
-  });
-  
-  test('should support backward compatibility', async () => {
-    const response = await callTool('mcp_memoraimcp_remember', { content: 'test' });
-    expect(response.isError).toBe(false);
-  });
-});
-```
+---
 
-### Integration Tests
-- Test with VS Code MCP integration
-- Test with Claude Desktop
-- Verify tool discovery works correctly
-- Confirm tool execution functions properly
-
-## Migration Plan
-
-### Version 7.2.2 (Current)
-- Maintain current verbose names
-- Add deprecation warnings
-
-### Version 7.3.0 (Transition)
-- Support both naming conventions
-- Prefer simple names in documentation
-- Add migration guide
-
-### Version 8.0.0 (Clean)
-- Remove verbose names completely
-- Use only simple tool names
-- Update all documentation
-
-## Documentation Updates
-
-### Tool Reference
-```markdown
-## Available Tools
-
-### remember
-Store information in memory with optional metadata.
-
-**Parameters:**
-- `content` (string, required): The information to store
-- `metadata` (object, optional): Additional context
-
-**Example:**
-```javascript
-await tools.remember({
-  content: "User prefers TypeScript for new projects",
-  metadata: { type: "preference", category: "development" }
-});
-```
-
-### recall
-Search and retrieve stored information.
-
-**Parameters:**
-- `query` (string, required): Search query
-- `limit` (number, optional): Maximum results to return
-
-**Example:**
-```javascript
-const memories = await tools.recall({
-  query: "TypeScript preferences",
-  limit: 5
-});
-```
-```
-
-## Success Criteria
-- ✅ Tool names are simple and intuitive
-- ✅ No breaking changes for existing users
-- ✅ Clear migration documentation
-- ✅ All tests pass
-- ✅ MCP integration works seamlessly
-- ✅ Performance is maintained or improved
-
-## Risk Assessment
-- **Low Risk**: Name changes are cosmetic
-- **Medium Risk**: Backward compatibility complexity
-- **Mitigation**: Comprehensive testing and gradual rollout
-
-This fix will significantly improve the developer experience and make the MemorAI MCP server more intuitive to use.
+**Key Insight**: The issue isn't the storage system, it's the tool name mismatch between what VS Code expects and what the server provides!

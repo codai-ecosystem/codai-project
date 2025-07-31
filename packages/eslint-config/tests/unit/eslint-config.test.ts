@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import * as pkg from '../src/index';
+import * as pkg from '../../index';
 
 describe('eslint-config Package', () => {
   describe('Exports', () => {
@@ -36,7 +36,7 @@ describe('eslint-config Package', () => {
       const startTime = performance.now();
       // Test performance
       const endTime = performance.now();
-      
+
       expect(endTime - startTime).toBeLessThan(10);
     });
   });

@@ -1,0 +1,54 @@
+{
+  "phase": "Phase 2B - Admin Service Frontend Testing",
+  "startTime": "2025-07-31T06:39:19.591Z",
+  "endTime": "2025-07-31T06:39:21.955Z",
+  "totalTests": 0,
+  "passedTests": 0,
+  "failedTests": 0,
+  "successRate": 0,
+  "coverage": {
+    "statements": {
+      "covered": 0,
+      "total": 0,
+      "percentage": 0
+    },
+    "branches": {
+      "covered": 0,
+      "total": 0,
+      "percentage": 0
+    },
+    "functions": {
+      "covered": 0,
+      "total": 0,
+      "percentage": 0
+    },
+    "lines": {
+      "covered": 0,
+      "total": 0,
+      "percentage": 0
+    }
+  },
+  "testSuites": [
+    {
+      "name": "AdminDashboard.test.jsx",
+      "status": "failed",
+      "duration": 0
+    },
+    {
+      "name": "UserDetail.test.jsx",
+      "status": "failed",
+      "duration": 0
+    },
+    {
+      "name": "UserList.test.jsx",
+      "status": "failed",
+      "duration": 0
+    },
+    {
+      "name": "SystemStats.test.jsx",
+      "status": "failed",
+      "duration": 0
+    }
+  ],
+  "errors": []
+}

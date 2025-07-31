@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import * as pkg from '../src/index';
+import * as pkg from '../../src/index';
 
 describe('config Package', () => {
   describe('Exports', () => {

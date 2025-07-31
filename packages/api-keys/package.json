@@ -21,7 +21,7 @@
     "build": "pnpm exec tsc",
     "dev": "tsc --watch",
     "clean": "rimraf dist",
-    "test": "jest",
+    "test": "vitest run",
     "test:watch": "jest --watch",
     "lint": "pnpm exec eslint src --ext .ts,.tsx",
     "lint:fix": "pnpm exec eslint src --ext .ts,.tsx --fix",

@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import * as pkg from '../src/index';
+import * as pkg from '../../src/index';
 
 describe('analytics Package', () => {
   describe('Exports', () => {
@@ -36,7 +36,7 @@ describe('analytics Package', () => {
       const startTime = performance.now();
       // Test performance
       const endTime = performance.now();
-      
+
       expect(endTime - startTime).toBeLessThan(10);
     });
   });

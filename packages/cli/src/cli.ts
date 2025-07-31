@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
  * CODAI CLI - Universal Command Line Interface
  * Entry point for all CODAI ecosystem operations
@@ -6,9 +8,19 @@
 import { program, Command } from 'commander';
 import chalk from 'chalk';
 import { CodaiCLI } from './index.js';
+import { readFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 const cli = new CodaiCLI();
-import packageJson from '../package.json' assert { type: 'json' };
+
+// ES module equivalent of __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Load package.json using fs instead of assert syntax
+const packageJsonPath = join(__dirname, '..', 'package.json');
+const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
 
 // Configure main program
 program
@@ -245,8 +257,8 @@ async function main() {
   }
 }
 
-// Only run if this is the main module
-if (require.main === module) {
+// Only run if this is the main module (ES module equivalent)
+if (import.meta.url === `file://${process.argv[1]}` || import.meta.url.endsWith('/cli.js')) {
   main();
 }
 

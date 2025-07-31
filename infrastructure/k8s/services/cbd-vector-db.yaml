@@ -1,0 +1,328 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: cbd-vector-db
+  namespace: memorai-system
+  labels:
+    app: cbd-vector-db
+    version: v1
+    component: database
+spec:
+  serviceName: cbd-vector-db
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cbd-vector-db
+  template:
+    metadata:
+      labels:
+        app: cbd-vector-db
+        version: v1
+        component: database
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '9090'
+        prometheus.io/path: '/metrics'
+    spec:
+      serviceAccountName: cbd-vector-db
+      nodeSelector:
+        role: memory-intensive
+      tolerations:
+        - key: 'role'
+          operator: 'Equal'
+          value: 'memory-intensive'
+          effect: 'NoSchedule'
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - cbd-vector-db
+                topologyKey: kubernetes.io/hostname
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: cbd-vector-db
+          image: codai/cbd:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4180
+              name: http
+              protocol: TCP
+            - containerPort: 4181
+              name: grpc
+              protocol: TCP
+            - containerPort: 9090
+              name: metrics
+              protocol: TCP
+          env:
+            - name: CBD_MODE
+              value: 'cluster'
+            - name: CBD_STORAGE_BACKEND
+              value: 'rocksdb'
+            - name: CBD_VECTOR_ENGINE
+              value: 'faiss'
+            - name: CBD_CLUSTER_SIZE
+              value: '3'
+            - name: CBD_NODE_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: CBD_CLUSTER_PEERS
+              value: 'cbd-vector-db-0.cbd-vector-db:4181,cbd-vector-db-1.cbd-vector-db:4181,cbd-vector-db-2.cbd-vector-db:4181'
+            - name: RUST_LOG
+              value: 'info'
+            - name: CBD_METRICS_ENABLED
+              value: 'true'
+            - name: CBD_METRICS_PORT
+              value: '9090'
+          resources:
+            requests:
+              memory: '32Gi'
+              cpu: '8'
+              ephemeral-storage: '10Gi'
+            limits:
+              memory: '64Gi'
+              cpu: '16'
+              ephemeral-storage: '20Gi'
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 4180
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 4180
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          startupProbe:
+            httpGet:
+              path: /startup
+              port: 4180
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 30
+          volumeMounts:
+            - name: cbd-data
+              mountPath: /data
+            - name: cbd-config
+              mountPath: /config
+            - name: cbd-logs
+              mountPath: /logs
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+      volumes:
+        - name: cbd-config
+          configMap:
+            name: cbd-config
+        - name: cbd-logs
+          emptyDir: {}
+  volumeClaimTemplates:
+    - metadata:
+        name: cbd-data
+        labels:
+          app: cbd-vector-db
+      spec:
+        accessModes: ['ReadWriteOnce']
+        storageClassName: 'gp3-encrypted'
+        resources:
+          requests:
+            storage: 1Ti
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cbd-vector-db
+  namespace: memorai-system
+  labels:
+    app: cbd-vector-db
+    service: cbd-vector-db
+spec:
+  selector:
+    app: cbd-vector-db
+  ports:
+    - name: http
+      port: 4180
+      targetPort: 4180
+      protocol: TCP
+    - name: grpc
+      port: 4181
+      targetPort: 4181
+      protocol: TCP
+    - name: metrics
+      port: 9090
+      targetPort: 9090
+      protocol: TCP
+  type: ClusterIP
+  clusterIP: None # Headless service for StatefulSet
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cbd-vector-db-lb
+  namespace: memorai-system
+  labels:
+    app: cbd-vector-db
+    service: cbd-vector-db-lb
+spec:
+  selector:
+    app: cbd-vector-db
+  ports:
+    - name: http
+      port: 4180
+      targetPort: 4180
+      protocol: TCP
+    - name: grpc
+      port: 4181
+      targetPort: 4181
+      protocol: TCP
+  type: ClusterIP
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cbd-vector-db
+  namespace: memorai-system
+  labels:
+    app: cbd-vector-db
+automountServiceAccountToken: true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cbd-config
+  namespace: memorai-system
+  labels:
+    app: cbd-vector-db
+data:
+  config.toml: |
+    [server]
+    host = "0.0.0.0"
+    port = 4180
+    grpc_port = 4181
+    workers = 16
+
+    [storage]
+    backend = "rocksdb"
+    data_dir = "/data"
+    max_memory = "32GB"
+    write_buffer_size = "256MB"
+    max_write_buffer_number = 6
+    target_file_size_base = "256MB"
+    max_background_jobs = 16
+
+    [vector]
+    engine = "faiss"
+    dimension = 1536
+    metric = "cosine"
+    nlist = 4096
+    nprobe = 64
+    use_gpu = false
+    index_factory = "IVF4096,Flat"
+
+    [cluster]
+    enabled = true
+    replicas = 3
+    consistency_level = "strong"
+    replication_factor = 2
+
+    [security]
+    tls_enabled = true
+    auth_required = true
+    api_key_header = "X-API-Key"
+
+    [metrics]
+    enabled = true
+    port = 9090
+    endpoint = "/metrics"
+
+    [logging]
+    level = "info"
+    format = "json"
+    file = "/logs/cbd.log"
+    max_size = "100MB"
+    max_files = 10
+
+    [performance]
+    cache_size = "8GB"
+    batch_size = 1000
+    max_connections = 1000
+    connection_timeout = "30s"
+    read_timeout = "60s"
+    write_timeout = "60s"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: cbd-vector-db-pdb
+  namespace: memorai-system
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: cbd-vector-db
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: cbd-vector-db-hpa
+  namespace: memorai-system
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: cbd-vector-db
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+    - type: Pods
+      pods:
+        metric:
+          name: cbd_active_connections
+        target:
+          type: AverageValue
+          averageValue: '100'
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 300
+      policies:
+        - type: Percent
+          value: 50
+          periodSeconds: 60
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+        - type: Percent
+          value: 25
+          periodSeconds: 60

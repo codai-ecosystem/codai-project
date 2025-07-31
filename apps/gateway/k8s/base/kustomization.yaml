@@ -1,0 +1,74 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: codai-gateway-base
+  annotations:
+    config.kubernetes.io/local-config: 'true'
+
+# Common labels applied to all resources
+commonLabels:
+  app.kubernetes.io/name: codai-gateway
+  app.kubernetes.io/component: api-gateway
+  app.kubernetes.io/part-of: codai-ecosystem
+  app.kubernetes.io/managed-by: kustomize
+
+# Common annotations applied to all resources
+commonAnnotations:
+  config.kubernetes.io/origin: |
+    path: k8s/base/kustomization.yaml
+  app.kubernetes.io/version: '1.0.0'
+
+# Namespace for all resources
+namespace: codai-system
+
+# Resources to include
+resources:
+  - namespace-and-secrets.yaml
+  - gateway-deployment.yaml
+  - gateway-service.yaml
+  - gateway-autoscaling.yaml
+  - gateway-security.yaml
+  - gateway-monitoring.yaml
+  - gateway-istio.yaml
+
+# Configuration transformers
+configMapGenerator:
+  - name: codai-gateway-build-info
+    literals:
+      - BUILD_VERSION=1.0.0
+      - BUILD_DATE=2025-07-30
+      - GIT_COMMIT=latest
+      - BUILD_ENVIRONMENT=base
+
+# Secret generators (will be overridden in overlays)
+secretGenerator:
+  - name: codai-gateway-runtime-secrets
+    literals:
+      - RUNTIME_TOKEN=changeme
+
+# Image transformations
+images:
+  - name: codai/gateway
+    newTag: '1.0.0'
+
+# Resource patches
+patches:
+  - target:
+      kind: Deployment
+      name: codai-gateway
+    patch: |-
+      - op: add
+        path: /spec/template/metadata/annotations/config.k8s.io~1local-config
+        value: "true"
+
+# Replica count (will be overridden in overlays)
+replicas:
+  - name: codai-gateway
+    count: 3
+
+# Name prefix for all resources
+namePrefix: ''
+
+# Name suffix for all resources
+nameSuffix: ''

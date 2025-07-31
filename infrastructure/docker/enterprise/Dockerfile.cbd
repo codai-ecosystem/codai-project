@@ -1,0 +1,101 @@
+# Multi-stage build for CBD Enterprise Service
+FROM rust:1.75-slim as rust-builder
+
+# Install dependencies for building
+RUN apt-get update && apt-get install -y \
+    pkg-config \
+    libssl-dev \
+    build-essential \
+    cmake \
+    clang \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Copy Rust source code
+COPY packages/cbd/rust/ ./rust/
+COPY packages/cbd/Cargo.toml ./
+COPY packages/cbd/Cargo.lock ./
+
+# Build Rust components with enterprise features
+WORKDIR /app/rust
+RUN cargo build --release --features enterprise,clustering,security,metrics
+
+# Node.js build stage
+FROM node:20-alpine as node-builder
+
+# Install dependencies
+RUN apk add --no-cache python3 make g++ git
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY packages/cbd/package*.json ./
+COPY packages/cbd/tsconfig.json ./
+
+# Install dependencies
+RUN npm ci --only=production --ignore-scripts
+
+# Copy TypeScript source
+COPY packages/cbd/src/ ./src/
+COPY packages/cbd/bin/ ./bin/
+
+# Build TypeScript
+RUN npm run build
+
+# Final production image
+FROM gcr.io/distroless/nodejs20-debian11
+
+# Labels for enterprise image
+LABEL maintainer="CODAI Ecosystem <support@codai.dev>"
+LABEL version="1.0.0"
+LABEL description="CBD Enterprise Vector Database"
+LABEL vendor="CODAI"
+LABEL org.opencontainers.image.title="CBD Enterprise"
+LABEL org.opencontainers.image.description="High-performance vector database with enterprise features"
+LABEL org.opencontainers.image.url="https://github.com/codai-ecosystem/codai-project"
+LABEL org.opencontainers.image.documentation="https://docs.codai.dev/cbd"
+LABEL org.opencontainers.image.source="https://github.com/codai-ecosystem/codai-project"
+LABEL org.opencontainers.image.vendor="CODAI Ecosystem"
+LABEL org.opencontainers.image.licenses="MIT"
+
+# Create non-root user (already done in distroless)
+# distroless runs as nonroot user by default
+
+# Set working directory
+WORKDIR /app
+
+# Copy Rust binaries
+COPY --from=rust-builder /app/rust/target/release/libcbd.so /app/lib/
+COPY --from=rust-builder /app/rust/target/release/cbd-cli /app/bin/
+
+# Copy Node.js application
+COPY --from=node-builder /app/dist /app/dist/
+COPY --from=node-builder /app/node_modules /app/node_modules/
+COPY --from=node-builder /app/bin /app/bin/
+
+# Copy configuration files
+COPY packages/cbd/config/ /app/config/
+
+# Create data and logs directories
+# Note: distroless doesn't have mkdir, so we create these at runtime
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV CBD_MODE=enterprise
+ENV CBD_CONFIG_DIR=/app/config
+ENV CBD_DATA_DIR=/data
+ENV CBD_LOGS_DIR=/logs
+ENV LD_LIBRARY_PATH=/app/lib
+
+# Expose ports
+EXPOSE 4180 4181 9090
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD ["/app/bin/cbd-service.js", "health-check"]
+
+# Run the application
+CMD ["/app/bin/cbd-service.js"]

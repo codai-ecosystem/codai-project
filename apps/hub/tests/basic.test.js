@@ -1,11 +1,11 @@
 // Basic test for hub service
-const { describe, it, expect } = require('@jest/globals');
+import { describe, it, expect } from 'vitest';
 
 describe('hub Service', () => {
-  it('should be properly configured', () => {
-    const packageJson = require('../package.json');
-    expect(packageJson.name).toBeDefined();
-    expect(packageJson.version).toBeDefined();
+  it('should be properly configured', async () => {
+    const packageJson = await import('../package.json');
+    expect(packageJson.default.name).toBeDefined();
+    expect(packageJson.default.version).toBeDefined();
   });
 
   it('should have basic structure', () => {

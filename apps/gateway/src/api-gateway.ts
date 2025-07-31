@@ -654,6 +654,19 @@ async function startGateway() {
             });
         });
 
+        // Gateway health endpoint (test-compatible)
+        app.get('/api/gateway/health', (req, res) => {
+            res.json({
+                service: 'Gateway Service',
+                status: 'healthy',
+                version: '2.0.0',
+                timestamp: new Date().toISOString(),
+                uptime: process.uptime(),
+                registeredServices: Object.keys(serviceRegistry).length,
+                security: securityIntegration.getSecurityStats()
+            });
+        });
+
         app.get('/security/status', async (req, res) => {
             const healthCheck = await securityIntegration.performSecurityHealthCheck();
             res.json(healthCheck);

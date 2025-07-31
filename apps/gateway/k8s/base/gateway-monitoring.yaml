@@ -1,0 +1,166 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: codai-gateway-monitor
+  namespace: codai-system
+  labels:
+    app: codai-gateway
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: codai-gateway
+  endpoints:
+    - port: http
+      interval: 30s
+      path: /api/gateway/metrics
+      scrapeTimeout: 10s
+      honorLabels: true
+      metricRelabelings:
+        - sourceLabels: [__name__]
+          regex: 'go_.*'
+          action: drop
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: codai-gateway-alerts
+  namespace: codai-system
+  labels:
+    app: codai-gateway
+    release: prometheus
+spec:
+  groups:
+    - name: codai.gateway.availability
+      interval: 30s
+      rules:
+        - alert: GatewayDown
+          expr: up{job="codai-gateway-service"} == 0
+          for: 1m
+          labels:
+            severity: critical
+            service: codai-gateway
+          annotations:
+            summary: 'CODAI Gateway is down'
+            description: 'CODAI Gateway has been down for more than 1 minute'
+            runbook_url: 'https://docs.codai.com/runbooks/gateway-down'
+
+        - alert: GatewayHighErrorRate
+          expr: |
+            (
+              rate(http_requests_total{job="codai-gateway-service",status=~"5.."}[5m]) /
+              rate(http_requests_total{job="codai-gateway-service"}[5m])
+            ) * 100 > 5
+          for: 5m
+          labels:
+            severity: warning
+            service: codai-gateway
+          annotations:
+            summary: 'High error rate on CODAI Gateway'
+            description: 'Error rate is {{ $value }}% for the last 5 minutes'
+            runbook_url: 'https://docs.codai.com/runbooks/high-error-rate'
+
+        - alert: GatewayHighLatency
+          expr: |
+            histogram_quantile(0.99, 
+              rate(http_request_duration_seconds_bucket{job="codai-gateway-service"}[5m])
+            ) > 1
+          for: 10m
+          labels:
+            severity: warning
+            service: codai-gateway
+          annotations:
+            summary: 'High latency on CODAI Gateway'
+            description: '99th percentile latency is {{ $value }}s'
+            runbook_url: 'https://docs.codai.com/runbooks/high-latency'
+
+    - name: codai.gateway.capacity
+      interval: 30s
+      rules:
+        - alert: GatewayHighCPU
+          expr: |
+            rate(container_cpu_usage_seconds_total{
+              namespace="codai-system",
+              pod=~"codai-gateway-.*"
+            }[5m]) * 100 > 80
+          for: 5m
+          labels:
+            severity: warning
+            service: codai-gateway
+          annotations:
+            summary: 'High CPU usage on CODAI Gateway'
+            description: 'CPU usage is {{ $value }}% on pod {{ $labels.pod }}'
+            runbook_url: 'https://docs.codai.com/runbooks/high-cpu'
+
+        - alert: GatewayHighMemory
+          expr: |
+            (
+              container_memory_working_set_bytes{
+                namespace="codai-system",
+                pod=~"codai-gateway-.*"
+              } / 
+              container_spec_memory_limit_bytes{
+                namespace="codai-system",
+                pod=~"codai-gateway-.*"
+              }
+            ) * 100 > 85
+          for: 5m
+          labels:
+            severity: warning
+            service: codai-gateway
+          annotations:
+            summary: 'High memory usage on CODAI Gateway'
+            description: 'Memory usage is {{ $value }}% on pod {{ $labels.pod }}'
+            runbook_url: 'https://docs.codai.com/runbooks/high-memory'
+
+        - alert: GatewayPodCrashLooping
+          expr: |
+            rate(kube_pod_container_status_restarts_total{
+              namespace="codai-system",
+              pod=~"codai-gateway-.*"
+            }[15m]) * 60 * 15 > 0
+          for: 5m
+          labels:
+            severity: critical
+            service: codai-gateway
+          annotations:
+            summary: 'CODAI Gateway pod is crash looping'
+            description: 'Pod {{ $labels.pod }} has restarted {{ $value }} times in the last 15 minutes'
+            runbook_url: 'https://docs.codai.com/runbooks/crash-looping'
+
+    - name: codai.gateway.scaling
+      interval: 30s
+      rules:
+        - alert: GatewayHPAMaxReplicas
+          expr: |
+            kube_horizontalpodautoscaler_status_current_replicas{
+              namespace="codai-system",
+              horizontalpodautoscaler="codai-gateway-hpa"
+            } >= 
+            kube_horizontalpodautoscaler_spec_max_replicas{
+              namespace="codai-system",
+              horizontalpodautoscaler="codai-gateway-hpa"
+            } * 0.9
+          for: 10m
+          labels:
+            severity: warning
+            service: codai-gateway
+          annotations:
+            summary: 'CODAI Gateway HPA near maximum replicas'
+            description: 'HPA has {{ $value }} replicas, close to maximum'
+            runbook_url: 'https://docs.codai.com/runbooks/hpa-max-replicas'
+
+        - alert: GatewayReplicasUnavailable
+          expr: |
+            kube_deployment_status_replicas_unavailable{
+              namespace="codai-system",
+              deployment="codai-gateway"
+            } > 0
+          for: 5m
+          labels:
+            severity: warning
+            service: codai-gateway
+          annotations:
+            summary: 'CODAI Gateway has unavailable replicas'
+            description: '{{ $value }} replicas are unavailable'
+            runbook_url: 'https://docs.codai.com/runbooks/unavailable-replicas'

@@ -41,9 +41,9 @@
     "license": "MIT",
     "dependencies": {
         "@codai/advanced-security": "workspace:*",
-        "@codai/monitoring": "workspace:*",
+        "codai-performance-monitor": "workspace:*",
         "@codai/ui-components": "workspace:*",
-        "@codai/performance-analytics": "workspace:*",
+        "@codai/performance-monitoring": "workspace:*",
         "@codai/accessibility": "workspace:*",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",

@@ -1,0 +1,36 @@
+{
+  "phase": "Phase 2A - CODAI Frontend Components",
+  "timestamp": "2025-07-31T06:31:15.634Z",
+  "total": 33,
+  "passed": 30,
+  "failed": 3,
+  "coverage": {
+    "statements": 89.56804825640411,
+    "branches": 80.30476283155537,
+    "functions": 89.39213321211152,
+    "lines": 92.20495755848049
+  },
+  "details": [
+    {
+      "component": "Dashboard",
+      "file": "components/Dashboard.test.jsx",
+      "total": 10,
+      "passed": 9,
+      "failed": 1
+    },
+    {
+      "component": "ProjectManager",
+      "file": "components/ProjectManager.test.jsx",
+      "total": 11,
+      "passed": 10,
+      "failed": 1
+    },
+    {
+      "component": "AIChat",
+      "file": "components/AIChat.test.jsx",
+      "total": 12,
+      "passed": 11,
+      "failed": 1
+    }
+  ]
+}

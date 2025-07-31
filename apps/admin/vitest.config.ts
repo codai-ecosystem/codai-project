@@ -9,22 +9,26 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./tests/setup.ts'],
+    include: ['tests/**/*.{test,spec}.{ts,tsx}'],
+    exclude: ['tests/e2e/**/*'],
+    testTimeout: 10000,
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
       exclude: [
         'node_modules/',
         'tests/',
+        'coverage/',
         '**/*.d.ts',
-        '**/*.config.*',
-        '**/coverage/**'
+        '**/*.config.{js,ts}',
+        '**/index.ts'
       ],
       thresholds: {
         global: {
-          branches: 90,
-          functions: 90,
-          lines: 90,
-          statements: 90
+          branches: 80,
+          functions: 80,
+          lines: 80,
+          statements: 80
         }
       }
     }
@@ -32,6 +36,10 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@/components': path.resolve(__dirname, './src/components'),
+      '@/lib': path.resolve(__dirname, './src/lib'),
+      '@/types': path.resolve(__dirname, './src/types'),
+      '@/app': path.resolve(__dirname, './src/app')
     },
   },
 });

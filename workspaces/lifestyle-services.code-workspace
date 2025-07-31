@@ -1,0 +1,387 @@
+{
+    "folders": [
+        {
+            "name": "Acasai",
+            "path": "../apps/acasai"
+        },
+        {
+            "name": "Adoptai",
+            "path": "../apps/adoptai"
+        },
+        {
+            "name": "Ajutai",
+            "path": "../apps/ajutai"
+        },
+        {
+            "name": "Analizai",
+            "path": "../apps/analizai"
+        },
+        {
+            "name": "Curtai",
+            "path": "../apps/curtai"
+        },
+        {
+            "name": "Donai",
+            "path": "../apps/donai"
+        },
+        {
+            "name": "Fabricai",
+            "path": "../apps/fabricai"
+        },
+        {
+            "name": "Jucai",
+            "path": "../apps/jucai"
+        },
+        {
+            "name": "Legalizai",
+            "path": "../apps/legalizai"
+        },
+        {
+            "name": "Logai",
+            "path": "../apps/logai"
+        },
+        {
+            "name": "Muzicai",
+            "path": "../apps/muzicai"
+        },
+        {
+            "name": "Prezentai",
+            "path": "../apps/prezentai"
+        },
+        {
+            "name": "Studiai",
+            "path": "../apps/studiai"
+        },
+        {
+            "name": "Sunai",
+            "path": "../apps/sunai"
+        }
+    ],
+    "settings": {
+        "typescript.preferences.includePackageJsonAutoImports": "on",
+        "typescript.suggest.autoImports": true,
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": "explicit"
+        },
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "files.exclude": {
+            "**/node_modules": true,
+            "**/dist": true,
+            "**/.next": true,
+            "**/.turbo": true
+        },
+        "search.exclude": {
+            "**/node_modules": true,
+            "**/dist": true,
+            "**/.next": true,
+            "**/.turbo": true
+        },
+        "workbench.colorCustomizations": {
+            "titleBar.activeBackground": "#EA580C",
+            "titleBar.activeForeground": "#FFFFFF",
+            "statusBar.background": "#EA580C",
+            "statusBar.foreground": "#FFFFFF"
+        }
+    },
+    "extensions": {
+        "recommendations": [
+            "esbenp.prettier-vscode",
+            "bradlc.vscode-tailwindcss",
+            "ms-vscode.vscode-typescript-next",
+            "dbaeumer.vscode-eslint",
+            "christian-kohler.path-intellisense",
+            "ms-playwright.playwright",
+            "vitest.explorer",
+            "humao.rest-client",
+            "ms-vscode.vscode-json"
+        ]
+    },
+    "tasks": {
+        "version": "2.0.0",
+        "tasks": [
+            {
+                "label": "Start All Lifestyle Services",
+                "dependsOrder": "parallel",
+                "dependsOn": [
+                    "Start Acasai",
+                    "Start Ajutai",
+                    "Start Curtai",
+                    "Start Donai",
+                    "Start Fabricai",
+                    "Start Jucai",
+                    "Start Legalizai",
+                    "Start Logai",
+                    "Start Muzicai",
+                    "Start Prezentai",
+                    "Start Studiai",
+                    "Start Sunai"
+                ],
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                }
+            },
+            {
+                "label": "Start Acasai",
+                "type": "shell",
+                "command": "pnpm dev",
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                },
+                "options": {
+                    "cwd": "${workspaceFolder:Acasai}",
+                    "env": {
+                        "PORT": "4200"
+                    }
+                }
+            },
+            {
+                "label": "Start Ajutai",
+                "type": "shell",
+                "command": "pnpm dev",
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                },
+                "options": {
+                    "cwd": "${workspaceFolder:Ajutai}",
+                    "env": {
+                        "PORT": "4202"
+                    }
+                }
+            },
+            {
+                "label": "Start Curtai",
+                "type": "shell",
+                "command": "pnpm dev",
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                },
+                "options": {
+                    "cwd": "${workspaceFolder:Curtai}",
+                    "env": {
+                        "PORT": "4204"
+                    }
+                }
+            },
+            {
+                "label": "Start Donai",
+                "type": "shell",
+                "command": "pnpm dev",
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                },
+                "options": {
+                    "cwd": "${workspaceFolder:Donai}",
+                    "env": {
+                        "PORT": "4205"
+                    }
+                }
+            },
+            {
+                "label": "Start Fabricai",
+                "type": "shell",
+                "command": "pnpm dev",
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                },
+                "options": {
+                    "cwd": "${workspaceFolder:Fabricai}",
+                    "env": {
+                        "PORT": "4206"
+                    }
+                }
+            },
+            {
+                "label": "Start Jucai",
+                "type": "shell",
+                "command": "pnpm dev",
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                },
+                "options": {
+                    "cwd": "${workspaceFolder:Jucai}",
+                    "env": {
+                        "PORT": "4207"
+                    }
+                }
+            },
+            {
+                "label": "Start Legalizai",
+                "type": "shell",
+                "command": "pnpm dev",
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                },
+                "options": {
+                    "cwd": "${workspaceFolder:Legalizai}",
+                    "env": {
+                        "PORT": "4208"
+                    }
+                }
+            },
+            {
+                "label": "Start Logai",
+                "type": "shell",
+                "command": "pnpm dev",
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                },
+                "options": {
+                    "cwd": "${workspaceFolder:Logai}",
+                    "env": {
+                        "PORT": "4209"
+                    }
+                }
+            },
+            {
+                "label": "Start Muzicai",
+                "type": "shell",
+                "command": "pnpm dev",
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                },
+                "options": {
+                    "cwd": "${workspaceFolder:Muzicai}",
+                    "env": {
+                        "PORT": "4210"
+                    }
+                }
+            },
+            {
+                "label": "Start Prezentai",
+                "type": "shell",
+                "command": "pnpm dev",
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                },
+                "options": {
+                    "cwd": "${workspaceFolder:Prezentai}",
+                    "env": {
+                        "PORT": "4211"
+                    }
+                }
+            },
+            {
+                "label": "Start Studiai",
+                "type": "shell",
+                "command": "pnpm dev",
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                },
+                "options": {
+                    "cwd": "${workspaceFolder:Studiai}",
+                    "env": {
+                        "PORT": "4212"
+                    }
+                }
+            },
+            {
+                "label": "Start Sunai",
+                "type": "shell",
+                "command": "pnpm dev",
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                },
+                "options": {
+                    "cwd": "${workspaceFolder:Sunai}",
+                    "env": {
+                        "PORT": "4213"
+                    }
+                }
+            },
+            {
+                "label": "Build Lifestyle Services",
+                "type": "shell",
+                "command": "pnpm build",
+                "group": "build"
+            },
+            {
+                "label": "Test Lifestyle Services",
+                "type": "shell",
+                "command": "pnpm test",
+                "group": "test"
+            }
+        ]
+    },
+    "launch": {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "Debug Studiai",
+                "type": "node",
+                "request": "launch",
+                "program": "${workspaceFolder:Studiai}/src/server.ts",
+                "env": {
+                    "NODE_ENV": "development",
+                    "PORT": "4212"
+                },
+                "runtimeArgs": ["-r", "ts-node/register"],
+                "skipFiles": ["<node_internals>/**"]
+            },
+            {
+                "name": "Debug Legalizai",
+                "type": "node",
+                "request": "launch",
+                "program": "${workspaceFolder:Legalizai}/src/server.ts",
+                "env": {
+                    "NODE_ENV": "development",
+                    "PORT": "4208"
+                },
+                "runtimeArgs": ["-r", "ts-node/register"],
+                "skipFiles": ["<node_internals>/**"]
+            }
+        ]
+    }
+}

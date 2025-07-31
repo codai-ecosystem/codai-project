@@ -1,0 +1,69 @@
+# Grafana Datasources Configuration
+apiVersion: 1
+
+datasources:
+  # Prometheus - Primary metrics datasource
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    orgId: 1
+    url: http://prometheus:9090
+    isDefault: true
+    version: 1
+    editable: true
+    jsonData:
+      httpMethod: POST
+      queryTimeout: 60s
+      timeInterval: 15s
+      exemplarTraceIdDestinations:
+        - name: trace_id
+          datasourceUid: jaeger
+
+  # Jaeger - Distributed tracing
+  - name: Jaeger
+    type: jaeger
+    access: proxy
+    orgId: 1
+    url: http://jaeger:16686
+    uid: jaeger
+    version: 1
+    editable: true
+    jsonData:
+      tracesToLogsV2:
+        datasourceUid: loki
+        spanStartTimeShift: -1h
+        spanEndTimeShift: 1h
+        tags: ['job', 'instance', 'pod', 'namespace']
+        filterByTraceID: false
+        filterBySpanID: false
+        customQuery: true
+        query: 'sum(rate(tempo_spanmetrics_latency_bucket{$__tags}[5m])) by (le)'
+
+  # PostgreSQL - Database metrics
+  - name: PostgreSQL
+    type: postgres
+    access: proxy
+    orgId: 1
+    url: postgres:5432
+    database: codai
+    user: codai
+    secureJsonData:
+      password: codai123
+    version: 1
+    editable: true
+    jsonData:
+      sslmode: disable
+      maxOpenConns: 10
+      maxIdleConns: 10
+      connMaxLifetime: 14400
+
+  # Redis - Cache metrics (if needed)
+  - name: Redis
+    type: redis-datasource
+    access: proxy
+    orgId: 1
+    url: redis://redis:6379
+    version: 1
+    editable: true
+    secureJsonData:
+      password: codai123

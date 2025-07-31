@@ -60,7 +60,7 @@ REM 2. Agent Runtime (depends on memory-graph)
 call :publish_package "packages\agent-runtime" "@codai/agent-runtime"
 
 REM 3. UI Components (depends on both)
-call :publish_package "packages\ui-components" "@codai/ui-components"
+call :publish_package "packages\ui-components" "@aide/ui-components"
 
 echo.
 echo 🎉 Publication complete!

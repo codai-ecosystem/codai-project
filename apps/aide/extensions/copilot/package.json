@@ -125,7 +125,7 @@
   "dependencies": {
     "@codai/memory-graph": "workspace:*",
     "@codai/agent-runtime": "workspace:*",
-    "@codai/ui-components": "workspace:*",
+    "@aide/ui-components": "workspace:*",
     "vscode": "^1.1.37"
   },
   "devDependencies": {

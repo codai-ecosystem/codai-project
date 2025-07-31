@@ -56,7 +56,7 @@
     "typedoc": "^0.25.4"
   },
   "peerDependencies": {
-    "@codai/advanced-security": "^1.0.0"
+    "@codai/advanced-security": "workspace:*"
   },
   "files": [
     "dist/**/*",

@@ -1,6 +1,12 @@
-module.exports = {
+export default {
   "preset": "ts-jest",
   "testEnvironment": "node",
+  "extensionsToTreatAsEsm": [".ts"],
+  "globals": {
+    "ts-jest": {
+      "useESM": true
+    }
+  },
   "roots": [
     "<rootDir>/src",
     "<rootDir>/tests"
@@ -32,8 +38,5 @@ module.exports = {
       "statements": 80
     }
   },
-  "setupFilesAfterEnv": [
-    "<rootDir>/jest.setup.js"
-  ],
   "testTimeout": 10000
 };

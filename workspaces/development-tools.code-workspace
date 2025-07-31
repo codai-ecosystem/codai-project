@@ -1,0 +1,219 @@
+{
+    "folders": [
+        {
+            "name": "Analytics",
+            "path": "../analytics"
+        },
+        {
+            "name": "Analysis Tools",
+            "path": "../analysis"
+        },
+        {
+            "name": "Codai",
+            "path": "../apps/codai"
+        },
+        {
+            "name": "Codai Mobile",
+            "path": "../apps/codai-mobile"
+        },
+        {
+            "name": "Kodex",
+            "path": "../apps/kodex"
+        },
+        {
+            "name": "Explorer",
+            "path": "../apps/explorer"
+        },
+        {
+            "name": "Tools",
+            "path": "../apps/tools"
+        }
+    ],
+    "settings": {
+        "typescript.preferences.includePackageJsonAutoImports": "on",
+        "typescript.suggest.autoImports": true,
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": "explicit"
+        },
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "files.exclude": {
+            "**/node_modules": true,
+            "**/dist": true,
+            "**/.next": true,
+            "**/.turbo": true,
+            "**/target": true
+        },
+        "search.exclude": {
+            "**/node_modules": true,
+            "**/dist": true,
+            "**/.next": true,
+            "**/.turbo": true,
+            "**/target": true
+        },
+        "workbench.colorCustomizations": {
+            "titleBar.activeBackground": "#059669",
+            "titleBar.activeForeground": "#FFFFFF",
+            "statusBar.background": "#059669",
+            "statusBar.foreground": "#FFFFFF"
+        }
+    },
+    "extensions": {
+        "recommendations": [
+            "esbenp.prettier-vscode",
+            "bradlc.vscode-tailwindcss",
+            "ms-vscode.vscode-typescript-next",
+            "dbaeumer.vscode-eslint",
+            "christian-kohler.path-intellisense",
+            "ms-playwright.playwright",
+            "vitest.explorer",
+            "humao.rest-client",
+            "ms-vscode.vscode-json",
+            "redhat.vscode-yaml",
+            "ms-python.python"
+        ]
+    },
+    "tasks": {
+        "version": "2.0.0",
+        "tasks": [
+            {
+                "label": "Start All Development Services",
+                "dependsOrder": "parallel",
+                "dependsOn": [
+                    "Start Codai",
+                    "Start Kodex",
+                    "Start Explorer",
+                    "Start Analytics"
+                ],
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                }
+            },
+            {
+                "label": "Start Codai",
+                "type": "shell",
+                "command": "pnpm dev",
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                },
+                "options": {
+                    "cwd": "${workspaceFolder:Codai}",
+                    "env": {
+                        "PORT": "4100"
+                    }
+                }
+            },
+            {
+                "label": "Start Kodex",
+                "type": "shell",
+                "command": "pnpm dev",
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                },
+                "options": {
+                    "cwd": "${workspaceFolder:Kodex}",
+                    "env": {
+                        "PORT": "4110"
+                    }
+                }
+            },
+            {
+                "label": "Start Explorer",
+                "type": "shell",
+                "command": "pnpm dev",
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                },
+                "options": {
+                    "cwd": "${workspaceFolder:Explorer}",
+                    "env": {
+                        "PORT": "4120"
+                    }
+                }
+            },
+            {
+                "label": "Start Analytics",
+                "type": "shell",
+                "command": "node business-intelligence.js",
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                },
+                "options": {
+                    "cwd": "${workspaceFolder:Analytics}",
+                    "env": {
+                        "PORT": "4130"
+                    }
+                }
+            },
+            {
+                "label": "Build All Development",
+                "type": "shell",
+                "command": "pnpm build",
+                "group": "build"
+            },
+            {
+                "label": "Test Development Services",
+                "type": "shell",
+                "command": "pnpm test",
+                "group": "test"
+            },
+            {
+                "label": "Run Analysis",
+                "type": "shell",
+                "command": "pnpm analyze",
+                "group": "test",
+                "options": {
+                    "cwd": "${workspaceFolder:Analysis Tools}"
+                }
+            }
+        ]
+    },
+    "launch": {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "Debug Codai",
+                "type": "node",
+                "request": "launch",
+                "program": "${workspaceFolder:Codai}/src/server.ts",
+                "env": {
+                    "NODE_ENV": "development",
+                    "PORT": "4100"
+                },
+                "runtimeArgs": ["-r", "ts-node/register"],
+                "skipFiles": ["<node_internals>/**"]
+            },
+            {
+                "name": "Debug Analytics",
+                "type": "node",
+                "request": "launch",
+                "program": "${workspaceFolder:Analytics}/business-intelligence.js",
+                "env": {
+                    "NODE_ENV": "development",
+                    "PORT": "4130"
+                },
+                "skipFiles": ["<node_internals>/**"]
+            }
+        ]
+    }
+}

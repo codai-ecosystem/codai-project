@@ -1,0 +1,179 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: codai-gateway-netpol
+  namespace: codai-system
+  labels:
+    app: codai-gateway
+spec:
+  podSelector:
+    matchLabels:
+      app: codai-gateway
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # Allow ingress from Istio ingress gateway
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: istio-system
+      ports:
+        - protocol: TCP
+          port: 4000
+    # Allow ingress from NGINX ingress controller
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: ingress-nginx
+      ports:
+        - protocol: TCP
+          port: 4000
+    # Allow ingress from Prometheus for metrics
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: monitoring
+      ports:
+        - protocol: TCP
+          port: 4000
+  egress:
+    # Allow egress to all CODAI services
+    - to:
+        - podSelector:
+            matchLabels:
+              app: codai-service
+      ports:
+        - protocol: TCP
+          port: 4001
+    - to:
+        - podSelector:
+            matchLabels:
+              app: admin-service
+      ports:
+        - protocol: TCP
+          port: 4007
+    - to:
+        - podSelector:
+            matchLabels:
+              app: hub-service
+      ports:
+        - protocol: TCP
+          port: 4008
+    - to:
+        - podSelector:
+            matchLabels:
+              app: id-service
+      ports:
+        - protocol: TCP
+          port: 4004
+    - to:
+        - podSelector:
+            matchLabels:
+              app: bancai-service
+      ports:
+        - protocol: TCP
+          port: 4005
+    - to:
+        - podSelector:
+            matchLabels:
+              app: memorai-service
+      ports:
+        - protocol: TCP
+          port: 4006
+    # Allow egress to database services
+    - to:
+        - podSelector:
+            matchLabels:
+              app: postgres
+      ports:
+        - protocol: TCP
+          port: 5432
+    - to:
+        - podSelector:
+            matchLabels:
+              app: redis
+      ports:
+        - protocol: TCP
+          port: 6379
+    # Allow egress to DNS
+    - to: []
+      ports:
+        - protocol: UDP
+          port: 53
+    # Allow egress to Kubernetes API
+    - to: []
+      ports:
+        - protocol: TCP
+          port: 443
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: codai-gateway-peer-auth
+  namespace: codai-system
+  labels:
+    app: codai-gateway
+spec:
+  selector:
+    matchLabels:
+      app: codai-gateway
+  mtls:
+    mode: STRICT
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: codai-gateway-authz
+  namespace: codai-system
+  labels:
+    app: codai-gateway
+spec:
+  selector:
+    matchLabels:
+      app: codai-gateway
+  rules:
+    # Allow health checks without authentication
+    - to:
+        - operation:
+            paths: ['/api/gateway/health']
+            methods: ['GET']
+    # Allow metrics scraping from monitoring namespace
+    - to:
+        - operation:
+            paths: ['/api/gateway/metrics']
+            methods: ['GET']
+      from:
+        - source:
+            namespaces: ['monitoring']
+    # Allow API access with valid JWT
+    - to:
+        - operation:
+            paths: ['/api/*']
+            methods: ['GET', 'POST', 'PUT', 'DELETE']
+      when:
+        - key: request.auth.claims[iss]
+          values: ['https://auth.codai.com']
+    # Allow documentation access
+    - to:
+        - operation:
+            paths: ['/docs', '/docs/*']
+            methods: ['GET']
+---
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: codai-gateway-jwt
+  namespace: codai-system
+  labels:
+    app: codai-gateway
+spec:
+  selector:
+    matchLabels:
+      app: codai-gateway
+  jwtRules:
+    - issuer: 'https://auth.codai.com'
+      jwksUri: 'https://auth.codai.com/.well-known/jwks.json'
+      audiences:
+        - 'codai-api'
+        - 'codai-gateway'

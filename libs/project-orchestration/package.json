@@ -69,8 +69,8 @@
     "@typescript-eslint/parser": "^7.8.0"
   },
   "peerDependencies": {
-    "@codai/advanced-security": "^1.0.0",
-    "@codai/service-stability": "^1.0.0",
+    "@codai/advanced-security": "workspace:*",
+    "@codai/service-stability": "workspace:*",
     "@codai/code-analysis": "^1.0.0"
   },
   "engines": {

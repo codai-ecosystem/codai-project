@@ -13,6 +13,8 @@ const Progress = React.forwardRef<
       "relative h-4 w-full overflow-hidden rounded-full bg-secondary",
       className
     )}
+    value={value}
+    max={100}
     {...props}
   >
     <ProgressPrimitive.Indicator

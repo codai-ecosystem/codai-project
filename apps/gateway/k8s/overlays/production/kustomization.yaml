@@ -1,0 +1,201 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: codai-gateway-production
+  annotations:
+    config.kubernetes.io/local-config: 'true'
+
+# Base configuration
+bases:
+  - ../../base
+
+# Production-specific namespace
+namespace: codai-prod
+
+# Production labels
+commonLabels:
+  environment: production
+  tier: critical
+
+# Production annotations
+commonAnnotations:
+  deployment.kubernetes.io/revision: '1'
+  meta.helm.sh/release-name: codai-gateway-prod
+  meta.helm.sh/release-namespace: codai-prod
+
+# Production image with specific tag
+images:
+  - name: codai/gateway
+    newTag: '1.0.0-prod'
+
+# Production replica count
+replicas:
+  - name: codai-gateway
+    count: 5
+
+# Production-specific ConfigMap
+configMapGenerator:
+  - name: codai-gateway-config
+    behavior: merge
+    literals:
+      - NODE_ENV=production
+      - LOG_LEVEL=warn
+      - METRICS_ENABLED=true
+      - RATE_LIMIT_WINDOW_MS=900000
+      - RATE_LIMIT_MAX_REQUESTS=2000
+      - CORS_ORIGIN=https://codai.com,https://app.codai.com,https://admin.codai.com
+      - MAX_CONNECTIONS=200
+      - KEEP_ALIVE_TIMEOUT=65000
+      - HEADERS_TIMEOUT=66000
+
+# Production secrets (should be managed by external secret operator)
+secretGenerator:
+  - name: codai-gateway-secrets
+    behavior: replace
+    literals:
+      - jwt-secret=VAULT_MANAGED_SECRET
+      - database-url=VAULT_MANAGED_SECRET
+      - redis-url=VAULT_MANAGED_SECRET
+      - session-secret=VAULT_MANAGED_SECRET
+      - encryption-key=VAULT_MANAGED_SECRET
+
+# Production-specific patches
+patches:
+  # Increase resources for production
+  - target:
+      kind: Deployment
+      name: codai-gateway
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources
+        value:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+            ephemeral-storage: "2Gi"
+          limits:
+            memory: "2Gi"  
+            cpu: "2000m"
+            ephemeral-storage: "4Gi"
+
+  # Production-specific environment variables
+  - target:
+      kind: Deployment
+      name: codai-gateway
+    patch: |-
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: MAX_CONNECTIONS
+          valueFrom:
+            configMapKeyRef:
+              name: codai-gateway-config
+              key: MAX_CONNECTIONS
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: KEEP_ALIVE_TIMEOUT
+          valueFrom:
+            configMapKeyRef:
+              name: codai-gateway-config
+              key: KEEP_ALIVE_TIMEOUT
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: HEADERS_TIMEOUT
+          valueFrom:
+            configMapKeyRef:
+              name: codai-gateway-config
+              key: HEADERS_TIMEOUT
+
+  # Production HPA settings
+  - target:
+      kind: HorizontalPodAutoscaler
+      name: codai-gateway-hpa
+    patch: |-
+      - op: replace
+        path: /spec/minReplicas
+        value: 5
+      - op: replace  
+        path: /spec/maxReplicas
+        value: 100
+      - op: replace
+        path: /spec/metrics/0/resource/target/averageUtilization
+        value: 60
+      - op: replace
+        path: /spec/metrics/1/resource/target/averageUtilization  
+        value: 70
+
+  # Production ingress with real domain
+  - target:
+      kind: Ingress
+      name: codai-gateway-ingress
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: api.codai.com
+      - op: replace
+        path: /spec/rules/1/host
+        value: gateway.codai.com
+      - op: replace
+        path: /spec/tls/0/hosts
+        value: 
+        - api.codai.com
+        - gateway.codai.com
+      - op: add
+        path: /metadata/annotations/nginx.ingress.kubernetes.io~1rate-limit
+        value: "2000"
+
+  # Production service annotations for AWS Load Balancer
+  - target:
+      kind: Service
+      name: codai-gateway-service
+    patch: |-
+      - op: add
+        path: /metadata/annotations/service.beta.kubernetes.io~1aws-load-balancer-ssl-cert
+        value: "arn:aws:acm:us-east-1:ACCOUNT:certificate/CERT_ID"
+      - op: add
+        path: /metadata/annotations/service.beta.kubernetes.io~1aws-load-balancer-ssl-ports
+        value: "https"
+      - op: add
+        path: /metadata/annotations/service.beta.kubernetes.io~1aws-load-balancer-connection-draining-enabled
+        value: "true"
+      - op: add
+        path: /metadata/annotations/service.beta.kubernetes.io~1aws-load-balancer-connection-draining-timeout
+        value: "60"
+
+  # Node affinity for production (prefer specific instance types)
+  - target:
+      kind: Deployment
+      name: codai-gateway
+    patch: |-
+      - op: add
+        path: /spec/template/spec/affinity/nodeAffinity
+        value:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+              - key: node.kubernetes.io/instance-type
+                operator: In
+                values:
+                - m5.large
+                - m5.xlarge
+                - c5.large
+                - c5.xlarge
+          - weight: 80
+            preference:
+              matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
+          - weight: 60
+            preference:
+              matchExpressions:
+              - key: node-type
+                operator: In
+                values:
+                - general
+                - compute-optimized

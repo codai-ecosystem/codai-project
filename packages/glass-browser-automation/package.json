@@ -31,9 +31,6 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
-    "test": "vitest",
-    "test:watch": "vitest watch",
-    "test:coverage": "vitest run --coverage",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "format": "prettier --write src",
@@ -43,7 +40,10 @@
     "demo": "npm run build && node dist/demo.js",
     "enhanced-demo": "npm run build && node dist/enhanced-demo.js",
     "debug-page": "npm run build && node -e \"require('./dist/enhanced-demo.js').debugCurrentPage()\"",
-    "glass-test": "npm run build && node dist/glass-test.js"
+    "glass-test": "npm run build && node dist/glass-test.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@codai/core": "workspace:*",
@@ -56,13 +56,13 @@
     "@codai/eslint-config": "workspace:*",
     "@codai/prettier-config": "workspace:*",
     "@codai/typescript-config": "workspace:*",
-    "@types/node": "^24.0.14",
     "@types/ws": "^8.5.13",
     "eslint": "^9.31.0",
     "prettier": "^3.6.2",
     "tsup": "^8.1.0",
     "typescript": "^5.8.3",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "@types/node": "^22.0.0"
   },
   "pnpm": {
     "overrides": {

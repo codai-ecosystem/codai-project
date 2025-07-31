@@ -1,6 +1,7 @@
 {
   "name": "@codai/cli",
   "version": "1.0.0",
+  "type": "module",
   "description": "Universal CLI for CODAI Ecosystem - Manage all services from one interface",
   "main": "dist/index.js",
   "bin": {

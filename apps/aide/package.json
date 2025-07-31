@@ -33,7 +33,6 @@
     "extensions/theme-defaults"
   ],
   "scripts": {
-    "test": "echo Please run any of the test scripts from the scripts folder.",
     "test-browser": "npx playwright install && node test/unit/browser/index.js",
     "test-browser-no-install": "node test/unit/browser/index.js",
     "test-node": "mocha test/unit/node/index.js --delay --ui=tdd --timeout=5000 --exit",
@@ -99,7 +98,6 @@
     "dev:aide-landing": "pnpm --filter \"@dragoscatalin/landing\" dev",
     "test:packages": "pnpm --filter \"@codai/*\" test",
     "test:aide-control": "pnpm --filter \"@dragoscatalin/web\" test",
-    "test:coverage": "pnpm --filter \"@codai/*\" test -- --coverage",
     "lint": "eslint \"packages/*/src/**/*.{ts,tsx}\" \"apps/*/src/**/*.{ts,tsx}\" --fix",
     "format": "prettier --write \"packages/*/src/**/*.{ts,tsx}\" \"apps/*/src/**/*.{ts,tsx}\"",
     "clean": "pnpm -r clean",
@@ -118,7 +116,10 @@
     "codai:package": "pnpm --filter @dragoscatalin/web package",
     "codai:web": "pnpm --filter @dragoscatalin/web dev",
     "security:audit": "pnpm audit --fix",
-    "update:deps": "pnpm update -r --latest"
+    "update:deps": "pnpm update -r --latest",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@microsoft/1ds-core-js": "^3.2.13",
@@ -186,7 +187,6 @@
     "@types/kerberos": "^1.1.2",
     "@types/minimist": "^1.2.1",
     "@types/mocha": "^9.1.1",
-    "@types/node": "22.x",
     "@types/sinon": "^10.0.2",
     "@types/sinon-test": "^2.4.2",
     "@types/trusted-types": "^1.0.6",
@@ -293,13 +293,14 @@
     "util": "^0.12.4",
     "vinyl": "^3.0.1",
     "vinyl-fs": "^4.0.2",
-    "vitest": "^1.6.0",
     "webpack": "^5.94.0",
     "webpack-cli": "^5.1.4",
     "webpack-stream": "^7.0.0",
     "workerpool": "^9.3.2",
     "xml2js": "^0.5.0",
-    "yaserver": "^0.4.0"
+    "yaserver": "^0.4.0",
+    "vitest": "^3.2.4",
+    "@types/node": "^22.0.0"
   },
   "keywords": [
     "ai",

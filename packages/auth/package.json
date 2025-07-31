@@ -14,7 +14,7 @@
     "build": "pnpm exec tsc --build && tsc --build tsconfig.esm.json",
     "dev": "tsc --build --watch",
     "lint": "pnpm exec eslint src --ext .ts,.tsx",
-    "test": "jest",
+    "test": "vitest run",
     "type-check": "pnpm exec tsc --noEmit"
   },
   "dependencies": {

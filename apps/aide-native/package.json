@@ -13,10 +13,10 @@
     "start": "electron dist/main.js",
     "lint": "eslint src --ext .ts,.tsx",
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "clean": "rimraf dist",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "clean": "rimraf dist"
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@codai/shared-ui": "workspace:*",
@@ -33,14 +33,14 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/node": "^22.9.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "electron-builder": "^24.6.4",
     "typescript": "^5.6.3",
-    "vitest": "^1.6.0",
     "eslint": "^9.11.1",
     "autoprefixer": "^10.4.17",
-    "postcss": "^8.4.35"
+    "postcss": "^8.4.35",
+    "vitest": "^3.2.4",
+    "@types/node": "^22.0.0"
   }
 }

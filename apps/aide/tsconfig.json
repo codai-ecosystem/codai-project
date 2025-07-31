@@ -11,7 +11,7 @@
 		"baseUrl": ".",		"paths": {			"@codai/*": ["packages/*/src"],
 			"@codai/memory-graph": ["packages/memory-graph/src"],
 			"@codai/agent-runtime": ["packages/agent-runtime/src"],
-			"@codai/ui-components": ["packages/ui-components/src"]
+			"@aide/ui-components": ["packages/ui-components/src"]
 		}
 	},	"include": ["packages/*/src/**/*", "apps/*/src/**/*"],
 	"exclude": [

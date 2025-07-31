@@ -11,6 +11,8 @@
   "scripts": {
     "build": "echo 'No build step needed for ESLint config'",
     "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "type-check": "echo 'No TypeScript files to check in ESLint config'"
   },
   "dependencies": {

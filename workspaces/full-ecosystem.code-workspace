@@ -1,0 +1,180 @@
+{
+    "folders": [
+        {
+            "name": "Full Ecosystem",
+            "path": "../"
+        }
+    ],
+    "settings": {
+        "typescript.preferences.includePackageJsonAutoImports": "on",
+        "typescript.suggest.autoImports": true,
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": "explicit"
+        },
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "files.exclude": {
+            "**/node_modules": true,
+            "**/dist": true,
+            "**/.next": true,
+            "**/.turbo": true,
+            "**/target": true
+        },
+        "search.exclude": {
+            "**/node_modules": true,
+            "**/dist": true,
+            "**/.next": true,
+            "**/.turbo": true,
+            "**/target": true
+        },
+        "terminal.integrated.cwd": "${workspaceFolder:Full Ecosystem}",
+        "workbench.colorCustomizations": {
+            "titleBar.activeBackground": "#DC2626",
+            "titleBar.activeForeground": "#FFFFFF",
+            "statusBar.background": "#DC2626",
+            "statusBar.foreground": "#FFFFFF"
+        }
+    },
+    "extensions": {
+        "recommendations": [
+            "esbenp.prettier-vscode",
+            "bradlc.vscode-tailwindcss",
+            "ms-vscode.vscode-typescript-next",
+            "dbaeumer.vscode-eslint",
+            "christian-kohler.path-intellisense",
+            "ms-playwright.playwright",
+            "vitest.explorer",
+            "rust-lang.rust-analyzer",
+            "humao.rest-client",
+            "ms-vscode.vscode-json",
+            "redhat.vscode-yaml"
+        ]
+    },
+    "tasks": {
+        "version": "2.0.0",
+        "tasks": [
+            {
+                "label": "Start Full Development Environment",
+                "type": "shell",
+                "command": "pnpm dev:orchestrated",
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                },
+                "options": {
+                    "cwd": "${workspaceFolder:Full Ecosystem}"
+                },
+                "runOptions": {
+                    "instanceLimit": 1
+                }
+            },
+            {
+                "label": "Start Primary Services",
+                "type": "shell",
+                "command": "pnpm dev:primary",
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                },
+                "options": {
+                    "cwd": "${workspaceFolder:Full Ecosystem}"
+                }
+            },
+            {
+                "label": "Build All",
+                "type": "shell",
+                "command": "pnpm build",
+                "group": "build",
+                "options": {
+                    "cwd": "${workspaceFolder:Full Ecosystem}"
+                }
+            },
+            {
+                "label": "Test All",
+                "type": "shell",
+                "command": "pnpm test",
+                "group": "test",
+                "options": {
+                    "cwd": "${workspaceFolder:Full Ecosystem}"
+                }
+            },
+            {
+                "label": "E2E Tests",
+                "type": "shell",
+                "command": "pnpm test:e2e",
+                "group": "test",
+                "options": {
+                    "cwd": "${workspaceFolder:Full Ecosystem}"
+                }
+            },
+            {
+                "label": "Comprehensive Tests",
+                "type": "shell",
+                "command": "pnpm test:comprehensive",
+                "group": "test",
+                "options": {
+                    "cwd": "${workspaceFolder:Full Ecosystem}"
+                }
+            },
+            {
+                "label": "Lint All",
+                "type": "shell",
+                "command": "pnpm lint",
+                "group": "build",
+                "options": {
+                    "cwd": "${workspaceFolder:Full Ecosystem}"
+                }
+            },
+            {
+                "label": "Format All",
+                "type": "shell",
+                "command": "pnpm format",
+                "group": "build",
+                "options": {
+                    "cwd": "${workspaceFolder:Full Ecosystem}"
+                }
+            },
+            {
+                "label": "Health Check",
+                "type": "shell",
+                "command": "pnpm health-check",
+                "group": "test",
+                "options": {
+                    "cwd": "${workspaceFolder:Full Ecosystem}"
+                }
+            },
+            {
+                "label": "Port Check",
+                "type": "shell",
+                "command": "pnpm ports:check",
+                "group": "test",
+                "options": {
+                    "cwd": "${workspaceFolder:Full Ecosystem}"
+                }
+            }
+        ]
+    },
+    "launch": {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "Debug Gateway",
+                "type": "node",
+                "request": "launch",
+                "program": "${workspaceFolder:Full Ecosystem}/apps/gateway/src/api-gateway.ts",
+                "env": {
+                    "NODE_ENV": "development",
+                    "GATEWAY_PORT": "4000"
+                },
+                "runtimeArgs": ["-r", "ts-node/register"],
+                "skipFiles": ["<node_internals>/**"]
+            }
+        ]
+    }
+}

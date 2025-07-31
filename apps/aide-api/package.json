@@ -11,10 +11,10 @@
     "start": "node dist/index.js",
     "lint": "eslint src --ext .ts,.tsx",
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "clean": "rimraf dist",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "clean": "rimraf dist"
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@codai/shared-types": "workspace:*",
@@ -30,12 +30,12 @@
     "dotenv": "^16.3.1"
   },
   "devDependencies": {
-    "@types/node": "^22.9.0",
     "@types/express": "^4.17.21",
     "@types/cors": "^2.8.17",
     "tsx": "^4.7.1",
     "typescript": "^5.6.3",
-    "vitest": "^1.6.0",
-    "eslint": "^9.11.1"
+    "eslint": "^9.11.1",
+    "vitest": "^3.2.4",
+    "@types/node": "^22.0.0"
   }
 }

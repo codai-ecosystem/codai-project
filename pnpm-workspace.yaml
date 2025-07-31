@@ -1,24 +1,32 @@
 packages:
   # Core applications (active development)
-  - "apps/*"
-  
+  - 'apps/*'
+
   # AIDE ecosystem
-  - "apps/aide/apps/*"
-  - "apps/aide/packages/*"
-  - "packages/aide-*"
-  
+  - 'apps/aide/apps/*'
+  - 'apps/aide/packages/*'
+  - 'packages/aide-*'
+
   # Memorai subpackages
-  - "apps/memorai/apps/*"
-  - "apps/memorai/packages/*"
-  
+  - 'apps/memorai/apps/*'
+  - 'apps/memorai/packages/*'
+
   # Shared packages and libraries
-  - "packages/*"
-  - "libs/*"
-  
+  - 'packages/*'
+  - 'libs/*'
+  - '!libs/ai-intelligence'
+  - '!libs/service-stability'
+  - '!libs/microservice-orchestration'
+  - '!libs/advanced-visualizations'
+  - '!libs/advanced-analytics'
+  - '!libs/advanced-service-integrations'
+  - '!libs/project-orchestration'
+  - '!libs/code-analysis'
+
   # Analytics and monitoring
-  - "analytics"
-  - "monitoring"
-  - "security"
-  
+  - 'analytics'
+  - 'monitoring'
+  - 'security'
+
   # Archived applications (inactive)
-  - "archive/apps/*"
+  - 'archive/apps/*'

@@ -39,11 +39,23 @@ export class HttpUtils {
 // Storage utilities
 export class StorageUtils {
   /**
-   * Safe localStorage operations
+   * Check if we're in a browser environment
+   */
+  private static isBrowser(): boolean {
+    return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
+  }
+
+  /**
+   * Safe localStorage operations with Node.js fallback
    */
   static setItem(key: string, value: any): void {
     try {
-      localStorage.setItem(key, JSON.stringify(value));
+      if (this.isBrowser()) {
+        localStorage.setItem(key, JSON.stringify(value));
+      } else {
+        // In Node.js, we could use a file-based storage or just ignore
+        console.warn('localStorage not available in Node.js environment, skipping storage operation');
+      }
     } catch (error) {
       console.warn('Failed to save to localStorage:', error);
     }
@@ -51,8 +63,14 @@ export class StorageUtils {
 
   static getItem<T>(key: string): T | null {
     try {
-      const item = localStorage.getItem(key);
-      return item ? JSON.parse(item) : null;
+      if (this.isBrowser()) {
+        const item = localStorage.getItem(key);
+        return item ? JSON.parse(item) : null;
+      } else {
+        // In Node.js, return null or implement file-based storage
+        console.warn('localStorage not available in Node.js environment, returning null');
+        return null;
+      }
     } catch (error) {
       console.warn('Failed to read from localStorage:', error);
       return null;

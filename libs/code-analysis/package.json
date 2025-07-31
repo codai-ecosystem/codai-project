@@ -43,7 +43,7 @@
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "typescript": "^5.6.0",
     "openai": "^4.52.0",
-    "anthropic": "^0.24.0",
+    "@anthropic-ai/sdk": "^0.57.0",
     "eslint": "^9.0.0",
     "acorn": "^8.12.0",
     "acorn-typescript": "^1.4.0",
@@ -93,7 +93,6 @@
     "@types/babel__core": "^7.20.0",
     "@types/babel__parser": "^7.1.0",
     "@types/babel__traverse": "^7.20.0",
-    "@types/babel__types": "^7.20.0",
     "@types/semver": "^7.5.0",
     "@types/glob": "^8.1.0",
     "@types/jest": "^29.5.0",
@@ -112,9 +111,9 @@
     "cross-env": "^7.0.0"
   },
   "peerDependencies": {
-    "@codai/advanced-security": "^1.0.0",
-    "@codai/ai-chatbot": "^1.0.0",
-    "@codai/service-stability": "^1.0.0"
+    "@codai/advanced-security": "workspace:*",
+    "@codai/ai-chatbot": "workspace:*",
+    "@codai/service-stability": "workspace:*"
   },
   "engines": {
     "node": ">=18.0.0",

@@ -1,7 +1,7 @@
 {
     "name": "@codai/memorai-mcp",
-    "version": "7.2.1",
-    "description": "WORLD-CLASS Enterprise MCP Server - HPKV-Inspired Rewrite with Semantic Search, Vector Similarity, and Structured Memory Organization",
+    "version": "8.0.1",
+    "description": "WORLD-CLASS Enterprise MCP Server - CBD-Powered Semantic Memory with Vector Search and Real-time Synchronization",
     "type": "module",
     "main": "dist/server.js",
     "bin": {

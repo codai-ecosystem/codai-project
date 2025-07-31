@@ -1,0 +1,169 @@
+{
+    "folders": [
+        {
+            "name": "ControlAI Dashboard",
+            "path": "../apps/controlai-dashboard"
+        },
+        {
+            "name": "CBD Package",
+            "path": "../packages/cbd"
+        },
+        {
+            "name": "Root Config",
+            "path": "../"
+        }
+    ],
+    "settings": {
+        "typescript.preferences.includePackageJsonAutoImports": "on",
+        "typescript.suggest.autoImports": true,
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": "explicit"
+        },
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "files.exclude": {
+            "**/node_modules": true,
+            "**/dist": true,
+            "**/.next": true,
+            "**/.turbo": true
+        },
+        "search.exclude": {
+            "**/node_modules": true,
+            "**/dist": true,
+            "**/.next": true,
+            "**/.turbo": true
+        },
+        "terminal.integrated.cwd": "${workspaceFolder:ControlAI Dashboard}",
+        "terminal.integrated.env.windows": {
+            "FORCE_COLOR": "1"
+        },
+        "workbench.colorCustomizations": {
+            "titleBar.activeBackground": "#23a82e",
+            "titleBar.activeForeground": "#FFFFFF",
+            "statusBar.background": "#23a82e",
+            "statusBar.foreground": "#FFFFFF"
+        }
+    },
+    "extensions": {
+        "recommendations": [
+            "esbenp.prettier-vscode",
+            "bradlc.vscode-tailwindcss",
+            "ms-vscode.vscode-typescript-next",
+            "dbaeumer.vscode-eslint",
+            "formulahendry.auto-rename-tag",
+            "christian-kohler.path-intellisense",
+            "ms-playwright.playwright",
+            "vitest.explorer"
+        ]
+    },
+    "tasks": {
+        "version": "2.0.0",
+        "tasks": [
+            {
+                "label": "Start Dashboard Dev Server",
+                "type": "shell",
+                "command": "pnpm dev",
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                },
+                "options": {
+                    "cwd": "${workspaceFolder:ControlAI Dashboard}"
+                },
+                "runOptions": {
+                    "instanceLimit": 1
+                }
+            },
+            {
+                "label": "Start CBD Service",
+                "type": "shell",
+                "command": "npm run service",
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "new"
+                },
+                "options": {
+                    "cwd": "${workspaceFolder:CBD Package}"
+                },
+                "runOptions": {
+                    "instanceLimit": 1
+                }
+            },
+            {
+                "label": "Start All Services",
+                "dependsOrder": "parallel",
+                "dependsOn": [
+                    "Start Dashboard Dev Server",
+                    "Start CBD Service"
+                ],
+                "group": "build"
+            },
+            {
+                "label": "Build Dashboard",
+                "type": "shell",
+                "command": "pnpm build",
+                "group": "build",
+                "options": {
+                    "cwd": "${workspaceFolder:ControlAI Dashboard}"
+                }
+            },
+            {
+                "label": "Test Dashboard",
+                "type": "shell",
+                "command": "pnpm test",
+                "group": "test",
+                "options": {
+                    "cwd": "${workspaceFolder:ControlAI Dashboard}"
+                }
+            },
+            {
+                "label": "E2E Tests",
+                "type": "shell",
+                "command": "pnpm test:e2e",
+                "group": "test",
+                "options": {
+                    "cwd": "${workspaceFolder:ControlAI Dashboard}"
+                }
+            },
+            {
+                "label": "Lint & Format",
+                "type": "shell",
+                "command": "pnpm lint && pnpm format",
+                "group": "build",
+                "options": {
+                    "cwd": "${workspaceFolder:ControlAI Dashboard}"
+                }
+            }
+        ]
+    },
+    "launch": {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "Next.js: debug server-side",
+                "type": "node-terminal",
+                "request": "launch",
+                "command": "pnpm dev",
+                "cwd": "${workspaceFolder:ControlAI Dashboard}",
+                "serverReadyAction": {
+                    "pattern": "- Local:.+(https?://.+)",
+                    "uriFormat": "%s",
+                    "action": "debugWithChrome"
+                }
+            },
+            {
+                "name": "Next.js: debug client-side",
+                "type": "chrome",
+                "request": "launch",
+                "url": "http://localhost:4200",
+                "webRoot": "${workspaceFolder:ControlAI Dashboard}"
+            }
+        ]
+    }
+}

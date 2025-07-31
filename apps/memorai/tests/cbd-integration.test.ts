@@ -3,7 +3,7 @@
  * Comprehensive testing for CBD-based memory operations
  */
 
-import { describe, test, expect, beforeAll, afterAll, beforeEach } from '@jest/globals';
+import { describe, test, expect, beforeAll, afterAll, beforeEach } from 'vitest';
 import { MemorAICBDServer } from '../cbd-mcp-server';
 import { MemorAILegacyMigration } from '../migrate-to-cbd';
 import { loadConfig } from '../config/memorai.config';
@@ -77,7 +77,7 @@ describe('MemorAI CBD Integration', () => {
 
       expect(results).toHaveLength(3);
       expect(results.every(r => r.success)).toBe(true);
-      
+
       // Verify unique structured keys
       const keys = results.map(r => r.data.structuredKey);
       const uniqueKeys = new Set(keys);
@@ -255,7 +255,7 @@ describe('Legacy Data Migration', () => {
 
       legacyMemories.forEach(memory => {
         const normalized = migration['normalizeMemoryFormat'](memory);
-        
+
         expect(normalized.structuredKey).toBeDefined();
         expect(normalized.content).toBeDefined();
         expect(normalized.projectName).toBeDefined();
@@ -267,7 +267,7 @@ describe('Legacy Data Migration', () => {
   describe('Migration Validation', () => {
     test('should validate migration readiness', async () => {
       const validation = await migration.validateMigration();
-      
+
       expect(validation).toBeDefined();
       expect(typeof validation.valid).toBe('boolean');
       expect(typeof validation.cbdMemoryCount).toBe('number');
@@ -292,22 +292,22 @@ describe('Performance Tests', () => {
     }
 
     const results = await Promise.all(operations);
-    
+
     expect(results).toHaveLength(concurrentOperations);
     expect(results.every(r => r.success)).toBe(true);
   });
 
   test('should maintain response time under load', async () => {
     const startTime = Date.now();
-    
+
     await mcpServer['handleRecall']({
       agentId: 'performance-agent',
       query: 'performance test query',
       limit: 50
     });
-    
+
     const responseTime = Date.now() - startTime;
-    
+
     // Should respond within 5 seconds for reasonable queries
     expect(responseTime).toBeLessThan(5000);
   });
@@ -323,7 +323,7 @@ describe('Integration with CBD Engine', () => {
     });
 
     await mcpServer['handleRemember']({
-      agentId: 'semantic-agent', 
+      agentId: 'semantic-agent',
       content: 'Python data science libraries',
       metadata: { topic: 'programming' }
     });
@@ -343,7 +343,7 @@ describe('Integration with CBD Engine', () => {
 
     expect(result.success).toBe(true);
     expect(result.data.memories.length).toBeGreaterThan(0);
-    
+
     // Should find programming-related memories with higher relevance
     if (result.data.memories.length > 0) {
       const topResult = result.data.memories[0];

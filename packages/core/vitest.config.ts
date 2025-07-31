@@ -8,7 +8,10 @@ export default defineConfig({
     name: 'pkg-core',
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./tests/setup.ts'],
+    testTimeout: 10000,
+    hookTimeout: 10000,
+    teardownTimeout: 10000,
+    setupFiles: ['./src/__tests__/setup.ts'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],

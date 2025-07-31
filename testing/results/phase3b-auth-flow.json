@@ -1,0 +1,53 @@
+{
+  "timestamp": "2025-07-31T06:31:57.726Z",
+  "phase": "Phase 3B - Cross-Service Auth Flow",
+  "authProvider": "ID Service (localhost:4004)",
+  "testScenarios": [
+    {
+      "name": "ID Service Direct Authentication",
+      "steps": [
+        {
+          "step": "Navigate to ID Service",
+          "success": true,
+          "url": "http://localhost:4004/",
+          "screenshot": "id-service-landing.png"
+        },
+        {
+          "step": "Check alternative auth patterns",
+          "authLinks": 0,
+          "authButtons": 0,
+          "hasAlternativeAuth": false
+        }
+      ],
+      "success": false,
+      "startTime": 1753943517726,
+      "endTime": 1753943517856,
+      "duration": 130
+    },
+    {
+      "name": "Admin Service Auth Requirement",
+      "serviceUrl": "http://localhost:4007",
+      "steps": [
+        {
+          "step": "Check auth requirement",
+          "originalUrl": "http://localhost:4007",
+          "currentUrl": "http://localhost:4007/",
+          "redirectedToAuth": false,
+          "hasLoginElements": false,
+          "hasProtectedMessage": false,
+          "title": "${APP_NAME} - CODAI Ecosystem"
+        }
+      ],
+      "success": true,
+      "startTime": 1753943517856,
+      "requiresAuthentication": false,
+      "endTime": 1753943520443,
+      "duration": 2587
+    }
+  ],
+  "summary": {
+    "totalScenarios": 2,
+    "successfulAuths": 1,
+    "failedAuths": 1
+  }
+}

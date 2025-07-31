@@ -5,6 +5,7 @@
 ## 🏗️ Architecture Overview
 
 The CODAI ecosystem is a fully integrated platform consisting of 32+ applications with:
+
 - **Universal Authentication**: Single sign-on via ID service
 - **Universal Database/Storage**: Centralized data management via MEMORAI
 - **Comprehensive SDKs**: TypeScript/JavaScript SDKs for all services
@@ -12,10 +13,39 @@ The CODAI ecosystem is a fully integrated platform consisting of 32+ application
 - **Standardized REST APIs**: Consistent API endpoints across all services
 - **Complete Testing**: 700+ tests ensuring system reliability
 
+## 📁 New Documentation Organization
+
+This documentation has been reorganized for better navigation:
+
+### `/guides/` - Core Guides & References
+
+- **CODAI_ECOSYSTEM_MASTER_GUIDE.md** - Complete ecosystem overview
+- **DEPLOYMENT_AND_OPERATIONS_GUIDE.md** - Deployment and operations guide
+- **SECURITY_AND_COMPLIANCE_GUIDE.md** - Security and compliance guidelines
+- **TESTING_AND_QUALITY_MASTER_GUIDE.md** - Testing and quality assurance
+- **MCP_ECOSYSTEM_DEFINITIVE_GUIDE.md** - Model Context Protocol guide
+- **README_ENTERPRISE_DEPLOYMENT.md** - Enterprise deployment instructions
+- **SERVICES_OVERVIEW.md** - Overview of all services
+
+### `/reports/` - Status Reports & Analysis
+
+- Phase completion reports and validation reports
+- Consolidation reports and progress tracking documents
+
+### `/plans/` - Planning & Strategy Documents
+
+- Project planning documents and implementation strategies
+
+### `/testing/` - Testing Documentation
+
+- Testing strategies, frameworks, and analysis documents
+
 ## 📖 Documentation Sections
 
 ### 🔐 [Authentication Documentation](./authentication/)
+
 Complete guide to the universal authentication system:
+
 - Authentication flows and token management
 - Integration patterns for all applications
 - Security implementation details
@@ -23,7 +53,9 @@ Complete guide to the universal authentication system:
 - Role-based access control
 
 ### 🗄️ [Database & Storage Documentation](./database-storage/)
+
 Comprehensive guide to data management:
+
 - MEMORAI service integration patterns
 - Database operations and transactions
 - File storage and retrieval
@@ -31,7 +63,9 @@ Comprehensive guide to data management:
 - Real-time synchronization
 
 ### ⚡ [SDK Documentation](./sdk/)
+
 Developer guides for all service SDKs:
+
 - Core SDK usage and examples
 - Service-specific SDK documentation
 - Authentication integration
@@ -39,7 +73,9 @@ Developer guides for all service SDKs:
 - TypeScript definitions and examples
 
 ### 🛠️ [CLI Documentation](./cli/)
+
 Command-line interface guides:
+
 - Installation and setup
 - Command reference for all services
 - Automation and scripting examples
@@ -47,7 +83,9 @@ Command-line interface guides:
 - Troubleshooting guides
 
 ### 🌐 [API Documentation](./api/)
+
 REST API references and examples:
+
 - Endpoint documentation for all services
 - Authentication requirements
 - Request/response examples
@@ -55,7 +93,9 @@ REST API references and examples:
 - OpenAPI specifications
 
 ### 🔗 [Integration Guides](./integration-guides/)
+
 Step-by-step integration tutorials:
+
 - New application integration
 - Migration from legacy systems
 - Best practices and patterns

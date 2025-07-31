@@ -1,0 +1,843 @@
+﻿{
+    "CriticalIssues":  0,
+    "HealthyServices":  49,
+    "Timestamp":  "2025-07-31 19:10:37",
+    "Services":  [
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\acasai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "acasai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\admin",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "admin",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Critical",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\adoptai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "adoptai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\aide",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  false,
+                         "Name":  "aide",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\aide-api",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "aide-api",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\aide-cli",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "aide-cli",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\aide-native",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "aide-native",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\ajutai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "ajutai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Critical",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\analizai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "analizai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\bancai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "bancai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Critical",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\bancai-mobile",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "bancai-mobile",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\codai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "codai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Critical",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\codai-mobile",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "codai-mobile",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\controlai-dashboard",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "controlai-dashboard",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Critical",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\conversai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "conversai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Critical",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\cumparai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "cumparai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\curtai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "curtai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\dash",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "dash",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\dexai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "dexai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\docs",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "docs",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\donai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "donai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\explorer",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "explorer",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\fabricai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "fabricai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\gateway",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "gateway",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Critical",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\glass",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "glass",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\hub",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "hub",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Critical",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\id",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "id",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\jucai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "jucai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\kodex",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "kodex",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\legalizai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "legalizai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\logai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "logai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\marketai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "marketai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\memorai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "memorai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Critical",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\metu",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  false,
+                         "Name":  "metu",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\metu-web",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "metu-web",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\mod",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "mod",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\muzicai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "muzicai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\prezentai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "prezentai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\promovai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "promovai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\publicai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "publicai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\romai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "romai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\sociai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "sociai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\stocai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "stocai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\studiai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "studiai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\sunai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "sunai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\talentai",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "talentai",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\tools",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "tools",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\wallet",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "wallet",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     },
+                     {
+                         "HasDevScript":  true,
+                         "Path":  "E:\\GitHub\\codai-project\\apps\\x",
+                         "HasBuildScript":  true,
+                         "DependenciesStatus":  "Installed",
+                         "HasPackageJson":  true,
+                         "HasStartScript":  true,
+                         "Name":  "x",
+                         "Recommendations":  [
+
+                                             ],
+                         "BuildStatus":  "Not Tested",
+                         "Priority":  "Standard",
+                         "Issues":  [
+
+                                    ]
+                     }
+                 ],
+    "HealthPercentage":  100,
+    "IssueServices":  0,
+    "TotalServices":  49
+}

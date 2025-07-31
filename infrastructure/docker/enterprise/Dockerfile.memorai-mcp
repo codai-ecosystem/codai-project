@@ -1,0 +1,73 @@
+# Multi-stage build for MemorAI MCP Enterprise Service
+FROM node:20-alpine as builder
+
+# Install dependencies for building
+RUN apk add --no-cache python3 make g++ git
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY apps/memorai/packages/mcp/package*.json ./
+COPY apps/memorai/packages/mcp/tsconfig.json ./
+
+# Install all dependencies (including dev)
+RUN npm ci
+
+# Copy source code
+COPY apps/memorai/packages/mcp/src/ ./src/
+COPY apps/memorai/packages/mcp/bin/ ./bin/
+
+# Build TypeScript
+RUN npm run build
+
+# Production dependencies stage
+FROM node:20-alpine as deps
+
+# Install production dependencies only
+WORKDIR /app
+COPY apps/memorai/packages/mcp/package*.json ./
+RUN npm ci --only=production && npm cache clean --force
+
+# Final production image
+FROM gcr.io/distroless/nodejs20-debian11
+
+# Labels for enterprise image
+LABEL maintainer="CODAI Ecosystem <support@codai.dev>"
+LABEL version="8.0.0"
+LABEL description="MemorAI MCP Enterprise Server"
+LABEL vendor="CODAI"
+LABEL org.opencontainers.image.title="MemorAI MCP Enterprise"
+LABEL org.opencontainers.image.description="Enterprise-grade Model Context Protocol server for AI memory management"
+LABEL org.opencontainers.image.url="https://github.com/codai-ecosystem/codai-project"
+LABEL org.opencontainers.image.documentation="https://docs.codai.dev/memorai"
+LABEL org.opencontainers.image.source="https://github.com/codai-ecosystem/codai-project"
+LABEL org.opencontainers.image.vendor="CODAI Ecosystem"
+LABEL org.opencontainers.image.licenses="MIT"
+
+# Set working directory
+WORKDIR /app
+
+# Copy built application and dependencies
+COPY --from=builder /app/dist /app/dist/
+COPY --from=builder /app/bin /app/bin/
+COPY --from=deps /app/node_modules /app/node_modules/
+
+# Copy configuration files
+COPY apps/memorai/packages/mcp/config/ /app/config/
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV MCP_MODE=enterprise
+ENV CONFIG_DIR=/app/config
+ENV LOGS_DIR=/logs
+
+# Expose ports
+EXPOSE 8080 8081 9091
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD ["node", "/app/dist/health-check.js"]
+
+# Run the application
+CMD ["node", "/app/dist/server.js"]

@@ -1,0 +1,331 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memorai-mcp
+  namespace: memorai-system
+  labels:
+    app: memorai-mcp
+    version: v1
+    component: api-server
+spec:
+  replicas: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: memorai-mcp
+  template:
+    metadata:
+      labels:
+        app: memorai-mcp
+        version: v1
+        component: api-server
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '9091'
+        prometheus.io/path: '/metrics'
+    spec:
+      serviceAccountName: memorai-mcp
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - memorai-mcp
+                topologyKey: kubernetes.io/hostname
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+      containers:
+        - name: memorai-mcp
+          image: codai/memorai-mcp:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+            - containerPort: 8081
+              name: websocket
+              protocol: TCP
+            - containerPort: 9091
+              name: metrics
+              protocol: TCP
+          env:
+            - name: NODE_ENV
+              value: 'production'
+            - name: PORT
+              value: '8080'
+            - name: WEBSOCKET_PORT
+              value: '8081'
+            - name: METRICS_PORT
+              value: '9091'
+            - name: CBD_ENDPOINT
+              value: 'http://cbd-vector-db-lb:4180'
+            - name: CBD_GRPC_ENDPOINT
+              value: 'cbd-vector-db-lb:4181'
+            - name: REDIS_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: memorai-secrets
+                  key: redis-url
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: memorai-secrets
+                  key: database-url
+            - name: CBD_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: memorai-secrets
+                  key: cbd-api-key
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: memorai-secrets
+                  key: openai-api-key
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: memorai-secrets
+                  key: jwt-secret
+            - name: ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: memorai-secrets
+                  key: encryption-key
+            - name: LOG_LEVEL
+              value: 'info'
+            - name: ENABLE_METRICS
+              value: 'true'
+            - name: ENABLE_TRACING
+              value: 'true'
+            - name: JAEGER_ENDPOINT
+              value: 'http://jaeger-collector:14268/api/traces'
+          resources:
+            requests:
+              memory: '2Gi'
+              cpu: '1'
+              ephemeral-storage: '1Gi'
+            limits:
+              memory: '4Gi'
+              cpu: '2'
+              ephemeral-storage: '2Gi'
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          startupProbe:
+            httpGet:
+              path: /startup
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 30
+          volumeMounts:
+            - name: config
+              mountPath: /app/config
+              readOnly: true
+            - name: logs
+              mountPath: /app/logs
+            - name: tmp
+              mountPath: /tmp
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+      volumes:
+        - name: config
+          configMap:
+            name: memorai-mcp-config
+        - name: logs
+          emptyDir: {}
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memorai-mcp
+  namespace: memorai-system
+  labels:
+    app: memorai-mcp
+    service: memorai-mcp
+spec:
+  selector:
+    app: memorai-mcp
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+    - name: websocket
+      port: 8081
+      targetPort: 8081
+      protocol: TCP
+    - name: metrics
+      port: 9091
+      targetPort: 9091
+      protocol: TCP
+  type: ClusterIP
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: memorai-mcp
+  namespace: memorai-system
+  labels:
+    app: memorai-mcp
+automountServiceAccountToken: true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memorai-mcp-config
+  namespace: memorai-system
+  labels:
+    app: memorai-mcp
+data:
+  config.json: |
+    {
+      "server": {
+        "port": 8080,
+        "websocketPort": 8081,
+        "metricsPort": 9091,
+        "cors": {
+          "enabled": true,
+          "origins": ["*"],
+          "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+          "headers": ["Content-Type", "Authorization", "X-API-Key"]
+        },
+        "rateLimit": {
+          "windowMs": 900000,
+          "max": 1000,
+          "skipSuccessfulRequests": false
+        }
+      },
+      "cbd": {
+        "endpoint": "http://cbd-vector-db-lb:4180",
+        "grpcEndpoint": "cbd-vector-db-lb:4181",
+        "timeout": 30000,
+        "retries": 3,
+        "circuitBreaker": {
+          "threshold": 5,
+          "timeout": 60000
+        }
+      },
+      "cache": {
+        "ttl": 300,
+        "maxSize": 10000,
+        "checkPeriod": 600
+      },
+      "memory": {
+        "maxContextSize": 100000,
+        "maxMemoryAge": 86400000,
+        "compressionEnabled": true
+      },
+      "security": {
+        "jwtExpiresIn": "24h",
+        "bcryptRounds": 12,
+        "encryptionAlgorithm": "aes-256-gcm"
+      },
+      "monitoring": {
+        "metricsEnabled": true,
+        "tracingEnabled": true,
+        "healthChecks": {
+          "interval": 30000,
+          "timeout": 5000
+        }
+      },
+      "logging": {
+        "level": "info",
+        "format": "json",
+        "file": "/app/logs/memorai-mcp.log",
+        "maxSize": "100MB",
+        "maxFiles": 10
+      }
+    }
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: memorai-mcp-hpa
+  namespace: memorai-system
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: memorai-mcp
+  minReplicas: 3
+  maxReplicas: 50
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+    - type: Pods
+      pods:
+        metric:
+          name: http_requests_per_second
+        target:
+          type: AverageValue
+          averageValue: '100'
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+        - type: Percent
+          value: 100
+          periodSeconds: 15
+        - type: Pods
+          value: 10
+          periodSeconds: 60
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+        - type: Percent
+          value: 50
+          periodSeconds: 60
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: memorai-mcp-pdb
+  namespace: memorai-system
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: memorai-mcp

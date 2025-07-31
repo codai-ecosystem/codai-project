@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { SimpleAuthService } from '@/services/simple-auth'
 import { z } from 'zod'
+import {
+  createAuthContext,
+  handleEnhancedLogin,
+  setAuthCookies,
+  addSecurityHeaders
+} from '@/lib/auth-middleware'
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -15,98 +20,75 @@ export async function POST(request: NextRequest) {
     const validatedData = loginSchema.parse(body)
     const { email, password } = validatedData
 
-    // Initialize auth service
-    const authService = new SimpleAuthService()
-    await authService.ensureInitialized()
+    // Create enhanced authentication context
+    const authContext = await createAuthContext(request)
 
-    // Authenticate user
-    const authResult = await authService.authenticateUser(email, password)
-    
-    if (!authResult.success || !authResult.user) {
-      return NextResponse.json(
-        { 
+    // Perform enhanced authentication
+    const authResult = await handleEnhancedLogin(email, password, authContext)
+
+    if (!authResult.success) {
+      const response = NextResponse.json(
+        {
           success: false,
-          error: 'Invalid email or password' 
+          error: authResult.error,
+          remainingAttempts: authResult.remainingAttempts
         },
         { status: 401 }
       )
+
+      // Add security headers
+      addSecurityHeaders(response, authResult.securityMetadata)
+      return response
     }
 
-    // Generate tokens
-    const tokenResult = await authService.generateToken(authResult.user.id)
-    if (!tokenResult.success || !tokenResult.token) {
-      return NextResponse.json(
-        { 
-          success: false,
-          error: 'Failed to generate authentication token' 
-        },
-        { status: 500 }
-      )
-    }
-
-    // Create session
-    const sessionResult = await authService.createSession(authResult.user.id, {
-      userAgent: request.headers.get('user-agent') || 'Unknown',
-      ipAddress: request.ip || 'Unknown'
-    })
-
-    // Prepare user data (without password)
-    const userData = {
-      id: authResult.user.id,
-      email: authResult.user.email,
-      username: authResult.user.username,
-      profile: authResult.user.profile,
-      createdAt: authResult.user.createdAt,
-      updatedAt: authResult.user.updatedAt
-    }
-
-    // Set cookies
-    const response = NextResponse.json({
+    // Create successful response with enhanced security data
+    const responseData: any = {
       success: true,
-      user: userData,
-      token: tokenResult.token,
-      refreshToken: tokenResult.refreshToken || null
-    })
-
-    response.cookies.set('codai_auth_token', tokenResult.token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 900, // 15 minutes
-      domain: process.env.NODE_ENV === 'production' ? '.codai.ro' : undefined
-    })
-
-    if (tokenResult.refreshToken) {
-      response.cookies.set('codai_refresh_token', tokenResult.refreshToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 604800, // 7 days
-        domain: process.env.NODE_ENV === 'production' ? '.codai.ro' : undefined
-      })
+      user: authResult.user,
+      token: authResult.token,
+      refreshToken: authResult.refreshToken
     }
+
+    // Add MFA flag if required (for future MFA implementation)
+    if (authResult.mfaRequired) {
+      responseData.mfaRequired = true
+    }
+
+    const response = NextResponse.json(responseData)
+
+    // Set secure authentication cookies
+    if (authResult.token) {
+      setAuthCookies(response, authResult.token, authResult.refreshToken)
+    }
+
+    // Add security headers
+    addSecurityHeaders(response, authResult.securityMetadata)
 
     return response
 
   } catch (error: any) {
-    console.error('Login error:', error)
+    console.error('Enhanced login error:', error)
 
     if (error.name === 'ZodError') {
-      return NextResponse.json(
-        { 
+      const response = NextResponse.json(
+        {
           success: false,
-          error: error.errors[0].message 
+          error: error.errors[0].message
         },
         { status: 400 }
       )
+      addSecurityHeaders(response)
+      return response
     }
 
-    return NextResponse.json(
-      { 
+    const response = NextResponse.json(
+      {
         success: false,
-        error: 'Internal server error' 
+        error: 'Internal server error'
       },
       { status: 500 }
     )
+    addSecurityHeaders(response)
+    return response
   }
 }

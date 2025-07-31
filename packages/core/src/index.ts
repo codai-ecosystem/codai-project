@@ -6,6 +6,9 @@ export * from './lib/database';
 export * from './lib/env';
 export * from './lib/types';
 
+// Core classes for testing and development
+export * from './classes';
+
 // Main User interface with permissions (overrides lib/types User)
 export type { User, Session, ServiceDefinition, ApiResponse, PaginatedResponse } from './types';
 

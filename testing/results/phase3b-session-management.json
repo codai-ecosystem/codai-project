@@ -1,0 +1,84 @@
+{
+  "timestamp": "2025-07-31T06:32:00.721Z",
+  "phase": "Phase 3B - Session Management",
+  "tests": [
+    {
+      "name": "Cookie and Session Analysis",
+      "services": [
+        {
+          "name": "CODAI",
+          "url": "http://localhost:4001",
+          "cookies": 0,
+          "sessionStorageKeys": 0,
+          "localStorageKeys": 0,
+          "authRelatedStorage": {
+            "hasAuthToken": false,
+            "authKeys": []
+          }
+        },
+        {
+          "name": "ID",
+          "url": "http://localhost:4004",
+          "cookies": 0,
+          "sessionStorageKeys": 0,
+          "localStorageKeys": 0,
+          "authRelatedStorage": {
+            "hasAuthToken": false,
+            "authKeys": []
+          }
+        },
+        {
+          "name": "Admin",
+          "url": "http://localhost:4007",
+          "cookies": 0,
+          "sessionStorageKeys": 0,
+          "localStorageKeys": 0,
+          "authRelatedStorage": {
+            "hasAuthToken": false,
+            "authKeys": []
+          }
+        }
+      ],
+      "success": true
+    },
+    {
+      "name": "Cross-Origin Request Testing",
+      "requests": [
+        {
+          "target": "http://localhost:4000/health",
+          "service": "Gateway",
+          "status": 200,
+          "ok": true,
+          "headers": {
+            "content-length": "993",
+            "content-type": "application/json; charset=utf-8"
+          }
+        },
+        {
+          "target": "http://localhost:4004/api/health",
+          "service": "ID",
+          "status": 404,
+          "ok": false,
+          "headers": {
+            "content-type": "application/json"
+          }
+        },
+        {
+          "target": "http://localhost:4008/api/status",
+          "service": "Hub",
+          "status": 404,
+          "ok": false,
+          "headers": {
+            "content-type": "application/json"
+          }
+        }
+      ],
+      "success": true
+    }
+  ],
+  "summary": {
+    "totalTests": 2,
+    "passedTests": 2,
+    "failedTests": 0
+  }
+}

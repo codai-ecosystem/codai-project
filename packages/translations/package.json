@@ -13,10 +13,11 @@
     "dev": "tsc --watch",
     "lint": "pnpm exec eslint src --ext .ts,.tsx",
     "lint:fix": "pnpm exec eslint src --ext .ts,.tsx --fix",
-    "test": "vitest",
-    "test:watch": "vitest --watch",
     "clean": "rimraf dist",
-    "validate-translations": "node scripts/validate-translations.js"
+    "validate-translations": "node scripts/validate-translations.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "i18next": "^24.2.0",
@@ -25,11 +26,11 @@
     "react-i18next": "^15.3.0"
   },
   "devDependencies": {
-    "@types/node": "^24.0.14",
     "@types/react": "^19.1.8",
     "eslint": "^9.31.0",
     "typescript": "^5.8.3",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "@types/node": "^22.0.0"
   },
   "peerDependencies": {
     "react": ">=18"

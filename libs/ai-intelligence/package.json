@@ -33,7 +33,7 @@
     "compromise": "^14.12.0",
     "sentiment": "^5.0.2",
     "ml-knn": "^3.0.0",
-    "ml-naive-bayes": "^3.0.0",
+    "naive-bayes": "^3.0.0",
     "ml-random-forest": "^2.1.0",
     "ml-tree": "^3.0.0",
     "genetic-js": "^0.2.1",

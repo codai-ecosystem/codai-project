@@ -1,0 +1,274 @@
+# Docker Compose for CODAI Gateway Service Development & Testing
+# Production-ready configuration with all dependencies
+
+version: '3.8'
+
+services:
+  # CODAI Gateway Service
+  codai-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+      target: production
+    image: codai/gateway:1.0.0-dev
+    container_name: codai-gateway
+    ports:
+      - '4000:4000'
+    environment:
+      - NODE_ENV=development
+      - GATEWAY_PORT=4000
+      - LOG_LEVEL=debug
+      - JWT_SECRET=development-secret-change-in-production
+      - DATABASE_URL=postgresql://codai:codai123@postgres:5432/codai
+      - REDIS_URL=redis://redis:6379
+      - RATE_LIMIT_WINDOW_MS=900000
+      - RATE_LIMIT_MAX_REQUESTS=1000
+      - CORS_ORIGIN=http://localhost:3000,http://localhost:3001,http://localhost:4000
+      - METRICS_ENABLED=true
+      - SERVICE_REGISTRY=${SERVICE_REGISTRY:-'{"codai":{"name":"CODAI Service","url":"http://codai-service:4001","healthPath":"/health","category":"core"}}'}
+    volumes:
+      - ./logs:/app/logs
+      - /tmp:/tmp
+    networks:
+      - codai-network
+    depends_on:
+      - postgres
+      - redis
+      - prometheus
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'wget',
+          '--no-verbose',
+          '--tries=1',
+          '--spider',
+          'http://localhost:4000/api/gateway/health',
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.codai-gateway.rule=Host(`gateway.localhost`)'
+      - 'traefik.http.services.codai-gateway.loadbalancer.server.port=4000'
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: codai-postgres
+    environment:
+      - POSTGRES_DB=codai
+      - POSTGRES_USER=codai
+      - POSTGRES_PASSWORD=codai123
+      - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    ports:
+      - '5432:5432'
+    networks:
+      - codai-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U codai -d codai']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: codai-redis
+    command: redis-server --appendonly yes --requirepass codai123
+    volumes:
+      - redis_data:/data
+      - ./config/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    ports:
+      - '6379:6379'
+    networks:
+      - codai-network
+    healthcheck:
+      test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
+
+  # Prometheus Monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: codai-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - '9090:9090'
+    networks:
+      - codai-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+
+  # Grafana Dashboards
+  grafana:
+    image: grafana/grafana:latest
+    container_name: codai-grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports:
+      - '3000:3000'
+    networks:
+      - codai-network
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
+
+  # Jaeger Tracing
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: codai-jaeger
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    ports:
+      - '16686:16686'
+      - '14268:14268'
+      - '14250:14250'
+    networks:
+      - codai-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
+
+  # NGINX Load Balancer (for testing)
+  nginx:
+    image: nginx:alpine
+    container_name: codai-nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    ports:
+      - '80:80'
+      - '443:443'
+    networks:
+      - codai-network
+    depends_on:
+      - codai-gateway
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+
+  # Mock Services for Testing
+  codai-service-mock:
+    image: nginx:alpine
+    container_name: codai-service-mock
+    volumes:
+      - ./mocks/codai-service:/usr/share/nginx/html:ro
+      - ./mocks/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - '4001:80'
+    networks:
+      - codai-network
+    restart: unless-stopped
+
+  admin-service-mock:
+    image: nginx:alpine
+    container_name: admin-service-mock
+    volumes:
+      - ./mocks/admin-service:/usr/share/nginx/html:ro
+      - ./mocks/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - '4007:80'
+    networks:
+      - codai-network
+    restart: unless-stopped
+
+  # Test Runner
+  gateway-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: codai-gateway-tests
+    environment:
+      - NODE_ENV=test
+      - GATEWAY_URL=http://codai-gateway:4000
+    volumes:
+      - ./tests:/app/tests:ro
+      - ./coverage:/app/coverage
+    networks:
+      - codai-network
+    depends_on:
+      - codai-gateway
+    profiles:
+      - test
+    command: npm test
+
+networks:
+  codai-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local

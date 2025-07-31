@@ -1,13 +1,11 @@
 import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react';
 import path from 'path';
 
 export default defineConfig({
-  plugins: [react()],
   test: {
     name: 'pkg-analytics',
     globals: true,
-    environment: 'jsdom',
+    environment: 'node', // Use node environment for analytics package
     setupFiles: ['./tests/setup.ts'],
     coverage: {
       provider: 'v8',
@@ -32,6 +30,9 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@codai/realtime': path.resolve(__dirname, '../realtime/src'),
+      '@codai/core': path.resolve(__dirname, '../core/src'),
+      '@codai/logai-sdk': path.resolve(__dirname, '../logai-sdk/src'),
     },
   },
 });

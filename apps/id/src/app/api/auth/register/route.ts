@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { SimpleAuthService } from "@/services/simple-auth";
 import { z } from "zod";
+import {
+  createAuthContext,
+  handleEnhancedRegistration,
+  addSecurityHeaders
+} from "@/lib/auth-middleware";
 
 const registerSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -20,74 +24,70 @@ export async function POST(request: NextRequest) {
     const validatedData = registerSchema.parse(body);
     const { email, username, password, profile } = validatedData;
 
-    // Initialize auth service
-    const authService = new SimpleAuthService();
-    await authService.ensureInitialized();
+    // Create enhanced authentication context
+    const authContext = await createAuthContext(request);
 
-    // Check if user already exists
-    const existingUser = await authService.findUserByEmail(email);
-    if (existingUser) {
-      return NextResponse.json(
-        { 
+    // Perform enhanced registration with password strength validation
+    const registrationResult = await handleEnhancedRegistration(
+      {
+        email,
+        username,
+        password,
+        profile: profile || { name: username }
+      },
+      authContext
+    );
+
+    if (!registrationResult.success) {
+      const response = NextResponse.json(
+        {
           success: false,
-          message: "User with this email already exists" 
+          message: registrationResult.error
         },
-        { status: 400 }
+        { status: registrationResult.error?.includes('already exists') ? 400 : 500 }
       );
+
+      // Add security headers
+      addSecurityHeaders(response, registrationResult.securityMetadata);
+      return response;
     }
 
-    // Create user
-    const user = await authService.createUser({
-      email,
-      username,
-      password,
-      profile: profile || { name: username }
-    });
-
-    if (!user) {
-      return NextResponse.json(
-        { 
-          success: false,
-          message: "Failed to create user" 
-        },
-        { status: 500 }
-      );
-    }
-
-    return NextResponse.json(
+    const response = NextResponse.json(
       {
         success: true,
-        message: "User created successfully",
-        user: {
-          id: user.id,
-          email: user.email,
-          username: user.username,
-          profile: user.profile,
-          createdAt: user.createdAt
-        }
+        message: "User created successfully with enhanced security",
+        user: registrationResult.user
       },
       { status: 201 }
     );
 
+    // Add security headers
+    addSecurityHeaders(response, registrationResult.securityMetadata);
+    return response;
+
   } catch (error: any) {
-    console.error("Registration error:", error);
+    console.error("Enhanced registration error:", error);
 
     if (error.name === "ZodError") {
-      return NextResponse.json(
-        { 
+      const response = NextResponse.json(
+        {
           success: false,
-          message: error.errors[0].message 
+          message: error.errors[0].message
         },
         { status: 400 }
       );
+      addSecurityHeaders(response);
+      return response;
     }
 
-    return NextResponse.json(
-      { 
+    const response = NextResponse.json(
+      {
         success: false,
-        message: "Internal server error" 
+        message: "Internal server error"
       },
       { status: 500 }
     );
+    addSecurityHeaders(response);
+    return response;
   }
 }

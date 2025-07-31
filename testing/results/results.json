@@ -1,0 +1,706 @@
+{
+  "config": {
+    "configFile": "E:\\GitHub\\codai-project\\playwright.config.ts",
+    "rootDir": "E:/GitHub/codai-project/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": "E:\\GitHub\\codai-project\\tests\\e2e\\global-setup.ts",
+    "globalTeardown": "E:\\GitHub\\codai-project\\tests\\e2e\\global-teardown.ts",
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "test-results/results.xml"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "E:/GitHub/codai-project/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "setup",
+        "name": "setup",
+        "testDir": "E:/GitHub/codai-project/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/.*\\.setup\\.ts/"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "E:/GitHub/codai-project/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "E:/GitHub/codai-project/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "E:/GitHub/codai-project/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "E:/GitHub/codai-project/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "E:/GitHub/codai-project/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "E:/GitHub/codai-project/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "E:/GitHub/codai-project/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "mobile-chrome",
+        "name": "mobile-chrome",
+        "testDir": "E:/GitHub/codai-project/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "E:/GitHub/codai-project/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "tablet",
+        "name": "tablet",
+        "testDir": "E:/GitHub/codai-project/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.54.1",
+    "workers": 16,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "auth.setup.ts",
+      "file": "auth.setup.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "authenticate as admin",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "setup",
+              "projectName": "setup",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10590,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "🔐 Setting up admin authentication...\n"
+                    },
+                    {
+                      "text": "❌ Admin authentication failed: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"login-form\"], [name=\"email\"], input[type=\"email\"]') to be visible\u001b[22m\n\n"
+                    },
+                    {
+                      "text": "🔄 Trying alternative admin authentication...\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-07-31T06:30:47.962Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "17e3fe6f4d9d8bd79c6b-1580989d32f149e984ed",
+          "file": "auth.setup.ts",
+          "line": 41,
+          "column": 6
+        },
+        {
+          "title": "authenticate as regular user",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "setup",
+              "projectName": "setup",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10418,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "🔐 Setting up user authentication...\n"
+                    },
+                    {
+                      "text": "❌ User authentication failed: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"login-form\"], [name=\"email\"], input[type=\"email\"]') to be visible\u001b[22m\n\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-07-31T06:30:59.094Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "17e3fe6f4d9d8bd79c6b-f9b42be7ea2d20427299",
+          "file": "auth.setup.ts",
+          "line": 115,
+          "column": 6
+        },
+        {
+          "title": "authenticate as developer",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "setup",
+              "projectName": "setup",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10521,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "🔐 Setting up developer authentication...\n"
+                    },
+                    {
+                      "text": "❌ Developer authentication failed: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"login-form\"], [name=\"email\"], input[type=\"email\"]') to be visible\u001b[22m\n\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-07-31T06:31:09.515Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "17e3fe6f4d9d8bd79c6b-b536b2c91da5f1a3314c",
+          "file": "auth.setup.ts",
+          "line": 151,
+          "column": 6
+        },
+        {
+          "title": "verify all services accessible",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "setup",
+              "projectName": "setup",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9629,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "🔍 Verifying all services are accessible...\n"
+                    },
+                    {
+                      "text": "🔍 Checking Gateway at http://localhost:4000...\n"
+                    },
+                    {
+                      "text": "⚠️  Gateway is accessible but may not be fully loaded\n"
+                    },
+                    {
+                      "text": "🔍 Checking CODAI at http://localhost:4001...\n"
+                    },
+                    {
+                      "text": "✅ CODAI is accessible and responding correctly\n"
+                    },
+                    {
+                      "text": "🔍 Checking Admin at http://localhost:4002...\n"
+                    },
+                    {
+                      "text": "❌ Admin is not accessible: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:4002/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:4002/\", waiting until \"load\"\u001b[22m\n\n"
+                    },
+                    {
+                      "text": "🔍 Checking Hub at http://localhost:4003...\n"
+                    },
+                    {
+                      "text": "❌ Hub is not accessible: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:4003/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:4003/\", waiting until \"load\"\u001b[22m\n\n"
+                    },
+                    {
+                      "text": "🔍 Checking ID at http://localhost:4004...\n"
+                    },
+                    {
+                      "text": "⚠️  ID is accessible but may not be fully loaded\n"
+                    },
+                    {
+                      "text": "🔍 Checking BancAI at http://localhost:4005...\n"
+                    },
+                    {
+                      "text": "✅ BancAI is accessible and responding correctly\n"
+                    },
+                    {
+                      "text": "✅ Service accessibility check completed\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-07-31T06:31:20.039Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "17e3fe6f4d9d8bd79c6b-98ab9b527eac93da5919",
+          "file": "auth.setup.ts",
+          "line": 187,
+          "column": 6
+        }
+      ]
+    },
+    {
+      "title": "phase3b-authentication-testing.spec.ts",
+      "file": "phase3b-authentication-testing.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Phase 3B: Authentication & Authorization Integration",
+          "file": "phase3b-authentication-testing.spec.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Phase 3B.1: Authentication Interface Discovery",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 26897,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🔐 Phase 3B.1: Discovering authentication interfaces across services...\n"
+                        },
+                        {
+                          "text": "🔍 Analyzing Gateway authentication...\n"
+                        },
+                        {
+                          "text": "  📊 Gateway: 🔓 Form, ⚪ Button, 👥 Profile\n"
+                        },
+                        {
+                          "text": "🔍 Analyzing CODAI authentication...\n"
+                        },
+                        {
+                          "text": "  📊 CODAI: 🔓 Form, 🔘 Button, 👥 Profile\n"
+                        },
+                        {
+                          "text": "🔍 Analyzing ID authentication...\n"
+                        },
+                        {
+                          "text": "  📊 ID: 🔓 Form, ⚪ Button, 👥 Profile\n"
+                        },
+                        {
+                          "text": "🔍 Analyzing BancAI authentication...\n"
+                        },
+                        {
+                          "text": "  📊 BancAI: 🔓 Form, ⚪ Button, 👥 Profile\n"
+                        },
+                        {
+                          "text": "🔍 Analyzing MemorAI authentication...\n"
+                        },
+                        {
+                          "text": "  📊 MemorAI: 🔓 Form, ⚪ Button, 👥 Profile\n"
+                        },
+                        {
+                          "text": "🔍 Analyzing Admin authentication...\n"
+                        },
+                        {
+                          "text": "  📊 Admin: 🔓 Form, ⚪ Button, 👥 Profile\n"
+                        },
+                        {
+                          "text": "🔍 Analyzing Hub authentication...\n"
+                        },
+                        {
+                          "text": "  📊 Hub: 🔓 Form, ⚪ Button, 👥 Profile\n"
+                        },
+                        {
+                          "text": "🔍 Analyzing CBD authentication...\n"
+                        },
+                        {
+                          "text": "  📊 CBD: 🔓 Form, ⚪ Button, 👥 Profile\n"
+                        },
+                        {
+                          "text": "\n📊 Authentication Discovery Summary:\n"
+                        },
+                        {
+                          "text": "   🏢 Total services: 8\n"
+                        },
+                        {
+                          "text": "   🔐 Services with auth: 1\n"
+                        },
+                        {
+                          "text": "   🔓 Services without auth: 7\n"
+                        },
+                        {
+                          "text": "   📈 Common patterns: \n"
+                        },
+                        {
+                          "text": "   💾 Results saved: test-results/phase3b-auth-discovery.json\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-31T06:31:30.361Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ece43415629902efa5f8-ae23d05417a2ff292f95",
+              "file": "phase3b-authentication-testing.spec.ts",
+              "line": 28,
+              "column": 7
+            },
+            {
+              "title": "Phase 3B.2: Cross-Service Authentication Flow",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3000,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🔄 Phase 3B.2: Testing cross-service authentication flow...\n"
+                        },
+                        {
+                          "text": "🔐 Scenario 1: ID Service authentication...\n"
+                        },
+                        {
+                          "text": "  ℹ️ No login form found - checking for other auth patterns\n"
+                        },
+                        {
+                          "text": "🔒 Scenario 2: Admin service auth requirement...\n"
+                        },
+                        {
+                          "text": "  🔓 Admin does not require authentication\n"
+                        },
+                        {
+                          "text": "\n📊 Cross-Service Authentication Flow Summary:\n"
+                        },
+                        {
+                          "text": "   🎯 Total scenarios: 2\n"
+                        },
+                        {
+                          "text": "   ✅ Successful tests: 1\n"
+                        },
+                        {
+                          "text": "   ❌ Failed tests: 1\n"
+                        },
+                        {
+                          "text": "   💾 Results saved: test-results/phase3b-auth-flow.json\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-31T06:31:57.673Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ece43415629902efa5f8-415f72a87e3bad5e892f",
+              "file": "phase3b-authentication-testing.spec.ts",
+              "line": 165,
+              "column": 7
+            },
+            {
+              "title": "Phase 3B.3: Session Management and Token Handling",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1386,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🎫 Phase 3B.3: Testing session management and token handling...\n"
+                        },
+                        {
+                          "text": "🍪 Test 1: Analyzing cookies and session storage...\n"
+                        },
+                        {
+                          "text": "  📊 CODAI: 0 cookies, 0 session keys, 0 local keys\n"
+                        },
+                        {
+                          "text": "  📊 ID: 0 cookies, 0 session keys, 0 local keys\n"
+                        },
+                        {
+                          "text": "  📊 Admin: 0 cookies, 0 session keys, 0 local keys\n"
+                        },
+                        {
+                          "text": "🌐 Test 2: Testing cross-origin requests...\n"
+                        },
+                        {
+                          "text": "  ✅ Gateway: 200\n"
+                        },
+                        {
+                          "text": "  ❌ ID: 404\n"
+                        },
+                        {
+                          "text": "  ❌ Hub: 404\n"
+                        },
+                        {
+                          "text": "\n📊 Session Management Summary:\n"
+                        },
+                        {
+                          "text": "   🎯 Total tests: 2\n"
+                        },
+                        {
+                          "text": "   ✅ Passed tests: 2\n"
+                        },
+                        {
+                          "text": "   ❌ Failed tests: 0\n"
+                        },
+                        {
+                          "text": "   💾 Results saved: test-results/phase3b-session-management.json\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-31T06:32:00.677Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ece43415629902efa5f8-0153b203ec43be709e0c",
+              "file": "phase3b-authentication-testing.spec.ts",
+              "line": 377,
+              "column": 7
+            },
+            {
+              "title": "Phase 3B: Generate Authentication Integration Report",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "📋 Phase 3B.4: Generating authentication integration report...\n"
+                        },
+                        {
+                          "text": "\n📊 Phase 3B Authentication Integration Report:\n"
+                        },
+                        {
+                          "text": "   🏢 Total services: 8\n"
+                        },
+                        {
+                          "text": "   🔍 Services analyzed: 8\n"
+                        },
+                        {
+                          "text": "   🔐 Authentication ready: 1\n"
+                        },
+                        {
+                          "text": "   🎯 Integration ready: YES\n"
+                        },
+                        {
+                          "text": "   💾 Report saved: test-results/phase3b-authentication-integration-report.json\n"
+                        },
+                        {
+                          "text": "\n🎯 Recommendations:\n"
+                        },
+                        {
+                          "text": "   1. Limited authentication coverage - review which services should require authentication\n"
+                        },
+                        {
+                          "text": "   2. Authentication flows are functioning correctly\n"
+                        },
+                        {
+                          "text": "   3. Session management capabilities detected - ensure secure token handling\n"
+                        },
+                        {
+                          "text": "\n✅ Phase 3B Authentication Integration Testing COMPLETED!\n"
+                        },
+                        {
+                          "text": "🚀 Ready for Phase 3C: Performance and Load Testing\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-31T06:32:02.066Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ece43415629902efa5f8-60464b19411b648b6b79",
+              "file": "phase3b-authentication-testing.spec.ts",
+              "line": 563,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-07-31T06:25:48.123Z",
+    "duration": 374141.43899999995,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

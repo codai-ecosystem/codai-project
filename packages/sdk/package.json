@@ -3,57 +3,57 @@
   "version": "1.0.0",
   "description": "Universal SDK for CODAI Ecosystem - Complete cross-app integration",
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
+  "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
+      "import": "./dist/esm/index.js",
       "require": "./dist/index.js"
     },
     "./auth": {
       "types": "./dist/auth/index.d.ts",
-      "import": "./dist/auth/index.mjs",
+      "import": "./dist/esm/auth/index.js",
       "require": "./dist/auth/index.js"
     },
     "./storage": {
       "types": "./dist/storage/index.d.ts",
-      "import": "./dist/storage/index.mjs",
+      "import": "./dist/esm/storage/index.js",
       "require": "./dist/storage/index.js"
     },
     "./memory": {
       "types": "./dist/memory/index.d.ts",
-      "import": "./dist/memory/index.mjs",
+      "import": "./dist/esm/memory/index.js",
       "require": "./dist/memory/index.js"
     },
     "./analytics": {
       "types": "./dist/analytics/index.d.ts",
-      "import": "./dist/analytics/index.mjs",
+      "import": "./dist/esm/analytics/index.js",
       "require": "./dist/analytics/index.js"
     },
     "./wallet": {
       "types": "./dist/wallet/index.d.ts",
-      "import": "./dist/wallet/index.mjs",
+      "import": "./dist/esm/wallet/index.js",
       "require": "./dist/wallet/index.js"
     },
     "./marketplace": {
       "types": "./dist/marketplace/index.d.ts",
-      "import": "./dist/marketplace/index.mjs",
+      "import": "./dist/esm/marketplace/index.js",
       "require": "./dist/marketplace/index.js"
     },
     "./legal": {
       "types": "./dist/legal/index.d.ts",
-      "import": "./dist/legal/index.mjs",
+      "import": "./dist/esm/legal/index.js",
       "require": "./dist/legal/index.js"
     },
     "./support": {
       "types": "./dist/support/index.d.ts",
-      "import": "./dist/support/index.mjs",
+      "import": "./dist/esm/support/index.js",
       "require": "./dist/support/index.js"
     },
     "./identity": {
       "types": "./dist/identity/index.d.ts",
-      "import": "./dist/identity/index.mjs",
+      "import": "./dist/esm/identity/index.js",
       "require": "./dist/identity/index.js"
     }
   },

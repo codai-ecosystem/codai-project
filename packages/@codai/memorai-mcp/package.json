@@ -1,11 +1,11 @@
 {
     "name": "@codai/memorai-mcp",
-    "version": "9.0.0",
+    "version": "9.4.17",
     "description": "MemorAI CBD-based MCP Server - High-Performance Vector Memory System",
     "type": "module",
     "main": "dist/server.js",
     "bin": {
-        "memorai-mcp": "dist/server.js"
+        "memorai-mcp": "./dist/server.js"
     },
     "scripts": {
         "build": "tsc",

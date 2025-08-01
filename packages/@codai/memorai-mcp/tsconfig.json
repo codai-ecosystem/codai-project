@@ -29,16 +29,8 @@
     "emitDecoratorMetadata": true,
     "types": []
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "**/*.test.ts",
-    "**/*.spec.ts",
-    "src/server-simple.ts"
-  ],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts", "src/archive/**/*"],
   "ts-node": {
     "esm": true,
     "experimentalSpecifierResolution": "node"

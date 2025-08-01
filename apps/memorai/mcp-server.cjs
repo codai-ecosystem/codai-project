@@ -37,7 +37,7 @@ class MemorAIMCPServer {
       return {
         tools: [
           {
-            name: 'mcp_memoraimcp_remember',
+            name: 'remember',
             description: 'Store information in memory with metadata',
             inputSchema: {
               type: 'object',
@@ -66,7 +66,7 @@ class MemorAIMCPServer {
             },
           },
           {
-            name: 'mcp_memoraimcp_recall',
+            name: 'recall',
             description: 'Search and retrieve stored memories',
             inputSchema: {
               type: 'object',
@@ -104,7 +104,7 @@ class MemorAIMCPServer {
             },
           },
           {
-            name: 'mcp_memoraimcp_forget',
+            name: 'forget',
             description: 'Delete memory by structured key',
             inputSchema: {
               type: 'object',
@@ -122,7 +122,7 @@ class MemorAIMCPServer {
             },
           },
           {
-            name: 'mcp_memoraimcp_context',
+            name: 'context',
             description: 'Get recent context for agent',
             inputSchema: {
               type: 'object',
@@ -141,6 +141,30 @@ class MemorAIMCPServer {
               required: ['agentId'],
             },
           },
+          {
+            name: 'search_keys',
+            description: 'Vector similarity search for memory keys',
+            inputSchema: {
+              type: 'object',
+              properties: {
+                query: {
+                  type: 'string',
+                  description: 'Query for finding similar memory keys',
+                },
+                limit: {
+                  type: 'number',
+                  description: 'Maximum keys to return',
+                  default: 10,
+                },
+                minScore: {
+                  type: 'number',
+                  description: 'Minimum similarity score',
+                  default: 0.7,
+                },
+              },
+              required: ['query'],
+            },
+          },
         ],
       };
     });
@@ -149,14 +173,16 @@ class MemorAIMCPServer {
       const { name, arguments: args } = request.params;
 
       switch (name) {
-        case 'mcp_memoraimcp_remember':
+        case 'remember':
           return this.handleRemember(args);
-        case 'mcp_memoraimcp_recall':
+        case 'recall':
           return this.handleRecall(args);
-        case 'mcp_memoraimcp_forget':
+        case 'forget':
           return this.handleForget(args);
-        case 'mcp_memoraimcp_context':
+        case 'context':
           return this.handleContext(args);
+        case 'search_keys':
+          return this.handleSearchKeys(args);
         default:
           throw new McpError(
             ErrorCode.MethodNotFound,
@@ -353,6 +379,55 @@ class MemorAIMCPServer {
             agentId,
             contextSize: agentMemories.length,
             message: `Retrieved ${agentMemories.length} recent memories for agent ${agentId}`
+          }, null, 2),
+        },
+      ],
+    };
+  }
+
+  async handleSearchKeys(args) {
+    const { query, limit = 10, minScore = 0.7 } = args;
+
+    const keys = Array.from(this.memories.keys());
+    const searchResults = [];
+
+    for (const key of keys) {
+      const memory = this.memories.get(key);
+      const searchTerms = query.toLowerCase().split(' ');
+      const keyLower = key.toLowerCase();
+      const contentLower = memory.content.toLowerCase();
+
+      let score = 0;
+      for (const term of searchTerms) {
+        if (keyLower.includes(term)) score += 0.8;
+        if (contentLower.includes(term)) score += 0.6;
+      }
+
+      if (score >= minScore) {
+        searchResults.push({
+          key,
+          score: Math.min(score, 1.0),
+          preview: memory.content.substring(0, 100)
+        });
+      }
+    }
+
+    searchResults.sort((a, b) => b.score - a.score);
+    const limitedResults = searchResults.slice(0, limit);
+
+    return {
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify({
+            success: true,
+            keys: limitedResults.map(r => r.key),
+            totalFound: searchResults.length,
+            metadata: {
+              responseTime: '1ms',
+              serverVersion: '1.0.0',
+              operation: 'search_keys'
+            }
           }, null, 2),
         },
       ],

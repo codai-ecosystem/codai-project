@@ -126,10 +126,10 @@ export class AdvancedSearchEngine {
         options: AdvancedSearchOptions = {}
     ): Promise<AdvancedSearchResult> {
         const startTime = Date.now();
-        
+
         // Analyze the query
         const queryAnalysis = await this.analyzeQuery(query, context);
-        
+
         // Expand query if enabled
         let searchTerms = [query];
         if (options.enableQueryExpansion) {
@@ -138,7 +138,7 @@ export class AdvancedSearchEngine {
 
         // Perform multi-stage search
         let candidateMemories = await this.filterCandidates(memories, searchTerms, options);
-        
+
         // Calculate advanced relevance scores
         const scoredMemories = await this.calculateAdvancedRelevance(
             candidateMemories,
@@ -194,7 +194,7 @@ export class AdvancedSearchEngine {
      */
     async analyzeQuery(query: string, context: SearchContext): Promise<QueryAnalysis> {
         const cacheKey = createHash('md5').update(query + context.agentId).digest('hex');
-        
+
         if (this.queryCache.has(cacheKey)) {
             return this.queryCache.get(cacheKey)!;
         }
@@ -247,7 +247,7 @@ export class AdvancedSearchEngine {
     async applyFuzzyMatching(memories: EnhancedMemory[], searchTerms: string[]): Promise<void> {
         for (const memory of memories) {
             let fuzzyBoost = 0;
-            
+
             for (const term of searchTerms) {
                 const fuzzyScore = await this.fuzzyMatch(term, memory.content);
                 if (fuzzyScore > 0.7) {
@@ -266,7 +266,7 @@ export class AdvancedSearchEngine {
     async fuzzyMatch(query: string, content: string): Promise<number> {
         const queryWords = query.toLowerCase().split(/\s+/);
         const contentWords = content.toLowerCase().split(/\s+/);
-        
+
         let matches = 0;
         for (const queryWord of queryWords) {
             for (const contentWord of contentWords) {
@@ -412,11 +412,11 @@ export class AdvancedSearchEngine {
         allMemories: any[]
     ): Promise<EnhancedMemory[]> {
         const relatedMemories: EnhancedMemory[] = [];
-        
+
         // For each primary result, find related memories
         for (const primaryMemory of primaryResults.slice(0, 5)) { // Limit to top 5
             const related = this.findRelatedMemories(primaryMemory, allMemories);
-            
+
             for (const relatedMemory of related) {
                 const enhancedRelated: EnhancedMemory = {
                     id: relatedMemory.id,
@@ -434,7 +434,7 @@ export class AdvancedSearchEngine {
                     },
                     relationshipContext: `Related to: ${primaryMemory.structuredKey}`
                 };
-                
+
                 relatedMemories.push(enhancedRelated);
             }
         }
@@ -472,7 +472,7 @@ export class AdvancedSearchEngine {
 
             if (clusterMemories.length >= 2) {
                 const theme = this.extractClusterTheme(clusterMemories);
-                const avgRelevance = clusterMemories.reduce((sum, m) => 
+                const avgRelevance = clusterMemories.reduce((sum, m) =>
                     sum + m.searchScore.finalScore, 0) / clusterMemories.length;
 
                 clusters.push({
@@ -491,20 +491,20 @@ export class AdvancedSearchEngine {
     // Helper methods
     private filterCandidates(memories: any[], searchTerms: string[], options: AdvancedSearchOptions): any[] {
         const scope = options.searchScope || 'all';
-        
+
         return memories.filter(memory => {
             if (scope === 'content' || scope === 'all') {
                 if (this.matchesAnyTerm(memory.content, searchTerms)) return true;
             }
-            
+
             if (scope === 'metadata' || scope === 'all') {
                 if (this.matchesMetadata(memory.metadata, searchTerms)) return true;
             }
-            
+
             if (scope === 'relationships' || scope === 'all') {
                 if (this.matchesRelationships(memory, searchTerms)) return true;
             }
-            
+
             return false;
         });
     }
@@ -527,14 +527,14 @@ export class AdvancedSearchEngine {
     private calculateContentRelevance(content: string, searchTerms: string[]): number {
         const lowerContent = content.toLowerCase();
         let score = 0;
-        
+
         for (const term of searchTerms) {
             const lowerTerm = term.toLowerCase();
             if (lowerContent.includes(lowerTerm)) {
                 // Boost for exact matches
                 const exactMatches = (lowerContent.match(new RegExp(lowerTerm, 'g')) || []).length;
                 score += exactMatches * 0.1;
-                
+
                 // Boost for term at beginning
                 if (lowerContent.startsWith(lowerTerm)) {
                     score += 0.2;
@@ -621,12 +621,12 @@ export class AdvancedSearchEngine {
 
     private highlightSearchTerms(content: string, searchTerms: string[]): string {
         let highlighted = content;
-        
+
         for (const term of searchTerms) {
             const regex = new RegExp(`(${this.escapeRegex(term)})`, 'gi');
             highlighted = highlighted.replace(regex, '**$1**');
         }
-        
+
         return highlighted;
     }
 
@@ -692,29 +692,29 @@ export class AdvancedSearchEngine {
         // Simple content similarity - could be enhanced with more sophisticated NLP
         const words1 = new Set(memory1.content.toLowerCase().split(/\s+/));
         const words2 = new Set(memory2.content.toLowerCase().split(/\s+/));
-        
+
         const intersection = new Set([...words1].filter(x => words2.has(x)));
         const union = new Set([...words1, ...words2]);
-        
+
         return union.size > 0 ? intersection.size / union.size : 0;
     }
 
     private extractClusterTheme(memories: EnhancedMemory[]): string {
         // Extract common theme from cluster memories
-        const allWords = memories.flatMap(m => 
+        const allWords = memories.flatMap(m =>
             m.content.toLowerCase().split(/\s+/).filter(w => w.length > 4)
         );
-        
+
         const wordCounts = new Map<string, number>();
         for (const word of allWords) {
             wordCounts.set(word, (wordCounts.get(word) || 0) + 1);
         }
-        
+
         const sortedWords = Array.from(wordCounts.entries())
-            .sort(([,a], [,b]) => b - a)
+            .sort(([, a], [, b]) => b - a)
             .slice(0, 3)
             .map(([word]) => word);
-            
+
         return sortedWords.join(', ') || 'Mixed Content';
     }
 
@@ -732,12 +732,12 @@ export class AdvancedSearchEngine {
 
     private detectIntent(query: string): 'find' | 'explore' | 'recall' | 'compare' | 'understand' {
         const lowerQuery = query.toLowerCase();
-        
+
         if (lowerQuery.includes('compare') || lowerQuery.includes('difference')) return 'compare';
         if (lowerQuery.includes('understand') || lowerQuery.includes('explain')) return 'understand';
         if (lowerQuery.includes('explore') || lowerQuery.includes('browse')) return 'explore';
         if (lowerQuery.includes('remember') || lowerQuery.includes('recall')) return 'recall';
-        
+
         return 'find';
     }
 
@@ -745,19 +745,19 @@ export class AdvancedSearchEngine {
         // Simple entity extraction - could be enhanced with NLP
         const entities: string[] = [];
         const words = query.split(/\s+/);
-        
+
         for (const word of words) {
             if (word.length > 3 && /^[A-Z]/.test(word)) {
                 entities.push(word);
             }
         }
-        
+
         return entities;
     }
 
     private extractTimeReferences(query: string): TimeReference[] {
         const timeRefs: TimeReference[] = [];
-        
+
         // Simple time reference detection
         const timePatterns = [
             { pattern: /today|now/i, type: 'relative' as const },
@@ -765,7 +765,7 @@ export class AdvancedSearchEngine {
             { pattern: /last week|past week/i, type: 'relative' as const },
             { pattern: /\d{4}-\d{2}-\d{2}/i, type: 'absolute' as const }
         ];
-        
+
         for (const { pattern, type } of timePatterns) {
             const match = query.match(pattern);
             if (match) {
@@ -775,7 +775,7 @@ export class AdvancedSearchEngine {
                 });
             }
         }
-        
+
         return timeRefs;
     }
 
@@ -783,20 +783,20 @@ export class AdvancedSearchEngine {
         const words = query.split(/\s+/).length;
         const hasTimeRef = this.extractTimeReferences(query).length > 0;
         const hasEntities = this.extractEntities(query).length > 0;
-        
+
         let complexity = Math.min(words / 10, 0.5); // Word count factor
         if (hasTimeRef) complexity += 0.2;
         if (hasEntities) complexity += 0.2;
-        
+
         return Math.min(complexity, 1.0);
     }
 
     private generateSearchInsights(analysis: QueryAnalysis, searchTime: number, totalMemories: number): SearchInsights {
-        const complexity = analysis.complexity < 0.3 ? 'simple' : 
-                          analysis.complexity < 0.7 ? 'moderate' : 'complex';
-        
+        const complexity = analysis.complexity < 0.3 ? 'simple' :
+            analysis.complexity < 0.7 ? 'moderate' : 'complex';
+
         const strategy = this.determineSearchStrategy(analysis);
-        
+
         return {
             queryComplexity: complexity,
             searchStrategy: strategy,
@@ -817,11 +817,11 @@ export class AdvancedSearchEngine {
 
     private getFilteringSteps(analysis: QueryAnalysis): string[] {
         const steps = ['Initial candidate filtering'];
-        
+
         if (analysis.entities.length > 0) steps.push('Entity extraction');
         if (analysis.timeReferences.length > 0) steps.push('Temporal filtering');
         if (analysis.expandedTerms.length > 1) steps.push('Query expansion');
-        
+
         steps.push('Relevance scoring', 'Final ranking');
         return steps;
     }
@@ -829,13 +829,13 @@ export class AdvancedSearchEngine {
     private recordSearchPattern(query: string, resultCount: number): void {
         const pattern = this.extractSearchPattern(query);
         this.searchPatterns.set(pattern, (this.searchPatterns.get(pattern) || 0) + 1);
-        
+
         this.searchHistory.push({
             query,
             timestamp: new Date(),
             results: resultCount
         });
-        
+
         // Keep history manageable
         if (this.searchHistory.length > 1000) {
             this.searchHistory.shift();
@@ -857,10 +857,10 @@ export class AdvancedSearchEngine {
 
     private getPopularSearchPatterns(partialQuery: string): string[] {
         const patterns = Array.from(this.searchPatterns.entries())
-            .sort(([,a], [,b]) => b - a)
+            .sort(([, a], [, b]) => b - a)
             .slice(0, 5)
             .map(([pattern]) => pattern.replace(/TERM/g, partialQuery));
-            
+
         return patterns.filter(p => p.includes(partialQuery));
     }
 
@@ -868,20 +868,21 @@ export class AdvancedSearchEngine {
         // Find terms that often appear with the query terms
         const queryWords = query.toLowerCase().split(/\s+/);
         const relatedTerms: string[] = [];
-        
+
         for (const pastQuery of searchHistory) {
             const pastWords = pastQuery.toLowerCase().split(/\s+/);
             const hasCommonWord = queryWords.some(word => pastWords.includes(word));
-            
+
             if (hasCommonWord) {
                 relatedTerms.push(...pastWords.filter(word => !queryWords.includes(word)));
             }
         }
-        
+
         return [...new Set(relatedTerms)].slice(0, 3);
     }
 
     private async aiExpandQuery(query: string, context: SearchContext): Promise<string[]> {
+        // Skip AI expansion if no chat model available (embeddings-only setup)
         if (!this.openai) return [];
 
         try {
@@ -898,12 +899,14 @@ export class AdvancedSearchEngine {
             const content = response.choices[0]?.message?.content;
             return content ? content.split('\n').map(term => term.trim()).filter(Boolean) : [];
         } catch (error) {
+            // Gracefully handle embeddings-only setup - disable AI expansion
             console.error('AI query expansion failed:', error);
             return [];
         }
     }
 
     private async generateAISuggestions(partialQuery: string, context: SearchContext): Promise<string[]> {
+        // Skip AI suggestions if no chat model available (embeddings-only setup)
         if (!this.openai) return [];
 
         try {
@@ -920,6 +923,7 @@ export class AdvancedSearchEngine {
             const content = response.choices[0]?.message?.content;
             return content ? content.split('\n').map(suggestion => suggestion.trim()).filter(Boolean) : [];
         } catch (error) {
+            // Gracefully handle embeddings-only setup - disable AI suggestions
             console.error('AI suggestion generation failed:', error);
             return [];
         }

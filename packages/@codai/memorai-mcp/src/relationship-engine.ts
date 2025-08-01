@@ -102,7 +102,7 @@ export class MemoryRelationshipEngine {
      * Detect relationships between a new memory and existing memories
      */
     async detectRelationships(
-        memory: AdvancedMemory, 
+        memory: AdvancedMemory,
         existingMemories: AdvancedMemory[],
         options: {
             maxRelationships?: number;
@@ -276,7 +276,7 @@ export class MemoryRelationshipEngine {
             if (existingMemory.id === memory.id || !existingMemory.embedding) continue;
 
             const similarity = await this.calculateSemanticSimilarity(memory, existingMemory);
-            
+
             if (similarity >= threshold) {
                 relationships.push({
                     id: this.generateRelationshipId(memory.id, existingMemory.id, 'similar'),
@@ -307,19 +307,19 @@ export class MemoryRelationshipEngine {
         const memoryTime = new Date(memory.metadata.timestamp);
 
         // Find memories from the same session within a reasonable time window
-        const sameSessionMemories = existingMemories.filter(m => 
-            m.sessionName === memory.sessionName && 
+        const sameSessionMemories = existingMemories.filter(m =>
+            m.sessionName === memory.sessionName &&
             m.metadata.agentId === memory.metadata.agentId
         );
 
         for (const sessionMemory of sameSessionMemories) {
             const sessionTime = new Date(sessionMemory.metadata.timestamp);
             const timeDiff = memoryTime.getTime() - sessionTime.getTime();
-            
+
             // If this memory comes after the session memory (within 1 hour)
             if (timeDiff > 0 && timeDiff < 3600000) {
                 const strength = Math.max(0.1, 1 - (timeDiff / 3600000));
-                
+
                 relationships.push({
                     id: this.generateRelationshipId(memory.id, sessionMemory.id, 'follows'),
                     sourceMemoryId: memory.id,
@@ -360,7 +360,7 @@ export class MemoryRelationshipEngine {
             }
 
             // Same entity type
-            if (memory.metadata.entityType && 
+            if (memory.metadata.entityType &&
                 memory.metadata.entityType === existingMemory.metadata.entityType) {
                 strength += 0.2;
                 context += (context ? ', ' : '') + 'Same entity type';
@@ -370,7 +370,7 @@ export class MemoryRelationshipEngine {
             const memoryTags = memory.metadata.tags || [];
             const existingTags = existingMemory.metadata.tags || [];
             const sharedTags = memoryTags.filter((tag: string) => existingTags.includes(tag));
-            
+
             if (sharedTags.length > 0) {
                 strength += Math.min(sharedTags.length * 0.1, 0.3);
                 context += (context ? ', ' : '') + `Shared tags: ${sharedTags.join(', ')}`;
@@ -406,7 +406,7 @@ export class MemoryRelationshipEngine {
         if (!this.openai) return [];
 
         const relationships: MemoryRelationship[] = [];
-        
+
         // Select top candidates based on existing relationships
         const candidates = existingMemories
             .filter(m => !existingRelationships.some(r => r.targetMemoryId === m.id))
@@ -584,7 +584,7 @@ Determine if there's a meaningful relationship and respond with JSON:
      */
     private cacheRelationships(memoryId: string, relationships: MemoryRelationship[]): void {
         this.relationshipCache.set(memoryId, relationships);
-        
+
         // Keep cache size reasonable
         if (this.relationshipCache.size > 1000) {
             const firstKey = this.relationshipCache.keys().next().value;
@@ -619,7 +619,7 @@ Determine if there's a meaningful relationship and respond with JSON:
     private async detectClusters(nodes: GraphNode[], edges: GraphEdge[], memories: AdvancedMemory[]): Promise<GraphCluster[]> {
         const clusters: GraphCluster[] = [];
         const visited = new Set<string>();
-        
+
         // Simple clustering based on connected components
         for (const node of nodes) {
             if (visited.has(node.id)) continue;
@@ -628,7 +628,7 @@ Determine if there's a meaningful relationship and respond with JSON:
             if (cluster.length >= 2) {
                 const clusterMemories = memories.filter(m => cluster.includes(m.id));
                 const theme = this.extractClusterTheme(clusterMemories);
-                
+
                 clusters.push({
                     id: `cluster_${clusters.length + 1}`,
                     name: `Cluster ${clusters.length + 1}: ${theme}`,
@@ -649,14 +649,14 @@ Determine if there's a meaningful relationship and respond with JSON:
     private findConnectedComponent(startNodeId: string, edges: GraphEdge[], visited: Set<string>): string[] {
         const component: string[] = [];
         const queue: string[] = [startNodeId];
-        
+
         while (queue.length > 0) {
             const nodeId = queue.shift()!;
             if (visited.has(nodeId)) continue;
-            
+
             visited.add(nodeId);
             component.push(nodeId);
-            
+
             // Find connected nodes
             for (const edge of edges) {
                 if (edge.source === nodeId && !visited.has(edge.target)) {
@@ -666,7 +666,7 @@ Determine if there's a meaningful relationship and respond with JSON:
                 }
             }
         }
-        
+
         return component;
     }
 
@@ -677,17 +677,17 @@ Determine if there's a meaningful relationship and respond with JSON:
         // Simple theme extraction - find most common entity type or project
         const entityTypes = memories.map(m => m.metadata.entityType).filter(Boolean);
         const projects = memories.map(m => m.projectName);
-        
+
         if (entityTypes.length > 0) {
             const mostCommon = this.findMostCommon(entityTypes);
             return mostCommon || 'Mixed Content';
         }
-        
+
         if (projects.length > 0) {
             const mostCommon = this.findMostCommon(projects);
             return mostCommon || 'Mixed Projects';
         }
-        
+
         return 'General Knowledge';
     }
 
@@ -699,17 +699,17 @@ Determine if there's a meaningful relationship and respond with JSON:
         for (const item of arr) {
             counts.set(item, (counts.get(item) || 0) + 1);
         }
-        
+
         let maxCount = 0;
         let mostCommon: string | null = null;
-        
+
         for (const [item, count] of counts) {
             if (count > maxCount) {
                 maxCount = count;
                 mostCommon = item;
             }
         }
-        
+
         return mostCommon;
     }
 
@@ -763,7 +763,7 @@ Determine if there's a meaningful relationship and respond with JSON:
     private calculateAveragePathLength(nodes: GraphNode[], edges: GraphEdge[]): number {
         // Simplified calculation - in production, use proper graph algorithms
         if (nodes.length <= 1) return 0;
-        
+
         const avgConnections = edges.length / nodes.length;
         return avgConnections > 0 ? Math.log(nodes.length) / Math.log(avgConnections) : nodes.length;
     }

@@ -34,7 +34,7 @@ async function testPhase1Features() {
 
         // Test memory creation with relationship detection
         console.log('\n📝 Testing memory creation with relationship detection...');
-        
+
         const memory1Result = await server.handleTool('mcp_memoraimcp_remember', {
             agentId: 'test_agent',
             content: 'JavaScript closures allow functions to access variables from outer scope',
@@ -43,7 +43,7 @@ async function testPhase1Features() {
         console.log('✅ Memory 1 created:', JSON.parse(memory1Result.content[0].text).structuredKey);
 
         const memory2Result = await server.handleTool('mcp_memoraimcp_remember', {
-            agentId: 'test_agent', 
+            agentId: 'test_agent',
             content: 'Higher-order functions in JavaScript take or return other functions',
             metadata: { topic: 'javascript', type: 'concept' }
         });
@@ -51,7 +51,7 @@ async function testPhase1Features() {
 
         // Test manual relationship linking
         console.log('\n🔗 Testing manual relationship linking...');
-        
+
         const memory1Key = JSON.parse(memory1Result.content[0].text).structuredKey;
         const memory2Key = JSON.parse(memory2Result.content[0].text).structuredKey;
 
@@ -63,33 +63,33 @@ async function testPhase1Features() {
             strength: 0.8,
             context: 'Both are JavaScript functional programming concepts'
         });
-        
+
         const linkData = JSON.parse(linkResult.content[0].text);
         console.log('✅ Relationship created:', linkData.relationship.relationshipType);
 
         // Test relationship exploration  
         console.log('\n🔍 Testing relationship exploration...');
-        
+
         const relationshipsResult = await server.handleTool('mcp_memoraimcp_get_relationships', {
             agentId: 'test_agent',
             memoryKey: memory1Key,
             maxDepth: 2
         });
-        
+
         const relData = JSON.parse(relationshipsResult.content[0].text);
         console.log('✅ Found relationships:', relData.totalRelationships);
         console.log('   Related memories:', relData.relatedMemories.length);
 
         // Test graph exploration
         console.log('\n🌐 Testing graph exploration...');
-        
+
         const graphResult = await server.handleTool('mcp_memoraimcp_explore_graph', {
             agentId: 'test_agent',
             startingMemoryKey: memory1Key,
             explorationRadius: 2,
             includeWeakLinks: false
         });
-        
+
         const graphData = JSON.parse(graphResult.content[0].text);
         console.log('✅ Graph exploration completed');
         console.log('   Knowledge graph nodes:', graphData.knowledgeGraph.totalNodes);
@@ -98,13 +98,13 @@ async function testPhase1Features() {
 
         // Test enhanced recall with search intelligence
         console.log('\n🎯 Testing enhanced recall...');
-        
+
         const recallResult = await server.handleTool('mcp_memoraimcp_recall', {
             agentId: 'test_agent',
             query: 'JavaScript functions',
             limit: 5
         });
-        
+
         const recallData = JSON.parse(recallResult.content[0].text);
         console.log('✅ Enhanced recall completed');
         console.log('   Memories found:', recallData.memories.length);
@@ -116,7 +116,7 @@ async function testPhase1Features() {
         console.log('   ✅ Relationship exploration and traversal');
         console.log('   ✅ Knowledge graph exploration');
         console.log('   ✅ Enhanced search intelligence');
-        
+
         console.log('\n🚀 MemorAI MCP v9.0.0 is ready for production!');
 
     } catch (error) {

@@ -1,25 +1,44 @@
-# @codai/memorai-mcp
+# @codai/memorai-mcp v9.0.0
 
-**High-Performance Vector Memory System for Model Context Protocol (MCP)**
+**World-Class AI Memory Management with Relationship Intelligence**
 
-A production-ready MCP server that provides advanced memory capabilities using CBD (Codai Better Database) architecture, designed for AI agents and applications requiring persistent, searchable memory.
+A production-ready MCP server that provides advanced memory capabilities with AI-powered relationship detection, knowledge graph construction, and intelligent search. Built on CBD (Codai Better Database) architecture for enterprise-grade performance and reliability.
 
 ## Features
 
 🚀 **High-Performance Architecture**
+
 - CBD-based vector memory storage with HPKV architecture
 - OpenAI embeddings integration for semantic search
 - Production-ready error handling and recovery
 - Zero data loss and corruption protection
 
 🧠 **Advanced Memory Operations**
+
 - Store memories with rich metadata and context
 - Semantic search across stored memories
 - Agent-isolated memory management
 - Structured key-based memory organization
 - Vector similarity search for memory keys
 
+🔗 **NEW: Relationship Intelligence (v9.0.0)**
+
+- AI-powered automatic relationship detection between memories
+- Knowledge graph construction with nodes, edges, and clusters
+- Multi-dimensional relationship analysis (semantic, temporal, contextual)
+- Graph traversal and exploration with configurable depth
+- Community detection and centrality analysis
+
+🎯 **NEW: Advanced Search Intelligence (v9.0.0)**
+
+- Multi-dimensional relevance scoring (semantic, temporal, usage-based)
+- Intelligent query expansion and fuzzy matching
+- Context-aware search result clustering
+- Relationship-aware search ranking
+- Advanced filtering and personalization
+
 🔧 **Easy Integration**
+
 - Compatible with VS Code MCP configuration
 - Environment-based configuration
 - Supports custom .env file paths
@@ -80,10 +99,14 @@ MEMORAI_CBD_PATH="/path/to/data" npx @codai/memorai-mcp@latest
 
 The server provides the following MCP tools:
 
+### Core Memory Tools
+
 ### `mcp_memoraimcp_remember`
-Store a new memory with metadata.
+
+Store a new memory with metadata and automatic relationship detection.
 
 **Parameters:**
+
 - `agentId` (string, required): Agent identifier for memory isolation
 - `content` (string, required): Memory content to store
 - `metadata` (object, optional): Additional metadata
@@ -94,26 +117,29 @@ Store a new memory with metadata.
   - `tags`: Array of tags for categorization
 
 **Example:**
+
 ```json
 {
   "name": "mcp_memoraimcp_remember",
   "arguments": {
     "agentId": "copilot-agent",
-    "content": "User prefers TypeScript over JavaScript for new projects",
+    "content": "React Hooks provide a way to use state in functional components",
     "metadata": {
-      "entityType": "preference",
-      "priority": "medium",
-      "project": "codai-ecosystem",
-      "tags": ["typescript", "preferences"]
+      "entityType": "concept",
+      "priority": "high",
+      "project": "react-learning",
+      "tags": ["react", "hooks", "frontend"]
     }
   }
 }
 ```
 
 ### `mcp_memoraimcp_recall`
-Search and retrieve stored memories.
+
+Search and retrieve stored memories with advanced search intelligence.
 
 **Parameters:**
+
 - `agentId` (string, required): Agent identifier
 - `query` (string, required): Search query
 - `limit` (number, optional): Maximum results (default: 10)
@@ -122,60 +148,156 @@ Search and retrieve stored memories.
 - `session` (string, optional): Filter by session
 
 **Example:**
+
 ```json
 {
   "name": "mcp_memoraimcp_recall",
   "arguments": {
     "agentId": "copilot-agent",
-    "query": "typescript preferences",
+    "query": "react state management",
     "limit": 5,
-    "project": "codai-ecosystem"
+    "project": "react-learning"
   }
 }
 ```
 
 ### `mcp_memoraimcp_forget`
+
 Delete a memory by structured key.
 
 **Parameters:**
+
 - `agentId` (string, required): Agent identifier
 - `structuredKey` (string, required): Structured key of memory to delete
 
 ### `mcp_memoraimcp_context`
+
 Get recent context for an agent.
 
 **Parameters:**
+
 - `agentId` (string, required): Agent identifier
 - `contextSize` (number, optional): Number of recent memories (default: 5)
 
 ### `mcp_memoraimcp_get_memory`
+
 Get memory by exact structured key.
 
 **Parameters:**
+
 - `structuredKey` (string, required): Exact structured key
 
 ### `mcp_memoraimcp_search_keys`
+
 Vector similarity search for memory keys.
 
 **Parameters:**
+
 - `query` (string, required): Query for finding similar keys
 - `limit` (number, optional): Maximum keys to return (default: 10)
 - `minScore` (number, optional): Minimum similarity score (default: 0.7)
+
+### NEW: Relationship Intelligence Tools (v9.0.0)
+
+### `mcp_memoraimcp_link_memories`
+
+Create explicit relationships between memories.
+
+**Parameters:**
+
+- `sourceMemoryKey` (string, required): Source memory structured key
+- `targetMemoryKey` (string, required): Target memory structured key
+- `relationshipType` (string, required): Type of relationship
+  - `"related"`: General relationship
+  - `"explains"`: Source explains target
+  - `"references"`: Source references target
+  - `"contradicts"`: Source contradicts target
+  - `"builds_on"`: Source builds on target
+  - `"implements"`: Source implements target
+  - `"exemplifies"`: Source exemplifies target
+  - `"depends_on"`: Source depends on target
+- `strength` (number, optional): Relationship strength (0-1, default: 0.5)
+- `context` (string, optional): Additional context about the relationship
+
+**Example:**
+
+```json
+{
+  "name": "mcp_memoraimcp_link_memories",
+  "arguments": {
+    "sourceMemoryKey": "react-learning_20250131_001",
+    "targetMemoryKey": "react-learning_20250131_002",
+    "relationshipType": "explains",
+    "strength": 0.9,
+    "context": "Hooks enable state management in functional components"
+  }
+}
+```
+
+### `mcp_memoraimcp_get_relationships`
+
+Retrieve relationships for a specific memory.
+
+**Parameters:**
+
+- `memoryKey` (string, required): Memory structured key
+- `maxDepth` (number, optional): Maximum relationship depth (default: 1)
+- `relationshipTypes` (array, optional): Filter by relationship types
+- `minStrength` (number, optional): Minimum relationship strength (default: 0.0)
+
+**Example:**
+
+```json
+{
+  "name": "mcp_memoraimcp_get_relationships",
+  "arguments": {
+    "memoryKey": "react-learning_20250131_001",
+    "maxDepth": 2,
+    "relationshipTypes": ["explains", "references"],
+    "minStrength": 0.5
+  }
+}
+```
+
+### `mcp_memoraimcp_explore_graph`
+
+Explore the knowledge graph from a starting memory.
+
+**Parameters:**
+
+- `startingMemoryKey` (string, required): Starting point for exploration
+- `explorationRadius` (number, optional): Exploration radius (default: 2)
+- `includeWeakLinks` (boolean, optional): Include weak relationships (default: false)
+- `maxNodes` (number, optional): Maximum nodes to return (default: 50)
+
+**Example:**
+
+```json
+{
+  "name": "mcp_memoraimcp_explore_graph",
+  "arguments": {
+    "startingMemoryKey": "react-learning_20250131_001",
+    "explorationRadius": 3,
+    "includeWeakLinks": true,
+    "maxNodes": 100
+  }
+}
+```
 
 ## Configuration
 
 ### Environment Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `OPENAI_API_KEY` | OpenAI API key (required) | - |
-| `DOTENV_CONFIG_PATH` | Path to .env file | `.env` |
-| `MEMORAI_CBD_PATH` | CBD data directory | `./memorai-cbd-data` |
-| `MEMORAI_LOG_LEVEL` | Log level | `info` |
-| `MEMORAI_CACHE_SIZE` | Memory cache size | `10000` |
-| `MEMORAI_DIMENSIONS` | Embedding dimensions | `1536` |
-| `MEMORAI_EMBEDDING_MODEL` | OpenAI embedding model | `text-embedding-ada-002` |
-| `MEMORAI_MAX_MEMORIES` | Maximum memories stored | `100000` |
+| Variable                  | Description               | Default                  |
+| ------------------------- | ------------------------- | ------------------------ |
+| `OPENAI_API_KEY`          | OpenAI API key (required) | -                        |
+| `DOTENV_CONFIG_PATH`      | Path to .env file         | `.env`                   |
+| `MEMORAI_CBD_PATH`        | CBD data directory        | `./memorai-cbd-data`     |
+| `MEMORAI_LOG_LEVEL`       | Log level                 | `info`                   |
+| `MEMORAI_CACHE_SIZE`      | Memory cache size         | `10000`                  |
+| `MEMORAI_DIMENSIONS`      | Embedding dimensions      | `1536`                   |
+| `MEMORAI_EMBEDDING_MODEL` | OpenAI embedding model    | `text-embedding-ada-002` |
+| `MEMORAI_MAX_MEMORIES`    | Maximum memories stored   | `100000`                 |
 
 ### VS Code MCP Configuration
 
@@ -200,6 +322,7 @@ The server is designed to work seamlessly with VS Code MCP configurations:
 ### CBD (Codai Better Database) Integration
 
 The server uses CBD architecture for:
+
 - High-performance vector storage
 - FAISS-based similarity search
 - Efficient memory indexing
@@ -207,30 +330,44 @@ The server uses CBD architecture for:
 
 ### Memory Structure
 
-Memories are stored with the following structure:
+Memories are stored with the following enhanced structure:
 
 ```typescript
-interface Memory {
-  id: string;                    // Unique identifier
-  content: string;               // Memory content
+interface AdvancedMemory {
+  id: string; // Unique identifier
+  content: string; // Memory content
   metadata: {
-    agentId: string;             // Agent identifier
-    timestamp: string;           // ISO timestamp
-    importance: number;          // Importance score (0-1)
-    project?: string;            // Project name
-    session?: string;            // Session identifier
-    tags?: string[];             // Tags array
-    entityType?: string;         // Entity type
-    priority?: string;           // Priority level
+    agentId: string; // Agent identifier
+    timestamp: string; // ISO timestamp
+    importance: number; // Importance score (0-1)
+    project?: string; // Project name
+    session?: string; // Session identifier
+    tags?: string[]; // Tags array
+    entityType?: string; // Entity type
+    priority?: string; // Priority level
   };
-  structuredKey: string;         // Structured key for organization
-  embedding?: number[];          // Vector embedding
+  structuredKey: string; // Structured key for organization
+  embedding?: number[]; // Vector embedding
+  relationships: MemoryRelationship[]; // NEW: Detected relationships
+}
+
+interface MemoryRelationship {
+  targetKey: string; // Target memory key
+  type: RelationshipType; // Relationship type
+  strength: number; // Relationship strength (0-1)
+  context?: string; // Optional context
+  metadata: {
+    detectionMethod: 'automatic' | 'explicit';
+    confidence: number; // AI confidence score
+    timestamp: string; // When relationship was created
+  };
 }
 ```
 
 ### Structured Keys
 
 Memories use structured keys for organization:
+
 ```
 {project}_{date}_{session}_{sequence}
 ```
@@ -305,7 +442,27 @@ npm start
 
 ## Version History
 
+### 9.0.0 - World-Class Enhancement Release
+
+- **NEW**: AI-powered automatic relationship detection between memories
+- **NEW**: Knowledge graph construction with nodes, edges, and clusters
+- **NEW**: Three new MCP tools for relationship management:
+  - `mcp_memoraimcp_link_memories`: Create explicit relationships
+  - `mcp_memoraimcp_get_relationships`: Explore memory relationships
+  - `mcp_memoraimcp_explore_graph`: Navigate knowledge graphs
+- **NEW**: Advanced search intelligence with multi-dimensional scoring
+- **NEW**: Intelligent query expansion and fuzzy matching
+- **NEW**: Context-aware search result clustering
+- **ENHANCED**: Memory recall with relationship-aware ranking
+- **ENHANCED**: Automatic relationship detection during memory creation
+- **IMPROVED**: Search relevance through semantic similarity and temporal analysis
+- **ADDED**: Graph analytics with centrality and community detection
+- **ADDED**: Comprehensive relationship type system (8 types)
+- **ADDED**: Configurable relationship strength and context
+- **ADDED**: Multi-depth graph traversal and exploration
+
 ### 8.0.0-cbd
+
 - Initial CBD-based implementation
 - Full MCP tool compatibility
 - Production-ready architecture
@@ -319,6 +476,7 @@ MIT License - see LICENSE file for details.
 ## Support
 
 For issues and questions:
+
 1. Check the troubleshooting section
 2. Review environment configuration
 3. Enable debug logging

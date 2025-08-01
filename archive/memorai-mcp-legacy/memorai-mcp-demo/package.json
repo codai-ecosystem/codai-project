@@ -1,0 +1,20 @@
+{
+  "name": "memorai-mcp-demo",
+  "version": "1.0.0",
+  "description": "MemorAI MCP Testing and Performance Demonstration",
+  "type": "module",
+  "scripts": {
+    "start": "node test-published-package.js",
+    "test:memory": "node test-memory-operations.js",
+    "test:analytics": "node test-analytics.js",
+    "test:federation": "node test-federation.js",
+    "test:performance": "node performance-test.js",
+    "install:memorai": "npm install @codai/memorai-mcp@latest"
+  },
+  "dependencies": {
+    "@codai/memorai-mcp": "^9.4.0"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5"
+  }
+}

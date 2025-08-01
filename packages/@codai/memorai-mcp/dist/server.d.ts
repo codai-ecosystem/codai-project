@@ -3,7 +3,7 @@
  * MemorAI MCP Unified Server - Production-Ready Implementation
  *
  * Consolidated server combining the best features from all implementations:
- * - Correct tool names (mcp_memoraimcp_*) for VS Code MCP compatibility
+ * - Correct tool names (*) for VS Code MCP compatibility
  * - CBD backend for high-performance and reliability
  * - HPKV-inspired architecture with structured keys
  * - Advanced semantic search with OpenAI embeddings
@@ -11,12 +11,45 @@
  * - Hybrid storage with fallback mechanisms
  * - Simplified configuration and startup
  */
+import { MemoryRelationship } from './relationship-engine.js';
 interface AzureOpenAIConfig {
     endpoint: string;
     apiKey: string;
     apiVersion: string;
     embeddingDeployment: string;
     embeddingModel: string;
+}
+export interface AdvancedMemory {
+    id: string;
+    content: string;
+    contentHash: string;
+    structuredKey: string;
+    projectName: string;
+    sessionName: string;
+    sequenceNumber: number;
+    metadata: {
+        agentId: string;
+        timestamp: string;
+        importance: number;
+        project?: string;
+        session?: string;
+        tags?: string[];
+        entityType?: string;
+        priority?: string;
+        embeddingSummary?: string;
+    };
+    accessCount: number;
+    lastAccessed: string;
+    relevanceScore?: number;
+    embedding?: number[];
+    embeddingModel?: string;
+    relationships: MemoryRelationship[];
+    relatedMemoryIds: Set<string>;
+    knowledgeGraphPosition?: {
+        x: number;
+        y: number;
+        cluster: string;
+    };
 }
 interface ServerConfig {
     cbdPath: string;
@@ -44,6 +77,12 @@ export declare class MemorAIUnifiedServer {
     private openai?;
     private relationshipEngine;
     private searchEngine;
+    private analyticsEngine;
+    private recommendationEngine;
+    private evolutionEngine;
+    private learningEngine;
+    private enhancedPredictiveEngine;
+    private federationEngine;
     private operationCount;
     private operationTimes;
     private startTime;
@@ -75,6 +114,25 @@ export declare class MemorAIUnifiedServer {
     private saveMemories;
     start(): Promise<void>;
     stop(): Promise<void>;
+    private handleGetAnalytics;
+    private handleGetRecommendations;
+    private handleGetInsights;
+    private generateInsightsSummary;
+    private handleEvolveMemory;
+    private handleResolveConflicts;
+    private handleConsolidateMemories;
+    private handleManageLifecycle;
+    private handlePredictEnhanced;
+    private handlePredictStructure;
+    private handlePredictEvolution;
+    private handleLearnFromUsage;
+    private handleAdaptOrganization;
+    private handleOptimizeRetrieval;
+    private handleShareMemory;
+    private handleFederatedQuery;
+    private handleCollectiveInsights;
+    private handleCollaborativeLearning;
+    private handleSynchronizeFederation;
 }
 export {};
 //# sourceMappingURL=server.d.ts.map

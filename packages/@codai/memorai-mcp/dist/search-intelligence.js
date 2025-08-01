@@ -629,6 +629,7 @@ export class AdvancedSearchEngine {
         return [...new Set(relatedTerms)].slice(0, 3);
     }
     async aiExpandQuery(query, context) {
+        // Skip AI expansion if no chat model available (embeddings-only setup)
         if (!this.openai)
             return [];
         try {
@@ -645,11 +646,13 @@ export class AdvancedSearchEngine {
             return content ? content.split('\n').map(term => term.trim()).filter(Boolean) : [];
         }
         catch (error) {
+            // Gracefully handle embeddings-only setup - disable AI expansion
             console.error('AI query expansion failed:', error);
             return [];
         }
     }
     async generateAISuggestions(partialQuery, context) {
+        // Skip AI suggestions if no chat model available (embeddings-only setup)
         if (!this.openai)
             return [];
         try {
@@ -666,6 +669,7 @@ export class AdvancedSearchEngine {
             return content ? content.split('\n').map(suggestion => suggestion.trim()).filter(Boolean) : [];
         }
         catch (error) {
+            // Gracefully handle embeddings-only setup - disable AI suggestions
             console.error('AI suggestion generation failed:', error);
             return [];
         }

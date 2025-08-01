@@ -183,7 +183,7 @@ export class MemorAIUnifiedServer {
             return {
                 tools: [
                     {
-                        name: 'mcp_memoraimcp_remember',
+                        name: 'remember',
                         description: 'Store a new memory with metadata',
                         inputSchema: {
                             type: 'object',
@@ -205,7 +205,7 @@ export class MemorAIUnifiedServer {
                         },
                     },
                     {
-                        name: 'mcp_memoraimcp_recall',
+                        name: 'recall',
                         description: 'Search and retrieve memories',
                         inputSchema: {
                             type: 'object',
@@ -221,7 +221,7 @@ export class MemorAIUnifiedServer {
                         },
                     },
                     {
-                        name: 'mcp_memoraimcp_forget',
+                        name: 'forget',
                         description: 'Delete a memory by structured key',
                         inputSchema: {
                             type: 'object',
@@ -233,7 +233,7 @@ export class MemorAIUnifiedServer {
                         },
                     },
                     {
-                        name: 'mcp_memoraimcp_context',
+                        name: 'context',
                         description: 'Get recent context for agent',
                         inputSchema: {
                             type: 'object',
@@ -245,7 +245,7 @@ export class MemorAIUnifiedServer {
                         },
                     },
                     {
-                        name: 'mcp_memoraimcp_get_memory',
+                        name: 'get_memory',
                         description: 'Get memory by exact structured key',
                         inputSchema: {
                             type: 'object',
@@ -256,7 +256,7 @@ export class MemorAIUnifiedServer {
                         },
                     },
                     {
-                        name: 'mcp_memoraimcp_search_keys',
+                        name: 'search_keys',
                         description: 'Vector similarity search for memory keys',
                         inputSchema: {
                             type: 'object',
@@ -278,17 +278,17 @@ export class MemorAIUnifiedServer {
 
             try {
                 switch (name) {
-                    case 'mcp_memoraimcp_remember':
+                    case 'remember':
                         return await this.handleRemember(args);
-                    case 'mcp_memoraimcp_recall':
+                    case 'recall':
                         return await this.handleRecall(args);
-                    case 'mcp_memoraimcp_forget':
+                    case 'forget':
                         return await this.handleForget(args);
-                    case 'mcp_memoraimcp_context':
+                    case 'context':
                         return await this.handleContext(args);
-                    case 'mcp_memoraimcp_get_memory':
+                    case 'get_memory':
                         return await this.handleGetMemory(args);
-                    case 'mcp_memoraimcp_search_keys':
+                    case 'search_keys':
                         return await this.handleSearchKeys(args);
                     default:
                         throw new McpError(ErrorCode.MethodNotFound, `Unknown tool: ${name}`);

@@ -17,3 +17,21 @@ export interface User {
   name: string;
   role: 'admin' | 'user';
 }
+
+// Intelligence Types
+export interface IntelligenceRequest {
+  query: string;
+  context?: string;
+  language?: 'ro' | 'en';
+  domain?: string;
+  userId?: string;
+  sessionId?: string;
+}
+
+export interface IntelligenceResponse {
+  response: string;
+  confidence: number;
+  sources?: string[];
+  relatedTopics?: string[];
+  suggestions?: string[];
+}

@@ -1,0 +1,637 @@
+# ControlAI and RomAI Ecosystem Services Kubernetes Manifests
+
+# ControlAI Dashboard (controlai.ro)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: controlai-dashboard
+  namespace: codai-services
+  labels:
+    app: controlai-dashboard
+    component: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: controlai-dashboard
+  template:
+    metadata:
+      labels:
+        app: controlai-dashboard
+        component: frontend
+    spec:
+      containers:
+        - name: controlai-dashboard
+          image: ${aws_ecr_repository.controlai_dashboard.repository_url}:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-config
+                  key: NODE_ENV
+            - name: PORT
+              value: '3000'
+            - name: NEXT_PUBLIC_API_URL
+              value: 'https://api.controlai.ro'
+            - name: NEXT_PUBLIC_MCP_URL
+              value: 'https://mcp.controlai.ro'
+            - name: NEXT_PUBLIC_DOMAIN
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-domains
+                  key: CONTROLAI_DOMAIN
+            - name: NEXT_PUBLIC_GATEWAY_URL
+              value: 'https://api.codai.ro'
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '250m'
+            limits:
+              memory: '512Mi'
+              cpu: '500m'
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/ready
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: controlai-dashboard
+  namespace: codai-services
+  labels:
+    app: controlai-dashboard
+spec:
+  selector:
+    app: controlai-dashboard
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+  type: ClusterIP
+---
+# ControlAI API Backend (api.controlai.ro)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: controlai-backend
+  namespace: codai-apis
+  labels:
+    app: controlai-backend
+    component: backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: controlai-backend
+  template:
+    metadata:
+      labels:
+        app: controlai-backend
+        component: backend
+    spec:
+      containers:
+        - name: controlai-backend
+          image: ${aws_ecr_repository.controlai_backend.repository_url}:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-config
+                  key: NODE_ENV
+            - name: PORT
+              value: '3000'
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: codai-secrets
+                  key: DATABASE_URL
+            - name: REDIS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-config
+                  key: REDIS_URL
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: codai-secrets
+                  key: JWT_SECRET
+            - name: MCP_SERVICE_URL
+              value: 'http://controlai-mcp.codai-mcps.svc.cluster.local'
+            - name: CBD_SERVICE_URL
+              value: 'http://cbd-service.codai-services.svc.cluster.local'
+          resources:
+            requests:
+              memory: '512Mi'
+              cpu: '500m'
+            limits:
+              memory: '1Gi'
+              cpu: '1000m'
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: controlai-backend
+  namespace: codai-apis
+  labels:
+    app: controlai-backend
+spec:
+  selector:
+    app: controlai-backend
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+  type: ClusterIP
+---
+# ControlAI MCP Server (mcp.controlai.ro)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: controlai-mcp
+  namespace: codai-mcps
+  labels:
+    app: controlai-mcp
+    component: mcp-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: controlai-mcp
+  template:
+    metadata:
+      labels:
+        app: controlai-mcp
+        component: mcp-server
+    spec:
+      containers:
+        - name: controlai-mcp
+          image: ${aws_ecr_repository.controlai_mcp.repository_url}:latest
+          ports:
+            - containerPort: 7002
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-config
+                  key: NODE_ENV
+            - name: PORT
+              value: '7002'
+            - name: MCP_SERVER_NAME
+              value: 'controlai-mcp'
+            - name: MCP_SERVER_VERSION
+              value: '2.1.9'
+            - name: CBD_SERVICE_URL
+              value: 'http://cbd-service.codai-services.svc.cluster.local'
+            - name: BACKEND_SERVICE_URL
+              value: 'http://controlai-backend.codai-apis.svc.cluster.local'
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: codai-secrets
+                  key: DATABASE_URL
+            - name: MCP_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: codai-secrets
+                  key: MCP_API_KEY
+            - name: RATE_LIMIT_ENABLED
+              value: 'true'
+            - name: ENABLE_LOCAL_DATABASE
+              value: 'true'
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '250m'
+            limits:
+              memory: '512Mi'
+              cpu: '500m'
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 7002
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 7002
+            initialDelaySeconds: 5
+            periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: controlai-mcp
+  namespace: codai-mcps
+  labels:
+    app: controlai-mcp
+spec:
+  selector:
+    app: controlai-mcp
+  ports:
+    - port: 80
+      targetPort: 7002
+      protocol: TCP
+  type: ClusterIP
+---
+# RomAI Frontend (romai.ro)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: romai-frontend
+  namespace: codai-services
+  labels:
+    app: romai-frontend
+    component: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: romai-frontend
+  template:
+    metadata:
+      labels:
+        app: romai-frontend
+        component: frontend
+    spec:
+      containers:
+        - name: romai-frontend
+          image: ${aws_ecr_repository.romai_frontend.repository_url}:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-config
+                  key: NODE_ENV
+            - name: PORT
+              value: '3000'
+            - name: NEXT_PUBLIC_API_URL
+              value: 'https://api.romai.ro'
+            - name: NEXT_PUBLIC_MCP_URL
+              value: 'https://mcp.romai.ro'
+            - name: NEXT_PUBLIC_DOMAIN
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-domains
+                  key: ROMAI_DOMAIN
+            - name: NEXT_PUBLIC_LANGUAGE
+              value: 'ro'
+            - name: NEXT_PUBLIC_REGION
+              value: 'Romania'
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '250m'
+            limits:
+              memory: '512Mi'
+              cpu: '500m'
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/ready
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: romai-frontend
+  namespace: codai-services
+  labels:
+    app: romai-frontend
+spec:
+  selector:
+    app: romai-frontend
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+  type: ClusterIP
+---
+# RomAI API Backend (api.romai.ro)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: romai-backend
+  namespace: codai-apis
+  labels:
+    app: romai-backend
+    component: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: romai-backend
+  template:
+    metadata:
+      labels:
+        app: romai-backend
+        component: backend
+    spec:
+      containers:
+        - name: romai-backend
+          image: ${aws_ecr_repository.romai_backend.repository_url}:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-config
+                  key: NODE_ENV
+            - name: PORT
+              value: '3000'
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: codai-secrets
+                  key: DATABASE_URL
+            - name: REDIS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-config
+                  key: REDIS_URL
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: codai-secrets
+                  key: JWT_SECRET
+            - name: MCP_SERVICE_URL
+              value: 'http://romai-mcp.codai-mcps.svc.cluster.local'
+            - name: LANGUAGE
+              value: 'ro'
+            - name: CULTURAL_CONTEXT
+              value: 'romanian'
+          resources:
+            requests:
+              memory: '512Mi'
+              cpu: '500m'
+            limits:
+              memory: '1Gi'
+              cpu: '1000m'
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: romai-backend
+  namespace: codai-apis
+  labels:
+    app: romai-backend
+spec:
+  selector:
+    app: romai-backend
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+  type: ClusterIP
+---
+# RomAI MCP Server (mcp.romai.ro)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: romai-mcp
+  namespace: codai-mcps
+  labels:
+    app: romai-mcp
+    component: mcp-server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: romai-mcp
+  template:
+    metadata:
+      labels:
+        app: romai-mcp
+        component: mcp-server
+    spec:
+      containers:
+        - name: romai-mcp
+          image: ${aws_ecr_repository.romai_mcp.repository_url}:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-config
+                  key: NODE_ENV
+            - name: PORT
+              value: '3000'
+            - name: MCP_SERVER_NAME
+              value: 'romai-mcp'
+            - name: MCP_SERVER_VERSION
+              value: '1.0.0'
+            - name: BACKEND_SERVICE_URL
+              value: 'http://romai-backend.codai-apis.svc.cluster.local'
+            - name: MCP_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: codai-secrets
+                  key: MCP_API_KEY
+            - name: LANGUAGE
+              value: 'ro'
+            - name: CULTURAL_EXPERTISE
+              value: 'romanian'
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '250m'
+            limits:
+              memory: '512Mi'
+              cpu: '500m'
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: romai-mcp
+  namespace: codai-mcps
+  labels:
+    app: romai-mcp
+spec:
+  selector:
+    app: romai-mcp
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+  type: ClusterIP
+---
+# Horizontal Pod Autoscalers for ControlAI and RomAI
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: controlai-dashboard-hpa
+  namespace: codai-services
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: controlai-dashboard
+  minReplicas: 2
+  maxReplicas: 8
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: controlai-backend-hpa
+  namespace: codai-apis
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: controlai-backend
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: controlai-mcp-hpa
+  namespace: codai-mcps
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: controlai-mcp
+  minReplicas: 2
+  maxReplicas: 8
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: romai-frontend-hpa
+  namespace: codai-services
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: romai-frontend
+  minReplicas: 1
+  maxReplicas: 6
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: romai-backend-hpa
+  namespace: codai-apis
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: romai-backend
+  minReplicas: 1
+  maxReplicas: 6
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: romai-mcp-hpa
+  namespace: codai-mcps
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: romai-mcp
+  minReplicas: 1
+  maxReplicas: 6
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70

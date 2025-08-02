@@ -1,0 +1,123 @@
+{
+  "folders": [
+    {
+      "name": "ControlAI MCP Server",
+      "path": "../packages/controlai-mcp",
+    },
+    {
+      "name": "ControlAI Dashboard",
+      "path": "../apps/controlai-dashboard",
+    },
+    {
+      "name": "CBD Database",
+      "path": "../packages/cbd",
+    },
+    {
+      "name": "Shared Types",
+      "path": "../types",
+    },
+    {
+      "name": "Documentation",
+      "path": "../docs",
+    },
+  ],
+  "settings": {
+    "workbench.colorTheme": "Just Black 2",
+    "workbench.colorCustomizations": {
+      "titleBar.activeBackground": "#1e40af",
+      "titleBar.activeForeground": "#ffffff",
+      "titleBar.inactiveBackground": "#1e3a8a",
+      "titleBar.inactiveForeground": "#e5e7eb",
+      "statusBar.background": "#1e40af",
+      "statusBar.foreground": "#ffffff",
+      "activityBar.background": "#1e3a8a",
+      "activityBar.foreground": "#ffffff",
+    },
+    "typescript.preferences.includePackageJsonAutoImports": "auto",
+    "eslint.workingDirectories": [
+      "packages/controlai-mcp",
+      "apps/controlai-dashboard",
+      "packages/cbd",
+    ],
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/.next": true,
+    },
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-vscode.vscode-typescript-next",
+      "bradlc.vscode-tailwindcss",
+      "esbenp.prettier-vscode",
+      "ms-vscode.vscode-json",
+    ],
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Start ControlAI MCP Server",
+        "type": "node",
+        "request": "launch",
+        "program": "${workspaceFolder}/packages/controlai-mcp/dist/server.js",
+        "env": {
+          "CONTROLAI_WEBSOCKET_ENABLED": "true",
+          "CONTROLAI_PORT": "7001",
+        },
+      },
+      {
+        "name": "Start Dashboard Dev",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder}/apps/controlai-dashboard",
+        "runtimeExecutable": "pnpm",
+        "runtimeArgs": ["dev"],
+      },
+    ],
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Start All ControlAI Services",
+        "dependsOrder": "parallel",
+        "dependsOn": ["Start CBD Service", "Start ControlAI MCP", "Start Dashboard"],
+      },
+      {
+        "label": "Start CBD Service",
+        "type": "shell",
+        "command": "pnpm",
+        "args": ["run", "service"],
+        "options": {
+          "cwd": "${workspaceFolder}/packages/cbd",
+        },
+        "isBackground": true,
+      },
+      {
+        "label": "Start ControlAI MCP",
+        "type": "shell",
+        "command": "pnpm",
+        "args": ["dev"],
+        "options": {
+          "cwd": "${workspaceFolder}/packages/controlai-mcp",
+          "env": {
+            "CONTROLAI_WEBSOCKET_ENABLED": "true",
+            "CONTROLAI_PORT": "7001",
+          },
+        },
+        "isBackground": true,
+      },
+      {
+        "label": "Start Dashboard",
+        "type": "shell",
+        "command": "pnpm",
+        "args": ["dev"],
+        "options": {
+          "cwd": "${workspaceFolder}/apps/controlai-dashboard",
+        },
+        "isBackground": true,
+      },
+    ],
+  },
+}

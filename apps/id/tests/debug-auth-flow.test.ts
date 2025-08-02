@@ -4,8 +4,8 @@
 
 import { describe, it, expect } from 'vitest';
 import { NextRequest } from 'next/server';
-import { POST as loginPOST } from '@/app/api/auth/login/route';
-import { POST as registerPOST } from '@/app/api/auth/register/route';
+import { POST as loginPOST } from '../src/app/api/auth/login/route';
+import { POST as registerPOST } from '../src/app/api/auth/register/route';
 
 // Helper to create mock NextRequest
 function createMockRequest(body: any, headers: Record<string, string> = {}): NextRequest {

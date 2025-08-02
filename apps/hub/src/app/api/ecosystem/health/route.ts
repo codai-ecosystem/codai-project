@@ -19,8 +19,13 @@ async function getHubService(): Promise<CNDHubService> {
 // GET /api/ecosystem/health - Get health status of all services
 export async function GET(request: NextRequest) {
     try {
+        console.log('🚀 Getting hub service...');
         const hub = await getHubService();
+        console.log('✅ Hub service obtained');
+
+        console.log('🔍 Getting service health...');
         const healthStatus = await hub.getServiceHealth();
+        console.log('✅ Service health obtained:', healthStatus);
 
         // Group health by status
         const healthSummary = Array.isArray(healthStatus) ? healthStatus.reduce((acc, service) => {
@@ -41,7 +46,7 @@ export async function GET(request: NextRequest) {
             degradedCount > 0 ? 'degraded' :
                 unknownCount > 0 ? 'partial' : 'healthy';
 
-        return NextResponse.json({
+        const result = {
             success: true,
             ecosystem: {
                 overallStatus,
@@ -56,9 +61,13 @@ export async function GET(request: NextRequest) {
             },
             services: healthStatus,
             timestamp: new Date().toISOString(),
-        });
+        };
+
+        console.log('✅ Returning health result:', result);
+        return NextResponse.json(result);
     } catch (error) {
         console.error('❌ Failed to get ecosystem health:', error);
+        console.error('❌ Error stack:', error instanceof Error ? error.stack : 'No stack trace');
 
         return NextResponse.json({
             success: false,

@@ -1,0 +1,101 @@
+# 📊 Prometheus Configuration for CBD Universal Database
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'cbd-production'
+    environment: 'prod'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  - "alert_rules.yml"
+
+# Scrape configuration
+scrape_configs:
+  # Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # CBD Core Database Service
+  - job_name: 'cbd-core-database'
+    static_configs:
+      - targets: ['cbd-core:4180']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  # Real-time Collaboration Service
+  - job_name: 'cbd-collaboration'
+    static_configs:
+      - targets: ['cbd-collaboration:4600']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # AI Analytics Engine
+  - job_name: 'cbd-analytics'
+    static_configs:
+      - targets: ['cbd-analytics:4700']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # GraphQL API Gateway
+  - job_name: 'cbd-graphql'
+    static_configs:
+      - targets: ['cbd-graphql:4800']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Service Mesh Gateway
+  - job_name: 'cbd-mesh'
+    static_configs:
+      - targets: ['cbd-mesh:4000']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Node Exporter for system metrics
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+
+  # PostgreSQL Exporter
+  - job_name: 'postgres-exporter'
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+
+  # Redis Exporter
+  - job_name: 'redis-exporter'
+    static_configs:
+      - targets: ['redis-exporter:9121']
+
+  # Docker Container Metrics
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+
+  # Application-specific metrics
+  - job_name: 'cbd-custom-metrics'
+    static_configs:
+      - targets: 
+        - 'cbd-core:4180'
+        - 'cbd-collaboration:4600'
+        - 'cbd-analytics:4700'
+        - 'cbd-graphql:4800'
+        - 'cbd-mesh:4000'
+    metrics_path: '/custom-metrics'
+    scrape_interval: 30s
+
+# Remote write configuration for long-term storage
+remote_write:
+  - url: "https://prometheus-remote-write.example.com/api/v1/write"
+    basic_auth:
+      username: "cbd-metrics"
+      password: "secure-password"

@@ -44,11 +44,6 @@
     ".next",
     "out",
     "dist",
-    "**/*.test.*",
-    "**/*.spec.*",
-    "tests/**/*",
-    "vitest.setup.ts",
-    "lib/hooks.ts",
-    "lib/IDService.ts"
+    "_archive"
   ]
 }

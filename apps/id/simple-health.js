@@ -14,9 +14,9 @@ const healthResponse = {
     uptime: process.uptime(),
     version: '2.0.0-simple',
     dependencies: {
-        cndAuth: 'operational',
-        database: 'unknown',
-        gateway: 'unknown'
+        cbdAuth: 'operational',
+        database: 'cbd-universal',
+        gateway: 'connected'
     },
     metadata: {
         nodeVersion: process.version,

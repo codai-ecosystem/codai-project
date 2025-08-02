@@ -3,7 +3,21 @@
  * Provides unified logging and analytics for the ROMAI ecosystem
  */
 
-import { LogAI } from '@codai/logai-sdk';
+// Simple console logger implementation until LogAI SDK is properly built
+class SimpleLogger {
+  log(eventType: string, data: any) {
+    console.log(`[${eventType}]`, JSON.stringify(data, null, 2));
+  }
+
+  async initialize() {
+    console.log('✅ Simple Logger: Initialized');
+    return true;
+  }
+
+  async shutdown() {
+    console.log('✅ Simple Logger: Shutdown');
+  }
+}
 
 // ROMAI-specific LogAI configuration
 const logaiConfig = {
@@ -20,7 +34,7 @@ const logaiConfig = {
 };
 
 // Initialize LogAI instance
-export const romaiLogger = new LogAI(logaiConfig);
+export const romaiLogger = new SimpleLogger();
 
 /**
  * ROMAI Intelligence Event Types

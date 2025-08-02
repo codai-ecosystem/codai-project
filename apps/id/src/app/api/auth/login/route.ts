@@ -1,94 +1,34 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { z } from 'zod'
-import {
-  createAuthContext,
-  handleEnhancedLogin,
-  setAuthCookies,
-  addSecurityHeaders
-} from '@/lib/auth-middleware'
-
-const loginSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(1, 'Password is required'),
-})
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
+    const { email, password } = body
 
-    // Validate input
-    const validatedData = loginSchema.parse(body)
-    const { email, password } = validatedData
-
-    // Create enhanced authentication context
-    const authContext = await createAuthContext(request)
-
-    // Perform enhanced authentication
-    const authResult = await handleEnhancedLogin(email, password, authContext)
-
-    if (!authResult.success) {
-      const response = NextResponse.json(
-        {
-          success: false,
-          error: authResult.error,
-          remainingAttempts: authResult.remainingAttempts
-        },
-        { status: 401 }
-      )
-
-      // Add security headers
-      addSecurityHeaders(response, authResult.securityMetadata)
-      return response
-    }
-
-    // Create successful response with enhanced security data
-    const responseData: any = {
-      success: true,
-      user: authResult.user,
-      token: authResult.token,
-      refreshToken: authResult.refreshToken
-    }
-
-    // Add MFA flag if required (for future MFA implementation)
-    if (authResult.mfaRequired) {
-      responseData.mfaRequired = true
-    }
-
-    const response = NextResponse.json(responseData)
-
-    // Set secure authentication cookies
-    if (authResult.token) {
-      setAuthCookies(response, authResult.token, authResult.refreshToken)
-    }
-
-    // Add security headers
-    addSecurityHeaders(response, authResult.securityMetadata)
-
-    return response
-
-  } catch (error: any) {
-    console.error('Enhanced login error:', error)
-
-    if (error.name === 'ZodError') {
-      const response = NextResponse.json(
-        {
-          success: false,
-          error: error.errors[0].message
-        },
+    if (!email || !password) {
+      return NextResponse.json(
+        { error: 'Email and password are required' },
         { status: 400 }
       )
-      addSecurityHeaders(response)
-      return response
     }
 
-    const response = NextResponse.json(
-      {
-        success: false,
-        error: 'Internal server error'
+    // Phase 1 Implementation - Mock authentication
+    return NextResponse.json({
+      success: true,
+      message: 'Login successful (Phase 1 mock implementation)',
+      user: {
+        id: '1',
+        email: email,
+        name: 'Test User'
       },
+      token: 'mock-jwt-token-phase1',
+      phase: 'Phase 1 - Service Ready'
+    })
+  } catch (error) {
+    console.error('Login error:', error)
+    return NextResponse.json(
+      { error: 'Login service error' },
       { status: 500 }
     )
-    addSecurityHeaders(response)
-    return response
   }
 }

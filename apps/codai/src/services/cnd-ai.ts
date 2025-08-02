@@ -1,10 +1,10 @@
 /**
- * CND AI Service for CODAI
+ * CBD AI Service for CODAI
  * Provides AI model storage, vector search, conversation management,
- * and training data storage using CND enterprise features
+ * and training data storage using CBD Universal Database features
  */
 
-// MIGRATED TO CBD: import { CND } from '@codai/cnd';
+// MIGRATED TO CBD: All functionality now provided by CBD Universal Service
 import { z } from 'zod';
 
 // AI Model schemas
@@ -15,8 +15,8 @@ const AIModelSchema = z.object({
   type: z.enum(['llm', 'vision', 'embedding', 'classification', 'generation']),
   provider: z.string(),
   modelPath: z.string().optional(),
-  parameters: z.record(z.any()).optional(),
-  metadata: z.record(z.any()).optional(),
+  parameters: z.record(z.string(), z.any()).optional(),
+  metadata: z.record(z.string(), z.any()).optional(),
   isActive: z.boolean().default(true),
   createdAt: z.date().default(() => new Date()),
   updatedAt: z.date().default(() => new Date())
@@ -31,7 +31,7 @@ const ConversationSchema = z.object({
     role: z.enum(['user', 'assistant', 'system']),
     content: z.string(),
     timestamp: z.date(),
-    metadata: z.record(z.any()).optional()
+    metadata: z.record(z.string(), z.any()).optional()
   })),
   modelId: z.string().optional(),
   tags: z.array(z.string()).optional(),

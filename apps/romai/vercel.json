@@ -1,24 +1,108 @@
 {
-  "env": {
-    "AZURE_OPENAI_ENDPOINT": "@azure_openai_endpoint",
-    "NEXTAUTH_URL": "@nextauth_url",
-    "NODE_ENV": "@node_env"
-  },
+  "version": 2,
+  "framework": "nextjs",
+  "buildCommand": "pnpm build",
+  "installCommand": "pnpm install --prefer-offline --no-frozen-lockfile",
   "regions": [
     "fra1"
   ],
-  "builds": [
+  "functions": {
+    "app/api/**": {
+      "maxDuration": 30
+    }
+  },
+  "env": {
+    "NEXTAUTH_URL": "https://romcp.ro",
+    "NODE_ENV": "production",
+    "NEXT_PUBLIC_API_URL": "https://api.romcp.ro",
+    "NEXT_PUBLIC_CBD_URL": "https://cbd.romcp.ro",
+    "NEXT_PUBLIC_MCP_URL": "https://mcp.romcp.ro",
+    "NEXT_PUBLIC_ROMAI_VERSION": "1.0.0",
+    "NEXT_PUBLIC_DOMAIN": "romcp.ro"
+  },
+  "headers": [
     {
-      "src": "package.json",
-      "use": "@vercel/next"
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.vercel.app; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.romcp.ro https://cbd.romcp.ro https://mcp.romcp.ro https://codai-sweden-central.openai.azure.com;"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=()"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/_next/static/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
   ],
-  "version": 2,
-  "git": {
-    "deploymentEnabled": {
-      "preview": true,
-      "dev": true,
-      "main": true
+  "rewrites": [
+    {
+      "source": "/api/gateway/(.*)",
+      "destination": "https://api.romcp.ro/$1"
+    },
+    {
+      "source": "/api/cbd/(.*)",
+      "destination": "https://cbd.romcp.ro/$1"
+    },
+    {
+      "source": "/api/mcp/(.*)",
+      "destination": "https://mcp.romcp.ro/$1"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/admin",
+      "destination": "/dashboard",
+      "permanent": false
+    },
+    {
+      "source": "/control",
+      "destination": "/dashboard",
+      "permanent": false
+    }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "github": {
+    "autoJobCancelation": true,
+    "autoAlias": false
   }
 }

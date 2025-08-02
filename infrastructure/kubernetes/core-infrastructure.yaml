@@ -1,0 +1,428 @@
+# 🏗️ Core Infrastructure Services - Production Deployment
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: codai-infrastructure
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: codai-data
+---
+# PostgreSQL for all services
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql
+  namespace: codai-data
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgresql
+  template:
+    metadata:
+      labels:
+        app: postgresql
+    spec:
+      containers:
+        - name: postgresql
+          image: postgres:15-alpine
+          env:
+            - name: POSTGRES_DB
+              value: 'codai'
+            - name: POSTGRES_USER
+              value: 'codai'
+            - name: POSTGRES_PASSWORD
+              value: 'codai123'
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  namespace: codai-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql
+  namespace: codai-data
+spec:
+  selector:
+    app: postgresql
+  ports:
+    - port: 5432
+      targetPort: 5432
+---
+# Redis for caching and sessions
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: codai-data
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7-alpine
+          ports:
+            - containerPort: 6379
+          command: ['redis-server', '--appendonly', 'yes']
+          volumeMounts:
+            - name: redis-storage
+              mountPath: /data
+      volumes:
+        - name: redis-storage
+          persistentVolumeClaim:
+            claimName: redis-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-pvc
+  namespace: codai-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: codai-data
+spec:
+  selector:
+    app: redis
+  ports:
+    - port: 6379
+      targetPort: 6379
+---
+# CRITICAL: Gateway Service - All API traffic routes through this
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+  namespace: codai-infrastructure
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - name: gateway
+          image: node:20-alpine
+          workingDir: /app
+          command: ['sh', '-c']
+          args: ['npm install && npm run build && npm start']
+          ports:
+            - containerPort: 4000
+          env:
+            - name: NODE_ENV
+              value: 'production'
+            - name: DATABASE_URL
+              value: 'postgresql://codai:codai123@postgresql.codai-data:5432/codai'
+            - name: REDIS_URL
+              value: 'redis://redis.codai-data:6379'
+            - name: PORT
+              value: '4000'
+          volumeMounts:
+            - name: gateway-code
+              mountPath: /app
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 4000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 4000
+            initialDelaySeconds: 60
+            periodSeconds: 30
+      volumes:
+        - name: gateway-code
+          hostPath:
+            path: E:\GitHub\codai-project\apps\gateway
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway
+  namespace: codai-infrastructure
+spec:
+  selector:
+    app: gateway
+  ports:
+    - port: 80
+      targetPort: 4000
+      name: http
+  type: LoadBalancer
+---
+# CRITICAL: MemorAI Service - Memory provider for all AI agents
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memorai
+  namespace: codai-infrastructure
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: memorai
+  template:
+    metadata:
+      labels:
+        app: memorai
+    spec:
+      containers:
+        - name: memorai
+          image: node:20-alpine
+          workingDir: /app
+          command: ['sh', '-c']
+          args: ['npm install && npm run build && npm start']
+          ports:
+            - containerPort: 3693
+              name: main
+            - containerPort: 6367
+              name: mcp
+          env:
+            - name: NODE_ENV
+              value: 'production'
+            - name: DATABASE_URL
+              value: 'postgresql://codai:codai123@postgresql.codai-data:5432/codai'
+            - name: REDIS_URL
+              value: 'redis://redis.codai-data:6379'
+            - name: QDRANT_URL
+              value: 'http://qdrant.codai-data:6333'
+          volumeMounts:
+            - name: memorai-code
+              mountPath: /app
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3693
+            initialDelaySeconds: 30
+            periodSeconds: 10
+      volumes:
+        - name: memorai-code
+          hostPath:
+            path: E:\GitHub\codai-project\apps\memorai
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memorai
+  namespace: codai-infrastructure
+spec:
+  selector:
+    app: memorai
+  ports:
+    - port: 3693
+      targetPort: 3693
+      name: main
+    - port: 6367
+      targetPort: 6367
+      name: mcp
+---
+# Qdrant Vector Database for MemorAI
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qdrant
+  namespace: codai-data
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qdrant
+  template:
+    metadata:
+      labels:
+        app: qdrant
+    spec:
+      containers:
+        - name: qdrant
+          image: qdrant/qdrant:latest
+          ports:
+            - containerPort: 6333
+            - containerPort: 6334
+          volumeMounts:
+            - name: qdrant-storage
+              mountPath: /qdrant/storage
+      volumes:
+        - name: qdrant-storage
+          persistentVolumeClaim:
+            claimName: qdrant-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: qdrant-pvc
+  namespace: codai-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qdrant
+  namespace: codai-data
+spec:
+  selector:
+    app: qdrant
+  ports:
+    - port: 6333
+      targetPort: 6333
+      name: http
+    - port: 6334
+      targetPort: 6334
+      name: grpc
+---
+# CRITICAL: RomAI MCP Server - Romanian AI coordination
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: romai-mcp
+  namespace: codai-infrastructure
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: romai-mcp
+  template:
+    metadata:
+      labels:
+        app: romai-mcp
+    spec:
+      containers:
+        - name: romai-mcp
+          image: node:20-alpine
+          workingDir: /app
+          command: ['sh', '-c']
+          args: ['npm install && npm run build && npm start']
+          ports:
+            - containerPort: 8000
+          env:
+            - name: NODE_ENV
+              value: 'production'
+            - name: DATABASE_URL
+              value: 'postgresql://codai:codai123@postgresql.codai-data:5432/codai'
+            - name: REDIS_URL
+              value: 'redis://redis.codai-data:6379'
+          volumeMounts:
+            - name: romai-code
+              mountPath: /app
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+      volumes:
+        - name: romai-code
+          hostPath:
+            path: E:\GitHub\codai-project\apps\romai
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: romai-mcp
+  namespace: codai-infrastructure
+spec:
+  selector:
+    app: romai-mcp
+  ports:
+    - port: 8000
+      targetPort: 8000
+---
+# Glass Service - Windows automation
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: glass
+  namespace: codai-infrastructure
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: glass
+  template:
+    metadata:
+      labels:
+        app: glass
+    spec:
+      containers:
+        - name: glass
+          image: node:20-alpine
+          workingDir: /app
+          command: ['sh', '-c']
+          args: ['npm install && npm run build && npm start']
+          ports:
+            - containerPort: 7700
+          env:
+            - name: NODE_ENV
+              value: 'production'
+            - name: PORT
+              value: '7700'
+          volumeMounts:
+            - name: glass-code
+              mountPath: /app
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 7700
+            initialDelaySeconds: 30
+            periodSeconds: 10
+      volumes:
+        - name: glass-code
+          hostPath:
+            path: E:\GitHub\codai-project\apps\glass
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: glass
+  namespace: codai-infrastructure
+spec:
+  selector:
+    app: glass
+  ports:
+    - port: 7700
+      targetPort: 7700

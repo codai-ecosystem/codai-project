@@ -25,7 +25,7 @@ export class DatabaseService {
     async initialize(): Promise<void> {
         try {
             console.log('[ControlAI] Initializing CBD database connection...');
-            
+
             // Test CBD service connectivity
             const isConnected = await this.adapter.testConnection();
             if (!isConnected) {

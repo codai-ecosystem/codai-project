@@ -1,0 +1,72 @@
+{
+  "folders": [
+    {
+      "name": "RomAI Intelligence",
+      "path": "../apps/romai",
+    },
+    {
+      "name": "Romanian Packages",
+      "path": "../packages",
+    },
+    {
+      "name": "Market Data",
+      "path": "../data",
+    },
+    {
+      "name": "Shared Types",
+      "path": "../types",
+    },
+  ],
+  "settings": {
+    "workbench.colorTheme": "Just Black 2",
+    "workbench.colorCustomizations": {
+      "titleBar.activeBackground": "#dc2626",
+      "titleBar.activeForeground": "#ffffff",
+      "titleBar.inactiveBackground": "#b91c1c",
+      "titleBar.inactiveForeground": "#e5e7eb",
+      "statusBar.background": "#dc2626",
+      "statusBar.foreground": "#ffffff",
+      "activityBar.background": "#b91c1c",
+      "activityBar.foreground": "#ffffff",
+    },
+    "typescript.preferences.includePackageJsonAutoImports": "auto",
+    "eslint.workingDirectories": ["apps/romai", "packages"],
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+    },
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-vscode.vscode-typescript-next",
+      "esbenp.prettier-vscode",
+      "ms-vscode.vscode-json",
+    ],
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Start RomAI Intelligence Server",
+        "type": "node",
+        "request": "launch",
+        "program": "${workspaceFolder}/apps/romai/dist/server.js",
+      },
+    ],
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Start RomAI Services",
+        "type": "shell",
+        "command": "pnpm",
+        "args": ["dev"],
+        "options": {
+          "cwd": "${workspaceFolder}/apps/romai",
+        },
+        "isBackground": true,
+      },
+    ],
+  },
+}

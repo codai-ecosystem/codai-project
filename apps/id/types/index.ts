@@ -1,3 +1,21 @@
+import { Request } from 'express';
+
+// Extend Express Request interface
+declare global {
+  namespace Express {
+    interface Request {
+      responseBuilder: {
+        success: (data: any) => any;
+        error: (message: string, code?: number) => any;
+        created: (data: any) => any;
+        deleted: () => any;
+      };
+      user?: any;
+      session?: any;
+    }
+  }
+}
+
 export interface AppStats {
   totalUsers: number
   activeNow: number

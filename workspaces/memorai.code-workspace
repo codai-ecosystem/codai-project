@@ -1,0 +1,72 @@
+{
+  "folders": [
+    {
+      "name": "MemorAI MCP Server",
+      "path": "../apps/memorai",
+    },
+    {
+      "name": "Memory Packages",
+      "path": "../packages",
+    },
+    {
+      "name": "Data Storage",
+      "path": "../data/memorai",
+    },
+    {
+      "name": "Shared Types",
+      "path": "../types",
+    },
+  ],
+  "settings": {
+    "workbench.colorTheme": "Just Black 2",
+    "workbench.colorCustomizations": {
+      "titleBar.activeBackground": "#059669",
+      "titleBar.activeForeground": "#ffffff",
+      "titleBar.inactiveBackground": "#047857",
+      "titleBar.inactiveForeground": "#e5e7eb",
+      "statusBar.background": "#059669",
+      "statusBar.foreground": "#ffffff",
+      "activityBar.background": "#047857",
+      "activityBar.foreground": "#ffffff",
+    },
+    "typescript.preferences.includePackageJsonAutoImports": "auto",
+    "eslint.workingDirectories": ["apps/memorai", "packages"],
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+    },
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-vscode.vscode-typescript-next",
+      "esbenp.prettier-vscode",
+      "ms-vscode.vscode-json",
+    ],
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Start MemorAI MCP Server",
+        "type": "node",
+        "request": "launch",
+        "program": "${workspaceFolder}/apps/memorai/dist/server.js",
+      },
+    ],
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Start MemorAI Services",
+        "type": "shell",
+        "command": "pnpm",
+        "args": ["dev"],
+        "options": {
+          "cwd": "${workspaceFolder}/apps/memorai",
+        },
+        "isBackground": true,
+      },
+    ],
+  },
+}

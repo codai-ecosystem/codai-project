@@ -51,7 +51,7 @@ export function ForgotPasswordForm() {
             Check Your Email
           </h2>
           <p className="text-gray-600 dark:text-gray-300 mb-6">
-            We've sent a password reset link to <strong>{email}</strong>
+            We&apos;ve sent a password reset link to <strong>{email}</strong>
           </p>
           <a
             href="/login"

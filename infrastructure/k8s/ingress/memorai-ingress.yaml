@@ -1,0 +1,209 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: memorai-enterprise-ingress
+  namespace: memorai-production
+  labels:
+    app: memorai-enterprise
+    component: ingress
+  annotations:
+    # AWS Load Balancer Controller
+    kubernetes.io/ingress.class: 'alb'
+    alb.ingress.kubernetes.io/scheme: 'internet-facing'
+    alb.ingress.kubernetes.io/target-type: 'ip'
+    alb.ingress.kubernetes.io/load-balancer-name: 'memorai-enterprise-alb'
+
+    # SSL/TLS Configuration
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/certificate-arn: 'arn:aws:acm:us-east-1:ACCOUNT:certificate/CERT-ID'
+    alb.ingress.kubernetes.io/ssl-policy: 'ELBSecurityPolicy-TLS-1-2-2017-01'
+
+    # WAF Integration
+    alb.ingress.kubernetes.io/wafv2-acl-arn: 'arn:aws:wafv2:us-east-1:ACCOUNT:webacl/memorai-waf/WAF-ID'
+
+    # Health Check Configuration
+    alb.ingress.kubernetes.io/healthcheck-protocol: 'HTTP'
+    alb.ingress.kubernetes.io/healthcheck-port: 'traffic-port'
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '30'
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
+    alb.ingress.kubernetes.io/healthy-threshold-count: '2'
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: '3'
+
+    # Performance Optimization
+    alb.ingress.kubernetes.io/load-balancer-attributes: |
+      idle_timeout.timeout_seconds=60,
+      routing.http2.enabled=true,
+      access_logs.s3.enabled=true,
+      access_logs.s3.bucket=memorai-alb-logs,
+      access_logs.s3.prefix=memorai-enterprise
+
+    # Security Headers
+    nginx.ingress.kubernetes.io/server-snippet: |
+      add_header X-Frame-Options "SAMEORIGIN" always;
+      add_header X-Content-Type-Options "nosniff" always;
+      add_header X-XSS-Protection "1; mode=block" always;
+      add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+      add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';" always;
+spec:
+  tls:
+    - hosts:
+        - memorai.codai.ro
+        - api.memorai.codai.ro
+        - mcp.memorai.codai.ro
+      secretName: memorai-tls-secret
+  rules:
+    # MemorAI Frontend
+    - host: memorai.codai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: memorai-frontend-service
+                port:
+                  number: 4006
+
+    # MemorAI Backend API
+    - host: api.memorai.codai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: memorai-backend-service
+                port:
+                  number: 4007
+          - path: /api/v1/vectors
+            pathType: Prefix
+            backend:
+              service:
+                name: cbd-service
+                port:
+                  number: 4180
+
+    # MemorAI MCP Server
+    - host: mcp.memorai.codai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: memorai-mcp-service
+                port:
+                  number: 8000
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: memorai-network-policy
+  namespace: memorai-production
+  labels:
+    app: memorai-enterprise
+    component: security
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # Allow ingress from ALB
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: kube-system
+      ports:
+        - protocol: TCP
+          port: 4006
+        - protocol: TCP
+          port: 4007
+        - protocol: TCP
+          port: 8000
+
+    # Allow inter-service communication
+    - from:
+        - podSelector:
+            matchLabels:
+              tier: frontend
+        - podSelector:
+            matchLabels:
+              tier: application
+        - podSelector:
+            matchLabels:
+              tier: integration
+      ports:
+        - protocol: TCP
+          port: 4180
+        - protocol: TCP
+          port: 4181
+        - protocol: TCP
+          port: 4007
+        - protocol: TCP
+          port: 8000
+
+    # Allow monitoring
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: memorai-monitoring
+      ports:
+        - protocol: TCP
+          port: 9090
+        - protocol: TCP
+          port: 9091
+        - protocol: TCP
+          port: 9092
+
+  egress:
+    # Allow egress to external services
+    - to: []
+      ports:
+        - protocol: TCP
+          port: 443 # HTTPS
+        - protocol: TCP
+          port: 53 # DNS
+        - protocol: UDP
+          port: 53 # DNS
+
+    # Allow egress to AWS services
+    - to: []
+      ports:
+        - protocol: TCP
+          port: 5432 # PostgreSQL
+        - protocol: TCP
+          port: 6379 # Redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memorai-nlb
+  namespace: memorai-production
+  labels:
+    app: memorai-enterprise
+    component: load-balancer
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: 'nlb'
+    service.beta.kubernetes.io/aws-load-balancer-scheme: 'internet-facing'
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: 'tcp'
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
+    service.beta.kubernetes.io/aws-load-balancer-connection-draining-enabled: 'true'
+    service.beta.kubernetes.io/aws-load-balancer-connection-draining-timeout: '60'
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-interval: '30'
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-timeout: '5'
+    service.beta.kubernetes.io/aws-load-balancer-healthy-threshold: '2'
+    service.beta.kubernetes.io/aws-load-balancer-unhealthy-threshold: '3'
+spec:
+  type: LoadBalancer
+  selector:
+    app: cbd-enterprise
+  ports:
+    - name: grpc
+      port: 443
+      targetPort: 4181
+      protocol: TCP
+    - name: http
+      port: 80
+      targetPort: 4180
+      protocol: TCP

@@ -13,6 +13,7 @@ export interface User {
   username: string;
   email: string;
   password?: string;
+  role?: string;
   profile: {
     name?: string;
     avatar?: string;
@@ -158,8 +159,9 @@ export class SimpleAuthService {
         email: 'admin@codai.ro',
         password: adminHashedPassword,
         profile: { name: 'Admin User' },
+        role: 'admin',
         isActive: true,
-        isVerified: true,
+        emailVerified: true,
         createdAt: new Date(),
         updatedAt: new Date()
       });
@@ -176,8 +178,9 @@ export class SimpleAuthService {
         email: 'test@codai.ro',
         password: testHashedPassword,
         profile: { name: 'Test User' },
+        role: 'user',
         isActive: true,
-        isVerified: true,
+        emailVerified: true,
         createdAt: new Date(),
         updatedAt: new Date()
       });
@@ -201,7 +204,7 @@ export class SimpleAuthService {
   async createUser(userData: CreateUserData): Promise<User> {
     // Skip ensureInitialized when called during initialization to avoid circular dependency
     if (!this.initialized && !this.isInitializing) {
-      await this.ensureInitialized();
+      if (!this.initialized && !this.isInitializing) { await this.initialize(); }
     }
 
     try {
@@ -259,7 +262,7 @@ export class SimpleAuthService {
   }
 
   async authenticateUser(credentials: LoginCredentials, metadata?: { ip?: string; userAgent?: string }): Promise<AuthenticationResult> {
-    await this.ensureInitialized();
+    if (!this.initialized && !this.isInitializing) { await this.initialize(); }
 
     try {
       // Record login attempt
@@ -364,25 +367,27 @@ export class SimpleAuthService {
     }
   }
 
-  async validateToken(token: string): Promise<{ isValid: boolean; user?: User; permissions?: string[] }> {
-    await this.ensureInitialized();
+  async validateToken(token: string): Promise<{ success: boolean; payload?: any; message?: string; isValid?: boolean; user?: User; permissions?: string[] }> {
+    if (!this.initialized && !this.isInitializing) {
+      await this.initialize();
+    }
 
     try {
       // Simple token validation (in production, use proper JWT)
       const payload = this.decodeToken(token);
       if (!payload) {
-        return { isValid: false };
+        return { success: false, isValid: false, message: 'Invalid token format' };
       }
 
       // Check if token is expired
       if (payload.exp < Date.now()) {
-        return { isValid: false };
+        return { success: false, isValid: false, message: 'Token expired' };
       }
 
       // Get user details
       const user = await this.findUserById(payload.userId);
       if (!user || !user.isActive) {
-        return { isValid: false };
+        return { success: false, isValid: false, message: 'User not found or inactive' };
       }
 
       // Check if session exists and is active
@@ -393,72 +398,27 @@ export class SimpleAuthService {
       );
 
       if (!session) {
-        return { isValid: false };
+        return { success: false, isValid: false, message: 'Session not found or expired' };
       }
 
       // Generate permissions based on role
-      const permissions = this.generatePermissions(user.role);
+      const permissions = this.generatePermissions(user.role || 'user');
 
       return {
+        success: true,
         isValid: true,
+        payload: {
+          userId: user.id,
+          email: user.email,
+          role: user.role
+        },
         user: { ...user, password: undefined },
         permissions
       };
     } catch (error) {
       console.error('Token validation error:', error);
-      return { isValid: false };
+      return { success: false, isValid: false, message: 'Token validation error' };
     }
-  }
-
-  async validateToken(token: string): Promise<{ success: boolean; payload?: any; message?: string }> {
-    await this.ensureInitialized();
-
-    try {
-      const payload = this.decodeToken(token);
-      if (!payload) {
-        return {
-          success: false,
-          message: 'Invalid token format'
-        };
-      }
-
-      // Check if token is expired
-      if (payload.exp < Date.now()) {
-        return {
-          success: false,
-          message: 'Token expired'
-        };
-      }
-
-      // Check if user still exists and is active
-      const user = this.data.users.find(u => u.id === payload.userId);
-      if (!user || !user.isActive) {
-        return {
-          success: false,
-          message: 'User not found or inactive'
-        };
-      }
-
-      return {
-        success: true,
-        payload
-      };
-    } catch (error) {
-      console.error('Validate token error:', error);
-      return {
-        success: false,
-        message: 'Token validation failed'
-      };
-    }
-  }
-
-  async findUserById(userId: string): Promise<User | null> {
-    if (!this.initialized && !this.isInitializing) {
-      await this.ensureInitialized();
-    }
-
-    const user = this.data.users.find(u => u.id === userId);
-    return user || null;
   }
 
   // Private method that doesn't trigger initialization
@@ -473,7 +433,7 @@ export class SimpleAuthService {
 
   async findUserByEmail(email: string): Promise<User | null> {
     if (!this.initialized && !this.isInitializing) {
-      await this.ensureInitialized();
+      if (!this.initialized && !this.isInitializing) { await this.initialize(); }
     }
 
     return this._findUserByEmailSync(email);
@@ -506,7 +466,7 @@ export class SimpleAuthService {
   }
 
   async generateToken(userId: string): Promise<{ success: boolean; token?: string; refreshToken?: string; message?: string }> {
-    await this.ensureInitialized();
+    if (!this.initialized && !this.isInitializing) { await this.initialize(); }
 
     try {
       const user = this.data.users.find(u => u.id === userId);
@@ -603,12 +563,6 @@ export class SimpleAuthService {
     }
   }
 
-  private async ensureInitialized(): Promise<void> {
-    if (!this.initialized) {
-      await this.initialize();
-    }
-  }
-
   async getHealthStatus(): Promise<any> {
     try {
       if (!this.initialized) {
@@ -642,12 +596,12 @@ export class SimpleAuthService {
 
   // Additional utility methods
   async getAllUsers(): Promise<User[]> {
-    await this.ensureInitialized();
+    if (!this.initialized && !this.isInitializing) { await this.initialize(); }
     return this.data.users.map(user => ({ ...user, password: undefined }));
   }
 
   async getActiveSessions(userId?: string): Promise<UserSession[]> {
-    await this.ensureInitialized();
+    if (!this.initialized && !this.isInitializing) { await this.initialize(); }
     
     const sessions = this.data.sessions.filter(s => 
       s.isActive && 
@@ -659,7 +613,7 @@ export class SimpleAuthService {
   }
 
   async getMetrics(): Promise<any> {
-    await this.ensureInitialized();
+    if (!this.initialized && !this.isInitializing) { await this.initialize(); }
     return {
       ...this.data.metrics,
       totalUsers: this.data.users.length,
@@ -670,12 +624,12 @@ export class SimpleAuthService {
   }
 
   async getAuditLogs(limit: number = 100): Promise<any[]> {
-    await this.ensureInitialized();
+    if (!this.initialized && !this.isInitializing) { await this.initialize(); }
     return this.data.auditLogs.slice(-limit);
   }
 
   async findUserById(userId: string): Promise<User | null> {
-    await this.ensureInitialized();
+    if (!this.initialized && !this.isInitializing) { await this.initialize(); }
     
     const user = this.data.users.find(user => user.id === userId);
     if (!user) {
@@ -688,7 +642,7 @@ export class SimpleAuthService {
   }
 
   async updateUserProfile(userId: string, updateData: { username?: string; profile?: { name?: string; avatar?: string } }): Promise<{ success: boolean; user?: User; message?: string }> {
-    await this.ensureInitialized();
+    if (!this.initialized && !this.isInitializing) { await this.initialize(); }
 
     try {
       const userIndex = this.data.users.findIndex(u => u.id === userId);
@@ -741,5 +695,21 @@ export class SimpleAuthService {
       this.initialized = false;
       console.log('✅ Simple Auth Service disconnected');
     }
+  }
+
+  // Test utility method to clear all data
+  async clearAllData(): Promise<void> {
+    this.data = {
+      users: [],
+      sessions: [],
+      auditLogs: [],
+      metrics: {
+        loginAttempts: 0,
+        loginSuccess: 0,
+        loginFailures: 0,
+        userRegistrations: 0
+      }
+    };
+    this.saveData();
   }
 }

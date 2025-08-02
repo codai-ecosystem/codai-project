@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: Inter, system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .studiai-gradient {
+    @apply bg-gradient-to-br from-blue-500 via-cyan-500 to-green-500;
+  }
+
+  .studiai-text-gradient {
+    @apply bg-gradient-to-r from-blue-600 via-cyan-600 to-green-600 bg-clip-text text-transparent;
+  }
+
+  .studiai-card {
+    @apply bg-white/90 backdrop-blur-sm border border-blue-200 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300;
+  }
+
+  .studiai-button {
+    @apply bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 hover:scale-105 active:scale-95;
+  }
+
+  .studiai-input {
+    @apply border border-blue-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+  }
+}

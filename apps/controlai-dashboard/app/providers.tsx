@@ -26,17 +26,17 @@ function ErrorFallback({ error, resetErrorBoundary }: { error: Error; resetError
 }
 
 export function Providers({ children }: { children: React.ReactNode }) {
-    return (
-        <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <ThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-                disableTransitionOnChange
-            >
-                {children}
-                <Toaster position="top-right" expand={false} richColors />
-            </ThemeProvider>
-        </ErrorBoundary>
-    )
+  return (
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+      >
+        {children}
+        <Toaster position="top-right" expand={false} richColors />
+      </ThemeProvider>
+    </ErrorBoundary>
+  )
 }

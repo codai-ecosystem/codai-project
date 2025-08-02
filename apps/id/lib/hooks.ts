@@ -44,8 +44,26 @@ export function useRealtimeStats() {
   return { stats, isConnected }
 }
 
+interface Service {
+  name: string
+  status: string
+}
+
+interface Alert {
+  id: string
+  type: string
+  message: string
+  timestamp: Date
+}
+
+interface SystemHealth {
+  status: string
+  services: Service[]
+  alerts: Alert[]
+}
+
 export function useSystemHealth() {
-  const [health, setHealth] = useState({
+  const [health, setHealth] = useState<SystemHealth>({
     status: 'healthy',
     services: [],
     alerts: []

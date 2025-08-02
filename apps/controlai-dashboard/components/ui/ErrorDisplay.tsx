@@ -81,8 +81,8 @@ export function ErrorDisplay({
 
   const containerVariants = {
     initial: { opacity: 0, y: 20 },
-    animate: { 
-      opacity: 1, 
+    animate: {
+      opacity: 1,
       y: 0,
       transition: {
         duration: 0.4,
@@ -93,8 +93,8 @@ export function ErrorDisplay({
 
   const iconVariants = {
     initial: { scale: 0, rotate: -180 },
-    animate: { 
-      scale: 1, 
+    animate: {
+      scale: 1,
       rotate: 0,
       transition: {
         duration: 0.5,
@@ -140,7 +140,7 @@ export function ErrorDisplay({
           <h3 className={`${sizeClasses.title} font-semibold text-red-900 dark:text-red-100 mb-2`}>
             {title}
           </h3>
-          
+
           {description && (
             <p className={`${sizeClasses.description} text-red-700 dark:text-red-200 mb-4`}>
               {description}

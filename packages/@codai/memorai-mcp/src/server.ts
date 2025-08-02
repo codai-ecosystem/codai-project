@@ -232,6 +232,169 @@ export class MemorAIUnifiedServer {
         console.error(`[${timestamp}] [${level.toUpperCase()}] ${message}`, ...args);
     }
 
+    /**
+     * Initialize CBD Service - Check for service availability and optionally start it
+     */
+    private async initializeCBDService(): Promise<void> {
+        try {
+            // Check if CBD service is available
+            const serviceAvailable = await this.checkCBDService();
+
+            if (serviceAvailable) {
+                this.log('info', 'CBD service is available, will use hybrid mode (service + file fallback)');
+                return;
+            }
+
+            this.log('info', 'CBD service not available, checking if we can start it locally...');
+
+            // Try to start CBD service if possible
+            const serviceStarted = await this.startCBDService();
+
+            if (serviceStarted) {
+                this.log('info', 'Successfully started local CBD service');
+                // Wait for service to initialize
+                await this.sleep(3000);
+
+                // Verify it's working
+                const isWorking = await this.checkCBDService();
+                if (isWorking) {
+                    this.log('info', 'CBD service is now running and available');
+                } else {
+                    this.log('warn', 'CBD service started but not responding, using file-based fallback');
+                }
+            } else {
+                this.log('info', 'Could not start CBD service, using file-based storage only');
+            }
+
+        } catch (error) {
+            this.log('warn', 'CBD service initialization failed, using file-based fallback:', error);
+        }
+    }
+
+    private async checkCBDService(): Promise<boolean> {
+        try {
+            const response = await fetch('http://localhost:4180/health', {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                signal: AbortSignal.timeout(3000) // 3 second timeout
+            });
+            return response.ok;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    private async startCBDService(): Promise<boolean> {
+        try {
+            const { spawn } = await import('child_process');
+            const { join } = await import('path');
+
+            // Look for CBD package in common locations
+            const cbdPackagePath = this.findCBDPackage();
+
+            if (!cbdPackagePath) {
+                this.log('info', 'CBD package not found locally, trying npx...');
+                return await this.startCBDViaNPX();
+            }
+
+            this.log('info', `Starting CBD service from: ${cbdPackagePath}`);
+
+            // Start CBD service
+            const cbdProcess = spawn('npm', ['run', 'service'], {
+                cwd: cbdPackagePath,
+                stdio: ['ignore', 'pipe', 'pipe'],
+                shell: true,
+                detached: false
+            });
+
+            if (cbdProcess.stdout) {
+                cbdProcess.stdout.on('data', (data) => {
+                    this.log('info', `[CBD] ${data.toString().trim()}`);
+                });
+            }
+
+            if (cbdProcess.stderr) {
+                cbdProcess.stderr.on('data', (data) => {
+                    this.log('warn', `[CBD] ${data.toString().trim()}`);
+                });
+            }
+
+            return true;
+        } catch (error) {
+            this.log('error', 'Failed to start CBD service:', error);
+            return false;
+        }
+    }
+
+    private async startCBDViaNPX(): Promise<boolean> {
+        try {
+            const { spawn } = await import('child_process');
+
+            this.log('info', 'Starting CBD service via npx...');
+
+            const cbdProcess = spawn('npx', ['@codai/cbd', 'service'], {
+                stdio: ['ignore', 'pipe', 'pipe'],
+                shell: true,
+                detached: false
+            });
+
+            if (cbdProcess.stdout) {
+                cbdProcess.stdout.on('data', (data) => {
+                    this.log('info', `[CBD-NPX] ${data.toString().trim()}`);
+                });
+            }
+
+            return true;
+        } catch (error) {
+            this.log('error', 'Failed to start CBD via npx:', error);
+            return false;
+        }
+    }
+
+    private findCBDPackage(): string | null {
+        try {
+            const { join } = require('path');
+            const { existsSync, readFileSync } = require('fs');
+
+            // Common paths where CBD package might be located
+            const possiblePaths = [
+                // Monorepo structure
+                join(process.cwd(), '..', '..', 'packages', 'cbd'),
+                join(process.cwd(), '..', 'packages', 'cbd'),
+                join(process.cwd(), 'packages', 'cbd'),
+                // Relative paths
+                join(__dirname, '..', '..', '..', 'cbd'),
+                join(__dirname, '..', '..', '..', '..', 'cbd'),
+                // Environment variable
+                process.env.CBD_PACKAGE_PATH
+            ].filter(Boolean);
+
+            for (const path of possiblePaths) {
+                try {
+                    const packageJsonPath = join(path!, 'package.json');
+                    if (existsSync(packageJsonPath)) {
+                        const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
+                        if (packageJson.name === '@codai/cbd') {
+                            this.log('info', `Found CBD package at: ${path}`);
+                            return path!;
+                        }
+                    }
+                } catch (err) {
+                    // Continue searching
+                }
+            }
+
+            return null;
+        } catch (error) {
+            this.log('error', 'Error finding CBD package:', error);
+            return null;
+        }
+    }
+
+    private sleep(ms: number): Promise<void> {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     private setupHandlers() {
         // List available tools
         this.server.setRequestHandler(ListToolsRequestSchema, async () => {
@@ -2176,6 +2339,9 @@ Stack trace: ${error?.stack || 'Not available'}`
         }
 
         try {
+            // Check for CBD service availability and optionally start it
+            await this.initializeCBDService();
+
             const transport = new StdioServerTransport();
             this.log('info', `🚀 ${this.config.serverName} starting on stdio`);
 

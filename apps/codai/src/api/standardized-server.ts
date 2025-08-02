@@ -17,8 +17,9 @@ import {
 import { OpenAPIV3 } from 'openapi-types';
 import swaggerUi from 'swagger-ui-express';
 import { z } from 'zod';
+import { Express } from 'express';
 
-const app = express();
+const app: Express = express();
 
 // Helper function to wrap Zod schemas for validation middleware
 const wrapSchema = (schema: z.ZodSchema) => schema as any;

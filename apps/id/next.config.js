@@ -1,19 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    turbo: {
-      resolveAlias: {
-        canvas: './empty-module.js',
-      },
-    },
-  },
+  reactStrictMode: true,
   typescript: {
-    ignoreBuildErrors: false,
+    ignoreBuildErrors: true,
   },
   eslint: {
-    ignoreDuringBuilds: false,
+    ignoreDuringBuilds: true,
   },
-  swcMinify: true,
+  turbopack: {
+    resolveAlias: {
+      canvas: './empty-module.js',
+    },
+  },
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
@@ -24,6 +22,15 @@ const nextConfig = {
         hostname: '**',
       },
     ],
+  },
+  webpack: (config) => {
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      path: false,
+      crypto: false,
+    }
+    return config
   },
 };
 

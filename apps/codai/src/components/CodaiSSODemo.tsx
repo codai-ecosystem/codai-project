@@ -5,7 +5,7 @@
 
 'use client';
 
-import { useCodaiAuth, useRBAC, useDeviceSecurity } from '@codai/sso-sdk';
+import { useCodaiAuth, useRBAC, useDeviceSecurity } from '@/lib/sso-sdk-stub';
 import { signIn, signOut } from 'next-auth/react';
 
 export default function CodaiSSODemo() {

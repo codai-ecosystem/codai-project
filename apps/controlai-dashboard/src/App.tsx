@@ -47,7 +47,7 @@ function App() {
         <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
           <h3 className="text-red-800 dark:text-red-200 font-medium">Error loading dashboard data</h3>
           <p className="text-red-600 dark:text-red-300 text-sm mt-1">{error}</p>
-          <button 
+          <button
             onClick={refetch}
             className="mt-2 btn btn-secondary text-sm"
           >
@@ -87,7 +87,7 @@ function App() {
                 </div>
               )}
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <button
                 onClick={refetch}
@@ -97,7 +97,7 @@ function App() {
                 <Activity className="w-4 h-4 mr-2" />
                 Refresh
               </button>
-              
+
               <button
                 onClick={toggleDarkMode}
                 className="btn btn-secondary"
@@ -123,11 +123,10 @@ function App() {
               <button
                 key={id}
                 onClick={() => setActiveView(id as ActiveView)}
-                className={`flex items-center px-3 py-4 text-sm font-medium border-b-2 transition-colors ${
-                  activeView === id
+                className={`flex items-center px-3 py-4 text-sm font-medium border-b-2 transition-colors ${activeView === id
                     ? 'border-primary-500 text-primary-600 dark:text-primary-400'
                     : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
-                }`}
+                  }`}
               >
                 <Icon className="w-4 h-4 mr-2" />
                 {label}

@@ -1,0 +1,181 @@
+# Local Ingress Configuration for Phase 1
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: phase1-ingress
+  namespace: phase1-apps
+  annotations:
+    kubernetes.io/ingress.class: 'nginx'
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: 'false'
+spec:
+  rules:
+    # BancAI
+    - host: bancai.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: bancai
+                port:
+                  number: 80
+    - host: www.bancai.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: bancai
+                port:
+                  number: 80
+    # StudiAI
+    - host: studiai.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: studiai
+                port:
+                  number: 80
+    - host: www.studiai.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: studiai
+                port:
+                  number: 80
+    # TalentAI
+    - host: talentai.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: talentai
+                port:
+                  number: 80
+    - host: www.talentai.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: talentai
+                port:
+                  number: 80
+    # MarketAI
+    - host: marketai.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: marketai
+                port:
+                  number: 80
+    - host: www.marketai.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: marketai
+                port:
+                  number: 80
+    # LegalizAI
+    - host: legalizai.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: legalizai
+                port:
+                  number: 80
+    - host: www.legalizai.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: legalizai
+                port:
+                  number: 80
+    # ConversAI
+    - host: conversai.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: conversai
+                port:
+                  number: 80
+    - host: www.conversai.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: conversai
+                port:
+                  number: 80
+    # MuzicAI
+    - host: muzicai.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: muzicai
+                port:
+                  number: 80
+    - host: www.muzicai.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: muzicai
+                port:
+                  number: 80
+    # StocAI
+    - host: stocai.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: stocai
+                port:
+                  number: 80
+    - host: www.stocai.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: stocai
+                port:
+                  number: 80

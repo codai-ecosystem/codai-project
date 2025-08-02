@@ -2,15 +2,12 @@
     "name": "@codai/gateway",
     "version": "2.0.0",
     "description": "CODAI Ecosystem API Gateway - Production-ready centralized routing and management for all CODAI services",
-    "main": "dist/api-gateway.js",
-    "types": "dist/api-gateway.d.ts",
+    "main": "dist/gateway.js",
+    "types": "dist/gateway.d.ts",
     "scripts": {
         "build": "tsc",
-        "build:working": "tsc --project tsconfig-working.json",
-        "start": "node dist/api-gateway.js",
-        "start:working": "node dist/gateway-working.js",
-        "dev": "ts-node-dev --respawn --transpile-only src/api-gateway.ts",
-        "dev:working": "ts-node-dev --respawn --transpile-only src/gateway-working.ts",
+        "start": "node dist/gateway.js",
+        "dev": "tsx src/gateway.ts",
         "test": "jest",
         "test:watch": "jest --watch",
         "test:coverage": "jest --coverage",
@@ -39,8 +36,8 @@
         "zod": "^3.22.4",
         "winston": "^3.11.0",
         "prom-client": "^15.1.0",
-        "@codai/api-standards": "workspace:*",
-        "@codai/security": "workspace:*"
+        "@codai/api-standards": "file:../../packages/api-standards",
+        "@codai/security": "file:../../packages/security"
     },
     "devDependencies": {
         "@types/express": "^4.17.21",
@@ -53,6 +50,7 @@
         "@types/supertest": "^6.0.2",
         "typescript": "^5.3.3",
         "ts-node-dev": "^2.0.0",
+        "tsx": "^4.0.0",
         "jest": "^29.7.0",
         "ts-jest": "^29.1.1",
         "supertest": "^6.3.4",

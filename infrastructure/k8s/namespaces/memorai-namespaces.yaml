@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: memorai-production
+  labels:
+    name: memorai-production
+    tier: production
+    component: memorai-enterprise
+    security.kubernetes.io/enforce: restricted
+  annotations:
+    kubernetes.io/managed-by: 'terraform'
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: memorai-monitoring
+  labels:
+    name: memorai-monitoring
+    tier: monitoring
+    component: observability
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: memorai-security
+  labels:
+    name: memorai-security
+    tier: security
+    component: compliance

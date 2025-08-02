@@ -1,0 +1,93 @@
+# 🌐 NGINX Ingress Controller with SSL - Core Infrastructure Routing
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: codai-infrastructure-ingress
+  namespace: codai-infrastructure
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - api.codai.ro
+        - memorai.ro
+        - mcp.memorai.ro
+        - mcp.romai.ro
+        - glass.codai.ro
+      secretName: codai-infrastructure-tls
+  rules:
+    # Main API Gateway - ALL API traffic
+    - host: api.codai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gateway
+                port:
+                  number: 80
+    # MemorAI Main Service
+    - host: memorai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: memorai
+                port:
+                  number: 3693
+    # MemorAI MCP Endpoint
+    - host: mcp.memorai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: memorai
+                port:
+                  number: 6367
+    # RomAI MCP Server
+    - host: mcp.romai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: romai-mcp
+                port:
+                  number: 8000
+    # Glass Windows Automation
+    - host: glass.codai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: glass
+                port:
+                  number: 7700
+---
+# cert-manager ClusterIssuer for SSL certificates
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: admin@codai.ro
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+      - http01:
+          ingress:
+            class: nginx

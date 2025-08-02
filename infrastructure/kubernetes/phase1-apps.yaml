@@ -1,0 +1,384 @@
+# 🚀 Phase 1 Applications - Local Deployment
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: phase1-apps
+---
+# BancAI - Banking AI Platform
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bancai
+  namespace: phase1-apps
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bancai
+  template:
+    metadata:
+      labels:
+        app: bancai
+    spec:
+      containers:
+        - name: bancai
+          image: node:20-alpine
+          command: ['sh', '-c', 'cd /app && npm install && npm start']
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DATABASE_URL
+              value: 'postgresql://codai:codai123@postgresql.codai-system:5432/codai'
+            - name: REDIS_URL
+              value: 'redis://redis.codai-system:6379'
+            - name: NODE_ENV
+              value: 'production'
+          volumeMounts:
+            - name: app-code
+              mountPath: /app
+      volumes:
+        - name: app-code
+          hostPath:
+            path: E:\GitHub\codai-project\apps\bancai
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bancai
+  namespace: phase1-apps
+spec:
+  selector:
+    app: bancai
+  ports:
+    - port: 80
+      targetPort: 3000
+---
+# StudiAI - Education AI Platform
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: studiai
+  namespace: phase1-apps
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: studiai
+  template:
+    metadata:
+      labels:
+        app: studiai
+    spec:
+      containers:
+        - name: studiai
+          image: node:20-alpine
+          command: ['sh', '-c', 'cd /app && npm install && npm start']
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DATABASE_URL
+              value: 'postgresql://codai:codai123@postgresql.codai-system:5432/codai'
+            - name: REDIS_URL
+              value: 'redis://redis.codai-system:6379'
+          volumeMounts:
+            - name: app-code
+              mountPath: /app
+      volumes:
+        - name: app-code
+          hostPath:
+            path: E:\GitHub\codai-project\apps\studiai
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: studiai
+  namespace: phase1-apps
+spec:
+  selector:
+    app: studiai
+  ports:
+    - port: 80
+      targetPort: 3000
+---
+# TalentAI - HR AI Platform
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: talentai
+  namespace: phase1-apps
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: talentai
+  template:
+    metadata:
+      labels:
+        app: talentai
+    spec:
+      containers:
+        - name: talentai
+          image: node:20-alpine
+          command: ['sh', '-c', 'cd /app && npm install && npm start']
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DATABASE_URL
+              value: 'postgresql://codai:codai123@postgresql.codai-system:5432/codai'
+            - name: REDIS_URL
+              value: 'redis://redis.codai-system:6379'
+          volumeMounts:
+            - name: app-code
+              mountPath: /app
+      volumes:
+        - name: app-code
+          hostPath:
+            path: E:\GitHub\codai-project\apps\talentai
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: talentai
+  namespace: phase1-apps
+spec:
+  selector:
+    app: talentai
+  ports:
+    - port: 80
+      targetPort: 3000
+---
+# MarketAI - Marketing AI Platform
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: marketai
+  namespace: phase1-apps
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: marketai
+  template:
+    metadata:
+      labels:
+        app: marketai
+    spec:
+      containers:
+        - name: marketai
+          image: node:20-alpine
+          command: ['sh', '-c', 'cd /app && npm install && npm start']
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DATABASE_URL
+              value: 'postgresql://codai:codai123@postgresql.codai-system:5432/codai'
+            - name: REDIS_URL
+              value: 'redis://redis.codai-system:6379'
+          volumeMounts:
+            - name: app-code
+              mountPath: /app
+      volumes:
+        - name: app-code
+          hostPath:
+            path: E:\GitHub\codai-project\apps\marketai
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: marketai
+  namespace: phase1-apps
+spec:
+  selector:
+    app: marketai
+  ports:
+    - port: 80
+      targetPort: 3000
+---
+# LegalizAI - Legal AI Platform
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: legalizai
+  namespace: phase1-apps
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: legalizai
+  template:
+    metadata:
+      labels:
+        app: legalizai
+    spec:
+      containers:
+        - name: legalizai
+          image: node:20-alpine
+          command: ['sh', '-c', 'cd /app && npm install && npm start']
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DATABASE_URL
+              value: 'postgresql://codai:codai123@postgresql.codai-system:5432/codai'
+            - name: REDIS_URL
+              value: 'redis://redis.codai-system:6379'
+          volumeMounts:
+            - name: app-code
+              mountPath: /app
+      volumes:
+        - name: app-code
+          hostPath:
+            path: E:\GitHub\codai-project\apps\legalizai
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: legalizai
+  namespace: phase1-apps
+spec:
+  selector:
+    app: legalizai
+  ports:
+    - port: 80
+      targetPort: 3000
+---
+# ConversAI - Communication AI Platform
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: conversai
+  namespace: phase1-apps
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: conversai
+  template:
+    metadata:
+      labels:
+        app: conversai
+    spec:
+      containers:
+        - name: conversai
+          image: node:20-alpine
+          command: ['sh', '-c', 'cd /app && npm install && npm start']
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DATABASE_URL
+              value: 'postgresql://codai:codai123@postgresql.codai-system:5432/codai'
+            - name: REDIS_URL
+              value: 'redis://redis.codai-system:6379'
+          volumeMounts:
+            - name: app-code
+              mountPath: /app
+      volumes:
+        - name: app-code
+          hostPath:
+            path: E:\GitHub\codai-project\apps\conversai
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: conversai
+  namespace: phase1-apps
+spec:
+  selector:
+    app: conversai
+  ports:
+    - port: 80
+      targetPort: 3000
+---
+# MuzicAI - Music AI Platform
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: muzicai
+  namespace: phase1-apps
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: muzicai
+  template:
+    metadata:
+      labels:
+        app: muzicai
+    spec:
+      containers:
+        - name: muzicai
+          image: node:20-alpine
+          command: ['sh', '-c', 'cd /app && npm install && npm start']
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DATABASE_URL
+              value: 'postgresql://codai:codai123@postgresql.codai-system:5432/codai'
+            - name: REDIS_URL
+              value: 'redis://redis.codai-system:6379'
+          volumeMounts:
+            - name: app-code
+              mountPath: /app
+      volumes:
+        - name: app-code
+          hostPath:
+            path: E:\GitHub\codai-project\apps\muzicai
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: muzicai
+  namespace: phase1-apps
+spec:
+  selector:
+    app: muzicai
+  ports:
+    - port: 80
+      targetPort: 3000
+---
+# StocAI - Stock Management AI Platform
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stocai
+  namespace: phase1-apps
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: stocai
+  template:
+    metadata:
+      labels:
+        app: stocai
+    spec:
+      containers:
+        - name: stocai
+          image: node:20-alpine
+          command: ['sh', '-c', 'cd /app && npm install && npm start']
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DATABASE_URL
+              value: 'postgresql://codai:codai123@postgresql.codai-system:5432/codai'
+            - name: REDIS_URL
+              value: 'redis://redis.codai-system:6379'
+          volumeMounts:
+            - name: app-code
+              mountPath: /app
+      volumes:
+        - name: app-code
+          hostPath:
+            path: E:\GitHub\codai-project\apps\stocai
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stocai
+  namespace: phase1-apps
+spec:
+  selector:
+    app: stocai
+  ports:
+    - port: 80
+      targetPort: 3000

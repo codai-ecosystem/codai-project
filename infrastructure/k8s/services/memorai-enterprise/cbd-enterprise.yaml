@@ -1,0 +1,249 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cbd-headless
+  namespace: memorai-production
+  labels:
+    app: cbd-enterprise
+    component: vector-database
+    tier: core
+spec:
+  clusterIP: None
+  selector:
+    app: cbd-enterprise
+  ports:
+    - name: http
+      port: 4180
+      targetPort: 4180
+      protocol: TCP
+    - name: grpc
+      port: 4181
+      targetPort: 4181
+      protocol: TCP
+    - name: raft
+      port: 4182
+      targetPort: 4182
+      protocol: TCP
+    - name: metrics
+      port: 9090
+      targetPort: 9090
+      protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cbd-service
+  namespace: memorai-production
+  labels:
+    app: cbd-enterprise
+    component: vector-database
+    tier: core
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: 'nlb'
+    service.beta.kubernetes.io/aws-load-balancer-internal: 'true'
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: 'tcp'
+spec:
+  type: LoadBalancer
+  selector:
+    app: cbd-enterprise
+  ports:
+    - name: http
+      port: 4180
+      targetPort: 4180
+      protocol: TCP
+    - name: grpc
+      port: 4181
+      targetPort: 4181
+      protocol: TCP
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: cbd-enterprise
+  namespace: memorai-production
+  labels:
+    app: cbd-enterprise
+    component: vector-database
+    tier: core
+spec:
+  serviceName: 'cbd-headless'
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cbd-enterprise
+  template:
+    metadata:
+      labels:
+        app: cbd-enterprise
+        component: vector-database
+        tier: core
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '9090'
+        prometheus.io/path: '/metrics'
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - cbd-enterprise
+              topologyKey: kubernetes.io/hostname
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: role
+                    operator: In
+                    values:
+                      - memory-intensive
+      tolerations:
+        - key: role
+          operator: Equal
+          value: memory-intensive
+          effect: NoSchedule
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: cbd-enterprise
+          image: codai/cbd-enterprise:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 4180
+              protocol: TCP
+            - name: grpc
+              containerPort: 4181
+              protocol: TCP
+            - name: raft
+              containerPort: 4182
+              protocol: TCP
+            - name: metrics
+              containerPort: 9090
+              protocol: TCP
+            - name: health
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: HOSTNAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          envFrom:
+            - configMapRef:
+                name: cbd-enterprise-config
+            - secretRef:
+                name: memorai-secrets
+          resources:
+            requests:
+              memory: '8Gi'
+              cpu: '2000m'
+              ephemeral-storage: '10Gi'
+            limits:
+              memory: '16Gi'
+              cpu: '4000m'
+              ephemeral-storage: '20Gi'
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: config
+              mountPath: /config
+              readOnly: true
+            - name: tls-certs
+              mountPath: /certs
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+          startupProbe:
+            httpGet:
+              path: /startup
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 30
+      volumes:
+        - name: config
+          configMap:
+            name: cbd-enterprise-config
+        - name: tls-certs
+          secret:
+            secretName: memorai-secrets
+            items:
+              - key: tls-cert
+                path: tls.crt
+              - key: tls-key
+                path: tls.key
+        - name: tmp
+          emptyDir: {}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        labels:
+          app: cbd-enterprise
+          component: vector-database
+      spec:
+        accessModes: ['ReadWriteOnce']
+        storageClassName: 'gp3-encrypted'
+        resources:
+          requests:
+            storage: 100Gi
+---
+apiVersion: v1
+kind: StorageClass
+metadata:
+  name: gp3-encrypted
+  labels:
+    app: memorai-enterprise
+parameters:
+  type: gp3
+  encrypted: 'true'
+  kmsKeyId: 'alias/memorai-s3'
+provisioner: ebs.csi.aws.com
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+reclaimPolicy: Retain

@@ -1,0 +1,794 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: codai-ecosystem-ingress
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/force-ssl-redirect: 'true'
+    cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+    nginx.ingress.kubernetes.io/proxy-body-size: '50m'
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: '600'
+    nginx.ingress.kubernetes.io/proxy-send-timeout: '600'
+    nginx.ingress.kubernetes.io/proxy-read-timeout: '600'
+spec:
+  ingressClassName: nginx
+  tls:
+    # Core Platform Certificates
+    - hosts:
+        - 'codai.ro'
+        - '*.codai.ro'
+      secretName: codai-tls
+    - hosts:
+        - 'memorai.ro'
+        - '*.memorai.ro'
+      secretName: memorai-tls
+    - hosts:
+        - 'controlai.ro'
+        - '*.controlai.ro'
+      secretName: controlai-tls
+    - hosts:
+        - 'romai.ro'
+        - '*.romai.ro'
+      secretName: romai-tls
+
+    # Phase 1: Core Business AI Services
+    - hosts:
+        - 'bancai.ro'
+        - '*.bancai.ro'
+      secretName: bancai-tls
+    - hosts:
+        - 'studiai.ro'
+        - '*.studiai.ro'
+      secretName: studiai-tls
+    - hosts:
+        - 'talentai.ro'
+        - '*.talentai.ro'
+      secretName: talentai-tls
+    - hosts:
+        - 'marketai.ro'
+        - '*.marketai.ro'
+      secretName: marketai-tls
+    - hosts:
+        - 'legalizai.ro'
+        - '*.legalizai.ro'
+      secretName: legalizai-tls
+    - hosts:
+        - 'conversai.ro'
+        - '*.conversai.ro'
+      secretName: conversai-tls
+    - hosts:
+        - 'muzicai.ro'
+        - '*.muzicai.ro'
+      secretName: muzicai-tls
+    - hosts:
+        - 'stocai.ro'
+        - '*.stocai.ro'
+      secretName: stocai-tls
+
+    # Phase 2: Platform Services
+    - hosts:
+        - 'kodex.ro'
+        - '*.kodex.ro'
+      secretName: kodex-tls
+    - hosts:
+        - 'metu.ro'
+        - '*.metu.ro'
+      secretName: metu-tls
+
+    # Phase 3: Extended AI Services
+    - hosts:
+        - 'acasai.ro'
+        - '*.acasai.ro'
+      secretName: acasai-tls
+    - hosts:
+        - 'adoptai.ro'
+        - '*.adoptai.ro'
+      secretName: adoptai-tls
+    - hosts:
+        - 'aide.ro'
+        - '*.aide.ro'
+      secretName: aide-tls
+    - hosts:
+        - 'ajutai.ro'
+        - '*.ajutai.ro'
+      secretName: ajutai-tls
+    - hosts:
+        - 'analizai.ro'
+        - '*.analizai.ro'
+      secretName: analizai-tls
+    - hosts:
+        - 'cumparai.ro'
+        - '*.cumparai.ro'
+      secretName: cumparai-tls
+    - hosts:
+        - 'curtai.ro'
+        - '*.curtai.ro'
+      secretName: curtai-tls
+    - hosts:
+        - 'dexai.ro'
+        - '*.dexai.ro'
+      secretName: dexai-tls
+    - hosts:
+        - 'donai.ro'
+        - '*.donai.ro'
+      secretName: donai-tls
+    - hosts:
+        - 'fabricai.ro'
+        - '*.fabricai.ro'
+      secretName: fabricai-tls
+    - hosts:
+        - 'jucai.ro'
+        - '*.jucai.ro'
+      secretName: jucai-tls
+    - hosts:
+        - 'logai.ro'
+        - '*.logai.ro'
+      secretName: logai-tls
+    - hosts:
+        - 'prezentai.ro'
+        - '*.prezentai.ro'
+      secretName: prezentai-tls
+    - hosts:
+        - 'promovai.ro'
+        - '*.promovai.ro'
+      secretName: promovai-tls
+    - hosts:
+        - 'publicai.ro'
+        - '*.publicai.ro'
+      secretName: publicai-tls
+    - hosts:
+        - 'sociai.ro'
+        - '*.sociai.ro'
+      secretName: sociai-tls
+    - hosts:
+        - 'sunai.ro'
+        - '*.sunai.ro'
+      secretName: sunai-tls
+
+  rules:
+    # CODAI.RO - Core Platform
+    - host: codai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: codai-main
+                port:
+                  number: 3000
+    - host: api.codai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: codai-api
+                port:
+                  number: 8080
+    - host: id.codai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: codai-id
+                port:
+                  number: 3000
+    - host: auth.codai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: codai-auth
+                port:
+                  number: 3000
+    - host: hub.codai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: codai-hub
+                port:
+                  number: 3000
+    - host: admin.codai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: codai-admin
+                port:
+                  number: 3000
+    - host: tools.codai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: codai-tools
+                port:
+                  number: 3000
+    - host: wallet.codai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: codai-wallet
+                port:
+                  number: 3000
+    - host: glass.codai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: codai-glass
+                port:
+                  number: 3000
+    - host: explorer.codai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: codai-explorer
+                port:
+                  number: 3000
+
+    # MEMORAI.RO - Memory AI Platform
+    - host: memorai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: memorai-main
+                port:
+                  number: 3000
+    - host: api.memorai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: memorai-api
+                port:
+                  number: 8080
+    - host: mcp.memorai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: memorai-mcp
+                port:
+                  number: 8002
+    - host: cbd.memorai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: memorai-cbd
+                port:
+                  number: 4180
+
+    # CONTROLAI.RO - Control AI Platform
+    - host: controlai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: controlai-main
+                port:
+                  number: 3000
+    - host: dashboard.controlai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: controlai-dashboard
+                port:
+                  number: 3000
+    - host: api.controlai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: controlai-api
+                port:
+                  number: 8080
+    - host: mcp.controlai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: controlai-mcp
+                port:
+                  number: 8003
+
+    # ROMAI.RO - Romanian AI Platform
+    - host: romai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: romai-main
+                port:
+                  number: 3000
+    - host: api.romai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: romai-api
+                port:
+                  number: 8080
+    - host: mcp.romai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: romai-mcp
+                port:
+                  number: 8004
+
+    # PHASE 1: Core Business AI Services
+
+    # BANCAI.RO - Banking AI
+    - host: bancai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: bancai-main
+                port:
+                  number: 3000
+    - host: app.bancai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: bancai-app
+                port:
+                  number: 3000
+    - host: api.bancai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: bancai-api
+                port:
+                  number: 8080
+    - host: admin.bancai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: bancai-admin
+                port:
+                  number: 3000
+    - host: mobile.bancai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: bancai-mobile
+                port:
+                  number: 3000
+
+    # STUDIAI.RO - Education AI
+    - host: studiai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: studiai-main
+                port:
+                  number: 3000
+    - host: app.studiai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: studiai-app
+                port:
+                  number: 3000
+    - host: api.studiai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: studiai-api
+                port:
+                  number: 8080
+    - host: admin.studiai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: studiai-admin
+                port:
+                  number: 3000
+
+    # TALENTAI.RO - Talent/HR AI
+    - host: talentai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: talentai-main
+                port:
+                  number: 3000
+    - host: app.talentai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: talentai-app
+                port:
+                  number: 3000
+    - host: api.talentai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: talentai-api
+                port:
+                  number: 8080
+    - host: admin.talentai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: talentai-admin
+                port:
+                  number: 3000
+
+    # MARKETAI.RO - Marketing AI
+    - host: marketai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: marketai-main
+                port:
+                  number: 3000
+    - host: app.marketai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: marketai-app
+                port:
+                  number: 3000
+    - host: api.marketai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: marketai-api
+                port:
+                  number: 8080
+    - host: admin.marketai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: marketai-admin
+                port:
+                  number: 3000
+
+    # LEGALIZAI.RO - Legal AI
+    - host: legalizai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: legalizai-main
+                port:
+                  number: 3000
+    - host: app.legalizai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: legalizai-app
+                port:
+                  number: 3000
+    - host: api.legalizai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: legalizai-api
+                port:
+                  number: 8080
+    - host: admin.legalizai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: legalizai-admin
+                port:
+                  number: 3000
+
+    # CONVERSAI.RO - Conversation AI
+    - host: conversai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: conversai-main
+                port:
+                  number: 3000
+    - host: app.conversai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: conversai-app
+                port:
+                  number: 3000
+    - host: api.conversai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: conversai-api
+                port:
+                  number: 8080
+    - host: admin.conversai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: conversai-admin
+                port:
+                  number: 3000
+
+    # MUZICAI.RO - Music AI
+    - host: muzicai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: muzicai-main
+                port:
+                  number: 3000
+    - host: app.muzicai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: muzicai-app
+                port:
+                  number: 3000
+    - host: api.muzicai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: muzicai-api
+                port:
+                  number: 8080
+    - host: admin.muzicai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: muzicai-admin
+                port:
+                  number: 3000
+
+    # STOCAI.RO - Stock AI
+    - host: stocai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: stocai-main
+                port:
+                  number: 3000
+    - host: app.stocai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: stocai-app
+                port:
+                  number: 3000
+    - host: api.stocai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: stocai-api
+                port:
+                  number: 8080
+    - host: admin.stocai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: stocai-admin
+                port:
+                  number: 3000
+
+    # PHASE 2: Platform Services
+
+    # KODEX.RO - Development Platform
+    - host: kodex.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kodex-main
+                port:
+                  number: 3000
+    - host: app.kodex.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kodex-app
+                port:
+                  number: 3000
+    - host: api.kodex.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kodex-api
+                port:
+                  number: 8080
+    - host: admin.kodex.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kodex-admin
+                port:
+                  number: 3000
+
+    # METU.RO - Meta Platform
+    - host: metu.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: metu-main
+                port:
+                  number: 3000
+    - host: web.metu.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: metu-web
+                port:
+                  number: 3000
+    - host: api.metu.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: metu-api
+                port:
+                  number: 8080
+
+    # Add remaining domains following the same pattern...
+    # (Note: This is a truncated version for readability - the full file would include all 25+ domains)

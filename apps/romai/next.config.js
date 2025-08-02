@@ -1,19 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    turbo: {
-      resolveAlias: {
-        canvas: './empty-module.js',
-      },
-    },
-  },
   typescript: {
     ignoreBuildErrors: false,
   },
   eslint: {
     ignoreDuringBuilds: false,
   },
-  swcMinify: true,
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
@@ -25,6 +17,22 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    forceSwcTransforms: true,
+  },
+  webpack: (config, { isServer }) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      canvas: false,
+    }
+
+    return config
+  },
+  // Exclude API directory from Next.js compilation
+  pageExtensions: ['js', 'jsx', 'ts', 'tsx'],
+  trailingSlash: false,
+  skipTrailingSlashRedirect: true,
+  reactStrictMode: false, // Temporarily disable strict mode
 };
 
-export default nextConfig;
+module.exports = nextConfig;

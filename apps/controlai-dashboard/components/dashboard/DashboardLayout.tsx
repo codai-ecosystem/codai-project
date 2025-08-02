@@ -36,7 +36,7 @@ export function DashboardLayout() {
   const { sidebarCollapsed } = useUIState()
   const { data, loading, error, refresh } = useDashboard()
   const { startRealTimeUpdates } = useRealTimeUpdates()
-  
+
   // Initialize real-time updates
   useEffect(() => {
     const cleanup = startRealTimeUpdates()
@@ -46,8 +46,8 @@ export function DashboardLayout() {
   // Error boundary fallback
   const ErrorFallback = ({ error, resetErrorBoundary }: any) => (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-      <ErrorDisplay 
-        error={error} 
+      <ErrorDisplay
+        error={error}
         onRetry={resetErrorBoundary}
         title="Dashboard Error"
         description="Something went wrong while loading the dashboard"
@@ -68,8 +68,8 @@ export function DashboardLayout() {
   if (error && !data) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <ErrorDisplay 
-          error={error} 
+        <ErrorDisplay
+          error={error}
           onRetry={refresh}
           title="Failed to Load Dashboard"
           description="There was an error loading the dashboard data"
@@ -83,14 +83,13 @@ export function DashboardLayout() {
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
         {/* Sidebar */}
         <Sidebar />
-        
+
         {/* Main content area */}
-        <div className={`transition-all duration-300 ${
-          sidebarCollapsed ? 'ml-16' : 'ml-64'
-        }`}>
+        <div className={`transition-all duration-300 ${sidebarCollapsed ? 'ml-16' : 'ml-64'
+          }`}>
           {/* Header */}
           <Header />
-          
+
           {/* Main content */}
           <main className="p-6">
             <AnimatePresence mode="wait">
@@ -122,7 +121,7 @@ export function DashboardLayout() {
             </AnimatePresence>
           </main>
         </div>
-        
+
         {/* Global UI components */}
         <NotificationCenter />
         <CommandPalette />
@@ -159,7 +158,7 @@ function OverviewView({ data, loading, error }: any) {
 
       {/* Stats cards */}
       <StatsCards data={data?.metrics} loading={loading} />
-      
+
       {/* Main content grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent projects */}
@@ -168,37 +167,37 @@ function OverviewView({ data, loading, error }: any) {
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <ProjectOverview 
-            data={data} 
-            loading={loading} 
+          <ProjectOverview
+            data={data}
+            loading={loading}
             maxItems={6}
             showCreateButton={true}
           />
         </motion.div>
-        
+
         {/* Active agents */}
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <AgentMonitor 
-            data={data} 
+          <AgentMonitor
+            data={data}
             loading={loading}
             maxItems={6}
             showStatusOnly={true}
           />
         </motion.div>
       </div>
-      
+
       {/* Task summary */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
       >
-        <TaskBoard 
-          data={data} 
+        <TaskBoard
+          data={data}
           loading={loading}
           compact={true}
           maxItemsPerColumn={3}

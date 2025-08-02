@@ -1,0 +1,273 @@
+{
+    "dashboard": {
+        "id": null,
+        "title": "CBD Universal Database - Production Dashboard",
+        "tags": [
+            "cbd",
+            "production",
+            "monitoring"
+        ],
+        "timezone": "browser",
+        "refresh": "30s",
+        "schemaVersion": 30,
+        "version": 1,
+        "time": {
+            "from": "now-1h",
+            "to": "now"
+        },
+        "panels": [
+            {
+                "id": 1,
+                "title": "System Overview",
+                "type": "stat",
+                "targets": [
+                    {
+                        "expr": "up{job=~\"cbd-.*\"}",
+                        "legendFormat": "{{job}} Status"
+                    }
+                ],
+                "fieldConfig": {
+                    "defaults": {
+                        "color": {
+                            "mode": "thresholds"
+                        },
+                        "thresholds": {
+                            "steps": [
+                                {
+                                    "color": "red",
+                                    "value": 0
+                                },
+                                {
+                                    "color": "green",
+                                    "value": 1
+                                }
+                            ]
+                        }
+                    }
+                },
+                "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 0,
+                    "y": 0
+                }
+            },
+            {
+                "id": 2,
+                "title": "Request Rate (req/sec)",
+                "type": "graph",
+                "targets": [
+                    {
+                        "expr": "sum(rate(http_requests_total{job=~\"cbd-.*\"}[5m])) by (job)",
+                        "legendFormat": "{{job}}"
+                    }
+                ],
+                "yAxes": [
+                    {
+                        "label": "Requests/sec",
+                        "min": 0
+                    }
+                ],
+                "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 12,
+                    "y": 0
+                }
+            },
+            {
+                "id": 3,
+                "title": "Response Time (P95)",
+                "type": "graph",
+                "targets": [
+                    {
+                        "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{job=~\"cbd-.*\"}[5m])) by (le, job))",
+                        "legendFormat": "{{job}} P95"
+                    }
+                ],
+                "yAxes": [
+                    {
+                        "label": "Seconds",
+                        "min": 0
+                    }
+                ],
+                "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 0,
+                    "y": 8
+                }
+            },
+            {
+                "id": 4,
+                "title": "Error Rate (%)",
+                "type": "graph",
+                "targets": [
+                    {
+                        "expr": "sum(rate(http_requests_total{job=~\"cbd-.*\",code!~\"2..\"}[5m])) by (job) / sum(rate(http_requests_total{job=~\"cbd-.*\"}[5m])) by (job) * 100",
+                        "legendFormat": "{{job}} Error Rate"
+                    }
+                ],
+                "yAxes": [
+                    {
+                        "label": "Percentage",
+                        "min": 0,
+                        "max": 100
+                    }
+                ],
+                "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 12,
+                    "y": 8
+                }
+            },
+            {
+                "id": 5,
+                "title": "CPU Usage",
+                "type": "graph",
+                "targets": [
+                    {
+                        "expr": "rate(container_cpu_usage_seconds_total{name=~\"cbd-.*\"}[5m]) * 100",
+                        "legendFormat": "{{name}} CPU"
+                    }
+                ],
+                "yAxes": [
+                    {
+                        "label": "Percentage",
+                        "min": 0,
+                        "max": 100
+                    }
+                ],
+                "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 0,
+                    "y": 16
+                }
+            },
+            {
+                "id": 6,
+                "title": "Memory Usage",
+                "type": "graph",
+                "targets": [
+                    {
+                        "expr": "container_memory_usage_bytes{name=~\"cbd-.*\"} / container_spec_memory_limit_bytes{name=~\"cbd-.*\"} * 100",
+                        "legendFormat": "{{name}} Memory"
+                    }
+                ],
+                "yAxes": [
+                    {
+                        "label": "Percentage",
+                        "min": 0,
+                        "max": 100
+                    }
+                ],
+                "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 12,
+                    "y": 16
+                }
+            },
+            {
+                "id": 7,
+                "title": "Database Connections",
+                "type": "graph",
+                "targets": [
+                    {
+                        "expr": "pg_stat_database_numbackends{datname=\"cbd_database\"}",
+                        "legendFormat": "Active Connections"
+                    }
+                ],
+                "yAxes": [
+                    {
+                        "label": "Connections",
+                        "min": 0
+                    }
+                ],
+                "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 0,
+                    "y": 24
+                }
+            },
+            {
+                "id": 8,
+                "title": "Redis Operations",
+                "type": "graph",
+                "targets": [
+                    {
+                        "expr": "rate(redis_commands_total[5m])",
+                        "legendFormat": "Commands/sec"
+                    }
+                ],
+                "yAxes": [
+                    {
+                        "label": "Operations/sec",
+                        "min": 0
+                    }
+                ],
+                "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 12,
+                    "y": 24
+                }
+            },
+            {
+                "id": 9,
+                "title": "Network I/O",
+                "type": "graph",
+                "targets": [
+                    {
+                        "expr": "rate(container_network_receive_bytes_total{name=~\"cbd-.*\"}[5m])",
+                        "legendFormat": "{{name}} RX"
+                    },
+                    {
+                        "expr": "rate(container_network_transmit_bytes_total{name=~\"cbd-.*\"}[5m])",
+                        "legendFormat": "{{name}} TX"
+                    }
+                ],
+                "yAxes": [
+                    {
+                        "label": "Bytes/sec",
+                        "min": 0
+                    }
+                ],
+                "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 0,
+                    "y": 32
+                }
+            },
+            {
+                "id": 10,
+                "title": "Business Metrics",
+                "type": "stat",
+                "targets": [
+                    {
+                        "expr": "sum(increase(cbd_operations_total[1h])) by (paradigm)",
+                        "legendFormat": "{{paradigm}} Operations (1h)"
+                    }
+                ],
+                "fieldConfig": {
+                    "defaults": {
+                        "color": {
+                            "mode": "palette-classic"
+                        },
+                        "unit": "short"
+                    }
+                },
+                "gridPos": {
+                    "h": 8,
+                    "w": 12,
+                    "x": 12,
+                    "y": 32
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,173 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: codai-infrastructure
+---
+# Gateway Service (API router) - Using NGINX placeholder
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+  namespace: codai-infrastructure
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - name: gateway
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: '128Mi'
+              cpu: '100m'
+            limits:
+              memory: '256Mi'
+              cpu: '250m'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway
+  namespace: codai-infrastructure
+spec:
+  selector:
+    app: gateway
+  ports:
+    - port: 80
+      targetPort: 80
+  type: LoadBalancer
+---
+# MemorAI Service (placeholder)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memorai
+  namespace: codai-infrastructure
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memorai
+  template:
+    metadata:
+      labels:
+        app: memorai
+    spec:
+      containers:
+        - name: memorai
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '100m'
+            limits:
+              memory: '512Mi'
+              cpu: '250m'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memorai
+  namespace: codai-infrastructure
+spec:
+  selector:
+    app: memorai
+  ports:
+    - port: 3693
+      targetPort: 80
+      name: main
+    - port: 6367
+      targetPort: 80
+      name: mcp
+---
+# RomAI MCP Service (placeholder)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: romai-mcp
+  namespace: codai-infrastructure
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: romai-mcp
+  template:
+    metadata:
+      labels:
+        app: romai-mcp
+    spec:
+      containers:
+        - name: romai-mcp
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: '128Mi'
+              cpu: '100m'
+            limits:
+              memory: '256Mi'
+              cpu: '250m'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: romai-mcp
+  namespace: codai-infrastructure
+spec:
+  selector:
+    app: romai-mcp
+  ports:
+    - port: 8000
+      targetPort: 80
+---
+# Glass Service (placeholder)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: glass
+  namespace: codai-infrastructure
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: glass
+  template:
+    metadata:
+      labels:
+        app: glass
+    spec:
+      containers:
+        - name: glass
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: '128Mi'
+              cpu: '100m'
+            limits:
+              memory: '256Mi'
+              cpu: '250m'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: glass
+  namespace: codai-infrastructure
+spec:
+  selector:
+    app: glass
+  ports:
+    - port: 7700
+      targetPort: 80

@@ -17,6 +17,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { DatabaseService } from './database/DatabaseService.js';
 import { AIService } from './ai/AIService.js';
 import { CoordinationService } from './coordination/CoordinationService.js';
+import { Logger } from './utils/logger.js';
+import { handleAdvancedAnalytics } from './tools/advanced-analytics.js';
 import {
     Project,
     Task,
@@ -38,7 +40,7 @@ dotenv.config({ path: process.env.DOTENV_CONFIG_PATH });
 // Configuration
 const config: ControlAIConfig = {
     server: {
-        port: parseInt(process.env.CONTROLAI_PORT || '7001'),
+        port: parseInt(process.env.CONTROLAI_PORT || '7002'),
         host: process.env.CONTROLAI_HOST || 'localhost',
         cors: {
             origin: process.env.CONTROLAI_CORS_ORIGIN || '*',
@@ -68,6 +70,7 @@ const config: ControlAIConfig = {
 class ControlAIMCPServer {
     private server: Server;
     private database: DatabaseService;
+    private isMCPMode: boolean;
     private aiService: AIService;
     private coordinationService: CoordinationService;
     private httpServer?: express.Application;
@@ -75,6 +78,15 @@ class ControlAIMCPServer {
     private clients: Set<any> = new Set();
 
     constructor() {
+        // Detect MCP mode (when running via npx or stdio transport)
+        this.isMCPMode = process.argv.includes('--stdio') ||
+            process.argv[0].includes('npx') ||
+            process.env.npm_lifecycle_event === 'start';
+
+        if (this.isMCPMode) {
+            Logger.setMCPMode(true);
+        }
+
         this.server = new Server(
             {
                 name: 'controlai-mcp',
@@ -212,6 +224,71 @@ class ControlAIMCPServer {
                             required: ['taskId', 'status'],
                         },
                     },
+                    {
+                        name: 'get_advanced_analytics',
+                        description: 'Get comprehensive advanced analytics including project trends, agent performance, predictive insights, and custom metrics',
+                        inputSchema: {
+                            type: 'object',
+                            properties: {
+                                workspaceId: {
+                                    type: 'string',
+                                    description: 'Workspace ID to get analytics for'
+                                },
+                                timeRange: {
+                                    type: 'object',
+                                    properties: {
+                                        start: { type: 'string', description: 'Start date (ISO string)' },
+                                        end: { type: 'string', description: 'End date (ISO string)' }
+                                    },
+                                    description: 'Time range for analytics (defaults to last 30 days)'
+                                },
+                                metrics: {
+                                    type: 'array',
+                                    items: {
+                                        type: 'string',
+                                        enum: [
+                                            'project_trends',
+                                            'agent_performance',
+                                            'task_analytics',
+                                            'productivity_metrics',
+                                            'collaboration_metrics',
+                                            'quality_metrics',
+                                            'predictive_insights',
+                                            'custom_metrics'
+                                        ]
+                                    },
+                                    description: 'Specific metrics to include (defaults to all)'
+                                },
+                                filters: {
+                                    type: 'object',
+                                    properties: {
+                                        projectIds: {
+                                            type: 'array',
+                                            items: { type: 'string' },
+                                            description: 'Filter by specific project IDs'
+                                        },
+                                        agentTypes: {
+                                            type: 'array',
+                                            items: { type: 'string' },
+                                            description: 'Filter by agent types'
+                                        },
+                                        priority: {
+                                            type: 'string',
+                                            enum: ['low', 'medium', 'high', 'critical'],
+                                            description: 'Filter by priority level'
+                                        }
+                                    },
+                                    description: 'Optional filters to apply to analytics'
+                                },
+                                aggregation: {
+                                    type: 'string',
+                                    enum: ['daily', 'weekly', 'monthly'],
+                                    description: 'Data aggregation level (defaults to weekly)'
+                                }
+                            },
+                            required: ['workspaceId'],
+                        },
+                    },
                 ],
             };
         });
@@ -255,6 +332,11 @@ class ControlAIMCPServer {
                     case 'update_task_status': {
                         const result = await this.handleUpdateTaskStatus(args);
                         return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+                    }
+
+                    case 'get_advanced_analytics': {
+                        const analytics = await this.handleGetAdvancedAnalytics(args);
+                        return analytics;
                     }
 
                     default:
@@ -655,6 +737,10 @@ class ControlAIMCPServer {
         return result;
     }
 
+    private async handleGetAdvancedAnalytics(args: any) {
+        return await handleAdvancedAnalytics(args, this.database, this.aiService);
+    }
+
     // WebSocket broadcasting
     private broadcast(message: WebSocketMessage): void {
         if (!this.wsServer || this.clients.size === 0) return;
@@ -747,35 +833,40 @@ class ControlAIMCPServer {
 
     async start(): Promise<void> {
         try {
-            console.log('Initializing ControlAI MCP Server...');
+            if (!this.isMCPMode) {
+                console.log('Initializing ControlAI MCP Server...');
+            }
 
             // Initialize database
             await this.database.initialize();
-            console.log('Database initialized successfully');
+            if (!this.isMCPMode) {
+                console.log('Database initialized successfully');
+            }
 
             // Start HTTP server if port is configured and not in MCP-only mode
-            const isMCPMode = process.argv.includes('--mcp') || process.stdin.isTTY === false;
-            if (config.server.port && !isMCPMode) {
+            if (config.server.port && !this.isMCPMode) {
                 try {
                     await this.startHTTPServer();
                 } catch (error) {
                     console.warn('HTTP server startup failed, continuing with MCP-only mode:', error);
                 }
-            } else if (isMCPMode) {
-                console.log('Running in MCP-only mode');
+            } else if (this.isMCPMode) {
+                // Suppress startup messages in MCP mode to avoid stdout interference
             }
 
             // Start MCP server transport
             const transport = new StdioServerTransport();
             await this.server.connect(transport);
 
-            console.log('ControlAI MCP Server started successfully');
-            console.log('Configuration:');
-            console.log(`- Database: ${config.database.path || 'Default location'}`);
-            console.log(`- AI Provider: ${config.ai.provider}`);
-            console.log(`- HTTP Server: ${config.server.port ? `http://${config.server.host}:${config.server.port}` : 'Disabled'}`);
-            console.log(`- WebSocket: ${config.websocket.enabled ? 'Enabled' : 'Disabled'}`);
-
+            // Only log configuration in non-MCP mode to avoid stdout interference
+            if (!this.isMCPMode) {
+                console.log('ControlAI MCP Server started successfully');
+                console.log('Configuration:');
+                console.log(`- Database: ${config.database.path || 'Default location'}`);
+                console.log(`- AI Provider: ${config.ai.provider}`);
+                console.log(`- HTTP Server: ${config.server.port ? `http://${config.server.host}:${config.server.port}` : 'Disabled'}`);
+                console.log(`- WebSocket: ${config.websocket.enabled ? 'Enabled' : 'Disabled'}`);
+            }
         } catch (error) {
             console.error('Failed to start ControlAI MCP Server:', error);
             process.exit(1);

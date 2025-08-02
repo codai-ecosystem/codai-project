@@ -106,7 +106,7 @@ export function AnimatedCounterRAF({
       }
 
       const elapsed = currentTime - startTime - delay
-      
+
       if (elapsed < 0) {
         rafId = requestAnimationFrame(animate)
         return
@@ -114,7 +114,7 @@ export function AnimatedCounterRAF({
 
       const progress = Math.min(elapsed / duration, 1)
       const easeOutQuart = 1 - Math.pow(1 - progress, 4)
-      
+
       const currentValue = startValue + (value - startValue) * easeOutQuart
       setDisplayValue(currentValue)
 
@@ -256,7 +256,7 @@ export function EaseAnimatedCounter({
       }
 
       const elapsed = currentTime - startTime - delay
-      
+
       if (elapsed < 0) {
         rafId = requestAnimationFrame(animate)
         return
@@ -264,7 +264,7 @@ export function EaseAnimatedCounter({
 
       const progress = Math.min(elapsed / duration, 1)
       const easedProgress = easingFunctions[easing as keyof typeof easingFunctions](progress)
-      
+
       const currentValue = startValue + (value - startValue) * easedProgress
       setDisplayValue(currentValue)
 

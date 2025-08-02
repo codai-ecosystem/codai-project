@@ -1,0 +1,241 @@
+# NGINX Ingress Controller for CODAI Ecosystem
+# This handles all domain routing and SSL termination
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: codai-ecosystem-ingress
+  annotations:
+    kubernetes.io/ingress.class: 'nginx'
+    cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/force-ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/proxy-body-size: '100m'
+    nginx.ingress.kubernetes.io/proxy-read-timeout: '300'
+    nginx.ingress.kubernetes.io/proxy-send-timeout: '300'
+spec:
+  tls:
+    - hosts:
+        - '*.codai.ro'
+        - 'codai.ro'
+      secretName: codai-ro-tls
+    - hosts:
+        - '*.memorai.ro'
+        - 'memorai.ro'
+      secretName: memorai-ro-tls
+    - hosts:
+        - '*.controlai.ro'
+        - 'controlai.ro'
+      secretName: controlai-ro-tls
+    - hosts:
+        - '*.romai.ro'
+        - 'romai.ro'
+      secretName: romai-ro-tls
+  rules:
+    # CODAI.RO domains
+    - host: api.codai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gateway-service
+                port:
+                  number: 80
+
+    - host: id.codai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: id-service-service
+                port:
+                  number: 80
+
+    - host: auth.codai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: id-service-service
+                port:
+                  number: 80
+
+    - host: admin.codai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: admin-service
+                port:
+                  number: 80
+
+    - host: hub.codai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hub-service
+                port:
+                  number: 80
+
+    - host: docs.codai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gateway-service
+                port:
+                  number: 80
+
+    # MEMORAI.RO domains
+    - host: memorai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: memorai-service
+                port:
+                  number: 80
+
+    - host: api.memorai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: memorai-service
+                port:
+                  number: 80
+
+    - host: mcp.memorai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: memorai-service
+                port:
+                  number: 80
+
+    - host: cbd.memorai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cbd-service
+                port:
+                  number: 80
+
+    # CONTROLAI.RO domains
+    - host: controlai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: controlai-service
+                port:
+                  number: 80
+
+    - host: dashboard.controlai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: controlai-service
+                port:
+                  number: 80
+
+    - host: api.controlai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: controlai-service
+                port:
+                  number: 80
+
+    - host: mcp.controlai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: controlai-service
+                port:
+                  number: 80
+
+    # ROMAI.RO domains
+    - host: romai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: romai-service
+                port:
+                  number: 80
+
+    - host: api.romai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: romai-service
+                port:
+                  number: 80
+
+    - host: mcp.romai.ro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: romai-service
+                port:
+                  number: 80
+
+---
+# ClusterIssuer for Let's Encrypt SSL certificates
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: admin@codai.ro # Replace with your email
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+      - http01:
+          ingress:
+            class: nginx

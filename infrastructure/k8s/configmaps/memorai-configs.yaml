@@ -1,0 +1,162 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cbd-enterprise-config
+  namespace: memorai-production
+  labels:
+    app: cbd-enterprise
+    component: vector-database
+    tier: core
+data:
+  # CBD Enterprise Configuration
+  CBD_LOG_LEVEL: 'info'
+  CBD_PORT: '4180'
+  CBD_GRPC_PORT: '4181'
+  CBD_METRICS_PORT: '9090'
+  CBD_HEALTH_PORT: '8080'
+
+  # Vector Index Configuration
+  CBD_VECTOR_DIMENSION: '1536' # OpenAI ada-002 dimension
+  CBD_INDEX_TYPE: 'hnsw'
+  CBD_HNSW_M: '16'
+  CBD_HNSW_EF_CONSTRUCTION: '200'
+  CBD_HNSW_EF_SEARCH: '100'
+  CBD_MAX_CONNECTIONS: '32'
+
+  # Storage Configuration
+  CBD_STORAGE_TYPE: 'rocksdb'
+  CBD_DATA_PATH: '/data/cbd'
+  CBD_WAL_PATH: '/data/wal'
+  CBD_BACKUP_PATH: '/data/backup'
+  CBD_ENABLE_COMPRESSION: 'true'
+  CBD_COMPRESSION_TYPE: 'lz4'
+
+  # Clustering Configuration
+  CBD_CLUSTER_ENABLED: 'true'
+  CBD_CLUSTER_NODE_ID: '${HOSTNAME}'
+  CBD_CLUSTER_PEERS: 'cbd-0.cbd-headless:4182,cbd-1.cbd-headless:4182,cbd-2.cbd-headless:4182'
+  CBD_RAFT_PORT: '4182'
+
+  # Security Configuration
+  CBD_TLS_ENABLED: 'true'
+  CBD_AUTH_ENABLED: 'true'
+  CBD_JWT_ISSUER: 'auth.codai.ro'
+  CBD_RBAC_ENABLED: 'true'
+
+  # Performance Configuration
+  CBD_MEMORY_LIMIT: '16Gi'
+  CBD_QUERY_TIMEOUT: '5s'
+  CBD_WRITE_TIMEOUT: '10s'
+  CBD_BATCH_SIZE: '1000'
+  CBD_FLUSH_INTERVAL: '30s'
+
+  # Monitoring Configuration
+  CBD_METRICS_ENABLED: 'true'
+  CBD_TRACING_ENABLED: 'true'
+  CBD_SAMPLING_RATE: '0.1'
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memorai-backend-config
+  namespace: memorai-production
+  labels:
+    app: memorai-backend
+    component: api-server
+    tier: application
+data:
+  # Server Configuration
+  NODE_ENV: 'production'
+  PORT: '4007'
+  HOST: '0.0.0.0'
+
+  # Database Configuration
+  CBD_ENDPOINT: 'http://cbd-service:4180'
+  CBD_GRPC_ENDPOINT: 'cbd-service:4181'
+  POSTGRES_HOST: 'memorai-metadata.cluster-xyz.us-east-1.rds.amazonaws.com'
+  POSTGRES_PORT: '5432'
+  POSTGRES_DB: 'memorai'
+  POSTGRES_USER: 'memorai_admin'
+  POSTGRES_SSL: 'true'
+
+  # Redis Configuration
+  REDIS_HOST: 'memorai-redis.cluster-xyz.cache.amazonaws.com'
+  REDIS_PORT: '6379'
+  REDIS_TLS: 'true'
+  REDIS_CLUSTER: 'true'
+
+  # Authentication Configuration
+  AUTH_ENDPOINT: 'https://auth.codai.ro'
+  HUB_ENDPOINT: 'https://hub.codai.ro'
+  ID_ENDPOINT: 'https://id.codai.ro'
+  JWT_ALGORITHM: 'RS256'
+
+  # Performance Configuration
+  MAX_MEMORY_USAGE: '2Gi'
+  WORKER_PROCESSES: '4'
+  CONNECTION_POOL_SIZE: '20'
+  QUERY_TIMEOUT: '30000'
+
+  # Monitoring Configuration
+  METRICS_ENABLED: 'true'
+  TRACING_ENABLED: 'true'
+  LOG_LEVEL: 'info'
+  LOG_FORMAT: 'json'
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memorai-frontend-config
+  namespace: memorai-production
+  labels:
+    app: memorai-frontend
+    component: web-ui
+    tier: frontend
+data:
+  # Next.js Configuration
+  NODE_ENV: 'production'
+  PORT: '4006'
+
+  # API Configuration
+  NEXT_PUBLIC_API_BASE_URL: 'https://api.memorai.codai.ro'
+  NEXT_PUBLIC_MCP_ENDPOINT: 'wss://mcp.memorai.codai.ro'
+
+  # Authentication Configuration
+  NEXT_PUBLIC_AUTH_URL: 'https://auth.codai.ro'
+  NEXT_PUBLIC_HUB_URL: 'https://hub.codai.ro'
+  NEXT_PUBLIC_ID_URL: 'https://id.codai.ro'
+
+  # Performance Configuration
+  NEXT_PUBLIC_CDN_URL: 'https://cdn.memorai.codai.ro'
+  NEXT_TELEMETRY_DISABLED: '1'
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memorai-mcp-config
+  namespace: memorai-production
+  labels:
+    app: memorai-mcp
+    component: protocol-server
+    tier: integration
+data:
+  # MCP Server Configuration
+  MCP_PORT: '8000'
+  MCP_HOST: '0.0.0.0'
+  MCP_PROTOCOL_VERSION: '2024-12-19'
+
+  # Backend Integration
+  MEMORAI_API_URL: 'http://memorai-backend-service:4007'
+  CBD_ENDPOINT: 'http://cbd-service:4180'
+
+  # Security Configuration
+  MCP_TLS_ENABLED: 'true'
+  MCP_AUTH_REQUIRED: 'true'
+
+  # Performance Configuration
+  MCP_MAX_CONNECTIONS: '1000'
+  MCP_TIMEOUT: '30s'
+  MCP_BUFFER_SIZE: '64KB'

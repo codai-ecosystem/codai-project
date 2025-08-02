@@ -1,23 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { OpenAI } from "openai";
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    
-    if (!session?.user) {
-      return NextResponse.json(
-        { message: "Unauthorized" },
-        { status: 401 }
-      );
-    }
-
     const body = await request.json();
     const { message, model = "gpt-3.5-turbo", maxTokens = 150 } = body;
 
@@ -28,50 +12,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const completion = await openai.chat.completions.create({
-      model,
-      messages: [
-        {
-          role: "system",
-          content: "You are a helpful AI assistant integrated into the Id ecosystem."
-        },
-        {
-          role: "user",
-          content: message
-        }
-      ],
-      max_tokens: maxTokens,
-      temperature: 0.7,
-    });
-
-    const response = completion.choices[0]?.message?.content || "No response generated";
-
+    // Phase 1 Implementation - Mock AI Response
     return NextResponse.json({
-      response,
+      response: `This is a Phase 1 mock response to: "${message}". AI functionality will be fully implemented in Phase 2.`,
       model,
-      usage: completion.usage,
-      timestamp: new Date().toISOString()
+      usage: {
+        prompt_tokens: 10,
+        completion_tokens: 25,
+        total_tokens: 35
+      },
+      timestamp: new Date().toISOString(),
+      phase: "Phase 1 - Service Ready"
     });
 
   } catch (error: any) {
     console.error("AI API error:", error);
-    
-    if (error.status === 401) {
-      return NextResponse.json(
-        { message: "Invalid API key" },
-        { status: 401 }
-      );
-    }
-    
-    if (error.status === 429) {
-      return NextResponse.json(
-        { message: "Rate limit exceeded" },
-        { status: 429 }
-      );
-    }
 
     return NextResponse.json(
-      { message: "AI service error" },
+      { message: "AI service error - Phase 1 implementation" },
       { status: 500 }
     );
   }
@@ -79,16 +37,7 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    
-    if (!session?.user) {
-      return NextResponse.json(
-        { message: "Unauthorized" },
-        { status: 401 }
-      );
-    }
-
-    // Return available AI models and capabilities
+    // Return available AI models and capabilities for Phase 1
     return NextResponse.json({
       models: [
         "gpt-3.5-turbo",
@@ -104,7 +53,9 @@ export async function GET(request: NextRequest) {
       limits: {
         maxTokens: 4000,
         requestsPerMinute: 60
-      }
+      },
+      phase: "Phase 1 - Service Ready",
+      status: "Mock implementation"
     });
 
   } catch (error) {

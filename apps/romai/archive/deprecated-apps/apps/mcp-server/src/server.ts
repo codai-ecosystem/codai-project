@@ -1,0 +1,20 @@
+// import { RomaiMcpServer } from '@codai/romai-mcp';
+import dotenv from 'dotenv';
+
+// Load environment variables
+dotenv.config();
+
+async function main() {
+  try {
+    console.error('🧠 Starting ROMAI MCP Server...');
+
+    // const server = new RomaiMcpServer();
+    // await server.run();
+    console.log('ROMAI MCP Server placeholder - to be implemented');
+  } catch (error) {
+    console.error('❌ Failed to start ROMAI MCP Server:', error);
+    process.exit(1);
+  }
+}
+
+main();

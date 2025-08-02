@@ -89,6 +89,15 @@ export declare class MemorAIUnifiedServer {
     private memoryStats;
     constructor(config: ServerConfig);
     private log;
+    /**
+     * Initialize CBD Service - Check for service availability and optionally start it
+     */
+    private initializeCBDService;
+    private checkCBDService;
+    private startCBDService;
+    private startCBDViaNPX;
+    private findCBDPackage;
+    private sleep;
     private setupHandlers;
     private handleRemember;
     private handleRecall;

@@ -1,5 +1,5 @@
-# MemorAI Production Deployment Configuration
-# Production-ready setup for enterprise deployment
+# MemorAI Frontend Enterprise Dockerfile
+# Next.js production build for enterprise deployment
 
 FROM node:18-alpine AS base
 
@@ -8,7 +8,7 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Install pnpm
+# Install pnpm for workspace compatibility
 RUN npm install -g pnpm
 
 # Copy package files
@@ -25,8 +25,8 @@ COPY . .
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 
-# Build the application
-RUN npm run build
+# Build the application with optimizations
+RUN pnpm build
 
 # Production image, copy all the files and run next
 FROM base AS runner
@@ -35,49 +35,64 @@ WORKDIR /app
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 
-# Create non-root user
+# Create non-root user for security
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # Copy built application
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
 
-# Copy Prisma schema and generate client
-COPY --from=builder /app/prisma ./prisma
-RUN npx prisma generate
+# Set permissions for Next.js cache
+RUN mkdir .next && chown nextjs:nodejs .next
 
-# Set correct permissions
+# Copy built Next.js application
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# Copy Prisma schema if exists
+COPY --from=builder /app/prisma ./prisma 2>/dev/null || true
+
+# Generate Prisma client if schema exists
+RUN if [ -f "./prisma/schema.prisma" ]; then npx prisma generate; fi
+
+# Switch to non-root user
 USER nextjs
 
-EXPOSE 3693
+# Expose enterprise port
+EXPOSE 4006
 
-ENV PORT 3693
+ENV PORT 4006
 ENV HOSTNAME "0.0.0.0"
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+# Enhanced health check for enterprise monitoring
+HEALTHCHECK --interval=30s --timeout=10s --start-period=45s --retries=3 \
   CMD node -e "
     const http = require('http');
     const options = { 
       hostname: 'localhost', 
-      port: process.env.PORT || 3693, 
+      port: process.env.PORT || 4006, 
       path: '/api/health', 
       method: 'GET',
-      timeout: 2000
+      timeout: 8000
     };
     const req = http.request(options, (res) => {
       if (res.statusCode === 200) {
         process.exit(0);
       } else {
+        console.error('Health check failed with status:', res.statusCode);
         process.exit(1);
       }
     });
-    req.on('error', () => process.exit(1));
-    req.on('timeout', () => process.exit(1));
+    req.on('error', (err) => {
+      console.error('Health check error:', err.message);
+      process.exit(1);
+    });
+    req.on('timeout', () => {
+      console.error('Health check timeout');
+      process.exit(1);
+    });
     req.end();
   "
 
-# Start the server
+# Start the Next.js server
 CMD ["node", "server.js"]

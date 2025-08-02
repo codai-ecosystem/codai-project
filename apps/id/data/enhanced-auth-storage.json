@@ -13,7 +13,7 @@
       "isActive": true,
       "emailVerified": true,
       "role": "admin",
-      "loginAttempts": 5,
+      "loginAttempts": 6,
       "mfaEnabled": false,
       "passwordHistory": [],
       "securityPreferences": {
@@ -21,7 +21,7 @@
         "trustedDevices": [],
         "loginNotifications": true
       },
-      "lockedUntil": "2025-07-31T12:56:42.251Z"
+      "lockedUntil": "2025-08-01T21:26:41.105Z"
     },
     {
       "id": "beaafd66348f720c1a1a094f507d699e",
@@ -32,7 +32,7 @@
         "name": "Test User"
       },
       "createdAt": "2025-07-31T12:26:40.830Z",
-      "updatedAt": "2025-07-31T12:52:08.280Z",
+      "updatedAt": "2025-08-01T20:56:42.185Z",
       "isActive": true,
       "emailVerified": true,
       "role": "user",
@@ -44,7 +44,7 @@
         "trustedDevices": [],
         "loginNotifications": true
       },
-      "lastLogin": "2025-07-31T12:52:08.280Z"
+      "lastLogin": "2025-08-01T20:56:42.185Z"
     },
     {
       "id": "user_1753964801028_lrf26n9ej",
@@ -1871,6 +1871,302 @@
       "createdAt": "2025-07-31T12:52:15.583Z",
       "updatedAt": "2025-07-31T12:52:19.340Z",
       "lastLogin": "2025-07-31T12:52:19.340Z"
+    },
+    {
+      "id": "user_1754081800604_fbiwwd3bk",
+      "username": "stronguser-1754081800395",
+      "email": "strong-1754081800395@test.com",
+      "password": "$2b$12$2fYVAadu1ibJrEwJz8az2eH.gTITcFqN1nyjYbX2DMJ2DYTdOLs92",
+      "profile": {
+        "name": "stronguser-1754081800395"
+      },
+      "role": "user",
+      "isActive": true,
+      "emailVerified": false,
+      "loginAttempts": 0,
+      "mfaEnabled": false,
+      "passwordHistory": [
+        "$2b$12$2fYVAadu1ibJrEwJz8az2eH.gTITcFqN1nyjYbX2DMJ2DYTdOLs92"
+      ],
+      "securityPreferences": {
+        "requireMFA": false,
+        "trustedDevices": [],
+        "loginNotifications": true
+      },
+      "createdAt": "2025-08-01T20:56:40.604Z",
+      "updatedAt": "2025-08-01T20:56:40.801Z",
+      "lastLogin": "2025-08-01T20:56:40.801Z"
+    },
+    {
+      "id": "user_1754081802516_2ro8pnh0e",
+      "username": "",
+      "email": "xss-1754081802300-1m9upp@test.com",
+      "password": "$2b$12$K45.m/.e6y/y5J8aMcmc3OldZesW7iqH5kWL8fx5xOWqmfdIrsLUu",
+      "profile": {
+        "name": "\"&gt;&lt;\""
+      },
+      "role": "user",
+      "isActive": true,
+      "emailVerified": false,
+      "loginAttempts": 0,
+      "mfaEnabled": false,
+      "passwordHistory": [
+        "$2b$12$K45.m/.e6y/y5J8aMcmc3OldZesW7iqH5kWL8fx5xOWqmfdIrsLUu"
+      ],
+      "securityPreferences": {
+        "requireMFA": false,
+        "trustedDevices": [],
+        "loginNotifications": true
+      },
+      "createdAt": "2025-08-01T20:56:42.516Z",
+      "updatedAt": "2025-08-01T20:56:42.516Z"
+    },
+    {
+      "id": "user_1754081802718_a4ubd4xlr",
+      "username": "email-1754081802523-w6v16j",
+      "email": "email-1754081802523-w6v16j@test.com",
+      "password": "$2b$12$X7ffCiQVO7.kCMvnHqFghOsMIFyapW2zABpOad.SXpX5OR3Zjw9LO",
+      "profile": {
+        "name": "email-1754081802523-w6v16j"
+      },
+      "role": "user",
+      "isActive": true,
+      "emailVerified": false,
+      "loginAttempts": 0,
+      "mfaEnabled": false,
+      "passwordHistory": [
+        "$2b$12$X7ffCiQVO7.kCMvnHqFghOsMIFyapW2zABpOad.SXpX5OR3Zjw9LO"
+      ],
+      "securityPreferences": {
+        "requireMFA": false,
+        "trustedDevices": [],
+        "loginNotifications": true
+      },
+      "createdAt": "2025-08-01T20:56:42.718Z",
+      "updatedAt": "2025-08-01T20:56:42.718Z"
+    },
+    {
+      "id": "user_1754081802917_mnk61spzb",
+      "username": "",
+      "email": "iptest_1754081802725@example.com",
+      "password": "$2b$12$PY/1Bwrgsh031QKQdSKhGeC5iKzjMhb2Qqzrq0N8yf.vlgm313oEu",
+      "profile": {
+        "name": ""
+      },
+      "role": "user",
+      "isActive": true,
+      "emailVerified": false,
+      "loginAttempts": 0,
+      "mfaEnabled": false,
+      "passwordHistory": [
+        "$2b$12$PY/1Bwrgsh031QKQdSKhGeC5iKzjMhb2Qqzrq0N8yf.vlgm313oEu"
+      ],
+      "securityPreferences": {
+        "requireMFA": false,
+        "trustedDevices": [],
+        "loginNotifications": true
+      },
+      "createdAt": "2025-08-01T20:56:42.917Z",
+      "updatedAt": "2025-08-01T20:56:43.114Z",
+      "lastLogin": "2025-08-01T20:56:43.114Z"
+    },
+    {
+      "id": "user_1754081803419_ruyv3vx8n",
+      "username": "",
+      "email": "multiip_1754081803224@example.com",
+      "password": "$2b$12$375Wo9gIsNi9Oftk1Qvc.uOFC2MfmBs7ULQU.wPcWFbEwPTmkx82q",
+      "profile": {
+        "name": ""
+      },
+      "role": "user",
+      "isActive": true,
+      "emailVerified": false,
+      "loginAttempts": 0,
+      "mfaEnabled": false,
+      "passwordHistory": [
+        "$2b$12$375Wo9gIsNi9Oftk1Qvc.uOFC2MfmBs7ULQU.wPcWFbEwPTmkx82q"
+      ],
+      "securityPreferences": {
+        "requireMFA": false,
+        "trustedDevices": [],
+        "loginNotifications": true
+      },
+      "createdAt": "2025-08-01T20:56:43.419Z",
+      "updatedAt": "2025-08-01T20:56:44.474Z",
+      "lastLogin": "2025-08-01T20:56:44.474Z"
+    },
+    {
+      "id": "user_1754081804767_b0dj5eiuj",
+      "username": "",
+      "email": "rapidchange_1754081804577@example.com",
+      "password": "$2b$12$uG2mEqOtnY.Sfs6xHi0XeOT9kG3kbxsv4bZ9mELWYSpYQMzIWhQ7i",
+      "profile": {
+        "name": ""
+      },
+      "role": "user",
+      "isActive": true,
+      "emailVerified": false,
+      "loginAttempts": 0,
+      "mfaEnabled": false,
+      "passwordHistory": [
+        "$2b$12$uG2mEqOtnY.Sfs6xHi0XeOT9kG3kbxsv4bZ9mELWYSpYQMzIWhQ7i"
+      ],
+      "securityPreferences": {
+        "requireMFA": false,
+        "trustedDevices": [],
+        "loginNotifications": true
+      },
+      "createdAt": "2025-08-01T20:56:44.767Z",
+      "updatedAt": "2025-08-01T20:56:45.242Z",
+      "lastLogin": "2025-08-01T20:56:45.242Z"
+    },
+    {
+      "id": "user_1754081805555_w5uurc2r3",
+      "username": "mfa-1754081805362-yhyt65",
+      "email": "mfa-1754081805362-yhyt65@test.com",
+      "password": "$2b$12$/Sbix5pjZb.0nrBnYIFkieFBKdrp/.siPlsa2/o.SopszFw2SdWLC",
+      "profile": {
+        "name": "mfa-1754081805362-yhyt65"
+      },
+      "role": "admin",
+      "isActive": true,
+      "emailVerified": false,
+      "loginAttempts": 0,
+      "mfaEnabled": false,
+      "passwordHistory": [
+        "$2b$12$/Sbix5pjZb.0nrBnYIFkieFBKdrp/.siPlsa2/o.SopszFw2SdWLC"
+      ],
+      "securityPreferences": {
+        "requireMFA": true,
+        "trustedDevices": [],
+        "loginNotifications": true
+      },
+      "createdAt": "2025-08-01T20:56:45.555Z",
+      "updatedAt": "2025-08-01T20:56:45.555Z"
+    },
+    {
+      "id": "user_1754081805941_z4w1av1pb",
+      "username": "mfaverify-1754081805752-9mr2xl",
+      "email": "mfaverify-1754081805752-9mr2xl@test.com",
+      "password": "$2b$12$vitrv1iI6h7dGSu9IANiZ.zkNqBlMHxitDnMez5octyY3N4UhULc6",
+      "profile": {
+        "name": "mfaverify-1754081805752-9mr2xl"
+      },
+      "role": "admin",
+      "isActive": true,
+      "emailVerified": false,
+      "loginAttempts": 0,
+      "mfaEnabled": false,
+      "passwordHistory": [
+        "$2b$12$vitrv1iI6h7dGSu9IANiZ.zkNqBlMHxitDnMez5octyY3N4UhULc6"
+      ],
+      "securityPreferences": {
+        "requireMFA": true,
+        "trustedDevices": [],
+        "loginNotifications": true
+      },
+      "createdAt": "2025-08-01T20:56:45.941Z",
+      "updatedAt": "2025-08-01T20:56:46.133Z",
+      "lastLogin": "2025-08-01T20:56:46.133Z"
+    },
+    {
+      "id": "user_1754081806429_v1k3xw9jn",
+      "username": "mfainvalid-1754081806236-e7cexd",
+      "email": "mfainvalid-1754081806236-e7cexd@test.com",
+      "password": "$2b$12$LpZD064qfdfOQs67pTvwje/atJxpxmTxnYsDnVdaa/Cs00SOgxJYa",
+      "profile": {
+        "name": "mfainvalid-1754081806236-e7cexd"
+      },
+      "role": "admin",
+      "isActive": true,
+      "emailVerified": false,
+      "loginAttempts": 0,
+      "mfaEnabled": false,
+      "passwordHistory": [
+        "$2b$12$LpZD064qfdfOQs67pTvwje/atJxpxmTxnYsDnVdaa/Cs00SOgxJYa"
+      ],
+      "securityPreferences": {
+        "requireMFA": true,
+        "trustedDevices": [],
+        "loginNotifications": true
+      },
+      "createdAt": "2025-08-01T20:56:46.429Z",
+      "updatedAt": "2025-08-01T20:56:46.429Z"
+    },
+    {
+      "id": "user_1754081806839_64rs579t8",
+      "username": "session-test-1754081806628-izoary",
+      "email": "session-test-1754081806628-izoary@test.com",
+      "password": "$2b$12$TuKl10VyZAiKWHPspEiyleIuySRwL54n6qNXr33IkRGbKawN.9u1e",
+      "profile": {
+        "name": "session-test-1754081806628-izoary"
+      },
+      "role": "user",
+      "isActive": true,
+      "emailVerified": false,
+      "loginAttempts": 0,
+      "mfaEnabled": false,
+      "passwordHistory": [
+        "$2b$12$TuKl10VyZAiKWHPspEiyleIuySRwL54n6qNXr33IkRGbKawN.9u1e"
+      ],
+      "securityPreferences": {
+        "requireMFA": false,
+        "trustedDevices": [],
+        "loginNotifications": true
+      },
+      "createdAt": "2025-08-01T20:56:46.839Z",
+      "updatedAt": "2025-08-01T20:56:48.353Z",
+      "lastLogin": "2025-08-01T20:56:48.353Z"
+    },
+    {
+      "id": "user_1754081808688_nb820jkjx",
+      "username": "risk-score-test-1754081808472-cyw4u",
+      "email": "risk-score-test-1754081808472-cyw4u@test.com",
+      "password": "$2b$12$DiJcYcPQPEYED5OzhqmYy.mWss1GhqKHLAJ0TVP8447fNM2fBQsEm",
+      "profile": {
+        "name": "risk-score-test-1754081808472-cyw4u"
+      },
+      "role": "user",
+      "isActive": true,
+      "emailVerified": false,
+      "loginAttempts": 0,
+      "mfaEnabled": false,
+      "passwordHistory": [
+        "$2b$12$DiJcYcPQPEYED5OzhqmYy.mWss1GhqKHLAJ0TVP8447fNM2fBQsEm"
+      ],
+      "securityPreferences": {
+        "requireMFA": false,
+        "trustedDevices": [],
+        "loginNotifications": true
+      },
+      "createdAt": "2025-08-01T20:56:48.688Z",
+      "updatedAt": "2025-08-01T20:56:48.891Z",
+      "lastLogin": "2025-08-01T20:56:48.891Z"
+    },
+    {
+      "id": "user_1754081809924_rvdmywwxl",
+      "username": "concurrent-test-1754081809719-vuyfh",
+      "email": "concurrent-test-1754081809719-vuyfh@test.com",
+      "password": "$2b$12$ipg/1JNf13YnVXIeW238YOCbkY5nt3kEA6aiKSaQXc4ZsBQXram1q",
+      "profile": {
+        "name": "concurrent-test-1754081809719-vuyfh"
+      },
+      "role": "user",
+      "isActive": true,
+      "emailVerified": false,
+      "loginAttempts": 0,
+      "mfaEnabled": false,
+      "passwordHistory": [
+        "$2b$12$ipg/1JNf13YnVXIeW238YOCbkY5nt3kEA6aiKSaQXc4ZsBQXram1q"
+      ],
+      "securityPreferences": {
+        "requireMFA": false,
+        "trustedDevices": [],
+        "loginNotifications": true
+      },
+      "createdAt": "2025-08-01T20:56:49.924Z",
+      "updatedAt": "2025-08-01T20:56:54.255Z",
+      "lastLogin": "2025-08-01T20:56:54.255Z"
     }
   ],
   "sessions": [
@@ -5185,15 +5481,561 @@
       "riskScore": 20,
       "isVerified": true,
       "mfaVerified": false
+    },
+    {
+      "id": "session_1754081800802_q5hl6y74a",
+      "userId": "user_1754081800604_fbiwwd3bk",
+      "tokenHash": "$2b$10$B32I6xY1vykI98DjiSsBlO8kjG0nm3S7UEFmUCtUmyT098u1RjJy2",
+      "refreshTokenHash": "$2b$10$I5B64igIIGyFFwcTUl6z/OSvxNHgk5Wlkx/BnlaIO7p34SrUpEXbm",
+      "expiresAt": "2025-08-01T21:56:40.897Z",
+      "createdAt": "2025-08-01T20:56:40.897Z",
+      "lastAccessed": "2025-08-01T20:56:40.897Z",
+      "isActive": true,
+      "riskScore": 40,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081801315_vtjgju5q8",
+      "userId": "beaafd66348f720c1a1a094f507d699e",
+      "tokenHash": "$2b$10$Cvt4lDnc9J/fxT3FE5kBn.kNZUEfR2HBQv63h5gbs6IJyMZ3xBO4S",
+      "refreshTokenHash": "$2b$10$sGc3Ockk2UJFJR8ptavXIO1fT8EoGQYWZL01eLAGpec3hJuIQNBmi",
+      "expiresAt": "2025-08-01T21:56:41.410Z",
+      "createdAt": "2025-08-01T20:56:41.410Z",
+      "lastAccessed": "2025-08-01T20:56:41.410Z",
+      "isActive": true,
+      "riskScore": 40,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081802185_qum81u2f8",
+      "userId": "beaafd66348f720c1a1a094f507d699e",
+      "tokenHash": "$2b$10$vFPfeFVvcALC1uuc/LI5ce5d7o6KbPw1hh9FVM1ym1/1IRsx9skta",
+      "refreshTokenHash": "$2b$10$9nHlRUml5tcDhsz3QCY.wO5lDdOhF4fHb1tuDSihDKejIYitYKCIK",
+      "expiresAt": "2025-08-01T21:56:42.290Z",
+      "createdAt": "2025-08-01T20:56:42.290Z",
+      "lastAccessed": "2025-08-01T20:56:42.290Z",
+      "isActive": true,
+      "riskScore": 40,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081803114_foao2h9qr",
+      "userId": "user_1754081802917_mnk61spzb",
+      "tokenHash": "$2b$10$jjf1g3/SjV4C7T9XbwuIiuVNx.nQfnsFaLQQHXFfvg/ksECV/.tru",
+      "refreshTokenHash": "$2b$10$jW7vA/jWUNR1P4zT7mTCZ.MZ0NF3I9Re0ig66OoR9PLeizfGRdeGa",
+      "expiresAt": "2025-08-01T21:56:43.211Z",
+      "createdAt": "2025-08-01T20:56:43.211Z",
+      "lastAccessed": "2025-08-01T20:56:43.211Z",
+      "ipAddress": "192.168.1.100",
+      "userAgent": "Test Browser",
+      "isActive": true,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081803611_k5n6l2pb3",
+      "userId": "user_1754081803419_ruyv3vx8n",
+      "tokenHash": "$2b$10$l3rr0TcGwARG2ztgnpIHUuOfinKn4G7eiGiWcMv.kXbUsg3eh4qyy",
+      "refreshTokenHash": "$2b$10$jqCAC6WZp3fnXhR5BonpX.kH0p5TfmXgQInhrNOTPgJKm.jNBEtie",
+      "expiresAt": "2025-08-01T21:56:43.707Z",
+      "createdAt": "2025-08-01T20:56:43.707Z",
+      "lastAccessed": "2025-08-01T20:56:43.707Z",
+      "ipAddress": "192.168.1.1",
+      "userAgent": "Browser-192.168.1.1",
+      "isActive": false,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081803898_yajlxzcxy",
+      "userId": "user_1754081803419_ruyv3vx8n",
+      "tokenHash": "$2b$10$DMw4J3ybT/wDsPVEwYWXHe8Lu0F/6hmZYoNumLGHN4wmZTtywJIDS",
+      "refreshTokenHash": "$2b$10$YCMOvpl1LRV5o1tp8J/Ebefm5SkGQdCYVg3Mcr0rbifPB9EZ3Hsva",
+      "expiresAt": "2025-08-01T21:56:43.993Z",
+      "createdAt": "2025-08-01T20:56:43.993Z",
+      "lastAccessed": "2025-08-01T20:56:43.993Z",
+      "ipAddress": "10.0.0.1",
+      "userAgent": "Browser-10.0.0.1",
+      "isActive": true,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081804188_ethn66a85",
+      "userId": "user_1754081803419_ruyv3vx8n",
+      "tokenHash": "$2b$10$j4jt71.5mdKHAyUem/meVOtoAOmT5AS.kXdRPGZ2qmPcNtLOC98Wq",
+      "refreshTokenHash": "$2b$10$Nwo1r4U9crT9ZH6zno.hvOMd0W0aooLOtXXdVTWeBboFZ02PuI6l2",
+      "expiresAt": "2025-08-01T21:56:44.282Z",
+      "createdAt": "2025-08-01T20:56:44.282Z",
+      "lastAccessed": "2025-08-01T20:56:44.282Z",
+      "ipAddress": "172.16.0.1",
+      "userAgent": "Browser-172.16.0.1",
+      "isActive": true,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081804474_6toqrto7n",
+      "userId": "user_1754081803419_ruyv3vx8n",
+      "tokenHash": "$2b$10$JVZ7kIaErm0u4LVwJgwihOAtHo.V3GnB6G7sewTLbDb6CMMrTaDEq",
+      "refreshTokenHash": "$2b$10$2Fk5H0SFfV3aSumVfUF7gutKMetu4apwPWw3pLUM2E7rTQPQoljCK",
+      "expiresAt": "2025-08-01T21:56:44.570Z",
+      "createdAt": "2025-08-01T20:56:44.570Z",
+      "lastAccessed": "2025-08-01T20:56:44.570Z",
+      "ipAddress": "203.0.113.1",
+      "userAgent": "Browser-203.0.113.1",
+      "isActive": true,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081804957_81cmfn1g8",
+      "userId": "user_1754081804767_b0dj5eiuj",
+      "tokenHash": "$2b$10$Izu1zn91HNenNUtmlwtuEu/ehSlsoOqlLEtJi713sheZ.UPLlnsm.",
+      "refreshTokenHash": "$2b$10$i0a1qDPY3uAppBpQE/aK6Ox6Gk3EQwIW8jlxInCX35YixCdKBSa/O",
+      "expiresAt": "2025-08-01T21:56:45.051Z",
+      "createdAt": "2025-08-01T20:56:45.051Z",
+      "lastAccessed": "2025-08-01T20:56:45.051Z",
+      "ipAddress": "192.168.1.1",
+      "userAgent": "Browser A",
+      "isActive": true,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081805242_zq7eo2n3k",
+      "userId": "user_1754081804767_b0dj5eiuj",
+      "tokenHash": "$2b$10$NhhiOFUH.bjXITtvZk8X/.lspJIwZg5G3ZxMY7UFoI5v.IRAbL0za",
+      "refreshTokenHash": "$2b$10$XxR.5nV2nbLCF9.imHtfT.Co23gG7zBcxUqpxEdE9W9vmFNVBPbU6",
+      "expiresAt": "2025-08-01T21:56:45.339Z",
+      "createdAt": "2025-08-01T20:56:45.339Z",
+      "lastAccessed": "2025-08-01T20:56:45.339Z",
+      "ipAddress": "10.0.0.1",
+      "userAgent": "Browser B",
+      "isActive": true,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081806133_0jkui7krh",
+      "userId": "user_1754081805941_z4w1av1pb",
+      "tokenHash": "$2b$10$51AXpymxQ5a1Qe2nhagNyOcbWt6.NPBHp/7yGdO7w2Owb/.j.F0Zq",
+      "refreshTokenHash": "$2b$10$spAxD5bvzCRn1HEtYPvSP.6vnCzY7UdwdDLM98AxxUZd64omFB96q",
+      "expiresAt": "2025-08-01T21:56:46.230Z",
+      "createdAt": "2025-08-01T20:56:46.230Z",
+      "lastAccessed": "2025-08-01T20:56:46.230Z",
+      "isActive": true,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": true
+    },
+    {
+      "id": "session_1754081807061_rygaw5mnw",
+      "userId": "user_1754081806839_64rs579t8",
+      "tokenHash": "$2b$10$/TnESkXQAhkHP/mT7Im.Lu6.hL2yAiVl.X3Jk4tBcJZrFCO3P1gOe",
+      "refreshTokenHash": "$2b$10$w9Tm9Za4i8GdbF.WAxpi1Ol4OJPYOIqGGq1/iJvvQ.l5oR4ZjvDa2",
+      "expiresAt": "2025-08-01T21:56:47.168Z",
+      "createdAt": "2025-08-01T20:56:47.168Z",
+      "lastAccessed": "2025-08-01T20:56:47.168Z",
+      "ipAddress": "192.168.1.1",
+      "userAgent": "Browser-1",
+      "isActive": false,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081807394_lbebnivx3",
+      "userId": "user_1754081806839_64rs579t8",
+      "tokenHash": "$2b$10$UYIe0cbxlmeoxliCnstdf.qnRUFR7VfOZnmjl6pAFd/plWrXfVbJ.",
+      "refreshTokenHash": "$2b$10$pF/2o24t.Y718K1yXp0jwuvJNyR0DOIPDBYoAk7AHWYysZg4g7x92",
+      "expiresAt": "2025-08-01T21:56:47.504Z",
+      "createdAt": "2025-08-01T20:56:47.504Z",
+      "lastAccessed": "2025-08-01T20:56:47.504Z",
+      "ipAddress": "192.168.1.2",
+      "userAgent": "Browser-2",
+      "isActive": false,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081807716_tqu72zpom",
+      "userId": "user_1754081806839_64rs579t8",
+      "tokenHash": "$2b$10$/yB1tG6dZLFX644FnSx95.kNKEdY2n.9etsb4V41IbhC4BR3Tzsaq",
+      "refreshTokenHash": "$2b$10$VPQykflWjUwUMYM70siO1.HkboGSk7E6YzfVIxcIRO0sD2MGSoZsK",
+      "expiresAt": "2025-08-01T21:56:47.822Z",
+      "createdAt": "2025-08-01T20:56:47.822Z",
+      "lastAccessed": "2025-08-01T20:56:47.822Z",
+      "ipAddress": "192.168.1.3",
+      "userAgent": "Browser-3",
+      "isActive": true,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081808037_091byyvva",
+      "userId": "user_1754081806839_64rs579t8",
+      "tokenHash": "$2b$10$Bh42.K24x0rnMD7D0LXmwebcRJ5Il3QVKppIKVs.STezQ29JyY6Te",
+      "refreshTokenHash": "$2b$10$MyFhMq7GTbLEoErwT5rMjOSRzUcSzaYjYAHff57Gb/KWtbcnkbqO2",
+      "expiresAt": "2025-08-01T21:56:48.137Z",
+      "createdAt": "2025-08-01T20:56:48.137Z",
+      "lastAccessed": "2025-08-01T20:56:48.137Z",
+      "ipAddress": "192.168.1.4",
+      "userAgent": "Browser-4",
+      "isActive": true,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081808353_4anj9boem",
+      "userId": "user_1754081806839_64rs579t8",
+      "tokenHash": "$2b$10$Hg8rUPAxWUdOyrTO6W39HO5c6fUK4B1M1tIifcp5r3sE4p/p06FEi",
+      "refreshTokenHash": "$2b$10$WZQ/.5saFqKwD2IIeLngFOXCMAKNiP9ovmPb0y/Wgs2KxDA5Zhggm",
+      "expiresAt": "2025-08-01T21:56:48.462Z",
+      "createdAt": "2025-08-01T20:56:48.462Z",
+      "lastAccessed": "2025-08-01T20:56:48.462Z",
+      "ipAddress": "192.168.1.5",
+      "userAgent": "Browser-5",
+      "isActive": true,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081808891_lusvbq0wf",
+      "userId": "user_1754081808688_nb820jkjx",
+      "tokenHash": "$2b$10$StmrGeE32zwlPjJoo6FEu.rrHsjKsaqT5dNWr2W7WUHmwzIdxvkJC",
+      "refreshTokenHash": "$2b$10$yMIkZXONyfNgJ/o5U02ZfOyLc9kFPhyIV39LLTbmFsyP1SYMSzSXK",
+      "expiresAt": "2025-08-01T21:56:48.998Z",
+      "createdAt": "2025-08-01T20:56:48.998Z",
+      "lastAccessed": "2025-08-01T20:56:49.056Z",
+      "ipAddress": "192.168.1.100",
+      "userAgent": "Test Browser",
+      "isActive": true,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081813958_vex6dtsre",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "tokenHash": "$2b$10$rxrQpvk9vx4JH29eYt8QY.N6RPLMPcS9uVMGC8D8vY9PBfIkb24OK",
+      "refreshTokenHash": "$2b$10$epELZJWA0nzoHxpMgvb2MOYsPbfyAjMk4HDfeTj0GJYAhHtrDVqZG",
+      "expiresAt": "2025-08-01T21:56:55.339Z",
+      "createdAt": "2025-08-01T20:56:55.339Z",
+      "lastAccessed": "2025-08-01T20:56:55.339Z",
+      "ipAddress": "192.168.1.1",
+      "userAgent": "Browser-1",
+      "isActive": false,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081813958_cyl1t47sv",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "tokenHash": "$2b$10$9VncfXT2ICnYddwyr/DclOvkl1m0D3EKk1JJUlJ2SY33WWb3HBgW.",
+      "refreshTokenHash": "$2b$10$T6SU8WBV6CoK08xlx7TS.eYHNSaoowuIVPpa1E8L9/JD0kiIoH6tK",
+      "expiresAt": "2025-08-01T21:56:55.342Z",
+      "createdAt": "2025-08-01T20:56:55.342Z",
+      "lastAccessed": "2025-08-01T20:56:55.342Z",
+      "ipAddress": "192.168.1.2",
+      "userAgent": "Browser-2",
+      "isActive": false,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081813958_5o7kmtcm3",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "tokenHash": "$2b$10$VOA7uGmbrcT6C.X0Wb.MoeNTuhxTP0hZUVazrBNDbMFNzeDXGlcuC",
+      "refreshTokenHash": "$2b$10$RNAIV/LPz5B5S9wnxtc1tuf6gpHDZz4goBfOuc7hMK1mbyykJj6fu",
+      "expiresAt": "2025-08-01T21:56:55.346Z",
+      "createdAt": "2025-08-01T20:56:55.346Z",
+      "lastAccessed": "2025-08-01T20:56:55.346Z",
+      "ipAddress": "192.168.1.3",
+      "userAgent": "Browser-3",
+      "isActive": false,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081813984_pgvkkqrf8",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "tokenHash": "$2b$10$LddT.R6/MnJXUXxjP8KMNeM4gVqfIHGnC6AvPNNwrq.LVDM8c2dZO",
+      "refreshTokenHash": "$2b$10$J4jiqvNI8EXpzPwL4ECyYOmkFyx5jEcpyrV.PaXKk0h4.9NGIoCAO",
+      "expiresAt": "2025-08-01T21:56:55.722Z",
+      "createdAt": "2025-08-01T20:56:55.722Z",
+      "lastAccessed": "2025-08-01T20:56:55.722Z",
+      "ipAddress": "192.168.1.11",
+      "userAgent": "Browser-11",
+      "isActive": false,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081814049_zr8io1cxn",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "tokenHash": "$2b$10$vNmVcfwVPVRC.IPv3QrU/eIUWmOl9Wr9E9Ch49/P9jBDOZEpfKZt2",
+      "refreshTokenHash": "$2b$10$gw1/9lR8j8Ii.rgmuYoE5evOzgRQo9E3cH0PrrM4exOdfDSth9BVq",
+      "expiresAt": "2025-08-01T21:56:56.135Z",
+      "createdAt": "2025-08-01T20:56:56.135Z",
+      "lastAccessed": "2025-08-01T20:56:56.135Z",
+      "ipAddress": "192.168.1.20",
+      "userAgent": "Browser-20",
+      "isActive": false,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081814202_ohmww4j73",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "tokenHash": "$2b$10$v7jCbEalAbPTObHRFOMZh.RXK86kUstv2vG5IqqIUgD9sjFQgTiDa",
+      "refreshTokenHash": "$2b$10$4o7ljK8M6YZMIf5CYCfdIeiYCvJC13HMBuA1SdNiAPtsEwsuhZGyi",
+      "expiresAt": "2025-08-01T21:56:56.137Z",
+      "createdAt": "2025-08-01T20:56:56.137Z",
+      "lastAccessed": "2025-08-01T20:56:56.137Z",
+      "ipAddress": "192.168.1.4",
+      "userAgent": "Browser-4",
+      "isActive": false,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081814202_t1b7a8rmi",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "tokenHash": "$2b$10$naMBHdQm3vrlLBoUJqvVUur7IBVP/F03Hxb6.NnXduuWjXOctqzpa",
+      "refreshTokenHash": "$2b$10$aUb4CCHAMi/Kv7MBzN5U7.gBN6pA6qNwLjnE.G2qDopRoQyP6edaK",
+      "expiresAt": "2025-08-01T21:56:56.140Z",
+      "createdAt": "2025-08-01T20:56:56.140Z",
+      "lastAccessed": "2025-08-01T20:56:56.140Z",
+      "ipAddress": "192.168.1.5",
+      "userAgent": "Browser-5",
+      "isActive": false,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081814202_xoyfq43xf",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "tokenHash": "$2b$10$ITfu1loyl7qnHYzbo20eDO8Duy3rQ9n/TrheKnU9wVYrAiEJHI4X2",
+      "refreshTokenHash": "$2b$10$OsiW.bOTVyfXAgbKnNCtgumxcOLfxJWI6JNS1/2MtxAc/K6iFFC3W",
+      "expiresAt": "2025-08-01T21:56:56.143Z",
+      "createdAt": "2025-08-01T20:56:56.143Z",
+      "lastAccessed": "2025-08-01T20:56:56.143Z",
+      "ipAddress": "192.168.1.6",
+      "userAgent": "Browser-6",
+      "isActive": false,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081814202_7ykk3x884",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "tokenHash": "$2b$10$BKRtCDjwqKJ82zzKuwPna.gxVRdGLldXz3IY0pcaV53v.UnqcdRP6",
+      "refreshTokenHash": "$2b$10$Md5Iq9.lKeb7akV4rKurae7kAfpX9DJ1Ii4veR9.j38hWUgY6PBAa",
+      "expiresAt": "2025-08-01T21:56:56.146Z",
+      "createdAt": "2025-08-01T20:56:56.146Z",
+      "lastAccessed": "2025-08-01T20:56:56.146Z",
+      "ipAddress": "192.168.1.7",
+      "userAgent": "Browser-7",
+      "isActive": false,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081814202_i8llfs6hy",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "tokenHash": "$2b$10$n6Az1eib7OpqHLQeB7Si5uCQkCkv7W04uegZAtQ.vRWxMxazS6Brm",
+      "refreshTokenHash": "$2b$10$FPVz57.sNyYRR6KrBkdy7u6dyQXjraiDiT0af4NBuyhMCKuN.0L3W",
+      "expiresAt": "2025-08-01T21:56:56.149Z",
+      "createdAt": "2025-08-01T20:56:56.149Z",
+      "lastAccessed": "2025-08-01T20:56:56.149Z",
+      "ipAddress": "192.168.1.8",
+      "userAgent": "Browser-8",
+      "isActive": false,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081814202_oardh92b6",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "tokenHash": "$2b$10$tY3bgaFjdtmb0Ee1s93jMefS2/zLOL97bZmL11kC7BY.IaxAZDbvm",
+      "refreshTokenHash": "$2b$10$8hMkJLPGGV3WmD5eVQzha.6hcIwgcLg6720ppDpS3pEbI1ytiXauC",
+      "expiresAt": "2025-08-01T21:56:56.152Z",
+      "createdAt": "2025-08-01T20:56:56.152Z",
+      "lastAccessed": "2025-08-01T20:56:56.152Z",
+      "ipAddress": "192.168.1.9",
+      "userAgent": "Browser-9",
+      "isActive": false,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081814202_tj3l5rogg",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "tokenHash": "$2b$10$hz5Kd7./fslcBIqaiqSZOOenRqJLgeZIAET/Z5pPQtW8PwxThjpX6",
+      "refreshTokenHash": "$2b$10$G515/qbtkSpHo9dyuUfJl./jV3S3tdzj52w1Avwwv5uYPIuV0nAfS",
+      "expiresAt": "2025-08-01T21:56:56.155Z",
+      "createdAt": "2025-08-01T20:56:56.155Z",
+      "lastAccessed": "2025-08-01T20:56:56.155Z",
+      "ipAddress": "192.168.1.10",
+      "userAgent": "Browser-10",
+      "isActive": false,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081814254_uno9sw5wj",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "tokenHash": "$2b$10$27XuCcbFuKQwPHIrBTLoTuPjJmGVqaJoLxGgo2OtRoQP5pD5AuMNK",
+      "refreshTokenHash": "$2b$10$njjFLyebPIeGWdi777ZBSebD7TOatpPCvaI/HJfyF6AorD.squt16",
+      "expiresAt": "2025-08-01T21:56:56.157Z",
+      "createdAt": "2025-08-01T20:56:56.157Z",
+      "lastAccessed": "2025-08-01T20:56:56.157Z",
+      "ipAddress": "192.168.1.12",
+      "userAgent": "Browser-12",
+      "isActive": false,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081814255_hlqamufia",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "tokenHash": "$2b$10$1fiOG.TMLyT9eF9Y.BDGf.Nb6I67erWw36aDGWaUA3KqMO5PSGGgC",
+      "refreshTokenHash": "$2b$10$GW4eljRd53xBh/c5aWpBweLtHIJKnTJWz1L2fLbTawtBUtKMyiSvy",
+      "expiresAt": "2025-08-01T21:56:56.160Z",
+      "createdAt": "2025-08-01T20:56:56.160Z",
+      "lastAccessed": "2025-08-01T20:56:56.160Z",
+      "ipAddress": "192.168.1.13",
+      "userAgent": "Browser-13",
+      "isActive": false,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081814255_lhuvtiprx",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "tokenHash": "$2b$10$83MqPBGn/Kz.UWdUy4tS0e0JrHliDmK5zqsCOmUE0DwBant/pgnGO",
+      "refreshTokenHash": "$2b$10$Przs8Hna8kxZzd7hWOSYfulRdT.aoExGUZgITUv./OOhLoAWe/Beu",
+      "expiresAt": "2025-08-01T21:56:56.163Z",
+      "createdAt": "2025-08-01T20:56:56.163Z",
+      "lastAccessed": "2025-08-01T20:56:56.163Z",
+      "ipAddress": "192.168.1.14",
+      "userAgent": "Browser-14",
+      "isActive": false,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081814255_fd0l9llq1",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "tokenHash": "$2b$10$lErNbsORNP3yTxPiQqfY9.CwD7.Fz154.g5V2xKuViFYDg0RCO/mm",
+      "refreshTokenHash": "$2b$10$ohz8G7zEdExEuqJHUrvJou4SdF789zy9p5bhDIv4tRwPAFc8fHIrC",
+      "expiresAt": "2025-08-01T21:56:56.167Z",
+      "createdAt": "2025-08-01T20:56:56.167Z",
+      "lastAccessed": "2025-08-01T20:56:56.167Z",
+      "ipAddress": "192.168.1.15",
+      "userAgent": "Browser-15",
+      "isActive": false,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081814255_1764i1a9v",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "tokenHash": "$2b$10$JBfLKWPHHvBG4Z51VYOQE.A0wzQB5e62qLCsxnvmJGtVkdG.zyw2m",
+      "refreshTokenHash": "$2b$10$FXKhC9XXsWcMklCZyjl7i.6Wbm6TtIKxX9MjsGtVYhof.EN4mlWaO",
+      "expiresAt": "2025-08-01T21:56:56.170Z",
+      "createdAt": "2025-08-01T20:56:56.170Z",
+      "lastAccessed": "2025-08-01T20:56:56.170Z",
+      "ipAddress": "192.168.1.16",
+      "userAgent": "Browser-16",
+      "isActive": false,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081814255_4wvfso5zf",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "tokenHash": "$2b$10$gzH6BZue0FLLBmTN/M8uCepMTypdUwjXngJhB5i5Z9OtJIce..H4.",
+      "refreshTokenHash": "$2b$10$8ecl6Ib0Pwcy29afyVl4luNA3eh.s7IPK/ZeFnrXNcKfoBgCFIpzy",
+      "expiresAt": "2025-08-01T21:56:56.174Z",
+      "createdAt": "2025-08-01T20:56:56.174Z",
+      "lastAccessed": "2025-08-01T20:56:56.174Z",
+      "ipAddress": "192.168.1.17",
+      "userAgent": "Browser-17",
+      "isActive": true,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081814255_b74fc37qk",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "tokenHash": "$2b$10$NFJfGXLtHcrwRW3qmu4nyu5ddeKn3ilQXdZIqCAA5.jCSceNtwjke",
+      "refreshTokenHash": "$2b$10$59DVQA/5fdBLvHbJnYgVju8ToWXTWUBHLfVza7PTmEoL1uxHNyOBq",
+      "expiresAt": "2025-08-01T21:56:56.178Z",
+      "createdAt": "2025-08-01T20:56:56.178Z",
+      "lastAccessed": "2025-08-01T20:56:56.178Z",
+      "ipAddress": "192.168.1.18",
+      "userAgent": "Browser-18",
+      "isActive": true,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
+    },
+    {
+      "id": "session_1754081814255_lqwv4uz7l",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "tokenHash": "$2b$10$fpwXY90GcLx4KGjqhvteWe6XEG6xlQ.dGtUrOKxBqndOk4Sfrp3HS",
+      "refreshTokenHash": "$2b$10$1jlyyTf5tSPnQfYMnmQ69.FI2h2L2RE2MrGD/Zxn67Ld05VXWTKfu",
+      "expiresAt": "2025-08-01T21:56:56.181Z",
+      "createdAt": "2025-08-01T20:56:56.181Z",
+      "lastAccessed": "2025-08-01T20:56:56.181Z",
+      "ipAddress": "192.168.1.19",
+      "userAgent": "Browser-19",
+      "isActive": true,
+      "riskScore": 20,
+      "isVerified": true,
+      "mfaVerified": false
     }
   ],
   "rateLimits": [
     {
       "email": "admin@codai.ro",
-      "attempts": 5,
-      "firstAttempt": "2025-07-31T12:26:41.502Z",
-      "lastAttempt": "2025-07-31T12:26:42.251Z",
-      "lockedUntil": "2025-07-31T13:26:42.252Z"
+      "attempts": 1,
+      "firstAttempt": "2025-08-01T20:56:40.908Z",
+      "lastAttempt": "2025-08-01T20:56:41.105Z"
     },
     {
       "email": "bruteforce-1753964806353-r4bl3k@test.com",
@@ -5236,9 +6078,237 @@
       "attempts": 4,
       "firstAttempt": "2025-07-31T12:52:11.413Z",
       "lastAttempt": "2025-07-31T12:52:11.418Z"
+    },
+    {
+      "email": "bruteforce-1754081805346-0wrqh@test.com",
+      "attempts": 4,
+      "firstAttempt": "2025-08-01T20:56:45.346Z",
+      "lastAttempt": "2025-08-01T20:56:45.353Z"
     }
   ],
   "securityAlerts": [
+    {
+      "id": "alert_1754081808353_0kzalisij",
+      "timestamp": "2025-08-01T20:56:48.353Z",
+      "resolved": false,
+      "userId": "user_1754081806839_64rs579t8",
+      "type": "multiple_ips",
+      "severity": "medium",
+      "description": "Login from multiple IP addresses detected (4 IPs)",
+      "details": {
+        "currentIP": "192.168.1.5",
+        "recentIPs": [
+          "192.168.1.4",
+          "192.168.1.3",
+          "192.168.1.2",
+          "192.168.1.5"
+        ],
+        "sessionCount": 3
+      }
+    },
+    {
+      "id": "alert_1754081808353_1yn7uncwe",
+      "timestamp": "2025-08-01T20:56:48.353Z",
+      "resolved": false,
+      "userId": "user_1754081806839_64rs579t8",
+      "type": "suspicious_login",
+      "severity": "medium",
+      "description": "Rapid login from different IP address detected",
+      "details": {
+        "previousIP": "192.168.1.4",
+        "currentIP": "192.168.1.5",
+        "timeDifferenceMs": 216
+      }
+    },
+    {
+      "id": "alert_1754081808037_t16ejjca9",
+      "timestamp": "2025-08-01T20:56:48.037Z",
+      "resolved": false,
+      "userId": "user_1754081806839_64rs579t8",
+      "type": "multiple_ips",
+      "severity": "medium",
+      "description": "Login from multiple IP addresses detected (4 IPs)",
+      "details": {
+        "currentIP": "192.168.1.4",
+        "recentIPs": [
+          "192.168.1.3",
+          "192.168.1.2",
+          "192.168.1.1",
+          "192.168.1.4"
+        ],
+        "sessionCount": 3
+      }
+    },
+    {
+      "id": "alert_1754081808037_hc8mbjpct",
+      "timestamp": "2025-08-01T20:56:48.037Z",
+      "resolved": false,
+      "userId": "user_1754081806839_64rs579t8",
+      "type": "suspicious_login",
+      "severity": "medium",
+      "description": "Rapid login from different IP address detected",
+      "details": {
+        "previousIP": "192.168.1.3",
+        "currentIP": "192.168.1.4",
+        "timeDifferenceMs": 215
+      }
+    },
+    {
+      "id": "alert_1754081807715_vsk4yhlvm",
+      "timestamp": "2025-08-01T20:56:47.715Z",
+      "resolved": false,
+      "userId": "user_1754081806839_64rs579t8",
+      "type": "suspicious_login",
+      "severity": "medium",
+      "description": "Rapid login from different IP address detected",
+      "details": {
+        "previousIP": "192.168.1.2",
+        "currentIP": "192.168.1.3",
+        "timeDifferenceMs": 211
+      }
+    },
+    {
+      "id": "alert_1754081807394_ugmi6u8ur",
+      "timestamp": "2025-08-01T20:56:47.394Z",
+      "resolved": false,
+      "userId": "user_1754081806839_64rs579t8",
+      "type": "suspicious_login",
+      "severity": "medium",
+      "description": "Rapid login from different IP address detected",
+      "details": {
+        "previousIP": "192.168.1.1",
+        "currentIP": "192.168.1.2",
+        "timeDifferenceMs": 226
+      }
+    },
+    {
+      "id": "alert_1754081806622_svgzrzhkh",
+      "timestamp": "2025-08-01T20:56:46.622Z",
+      "resolved": false,
+      "userId": "user_1754081806429_v1k3xw9jn",
+      "type": "mfa_failure",
+      "severity": "medium",
+      "description": "Invalid MFA code provided",
+      "details": {
+        "email": "mfainvalid-1754081806236-e7cexd@test.com"
+      }
+    },
+    {
+      "id": "alert_1754081805353_1fsdcjk2i",
+      "timestamp": "2025-08-01T20:56:45.353Z",
+      "resolved": false,
+      "userId": "bruteforce-1754081805346-0wrqh@test.com",
+      "type": "brute_force",
+      "severity": "medium",
+      "description": "Multiple failed login attempts detected (4)",
+      "details": {
+        "email": "bruteforce-1754081805346-0wrqh@test.com",
+        "ipAddress": "192.168.1.100",
+        "attempts": 4
+      }
+    },
+    {
+      "id": "alert_1754081805351_7ybnnhn39",
+      "timestamp": "2025-08-01T20:56:45.351Z",
+      "resolved": false,
+      "userId": "bruteforce-1754081805346-0wrqh@test.com",
+      "type": "brute_force",
+      "severity": "medium",
+      "description": "Multiple failed login attempts detected (3)",
+      "details": {
+        "email": "bruteforce-1754081805346-0wrqh@test.com",
+        "ipAddress": "192.168.1.100",
+        "attempts": 3
+      }
+    },
+    {
+      "id": "alert_1754081805242_cg6stopdw",
+      "timestamp": "2025-08-01T20:56:45.242Z",
+      "resolved": false,
+      "userId": "user_1754081804767_b0dj5eiuj",
+      "type": "suspicious_login",
+      "severity": "medium",
+      "description": "Rapid login from different IP address detected",
+      "details": {
+        "previousIP": "192.168.1.1",
+        "currentIP": "10.0.0.1",
+        "timeDifferenceMs": 191
+      }
+    },
+    {
+      "id": "alert_1754081804474_uanz8qyu5",
+      "timestamp": "2025-08-01T20:56:44.474Z",
+      "resolved": false,
+      "userId": "user_1754081803419_ruyv3vx8n",
+      "type": "suspicious_login",
+      "severity": "medium",
+      "description": "Rapid login from different IP address detected",
+      "details": {
+        "previousIP": "172.16.0.1",
+        "currentIP": "203.0.113.1",
+        "timeDifferenceMs": 192
+      }
+    },
+    {
+      "id": "alert_1754081804473_3kwxd5k19",
+      "timestamp": "2025-08-01T20:56:44.473Z",
+      "resolved": false,
+      "userId": "user_1754081803419_ruyv3vx8n",
+      "type": "multiple_ips",
+      "severity": "medium",
+      "description": "Login from multiple IP addresses detected (4 IPs)",
+      "details": {
+        "currentIP": "203.0.113.1",
+        "recentIPs": [
+          "172.16.0.1",
+          "10.0.0.1",
+          "192.168.1.1",
+          "203.0.113.1"
+        ],
+        "sessionCount": 3
+      }
+    },
+    {
+      "id": "alert_1754081804188_zg8cbiz4m",
+      "timestamp": "2025-08-01T20:56:44.188Z",
+      "resolved": false,
+      "userId": "user_1754081803419_ruyv3vx8n",
+      "type": "suspicious_login",
+      "severity": "medium",
+      "description": "Rapid login from different IP address detected",
+      "details": {
+        "previousIP": "10.0.0.1",
+        "currentIP": "172.16.0.1",
+        "timeDifferenceMs": 195
+      }
+    },
+    {
+      "id": "alert_1754081803898_9v0q2xvfc",
+      "timestamp": "2025-08-01T20:56:43.898Z",
+      "resolved": false,
+      "userId": "user_1754081803419_ruyv3vx8n",
+      "type": "suspicious_login",
+      "severity": "medium",
+      "description": "Rapid login from different IP address detected",
+      "details": {
+        "previousIP": "192.168.1.1",
+        "currentIP": "10.0.0.1",
+        "timeDifferenceMs": 191
+      }
+    },
+    {
+      "id": "alert_1754081801990_e9n4kbpla",
+      "timestamp": "2025-08-01T20:56:41.990Z",
+      "resolved": false,
+      "userId": "test@codai.ro",
+      "type": "brute_force",
+      "severity": "medium",
+      "description": "Multiple failed login attempts detected (3)",
+      "details": {
+        "email": "test@codai.ro",
+        "attempts": 3
+      }
+    },
     {
       "id": "alert_1753966334196_dwuf6u0g0",
       "timestamp": "2025-07-31T12:52:14.196Z",
@@ -6630,12 +7700,12 @@
     }
   ],
   "metrics": {
-    "loginAttempts": 381,
-    "loginSuccess": 224,
-    "loginFailures": 145,
-    "userRegistrations": 74,
-    "securityAlerts": 94,
-    "mfaVerifications": 6
+    "loginAttempts": 441,
+    "loginSuccess": 261,
+    "loginFailures": 153,
+    "userRegistrations": 86,
+    "securityAlerts": 109,
+    "mfaVerifications": 7
   },
   "auditLogs": [
     {
@@ -14446,6 +15516,1283 @@
         "authTimeMs": 5682
       },
       "timestamp": "2025-07-31T12:52:21.268Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081800386_uzvb3fy01",
+      "action": "user_creation_failed",
+      "resource": "enhanced_authentication",
+      "userId": "system",
+      "details": {
+        "email": "weak-1754081800383-t8g8yb@test.com",
+        "error": "Password validation failed: Password must be at least 8 characters long, Password must contain at least one uppercase letter, Password must contain at least one lowercase letter, Password must contain at least one special character, Password strength is too weak (score: 0/2 required)"
+      },
+      "timestamp": "2025-08-01T20:56:40.386Z",
+      "severity": "warning",
+      "status": "failure"
+    },
+    {
+      "id": "audit_1754081800387_1c88opgz2",
+      "action": "user_creation_failed",
+      "resource": "enhanced_authentication",
+      "userId": "system",
+      "details": {
+        "email": "weak-1754081800386-9oyydj@test.com",
+        "error": "Password validation failed: Password must contain at least one uppercase letter, Password must contain at least one number, Password must contain at least one special character, Password strength is too weak (score: 0/2 required)"
+      },
+      "timestamp": "2025-08-01T20:56:40.387Z",
+      "severity": "warning",
+      "status": "failure"
+    },
+    {
+      "id": "audit_1754081800388_vw60hjz3r",
+      "action": "user_creation_failed",
+      "resource": "enhanced_authentication",
+      "userId": "system",
+      "details": {
+        "email": "weak-1754081800387-0yyudh@test.com",
+        "error": "Password validation failed: Password must contain at least one uppercase letter, Password must contain at least one lowercase letter, Password must contain at least one special character, Password strength is too weak (score: 0/2 required)"
+      },
+      "timestamp": "2025-08-01T20:56:40.388Z",
+      "severity": "warning",
+      "status": "failure"
+    },
+    {
+      "id": "audit_1754081800389_axkl3ut30",
+      "action": "user_creation_failed",
+      "resource": "enhanced_authentication",
+      "userId": "system",
+      "details": {
+        "email": "weak-1754081800389-cogec@test.com",
+        "error": "Password validation failed: Password must contain at least one uppercase letter, Password must contain at least one number, Password must contain at least one special character, Password strength is too weak (score: 0/2 required)"
+      },
+      "timestamp": "2025-08-01T20:56:40.389Z",
+      "severity": "warning",
+      "status": "failure"
+    },
+    {
+      "id": "audit_1754081800389_wmpqycyfz",
+      "action": "user_creation_failed",
+      "resource": "enhanced_authentication",
+      "userId": "system",
+      "details": {
+        "email": "weak-1754081800389-3ugp57@test.com",
+        "error": "Password validation failed: Password must contain at least one number, Password must contain at least one special character, Password strength is too weak (score: 0/2 required)"
+      },
+      "timestamp": "2025-08-01T20:56:40.389Z",
+      "severity": "warning",
+      "status": "failure"
+    },
+    {
+      "id": "audit_1754081800604_4yv7izaoc",
+      "action": "user_created",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081800604_fbiwwd3bk",
+      "details": {
+        "email": "strong-1754081800395@test.com",
+        "username": "stronguser-1754081800395",
+        "role": "user",
+        "passwordStrength": 3
+      },
+      "timestamp": "2025-08-01T20:56:40.604Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081800897_gqqqmqwv4",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081800604_fbiwwd3bk",
+      "details": {
+        "email": "strong-1754081800395@test.com",
+        "mfaVerified": false,
+        "authTimeMs": 289
+      },
+      "timestamp": "2025-08-01T20:56:40.897Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081800904_6hes2fo2y",
+      "action": "user_creation_failed",
+      "resource": "enhanced_authentication",
+      "userId": "system",
+      "details": {
+        "email": "zxcvbn-1754081800903-lnkz4c@test.com",
+        "error": "Password validation failed: Password must contain at least one uppercase letter, Password must contain at least one special character, Password strength is too weak (score: 1/2 required)"
+      },
+      "timestamp": "2025-08-01T20:56:40.904Z",
+      "severity": "warning",
+      "status": "failure"
+    },
+    {
+      "id": "audit_1754081801106_tb52b9ydr",
+      "action": "login_failed",
+      "resource": "enhanced_authentication",
+      "userId": "fdd2c0b60455de8df45dbb600c3eb9f3",
+      "details": {
+        "email": "admin@codai.ro",
+        "reason": "invalid_password",
+        "ip": "192.168.1.100",
+        "userAgent": "Test Browser",
+        "attempts": 7
+      },
+      "timestamp": "2025-08-01T20:56:41.106Z",
+      "severity": "warning",
+      "status": "failure"
+    },
+    {
+      "id": "audit_1754081801410_ox4p2tzy1",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "beaafd66348f720c1a1a094f507d699e",
+      "details": {
+        "email": "test@codai.ro",
+        "mfaVerified": false,
+        "authTimeMs": 293
+      },
+      "timestamp": "2025-08-01T20:56:41.410Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081801602_0ds87nfl6",
+      "action": "login_failed",
+      "resource": "enhanced_authentication",
+      "userId": "beaafd66348f720c1a1a094f507d699e",
+      "details": {
+        "email": "test@codai.ro",
+        "reason": "invalid_password",
+        "attempts": 2
+      },
+      "timestamp": "2025-08-01T20:56:41.602Z",
+      "severity": "warning",
+      "status": "failure"
+    },
+    {
+      "id": "audit_1754081801794_oa7024rfo",
+      "action": "login_failed",
+      "resource": "enhanced_authentication",
+      "userId": "beaafd66348f720c1a1a094f507d699e",
+      "details": {
+        "email": "test@codai.ro",
+        "reason": "invalid_password",
+        "attempts": 3
+      },
+      "timestamp": "2025-08-01T20:56:41.794Z",
+      "severity": "warning",
+      "status": "failure"
+    },
+    {
+      "id": "audit_1754081801990_tl7d27hpk",
+      "action": "security_alert",
+      "resource": "enhanced_authentication",
+      "userId": "test@codai.ro",
+      "details": {
+        "alertType": "brute_force",
+        "severity": "medium",
+        "description": "Multiple failed login attempts detected (3)",
+        "details": {
+          "email": "test@codai.ro",
+          "attempts": 3
+        }
+      },
+      "timestamp": "2025-08-01T20:56:41.990Z",
+      "severity": "warning",
+      "status": "warning"
+    },
+    {
+      "id": "audit_1754081801990_yf7sg87wl",
+      "action": "login_failed",
+      "resource": "enhanced_authentication",
+      "userId": "beaafd66348f720c1a1a094f507d699e",
+      "details": {
+        "email": "test@codai.ro",
+        "reason": "invalid_password",
+        "attempts": 4
+      },
+      "timestamp": "2025-08-01T20:56:41.990Z",
+      "severity": "warning",
+      "status": "failure"
+    },
+    {
+      "id": "audit_1754081802290_mub4z2wkh",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "beaafd66348f720c1a1a094f507d699e",
+      "details": {
+        "email": "test@codai.ro",
+        "mfaVerified": false,
+        "authTimeMs": 298
+      },
+      "timestamp": "2025-08-01T20:56:42.290Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081802516_v4v9asfjb",
+      "action": "user_created",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081802516_2ro8pnh0e",
+      "details": {
+        "email": "xss-1754081802300-1m9upp@test.com",
+        "username": "",
+        "role": "user",
+        "passwordStrength": 3
+      },
+      "timestamp": "2025-08-01T20:56:42.516Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081802718_ukh0h2is9",
+      "action": "user_created",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081802718_a4ubd4xlr",
+      "details": {
+        "email": "email-1754081802523-w6v16j@test.com",
+        "username": "email-1754081802523-w6v16j",
+        "role": "user",
+        "passwordStrength": 3
+      },
+      "timestamp": "2025-08-01T20:56:42.718Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081802917_txgs2b7om",
+      "action": "user_created",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081802917_mnk61spzb",
+      "details": {
+        "email": "iptest_1754081802725@example.com",
+        "username": "",
+        "role": "user",
+        "passwordStrength": 3
+      },
+      "timestamp": "2025-08-01T20:56:42.917Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081803212_f7r58hwwt",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081802917_mnk61spzb",
+      "details": {
+        "email": "iptest_1754081802725@example.com",
+        "ip": "192.168.1.100",
+        "userAgent": "Test Browser",
+        "mfaVerified": false,
+        "authTimeMs": 293
+      },
+      "timestamp": "2025-08-01T20:56:43.212Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081803419_8otbbe8hi",
+      "action": "user_created",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081803419_ruyv3vx8n",
+      "details": {
+        "email": "multiip_1754081803224@example.com",
+        "username": "",
+        "role": "user",
+        "passwordStrength": 3
+      },
+      "timestamp": "2025-08-01T20:56:43.419Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081803707_h09obu4bb",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081803419_ruyv3vx8n",
+      "details": {
+        "email": "multiip_1754081803224@example.com",
+        "ip": "192.168.1.1",
+        "userAgent": "Browser-192.168.1.1",
+        "mfaVerified": false,
+        "authTimeMs": 286
+      },
+      "timestamp": "2025-08-01T20:56:43.707Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081803898_ex9feawu2",
+      "action": "security_alert",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081803419_ruyv3vx8n",
+      "details": {
+        "alertType": "suspicious_login",
+        "severity": "medium",
+        "description": "Rapid login from different IP address detected",
+        "details": {
+          "previousIP": "192.168.1.1",
+          "currentIP": "10.0.0.1",
+          "timeDifferenceMs": 191
+        }
+      },
+      "timestamp": "2025-08-01T20:56:43.898Z",
+      "severity": "warning",
+      "status": "warning"
+    },
+    {
+      "id": "audit_1754081803993_3u6z3qkek",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081803419_ruyv3vx8n",
+      "details": {
+        "email": "multiip_1754081803224@example.com",
+        "ip": "10.0.0.1",
+        "userAgent": "Browser-10.0.0.1",
+        "mfaVerified": false,
+        "authTimeMs": 284
+      },
+      "timestamp": "2025-08-01T20:56:43.993Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081804188_bglig55b8",
+      "action": "security_alert",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081803419_ruyv3vx8n",
+      "details": {
+        "alertType": "suspicious_login",
+        "severity": "medium",
+        "description": "Rapid login from different IP address detected",
+        "details": {
+          "previousIP": "10.0.0.1",
+          "currentIP": "172.16.0.1",
+          "timeDifferenceMs": 195
+        }
+      },
+      "timestamp": "2025-08-01T20:56:44.188Z",
+      "severity": "warning",
+      "status": "warning"
+    },
+    {
+      "id": "audit_1754081804282_tmy7koh9u",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081803419_ruyv3vx8n",
+      "details": {
+        "email": "multiip_1754081803224@example.com",
+        "ip": "172.16.0.1",
+        "userAgent": "Browser-172.16.0.1",
+        "mfaVerified": false,
+        "authTimeMs": 287
+      },
+      "timestamp": "2025-08-01T20:56:44.282Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081804473_4yyss69p6",
+      "action": "security_alert",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081803419_ruyv3vx8n",
+      "details": {
+        "alertType": "multiple_ips",
+        "severity": "medium",
+        "description": "Login from multiple IP addresses detected (4 IPs)",
+        "details": {
+          "currentIP": "203.0.113.1",
+          "recentIPs": [
+            "172.16.0.1",
+            "10.0.0.1",
+            "192.168.1.1",
+            "203.0.113.1"
+          ],
+          "sessionCount": 3
+        }
+      },
+      "timestamp": "2025-08-01T20:56:44.473Z",
+      "severity": "warning",
+      "status": "warning"
+    },
+    {
+      "id": "audit_1754081804474_vbn4xv239",
+      "action": "security_alert",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081803419_ruyv3vx8n",
+      "details": {
+        "alertType": "suspicious_login",
+        "severity": "medium",
+        "description": "Rapid login from different IP address detected",
+        "details": {
+          "previousIP": "172.16.0.1",
+          "currentIP": "203.0.113.1",
+          "timeDifferenceMs": 192
+        }
+      },
+      "timestamp": "2025-08-01T20:56:44.474Z",
+      "severity": "warning",
+      "status": "warning"
+    },
+    {
+      "id": "audit_1754081804570_h1j5qh4ik",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081803419_ruyv3vx8n",
+      "details": {
+        "email": "multiip_1754081803224@example.com",
+        "ip": "203.0.113.1",
+        "userAgent": "Browser-203.0.113.1",
+        "mfaVerified": false,
+        "authTimeMs": 286
+      },
+      "timestamp": "2025-08-01T20:56:44.570Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081804767_48e89s75d",
+      "action": "user_created",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081804767_b0dj5eiuj",
+      "details": {
+        "email": "rapidchange_1754081804577@example.com",
+        "username": "",
+        "role": "user",
+        "passwordStrength": 3
+      },
+      "timestamp": "2025-08-01T20:56:44.767Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081805051_3jcwetpdg",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081804767_b0dj5eiuj",
+      "details": {
+        "email": "rapidchange_1754081804577@example.com",
+        "ip": "192.168.1.1",
+        "userAgent": "Browser A",
+        "mfaVerified": false,
+        "authTimeMs": 281
+      },
+      "timestamp": "2025-08-01T20:56:45.051Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081805242_amaptn2gl",
+      "action": "security_alert",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081804767_b0dj5eiuj",
+      "details": {
+        "alertType": "suspicious_login",
+        "severity": "medium",
+        "description": "Rapid login from different IP address detected",
+        "details": {
+          "previousIP": "192.168.1.1",
+          "currentIP": "10.0.0.1",
+          "timeDifferenceMs": 191
+        }
+      },
+      "timestamp": "2025-08-01T20:56:45.242Z",
+      "severity": "warning",
+      "status": "warning"
+    },
+    {
+      "id": "audit_1754081805339_r4mvv8taz",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081804767_b0dj5eiuj",
+      "details": {
+        "email": "rapidchange_1754081804577@example.com",
+        "ip": "10.0.0.1",
+        "userAgent": "Browser B",
+        "mfaVerified": false,
+        "authTimeMs": 286
+      },
+      "timestamp": "2025-08-01T20:56:45.339Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081805346_18tqkv2k0",
+      "action": "login_failed",
+      "resource": "enhanced_authentication",
+      "userId": "unknown",
+      "details": {
+        "email": "bruteforce-1754081805346-0wrqh@test.com",
+        "reason": "user_not_found",
+        "ip": "192.168.1.100"
+      },
+      "timestamp": "2025-08-01T20:56:45.346Z",
+      "severity": "warning",
+      "status": "failure"
+    },
+    {
+      "id": "audit_1754081805349_oolv33ily",
+      "action": "login_failed",
+      "resource": "enhanced_authentication",
+      "userId": "unknown",
+      "details": {
+        "email": "bruteforce-1754081805346-0wrqh@test.com",
+        "reason": "user_not_found",
+        "ip": "192.168.1.100"
+      },
+      "timestamp": "2025-08-01T20:56:45.349Z",
+      "severity": "warning",
+      "status": "failure"
+    },
+    {
+      "id": "audit_1754081805351_057c4geri",
+      "action": "security_alert",
+      "resource": "enhanced_authentication",
+      "userId": "bruteforce-1754081805346-0wrqh@test.com",
+      "details": {
+        "alertType": "brute_force",
+        "severity": "medium",
+        "description": "Multiple failed login attempts detected (3)",
+        "details": {
+          "email": "bruteforce-1754081805346-0wrqh@test.com",
+          "ipAddress": "192.168.1.100",
+          "attempts": 3
+        }
+      },
+      "timestamp": "2025-08-01T20:56:45.351Z",
+      "severity": "warning",
+      "status": "warning"
+    },
+    {
+      "id": "audit_1754081805351_7pw2m2jvf",
+      "action": "login_failed",
+      "resource": "enhanced_authentication",
+      "userId": "unknown",
+      "details": {
+        "email": "bruteforce-1754081805346-0wrqh@test.com",
+        "reason": "user_not_found",
+        "ip": "192.168.1.100"
+      },
+      "timestamp": "2025-08-01T20:56:45.351Z",
+      "severity": "warning",
+      "status": "failure"
+    },
+    {
+      "id": "audit_1754081805353_2w4tnamzd",
+      "action": "security_alert",
+      "resource": "enhanced_authentication",
+      "userId": "bruteforce-1754081805346-0wrqh@test.com",
+      "details": {
+        "alertType": "brute_force",
+        "severity": "medium",
+        "description": "Multiple failed login attempts detected (4)",
+        "details": {
+          "email": "bruteforce-1754081805346-0wrqh@test.com",
+          "ipAddress": "192.168.1.100",
+          "attempts": 4
+        }
+      },
+      "timestamp": "2025-08-01T20:56:45.353Z",
+      "severity": "warning",
+      "status": "warning"
+    },
+    {
+      "id": "audit_1754081805354_r73h5bxmk",
+      "action": "login_failed",
+      "resource": "enhanced_authentication",
+      "userId": "unknown",
+      "details": {
+        "email": "bruteforce-1754081805346-0wrqh@test.com",
+        "reason": "user_not_found",
+        "ip": "192.168.1.100"
+      },
+      "timestamp": "2025-08-01T20:56:45.354Z",
+      "severity": "warning",
+      "status": "failure"
+    },
+    {
+      "id": "audit_1754081805555_ocxnzs90o",
+      "action": "user_created",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081805555_w5uurc2r3",
+      "details": {
+        "email": "mfa-1754081805362-yhyt65@test.com",
+        "username": "mfa-1754081805362-yhyt65",
+        "role": "admin",
+        "passwordStrength": 3
+      },
+      "timestamp": "2025-08-01T20:56:45.555Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081805747_drkilq9w2",
+      "action": "mfa_token_generated",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081805555_w5uurc2r3",
+      "details": {
+        "token": "vhjyv72nubi"
+      },
+      "timestamp": "2025-08-01T20:56:45.747Z",
+      "severity": "info",
+      "status": "info"
+    },
+    {
+      "id": "audit_1754081805747_0o6otr0hm",
+      "action": "mfa_required",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081805555_w5uurc2r3",
+      "details": {
+        "email": "mfa-1754081805362-yhyt65@test.com"
+      },
+      "timestamp": "2025-08-01T20:56:45.747Z",
+      "severity": "info",
+      "status": "info"
+    },
+    {
+      "id": "audit_1754081805941_kx5g11qam",
+      "action": "user_created",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081805941_z4w1av1pb",
+      "details": {
+        "email": "mfaverify-1754081805752-9mr2xl@test.com",
+        "username": "mfaverify-1754081805752-9mr2xl",
+        "role": "admin",
+        "passwordStrength": 3
+      },
+      "timestamp": "2025-08-01T20:56:45.941Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081806230_p3gin2ap3",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081805941_z4w1av1pb",
+      "details": {
+        "email": "mfaverify-1754081805752-9mr2xl@test.com",
+        "mfaVerified": true,
+        "authTimeMs": 287
+      },
+      "timestamp": "2025-08-01T20:56:46.230Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081806429_tr2ji3hic",
+      "action": "user_created",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081806429_v1k3xw9jn",
+      "details": {
+        "email": "mfainvalid-1754081806236-e7cexd@test.com",
+        "username": "mfainvalid-1754081806236-e7cexd",
+        "role": "admin",
+        "passwordStrength": 3
+      },
+      "timestamp": "2025-08-01T20:56:46.429Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081806622_p4tq56w02",
+      "action": "security_alert",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081806429_v1k3xw9jn",
+      "details": {
+        "alertType": "mfa_failure",
+        "severity": "medium",
+        "description": "Invalid MFA code provided",
+        "details": {
+          "email": "mfainvalid-1754081806236-e7cexd@test.com"
+        }
+      },
+      "timestamp": "2025-08-01T20:56:46.622Z",
+      "severity": "warning",
+      "status": "warning"
+    },
+    {
+      "id": "audit_1754081806839_9p32c6o5x",
+      "action": "user_created",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081806839_64rs579t8",
+      "details": {
+        "email": "session-test-1754081806628-izoary@test.com",
+        "username": "session-test-1754081806628-izoary",
+        "role": "user",
+        "passwordStrength": 3
+      },
+      "timestamp": "2025-08-01T20:56:46.839Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081807168_0bsucm803",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081806839_64rs579t8",
+      "details": {
+        "email": "session-test-1754081806628-izoary@test.com",
+        "ip": "192.168.1.1",
+        "userAgent": "Browser-1",
+        "mfaVerified": false,
+        "authTimeMs": 327
+      },
+      "timestamp": "2025-08-01T20:56:47.168Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081807394_xjonjq9xi",
+      "action": "security_alert",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081806839_64rs579t8",
+      "details": {
+        "alertType": "suspicious_login",
+        "severity": "medium",
+        "description": "Rapid login from different IP address detected",
+        "details": {
+          "previousIP": "192.168.1.1",
+          "currentIP": "192.168.1.2",
+          "timeDifferenceMs": 226
+        }
+      },
+      "timestamp": "2025-08-01T20:56:47.394Z",
+      "severity": "warning",
+      "status": "warning"
+    },
+    {
+      "id": "audit_1754081807504_wmq7na8bt",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081806839_64rs579t8",
+      "details": {
+        "email": "session-test-1754081806628-izoary@test.com",
+        "ip": "192.168.1.2",
+        "userAgent": "Browser-2",
+        "mfaVerified": false,
+        "authTimeMs": 332
+      },
+      "timestamp": "2025-08-01T20:56:47.504Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081807715_7x7vr2hai",
+      "action": "security_alert",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081806839_64rs579t8",
+      "details": {
+        "alertType": "suspicious_login",
+        "severity": "medium",
+        "description": "Rapid login from different IP address detected",
+        "details": {
+          "previousIP": "192.168.1.2",
+          "currentIP": "192.168.1.3",
+          "timeDifferenceMs": 211
+        }
+      },
+      "timestamp": "2025-08-01T20:56:47.715Z",
+      "severity": "warning",
+      "status": "warning"
+    },
+    {
+      "id": "audit_1754081807822_zgdaius4m",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081806839_64rs579t8",
+      "details": {
+        "email": "session-test-1754081806628-izoary@test.com",
+        "ip": "192.168.1.3",
+        "userAgent": "Browser-3",
+        "mfaVerified": false,
+        "authTimeMs": 315
+      },
+      "timestamp": "2025-08-01T20:56:47.822Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081808037_yv0cfqzvl",
+      "action": "security_alert",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081806839_64rs579t8",
+      "details": {
+        "alertType": "multiple_ips",
+        "severity": "medium",
+        "description": "Login from multiple IP addresses detected (4 IPs)",
+        "details": {
+          "currentIP": "192.168.1.4",
+          "recentIPs": [
+            "192.168.1.3",
+            "192.168.1.2",
+            "192.168.1.1",
+            "192.168.1.4"
+          ],
+          "sessionCount": 3
+        }
+      },
+      "timestamp": "2025-08-01T20:56:48.037Z",
+      "severity": "warning",
+      "status": "warning"
+    },
+    {
+      "id": "audit_1754081808037_pdpzggxii",
+      "action": "security_alert",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081806839_64rs579t8",
+      "details": {
+        "alertType": "suspicious_login",
+        "severity": "medium",
+        "description": "Rapid login from different IP address detected",
+        "details": {
+          "previousIP": "192.168.1.3",
+          "currentIP": "192.168.1.4",
+          "timeDifferenceMs": 215
+        }
+      },
+      "timestamp": "2025-08-01T20:56:48.037Z",
+      "severity": "warning",
+      "status": "warning"
+    },
+    {
+      "id": "audit_1754081808137_myrg4bmup",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081806839_64rs579t8",
+      "details": {
+        "email": "session-test-1754081806628-izoary@test.com",
+        "ip": "192.168.1.4",
+        "userAgent": "Browser-4",
+        "mfaVerified": false,
+        "authTimeMs": 311
+      },
+      "timestamp": "2025-08-01T20:56:48.137Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081808353_z5jlct6qa",
+      "action": "security_alert",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081806839_64rs579t8",
+      "details": {
+        "alertType": "multiple_ips",
+        "severity": "medium",
+        "description": "Login from multiple IP addresses detected (4 IPs)",
+        "details": {
+          "currentIP": "192.168.1.5",
+          "recentIPs": [
+            "192.168.1.4",
+            "192.168.1.3",
+            "192.168.1.2",
+            "192.168.1.5"
+          ],
+          "sessionCount": 3
+        }
+      },
+      "timestamp": "2025-08-01T20:56:48.353Z",
+      "severity": "warning",
+      "status": "warning"
+    },
+    {
+      "id": "audit_1754081808353_xm70li6dp",
+      "action": "security_alert",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081806839_64rs579t8",
+      "details": {
+        "alertType": "suspicious_login",
+        "severity": "medium",
+        "description": "Rapid login from different IP address detected",
+        "details": {
+          "previousIP": "192.168.1.4",
+          "currentIP": "192.168.1.5",
+          "timeDifferenceMs": 216
+        }
+      },
+      "timestamp": "2025-08-01T20:56:48.353Z",
+      "severity": "warning",
+      "status": "warning"
+    },
+    {
+      "id": "audit_1754081808462_hxyw54t8a",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081806839_64rs579t8",
+      "details": {
+        "email": "session-test-1754081806628-izoary@test.com",
+        "ip": "192.168.1.5",
+        "userAgent": "Browser-5",
+        "mfaVerified": false,
+        "authTimeMs": 321
+      },
+      "timestamp": "2025-08-01T20:56:48.462Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081808688_2jaro81ub",
+      "action": "user_created",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081808688_nb820jkjx",
+      "details": {
+        "email": "risk-score-test-1754081808472-cyw4u@test.com",
+        "username": "risk-score-test-1754081808472-cyw4u",
+        "role": "user",
+        "passwordStrength": 3
+      },
+      "timestamp": "2025-08-01T20:56:48.688Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081808998_as53ifpev",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081808688_nb820jkjx",
+      "details": {
+        "email": "risk-score-test-1754081808472-cyw4u@test.com",
+        "ip": "192.168.1.100",
+        "userAgent": "Test Browser",
+        "mfaVerified": false,
+        "authTimeMs": 307
+      },
+      "timestamp": "2025-08-01T20:56:48.998Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081809924_g24srkcbj",
+      "action": "user_created",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "details": {
+        "email": "concurrent-test-1754081809719-vuyfh@test.com",
+        "username": "concurrent-test-1754081809719-vuyfh",
+        "role": "user",
+        "passwordStrength": 3
+      },
+      "timestamp": "2025-08-01T20:56:49.924Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081815339_l2axln8wf",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "details": {
+        "email": "concurrent-test-1754081809719-vuyfh@test.com",
+        "ip": "192.168.1.1",
+        "userAgent": "Browser-1",
+        "mfaVerified": false,
+        "authTimeMs": 5411
+      },
+      "timestamp": "2025-08-01T20:56:55.339Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081815342_9q3e788g3",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "details": {
+        "email": "concurrent-test-1754081809719-vuyfh@test.com",
+        "ip": "192.168.1.2",
+        "userAgent": "Browser-2",
+        "mfaVerified": false,
+        "authTimeMs": 5414
+      },
+      "timestamp": "2025-08-01T20:56:55.342Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081815346_zwllv8jzd",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "details": {
+        "email": "concurrent-test-1754081809719-vuyfh@test.com",
+        "ip": "192.168.1.3",
+        "userAgent": "Browser-3",
+        "mfaVerified": false,
+        "authTimeMs": 5417
+      },
+      "timestamp": "2025-08-01T20:56:55.346Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081815722_tqv26ykop",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "details": {
+        "email": "concurrent-test-1754081809719-vuyfh@test.com",
+        "ip": "192.168.1.11",
+        "userAgent": "Browser-11",
+        "mfaVerified": false,
+        "authTimeMs": 5793
+      },
+      "timestamp": "2025-08-01T20:56:55.722Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081816135_zpmeldyn7",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "details": {
+        "email": "concurrent-test-1754081809719-vuyfh@test.com",
+        "ip": "192.168.1.20",
+        "userAgent": "Browser-20",
+        "mfaVerified": false,
+        "authTimeMs": 6206
+      },
+      "timestamp": "2025-08-01T20:56:56.135Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081816137_539rp8i05",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "details": {
+        "email": "concurrent-test-1754081809719-vuyfh@test.com",
+        "ip": "192.168.1.4",
+        "userAgent": "Browser-4",
+        "mfaVerified": false,
+        "authTimeMs": 6209
+      },
+      "timestamp": "2025-08-01T20:56:56.137Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081816140_ew6ehf9p5",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "details": {
+        "email": "concurrent-test-1754081809719-vuyfh@test.com",
+        "ip": "192.168.1.5",
+        "userAgent": "Browser-5",
+        "mfaVerified": false,
+        "authTimeMs": 6212
+      },
+      "timestamp": "2025-08-01T20:56:56.140Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081816143_xmbga7gx1",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "details": {
+        "email": "concurrent-test-1754081809719-vuyfh@test.com",
+        "ip": "192.168.1.6",
+        "userAgent": "Browser-6",
+        "mfaVerified": false,
+        "authTimeMs": 6215
+      },
+      "timestamp": "2025-08-01T20:56:56.143Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081816146_vantqqk2b",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "details": {
+        "email": "concurrent-test-1754081809719-vuyfh@test.com",
+        "ip": "192.168.1.7",
+        "userAgent": "Browser-7",
+        "mfaVerified": false,
+        "authTimeMs": 6217
+      },
+      "timestamp": "2025-08-01T20:56:56.146Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081816149_bhva1eqph",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "details": {
+        "email": "concurrent-test-1754081809719-vuyfh@test.com",
+        "ip": "192.168.1.8",
+        "userAgent": "Browser-8",
+        "mfaVerified": false,
+        "authTimeMs": 6221
+      },
+      "timestamp": "2025-08-01T20:56:56.149Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081816152_iku4gsnlc",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "details": {
+        "email": "concurrent-test-1754081809719-vuyfh@test.com",
+        "ip": "192.168.1.9",
+        "userAgent": "Browser-9",
+        "mfaVerified": false,
+        "authTimeMs": 6223
+      },
+      "timestamp": "2025-08-01T20:56:56.152Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081816155_698ctmv92",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "details": {
+        "email": "concurrent-test-1754081809719-vuyfh@test.com",
+        "ip": "192.168.1.10",
+        "userAgent": "Browser-10",
+        "mfaVerified": false,
+        "authTimeMs": 6226
+      },
+      "timestamp": "2025-08-01T20:56:56.155Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081816157_qv024160u",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "details": {
+        "email": "concurrent-test-1754081809719-vuyfh@test.com",
+        "ip": "192.168.1.12",
+        "userAgent": "Browser-12",
+        "mfaVerified": false,
+        "authTimeMs": 6228
+      },
+      "timestamp": "2025-08-01T20:56:56.157Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081816160_zow2g4d30",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "details": {
+        "email": "concurrent-test-1754081809719-vuyfh@test.com",
+        "ip": "192.168.1.13",
+        "userAgent": "Browser-13",
+        "mfaVerified": false,
+        "authTimeMs": 6231
+      },
+      "timestamp": "2025-08-01T20:56:56.160Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081816163_reh4nr21r",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "details": {
+        "email": "concurrent-test-1754081809719-vuyfh@test.com",
+        "ip": "192.168.1.14",
+        "userAgent": "Browser-14",
+        "mfaVerified": false,
+        "authTimeMs": 6234
+      },
+      "timestamp": "2025-08-01T20:56:56.163Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081816167_qici3kqhh",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "details": {
+        "email": "concurrent-test-1754081809719-vuyfh@test.com",
+        "ip": "192.168.1.15",
+        "userAgent": "Browser-15",
+        "mfaVerified": false,
+        "authTimeMs": 6238
+      },
+      "timestamp": "2025-08-01T20:56:56.167Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081816170_lvdmwvwah",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "details": {
+        "email": "concurrent-test-1754081809719-vuyfh@test.com",
+        "ip": "192.168.1.16",
+        "userAgent": "Browser-16",
+        "mfaVerified": false,
+        "authTimeMs": 6241
+      },
+      "timestamp": "2025-08-01T20:56:56.170Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081816174_rgxlj36lj",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "details": {
+        "email": "concurrent-test-1754081809719-vuyfh@test.com",
+        "ip": "192.168.1.17",
+        "userAgent": "Browser-17",
+        "mfaVerified": false,
+        "authTimeMs": 6245
+      },
+      "timestamp": "2025-08-01T20:56:56.174Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081816178_90iw6pr0w",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "details": {
+        "email": "concurrent-test-1754081809719-vuyfh@test.com",
+        "ip": "192.168.1.18",
+        "userAgent": "Browser-18",
+        "mfaVerified": false,
+        "authTimeMs": 6249
+      },
+      "timestamp": "2025-08-01T20:56:56.178Z",
+      "severity": "info",
+      "status": "success"
+    },
+    {
+      "id": "audit_1754081816181_f9afhzmxd",
+      "action": "login_success",
+      "resource": "enhanced_authentication",
+      "userId": "user_1754081809924_rvdmywwxl",
+      "details": {
+        "email": "concurrent-test-1754081809719-vuyfh@test.com",
+        "ip": "192.168.1.19",
+        "userAgent": "Browser-19",
+        "mfaVerified": false,
+        "authTimeMs": 6252
+      },
+      "timestamp": "2025-08-01T20:56:56.181Z",
       "severity": "info",
       "status": "success"
     }

@@ -3,7 +3,7 @@
  * Standardized authentication and user management API using CODAI standards
  */
 
-import express from 'express';
+import express, { Express } from 'express';
 import {
     setupCodaiMiddleware,
     createStandardApiConfig,
@@ -16,8 +16,9 @@ import {
 } from '@codai/api-standards';
 import { OpenAPIV3 } from 'openapi-types';
 import swaggerUi from 'swagger-ui-express';
+import '../../types'; // Import type extensions
 
-const app = express();
+const app: Express = express();
 const config = createStandardApiConfig('id', 4001);
 
 // Setup universal CODAI middleware

@@ -2,11 +2,11 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { 
-  FolderKanban, 
-  CheckCircle, 
-  Clock, 
-  Users, 
+import {
+  FolderKanban,
+  CheckCircle,
+  Clock,
+  Users,
   Activity,
   TrendingUp,
   TrendingDown,
@@ -107,8 +107,8 @@ export function StatsCards({ data, loading, className = '' }: StatsCardsProps) {
     return (
       <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ${className}`}>
         {Array(4).fill(0).map((_, i) => (
-          <div 
-            key={i} 
+          <div
+            key={i}
             className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 animate-pulse"
           >
             <div className="flex items-center justify-between mb-4">
@@ -148,12 +148,12 @@ function StatCard({ stat, index }: StatCardProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ 
+      transition={{
         delay: index * 0.1,
         duration: 0.5,
         ease: 'easeOut'
       }}
-      whileHover={{ 
+      whileHover={{
         y: -4,
         boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
         transition: { duration: 0.2 }
@@ -168,7 +168,7 @@ function StatCard({ stat, index }: StatCardProps) {
     >
       {/* Background decoration */}
       <div className={`absolute top-0 right-0 w-32 h-32 ${bgColor} rounded-full -translate-y-16 translate-x-16 opacity-50`} />
-      
+
       {/* Content */}
       <div className="relative z-10">
         {/* Header */}
@@ -253,8 +253,8 @@ export function DetailedStatsCards({ data, loading }: StatsCardsProps) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {Array(3).fill(0).map((_, i) => (
-          <div 
-            key={i} 
+          <div
+            key={i}
             className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 animate-pulse"
           >
             <LoadingSpinner size="sm" />
@@ -271,7 +271,7 @@ export function DetailedStatsCards({ data, loading }: StatsCardsProps) {
           key={stat.id}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ 
+          transition={{
             delay: index * 0.1,
             duration: 0.4,
             ease: 'easeOut'
@@ -290,7 +290,7 @@ export function DetailedStatsCards({ data, loading }: StatsCardsProps) {
               <stat.icon className={`w-4 h-4 ${stat.color}`} />
             </div>
           </div>
-          
+
           <div className="flex items-baseline space-x-1">
             <AnimatedCounter
               value={stat.value}

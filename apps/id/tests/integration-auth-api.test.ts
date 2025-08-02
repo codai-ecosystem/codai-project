@@ -1,13 +1,13 @@
 /**
- * Integration Tests for Enhanced Authentication API Routes
+ * Iimport { EnhancedAuthService } from "../src/lib/enhanced-auth-service";tegration Tests for Enhanced Authentication API Routes
  * Tests the integration of EnhancedAuthService with Next.js API routes
  */
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { NextRequest } from 'next/server';
-import { POST as loginPOST } from '@/app/api/auth/login/route';
-import { POST as registerPOST } from '@/app/api/auth/register/route';
-import { EnhancedAuthService } from '@/services/enhanced-auth';
+import { POST as loginPOST } from '../src/app/api/auth/login/route';
+import { POST as registerPOST } from '../src/app/api/auth/register/route';
+import { EnhancedAuthService } from '../src/lib/auth.enterprise';
 
 // Helper to create mock NextRequest
 function createMockRequest(body: any, headers: Record<string, string> = {}): NextRequest {

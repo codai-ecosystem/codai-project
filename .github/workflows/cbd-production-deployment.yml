@@ -1,0 +1,406 @@
+# 🚀 CBD Universal Database - CI/CD Pipeline
+
+name: CBD Production Deployment
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'packages/cbd/**'
+      - 'infrastructure/**'
+      - '.github/workflows/**'
+  pull_request:
+    branches: [ main ]
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
+  ECS_CLUSTER: cbd-cluster-prod
+  
+jobs:
+  # Quality Assurance
+  quality-assurance:
+    name: 🧪 Quality Assurance
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [24.1.0]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        
+    - name: Install pnpm
+      run: npm install -g pnpm
+      
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+      working-directory: ./packages/cbd
+      
+    - name: TypeScript compilation check
+      run: pnpm build
+      working-directory: ./packages/cbd
+      
+    - name: Run linting
+      run: pnpm lint
+      working-directory: ./packages/cbd
+      
+    - name: Run unit tests
+      run: pnpm test
+      working-directory: ./packages/cbd
+      
+    - name: Security audit
+      run: pnpm audit
+      working-directory: ./packages/cbd
+
+  # Integration Testing
+  integration-testing:
+    name: 🔗 Integration Testing
+    runs-on: ubuntu-latest
+    needs: quality-assurance
+    
+    services:
+      redis:
+        image: redis:7.2-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+          
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: cbd_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 24.1.0
+        cache: 'npm'
+        
+    - name: Install pnpm
+      run: npm install -g pnpm
+      
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+      working-directory: ./packages/cbd
+      
+    - name: Start CBD services
+      run: |
+        # Start services in background
+        cd packages/cbd
+        npm run start:all:test &
+        sleep 30
+      
+    - name: Run comprehensive test suite
+      run: |
+        cd packages/cbd
+        node comprehensive-test-suite.cjs
+        
+    - name: Upload test reports
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-reports
+        path: packages/cbd/comprehensive-test-report.json
+
+  # Security Scanning
+  security-scanning:
+    name: 🔐 Security Scanning
+    runs-on: ubuntu-latest
+    needs: quality-assurance
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: './packages/cbd'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+        
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+  # Build and Push Docker Images
+  build-and-push:
+    name: 🐳 Build & Push Images
+    runs-on: ubuntu-latest
+    needs: [quality-assurance, integration-testing]
+    if: github.ref == 'refs/heads/main'
+    
+    strategy:
+      matrix:
+        service: [
+          { name: 'cbd-core', dockerfile: 'Dockerfile', port: 4180 },
+          { name: 'cbd-collaboration', dockerfile: 'Dockerfile.collaboration', port: 4600 },
+          { name: 'cbd-analytics', dockerfile: 'Dockerfile.analytics', port: 4700 },
+          { name: 'cbd-graphql', dockerfile: 'Dockerfile.graphql', port: 4800 },
+          { name: 'cbd-mesh', dockerfile: 'Dockerfile.mesh', port: 4000 }
+        ]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+        
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+      
+    - name: Build, tag, and push image to Amazon ECR
+      env:
+        ECR_REPOSITORY: ${{ matrix.service.name }}-prod
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        cd packages/cbd
+        docker build -f ${{ matrix.service.dockerfile }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        
+    - name: Output image URI
+      run: echo "Image URI: $ECR_REGISTRY/${{ matrix.service.name }}-prod:${{ github.sha }}"
+
+  # Infrastructure Deployment
+  infrastructure-deployment:
+    name: 🏗️ Infrastructure Deployment
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+        
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: 1.5.0
+        
+    - name: Terraform Init
+      run: terraform init
+      working-directory: ./infrastructure
+      
+    - name: Terraform Plan
+      run: terraform plan -out=tfplan
+      working-directory: ./infrastructure
+      
+    - name: Terraform Apply
+      run: terraform apply -auto-approve tfplan
+      working-directory: ./infrastructure
+
+  # ECS Service Deployment
+  ecs-deployment:
+    name: 🚀 ECS Service Deployment
+    runs-on: ubuntu-latest
+    needs: [build-and-push, infrastructure-deployment]
+    if: github.ref == 'refs/heads/main'
+    
+    strategy:
+      matrix:
+        service: [
+          { name: 'cbd-core', port: 4180, cpu: 512, memory: 1024 },
+          { name: 'cbd-collaboration', port: 4600, cpu: 256, memory: 512 },
+          { name: 'cbd-analytics', port: 4700, cpu: 512, memory: 1024 },
+          { name: 'cbd-graphql', port: 4800, cpu: 256, memory: 512 },
+          { name: 'cbd-mesh', port: 4000, cpu: 256, memory: 512 }
+        ]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+        
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: infrastructure/ecs-task-definitions/${{ matrix.service.name }}.json
+        container-name: ${{ matrix.service.name }}
+        image: ${{ env.ECR_REGISTRY }}/${{ matrix.service.name }}-prod:${{ github.sha }}
+        
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: ${{ matrix.service.name }}-service-prod
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true
+
+  # Post-Deployment Testing
+  post-deployment-testing:
+    name: 🧪 Post-Deployment Testing
+    runs-on: ubuntu-latest
+    needs: ecs-deployment
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+        
+    - name: Get ALB DNS name
+      id: get-alb
+      run: |
+        ALB_DNS=$(aws elbv2 describe-load-balancers \
+          --names cbd-alb-prod \
+          --query 'LoadBalancers[0].DNSName' \
+          --output text)
+        echo "alb_dns=$ALB_DNS" >> $GITHUB_OUTPUT
+        
+    - name: Setup Node.js for testing
+      uses: actions/setup-node@v4
+      with:
+        node-version: 24.1.0
+        
+    - name: Install test dependencies
+      run: npm install -g newman
+      
+    - name: Run production health checks
+      run: |
+        # Wait for services to be ready
+        sleep 60
+        
+        # Test each service endpoint
+        services=("4180" "4600" "4700" "4800" "4000")
+        for port in "${services[@]}"; do
+          echo "Testing service on port $port..."
+          curl -f "http://${{ steps.get-alb.outputs.alb_dns }}:$port/health" || exit 1
+        done
+        
+    - name: Run performance tests
+      run: |
+        cd packages/cbd
+        # Run load tests against production environment
+        export BASE_URL="http://${{ steps.get-alb.outputs.alb_dns }}"
+        node performance-test-suite.js
+        
+    - name: Upload performance reports
+      uses: actions/upload-artifact@v4
+      with:
+        name: performance-reports
+        path: packages/cbd/performance-test-report.json
+
+  # Notification
+  notification:
+    name: 📢 Deployment Notification
+    runs-on: ubuntu-latest
+    needs: [post-deployment-testing]
+    if: always()
+    
+    steps:
+    - name: Notify deployment status
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        channel: '#cbd-deployments'
+        text: |
+          CBD Universal Database Deployment Status: ${{ job.status }}
+          Branch: ${{ github.ref }}
+          Commit: ${{ github.sha }}
+          Actor: ${{ github.actor }}
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # Performance Monitoring Setup
+  monitoring-setup:
+    name: 📊 Monitoring Setup
+    runs-on: ubuntu-latest
+    needs: ecs-deployment
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+        
+    - name: Setup CloudWatch alarms
+      run: |
+        # CPU Utilization Alarm
+        aws cloudwatch put-metric-alarm \
+          --alarm-name "CBD-High-CPU-Utilization" \
+          --alarm-description "CBD services high CPU utilization" \
+          --metric-name CPUUtilization \
+          --namespace AWS/ECS \
+          --statistic Average \
+          --period 300 \
+          --threshold 80 \
+          --comparison-operator GreaterThanThreshold \
+          --evaluation-periods 2
+          
+        # Memory Utilization Alarm
+        aws cloudwatch put-metric-alarm \
+          --alarm-name "CBD-High-Memory-Utilization" \
+          --alarm-description "CBD services high memory utilization" \
+          --metric-name MemoryUtilization \
+          --namespace AWS/ECS \
+          --statistic Average \
+          --period 300 \
+          --threshold 85 \
+          --comparison-operator GreaterThanThreshold \
+          --evaluation-periods 2
+
+# Environment-specific configurations
+env:
+  NODE_ENV: production
+  LOG_LEVEL: info
+  MONITORING_ENABLED: true

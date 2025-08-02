@@ -44,7 +44,7 @@ export default async function handler(req: any, res: any) {
 
         // Check database connection (placeholder for future implementation)
         dependencies.database = 'unknown';
-        
+
         // Check external services (placeholder for future implementation)
         dependencies.auth = 'unknown';
         dependencies.storage = 'unknown';
@@ -52,19 +52,19 @@ export default async function handler(req: any, res: any) {
         // Check memory usage
         const memoryUsage = process.memoryUsage();
         const memoryUsagePercent = (memoryUsage.heapUsed / memoryUsage.heapTotal) * 100;
-        
+
         // Determine overall health status
         let status: 'healthy' | 'unhealthy' | 'degraded' = 'healthy';
         let description = 'AI-native development platform is operational';
 
-        // Check for degraded conditions
-        if (memoryUsagePercent > 90) {
+        // Check for degraded conditions (more realistic thresholds for dev environment)
+        if (memoryUsagePercent > 95) {
             status = 'degraded';
             description = 'High memory usage detected';
         }
 
-        // Check for unhealthy conditions
-        if (memoryUsagePercent > 95) {
+        // Check for unhealthy conditions (critical only)
+        if (memoryUsagePercent > 98) {
             status = 'unhealthy';
             description = 'Critical memory usage - service may be unstable';
         }
@@ -86,12 +86,12 @@ export default async function handler(req: any, res: any) {
 
         // Set appropriate HTTP status code
         const httpStatus = status === 'healthy' ? 200 : status === 'degraded' ? 200 : 503;
-        
+
         res.status(httpStatus).json(healthResponse);
 
     } catch (error) {
         console.error('Health check error:', error);
-        
+
         const errorResponse: HealthResponse = {
             service: 'codai',
             status: 'unhealthy',

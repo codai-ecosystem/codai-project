@@ -109,8 +109,8 @@ export function TrendIndicator({
 
   const containerVariants = {
     initial: { opacity: 0, scale: 0.8 },
-    animate: { 
-      opacity: 1, 
+    animate: {
+      opacity: 1,
       scale: 1,
       transition: {
         duration: 0.3,
@@ -121,7 +121,7 @@ export function TrendIndicator({
 
   const iconVariants = {
     initial: { rotate: 0 },
-    animate: { 
+    animate: {
       rotate: type === 'increase' ? 360 : type === 'decrease' ? -360 : 0,
       transition: {
         duration: 0.6,
@@ -151,7 +151,7 @@ export function TrendIndicator({
           <Icon className={sizeClasses.icon} />
         </motion.div>
       )}
-      
+
       {showValue && (
         <span className="font-semibold">
           {type !== 'stable' && (type === 'increase' ? '+' : '-')}
@@ -159,7 +159,7 @@ export function TrendIndicator({
           {type !== 'stable' && '%'}
         </span>
       )}
-      
+
       {period && (
         <span className="opacity-75">
           {period}

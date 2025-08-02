@@ -1,0 +1,446 @@
+# Core CODAI Ecosystem Services Kubernetes Manifests
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: codai-core
+  labels:
+    name: codai-core
+    istio-injection: enabled
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: codai-services
+  labels:
+    name: codai-services
+    istio-injection: enabled
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: codai-mcps
+  labels:
+    name: codai-mcps
+    istio-injection: enabled
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: codai-apis
+  labels:
+    name: codai-apis
+    istio-injection: enabled
+---
+# ConfigMap for Common Environment Variables
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: codai-config
+  namespace: codai-core
+data:
+  NODE_ENV: 'production'
+  PORT: '3000'
+  API_VERSION: 'v1'
+  REDIS_URL: 'redis://codai-redis-cluster.codai-core.svc.cluster.local:6379'
+  DATABASE_SSL: 'true'
+  LOG_LEVEL: 'info'
+  CORS_ORIGIN: 'https://codai.ro,https://memorai.ro,https://controlai.ro,https://romai.ro'
+  JWT_EXPIRES_IN: '24h'
+  RATE_LIMIT_WINDOW: '900000'
+  RATE_LIMIT_MAX: '100'
+  HEALTH_CHECK_TIMEOUT: '30000'
+  METRICS_ENABLED: 'true'
+  TRACING_ENABLED: 'true'
+  ENCRYPTION_ALGORITHM: 'aes-256-gcm'
+  BACKUP_RETENTION_DAYS: '30'
+---
+# ConfigMap for Domain Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: codai-domains
+  namespace: codai-core
+data:
+  ID_DOMAIN: 'id.codai.ro'
+  AUTH_DOMAIN: 'auth.codai.ro'
+  API_DOMAIN: 'api.codai.ro'
+  HUB_DOMAIN: 'hub.codai.ro'
+  ADMIN_DOMAIN: 'admin.codai.ro'
+  GATEWAY_DOMAIN: 'gateway.codai.ro'
+  MEMORAI_DOMAIN: 'memorai.ro'
+  MEMORAI_MCP_DOMAIN: 'mcp.memorai.ro'
+  MEMORAI_CBD_DOMAIN: 'cbd.memorai.ro'
+  MEMORAI_API_DOMAIN: 'api.memorai.ro'
+  CONTROLAI_DOMAIN: 'controlai.ro'
+  CONTROLAI_MCP_DOMAIN: 'mcp.controlai.ro'
+  CONTROLAI_API_DOMAIN: 'api.controlai.ro'
+  ROMAI_DOMAIN: 'romai.ro'
+  ROMAI_MCP_DOMAIN: 'mcp.romai.ro'
+  ROMAI_API_DOMAIN: 'api.romai.ro'
+  DOCS_DOMAIN: 'docs.codai.ro'
+  STATUS_DOMAIN: 'status.codai.ro'
+---
+# Secrets for Database and Services
+apiVersion: v1
+kind: Secret
+metadata:
+  name: codai-secrets
+  namespace: codai-core
+type: Opaque
+stringData:
+  DATABASE_URL: 'postgresql://codai_user:${random_password.db_password.result}@codai-aurora-cluster.cluster-xxx.${var.aws_region}.rds.amazonaws.com:5432/codai_db'
+  REDIS_PASSWORD: '${random_password.redis_password.result}'
+  JWT_SECRET: '${random_password.jwt_secret.result}'
+  ENCRYPTION_KEY: '${random_password.encryption_key.result}'
+  SESSION_SECRET: '${random_password.session_secret.result}'
+  OAUTH_CLIENT_SECRET: '${random_password.oauth_secret.result}'
+  MCP_API_KEY: '${random_password.mcp_api_key.result}'
+  WEBHOOK_SECRET: '${random_password.webhook_secret.result}'
+  ADMIN_PASSWORD: '${random_password.admin_password.result}'
+---
+# Identity Service (id.codai.ro)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: id-service
+  namespace: codai-core
+  labels:
+    app: id-service
+    component: identity
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: id-service
+  template:
+    metadata:
+      labels:
+        app: id-service
+        component: identity
+    spec:
+      containers:
+        - name: id-service
+          image: ${aws_ecr_repository.id_service.repository_url}:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-config
+                  key: NODE_ENV
+            - name: PORT
+              value: '3000'
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: codai-secrets
+                  key: DATABASE_URL
+            - name: REDIS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-config
+                  key: REDIS_URL
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: codai-secrets
+                  key: JWT_SECRET
+            - name: DOMAIN
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-domains
+                  key: ID_DOMAIN
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '250m'
+            limits:
+              memory: '512Mi'
+              cpu: '500m'
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: id-service
+  namespace: codai-core
+  labels:
+    app: id-service
+spec:
+  selector:
+    app: id-service
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+  type: ClusterIP
+---
+# Gateway Service (api.codai.ro)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-service
+  namespace: codai-core
+  labels:
+    app: gateway-service
+    component: gateway
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: gateway-service
+  template:
+    metadata:
+      labels:
+        app: gateway-service
+        component: gateway
+    spec:
+      containers:
+        - name: gateway-service
+          image: ${aws_ecr_repository.gateway_service.repository_url}:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-config
+                  key: NODE_ENV
+            - name: PORT
+              value: '3000'
+            - name: REDIS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-config
+                  key: REDIS_URL
+            - name: CORS_ORIGIN
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-config
+                  key: CORS_ORIGIN
+            - name: RATE_LIMIT_WINDOW
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-config
+                  key: RATE_LIMIT_WINDOW
+            - name: RATE_LIMIT_MAX
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-config
+                  key: RATE_LIMIT_MAX
+          resources:
+            requests:
+              memory: '512Mi'
+              cpu: '500m'
+            limits:
+              memory: '1Gi'
+              cpu: '1000m'
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service
+  namespace: codai-core
+  labels:
+    app: gateway-service
+spec:
+  selector:
+    app: gateway-service
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+  type: ClusterIP
+---
+# Hub Service (hub.codai.ro)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hub-service
+  namespace: codai-core
+  labels:
+    app: hub-service
+    component: hub
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hub-service
+  template:
+    metadata:
+      labels:
+        app: hub-service
+        component: hub
+    spec:
+      containers:
+        - name: hub-service
+          image: ${aws_ecr_repository.hub_service.repository_url}:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-config
+                  key: NODE_ENV
+            - name: PORT
+              value: '3000'
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: codai-secrets
+                  key: DATABASE_URL
+            - name: REDIS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-config
+                  key: REDIS_URL
+            - name: DOMAIN
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-domains
+                  key: HUB_DOMAIN
+          resources:
+            requests:
+              memory: '512Mi'
+              cpu: '500m'
+            limits:
+              memory: '1Gi'
+              cpu: '1000m'
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hub-service
+  namespace: codai-core
+  labels:
+    app: hub-service
+spec:
+  selector:
+    app: hub-service
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+  type: ClusterIP
+---
+# Admin Service (admin.codai.ro)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin-service
+  namespace: codai-core
+  labels:
+    app: admin-service
+    component: admin
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: admin-service
+  template:
+    metadata:
+      labels:
+        app: admin-service
+        component: admin
+    spec:
+      containers:
+        - name: admin-service
+          image: ${aws_ecr_repository.admin_service.repository_url}:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-config
+                  key: NODE_ENV
+            - name: PORT
+              value: '3000'
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: codai-secrets
+                  key: DATABASE_URL
+            - name: REDIS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: codai-config
+                  key: REDIS_URL
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: codai-secrets
+                  key: ADMIN_PASSWORD
+          resources:
+            requests:
+              memory: '512Mi'
+              cpu: '500m'
+            limits:
+              memory: '1Gi'
+              cpu: '1000m'
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: admin-service
+  namespace: codai-core
+  labels:
+    app: admin-service
+spec:
+  selector:
+    app: admin-service
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+  type: ClusterIP

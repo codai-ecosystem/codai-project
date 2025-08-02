@@ -13,7 +13,7 @@ import {
 dotenv.config({ path: process.env.DOTENV_CONFIG_PATH });
 
 export class AIService {
-    private client: OpenAI;
+    private client: OpenAI | null;
     private deploymentName: string;
 
     constructor() {
@@ -21,8 +21,10 @@ export class AIService {
         const apiKey = process.env.AZURE_OPENAI_API_KEY;
         this.deploymentName = process.env.AZURE_OPENAI_DEPLOYMENT || 'gpt-4o';
 
-        if (!endpoint || !apiKey) {
-            throw new Error('Azure OpenAI configuration is missing. Please set AZURE_OPENAI_ENDPOINT and AZURE_OPENAI_API_KEY environment variables.');
+        if (!endpoint || !apiKey || endpoint === 'test' || apiKey === 'test') {
+            console.warn('Azure OpenAI not configured. AI features will be disabled.');
+            this.client = null;
+            return;
         }
 
         this.client = new OpenAI({
@@ -36,6 +38,37 @@ export class AIService {
     }
 
     async analyzePlan(planText: string): Promise<PlanAnalysis> {
+        if (!this.client) {
+            // Return mock analysis when AI is not configured
+            return {
+                tasks: [
+                    {
+                        complexity: 50,
+                        estimatedHours: 8,
+                        suggestedCategory: 'development' as TaskCategory,
+                        suggestedPriority: 'medium' as Priority,
+                        requiredCapabilities: [AgentCapability.PROGRAMMING],
+                        potentialRisks: [],
+                        dependencies: [],
+                        confidence: 80
+                    }
+                ],
+                suggestedTasks: [{
+                    title: "Implementation Task",
+                    description: planText.length > 100 ? planText.substring(0, 100) + "..." : planText,
+                    priority: 'medium' as Priority,
+                    category: 'development' as TaskCategory,
+                    estimatedHours: 8,
+                    tags: [],
+                    confidence: 80
+                }],
+                projectComplexity: 50,
+                estimatedDuration: 8,
+                suggestedAgents: ['senior_developer'] as AgentType[],
+                riskAssessment: ["Low risk - AI analysis not available"],
+                recommendations: ["Complete implementation as planned"]
+            };
+        }
         const prompt = `Analyze the following project plan and break it down into structured tasks with detailed analysis:
 
 PLAN:
@@ -104,6 +137,19 @@ Focus on:
     }
 
     async analyzeTask(taskDescription: string, projectContext?: string): Promise<TaskAnalysis> {
+        if (!this.client) {
+            // Return mock analysis when AI is not configured
+            return {
+                complexity: 50,
+                estimatedHours: 4,
+                suggestedCategory: 'development' as TaskCategory,
+                suggestedPriority: 'medium' as Priority,
+                requiredCapabilities: [AgentCapability.PROGRAMMING],
+                potentialRisks: [],
+                dependencies: [],
+                confidence: 80
+            };
+        }
         const prompt = `Analyze the following task and provide detailed analysis:
 
 TASK: ${taskDescription}
@@ -185,6 +231,9 @@ Consider:
 4. Skill level alignment with task complexity`;
 
         try {
+            if (!this.client) {
+                throw new Error('AI client not configured');
+            }
             const response = await this.client.chat.completions.create({
                 model: this.deploymentName,
                 messages: [
@@ -243,6 +292,9 @@ Consider:
 5. Business value delivery`;
 
         try {
+            if (!this.client) {
+                throw new Error('AI client not configured');
+            }
             const response = await this.client.chat.completions.create({
                 model: this.deploymentName,
                 messages: [

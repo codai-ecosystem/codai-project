@@ -1,11 +1,11 @@
 /**
- * Enhanced Authentication Service Tests
+ import { EnhancedAuthService } from "../src/lib/enhanced-auth-service"; Enhanced Authentication Service Tests
  * Validates all security fixes and improvements
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { EnhancedAuthService } from '../src/services/enhanced-auth';
-import type { CreateUserData, LoginCredentials } from '../src/services/enhanced-auth';
+import { EnhancedAuthService } from '../src/lib/auth.enterprise';
+import type { CreateUserData, LoginCredentials } from '../src/lib/auth.enterprise';
 
 describe('Enhanced Authentication Service Security Tests', () => {
     let authService: EnhancedAuthService;

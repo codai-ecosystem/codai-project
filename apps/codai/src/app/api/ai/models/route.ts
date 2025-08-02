@@ -13,8 +13,9 @@ const CreateModelSchema = z.object({
   type: z.enum(['llm', 'vision', 'embedding', 'classification', 'generation']),
   provider: z.string().min(1, 'Provider is required'),
   modelPath: z.string().optional(),
-  parameters: z.record(z.any()).optional(),
-  metadata: z.record(z.any()).optional()
+  parameters: z.record(z.string(), z.any()).optional(),
+  metadata: z.record(z.string(), z.any()).optional(),
+  isActive: z.boolean().default(true)
 });
 
 export async function GET(request: NextRequest) {
@@ -67,7 +68,7 @@ export async function POST(request: NextRequest) {
         {
           success: false,
           error: 'Validation failed',
-          details: error.errors
+          details: error.issues
         },
         { status: 400 }
       );

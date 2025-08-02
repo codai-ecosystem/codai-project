@@ -15,10 +15,11 @@ const CreateConversationSchema = z.object({
     role: z.enum(['user', 'assistant', 'system']),
     content: z.string(),
     timestamp: z.string().transform(str => new Date(str)),
-    metadata: z.record(z.any()).optional()
+    metadata: z.record(z.string(), z.any()).optional()
   })),
   modelId: z.string().optional(),
-  tags: z.array(z.string()).optional()
+  tags: z.array(z.string()).optional(),
+  isArchived: z.boolean().default(false)
 });
 
 const SearchConversationsSchema = z.object({
@@ -118,7 +119,7 @@ export async function POST(request: NextRequest) {
         {
           success: false,
           error: 'Validation failed',
-          details: error.errors
+          details: error.issues
         },
         { status: 400 }
       );

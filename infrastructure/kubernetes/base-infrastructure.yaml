@@ -1,0 +1,155 @@
+# Namespace for CODAI Ecosystem
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: codai-ecosystem
+  labels:
+    name: codai-ecosystem
+
+---
+# ConfigMap for shared environment variables
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: codai-config
+  namespace: codai-ecosystem
+data:
+  NODE_ENV: 'production'
+  LOG_LEVEL: 'info'
+  DATABASE_HOST: 'postgresql-service'
+  DATABASE_PORT: '5432'
+  REDIS_HOST: 'redis-service'
+  REDIS_PORT: '6379'
+
+---
+# Secret for sensitive configuration
+apiVersion: v1
+kind: Secret
+metadata:
+  name: codai-secrets
+  namespace: codai-ecosystem
+type: Opaque
+data:
+  # Base64 encoded values - replace with actual values
+  DATABASE_PASSWORD: cGFzc3dvcmQ= # "password"
+  JWT_SECRET: c3VwZXJzZWNyZXRqd3RrZXk= # "supersecretjwtkey"
+  API_KEY: YXBpa2V5MTIzNDU2Nzg5MA== # "apikey1234567890"
+
+---
+# PostgreSQL Database
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql
+  namespace: codai-ecosystem
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgresql
+  template:
+    metadata:
+      labels:
+        app: postgresql
+    spec:
+      containers:
+        - name: postgresql
+          image: postgres:15-alpine
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: 'codai'
+            - name: POSTGRES_USER
+              value: 'codai'
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: codai-secrets
+                  key: DATABASE_PASSWORD
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '250m'
+            limits:
+              memory: '512Mi'
+              cpu: '500m'
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql-service
+  namespace: codai-ecosystem
+spec:
+  selector:
+    app: postgresql
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+
+---
+# Persistent Volume Claim for PostgreSQL
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  namespace: codai-ecosystem
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+# Redis Cache
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: codai-ecosystem
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7-alpine
+          ports:
+            - containerPort: 6379
+          resources:
+            requests:
+              memory: '128Mi'
+              cpu: '100m'
+            limits:
+              memory: '256Mi'
+              cpu: '200m'
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+  namespace: codai-ecosystem
+spec:
+  selector:
+    app: redis
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379

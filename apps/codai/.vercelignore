@@ -1,0 +1,40 @@
+# Ignore duplicate monorepo structure
+apps/
+packages/
+archive-legacy/
+cli/
+extensions/
+remote/
+build/
+data/
+.github/
+.devcontainer/
+.config/
+.husky/
+.eslint-plugin-local/
+
+# Standard ignores
+node_modules/
+.next/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+dist/
+coverage/
+.nyc_output/
+*.log
+.DS_Store
+Thumbs.db
+
+# Development files
+vitest.config.ts
+jest.setup.js
+playwright.config.ts
+__tests__/
+test/
+tests/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx

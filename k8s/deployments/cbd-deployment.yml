@@ -1,0 +1,213 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cbd-database
+  namespace: codai-ecosystem
+  labels:
+    app: cbd-database
+    component: backend
+    version: v1.0.0
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cbd-database
+  template:
+    metadata:
+      labels:
+        app: cbd-database
+        component: backend
+    spec:
+      containers:
+      - name: cbd-database
+        image: codai/cbd-database:latest
+        ports:
+        - containerPort: 4180
+          name: http
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "4180"
+        - name: REDIS_URL
+          value: "redis://redis-service:6379"
+        - name: DATABASE_URL
+          value: "postgresql://cbd_user:cbd_password@postgres-service:5432/cbd_database"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 4180
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 4180
+          initialDelaySeconds: 15
+          periodSeconds: 5
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cbd-collaboration
+  namespace: codai-ecosystem
+  labels:
+    app: cbd-collaboration
+    component: backend
+    version: v1.0.0
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cbd-collaboration
+  template:
+    metadata:
+      labels:
+        app: cbd-collaboration
+        component: backend
+    spec:
+      containers:
+      - name: cbd-collaboration
+        image: codai/cbd-collaboration:latest
+        ports:
+        - containerPort: 4600
+          name: http
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "4600"
+        - name: CBD_DATABASE_URL
+          value: "http://cbd-database-service:4180"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 4600
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 4600
+          initialDelaySeconds: 15
+          periodSeconds: 5
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "125m"
+          limits:
+            memory: "256Mi"
+            cpu: "250m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cbd-ai-analytics
+  namespace: codai-ecosystem
+  labels:
+    app: cbd-ai-analytics
+    component: backend
+    version: v1.0.0
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cbd-ai-analytics
+  template:
+    metadata:
+      labels:
+        app: cbd-ai-analytics
+        component: backend
+    spec:
+      containers:
+      - name: cbd-ai-analytics
+        image: codai/cbd-ai-analytics:latest
+        ports:
+        - containerPort: 4700
+          name: http
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "4700"
+        - name: CBD_DATABASE_URL
+          value: "http://cbd-database-service:4180"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 4700
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 4700
+          initialDelaySeconds: 15
+          periodSeconds: 5
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cbd-graphql
+  namespace: codai-ecosystem
+  labels:
+    app: cbd-graphql
+    component: backend
+    version: v1.0.0
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cbd-graphql
+  template:
+    metadata:
+      labels:
+        app: cbd-graphql
+        component: backend
+    spec:
+      containers:
+      - name: cbd-graphql
+        image: codai/cbd-graphql:latest
+        ports:
+        - containerPort: 4800
+          name: http
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "4800"
+        - name: CBD_DATABASE_URL
+          value: "http://cbd-database-service:4180"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 4800
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 4800
+          initialDelaySeconds: 15
+          periodSeconds: 5
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "125m"
+          limits:
+            memory: "256Mi"
+            cpu: "250m"

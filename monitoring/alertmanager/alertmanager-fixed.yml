@@ -1,0 +1,120 @@
+# CODAI Ecosystem AlertManager Configuration
+global:
+  # Email server configuration
+  smtp_smarthost: 'localhost:587'
+  smtp_from: 'alertmanager@codai.ro'
+  smtp_auth_username: 'alertmanager@codai.ro'
+  smtp_auth_password: 'your-email-password'
+  
+  # Default notification intervals
+  resolve_timeout: 5m
+
+# Route configuration
+route:
+  group_by: ['alertname', 'instance']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 12h
+  receiver: 'default-receiver'
+  
+  routes:
+    # Critical alerts get immediate attention
+    - match:
+        severity: critical
+      receiver: 'critical-alerts'
+      group_wait: 10s
+      repeat_interval: 5m
+    
+    # Warning alerts are less urgent
+    - match:
+        severity: warning
+      receiver: 'warning-alerts'
+      group_wait: 5m
+      repeat_interval: 30m
+    
+    # Info alerts are batched
+    - match:
+        severity: info
+      receiver: 'info-alerts'
+      group_wait: 10m
+      repeat_interval: 2h
+
+receivers:
+  - name: 'default-receiver'
+    email_configs:
+      - to: 'ops@codai.ro'
+        subject: '[CODAI] Alert: {{ .GroupLabels.alertname }}'
+        html: |
+          <h3>CODAI Alert Notification</h3>
+          {{ range .Alerts }}
+          <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">
+            <h4>{{ .Annotations.summary }}</h4>
+            <p><strong>Description:</strong> {{ .Annotations.description }}</p>
+            <p><strong>Instance:</strong> {{ .Labels.instance }}</p>
+            <p><strong>Severity:</strong> {{ .Labels.severity }}</p>
+            <p><strong>Time:</strong> {{ .StartsAt }}</p>
+          </div>
+          {{ end }}
+
+  - name: 'critical-alerts'
+    email_configs:
+      - to: 'critical@codai.ro'
+        subject: '[CODAI CRITICAL] {{ .GroupLabels.alertname }}'
+        html: |
+          <h2 style="color: red;">CRITICAL ALERT</h2>
+          {{ range .Alerts }}
+          <div style="border: 2px solid red; margin: 10px; padding: 10px; background-color: #ffebee;">
+            <h3>{{ .Annotations.summary }}</h3>
+            <p><strong>Description:</strong> {{ .Annotations.description }}</p>
+            <p><strong>Instance:</strong> {{ .Labels.instance }}</p>
+            <p><strong>Time:</strong> {{ .StartsAt }}</p>
+          </div>
+          {{ end }}
+
+  - name: 'warning-alerts'
+    email_configs:
+      - to: 'warnings@codai.ro'
+        subject: '[CODAI WARNING] {{ .GroupLabels.alertname }}'
+        html: |
+          <h3 style="color: orange;">Warning Alert</h3>
+          {{ range .Alerts }}
+          <div style="border: 1px solid orange; margin: 10px; padding: 10px; background-color: #fff3e0;">
+            <h4>{{ .Annotations.summary }}</h4>
+            <p><strong>Description:</strong> {{ .Annotations.description }}</p>
+            <p><strong>Instance:</strong> {{ .Labels.instance }}</p>
+            <p><strong>Time:</strong> {{ .StartsAt }}</p>
+          </div>
+          {{ end }}
+
+  - name: 'info-alerts'
+    email_configs:
+      - to: 'info@codai.ro'
+        subject: '[CODAI INFO] {{ .GroupLabels.alertname }}'
+        html: |
+          <h3>Information Alert</h3>
+          {{ range .Alerts }}
+          <div style="border: 1px solid blue; margin: 10px; padding: 10px; background-color: #e3f2fd;">
+            <h4>{{ .Annotations.summary }}</h4>
+            <p><strong>Description:</strong> {{ .Annotations.description }}</p>
+            <p><strong>Instance:</strong> {{ .Labels.instance }}</p>
+            <p><strong>Time:</strong> {{ .StartsAt }}</p>
+          </div>
+          {{ end }}
+
+# Inhibit rules prevent notifications when dependencies are down
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'instance']
+  
+  - source_match:
+      alertname: 'ServiceDown'
+    target_match_re:
+      alertname: '(HighResponseTime|HighCPUUsage|HighMemoryUsage)'
+    equal: ['instance']
+
+# Template configuration
+templates:
+  - '/etc/alertmanager/templates/*.tmpl'

@@ -1,0 +1,143 @@
+{
+  "timestamp": "2025-08-05T13:23:51.278847",
+  "server_url": "http://localhost:8000",
+  "total_endpoints": 7,
+  "healthy_endpoints": 5,
+  "results": [
+    {
+      "endpoint": "/health",
+      "status": "✅ HEALTHY",
+      "response_time": 2.053443431854248,
+      "error": null,
+      "details": {
+        "status": "healthy",
+        "uptime_seconds": 32.575304,
+        "models_loaded": 3,
+        "total_inferences": 0,
+        "server_version": "1.0.0",
+        "timestamp": "2025-08-05T13:23:38.899791"
+      }
+    },
+    {
+      "endpoint": "/status",
+      "status": "❌ UNHEALTHY",
+      "response_time": 2.055715560913086,
+      "error": "HTTP 404",
+      "details": {
+        "status_code": 404
+      }
+    },
+    {
+      "endpoint": "/models/info",
+      "status": "❌ UNHEALTHY",
+      "response_time": 2.045149803161621,
+      "error": "HTTP 404",
+      "details": {
+        "status_code": 404
+      }
+    },
+    {
+      "endpoint": "/capabilities/scores",
+      "status": "✅ HEALTHY",
+      "response_time": 2.040841817855835,
+      "error": null,
+      "details": {
+        "romanian_language_processing": 0.887,
+        "cultural_understanding": 0.84265,
+        "advanced_reasoning": 0.0,
+        "multi_dimensional_intelligence": 0.78,
+        "meta_learning": 0.6,
+        "autonomous_problem_solving": 0.0,
+        "overall_agi_score": 0.62175,
+        "confidence_interval": 1.0,
+        "last_evaluated": "2025-08-05T13:23:25.264961"
+      }
+    },
+    {
+      "endpoint": "/training/metrics",
+      "status": "✅ HEALTHY",
+      "response_time": 2.0355355739593506,
+      "error": null,
+      "details": {
+        "epochs_completed": 0,
+        "current_loss": 2.5,
+        "best_loss": 2.5,
+        "learning_rate": 0.001,
+        "batch_size": 32,
+        "model_parameters": 103954970,
+        "training_samples": 0,
+        "validation_accuracy": 0.75,
+        "cultural_accuracy": 0.887,
+        "reasoning_score": 0.85,
+        "training_time_hours": 0.011321244166666666,
+        "last_updated": "2025-08-05T13:23:25.264719"
+      }
+    },
+    {
+      "endpoint": "/intelligence/capabilities",
+      "status": "✅ HEALTHY",
+      "response_time": 2.0535356998443604,
+      "error": null,
+      "details": {
+        "status": "mock_operational",
+        "agi_systems": {
+          "systems_initialized": true,
+          "intelligence_types": [
+            "linguistic",
+            "cultural",
+            "logical",
+            "creative",
+            "emotional"
+          ],
+          "reasoning_types": [
+            "deductive",
+            "inductive",
+            "analogical",
+            "causal"
+          ],
+          "cultural_specialization": true,
+          "romanian_context": true,
+          "performance_metrics": {
+            "total_queries": 42,
+            "avg_response_time": 0.12,
+            "cultural_accuracy": 0.91,
+            "reasoning_depth": 3.2
+          },
+          "capabilities": {
+            "multi_dimensional_intelligence": true,
+            "autonomous_reasoning": true,
+            "creative_problem_solving": true,
+            "cultural_reasoning": true,
+            "advanced_logic": true,
+            "emotional_intelligence": true
+          }
+        },
+        "description": "RomAI Advanced General Intelligence Systems (Mock Mode)",
+        "version": "Day 3 Intelligence Integration",
+        "timestamp": "2025-08-05T13:23:49.131997"
+      }
+    },
+    {
+      "endpoint": "/inference",
+      "status": "✅ HEALTHY",
+      "response_time": 2.1449460983276367,
+      "error": null,
+      "details": {
+        "response": "Procesare culturală avansată: Salut! Cum te numești?",
+        "confidence": 0.887,
+        "processing_time_ms": 105.58223724365234,
+        "model_used": "romanian_processor",
+        "cultural_context": {
+          "detected_entities": [
+            "România",
+            "cultură"
+          ],
+          "formality_level": "formal",
+          "regional_variant": "moldovenesc",
+          "cultural_relevance": 0.92
+        },
+        "reasoning_steps": null
+      }
+    }
+  ]
+}

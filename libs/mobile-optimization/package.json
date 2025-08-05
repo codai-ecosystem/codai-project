@@ -41,7 +41,7 @@
     "license": "MIT",
     "dependencies": {
         "@codai/advanced-security": "workspace:*",
-        "codai-performance-monitor": "workspace:*",
+        "@codai/performance-monitor-utils": "workspace:*",
         "@codai/ui-components": "workspace:*",
         "@codai/performance-monitoring": "workspace:*",
         "@codai/accessibility": "workspace:*",

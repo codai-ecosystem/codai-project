@@ -1,0 +1,743 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { Memory, ApiResponse } from '../types/memory';
+import MemoryList from './memory-list';
+import SearchInterface from './search-interface';
+import MemoryViewer from './memory-viewer';
+import MemoryEditor from './memory-editor';
+import MemoryCategories from './memory-categories';
+import MemoryTags from './memory-tags';
+import MemoryFilters from './memory-filters';
+import MemoryTimeline from './memory-timeline';
+import ConnectionStatus from './connection-status';
+import { useNotificationContext } from './notifications';
+import { Grid, List, Layout, Sidebar, Clock, Wifi, WifiOff, Plus } from 'lucide-react';
+import { useWebSocket } from '@/lib/websocket-client';
+
+interface FilterOptions {
+    category?: string;
+    tags?: string[];
+    dateRange?: {
+        start?: string;
+        end?: string;
+    };
+    sortBy?: 'created' | 'updated' | 'relevance' | 'alphabetical';
+    sortOrder?: 'asc' | 'desc';
+    author?: string;
+    searchQuery?: string;
+}
+
+export default function MemoryDashboard() {
+    return (
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+            <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                    <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                        🧠 MemorAI Dashboard
+                    </h1>
+                    <p className="text-gray-600 dark:text-gray-400">
+                        Your Personal Memory Assistant - Coming Soon
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+}
+    const [memories, setMemories] = useState<Memory[]>([]);
+    const [filteredMemories, setFilteredMemories] = useState<Memory[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [selectedMemory, setSelectedMemory] = useState<Memory | null>(null);
+    const [isCreating, setIsCreating] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [searchResults, setSearchResults] = useState<Memory[] | null>(null);
+
+    // Notification context
+    const notifications = useNotificationContext();
+
+    // Organization state
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [filters, setFilters] = useState<FilterOptions>({
+        sortBy: 'created',
+        sortOrder: 'desc'
+    });
+    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [viewMode, setViewMode] = useState<'grid' | 'list' | 'timeline'>('list');
+
+    // WebSocket integration for real-time updates
+    const { state: wsState, notifyMemoryCreated, notifyMemoryUpdated, notifyMemoryDeleted } = useWebSocket({
+        userId: 'current-user', // TODO: Get from authentication context
+        onMessage: (message) => {
+            console.log('📨 WebSocket message received:', message);
+
+            switch (message.type) {
+                case 'memory_created':
+                    if (message.data && message.userId !== 'current-user') {
+                        setMemories(prev => [message.data, ...prev]);
+                        notifications.info(
+                            `New memory "${message.data.title}" was created by another user.`,
+                            'Collaborative Update'
+                        );
+                    }
+                    break;
+
+                case 'memory_updated':
+                    if (message.data && message.userId !== 'current-user') {
+                        setMemories(prev => prev.map(m =>
+                            m.id === message.data.id ? { ...m, ...message.data } : m
+                        ));
+                        notifications.info(
+                            `Memory "${message.data.title}" was updated by another user.`,
+                            'Collaborative Update'
+                        );
+                    }
+                    break;
+
+                case 'memory_deleted':
+                    if (message.data && message.userId !== 'current-user') {
+                        setMemories(prev => prev.filter(m => m.id !== message.data));
+                        notifications.warning(
+                            'A memory was deleted by another user.',
+                            'Collaborative Update'
+                        );
+                    }
+                    break;
+
+                case 'user_activity':
+                    // Handle user activity notifications
+                    console.log('👤 User activity:', message.data);
+                    break;
+            }
+        },
+        onConnect: () => {
+            console.log('🔌 WebSocket connected to MemorAI');
+            notifications.success('Real-time collaboration enabled', 'Connected');
+        },
+        onDisconnect: () => {
+            console.log('🔌 WebSocket disconnected from MemorAI');
+            notifications.warning('Real-time collaboration disabled', 'Disconnected');
+        }
+    });
+
+    // Load memories on component mount
+    useEffect(() => {
+        loadMemories();
+    }, []);
+
+    // Apply filters whenever dependencies change
+    useEffect(() => {
+        applyFilters();
+    }, [memories, selectedCategory, selectedTags, filters]);
+
+    const loadMemories = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            const response = await fetch('/api/memories');
+            const result: ApiResponse<Memory[]> = await response.json();
+
+            if (result.success && result.data) {
+                setMemories(result.data);
+            } else {
+                setError(result.error?.message || 'Failed to load memories');
+            }
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Unknown error');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const applyFilters = () => {
+        let filtered = [...memories];
+
+        // Apply category filter
+        if (selectedCategory) {
+            filtered = filtered.filter(memory => memory.category === selectedCategory);
+        }
+
+        // Apply tags filter
+        if (selectedTags.length > 0) {
+            filtered = filtered.filter(memory =>
+                memory.tags?.some(tag => selectedTags.includes(tag))
+            );
+        }
+
+        // Apply date range filter
+        if (filters.dateRange?.start || filters.dateRange?.end) {
+            filtered = filtered.filter(memory => {
+                const memoryDate = new Date(memory.createdAt);
+                const start = filters.dateRange?.start ? new Date(filters.dateRange.start) : null;
+                const end = filters.dateRange?.end ? new Date(filters.dateRange.end) : null;
+
+                if (start && memoryDate < start) return false;
+                if (end && memoryDate > end) return false;
+                return true;
+            });
+        }
+
+        // Apply author filter
+        if (filters.author) {
+            filtered = filtered.filter(memory =>
+                memory.userId?.toLowerCase().includes(filters.author!.toLowerCase())
+            );
+        }
+
+        // Apply sorting
+        const sortBy = filters.sortBy || 'created';
+        const sortOrder = filters.sortOrder || 'desc';
+
+        filtered.sort((a, b) => {
+            let aValue: any, bValue: any;
+
+            switch (sortBy) {
+                case 'created':
+                    aValue = new Date(a.createdAt);
+                    bValue = new Date(b.createdAt);
+                    break;
+                case 'updated':
+                    aValue = new Date(a.updatedAt);
+                    bValue = new Date(b.updatedAt);
+                    break;
+                case 'alphabetical':
+                    aValue = a.title?.toLowerCase() || a.content.toLowerCase();
+                    bValue = b.title?.toLowerCase() || b.content.toLowerCase();
+                    break;
+                case 'relevance':
+                default:
+                    // For relevance, we could use search scores if available
+                    aValue = a.relevanceScore || 0;
+                    bValue = b.relevanceScore || 0;
+                    break;
+            }
+
+            if (sortOrder === 'asc') {
+                return aValue > bValue ? 1 : -1;
+            } else {
+                return aValue < bValue ? 1 : -1;
+            }
+        });
+
+        setFilteredMemories(filtered);
+    };
+
+    const handleFiltersChange = (newFilters: FilterOptions) => {
+        setFilters(newFilters);
+    };
+
+    const handleFiltersReset = () => {
+        setSelectedCategory(null);
+        setSelectedTags([]);
+        setFilters({
+            sortBy: 'created',
+            sortOrder: 'desc'
+        });
+    };
+
+    const handleCreateMemory = async (memoryData: { content: string; title?: string; category?: string; tags?: string[] }) => {
+        try {
+            const response = await fetch('/api/memories', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(memoryData),
+            });
+
+            const result: ApiResponse<Memory> = await response.json();
+
+            if (result.success && result.data) {
+                setMemories(prev => [result.data!, ...prev]);
+                setIsCreating(false);
+                setSelectedMemory(null);
+
+                // Notify other users via WebSocket
+                notifyMemoryCreated(result.data);
+
+                // Show success notification
+                notifications.success(
+                    `Memory "${result.data.title || 'Untitled'}" has been created successfully.`,
+                    'Memory Created'
+                );
+            } else {
+                const errorMsg = result.error?.message || 'Failed to create memory';
+                setError(errorMsg);
+                notifications.error(errorMsg, 'Creation Failed');
+            }
+        } catch (err) {
+            const errorMsg = err instanceof Error ? err.message : 'Unknown error';
+            setError(errorMsg);
+            notifications.error(errorMsg, 'Creation Error');
+        }
+    };
+
+    const handleUpdateMemory = async (id: string, updates: Partial<Memory>) => {
+        try {
+            const response = await fetch(`/api/memories/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updates),
+            });
+
+            const result: ApiResponse<Memory> = await response.json();
+
+            if (result.success && result.data) {
+                setMemories(prev => prev.map(m => m.id === id ? result.data! : m));
+                setSelectedMemory(result.data);
+                setIsEditing(false); // Exit edit mode after successful update
+
+                // Notify other users via WebSocket
+                notifyMemoryUpdated(result.data);
+
+                // Show success notification
+                notifications.info(
+                    `Memory "${result.data.title || 'Untitled'}" has been updated.`,
+                    'Memory Updated'
+                );
+            } else {
+                const errorMsg = result.error?.message || 'Failed to update memory';
+                setError(errorMsg);
+                notifications.error(errorMsg, 'Update Failed');
+            }
+        } catch (err) {
+            const errorMsg = err instanceof Error ? err.message : 'Unknown error';
+            setError(errorMsg);
+            notifications.error(errorMsg, 'Update Error');
+        }
+    };
+
+    const handleDeleteMemory = async (id: string) => {
+        try {
+            const memoryToDelete = memories.find(m => m.id === id);
+
+            const response = await fetch(`/api/memories/${id}`, {
+                method: 'DELETE',
+            });
+
+            const result: ApiResponse = await response.json();
+
+            if (result.success) {
+                setMemories(prev => prev.filter(m => m.id !== id));
+                setSelectedMemory(null);
+
+                // Notify other users via WebSocket
+                notifyMemoryDeleted(id);
+
+                // Show success notification
+                notifications.warning(
+                    `Memory "${memoryToDelete?.title || 'Untitled'}" has been deleted.`,
+                    'Memory Deleted'
+                );
+            } else {
+                const errorMsg = result.error?.message || 'Failed to delete memory';
+                setError(errorMsg);
+                notifications.error(errorMsg, 'Delete Failed');
+            }
+        } catch (err) {
+            const errorMsg = err instanceof Error ? err.message : 'Unknown error';
+            setError(errorMsg);
+            notifications.error(errorMsg, 'Delete Error');
+        }
+    };
+
+    const handleSearch = async (query: string) => {
+        if (!query.trim()) {
+            setSearchResults(null);
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/search', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query }),
+            });
+
+            const result = await response.json();
+
+            if (result.success && result.data) {
+                // Extract memories from search results
+                setSearchResults(result.data.map((item: any) => item.memory || item));
+            } else {
+                setError(result.error?.message || 'Search failed');
+            }
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Search error');
+        }
+    };
+
+    const displayMemories = searchResults || filteredMemories;
+
+    return (
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+            {/* Header */}
+            <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex items-center justify-between h-14 sm:h-16">
+                        <div className="flex items-center min-w-0 flex-1">
+                            <div className="flex-shrink-0">
+                                <h1 className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">
+                                    🧠 MemorAI
+                                </h1>
+                            </div>
+                            <div className="ml-2 sm:ml-4 min-w-0">
+                                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 truncate">
+                                    Your Personal Memory Assistant
+                                </p>
+                            </div>
+                        </div>
+                        <div className="flex items-center space-x-2 sm:space-x-4">
+                            {/* View Mode Toggle */}
+                            <div className="flex items-center bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+                                <button
+                                    onClick={() => setViewMode('list')}
+                                    className={`p-1.5 sm:p-2 rounded-md transition-colors touch-target ${viewMode === 'list'
+                                        ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
+                                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                                        }`}
+                                    aria-label="List view"
+                                >
+                                    <List className="h-3 w-3 sm:h-4 sm:w-4" />
+                                </button>
+                                <button
+                                    onClick={() => setViewMode('grid')}
+                                    className={`p-1.5 sm:p-2 rounded-md transition-colors touch-target ${viewMode === 'grid'
+                                        ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
+                                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                                        }`}
+                                    aria-label="Grid view"
+                                >
+                                    <Grid className="h-3 w-3 sm:h-4 sm:w-4" />
+                                </button>
+                                <button
+                                    onClick={() => setViewMode('timeline')}
+                                    className={`p-1.5 sm:p-2 rounded-md transition-colors touch-target ${viewMode === 'timeline'
+                                        ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
+                                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                                        }`}
+                                    aria-label="Timeline view"
+                                >
+                                    <Clock className="h-3 w-3 sm:h-4 sm:w-4" />
+                                </button>
+                            </div>
+
+                            {/* Sidebar Toggle */}
+                            <button
+                                onClick={() => setSidebarOpen(!sidebarOpen)}
+                                className="p-1.5 sm:p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors touch-target"
+                                aria-label="Toggle sidebar"
+                            >
+                                <Sidebar className="h-4 w-4 sm:h-5 sm:w-5" />
+                            </button>
+
+                            {/* WebSocket Status Indicator */}
+                            <div className="flex items-center space-x-1 text-xs text-gray-500 dark:text-gray-400">
+                                {wsState.isConnected ? (
+                                    <>
+                                        <Wifi className="h-3 w-3 text-green-500" />
+                                        <span className="hidden sm:inline">Live</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <WifiOff className="h-3 w-3 text-gray-400" />
+                                        <span className="hidden sm:inline">Offline</span>
+                                    </>
+                                )}
+                            </div>
+
+                            <button
+                                onClick={() => setIsCreating(true)}
+                                className="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white px-2 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors touch-target"
+                            >
+                                <span className="hidden sm:inline">+ New Memory</span>
+                                <span className="sm:hidden">+</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            {/* Error display */}
+            {error && (
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <div className="flex">
+                            <div className="flex-shrink-0">
+                                <svg className="h-5 w-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                </svg>
+                            </div>
+                            <div className="ml-3">
+                                <p className="text-sm text-red-800">{error}</p>
+                            </div>
+                            <div className="ml-auto pl-3">
+                                <button
+                                    onClick={() => setError(null)}
+                                    className="text-red-400 hover:text-red-600"
+                                >
+                                    <span className="sr-only">Dismiss</span>
+                                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div className={`flex gap-6 ${sidebarOpen ? 'lg:grid-cols-4' : 'lg:grid-cols-1'}`}>
+                    {/* Sidebar - Organization Components */}
+                    {sidebarOpen && (
+                        <div className="w-80 space-y-6">
+                            {/* Search Interface */}
+                            <SearchInterface onSearch={handleSearch} />
+
+                            {/* Filters */}
+                            <MemoryFilters
+                                filters={filters}
+                                onFiltersChange={handleFiltersChange}
+                                onReset={handleFiltersReset}
+                                totalResults={displayMemories.length}
+                            />
+
+                            {/* Categories */}
+                            <MemoryCategories
+                                selectedCategory={selectedCategory}
+                                onCategorySelect={setSelectedCategory}
+                            />
+
+                            {/* Tags */}
+                            <MemoryTags
+                                selectedTags={selectedTags}
+                                onTagsSelect={setSelectedTags}
+                            />
+                        </div>
+                    )}
+
+                    {/* Main Content */}
+                    <div className="flex-1 space-y-6">
+                        {/* Memory List or Grid */}
+                        <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
+                            <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                                <div className="flex items-center justify-between">
+                                    <h2 className="text-lg font-medium text-gray-900 dark:text-white">
+                                        {searchResults
+                                            ? `Search Results (${searchResults.length})`
+                                            : `Memories (${displayMemories.length})`
+                                        }
+                                    </h2>
+                                    {!sidebarOpen && (
+                                        <button
+                                            onClick={() => setSidebarOpen(true)}
+                                            className="flex items-center gap-2 px-3 py-1.5 text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                                        >
+                                            <Layout className="h-4 w-4" />
+                                            Show Filters
+                                        </button>
+                                    )}
+                                    <button
+                                        onClick={() => setShowCreateModal(true)}
+                                        className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+                                    >
+                                        <Plus className="h-4 w-4" />
+                                        New Memory
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Memory List Content */}
+                            <div className="p-6">
+                                <MemoryList
+                                    memories={displayMemories}
+                                    viewMode={viewMode}
+                                    onMemorySelect={setSelectedMemory}
+                                    onMemoryEdit={setEditingMemory}
+                                    onMemoryDelete={handleMemoryDelete}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+        {/* Error display */}
+        {error && (
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                    <div className="flex">
+                        <div className="flex-shrink-0">
+                            <svg className="h-5 w-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                            </svg>
+                        </div>
+                        <div className="ml-3">
+                            <p className="text-sm text-red-800">{error}</p>
+                        </div>
+                        <div className="ml-auto pl-3">
+                            <button
+                                onClick={() => setError(null)}
+                                className="text-red-400 hover:text-red-600"
+                            >
+                                <span className="sr-only">Dismiss</span>
+                                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )}
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+        <div className={`flex flex-col lg:flex-row gap-4 lg:gap-6`}>
+            {/* Sidebar - Organization Components */}
+            {sidebarOpen && (
+                <div className="w-full lg:w-80 space-y-4 lg:space-y-6 order-2 lg:order-1">
+                    {/* Search Interface */}
+                    <div className="lg:hidden">
+                        <SearchInterface onSearch={handleSearch} />
+                    </div>
+
+                    {/* Mobile accordion for filters */}
+                    <div className="lg:hidden bg-white dark:bg-gray-800 rounded-lg shadow">
+                        <div className="p-4 space-y-4">
+                            <MemoryFilters
+                                filters={filters}
+                                onFiltersChange={handleFiltersChange}
+                                onReset={handleFiltersReset}
+                                totalResults={displayMemories.length}
+                            />
+                            <MemoryCategories
+                                selectedCategory={selectedCategory}
+                                onCategorySelect={setSelectedCategory}
+                            />
+                            <MemoryTags
+                                selectedTags={selectedTags}
+                                onTagsSelect={setSelectedTags}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Desktop sidebar */}
+                    <div className="hidden lg:block space-y-6">
+                        <SearchInterface onSearch={handleSearch} />
+                        <ConnectionStatus
+                            userId="current-user"
+                            className="lg:sticky lg:top-4"
+                        />
+                        <MemoryFilters
+                            filters={filters}
+                            onFiltersChange={handleFiltersChange}
+                            onReset={handleFiltersReset}
+                            totalResults={displayMemories.length}
+                        />
+                        <MemoryCategories
+                            selectedCategory={selectedCategory}
+                            onCategorySelect={setSelectedCategory}
+                        />
+                        <MemoryTags
+                            selectedTags={selectedTags}
+                            onTagsSelect={setSelectedTags}
+                        />
+                    </div>
+                </div>
+            )}
+
+            {/* Main Content */}
+            <div className="flex-1 space-y-4 lg:space-y-6 order-1 lg:order-2">
+                {viewMode === 'timeline' ? (
+                    <MemoryTimeline
+                        memories={displayMemories}
+                        onMemorySelect={setSelectedMemory}
+                        onMemoryEdit={(memory) => {
+                            setSelectedMemory(memory);
+                            setIsEditing(true);
+                        }}
+                    />
+                ) : (
+                    /* Memory List or Grid */
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
+                        <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700">
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                                <h2 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white">
+                                    {searchResults
+                                        ? `Search Results (${searchResults.length})`
+                                        : `Memories (${displayMemories.length})`
+                                    }
+                                </h2>
+                                {!sidebarOpen && (
+                                    <button
+                                        onClick={() => setSidebarOpen(true)}
+                                        className="flex items-center gap-2 px-3 py-1.5 text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 touch-target self-start sm:self-auto"
+                                    >
+                                        <Layout className="h-4 w-4" />
+                                        Show Filters
+                                    </button>
+                                )}
+                            </div>
+                            {searchResults && (
+                                <button
+                                    onClick={() => setSearchResults(null)}
+                                    className="mt-2 text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 touch-target"
+                                >
+                                    ← Back to all memories
+                                </button>
+                            )}
+                        </div>
+
+                        {/* Memory List Content */}
+                        {loading ? (
+                            <div className="p-4 sm:p-6 text-center">
+                                <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-blue-600 mx-auto"></div>
+                                <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Loading memories...</p>
+                            </div>
+                        ) : (
+                            <div className="p-3 sm:p-6">
+                                <MemoryList
+                                    memories={displayMemories}
+                                    selectedMemory={selectedMemory}
+                                    onSelectMemory={setSelectedMemory}
+                                    onDeleteMemory={handleDeleteMemory}
+                                    viewMode={viewMode}
+                                />
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>
+        </div>
+
+        {/* Memory Viewer Modal */}
+        {selectedMemory && !isEditing && !isCreating && (
+            <MemoryViewer
+                memory={selectedMemory}
+                onClose={() => setSelectedMemory(null)}
+                onEdit={() => setIsEditing(true)}
+                onDelete={() => handleDeleteMemory(selectedMemory.id)}
+            />
+        )}
+
+        {/* Memory Editor Modal */}
+        {isEditing && selectedMemory && (
+            <MemoryEditor
+                memory={selectedMemory}
+                onSave={(updates) => handleUpdateMemory(selectedMemory.id, updates)}
+                onCancel={() => {
+                    setIsEditing(false);
+                    setSelectedMemory(null);
+                }}
+            />
+        )}
+
+        {/* Memory Creator Modal */}
+        {isCreating && (
+            <MemoryEditor
+                onSave={handleCreateMemory}
+                onCancel={() => setIsCreating(false)}
+            />
+        )}
+        </div>
+    );
+}

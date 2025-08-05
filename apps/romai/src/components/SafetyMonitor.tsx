@@ -65,7 +65,7 @@ export function SafetyMonitor({ metrics, className = '' }: SafetyMonitorProps) {
         status: value >= 95 ? 'excellent' : value >= 85 ? 'good' : 'warning'
     }));
 
-    const statusColors = {
+    const statusColors: Record<string, string> = {
         excellent: 'text-green-600 bg-green-100 dark:bg-green-900/20 dark:text-green-400',
         good: 'text-blue-600 bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400',
         warning: 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900/20 dark:text-yellow-400',
@@ -86,8 +86,8 @@ export function SafetyMonitor({ metrics, className = '' }: SafetyMonitorProps) {
                     </h3>
                     <div className="flex items-center space-x-3">
                         <div className={`px-3 py-1 rounded-full text-sm font-medium ${overallSafetyScore >= 95 ? statusColors.excellent :
-                                overallSafetyScore >= 85 ? statusColors.good :
-                                    statusColors.warning
+                            overallSafetyScore >= 85 ? statusColors.good :
+                                statusColors.warning
                             }`}>
                             {overallSafetyScore >= 95 ? 'SECURE' : overallSafetyScore >= 85 ? 'MONITORED' : 'CAUTION'}
                         </div>
@@ -121,8 +121,8 @@ export function SafetyMonitor({ metrics, className = '' }: SafetyMonitorProps) {
                             <div className="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2">
                                 <motion.div
                                     className={`h-2 rounded-full transition-all duration-1000 ${category.status === 'excellent' ? 'bg-green-600' :
-                                            category.status === 'good' ? 'bg-blue-600' :
-                                                'bg-yellow-600'
+                                        category.status === 'good' ? 'bg-blue-600' :
+                                            'bg-yellow-600'
                                         }`}
                                     initial={{ width: 0 }}
                                     animate={{ width: `${category.value}%` }}
@@ -167,8 +167,8 @@ export function SafetyMonitor({ metrics, className = '' }: SafetyMonitorProps) {
                             <div className="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2">
                                 <motion.div
                                     className={`h-2 rounded-full ${bias.status === 'excellent' ? 'bg-green-600' :
-                                            bias.status === 'good' ? 'bg-blue-600' :
-                                                'bg-yellow-600'
+                                        bias.status === 'good' ? 'bg-blue-600' :
+                                            'bg-yellow-600'
                                         }`}
                                     initial={{ width: 0 }}
                                     animate={{ width: `${bias.value}%` }}
@@ -190,8 +190,8 @@ export function SafetyMonitor({ metrics, className = '' }: SafetyMonitorProps) {
                         <div
                             key={key}
                             className={`p-4 rounded-lg border-2 transition-colors ${enabled
-                                    ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
-                                    : 'border-red-500 bg-red-50 dark:bg-red-900/20'
+                                ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
+                                : 'border-red-500 bg-red-50 dark:bg-red-900/20'
                                 }`}
                         >
                             <div className="flex items-center justify-between mb-2">
@@ -224,9 +224,9 @@ export function SafetyMonitor({ metrics, className = '' }: SafetyMonitorProps) {
                         <motion.div
                             key={index}
                             className={`p-3 rounded-lg border-l-4 ${alert.level === 'success' ? 'border-green-500 bg-green-50 dark:bg-green-900/20' :
-                                    alert.level === 'warning' ? 'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20' :
-                                        alert.level === 'error' ? 'border-red-500 bg-red-50 dark:bg-red-900/20' :
-                                            'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                                alert.level === 'warning' ? 'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20' :
+                                    alert.level === 'error' ? 'border-red-500 bg-red-50 dark:bg-red-900/20' :
+                                        'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
                                 }`}
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}

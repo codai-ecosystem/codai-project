@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for Nextra theme */
+:root {
+    --memorai-primary: #0ea5e9;
+    --memorai-secondary: #a855f7;
+}
+
+/* Dark mode custom properties */
+[data-theme='dark'] {
+    --memorai-primary: #38bdf8;
+    --memorai-secondary: #c084fc;
+}
+
+/* Code blocks styling */
+pre {
+    @apply !bg-gray-900 !text-gray-100;
+}
+
+pre code {
+    @apply !bg-transparent;
+}
+
+/* Inline code styling */
+code {
+    @apply bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-1.5 py-0.5 rounded text-sm font-mono;
+}
+
+pre code {
+    @apply bg-transparent p-0 text-inherit;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-gray-100 dark:bg-gray-800;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 dark:bg-gray-600 rounded;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400 dark:bg-gray-500;
+}
+
+/* Table styling */
+table {
+    @apply w-full border-collapse;
+}
+
+th,
+td {
+    @apply border border-gray-200 dark:border-gray-700 px-4 py-2 text-left;
+}
+
+th {
+    @apply bg-gray-50 dark:bg-gray-800 font-semibold;
+}
+
+/* Alert boxes */
+.callout {
+    @apply p-4 rounded-lg border-l-4 my-4;
+}
+
+.callout-info {
+    @apply bg-blue-50 border-blue-400 text-blue-900 dark:bg-blue-950 dark:text-blue-100;
+}
+
+.callout-warning {
+    @apply bg-yellow-50 border-yellow-400 text-yellow-900 dark:bg-yellow-950 dark:text-yellow-100;
+}
+
+.callout-error {
+    @apply bg-red-50 border-red-400 text-red-900 dark:bg-red-950 dark:text-red-100;
+}
+
+.callout-success {
+    @apply bg-green-50 border-green-400 text-green-900 dark:bg-green-950 dark:text-green-100;
+}
+
+/* Custom components */
+.feature-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8;
+}
+
+.feature-card {
+    @apply p-6 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-300 dark:hover:border-blue-600 transition-colors;
+}
+
+.hero-gradient {
+    background: linear-gradient(135deg, var(--memorai-primary) 0%, var(--memorai-secondary) 100%);
+}
+
+/* Animation utilities */
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Nextra theme customizations */
+.nextra-nav-container {
+    @apply border-b border-gray-200 dark:border-gray-800;
+}
+
+.nextra-sidebar {
+    @apply border-r border-gray-200 dark:border-gray-800;
+}
+
+/* Search styling */
+.nextra-search input {
+    @apply bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600;
+}
+
+/* Copy code button */
+.nextra-code-block {
+    position: relative;
+}
+
+.nextra-copy-code {
+    @apply absolute top-2 right-2 p-2 rounded bg-gray-800 text-white hover:bg-gray-700 transition-colors;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .feature-grid {
+        @apply grid-cols-1;
+    }
+
+    pre {
+        @apply text-sm;
+    }
+
+    .feature-card {
+        @apply p-4;
+    }
+}

@@ -69,15 +69,5 @@
     "tailwind"
   ],
   "author": "CODAI Ecosystem",
-  "license": "MIT",
-  "pnpm": {
-    "overrides": {
-      "tough-cookie@<4.1.3": ">=4.1.3",
-      "undici@>=4.5.0 <5.28.5": ">=5.28.5",
-      "path-to-regexp@>=4.0.0 <6.3.0": ">=6.3.0",
-      "esbuild@<=0.24.2": ">=0.25.0",
-      "fast-jwt@<5.0.6": ">=5.0.6",
-      "undici@<5.29.0": ">=5.29.0"
-    }
-  }
+  "license": "MIT"
 }

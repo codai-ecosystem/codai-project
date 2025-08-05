@@ -1,0 +1,37 @@
+{
+    "initial_examples": [
+        {
+            "input": "Bună ziua, domnule profesor!",
+            "output": "Bună, domnule profesor!",
+            "cultural_tags": [
+                "formal",
+                "education"
+            ]
+        },
+        {
+            "input": "Vă mulțumesc foarte mult pentru ajutor.",
+            "output": "Mulțumesc mult pentru ajutor.",
+            "cultural_tags": [
+                "gratitude",
+                "informal"
+            ]
+        },
+        {
+            "input": "Unde se află biblioteca universitară?",
+            "output": "Unde-i biblioteca de la universitate?",
+            "cultural_tags": [
+                "question",
+                "informal",
+                "education"
+            ]
+        }
+    ],
+    "target_input": "Cum vă simțiți astăzi?",
+    "task_type": "dialect_conversion",
+    "cultural_context": {
+        "region": "Transilvania",
+        "dialect": "transylvanian",
+        "formality": "informal",
+        "domain": "daily_conversation"
+    }
+}

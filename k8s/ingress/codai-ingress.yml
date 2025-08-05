@@ -1,0 +1,149 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: codai-ecosystem-ingress
+  namespace: codai-ecosystem
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+spec:
+  tls:
+  - hosts:
+    - codai.app
+    - api.codai.app
+    - gateway.codai.app
+    - id.codai.app
+    - bancai.codai.app
+    - memorai.codai.app
+    - admin.codai.app
+    - hub.codai.app
+    - controlai.codai.app
+    - romai.codai.app
+    secretName: codai-ecosystem-tls
+  rules:
+  # Main CODAI App
+  - host: codai.app
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: codai-app-service
+            port:
+              number: 4001
+  
+  # Gateway API
+  - host: api.codai.app
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: gateway-service
+            port:
+              number: 4003
+  
+  # Gateway Dashboard
+  - host: gateway.codai.app
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: gateway-service
+            port:
+              number: 4003
+  
+  # ID Service
+  - host: id.codai.app
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: id-service-service
+            port:
+              number: 4004
+  
+  # BancAI App
+  - host: bancai.codai.app
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: bancai-app-service
+            port:
+              number: 4005
+  
+  # MemorAI App
+  - host: memorai.codai.app
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: memorai-app-service
+            port:
+              number: 4006
+  
+  # Admin Dashboard
+  - host: admin.codai.app
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: admin-dashboard-service
+            port:
+              number: 4007
+  
+  # Hub App
+  - host: hub.codai.app
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: hub-app-service
+            port:
+              number: 4008
+  
+  # ControlAI Dashboard
+  - host: controlai.codai.app
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: controlai-dashboard-service
+            port:
+              number: 4200
+  
+  # RomAI App
+  - host: romai.codai.app
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: romai-app-service
+            port:
+              number: 6100

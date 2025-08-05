@@ -1,0 +1,278 @@
+/* Responsive Design Utilities for MemorAI */
+
+/* Mobile-first responsive breakpoints */
+@layer utilities {
+
+    /* Touch-friendly interactions */
+    .touch-target {
+        @apply min-h-[44px] min-w-[44px] p-2;
+    }
+
+    .touch-action {
+        touch-action: manipulation;
+    }
+
+    /* Mobile-optimized scrolling */
+    .scroll-smooth-mobile {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+
+    /* Responsive text scaling */
+    .text-responsive-xs {
+        @apply text-xs sm:text-sm;
+    }
+
+    .text-responsive-sm {
+        @apply text-sm sm:text-base;
+    }
+
+    .text-responsive-base {
+        @apply text-base sm:text-lg;
+    }
+
+    .text-responsive-lg {
+        @apply text-lg sm:text-xl md:text-2xl;
+    }
+}
+
+/* Mobile navigation adjustments */
+@media (max-width: 768px) {
+    .mobile-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;
+        z-index: 50;
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .mobile-sidebar-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 80vw;
+        max-width: 320px;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .mobile-sidebar-content.open {
+        transform: translateX(0);
+    }
+}
+
+/* Grid responsive adjustments */
+@layer components {
+    .memory-grid {
+        @apply grid gap-4;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+
+    @media (max-width: 640px) {
+        .memory-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .memory-grid {
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        }
+    }
+}
+
+/* Form elements responsive behavior */
+@layer components {
+    .form-responsive {
+        @apply w-full px-3 py-2 text-sm;
+        @apply sm:px-4 sm:py-3 sm:text-base;
+    }
+
+    .button-responsive {
+        @apply px-4 py-2 text-sm font-medium;
+        @apply sm:px-6 sm:py-3 sm:text-base;
+    }
+
+    .card-responsive {
+        @apply p-4 rounded-lg;
+        @apply sm:p-6 sm:rounded-xl;
+    }
+}
+
+/* Timeline responsive adjustments */
+@media (max-width: 640px) {
+    .timeline-item {
+        @apply pl-6 text-sm;
+    }
+
+    .timeline-content {
+        @apply p-3;
+    }
+
+    .timeline-stats {
+        @apply grid-cols-2 gap-2 text-xs;
+    }
+}
+
+/* Memory card responsive behavior */
+@layer components {
+    .memory-card {
+        @apply bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700;
+        @apply p-4 hover:shadow-md transition-shadow duration-200;
+        @apply sm:p-6;
+    }
+
+    .memory-card-mobile {
+        @apply memory-card;
+        @apply active:scale-95 active:shadow-sm;
+        transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    }
+}
+
+/* Search interface responsive */
+@media (max-width: 640px) {
+    .search-container {
+        @apply px-4 py-3;
+    }
+
+    .search-input {
+        @apply text-base;
+        /* Prevents zoom on iOS */
+    }
+
+    .search-filters {
+        @apply flex-col space-y-2;
+    }
+}
+
+/* Modal responsive behavior */
+@layer components {
+    .modal-responsive {
+        @apply fixed inset-0 z-50 overflow-y-auto;
+    }
+
+    .modal-content-responsive {
+        @apply min-h-screen flex items-center justify-center p-4;
+        @apply sm:min-h-0 sm:p-6;
+    }
+
+    .modal-panel-responsive {
+        @apply w-full max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-xl;
+        @apply sm:max-w-lg md:max-w-2xl lg:max-w-4xl;
+    }
+}
+
+/* Navigation responsive adjustments */
+@layer components {
+    .nav-responsive {
+        @apply flex flex-col space-y-2;
+        @apply sm:flex-row sm:space-y-0 sm:space-x-4;
+    }
+
+    .nav-item-responsive {
+        @apply w-full text-center py-3 px-4;
+        @apply sm:w-auto sm:py-2 sm:px-3;
+    }
+}
+
+/* Table responsive behavior */
+@media (max-width: 768px) {
+    .table-responsive {
+        @apply block overflow-x-auto whitespace-nowrap;
+    }
+
+    .table-mobile-stack {
+        @apply block;
+    }
+
+    .table-mobile-stack thead {
+        @apply hidden;
+    }
+
+    .table-mobile-stack tr {
+        @apply block border border-gray-200 dark:border-gray-700 mb-4 rounded-lg;
+    }
+
+    .table-mobile-stack td {
+        @apply block text-right border-none pl-4 pr-4 py-2;
+    }
+
+    .table-mobile-stack td:before {
+        content: attr(data-label) ': ';
+        @apply float-left font-medium text-gray-600 dark:text-gray-300;
+    }
+}
+
+/* Animation classes for mobile interactions */
+@layer utilities {
+    .animate-mobile-slide-in {
+        animation: mobileSlideIn 0.3s ease-out forwards;
+    }
+
+    .animate-mobile-slide-out {
+        animation: mobileSlideOut 0.3s ease-out forwards;
+    }
+
+    @keyframes mobileSlideIn {
+        from {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes mobileSlideOut {
+        from {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        to {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+    }
+}
+
+/* Focus states for accessibility */
+@layer utilities {
+    .focus-ring-responsive {
+        @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+        @apply dark:focus:ring-blue-400 dark:focus:ring-offset-gray-800;
+    }
+
+    .focus-visible-only {
+        outline: none;
+    }
+
+    .focus-visible-only:focus-visible {
+        @apply ring-2 ring-blue-500 ring-offset-2;
+    }
+}
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    .print-break-before {
+        break-before: page;
+    }
+
+    .print-break-after {
+        break-after: page;
+    }
+
+    .memory-card {
+        @apply shadow-none border border-gray-300;
+        break-inside: avoid;
+    }
+}

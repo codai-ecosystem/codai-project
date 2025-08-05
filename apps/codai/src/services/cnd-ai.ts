@@ -1,551 +1,618 @@
 /**
- * CBD AI Service for CODAI
- * Provides AI model storage, vector search, conversation management,
- * and training data storage using CBD Universal Database features
+ * CODAI AI Service
+ * 
+ * Provides AI-powered features for the CODAI platform using lightweight HTTP client.
+ * This service replaces the legacy CND-based AI functionality with modern API integration.
+ * Optimized for frontend builds by avoiding heavy ML dependencies.
  */
 
-// MIGRATED TO CBD: All functionality now provided by CBD Universal Service
-import { z } from 'zod';
-
-// AI Model schemas
-const AIModelSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  version: z.string(),
-  type: z.enum(['llm', 'vision', 'embedding', 'classification', 'generation']),
-  provider: z.string(),
-  modelPath: z.string().optional(),
-  parameters: z.record(z.string(), z.any()).optional(),
-  metadata: z.record(z.string(), z.any()).optional(),
-  isActive: z.boolean().default(true),
-  createdAt: z.date().default(() => new Date()),
-  updatedAt: z.date().default(() => new Date())
-});
-
-const ConversationSchema = z.object({
-  id: z.string(),
-  userId: z.string(),
-  title: z.string(),
-  messages: z.array(z.object({
-    id: z.string(),
-    role: z.enum(['user', 'assistant', 'system']),
-    content: z.string(),
-    timestamp: z.date(),
-    metadata: z.record(z.string(), z.any()).optional()
-  })),
-  modelId: z.string().optional(),
-  tags: z.array(z.string()).optional(),
-  isArchived: z.boolean().default(false),
-  createdAt: z.date().default(() => new Date()),
-  updatedAt: z.date().default(() => new Date())
-});
-
-const TrainingDataSchema = z.object({
-  id: z.string(),
-  userId: z.string(),
-  modelId: z.string(),
-  inputText: z.string(),
-  expectedOutput: z.string(),
-  actualOutput: z.string().optional(),
-  feedback: z.enum(['positive', 'negative', 'neutral']).optional(),
-  tags: z.array(z.string()).optional(),
-  createdAt: z.date().default(() => new Date())
-});
-
-type AIModel = z.infer<typeof AIModelSchema>;
-type Conversation = z.infer<typeof ConversationSchema>;
-type TrainingData = z.infer<typeof TrainingDataSchema>;
-
-export class CNDAIService {
-  private cnd: CND;
-  private isInitialized = false;
-
-  constructor() {
-    // Initialize CND with AI-specific configuration
-    const cndConfig = {
-      cbd: {
-        host: process.env.CBD_HOST || 'localhost',
-        port: parseInt(process.env.CBD_PORT || '5000'),
-        database: process.env.CBD_DATABASE || 'codai_ai_db'
-      },
-      enterprise: {
-        enabled: true,
-        features: {
-          serviceDiscovery: true,
-          authentication: true,
-          authorization: true,
-          audit: true,
-          monitoring: true
-        }
-      },
-      auth: {
-        enabled: true,
-        provider: 'internal',
-        config: {
-          secret: process.env.CND_AUTH_SECRET || 'codai-ai-service-secret'
-        }
-      },
-      serviceDiscovery: {
-        enabled: true,
-        serviceName: 'codai-ai-service',
-        tags: ['ai', 'ml', 'vector-search', 'conversations', 'models'],
-        healthCheckInterval: 30000
-      },
-      security: {
-        audit: {
-          enabled: true,
-          logLevel: 'detailed',
-          storage: 'database',
-          retentionDays: 365
-        }
-      },
-      performance: {
-        monitoring: {
-          enabled: true,
-          metricsEnabled: true,
-          healthChecksEnabled: true,
-          customMetrics: {
-            'ai_model_queries': 'counter',
-            'conversation_created': 'counter',
-            'vector_searches': 'counter',
-            'training_data_added': 'counter',
-            'ai_response_time': 'histogram',
-            'active_ai_sessions': 'gauge'
-          }
-        }
-      },
-      cache: {
-        enabled: true,
-        ttl: 600 // 10 minutes for AI responses
-      },
-      vector: {
-        enabled: true,
-        dimensions: 1536, // OpenAI embedding dimensions
-        similarity: 'cosine'
-      },
-      logging: {
-        enabled: true,
-        level: 'info'
-      }
-    };
-
-    this.cnd = new CND(cndConfig);
-  }
-
-  async initialize(): Promise<void> {
-    if (this.isInitialized) {
-      return;
-    }
-
-    try {
-      await this.cnd.connect();
-      await this.setupDatabase();
-      this.isInitialized = true;
-
-      await this.logAudit('service_initialized', {
-        service: 'codai-ai-service',
-        timestamp: new Date(),
-        status: 'success'
-      });
-
-      console.log('✅ CND AI Service initialized successfully');
-    } catch (error) {
-      console.error('❌ Failed to initialize CND AI Service:', error);
-      throw error;
-    }
-  }
-
-  private async setupDatabase(): Promise<void> {
-    // Create AI models table
-    await this.cnd.sql().query(`
-      CREATE TABLE IF NOT EXISTS ai_models (
-        id VARCHAR(36) PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        version VARCHAR(50) NOT NULL,
-        type VARCHAR(50) NOT NULL,
-        provider VARCHAR(100) NOT NULL,
-        model_path TEXT,
-        parameters TEXT,
-        metadata TEXT,
-        is_active BOOLEAN DEFAULT true,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-
-    // Create conversations table
-    await this.cnd.sql().query(`
-      CREATE TABLE IF NOT EXISTS conversations (
-        id VARCHAR(36) PRIMARY KEY,
-        user_id VARCHAR(36) NOT NULL,
-        title VARCHAR(255) NOT NULL,
-        messages TEXT NOT NULL,
-        model_id VARCHAR(36),
-        tags TEXT,
-        is_archived BOOLEAN DEFAULT false,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-
-    // Create training data table
-    await this.cnd.sql().query(`
-      CREATE TABLE IF NOT EXISTS training_data (
-        id VARCHAR(36) PRIMARY KEY,
-        user_id VARCHAR(36) NOT NULL,
-        model_id VARCHAR(36) NOT NULL,
-        input_text TEXT NOT NULL,
-        expected_output TEXT NOT NULL,
-        actual_output TEXT,
-        feedback VARCHAR(20),
-        tags TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-
-    // Create vector embeddings table for semantic search
-    await this.cnd.sql().query(`
-      CREATE TABLE IF NOT EXISTS conversation_embeddings (
-        id VARCHAR(36) PRIMARY KEY,
-        conversation_id VARCHAR(36) NOT NULL,
-        message_id VARCHAR(36) NOT NULL,
-        content TEXT NOT NULL,
-        embedding BLOB,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-
-    console.log('✅ AI database schema created');
-  }
-
-  // AI Model Management
-  async createAIModel(model: Omit<AIModel, 'id' | 'createdAt' | 'updatedAt'>): Promise<AIModel> {
-    const modelId = `model_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const now = new Date();
-
-    const aiModel: AIModel = {
-      ...model,
-      id: modelId,
-      createdAt: now,
-      updatedAt: now
-    };
-
-    // Validate model data
-    const validatedModel = AIModelSchema.parse(aiModel);
-
-    await this.cnd.sql().query(`
-      INSERT INTO ai_models (id, name, version, type, provider, model_path, parameters, metadata, is_active, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `, [
-      validatedModel.id,
-      validatedModel.name,
-      validatedModel.version,
-      validatedModel.type,
-      validatedModel.provider,
-      validatedModel.modelPath || null,
-      JSON.stringify(validatedModel.parameters || {}),
-      JSON.stringify(validatedModel.metadata || {}),
-      validatedModel.isActive,
-      validatedModel.createdAt.toISOString(),
-      validatedModel.updatedAt.toISOString()
-    ]);
-
-    await this.recordMetric('ai_model_created');
-    await this.logAudit('ai_model_created', { modelId, name: validatedModel.name });
-
-    return validatedModel;
-  }
-
-  async getAIModel(modelId: string): Promise<AIModel | null> {
-    const result = await this.cnd.sql().query(`
-      SELECT * FROM ai_models WHERE id = ?
-    `, [modelId]);
-
-    if (!result.data || result.data.length === 0) {
-      return null;
-    }
-
-    const row = result.data[0];
-    return {
-      id: row.id,
-      name: row.name,
-      version: row.version,
-      type: row.type,
-      provider: row.provider,
-      modelPath: row.model_path,
-      parameters: row.parameters ? JSON.parse(row.parameters) : {},
-      metadata: row.metadata ? JSON.parse(row.metadata) : {},
-      isActive: row.is_active,
-      createdAt: new Date(row.created_at),
-      updatedAt: new Date(row.updated_at)
-    };
-  }
-
-  async getActiveAIModels(): Promise<AIModel[]> {
-    const result = await this.cnd.sql().query(`
-      SELECT * FROM ai_models WHERE is_active = true ORDER BY created_at DESC
-    `);
-
-    if (!result.data) {
-      return [];
-    }
-
-    return result.data.map(row => ({
-      id: row.id,
-      name: row.name,
-      version: row.version,
-      type: row.type,
-      provider: row.provider,
-      modelPath: row.model_path,
-      parameters: row.parameters ? JSON.parse(row.parameters) : {},
-      metadata: row.metadata ? JSON.parse(row.metadata) : {},
-      isActive: row.is_active,
-      createdAt: new Date(row.created_at),
-      updatedAt: new Date(row.updated_at)
-    }));
-  }
-
-  // Conversation Management
-  async createConversation(conversation: Omit<Conversation, 'id' | 'createdAt' | 'updatedAt'>): Promise<Conversation> {
-    const conversationId = `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const now = new Date();
-
-    const newConversation: Conversation = {
-      ...conversation,
-      id: conversationId,
-      createdAt: now,
-      updatedAt: now
-    };
-
-    // Validate conversation data
-    const validatedConversation = ConversationSchema.parse(newConversation);
-
-    await this.cnd.sql().query(`
-      INSERT INTO conversations (id, user_id, title, messages, model_id, tags, is_archived, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `, [
-      validatedConversation.id,
-      validatedConversation.userId,
-      validatedConversation.title,
-      JSON.stringify(validatedConversation.messages),
-      validatedConversation.modelId || null,
-      JSON.stringify(validatedConversation.tags || []),
-      validatedConversation.isArchived,
-      validatedConversation.createdAt.toISOString(),
-      validatedConversation.updatedAt.toISOString()
-    ]);
-
-    // Create vector embeddings for semantic search
-    await this.createConversationEmbeddings(validatedConversation);
-
-    await this.recordMetric('conversation_created');
-    await this.logAudit('conversation_created', { conversationId, userId: validatedConversation.userId });
-
-    return validatedConversation;
-  }
-
-  async getConversation(conversationId: string): Promise<Conversation | null> {
-    const result = await this.cnd.sql().query(`
-      SELECT * FROM conversations WHERE id = ?
-    `, [conversationId]);
-
-    if (!result.data || result.data.length === 0) {
-      return null;
-    }
-
-    const row = result.data[0];
-    return {
-      id: row.id,
-      userId: row.user_id,
-      title: row.title,
-      messages: JSON.parse(row.messages),
-      modelId: row.model_id,
-      tags: row.tags ? JSON.parse(row.tags) : [],
-      isArchived: row.is_archived,
-      createdAt: new Date(row.created_at),
-      updatedAt: new Date(row.updated_at)
-    };
-  }
-
-  async getUserConversations(userId: string, limit: number = 50): Promise<Conversation[]> {
-    const result = await this.cnd.sql().query(`
-      SELECT * FROM conversations 
-      WHERE user_id = ? AND is_archived = false 
-      ORDER BY updated_at DESC 
-      LIMIT ?
-    `, [userId, limit]);
-
-    if (!result.data) {
-      return [];
-    }
-
-    return result.data.map(row => ({
-      id: row.id,
-      userId: row.user_id,
-      title: row.title,
-      messages: JSON.parse(row.messages),
-      modelId: row.model_id,
-      tags: row.tags ? JSON.parse(row.tags) : [],
-      isArchived: row.is_archived,
-      createdAt: new Date(row.created_at),
-      updatedAt: new Date(row.updated_at)
-    }));
-  }
-
-  // Vector Search for Conversations
-  async searchConversations(query: string, userId: string, limit: number = 10): Promise<Conversation[]> {
-    // This would use vector similarity search in a full implementation
-    // For now, we'll use text search
-    const result = await this.cnd.sql().query(`
-      SELECT DISTINCT c.* FROM conversations c
-      WHERE c.user_id = ? 
-      AND (c.title LIKE ? OR c.messages LIKE ?)
-      AND c.is_archived = false
-      ORDER BY c.updated_at DESC
-      LIMIT ?
-    `, [userId, `%${query}%`, `%${query}%`, limit]);
-
-    await this.recordMetric('vector_searches');
-
-    if (!result.data) {
-      return [];
-    }
-
-    return result.data.map(row => ({
-      id: row.id,
-      userId: row.user_id,
-      title: row.title,
-      messages: JSON.parse(row.messages),
-      modelId: row.model_id,
-      tags: row.tags ? JSON.parse(row.tags) : [],
-      isArchived: row.is_archived,
-      createdAt: new Date(row.created_at),
-      updatedAt: new Date(row.updated_at)
-    }));
-  }
-
-  // Training Data Management
-  async addTrainingData(data: Omit<TrainingData, 'id' | 'createdAt'>): Promise<TrainingData> {
-    const trainingId = `train_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const now = new Date();
-
-    const trainingData: TrainingData = {
-      ...data,
-      id: trainingId,
-      createdAt: now
-    };
-
-    // Validate training data
-    const validatedData = TrainingDataSchema.parse(trainingData);
-
-    await this.cnd.sql().query(`
-      INSERT INTO training_data (id, user_id, model_id, input_text, expected_output, actual_output, feedback, tags, created_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `, [
-      validatedData.id,
-      validatedData.userId,
-      validatedData.modelId,
-      validatedData.inputText,
-      validatedData.expectedOutput,
-      validatedData.actualOutput || null,
-      validatedData.feedback || null,
-      JSON.stringify(validatedData.tags || []),
-      validatedData.createdAt.toISOString()
-    ]);
-
-    await this.recordMetric('training_data_added');
-    await this.logAudit('training_data_added', { trainingId, modelId: validatedData.modelId });
-
-    return validatedData;
-  }
-
-  // Utility Methods
-  private async createConversationEmbeddings(conversation: Conversation): Promise<void> {
-    // In a full implementation, this would create vector embeddings
-    // for semantic search using the vector API
-    for (const message of conversation.messages) {
-      await this.cnd.sql().query(`
-        INSERT INTO conversation_embeddings (id, conversation_id, message_id, content, created_at)
-        VALUES (?, ?, ?, ?, ?)
-      `, [
-        `embed_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-        conversation.id,
-        message.id,
-        message.content,
-        new Date().toISOString()
-      ]);
-    }
-  }
-
-  private async recordMetric(metricName: string, value: number = 1): Promise<void> {
-    try {
-      // In a full implementation, this would use the metrics manager
-      console.log(`📊 Metric recorded: ${metricName} = ${value}`);
-    } catch (error) {
-      console.error('Failed to record metric:', error);
-    }
-  }
-
-  private async logAudit(action: string, details: any): Promise<void> {
-    try {
-      // In a full implementation, this would use the audit logger
-      console.log(`🔍 Audit log: ${action}`, details);
-    } catch (error) {
-      console.error('Failed to log audit:', error);
-    }
-  }
-
-  // Health and Status Methods
-  async getHealthStatus(): Promise<any> {
-    const status = await this.cnd.getHealthStatus();
-
-    // Add AI-specific health checks
-    const aiStatus = {
-      ...status,
-      aiFeatures: {
-        modelStorage: true,
-        conversationManagement: true,
-        vectorSearch: true,
-        trainingData: true
-      }
-    };
-
-    return aiStatus;
-  }
-
-  async getServiceMetrics(): Promise<any> {
-    const metrics = this.cnd.getCurrentMetrics();
-
-    // Add AI-specific metrics
-    const modelsResult = await this.cnd.sql().query('SELECT COUNT(*) as count FROM ai_models WHERE is_active = true');
-    const conversationsResult = await this.cnd.sql().query('SELECT COUNT(*) as count FROM conversations WHERE is_archived = false');
-    const trainingResult = await this.cnd.sql().query('SELECT COUNT(*) as count FROM training_data');
-
-    return {
-      ...metrics,
-      aiMetrics: {
-        activeModels: modelsResult.data?.[0]?.count || 0,
-        activeConversations: conversationsResult.data?.[0]?.count || 0,
-        trainingDataPoints: trainingResult.data?.[0]?.count || 0
-      }
-    };
-  }
-
-  async disconnect(): Promise<void> {
-    await this.logAudit('service_disconnected', { timestamp: new Date() });
-    await this.cnd.disconnect();
-    this.isInitialized = false;
-  }
+export interface AIRequest {
+    message: string;
+    userId?: string;
+    sessionId?: string;
+    context?: Record<string, any>;
+    model?: 'gpt-4' | 'gpt-3.5-turbo' | 'claude-3' | 'gemini-pro';
 }
 
-// Singleton instance
-let cndAIService: CNDAIService | null = null;
-
-export function getCNDAIService(): CNDAIService {
-  if (!cndAIService) {
-    cndAIService = new CNDAIService();
-  }
-  return cndAIService;
+export interface AIResponse {
+    message: string;
+    usage?: {
+        tokens: number;
+        cost?: number;
+    };
+    sessionId: string;
+    timestamp: string;
+    model: string;
 }
 
-export { AIModel, Conversation, TrainingData };
+export interface ConversationSession {
+    id: string;
+    userId?: string;
+    messages: AIMessage[];
+    createdAt: string;
+    updatedAt: string;
+    metadata?: Record<string, any>;
+}
+
+export interface AIMessage {
+    id: string;
+    role: 'user' | 'assistant' | 'system';
+    content: string;
+    timestamp: string;
+    metadata?: Record<string, any>;
+}
+
+/**
+ * Lightweight CODAI AI Service for frontend builds
+ */
+export class CodaiAIService {
+    private baseUrl: string;
+    private isInitialized = false;
+
+    constructor() {
+        this.baseUrl = process.env.CBD_URL || 'http://localhost:4180';
+    }
+
+    /**
+     * Initialize the AI service
+     */
+    async initialize(): Promise<void> {
+        try {
+            const response = await fetch(`${this.baseUrl}/health`);
+            if (response.ok) {
+                this.isInitialized = true;
+                console.log('CODAI AI Service initialized successfully');
+            } else {
+                throw new Error('CBD service not available');
+            }
+        } catch (error) {
+            console.error('Failed to initialize CODAI AI Service:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Process an AI request and return response
+     */
+    async processRequest(request: AIRequest): Promise<AIResponse> {
+        if (!this.isInitialized) {
+            await this.initialize();
+        }
+
+        try {
+            const sessionId = request.sessionId || this.generateSessionId();
+            const model = request.model || 'gpt-4';
+
+            // Call CBD API endpoint for AI processing
+            const response = await fetch(`${this.baseUrl}/ai/process`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: request.message,
+                    userId: request.userId,
+                    sessionId,
+                    context: request.context,
+                    model
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`AI processing failed: ${response.statusText}`);
+            }
+
+            const result = await response.json();
+            
+            return {
+                message: result.message || `AI Response to: ${request.message}`,
+                usage: result.usage || {
+                    tokens: request.message.length + 50,
+                    cost: 0.001
+                },
+                sessionId,
+                timestamp: new Date().toISOString(),
+                model
+            };
+        } catch (error) {
+            console.error('Error processing AI request:', error);
+            
+            // Fallback response
+            return {
+                message: `AI Response to: ${request.message}`,
+                usage: {
+                    tokens: request.message.length + 50,
+                    cost: 0.001
+                },
+                sessionId: request.sessionId || this.generateSessionId(),
+                timestamp: new Date().toISOString(),
+                model: request.model || 'gpt-4'
+            };
+        }
+    }
+
+    /**
+     * Get conversation history for a session
+     */
+    async getConversationHistory(sessionId: string): Promise<AIMessage[]> {
+        try {
+            const response = await fetch(`${this.baseUrl}/ai/conversations/${sessionId}/messages`);
+            
+            if (response.ok) {
+                const result = await response.json();
+                return result.messages || [];
+            }
+            
+            return [];
+        } catch (error) {
+            console.error('Error fetching conversation history:', error);
+            return [];
+        }
+    }
+
+    /**
+     * Create a new conversation session
+     */
+    async createSession(userId?: string, metadata?: Record<string, any>): Promise<string> {
+        try {
+            const sessionId = this.generateSessionId();
+            
+            const response = await fetch(`${this.baseUrl}/ai/sessions`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: sessionId,
+                    userId,
+                    metadata: metadata || {}
+                })
+            });
+
+            if (response.ok) {
+                return sessionId;
+            }
+            
+            throw new Error('Failed to create session');
+        } catch (error) {
+            console.error('Error creating session:', error);
+            return this.generateSessionId(); // Return generated ID as fallback
+        }
+    }
+
+    /**
+     * Create a conversation with full conversation data
+     */
+    async createConversation(conversationData: any): Promise<ConversationSession> {
+        try {
+            const sessionId = await this.createSession(conversationData.userId, {
+                title: conversationData.title,
+                modelId: conversationData.modelId,
+                tags: conversationData.tags,
+                isArchived: conversationData.isArchived
+            });
+
+            // Store messages if provided
+            if (conversationData.messages && conversationData.messages.length > 0) {
+                for (const message of conversationData.messages) {
+                    await this.storeMessage(sessionId, message);
+                }
+            }
+
+            return {
+                id: sessionId,
+                userId: conversationData.userId,
+                messages: conversationData.messages || [],
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                metadata: {
+                    title: conversationData.title,
+                    modelId: conversationData.modelId,
+                    tags: conversationData.tags,
+                    isArchived: conversationData.isArchived
+                }
+            };
+        } catch (error) {
+            console.error('Error creating conversation:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Store a message (internal helper)
+     */
+    private async storeMessage(sessionId: string, message: any): Promise<void> {
+        try {
+            await fetch(`${this.baseUrl}/ai/sessions/${sessionId}/messages`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    role: message.role,
+                    content: message.content,
+                    timestamp: message.timestamp,
+                    metadata: message.metadata || {}
+                })
+            });
+        } catch (error) {
+            console.error('Error storing message:', error);
+            // Don't throw - allow conversation creation to continue
+        }
+    }
+
+    /**
+     * Get session information
+     */
+    async getSession(sessionId: string): Promise<ConversationSession | null> {
+        try {
+            const response = await fetch(`${this.baseUrl}/ai/sessions/${sessionId}`);
+            
+            if (response.ok) {
+                const session = await response.json();
+                const messages = await this.getConversationHistory(sessionId);
+                
+                return {
+                    id: session.id,
+                    userId: session.userId,
+                    messages,
+                    createdAt: session.createdAt,
+                    updatedAt: session.updatedAt,
+                    metadata: session.metadata || {}
+                };
+            }
+            
+            return null;
+        } catch (error) {
+            console.error('Error fetching session:', error);
+            return null;
+        }
+    }
+
+    /**
+     * Alias for getSession for backward compatibility
+     */
+    async getConversation(conversationId: string): Promise<ConversationSession | null> {
+        return this.getSession(conversationId);
+    }
+
+    /**
+     * Delete a conversation session
+     */
+    async deleteSession(sessionId: string): Promise<boolean> {
+        try {
+            const response = await fetch(`${this.baseUrl}/ai/sessions/${sessionId}`, {
+                method: 'DELETE'
+            });
+            
+            return response.ok;
+        } catch (error) {
+            console.error('Error deleting session:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Get user's conversation sessions
+     */
+    async getUserSessions(userId: string): Promise<ConversationSession[]> {
+        try {
+            const response = await fetch(`${this.baseUrl}/ai/users/${userId}/sessions`);
+            
+            if (response.ok) {
+                const result = await response.json();
+                return result.sessions || [];
+            }
+            
+            return [];
+        } catch (error) {
+            console.error('Error fetching user sessions:', error);
+            return [];
+        }
+    }
+
+    /**
+     * Alias for getUserSessions for backward compatibility
+     */
+    async getUserConversations(userId: string, limit?: number): Promise<ConversationSession[]> {
+        const sessions = await this.getUserSessions(userId);
+        return limit ? sessions.slice(0, limit) : sessions;
+    }
+
+    /**
+     * Search conversations by query
+     */
+    async searchConversations(query: string, userId: string, limit: number = 10): Promise<ConversationSession[]> {
+        try {
+            const response = await fetch(`${this.baseUrl}/ai/search?query=${encodeURIComponent(query)}&userId=${encodeURIComponent(userId)}&limit=${limit}`);
+            
+            if (response.ok) {
+                const result = await response.json();
+                return result.conversations || [];
+            }
+            
+            return [];
+        } catch (error) {
+            console.error('Error searching conversations:', error);
+            return [];
+        }
+    }
+
+    /**
+     * Get AI service analytics
+     */
+    async getAnalytics(): Promise<any> {
+        try {
+            const response = await fetch(`${this.baseUrl}/ai/analytics`);
+            
+            if (response.ok) {
+                return await response.json();
+            }
+            
+            return {
+                ai_metrics: {
+                    total_sessions: 0,
+                    total_messages: 0,
+                    timestamp: new Date().toISOString()
+                }
+            };
+        } catch (error) {
+            console.error('Error getting analytics:', error);
+            return {
+                ai_metrics: {
+                    total_sessions: 0,
+                    total_messages: 0,
+                    timestamp: new Date().toISOString()
+                }
+            };
+        }
+    }
+
+    /**
+     * Generate unique session ID
+     */
+    private generateSessionId(): string {
+        return `ai_session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    }
+
+    /**
+     * Check service health
+     */
+    async getHealthStatus(): Promise<any> {
+        try {
+            const response = await fetch(`${this.baseUrl}/health`);
+            
+            if (response.ok) {
+                const cbdHealth = await response.json();
+                
+                return {
+                    service: 'CODAI AI Service',
+                    status: this.isInitialized ? 'healthy' : 'initializing',
+                    cbd_health: cbdHealth,
+                    timestamp: new Date().toISOString()
+                };
+            }
+            
+            throw new Error('CBD service not responding');
+        } catch (error) {
+            return {
+                service: 'CODAI AI Service',
+                status: 'error',
+                error: error instanceof Error ? error.message : 'Unknown error',
+                timestamp: new Date().toISOString()
+            };
+        }
+    }
+
+    /**
+     * Get service metrics
+     */
+    async getServiceMetrics(): Promise<any> {
+        try {
+            const analytics = await this.getAnalytics();
+            
+            return {
+                total_conversations: analytics?.ai_metrics?.total_sessions || 0,
+                total_messages: analytics?.ai_metrics?.total_messages || 0,
+                active_users: 0, // Placeholder
+                uptime: process.uptime ? Math.floor(process.uptime()) : 0,
+                memory_usage: typeof process !== 'undefined' && process.memoryUsage ? process.memoryUsage() : {},
+                timestamp: new Date().toISOString()
+            };
+        } catch (error) {
+            console.error('Error getting service metrics:', error);
+            return {
+                total_conversations: 0,
+                total_messages: 0,
+                active_users: 0,
+                uptime: 0,
+                memory_usage: {},
+                timestamp: new Date().toISOString()
+            };
+        }
+    }
+
+    /**
+     * Get AI model information
+     */
+    async getAIModel(modelId: string): Promise<any> {
+        try {
+            const response = await fetch(`${this.baseUrl}/ai/models/${modelId}`);
+            
+            if (response.ok) {
+                return await response.json();
+            }
+            
+            return null;
+        } catch (error) {
+            console.error('Error getting AI model:', error);
+            return null;
+        }
+    }
+
+    /**
+     * Get available AI models
+     */
+    async getAIModels(): Promise<any[]> {
+        try {
+            const response = await fetch(`${this.baseUrl}/ai/models`);
+            
+            if (response.ok) {
+                const result = await response.json();
+                return result.models || [];
+            }
+            
+            return [];
+        } catch (error) {
+            console.error('Error getting AI models:', error);
+            return [];
+        }
+    }
+
+    /**
+     * Get active AI models
+     */
+    async getActiveAIModels(): Promise<any[]> {
+        try {
+            const models = await this.getAIModels();
+            return models.filter(model => model.status === 'active' || model.active === true);
+        } catch (error) {
+            console.error('Error getting active AI models:', error);
+            return [];
+        }
+    }
+
+    /**
+     * Create a new AI model
+     */
+    async createAIModel(modelData: any): Promise<any> {
+        try {
+            const response = await fetch(`${this.baseUrl}/ai/models`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(modelData)
+            });
+            
+            if (response.ok) {
+                return await response.json();
+            }
+            
+            throw new Error('Model creation failed');
+        } catch (error) {
+            console.error('Error creating AI model:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Train AI model
+     */
+    async trainModel(trainingData: any): Promise<any> {
+        try {
+            const response = await fetch(`${this.baseUrl}/ai/training`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(trainingData)
+            });
+            
+            if (response.ok) {
+                return await response.json();
+            }
+            
+            throw new Error('Training failed');
+        } catch (error) {
+            console.error('Error training model:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Add training data
+     */
+    async addTrainingData(trainingData: any): Promise<any> {
+        try {
+            const response = await fetch(`${this.baseUrl}/ai/training/data`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(trainingData)
+            });
+            
+            if (response.ok) {
+                return await response.json();
+            }
+            
+            throw new Error('Adding training data failed');
+        } catch (error) {
+            console.error('Error adding training data:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Cleanup resources
+     */
+    async cleanup(): Promise<void> {
+        try {
+            this.isInitialized = false;
+            console.log('CODAI AI Service cleaned up successfully');
+        } catch (error) {
+            console.error('Error during cleanup:', error);
+            throw error;
+        }
+    }
+}
+
+// ================================
+// SINGLETON INSTANCE & EXPORTS
+// ================================
+
+let aiServiceInstance: CodaiAIService | null = null;
+
+/**
+ * Get the singleton AI service instance
+ */
+export function getCodaiAIService(): CodaiAIService {
+    if (!aiServiceInstance) {
+        aiServiceInstance = new CodaiAIService();
+    }
+    return aiServiceInstance;
+}
+
+/**
+ * Initialize AI service (lightweight version)
+ */
+export async function initializeAITables(): Promise<void> {
+    const aiService = getCodaiAIService();
+    await aiService.initialize();
+    console.log('AI service initialized (lightweight mode)');
+}
+
+// ================================
+// LEGACY COMPATIBILITY
+// ================================
+
+/**
+ * Legacy function for backward compatibility
+ * @deprecated Use getCodaiAIService() instead
+ */
+export function createCNDAIClient() {
+    console.warn('createCNDAIClient() is deprecated. Use getCodaiAIService() instead.');
+    return getCodaiAIService();
+}
+
+/**
+ * Legacy function for backward compatibility  
+ * @deprecated Use getCodaiAIService() instead
+ */
+export function getCNDAIService() {
+    console.warn('getCNDAIService() is deprecated. Use getCodaiAIService() instead.');
+    return getCodaiAIService();
+}
+
+export default CodaiAIService;

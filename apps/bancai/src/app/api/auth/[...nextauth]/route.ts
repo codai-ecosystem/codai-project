@@ -1,4 +1,4 @@
-import { createCodaiSSOConfig, createKeycloakProvider } from '@codai/sso-sdk';
+import { createCodaiSSOConfig, createKeycloakProvider } from '../../../../lib/sso-sdk';
 import NextAuth from 'next-auth';
 
 const ssoConfig = createCodaiSSOConfig({

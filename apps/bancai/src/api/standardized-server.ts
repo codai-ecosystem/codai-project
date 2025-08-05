@@ -13,7 +13,7 @@ import {
     generateServiceOpenApiSpec,
     globalErrorHandler,
     notFoundHandler
-} from '@codai/api-standards';
+} from '../lib/api-standards';
 import { OpenAPIV3 } from 'openapi-types';
 import swaggerUi from 'swagger-ui-express';
 import { z } from 'zod';

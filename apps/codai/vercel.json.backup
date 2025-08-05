@@ -1,0 +1,19 @@
+{
+  "regions": [
+    "fra1"
+  ],
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "version": 2,
+  "git": {
+    "deploymentEnabled": {
+      "preview": true,
+      "dev": true,
+      "main": true
+    }
+  }
+}

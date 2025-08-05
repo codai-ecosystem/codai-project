@@ -1,0 +1,10 @@
+{
+    "overview": "API Overview",
+    "memories": "Memories API",
+    "search": "Search API",
+    "collections": "Collections API",
+    "realtime": "Real-time API",
+    "webhooks": "Webhooks",
+    "authentication": "Authentication",
+    "errors": "Error Handling"
+}

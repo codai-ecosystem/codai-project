@@ -1,0 +1,30 @@
+{
+    "name": "@codai/cli",
+    "version": "1.0.0",
+    "description": "CODAI Ecosystem Command Line Interface",
+    "main": "codai.js",
+    "bin": {
+        "codai": "./codai.js"
+    },
+    "scripts": {
+        "test": "node tests/cli.test.js",
+        "start": "node codai.js",
+        "install-global": "npm link"
+    },
+    "keywords": [
+        "codai",
+        "cli",
+        "microservices",
+        "ecosystem",
+        "management"
+    ],
+    "author": "CODAI Team",
+    "license": "MIT",
+    "engines": {
+        "node": ">=14.0.0"
+    },
+    "files": [
+        "codai.js",
+        "README.md"
+    ]
+}

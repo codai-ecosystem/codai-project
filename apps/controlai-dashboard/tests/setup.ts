@@ -1,8 +1,16 @@
 import { vi, beforeEach } from 'vitest'
+import '@testing-library/jest-dom'
 import React from 'react'
 
 // Test timeout constant
 export const TEST_TIMEOUT = 10000
+
+// Setup DOM environment properly
+import { cleanup } from '@testing-library/react'
+
+beforeEach(() => {
+  cleanup()
+})
 
 // Create comprehensive mock data that matches the real hook structure
 const mockDashboardData = {
@@ -236,8 +244,8 @@ beforeEach(() => {
   // Clear all mocks before each test
   vi.clearAllMocks()
 
-  // Ensure React is available globally
-  global.React = React
+  // Clean up DOM
+  cleanup()
 })
 
 // Mock global objects

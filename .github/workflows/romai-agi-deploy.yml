@@ -1,0 +1,411 @@
+# RomAI AGI CI/CD Pipeline - GitHub Actions
+# Automated build, test, and deployment to AWS ECS
+
+name: "🤖 RomAI AGI Production Deployment"
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/romai/**'
+      - 'terraform/**'
+      - '.github/workflows/romai-agi-deploy.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/romai/**'
+      - 'terraform/**'
+  workflow_dispatch:
+    inputs:
+      force_deploy:
+        description: 'Force deployment regardless of tests'
+        required: false
+        default: 'false'
+        type: boolean
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REPOSITORY: romai-agi
+  ECS_SERVICE: romai-agi-service
+  ECS_CLUSTER: romai-agi-cluster
+  ECS_TASK_DEFINITION: romai-agi-task
+  CONTAINER_NAME: romai-agi-server
+
+jobs:
+  test:
+    name: "🧪 Test ML Models & API"
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Cache Python dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('apps/romai/src/ml/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+          
+    - name: Install dependencies
+      run: |
+        cd apps/romai
+        python -m pip install --upgrade pip
+        pip install -r src/ml/requirements.txt
+        pip install pytest pytest-asyncio httpx
+        
+    - name: Download models (lightweight test versions)
+      run: |
+        cd apps/romai
+        python -c "
+        from transformers import AutoTokenizer, AutoModel
+        # Download small test models
+        AutoTokenizer.from_pretrained('distilbert-base-multilingual-cased')
+        AutoModel.from_pretrained('distilbert-base-multilingual-cased')
+        print('✅ Test models downloaded')
+        "
+        
+    - name: Run ML model tests
+      run: |
+        cd apps/romai
+        python -m pytest src/tests/ -v --tb=short
+        
+    - name: Test API endpoints
+      run: |
+        cd apps/romai
+        # Start server in background
+        python -m uvicorn src.main:app --host 0.0.0.0 --port 8000 &
+        SERVER_PID=$!
+        
+        # Wait for server to start
+        sleep 10
+        
+        # Test health endpoint
+        curl -f http://localhost:8000/health || exit 1
+        
+        # Test AGI endpoint
+        curl -X POST -H "Content-Type: application/json" \
+             -d '{"prompt":"Test prompt","language":"ro"}' \
+             http://localhost:8000/agi/generate || exit 1
+             
+        # Cleanup
+        kill $SERVER_PID
+        
+  build:
+    name: "🐳 Build & Push Docker Image"
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+        
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+      
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        cd apps/romai
+        
+        # Build the Docker image
+        docker build -f Dockerfile.agi -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        
+        # Push images to ECR
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+        
+    - name: Run security scan
+      run: |
+        # Install Trivy scanner
+        sudo apt-get update
+        sudo apt-get install wget apt-transport-https gnupg lsb-release
+        wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+        echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+        sudo apt-get update
+        sudo apt-get install trivy
+        
+        # Scan the image
+        trivy image --exit-code 0 --severity HIGH,CRITICAL ${{ steps.build-image.outputs.image }}
+
+  deploy-infrastructure:
+    name: "🏗️ Deploy Infrastructure"
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+        
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: 1.6.0
+        
+    - name: Terraform Init
+      run: |
+        cd terraform
+        terraform init
+        
+    - name: Terraform Plan
+      run: |
+        cd terraform
+        terraform plan -out=tfplan
+        
+    - name: Terraform Apply
+      run: |
+        cd terraform
+        terraform apply -auto-approve tfplan
+
+  deploy:
+    name: "🚀 Deploy to ECS"
+    runs-on: ubuntu-latest
+    needs: [build, deploy-infrastructure]
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+        
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+      
+    - name: Download task definition
+      run: |
+        aws ecs describe-task-definition \
+          --task-definition $ECS_TASK_DEFINITION \
+          --query taskDefinition > task-definition.json
+          
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: task-definition.json
+        container-name: ${{ env.CONTAINER_NAME }}
+        image: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+        
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: ${{ env.ECS_SERVICE }}
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true
+        
+    - name: Health check deployment
+      run: |
+        # Get ALB DNS name
+        ALB_DNS=$(aws elbv2 describe-load-balancers \
+          --names romai-agi-alb \
+          --query 'LoadBalancers[0].DNSName' \
+          --output text)
+          
+        echo "🔍 Testing deployment at: http://$ALB_DNS"
+        
+        # Wait for deployment to be ready
+        for i in {1..30}; do
+          if curl -f "http://$ALB_DNS/health"; then
+            echo "✅ Deployment successful!"
+            break
+          fi
+          echo "⏳ Waiting for deployment... ($i/30)"
+          sleep 30
+        done
+        
+        # Test AGI endpoint
+        curl -X POST -H "Content-Type: application/json" \
+             -d '{"prompt":"Salut! Cum te numești?","language":"ro"}' \
+             "http://$ALB_DNS/agi/generate"
+
+  monitoring:
+    name: "📊 Setup Monitoring"
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+        
+    - name: Create CloudWatch Dashboard
+      run: |
+        aws cloudwatch put-dashboard \
+          --dashboard-name "RomAI-AGI-Production" \
+          --dashboard-body '{
+            "widgets": [
+              {
+                "type": "metric",
+                "properties": {
+                  "metrics": [
+                    ["AWS/ECS", "CPUUtilization", "ServiceName", "romai-agi-service", "ClusterName", "romai-agi-cluster"],
+                    [".", "MemoryUtilization", ".", ".", ".", "."]
+                  ],
+                  "period": 300,
+                  "stat": "Average",
+                  "region": "us-east-1",
+                  "title": "ECS Resource Utilization"
+                }
+              },
+              {
+                "type": "metric",
+                "properties": {
+                  "metrics": [
+                    ["AWS/ApplicationELB", "RequestCount", "LoadBalancer", "app/romai-agi-alb/*"],
+                    [".", "TargetResponseTime", ".", "."]
+                  ],
+                  "period": 300,
+                  "stat": "Sum",
+                  "region": "us-east-1",
+                  "title": "ALB Metrics"
+                }
+              }
+            ]
+          }'
+          
+    - name: Create CloudWatch Alarms
+      run: |
+        # High CPU alarm
+        aws cloudwatch put-metric-alarm \
+          --alarm-name "RomAI-AGI-High-CPU" \
+          --alarm-description "High CPU utilization for RomAI AGI" \
+          --metric-name CPUUtilization \
+          --namespace AWS/ECS \
+          --statistic Average \
+          --period 300 \
+          --threshold 80 \
+          --comparison-operator GreaterThanThreshold \
+          --evaluation-periods 2 \
+          --dimensions Name=ServiceName,Value=romai-agi-service Name=ClusterName,Value=romai-agi-cluster \
+          --alarm-actions arn:aws:sns:us-east-1:${{ secrets.AWS_ACCOUNT_ID }}:romai-alerts
+          
+        # High response time alarm  
+        aws cloudwatch put-metric-alarm \
+          --alarm-name "RomAI-AGI-High-Response-Time" \
+          --alarm-description "High response time for RomAI AGI" \
+          --metric-name TargetResponseTime \
+          --namespace AWS/ApplicationELB \
+          --statistic Average \
+          --period 300 \
+          --threshold 2 \
+          --comparison-operator GreaterThanThreshold \
+          --evaluation-periods 2 \
+          --dimensions Name=LoadBalancer,Value=app/romai-agi-alb/* \
+          --alarm-actions arn:aws:sns:us-east-1:${{ secrets.AWS_ACCOUNT_ID }}:romai-alerts
+
+  performance-test:
+    name: "⚡ Performance Testing"
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+        
+    - name: Install performance testing tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y apache2-utils
+        
+    - name: Run performance tests
+      run: |
+        # Get ALB DNS name
+        ALB_DNS=$(aws elbv2 describe-load-balancers \
+          --names romai-agi-alb \
+          --query 'LoadBalancers[0].DNSName' \
+          --output text)
+          
+        echo "🚀 Running performance tests against: http://$ALB_DNS"
+        
+        # Basic load test - 100 requests, 10 concurrent
+        ab -n 100 -c 10 "http://$ALB_DNS/health"
+        
+        # AGI endpoint load test - 20 requests, 5 concurrent
+        echo '{"prompt":"Test performance","language":"ro"}' > test_payload.json
+        
+        for i in {1..20}; do
+          curl -X POST -H "Content-Type: application/json" \
+               -d @test_payload.json \
+               "http://$ALB_DNS/agi/generate" &
+               
+          # Limit to 5 concurrent requests
+          if (( i % 5 == 0 )); then
+            wait
+          fi
+        done
+        wait
+        
+        echo "✅ Performance tests completed"
+
+  notify:
+    name: "📢 Deployment Notification"
+    runs-on: ubuntu-latest
+    needs: [deploy, monitoring, performance-test]
+    if: always() && github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Get deployment status
+      id: status
+      run: |
+        if [[ "${{ needs.deploy.result }}" == "success" && "${{ needs.monitoring.result }}" == "success" ]]; then
+          echo "status=success" >> $GITHUB_OUTPUT
+          echo "message=🎉 RomAI AGI successfully deployed to production!" >> $GITHUB_OUTPUT
+        else
+          echo "status=failure" >> $GITHUB_OUTPUT
+          echo "message=❌ RomAI AGI deployment failed. Check logs for details." >> $GITHUB_OUTPUT
+        fi
+        
+    - name: Notify deployment status
+      run: |
+        echo "${{ steps.status.outputs.message }}"
+        # Add Slack/Teams notification here if needed

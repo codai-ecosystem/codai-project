@@ -1,10 +1,119 @@
 /**
  * CODAI App Integration Service
- * Integrates with @codai/memorai and @codai/auth for universal services
+ * Integrates with CODAI ecosystem services
  */
 
-import { memorai } from '@codai/memorai'
-import { enhancedAuth } from '@codai/auth'
+// TODO: Add @codai/memorai and @codai/auth as dependencies when ready
+// import { memorai } from '@codai/memorai'
+// import { enhancedAuth } from '@codai/auth'
+
+// Stub implementations for now
+const memorai = {
+  initialize: async () => ({ success: true }),
+  store: async (data: any) => ({ id: 'stub-id', success: true }),
+  retrieve: async (id: string) => ({ id, data: null, success: true }),
+  search: async (query: string) => ({ results: [], success: true }),
+  database: {
+    create: async (table: string, data: any) => ({ id: 'stub-id', ...data }),
+    findById: async (table: string, id: string) => {
+      // Return properly typed stub data based on table
+      if (table === 'codai_projects') {
+        return {
+          id,
+          name: 'Stub Project',
+          description: 'Stub Description',
+          type: 'web' as const,
+          status: 'DRAFT' as const,
+          framework: 'next.js' as const,
+          progress: 0,
+          aiFeatures: [],
+          codeFiles: [],
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }
+      } else if (table === 'codai_code_files') {
+        return {
+          id,
+          projectId: 'stub-project-id',
+          path: 'stub/file.ts',
+          language: 'typescript',
+          content: '// Stub content',
+          size: 100,
+          aiGenerated: false,
+          lastModified: new Date(),
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }
+      } else if (table === 'codai_ai_assistants') {
+        return {
+          id,
+          name: 'Stub Assistant',
+          role: 'developer' as const,
+          model: 'gpt-4' as const,
+          specialization: ['javascript', 'typescript'],
+          isActive: true,
+          metrics: {
+            codeGenerated: 0,
+            bugsFixed: 0,
+            reviewsCompleted: 0,
+            suggestions: 0
+          }
+        }
+      }
+      return { id, data: null }
+    },
+    update: async (table: string, id: string, data: any) => ({ id, ...data }),
+    delete: async (table: string, id: string) => ({ success: true }),
+    query: async (sql: string, params?: any[]): Promise<any[]> => {
+      // Return appropriate stub data based on SQL
+      if (sql.includes('codai_code_files')) {
+        // Always return empty array for code files queries (never count objects)
+        return []
+      } else if (sql.includes('codai_ai_assistants') && !sql.includes('COUNT')) {
+        return []
+      } else if (sql.includes('COUNT(*)') || sql.includes('SELECT COUNT(*)')) {
+        return [{ count: 0 }]
+      }
+      return []
+    }
+  },
+  memory: {
+    store: async (context: string, data: any, metadata?: any) => ({ success: true }),
+    recall: async (context: string, query: string) => ({ 
+      memories: [
+        // Sample memory structure
+        {
+          id: 'stub-memory-id',
+          content: 'Stub memory content',
+          metadata: {
+            projectId: 'stub-project-id',
+            type: 'project_creation'
+          }
+        }
+      ], 
+      results: [], 
+      success: true 
+    })
+  },
+  storage: {
+    upload: async (content: any, filename: string) => ({ url: `stub-url/${filename}`, success: true }),
+    download: async (filename: string) => ({ content: null, success: true })
+  }
+}
+
+const enhancedAuth = {
+  initialize: async () => ({ success: true }),
+  authenticate: async (credentials: any) => ({ user: null, success: true }),
+  authorize: async (user: any, resource: string) => ({ authorized: false, success: true }),
+  getCurrentUser: async () => ({ 
+    id: 'stub-user-id', 
+    email: 'stub@example.com', 
+    name: 'Stub User',
+    role: 'developer'
+  }),
+  checkAccess: async (userId: string, resource: string, action: string) => true,
+  hasLocalRole: async (role: string) => true
+}
 
 // CODAI App specific types
 interface CodaiProject {
@@ -232,6 +341,10 @@ class CodaiIntegrationService {
         `SELECT * FROM codai_code_files WHERE projectId = ?`,
         [projectId]
       )
+      // Ensure return type safety with explicit check
+      if (Array.isArray(files) && files.length > 0 && 'count' in files[0]) {
+        return [] // Return empty array if it's a count query result
+      }
       return files as CodeFile[]
     } catch (error) {
       console.error('Failed to get project files:', error)
@@ -309,7 +422,7 @@ class CodaiIntegrationService {
   }
 
   async hasProjectAccess(projectId: string, action: 'read' | 'write' | 'delete' = 'read'): Promise<boolean> {
-    const user = this.getCurrentUser()
+    const user = await this.getCurrentUser()
     if (!user) return false
 
     // Check if user has permission to access project

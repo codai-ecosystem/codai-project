@@ -4,9 +4,9 @@
   "description": "AI support and help system",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3400",
+    "dev": "next dev -p 4400",
     "build": "next build",
-    "start": "next start -p 3400",
+    "start": "next start -p 4400",
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",

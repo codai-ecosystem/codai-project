@@ -1,6 +1,6 @@
 {
   "name": "@codai/ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "Shared UI components and design system for the Codai ecosystem",
   "main": "dist/index.js",

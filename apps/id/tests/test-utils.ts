@@ -16,7 +16,7 @@ export function generateTestUser(overrides: Partial<CreateUserData> = {}): Creat
   return {
     username: `testuser-${testCounter}`,
     email: generateUniqueEmail(),
-    password: 'TestPassword123!',
+    password: 'TestPassword123!', // Meets all security requirements: 8+ chars, uppercase, lowercase, numbers, special chars
     profile: { name: 'Test User' },
     ...overrides
   };
@@ -29,19 +29,19 @@ export async function setupTestAuthService(): Promise<SimpleAuthService> {
   return authService;
 }
 
-export async function createTestAdmin(authService: SimpleAuthService): Promise<{ 
-  user: any; 
-  credentials: { email: string; password: string } 
+export async function createTestAdmin(authService: SimpleAuthService): Promise<{
+  user: any;
+  credentials: { email: string; password: string }
 }> {
   const adminData = generateTestUser({
     username: 'admin',
     email: generateUniqueEmail('admin'),
-    password: 'admin123',
+    password: 'AdminPass123!', // Strong password that meets all security requirements
     profile: { name: 'Admin User' }
   });
 
   const user = await authService.createUser(adminData);
-  
+
   return {
     user,
     credentials: {

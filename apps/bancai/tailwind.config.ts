@@ -1,17 +1,42 @@
-import { createCodaiTailwindConfig } from '../../packages/shared-ui/tailwind-master.config';
+import type { Config } from 'tailwindcss'
 
-export default createCodaiTailwindConfig(
-  'bancai',
-  undefined, // Use default brand colors for bancai
-  {
-    content: [
-      './app/**/*.{js,ts,jsx,tsx,mdx}',
-      './src/**/*.{js,ts,jsx,tsx,mdx}',
-      './components/**/*.{js,ts,jsx,tsx,mdx}',
-      './lib/**/*.{js,ts,jsx,tsx,mdx}',
-      './utils/**/*.{js,ts,jsx,tsx,mdx}',
-      '../../packages/shared-ui/src/**/*.{js,ts,jsx,tsx,mdx}',
-      '../../packages/ui/src/**/*.{js,ts,jsx,tsx,mdx}',
-    ],
-  }
-);
+const config: Config = {
+  content: [
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './lib/**/*.{js,ts,jsx,tsx,mdx}',
+    './utils/**/*.{js,ts,jsx,tsx,mdx}',
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: '#eff6ff',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+          900: '#1e3a8a',
+        },
+        secondary: {
+          50: '#faf5ff',
+          500: '#a855f7',
+          600: '#9333ea',
+          700: '#7c3aed',
+          900: '#581c87',
+        },
+        accent: {
+          50: '#f0fdf4',
+          500: '#22c55e',
+          600: '#16a34a',
+          700: '#15803d',
+          900: '#14532d',
+        },
+      },
+    },
+  },
+  plugins: [],
+}
+
+export default config

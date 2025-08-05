@@ -25,11 +25,10 @@ const nextConfig = {
   },
   // Production optimizations
   experimental: {
-    optimizeCss: true,
+    // Temporarily disabled optimizeCss due to critters dependency issue
+    // optimizeCss: true,
     scrollRestoration: true,
   },
-  // Output configuration for deployment
-  output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
 };
 
 export default nextConfig;

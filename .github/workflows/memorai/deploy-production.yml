@@ -1,0 +1,506 @@
+name: 🧠 MemorAI - Deploy Production Infrastructure
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/memorai/**'
+      - 'services/memorai-api/**'
+      - 'services/memorai-mcp/**'
+      - 'infrastructure/memorai/**'
+      - '.github/workflows/memorai/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/memorai/**'
+      - 'services/memorai-api/**'
+      - 'services/memorai-mcp/**'
+      - 'infrastructure/memorai/**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '8'
+  AWS_REGION: 'eu-central-1'
+  MEMORAI_DOMAIN: 'memorai.ro'
+
+jobs:
+  # Security and Quality Checks
+  security-scan:
+    name: 🔒 Security & Quality Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      
+      - name: Get pnpm store directory
+        shell: bash
+        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+        id: pnpm-cache
+      
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline
+      
+      - name: Run ESLint
+        run: pnpm --filter "@memorai/*" lint
+      
+      - name: Run TypeScript type check
+        run: pnpm --filter "@memorai/*" type-check
+      
+      - name: Run security audit
+        run: pnpm audit --audit-level moderate
+      
+      - name: Run dependency vulnerability scan
+        uses: securecodewarrior/github-action-add-sarif@v1
+        with:
+          sarif-file: 'vulnerability-report.sarif'
+        continue-on-error: true
+
+  # Frontend Testing
+  test-frontend:
+    name: 🧪 Frontend Tests
+    runs-on: ubuntu-latest
+    needs: [security-scan]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline
+      
+      - name: Build MemorAI frontend
+        run: pnpm --filter memorai build
+        env:
+          NODE_ENV: production
+          NEXT_PUBLIC_API_URL: https://api.memorai.ro
+          NEXT_PUBLIC_CBD_URL: https://cbd.memorai.ro
+          NEXT_PUBLIC_MCP_URL: https://mcp.memorai.ro
+      
+      - name: Run unit tests
+        run: pnpm --filter memorai test
+      
+      - name: Run component tests
+        run: pnpm --filter memorai test:components
+      
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps
+      
+      - name: Run E2E tests
+        run: pnpm --filter memorai test:e2e
+        env:
+          BASE_URL: http://localhost:3000
+      
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: test-results-frontend
+          path: |
+            apps/memorai/test-results/
+            apps/memorai/coverage/
+          retention-days: 7
+
+  # Backend Testing
+  test-backend:
+    name: 🔧 Backend Tests
+    runs-on: ubuntu-latest
+    needs: [security-scan]
+    
+    services:
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline
+      
+      - name: Build API service
+        run: pnpm --filter "@memorai/api-service" build
+      
+      - name: Run API unit tests
+        run: pnpm --filter "@memorai/api-service" test
+        env:
+          NODE_ENV: test
+          REDIS_URL: redis://localhost:6379
+          CBD_API_URL: https://cbd.memorai.ro
+      
+      - name: Run API integration tests
+        run: pnpm --filter "@memorai/api-service" test:integration
+        env:
+          NODE_ENV: test
+          REDIS_URL: redis://localhost:6379
+      
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: test-results-backend
+          path: |
+            services/memorai-api/coverage/
+            services/memorai-mcp/coverage/
+          retention-days: 7
+
+  # Build and Push Docker Images
+  build-images:
+    name: 🐳 Build Docker Images
+    runs-on: ubuntu-latest
+    needs: [test-frontend, test-backend]
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    
+    outputs:
+      api-image-tag: ${{ steps.api-meta.outputs.tags }}
+      mcp-image-tag: ${{ steps.mcp-meta.outputs.tags }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+      
+      - name: Extract API metadata
+        id: api-meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ steps.login-ecr.outputs.registry }}/memorai-api
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+      
+      - name: Extract MCP metadata
+        id: mcp-meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ steps.login-ecr.outputs.registry }}/memorai-mcp
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+      
+      - name: Build and push API image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./services/memorai-api/Dockerfile
+          push: true
+          tags: ${{ steps.api-meta.outputs.tags }}
+          labels: ${{ steps.api-meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      
+      - name: Build and push MCP image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./services/memorai-mcp/Dockerfile
+          push: true
+          tags: ${{ steps.mcp-meta.outputs.tags }}
+          labels: ${{ steps.mcp-meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # Deploy to Vercel (Frontend)
+  deploy-frontend:
+    name: 🌐 Deploy Frontend to Vercel
+    runs-on: ubuntu-latest
+    needs: [test-frontend]
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    
+    environment:
+      name: ${{ github.event.inputs.environment || 'production' }}
+      url: https://app.memorai.ro
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+      
+      - name: Pull Vercel environment information
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: apps/memorai
+      
+      - name: Build project artifacts
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: apps/memorai
+        env:
+          NEXT_PUBLIC_API_URL: https://api.memorai.ro
+          NEXT_PUBLIC_CBD_URL: https://cbd.memorai.ro
+          NEXT_PUBLIC_MCP_URL: https://mcp.memorai.ro
+          NEXT_PUBLIC_DOMAIN: memorai.ro
+      
+      - name: Deploy project artifacts to Vercel
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: apps/memorai
+        id: vercel-deploy
+      
+      - name: Update deployment status
+        run: |
+          echo "Frontend deployed to: ${{ steps.vercel-deploy.outputs.url }}"
+          echo "VERCEL_URL=${{ steps.vercel-deploy.outputs.url }}" >> $GITHUB_OUTPUT
+
+  # Deploy to AWS (Backend)
+  deploy-backend:
+    name: ☁️ Deploy Backend to AWS
+    runs-on: ubuntu-latest
+    needs: [build-images]
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    
+    environment:
+      name: ${{ github.event.inputs.environment || 'production' }}
+      url: https://api.memorai.ro
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.0
+      
+      - name: Terraform Init
+        run: terraform init
+        working-directory: infrastructure/memorai
+      
+      - name: Terraform Plan
+        run: terraform plan -var="environment=production"
+        working-directory: infrastructure/memorai
+      
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
+        run: terraform apply -auto-approve -var="environment=production"
+        working-directory: infrastructure/memorai
+      
+      - name: Update ECS Services
+        run: |
+          # Update API service
+          aws ecs update-service \
+            --cluster memorai-cluster-production \
+            --service memorai-api-service \
+            --force-new-deployment
+          
+          # Update MCP service
+          aws ecs update-service \
+            --cluster memorai-cluster-production \
+            --service memorai-mcp-service \
+            --force-new-deployment
+      
+      - name: Wait for deployment
+        run: |
+          aws ecs wait services-stable \
+            --cluster memorai-cluster-production \
+            --services memorai-api-service memorai-mcp-service
+
+  # Health Check & Validation
+  validate-deployment:
+    name: ✅ Validate Deployment
+    runs-on: ubuntu-latest
+    needs: [deploy-frontend, deploy-backend]
+    if: always() && (needs.deploy-frontend.result == 'success' || needs.deploy-backend.result == 'success')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Install curl and jq
+        run: sudo apt-get update && sudo apt-get install -y curl jq
+      
+      - name: Health check - Frontend
+        run: |
+          echo "🌐 Checking frontend health..."
+          response=$(curl -s -w "%{http_code}" https://app.memorai.ro/api/health -o /tmp/frontend_health.json)
+          if [ "$response" = "200" ]; then
+            echo "✅ Frontend health check passed"
+            cat /tmp/frontend_health.json | jq '.'
+          else
+            echo "❌ Frontend health check failed with status: $response"
+            exit 1
+          fi
+      
+      - name: Health check - API
+        run: |
+          echo "🔧 Checking API health..."
+          response=$(curl -s -w "%{http_code}" https://api.memorai.ro/health -o /tmp/api_health.json)
+          if [ "$response" = "200" ]; then
+            echo "✅ API health check passed"
+            cat /tmp/api_health.json | jq '.'
+          else
+            echo "❌ API health check failed with status: $response"
+            exit 1
+          fi
+      
+      - name: Health check - MCP Server
+        run: |
+          echo "🧠 Checking MCP server health..."
+          response=$(curl -s -w "%{http_code}" https://mcp.memorai.ro/health -o /tmp/mcp_health.json)
+          if [ "$response" = "200" ]; then
+            echo "✅ MCP server health check passed"
+            cat /tmp/mcp_health.json | jq '.'
+          else
+            echo "❌ MCP server health check failed with status: $response"
+            exit 1
+          fi
+      
+      - name: SSL Certificate check
+        run: |
+          echo "🔒 Checking SSL certificates..."
+          domains=("memorai.ro" "app.memorai.ro" "api.memorai.ro" "mcp.memorai.ro" "docs.memorai.ro")
+          
+          for domain in "${domains[@]}"; do
+            echo "Checking SSL for $domain..."
+            ssl_info=$(echo | openssl s_client -servername $domain -connect $domain:443 2>/dev/null | openssl x509 -noout -dates)
+            if [ $? -eq 0 ]; then
+              echo "✅ SSL certificate valid for $domain"
+              echo "$ssl_info"
+            else
+              echo "❌ SSL certificate check failed for $domain"
+              exit 1
+            fi
+          done
+      
+      - name: Performance test
+        run: |
+          echo "⚡ Running performance tests..."
+          
+          # Test API response time
+          api_time=$(curl -s -w "%{time_total}" -o /dev/null https://api.memorai.ro/health)
+          echo "API response time: ${api_time}s"
+          
+          # Test frontend response time
+          frontend_time=$(curl -s -w "%{time_total}" -o /dev/null https://app.memorai.ro)
+          echo "Frontend response time: ${frontend_time}s"
+          
+          # Validate response times (should be < 2 seconds)
+          if (( $(echo "$api_time < 2.0" | bc -l) )); then
+            echo "✅ API performance acceptable"
+          else
+            echo "⚠️ API performance slow: ${api_time}s"
+          fi
+          
+          if (( $(echo "$frontend_time < 2.0" | bc -l) )); then
+            echo "✅ Frontend performance acceptable"
+          else
+            echo "⚠️ Frontend performance slow: ${frontend_time}s"
+          fi
+
+  # Notification & Reporting
+  notify-deployment:
+    name: 📱 Notify Deployment Status
+    runs-on: ubuntu-latest
+    needs: [validate-deployment]
+    if: always()
+    
+    steps:
+      - name: Create deployment summary
+        run: |
+          echo "# 🧠 MemorAI Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Deployment Date**: $(date)" >> $GITHUB_STEP_SUMMARY
+          echo "**Environment**: ${{ github.event.inputs.environment || 'production' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit SHA**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ needs.validate-deployment.result }}" == "success" ]; then
+            echo "## ✅ Deployment Successful" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "All services are healthy and operational:" >> $GITHUB_STEP_SUMMARY
+            echo "- 🌐 Frontend: https://app.memorai.ro" >> $GITHUB_STEP_SUMMARY
+            echo "- 🔧 API: https://api.memorai.ro" >> $GITHUB_STEP_SUMMARY
+            echo "- 🧠 MCP Server: https://mcp.memorai.ro" >> $GITHUB_STEP_SUMMARY
+            echo "- 📊 CBD Database: https://cbd.memorai.ro" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## ❌ Deployment Failed" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Please check the workflow logs for details." >> $GITHUB_STEP_SUMMARY
+          fi

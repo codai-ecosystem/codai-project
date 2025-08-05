@@ -472,19 +472,6 @@ export function AIInsightsDashboard() {
                     </motion.div>
                 )}
             </AnimatePresence>
-
-            <style jsx global>{`
-        .glassmorphism {
-          background: rgba(255, 255, 255, 0.1);
-          backdrop-filter: blur(20px);
-        }
-        .line-clamp-2 {
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-        }
-      `}</style>
         </div>
     )
 }

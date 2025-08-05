@@ -1,0 +1,87 @@
+# CBD Universal D# Copy package files
+COPY package*.json ./
+COPY tsconfig.json ./
+
+# Install dependencies with production optimizations
+RUN npm ci --only=production --no-audit --no-fund
+
+# Copy source code
+COPY src ./srcrvice - Production Dockerfile
+# Multi-stage build for optimal performance and security
+
+# Stage 1: Build stage
+FROM node:24.1.0-alpine AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Install build dependencies
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    git \
+    && ln -sf python3 /usr/bin/python
+
+# Copy package files
+COPY packages/cbd/package.json packages/cbd/package-lock.json* ./
+COPY packages/cbd/tsconfig.json ./
+
+# Install dependencies with production optimizations
+RUN npm ci --only=production --no-audit --no-fund
+
+# Copy source code
+COPY packages/cbd/src ./src
+COPY packages/cbd/dist ./dist
+
+# Stage 2: Production stage
+FROM node:24.1.0-alpine AS production
+
+# Install security updates and required packages
+RUN apk upgrade --no-cache && \
+    apk add --no-cache \
+    dumb-init \
+    tzdata \
+    && rm -rf /var/cache/apk/*
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S cbduser -u 1001
+
+# Set working directory
+WORKDIR /app
+
+# Copy dependencies from builder stage
+COPY --from=builder --chown=cbduser:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=cbduser:nodejs /app/package.json ./
+
+# Copy application code
+COPY --chown=cbduser:nodejs src ./src
+
+# Create data directory with proper permissions
+RUN mkdir -p /app/cbd-data && \
+    chown -R cbduser:nodejs /app/cbd-data
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV PORT=4180
+ENV CBD_DATA_PATH=/app/cbd-data
+ENV TZ=UTC
+
+# Expose port
+EXPOSE 4180
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD node -e "require('http').get('http://localhost:4180/health', (res) => { \
+        if (res.statusCode === 200) { process.exit(0); } else { process.exit(1); } \
+    }).on('error', () => process.exit(1));"
+
+# Switch to non-root user
+USER cbduser
+
+# Use dumb-init for proper signal handling
+ENTRYPOINT ["dumb-init", "--"]
+
+# Start the application
+CMD ["tsx", "src/start.ts"]

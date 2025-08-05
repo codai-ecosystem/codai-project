@@ -1,0 +1,82 @@
+# MemorAI MCP HTTP Server - Production Dockerfile
+# Optimized for memory operations and vector processing
+
+# Stage 1: Build stage
+FROM node:24.1.0-alpine AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Install build dependencies including native compilation tools
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    git \
+    pkgconfig \
+    && ln -sf python3 /usr/bin/python
+
+# Copy package files
+COPY package.json package-lock.json* ./
+
+# Install dependencies with native modules support
+RUN npm ci --only=production --no-audit --no-fund
+
+# Stage 2: Production stage
+FROM node:24.1.0-alpine AS production
+
+# Install security updates and runtime dependencies
+RUN apk upgrade --no-cache && \
+    apk add --no-cache \
+    dumb-init \
+    tzdata \
+    libc6-compat \
+    && rm -rf /var/cache/apk/*
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S memoraiuser -u 1001
+
+# Set working directory
+WORKDIR /app
+
+# Copy dependencies from builder stage
+COPY --from=builder --chown=memoraiuser:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=memoraiuser:nodejs /app/package.json ./
+
+# Copy application code
+COPY --chown=memoraiuser:nodejs robust-http-server.cjs ./
+
+# Create data directories with proper permissions
+RUN mkdir -p /app/memorai-cbd-data /app/logs && \
+    chown -R memoraiuser:nodejs /app/memorai-cbd-data /app/logs
+
+# Set environment variables for production
+ENV NODE_ENV=production
+ENV PORT=8002
+ENV MEMORAI_API_KEY=memorai-prod-key-2025
+ENV MEMORAI_DEBUG=false
+ENV MEMORAI_LOG_LEVEL=info
+ENV MEMORAI_CBD_PATH=/app/memorai-cbd-data
+ENV TZ=UTC
+
+# Memory optimization for vector operations
+ENV NODE_OPTIONS="--max-old-space-size=8192"
+
+# Expose port
+EXPOSE 8002
+
+# Health check with extended timeout for vector operations
+HEALTHCHECK --interval=45s --timeout=15s --start-period=90s --retries=3 \
+    CMD node -e "require('http').get('http://localhost:8002/health', (res) => { \
+        if (res.statusCode === 200) { process.exit(0); } else { process.exit(1); } \
+    }).on('error', () => process.exit(1));"
+
+# Switch to non-root user
+USER memoraiuser
+
+# Use dumb-init for proper signal handling
+ENTRYPOINT ["dumb-init", "--"]
+
+# Start the MCP HTTP server
+CMD ["node", "robust-http-server.cjs"]

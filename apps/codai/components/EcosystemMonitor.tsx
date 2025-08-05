@@ -388,13 +388,6 @@ export function EcosystemMonitor() {
                     ))}
                 </div>
             </div>
-
-            <style jsx global>{`
-        .glassmorphism {
-          background: rgba(255, 255, 255, 0.1);
-          backdrop-filter: blur(20px);
-        }
-      `}</style>
         </div>
     )
 }

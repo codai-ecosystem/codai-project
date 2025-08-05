@@ -112,8 +112,8 @@ interface DeveloperPreference {
 class CodaiServiceManager {
   private static instance: CodaiServiceManager;
   private hubServices = hubServices;
-  private codaiConfig?: CodaiServiceConfig['codai'];
-  private aiAssistantContext: Map<string, any> = new Map();
+  public codaiConfig?: CodaiServiceConfig['codai'];
+  public aiAssistantContext: Map<string, any> = new Map();
 
   private constructor() { }
 
@@ -151,17 +151,19 @@ class CodaiServiceManager {
 
     if (user) {
       // Load user's coding patterns and preferences
-      const userMemories = await memorai.memory.recall(
+      const memoryResult = await memorai.memory.recall(
         `codai_user_${user.id}`,
         'coding patterns preferences',
         { limit: 50 }
       );
 
+      const userMemories = memoryResult.memories || [];
+
       // Store in assistant context
       this.aiAssistantContext.set(user.id, {
-        codingPatterns: userMemories.filter(m => m.metadata?.type === 'coding_pattern'),
-        preferences: userMemories.filter(m => m.metadata?.type === 'preference'),
-        projectHistory: userMemories.filter(m => m.metadata?.type === 'project_context')
+        codingPatterns: userMemories.filter((m: any) => m.metadata?.type === 'coding_pattern'),
+        preferences: userMemories.filter((m: any) => m.metadata?.type === 'preference'),
+        projectHistory: userMemories.filter((m: any) => m.metadata?.type === 'project_context')
       });
 
       console.log(`✅ AI Assistant context loaded for user ${user.id}`);
@@ -183,6 +185,23 @@ class CodaiServiceManager {
     const memorai = this.hubServices.memorai;
     const auth = this.hubServices.auth;
     const conversai = this.hubServices.conversai;
+    const serviceManager = this; // Capture the instance reference
+
+    // Define project methods
+    const getProject = async (projectId: string): Promise<CodaiProject | null> => {
+      const user = auth.getCurrentUser();
+      if (!user) throw new Error('User not authenticated');
+
+      const project = await memorai.db.findFirst('codai_projects', {
+        id: projectId,
+        $or: [
+          { userId: user.id },
+          { 'collaborators.userId': user.id }
+        ]
+      });
+
+      return project;
+    };
 
     return {
       // Create new coding project
@@ -237,40 +256,27 @@ class CodaiServiceManager {
       },
 
       // Get project details
-      async getProject(projectId: string): Promise<CodaiProject | null> {
-        const user = auth.getCurrentUser();
-        if (!user) throw new Error('User not authenticated');
-
-        const project = await memorai.db.findFirst('codai_projects', {
-          id: projectId,
-          $or: [
-            { userId: user.id },
-            { 'collaborators.userId': user.id }
-          ]
-        });
-
-        return project;
-      },
+      getProject,
 
       // Update project files
       async updateProjectFile(projectId: string, filePath: string, content: string): Promise<ProjectFile> {
         const user = auth.getCurrentUser();
         if (!user) throw new Error('User not authenticated');
 
-        const project = await this.getProject(projectId);
+        const project = await getProject(projectId);
         if (!project) throw new Error('Project not found');
 
         // Analyze code if enabled
         let analysis: CodeAnalysis | undefined;
-        if (this.codaiConfig?.enableCodeAnalysis) {
-          analysis = await this.analyzeCode(content, filePath);
+        if (serviceManager.codaiConfig && serviceManager.codaiConfig.enableCodeAnalysis) {
+          analysis = await serviceManager.analyzeCode(content, filePath);
         }
 
         const fileData: ProjectFile = {
           id: crypto.randomUUID(),
           path: filePath,
           content,
-          language: this.detectLanguage(filePath),
+          language: serviceManager.detectLanguage(filePath),
           size: content.length,
           lastModified: new Date(),
           version: 1, // Would increment in real implementation
@@ -310,7 +316,7 @@ class CodaiServiceManager {
         testingSuggestions: string[];
         performanceOptimizations: string[];
       }> {
-        const project = await this.getProject(projectId);
+        const project = await getProject(projectId);
         if (!project) throw new Error('Project not found');
 
         // AI analysis based on project codebase
@@ -352,6 +358,7 @@ class CodaiServiceManager {
     const memorai = this.hubServices.memorai;
     const fabricai = this.hubServices.fabricai;
     const auth = this.hubServices.auth;
+    const serviceManager = this; // Capture the instance reference
 
     return {
       // Start coding conversation
@@ -360,7 +367,7 @@ class CodaiServiceManager {
         if (!user) throw new Error('User not authenticated');
 
         // Get project context
-        const projectManager = await this.getProjectManagement();
+        const projectManager = await serviceManager.getProjectManagement();
         const project = await projectManager.getProject(projectId);
         if (!project) throw new Error('Project not found');
 
@@ -374,7 +381,7 @@ class CodaiServiceManager {
             codebase: project.codebase.structure
           },
           settings: {
-            model: this.codaiConfig?.aiModelPreferences.codeGeneration || 'gpt-4',
+            model: serviceManager.codaiConfig?.aiModelPreferences?.codeGeneration || 'gpt-4',
             temperature: 0.3,
             systemPrompt: `You are an expert software developer assistant. 
             Project: ${project.name}
@@ -457,7 +464,7 @@ ${requirements.includes('class') ?
         rating: number; // 1-10
         improvements: string[];
       }> {
-        const analysis = await this.analyzeCode(code, language);
+        const analysis = await serviceManager.analyzeCode(code, language);
 
         return {
           issues: analysis.issues,
@@ -474,7 +481,7 @@ ${requirements.includes('class') ?
 
       // Get coding context from memory
       async getCodingContext(userId: string): Promise<any> {
-        const context = this.aiAssistantContext.get(userId);
+        const context = serviceManager.aiAssistantContext.get(userId);
         if (!context) {
           // Load from memory if not cached
           const memories = await memorai.memory.recall(
@@ -599,7 +606,7 @@ ${requirements.includes('class') ?
     return this.codaiConfig;
   }
 
-  hasCodaiFeature(feature: keyof CodaiServiceConfig['codai']): boolean {
+  hasCodaiFeature(feature: keyof CodaiServiceConfig['codai']): any {
     return this.codaiConfig?.[feature] ?? false;
   }
 }

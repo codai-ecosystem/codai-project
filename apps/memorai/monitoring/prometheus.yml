@@ -1,0 +1,157 @@
+# Prometheus Configuration for MemorAI Production Monitoring
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'memorai-production'
+    replica: 'prometheus-01'
+
+# Alertmanager Configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - "memorai-alertmanager:9093"
+
+# Rules and Alerts
+rule_files:
+  - "/etc/prometheus/rules/*.yml"
+
+# Scrape Configurations
+scrape_configs:
+  # Prometheus Self-Monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    scrape_interval: 5s
+    metrics_path: /metrics
+
+  # MemorAI Application Metrics
+  - job_name: 'memorai-app'
+    static_configs:
+      - targets:
+        - 'memorai-app:3000'
+    metrics_path: '/api/metrics'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+    honor_labels: true
+    params:
+      format: ['prometheus']
+
+  # PostgreSQL Database Metrics
+  - job_name: 'postgresql'
+    static_configs:
+      - targets: ['memorai-db-exporter:9187']
+    scrape_interval: 10s
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'memorai-production-db'
+
+  # Redis Cache Metrics
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['memorai-redis-exporter:9121']
+    scrape_interval: 10s
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'memorai-production-redis'
+
+  # Elasticsearch Metrics
+  - job_name: 'elasticsearch'
+    static_configs:
+      - targets: ['memorai-elasticsearch-exporter:9114']
+    scrape_interval: 30s
+    metrics_path: '/metrics'
+
+  # NGINX Load Balancer Metrics
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['memorai-nginx-exporter:9113']
+    scrape_interval: 10s
+
+  # Node Exporter for System Metrics
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets:
+        - 'memorai-node-exporter:9100'
+    scrape_interval: 10s
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'memorai-production-host'
+
+  # Docker Container Metrics
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['memorai-cadvisor:8080']
+    scrape_interval: 10s
+    metrics_path: '/metrics'
+
+  # Blackbox Exporter for Endpoint Monitoring
+  - job_name: 'blackbox-http'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        - https://memorai.com
+        - https://api.memorai.com/health
+        - https://memorai.com/api/health
+        - https://memorai.com/login
+        - https://memorai.com/dashboard
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: memorai-blackbox-exporter:9115
+
+  # SSL Certificate Monitoring
+  - job_name: 'blackbox-ssl'
+    metrics_path: /probe
+    params:
+      module: [tcp_connect]
+    static_configs:
+      - targets:
+        - memorai.com:443
+        - api.memorai.com:443
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: memorai-blackbox-exporter:9115
+
+  # Custom Business Metrics from Application
+  - job_name: 'memorai-business-metrics'
+    static_configs:
+      - targets: ['memorai-app:3000']
+    metrics_path: '/api/metrics/business'
+    scrape_interval: 60s
+    honor_labels: true
+
+  # Background Job Metrics
+  - job_name: 'memorai-jobs'
+    static_configs:
+      - targets: ['memorai-job-processor:3001']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+
+# Remote Write Configuration (Optional - for long-term storage)
+# remote_write:
+#   - url: "https://prometheus-remote-write.memorai.com/api/v1/write"
+#     basic_auth:
+#       username: "memorai"
+#       password: "SECURE_REMOTE_WRITE_PASSWORD"
+
+# Storage Configuration
+storage:
+  tsdb:
+    retention.time: 30d
+    retention.size: 50GB
+    path: /prometheus
+    wal-compression: true

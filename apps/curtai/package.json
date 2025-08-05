@@ -4,9 +4,9 @@
   "description": "AI court management system",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev -p 3900",
+    "dev": "next dev -p 4900",
     "build": "next build",
-    "start": "next start -p 3900",
+    "start": "next start -p 4900",
     "lint": "next lint",
     "type-check": "pnpm exec tsc --noEmit",
     "vercel-build": "next build",

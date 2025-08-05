@@ -1,0 +1,480 @@
+/* Week 2 Phase 2 Advanced Animations - ID Service Integration CSS */
+/* Authentication-focused animations for enhanced user experience */
+
+/* Core Animation Utilities */
+.animate-container {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+}
+
+/* Authentication Flow Animations */
+@keyframes authSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes authFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes authScaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Form Input Animations */
+@keyframes inputFocus {
+    from {
+        border-color: #d1d5db;
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+    }
+
+    to {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+}
+
+@keyframes inputError {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+@keyframes inputSuccess {
+    from {
+        border-color: #d1d5db;
+    }
+
+    to {
+        border-color: #10b981;
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    }
+}
+
+/* Progress Indicators */
+@keyframes progressStep {
+    from {
+        transform: scale(1);
+        background-color: #e5e7eb;
+    }
+
+    to {
+        transform: scale(1.1);
+        background-color: #3b82f6;
+    }
+}
+
+@keyframes progressLine {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+/* Button Animations */
+@keyframes buttonLoading {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes buttonPress {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(0.98);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes buttonSuccess {
+    0% {
+        background-color: #3b82f6;
+    }
+
+    50% {
+        background-color: #10b981;
+        transform: scale(1.02);
+    }
+
+    100% {
+        background-color: #3b82f6;
+        transform: scale(1);
+    }
+}
+
+/* Status Indicators */
+@keyframes statusPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes statusGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
+    }
+}
+
+/* Security Animations */
+@keyframes securityScan {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes lockAnimation {
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(-5deg);
+    }
+
+    75% {
+        transform: rotate(5deg);
+    }
+}
+
+/* Hero Section Animations */
+@keyframes heroFloat {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes heroGlow {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.3));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.6));
+    }
+}
+
+/* Card Hover Effects */
+@keyframes cardHover {
+    from {
+        transform: translateY(0) scale(1);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    to {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* Animation Classes */
+.animate-auth-slide-in {
+    animation: authSlideIn 0.6s ease-out forwards;
+}
+
+.animate-auth-fade-in {
+    animation: authFadeIn 0.5s ease-out forwards;
+}
+
+.animate-auth-scale-in {
+    animation: authScaleIn 0.4s ease-out forwards;
+}
+
+.animate-input-focus {
+    animation: inputFocus 0.2s ease-out forwards;
+}
+
+.animate-input-error {
+    animation: inputError 0.3s ease-in-out;
+}
+
+.animate-input-success {
+    animation: inputSuccess 0.3s ease-out forwards;
+}
+
+.animate-progress-step {
+    animation: progressStep 0.3s ease-out forwards;
+}
+
+.animate-progress-line {
+    animation: progressLine 0.5s ease-out forwards;
+}
+
+.animate-button-loading {
+    animation: buttonLoading 1s linear infinite;
+}
+
+.animate-button-press {
+    animation: buttonPress 0.1s ease-out;
+}
+
+.animate-button-success {
+    animation: buttonSuccess 0.6s ease-out;
+}
+
+.animate-status-pulse {
+    animation: statusPulse 2s ease-in-out infinite;
+}
+
+.animate-status-glow {
+    animation: statusGlow 3s ease-in-out infinite;
+}
+
+.animate-security-scan {
+    animation: securityScan 2s ease-in-out infinite;
+}
+
+.animate-lock {
+    animation: lockAnimation 0.5s ease-in-out;
+}
+
+.animate-hero-float {
+    animation: heroFloat 6s ease-in-out infinite;
+}
+
+.animate-hero-glow {
+    animation: heroGlow 4s ease-in-out infinite;
+}
+
+.animate-card-hover:hover {
+    animation: cardHover 0.3s ease-out forwards;
+}
+
+/* Interactive States */
+.auth-form-field {
+    transition: all 0.2s ease-out;
+}
+
+.auth-form-field:focus {
+    animation: inputFocus 0.2s ease-out forwards;
+}
+
+.auth-form-field.error {
+    animation: inputError 0.3s ease-in-out;
+    border-color: #ef4444;
+}
+
+.auth-form-field.success {
+    animation: inputSuccess 0.3s ease-out forwards;
+}
+
+.auth-button {
+    transition: all 0.2s ease-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-button:active {
+    animation: buttonPress 0.1s ease-out;
+}
+
+.auth-button.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: buttonLoading 1s linear infinite;
+}
+
+/* Step Progress Indicators */
+.step-indicator {
+    transition: all 0.3s ease-out;
+}
+
+.step-indicator.active {
+    animation: progressStep 0.3s ease-out forwards;
+}
+
+.step-indicator.completed {
+    background-color: #10b981;
+    color: white;
+}
+
+.step-progress-line {
+    transition: width 0.5s ease-out;
+}
+
+.step-progress-line.active {
+    animation: progressLine 0.5s ease-out forwards;
+}
+
+/* Security Elements */
+.security-badge {
+    position: relative;
+    overflow: hidden;
+}
+
+.security-badge::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: securityScan 3s ease-in-out infinite;
+}
+
+.security-lock {
+    transition: transform 0.2s ease-out;
+}
+
+.security-lock:hover {
+    animation: lockAnimation 0.5s ease-in-out;
+}
+
+/* Feature Card Animations */
+.feature-card {
+    transition: all 0.3s ease-out;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+.feature-card:hover {
+    animation: cardHover 0.3s ease-out forwards;
+}
+
+/* Accessibility - Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .animate-hero-float,
+    .animate-hero-glow,
+    .animate-status-pulse,
+    .animate-status-glow,
+    .animate-security-scan,
+    .animate-button-loading {
+        animation: none !important;
+    }
+}
+
+/* Performance optimizations */
+.animate-container,
+.animate-auth-slide-in,
+.animate-auth-fade-in,
+.animate-auth-scale-in,
+.animate-card-hover,
+.feature-card {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .auth-form-field:focus {
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+    }
+
+    .security-badge::before {
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    }
+}
+
+/* Stagger animation delays for multiple elements */
+.animate-stagger-1 {
+    animation-delay: 0ms;
+}
+
+.animate-stagger-2 {
+    animation-delay: 150ms;
+}
+
+.animate-stagger-3 {
+    animation-delay: 300ms;
+}
+
+.animate-stagger-4 {
+    animation-delay: 450ms;
+}
+
+.animate-stagger-5 {
+    animation-delay: 600ms;
+}

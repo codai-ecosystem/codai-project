@@ -1,0 +1,191 @@
+{
+    "name": "CODAI Hub",
+    "short_name": "Hub",
+    "description": "AI-Powered Central Platform for ecosystem management and service coordination",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#3b82f6",
+    "orientation": "portrait-primary",
+    "scope": "/",
+    "lang": "en-US",
+    "categories": [
+        "business",
+        "productivity",
+        "utilities"
+    ],
+    "screenshots": [
+        {
+            "src": "/screenshot-wide.png",
+            "sizes": "1024x768",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "/screenshot-narrow.png",
+            "sizes": "375x812",
+            "type": "image/png",
+            "form_factor": "narrow"
+        }
+    ],
+    "icons": [
+        {
+            "src": "/icon-72x72.png",
+            "sizes": "72x72",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/icon-96x96.png",
+            "sizes": "96x96",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/icon-128x128.png",
+            "sizes": "128x128",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/icon-144x144.png",
+            "sizes": "144x144",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/icon-152x152.png",
+            "sizes": "152x152",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/icon-384x384.png",
+            "sizes": "384x384",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable any"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Dashboard",
+            "short_name": "Dashboard",
+            "description": "Hub dashboard overview",
+            "url": "/dashboard",
+            "icons": [
+                {
+                    "src": "/shortcut-dashboard.png",
+                    "sizes": "96x96",
+                    "type": "image/png"
+                }
+            ]
+        },
+        {
+            "name": "Services",
+            "short_name": "Services",
+            "description": "Manage connected services",
+            "url": "/services",
+            "icons": [
+                {
+                    "src": "/shortcut-services.png",
+                    "sizes": "96x96",
+                    "type": "image/png"
+                }
+            ]
+        },
+        {
+            "name": "Analytics",
+            "short_name": "Analytics",
+            "description": "View system analytics",
+            "url": "/analytics",
+            "icons": [
+                {
+                    "src": "/shortcut-analytics.png",
+                    "sizes": "96x96",
+                    "type": "image/png"
+                }
+            ]
+        },
+        {
+            "name": "Settings",
+            "short_name": "Settings",
+            "description": "Hub configuration",
+            "url": "/settings",
+            "icons": [
+                {
+                    "src": "/shortcut-settings.png",
+                    "sizes": "96x96",
+                    "type": "image/png"
+                }
+            ]
+        }
+    ],
+    "file_handlers": [
+        {
+            "action": "/import",
+            "accept": {
+                "application/json": [
+                    ".json"
+                ],
+                "text/csv": [
+                    ".csv"
+                ],
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
+                    ".xlsx"
+                ],
+                "application/yaml": [
+                    ".yaml",
+                    ".yml"
+                ]
+            }
+        }
+    ],
+    "protocol_handlers": [
+        {
+            "protocol": "web+codai-hub",
+            "url": "/connect?service=%s"
+        }
+    ],
+    "share_target": {
+        "action": "/share",
+        "method": "POST",
+        "enctype": "multipart/form-data",
+        "params": {
+            "title": "title",
+            "text": "text",
+            "url": "url",
+            "files": [
+                {
+                    "name": "file",
+                    "accept": [
+                        "application/json",
+                        "text/csv",
+                        ".xlsx",
+                        ".yaml"
+                    ]
+                }
+            ]
+        }
+    },
+    "edge_side_panel": {
+        "preferred_width": 450
+    },
+    "related_applications": [
+        {
+            "platform": "webapp",
+            "url": "https://hub.codai.app/manifest.json"
+        }
+    ]
+}

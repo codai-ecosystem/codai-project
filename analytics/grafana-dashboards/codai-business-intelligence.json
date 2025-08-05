@@ -1,0 +1,346 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "CODAI Business Intelligence",
+    "tags": ["codai", "business", "analytics"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "User Acquisition Funnel",
+        "type": "bargauge",
+        "targets": [
+          {
+            "expr": "sum(increase(codai_user_visits_total[24h]))",
+            "refId": "A",
+            "legendFormat": "Visitors"
+          },
+          {
+            "expr": "sum(increase(codai_user_signups_total[24h]))",
+            "refId": "B",
+            "legendFormat": "Signups"
+          },
+          {
+            "expr": "sum(increase(codai_user_activations_total[24h]))",
+            "refId": "C",
+            "legendFormat": "Activations"
+          },
+          {
+            "expr": "sum(increase(codai_conversions_total[24h]))",
+            "refId": "D",
+            "legendFormat": "Conversions"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "thresholds": {
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        }
+      },
+      {
+        "id": 2,
+        "title": "Revenue Trends",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "sum(increase(codai_revenue_total[1d]))",
+            "refId": "A",
+            "legendFormat": "Daily Revenue"
+          },
+          {
+            "expr": "sum_over_time(codai_monthly_recurring_revenue[30d:1d])",
+            "refId": "B",
+            "legendFormat": "MRR Trend"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "currencyUSD"
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 0
+        }
+      },
+      {
+        "id": 3,
+        "title": "User Engagement by Application",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "sum by (application) (increase(codai_user_sessions_total[1h]))",
+            "refId": "A",
+            "legendFormat": "{{application}}"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 8
+        }
+      },
+      {
+        "id": 4,
+        "title": "Customer Lifetime Value",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "sum(codai_customer_lifetime_value) / sum(codai_total_customers)",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "currencyUSD",
+            "color": {
+              "mode": "thresholds"
+            },
+            "thresholds": {
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          }
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 6,
+          "x": 0,
+          "y": 16
+        }
+      },
+      {
+        "id": 5,
+        "title": "Churn Rate",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "sum(increase(codai_user_churns_total[30d])) / sum(codai_active_users) * 100",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent",
+            "color": {
+              "mode": "thresholds"
+            },
+            "thresholds": {
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 5
+                },
+                {
+                  "color": "red",
+                  "value": 10
+                }
+              ]
+            }
+          }
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 6,
+          "x": 6,
+          "y": 16
+        }
+      },
+      {
+        "id": 6,
+        "title": "Net Promoter Score",
+        "type": "gauge",
+        "targets": [
+          {
+            "expr": "avg(codai_nps_score)",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "max": 100,
+            "min": -100,
+            "thresholds": {
+              "steps": [
+                {
+                  "color": "red",
+                  "value": -100
+                },
+                {
+                  "color": "yellow",
+                  "value": 0
+                },
+                {
+                  "color": "green",
+                  "value": 50
+                }
+              ]
+            }
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 12,
+          "y": 16
+        }
+      },
+      {
+        "id": 7,
+        "title": "Feature Usage Heatmap",
+        "type": "heatmap",
+        "targets": [
+          {
+            "expr": "sum by (feature, application) (increase(codai_feature_usage_total[24h]))",
+            "refId": "A"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 18,
+          "y": 16
+        }
+      },
+      {
+        "id": 8,
+        "title": "Cohort Analysis",
+        "type": "table",
+        "targets": [
+          {
+            "expr": "sum by (cohort_month) (codai_user_retention_rate)",
+            "refId": "A",
+            "format": "table"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 24
+        }
+      },
+      {
+        "id": 9,
+        "title": "A/B Test Results",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "sum by (test_variant) (increase(codai_ab_test_conversions[24h]))",
+            "refId": "A",
+            "legendFormat": "{{test_variant}}"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 24
+        }
+      },
+      {
+        "id": 10,
+        "title": "Geographic Distribution",
+        "type": "geomap",
+        "targets": [
+          {
+            "expr": "sum by (country) (increase(codai_user_sessions_total[24h]))",
+            "refId": "A"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 32
+        }
+      },
+      {
+        "id": 11,
+        "title": "Support Ticket Metrics",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "sum(increase(codai_support_tickets_total[1d]))",
+            "refId": "A",
+            "legendFormat": "New Tickets"
+          },
+          {
+            "expr": "sum(increase(codai_support_tickets_resolved[1d]))",
+            "refId": "B",
+            "legendFormat": "Resolved Tickets"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 32
+        }
+      }
+    ],
+    "time": {
+      "from": "now-30d",
+      "to": "now"
+    },
+    "timepicker": {},
+    "templating": {
+      "list": [
+        {
+          "name": "application",
+          "query": "label_values(codai_user_sessions_total, application)",
+          "type": "query"
+        },
+        {
+          "name": "timerange",
+          "options": [
+            {
+              "text": "Last 24h",
+              "value": "24h"
+            },
+            {
+              "text": "Last 7d",
+              "value": "7d"
+            },
+            {
+              "text": "Last 30d",
+              "value": "30d"
+            }
+          ],
+          "type": "custom"
+        }
+      ]
+    },
+    "annotations": {
+      "list": []
+    },
+    "refresh": "5m",
+    "schemaVersion": 27,
+    "version": 0,
+    "links": []
+  }
+}

@@ -1,0 +1,14 @@
+{
+    "index": "Introduction",
+    "getting-started": "Getting Started",
+    "concepts": "Core Concepts",
+    "api": "API Reference",
+    "sdk": "SDK Documentation",
+    "features": "Features",
+    "examples": "Examples",
+    "tools": "Tools & CLI",
+    "guides": "Guides",
+    "deployment": "Deployment",
+    "migration": "Migration",
+    "troubleshooting": "Troubleshooting"
+}

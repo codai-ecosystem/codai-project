@@ -13,6 +13,9 @@ import {
   Bar,
   RadarChart,
   Radar,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
   PieChart,
   Pie,
   Cell,
@@ -362,13 +365,7 @@ export function RiskAssessmentChart({
           />
           <Bar
             dataKey="riskScore"
-            fill={(entry: any) => {
-              const score = entry.riskScore
-              if (score >= 8) return riskColors.critical
-              if (score >= 6) return riskColors.high
-              if (score >= 4) return riskColors.medium
-              return riskColors.low
-            }}
+            fill={colors.danger}
             radius={[4, 4, 0, 0]}
           />
         </BarChart>

@@ -4,13 +4,13 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import CNDHubService from '@/services/cnd-hub';
+import CBDHubService from '@/services/cbd-hub';
 
-let hubService: CNDHubService | null = null;
+let hubService: CBDHubService | null = null;
 
-async function getHubService(): Promise<CNDHubService> {
+async function getHubService(): Promise<CBDHubService> {
     if (!hubService) {
-        hubService = new CNDHubService();
+        hubService = new CBDHubService();
         await hubService.initialize();
     }
     return hubService;

@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
             service => service.status === 'operational' || service.status === 'warning'
         );
         const totalServices = Object.values(servicesStatus).length;
-        
+
         // Consider system operational if most services are working
         const overallStatus = operationalServices.length >= totalServices * 0.75 ? 'operational' : 'degraded';
         const responseTime = Date.now() - startTime;
@@ -131,7 +131,7 @@ async function checkAzureAIService() {
             const apiVersion = process.env.AZURE_OPENAI_API_VERSION || '2024-10-01-preview';
             const response = await fetch(`${endpoint}/openai/models?api-version=${apiVersion}`, {
                 method: 'GET',
-                headers: { 
+                headers: {
                     'api-key': apiKey,
                     'Content-Type': 'application/json'
                 },

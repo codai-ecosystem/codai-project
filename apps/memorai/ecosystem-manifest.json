@@ -1,0 +1,18 @@
+{
+  "service": "memorai",
+  "version": "1.0.0",
+  "ecosystem_features": [
+    "ecosystem_health_endpoint",
+    "service_discovery",
+    "cross_service_communication",
+    "unified_authentication",
+    "real_time_analytics"
+  ],
+  "production_ready": true,
+  "api_endpoints": {
+    "/api/ecosystem/communicate": "Inter-service communication endpoint",
+    "/api/ecosystem/discover": "Service discovery endpoint",
+    "/api/ecosystem": "Ecosystem integration and communication",
+    "/api/ecosystem/health": "Enhanced health check with ecosystem status"
+  }
+}

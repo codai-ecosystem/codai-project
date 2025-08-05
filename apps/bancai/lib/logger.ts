@@ -3,7 +3,7 @@
  * Enhanced logging system for the Banking & Finance Platform
  */
 
-import { LogAIClient } from '@codai/logai-sdk'
+import { LogAIClient } from '../src/lib/logai-sdk'
 
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error' | 'critical'
 
@@ -52,8 +52,6 @@ class BancAILogger {
     if (!this.logaiClient || !this.isEnabled) return
 
     try {
-      // TODO: Fix LogAI client integration - temporarily disabled for build
-      /*
       await this.logaiClient.log({
         level,
         message,
@@ -70,7 +68,6 @@ class BancAILogger {
           context: options.context || {}
         }
       })
-      */
     } catch (error) {
       // Don't log LogAI errors to avoid infinite loops
       console.warn('Failed to send log to LogAI:', error)

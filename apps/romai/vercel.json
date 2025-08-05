@@ -1,8 +1,8 @@
 {
   "version": 2,
   "framework": "nextjs",
-  "buildCommand": "pnpm build",
-  "installCommand": "pnpm install --prefer-offline --no-frozen-lockfile",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install --legacy-peer-deps",
   "regions": [
     "fra1"
   ],

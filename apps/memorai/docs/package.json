@@ -1,0 +1,47 @@
+{
+  "name": "memorai-documentation-generator",
+  "version": "1.0.0",
+  "description": "Automated API documentation generator for MemorAI platform",
+  "main": "documentation-generator.js",
+  "scripts": {
+    "generate": "node documentation-generator.js",
+    "generate:api": "node documentation-generator.js --type=api",
+    "generate:sdk": "node documentation-generator.js --type=sdk",
+    "generate:webhook": "node documentation-generator.js --type=webhook",
+    "generate:all": "node documentation-generator.js --type=all",
+    "serve": "node documentation-server.js",
+    "validate": "node validate-documentation.js",
+    "build": "node build-documentation.js"
+  },
+  "dependencies": {
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
+    "redoc-cli": "^0.13.21",
+    "jsdoc": "^4.0.2",
+    "typedoc": "^0.25.7",
+    "markdown-it": "^14.0.0",
+    "highlight.js": "^11.9.0",
+    "express": "^4.18.2",
+    "axios": "^1.6.5",
+    "fs-extra": "^11.2.0",
+    "glob": "^10.3.10",
+    "yaml": "^2.3.4",
+    "mustache": "^4.2.0",
+    "puppeteer": "^22.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "typescript": "^5.3.3"
+  },
+  "keywords": [
+    "memorai",
+    "documentation",
+    "api",
+    "swagger",
+    "openapi",
+    "sdk",
+    "webhook"
+  ],
+  "author": "MemorAI Team",
+  "license": "MIT"
+}

@@ -1,0 +1,107 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cbd-database-service
+  namespace: codai-ecosystem
+  labels:
+    app: cbd-database
+    component: backend
+spec:
+  selector:
+    app: cbd-database
+  ports:
+  - name: http
+    port: 4180
+    targetPort: 4180
+    protocol: TCP
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cbd-collaboration-service
+  namespace: codai-ecosystem
+  labels:
+    app: cbd-collaboration
+    component: backend
+spec:
+  selector:
+    app: cbd-collaboration
+  ports:
+  - name: http
+    port: 4600
+    targetPort: 4600
+    protocol: TCP
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cbd-ai-analytics-service
+  namespace: codai-ecosystem
+  labels:
+    app: cbd-ai-analytics
+    component: backend
+spec:
+  selector:
+    app: cbd-ai-analytics
+  ports:
+  - name: http
+    port: 4700
+    targetPort: 4700
+    protocol: TCP
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cbd-graphql-service
+  namespace: codai-ecosystem
+  labels:
+    app: cbd-graphql
+    component: backend
+spec:
+  selector:
+    app: cbd-graphql
+  ports:
+  - name: http
+    port: 4800
+    targetPort: 4800
+    protocol: TCP
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service
+  namespace: codai-ecosystem
+  labels:
+    app: gateway-service
+    component: backend
+spec:
+  selector:
+    app: gateway-service
+  ports:
+  - name: http
+    port: 4003
+    targetPort: 4003
+    protocol: TCP
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: websocket-service
+  namespace: codai-ecosystem
+  labels:
+    app: websocket-service
+    component: backend
+spec:
+  selector:
+    app: websocket-service
+  ports:
+  - name: http
+    port: 4900
+    targetPort: 4900
+    protocol: TCP
+  type: ClusterIP

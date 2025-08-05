@@ -50,7 +50,7 @@ Phase 4.2.1 has been **successfully completed** with the deployment of a compreh
 ### Service Health Endpoints
 ```
 ✅ CBD Universal Database (4180/health)
-✅ Phase 4 Gateway (3000/health)  
+✅ Phase 4 Gateway (4003/health)  
 ✅ Monitoring Dashboard (4100/health)
 🔄 Next.js Services (status via service checks)
 ```
@@ -164,7 +164,7 @@ Phase 4.2.1 has been **successfully completed** with the deployment of a compreh
 
 **🟢 Fully Monitored Services:**
 - Monitoring Dashboard (4100) - Operational ✅
-- Phase 4 Gateway (3000) - Healthy ✅  
+- Phase 4 Gateway (4003) - Healthy ✅  
 - CBD Universal Database (4180) - Healthy ✅
 
 **🟡 Running Services (Health Check Enhancement Needed):**

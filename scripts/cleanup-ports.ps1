@@ -1,7 +1,7 @@
 # PowerShell Port Cleanup Utility
 # Reliably cleans up processes on specified ports
 param(
-    [int[]]$Ports = @(4180, 4200, 4001, 4004, 4005, 4006, 4007, 4008, 3000),
+    [int[]]$Ports = @(4180, 4200, 4001, 4003, 4004, 4005, 4006, 4007, 4008, 4950, 6001, 6100, 7001, 8001, 8002, 8003, 8080),
     [switch]$Verbose = $false
 )
 

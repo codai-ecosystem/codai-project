@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 import React from 'react';
+// Remove jest-axe import temporarily for basic testing
 
 // Mock Next.js modules
 vi.mock('next/navigation', () => ({
@@ -59,12 +60,12 @@ Object.defineProperty(window, 'navigator', {
 // Mock location object for demo mode testing
 const mockLocation = {
   search: '',
-  href: 'http://localhost:3000/admin',
+  href: 'http://localhost:4003/admin',
   pathname: '/admin',
-  origin: 'http://localhost:3000',
-  host: 'localhost:3000',
+  origin: 'http://localhost:4003',
+  host: 'localhost:4003',
   hostname: 'localhost',
-  port: '3000',
+  port: '4003',
   protocol: 'http:',
   hash: '',
   reload: vi.fn(),

@@ -1,0 +1,88 @@
+{
+    "name": "@memorai/docs",
+    "version": "1.0.0",
+    "description": "MemorAI Documentation Portal - Comprehensive developer documentation and guides",
+    "keywords": [
+        "memorai",
+        "documentation",
+        "ai",
+        "memory",
+        "developer",
+        "guides",
+        "api"
+    ],
+    "author": "MemorAI Team <team@memorai.ro>",
+    "license": "MIT",
+    "homepage": "https://docs.memorai.ro",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/codai-project/memorai.git",
+        "directory": "apps/memorai-docs"
+    },
+    "bugs": {
+        "url": "https://github.com/codai-project/memorai/issues"
+    },
+    "type": "module",
+    "scripts": {
+        "dev": "next dev -p 4009",
+        "build": "next build",
+        "start": "next start -p 4009",
+        "lint": "next lint",
+        "lint:fix": "next lint --fix",
+        "type-check": "tsc --noEmit",
+        "export": "next export",
+        "analyze": "ANALYZE=true next build",
+        "clean": "rimraf .next out",
+        "test": "vitest",
+        "test:coverage": "vitest --coverage"
+    },
+    "dependencies": {
+        "@mdx-js/loader": "^3.1.0",
+        "@mdx-js/react": "^3.1.0",
+        "@next/mdx": "^15.4.5",
+        "@tailwindcss/aspect-ratio": "^0.4.2",
+        "@tailwindcss/forms": "^0.5.10",
+        "@tailwindcss/typography": "^0.5.16",
+        "clsx": "^2.1.1",
+        "framer-motion": "^12.0.3",
+        "gray-matter": "^4.0.3",
+        "lucide-react": "^0.469.0",
+        "next": "^15.4.5",
+        "nextra": "^4.3.0",
+        "nextra-theme-docs": "^4.3.0",
+        "prism-react-renderer": "^2.4.0",
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0",
+        "reading-time": "^1.5.0",
+        "rehype-autolink-headings": "^7.1.0",
+        "rehype-highlight": "^7.0.0",
+        "rehype-slug": "^6.0.0",
+        "remark-gfm": "^4.0.0",
+        "tailwindcss": "^3.4.17"
+    },
+    "devDependencies": {
+        "@types/mdx": "^2.0.13",
+        "@types/node": "^22.10.6",
+        "@types/react": "^19.0.3",
+        "@types/react-dom": "^19.0.3",
+        "@typescript-eslint/eslint-plugin": "^8.21.0",
+        "@typescript-eslint/parser": "^8.21.0",
+        "autoprefixer": "^10.4.20",
+        "eslint": "^9.21.0",
+        "eslint-config-next": "^15.4.5",
+        "postcss": "^8.5.0",
+        "rimraf": "^6.0.1",
+        "typescript": "^5.8.3",
+        "vitest": "^3.2.4"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs"
+        }
+    }
+}

@@ -1,0 +1,283 @@
+# CODAI AlertManager Rules Configuration
+# Critical alerts for business and technical monitoring
+
+groups:
+  - name: codai_critical_business
+    rules:
+      - alert: CODAIApplicationDown
+        expr: up{job="codai-applications"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          team: devops
+        annotations:
+          summary: "CODAI Application {{ $labels.instance }} is down"
+          description: "Application {{ $labels.instance }} has been down for more than 1 minute."
+          runbook_url: "https://wiki.codai.ro/runbooks/application-down"
+
+      - alert: CODAIHighErrorRate
+        expr: |
+          (
+            sum(rate(http_requests_total{status=~"5.."}[5m])) by (instance)
+            /
+            sum(rate(http_requests_total[5m])) by (instance)
+          ) * 100 > 5
+        for: 2m
+        labels:
+          severity: warning
+          team: backend
+        annotations:
+          summary: "High error rate on {{ $labels.instance }}"
+          description: "Error rate is {{ $value }}% for {{ $labels.instance }}"
+
+      - alert: CODAISlowResponseTime
+        expr: |
+          histogram_quantile(0.95, 
+            sum(rate(http_request_duration_seconds_bucket[5m])) by (le, instance)
+          ) > 2
+        for: 5m
+        labels:
+          severity: warning
+          team: backend
+        annotations:
+          summary: "Slow response time on {{ $labels.instance }}"
+          description: "95th percentile response time is {{ $value }}s"
+
+      - alert: CODAILowConversionRate
+        expr: |
+          (
+            sum(increase(codai_conversions_total[1h]))
+            /
+            sum(increase(codai_user_sessions_total[1h]))
+          ) * 100 < 1
+        for: 15m
+        labels:
+          severity: warning
+          team: product
+        annotations:
+          summary: "Low conversion rate detected"
+          description: "Conversion rate is {{ $value }}% in the last hour"
+
+      - alert: CODAIHighChurnRate
+        expr: |
+          (
+            sum(increase(codai_user_churns_total[24h]))
+            /
+            sum(codai_active_users)
+          ) * 100 > 10
+        for: 30m
+        labels:
+          severity: critical
+          team: product
+        annotations:
+          summary: "High user churn rate detected"
+          description: "Daily churn rate is {{ $value }}%"
+
+  - name: codai_infrastructure
+    rules:
+      - alert: CODAIHighCPUUsage
+        expr: |
+          100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+          team: devops
+        annotations:
+          summary: "High CPU usage on {{ $labels.instance }}"
+          description: "CPU usage is {{ $value }}%"
+
+      - alert: CODAIHighMemoryUsage
+        expr: |
+          (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+          team: devops
+        annotations:
+          summary: "High memory usage on {{ $labels.instance }}"
+          description: "Memory usage is {{ $value }}%"
+
+      - alert: CODAIDiskSpaceLow
+        expr: |
+          (
+            (node_filesystem_size_bytes{fstype!="tmpfs"} - node_filesystem_free_bytes{fstype!="tmpfs"})
+            /
+            node_filesystem_size_bytes{fstype!="tmpfs"}
+          ) * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+          team: devops
+        annotations:
+          summary: "Low disk space on {{ $labels.instance }}"
+          description: "Disk usage is {{ $value }}% on {{ $labels.mountpoint }}"
+
+      - alert: CODAISSLCertificateExpiring
+        expr: |
+          (probe_ssl_earliest_cert_expiry - time()) / 86400 < 30
+        for: 1h
+        labels:
+          severity: warning
+          team: devops
+        annotations:
+          summary: "SSL certificate expiring for {{ $labels.instance }}"
+          description: "Certificate expires in {{ $value }} days"
+
+  - name: codai_database
+    rules:
+      - alert: CODAIDatabaseDown
+        expr: postgres_up == 0
+        for: 1m
+        labels:
+          severity: critical
+          team: database
+        annotations:
+          summary: "PostgreSQL database is down"
+          description: "Database {{ $labels.instance }} is unreachable"
+
+      - alert: CODAIHighDatabaseConnections
+        expr: |
+          postgres_active_connections / postgres_max_connections * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+          team: database
+        annotations:
+          summary: "High database connection usage"
+          description: "Database connection usage is {{ $value }}%"
+
+      - alert: CODAISlowDatabaseQueries
+        expr: |
+          avg(postgres_query_duration_seconds) > 1
+        for: 5m
+        labels:
+          severity: warning
+          team: database
+        annotations:
+          summary: "Slow database queries detected"
+          description: "Average query time is {{ $value }}s"
+
+  - name: codai_security
+    rules:
+      - alert: CODAISecurityHeadersNonCompliant
+        expr: |
+          (
+            sum(codai_security_headers_compliant)
+            /
+            sum(codai_security_headers_total)
+          ) * 100 < 95
+        for: 10m
+        labels:
+          severity: warning
+          team: security
+        annotations:
+          summary: "Security headers compliance below threshold"
+          description: "Security compliance is {{ $value }}%"
+
+      - alert: CODAIFailedLogins
+        expr: |
+          sum(increase(codai_failed_logins_total[5m])) > 50
+        for: 1m
+        labels:
+          severity: warning
+          team: security
+        annotations:
+          summary: "High number of failed login attempts"
+          description: "{{ $value }} failed logins in the last 5 minutes"
+
+      - alert: CODAISuspiciousActivity
+        expr: |
+          sum(increase(codai_security_events_total{type="suspicious"}[5m])) > 10
+        for: 1m
+        labels:
+          severity: critical
+          team: security
+        annotations:
+          summary: "Suspicious security activity detected"
+          description: "{{ $value }} suspicious events in the last 5 minutes"
+
+  - name: codai_deployment
+    rules:
+      - alert: CODAIDeploymentFailed
+        expr: |
+          sum(increase(codai_deployments_failed[5m])) > 0
+        for: 1m
+        labels:
+          severity: critical
+          team: devops
+        annotations:
+          summary: "Deployment failure detected"
+          description: "{{ $value }} deployments failed in the last 5 minutes"
+
+      - alert: CODAILowDeploymentSuccessRate
+        expr: |
+          (
+            sum(increase(codai_deployments_successful[24h]))
+            /
+            sum(increase(codai_deployments_total[24h]))
+          ) * 100 < 95
+        for: 1h
+        labels:
+          severity: warning
+          team: devops
+        annotations:
+          summary: "Low deployment success rate"
+          description: "Deployment success rate is {{ $value }}% in the last 24h"
+
+  - name: codai_business_critical
+    rules:
+      - alert: CODAIRevenueDrop
+        expr: |
+          (
+            sum(increase(codai_revenue_total[1h]))
+            /
+            sum(increase(codai_revenue_total[1h] offset 24h))
+          ) < 0.7
+        for: 30m
+        labels:
+          severity: critical
+          team: business
+        annotations:
+          summary: "Significant revenue drop detected"
+          description: "Revenue is {{ $value | humanizePercentage }} of yesterday's value"
+
+      - alert: CODAIUserEngagementDrop
+        expr: |
+          (
+            sum(increase(codai_user_sessions_total[1h]))
+            /
+            sum(increase(codai_user_sessions_total[1h] offset 24h))
+          ) < 0.5
+        for: 1h
+        labels:
+          severity: warning
+          team: product
+        annotations:
+          summary: "Significant drop in user engagement"
+          description: "User sessions are {{ $value | humanizePercentage }} of yesterday's value"
+
+      - alert: CODAIPaymentProcessingIssues
+        expr: |
+          sum(increase(codai_payment_failures_total[5m])) > 5
+        for: 1m
+        labels:
+          severity: critical
+          team: finance
+        annotations:
+          summary: "Payment processing issues detected"
+          description: "{{ $value }} payment failures in the last 5 minutes"
+
+      - alert: CODAICustomerSupportBacklog
+        expr: |
+          (
+            sum(codai_support_tickets_open)
+            -
+            sum(codai_support_tickets_resolved[24h])
+          ) > 100
+        for: 2h
+        labels:
+          severity: warning
+          team: support
+        annotations:
+          summary: "High customer support ticket backlog"
+          description: "{{ $value }} tickets in backlog"

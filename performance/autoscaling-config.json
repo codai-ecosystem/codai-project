@@ -1,0 +1,65 @@
+{
+  "scalingPolicies": {
+    "cbd-database": {
+      "minInstances": 2,
+      "maxInstances": 10,
+      "targetCPU": 70,
+      "targetMemory": 80,
+      "scaleUpCooldown": 300,
+      "scaleDownCooldown": 600,
+      "metrics": [
+        {
+          "name": "CPUUtilization",
+          "targetValue": 70,
+          "weight": 0.6
+        },
+        {
+          "name": "MemoryUtilization", 
+          "targetValue": 80,
+          "weight": 0.4
+        }
+      ]
+    },
+    "gateway-service": {
+      "minInstances": 2,
+      "maxInstances": 20,
+      "targetCPU": 60,
+      "targetMemory": 70,
+      "targetRequestRate": 1000,
+      "scaleUpCooldown": 180,
+      "scaleDownCooldown": 300,
+      "metrics": [
+        {
+          "name": "RequestRate",
+          "targetValue": 1000,
+          "weight": 0.5
+        },
+        {
+          "name": "CPUUtilization",
+          "targetValue": 60,
+          "weight": 0.3
+        },
+        {
+          "name": "ResponseTime",
+          "targetValue": 0.1,
+          "weight": 0.2
+        }
+      ]
+    },
+    "memorai-mcp": {
+      "minInstances": 1,
+      "maxInstances": 5,
+      "targetCPU": 75,
+      "targetMemory": 85,
+      "scaleUpCooldown": 240,
+      "scaleDownCooldown": 480,
+      "predictiveScaling": true
+    }
+  },
+  "predictiveScaling": {
+    "enabled": true,
+    "forecastPeriod": 3600,
+    "confidenceThreshold": 0.8,
+    "mlModel": "ARIMA"
+  }
+}

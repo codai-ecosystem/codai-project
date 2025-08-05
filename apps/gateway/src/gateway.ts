@@ -1,3 +1,5 @@
+import { createHealthCheckHTML } from './templates/health-check-template';
+
 /**
  * CODAI Ecosystem API Gateway
  * Consolidated production-ready gateway combining the best features from all versions
@@ -17,7 +19,32 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 import cors from 'cors';
 
 // Simple fallback for missing dependencies
-const helmet = (req: Request, res: Response, next: NextFunction) => next();
+const helmet = (req: Request, res: Response, next: NextFunction) => {
+    // OWASP-compliant comprehensive security headers
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+    res.setHeader('Content-Security-Policy', 
+        "default-src 'self'; " +
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
+        "style-src 'self' 'unsafe-inline'; " +
+        "img-src 'self' data: https:; " +
+        "connect-src 'self' http://localhost:* https://localhost:* ws://localhost:* wss://localhost:*; " +
+        "frame-ancestors 'none'; " +
+        "base-uri 'self'; " +
+        "form-action 'self';"
+    );
+    res.setHeader('X-Frame-Options', 'DENY');
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    res.setHeader('Permissions-Policy', 
+        'camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), speaker=(), fullscreen=(self), sync-xhr=()'
+    );
+    
+    // Remove server identification headers
+    res.removeHeader('X-Powered-By');
+    res.removeHeader('Server');
+    
+    next();
+};
 const compression = (req: Request, res: Response, next: NextFunction) => next();
 const rateLimit = (options: any) => (req: Request, res: Response, next: NextFunction) => next();
 
@@ -44,7 +71,73 @@ const swaggerUi = {
 
 const app: Application = express();
 const PORT = parseInt(process.env.GATEWAY_PORT || '4003', 10);
-const JWT_SECRET = process.env.JWT_SECRET || 'change-this-secret-in-production';
+
+// Safety check: Ensure Gateway never runs on ports below 4000
+if (PORT < 4000) {
+    console.error(`🚫 ERROR: Gateway cannot run on port ${PORT}. Ports below 4000 are reserved.`);
+    console.error(`📋 Switching to default port 4003 for security compliance.`);
+    process.env.GATEWAY_PORT = '4003';
+}
+
+const GATEWAY_PORT = PORT < 4000 ? 4003 : PORT;
+const JWT_SECRET = process.env.JWT_SECRET || 'secure-jwt-secret-change-in-production';
+
+// ============================================================================
+// SECURITY MIDDLEWARE
+// ============================================================================
+
+// CORS configuration with security headers
+app.use(cors({
+    origin: process.env.NODE_ENV === 'production'
+        ? ['https://codai.com', 'https://api.codai.com']
+        : ['http://localhost:4001', 'http://localhost:4004', 'http://localhost:4007', 'http://localhost:4008'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+    exposedHeaders: ['X-Total-Count']
+}));
+
+// Security headers middleware
+app.use((req: Request, res: Response, next: NextFunction) => {
+    // Content Security Policy
+    res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' ws: wss:");
+
+    // Prevent clickjacking
+    res.setHeader('X-Frame-Options', 'DENY');
+
+    // Prevent MIME type sniffing
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+
+    // XSS Protection
+    res.setHeader('X-XSS-Protection', '1; mode=block');
+
+    // HSTS (for HTTPS)
+    if (req.secure || req.headers['x-forwarded-proto'] === 'https') {
+        res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+    }
+
+    // Referrer Policy
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+
+    // Remove powered by header
+    res.removeHeader('X-Powered-By');
+
+    next();
+});
+
+// Rate limiting
+const rateLimitConfig = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+    message: {
+        success: false,
+        error: 'Too Many Requests',
+        message: 'Rate limit exceeded. Please try again later.',
+        retryAfter: '15 minutes'
+    }
+});
+
+app.use('/api/', rateLimitConfig);
 
 // ============================================================================
 // INTERFACES AND TYPES
@@ -364,7 +457,7 @@ app.use('/api', (req: Request, res: Response, next: NextFunction) => {
 // Request logging and metrics middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
     const startTime = Date.now();
-    const requestId = req.headers['x-request-id'] as string || 
+    const requestId = req.headers['x-request-id'] as string ||
         `req-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
     req.headers['x-request-id'] = requestId;
@@ -457,9 +550,9 @@ async function checkServiceHealth(serviceId: string): Promise<boolean> {
         service.isHealthy = false;
         service.lastHealthCheck = new Date();
         service.errorCount++;
-        
+
         loadBalancer.updateInstanceHealth(serviceId, service.url, false);
-        
+
         console.error(`[HEALTH] ${serviceId}: ERROR - ${(error as Error).message}`);
         return false;
     }
@@ -591,23 +684,119 @@ const createServiceProxy = (serviceId: string): express.RequestHandler => {
 // GATEWAY API ENDPOINTS
 // ============================================================================
 
-// Gateway health endpoint
-app.get('/health', (req: Request, res: Response) => {
-    res.json({
-        service: 'codai-api-gateway',
-        status: 'healthy',
-        version: '2.0.0',
-        description: 'CODAI Ecosystem API Gateway',
-        timestamp: new Date().toISOString(),
-        uptime: Math.floor(process.uptime()),
-        registeredServices: Object.keys(serviceRegistry).length,
-        port: PORT,
-        features: ['load-balancing', 'circuit-breaker', 'health-monitoring', 'authentication']
-    });
+// Simple authentication middleware for sensitive endpoints
+const authenticateRequest = (req: Request, res: Response, next: NextFunction) => {
+    const apiKey = req.headers['x-api-key'] || req.headers['authorization'];
+    const adminKey = process.env.GATEWAY_ADMIN_KEY || 'admin-key-123';
+
+    // Allow health checks from internal services without authentication
+    if (req.path === '/health' && (
+        req.headers['user-agent']?.includes('health-check') ||
+        req.headers['x-internal-service'] === 'true'
+    )) {
+        return next();
+    }
+
+    // For admin endpoints, require authentication
+    if (req.path.startsWith('/api/gateway/')) {
+        if (!apiKey || apiKey !== adminKey) {
+            return res.status(401).json({
+                success: false,
+                error: 'Unauthorized',
+                message: 'Valid API key required for admin endpoints',
+                code: 'AUTHENTICATION_REQUIRED'
+            });
+        }
+    }
+
+    next();
+};
+
+// Gateway health endpoint with accessibility support
+app.get('/health', async (req: Request, res: Response) => {
+    try {
+        const healthData = {
+            service: 'codai-api-gateway',
+            status: 'healthy',
+            version: '2.0.0',
+            description: 'CODAI Ecosystem API Gateway',
+            timestamp: new Date().toISOString(),
+            uptime: Math.floor(process.uptime()),
+            registeredServices: Object.keys(serviceRegistry).length,
+            port: PORT,
+            features: ['load-balancing', 'circuit-breaker', 'health-monitoring', 'authentication'],
+            services: [] as Array<{
+                name: string;
+                url: string;
+                port: string;
+                status: string;
+                lastCheck: string;
+                responseTime: number;
+                errorCount: number;
+            }>
+        };
+
+        // Use the same data that the working periodic health checks use
+        for (const [id, config] of Object.entries(serviceRegistry)) {
+            healthData.services.push({
+                name: config.name,
+                url: config.url,
+                port: config.port.toString(),
+                status: config.isHealthy ? 'healthy' : 'unhealthy',
+                lastCheck: config.lastHealthCheck.toISOString(),
+                responseTime: config.responseTime,
+                errorCount: config.errorCount
+            });
+        }
+
+        // Determine overall status
+        const unhealthyServices = healthData.services.filter(s => s.status === 'unhealthy');
+        if (unhealthyServices.length > 0) {
+            healthData.status = unhealthyServices.length === healthData.services.length ? 'unhealthy' : 'degraded';
+        }
+
+        // Check Accept header for content type
+        const acceptHeader = req.get('Accept') || '';
+
+        if (acceptHeader.includes('text/html') || acceptHeader.includes('*/*')) {
+            // Return accessible HTML response
+            const htmlResponse = createHealthCheckHTML(healthData);
+            res.setHeader('Content-Type', 'text/html; charset=utf-8');
+            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+            res.send(htmlResponse);
+        } else {
+            // Return JSON response
+            res.setHeader('Content-Type', 'application/json');
+            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+            res.json(healthData);
+        }
+    } catch (error) {
+        console.error('❌ Health check error:', error);
+
+        const errorData = {
+            service: 'codai-api-gateway',
+            status: 'unhealthy',
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : 'Unknown error',
+            port: PORT,
+            services: []
+        };
+
+        const acceptHeader = req.get('Accept') || '';
+
+        if (acceptHeader.includes('text/html') || acceptHeader.includes('*/*')) {
+            const htmlResponse = createHealthCheckHTML(errorData);
+            res.setHeader('Content-Type', 'text/html; charset=utf-8');
+            res.status(503).send(htmlResponse);
+        } else {
+            res.setHeader('Content-Type', 'application/json');
+            res.status(503).json(errorData);
+        }
+    }
 });
 
 // Enhanced gateway health with service details
-app.get('/api/gateway/health', (req: Request, res: Response) => {
+app.get('/api/gateway/health', authenticateRequest, (req: Request, res: Response) => {
     const healthStatus = {
         gateway: {
             status: 'healthy',
@@ -787,7 +976,7 @@ app.get('/docs', (req: Request, res: Response) => {
             discover: '/api/gateway/discover/:serviceId'
         }
     };
-    
+
     res.json({
         success: true,
         data: apiDocs,
@@ -861,7 +1050,7 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
 
 const gracefulShutdown = (signal: string) => {
     console.log(`[GATEWAY] Received ${signal}, shutting down gracefully...`);
-    
+
     // Perform cleanup here if needed
     console.log('[GATEWAY] Cleanup completed');
     process.exit(0);
@@ -874,18 +1063,18 @@ process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 // SERVER STARTUP
 // ============================================================================
 
-const server = app.listen(PORT, () => {
-    console.log(`🚀 CODAI API Gateway v2.0.0 running on port ${PORT}`);
+const server = app.listen(GATEWAY_PORT, () => {
+    console.log(`🚀 CODAI API Gateway v2.0.0 running on port ${GATEWAY_PORT}`);
     console.log(`🔒 Security: JWT auth, CORS, Rate limiting, Helmet protection`);
     console.log(`⚖️  Load Balancer: Round-robin with health awareness & circuit breaker`);
-    console.log(`📚 Documentation: http://localhost:${PORT}/docs`);
-    console.log(`❤️  Health Check: http://localhost:${PORT}/health`);
-    console.log(`🔍 Service Discovery: http://localhost:${PORT}/api/gateway/services`);
-    console.log(`📊 Metrics: http://localhost:${PORT}/api/gateway/metrics`);
+    console.log(`📚 Documentation: http://localhost:${GATEWAY_PORT}/docs`);
+    console.log(`❤️  Health Check: http://localhost:${GATEWAY_PORT}/health`);
+    console.log(`🔍 Service Discovery: http://localhost:${GATEWAY_PORT}/api/gateway/services`);
+    console.log(`📊 Metrics: http://localhost:${GATEWAY_PORT}/api/gateway/metrics`);
     console.log(`\n🌐 Registered Services (${Object.keys(serviceRegistry).length}):`);
 
     Object.entries(serviceRegistry).forEach(([id, config]) => {
-        console.log(`   ${config.name}: http://localhost:${PORT}/api/v1/${id} -> ${config.url}`);
+        console.log(`   ${config.name}: http://localhost:${GATEWAY_PORT}/api/v1/${id} -> ${config.url}`);
     });
 
     console.log(`\n✅ Gateway ready for production traffic!`);

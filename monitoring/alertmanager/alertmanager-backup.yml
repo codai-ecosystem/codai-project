@@ -1,0 +1,149 @@
+# AlertManager Configuration for CODAI Ecosystem
+
+global:
+  # Email configuration
+  smtp_smarthost: 'smtp.gmail.com:587'
+  smtp_from: 'alerts@codai.ro'
+  smtp_auth_username: 'alerts@codai.ro'
+  smtp_auth_password: 'your-app-password'
+  smtp_require_tls: true
+
+  # Slack configuration
+  slack_api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+
+# Route tree for notifications
+route:
+  group_by: ['alertname', 'cluster', 'service']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 1h
+  receiver: 'default-receiver'
+  
+  routes:
+    # Critical alerts go to PagerDuty and Slack
+    - match:
+        severity: critical
+      receiver: 'critical-alerts'
+      group_wait: 5s
+      repeat_interval: 30m
+      
+    # Warning alerts go to Slack only
+    - match:
+        severity: warning
+      receiver: 'warning-alerts'
+      group_wait: 30s
+      repeat_interval: 2h
+      
+    # Info alerts go to email
+    - match:
+        severity: info
+      receiver: 'info-alerts'
+      group_wait: 5m
+      repeat_interval: 12h
+
+# Notification receivers
+receivers:
+  - name: 'default-receiver'
+    email_configs:
+      - to: 'ops@codai.ro'
+        subject: '[CODAI] Alert: {{ .GroupLabels.alertname }}'
+        body: |
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Instance: {{ .Labels.instance }}
+          Severity: {{ .Labels.severity }}
+          Time: {{ .StartsAt }}
+          {{ end }}
+
+  - name: 'critical-alerts'
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+        channel: '#alerts-critical'
+        username: 'CODAI AlertManager'
+        icon_emoji: ':rotating_light:'
+        title: 'CRITICAL: {{ .GroupLabels.alertname }}'
+        text: |
+          {{ range .Alerts }}
+          *Alert:* {{ .Annotations.summary }}
+          *Description:* {{ .Annotations.description }}
+          *Instance:* {{ .Labels.instance }}
+          *Time:* {{ .StartsAt }}
+          {{ end }}
+        color: 'danger'
+        send_resolved: true
+    
+    email_configs:
+      - to: 'critical@codai.ro'
+        subject: '🚨 CRITICAL ALERT: {{ .GroupLabels.alertname }}'
+        body: |
+          CRITICAL ALERT DETECTED
+          
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Instance: {{ .Labels.instance }}
+          Severity: {{ .Labels.severity }}
+          Started: {{ .StartsAt }}
+          
+          Service: {{ .Labels.job }}
+          Labels: {{ .Labels }}
+          {{ end }}
+          
+          Please investigate immediately.
+
+  - name: 'warning-alerts'
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+        channel: '#alerts-warning'
+        username: 'CODAI AlertManager'
+        icon_emoji: ':warning:'
+        title: 'WARNING: {{ .GroupLabels.alertname }}'
+        text: |
+          {{ range .Alerts }}
+          *Alert:* {{ .Annotations.summary }}
+          *Description:* {{ .Annotations.description }}
+          *Instance:* {{ .Labels.instance }}
+          {{ end }}
+        color: 'warning'
+        send_resolved: true
+
+  - name: 'info-alerts'
+    email_configs:
+      - to: 'info@codai.ro'
+        subject: '[INFO] CODAI Alert: {{ .GroupLabels.alertname }}'
+        body: |
+          Informational Alert
+          
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Instance: {{ .Labels.instance }}
+          Time: {{ .StartsAt }}
+          {{ end }}
+
+# Inhibition rules to reduce noise
+inhibit_rules:
+  # Inhibit any warning/info alerts if the same service has a critical alert
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['service', 'instance']
+
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'info'
+    equal: ['service', 'instance']
+
+  # Inhibit warning alerts if info alerts exist for the same service
+  - source_match:
+      severity: 'warning'
+    target_match:
+      severity: 'info'
+    equal: ['service', 'instance']
+
+# Template files for custom formatting
+templates:
+  - '/etc/alertmanager/templates/*.tmpl'

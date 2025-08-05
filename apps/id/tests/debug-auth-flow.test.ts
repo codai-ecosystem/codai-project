@@ -9,7 +9,7 @@ import { POST as registerPOST } from '../src/app/api/auth/register/route';
 
 // Helper to create mock NextRequest
 function createMockRequest(body: any, headers: Record<string, string> = {}): NextRequest {
-    const url = 'http://localhost:3000/api/auth/test';
+    const url = 'http://localhost:4004/api/auth/test';
     const request = new NextRequest(url, {
         method: 'POST',
         headers: {
@@ -35,11 +35,8 @@ describe('🔍 Debug Authentication Flow', () => {
         const timestamp = Date.now();
         const testUser = {
             email: `debug-test-${timestamp}@example.com`,
-            username: `debuguser${timestamp}`,
-            password: 'SecurePassword123!',
-            profile: {
-                name: `Debug User ${timestamp}`
-            }
+            name: `Debug User ${timestamp}`,
+            password: 'SecurePassword123!'
         };
 
         console.log('🔍 Starting debug test with user:', testUser.email);
@@ -54,7 +51,9 @@ describe('🔍 Debug Authentication Flow', () => {
         console.log('📝 Registration response data:', JSON.stringify(registerData, null, 2));
 
         expect(registerResponse.status).toBe(201);
-        expect(registerData.success).toBe(true);
+        expect(registerData.message).toBe('User created successfully');
+        expect(registerData.user).toBeDefined();
+        expect(registerData.user.email).toBe(testUser.email);
 
         // Step 2: Try to login with the same user
         console.log('🔑 Step 2: Attempting login...');

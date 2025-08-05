@@ -1,0 +1,54 @@
+# RomAI AGI Prometheus Configuration
+# Specialized monitoring for ML inference performance
+
+global:
+  scrape_interval: 10s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'romai-agi'
+    service: 'ml-inference'
+
+scrape_configs:
+  # RomAI AGI Model Server - Primary metrics
+  - job_name: 'romai-agi-inference'
+    scrape_interval: 5s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['romai-agi:8000']
+    scrape_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'agi-server'
+
+  # AGI Health and Performance
+  - job_name: 'romai-agi-health'
+    scrape_interval: 10s
+    metrics_path: '/health'
+    static_configs:
+      - targets: ['romai-agi:8000']
+
+  # AGI Training Metrics
+  - job_name: 'romai-agi-training'
+    scrape_interval: 30s
+    metrics_path: '/training/metrics'
+    static_configs:
+      - targets: ['romai-agi:8000']
+
+  # AGI Capability Scores
+  - job_name: 'romai-agi-capabilities'
+    scrape_interval: 60s
+    metrics_path: '/capabilities/scores'
+    static_configs:
+      - targets: ['romai-agi:8000']
+
+  # Redis Cache Performance
+  - job_name: 'redis-cache'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['redis:6379']
+
+  # Self-monitoring
+  - job_name: 'prometheus'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['localhost:9090']

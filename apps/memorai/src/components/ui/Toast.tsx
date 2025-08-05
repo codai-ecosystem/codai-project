@@ -1,171 +1,263 @@
-'use client';
-
-import { cva, type VariantProps } from 'class-variance-authority';
-import { AlertCircle, AlertTriangle, CheckCircle, Info, X } from 'lucide-react';
-import {
-  forwardRef,
-  type ComponentPropsWithoutRef,
-  type ElementRef,
-} from 'react';
-
-import { cn } from '@/lib/utils';
-
-import { Button } from './Button';
+import React from 'react'
+import { cn } from '@/lib/utils'
+import { cva, type VariantProps } from 'class-variance-authority'
+import { CheckCircle, XCircle, AlertCircle, Info, X } from 'lucide-react'
 
 const toastVariants = cva(
-  'group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border p-6 pr-8 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full',
-  {
-    variants: {
-      variant: {
-        default: 'border bg-background text-foreground',
-        destructive:
-          'destructive group border-destructive bg-destructive text-destructive-foreground',
-        success:
-          'border-green-200 bg-green-50 text-green-900 dark:border-green-800 dark:bg-green-950 dark:text-green-100',
-        warning:
-          'border-yellow-200 bg-yellow-50 text-yellow-900 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-100',
-        info: 'border-blue-200 bg-blue-50 text-blue-900 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-100',
-      },
-    },
-    defaultVariants: {
-      variant: 'default',
-    },
-  }
-);
+    'group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border p-6 pr-8 shadow-lg transition-all duration-300 ease-in-out',
+    {
+        variants: {
+            variant: {
+                default: 'border-border bg-background text-foreground',
+                success: 'border-green-200 bg-green-50 text-green-800 dark:border-green-800 dark:bg-green-900/50 dark:text-green-200',
+                error: 'border-red-200 bg-red-50 text-red-800 dark:border-red-800 dark:bg-red-900/50 dark:text-red-200',
+                warning: 'border-yellow-200 bg-yellow-50 text-yellow-800 dark:border-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-200',
+                info: 'border-blue-200 bg-blue-50 text-blue-800 dark:border-blue-800 dark:bg-blue-900/50 dark:text-blue-200',
+            },
+        },
+        defaultVariants: {
+            variant: 'default',
+        },
+    }
+)
 
-const Toast = forwardRef<
-  ElementRef<'div'>,
-  ComponentPropsWithoutRef<'div'> & VariantProps<typeof toastVariants>
->(({ className, variant, ...props }, ref): React.ReactElement => {
-  return (
-    <div
-      ref={ref}
-      className={cn(toastVariants({ variant }), className)}
-      {...props}
-    />
-  );
-});
-Toast.displayName = 'Toast';
-
-const ToastAction = forwardRef<
-  ElementRef<typeof Button>,
-  ComponentPropsWithoutRef<typeof Button>
->(
-  ({ className, ...props }, ref): React.ReactElement => (
-    <Button
-      ref={ref}
-      variant="outline"
-      size="sm"
-      className={cn(
-        'group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive',
-        className
-      )}
-      {...props}
-    />
-  )
-);
-ToastAction.displayName = 'ToastAction';
-
-const ToastClose = forwardRef<
-  ElementRef<'button'>,
-  ComponentPropsWithoutRef<'button'>
->(
-  ({ className, ...props }, ref): React.ReactElement => (
-    <button
-      ref={ref}
-      type="button"
-      data-testid="toast-close"
-      className={cn(
-        'absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600',
-        className
-      )}
-      {...props}
-    >
-      <X className="h-4 w-4" data-testid="x-icon" />
-      <span className="sr-only">Close</span>
-    </button>
-  )
-);
-ToastClose.displayName = 'ToastClose';
-
-const ToastTitle = forwardRef<
-  ElementRef<'div'>,
-  ComponentPropsWithoutRef<'div'>
->(
-  ({ className, ...props }, ref): React.ReactElement => (
-    <div
-      ref={ref}
-      className={cn('text-sm font-semibold', className)}
-      {...props}
-    />
-  )
-);
-ToastTitle.displayName = 'ToastTitle';
-
-const ToastDescription = forwardRef<
-  ElementRef<'div'>,
-  ComponentPropsWithoutRef<'div'>
->(
-  ({ className, ...props }, ref): React.ReactElement => (
-    <div ref={ref} className={cn('text-sm opacity-90', className)} {...props} />
-  )
-);
-ToastDescription.displayName = 'ToastDescription';
-
-interface ToastIconProps {
-  variant?: 'default' | 'destructive' | 'success' | 'warning' | 'info';
-  className?: string;
-  'data-testid'?: string;
+const iconMap = {
+    default: Info,
+    success: CheckCircle,
+    error: XCircle,
+    warning: AlertCircle,
+    info: Info,
 }
 
-const ToastIcon = ({
-  variant = 'default',
-  className,
-  'data-testid': testId,
-}: ToastIconProps): React.ReactElement => {
-  const iconMap = {
-    success: CheckCircle,
-    destructive: AlertCircle,
-    warning: AlertTriangle,
-    info: Info,
-    default: Info,
-  };
+export interface ToastProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof toastVariants> {
+    title?: string
+    description?: string
+    message?: string  // Add message prop for backward compatibility
+    action?: React.ReactNode
+    onClose?: () => void
+    showCloseButton?: boolean
+    icon?: React.ReactNode
+    duration?: number
+    type?: 'default' | 'success' | 'error' | 'warning' | 'info'  // Add type alias for variant
+}
 
-  const colorMap = {
-    success: 'text-green-500',
-    destructive: 'text-red-500',
-    warning: 'text-yellow-500',
-    info: 'text-blue-500',
-    default: 'text-muted-foreground',
-  };
+const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
+    ({ 
+        className, 
+        variant = 'default', 
+        type, // Add type prop
+        title, 
+        description, 
+        message, // Add message prop
+        action, 
+        onClose,
+        showCloseButton = true,
+        icon,
+        duration,
+        ...props 
+    }, ref) => {
+        const [isVisible, setIsVisible] = React.useState(true)
+        const [progress, setProgress] = React.useState(100)
+        
+        // Use type as alias for variant if provided
+        const effectiveVariant = type || variant || 'default'
+        const IconComponent = iconMap[effectiveVariant]
+        
+        React.useEffect(() => {
+            if (duration && duration > 0) {
+                const interval = setInterval(() => {
+                    setProgress((prev) => {
+                        const newProgress = prev - (100 / (duration / 100))
+                        if (newProgress <= 0) {
+                            clearInterval(interval)
+                            handleClose()
+                            return 0
+                        }
+                        return newProgress
+                    })
+                }, 100)
+                
+                return () => clearInterval(interval)
+            }
+        }, [duration])
+        
+        const handleClose = () => {
+            setIsVisible(false)
+            setTimeout(() => {
+                onClose?.()
+            }, 300)
+        }
+        
+        if (!isVisible) {
+            return null
+        }
+        
+        return (
+            <div
+                ref={ref}
+                role="alert"  // Add required role for accessibility
+                aria-live="polite"  // Change to polite as expected by tests
+                aria-atomic="true"  // Add aria-atomic for accessibility
+                className={cn(
+                    toastVariants({ variant: effectiveVariant }),
+                    'transform transition-all duration-300 ease-in-out',
+                    isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0',
+                    className
+                )}
+                {...props}
+            >
+                <div className="flex items-start space-x-3 flex-1">
+                    {(icon || IconComponent) && (
+                        <div className="flex-shrink-0">
+                            {icon || <IconComponent className="h-5 w-5" />}
+                        </div>
+                    )}
+                    
+                    <div className="flex-1 space-y-1">
+                        {title && (
+                            <div className="text-sm font-semibold">
+                                {title}
+                            </div>
+                        )}
+                        {(description || message) && (
+                            <div className="text-sm opacity-90">
+                                {description || message}
+                            </div>
+                        )}
+                    </div>
+                </div>
+                
+                {action && (
+                    <div className="flex-shrink-0">
+                        {action}
+                    </div>
+                )}
+                
+                {showCloseButton && (
+                    <button
+                        onClick={handleClose}
+                        className="absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100"
+                        aria-label="dismiss"  // Change to match test expectations
+                    >
+                        <X className="h-4 w-4" />
+                    </button>
+                )}
+                
+                {duration && duration > 0 && (
+                    <div className="absolute bottom-0 left-0 h-1 bg-current opacity-30 transition-all duration-100 ease-out" 
+                         style={{ width: `${progress}%` }} />
+                )}
+            </div>
+        )
+    }
+)
+Toast.displayName = 'Toast'
 
-  const IconComponent = iconMap[variant as keyof typeof iconMap];
+// Toast Container Component
+export interface ToastContainerProps {
+    position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center'
+    className?: string
+    children?: React.ReactNode
+    toasts?: ToastState[]  // Add toasts prop for rendering toast states
+    onDismiss?: (id: string) => void  // Add onDismiss callback
+}
 
-  return (
-    <div data-testid={testId ?? `toast-icon-${variant}`}>
-      <IconComponent
-        className={cn(
-          'h-5 w-5 flex-shrink-0',
-          colorMap[variant as keyof typeof colorMap],
-          className
-        )}
-      />
-    </div>
-  );
-};
+const positionClasses = {
+    'top-right': 'top-4 right-4',
+    'top-left': 'top-4 left-4',
+    'bottom-right': 'bottom-4 right-4',
+    'bottom-left': 'bottom-4 left-4',
+    'top-center': 'top-4 left-1/2 transform -translate-x-1/2',
+    'bottom-center': 'bottom-4 left-1/2 transform -translate-x-1/2',
+}
 
-type ToastProps = ComponentPropsWithoutRef<typeof Toast>;
+export const ToastContainer: React.FC<ToastContainerProps> = ({ 
+    position = 'top-right', 
+    className, 
+    children,
+    toasts = [],
+    onDismiss
+}) => {
+    return (
+        <div 
+            data-testid="toast-container"
+            className={cn(
+                'fixed z-50 flex flex-col space-y-2 w-full max-w-sm',
+                positionClasses[position],
+                className
+            )}
+            role="region"
+            aria-live="polite"
+            aria-label="Notifications"
+        >
+            {children}
+            {toasts.map((toast) => (
+                <Toast
+                    key={toast.id}
+                    title={toast.title}
+                    description={toast.description}
+                    message={toast.message || toast.description}  // Use message if available
+                    variant={toast.variant || toast.type}  // Support both variant and type
+                    type={toast.type}
+                    duration={toast.duration}
+                    action={toast.action}
+                    onClose={() => onDismiss?.(toast.id)}
+                />
+            ))}
+        </div>
+    )
+}
 
-type ToastActionElement = React.ReactElement<typeof ToastAction>;
+// Hook for programmatic toast management
+export interface ToastState {
+    id: string
+    title?: string
+    description?: string
+    message?: string  // Add message for compatibility
+    variant?: 'default' | 'success' | 'error' | 'warning' | 'info'
+    type?: 'default' | 'success' | 'error' | 'warning' | 'info'  // Add type alias
+    duration?: number
+    action?: React.ReactNode
+}
 
-export {
-  Toast,
-  ToastAction,
-  ToastClose,
-  ToastDescription,
-  ToastIcon,
-  ToastTitle,
-  toastVariants,
-  type ToastActionElement,
-  type ToastProps,
-};
+export const useToast = () => {
+    const [toasts, setToasts] = React.useState<ToastState[]>([])
+    
+    const addToast = React.useCallback((toast: Omit<ToastState, 'id'>) => {
+        const id = Math.random().toString(36).substr(2, 9)
+        setToasts((prev) => [...prev, { ...toast, id }])
+    }, [])
+    
+    const removeToast = React.useCallback((id: string) => {
+        setToasts((prev) => prev.filter((toast) => toast.id !== id))
+    }, [])
+    
+    const clearAllToasts = React.useCallback(() => {
+        setToasts([])
+    }, [])
+    
+    // Convenience methods
+    const toast = React.useMemo(() => ({
+        success: (title: string, description?: string, options?: Partial<ToastState>) => 
+            addToast({ title, description, variant: 'success', duration: 4000, ...options }),
+        error: (title: string, description?: string, options?: Partial<ToastState>) => 
+            addToast({ title, description, variant: 'error', duration: 6000, ...options }),
+        warning: (title: string, description?: string, options?: Partial<ToastState>) => 
+            addToast({ title, description, variant: 'warning', duration: 5000, ...options }),
+        info: (title: string, description?: string, options?: Partial<ToastState>) => 
+            addToast({ title, description, variant: 'info', duration: 4000, ...options }),
+        default: (title: string, description?: string, options?: Partial<ToastState>) => 
+            addToast({ title, description, variant: 'default', duration: 4000, ...options }),
+    }), [addToast])
+    
+    return {
+        toasts,
+        addToast,
+        removeToast,
+        clearAllToasts,
+        toast,
+        showToast: addToast,  // Add showToast alias for test compatibility
+    }
+}
+
+export { Toast, toastVariants }

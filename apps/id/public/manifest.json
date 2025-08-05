@@ -1,0 +1,186 @@
+{
+    "name": "CODAI ID Service",
+    "short_name": "ID Service",
+    "description": "Advanced identity and authentication management platform",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#3b82f6",
+    "orientation": "portrait-primary",
+    "scope": "/",
+    "lang": "en-US",
+    "categories": [
+        "business",
+        "productivity",
+        "security"
+    ],
+    "screenshots": [
+        {
+            "src": "/screenshot-wide.png",
+            "sizes": "1024x768",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "/screenshot-narrow.png",
+            "sizes": "375x812",
+            "type": "image/png",
+            "form_factor": "narrow"
+        }
+    ],
+    "icons": [
+        {
+            "src": "/icon-72x72.png",
+            "sizes": "72x72",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/icon-96x96.png",
+            "sizes": "96x96",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/icon-128x128.png",
+            "sizes": "128x128",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/icon-144x144.png",
+            "sizes": "144x144",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/icon-152x152.png",
+            "sizes": "152x152",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/icon-384x384.png",
+            "sizes": "384x384",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable any"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Login",
+            "short_name": "Login",
+            "description": "Quick access to login page",
+            "url": "/login",
+            "icons": [
+                {
+                    "src": "/shortcut-login.png",
+                    "sizes": "96x96",
+                    "type": "image/png"
+                }
+            ]
+        },
+        {
+            "name": "Register",
+            "short_name": "Register",
+            "description": "Create new account",
+            "url": "/register",
+            "icons": [
+                {
+                    "src": "/shortcut-register.png",
+                    "sizes": "96x96",
+                    "type": "image/png"
+                }
+            ]
+        },
+        {
+            "name": "Profile",
+            "short_name": "Profile",
+            "description": "Manage your profile",
+            "url": "/profile",
+            "icons": [
+                {
+                    "src": "/shortcut-profile.png",
+                    "sizes": "96x96",
+                    "type": "image/png"
+                }
+            ]
+        },
+        {
+            "name": "Security",
+            "short_name": "Security",
+            "description": "Security settings",
+            "url": "/security",
+            "icons": [
+                {
+                    "src": "/shortcut-security.png",
+                    "sizes": "96x96",
+                    "type": "image/png"
+                }
+            ]
+        }
+    ],
+    "file_handlers": [
+        {
+            "action": "/import",
+            "accept": {
+                "application/json": [
+                    ".json"
+                ],
+                "text/csv": [
+                    ".csv"
+                ],
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
+                    ".xlsx"
+                ]
+            }
+        }
+    ],
+    "protocol_handlers": [
+        {
+            "protocol": "web+codai-auth",
+            "url": "/auth/callback?token=%s"
+        }
+    ],
+    "share_target": {
+        "action": "/share",
+        "method": "POST",
+        "enctype": "multipart/form-data",
+        "params": {
+            "title": "title",
+            "text": "text",
+            "url": "url",
+            "files": [
+                {
+                    "name": "file",
+                    "accept": [
+                        "application/json",
+                        "text/csv",
+                        ".xlsx"
+                    ]
+                }
+            ]
+        }
+    },
+    "edge_side_panel": {
+        "preferred_width": 400
+    },
+    "related_applications": [
+        {
+            "platform": "webapp",
+            "url": "https://id.codai.app/manifest.json"
+        }
+    ]
+}

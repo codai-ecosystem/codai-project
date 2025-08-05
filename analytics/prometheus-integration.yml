@@ -1,0 +1,105 @@
+# Prometheus Configuration for CODAI Analytics Integration
+# Enhanced monitoring with custom metrics and alerting rules
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'codai-production'
+    environment: 'production'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - localhost:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  - "alerts/*.yml"
+  - "rules/*.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+scrape_configs:
+  # CODAI Applications
+  - job_name: 'codai-frontend-apps'
+    static_configs:
+      - targets:
+        - 'memorai.codai.ro:443'
+        - 'admin.codai.ro:443'
+        - 'hub.codai.ro:443'
+        - 'control.codai.ro:443'
+        - 'romai.codai.ro:443'
+        - 'bancai.codai.ro:443'
+        - 'id.codai.ro:443'
+        - 'apps.codai.ro:443'
+    scheme: https
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+  - job_name: 'codai-backend-services'
+    static_configs:
+      - targets:
+        - 'gateway.codai.ro:443'
+        - 'api.codai.ro:443'
+    scheme: https
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+    scrape_timeout: 10s
+
+  # Local development services
+  - job_name: 'codai-local-services'
+    static_configs:
+      - targets:
+        - 'localhost:4001'  # CODAI App
+        - 'localhost:4006'  # MemorAI App
+        - 'localhost:6100'  # RomAI App
+        - 'localhost:4950'  # MemorAI MCP
+        - 'localhost:8080'  # CBD Database
+        - 'localhost:8000'  # RomAI AGI Server
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+
+  # System monitoring
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['localhost:9100']
+
+  - job_name: 'postgres-exporter'
+    static_configs:
+      - targets: ['localhost:9187']
+
+  - job_name: 'redis-exporter'
+    static_configs:
+      - targets: ['localhost:9121']
+
+  # Analytics dashboard
+  - job_name: 'codai-analytics'
+    static_configs:
+      - targets: ['localhost:9999']
+    metrics_path: '/api/metrics'
+    scrape_interval: 30s
+
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Grafana monitoring
+  - job_name: 'grafana'
+    static_configs:
+      - targets: ['localhost:3000']
+
+# Custom recording rules for CODAI metrics
+# These create derived metrics for better performance and alerting
+rule_files:
+  - "/etc/prometheus/rules/codai-rules.yml"
+
+# Remote write configuration for long-term storage (optional)
+# remote_write:
+#   - url: "https://prometheus-us-central1.grafana.net/api/prom/push"
+#     basic_auth:
+#       username: "your-username"
+#       password: "your-api-key"

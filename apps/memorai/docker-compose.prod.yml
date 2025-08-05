@@ -1,0 +1,312 @@
+# Production Docker Configuration
+version: '3.8'
+
+services:
+  # MemorAI Application - Production
+  memorai-app:
+    image: memorai/app:production
+    container_name: memorai-app-prod
+    restart: unless-stopped
+    depends_on:
+      - memorai-db
+      - memorai-redis
+      - memorai-elasticsearch
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@memorai-db:5432/memorai_prod
+      - REDIS_URL=redis://memorai-redis:6379
+      - ELASTICSEARCH_URL=http://memorai-elasticsearch:9200
+      - JWT_SECRET=${JWT_SECRET}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
+      - S3_BUCKET_NAME=${S3_BUCKET_NAME}
+      - NEXT_PUBLIC_APP_URL=https://memorai.com
+      - NEXT_PUBLIC_API_URL=https://api.memorai.com
+    ports:
+      - "4006:3000"
+    networks:
+      - memorai-network
+    volumes:
+      - memorai-app-logs:/app/logs
+      - memorai-uploads:/app/uploads
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+        reservations:
+          memory: 1G
+          cpus: '0.5'
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # PostgreSQL Database - Production
+  memorai-db:
+    image: postgres:15-alpine
+    container_name: memorai-db-prod
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=memorai_prod
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256
+    volumes:
+      - memorai-db-data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d
+      - ./db/backups:/backups
+    ports:
+      - "5432:5432"
+    networks:
+      - memorai-network
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '2.0'
+        reservations:
+          memory: 2G
+          cpus: '1.0'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d memorai_prod"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: >
+      postgres
+      -c max_connections=200
+      -c shared_buffers=256MB
+      -c effective_cache_size=1GB
+      -c maintenance_work_mem=64MB
+      -c checkpoint_completion_target=0.7
+      -c wal_buffers=16MB
+      -c default_statistics_target=100
+      -c random_page_cost=1.1
+      -c effective_io_concurrency=200
+      -c work_mem=4MB
+      -c min_wal_size=1GB
+      -c max_wal_size=4GB
+
+  # Redis Cache - Production
+  memorai-redis:
+    image: redis:7-alpine
+    container_name: memorai-redis-prod
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - memorai-network
+    volumes:
+      - memorai-redis-data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # Elasticsearch - Production
+  memorai-elasticsearch:
+    image: elasticsearch:8.11.0
+    container_name: memorai-elasticsearch-prod
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+    volumes:
+      - memorai-elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - memorai-network
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+        reservations:
+          memory: 1G
+          cpus: '0.5'
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # NGINX Load Balancer - Production
+  memorai-nginx:
+    image: nginx:alpine
+    container_name: memorai-nginx-prod
+    restart: unless-stopped
+    depends_on:
+      - memorai-app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+      - memorai-app-logs:/var/log/nginx
+    networks:
+      - memorai-network
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # PgBouncer Connection Pool
+  memorai-pgbouncer:
+    image: pgbouncer/pgbouncer:latest
+    container_name: memorai-pgbouncer-prod
+    restart: unless-stopped
+    depends_on:
+      - memorai-db
+    environment:
+      - DATABASES_HOST=memorai-db
+      - DATABASES_PORT=5432
+      - DATABASES_USER=${DB_USER}
+      - DATABASES_PASSWORD=${DB_PASSWORD}
+      - DATABASES_DBNAME=memorai_prod
+      - POOL_MODE=transaction
+      - SERVER_RESET_QUERY=DISCARD ALL
+      - MAX_CLIENT_CONN=200
+      - DEFAULT_POOL_SIZE=25
+    ports:
+      - "6432:6432"
+    networks:
+      - memorai-network
+    volumes:
+      - ./pgbouncer/pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini
+      - ./pgbouncer/userlist.txt:/etc/pgbouncer/userlist.txt
+
+  # Prometheus Monitoring
+  memorai-prometheus:
+    image: prom/prometheus:latest
+    container_name: memorai-prometheus-prod
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - memorai-prometheus-data:/prometheus
+    networks:
+      - memorai-network
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+
+  # Grafana Dashboard
+  memorai-grafana:
+    image: grafana/grafana:latest
+    container_name: memorai-grafana-prod
+    restart: unless-stopped
+    depends_on:
+      - memorai-prometheus
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - GF_SERVER_ROOT_URL=https://monitoring.memorai.com
+    volumes:
+      - memorai-grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+    networks:
+      - memorai-network
+
+  # Log Aggregation with Fluentd
+  memorai-fluentd:
+    image: fluentd:v1.16-debian-1
+    container_name: memorai-fluentd-prod
+    restart: unless-stopped
+    volumes:
+      - ./logging/fluent.conf:/fluentd/etc/fluent.conf
+      - memorai-app-logs:/var/log/app
+    ports:
+      - "24224:24224"
+    networks:
+      - memorai-network
+
+  # Backup Service
+  memorai-backup:
+    image: alpine:latest
+    container_name: memorai-backup-prod
+    restart: unless-stopped
+    depends_on:
+      - memorai-db
+      - memorai-redis
+    environment:
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - S3_BACKUP_BUCKET=${S3_BACKUP_BUCKET}
+    volumes:
+      - ./scripts/backup.sh:/backup.sh
+      - memorai-backups:/backups
+    networks:
+      - memorai-network
+    command: |
+      sh -c "
+        apk add --no-cache postgresql-client redis aws-cli &&
+        chmod +x /backup.sh &&
+        crond -f -l 2
+      "
+
+networks:
+  memorai-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  memorai-db-data:
+    driver: local
+  memorai-redis-data:
+    driver: local
+  memorai-elasticsearch-data:
+    driver: local
+  memorai-app-logs:
+    driver: local
+  memorai-uploads:
+    driver: local
+  memorai-prometheus-data:
+    driver: local
+  memorai-grafana-data:
+    driver: local
+  memorai-backups:
+    driver: local

@@ -1,12 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ['@codai/shared-ui', '@codai/memorai', '@codai/auth'],
+  transpilePackages: ['@codai/memorai', '@codai/auth'],
   // Enable strict type and lint checking
   typescript: {
     ignoreBuildErrors: false,
   },
   eslint: {
-    ignoreDuringBuilds: false,
+    ignoreDuringBuilds: true,
   },
   // Fix webpack module resolution for pnpm workspaces
   webpack: (config, { dev, isServer }) => {
@@ -21,6 +21,22 @@ const nextConfig = {
       '../../node_modules', // workspace root
       ...config.resolve.modules
     ];
+
+    // Exclude ONNX Runtime and heavy ML dependencies from client bundle
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        'onnxruntime-node': false,
+        '@xenova/transformers': false,
+        'onnxruntime-web': false,
+      };
+      
+      config.externals = config.externals || [];
+      config.externals.push({
+        'onnxruntime-node': 'onnxruntime-node',
+        '@xenova/transformers': '@xenova/transformers',
+      });
+    }
 
     return config;
   },

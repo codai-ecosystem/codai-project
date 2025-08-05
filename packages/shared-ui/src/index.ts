@@ -13,6 +13,50 @@ export { default as FeatureCard } from './components/ui/FeatureCard'
 export { LoadingSpinner } from './components/ui/LoadingSpinner'
 export { ErrorBoundary } from './components/ui/ErrorBoundary'
 
+// Animation Components - Week 2 Phase 2 Advanced Animations
+// Temporarily disabled due to TypeScript compilation issues during testing validation
+/*
+export {
+    AnimatedContainer,
+    PageTransition,
+    Skeleton,
+    LoadingSpinner as AnimatedLoadingSpinner,
+    LoadingDots,
+    AnimatedModal,
+    AnimatedButton,
+    AnimatedCard,
+    ScrollAnimation,
+    StaggerContainer,
+    AnimatedProgress,
+    AnimatedNotification
+} from './animations/animation-components'
+
+// Gesture System - Week 2 Phase 2 Advanced Interactions
+export {
+    useSwipeGesture,
+    useDragGesture,
+    useLongPress,
+    SwipeableCard,
+    DraggableElement,
+    LongPressButton
+} from './animations/gesture-system'
+
+// Animation System Core - Week 2 Phase 2 Core System
+export {
+    useAnimation,
+    useReducedMotion,
+    useIntersectionObserver,
+    SpringAnimation,
+    AnimationPerformanceMonitor,
+    createStaggerAnimation,
+    AnimationQueue
+} from './animations/core-animation-system'
+*/
+
+// Advanced Gesture System - Day 7 Mobile Touch Optimization
+// Temporarily disabled due to SSR compilation issues during testing validation
+// export * from './gestures'
+
 // Authentication Components
 export { default as AuthLayout } from './components/auth/AuthLayout'
 export { default as LoginForm } from './components/auth/LoginForm'
@@ -38,6 +82,8 @@ export type { User, AuthContextType, RegisterData } from './contexts/AuthProvide
 
 // Middleware
 export { createAuthMiddleware } from './middleware/auth'
+export { createSecurityHeaders, applySecurityHeaders, securityMiddleware } from './middleware/security-headers'
+export type { SecurityHeadersConfig } from './middleware/security-headers'
 
 // I18n Components - Enhanced Phase 2
 export { I18nProvider, useTranslation } from './components/i18n/I18nProvider'

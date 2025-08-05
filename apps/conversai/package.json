@@ -9,9 +9,9 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "next dev -p 3700",
+    "dev": "next dev -p 4700",
     "build": "next build",
-    "start": "next start -p 3700",
+    "start": "next start -p 4700",
     "lint": "next lint",
     "test": "vitest",
     "type-check": "pnpm exec tsc --noEmit",

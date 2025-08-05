@@ -60,7 +60,7 @@ export class ServerService {
         this.server = createServer(this.app);
         this.io = new SocketIOServer(this.server, {
             cors: {
-                origin: options.corsOrigins || ["http://localhost:4400", "http://localhost:3000"],
+                origin: options.corsOrigins || ["http://localhost:4400", "http://localhost:4001"],
                 methods: ["GET", "POST", "PUT", "DELETE"],
                 credentials: true
             },

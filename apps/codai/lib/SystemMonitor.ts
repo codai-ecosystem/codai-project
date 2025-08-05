@@ -122,11 +122,15 @@ export class SystemMonitor {
             services.map(async (service) => {
                 const startTime = Date.now();
                 try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 5000);
+                    
                     const response = await fetch(`http://localhost:${service.port}/health`, {
                         method: 'GET',
-                        timeout: 5000,
+                        signal: controller.signal,
                     });
 
+                    clearTimeout(timeoutId);
                     const responseTime = Date.now() - startTime;
 
                     return {

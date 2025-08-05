@@ -1,0 +1,40 @@
+{
+  "name": "id-service-deployment",
+  "version": "1.0.0",
+  "description": "Identity and authentication service - Deployment build",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p 4004",
+    "build": "next build",
+    "start": "next start -p 4004",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@codai/shared-types": "^1.0.1",
+    "bcryptjs": "^3.0.2",
+    "clsx": "^2.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.525.0",
+    "next": "^15.4.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss-animate": "^1.0.7",
+    "typescript": "^5.8.3",
+    "zod": "^3.25.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^3.0.0",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.0.14",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.31.0",
+    "eslint-config-next": "^15.4.1",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.3"
+  }
+}

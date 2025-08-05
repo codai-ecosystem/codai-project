@@ -1,0 +1,368 @@
+/* Week 2 Phase 2 Advanced Animations - Admin Service Integration CSS */
+/* Hardware-accelerated animations for enhanced performance */
+
+/* Core Animation Utilities */
+.animate-container {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+}
+
+/* Entrance Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Interactive Animations */
+@keyframes lift {
+    from {
+        transform: translateY(0) scale(1);
+    }
+
+    to {
+        transform: translateY(-4px) scale(1.02);
+    }
+}
+
+@keyframes buttonPress {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(0.98);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes glow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.8);
+    }
+}
+
+/* Micro-interactions */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+@keyframes bounceSubtle {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-2px);
+    }
+}
+
+@keyframes pulseSoft {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+}
+
+@keyframes spinSlow {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Progress Animations */
+@keyframes progressFill {
+    from {
+        width: 0%;
+    }
+}
+
+@keyframes counter {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Tab Animations */
+@keyframes tabActive {
+    from {
+        background-color: transparent;
+        transform: scale(0.98);
+    }
+
+    to {
+        background-color: rgb(37, 99, 235);
+        transform: scale(1);
+    }
+}
+
+@keyframes tabInactive {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+/* Button Hover Animations */
+@keyframes buttonHover {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Animation Classes */
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-slide-down {
+    animation: slideDown 0.6s ease-out forwards;
+}
+
+.animate-slide-in-left {
+    animation: slideInLeft 0.5s ease-out forwards;
+}
+
+.animate-slide-in-right {
+    animation: slideInRight 0.5s ease-out forwards;
+}
+
+.animate-scale-in {
+    animation: scaleIn 0.3s ease-out forwards;
+}
+
+.animate-lift {
+    animation: lift 0.2s ease-out forwards;
+}
+
+.animate-button-press {
+    animation: buttonPress 0.1s ease-out;
+}
+
+.animate-glow {
+    animation: glow 2s ease-in-out infinite;
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-bounce-subtle {
+    animation: bounceSubtle 1s ease-in-out infinite;
+}
+
+.animate-pulse-soft {
+    animation: pulseSoft 2s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+    animation: spinSlow 3s linear infinite;
+}
+
+.animate-progress-fill {
+    animation: progressFill 1s ease-out forwards;
+}
+
+.animate-counter {
+    animation: counter 0.6s ease-out forwards;
+}
+
+.animate-tab-active {
+    animation: tabActive 0.2s ease-out forwards;
+}
+
+.animate-tab-inactive {
+    animation: tabInactive 0.2s ease-out forwards;
+}
+
+.animate-button-hover:hover {
+    animation: lift 0.2s ease-out forwards;
+}
+
+/* Hover Effects */
+.animate-button-hover:hover .group-hover\\:animate-bounce {
+    animation: bounceSubtle 0.6s ease-in-out;
+}
+
+/* Accessibility - Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .animate-glow,
+    .animate-float,
+    .animate-bounce-subtle,
+    .animate-pulse-soft,
+    .animate-spin-slow {
+        animation: none !important;
+    }
+}
+
+/* Performance optimizations */
+.animate-container,
+.animate-fade-in,
+.animate-slide-down,
+.animate-slide-in-left,
+.animate-slide-in-right,
+.animate-scale-in,
+.animate-lift,
+.animate-glow,
+.animate-float {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Loading states */
+@keyframes shimmer {
+    0% {
+        background-position: -200px 0;
+    }
+
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+.animate-shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200px 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+/* Dark mode shimmer */
+.dark .animate-shimmer {
+    background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+    background-size: 200px 100%;
+}
+
+/* Focus animations for accessibility */
+.focus\\:animate-focus-ring:focus {
+    animation: glow 0.3s ease-out;
+}
+
+/* Stagger animation delays */
+.animate-stagger-1 {
+    animation-delay: 0ms;
+}
+
+.animate-stagger-2 {
+    animation-delay: 100ms;
+}
+
+.animate-stagger-3 {
+    animation-delay: 200ms;
+}
+
+.animate-stagger-4 {
+    animation-delay: 300ms;
+}
+
+.animate-stagger-5 {
+    animation-delay: 400ms;
+}
+
+.animate-stagger-6 {
+    animation-delay: 500ms;
+}

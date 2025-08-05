@@ -1,6 +1,7 @@
 {
   "name": "metu-web",
   "version": "1.0.0",
+  "type": "module",
   "description": "Web-based meeting platform",
   "scripts": {
     "dev": "next dev -p 5500",
@@ -15,10 +16,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@codai/api-keys": "workspace:*",
-    "@codai/logai-integration": "workspace:*",
-    "@codai/logai-sdk": "workspace:*",
-    "@codai/shared-ui": "workspace:*",
     "clsx": "^2.1.1",
     "critters": "^0.0.25",
     "framer-motion": "^12.23.6",
@@ -26,12 +23,13 @@
     "next": "^15.4.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "tailwind-merge": "^3.3.1",
-    "@codai/translations": "workspace:*"
+    "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
-    "@codai/eslint-config": "workspace:*",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.9",
     "@tailwindcss/postcss": "^4.1.11",
+    "@tailwindcss/typography": "^0.5.15",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",

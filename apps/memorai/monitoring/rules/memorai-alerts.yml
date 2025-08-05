@@ -1,0 +1,319 @@
+# MemorAI Production Alert Rules
+# These rules define when alerts should be triggered based on metrics
+
+groups:
+  # ===================================
+  # CRITICAL SYSTEM ALERTS
+  # ===================================
+  - name: memorai.critical
+    interval: 30s
+    rules:
+      # Service Down Alerts
+      - alert: MemorAIAppDown
+        expr: up{job="memorai-app"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: application
+          team: platform
+        annotations:
+          summary: "MemorAI application is down"
+          description: "MemorAI application has been down for more than 1 minute. Instance: {{ $labels.instance }}"
+          runbook_url: "https://runbooks.memorai.com/app-down"
+          action_required: "Immediate investigation required"
+
+      - alert: DatabaseDown
+        expr: up{job="postgresql"} == 0
+        for: 30s
+        labels:
+          severity: critical
+          component: database
+          team: platform
+        annotations:
+          summary: "PostgreSQL database is down"
+          description: "PostgreSQL database has been unreachable for more than 30 seconds"
+          runbook_url: "https://runbooks.memorai.com/db-down"
+          action_required: "Immediate database recovery required"
+
+      - alert: RedisDown
+        expr: up{job="redis"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: cache
+          team: platform
+        annotations:
+          summary: "Redis cache is down"
+          description: "Redis cache has been unreachable for more than 1 minute"
+          runbook_url: "https://runbooks.memorai.com/redis-down"
+
+      # High Error Rate
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m]) > 0.05
+        for: 2m
+        labels:
+          severity: critical
+          component: application
+          team: platform
+        annotations:
+          summary: "High error rate detected"
+          description: "Error rate is {{ $value | humanizePercentage }} for more than 2 minutes"
+          runbook_url: "https://runbooks.memorai.com/high-error-rate"
+
+      # Response Time Critical
+      - alert: ResponseTimeCritical
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 5
+        for: 3m
+        labels:
+          severity: critical
+          component: application
+          team: platform
+        annotations:
+          summary: "Critical response time detected"
+          description: "95th percentile response time is {{ $value | humanizeDuration }} for more than 3 minutes"
+          runbook_url: "https://runbooks.memorai.com/response-time-critical"
+
+      # Database Connection Pool Exhausted
+      - alert: DatabaseConnectionPoolExhausted
+        expr: postgresql_connections_active / postgresql_connections_max > 0.9
+        for: 2m
+        labels:
+          severity: critical
+          component: database
+          team: platform
+        annotations:
+          summary: "Database connection pool near exhaustion"
+          description: "Database connection pool is {{ $value | humanizePercentage }} full"
+          runbook_url: "https://runbooks.memorai.com/db-connections"
+
+      # Memory Usage Critical
+      - alert: HighMemoryUsage
+        expr: (container_memory_usage_bytes / container_spec_memory_limit_bytes) > 0.9
+        for: 2m
+        labels:
+          severity: critical
+          component: infrastructure
+          team: platform
+        annotations:
+          summary: "Container memory usage critical"
+          description: "Container {{ $labels.name }} memory usage is {{ $value | humanizePercentage }}"
+          runbook_url: "https://runbooks.memorai.com/memory-usage"
+
+  # ===================================
+  # WARNING SYSTEM ALERTS
+  # ===================================
+  - name: memorai.warning
+    interval: 60s
+    rules:
+      # Response Time Warning
+      - alert: ResponseTimeHigh
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+          component: application
+          team: platform
+        annotations:
+          summary: "High response time detected"
+          description: "95th percentile response time is {{ $value | humanizeDuration }}"
+          runbook_url: "https://runbooks.memorai.com/response-time-high"
+
+      # Database Slow Queries
+      - alert: DatabaseSlowQueries
+        expr: postgresql_slow_queries_total > 10
+        for: 5m
+        labels:
+          severity: warning
+          component: database
+          team: platform
+        annotations:
+          summary: "Database slow queries detected"
+          description: "{{ $value }} slow queries detected in the last 5 minutes"
+          runbook_url: "https://runbooks.memorai.com/slow-queries"
+
+      # Redis Memory Usage
+      - alert: RedisMemoryHigh
+        expr: redis_memory_used_bytes / redis_memory_max_bytes > 0.8
+        for: 5m
+        labels:
+          severity: warning
+          component: cache
+          team: platform
+        annotations:
+          summary: "Redis memory usage high"
+          description: "Redis memory usage is {{ $value | humanizePercentage }}"
+          runbook_url: "https://runbooks.memorai.com/redis-memory"
+
+      # High CPU Usage
+      - alert: HighCPUUsage
+        expr: rate(container_cpu_usage_seconds_total[5m]) > 0.8
+        for: 10m
+        labels:
+          severity: warning
+          component: infrastructure
+          team: platform
+        annotations:
+          summary: "High CPU usage"
+          description: "Container {{ $labels.name }} CPU usage is {{ $value | humanizePercentage }}"
+          runbook_url: "https://runbooks.memorai.com/cpu-usage"
+
+      # Disk Space Warning
+      - alert: DiskSpaceWarning
+        expr: (node_filesystem_avail_bytes / node_filesystem_size_bytes) < 0.2
+        for: 5m
+        labels:
+          severity: warning
+          component: infrastructure
+          team: platform
+        annotations:
+          summary: "Disk space running low"
+          description: "Disk space on {{ $labels.mountpoint }} is {{ $value | humanizePercentage }} full"
+          runbook_url: "https://runbooks.memorai.com/disk-space"
+
+  # ===================================
+  # BUSINESS METRIC ALERTS
+  # ===================================
+  - name: memorai.business
+    interval: 300s
+    rules:
+      # User Registration Rate Drop
+      - alert: UserRegistrationRateDrop
+        expr: rate(memorai_user_registrations_total[1h]) < 5
+        for: 15m
+        labels:
+          severity: warning
+          component: business
+          team: growth
+        annotations:
+          summary: "User registration rate below threshold"
+          description: "User registration rate is {{ $value }} registrations per hour"
+          runbook_url: "https://runbooks.memorai.com/registration-rate"
+
+      # Memory Creation Rate Drop
+      - alert: MemoryCreationRateDrop
+        expr: rate(memorai_memories_created_total[1h]) < 50
+        for: 30m
+        labels:
+          severity: warning
+          component: business
+          team: product
+        annotations:
+          summary: "Memory creation rate below threshold"
+          description: "Memory creation rate is {{ $value }} memories per hour"
+          runbook_url: "https://runbooks.memorai.com/memory-creation"
+
+      # Failed Payment Processing
+      - alert: FailedPayments
+        expr: increase(memorai_payment_failures_total[1h]) > 5
+        for: 5m
+        labels:
+          severity: critical
+          component: business
+          team: revenue
+        annotations:
+          summary: "High payment failure rate"
+          description: "{{ $value }} payment failures in the last hour"
+          runbook_url: "https://runbooks.memorai.com/payment-failures"
+
+      # API Rate Limit Hits
+      - alert: APIRateLimitHits
+        expr: increase(memorai_rate_limit_hits_total[5m]) > 100
+        for: 2m
+        labels:
+          severity: warning
+          component: api
+          team: platform
+        annotations:
+          summary: "High API rate limit hits"
+          description: "{{ $value }} rate limit hits in the last 5 minutes"
+          runbook_url: "https://runbooks.memorai.com/rate-limits"
+
+  # ===================================
+  # SECURITY ALERTS
+  # ===================================
+  - name: memorai.security
+    interval: 60s
+    rules:
+      # Failed Login Attempts
+      - alert: HighFailedLoginAttempts
+        expr: increase(memorai_failed_login_attempts_total[5m]) > 50
+        for: 1m
+        labels:
+          severity: warning
+          component: security
+          team: security
+        annotations:
+          summary: "High number of failed login attempts"
+          description: "{{ $value }} failed login attempts in the last 5 minutes"
+          runbook_url: "https://runbooks.memorai.com/failed-logins"
+
+      # Suspicious API Activity
+      - alert: SuspiciousAPIActivity
+        expr: increase(memorai_suspicious_requests_total[10m]) > 20
+        for: 2m
+        labels:
+          severity: critical
+          component: security
+          team: security
+        annotations:
+          summary: "Suspicious API activity detected"
+          description: "{{ $value }} suspicious requests in the last 10 minutes"
+          runbook_url: "https://runbooks.memorai.com/suspicious-activity"
+
+      # SSL Certificate Expiry
+      - alert: SSLCertificateExpiringSoon
+        expr: probe_ssl_earliest_cert_expiry < 7 * 24 * 3600
+        for: 1h
+        labels:
+          severity: warning
+          component: security
+          team: platform
+        annotations:
+          summary: "SSL certificate expiring soon"
+          description: "SSL certificate for {{ $labels.instance }} expires in {{ $value | humanizeDuration }}"
+          runbook_url: "https://runbooks.memorai.com/ssl-expiry"
+
+  # ===================================
+  # INFRASTRUCTURE ALERTS
+  # ===================================
+  - name: memorai.infrastructure
+    interval: 120s
+    rules:
+      # Container Restart Alert
+      - alert: ContainerRestarting
+        expr: increase(container_restart_count[1h]) > 3
+        for: 5m
+        labels:
+          severity: warning
+          component: infrastructure
+          team: platform
+        annotations:
+          summary: "Container restarting frequently"
+          description: "Container {{ $labels.name }} has restarted {{ $value }} times in the last hour"
+          runbook_url: "https://runbooks.memorai.com/container-restarts"
+
+      # Load Balancer Health
+      - alert: LoadBalancerUnhealthy
+        expr: nginx_up != 1
+        for: 2m
+        labels:
+          severity: critical
+          component: infrastructure
+          team: platform
+        annotations:
+          summary: "Load balancer unhealthy"
+          description: "NGINX load balancer is not responding"
+          runbook_url: "https://runbooks.memorai.com/load-balancer"
+
+      # Backup Failure
+      - alert: BackupFailure
+        expr: time() - memorai_last_successful_backup_timestamp > 86400
+        for: 1h
+        labels:
+          severity: critical
+          component: infrastructure
+          team: platform
+        annotations:
+          summary: "Database backup failure"
+          description: "No successful backup in the last 24 hours"
+          runbook_url: "https://runbooks.memorai.com/backup-failure"

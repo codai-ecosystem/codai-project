@@ -1,0 +1,432 @@
+# RomAI AGI Day 8 - GPU-Accelerated Cloud Infrastructure
+# Advanced optimization with CUDA acceleration and global scale deployment
+
+version: '3.8'
+
+services:
+  # RomAI AGI GPU-Accelerated Model Server - Day 8 Enhanced
+  romai-agi-gpu:
+    build:
+      context: .
+      dockerfile: apps/romai/Dockerfile.gpu
+      target: production
+    container_name: romai-agi-gpu-server
+    runtime: nvidia  # Enable GPU access
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - CUDA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      - PYTHONPATH=/app
+      - MODEL_CACHE_DIR=/app/cache
+      - LOG_LEVEL=INFO
+      - ENVIRONMENT=production
+      - AGI_MODE=gpu_optimized
+      - TORCH_NUM_THREADS=8
+      - OMP_NUM_THREADS=8
+      - PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512
+      - REDIS_URL=redis://redis-cluster:6379/0
+      - POSTGRES_URL=postgresql://romai:romai_secure_2025@postgres-primary:5432/romai_metrics
+      - HUGGINGFACE_HUB_CACHE=/app/cache/huggingface
+      - TRANSFORMERS_CACHE=/app/cache/transformers
+      - ENABLE_GPU_ACCELERATION=true
+      - MODEL_QUANTIZATION=true
+      - BATCH_SIZE=32
+      - MAX_SEQUENCE_LENGTH=512
+    ports:
+      - "8000:8000"
+      - "8001:8001"  # GPU metrics endpoint
+    volumes:
+      - agi_gpu_cache:/app/cache
+      - agi_gpu_logs:/app/logs
+      - agi_gpu_models:/app/cache/huggingface
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw  # For GPU debugging if needed
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+        limits:
+          memory: 16G
+          cpus: '8.0'
+        restart_policy:
+          condition: on-failure
+          delay: 10s
+          max_attempts: 3
+    healthcheck:
+      test: ["CMD", "python", "health_check_gpu.py"]
+      interval: 30s
+      timeout: 15s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      redis-cluster:
+        condition: service_healthy
+      postgres-primary:
+        condition: service_healthy
+    networks:
+      - agi-network
+      - monitoring-network
+
+  # Redis Cluster for High-Performance Caching
+  redis-cluster:
+    image: redis:7-alpine
+    container_name: romai-redis-cluster
+    command: redis-server --cluster-enabled yes --cluster-config-file nodes.conf --cluster-node-timeout 5000 --appendonly yes --maxmemory 4gb --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+      - "16379:16379"  # Cluster bus
+    environment:
+      - REDIS_PASSWORD=romai_cache_2025
+    volumes:
+      - redis_cluster_data:/data
+      - redis_cluster_config:/usr/local/etc/redis
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '2.0'
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - agi-network
+
+  # PostgreSQL Primary for Metrics and Analytics
+  postgres-primary:
+    image: postgres:15-alpine
+    container_name: romai-postgres-primary
+    environment:
+      - POSTGRES_DB=romai_metrics
+      - POSTGRES_USER=romai
+      - POSTGRES_PASSWORD=romai_secure_2025
+      - POSTGRES_REPLICATION_MODE=master
+      - POSTGRES_REPLICATION_USER=replicator
+      - POSTGRES_REPLICATION_PASSWORD=repl_secure_2025
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_primary_data:/var/lib/postgresql/data
+      - ./postgres/init-scripts:/docker-entrypoint-initdb.d
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '2.0'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U romai -d romai_metrics"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - agi-network
+
+  # NGINX GPU-Optimized Load Balancer
+  nginx-gpu-lb:
+    image: nginx:alpine
+    container_name: romai-nginx-gpu-lb
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"  # Admin interface
+    volumes:
+      - ./docker/nginx/nginx-gpu.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/ssl:/etc/nginx/ssl
+      - nginx_gpu_logs:/var/log/nginx
+    environment:
+      - NGINX_WORKER_PROCESSES=auto
+      - NGINX_WORKER_CONNECTIONS=4096
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1.0'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      - romai-agi-gpu
+    networks:
+      - agi-network
+      - external-network
+
+  # Prometheus Enhanced Monitoring
+  prometheus-enhanced:
+    image: prom/prometheus:latest
+    container_name: romai-prometheus-enhanced
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=30d'
+      - '--storage.tsdb.retention.size=50GB'
+      - '--web.enable-lifecycle'
+      - '--web.enable-admin-api'
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./docker/prometheus/prometheus-gpu.yml:/etc/prometheus/prometheus.yml
+      - ./docker/prometheus/rules:/etc/prometheus/rules
+      - prometheus_enhanced_data:/prometheus
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '2.0'
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - monitoring-network
+
+  # Grafana GPU Analytics Dashboard
+  grafana-gpu:
+    image: grafana/grafana:latest
+    container_name: romai-grafana-gpu
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=romai_grafana_2025
+      - GF_INSTALL_PLUGINS=grafana-gpu-app,nvidia-gpu-monitoring
+      - GF_FEATURE_TOGGLES_ENABLE=publicDashboards
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./docker/grafana/provisioning:/etc/grafana/provisioning
+      - ./docker/grafana/dashboards:/var/lib/grafana/dashboards
+      - grafana_gpu_data:/var/lib/grafana
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      - prometheus-enhanced
+    networks:
+      - monitoring-network
+
+  # GPU Metrics Exporter
+  gpu-metrics-exporter:
+    image: nvcr.io/nvidia/k8s/dcgm-exporter:3.1.8-3.1.5-ubuntu20.04
+    container_name: romai-gpu-metrics
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    ports:
+      - "9400:9400"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    cap_add:
+      - SYS_ADMIN
+    networks:
+      - monitoring-network
+
+  # Node Exporter for System Metrics
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: romai-node-exporter
+    command:
+      - '--path.rootfs=/host'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - "9100:9100"
+    volumes:
+      - /:/host:ro,rslave
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+          cpus: '0.5'
+    networks:
+      - monitoring-network
+
+  # AlertManager for Intelligent Alerting
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: romai-alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./docker/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - alertmanager_data:/alertmanager
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+    networks:
+      - monitoring-network
+
+  # Jaeger for Distributed Tracing
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: romai-jaeger
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    ports:
+      - "16686:16686"  # Jaeger UI
+      - "14268:14268"  # HTTP collector
+      - "14250:14250"  # gRPC collector
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+    networks:
+      - monitoring-network
+
+  # Elasticsearch for Log Aggregation
+  elasticsearch:
+    image: elasticsearch:8.10.0
+    container_name: romai-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '2.0'
+    networks:
+      - monitoring-network
+
+  # Kibana for Log Visualization
+  kibana:
+    image: kibana:8.10.0
+    container_name: romai-kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+    depends_on:
+      - elasticsearch
+    networks:
+      - monitoring-network
+
+  # Vector for Log Collection
+  vector:
+    image: timberio/vector:latest-alpine
+    container_name: romai-vector
+    volumes:
+      - ./docker/vector/vector.toml:/etc/vector/vector.toml
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - agi_gpu_logs:/app/logs:ro
+      - nginx_gpu_logs:/var/log/nginx:ro
+    environment:
+      - VECTOR_CONFIG=/etc/vector/vector.toml
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+    depends_on:
+      - elasticsearch
+    networks:
+      - monitoring-network
+      - agi-network
+
+# Networks for service isolation and communication
+networks:
+  agi-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+  monitoring-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
+  external-network:
+    driver: bridge
+
+# Persistent volumes for data and optimization
+volumes:
+  # AGI GPU-optimized volumes
+  agi_gpu_cache:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/agi-gpu-cache
+  agi_gpu_logs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/agi-gpu-logs
+  agi_gpu_models:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/agi-gpu-models
+
+  # Database volumes
+  redis_cluster_data:
+    driver: local
+  redis_cluster_config:
+    driver: local
+  postgres_primary_data:
+    driver: local
+
+  # Monitoring volumes
+  prometheus_enhanced_data:
+    driver: local
+  grafana_gpu_data:
+    driver: local
+  alertmanager_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+
+  # Log volumes
+  nginx_gpu_logs:
+    driver: local
+
+# Configuration for GPU optimization
+x-gpu-optimization: &gpu-optimization
+  deploy:
+    resources:
+      reservations:
+        devices:
+          - driver: nvidia
+            count: all
+            capabilities: [gpu]
+
+# Environment template for production
+x-production-env: &production-env
+  ENVIRONMENT: production
+  LOG_LEVEL: INFO
+  METRICS_ENABLED: true
+  TRACING_ENABLED: true
+  GPU_OPTIMIZATION: true

@@ -1,32 +1,32 @@
 {
   "users": [
     {
-      "id": "admin_1754087086769_eg4y4t8ab",
+      "id": "admin_1754218985691_b2lng01bd",
       "username": "admin",
       "email": "admin@codai.ro",
-      "password": "$2b$12$yESeWyMVQMHWYh320UCpqOJHSEewtNb6i5Y0EE/Ibvj5h2Jshsx8m",
+      "password": "$2b$12$4SrsjMC7pcdXXA.qSxvHBOphNulYWdmkNPmx4hv//mYtKDeowtLHW",
       "profile": {
         "name": "Admin User"
       },
       "role": "admin",
       "isActive": true,
       "emailVerified": true,
-      "createdAt": "2025-08-01T22:24:46.769Z",
-      "updatedAt": "2025-08-01T22:24:46.769Z"
+      "createdAt": "2025-08-03T11:03:05.691Z",
+      "updatedAt": "2025-08-03T11:03:05.691Z"
     },
     {
-      "id": "test_1754087086976_6omc9g30l",
+      "id": "test_1754218985901_46m8wfgfe",
       "username": "testuser",
       "email": "test@codai.ro",
-      "password": "$2b$12$55pawwMFo/O26Dcs/zfClekxiZzTZkXtMvI6gOa/C2h.5AjOt.wJW",
+      "password": "$2b$12$HeBU6wm.qQD423W8PLRAyuF79cgG15PHsiL7A7GU/.QofrgVfZcvi",
       "profile": {
         "name": "Test User"
       },
       "role": "user",
       "isActive": true,
       "emailVerified": true,
-      "createdAt": "2025-08-01T22:24:46.975Z",
-      "updatedAt": "2025-08-01T22:24:46.975Z"
+      "createdAt": "2025-08-03T11:03:05.900Z",
+      "updatedAt": "2025-08-03T11:03:05.900Z"
     }
   ],
   "sessions": [],

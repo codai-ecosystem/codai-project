@@ -3,7 +3,7 @@
  * Implements algorithmic trading, portfolio analytics, and AI-powered investment recommendations
  */
 
-import { AzureOpenAIService } from '@codai/azure-openai'
+import { AzureOpenAIService } from '../src/lib/azure-openai'
 
 export interface Portfolio {
   id: string
@@ -92,9 +92,13 @@ export class TradingPortfolioService {
   ]
 
   constructor() {
-    // TODO: Fix Azure OpenAI service integration
-    // this.azureOpenAI = AzureOpenAIService.getInstance()
-    this.azureOpenAI = null as any // Mock for now
+    // Initialize Azure OpenAI service
+    this.azureOpenAI = new AzureOpenAIService({
+      apiKey: process.env.AZURE_OPENAI_API_KEY || 'dev-key',
+      endpoint: process.env.AZURE_OPENAI_ENDPOINT || 'https://dev.openai.azure.com',
+      apiVersion: '2023-12-01-preview',
+      deploymentName: 'gpt-4'
+    })
   }
 
   /**
@@ -365,7 +369,7 @@ export class TradingPortfolioService {
         Furnizează recomandarea în format JSON cu: action (BUY/SELL/HOLD), confidence (0-100), reasoning, targetPrice, stopLoss.
       `
 
-      const aiResponse = await this.azureOpenAI.generateCompletion([
+      const aiResponse = await this.azureOpenAI.generateChatCompletion([
         {
           role: 'system',
           content: 'Ești un expert în analiză financiară și trading algoritmmic pentru piața română.'
@@ -377,7 +381,7 @@ export class TradingPortfolioService {
       ])
 
       // Extract text content from AI response and parse signal
-      const responseText = aiResponse.success ? (aiResponse.data || '') : ''
+      const responseText = aiResponse.choices?.[0]?.message?.content || ''
       const signalData = this.parseAISignalResponse(responseText)
 
       return {

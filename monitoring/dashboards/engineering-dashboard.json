@@ -1,0 +1,78 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "CODAI Ecosystem - Engineering Dashboard",
+    "tags": ["codai", "engineering"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "CBD Database Performance",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(cbd_operations_total[5m])",
+            "legendFormat": "Operations/sec"
+          },
+          {
+            "expr": "cbd_query_duration_seconds{quantile=\"0.95\"}",
+            "legendFormat": "Query Time P95"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Gateway Throughput",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(gateway_requests_total[5m])",
+            "legendFormat": "Requests/sec"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Memory Usage by Service",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "process_resident_memory_bytes / 1024 / 1024",
+            "legendFormat": "{{ job }} Memory (MB)"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "CPU Usage by Service",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(process_cpu_seconds_total[5m]) * 100",
+            "legendFormat": "{{ job }} CPU %"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Network I/O",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(network_bytes_received_total[5m])",
+            "legendFormat": "Bytes Received/sec"
+          },
+          {
+            "expr": "rate(network_bytes_sent_total[5m])",
+            "legendFormat": "Bytes Sent/sec"
+          }
+        ]
+      }
+    ],
+    "time": {
+      "from": "now-4h",
+      "to": "now"
+    },
+    "refresh": "15s"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "Output": "Script file not found: .\\scripts\\test-phase2-api.ps1",
+  "Status": "SCRIPT_NOT_FOUND",
+  "Name": "Phase 2: API Integration",
+  "ExitCode": -1,
+  "Required": {
+    "IsPresent": true
+  },
+  "Duration": 0
+}

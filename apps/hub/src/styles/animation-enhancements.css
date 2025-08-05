@@ -1,0 +1,621 @@
+/* Week 2 Phase 2 Advanced Animations - Hub Service Integration CSS */
+/* Service coordination and ecosystem management animations */
+
+/* Core Animation Utilities */
+.animate-container {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+}
+
+/* Hub Coordination Animations */
+@keyframes hubSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes hubFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes hubScaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Service Status Animations */
+@keyframes serviceOnline {
+
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+    }
+
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+    }
+}
+
+@keyframes serviceOffline {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(0.95);
+    }
+}
+
+@keyframes servicePending {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Dashboard Grid Animations */
+@keyframes gridItemHover {
+    from {
+        transform: translateY(0) scale(1);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    to {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
+    }
+}
+
+@keyframes metricCounter {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Connection Line Animations */
+@keyframes connectionPulse {
+
+    0%,
+    100% {
+        stroke-dashoffset: 0;
+        stroke-opacity: 0.5;
+    }
+
+    50% {
+        stroke-dashoffset: 10;
+        stroke-opacity: 1;
+    }
+}
+
+@keyframes networkFlow {
+    0% {
+        stroke-dasharray: 0 100;
+    }
+
+    100% {
+        stroke-dasharray: 100 0;
+    }
+}
+
+/* Coordination Animations */
+@keyframes coordinationSync {
+
+    0%,
+    100% {
+        transform: translateY(0);
+        background-color: #3b82f6;
+    }
+
+    25% {
+        transform: translateY(-2px);
+        background-color: #10b981;
+    }
+
+    50% {
+        transform: translateY(-4px);
+        background-color: #8b5cf6;
+    }
+
+    75% {
+        transform: translateY(-2px);
+        background-color: #f59e0b;
+    }
+}
+
+/* Health Monitor Animations */
+@keyframes healthPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1);
+    }
+}
+
+@keyframes healthAlert {
+
+    0%,
+    100% {
+        background-color: #ef4444;
+    }
+
+    50% {
+        background-color: #f97316;
+    }
+}
+
+/* Progress and Loading Animations */
+@keyframes progressGrow {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: var(--progress-width, 100%);
+    }
+}
+
+@keyframes spinSlow {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes dotPulse {
+
+    0%,
+    20% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    80%,
+    100% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+}
+
+/* Interactive Button Animations */
+@keyframes buttonPress {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(0.98);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes buttonSuccess {
+    0% {
+        background-color: #3b82f6;
+    }
+
+    50% {
+        background-color: #10b981;
+        transform: scale(1.02);
+    }
+
+    100% {
+        background-color: #3b82f6;
+        transform: scale(1);
+    }
+}
+
+/* Modal and Dialog Animations */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modalSlideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Ecosystem Network Animations */
+@keyframes nodeConnection {
+    0% {
+        stroke-dasharray: 0 100;
+        opacity: 0;
+    }
+
+    50% {
+        stroke-dasharray: 50 50;
+        opacity: 0.7;
+    }
+
+    100% {
+        stroke-dasharray: 100 0;
+        opacity: 1;
+    }
+}
+
+@keyframes nodeFloat {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+/* Animation Classes */
+.animate-hub-slide-in {
+    animation: hubSlideIn 0.6s ease-out forwards;
+}
+
+.animate-hub-fade-in {
+    animation: hubFadeIn 0.5s ease-out forwards;
+}
+
+.animate-hub-scale-in {
+    animation: hubScaleIn 0.4s ease-out forwards;
+}
+
+.animate-service-online {
+    animation: serviceOnline 2s ease-in-out infinite;
+}
+
+.animate-service-offline {
+    animation: serviceOffline 1s ease-in-out infinite;
+}
+
+.animate-service-pending {
+    animation: servicePending 1s linear infinite;
+}
+
+.animate-grid-item-hover:hover {
+    animation: gridItemHover 0.3s ease-out forwards;
+}
+
+.animate-metric-counter {
+    animation: metricCounter 0.5s ease-out forwards;
+}
+
+.animate-connection-pulse {
+    animation: connectionPulse 2s ease-in-out infinite;
+}
+
+.animate-network-flow {
+    animation: networkFlow 2s ease-in-out infinite;
+}
+
+.animate-coordination-sync {
+    animation: coordinationSync 3s ease-in-out infinite;
+}
+
+.animate-health-pulse {
+    animation: healthPulse 2s ease-in-out infinite;
+}
+
+.animate-health-alert {
+    animation: healthAlert 1s ease-in-out infinite;
+}
+
+.animate-progress-grow {
+    animation: progressGrow 1s ease-out forwards;
+}
+
+.animate-spin-slow {
+    animation: spinSlow 3s linear infinite;
+}
+
+.animate-dot-pulse {
+    animation: dotPulse 1.4s ease-in-out infinite;
+}
+
+.animate-button-press:active {
+    animation: buttonPress 0.1s ease-out;
+}
+
+.animate-button-success {
+    animation: buttonSuccess 0.6s ease-out;
+}
+
+.animate-modal-fade-in {
+    animation: modalFadeIn 0.3s ease-out forwards;
+}
+
+.animate-modal-slide-down {
+    animation: modalSlideDown 0.4s ease-out forwards;
+}
+
+.animate-node-connection {
+    animation: nodeConnection 2s ease-out forwards;
+}
+
+.animate-node-float {
+    animation: nodeFloat 4s ease-in-out infinite;
+}
+
+/* Interactive States */
+.hub-card {
+    transition: all 0.3s ease-out;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+.hub-card:hover {
+    animation: gridItemHover 0.3s ease-out forwards;
+}
+
+.service-status-indicator {
+    transition: all 0.2s ease-out;
+    border-radius: 50%;
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+}
+
+.service-status-indicator.online {
+    background-color: #10b981;
+    animation: serviceOnline 2s ease-in-out infinite;
+}
+
+.service-status-indicator.offline {
+    background-color: #ef4444;
+    animation: serviceOffline 1s ease-in-out infinite;
+}
+
+.service-status-indicator.pending {
+    background-color: #f59e0b;
+    animation: servicePending 1s linear infinite;
+}
+
+.hub-button {
+    transition: all 0.2s ease-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.hub-button:active {
+    animation: buttonPress 0.1s ease-out;
+}
+
+.hub-button.success {
+    animation: buttonSuccess 0.6s ease-out;
+}
+
+/* Connection Visualization */
+.connection-line {
+    stroke: #3b82f6;
+    stroke-width: 2;
+    fill: none;
+    stroke-dasharray: 10 5;
+    animation: connectionPulse 2s ease-in-out infinite;
+}
+
+.network-node {
+    transition: all 0.3s ease-out;
+}
+
+.network-node:hover {
+    animation: nodeFloat 2s ease-in-out infinite;
+}
+
+/* Loading States */
+.loading-dots {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.loading-dots .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: currentColor;
+    animation: dotPulse 1.4s ease-in-out infinite;
+}
+
+.loading-dots .dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.loading-dots .dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+/* Progress Bars */
+.progress-bar {
+    background-color: #e5e7eb;
+    border-radius: 9999px;
+    overflow: hidden;
+    height: 8px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #10b981);
+    border-radius: 9999px;
+    transition: width 0.5s ease-out;
+    animation: progressGrow 1s ease-out forwards;
+}
+
+/* Service Grid Layout */
+.service-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.service-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease-out;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+.service-card:hover {
+    animation: gridItemHover 0.3s ease-out forwards;
+}
+
+/* Metric Cards */
+.metric-card {
+    text-align: center;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease-out;
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    animation: metricCounter 0.5s ease-out forwards;
+}
+
+/* Accessibility - Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .animate-service-online,
+    .animate-service-pending,
+    .animate-health-pulse,
+    .animate-coordination-sync,
+    .animate-connection-pulse,
+    .animate-network-flow,
+    .animate-spin-slow,
+    .animate-dot-pulse,
+    .animate-node-float {
+        animation: none !important;
+    }
+}
+
+/* Performance optimizations */
+.animate-container,
+.animate-hub-slide-in,
+.animate-hub-fade-in,
+.animate-hub-scale-in,
+.animate-grid-item-hover,
+.hub-card,
+.service-card {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+
+    .service-card,
+    .metric-card {
+        background-color: #1f2937;
+        border-color: #374151;
+        color: white;
+    }
+
+    .connection-line {
+        stroke: #60a5fa;
+    }
+
+    .progress-bar {
+        background-color: #374151;
+    }
+}
+
+/* Stagger animation delays for multiple elements */
+.animate-stagger-1 {
+    animation-delay: 0ms;
+}
+
+.animate-stagger-2 {
+    animation-delay: 150ms;
+}
+
+.animate-stagger-3 {
+    animation-delay: 300ms;
+}
+
+.animate-stagger-4 {
+    animation-delay: 450ms;
+}
+
+.animate-stagger-5 {
+    animation-delay: 600ms;
+}
+
+.animate-stagger-6 {
+    animation-delay: 750ms;
+}

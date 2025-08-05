@@ -1,0 +1,40 @@
+{
+  "name": "memorai-cli",
+  "version": "1.0.0",
+  "description": "MemorAI Command Line Interface - Official CLI tool for managing memories",
+  "main": "memorai-cli.js",
+  "bin": {
+    "memorai": "./memorai-cli.js"
+  },
+  "scripts": {
+    "start": "node memorai-cli.js",
+    "help": "node memorai-cli.js --help",
+    "install-global": "npm install -g ."
+  },
+  "keywords": [
+    "memorai",
+    "cli",
+    "memory",
+    "ai",
+    "command-line",
+    "tool"
+  ],
+  "author": "MemorAI Team",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^11.0.0",
+    "inquirer": "^9.2.0",
+    "chalk": "^4.1.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/memorai/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/memorai/cli/issues"
+  },
+  "homepage": "https://memorai.ai"
+}

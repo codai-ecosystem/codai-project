@@ -1,0 +1,50 @@
+{
+  "name": "@codai/cli",
+  "version": "1.0.0",
+  "description": "CODAI Ecosystem CLI - Service management, deployment, and monitoring tools",
+  "main": "dist/index.js",
+  "bin": {
+    "codai": "./bin/codai"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "test": "vitest",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.ts"
+  },
+  "keywords": [
+    "codai",
+    "cli",
+    "ecosystem",
+    "microservices",
+    "deployment",
+    "monitoring"
+  ],
+  "author": "CODAI Team",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^12.0.0",
+    "chalk": "^5.3.0",
+    "axios": "^1.6.0",
+    "inquirer": "^9.2.0",
+    "ora": "^8.0.0",
+    "table": "^6.8.0",
+    "dotenv": "^16.3.0",
+    "ws": "^8.14.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/inquirer": "^9.0.0",
+    "@types/ws": "^8.5.0",
+    "typescript": "^5.0.0",
+    "tsx": "^4.0.0",
+    "vitest": "^1.0.0",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

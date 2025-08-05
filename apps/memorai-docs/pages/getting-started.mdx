@@ -1,0 +1,193 @@
+---
+title: Getting Started with MemorAI
+description: Quick start guide to building your first application with MemorAI platform
+---
+
+# Getting Started
+
+Welcome to MemorAI! This guide will help you build your first application with our AI memory infrastructure platform.
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+- **Node.js 18+** installed on your system
+- **npm** or **pnpm** package manager
+- A **MemorAI account** (sign up at [memorai.ro](https://memorai.ro))
+
+## Installation
+
+Install the MemorAI SDK in your project:
+
+```bash
+npm install @memorai/sdk
+# or
+pnpm add @memorai/sdk
+```
+
+## Authentication
+
+First, obtain your API key from the [MemorAI Dashboard](https://memorai.ro/dashboard):
+
+1. Sign in to your MemorAI account
+2. Navigate to **Settings > API Keys**
+3. Click **Generate New Key**
+4. Copy your API key
+
+## Initialize Your Client
+
+Create a new MemorAI client instance:
+
+```typescript
+import { MemorAIClient } from '@memorai/sdk';
+
+const client = new MemorAIClient({
+  apiKey: 'your-api-key-here',
+  baseURL: 'https://api.memorai.ro' // Optional, defaults to production
+});
+```
+
+## Your First Memory
+
+Let's create and retrieve your first memory:
+
+```typescript
+async function quickStart() {
+  try {
+    // Create a memory
+    const memory = await client.memories.create({
+      content: 'My first MemorAI memory!',
+      metadata: {
+        type: 'note',
+        tags: ['getting-started', 'tutorial']
+      }
+    });
+    
+    console.log('Memory created:', memory.id);
+    
+    // Search for memories
+    const results = await client.memories.search({
+      query: 'first memory',
+      limit: 10
+    });
+    
+    console.log('Found memories:', results.data.length);
+    
+    // Retrieve a specific memory
+    const retrieved = await client.memories.get(memory.id);
+    console.log('Retrieved memory:', retrieved.content);
+    
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+quickStart();
+```
+
+## Environment Variables
+
+For security, store your API key in environment variables:
+
+Create a `.env.local` file:
+
+```env
+MEMORAI_API_KEY=your-api-key-here
+MEMORAI_BASE_URL=https://api.memorai.ro
+```
+
+Update your client initialization:
+
+```typescript
+const client = new MemorAIClient({
+  apiKey: process.env.MEMORAI_API_KEY!,
+  baseURL: process.env.MEMORAI_BASE_URL
+});
+```
+
+## Real-time Updates
+
+MemorAI supports real-time memory updates via WebSocket connections:
+
+```typescript
+// Subscribe to memory updates
+const subscription = client.realtime.subscribe('memories', {
+  onMemoryCreated: (memory) => {
+    console.log('New memory created:', memory.id);
+  },
+  onMemoryUpdated: (memory) => {
+    console.log('Memory updated:', memory.id);
+  },
+  onMemoryDeleted: (memoryId) => {
+    console.log('Memory deleted:', memoryId);
+  }
+});
+
+// Unsubscribe when done
+subscription.unsubscribe();
+```
+
+## Next Steps
+
+Now that you have MemorAI running, explore these guides:
+
+### Core Concepts
+- [Understanding Memories](/concepts/memories)
+- [Vector Search & Indexing](/concepts/search)
+- [Metadata & Tags](/concepts/metadata)
+
+### Advanced Features
+- [Real-time Collaboration](/features/realtime)
+- [Collections & Organization](/features/collections)
+- [Security & Permissions](/features/security)
+
+### SDK References
+- [TypeScript SDK](/sdk/typescript)
+- [REST API](/api/overview)
+- [CLI Tools](/tools/cli)
+
+## Example Applications
+
+Check out these complete examples:
+
+- **[AI Assistant](https://github.com/codai-project/memorai/tree/main/examples/ai-assistant)**: Build a contextual AI assistant with persistent memory
+- **[Knowledge Base](https://github.com/codai-project/memorai/tree/main/examples/knowledge-base)**: Create a searchable knowledge management system
+- **[Team Collaboration](https://github.com/codai-project/memorai/tree/main/examples/team-collab)**: Enable shared memory across team members
+
+## Common Issues
+
+### Authentication Errors
+If you receive authentication errors, verify:
+- Your API key is correct
+- The key hasn't expired
+- You're using the correct base URL
+
+### Connection Issues
+For connection problems:
+- Check your internet connection
+- Verify the API endpoint is reachable
+- Review firewall settings
+
+### Rate Limiting
+MemorAI implements rate limiting:
+- Free tier: 1,000 requests/hour
+- Pro tier: 10,000 requests/hour
+- Enterprise: Custom limits
+
+## Getting Help
+
+Need assistance? We're here to help:
+
+- **Documentation**: Browse our [comprehensive guides](/api/overview)
+- **Discord**: Join our [community server](https://discord.gg/memorai)
+- **GitHub**: Check [issues and discussions](https://github.com/codai-project/memorai)
+- **Support**: Email us at [support@memorai.ro](mailto:support@memorai.ro)
+
+---
+
+<div className="bg-blue-50 p-6 rounded-lg mt-8">
+  <h3 className="text-lg font-semibold mb-2">🎉 You're all set!</h3>
+  <p className="text-gray-700">
+    You've successfully created your first MemorAI application. Continue exploring our documentation to unlock the full power of AI memory infrastructure.
+  </p>
+</div>

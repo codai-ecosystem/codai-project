@@ -1,0 +1,18 @@
+{
+    "name": "phase9-ui-ux-testing",
+    "version": "1.0.0",
+    "description": "Phase 9: UI/UX Testing Validation for CODAI Project",
+    "scripts": {
+        "test": "playwright test",
+        "test:ui": "playwright test --grep=\"UI Testing\"",
+        "test:ux": "playwright test --grep=\"UX Testing\"",
+        "test:visual": "playwright test --grep=\"Visual Regression\"",
+        "test:interaction": "playwright test --grep=\"Interaction\"",
+        "test:usability": "playwright test --grep=\"Usability\"",
+        "test:report": "playwright show-report"
+    },
+    "devDependencies": {
+        "@playwright/test": "^1.40.0",
+        "pixelmatch": "^5.3.0"
+    }
+}

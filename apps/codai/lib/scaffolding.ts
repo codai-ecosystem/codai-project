@@ -215,8 +215,8 @@ export async function scaffoldProject(
       license: options.license || 'MIT',
       private: true,
       scripts: template.scripts,
-      dependencies: {},
-      devDependencies: {}
+      dependencies: {} as Record<string, string>,
+      devDependencies: {} as Record<string, string>
     }
 
     // Add dependencies

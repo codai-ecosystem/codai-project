@@ -1,6 +1,6 @@
 {
   "name": "@codai/auth",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "Universal authentication utilities for the Codai ecosystem",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -18,19 +18,19 @@
     "type-check": "pnpm exec tsc --noEmit"
   },
   "dependencies": {
-    "@codai/core": "workspace:*",
+    "@codai/core": "^1.1.2",
     "bcryptjs": "^2.4.3",
     "jose": "^5.9.6",
     "js-cookie": "^3.0.5",
-    "zustand": "^5.0.3",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
     "zod": "^3.23.8",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
-    "@types/js-cookie": "^3.0.6",
     "@types/jest": "^30.0.0",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^24.0.13",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",

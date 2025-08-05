@@ -20,10 +20,10 @@ $serviceMap = @{
         startArgs = @("src/start.ts")
     }
     'gateway' = @{ 
-        port = 3000
+        port = 4003
         name = "API Gateway"
         path = "apps/gateway"
-        healthEndpoint = "http://localhost:3000/health"
+        healthEndpoint = "http://localhost:4003/health"
         startCommand = "pnpm"
         startArgs = @("dev")
     }

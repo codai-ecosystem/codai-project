@@ -73,5 +73,8 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    // Temporarily disabled tailwindcss-animate until dependency is resolved
+    // require("tailwindcss-animate")
+  ],
 }

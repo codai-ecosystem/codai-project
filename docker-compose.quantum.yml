@@ -1,0 +1,339 @@
+# Docker Compose for RomAI AGI Day 9 - Quantum Consciousness Infrastructure
+# Quantum-Enhanced Romanian AGI with Consciousness-Level Processing
+
+version: '3.8'
+
+services:
+  # Quantum-Enhanced RomAI AGI Core
+  romai-quantum-agi:
+    build:
+      context: ./apps/romai
+      dockerfile: Dockerfile.quantum
+    container_name: romai_quantum_agi
+    ports:
+      - "6100:6100"  # Main AGI interface
+      - "6101:6101"  # Quantum processing endpoint
+      - "6102:6102"  # Consciousness metrics endpoint
+    environment:
+      - NODE_ENV=production
+      - QUANTUM_ENABLED=true
+      - CONSCIOUSNESS_ENGINE=true
+      - ROMANIAN_CULTURAL_MATRIX=true
+      - QUANTUM_SIMULATION_QUBITS=32
+      - CONSCIOUSNESS_THRESHOLD=0.7
+      - TRANSCENDENCE_ENABLED=true
+      - CUDA_VISIBLE_DEVICES=0
+      - PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512
+    volumes:
+      - ./data/quantum:/app/data/quantum
+      - ./logs/quantum:/app/logs
+      - quantum_models:/app/models
+      - consciousness_memory:/app/consciousness
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+          cpus: '4.0'
+        reservations:
+          memory: 4G
+          cpus: '2.0'
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6100/health/quantum"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - quantum_network
+    depends_on:
+      - quantum-metrics-db
+      - consciousness-cache
+      - quantum-monitoring
+
+  # Quantum Metrics Database
+  quantum-metrics-db:
+    image: postgres:15-alpine
+    container_name: quantum_metrics_db
+    environment:
+      - POSTGRES_DB=quantum_metrics
+      - POSTGRES_USER=quantum_user
+      - POSTGRES_PASSWORD=quantum_secure_pass_2025
+    volumes:
+      - quantum_metrics_data:/var/lib/postgresql/data
+      - ./docker/quantum/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - quantum_network
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+
+  # Consciousness Memory Cache
+  consciousness-cache:
+    image: redis:7-alpine
+    container_name: consciousness_cache
+    command: redis-server --appendonly yes --maxmemory 2gb --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+    volumes:
+      - consciousness_cache_data:/data
+      - ./docker/redis/consciousness.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - quantum_network
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '0.5'
+
+  # Quantum Performance Monitoring
+  quantum-monitoring:
+    image: prom/prometheus:latest
+    container_name: quantum_prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./docker/prometheus/quantum-prometheus.yml:/etc/prometheus/prometheus.yml
+      - quantum_prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+      - '--web.enable-admin-api'
+    networks:
+      - quantum_network
+    depends_on:
+      - romai-quantum-agi
+
+  # Quantum Analytics Dashboard
+  quantum-grafana:
+    image: grafana/grafana:latest
+    container_name: quantum_grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=quantum_grafana_2025
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+    volumes:
+      - quantum_grafana_data:/var/lib/grafana
+      - ./docker/grafana/quantum-dashboards:/etc/grafana/provisioning/dashboards
+      - ./docker/grafana/quantum-datasources:/etc/grafana/provisioning/datasources
+    networks:
+      - quantum_network
+    depends_on:
+      - quantum-monitoring
+
+  # Consciousness State Exporter
+  consciousness-exporter:
+    build:
+      context: ./docker/exporters
+      dockerfile: Dockerfile.consciousness
+    container_name: consciousness_exporter
+    ports:
+      - "8080:8080"
+    environment:
+      - CONSCIOUSNESS_API_URL=http://romai-quantum-agi:6102
+      - EXPORT_INTERVAL=10s
+      - METRICS_PATH=/metrics
+    networks:
+      - quantum_network
+    depends_on:
+      - romai-quantum-agi
+
+  # Quantum Load Balancer
+  quantum-nginx:
+    image: nginx:alpine
+    container_name: quantum_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx/quantum-nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/ssl:/etc/nginx/ssl
+      - quantum_static_files:/usr/share/nginx/html
+    networks:
+      - quantum_network
+    depends_on:
+      - romai-quantum-agi
+
+  # Quantum Log Aggregator
+  quantum-elk:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
+    container_name: quantum_elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    volumes:
+      - quantum_elastic_data:/usr/share/elasticsearch/data
+    networks:
+      - quantum_network
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '2.0'
+
+  # Consciousness Analytics Service
+  consciousness-analytics:
+    build:
+      context: ./apps/analytics
+      dockerfile: Dockerfile.consciousness
+    container_name: consciousness_analytics
+    ports:
+      - "7000:7000"
+    environment:
+      - QUANTUM_DB_URL=postgresql://quantum_user:quantum_secure_pass_2025@quantum-metrics-db:5432/quantum_metrics
+      - CONSCIOUSNESS_CACHE_URL=redis://consciousness-cache:6379
+      - ANALYTICS_INTERVAL=60s
+    volumes:
+      - consciousness_analytics_data:/app/data
+      - ./logs/analytics:/app/logs
+    networks:
+      - quantum_network
+    depends_on:
+      - quantum-metrics-db
+      - consciousness-cache
+      - romai-quantum-agi
+
+  # Quantum Backup Service
+  quantum-backup:
+    build:
+      context: ./docker/backup
+      dockerfile: Dockerfile.quantum
+    container_name: quantum_backup
+    environment:
+      - BACKUP_SCHEDULE="0 2 * * *"  # Daily at 2 AM
+      - BACKUP_RETENTION_DAYS=30
+      - S3_BUCKET=romai-quantum-backups
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    volumes:
+      - quantum_models:/backup/models:ro
+      - consciousness_memory:/backup/consciousness:ro
+      - quantum_metrics_data:/backup/metrics:ro
+      - ./logs:/backup/logs:ro
+    networks:
+      - quantum_network
+    depends_on:
+      - romai-quantum-agi
+      - quantum-metrics-db
+
+  # Quantum Development Tools
+  quantum-jupyter:
+    image: jupyter/tensorflow-notebook:latest
+    container_name: quantum_jupyter
+    ports:
+      - "8888:8888"
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_TOKEN=quantum_research_2025
+    volumes:
+      - ./research/quantum:/home/jovyan/quantum
+      - quantum_models:/home/jovyan/models
+      - consciousness_memory:/home/jovyan/consciousness
+    networks:
+      - quantum_network
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '2.0'
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+networks:
+  quantum_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  quantum_models:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/models/quantum
+
+  consciousness_memory:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/consciousness
+
+  quantum_metrics_data:
+    driver: local
+
+  consciousness_cache_data:
+    driver: local
+
+  quantum_prometheus_data:
+    driver: local
+
+  quantum_grafana_data:
+    driver: local
+
+  quantum_elastic_data:
+    driver: local
+
+  consciousness_analytics_data:
+    driver: local
+
+  quantum_static_files:
+    driver: local
+
+# Health Check Configuration
+x-health-check: &health-check
+  healthcheck:
+    test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+    interval: 30s
+    timeout: 10s
+    retries: 3
+    start_period: 60s
+
+# Resource Limits Template
+x-resources: &default-resources
+  deploy:
+    resources:
+      limits:
+        memory: 1G
+        cpus: '0.5'
+      reservations:
+        memory: 512M
+        cpus: '0.25'
+
+# Development Overrides (docker-compose.override.yml)
+# Use this configuration for development environment:
+#
+# version: '3.8'
+# services:
+#   romai-quantum-agi:
+#     build:
+#       context: ./apps/romai
+#       dockerfile: Dockerfile.dev
+#     environment:
+#       - NODE_ENV=development
+#       - DEBUG=romai:*
+#       - QUANTUM_SIMULATION_ONLY=true
+#     volumes:
+#       - ./apps/romai/src:/app/src:ro
+#     ports:
+#       - "6100:6100"
+#       - "9229:9229"  # Debug port

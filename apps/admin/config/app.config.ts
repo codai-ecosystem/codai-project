@@ -1,4 +1,4 @@
-import { AppConfig } from '@codai/shared-ui'
+import { AppConfig } from '../types/app.config'
 
 export const appConfig: AppConfig = {
   name: 'ADMIN',

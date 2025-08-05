@@ -9,7 +9,8 @@
     "styles"
   ],
   "scripts": {
-    "build": "pnpm exec tsc",
+    "build": "tsc",
+    "build:minimal": "tsc src/index-minimal.ts --outDir dist --declaration --declarationMap --jsx react-jsx --esModuleInterop --moduleResolution node",
     "dev": "tsc --watch",
     "lint": "pnpm exec eslint src --ext .ts,.tsx",
     "lint:fix": "pnpm exec eslint src --ext .ts,.tsx --fix",
@@ -60,6 +61,16 @@
       "import": "./dist/index.js",
       "require": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./gestures": {
+      "import": "./dist/gestures/index.js",
+      "require": "./dist/gestures/index.js",
+      "types": "./dist/gestures/index.d.ts"
+    },
+    "./middleware/security-headers": {
+      "import": "./dist/middleware/security-headers.js",
+      "require": "./dist/middleware/security-headers.js",
+      "types": "./dist/middleware/security-headers.d.ts"
     },
     "./styles": "./styles/globals.css",
     "./styles/design-system": "./styles/design-system.css",

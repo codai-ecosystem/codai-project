@@ -1,0 +1,71 @@
+# Gateway Service - Production Dockerfile
+# Multi-stage build for optimal performance and security
+
+# Stage 1: Build stage
+FROM node:24.1.0-alpine AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Install build dependencies
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    git
+
+# Copy package files
+COPY package.json package-lock.json* ./
+COPY tsconfig.json ./
+
+# Install dependencies
+RUN npm ci --only=production --no-audit --no-fund
+
+# Copy source code and build
+COPY src ./src
+RUN npm run build
+
+# Stage 2: Production stage
+FROM node:24.1.0-alpine AS production
+
+# Install security updates
+RUN apk upgrade --no-cache && \
+    apk add --no-cache \
+    dumb-init \
+    tzdata \
+    && rm -rf /var/cache/apk/*
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S gatewayuser -u 1001
+
+# Set working directory
+WORKDIR /app
+
+# Copy dependencies and built application
+COPY --from=builder --chown=gatewayuser:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=gatewayuser:nodejs /app/package.json ./
+COPY --from=builder --chown=gatewayuser:nodejs /app/dist ./dist
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV TZ=UTC
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD node -e "require('http').get('http://localhost:3000/health', (res) => { \
+        if (res.statusCode === 200) { process.exit(0); } else { process.exit(1); } \
+    }).on('error', () => process.exit(1));"
+
+# Switch to non-root user
+USER gatewayuser
+
+# Use dumb-init for proper signal handling
+ENTRYPOINT ["dumb-init", "--"]
+
+# Start the application
+CMD ["node", "dist/gateway.js"]

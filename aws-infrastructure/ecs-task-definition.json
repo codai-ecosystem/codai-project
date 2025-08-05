@@ -1,0 +1,156 @@
+{
+    "family": "romai-agi-task",
+    "networkMode": "awsvpc",
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "4096",
+    "memory": "8192",
+    "executionRoleArn": "arn:aws:iam::{AWS_ACCOUNT_ID}:role/ecsTaskExecutionRole",
+    "taskRoleArn": "arn:aws:iam::{AWS_ACCOUNT_ID}:role/ecsTaskRole",
+    "containerDefinitions": [
+        {
+            "name": "romai-agi",
+            "image": "{AWS_ACCOUNT_ID}.dkr.ecr.{AWS_REGION}.amazonaws.com/romai-agi:latest",
+            "essential": true,
+            "portMappings": [
+                {
+                    "containerPort": 8000,
+                    "protocol": "tcp"
+                }
+            ],
+            "environment": [
+                {
+                    "name": "ENVIRONMENT",
+                    "value": "production"
+                },
+                {
+                    "name": "AGI_MODE",
+                    "value": "production"
+                },
+                {
+                    "name": "LOG_LEVEL",
+                    "value": "INFO"
+                },
+                {
+                    "name": "REDIS_URL",
+                    "value": "redis://romai-redis.{AWS_REGION}.cache.amazonaws.com:6379"
+                },
+                {
+                    "name": "TORCH_NUM_THREADS",
+                    "value": "4"
+                },
+                {
+                    "name": "OMP_NUM_THREADS",
+                    "value": "4"
+                }
+            ],
+            "secrets": [
+                {
+                    "name": "DATABASE_URL",
+                    "valueFrom": "arn:aws:secretsmanager:{AWS_REGION}:{AWS_ACCOUNT_ID}:secret:romai-database-url"
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/romai-agi",
+                    "awslogs-region": "{AWS_REGION}",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "healthCheck": {
+                "command": [
+                    "CMD-SHELL",
+                    "curl -f http://localhost:8000/health || exit 1"
+                ],
+                "interval": 30,
+                "timeout": 5,
+                "retries": 3,
+                "startPeriod": 180
+            },
+            "mountPoints": [
+                {
+                    "sourceVolume": "agi-cache",
+                    "containerPath": "/app/cache",
+                    "readOnly": false
+                }
+            ],
+            "resourceRequirements": [
+                {
+                    "type": "InferenceAccelerator",
+                    "value": "eia2.medium"
+                }
+            ]
+        },
+        {
+            "name": "redis-sidecar",
+            "image": "redis:7-alpine",
+            "essential": false,
+            "portMappings": [
+                {
+                    "containerPort": 6379,
+                    "protocol": "tcp"
+                }
+            ],
+            "command": [
+                "redis-server",
+                "--maxmemory",
+                "1gb",
+                "--maxmemory-policy",
+                "allkeys-lru",
+                "--appendonly",
+                "yes"
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/romai-redis",
+                    "awslogs-region": "{AWS_REGION}",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "mountPoints": [
+                {
+                    "sourceVolume": "redis-data",
+                    "containerPath": "/data",
+                    "readOnly": false
+                }
+            ]
+        }
+    ],
+    "volumes": [
+        {
+            "name": "agi-cache",
+            "host": {}
+        },
+        {
+            "name": "redis-data",
+            "host": {}
+        }
+    ],
+    "placementConstraints": [
+        {
+            "type": "memberOf",
+            "expression": "attribute:ecs.instance-type =~ c5.*|m5.*|r5.*"
+        }
+    ],
+    "tags": [
+        {
+            "key": "Application",
+            "value": "RomAI-AGI"
+        },
+        {
+            "key": "Environment",
+            "value": "Production"
+        },
+        {
+            "key": "Version",
+            "value": "1.7.0"
+        },
+        {
+            "key": "Deployment",
+            "value": "Day-7"
+        }
+    ]
+}

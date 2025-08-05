@@ -2,7 +2,7 @@
 
 \*\*Comprehensive Service Architecture Overvie## 💬 Communication & Social Services
 
-### ConversAI Service (Port 3000)
+### ConversAI Service (Port 4700)
 
 - **Purpose**: Professional email service with AI-powered communication intelligence
 - **Technology**: Next.js 15 + OpenAI + Custom NLP + SMTP/IMAP integration
@@ -11,7 +11,7 @@
 - **Performance**: AI-enhanced composition, professional communication optimization
 - **Security**: End-to-end encryption, spam protection, GDPR/HIPAA compliance
 
-### AjutAI Service (Port 3000)
+### AjutAI Service (Port 4400)
 
 - **Purpose**: AI-powered customer support platform with Romanian language focus
 - **Technology**: Next.js 15 + OpenAI + Socket.io + Elasticsearch + PostgreSQL
@@ -37,7 +37,7 @@
 
 ## 📊 Analytics & Business Intelligence Services
 
-### AnalizAI Service (Port 3016)
+### AnalizAI Service (Port 4500)
 
 - **Purpose**: AI-powered analytics platform with real-time business intelligence
 - **Technology**: Next.js 14 + Chart.js + Recharts + PostgreSQL + Redis
@@ -120,7 +120,7 @@
 - **Performance**: AI-powered recommendations, automated quality assurance, revenue analytics
 - **Integration**: Payment processing, agent deployment, enterprise licensing, API marketplace
 
-### CumparAI Service (Port 3000)
+### CumparAI Service (Port 4800)
 
 - **Purpose**: Intelligent shopping platform with AI-powered e-commerce and marketplace features
 - **Technology**: Next.js 15 + PostgreSQL + MongoDB + Elasticsearch + TensorFlow + Stripe

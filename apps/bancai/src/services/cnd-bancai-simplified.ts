@@ -154,11 +154,11 @@ export class CNDBancAIService {
         const now = new Date();
 
         const newTransaction: Transaction = {
+            ...transaction,
             id,
             createdAt: now,
             riskScore,
-            complianceFlags,
-            ...transaction
+            complianceFlags
         };
 
         this.transactions.set(id, newTransaction);

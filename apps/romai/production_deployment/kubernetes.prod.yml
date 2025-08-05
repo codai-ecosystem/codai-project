@@ -1,0 +1,135 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: romai-agi-intelligence
+  namespace: production
+  labels:
+    app: romai-agi-intelligence
+    version: v1.0.0
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: romai-agi-intelligence
+  template:
+    metadata:
+      labels:
+        app: romai-agi-intelligence
+        version: v1.0.0
+    spec:
+      containers:
+      - name: romai-agi-intelligence
+        image: romai/agi-intelligence:latest
+        ports:
+        - containerPort: 6100
+          name: http
+        - containerPort: 9090
+          name: metrics
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "6100"
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: romai-secrets
+              key: db-host
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: romai-secrets
+              key: db-username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: romai-secrets
+              key: db-password
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 6100
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 6100
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/config
+        - name: data-volume
+          mountPath: /app/data
+      volumes:
+      - name: config-volume
+        configMap:
+          name: romai-config
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: romai-data-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: romai-agi-intelligence-service
+  namespace: production
+  labels:
+    app: romai-agi-intelligence
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 6100
+    protocol: TCP
+    name: http
+  - port: 9090
+    targetPort: 9090
+    protocol: TCP
+    name: metrics
+  selector:
+    app: romai-agi-intelligence
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: romai-agi-intelligence-hpa
+  namespace: production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: romai-agi-intelligence
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80

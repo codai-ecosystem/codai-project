@@ -1,0 +1,62 @@
+# SSL Proxy Server - Production Dockerfile
+# Optimized for SSL termination and ACME challenge handling
+
+# Stage 1: Production stage (single stage for proxy)
+FROM node:24.1.0-alpine AS production
+
+# Install security updates and SSL tools
+RUN apk upgrade --no-cache && \
+    apk add --no-cache \
+    dumb-init \
+    tzdata \
+    openssl \
+    ca-certificates \
+    && rm -rf /var/cache/apk/*
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S ssluser -u 1001
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files and install minimal dependencies
+COPY packages/cbd/package.json ./
+RUN npm install --only=production --no-audit --no-fund \
+    express \
+    http-proxy-middleware \
+    cors \
+    helmet
+
+# Copy SSL proxy server
+COPY --chown=ssluser:nodejs ssl-proxy-server.cjs ./
+
+# Create directories for SSL certificates and challenges
+RUN mkdir -p /app/ssl-challenges /app/letsencrypt && \
+    chown -R ssluser:nodejs /app/ssl-challenges /app/letsencrypt
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV PORT=8080
+ENV SSL_PROXY_PORT=8080
+ENV TZ=UTC
+
+# Expose ports
+EXPOSE 8080
+EXPOSE 80
+EXPOSE 443
+
+# Health check for SSL proxy
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD node -e "require('http').get('http://localhost:8080/ssl-proxy-health', (res) => { \
+        if (res.statusCode === 200) { process.exit(0); } else { process.exit(1); } \
+    }).on('error', () => process.exit(1));"
+
+# Switch to non-root user
+USER ssluser
+
+# Use dumb-init for proper signal handling
+ENTRYPOINT ["dumb-init", "--"]
+
+# Start the SSL proxy server
+CMD ["node", "ssl-proxy-server.cjs"]

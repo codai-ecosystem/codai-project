@@ -1,6 +1,6 @@
 'use client';
 
-import { useCodaiAuth } from '@codai/sso-sdk';
+import { useCodaiAuth } from '../lib/sso-sdk';
 import { signIn, signOut } from 'next-auth/react';
 import {
     Shield,

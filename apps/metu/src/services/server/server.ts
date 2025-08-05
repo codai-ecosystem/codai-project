@@ -54,7 +54,7 @@ export class MetuBackendServer {
             port: 4402,
             host: 'localhost',
             corsOrigins: [
-                'http://localhost:3000',  // Next.js dev
+                'http://localhost:4001',  // CODAI Main App
                 'http://localhost:4400',  // METU web app
                 'http://localhost:6388',  // Electron renderer
                 'file://',                // Electron file protocol

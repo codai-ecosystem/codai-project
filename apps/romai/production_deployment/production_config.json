@@ -1,0 +1,307 @@
+{
+  "deployment_id": "romai-agi-prod-20250805-013444",
+  "version": "1.0.0",
+  "environment": "production",
+  "app": {
+    "name": "romai-agi-intelligence",
+    "version": "1.0.0",
+    "environment": "production",
+    "port": 6100,
+    "host": "0.0.0.0",
+    "cors": {
+      "enabled": true,
+      "origins": [
+        "https://romai.ai",
+        "https://app.romai.ai",
+        "https://api.romai.ai"
+      ],
+      "credentials": true
+    },
+    "ssl": {
+      "enabled": true,
+      "cert_path": "/etc/ssl/certs/romai.crt",
+      "key_path": "/etc/ssl/private/romai.key"
+    },
+    "compression": {
+      "enabled": true,
+      "level": 6
+    },
+    "rate_limiting": {
+      "enabled": true,
+      "requests_per_minute": 1000,
+      "burst_size": 100
+    }
+  },
+  "database": {
+    "primary": {
+      "type": "postgresql",
+      "host": "${DB_HOST}",
+      "port": 5432,
+      "database": "romai_agi_prod",
+      "username": "${DB_USERNAME}",
+      "password": "${DB_PASSWORD}",
+      "ssl": true,
+      "pool_size": 20,
+      "max_overflow": 30,
+      "pool_timeout": 30,
+      "pool_recycle": 3600
+    },
+    "redis": {
+      "host": "${REDIS_HOST}",
+      "port": 6379,
+      "password": "${REDIS_PASSWORD}",
+      "db": 0,
+      "ssl": true,
+      "connection_pool_size": 50
+    },
+    "backup": {
+      "enabled": true,
+      "schedule": "0 2 * * *",
+      "retention_days": 30,
+      "location": "s3://romai-backups/agi-intelligence/"
+    }
+  },
+  "security": {
+    "authentication": {
+      "jwt": {
+        "secret": "${JWT_SECRET}",
+        "expiry": 3600,
+        "refresh_expiry": 604800,
+        "algorithm": "HS256"
+      },
+      "oauth": {
+        "enabled": true,
+        "providers": [
+          "google",
+          "microsoft",
+          "azure"
+        ]
+      }
+    },
+    "encryption": {
+      "algorithm": "AES-256-GCM",
+      "key": "${ENCRYPTION_KEY}",
+      "at_rest": true,
+      "in_transit": true
+    },
+    "headers": {
+      "hsts": true,
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'",
+      "x_frame_options": "DENY",
+      "x_content_type_options": "nosniff"
+    },
+    "input_validation": {
+      "max_request_size": "10MB",
+      "sanitization": true,
+      "sql_injection_protection": true,
+      "xss_protection": true
+    },
+    "audit": {
+      "enabled": true,
+      "log_level": "INFO",
+      "retention_days": 90
+    }
+  },
+  "monitoring": {
+    "metrics": {
+      "enabled": true,
+      "prometheus": {
+        "enabled": true,
+        "port": 9090,
+        "path": "/metrics"
+      },
+      "custom_metrics": [
+        "intelligence_requests_total",
+        "reasoning_latency_seconds",
+        "cultural_authenticity_score",
+        "coordination_efficiency",
+        "error_rate"
+      ]
+    },
+    "logging": {
+      "level": "INFO",
+      "format": "json",
+      "outputs": [
+        "console",
+        "file",
+        "elasticsearch"
+      ],
+      "file_path": "/var/log/romai/agi-intelligence.log",
+      "max_size": "100MB",
+      "retention_days": 30
+    },
+    "tracing": {
+      "enabled": true,
+      "jaeger": {
+        "endpoint": "${JAEGER_ENDPOINT}",
+        "service_name": "romai-agi-intelligence"
+      },
+      "sampling_rate": 0.1
+    },
+    "health_checks": {
+      "enabled": true,
+      "endpoint": "/health",
+      "checks": [
+        "database_connection",
+        "redis_connection",
+        "intelligence_systems",
+        "memory_usage",
+        "disk_space"
+      ],
+      "timeout": 10
+    },
+    "alerting": {
+      "enabled": true,
+      "webhook": "${ALERT_WEBHOOK}",
+      "channels": [
+        "slack",
+        "email",
+        "pagerduty"
+      ],
+      "rules": [
+        {
+          "name": "high_error_rate",
+          "condition": "error_rate > 0.05",
+          "severity": "critical"
+        },
+        {
+          "name": "high_latency",
+          "condition": "response_time > 5000ms",
+          "severity": "warning"
+        },
+        {
+          "name": "low_cultural_authenticity",
+          "condition": "cultural_authenticity < 0.85",
+          "severity": "warning"
+        }
+      ]
+    }
+  },
+  "scaling": {
+    "horizontal_scaling": {
+      "enabled": true,
+      "min_replicas": 2,
+      "max_replicas": 10,
+      "target_cpu_utilization": 70,
+      "target_memory_utilization": 80,
+      "scale_up_cooldown": 300,
+      "scale_down_cooldown": 600
+    },
+    "load_balancing": {
+      "strategy": "round_robin",
+      "health_check_interval": 30,
+      "unhealthy_threshold": 3,
+      "healthy_threshold": 2
+    },
+    "caching": {
+      "enabled": true,
+      "redis_cache": true,
+      "ttl": 3600,
+      "max_memory": "1GB",
+      "eviction_policy": "allkeys-lru"
+    },
+    "connection_pooling": {
+      "enabled": true,
+      "max_connections": 100,
+      "idle_timeout": 300,
+      "connection_timeout": 30
+    },
+    "resource_limits": {
+      "memory": "2GB",
+      "cpu": "1000m",
+      "storage": "10GB"
+    }
+  },
+  "intelligence": {
+    "advanced_reasoning": {
+      "enabled": true,
+      "model_path": "/models/advanced_reasoning",
+      "batch_size": 32,
+      "max_sequence_length": 512,
+      "confidence_threshold": 0.8,
+      "cultural_authenticity_threshold": 0.85
+    },
+    "multi_dimensional_intelligence": {
+      "enabled": true,
+      "dimensions": [
+        "logical",
+        "creative",
+        "emotional",
+        "cultural",
+        "analytical",
+        "practical",
+        "linguistic",
+        "interpersonal"
+      ],
+      "assessment_depth": "comprehensive",
+      "cultural_weighting": 0.3
+    },
+    "cognitive_architecture": {
+      "enabled": true,
+      "modules": [
+        "perception",
+        "attention",
+        "memory",
+        "reasoning",
+        "decision_making",
+        "learning",
+        "creativity"
+      ],
+      "optimization_interval": 3600,
+      "adaptation_rate": 0.01
+    },
+    "coordination": {
+      "enabled": true,
+      "max_concurrent_tasks": 50,
+      "task_timeout": 300,
+      "coordination_strategy": "adaptive",
+      "conflict_resolution": "cultural_priority"
+    },
+    "performance_targets": {
+      "reasoning_accuracy": 0.94,
+      "cultural_authenticity": 0.9,
+      "response_time_ms": 2500,
+      "coordination_efficiency": 0.92,
+      "system_availability": 0.999
+    }
+  },
+  "romanian": {
+    "cultural_authenticity": {
+      "enabled": true,
+      "validation_threshold": 0.9,
+      "traditional_wisdom_weight": 0.4,
+      "modern_adaptation_weight": 0.6,
+      "regional_variations": true
+    },
+    "language_processing": {
+      "diacritics_support": true,
+      "regional_dialects": [
+        "moldovenesc",
+        "transilvănean",
+        "bănățean",
+        "maramureșean"
+      ],
+      "cultural_context_preservation": true,
+      "traditional_expressions": true
+    },
+    "cultural_patterns": {
+      "hospitality_patterns": true,
+      "family_values": true,
+      "traditional_celebrations": true,
+      "folklore_integration": true,
+      "historical_consciousness": true
+    },
+    "proverbs_and_wisdom": {
+      "database_path": "/data/romanian_proverbs.json",
+      "contextual_application": true,
+      "modern_interpretation": true,
+      "wisdom_scoring": true
+    },
+    "cultural_validation": {
+      "expert_review": true,
+      "community_feedback": true,
+      "accuracy_monitoring": true,
+      "cultural_sensitivity": true
+    }
+  }
+}

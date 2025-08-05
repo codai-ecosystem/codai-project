@@ -6,12 +6,21 @@
   "packageManager": "pnpm@9.15.9",
   "keywords": [
     "ai",
-    "artificial-intelligence",
+    "artificial-general-intelligence",
+    "agi",
     "romanian",
     "mcp",
     "model-context-protocol",
     "azure-openai",
     "typescript",
+    "python",
+    "polyglot",
+    "functional-organization",
+    "domain-driven-design",
+    "consciousness",
+    "meta-learning",
+    "cultural-intelligence",
+    "multimodal",
     "monorepo",
     "codai",
     "intelligence"
@@ -30,7 +39,7 @@
   },
   "engines": {
     "node": ">=18.0.0",
-    "pnpm": ">=9.0.0"
+    "pnpm": ">=6.0.0"
   },
   "scripts": {
     "build": "next build",
@@ -54,9 +63,7 @@
     "test:run": "vitest run"
   },
   "dependencies": {
-    "@codai/shared-ui": "workspace:*",
-    "@codai/translations": "workspace:*",
-    "@codai/shared-types": "workspace:*",
+    "@codai/shared-types": "^1.0.0",
     "dotenv": "^17.2.0",
     "framer-motion": "^12.23.12",
     "geist": "^1.4.2",

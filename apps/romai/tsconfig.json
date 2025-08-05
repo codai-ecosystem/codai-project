@@ -22,9 +22,11 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@/components/*": ["./src/components/*"],
+      "@/components/*": ["./src/typescript/components/*"],
       "@/lib/*": ["./src/lib/*"],
-      "@/types/*": ["./src/types/*"]
+      "@/types/*": ["./src/types/*"],
+      "@/python/*": ["./src/python/*"],
+      "@/shared/*": ["./src/shared/*"]
     },
     "typeRoots": [
       "./node_modules/@types",

@@ -1,0 +1,82 @@
+{
+  "summary": {
+    "testDate": "2025-08-03T15:21:14.099Z",
+    "testEnvironment": "Local Development",
+    "totalTestDuration": 411.39,
+    "scenariosTested": 3,
+    "overallStatus": "FAILED"
+  },
+  "scenarios": {
+    "smoke": {
+      "totalRequests": 18,
+      "successfulRequests": 0,
+      "failedRequests": 18,
+      "averageResponseTime": 0,
+      "responseTime95": 0,
+      "responseTime99": 0,
+      "errorRate": 1,
+      "throughput": 0.44,
+      "testDuration": 40.99
+    },
+    "load": {
+      "totalRequests": 1543,
+      "successfulRequests": 0,
+      "failedRequests": 1543,
+      "averageResponseTime": 0,
+      "responseTime95": 0,
+      "responseTime99": 0,
+      "errorRate": 1,
+      "throughput": 9.44,
+      "testDuration": 163.5
+    },
+    "stress": {
+      "totalRequests": 3326,
+      "successfulRequests": 0,
+      "failedRequests": 3326,
+      "averageResponseTime": 0,
+      "responseTime95": 0,
+      "responseTime99": 0,
+      "errorRate": 1,
+      "throughput": 18.22,
+      "testDuration": 182.55
+    }
+  },
+  "analysis": {
+    "passedThresholds": [
+      "smoke: 95th percentile response time (0ms)",
+      "load: 95th percentile response time (0ms)",
+      "stress: 95th percentile response time (0ms)"
+    ],
+    "failedThresholds": [
+      "smoke: Error rate too high (100.00% > 5%)",
+      "load: Error rate too high (100.00% > 5%)",
+      "stress: Error rate too high (100.00% > 5%)"
+    ],
+    "bottlenecks": [
+      "High error rate in smoke scenario",
+      "Low throughput in smoke scenario (0.44 RPS)",
+      "High error rate in load scenario",
+      "Low throughput in load scenario (9.44 RPS)",
+      "High error rate in stress scenario"
+    ],
+    "strengths": [
+      "stress: Good throughput (18.22 RPS)"
+    ]
+  },
+  "recommendations": [
+    {
+      "priority": "CRITICAL",
+      "category": "Reliability",
+      "issue": "High error rates detected",
+      "recommendation": "Fix service connectivity issues, improve error handling",
+      "impact": "Better stability during development and testing"
+    },
+    {
+      "priority": "MEDIUM",
+      "category": "Development",
+      "issue": "Local development performance baseline",
+      "recommendation": "Establish performance budgets, implement performance monitoring in CI",
+      "impact": "Prevent performance regressions in production"
+    }
+  ]
+}

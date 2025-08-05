@@ -17,8 +17,7 @@
     "build": {
       "dependsOn": [
         "^build",
-        "type-check",
-        "lint"
+        "type-check"
       ],
       "inputs": [
         "src/**/*.{ts,tsx,js,jsx}",

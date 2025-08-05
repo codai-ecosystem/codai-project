@@ -1,166 +1,167 @@
-"use client";
+'use client';
 
-import { signIn, getProviders, getSession } from "next-auth/react";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { signIn, getProviders } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Brain, Shield, Users, Zap } from 'lucide-react';
+import Link from 'next/link';
 
-interface Provider {
-  id: string;
-  name: string;
-  type: string;
-  signinUrl: string;
-  callbackUrl: string;
-}
+/**
+ * Sign In Page for MemorAI
+ * Integrates with CODAI authentication system
+ */
+export default function SignInPage() {
+    const [providers, setProviders] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
-export default function SignIn() {
-  const [providers, setProviders] = useState<Record<string, Provider> | null>(null);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const router = useRouter();
+    useEffect(() => {
+        const setupProviders = async () => {
+            const res = await getProviders();
+            setProviders(res);
+        };
+        setupProviders();
+    }, []);
 
-  useEffect(() => {
-    const setUpProviders = async () => {
-      const response = await getProviders();
-      setProviders(response);
+    const handleSignIn = async (providerId: string) => {
+        setIsLoading(true);
+        try {
+            await signIn(providerId, { callbackUrl: '/dashboard' });
+        } catch (error) {
+            console.error('Sign in error:', error);
+        } finally {
+            setIsLoading(false);
+        }
     };
-    setUpProviders();
-  }, []);
 
-  const handleCredentialsSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError("");
-
-    try {
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        setError("Invalid credentials. Please try again.");
-      } else {
-        router.push("/dashboard");
-      }
-    } catch (error) {
-      setError("An error occurred. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleProviderSignIn = async (providerId: string) => {
-    setIsLoading(true);
-    try {
-      await signIn(providerId, { callbackUrl: "/dashboard" });
-    } catch (error) {
-      setError("An error occurred. Please try again.");
-      setIsLoading(false);
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-white to-cyan-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full space-y-8">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome to Memorai</h1>
-            <p className="text-gray-600 mb-8">Sign in to your account</p>
-          </div>
-
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
-              {error}
-            </div>
-          )}
-
-          <form onSubmit={handleCredentialsSignIn} className="space-y-6">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
-                placeholder="Enter your email"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
-                placeholder="Enter your password"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
-            >
-              {isLoading ? "Signing in..." : "Sign in"}
-            </button>
-          </form>
-
-          {providers && Object.keys(providers).length > 1 && (
-            <div className="mt-6">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300" />
+    return (
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center p-4">
+            <div className="w-full max-w-md space-y-8">
+                {/* Logo and Title */}
+                <div className="text-center">
+                    <div className="flex justify-center mb-6">
+                        <div className="relative">
+                            <Brain className="w-12 h-12 text-blue-600 dark:text-blue-400" />
+                            <div className="absolute -top-1 -right-1 w-4 h-4 bg-purple-500 rounded-full animate-pulse"></div>
+                        </div>
+                    </div>
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+                        Welcome to MemorAI
+                    </h1>
+                    <p className="mt-2 text-gray-600 dark:text-gray-300">
+                        Your AI-powered memory infrastructure platform
+                    </p>
                 </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">Or continue with</span>
+
+                {/* Sign In Card */}
+                <Card className="w-full">
+                    <CardHeader className="space-y-1">
+                        <CardTitle className="text-2xl text-center">Sign in</CardTitle>
+                        <CardDescription className="text-center">
+                            Sign in with your CODAI account to access MemorAI
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        {providers &&
+                            Object.values(providers).map((provider: any) => (
+                                <div key={provider.name} className="space-y-2">
+                                    <Button
+                                        onClick={() => handleSignIn(provider.id)}
+                                        disabled={isLoading}
+                                        className="w-full"
+                                        size="lg"
+                                    >
+                                        {isLoading ? (
+                                            <div className="flex items-center space-x-2">
+                                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                                                <span>Signing in...</span>
+                                            </div>
+                                        ) : (
+                                            <div className="flex items-center space-x-2">
+                                                <Shield className="w-4 h-4" />
+                                                <span>Sign in with {provider.name}</span>
+                                            </div>
+                                        )}
+                                    </Button>
+                                </div>
+                            ))}
+
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <span className="w-full border-t" />
+                            </div>
+                            <div className="relative flex justify-center text-xs uppercase">
+                                <span className="bg-background px-2 text-muted-foreground">
+                                    Or continue with
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className="text-center">
+                            <Link
+                                href="https://id.codai.ro/register"
+                                className="text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+                            >
+                                Don't have a CODAI account? Sign up here
+                            </Link>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* Features Overview */}
+                <div className="grid grid-cols-2 gap-4 mt-8">
+                    <div className="text-center space-y-2">
+                        <Brain className="w-8 h-8 text-blue-600 dark:text-blue-400 mx-auto" />
+                        <h3 className="font-semibold text-sm text-gray-900 dark:text-white">
+                            AI Memory
+                        </h3>
+                        <p className="text-xs text-gray-600 dark:text-gray-300">
+                            Intelligent vector-based memory storage
+                        </p>
+                    </div>
+                    <div className="text-center space-y-2">
+                        <Users className="w-8 h-8 text-purple-600 dark:text-purple-400 mx-auto" />
+                        <h3 className="font-semibold text-sm text-gray-900 dark:text-white">
+                            Collaboration
+                        </h3>
+                        <p className="text-xs text-gray-600 dark:text-gray-300">
+                            Real-time team collaboration
+                        </p>
+                    </div>
+                    <div className="text-center space-y-2">
+                        <Zap className="w-8 h-8 text-yellow-600 dark:text-yellow-400 mx-auto" />
+                        <h3 className="font-semibold text-sm text-gray-900 dark:text-white">
+                            Fast Search
+                        </h3>
+                        <p className="text-xs text-gray-600 dark:text-gray-300">
+                            Lightning-fast semantic search
+                        </p>
+                    </div>
+                    <div className="text-center space-y-2">
+                        <Shield className="w-8 h-8 text-green-600 dark:text-green-400 mx-auto" />
+                        <h3 className="font-semibold text-sm text-gray-900 dark:text-white">
+                            Secure
+                        </h3>
+                        <p className="text-xs text-gray-600 dark:text-gray-300">
+                            Enterprise-grade security
+                        </p>
+                    </div>
                 </div>
-              </div>
 
-              <div className="mt-6 space-y-3">
-                {Object.values(providers).map((provider) => {
-                  if (provider.id === "credentials") return null;
-
-                  return (
-                    <button
-                      key={provider.id}
-                      onClick={() => handleProviderSignIn(provider.id)}
-                      disabled={isLoading}
-                      className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium flex items-center justify-center"
-                    >
-                      Sign in with {provider.name}
-                    </button>
-                  );
-                })}
-              </div>
+                {/* Footer */}
+                <div className="text-center text-xs text-gray-500 dark:text-gray-400">
+                    <p>
+                        By signing in, you agree to our{' '}
+                        <Link href="/terms" className="underline hover:text-gray-700 dark:hover:text-gray-300">
+                            Terms of Service
+                        </Link>{' '}
+                        and{' '}
+                        <Link href="/privacy" className="underline hover:text-gray-700 dark:hover:text-gray-300">
+                            Privacy Policy
+                        </Link>
+                    </p>
+                </div>
             </div>
-          )}
-
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
-              Don't have an account?{" "}
-              <Link
-                href="/auth/signup"
-                className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors"
-              >
-                Sign up
-              </Link>
-            </p>
-          </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }

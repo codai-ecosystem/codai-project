@@ -1,6 +1,6 @@
 {
   "name": "@codai/memorai",
-  "version": "8.0.0-cbd",
+  "version": "8.0.2",
   "type": "module",
   "description": "Universal Database & Storage Service for CODAI Ecosystem - CBD Backend",
   "main": "dist/index.js",
@@ -47,9 +47,9 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@codai/core": "workspace:*",
-    "@codai/shared-types": "workspace:*",
-    "@codai/cbd": "workspace:*",
+    "@codai/core": "^1.1.1",
+    "@codai/shared-types": "^1.0.0",
+    "@codai/cbd": "^1.0.7",
     "@modelcontextprotocol/sdk": "^0.6.0",
     "commander": "^12.1.0",
     "cors": "^2.8.5",

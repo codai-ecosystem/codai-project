@@ -1,0 +1,37 @@
+{
+  "name": "memorai-client",
+  "version": "1.0.0",
+  "description": "Official Node.js client for the MemorAI platform",
+  "main": "memorai-client.js",
+  "scripts": {
+    "test": "node test-client.js"
+  },
+  "keywords": [
+    "memorai",
+    "memory",
+    "ai",
+    "api",
+    "client",
+    "nodejs"
+  ],
+  "author": "MemorAI Team",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "ws": "^8.14.0"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/memorai/nodejs-client"
+  },
+  "bugs": {
+    "url": "https://github.com/memorai/nodejs-client/issues"
+  },
+  "homepage": "https://memorai.ai"
+}

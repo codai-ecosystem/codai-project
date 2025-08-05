@@ -1,0 +1,143 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-app-service
+  namespace: codai-ecosystem
+  labels:
+    app: codai-app
+    component: frontend
+spec:
+  selector:
+    app: codai-app
+  ports:
+  - name: http
+    port: 4001
+    targetPort: 4001
+    protocol: TCP
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: id-service-service
+  namespace: codai-ecosystem
+  labels:
+    app: id-service
+    component: frontend
+spec:
+  selector:
+    app: id-service
+  ports:
+  - name: http
+    port: 4004
+    targetPort: 4004
+    protocol: TCP
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bancai-app-service
+  namespace: codai-ecosystem
+  labels:
+    app: bancai-app
+    component: frontend
+spec:
+  selector:
+    app: bancai-app
+  ports:
+  - name: http
+    port: 4005
+    targetPort: 4005
+    protocol: TCP
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memorai-app-service
+  namespace: codai-ecosystem
+  labels:
+    app: memorai-app
+    component: frontend
+spec:
+  selector:
+    app: memorai-app
+  ports:
+  - name: http
+    port: 4006
+    targetPort: 4006
+    protocol: TCP
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: admin-dashboard-service
+  namespace: codai-ecosystem
+  labels:
+    app: admin-dashboard
+    component: frontend
+spec:
+  selector:
+    app: admin-dashboard
+  ports:
+  - name: http
+    port: 4007
+    targetPort: 4007
+    protocol: TCP
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hub-app-service
+  namespace: codai-ecosystem
+  labels:
+    app: hub-app
+    component: frontend
+spec:
+  selector:
+    app: hub-app
+  ports:
+  - name: http
+    port: 4008
+    targetPort: 4008
+    protocol: TCP
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: controlai-dashboard-service
+  namespace: codai-ecosystem
+  labels:
+    app: controlai-dashboard
+    component: frontend
+spec:
+  selector:
+    app: controlai-dashboard
+  ports:
+  - name: http
+    port: 4200
+    targetPort: 4200
+    protocol: TCP
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: romai-app-service
+  namespace: codai-ecosystem
+  labels:
+    app: romai-app
+    component: frontend
+spec:
+  selector:
+    app: romai-app
+  ports:
+  - name: http
+    port: 6100
+    targetPort: 6100
+    protocol: TCP
+  type: ClusterIP

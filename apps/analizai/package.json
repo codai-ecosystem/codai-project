@@ -5,9 +5,9 @@
   "description": "Professional Data Analytics Platform - CODAI Ecosystem",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3500",
+    "dev": "next dev -p 4500",
     "build": "next build",
-    "start": "next start -p 3500",
+    "start": "next start -p 4500",
     "lint": "next lint",
     "type-check": "pnpm exec tsc --noEmit",
     "test": "vitest",

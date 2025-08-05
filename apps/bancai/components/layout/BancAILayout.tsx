@@ -18,7 +18,7 @@ import {
     Menu,
     X
 } from 'lucide-react'
-import { cn } from '@codai/shared-ui'
+import { cn } from '../../src/lib/utils'
 
 interface BancAILayoutProps {
     children: React.ReactNode

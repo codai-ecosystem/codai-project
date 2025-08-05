@@ -4,7 +4,7 @@
   "description": "Mobile banking app",
   "main": "expo-router/entry",
   "scripts": {
-    "start": "next start -p 3600",
+    "start": "next start -p 4600",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
@@ -20,7 +20,7 @@
     "lint": "next lint",
     "type-check": "pnpm exec tsc --noEmit",
     "clean": "rimraf .expo dist coverage",
-    "dev": "next dev -p 3600",
+    "dev": "next dev -p 4600",
     "build": "next build",
     "test:run": "vitest run"
   },

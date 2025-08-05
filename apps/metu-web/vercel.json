@@ -1,8 +1,6 @@
 {
   "env": {
-    "AZURE_OPENAI_ENDPOINT": "@azure_openai_endpoint",
-    "NEXTAUTH_URL": "@nextauth_url",
-    "NODE_ENV": "@node_env"
+    "NODE_ENV": "production"
   },
   "regions": [
     "fra1"

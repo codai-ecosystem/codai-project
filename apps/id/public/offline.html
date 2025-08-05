@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ID Service - You're Offline</title>
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #1e40af;
+            --accent-color: #06b6d4;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --border-color: #e5e7eb;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --text-primary: #f9fafb;
+                --text-secondary: #d1d5db;
+                --bg-primary: #111827;
+                --bg-secondary: #1f2937;
+                --border-color: #374151;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .offline-container {
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            background: var(--bg-primary);
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--border-color);
+        }
+
+        .offline-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+
+        .offline-icon svg {
+            width: 40px;
+            height: 40px;
+            color: white;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: scale(1.05);
+            }
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            line-height: 1.5;
+        }
+
+        .connection-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 24px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .connection-status.offline {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error-color);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .connection-status.online {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .connection-status.checking {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .retry-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 24px;
+            min-width: 120px;
+        }
+
+        .retry-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
+        }
+
+        .retry-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .features-available {
+            text-align: left;
+            margin-top: 32px;
+            padding: 20px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .features-available h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .features-list {
+            list-style: none;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .feature-icon {
+            width: 16px;
+            height: 16px;
+            color: var(--success-color);
+        }
+
+        .last-updated {
+            margin-top: 24px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        @media (max-width: 640px) {
+            .offline-container {
+                padding: 24px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .offline-icon {
+                width: 60px;
+                height: 60px;
+            }
+
+            .offline-icon svg {
+                width: 30px;
+                height: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+        </div>
+
+        <h1>You're Offline</h1>
+        <p class="subtitle">
+            The ID Service is currently unavailable. Please check your internet connection and try again.
+        </p>
+
+        <div class="connection-status offline" id="connectionStatus">
+            <div class="status-dot"></div>
+            <span id="statusText">No Internet Connection</span>
+        </div>
+
+        <button class="retry-button" id="retryButton" onclick="checkConnection()">
+            Retry Connection
+        </button>
+
+        <div class="features-available">
+            <h3>📱 Available Offline Features</h3>
+            <ul class="features-list">
+                <li>
+                    <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
+                    </svg>
+                    View cached profile information
+                </li>
+                <li>
+                    <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
+                    </svg>
+                    Browse previously loaded content
+                </li>
+                <li>
+                    <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
+                    </svg>
+                    Access security settings (read-only)
+                </li>
+                <li>
+                    <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
+                    </svg>
+                    View authentication history
+                </li>
+            </ul>
+        </div>
+
+        <div class="last-updated" id="lastUpdated">
+            <!-- Will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Connection monitoring and auto-refresh
+        let isOnline = navigator.onLine;
+        let retryAttempts = 0;
+        const maxRetries = 3;
+
+        // Update connection status display
+        function updateConnectionStatus(online, checking = false) {
+            const statusElement = document.getElementById('connectionStatus');
+            const statusText = document.getElementById('statusText');
+            const retryButton = document.getElementById('retryButton');
+
+            statusElement.className = `connection-status ${checking ? 'checking' : (online ? 'online' : 'offline')}`;
+
+            if (checking) {
+                statusText.textContent = 'Checking Connection...';
+                retryButton.disabled = true;
+                retryButton.textContent = 'Checking...';
+            } else if (online) {
+                statusText.textContent = 'Connection Restored';
+                retryButton.disabled = false;
+                retryButton.textContent = 'Reload Page';
+            } else {
+                statusText.textContent = 'No Internet Connection';
+                retryButton.disabled = false;
+                retryButton.textContent = 'Retry Connection';
+            }
+        }
+
+        // Check internet connection
+        async function checkConnection() {
+            updateConnectionStatus(false, true);
+            retryAttempts++;
+
+            try {
+                // Try to fetch a small resource
+                const response = await fetch('/manifest.json', {
+                    cache: 'no-cache',
+                    method: 'HEAD'
+                });
+
+                if (response.ok) {
+                    updateConnectionStatus(true);
+
+                    // Auto-reload after successful connection
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    throw new Error('Network response not ok');
+                }
+            } catch (error) {
+                console.log('Connection check failed:', error);
+                updateConnectionStatus(false);
+
+                // Exponential backoff for auto-retry
+                if (retryAttempts < maxRetries) {
+                    const delay = Math.min(1000 * Math.pow(2, retryAttempts), 10000);
+                    setTimeout(checkConnection, delay);
+                }
+            }
+        }
+
+        // Listen for online/offline events
+        window.addEventListener('online', () => {
+            console.log('Browser detected online status');
+            checkConnection();
+        });
+
+        window.addEventListener('offline', () => {
+            console.log('Browser detected offline status');
+            updateConnectionStatus(false);
+            retryAttempts = 0;
+        });
+
+        // Service Worker message handling
+        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+            navigator.serviceWorker.addEventListener('message', event => {
+                if (event.data && event.data.type === 'OFFLINE_STATUS') {
+                    updateConnectionStatus(event.data.online);
+                }
+            });
+        }
+
+        // Update last updated time
+        function updateLastUpdated() {
+            const lastUpdatedElement = document.getElementById('lastUpdated');
+            const now = new Date();
+            lastUpdatedElement.textContent = `Last checked: ${now.toLocaleTimeString()}`;
+        }
+
+        // Periodic connection check (every 30 seconds)
+        setInterval(() => {
+            if (!navigator.onLine) {
+                checkConnection();
+            }
+            updateLastUpdated();
+        }, 30000);
+
+        // Initialize
+        updateConnectionStatus(navigator.onLine);
+        updateLastUpdated();
+
+        // Initial connection check after 2 seconds
+        setTimeout(checkConnection, 2000);
+
+        console.log('🎯 ID Service offline page loaded successfully');
+    </script>
+</body>
+
+</html>

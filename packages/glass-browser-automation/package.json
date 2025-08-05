@@ -63,11 +63,5 @@
     "typescript": "^5.8.3",
     "vitest": "^3.2.4",
     "@types/node": "^22.0.0"
-  },
-  "pnpm": {
-    "overrides": {
-      "typescript": "^5.7.0",
-      "eslint": "^9.17.0"
-    }
   }
 }

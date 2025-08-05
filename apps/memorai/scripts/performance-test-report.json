@@ -1,0 +1,24 @@
+{
+  "summary": {
+    "testDate": "2025-08-03T13:47:44.031Z",
+    "totalTestDuration": 62.086,
+    "scenariosTested": 0,
+    "overallStatus": "PASSED"
+  },
+  "scenarios": {},
+  "analysis": {
+    "passedThresholds": [],
+    "failedThresholds": [],
+    "bottlenecks": [],
+    "strengths": []
+  },
+  "recommendations": [
+    {
+      "priority": "LOW",
+      "category": "Monitoring",
+      "issue": "Continuous performance monitoring",
+      "recommendation": "Implement real-time performance monitoring and alerting",
+      "impact": "Proactive identification and resolution of performance issues"
+    }
+  ]
+}

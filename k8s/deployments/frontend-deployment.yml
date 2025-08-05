@@ -1,0 +1,213 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-app
+  namespace: codai-ecosystem
+  labels:
+    app: codai-app
+    component: frontend
+    version: v1.0.0
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: codai-app
+  template:
+    metadata:
+      labels:
+        app: codai-app
+        component: frontend
+    spec:
+      containers:
+      - name: codai-app
+        image: codai/codai-app:latest
+        ports:
+        - containerPort: 4001
+          name: http
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "4001"
+        - name: NEXT_PUBLIC_API_URL
+          value: "http://gateway-service:4003"
+        - name: NEXT_PUBLIC_WS_URL
+          value: "ws://websocket-service:4900"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 4001
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 4001
+          initialDelaySeconds: 15
+          periodSeconds: 5
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: id-service
+  namespace: codai-ecosystem
+  labels:
+    app: id-service
+    component: frontend
+    version: v1.0.0
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: id-service
+  template:
+    metadata:
+      labels:
+        app: id-service
+        component: frontend
+    spec:
+      containers:
+      - name: id-service
+        image: codai/id-service:latest
+        ports:
+        - containerPort: 4004
+          name: http
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "4004"
+        - name: NEXT_PUBLIC_API_URL
+          value: "http://gateway-service:4003"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 4004
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 4004
+          initialDelaySeconds: 15
+          periodSeconds: 5
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bancai-app
+  namespace: codai-ecosystem
+  labels:
+    app: bancai-app
+    component: frontend
+    version: v1.0.0
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bancai-app
+  template:
+    metadata:
+      labels:
+        app: bancai-app
+        component: frontend
+    spec:
+      containers:
+      - name: bancai-app
+        image: codai/bancai-app:latest
+        ports:
+        - containerPort: 4005
+          name: http
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "4005"
+        - name: NEXT_PUBLIC_API_URL
+          value: "http://gateway-service:4003"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 4005
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 4005
+          initialDelaySeconds: 15
+          periodSeconds: 5
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memorai-app
+  namespace: codai-ecosystem
+  labels:
+    app: memorai-app
+    component: frontend
+    version: v1.0.0
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: memorai-app
+  template:
+    metadata:
+      labels:
+        app: memorai-app
+        component: frontend
+    spec:
+      containers:
+      - name: memorai-app
+        image: codai/memorai-app:latest
+        ports:
+        - containerPort: 4006
+          name: http
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "4006"
+        - name: NEXT_PUBLIC_API_URL
+          value: "http://gateway-service:4003"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 4006
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 4006
+          initialDelaySeconds: 15
+          periodSeconds: 5
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"

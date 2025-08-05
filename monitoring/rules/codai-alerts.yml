@@ -1,0 +1,155 @@
+groups:
+  - name: codai.production.rules
+    rules:
+      # Service availability
+      - alert: ServiceDown
+        expr: up{job=~"codai-api|codai-frontend"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "CODAI service {{ $labels.job }} on {{ $labels.instance }} is down"
+          description: "Service {{ $labels.job }} on instance {{ $labels.instance }} has been down for more than 1 minute."
+          runbook_url: "https://docs.codai.ro/runbooks/service-down"
+
+      # High response time
+      - alert: HighResponseTime
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="codai-api"}[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High response time detected on {{ $labels.instance }}"
+          description: "95th percentile response time has been above 2 seconds for 5 minutes on {{ $labels.instance }}."
+          
+      # High error rate
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{job="codai-api", status=~"5.."}[5m]) / rate(http_requests_total{job="codai-api"}[5m]) > 0.05
+        for: 3m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High error rate detected on {{ $labels.instance }}"
+          description: "Error rate is above 5% for 3 minutes on {{ $labels.instance }}. Current rate: {{ $value | humanizePercentage }}"
+
+      # SSL Certificate expiry
+      - alert: SSLCertificateExpiry
+        expr: ssl_certificate_expiry_days < 30
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: "SSL certificate expiring soon for {{ $labels.instance }}"
+          description: "SSL certificate for {{ $labels.instance }} expires in {{ $value }} days."
+          action_required: "Renew SSL certificate in AWS Certificate Manager"
+
+      - alert: SSLCertificateCriticalExpiry
+        expr: ssl_certificate_expiry_days < 7
+        for: 1h
+        labels:
+          severity: critical
+        annotations:
+          summary: "SSL certificate expires in {{ $value }} days for {{ $labels.instance }}"
+          description: "URGENT: SSL certificate for {{ $labels.instance }} expires in {{ $value }} days. Immediate action required."
+
+      # Domain health checks
+      - alert: DomainDown
+        expr: probe_success{job="blackbox"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Domain {{ $labels.instance }} is not accessible"
+          description: "Domain {{ $labels.instance }} has been unreachable for 2 minutes. Check DNS and server status."
+
+      # Memory usage
+      - alert: HighMemoryUsage
+        expr: (process_resident_memory_bytes{job="codai-api"} / 1024 / 1024 / 1024) > 1
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage on {{ $labels.instance }}"
+          description: "Memory usage is above 1GB for 10 minutes on {{ $labels.instance }}. Current usage: {{ $value | humanize }}GB"
+
+      # CPU usage
+      - alert: HighCPUUsage
+        expr: rate(process_cpu_seconds_total{job="codai-api"}[5m]) * 100 > 80
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage on {{ $labels.instance }}"
+          description: "CPU usage is above 80% for 15 minutes on {{ $labels.instance }}. Current usage: {{ $value | humanizePercentage }}"
+
+      # Database connectivity
+      - alert: DatabaseConnectionFailed
+        expr: up{job="postgres"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Database connection failed"
+          description: "Unable to connect to PostgreSQL database for more than 1 minute."
+
+      # Request rate anomaly
+      - alert: UnusuallyHighRequestRate
+        expr: rate(http_requests_total{job="codai-api"}[5m]) > 100
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Unusually high request rate on {{ $labels.instance }}"
+          description: "Request rate is above 100 requests/second for 5 minutes. This might indicate a DDoS attack or traffic spike."
+
+      # Low request rate (possible issue)
+      - alert: UnusuallyLowRequestRate
+        expr: rate(http_requests_total{job="codai-api"}[5m]) < 0.1
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Unusually low request rate on {{ $labels.instance }}"
+          description: "Request rate is below 0.1 requests/second for 10 minutes. This might indicate a service issue."
+
+  - name: codai.business.rules
+    rules:
+      # Business metrics
+      - alert: LowUserEngagement
+        expr: user_active_sessions < 5
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Low user engagement detected"
+          description: "Active user sessions have been below 5 for 30 minutes. Consider checking for user experience issues."
+
+      - alert: HighUserGrowth
+        expr: rate(user_registrations_total[1h]) > 50
+        for: 1h
+        labels:
+          severity: info
+        annotations:
+          summary: "High user growth detected"
+          description: "User registration rate is above 50 per hour. Monitor system capacity."
+
+  - name: codai.security.rules
+    rules:
+      # Security alerts
+      - alert: SuspiciousActivity
+        expr: rate(http_requests_total{status="401"}[5m]) > 10
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High number of authentication failures"
+          description: "More than 10 authentication failures per second detected. Possible brute force attack."
+
+      - alert: UnauthorizedAccess
+        expr: rate(http_requests_total{status="403"}[5m]) > 5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High number of unauthorized access attempts"
+          description: "More than 5 unauthorized access attempts per second for 5 minutes."

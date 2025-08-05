@@ -19,7 +19,7 @@ import { hostname } from 'os';
 import { AzureRealtimeClient, RealtimeConfig } from '../audio/AzureRealtimeClient';
 import { audioDeviceManager } from '../audio/AudioDeviceManager';
 import { metuGlassMCPController, DeviceAutomationRequest } from '../mcp/MetuGlassMCPController';
-import { MetuCNDClient, MetuDevice, MetuConversation, MetuMessage } from '../database/MetuCNDClient';
+import { MetuCBDClient, MetuDevice, MetuConversation, MetuMessage } from '../database/MetuCBDClient';
 
 export interface DeviceServerConfig {
     port: number;
@@ -87,7 +87,7 @@ export class MetuDeviceServer extends EventEmitter {
     private publishedService: Service | null = null;
     private clients: Map<string, ClientConnection> = new Map();
     private azureClient: AzureRealtimeClient | null = null;
-    private this.this.metuCNDClient: this.this.metuCNDClient;
+    private metuCBDClient: MetuCBDClient;
     private isRunning = false;
     private config: DeviceServerConfig;
     private capabilities: DeviceCapabilities;
@@ -100,14 +100,13 @@ constructor(config: DeviceServerConfig) {
     this.wsServer = new WebSocketServer({ server: this.server });
     this.bonjourService = new (bonjourService as any).Bonjour();
 
-    // Initialize MetuCNDClient
-    this.metuCNDClient = new MetuCNDClient({
-        host: 'localhost',
-        port: 5432,
-        database: 'metu_cnd',
-        user: 'metu_user',
-        password: 'metu_password'
-    } as any);
+    // Initialize MetuCBDClient
+    this.metuCBDClient = new MetuCBDClient({
+        url: 'http://localhost:4180',
+        name: 'METU-Device-Server',
+        enableCache: true,
+        enableEvents: true
+    });
 
     this.capabilities = {
         audio: {
@@ -318,8 +317,8 @@ this.app.use(express.urlencoded({ extended: true }));
     // Glass MCP Automation Endpoints
     this.setupGlassMCPEndpoints();
 
-    // CND Database Endpoints
-    this.setupCNDDatabaseEndpoints();
+    // CBD Database Endpoints
+    this.setupCBDDatabaseEndpoints();
 
     // 404 handler
     this.app.use('*', (req: Request, res: Response) => {
@@ -823,20 +822,20 @@ this.sendToClient(clientId, {
 }
 
     /**
-     * Setup CND Database endpoints
+     * Setup CBD Database endpoints
      */
-    private setupCNDDatabaseEndpoints(): void {
+    private setupCBDDatabaseEndpoints(): void {
     // Database health status
     this.app.get('/api/database/health', async (req: Request, res: Response) => {
         try {
-            const health = await this.this.this.metuCNDClient.getHealthStatus();
-            const enterpriseStatus = { ready: this.this.this.metuCNDClient.isHealthy() };
+            const health = await this.metuCBDClient.getHealthStatus();
+            const ping = await this.metuCBDClient.ping();
 
             res.json({
                 success: true,
                 health,
-                enterprise: enterpriseStatus,
-                ready: this.metuCNDClient.isReady(),
+                ready: ping,
+                connected: this.metuCBDClient.getConnectionStatus(),
                 timestamp: Date.now()
             });
         } catch (error) {
@@ -851,8 +850,7 @@ this.sendToClient(clientId, {
     // Get all registered devices
     this.app.get('/api/database/devices', async (req: Request, res: Response) => {
         try {
-            const { status } = req.query;
-            const devices = await (this.metuCNDClient as any).getDevices(status as any);
+            const devices = await this.metuCBDClient.getAllDevices();
 
             res.json({
                 success: true,
@@ -873,7 +871,7 @@ this.sendToClient(clientId, {
     this.app.get('/api/database/devices/:deviceId', async (req: Request, res: Response) => {
         try {
             const { deviceId } = req.params;
-            const device = await this.this.metuCNDClient.getDevice(deviceId);
+            const device = await this.metuCBDClient.getDevice(deviceId);
 
             if (!device) {
                 return res.status(404).json({
@@ -902,7 +900,7 @@ this.sendToClient(clientId, {
         try {
             const { deviceId } = req.params;
             const { limit } = req.query;
-            const conversations = await this.this.metuCNDClient.getDeviceConversations(
+                        const conversations = await this.metuCBDClient.getDeviceConversations(
                 deviceId,
                 limit ? parseInt(limit as string) : undefined
             );
@@ -926,7 +924,7 @@ this.sendToClient(clientId, {
     this.app.get('/api/database/conversations/:conversationId', async (req: Request, res: Response) => {
         try {
             const { conversationId } = req.params;
-            const conversation = await this.this.metuCNDClient.getConversation(conversationId);
+                        const conversation = await this.metuCBDClient.getConversation(conversationId);
 
             if (!conversation) {
                 return res.status(404).json({
@@ -964,7 +962,7 @@ this.sendToClient(clientId, {
                 });
             }
 
-            const conversation = await this.this.metuCNDClient.startConversation({
+                        const conversation = await this.metuCBDClient.createConversation({
                 deviceId,
                 sessionId,
                 userId,
@@ -999,7 +997,7 @@ this.sendToClient(clientId, {
                 });
             }
 
-            const message = await this.this.metuCNDClient.addMessage({
+            const message = await this.metuCBDClient.createMessage({
                 conversationId,
                 role,
                 type,
@@ -1031,7 +1029,7 @@ this.sendToClient(clientId, {
             const { conversationId } = req.params;
             const { summary } = req.body;
 
-            await this.this.metuCNDClient.endConversation(conversationId, summary);
+            await this.metuCBDClient.endConversation(conversationId, summary);
 
             res.json({
                 success: true,
@@ -1051,7 +1049,7 @@ this.sendToClient(clientId, {
     this.app.get('/api/database/users/:userId', async (req: Request, res: Response) => {
         try {
             const { userId } = req.params;
-            const profile = await this.this.metuCNDClient.getUserProfile(userId);
+            const profile = await this.metuCBDClient.getUserProfile(userId);
 
             if (!profile) {
                 return res.status(404).json({
@@ -1081,7 +1079,7 @@ this.sendToClient(clientId, {
             const { userId } = req.params;
             const preferences = req.body;
 
-            await this.this.metuCNDClient.updateUserPreferences(userId, preferences);
+            await this.metuCBDClient.updateUserPreferences(userId, preferences);
 
             res.json({
                 success: true,
@@ -1103,7 +1101,7 @@ this.sendToClient(clientId, {
             const { key } = req.params;
             const { scope = 'global', deviceId, userId, sessionId } = req.query;
 
-            const value = await this.this.metuCNDClient.getSystemState(key, scope as any, {
+            const value = await this.metuCBDClient.getSystemState(key, scope as any, {
                 deviceId: deviceId as string,
                 userId: userId as string,
                 sessionId: sessionId as string
@@ -1139,7 +1137,7 @@ this.sendToClient(clientId, {
                 });
             }
 
-            await this.this.metuCNDClient.setSystemState(key, value, category, scope, {
+            await this.metuCBDClient.setSystemState(key, value, category, scope, {
                 deviceId,
                 userId,
                 sessionId,
@@ -1173,7 +1171,7 @@ this.sendToClient(clientId, {
                 });
             }
 
-            await this.this.metuCNDClient.trackEvent(deviceId, event, category, properties, {
+            await this.metuCBDClient.trackEvent(deviceId, event, category, properties, {
                 userId,
                 sessionId,
                 duration
@@ -1198,7 +1196,7 @@ this.sendToClient(clientId, {
         try {
             const { deviceId, userId, category, startDate, endDate, limit } = req.query;
 
-            const analytics = await this.this.metuCNDClient.getAnalytics({
+            const analytics = await this.metuCBDClient.getAnalytics({
                 deviceId: deviceId as string,
                 userId: userId as string,
                 category: category as any,
@@ -1227,7 +1225,7 @@ this.sendToClient(clientId, {
         try {
             const { olderThanDays, categories } = req.body;
 
-            await this.this.metuCNDClient.cleanup({ olderThanDays, categories });
+            await this.metuCBDClient.cleanup({ olderThanDays, categories });
 
             res.json({
                 success: true,
@@ -1248,7 +1246,7 @@ this.sendToClient(clientId, {
         try {
             const { filepath } = req.body;
 
-            const backupPath = await this.this.metuCNDClient.backup(filepath);
+            const backupPath = await this.metuCBDClient.backup(filepath);
 
             res.json({
                 success: true,
@@ -1482,7 +1480,7 @@ audioDeviceManager.cleanup();
 await metuGlassMCPController.shutdown();
 
 // Close CND database client
-await this.this.metuCNDClient.close();
+await this.metuCBDClient.close();
 
 this.isRunning = false;
 this.emit('server-stopped');
@@ -1590,8 +1588,8 @@ console.log('✅ METU Device Server stopped');
     try {
         console.log('🗄️ Initializing CND Database Client...');
 
-        if(!this.this.metuCNDClient.isReady()) {
-    await this.this.metuCNDClient.initialize();
+        if(!this.metuCBDClient.isReady()) {
+    await this.metuCBDClient.initialize();
 }
 
 // Register this device server in the database
@@ -1631,22 +1629,22 @@ const currentDevice: Omit<MetuDevice, 'createdAt' | 'updatedAt' | 'lastSeen'> = 
     }
 };
 
-await this.this.metuCNDClient.registerDevice(currentDevice);
+await this.metuCBDClient.registerDevice(currentDevice);
 
 // Setup CND event listeners
-this.this.metuCNDClient.on('deviceRegistered', (device) => {
+this.metuCBDClient.on('deviceRegistered', (device) => {
     console.log(`📱 Device registered: ${device.name} (${device.id})`);
 });
 
-this.this.metuCNDClient.on('conversationStarted', (conversation) => {
+this.metuCBDClient.on('conversationStarted', (conversation) => {
     console.log(`💬 Conversation started: ${conversation.id} on device ${conversation.deviceId}`);
 });
 
-this.this.metuCNDClient.on('messageAdded', (message) => {
+this.metuCBDClient.on('messageAdded', (message) => {
     console.log(`📝 Message added to conversation ${message.conversationId}: ${message.type} from ${message.role}`);
 });
 
-this.this.metuCNDClient.on('eventTracked', (event) => {
+this.metuCBDClient.on('eventTracked', (event) => {
     console.log(`📊 Analytics event tracked: ${event.category}/${event.event} for device ${event.deviceId}`);
 });
 

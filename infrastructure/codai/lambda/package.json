@@ -1,0 +1,12 @@
+{
+  "name": "codai-api-key-authorizer",
+  "version": "1.0.0",
+  "description": "CODAI API Key Authorizer Lambda Function",
+  "main": "api-key-authorizer.js",
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2"
+  },
+  "keywords": ["api", "security", "authorization", "jwt"],
+  "author": "CODAI Ecosystem",
+  "license": "MIT"
+}

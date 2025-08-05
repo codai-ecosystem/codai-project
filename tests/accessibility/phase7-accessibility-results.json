@@ -1,0 +1,2031 @@
+{
+  "config": {
+    "configFile": "E:\\GitHub\\codai-project\\tests\\accessibility\\playwright.config.ts",
+    "rootDir": "E:/GitHub/codai-project/tests/accessibility",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 10
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "E:/GitHub/codai-project/tests/accessibility/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 10
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "E:/GitHub/codai-project/tests/accessibility",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "E:/GitHub/codai-project/tests/accessibility/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 10
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "E:/GitHub/codai-project/tests/accessibility",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.54.2",
+    "workers": 16,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "phase7-accessibility-validation.spec.ts",
+      "file": "phase7-accessibility-validation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Phase 7: Accessibility Testing - Current Port Allocation",
+          "file": "phase7-accessibility-validation.spec.ts",
+          "line": 313,
+          "column": 6,
+          "specs": [
+            {
+              "title": "WCAG 2.1 AA Compliance Validation",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 950,
+                      "error": {
+                        "message": "Error: Gateway Service should meet WCAG 2.1 AA standards\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m60\u001b[39m\nReceived:   \u001b[31m17.5\u001b[39m",
+                        "stack": "Error: Gateway Service should meet WCAG 2.1 AA standards\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m60\u001b[39m\nReceived:   \u001b[31m17.5\u001b[39m\n    at E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts:328:92",
+                        "location": {
+                          "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                          "column": 92,
+                          "line": 328
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 326 |\u001b[39m         \n \u001b[90m 327 |\u001b[39m         \u001b[90m// Validate WCAG compliance score\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 328 |\u001b[39m         expect(result\u001b[33m.\u001b[39mwcagCompliance\u001b[33m,\u001b[39m \u001b[32m`${service.name} should meet WCAG 2.1 AA standards`\u001b[39m)\u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m60\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 329 |\u001b[39m         \n \u001b[90m 330 |\u001b[39m         \u001b[90m// Critical services should have higher accessibility standards\u001b[39m\n \u001b[90m 331 |\u001b[39m         \u001b[36mif\u001b[39m (service\u001b[33m.\u001b[39mtype \u001b[33m===\u001b[39m \u001b[32m'authentication'\u001b[39m \u001b[33m||\u001b[39m service\u001b[33m.\u001b[39mtype \u001b[33m===\u001b[39m \u001b[32m'admin_interface'\u001b[39m) {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                            "column": 92,
+                            "line": 328
+                          },
+                          "message": "Error: Gateway Service should meet WCAG 2.1 AA standards\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m60\u001b[39m\nReceived:   \u001b[31m17.5\u001b[39m\n\n  326 |         \n  327 |         // Validate WCAG compliance score\n> 328 |         expect(result.wcagCompliance, `${service.name} should meet WCAG 2.1 AA standards`).toBeGreaterThan(60);\n      |                                                                                            ^\n  329 |         \n  330 |         // Critical services should have higher accessibility standards\n  331 |         if (service.type === 'authentication' || service.type === 'admin_interface') {\n    at E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts:328:92"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "ΓÖ┐ Phase 7.1: WCAG 2.1 AA Compliance Validation\n"
+                        },
+                        {
+                          "text": "============================================================\n"
+                        },
+                        {
+                          "text": "ΓÖ┐ Validating WCAG compliance for Gateway Service...\n"
+                        },
+                        {
+                          "text": "ΓÖ┐ Validating accessibility for http://localhost:4003/health...\n"
+                        },
+                        {
+                          "text": "   Testing HTML structure and semantics...\n"
+                        },
+                        {
+                          "text": "   Γ¥î DOCTYPE declaration missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î Language attribute missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î Page title missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î No heading elements found\n"
+                        },
+                        {
+                          "text": "   Testing ARIA labels and accessibility attributes...\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No ARIA labels found\n"
+                        },
+                        {
+                          "text": "   Γ¥î No landmark elements found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No role attributes found\n"
+                        },
+                        {
+                          "text": "   Testing keyboard navigation...\n"
+                        },
+                        {
+                          "text": "   Γ¥î No focusable elements found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No skip links found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No tab index management found\n"
+                        },
+                        {
+                          "text": "   Testing color contrast and visual accessibility...\n"
+                        },
+                        {
+                          "text": "   Γ£à Image alt attributes adequate (0/0)\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å Potential color contrast issues\n"
+                        },
+                        {
+                          "text": "   Γ£à Visual styling present\n"
+                        },
+                        {
+                          "text": "   Testing screen reader compatibility...\n"
+                        },
+                        {
+                          "text": "   Γ¥î Limited ARIA support for screen readers\n"
+                        },
+                        {
+                          "text": "   Γ¥î No heading structure for screen readers\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè Structure: 0% | ARIA: 0% | Keyboard: 0% | Contrast: 70% | Screen Reader: 0%\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè WCAG Compliance Score: 17.5%\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-03T13:17:27.522Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-6994d--1-AA-Compliance-Validation-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-6994d--1-AA-Compliance-Validation-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-6994d--1-AA-Compliance-Validation-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                        "column": 92,
+                        "line": 328
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "failed",
+                      "duration": 1449,
+                      "error": {
+                        "message": "Error: Gateway Service should meet WCAG 2.1 AA standards\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m60\u001b[39m\nReceived:   \u001b[31m17.5\u001b[39m",
+                        "stack": "Error: Gateway Service should meet WCAG 2.1 AA standards\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m60\u001b[39m\nReceived:   \u001b[31m17.5\u001b[39m\n    at E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts:328:92",
+                        "location": {
+                          "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                          "column": 92,
+                          "line": 328
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 326 |\u001b[39m         \n \u001b[90m 327 |\u001b[39m         \u001b[90m// Validate WCAG compliance score\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 328 |\u001b[39m         expect(result\u001b[33m.\u001b[39mwcagCompliance\u001b[33m,\u001b[39m \u001b[32m`${service.name} should meet WCAG 2.1 AA standards`\u001b[39m)\u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m60\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 329 |\u001b[39m         \n \u001b[90m 330 |\u001b[39m         \u001b[90m// Critical services should have higher accessibility standards\u001b[39m\n \u001b[90m 331 |\u001b[39m         \u001b[36mif\u001b[39m (service\u001b[33m.\u001b[39mtype \u001b[33m===\u001b[39m \u001b[32m'authentication'\u001b[39m \u001b[33m||\u001b[39m service\u001b[33m.\u001b[39mtype \u001b[33m===\u001b[39m \u001b[32m'admin_interface'\u001b[39m) {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                            "column": 92,
+                            "line": 328
+                          },
+                          "message": "Error: Gateway Service should meet WCAG 2.1 AA standards\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m60\u001b[39m\nReceived:   \u001b[31m17.5\u001b[39m\n\n  326 |         \n  327 |         // Validate WCAG compliance score\n> 328 |         expect(result.wcagCompliance, `${service.name} should meet WCAG 2.1 AA standards`).toBeGreaterThan(60);\n      |                                                                                            ^\n  329 |         \n  330 |         // Critical services should have higher accessibility standards\n  331 |         if (service.type === 'authentication' || service.type === 'admin_interface') {\n    at E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts:328:92"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "ΓÖ┐ Phase 7.1: WCAG 2.1 AA Compliance Validation\n"
+                        },
+                        {
+                          "text": "============================================================\n"
+                        },
+                        {
+                          "text": "ΓÖ┐ Validating WCAG compliance for Gateway Service...\n"
+                        },
+                        {
+                          "text": "ΓÖ┐ Validating accessibility for http://localhost:4003/health...\n"
+                        },
+                        {
+                          "text": "   Testing HTML structure and semantics...\n"
+                        },
+                        {
+                          "text": "   Γ¥î DOCTYPE declaration missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î Language attribute missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î Page title missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î No heading elements found\n"
+                        },
+                        {
+                          "text": "   Testing ARIA labels and accessibility attributes...\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No ARIA labels found\n"
+                        },
+                        {
+                          "text": "   Γ¥î No landmark elements found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No role attributes found\n"
+                        },
+                        {
+                          "text": "   Testing keyboard navigation...\n"
+                        },
+                        {
+                          "text": "   Γ¥î No focusable elements found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No skip links found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No tab index management found\n"
+                        },
+                        {
+                          "text": "   Testing color contrast and visual accessibility...\n"
+                        },
+                        {
+                          "text": "   Γ£à Image alt attributes adequate (0/0)\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å Potential color contrast issues\n"
+                        },
+                        {
+                          "text": "   Γ£à Visual styling present\n"
+                        },
+                        {
+                          "text": "   Testing screen reader compatibility...\n"
+                        },
+                        {
+                          "text": "   Γ¥î Limited ARIA support for screen readers\n"
+                        },
+                        {
+                          "text": "   Γ¥î No heading structure for screen readers\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè Structure: 0% | ARIA: 0% | Keyboard: 0% | Contrast: 70% | Screen Reader: 0%\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè WCAG Compliance Score: 17.5%\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-03T13:17:27.599Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-6994d--1-AA-Compliance-Validation-firefox\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-6994d--1-AA-Compliance-Validation-firefox\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-6994d--1-AA-Compliance-Validation-firefox\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                        "column": 92,
+                        "line": 328
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "607f490676b238fe04e0-825bd653c9128ddf6920",
+              "file": "phase7-accessibility-validation.spec.ts",
+              "line": 314,
+              "column": 3
+            },
+            {
+              "title": "Keyboard Navigation Accessibility",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 928,
+                      "error": {
+                        "message": "Error: Gateway Service should support keyboard navigation\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m50\u001b[39m\nReceived:   \u001b[31m0\u001b[39m",
+                        "stack": "Error: Gateway Service should support keyboard navigation\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m50\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n    at E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts:352:97",
+                        "location": {
+                          "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                          "column": 97,
+                          "line": 352
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 350 |\u001b[39m         \n \u001b[90m 351 |\u001b[39m         \u001b[90m// Validate keyboard navigation\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 352 |\u001b[39m         expect(result\u001b[33m.\u001b[39mkeyboardNavigation\u001b[33m,\u001b[39m \u001b[32m`${service.name} should support keyboard navigation`\u001b[39m)\u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m50\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 353 |\u001b[39m         \n \u001b[90m 354 |\u001b[39m         \u001b[90m// Interactive services should have excellent keyboard support\u001b[39m\n \u001b[90m 355 |\u001b[39m         \u001b[36mif\u001b[39m (service\u001b[33m.\u001b[39mtype \u001b[33m===\u001b[39m \u001b[32m'admin_interface'\u001b[39m \u001b[33m||\u001b[39m service\u001b[33m.\u001b[39mtype \u001b[33m===\u001b[39m \u001b[32m'authentication'\u001b[39m) {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                            "column": 97,
+                            "line": 352
+                          },
+                          "message": "Error: Gateway Service should support keyboard navigation\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m50\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\n  350 |         \n  351 |         // Validate keyboard navigation\n> 352 |         expect(result.keyboardNavigation, `${service.name} should support keyboard navigation`).toBeGreaterThan(50);\n      |                                                                                                 ^\n  353 |         \n  354 |         // Interactive services should have excellent keyboard support\n  355 |         if (service.type === 'admin_interface' || service.type === 'authentication') {\n    at E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts:352:97"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "Γî¿∩╕Å Phase 7.2: Keyboard Navigation Accessibility\n"
+                        },
+                        {
+                          "text": "============================================================\n"
+                        },
+                        {
+                          "text": "Γî¿∩╕Å Validating keyboard navigation for Gateway Service...\n"
+                        },
+                        {
+                          "text": "ΓÖ┐ Validating accessibility for http://localhost:4003/health...\n"
+                        },
+                        {
+                          "text": "   Testing HTML structure and semantics...\n"
+                        },
+                        {
+                          "text": "   Γ¥î DOCTYPE declaration missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î Language attribute missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î Page title missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î No heading elements found\n"
+                        },
+                        {
+                          "text": "   Testing ARIA labels and accessibility attributes...\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No ARIA labels found\n"
+                        },
+                        {
+                          "text": "   Γ¥î No landmark elements found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No role attributes found\n"
+                        },
+                        {
+                          "text": "   Testing keyboard navigation...\n"
+                        },
+                        {
+                          "text": "   Γ¥î No focusable elements found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No skip links found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No tab index management found\n"
+                        },
+                        {
+                          "text": "   Testing color contrast and visual accessibility...\n"
+                        },
+                        {
+                          "text": "   Γ£à Image alt attributes adequate (0/0)\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å Potential color contrast issues\n"
+                        },
+                        {
+                          "text": "   Γ£à Visual styling present\n"
+                        },
+                        {
+                          "text": "   Testing screen reader compatibility...\n"
+                        },
+                        {
+                          "text": "   Γ¥î Limited ARIA support for screen readers\n"
+                        },
+                        {
+                          "text": "   Γ¥î No heading structure for screen readers\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè Structure: 0% | ARIA: 0% | Keyboard: 0% | Contrast: 70% | Screen Reader: 0%\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè Keyboard Navigation Score: 0.0%\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-03T13:17:27.553Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-cbe44-rd-Navigation-Accessibility-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-cbe44-rd-Navigation-Accessibility-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-cbe44-rd-Navigation-Accessibility-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                        "column": 97,
+                        "line": 352
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 6,
+                      "status": "failed",
+                      "duration": 1603,
+                      "error": {
+                        "message": "Error: Gateway Service should support keyboard navigation\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m50\u001b[39m\nReceived:   \u001b[31m0\u001b[39m",
+                        "stack": "Error: Gateway Service should support keyboard navigation\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m50\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n    at E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts:352:97",
+                        "location": {
+                          "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                          "column": 97,
+                          "line": 352
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 350 |\u001b[39m         \n \u001b[90m 351 |\u001b[39m         \u001b[90m// Validate keyboard navigation\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 352 |\u001b[39m         expect(result\u001b[33m.\u001b[39mkeyboardNavigation\u001b[33m,\u001b[39m \u001b[32m`${service.name} should support keyboard navigation`\u001b[39m)\u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m50\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 353 |\u001b[39m         \n \u001b[90m 354 |\u001b[39m         \u001b[90m// Interactive services should have excellent keyboard support\u001b[39m\n \u001b[90m 355 |\u001b[39m         \u001b[36mif\u001b[39m (service\u001b[33m.\u001b[39mtype \u001b[33m===\u001b[39m \u001b[32m'admin_interface'\u001b[39m \u001b[33m||\u001b[39m service\u001b[33m.\u001b[39mtype \u001b[33m===\u001b[39m \u001b[32m'authentication'\u001b[39m) {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                            "column": 97,
+                            "line": 352
+                          },
+                          "message": "Error: Gateway Service should support keyboard navigation\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m50\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\n  350 |         \n  351 |         // Validate keyboard navigation\n> 352 |         expect(result.keyboardNavigation, `${service.name} should support keyboard navigation`).toBeGreaterThan(50);\n      |                                                                                                 ^\n  353 |         \n  354 |         // Interactive services should have excellent keyboard support\n  355 |         if (service.type === 'admin_interface' || service.type === 'authentication') {\n    at E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts:352:97"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "Γî¿∩╕Å Phase 7.2: Keyboard Navigation Accessibility\n"
+                        },
+                        {
+                          "text": "============================================================\n"
+                        },
+                        {
+                          "text": "Γî¿∩╕Å Validating keyboard navigation for Gateway Service...\n"
+                        },
+                        {
+                          "text": "ΓÖ┐ Validating accessibility for http://localhost:4003/health...\n"
+                        },
+                        {
+                          "text": "   Testing HTML structure and semantics...\n"
+                        },
+                        {
+                          "text": "   Γ¥î DOCTYPE declaration missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î Language attribute missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î Page title missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î No heading elements found\n"
+                        },
+                        {
+                          "text": "   Testing ARIA labels and accessibility attributes...\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No ARIA labels found\n"
+                        },
+                        {
+                          "text": "   Γ¥î No landmark elements found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No role attributes found\n"
+                        },
+                        {
+                          "text": "   Testing keyboard navigation...\n"
+                        },
+                        {
+                          "text": "   Γ¥î No focusable elements found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No skip links found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No tab index management found\n"
+                        },
+                        {
+                          "text": "   Testing color contrast and visual accessibility...\n"
+                        },
+                        {
+                          "text": "   Γ£à Image alt attributes adequate (0/0)\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å Potential color contrast issues\n"
+                        },
+                        {
+                          "text": "   Γ£à Visual styling present\n"
+                        },
+                        {
+                          "text": "   Testing screen reader compatibility...\n"
+                        },
+                        {
+                          "text": "   Γ¥î Limited ARIA support for screen readers\n"
+                        },
+                        {
+                          "text": "   Γ¥î No heading structure for screen readers\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè Structure: 0% | ARIA: 0% | Keyboard: 0% | Contrast: 70% | Screen Reader: 0%\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè Keyboard Navigation Score: 0.0%\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-03T13:17:27.600Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-cbe44-rd-Navigation-Accessibility-firefox\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-cbe44-rd-Navigation-Accessibility-firefox\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-cbe44-rd-Navigation-Accessibility-firefox\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                        "column": 97,
+                        "line": 352
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "607f490676b238fe04e0-6e1addf5527eef36c9d5",
+              "file": "phase7-accessibility-validation.spec.ts",
+              "line": 338,
+              "column": 3
+            },
+            {
+              "title": "Screen Reader Compatibility",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 894,
+                      "error": {
+                        "message": "Error: Gateway Service should be compatible with screen readers\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m60\u001b[39m\nReceived:   \u001b[31m0\u001b[39m",
+                        "stack": "Error: Gateway Service should be compatible with screen readers\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m60\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n    at E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts:376:110",
+                        "location": {
+                          "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                          "column": 110,
+                          "line": 376
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 374 |\u001b[39m         \n \u001b[90m 375 |\u001b[39m         \u001b[90m// Validate screen reader compatibility\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 376 |\u001b[39m         expect(result\u001b[33m.\u001b[39mscreenReaderCompatibility\u001b[33m,\u001b[39m \u001b[32m`${service.name} should be compatible with screen readers`\u001b[39m)\u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m60\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 377 |\u001b[39m         \n \u001b[90m 378 |\u001b[39m         \u001b[90m// User-facing services should have excellent screen reader support\u001b[39m\n \u001b[90m 379 |\u001b[39m         \u001b[36mif\u001b[39m (service\u001b[33m.\u001b[39mtype \u001b[33m===\u001b[39m \u001b[32m'admin_interface'\u001b[39m \u001b[33m||\u001b[39m service\u001b[33m.\u001b[39mtype \u001b[33m===\u001b[39m \u001b[32m'authentication'\u001b[39m) {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                            "column": 110,
+                            "line": 376
+                          },
+                          "message": "Error: Gateway Service should be compatible with screen readers\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m60\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\n  374 |         \n  375 |         // Validate screen reader compatibility\n> 376 |         expect(result.screenReaderCompatibility, `${service.name} should be compatible with screen readers`).toBeGreaterThan(60);\n      |                                                                                                              ^\n  377 |         \n  378 |         // User-facing services should have excellent screen reader support\n  379 |         if (service.type === 'admin_interface' || service.type === 'authentication') {\n    at E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts:376:110"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "≡ƒöè Phase 7.3: Screen Reader Compatibility\n"
+                        },
+                        {
+                          "text": "============================================================\n"
+                        },
+                        {
+                          "text": "≡ƒöè Validating screen reader compatibility for Gateway Service...\n"
+                        },
+                        {
+                          "text": "ΓÖ┐ Validating accessibility for http://localhost:4003/health...\n"
+                        },
+                        {
+                          "text": "   Testing HTML structure and semantics...\n"
+                        },
+                        {
+                          "text": "   Γ¥î DOCTYPE declaration missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î Language attribute missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î Page title missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î No heading elements found\n"
+                        },
+                        {
+                          "text": "   Testing ARIA labels and accessibility attributes...\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No ARIA labels found\n"
+                        },
+                        {
+                          "text": "   Γ¥î No landmark elements found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No role attributes found\n"
+                        },
+                        {
+                          "text": "   Testing keyboard navigation...\n"
+                        },
+                        {
+                          "text": "   Γ¥î No focusable elements found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No skip links found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No tab index management found\n"
+                        },
+                        {
+                          "text": "   Testing color contrast and visual accessibility...\n"
+                        },
+                        {
+                          "text": "   Γ£à Image alt attributes adequate (0/0)\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å Potential color contrast issues\n"
+                        },
+                        {
+                          "text": "   Γ£à Visual styling present\n"
+                        },
+                        {
+                          "text": "   Testing screen reader compatibility...\n"
+                        },
+                        {
+                          "text": "   Γ¥î Limited ARIA support for screen readers\n"
+                        },
+                        {
+                          "text": "   Γ¥î No heading structure for screen readers\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè Structure: 0% | ARIA: 0% | Keyboard: 0% | Contrast: 70% | Screen Reader: 0%\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè Screen Reader Compatibility Score: 0.0%\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-03T13:17:27.568Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-09707-Screen-Reader-Compatibility-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-09707-Screen-Reader-Compatibility-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-09707-Screen-Reader-Compatibility-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                        "column": 110,
+                        "line": 376
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 7,
+                      "status": "failed",
+                      "duration": 1625,
+                      "error": {
+                        "message": "Error: Gateway Service should be compatible with screen readers\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m60\u001b[39m\nReceived:   \u001b[31m0\u001b[39m",
+                        "stack": "Error: Gateway Service should be compatible with screen readers\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m60\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n    at E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts:376:110",
+                        "location": {
+                          "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                          "column": 110,
+                          "line": 376
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 374 |\u001b[39m         \n \u001b[90m 375 |\u001b[39m         \u001b[90m// Validate screen reader compatibility\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 376 |\u001b[39m         expect(result\u001b[33m.\u001b[39mscreenReaderCompatibility\u001b[33m,\u001b[39m \u001b[32m`${service.name} should be compatible with screen readers`\u001b[39m)\u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m60\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 377 |\u001b[39m         \n \u001b[90m 378 |\u001b[39m         \u001b[90m// User-facing services should have excellent screen reader support\u001b[39m\n \u001b[90m 379 |\u001b[39m         \u001b[36mif\u001b[39m (service\u001b[33m.\u001b[39mtype \u001b[33m===\u001b[39m \u001b[32m'admin_interface'\u001b[39m \u001b[33m||\u001b[39m service\u001b[33m.\u001b[39mtype \u001b[33m===\u001b[39m \u001b[32m'authentication'\u001b[39m) {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                            "column": 110,
+                            "line": 376
+                          },
+                          "message": "Error: Gateway Service should be compatible with screen readers\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m60\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\n  374 |         \n  375 |         // Validate screen reader compatibility\n> 376 |         expect(result.screenReaderCompatibility, `${service.name} should be compatible with screen readers`).toBeGreaterThan(60);\n      |                                                                                                              ^\n  377 |         \n  378 |         // User-facing services should have excellent screen reader support\n  379 |         if (service.type === 'admin_interface' || service.type === 'authentication') {\n    at E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts:376:110"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "≡ƒöè Phase 7.3: Screen Reader Compatibility\n"
+                        },
+                        {
+                          "text": "============================================================\n"
+                        },
+                        {
+                          "text": "≡ƒöè Validating screen reader compatibility for Gateway Service...\n"
+                        },
+                        {
+                          "text": "ΓÖ┐ Validating accessibility for http://localhost:4003/health...\n"
+                        },
+                        {
+                          "text": "   Testing HTML structure and semantics...\n"
+                        },
+                        {
+                          "text": "   Γ¥î DOCTYPE declaration missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î Language attribute missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î Page title missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î No heading elements found\n"
+                        },
+                        {
+                          "text": "   Testing ARIA labels and accessibility attributes...\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No ARIA labels found\n"
+                        },
+                        {
+                          "text": "   Γ¥î No landmark elements found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No role attributes found\n"
+                        },
+                        {
+                          "text": "   Testing keyboard navigation...\n"
+                        },
+                        {
+                          "text": "   Γ¥î No focusable elements found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No skip links found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No tab index management found\n"
+                        },
+                        {
+                          "text": "   Testing color contrast and visual accessibility...\n"
+                        },
+                        {
+                          "text": "   Γ£à Image alt attributes adequate (0/0)\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å Potential color contrast issues\n"
+                        },
+                        {
+                          "text": "   Γ£à Visual styling present\n"
+                        },
+                        {
+                          "text": "   Testing screen reader compatibility...\n"
+                        },
+                        {
+                          "text": "   Γ¥î Limited ARIA support for screen readers\n"
+                        },
+                        {
+                          "text": "   Γ¥î No heading structure for screen readers\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè Structure: 0% | ARIA: 0% | Keyboard: 0% | Contrast: 70% | Screen Reader: 0%\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè Screen Reader Compatibility Score: 0.0%\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-03T13:17:27.600Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-09707-Screen-Reader-Compatibility-firefox\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-09707-Screen-Reader-Compatibility-firefox\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-09707-Screen-Reader-Compatibility-firefox\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                        "column": 110,
+                        "line": 376
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "607f490676b238fe04e0-16c82ec2bd750be6c3ab",
+              "file": "phase7-accessibility-validation.spec.ts",
+              "line": 362,
+              "column": 3
+            },
+            {
+              "title": "Color Contrast and Visual Accessibility",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 931,
+                      "error": {
+                        "message": "Error: Gateway Service should have adequate color contrast\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m70\u001b[39m\nReceived:   \u001b[31m70\u001b[39m",
+                        "stack": "Error: Gateway Service should have adequate color contrast\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m70\u001b[39m\nReceived:   \u001b[31m70\u001b[39m\n    at E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts:400:93",
+                        "location": {
+                          "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                          "column": 93,
+                          "line": 400
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 398 |\u001b[39m         \n \u001b[90m 399 |\u001b[39m         \u001b[90m// Validate color contrast\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 400 |\u001b[39m         expect(result\u001b[33m.\u001b[39mcolorContrast\u001b[33m,\u001b[39m \u001b[32m`${service.name} should have adequate color contrast`\u001b[39m)\u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m70\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 401 |\u001b[39m         \n \u001b[90m 402 |\u001b[39m         \u001b[90m// All services should meet high contrast standards\u001b[39m\n \u001b[90m 403 |\u001b[39m         \u001b[36mif\u001b[39m (service\u001b[33m.\u001b[39mtype \u001b[33m!==\u001b[39m \u001b[32m'gateway'\u001b[39m) {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                            "column": 93,
+                            "line": 400
+                          },
+                          "message": "Error: Gateway Service should have adequate color contrast\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m70\u001b[39m\nReceived:   \u001b[31m70\u001b[39m\n\n  398 |         \n  399 |         // Validate color contrast\n> 400 |         expect(result.colorContrast, `${service.name} should have adequate color contrast`).toBeGreaterThan(70);\n      |                                                                                             ^\n  401 |         \n  402 |         // All services should meet high contrast standards\n  403 |         if (service.type !== 'gateway') {\n    at E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts:400:93"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "≡ƒÄ¿ Phase 7.4: Color Contrast and Visual Accessibility\n"
+                        },
+                        {
+                          "text": "============================================================\n"
+                        },
+                        {
+                          "text": "≡ƒÄ¿ Validating color contrast for Gateway Service...\n"
+                        },
+                        {
+                          "text": "ΓÖ┐ Validating accessibility for http://localhost:4003/health...\n"
+                        },
+                        {
+                          "text": "   Testing HTML structure and semantics...\n"
+                        },
+                        {
+                          "text": "   Γ¥î DOCTYPE declaration missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î Language attribute missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î Page title missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î No heading elements found\n"
+                        },
+                        {
+                          "text": "   Testing ARIA labels and accessibility attributes...\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No ARIA labels found\n"
+                        },
+                        {
+                          "text": "   Γ¥î No landmark elements found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No role attributes found\n"
+                        },
+                        {
+                          "text": "   Testing keyboard navigation...\n"
+                        },
+                        {
+                          "text": "   Γ¥î No focusable elements found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No skip links found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No tab index management found\n"
+                        },
+                        {
+                          "text": "   Testing color contrast and visual accessibility...\n"
+                        },
+                        {
+                          "text": "   Γ£à Image alt attributes adequate (0/0)\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å Potential color contrast issues\n"
+                        },
+                        {
+                          "text": "   Γ£à Visual styling present\n"
+                        },
+                        {
+                          "text": "   Testing screen reader compatibility...\n"
+                        },
+                        {
+                          "text": "   Γ¥î Limited ARIA support for screen readers\n"
+                        },
+                        {
+                          "text": "   Γ¥î No heading structure for screen readers\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè Structure: 0% | ARIA: 0% | Keyboard: 0% | Contrast: 70% | Screen Reader: 0%\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè Color Contrast Score: 70.0%\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-03T13:17:27.568Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-fa926-st-and-Visual-Accessibility-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-fa926-st-and-Visual-Accessibility-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-fa926-st-and-Visual-Accessibility-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                        "column": 93,
+                        "line": 400
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 8,
+                      "status": "failed",
+                      "duration": 1502,
+                      "error": {
+                        "message": "Error: Gateway Service should have adequate color contrast\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m70\u001b[39m\nReceived:   \u001b[31m70\u001b[39m",
+                        "stack": "Error: Gateway Service should have adequate color contrast\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m70\u001b[39m\nReceived:   \u001b[31m70\u001b[39m\n    at E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts:400:93",
+                        "location": {
+                          "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                          "column": 93,
+                          "line": 400
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 398 |\u001b[39m         \n \u001b[90m 399 |\u001b[39m         \u001b[90m// Validate color contrast\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 400 |\u001b[39m         expect(result\u001b[33m.\u001b[39mcolorContrast\u001b[33m,\u001b[39m \u001b[32m`${service.name} should have adequate color contrast`\u001b[39m)\u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m70\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 401 |\u001b[39m         \n \u001b[90m 402 |\u001b[39m         \u001b[90m// All services should meet high contrast standards\u001b[39m\n \u001b[90m 403 |\u001b[39m         \u001b[36mif\u001b[39m (service\u001b[33m.\u001b[39mtype \u001b[33m!==\u001b[39m \u001b[32m'gateway'\u001b[39m) {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                            "column": 93,
+                            "line": 400
+                          },
+                          "message": "Error: Gateway Service should have adequate color contrast\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m70\u001b[39m\nReceived:   \u001b[31m70\u001b[39m\n\n  398 |         \n  399 |         // Validate color contrast\n> 400 |         expect(result.colorContrast, `${service.name} should have adequate color contrast`).toBeGreaterThan(70);\n      |                                                                                             ^\n  401 |         \n  402 |         // All services should meet high contrast standards\n  403 |         if (service.type !== 'gateway') {\n    at E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts:400:93"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "≡ƒÄ¿ Phase 7.4: Color Contrast and Visual Accessibility\n"
+                        },
+                        {
+                          "text": "============================================================\n"
+                        },
+                        {
+                          "text": "≡ƒÄ¿ Validating color contrast for Gateway Service...\n"
+                        },
+                        {
+                          "text": "ΓÖ┐ Validating accessibility for http://localhost:4003/health...\n"
+                        },
+                        {
+                          "text": "   Testing HTML structure and semantics...\n"
+                        },
+                        {
+                          "text": "   Γ¥î DOCTYPE declaration missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î Language attribute missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î Page title missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î No heading elements found\n"
+                        },
+                        {
+                          "text": "   Testing ARIA labels and accessibility attributes...\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No ARIA labels found\n"
+                        },
+                        {
+                          "text": "   Γ¥î No landmark elements found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No role attributes found\n"
+                        },
+                        {
+                          "text": "   Testing keyboard navigation...\n"
+                        },
+                        {
+                          "text": "   Γ¥î No focusable elements found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No skip links found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No tab index management found\n"
+                        },
+                        {
+                          "text": "   Testing color contrast and visual accessibility...\n"
+                        },
+                        {
+                          "text": "   Γ£à Image alt attributes adequate (0/0)\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å Potential color contrast issues\n"
+                        },
+                        {
+                          "text": "   Γ£à Visual styling present\n"
+                        },
+                        {
+                          "text": "   Testing screen reader compatibility...\n"
+                        },
+                        {
+                          "text": "   Γ¥î Limited ARIA support for screen readers\n"
+                        },
+                        {
+                          "text": "   Γ¥î No heading structure for screen readers\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè Structure: 0% | ARIA: 0% | Keyboard: 0% | Contrast: 70% | Screen Reader: 0%\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè Color Contrast Score: 70.0%\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-03T13:17:27.599Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-fa926-st-and-Visual-Accessibility-firefox\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-fa926-st-and-Visual-Accessibility-firefox\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "E:\\GitHub\\codai-project\\tests\\accessibility\\test-results\\phase7-accessibility-valid-fa926-st-and-Visual-Accessibility-firefox\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "E:\\GitHub\\codai-project\\tests\\accessibility\\phase7-accessibility-validation.spec.ts",
+                        "column": 93,
+                        "line": 400
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "607f490676b238fe04e0-79816bbbc406a7f9d0aa",
+              "file": "phase7-accessibility-validation.spec.ts",
+              "line": 386,
+              "column": 3
+            },
+            {
+              "title": "Comprehensive Accessibility Assessment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 5974,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "≡ƒÅå Phase 7.5: Comprehensive Accessibility Assessment\n"
+                        },
+                        {
+                          "text": "============================================================\n"
+                        },
+                        {
+                          "text": "ΓÖ┐ Validating accessibility for http://localhost:4003/health...\n"
+                        },
+                        {
+                          "text": "   Testing HTML structure and semantics...\n"
+                        },
+                        {
+                          "text": "   Γ¥î DOCTYPE declaration missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î Language attribute missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î Page title missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î No heading elements found\n"
+                        },
+                        {
+                          "text": "   Testing ARIA labels and accessibility attributes...\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No ARIA labels found\n"
+                        },
+                        {
+                          "text": "   Γ¥î No landmark elements found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No role attributes found\n"
+                        },
+                        {
+                          "text": "   Testing keyboard navigation...\n"
+                        },
+                        {
+                          "text": "   Γ¥î No focusable elements found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No skip links found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No tab index management found\n"
+                        },
+                        {
+                          "text": "   Testing color contrast and visual accessibility...\n"
+                        },
+                        {
+                          "text": "   Γ£à Image alt attributes adequate (0/0)\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å Potential color contrast issues\n"
+                        },
+                        {
+                          "text": "   Γ£à Visual styling present\n"
+                        },
+                        {
+                          "text": "   Testing screen reader compatibility...\n"
+                        },
+                        {
+                          "text": "   Γ¥î Limited ARIA support for screen readers\n"
+                        },
+                        {
+                          "text": "   Γ¥î No heading structure for screen readers\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè Structure: 0% | ARIA: 0% | Keyboard: 0% | Contrast: 70% | Screen Reader: 0%\n"
+                        },
+                        {
+                          "text": "   F: Gateway Service (Port: 4003)\n"
+                        },
+                        {
+                          "text": "      Overall Score: 14.0%\n"
+                        },
+                        {
+                          "text": "      WCAG: 17.5% | Keyboard: 0.0% | Screen Reader: 0.0% | Contrast: 70.0%\n"
+                        },
+                        {
+                          "text": "      Issues: 13 total, 3 critical\n"
+                        },
+                        {
+                          "text": "ΓÖ┐ Validating accessibility for http://localhost:4007/...\n"
+                        },
+                        {
+                          "text": "   Testing HTML structure and semantics...\n"
+                        },
+                        {
+                          "text": "   Γ£à DOCTYPE declaration present\n"
+                        },
+                        {
+                          "text": "   Γ£à Language attribute present\n"
+                        },
+                        {
+                          "text": "   Γ£à Page title present\n"
+                        },
+                        {
+                          "text": "   Γ£à Heading structure present\n"
+                        },
+                        {
+                          "text": "   Testing ARIA labels and accessibility attributes...\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No ARIA labels found\n"
+                        },
+                        {
+                          "text": "   Γ£à Landmark elements present (4)\n"
+                        },
+                        {
+                          "text": "   Γ£à Interactive elements present (7)\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No role attributes found\n"
+                        },
+                        {
+                          "text": "   Testing keyboard navigation...\n"
+                        },
+                        {
+                          "text": "   Γ£à Focusable elements present (7)\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No skip links found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No tab index management found\n"
+                        },
+                        {
+                          "text": "   Testing color contrast and visual accessibility...\n"
+                        },
+                        {
+                          "text": "   Γ£à Image alt attributes adequate (0/0)\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å Potential color contrast issues\n"
+                        },
+                        {
+                          "text": "   Γ£à Visual styling present\n"
+                        },
+                        {
+                          "text": "   Testing screen reader compatibility...\n"
+                        },
+                        {
+                          "text": "   Γ£à Basic screen reader support (title + lang)\n"
+                        },
+                        {
+                          "text": "   Γ£à ARIA support for screen readers\n"
+                        },
+                        {
+                          "text": "   Γ£à Heading structure for screen readers\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè Structure: 100% | ARIA: 55% | Keyboard: 40% | Contrast: 70% | Screen Reader: 100%\n"
+                        },
+                        {
+                          "text": "   B: Admin Dashboard (Port: 4007)\n"
+                        },
+                        {
+                          "text": "      Overall Score: 73.0%\n"
+                        },
+                        {
+                          "text": "      WCAG: 66.3% | Keyboard: 40.0% | Screen Reader: 100.0% | Contrast: 70.0%\n"
+                        },
+                        {
+                          "text": "      Issues: 5 total, 0 critical\n"
+                        },
+                        {
+                          "text": "ΓÖ┐ Validating accessibility for http://localhost:4004/...\n"
+                        },
+                        {
+                          "text": "   Testing HTML structure and semantics...\n"
+                        },
+                        {
+                          "text": "   Γ£à DOCTYPE declaration present\n"
+                        },
+                        {
+                          "text": "   Γ£à Language attribute present\n"
+                        },
+                        {
+                          "text": "   Γ£à Page title present\n"
+                        },
+                        {
+                          "text": "   Γ£à Heading structure present\n"
+                        },
+                        {
+                          "text": "   Testing ARIA labels and accessibility attributes...\n"
+                        },
+                        {
+                          "text": "   Γ£à ARIA labels present (4)\n"
+                        },
+                        {
+                          "text": "   Γ£à Landmark elements present (7)\n"
+                        },
+                        {
+                          "text": "   Γ£à Interactive elements present (21)\n"
+                        },
+                        {
+                          "text": "   Γ£à Role attributes present (4)\n"
+                        },
+                        {
+                          "text": "   Testing keyboard navigation...\n"
+                        },
+                        {
+                          "text": "   Γ£à Focusable elements present (21)\n"
+                        },
+                        {
+                          "text": "   Γ£à Skip links available\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No tab index management found\n"
+                        },
+                        {
+                          "text": "   Testing color contrast and visual accessibility...\n"
+                        },
+                        {
+                          "text": "   Γ£à Image alt attributes adequate (0/0)\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å Potential color contrast issues\n"
+                        },
+                        {
+                          "text": "   Γ£à Visual styling present\n"
+                        },
+                        {
+                          "text": "   Testing screen reader compatibility...\n"
+                        },
+                        {
+                          "text": "   Γ£à Basic screen reader support (title + lang)\n"
+                        },
+                        {
+                          "text": "   Γ£à ARIA support for screen readers\n"
+                        },
+                        {
+                          "text": "   Γ£à Heading structure for screen readers\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè Structure: 100% | ARIA: 100% | Keyboard: 70% | Contrast: 70% | Screen Reader: 100%\n"
+                        },
+                        {
+                          "text": "   A: ID Service (Port: 4004)\n"
+                        },
+                        {
+                          "text": "      Overall Score: 88.0%\n"
+                        },
+                        {
+                          "text": "      WCAG: 85.0% | Keyboard: 70.0% | Screen Reader: 100.0% | Contrast: 70.0%\n"
+                        },
+                        {
+                          "text": "      Issues: 2 total, 0 critical\n"
+                        },
+                        {
+                          "text": "ΓÖ┐ Validating accessibility for http://localhost:4008/...\n"
+                        },
+                        {
+                          "text": "   Testing HTML structure and semantics...\n"
+                        },
+                        {
+                          "text": "   Γ£à DOCTYPE declaration present\n"
+                        },
+                        {
+                          "text": "   Γ£à Language attribute present\n"
+                        },
+                        {
+                          "text": "   Γ£à Page title present\n"
+                        },
+                        {
+                          "text": "   Γ£à Heading structure present\n"
+                        },
+                        {
+                          "text": "   Testing ARIA labels and accessibility attributes...\n"
+                        },
+                        {
+                          "text": "   Γ£à ARIA labels present (3)\n"
+                        },
+                        {
+                          "text": "   Γ£à Landmark elements present (4)\n"
+                        },
+                        {
+                          "text": "   Γ£à Interactive elements present (3)\n"
+                        },
+                        {
+                          "text": "   Γ£à Role attributes present (6)\n"
+                        },
+                        {
+                          "text": "   Testing keyboard navigation...\n"
+                        },
+                        {
+                          "text": "   Γ£à Focusable elements present (3)\n"
+                        },
+                        {
+                          "text": "   Γ£à Skip links available\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No tab index management found\n"
+                        },
+                        {
+                          "text": "   Testing color contrast and visual accessibility...\n"
+                        },
+                        {
+                          "text": "   Γ£à Image alt attributes adequate (0/0)\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å Potential color contrast issues\n"
+                        },
+                        {
+                          "text": "   Γ£à Visual styling present\n"
+                        },
+                        {
+                          "text": "   Testing screen reader compatibility...\n"
+                        },
+                        {
+                          "text": "   Γ£à Basic screen reader support (title + lang)\n"
+                        },
+                        {
+                          "text": "   Γ£à ARIA support for screen readers\n"
+                        },
+                        {
+                          "text": "   Γ£à Heading structure for screen readers\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè Structure: 100% | ARIA: 100% | Keyboard: 70% | Contrast: 70% | Screen Reader: 100%\n"
+                        },
+                        {
+                          "text": "   A: Hub Service (Port: 4008)\n"
+                        },
+                        {
+                          "text": "      Overall Score: 88.0%\n"
+                        },
+                        {
+                          "text": "      WCAG: 85.0% | Keyboard: 70.0% | Screen Reader: 100.0% | Contrast: 70.0%\n"
+                        },
+                        {
+                          "text": "      Issues: 2 total, 0 critical\n"
+                        },
+                        {
+                          "text": "\\n≡ƒôè Accessibility Assessment Summary:\n"
+                        },
+                        {
+                          "text": "   Average Accessibility Score: 65.8%\n"
+                        },
+                        {
+                          "text": "   Total Critical Issues: 3\n"
+                        },
+                        {
+                          "text": "   ≡ƒÄ» Accessibility Grade: B (Good)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-03T13:17:27.583Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                },
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 9,
+                      "status": "passed",
+                      "duration": 5219,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "≡ƒÅå Phase 7.5: Comprehensive Accessibility Assessment\n"
+                        },
+                        {
+                          "text": "============================================================\n"
+                        },
+                        {
+                          "text": "ΓÖ┐ Validating accessibility for http://localhost:4003/health...\n"
+                        },
+                        {
+                          "text": "   Testing HTML structure and semantics...\n"
+                        },
+                        {
+                          "text": "   Γ¥î DOCTYPE declaration missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î Language attribute missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î Page title missing\n"
+                        },
+                        {
+                          "text": "   Γ¥î No heading elements found\n"
+                        },
+                        {
+                          "text": "   Testing ARIA labels and accessibility attributes...\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No ARIA labels found\n"
+                        },
+                        {
+                          "text": "   Γ¥î No landmark elements found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No role attributes found\n"
+                        },
+                        {
+                          "text": "   Testing keyboard navigation...\n"
+                        },
+                        {
+                          "text": "   Γ¥î No focusable elements found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No skip links found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No tab index management found\n"
+                        },
+                        {
+                          "text": "   Testing color contrast and visual accessibility...\n"
+                        },
+                        {
+                          "text": "   Γ£à Image alt attributes adequate (0/0)\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å Potential color contrast issues\n"
+                        },
+                        {
+                          "text": "   Γ£à Visual styling present\n"
+                        },
+                        {
+                          "text": "   Testing screen reader compatibility...\n"
+                        },
+                        {
+                          "text": "   Γ¥î Limited ARIA support for screen readers\n"
+                        },
+                        {
+                          "text": "   Γ¥î No heading structure for screen readers\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè Structure: 0% | ARIA: 0% | Keyboard: 0% | Contrast: 70% | Screen Reader: 0%\n"
+                        },
+                        {
+                          "text": "   F: Gateway Service (Port: 4003)\n"
+                        },
+                        {
+                          "text": "      Overall Score: 14.0%\n"
+                        },
+                        {
+                          "text": "      WCAG: 17.5% | Keyboard: 0.0% | Screen Reader: 0.0% | Contrast: 70.0%\n"
+                        },
+                        {
+                          "text": "      Issues: 13 total, 3 critical\n"
+                        },
+                        {
+                          "text": "ΓÖ┐ Validating accessibility for http://localhost:4007/...\n"
+                        },
+                        {
+                          "text": "   Testing HTML structure and semantics...\n"
+                        },
+                        {
+                          "text": "   Γ£à DOCTYPE declaration present\n"
+                        },
+                        {
+                          "text": "   Γ£à Language attribute present\n"
+                        },
+                        {
+                          "text": "   Γ£à Page title present\n"
+                        },
+                        {
+                          "text": "   Γ£à Heading structure present\n"
+                        },
+                        {
+                          "text": "   Testing ARIA labels and accessibility attributes...\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No ARIA labels found\n"
+                        },
+                        {
+                          "text": "   Γ£à Landmark elements present (4)\n"
+                        },
+                        {
+                          "text": "   Γ£à Interactive elements present (7)\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No role attributes found\n"
+                        },
+                        {
+                          "text": "   Testing keyboard navigation...\n"
+                        },
+                        {
+                          "text": "   Γ£à Focusable elements present (7)\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No skip links found\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No tab index management found\n"
+                        },
+                        {
+                          "text": "   Testing color contrast and visual accessibility...\n"
+                        },
+                        {
+                          "text": "   Γ£à Image alt attributes adequate (0/0)\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å Potential color contrast issues\n"
+                        },
+                        {
+                          "text": "   Γ£à Visual styling present\n"
+                        },
+                        {
+                          "text": "   Testing screen reader compatibility...\n"
+                        },
+                        {
+                          "text": "   Γ£à Basic screen reader support (title + lang)\n"
+                        },
+                        {
+                          "text": "   Γ£à ARIA support for screen readers\n"
+                        },
+                        {
+                          "text": "   Γ£à Heading structure for screen readers\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè Structure: 100% | ARIA: 55% | Keyboard: 40% | Contrast: 70% | Screen Reader: 100%\n"
+                        },
+                        {
+                          "text": "   B: Admin Dashboard (Port: 4007)\n"
+                        },
+                        {
+                          "text": "      Overall Score: 73.0%\n"
+                        },
+                        {
+                          "text": "      WCAG: 66.3% | Keyboard: 40.0% | Screen Reader: 100.0% | Contrast: 70.0%\n"
+                        },
+                        {
+                          "text": "      Issues: 5 total, 0 critical\n"
+                        },
+                        {
+                          "text": "ΓÖ┐ Validating accessibility for http://localhost:4004/...\n"
+                        },
+                        {
+                          "text": "   Testing HTML structure and semantics...\n"
+                        },
+                        {
+                          "text": "   Γ£à DOCTYPE declaration present\n"
+                        },
+                        {
+                          "text": "   Γ£à Language attribute present\n"
+                        },
+                        {
+                          "text": "   Γ£à Page title present\n"
+                        },
+                        {
+                          "text": "   Γ£à Heading structure present\n"
+                        },
+                        {
+                          "text": "   Testing ARIA labels and accessibility attributes...\n"
+                        },
+                        {
+                          "text": "   Γ£à ARIA labels present (4)\n"
+                        },
+                        {
+                          "text": "   Γ£à Landmark elements present (7)\n"
+                        },
+                        {
+                          "text": "   Γ£à Interactive elements present (21)\n"
+                        },
+                        {
+                          "text": "   Γ£à Role attributes present (4)\n"
+                        },
+                        {
+                          "text": "   Testing keyboard navigation...\n"
+                        },
+                        {
+                          "text": "   Γ£à Focusable elements present (21)\n"
+                        },
+                        {
+                          "text": "   Γ£à Skip links available\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No tab index management found\n"
+                        },
+                        {
+                          "text": "   Testing color contrast and visual accessibility...\n"
+                        },
+                        {
+                          "text": "   Γ£à Image alt attributes adequate (0/0)\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å Potential color contrast issues\n"
+                        },
+                        {
+                          "text": "   Γ£à Visual styling present\n"
+                        },
+                        {
+                          "text": "   Testing screen reader compatibility...\n"
+                        },
+                        {
+                          "text": "   Γ£à Basic screen reader support (title + lang)\n"
+                        },
+                        {
+                          "text": "   Γ£à ARIA support for screen readers\n"
+                        },
+                        {
+                          "text": "   Γ£à Heading structure for screen readers\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè Structure: 100% | ARIA: 100% | Keyboard: 70% | Contrast: 70% | Screen Reader: 100%\n"
+                        },
+                        {
+                          "text": "   A: ID Service (Port: 4004)\n"
+                        },
+                        {
+                          "text": "      Overall Score: 88.0%\n"
+                        },
+                        {
+                          "text": "      WCAG: 85.0% | Keyboard: 70.0% | Screen Reader: 100.0% | Contrast: 70.0%\n"
+                        },
+                        {
+                          "text": "      Issues: 2 total, 0 critical\n"
+                        },
+                        {
+                          "text": "ΓÖ┐ Validating accessibility for http://localhost:4008/...\n"
+                        },
+                        {
+                          "text": "   Testing HTML structure and semantics...\n"
+                        },
+                        {
+                          "text": "   Γ£à DOCTYPE declaration present\n"
+                        },
+                        {
+                          "text": "   Γ£à Language attribute present\n"
+                        },
+                        {
+                          "text": "   Γ£à Page title present\n"
+                        },
+                        {
+                          "text": "   Γ£à Heading structure present\n"
+                        },
+                        {
+                          "text": "   Testing ARIA labels and accessibility attributes...\n"
+                        },
+                        {
+                          "text": "   Γ£à ARIA labels present (3)\n"
+                        },
+                        {
+                          "text": "   Γ£à Landmark elements present (4)\n"
+                        },
+                        {
+                          "text": "   Γ£à Interactive elements present (3)\n"
+                        },
+                        {
+                          "text": "   Γ£à Role attributes present (6)\n"
+                        },
+                        {
+                          "text": "   Testing keyboard navigation...\n"
+                        },
+                        {
+                          "text": "   Γ£à Focusable elements present (3)\n"
+                        },
+                        {
+                          "text": "   Γ£à Skip links available\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å No tab index management found\n"
+                        },
+                        {
+                          "text": "   Testing color contrast and visual accessibility...\n"
+                        },
+                        {
+                          "text": "   Γ£à Image alt attributes adequate (0/0)\n"
+                        },
+                        {
+                          "text": "   ΓÜá∩╕Å Potential color contrast issues\n"
+                        },
+                        {
+                          "text": "   Γ£à Visual styling present\n"
+                        },
+                        {
+                          "text": "   Testing screen reader compatibility...\n"
+                        },
+                        {
+                          "text": "   Γ£à Basic screen reader support (title + lang)\n"
+                        },
+                        {
+                          "text": "   Γ£à ARIA support for screen readers\n"
+                        },
+                        {
+                          "text": "   Γ£à Heading structure for screen readers\n"
+                        },
+                        {
+                          "text": "   ≡ƒôè Structure: 100% | ARIA: 100% | Keyboard: 70% | Contrast: 70% | Screen Reader: 100%\n"
+                        },
+                        {
+                          "text": "   A: Hub Service (Port: 4008)\n"
+                        },
+                        {
+                          "text": "      Overall Score: 88.0%\n"
+                        },
+                        {
+                          "text": "      WCAG: 85.0% | Keyboard: 70.0% | Screen Reader: 100.0% | Contrast: 70.0%\n"
+                        },
+                        {
+                          "text": "      Issues: 2 total, 0 critical\n"
+                        },
+                        {
+                          "text": "\\n≡ƒôè Accessibility Assessment Summary:\n"
+                        },
+                        {
+                          "text": "   Average Accessibility Score: 65.8%\n"
+                        },
+                        {
+                          "text": "   Total Critical Issues: 3\n"
+                        },
+                        {
+                          "text": "   ≡ƒÄ» Accessibility Grade: B (Good)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-03T13:17:27.599Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "607f490676b238fe04e0-c2e0d6bfd0cb8f3e9fdf",
+              "file": "phase7-accessibility-validation.spec.ts",
+              "line": 410,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-08-03T13:17:26.836Z",
+    "duration": 8020.467999999999,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 8,
+    "flaky": 0
+  }
+}

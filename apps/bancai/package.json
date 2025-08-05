@@ -16,15 +16,7 @@
     "type-check": "pnpm exec tsc --noEmit"
   },
   "dependencies": {
-    "@codai/api-keys": "workspace:*",
-    "@codai/api-standards": "workspace:*",
-    "@codai/azure-openai": "workspace:*",
-    "@codai/logai-integration": "workspace:*",
-    "@codai/logai-sdk": "link:..\\..\\packages\\logai-sdk",
-    "@codai/shared-ui": "workspace:*",
-    "@codai/sso-sdk": "workspace:*",
-    "@codai/security": "workspace:*",
-    "@codai/translations": "workspace:*",
+    "@codai/logai-sdk": "^1.0.0",
     "@stripe/stripe-js": "^7.5.0",
     "@types/node": "^24.0.14",
     "@types/react": "^19.1.8",

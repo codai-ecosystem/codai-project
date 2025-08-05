@@ -1,0 +1,65 @@
+{
+  "name": "@codai/sdk",
+  "version": "1.0.0",
+  "description": "Official TypeScript/JavaScript SDK for the CODAI ecosystem",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "docs": "typedoc src/index.ts"
+  },
+  "keywords": [
+    "codai",
+    "ai",
+    "sdk",
+    "typescript",
+    "javascript",
+    "api",
+    "client"
+  ],
+  "author": "CODAI Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^2.0.0",
+    "eslint": "^8.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "typedoc": "^0.25.0"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "ws": "^8.16.0"
+  },
+  "peerDependencies": {
+    "@types/ws": "^8.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codai-project/codai-sdk"
+  },
+  "bugs": {
+    "url": "https://github.com/codai-project/codai-sdk/issues"
+  },
+  "homepage": "https://github.com/codai-project/codai-sdk#readme"
+}

@@ -1,0 +1,181 @@
+{
+  "servers": {
+    "ControlAIMCP": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "controlai-mcp"],
+      "env": {
+        "NODE_ENV": "development",
+        "DOTENV_CONFIG_PATH": "E:\\GitHub\\codai-project\\.env",
+        "CONTROLAI_HTTP_PORT": "7001",
+        "CONTROLAI_WS_PORT": "7001"
+      },
+      "dev": {
+        "watch": "src/**/*.ts",
+        "debug": { "type": "node" }
+      },
+      "resilience": {
+        "enabled": true,
+        "maxRetries": 3,
+        "retryDelay": 5000,
+        "healthCheck": "http://localhost:7001/health",
+        "circuitBreakerThreshold": 5,
+        "fallbackMode": "degraded"
+      }
+    },
+    "MemoraiMCP": {
+      "type": "http",
+      "url": "http://localhost:4950",
+      "apiKey": "memorai-dev-key-2025",
+      "env": {
+        "DOTENV_CONFIG_PATH": "E:\\GitHub\\codai-project\\.env",
+        "NODE_ENV": "development",
+        "DEBUG": "memorai:*",
+        "MEMORAI_DEBUG": "true",
+        "MEMORAI_LOG_LEVEL": "debug",
+        "MEMORAI_API_KEY": "memorai-dev-key-2025",
+        "MEMORAI_MCP_PORT": "4950",
+        "MEMORAI_CBD_PATH": "./memorai-cbd-data"
+      },
+      "dev": {
+        "watch": "src/**/*.ts",
+        "debug": { "type": "node" }
+      },
+      "resilience": {
+        "enabled": true,
+        "maxRetries": 5,
+        "retryDelay": 3000,
+        "healthCheck": "http://localhost:4950/health",
+        "circuitBreakerThreshold": 3,
+        "fallbackMode": "local_cache",
+        "criticalForConversations": true,
+        "autoRestart": true,
+        "restartCommand": "🔄 Auto-Restart MemorAI MCP"
+      }
+    },
+    "GlassMCP": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@codai/glass-mcp"],
+      "env": {
+        "GLASS_LOG_LEVEL": "debug",
+        "GLASS_MAX_WINDOWS": "1000",
+        "GLASS_WINDOW_CACHE_TTL": "5000",
+        "NODE_ENV": "development"
+      },
+      "dev": {
+        "watch": "src/**/*.ts",
+        "debug": { "type": "node" }
+      },
+      "resilience": {
+        "enabled": true,
+        "maxRetries": 2,
+        "retryDelay": 2000,
+        "healthCheck": "http://localhost:8001/health",
+        "circuitBreakerThreshold": 3,
+        "fallbackMode": "disabled"
+      }
+    },
+    "PlaywrightMCP": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@executeautomation/playwright-mcp-server"],
+      "dev": {
+        "debug": { "type": "node" }
+      },
+      "resilience": {
+        "enabled": true,
+        "maxRetries": 2,
+        "retryDelay": 5000,
+        "fallbackMode": "disabled"
+      }
+    },
+    "SimpleMemoryMCP": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "dev": {
+        "debug": { "type": "node" }
+      },
+      "resilience": {
+        "enabled": true,
+        "maxRetries": 3,
+        "retryDelay": 3000,
+        "fallbackMode": "in_memory",
+        "backupToMemoraiMCP": true
+      }
+    },
+    "Context7MCP": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"],
+      "dev": {
+        "debug": { "type": "node" }
+      },
+      "resilience": {
+        "enabled": true,
+        "maxRetries": 2,
+        "retryDelay": 2000,
+        "fallbackMode": "cached_docs"
+      }
+    },
+    "SequentialThinkingMCP": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "dev": {
+        "debug": { "type": "node" }
+      },
+      "resilience": {
+        "enabled": true,
+        "maxRetries": 2,
+        "retryDelay": 1000,
+        "fallbackMode": "simplified_thinking"
+      }
+    },
+    "RomaiIntelligenceMCP": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@codai/romai-mcp-standalone"],
+      "env": {
+        "DOTENV_CONFIG_PATH": "E:\\GitHub\\codai-project\\.env"
+      },
+      "dev": {
+        "debug": { "type": "node" }
+      },
+      "resilience": {
+        "enabled": true,
+        "maxRetries": 2,
+        "retryDelay": 3000,
+        "fallbackMode": "basic_romanian"
+      }
+    },
+    "MicrosoftDocsMCP": {
+      "type": "http",
+      "url": "https://learn.microsoft.com/api/mcp",
+      "resilience": {
+        "enabled": true,
+        "maxRetries": 2,
+        "retryDelay": 5000,
+        "fallbackMode": "cached_docs"
+      }
+    }
+  },
+  "resilienceConfig": {
+    "globalEnabled": true,
+    "monitoringInterval": 30000,
+    "conversationProtection": {
+      "enabled": true,
+      "criticalServers": ["MemoraiMCP", "ControlAIMCP"],
+      "fallbackStrategies": {
+        "memory": "local_session_cache",
+        "coordination": "basic_task_management"
+      }
+    },
+    "notifications": {
+      "enabled": true,
+      "channels": ["console", "file"],
+      "logPath": "E:\\GitHub\\codai-project\\logs\\mcp-resilience.log"
+    }
+  }
+}

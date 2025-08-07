@@ -309,7 +309,8 @@ const resolvers = {
   Query: {
     // Memory Operations
     memory: async (_, { id }) => {
-      return await api.request('GET', `/api/memories/${id}`);
+      const response = await api.request('GET', `/api/memories/${id}`);
+      return response.data; // Unwrap the response to get the actual memory object
     },
 
     memories: async (_, { limit, offset, category, tags, dateFrom, dateTo }) => {
@@ -321,8 +322,8 @@ const resolvers = {
       if (dateFrom) params.append('dateFrom', dateFrom);
       if (dateTo) params.append('dateTo', dateTo);
 
-      const result = await api.request('GET', `/api/memories?${params}`);
-      return result.memories || result;
+      const response = await api.request('GET', `/api/memories?${params}`);
+      return response.data || response.memories || response; // Handle different response structures
     },
 
     // Search Operations
@@ -342,30 +343,35 @@ const resolvers = {
         includeEmbeddings: options.includeEmbeddings
       };
 
-      return await api.request('POST', '/api/search', searchRequest);
+      const response = await api.request('POST', '/api/search', searchRequest);
+      return response.data || response; // Unwrap search results
     },
 
     similarMemories: async (_, { memoryId, limit }) => {
-      const result = await api.request('GET', `/api/memories/${memoryId}/similar?limit=${limit}`);
-      return result.memories || result;
+      const response = await api.request('GET', `/api/memories/${memoryId}/similar?limit=${limit}`);
+      return response.data || response.memories || response; // Handle different response structures
     },
 
     // Analytics
     analytics: async () => {
-      return await api.request('GET', '/api/analytics');
+      const response = await api.request('GET', '/api/analytics');
+      return response.data || response; // Unwrap analytics data
     },
 
     memoryAnalytics: async () => {
-      return await api.request('GET', '/api/analytics/memories');
+      const response = await api.request('GET', '/api/analytics/memories');
+      return response.data || response; // Unwrap analytics data
     },
 
     searchAnalytics: async () => {
-      return await api.request('GET', '/api/analytics/search');
+      const response = await api.request('GET', '/api/analytics/search');
+      return response.data || response; // Unwrap analytics data
     },
 
     // System Information
     systemInfo: async () => {
-      return await api.request('GET', '/api/system/info');
+      const response = await api.request('GET', '/api/system/info');
+      return response.data || response; // Unwrap system info
     },
 
     health: async () => {
@@ -378,67 +384,77 @@ const resolvers = {
       params.append('dateFrom', from);
       params.append('dateTo', to);
 
-      const result = await api.request('GET', `/api/memories?${params}`);
-      return result.memories || result;
+      const response = await api.request('GET', `/api/memories?${params}`);
+      return response.data || response.memories || response; // Handle different response structures
     },
 
     memoriesByPattern: async (_, { pattern }) => {
-      return await api.request('POST', '/api/search', {
+      const response = await api.request('POST', '/api/search', {
         query: pattern,
         algorithm: 'regex'
       });
+      return response.data || response; // Unwrap search results
     },
 
     getMemoryVersions: async (_, { id }) => {
-      return await api.request('GET', `/api/memories/${id}/versions`);
+      const response = await api.request('GET', `/api/memories/${id}/versions`);
+      return response.data || response; // Unwrap version history
     }
   },
 
   Mutation: {
     // Memory Operations
     createMemory: async (_, { input }) => {
-      return await api.request('POST', '/api/memories', input);
+      const response = await api.request('POST', '/api/memories', input);
+      return response.data; // Unwrap the response to get the actual memory object
     },
 
     updateMemory: async (_, { id, input }) => {
-      return await api.request('PUT', `/api/memories/${id}`, input);
+      const response = await api.request('PUT', `/api/memories/${id}`, input);
+      return response.data; // Unwrap the response to get the actual memory object
     },
 
     deleteMemory: async (_, { id }) => {
-      await api.request('DELETE', `/api/memories/${id}`);
-      return true;
+      const response = await api.request('DELETE', `/api/memories/${id}`);
+      return response.success; // Return the success boolean from the wrapped response
     },
 
     // Batch Operations
     batchMemories: async (_, { operations }) => {
-      return await api.request('POST', '/api/memories/batch', { operations });
+      const response = await api.request('POST', '/api/memories/batch', { operations });
+      return response.data; // Unwrap the response to get the actual batch results
     },
 
     importMemories: async (_, { memories }) => {
-      return await api.request('POST', '/api/memories/import', { memories });
+      const response = await api.request('POST', '/api/memories/import', { memories });
+      return response.data || response; // Unwrap the import results
     },
 
     exportMemories: async (_, { options }) => {
-      return await api.request('POST', '/api/memories/export', options || {});
+      const response = await api.request('POST', '/api/memories/export', options || {});
+      return response.data || response; // Unwrap the export results
     },
 
     // Memory Management
     archiveMemory: async (_, { id }) => {
-      return await api.request('POST', `/api/memories/${id}/archive`);
+      const response = await api.request('POST', `/api/memories/${id}/archive`);
+      return response.data || response; // Unwrap the archived memory
     },
 
     restoreMemory: async (_, { id }) => {
-      return await api.request('POST', `/api/memories/${id}/restore`);
+      const response = await api.request('POST', `/api/memories/${id}/restore`);
+      return response.data || response; // Unwrap the restored memory
     },
 
     duplicateMemory: async (_, { id }) => {
-      return await api.request('POST', `/api/memories/${id}/duplicate`);
+      const response = await api.request('POST', `/api/memories/${id}/duplicate`);
+      return response.data || response; // Unwrap the duplicated memory
     },
 
     // System Operations
     reindexSearch: async () => {
-      await api.request('POST', '/api/system/reindex');
-      return true;
+      const response = await api.request('POST', '/api/system/reindex');
+      return response.success || true; // Return success status
     },
 
     clearCache: async () => {

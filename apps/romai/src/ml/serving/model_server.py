@@ -45,8 +45,8 @@ try:
     sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
     
     # Import new consolidated modules
-    from consciousness.advanced_consciousness_engine import AdvancedConsciousnessEngine
-    from consciousness.neural_quantum_bridge import NeuralQuantumBridge, ConsciousnessMetrics
+    from ..consciousness.advanced_awareness_engine_engine import AdvancedConsciousnessEngine
+    from ..consciousness.neural_quantum_bridge import NeuralQuantumBridge, ConsciousnessMetrics
     from reasoning.advanced_reasoning_system import AdvancedReasoningSystem
     from multimodal.multimodal_processing_system import MultiModalProcessingSystem
     from infrastructure.infrastructure_scaling_system import InfrastructureScalingSystem
@@ -64,7 +64,7 @@ try:
     # Phase 1.1 Advanced Reasoning Training System
     AdvancedReasoningTrainingSystem = None
     try:
-        from training.advanced_reasoning_training_system import AdvancedReasoningTrainingSystem
+        from ..training.advanced_reasoning_training_system import AdvancedReasoningTrainingSystem
         ADVANCED_REASONING_AVAILABLE = True
         logger.info("✅ Advanced Reasoning Training System imported successfully")
     except ImportError as e:
@@ -101,9 +101,10 @@ try:
     from emergence.real_world_interaction_system import RealWorldInteractionSystem, InteractionTask, InteractionDomain, InteractionMode
     
     # Production Monitoring & Analytics
+    MONITORING_AVAILABLE = False
     try:
-        from monitoring.advanced_monitoring_system import initialize_monitoring, get_monitoring_system, MonitoringLevel
-        MONITORING_AVAILABLE = True
+        from ..monitoring.advanced_monitoring_system import initialize_monitoring, get_monitoring_system, MonitoringLevel
+        from ..monitoring.advanced_monitoring_system import MONITORING_AVAILABLE
     except ImportError:
         logger.warning("⚠️ Advanced monitoring system not available")
         MONITORING_AVAILABLE = False
@@ -230,7 +231,7 @@ meta_learning_emergence_system = None
 autonomous_agent_training_system = None
 real_world_interaction_system = None
 
-# Phase 3 Multi-Agent Coordination - Global instance
+# Multi-Agent Coordination - Global instance
 multi_agent_coordination_system = None
 
 # Phase 5 AGI Performance Enhancement - Global instance
@@ -311,12 +312,17 @@ async def initialize_advanced_systems():
         
         # Initialize Neural-Quantum Consciousness Bridge (Hour 3-4)
         logger.info("🧠 Initializing Neural-Quantum Consciousness Bridge...")
-        neural_quantum_bridge = NeuralQuantumBridge(
-            neural_dim=512,
-            quantum_qubits=16,
-            consciousness_threshold=0.7
-        )
-        logger.info("✅ Neural-Quantum Bridge initialized")
+        try:
+            from ..consciousness.neural_quantum_bridge import NeuralQuantumBridge
+            neural_quantum_bridge = NeuralQuantumBridge(
+                neural_dim=512,
+                quantum_qubits=16,
+                consciousness_threshold=0.7
+            )
+            logger.info("✅ Neural-Quantum Bridge initialized")
+        except Exception as e:
+            logger.error(f"❌ Failed to initialize Neural-Quantum Bridge: {e}")
+            neural_quantum_bridge = None
         
         # Neural-Quantum Bridge includes consciousness capabilities
         logger.info("✅ Advanced consciousness systems available via Neural-Quantum Bridge")
@@ -1629,6 +1635,7 @@ async def lifespan(app: FastAPI):
     global advanced_reasoning_system
     try:
         logger.info("🧠 Initializing Advanced Reasoning Training System...")
+        from ..training.advanced_reasoning_training_system import AdvancedReasoningTrainingSystem
         advanced_reasoning_system = AdvancedReasoningTrainingSystem()
         logger.info("✅ Advanced Reasoning Training System initialized successfully")
         
@@ -1647,13 +1654,13 @@ async def lifespan(app: FastAPI):
         logger.error(f"❌ Advanced Reasoning Training initialization failed: {e}")
         advanced_reasoning_system = None
 
-    # 4.5. Initialize Phase 3 Multi-Agent Coordination System
+    # 4.5. Initialize Multi-Agent Coordination System
     global multi_agent_coordination_system
     try:
-        logger.info("🤖 Initializing Phase 3 Multi-Agent Coordination System...")
+        logger.info("🤖 Initializing Multi-Agent Coordination System...")
         from multi_agent_coordination import create_multi_agent_coordination_system
         multi_agent_coordination_system = create_multi_agent_coordination_system()
-        logger.info("✅ Phase 3 Multi-Agent Coordination System initialized successfully")
+        logger.info("✅ Multi-Agent Coordination System initialized successfully")
         
         # Test the system briefly
         test_status = multi_agent_coordination_system.get_coordination_status()
@@ -1668,10 +1675,10 @@ async def lifespan(app: FastAPI):
     # 4.6. Initialize Phase 5 AGI Performance Enhancement System
     global phase_5_enhancement_system
     try:
-        logger.info("🚀 Initializing Phase 5 AGI Performance Enhancement System...")
-        from phase_5_agi_performance_enhancement import initialize_phase_5_system
+        logger.info("🚀 Initializing AGI Performance Enhancement System...")
+        from artificial_general_intelligence_performance_improvement import initialize_phase_5_system
         phase_5_enhancement_system = await initialize_phase_5_system()
-        logger.info("✅ Phase 5 AGI Performance Enhancement System initialized successfully")
+        logger.info("✅ AGI Performance Enhancement System initialized successfully")
         
         # Get enhancement status
         enhancement_status = await phase_5_enhancement_system.get_enhancement_status()
@@ -3750,7 +3757,7 @@ async def test_intelligence_systems():
 @app.post("/self_modification/architecture")
 async def modify_model_architecture(request: dict):
     """
-    🔧 PHASE 3: Self-Modification Core - Architecture Modification
+    🔧 ADVANCED: Self-Modification Core - Architecture Modification
     Enable dynamic model architecture modification and optimization
     """
     start_time = time.time()
@@ -3956,7 +3963,7 @@ async def modify_model_architecture(request: dict):
 @app.post("/self_modification/adaptive_learning")
 async def adaptive_learning_system(request: dict):
     """
-    🧠 PHASE 3: Adaptive Learning System
+    🧠 ADVANCED: Adaptive Learning System
     Dynamic learning adaptation and capability enhancement
     """
     start_time = time.time()
@@ -4137,7 +4144,7 @@ async def adaptive_learning_system(request: dict):
 @app.post("/self_modification/emergent_capabilities")
 async def emergent_capability_detection(request: dict):
     """
-    🌟 PHASE 3: Emergent Capability Detection
+    🌟 ADVANCED: Emergent Capability Detection
     Detect and develop newly emerging AGI capabilities
     """
     start_time = time.time()
@@ -7671,13 +7678,13 @@ async def get_phase_2_autonomous_status():
 # =============================================================================
 
 # =============================================================================
-# Phase 3: Advanced Multi-Agent Coordination Endpoints
+# Multi-Agent: Advanced Multi-Agent Coordination Endpoints
 # =============================================================================
 
 @app.post("/api/v3/multi-agent/create-task")
 async def create_multi_agent_task(request: dict):
     """
-    🤖 Phase 3: Create Multi-Agent Coordination Task
+    🤖 Multi-Agent: Create Multi-Agent Coordination Task
     Creates a distributed task for multiple specialized agents
     """
     try:
@@ -7737,7 +7744,7 @@ async def create_multi_agent_task(request: dict):
 @app.post("/api/v3/multi-agent/execute")
 async def execute_multi_agent_coordination(request: dict):
     """
-    🤖 Phase 3: Execute Multi-Agent Coordination
+    🤖 Multi-Agent: Execute Multi-Agent Coordination
     Executes distributed AGI reasoning across multiple specialized agents
     """
     try:
@@ -7769,7 +7776,7 @@ async def execute_multi_agent_coordination(request: dict):
 @app.get("/api/v3/multi-agent/status")
 async def get_multi_agent_status():
     """
-    🤖 Phase 3: Get Multi-Agent System Status
+    🤖 Multi-Agent: Get Multi-Agent System Status
     Returns comprehensive status of the multi-agent coordination system
     """
     try:
@@ -7789,7 +7796,7 @@ async def get_multi_agent_status():
 @app.post("/api/v3/multi-agent/test")
 async def test_multi_agent_system():
     """
-    🤖 Phase 3: Test Multi-Agent Coordination System
+    🤖 Multi-Agent: Test Multi-Agent Coordination System
     Comprehensive test of multi-agent coordination capabilities
     """
     try:
@@ -7821,7 +7828,7 @@ async def test_multi_agent_system():
         raise HTTPException(status_code=500, detail=f"Multi-agent test failed: {str(e)}")
 
 # =============================================================================
-# End Phase 3: Advanced Multi-Agent Coordination Endpoints
+# End Multi-Agent: Advanced Multi-Agent Coordination Endpoints
 # =============================================================================
 
 # Global exception handler for unhandled exceptions
@@ -8025,7 +8032,7 @@ async def get_enhancement_status():
     Returns current enhancement system status and target metrics
     """
     try:
-        from phase_5_agi_performance_enhancement import get_phase_5_system
+        from artificial_general_intelligence_performance_improvement import get_phase_5_system
         
         system = get_phase_5_system()
         status = await system.get_enhancement_status()
@@ -8053,7 +8060,7 @@ async def run_comprehensive_enhancement():
     Executes targeted training to improve AGI performance to 80%+
     """
     try:
-        from phase_5_agi_performance_enhancement import get_phase_5_system
+        from artificial_general_intelligence_performance_improvement import get_phase_5_system
         
         logger.info("🚀 Starting Phase 5 comprehensive AGI enhancement...")
         
@@ -8083,7 +8090,7 @@ async def get_enhanced_performance_metrics():
     Returns real performance metrics after enhancement
     """
     try:
-        from phase_5_agi_performance_enhancement import get_phase_5_system
+        from artificial_general_intelligence_performance_improvement import get_phase_5_system
         
         system = get_phase_5_system()
         metrics = await system.get_real_performance_metrics()
@@ -8111,7 +8118,7 @@ async def train_reasoning_capability():
     Targeted training for reasoning enhancement (0.0% → 80%+)
     """
     try:
-        from phase_5_agi_performance_enhancement import get_phase_5_system
+        from artificial_general_intelligence_performance_improvement import get_phase_5_system
         
         logger.info("🧠 Starting targeted reasoning capability training...")
         
@@ -8140,7 +8147,7 @@ async def train_problem_solving_capability():
     Targeted training for abstract problem solving (55.0% → 80%+)
     """
     try:
-        from phase_5_agi_performance_enhancement import get_phase_5_system
+        from artificial_general_intelligence_performance_improvement import get_phase_5_system
         
         logger.info("🎯 Starting targeted problem solving training...")
         
@@ -8169,7 +8176,7 @@ async def train_creativity_capability():
     Targeted training for creative thinking (69.8% → 80%+)
     """
     try:
-        from phase_5_agi_performance_enhancement import get_phase_5_system
+        from artificial_general_intelligence_performance_improvement import get_phase_5_system
         
         logger.info("🎨 Starting targeted creativity training...")
         
@@ -8198,7 +8205,7 @@ async def train_knowledge_integration_capability():
     Targeted training for knowledge integration (66.7% → 80%+)
     """
     try:
-        from phase_5_agi_performance_enhancement import get_phase_5_system
+        from artificial_general_intelligence_performance_improvement import get_phase_5_system
         
         logger.info("🔗 Starting targeted knowledge integration training...")
         

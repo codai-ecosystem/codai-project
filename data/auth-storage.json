@@ -1,48 +1,40 @@
 {
   "users": [
     {
-      "id": "user_1754532349126_n7pr27fun",
+      "id": "admin_1754557121298_a4fz3gwzg",
       "username": "admin",
-      "email": "admin-1754532348902-17@test.com",
-      "password": "$2b$12$1U.HgzNSX7FxuTU6c5xXhuLGiMR/F.6KuwqTKiwjHpmxBKLXYd8Wm",
+      "email": "admin@codai.ro",
+      "password": "$2b$12$NXRkp2Cf87AH2TzC5j71k.llAEisne.e1kNNrFnbiZXjcdGs3.lGe",
       "profile": {
         "name": "Admin User"
       },
+      "role": "admin",
       "isActive": true,
-      "emailVerified": false,
-      "createdAt": "2025-08-07T02:05:49.126Z",
-      "updatedAt": "2025-08-07T02:05:49.126Z",
-      "failedLoginAttempts": 0,
-      "passwordHistory": [
-        "$2b$12$1U.HgzNSX7FxuTU6c5xXhuLGiMR/F.6KuwqTKiwjHpmxBKLXYd8Wm"
-      ],
-      "lastPasswordChange": "2025-08-07T02:05:49.126Z",
-      "ipAddresses": [],
-      "suspiciousActivityDetected": false,
-      "lastLogin": "2025-08-07T02:05:49.358Z"
+      "emailVerified": true,
+      "createdAt": "2025-08-07T08:58:41.298Z",
+      "updatedAt": "2025-08-07T08:58:41.298Z"
+    },
+    {
+      "id": "test_1754557121488_9ktlyfbe7",
+      "username": "testuser",
+      "email": "test@codai.ro",
+      "password": "$2b$12$v5IFzmZioUcQOL99NBMgAOUzzt88EoWXe1TBI6/gvSKMPS5sWsZdi",
+      "profile": {
+        "name": "Test User"
+      },
+      "role": "user",
+      "isActive": true,
+      "emailVerified": true,
+      "createdAt": "2025-08-07T08:58:41.487Z",
+      "updatedAt": "2025-08-07T08:58:41.487Z"
     }
   ],
   "sessions": [],
-  "auditLogs": [
-    {
-      "id": "audit_1754532349126_x1qztpbuc",
-      "action": "user_created",
-      "resource": "user_management",
-      "userId": "user_1754532349126_n7pr27fun",
-      "details": {
-        "email": "admin-1754532348902-17@test.com",
-        "username": "admin",
-        "passwordStrengthMet": true
-      },
-      "timestamp": "2025-08-07T02:05:49.126Z",
-      "severity": "info",
-      "status": "success"
-    }
-  ],
+  "auditLogs": [],
   "metrics": {
-    "loginAttempts": 1,
+    "loginAttempts": 0,
     "loginSuccess": 0,
     "loginFailures": 0,
-    "userRegistrations": 1
+    "userRegistrations": 0
   }
 }

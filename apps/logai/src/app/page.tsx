@@ -427,18 +427,19 @@ export default function LogAIPage() {
           {/* Tab Navigation */}
           <nav className="flex space-x-1 bg-gray-100/50 rounded-xl p-1">
             {[
-              { id: 'overview', label: 'Overview', icon: Monitor },
-              { id: 'logs', label: 'Logs', icon: FileText },
-              { id: 'analytics', label: 'Analytics', icon: BarChart3 },
-              { id: 'alerts', label: 'Alerts', icon: AlertTriangle },
-              { id: 'services', label: 'Services', icon: Server },
-              { id: 'settings', label: 'Settings', icon: Settings }
+              { id: 'overview', label: 'Overview', icon: Monitor, href: null },
+              { id: 'logs', label: 'Logs', icon: FileText, href: '/logs' },
+              { id: 'analytics', label: 'Analytics', icon: BarChart3, href: '/analytics' },
+              { id: 'alerts', label: 'Alerts', icon: AlertTriangle, href: '/alerts' },
+              { id: 'services', label: 'Services', icon: Server, href: '/services' },
+              { id: 'settings', label: 'Settings', icon: Settings, href: '/settings' }
             ].map((tab) => {
               const Icon = tab.icon;
+              const Component = tab.href ? 'a' : 'button';
               return (
-                <button
+                <Component
                   key={tab.id}
-                  onClick={() => setSelectedTab(tab.id)}
+                  {...(tab.href ? { href: tab.href } : { onClick: () => setSelectedTab(tab.id) })}
                   className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all ${selectedTab === tab.id
                       ? 'bg-white text-blue-600 shadow-md'
                       : 'text-gray-600 hover:text-blue-600 hover:bg-white/50'
@@ -446,7 +447,7 @@ export default function LogAIPage() {
                 >
                   <Icon className="w-4 h-4" />
                   <span>{tab.label}</span>
-                </button>
+                </Component>
               );
             })}
           </nav>

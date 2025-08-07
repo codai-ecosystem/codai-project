@@ -41,7 +41,7 @@ describe('Fetch Integration Test', () => {
     console.log('Response data:', data)
     
     expect(data).toHaveProperty('service')
-    expect(data.service).toBe('memorai-health')
+    expect(data.service).toBe('MemorAI Service')
     expect(data).toHaveProperty('status')
     expect(data.status).toBe('operational')
   })

@@ -1,9 +1,11 @@
 import { MemorAI } from '../src/client';
 import { Memory, MemoryInput, SearchResult } from '../src/types';
+import { vi } from 'vitest';
+import axios from 'axios';
 
 // Mock axios
-jest.mock('axios');
-const mockAxios = require('axios');
+vi.mock('axios');
+const mockAxios = vi.mocked(axios);
 
 describe('MemorAI SDK', () => {
   let client: MemorAI;
@@ -11,13 +13,13 @@ describe('MemorAI SDK', () => {
 
   beforeEach(() => {
     mockAxiosInstance = {
-      post: jest.fn(),
-      get: jest.fn(),
-      put: jest.fn(),
-      delete: jest.fn(),
+      post: vi.fn(),
+      get: vi.fn(),
+      put: vi.fn(),
+      delete: vi.fn(),
       interceptors: {
-        request: { use: jest.fn() },
-        response: { use: jest.fn() }
+        request: { use: vi.fn() },
+        response: { use: vi.fn() }
       }
     };
 
@@ -30,7 +32,7 @@ describe('MemorAI SDK', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     client.destroy();
   });
 
@@ -353,7 +355,7 @@ describe('MemorAI SDK', () => {
         data: { success: true, data: memory }
       });
 
-      const eventHandler = jest.fn();
+      const eventHandler = vi.fn();
       client.on('memory:created', eventHandler);
 
       await client.memories.create({ content: 'Test' });
@@ -374,7 +376,7 @@ describe('MemorAI SDK', () => {
         data: { success: true, data: searchResult }
       });
 
-      const eventHandler = jest.fn();
+      const eventHandler = vi.fn();
       client.on('search:completed', eventHandler);
 
       await client.search.query('test');

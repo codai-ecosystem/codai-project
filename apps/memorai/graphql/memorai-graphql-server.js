@@ -287,7 +287,10 @@ class MemorAIAPI {
         url: `${this.baseURL}${path}`,
         headers: {
           'Content-Type': 'application/json',
-          'User-Agent': 'MemorAI-GraphQL/1.0.0'
+          'User-Agent': 'MemorAI-GraphQL/1.0.0',
+          'Authorization': 'Bearer ecosystem-token-dev',
+          'x-ecosystem-token': 'ecosystem-token-dev',
+          'x-service-id': 'graphql-server'
         }
       };
 

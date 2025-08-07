@@ -252,7 +252,13 @@ class ResourceMonitor:
             metrics['gpu_memory_allocated_gb'] = torch.cuda.memory_allocated() / 1e9
             metrics['gpu_memory_reserved_gb'] = torch.cuda.memory_reserved() / 1e9
             metrics['gpu_memory_max_allocated_gb'] = torch.cuda.max_memory_allocated() / 1e9
-            metrics['gpu_utilization'] = torch.cuda.utilization() if hasattr(torch.cuda, 'utilization') else 0.0
+            # Use GPUtil for real GPU utilization
+            try:
+                import GPUtil
+                gpus = GPUtil.getGPUs()
+                metrics['gpu_utilization'] = gpus[0].load * 100.0 if gpus else 0.0
+            except Exception:
+                metrics['gpu_utilization'] = 0.0
         else:
             metrics['gpu_memory_allocated_gb'] = 0.0
             metrics['gpu_memory_reserved_gb'] = 0.0

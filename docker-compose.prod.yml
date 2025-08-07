@@ -65,12 +65,75 @@ services:
       - NODE_ENV=production
       - PORT=4950
       - MEMORAI_API_KEY=${MEMORAI_API_KEY}
-      - CBD_URL=http://cbd-database:4180
+      - CBD_BASE_URL=http://cbd-database:4180
+      - AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT}
+      - AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}
+      - AZURE_OPENAI_DEPLOYMENT_NAME=${AZURE_OPENAI_DEPLOYMENT_NAME}
+      - AZURE_OPENAI_API_VERSION=${AZURE_OPENAI_API_VERSION}
+      - ENABLE_VECTOR_SEARCH=${ENABLE_VECTOR_SEARCH}
+      - ENABLE_HYBRID_SEARCH=${ENABLE_HYBRID_SEARCH}
+      - ENABLE_ANALYTICS=${ENABLE_ANALYTICS}
+      - ENABLE_MONITORING=${ENABLE_MONITORING}
     networks:
       - codai-production-net
     depends_on:
       - cbd-database
     restart: unless-stopped
+
+  # MemorAI Application
+  memorai-app:
+    build:
+      context: ./apps/memorai
+      dockerfile: Dockerfile
+    container_name: codai-memorai-app-prod
+    ports:
+      - "4007:4006"
+    environment:
+      - NODE_ENV=production
+      - PORT=4006
+      - NODE_OPTIONS=--max-old-space-size=4096
+      - CBD_BASE_URL=http://cbd-database:4180
+      - MEMORAI_MCP_URL=http://memorai-mcp:4950
+      - DATABASE_URL=${DATABASE_URL}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - NEXTAUTH_URL=${NEXTAUTH_URL}
+      - JWT_SECRET=${JWT_SECRET}
+    networks:
+      - codai-production-net
+    depends_on:
+      - cbd-database
+      - memorai-mcp
+      - postgres
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4006/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # MemorAI GraphQL Server
+  memorai-graphql:
+    build:
+      context: ./apps/memorai/graphql
+      dockerfile: Dockerfile
+    container_name: codai-memorai-graphql-prod
+    ports:
+      - "4501:4500"
+    environment:
+      - NODE_ENV=production
+      - PORT=4500
+      - MEMORAI_API_BASE_URL=http://memorai-app:4006
+    networks:
+      - codai-production-net
+    depends_on:
+      - memorai-app
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4500/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   # Gateway Service
   gateway:
@@ -145,7 +208,7 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.30.0.0/16
+        - subnet: 172.31.0.0/16
 
 volumes:
   cbd_data:

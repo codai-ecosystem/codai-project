@@ -1,0 +1,72 @@
+{
+  "erp_systems": {
+    "sap": {
+      "supported_versions": [
+        "S/4HANA",
+        "ECC 6.0"
+      ],
+      "protocols": [
+        "RFC",
+        "REST",
+        "SOAP",
+        "OData"
+      ],
+      "modules": [
+        "FI",
+        "CO",
+        "MM",
+        "SD",
+        "HR",
+        "PP"
+      ]
+    },
+    "oracle": {
+      "supported_versions": [
+        "EBS R12",
+        "Cloud ERP"
+      ],
+      "protocols": [
+        "REST",
+        "SOAP",
+        "Database"
+      ],
+      "modules": [
+        "GL",
+        "AP",
+        "AR",
+        "PO",
+        "OM",
+        "HR"
+      ]
+    },
+    "dynamics": {
+      "supported_versions": [
+        "365",
+        "AX",
+        "NAV"
+      ],
+      "protocols": [
+        "REST",
+        "OData",
+        "SOAP"
+      ],
+      "modules": [
+        "Finance",
+        "Supply Chain",
+        "HR",
+        "Manufacturing"
+      ]
+    }
+  },
+  "sync_settings": {
+    "max_batch_size": 1000,
+    "retry_attempts": 3,
+    "timeout_seconds": 30,
+    "error_threshold": 5
+  },
+  "security": {
+    "encryption_enabled": true,
+    "token_expiry_hours": 24,
+    "audit_logging": true
+  }
+}

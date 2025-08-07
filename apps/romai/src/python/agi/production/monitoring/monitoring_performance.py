@@ -600,10 +600,19 @@ class RomanianPerformanceMonitor:
     
     # Additional helper methods for performance calculations...
     def _get_gpu_metrics(self) -> Tuple[float, float]:
-        """Get GPU usage and memory metrics (simulated)"""
-        gpu_usage = 45.0 + (25.0 * np.sin(time.time() * 0.1))
-        gpu_memory = 2048.0 + (512.0 * np.cos(time.time() * 0.08))
-        return max(0.0, gpu_usage), max(0.0, gpu_memory)
+        """Get real GPU usage and memory metrics using GPUtil"""
+        try:
+            import GPUtil
+            gpus = GPUtil.getGPUs()
+            if gpus:
+                gpu = gpus[0]
+                gpu_usage = gpu.load * 100.0  # Convert to percentage
+                gpu_memory = gpu.memoryUsed  # Memory in MB
+                return gpu_usage, gpu_memory
+            else:
+                return 0.0, 0.0
+        except Exception:
+            return 0.0, 0.0
     
     def _get_network_io_rate(self) -> float:
         """Get network I/O rate in MB/s"""

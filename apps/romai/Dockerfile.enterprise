@@ -1,0 +1,84 @@
+# 🐳 RomAI Enterprise API - Docker Configuration
+# Production-grade containerization for on-premise deployment
+
+# Base image with Python 3.13 and enterprise security
+FROM python:3.13-slim-bullseye
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    DEBIAN_FRONTEND=noninteractive \
+    ROMAI_ENV=production \
+    ROMAI_LOG_LEVEL=info
+
+# Create app user for security
+RUN groupadd -r romai && useradd -r -g romai romai
+
+# Install system dependencies and security updates
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    git \
+    libffi-dev \
+    libssl-dev \
+    pkg-config \
+    ca-certificates \
+    && apt-get upgrade -y \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements first for better caching
+COPY apps/romai/src/api/enterprise/requirements-compliance.txt /app/requirements.txt
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install additional enterprise dependencies
+RUN pip install --no-cache-dir \
+    gunicorn==21.2.0 \
+    uvicorn[standard]==0.24.0 \
+    python-multipart==0.0.6 \
+    email-validator==2.1.0 \
+    prometheus-client==0.19.0 \
+    psutil==5.9.6 \
+    structlog==23.2.0
+
+# Copy application code
+COPY apps/romai/src/ /app/src/
+
+# Copy startup scripts
+COPY apps/romai/scripts/docker/ /app/scripts/ 2>/dev/null || echo "No docker scripts directory"
+
+# Create necessary directories
+RUN mkdir -p /app/logs /app/data /app/cache /app/models /app/config
+
+# Create production configuration
+RUN echo "# Production Configuration" > /app/config/production.env
+
+# Set ownership and permissions
+RUN chown -R romai:romai /app
+RUN chmod -R 755 /app/scripts/ 2>/dev/null || true
+
+# Switch to non-root user
+USER romai
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:8001/api/v1/health || exit 1
+
+# Expose ports
+EXPOSE 8001
+
+# Production startup command
+CMD ["uvicorn", "src.api.enterprise.api_platform_minimal:app", \
+     "--host", "0.0.0.0", \
+     "--port", "8001", \
+     "--workers", "4", \
+     "--worker-class", "uvicorn.workers.UvicornWorker", \
+     "--access-log", \
+     "--log-level", "info"]

@@ -1,0 +1,32 @@
+{
+  "analytics_settings": {
+    "default_refresh_interval": 300,
+    "cache_ttl_minutes": 60,
+    "max_data_points": 10000,
+    "concurrent_queries": 5
+  },
+  "visualization_settings": {
+    "default_chart_theme": "corporate",
+    "color_palette": [
+      "#1f77b4",
+      "#ff7f0e",
+      "#2ca02c",
+      "#d62728",
+      "#9467bd"
+    ],
+    "animation_enabled": true,
+    "responsive_design": true
+  },
+  "export_formats": [
+    "pdf",
+    "excel",
+    "csv",
+    "png",
+    "svg"
+  ],
+  "security": {
+    "data_encryption": true,
+    "access_logging": true,
+    "audit_trail": true
+  }
+}

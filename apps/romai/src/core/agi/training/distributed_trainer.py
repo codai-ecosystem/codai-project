@@ -477,7 +477,7 @@ class DistributedTrainer:
             romanian_quality_score=avg_cultural_score * 0.95,
             throughput_tokens_per_sec=self.config.batch_size * num_batches * self.config.max_sequence_length / epoch_time,
             memory_usage_gb=torch.cuda.max_memory_allocated() / 1e9 if torch.cuda.is_available() else 0.0,
-            gpu_utilization=85.0 if torch.cuda.is_available() else 0.0,
+            gpu_utilization=self._get_real_gpu_utilization(),
             training_time_seconds=epoch_time,
             gradient_norm=1.2,
             diacritics_accuracy=0.92 + epoch * 0.01,
@@ -648,6 +648,17 @@ class DistributedTrainer:
             # Cleanup distributed training
             if self.config.world_size > 1:
                 dist.destroy_process_group()
+    
+    def _get_real_gpu_utilization(self) -> float:
+        """Get real GPU utilization using GPUtil."""
+        try:
+            import GPUtil
+            gpus = GPUtil.getGPUs()
+            if gpus and torch.cuda.is_available():
+                return gpus[0].load * 100.0  # Convert to percentage
+            return 0.0
+        except Exception:
+            return 0.0
 
 async def create_training_system(config: TrainingConfiguration) -> DistributedTrainer:
     """Factory function to create a configured training system."""

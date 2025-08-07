@@ -1,253 +1,568 @@
 'use client';
 
-import React from 'react'
-/**
- * Settings Page - System Configuration and Preferences
- * AGI system settings and configuration management
- */
-
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { 
+  Settings, 
+  User,
+  Shield,
+  Bell,
+  Palette,
+  Globe,
+  Key,
+  Database,
+  Monitor,
+  Zap,
+  Brain,
+  Flag,
+  Code,
+  Download,
+  Upload,
+  Save,
+  RefreshCw,
+  Eye,
+  EyeOff,
+  Check,
+  X,
+  Plus,
+  Minus,
+  Edit,
+  Trash2,
+  Copy,
+  ExternalLink,
+  AlertCircle,
+  Info,
+  CheckCircle,
+  Moon,
+  Sun,
+  Volume2,
+  VolumeX,
+  Smartphone,
+  Mail,
+  MessageSquare,
+  Cpu,
+  HardDrive,
+  Network,
+  Lock,
+  Unlock,
+  RotateCcw,
+  Sliders,
+  ToggleLeft,
+  ToggleRight,
+  Languages,
+  MapPin,
+  Clock,
+  Calendar,
+  FileText,
+  Folder,
+  Link,
+  Search,
+  Filter,
+  SortAsc,
+  ChevronRight,
+  ChevronDown
+} from 'lucide-react';
 
-interface SystemSettings {
-    server_config: {
-        max_concurrent_requests: number;
-        request_timeout_seconds: number;
-        enable_caching: boolean;
-        cache_ttl_seconds: number;
-        log_level: 'DEBUG' | 'INFO' | 'WARNING' | 'ERROR';
-        enable_metrics: boolean;
-    };
-    model_config: {
-        temperature: number;
-        max_tokens: number;
-        top_p: number;
-        frequency_penalty: number;
-        presence_penalty: number;
-        enable_streaming: boolean;
-    };
-    romanian_config: {
-        preferred_dialect: 'standard' | 'moldovan' | 'banat' | 'transylvanian';
-        formality_level: 'formal' | 'informal' | 'mixed';
-        cultural_context_weight: number;
-        enable_cultural_adaptation: boolean;
-    };
-    training_config: {
-        auto_training: boolean;
-        training_schedule: string;
-        backup_frequency_hours: number;
-        enable_monitoring: boolean;
-        max_training_epochs: number;
-        early_stopping_patience: number;
-    };
-    security_config: {
-        enable_rate_limiting: boolean;
-        max_requests_per_minute: number;
-        enable_authentication: boolean;
-        session_timeout_minutes: number;
-        enable_audit_logging: boolean;
-    };
+interface SettingsSection {
+  id: string;
+  title: string;
+  description: string;
+  icon: React.ElementType;
+  subsections?: string[];
 }
 
-const SettingsPage = () => {
-    const [settings, setSettings] = useState<SystemSettings | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [saving, setSaving] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const [success, setSuccess] = useState<string | null>(null);
-    const [activeTab, setActiveTab] = useState<'server' | 'model' | 'romanian' | 'training' | 'security'>('server');
+interface ApiKey {
+  id: string;
+  name: string;
+  key: string;
+  permissions: string[];
+  created: string;
+  lastUsed: string;
+  status: 'active' | 'inactive' | 'expired';
+  usage: number;
+}
 
-    useEffect(() => {
-        const fetchSettings = async () => {
-            try {
-                const response = await fetch('http://localhost:6101/settings');
+interface NotificationSetting {
+  id: string;
+  title: string;
+  description: string;
+  enabled: boolean;
+  channels: {
+    email: boolean;
+    push: boolean;
+    sms: boolean;
+  };
+}
 
-                if (!response.ok) {
-                    // Fallback to default settings if endpoint doesn't exist
-                    setSettings({
-                        server_config: {
-                            max_concurrent_requests: 100,
-                            request_timeout_seconds: 30,
-                            enable_caching: true,
-                            cache_ttl_seconds: 3600,
-                            log_level: 'INFO',
-                            enable_metrics: true
-                        },
-                        model_config: {
-                            temperature: 0.7,
-                            max_tokens: 2048,
-                            top_p: 0.9,
-                            frequency_penalty: 0.0,
-                            presence_penalty: 0.0,
-                            enable_streaming: true
-                        },
-                        romanian_config: {
-                            preferred_dialect: 'standard',
-                            formality_level: 'mixed',
-                            cultural_context_weight: 0.8,
-                            enable_cultural_adaptation: true
-                        },
-                        training_config: {
-                            auto_training: false,
-                            training_schedule: '0 2 * * *', // Daily at 2 AM
-                            backup_frequency_hours: 24,
-                            enable_monitoring: true,
-                            max_training_epochs: 1000,
-                            early_stopping_patience: 10
-                        },
-                        security_config: {
-                            enable_rate_limiting: true,
-                            max_requests_per_minute: 60,
-                            enable_authentication: false,
-                            session_timeout_minutes: 30,
-                            enable_audit_logging: true
-                        }
-                    });
-                } else {
-                    const settingsData = await response.json();
-                    setSettings(settingsData);
-                }
+export default function Settings() {
+  const [selectedSection, setSelectedSection] = useState('general');
+  const [darkMode, setDarkMode] = useState(false);
+  const [language, setLanguage] = useState('ro');
+  const [notifications, setNotifications] = useState(true);
+  const [autoSave, setAutoSave] = useState(true);
+  const [showApiKeys, setShowApiKeys] = useState(false);
+  const [newApiKeyName, setNewApiKeyName] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
-                setError(null);
-            } catch (err) {
-                setError(err instanceof Error ? err.message : 'Failed to fetch settings');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchSettings();
-    }, []);
-
-    const saveSettings = async () => {
-        if (!settings) return;
-
-        setSaving(true);
-        try {
-            const response = await fetch('http://localhost:6101/settings', {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(settings)
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to save settings');
-            }
-
-            setSuccess('Settings saved successfully!');
-            setTimeout(() => setSuccess(null), 3000);
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'Failed to save settings');
-        } finally {
-            setSaving(false);
-        }
-    };
-
-    const updateSettings = (section: keyof SystemSettings, key: string, value: any) => {
-        if (!settings) return;
-
-        setSettings({
-            ...settings,
-            [section]: {
-                ...settings[section],
-                [key]: value
-            }
-        });
-    };
-
-    const tabs = [
-        { id: 'server', label: 'Server', icon: '🖥️' },
-        { id: 'model', label: 'Model', icon: '🧠' },
-        { id: 'romanian', label: 'Romanian', icon: '🇷🇴' },
-        { id: 'training', label: 'Training', icon: '🎯' },
-        { id: 'security', label: 'Security', icon: '🔒' }
-    ] as const;
-
-    if (loading) {
-        return (
-            <div className="p-6">
-                <div className="flex items-center justify-center min-h-[400px]">
-                    <div className="text-center">
-                        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                        <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
-                            Loading Settings...
-                        </p>
-                    </div>
-                </div>
-            </div>
-        );
+  const settingsSections: SettingsSection[] = [
+    {
+      id: 'general',
+      title: 'General Settings',
+      description: 'Basic platform configuration and preferences',
+      icon: Settings,
+      subsections: ['Profile', 'Preferences', 'Language & Region']
+    },
+    {
+      id: 'account',
+      title: 'Account & Security',
+      description: 'Account management and security settings',
+      icon: User,
+      subsections: ['Profile Information', 'Password & Authentication', 'Privacy Settings']
+    },
+    {
+      id: 'notifications',
+      title: 'Notifications',
+      description: 'Configure alerts and notification preferences',
+      icon: Bell,
+      subsections: ['Email Notifications', 'Push Notifications', 'SMS Alerts']
+    },
+    {
+      id: 'appearance',
+      title: 'Appearance',
+      description: 'Customize the look and feel of the platform',
+      icon: Palette,
+      subsections: ['Theme Settings', 'Layout Options', 'Accessibility']
+    },
+    {
+      id: 'language',
+      title: 'Language & Cultural',
+      description: 'Romanian language and cultural settings',
+      icon: Flag,
+      subsections: ['Language Preferences', 'Cultural Context', 'Regional Settings']
+    },
+    {
+      id: 'api',
+      title: 'API & Integrations',
+      description: 'Manage API keys and external integrations',
+      icon: Key,
+      subsections: ['API Keys', 'Webhooks', 'Third-party Integrations']
+    },
+    {
+      id: 'ai',
+      title: 'AI Configuration',
+      description: 'AI model settings and performance tuning',
+      icon: Brain,
+      subsections: ['Model Selection', 'Performance Tuning', 'Cultural Intelligence']
+    },
+    {
+      id: 'data',
+      title: 'Data & Privacy',
+      description: 'Data management and privacy controls',
+      icon: Database,
+      subsections: ['Data Retention', 'Privacy Controls', 'Export & Import']
+    },
+    {
+      id: 'performance',
+      title: 'Performance',
+      description: 'System performance and optimization settings',
+      icon: Zap,
+      subsections: ['Cache Settings', 'Resource Limits', 'Optimization']
+    },
+    {
+      id: 'advanced',
+      title: 'Advanced Settings',
+      description: 'Advanced configuration for power users',
+      icon: Code,
+      subsections: ['Developer Options', 'Experimental Features', 'System Diagnostics']
     }
+  ];
 
-    return (
-        <div className="p-6 space-y-6">
-            {/* Page Header */}
-            <div className="flex items-center justify-between mb-8">
-                <div>
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center space-x-3">
-                        <span>⚙️</span>
-                        <span>System Configuration</span>
-                    </h1>
-                    <p className="text-gray-600 dark:text-gray-400">
-                        Configure AGI system settings and preferences
-                    </p>
-                </div>
+  const apiKeys: ApiKey[] = [
+    {
+      id: 'api-1',
+      name: 'Production API Key',
+      key: 'romai_pk_1234567890abcdef...',
+      permissions: ['read', 'write', 'admin'],
+      created: '2025-01-15',
+      lastUsed: '2025-08-07',
+      status: 'active',
+      usage: 1247
+    },
+    {
+      id: 'api-2',
+      name: 'Development API Key',
+      key: 'romai_sk_abcdef1234567890...',
+      permissions: ['read', 'write'],
+      created: '2024-12-20',
+      lastUsed: '2025-08-06',
+      status: 'active',
+      usage: 856
+    },
+    {
+      id: 'api-3',
+      name: 'Analytics API Key',
+      key: 'romai_ak_fedcba0987654321...',
+      permissions: ['read'],
+      created: '2024-11-10',
+      lastUsed: '2025-07-28',
+      status: 'inactive',
+      usage: 342
+    }
+  ];
 
-                <button
-                    onClick={saveSettings}
-                    disabled={saving || !settings}
-                    className={`
-            px-6 py-3 rounded-lg font-medium transition-all
-            ${saving || !settings
-                            ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
-                            : 'bg-blue-600 hover:bg-blue-700 text-white shadow-md hover:shadow-lg'
-                        }
-          `}
-                >
-                    {saving ? 'Saving...' : 'Save Settings'}
-                </button>
+  const notificationSettings: NotificationSetting[] = [
+    {
+      id: 'ai-updates',
+      title: 'AI Model Updates',
+      description: 'Notifications about AI model improvements and new features',
+      enabled: true,
+      channels: { email: true, push: true, sms: false }
+    },
+    {
+      id: 'security-alerts',
+      title: 'Security Alerts',
+      description: 'Important security notifications and warnings',
+      enabled: true,
+      channels: { email: true, push: true, sms: true }
+    },
+    {
+      id: 'system-status',
+      title: 'System Status',
+      description: 'Updates about system maintenance and performance',
+      enabled: true,
+      channels: { email: true, push: false, sms: false }
+    },
+    {
+      id: 'research-updates',
+      title: 'Research Updates',
+      description: 'News about research projects and innovations',
+      enabled: false,
+      channels: { email: false, push: false, sms: false }
+    }
+  ];
+
+  const toggleNotification = (id: string, field?: string, channel?: string) => {
+    console.log(`Toggle notification ${id}`, field, channel);
+  };
+
+  const generateApiKey = () => {
+    if (newApiKeyName.trim()) {
+      console.log(`Generate new API key: ${newApiKeyName}`);
+      setNewApiKeyName('');
+    }
+  };
+
+  const revokeApiKey = (id: string) => {
+    console.log(`Revoke API key: ${id}`);
+  };
+
+  const copyApiKey = (key: string) => {
+    navigator.clipboard.writeText(key);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-red-50 to-yellow-50">
+      {/* Enhanced Header */}
+      <motion.div 
+        className="bg-white/80 backdrop-blur-sm border-b border-red-200/50 sticky top-0 z-40"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-gradient-to-r from-red-500 to-yellow-500 rounded-lg flex items-center justify-center">
+                <Settings className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold bg-gradient-to-r from-red-600 to-yellow-600 bg-clip-text text-transparent">
+                  Settings
+                </h1>
+                <p className="text-sm text-gray-600">Platform Configuration & Preferences</p>
+              </div>
             </div>
-
-            {/* Notifications */}
-            {error && (
-                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-                    <p className="text-red-800 dark:text-red-400">{error}</p>
+            
+            <div className="flex items-center space-x-4">
+              <div className="hidden sm:flex items-center space-x-6 text-sm">
+                <div className="flex items-center space-x-2">
+                  <Settings className="w-4 h-4 text-gray-500" />
+                  <span className="text-gray-600">10 Sections</span>
                 </div>
-            )}
-
-            {success && (
-                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
-                    <p className="text-green-800 dark:text-green-400">{success}</p>
+                <div className="flex items-center space-x-2">
+                  <Flag className="w-4 h-4 text-gray-500" />
+                  <span className="text-gray-600">Romanian Optimized</span>
                 </div>
-            )}
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-4 h-4 text-gray-500" />
+                  <span className="text-gray-600">Auto-saved</span>
+                </div>
+              </div>
+              
+              <button className="px-4 py-2 bg-gradient-to-r from-red-500 to-yellow-500 text-white rounded-lg hover:from-red-600 hover:to-yellow-600 transition-colors">
+                <Save className="w-4 h-4 inline mr-2" />
+                Save All
+              </button>
+            </div>
+          </div>
+        </div>
+      </motion.div>
 
-            {settings && (
-                <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden">
-                    {/* Tabs */}
-                    <div className="border-b border-gray-200 dark:border-slate-700">
-                        <nav className="flex space-x-8 px-6">
-                            {tabs.map((tab) => (
-                                <button
-                                    key={tab.id}
-                                    onClick={() => setActiveTab(tab.id)}
-                                    className={`
-                    py-4 px-1 border-b-2 font-medium text-sm transition-colors
-                    ${activeTab === tab.id
-                                            ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                                            : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
-                                        }
-                  `}
-                                >
-                                    <span className="flex items-center space-x-2">
-                                        <span>{tab.icon}</span>
-                                        <span>{tab.label}</span>
-                                    </span>
-                                </button>
-                            ))}
-                        </nav>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex gap-8">
+          {/* Settings Sidebar */}
+          <motion.div
+            className="w-80 flex-shrink-0"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-red-200/50 shadow-sm">
+              <div className="p-6 border-b border-gray-200">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <input
+                    type="text"
+                    placeholder="Search settings..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm"
+                  />
+                </div>
+              </div>
+              
+              <div className="p-2">
+                {settingsSections
+                  .filter(section => 
+                    section.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    section.description.toLowerCase().includes(searchTerm.toLowerCase())
+                  )
+                  .map((section) => {
+                    const Icon = section.icon;
+                    return (
+                      <button
+                        key={section.id}
+                        onClick={() => setSelectedSection(section.id)}
+                        className={`w-full flex items-center space-x-3 p-3 rounded-lg text-left transition-colors ${
+                          selectedSection === section.id
+                            ? 'bg-gradient-to-r from-red-50 to-yellow-50 border border-red-200 text-red-700'
+                            : 'hover:bg-gray-50'
+                        }`}
+                      >
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                          selectedSection === section.id
+                            ? 'bg-gradient-to-r from-red-500 to-yellow-500 text-white'
+                            : 'bg-gray-100 text-gray-600'
+                        }`}>
+                          <Icon className="w-4 h-4" />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-medium text-gray-900">{section.title}</h3>
+                          <p className="text-xs text-gray-600">{section.description}</p>
+                        </div>
+                        <ChevronRight className="w-4 h-4 text-gray-400" />
+                      </button>
+                    );
+                  })}
+              </div>
+            </div>
+          </motion.div>
+
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-red-200/50 shadow-sm">
+              {/* General Settings */}
+              {selectedSection === 'general' && (
+                <div className="p-6">
+                  <div className="flex items-center space-x-3 mb-6">
+                    <div className="w-10 h-10 bg-gradient-to-r from-red-500 to-yellow-500 rounded-lg flex items-center justify-center">
+                      <Settings className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-bold text-gray-900">General Settings</h2>
+                      <p className="text-gray-600">Basic platform configuration and preferences</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Platform Name</label>
+                      <input
+                        type="text"
+                        defaultValue="RomAI - Romanian AGI Platform"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Default Language</label>
+                      <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                        <option value="ro">Romanian (Română)</option>
+                        <option value="en">English</option>
+                        <option value="auto">Auto-detect</option>
+                      </select>
                     </div>
 
-                    {/* Tab Content */}
-                    <div className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-sm font-medium text-gray-700">Dark Mode</h3>
+                        <p className="text-sm text-gray-500">Toggle dark theme appearance</p>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={darkMode}
+                          onChange={(e) => setDarkMode(e.target.checked)}
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-red-500 peer-checked:to-yellow-500"></div>
+                      </label>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-sm font-medium text-gray-700">Auto-save Settings</h3>
+                        <p className="text-sm text-gray-500">Automatically save changes</p>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={autoSave}
+                          onChange={(e) => setAutoSave(e.target.checked)}
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-red-500 peer-checked:to-yellow-500"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Continue with other settings sections */}
+              {selectedSection === 'data-privacy' && (
+                <div className="p-6">
+                  <div className="flex items-center space-x-3 mb-6">
+                    <div className="w-10 h-10 bg-gradient-to-r from-red-500 to-yellow-500 rounded-lg flex items-center justify-center">
+                      <Database className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-bold text-gray-900">Data & Privacy</h2>
+                      <p className="text-gray-600">Manage your data and privacy preferences</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-6">
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-700">Data Collection</h4>
+                          <p className="text-sm text-gray-500">Allow data collection for service improvement</p>
+                        </div>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input type="checkbox" defaultChecked className="sr-only peer" />
+                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-red-500 peer-checked:to-yellow-500"></div>
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-700">Analytics</h4>
+                          <p className="text-sm text-gray-500">Share usage analytics for platform improvement</p>
+                        </div>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input type="checkbox" defaultChecked className="sr-only peer" />
+                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-red-500 peer-checked:to-yellow-500"></div>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="border-t pt-6">
+                      <h4 className="font-medium text-gray-900 mb-4">Data Export & Deletion</h4>
+                      <div className="flex space-x-4">
+                        <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                          <Download className="w-4 h-4 inline mr-2" />
+                          Export Data
+                        </button>
+                        <button className="px-4 py-2 border border-red-300 text-red-700 rounded-lg hover:bg-red-50">
+                          <Trash2 className="w-4 h-4 inline mr-2" />
+                          Delete Account
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Advanced Settings */}
+              {selectedSection === 'advanced' && (
+                <div className="p-6">
+                  <div className="flex items-center space-x-3 mb-6">
+                    <div className="w-10 h-10 bg-gradient-to-r from-red-500 to-yellow-500 rounded-lg flex items-center justify-center">
+                      <Zap className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-bold text-gray-900">Advanced Settings</h2>
+                      <p className="text-gray-600">Advanced platform configuration options</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-6">
+                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                      <div className="flex items-center">
+                        <AlertTriangle className="w-5 h-5 text-yellow-600 mr-2" />
+                        <span className="text-sm font-medium text-yellow-800">
+                          Advanced settings can affect platform performance. Modify with caution.
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Debug Mode</label>
+                        <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                          <option value="off">Disabled</option>
+                          <option value="basic">Basic Logging</option>
+                          <option value="verbose">Verbose Logging</option>
+                          <option value="debug">Full Debug Mode</option>
+                        </select>
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Cache Settings</label>
+                        <div className="grid grid-cols-2 gap-4">
+                          <input
+                            type="number"
+                            placeholder="Cache TTL (seconds)"
+                            defaultValue="3600"
+                            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                          />
+                          <input
+                            type="number"
+                            placeholder="Max Cache Size (MB)"
+                            defaultValue="256"
+                            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-700">Development Mode</h4>
+                          <p className="text-sm text-gray-500">Enable development features and testing tools</p>
+                        </div>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input type="checkbox" className="sr-only peer" />
+                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-red-500 peer-checked:to-yellow-500"></div>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+}
                         {/* Server Configuration */}
                         {activeTab === 'server' && (
                             <motion.div

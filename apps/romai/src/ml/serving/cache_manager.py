@@ -6,10 +6,12 @@ import json
 import hashlib
 import pickle
 import logging
+import time
 from typing import Dict, Any, Optional, List
 from datetime import datetime, timedelta
 import asyncio
 from dataclasses import dataclass
+from redis_manager import redis_manager, ensure_redis_running
 
 logger = logging.getLogger(__name__)
 
@@ -46,8 +48,16 @@ class RomAICacheManager:
         }
         
     async def initialize(self):
-        """Initialize Redis connection with production settings"""
+        """Initialize Redis connection with automatic Redis startup"""
         try:
+            logger.info("🔄 Initializing Redis cache...")
+            
+            # Ensure Redis is running (auto-install and start if needed)
+            if not await ensure_redis_running():
+                logger.info("ℹ️ Redis auto-startup failed - continuing without cache (performance may be slower)")
+                self.redis_client = None
+                return False
+            
             # Create connection pool for better performance - Day 6 Enhanced
             self.connection_pool = redis.ConnectionPool(
                 host=self.config.host,
@@ -80,7 +90,7 @@ class RomAICacheManager:
             return True
             
         except Exception as e:
-            logger.error(f"❌ Redis connection failed: {str(e)}")
+            logger.info(f"ℹ️ Redis cache not available - continuing without cache (performance may be slower)")
             # Graceful fallback - system works without cache
             self.redis_client = None
             return False

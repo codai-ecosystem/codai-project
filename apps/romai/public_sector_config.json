@@ -1,0 +1,29 @@
+{
+  "language_models": {
+    "ro": "romanian_model_v1",
+    "hu": "hungarian_model_v1",
+    "de": "german_model_v1",
+    "en": "english_model_v1",
+    "rom": "romani_model_v1"
+  },
+  "accessibility": {
+    "wcag_level": "AA",
+    "default_font_size": 16,
+    "high_contrast_ratio": 7.0,
+    "keyboard_navigation": true,
+    "screen_reader_support": true,
+    "audio_descriptions": true
+  },
+  "citizen_categories": {
+    "senior": {
+      "default_font_size": 20,
+      "simplified_language": true,
+      "audio_assistance": true
+    },
+    "disabled": {
+      "screen_reader_optimized": true,
+      "keyboard_only": true,
+      "high_contrast": true
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "crm_systems": {
+    "salesforce": {
+      "api_version": "v59.0",
+      "oauth_endpoint": "https://login.salesforce.com/services/oauth2/token",
+      "supported_objects": [
+        "Lead",
+        "Contact",
+        "Account",
+        "Opportunity"
+      ]
+    },
+    "hubspot": {
+      "api_version": "v3",
+      "base_url": "https://api.hubapi.com",
+      "supported_objects": [
+        "contacts",
+        "companies",
+        "deals",
+        "tickets"
+      ]
+    },
+    "pipedrive": {
+      "api_version": "v1",
+      "base_url": "https://api.pipedrive.com",
+      "supported_objects": [
+        "persons",
+        "organizations",
+        "deals",
+        "activities"
+      ]
+    }
+  },
+  "sync_settings": {
+    "batch_size": 500,
+    "sync_interval_minutes": 60,
+    "retry_attempts": 3,
+    "timeout_seconds": 30
+  }
+}

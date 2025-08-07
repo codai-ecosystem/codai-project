@@ -1,0 +1,69 @@
+{
+  "security": {
+    "classification_levels": [
+      "PUBLIC",
+      "INTERNAL",
+      "CONFIDENTIAL",
+      "SECRET",
+      "TOP_SECRET"
+    ],
+    "encryption_algorithm": "AES-256-GCM",
+    "audit_retention_days": 2555,
+    "max_login_attempts": 3,
+    "session_timeout": 1800,
+    "air_gapped_mode": false
+  },
+  "egov_integration": {
+    "services": [
+      "GHISEUL_RO",
+      "SIAS",
+      "ANAF_ONLINE",
+      "COMMERCIAL_REGISTER",
+      "ELECTRONIC_IDENTITY"
+    ],
+    "romanian_counties": 41,
+    "supported_document_types": [
+      "BIRTH_CERTIFICATE",
+      "MARRIAGE_CERTIFICATE",
+      "ID_CARD",
+      "PASSPORT"
+    ],
+    "workflow_timeout": 7200,
+    "auto_status_updates": true
+  },
+  "public_sector": {
+    "languages": [
+      "ro",
+      "hu",
+      "de",
+      "en",
+      "rom"
+    ],
+    "accessibility_level": "AA",
+    "citizen_categories": [
+      "individual",
+      "senior",
+      "disabled",
+      "business_owner",
+      "student",
+      "foreign_citizen"
+    ],
+    "interface_modes": [
+      "standard",
+      "high_contrast",
+      "large_text",
+      "screen_reader",
+      "simplified",
+      "audio_only"
+    ],
+    "wcag_compliance": true,
+    "multi_language_support": true
+  },
+  "integration": {
+    "cross_system_authentication": true,
+    "unified_citizen_profile": true,
+    "real_time_status_sync": true,
+    "comprehensive_audit_log": true,
+    "performance_monitoring": true
+  }
+}

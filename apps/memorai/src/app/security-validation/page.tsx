@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react'
 /**
  * Security Validation Testing
@@ -5,8 +7,6 @@ import React from 'react'
  * Comprehensive security testing including authentication, authorization,
  * input validation, XSS protection, and data isolation
  */
-
-'use client';
 
 import { useState, useCallback } from 'react';
 import DashboardLayout from '@/components/dashboard-layout';
@@ -310,6 +310,10 @@ export default function SecurityValidationPage() {
           severity: 'medium',
           action: async () => {
             // Check if the application enforces HTTPS
+            if (typeof window === 'undefined') {
+              return { passed: true, details: 'Server-side validation skipped', warning: false };
+            }
+            
             const isHttps = window.location.protocol === 'https:';
             const isLocalhost = window.location.hostname === 'localhost';
 

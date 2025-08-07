@@ -360,7 +360,12 @@ class RomanianCulturalPerformanceOptimizer:
         # GPU metrics (if available)
         gpu_utilization = None
         if torch.cuda.is_available():
-            gpu_utilization = torch.cuda.utilization()
+            try:
+                import GPUtil
+                gpus = GPUtil.getGPUs()
+                gpu_utilization = gpus[0].load * 100.0 if gpus else 0.0
+            except Exception:
+                gpu_utilization = 0.0
         
         # Cache metrics
         cache_stats = self.cache.get_cache_stats()
@@ -992,11 +997,27 @@ class ResourceMonitor:
         
         gpu_info = {}
         if torch.cuda.is_available():
-            gpu_info = {
-                "gpu_utilization": torch.cuda.utilization(),
-                "gpu_memory_used": torch.cuda.memory_allocated(),
-                "gpu_memory_total": torch.cuda.max_memory_allocated()
-            }
+            try:
+                import GPUtil
+                gpus = GPUtil.getGPUs()
+                if gpus:
+                    gpu_info = {
+                        "gpu_utilization": gpus[0].load * 100.0,
+                        "gpu_memory_used": torch.cuda.memory_allocated(),
+                        "gpu_memory_total": torch.cuda.max_memory_allocated()
+                    }
+                else:
+                    gpu_info = {
+                        "gpu_utilization": 0.0,
+                        "gpu_memory_used": torch.cuda.memory_allocated(),
+                        "gpu_memory_total": torch.cuda.max_memory_allocated()
+                    }
+            except Exception:
+                gpu_info = {
+                    "gpu_utilization": 0.0,
+                    "gpu_memory_used": torch.cuda.memory_allocated(),
+                    "gpu_memory_total": torch.cuda.max_memory_allocated()
+                }
         
         return {
             "timestamp": datetime.now(),

@@ -4,7 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { categorizationService, type CategorizationRequest } from '../../../services/ai/CategorizationService';
+import { categorizationService, type CategorizationRequest } from '@/services/ai/CategorizationService';
 import { z } from 'zod';
 
 // Request validation schemas

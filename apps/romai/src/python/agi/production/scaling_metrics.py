@@ -203,8 +203,13 @@ class AGIScalingMetrics:
             memory_usage = np.random.normal(70.0, 12.0)
             memory_usage = max(0.0, min(100.0, memory_usage))
             
-            gpu_usage = np.random.normal(45.0, 20.0)
-            gpu_usage = max(0.0, min(100.0, gpu_usage))
+            # Real GPU usage from GPUtil
+            try:
+                import GPUtil
+                gpus = GPUtil.getGPUs()
+                gpu_usage = gpus[0].load * 100.0 if gpus else 0.0
+            except Exception:
+                gpu_usage = 0.0
             
             # AGI-specific metrics with consciousness correlation
             consciousness_load = min(95.0, cpu_usage * 1.2 + np.random.normal(5.0, 3.0))

@@ -1,0 +1,29 @@
+# 🏢 RomAI Enterprise API Platform - Dependencies
+# Production-grade dependencies for enterprise API with advanced compliance
+
+# Core FastAPI Framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+
+# Authentication & Security
+PyJWT==2.8.0
+passlib[bcrypt]==1.7.4
+cryptography==41.0.7
+
+# Rate Limiting & Performance
+slowapi==0.1.9
+redis==5.0.1
+
+# HTTP Client
+httpx==0.25.2
+
+# Development & Logging
+python-multipart==0.0.6
+python-json-logger==2.0.7
+
+# EU AI Act Compliance Framework
+# These dependencies support the advanced compliance system
+scipy==1.11.4
+numpy==1.24.4
+scikit-learn==1.3.2

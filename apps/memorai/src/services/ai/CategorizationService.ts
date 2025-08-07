@@ -3,8 +3,8 @@
  * Provides intelligent tagging, project assignment, and content classification
  */
 
-import { contentAnalyzer, type ContentAnalysis } from '../utils/nlp/ContentAnalyzer';
-import { memoraiMCPClient } from '../lib/memorai-mcp-client';
+import { contentAnalyzer, type ContentAnalysis } from '@/utils/nlp/ContentAnalyzer';
+import { memoraiMCPClient } from '@/utils/memorai-mcp-client';
 
 export interface CategorizationRequest {
     content: string;

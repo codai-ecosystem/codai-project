@@ -1,0 +1,66 @@
+{
+  "compliance_settings": {
+    "default_assessment_cycle_months": 12,
+    "critical_finding_escalation_hours": 4,
+    "audit_retention_days": 2555,
+    "risk_threshold_high": 7.0,
+    "risk_threshold_medium": 4.0
+  },
+  "frameworks": {
+    "gdpr": {
+      "enabled": true,
+      "jurisdiction": "EU",
+      "data_subject_rights": [
+        "access",
+        "rectification",
+        "erasure",
+        "portability"
+      ]
+    },
+    "romanian_gdpr": {
+      "enabled": true,
+      "jurisdiction": "Romania",
+      "supervisory_authority": "ANSPDCP",
+      "local_requirements": [
+        "romanian_language_notices",
+        "local_dpo_contact"
+      ]
+    },
+    "eu_ai_act": {
+      "enabled": true,
+      "jurisdiction": "EU",
+      "risk_categories": [
+        "unacceptable",
+        "high",
+        "limited",
+        "minimal"
+      ]
+    }
+  },
+  "governance_policies": {
+    "data_retention": {
+      "default_retention_years": 7,
+      "personal_data_max_years": 3,
+      "financial_data_years": 10
+    },
+    "access_control": {
+      "multi_factor_auth_required": true,
+      "password_complexity": "high",
+      "session_timeout_minutes": 30
+    }
+  },
+  "notification_settings": {
+    "compliance_violations": {
+      "email": true,
+      "sms": false
+    },
+    "assessment_due": {
+      "email": true,
+      "dashboard": true
+    },
+    "policy_updates": {
+      "email": true,
+      "in_app": true
+    }
+  }
+}

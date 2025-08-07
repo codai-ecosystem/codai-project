@@ -1,11 +1,11 @@
+'use client';
+
 import React from 'react'
 /**
  * Advanced Performance Monitoring
  * 
  * Real-time performance monitoring dashboard with live metrics
  */
-
-'use client';
 
 import { useState, useEffect, useCallback } from 'react';
 import DashboardLayout from '@/components/dashboard-layout';

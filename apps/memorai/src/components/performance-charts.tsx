@@ -1,11 +1,11 @@
+'use client';
+
 import React from 'react'
 /**
  * Performance Metrics Visualization Component
  * 
  * Visual charts for performance metrics and trends
  */
-
-'use client';
 
 interface PerformanceChartProps {
   data: Array<{ name: string; value: number; threshold?: number }>;

@@ -764,10 +764,19 @@ class RomanianAGIDeploymentEngine:
             "audit_status": "passed"
         }
         
+        # Get real GPU utilization
+        real_gpu_util = 0.0
+        try:
+            import GPUtil
+            gpu = GPUtil.getGPUs()[0] if GPUtil.getGPUs() else None
+            real_gpu_util = gpu.load if gpu else 0.0
+        except:
+            real_gpu_util = 0.0
+        
         resource_utilization = {
             "cpu_utilization": 0.45,
             "memory_utilization": 0.55,
-            "gpu_utilization": 0.60,
+            "gpu_utilization": real_gpu_util,
             "storage_utilization": 0.30,
             "network_utilization": 0.25
         }

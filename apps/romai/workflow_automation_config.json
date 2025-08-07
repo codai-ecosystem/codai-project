@@ -1,0 +1,53 @@
+{
+  "platforms": {
+    "servicenow": {
+      "api_version": "v1",
+      "endpoints": {
+        "table": "/api/now/table",
+        "import": "/api/now/import",
+        "workflow": "/api/now/workflow"
+      },
+      "supported_tables": [
+        "incident",
+        "change_request",
+        "problem"
+      ]
+    },
+    "jira": {
+      "api_version": "3",
+      "base_url": "/rest/api/3",
+      "supported_types": [
+        "Task",
+        "Bug",
+        "Story",
+        "Epic"
+      ]
+    },
+    "asana": {
+      "api_version": "1.0",
+      "base_url": "https://app.asana.com/api/1.0",
+      "supported_objects": [
+        "tasks",
+        "projects",
+        "teams"
+      ]
+    }
+  },
+  "automation_settings": {
+    "max_concurrent_workflows": 50,
+    "retry_attempts": 3,
+    "timeout_minutes": 30,
+    "log_retention_days": 90
+  },
+  "notification_channels": {
+    "email": {
+      "enabled": true
+    },
+    "slack": {
+      "enabled": false
+    },
+    "teams": {
+      "enabled": false
+    }
+  }
+}

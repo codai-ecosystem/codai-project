@@ -1,0 +1,638 @@
+{
+    "romanian_literature": {
+        "classical_authors": {
+            "mihai_eminescu": {
+                "period": "1850-1889",
+                "major_works": [
+                    "Luceafărul",
+                    "Floare albastră",
+                    "Doina"
+                ],
+                "cultural_impact": "Definește identitatea romantică românească",
+                "linguistic_contributions": [
+                    "neologisme poetice",
+                    "expresii metaforice"
+                ],
+                "regional_influence": "Național, cu puternice ecouri în Moldova"
+            },
+            "ion_creanga": {
+                "period": "1837-1889",
+                "major_works": [
+                    "Amintiri din copilărie",
+                    "Povestea lui Harap-Alb",
+                    "Dănilă Prepeleac"
+                ],
+                "cultural_impact": "Păstrează tradițiile populare și umorul moldovenesc",
+                "linguistic_contributions": [
+                    "limbaj popular autentic",
+                    "expresii moldovenești"
+                ],
+                "regional_influence": "Moldova, Târgu Neamț"
+            },
+            "liviu_rebreanu": {
+                "period": "1885-1944",
+                "major_works": [
+                    "Ion",
+                    "Răscoala",
+                    "Pădurea spânzuraților"
+                ],
+                "cultural_impact": "Realismul rural transilvanean",
+                "linguistic_contributions": [
+                    "descrieri rurale autentice",
+                    "dialecte transilvănene"
+                ],
+                "regional_influence": "Transilvania, Năsăud"
+            },
+            "george_calinescu": {
+                "period": "1899-1965",
+                "major_works": [
+                    "Enigma Otiliei",
+                    "Istoria literaturii române"
+                ],
+                "cultural_impact": "Critica literară modernă și proza urbană",
+                "linguistic_contributions": [
+                    "limbaj erudite",
+                    "analize culturale"
+                ],
+                "regional_influence": "București, mediul urban"
+            }
+        },
+        "contemporary_authors": {
+            "mircea_cartarescu": {
+                "period": "1956-prezent",
+                "major_works": [
+                    "Orbitor",
+                    "Nostalgia",
+                    "De ce iubim femeile"
+                ],
+                "cultural_impact": "Postmodernismul românesc și realismul magic",
+                "linguistic_contributions": [
+                    "limbaj experimental",
+                    "neologisme contemporane"
+                ],
+                "regional_influence": "București, cultura urbană"
+            },
+            "norman_manea": {
+                "period": "1936-prezent",
+                "major_works": [
+                    "Plicul negru",
+                    "Întoarcerea huliganului"
+                ],
+                "cultural_impact": "Literatura exilului și memoria comunismului",
+                "linguistic_contributions": [
+                    "reflexivitate culturală",
+                    "limbaj al memoriei"
+                ],
+                "regional_influence": "Bucovina, exil american"
+            }
+        },
+        "folk_literature": {
+            "mioriţa": {
+                "type": "baladă populară",
+                "origin": "tradițiile pastorale românești",
+                "cultural_significance": "Mitul fundator al fatalismului românesc",
+                "regional_variants": [
+                    "moldovenească",
+                    "transilvăneană",
+                    "olteană"
+                ],
+                "themes": [
+                    "destinul",
+                    "natura",
+                    "moartea acceptată"
+                ]
+            },
+            "mesterul_manole": {
+                "type": "legendă populară",
+                "origin": "tradițiile meșteșugărești",
+                "cultural_significance": "Sacrificiul pentru artă și creativitate",
+                "themes": [
+                    "artă",
+                    "sacrificiu",
+                    "tradiții constructive"
+                ]
+            }
+        }
+    },
+    "romanian_history": {
+        "medieval_period": {
+            "key_rulers": {
+                "mircea_cel_batran": {
+                    "period": "1386-1418",
+                    "achievements": [
+                        "consolidarea Țării Românești",
+                        "diplomația europeană"
+                    ],
+                    "cultural_impact": "Model de domnie înțeleaptă",
+                    "legacy": "Măreția medievală românească"
+                },
+                "stefan_cel_mare": {
+                    "period": "1457-1504",
+                    "achievements": [
+                        "47 de bătălii câștigate",
+                        "mănăstiri votive"
+                    ],
+                    "cultural_impact": "Ideal de conducător creștin",
+                    "legacy": "Simbolul rezistenței creștine"
+                },
+                "vlad_tepes": {
+                    "period": "1448-1476",
+                    "achievements": [
+                        "lupta împotriva otomanilor",
+                        "administrația strictă"
+                    ],
+                    "cultural_impact": "Controverse și legende",
+                    "legacy": "Justițiar implacabil sau tiran"
+                }
+            },
+            "cultural_developments": {
+                "orthodoxy": "Adoptarea și consolidarea creștinismului ortodox",
+                "architecture": "Dezvoltarea stilului brâncovenesc",
+                "manuscripts": "Copierea și păstrarea textelor slave și române"
+            }
+        },
+        "modern_period": {
+            "union_1859": {
+                "event": "Unirea Principatelor Române",
+                "significance": "Primul pas către România modernă",
+                "key_figures": [
+                    "Alexandru Ioan Cuza",
+                    "Mihail Kogălniceanu"
+                ],
+                "cultural_impact": "Nașterea conștiinței naționale moderne"
+            },
+            "independence_1877": {
+                "event": "Independența României",
+                "significance": "Recunoașterea internațională",
+                "key_figures": [
+                    "Carol I",
+                    "Ion C. Brătianu"
+                ],
+                "cultural_impact": "Consolidarea identității naționale"
+            },
+            "great_union_1918": {
+                "event": "Marea Unire",
+                "significance": "România Mare - unificarea tuturor românilor",
+                "cultural_impact": "Apogeul idealului național românesc",
+                "provinces_united": [
+                    "Transilvania",
+                    "Basarabia",
+                    "Bucovina",
+                    "Dobrogea"
+                ]
+            }
+        },
+        "contemporary_period": {
+            "communist_era": {
+                "period": "1947-1989",
+                "key_figures": [
+                    "Gheorghe Gheorghiu-Dej",
+                    "Nicolae Ceaușescu"
+                ],
+                "cultural_impact": "Transformări sociale radicale, reprimarea culturală",
+                "legacy": "Trauma colectivă și nostalgia ambiguă"
+            },
+            "revolution_1989": {
+                "event": "Revoluția Română",
+                "significance": "Căderea comunismului",
+                "cultural_impact": "Redescoperirea libertății și democrației",
+                "challenges": "Tranziția dificilă către capitalism"
+            },
+            "eu_integration": {
+                "milestone": "Aderarea la UE (2007)",
+                "significance": "Integrarea europeană",
+                "cultural_impact": "Deschiderea către valorile occidentale",
+                "challenges": "Tensiuni între tradiție și modernitate"
+            }
+        }
+    },
+    "romanian_traditions": {
+        "annual_celebrations": {
+            "martisoare": {
+                "date": "1 martie",
+                "significance": "Simbolul primăverii și renașterii",
+                "traditions": [
+                    "dăruirea mărțișorului",
+                    "dorințe de bine",
+                    "flori"
+                ],
+                "regional_variations": [
+                    "Moldova - mărțișor roșu-alb",
+                    "Transilvania - cordițe colorate"
+                ],
+                "modern_adaptations": "Comercializarea și urbanizarea tradiției"
+            },
+            "dragobete": {
+                "date": "24 februarie",
+                "significance": "Ziua îndrăgostiților românesc",
+                "traditions": [
+                    "căutarea iubirii",
+                    "plimbări în natură",
+                    "ghiocei"
+                ],
+                "cultural_role": "Alternativa românească la Sf. Valentin"
+            },
+            "sanzienele": {
+                "date": "24 iunie",
+                "significance": "Noaptea magică a plantelor",
+                "traditions": [
+                    "cules plante medicinale",
+                    "focuri de tabără",
+                    "dansuri"
+                ],
+                "beliefs": [
+                    "puterea vindecătoare",
+                    "iubirea și fertilitatea"
+                ]
+            }
+        },
+        "life_cycle_rituals": {
+            "birth_customs": {
+                "botez": "Ritualul creștin de intrare în comunitate",
+                "traditions": [
+                    "naș și nașă",
+                    "cununa de botez",
+                    "masa festifă"
+                ],
+                "regional_differences": "Variații în música și mâncăruri"
+            },
+            "wedding_customs": {
+                "logodna": "Ceremonia oficială a angajamentului",
+                "nunta": "Ceremonia complexă cu multe ritualuri",
+                "traditions": [
+                    "hora miresei",
+                    "furatul miresei",
+                    "strigăturile"
+                ],
+                "regional_variations": {
+                    "muntenia": [
+                        "hora de la Oltenița",
+                        "cântece de jale"
+                    ],
+                    "moldova": [
+                        "hora moldovenească",
+                        "folclor arhaic"
+                    ],
+                    "transilvania": [
+                        "influențe maghiare",
+                        "muzică de fanfară"
+                    ]
+                }
+            },
+            "funeral_customs": {
+                "bocet": "Plânsul ritual pentru defunct",
+                "prastia": "Masa comemorativă",
+                "traditions": [
+                    "priveghiul",
+                    "colivă",
+                    "pomana"
+                ],
+                "beliefs": [
+                    "respectul pentru morți",
+                    "continuitatea spirituală"
+                ]
+            }
+        },
+        "seasonal_traditions": {
+            "spring": {
+                "customs": [
+                    "Paștele",
+                    "Floriile",
+                    "mărțișorul"
+                ],
+                "agricultural": [
+                    "semănatul",
+                    "binecuvântarea holdelor"
+                ],
+                "cultural_meaning": "Renașterea și speranța"
+            },
+            "summer": {
+                "customs": [
+                    "Sânzienele",
+                    "Sf. Ilie",
+                    "secerișul"
+                ],
+                "agricultural": [
+                    "recoltarea",
+                    "târgurile de vară"
+                ],
+                "cultural_meaning": "Abundența și bucuria"
+            },
+            "autumn": {
+                "customs": [
+                    "Sf. Dumitru",
+                    "culesul viei",
+                    "tăierea porcului"
+                ],
+                "agricultural": [
+                    "pregătirea pentru iarnă",
+                    "conservarea"
+                ],
+                "cultural_meaning": "Recunoștința și pregătirea"
+            },
+            "winter": {
+                "customs": [
+                    "Crăciunul",
+                    "Anul Nou",
+                    "Boboteaza"
+                ],
+                "traditions": [
+                    "colindatul",
+                    "plugușorul",
+                    "sorcova"
+                ],
+                "cultural_meaning": "Reuniunea familială și speranța"
+            }
+        }
+    },
+    "romanian_cuisine": {
+        "traditional_dishes": {
+            "ciorbă_de_burtă": {
+                "type": "ciorbă",
+                "ingredients": [
+                    "burtă de vită",
+                    "smântână",
+                    "usturoi",
+                    "oțet"
+                ],
+                "regional_origin": "Muntenia, București",
+                "cultural_significance": "Mâncarea de duminică dimineața",
+                "preparation_time": "4-6 ore",
+                "serving_tradition": "Cu smântână și ardei iute"
+            },
+            "mici": {
+                "type": "grătar",
+                "ingredients": [
+                    "carne tocată",
+                    "usturoi",
+                    "țuică",
+                    "bicarbonat"
+                ],
+                "regional_origin": "București",
+                "cultural_significance": "Mâncarea de grătar românească",
+                "serving_tradition": "Cu muștar și pâine"
+            },
+            "papanași": {
+                "type": "desert",
+                "ingredients": [
+                    "brânză de vaci",
+                    "griș",
+                    "smântână",
+                    "gem"
+                ],
+                "regional_origin": "Moldova, Transilvania",
+                "cultural_significance": "Desertul tradițional românesc",
+                "serving_tradition": "Cu smântână și gem de vișine"
+            },
+            "mămăligă": {
+                "type": "mâncare de bază",
+                "ingredients": [
+                    "mălai",
+                    "apă",
+                    "sare"
+                ],
+                "regional_origin": "Toate regiunile României",
+                "cultural_significance": "Pâinea românilor",
+                "variations": [
+                    "mămăliguță",
+                    "mămăligă cu brânză",
+                    "mămăligă cu lapte"
+                ]
+            }
+        },
+        "regional_specialties": {
+            "muntenia": {
+                "specific_dishes": [
+                    "ciorbă de burtă",
+                    "mici de București",
+                    "papară"
+                ],
+                "ingredients": [
+                    "carne de porc",
+                    "legume de grădină",
+                    "brânză de burduf"
+                ],
+                "cooking_style": "Urban, influențe balcanice"
+            },
+            "moldova": {
+                "specific_dishes": [
+                    "tocană moldovenească",
+                    "mujdei",
+                    "răcituri"
+                ],
+                "ingredients": [
+                    "carne de vită",
+                    "usturoi",
+                    "țuică de prune"
+                ],
+                "cooking_style": "Rural, simplu, consistente"
+            },
+            "transilvania": {
+                "specific_dishes": [
+                    "gulas",
+                    "varză a la Cluj",
+                    "kurtos kalacs"
+                ],
+                "ingredients": [
+                    "carne de porc",
+                    "varză",
+                    "boia"
+                ],
+                "cooking_style": "Influențe maghiare și săsești"
+            },
+            "banat": {
+                "specific_dishes": [
+                    "ciorbă de pește",
+                    "șvițer",
+                    "kurtosh"
+                ],
+                "ingredients": [
+                    "pește de Dunăre",
+                    "legume",
+                    "condimente balcanice"
+                ],
+                "cooking_style": "Multicultural, influențe sârbești"
+            }
+        },
+        "beverages": {
+            "alcoholic": {
+                "țuică": {
+                    "type": "băutură tradițională",
+                    "ingredients": [
+                        "prune fermentate"
+                    ],
+                    "alcohol_content": "25-30%",
+                    "cultural_role": "Băutura ospitalității românești",
+                    "regional_variations": [
+                        "țuică de prune",
+                        "țuică de pere",
+                        "țuică de mere"
+                    ]
+                },
+                "pălincă": {
+                    "type": "băutură tare",
+                    "ingredients": [
+                        "fructe fermentate"
+                    ],
+                    "alcohol_content": "40-70%",
+                    "regional_origin": "Transilvania, Maramureș",
+                    "cultural_significance": "Băutura ceremonială"
+                },
+                "vin": {
+                    "regions": [
+                        "Cotnari",
+                        "Murfatlar",
+                        "Drăgășani",
+                        "Dealu Mare"
+                    ],
+                    "varieties": [
+                        "Fetească albă",
+                        "Fetească neagră",
+                        "Grasa de Cotnari"
+                    ],
+                    "cultural_role": "Însoțitorul meselor festive"
+                }
+            },
+            "non_alcoholic": {
+                "socată": {
+                    "ingredients": [
+                        "flori de soc",
+                        "zahăr",
+                        "lămâie"
+                    ],
+                    "season": "primăvara",
+                    "cultural_role": "Răcoritoarea tradițională"
+                },
+                "must": {
+                    "ingredients": [
+                        "struguri proaspeți"
+                    ],
+                    "season": "toamna",
+                    "cultural_significance": "Băutura recoltei"
+                }
+            }
+        }
+    },
+    "romanian_music": {
+        "traditional_music": {
+            "folk_dances": {
+                "hora": {
+                    "type": "dans în cerc",
+                    "origin": "Toate regiunile României",
+                    "characteristics": [
+                        "mișcări circulare",
+                        "unitate comunitară"
+                    ],
+                    "occasions": [
+                        "nunți",
+                        "sărbători",
+                        "reuniuni"
+                    ],
+                    "variations": [
+                        "hora mare",
+                        "hora mică",
+                        "hora de la Prislop"
+                    ]
+                },
+                "sârba": {
+                    "type": "dans rapid",
+                    "origin": "Regiunea Munților Carpați",
+                    "characteristics": [
+                        "ritm accelerat",
+                        "pași complicați"
+                    ],
+                    "cultural_meaning": "Bucuria și energia tinerilor"
+                },
+                "brâu": {
+                    "type": "dans masculin",
+                    "origin": "Oltenia",
+                    "characteristics": [
+                        "pași atletici",
+                        "demonstrație de vigoare"
+                    ],
+                    "cultural_role": "Afirmarea masculinității și abilității"
+                }
+            },
+            "folk_songs": {
+                "doina": {
+                    "type": "cântec melancolic",
+                    "characteristics": [
+                        "improvizație",
+                        "durere",
+                        "nostalgie"
+                    ],
+                    "themes": [
+                        "dragostea pierdută",
+                        "dorul de casă",
+                        "injustița"
+                    ],
+                    "regional_styles": [
+                        "doina oltenească",
+                        "doina moldovenească"
+                    ]
+                },
+                "cântec_de_leagăn": {
+                    "type": "berceuse",
+                    "function": "liniștirea copiilor",
+                    "themes": [
+                        "protecția maternă",
+                        "vise dulci",
+                        "binecuvântări"
+                    ],
+                    "transmission": "Din generație în generație"
+                }
+            },
+            "instruments": {
+                "cobză": {
+                    "type": "instrument cu coarde",
+                    "usage": "Acompaniament pentru epic",
+                    "cultural_role": "Instrumentul lăutarilor"
+                },
+                "fluier": {
+                    "type": "instrument de suflat",
+                    "usage": "Muzică pastorală",
+                    "cultural_role": "Instrumentul ciobănesc"
+                },
+                "țambal": {
+                    "type": "instrument cu percuție de coarde",
+                    "usage": "Muzică de dans",
+                    "cultural_role": "Instrumentul petrecerii"
+                }
+            }
+        },
+        "contemporary_music": {
+            "rock_românesc": {
+                "pioneers": [
+                    "Phoenix",
+                    "Iris",
+                    "Holograf"
+                ],
+                "characteristics": [
+                    "versuri în română",
+                    "teme sociale"
+                ],
+                "cultural_impact": "Exprimarea rebeliunii în timpul comunist"
+            },
+            "pop_românesc": {
+                "artists": [
+                    "Inna",
+                    "Alexandra Stan",
+                    "Akcent"
+                ],
+                "characteristics": [
+                    "melodii comerciale",
+                    "success internațional"
+                ],
+                "cultural_role": "Promovarea imaginii României în lume"
+            },
+            "manele": {
+                "characteristics": [
+                    "influențe balcanice",
+                    "teme sentimentale"
+                ],
+                "controversy": "Divizarea opiniei publice",
+                "cultural_impact": "Fenomen social complex"
+            }
+        }
+    }
+}

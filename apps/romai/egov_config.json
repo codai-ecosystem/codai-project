@@ -1,0 +1,23 @@
+{
+  "api_keys": {
+    "ghiseul_ro": "demo-api-key-ghiseul",
+    "sias": "demo-api-key-sias",
+    "anaf_online": "demo-api-key-anaf",
+    "portal_digital": "demo-api-key-portal"
+  },
+  "endpoints": {
+    "ghiseul_ro": "https://api.ghiseul.ro/v2",
+    "sias": "https://sias.mmuncii.ro/api/v1",
+    "anaf_online": "https://webservicesp.anaf.ro/PlatitorTaxeRS",
+    "portal_digital": "https://api.gov.ro/v1",
+    "registrul_comertului": "https://api.onrc.ro/v1"
+  },
+  "timeout": 30,
+  "retry_attempts": 3,
+  "language_preferences": [
+    "ro",
+    "hu",
+    "de",
+    "en"
+  ]
+}

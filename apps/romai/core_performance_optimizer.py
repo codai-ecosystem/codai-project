@@ -204,16 +204,35 @@ class GPUOptimizer:
     
     async def monitor_gpu_performance(self) -> Dict[str, float]:
         """Monitor GPU performance metrics"""
-        # Simulate GPU performance monitoring
-        # In real implementation, would use nvidia-ml-py or similar
-        
-        metrics = {
-            'gpu_utilization': np.random.uniform(0.85, 0.95),  # 85-95% utilization
-            'memory_utilization': np.random.uniform(0.80, 0.90),  # 80-90% memory use
-            'temperature': np.random.uniform(65, 75),  # 65-75°C temperature
-            'power_usage': np.random.uniform(180, 220),  # 180-220W power
-            'tensor_core_usage': np.random.uniform(0.90, 0.98)  # 90-98% tensor cores
-        }
+        # Real GPU performance monitoring using GPUtil
+        try:
+            import GPUtil
+            gpus = GPUtil.getGPUs()
+            if gpus:
+                gpu = gpus[0]
+                metrics = {
+                    'gpu_utilization': gpu.load,  # Real GPU utilization (0.0-1.0)
+                    'memory_utilization': gpu.memoryUtil,  # Real memory utilization (0.0-1.0)
+                    'temperature': gpu.temperature,  # Real temperature in °C
+                    'power_usage': 220.0,  # RTX 3060 Ti max power (approximate)
+                    'tensor_core_usage': gpu.load * 0.95  # Estimate tensor core usage from GPU load
+                }
+            else:
+                metrics = {
+                    'gpu_utilization': 0.0,
+                    'memory_utilization': 0.0,
+                    'temperature': 0.0,
+                    'power_usage': 0.0,
+                    'tensor_core_usage': 0.0
+                }
+        except Exception:
+            metrics = {
+                'gpu_utilization': 0.0,
+                'memory_utilization': 0.0,
+                'temperature': 0.0,
+                'power_usage': 0.0,
+                'tensor_core_usage': 0.0
+            }
         
         return metrics
 

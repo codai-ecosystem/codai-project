@@ -1,0 +1,47 @@
+# 🧠 RomAI Advanced Analytics & Reporting - Requirements
+
+# Core analytics and data processing
+pandas>=2.0.0
+numpy>=1.24.0
+sqlite3  # Built-in Python module
+
+# Visualization and charting
+plotly>=5.17.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Web framework and API
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+websockets>=12.0
+
+# Reporting and document generation  
+jinja2>=3.1.0
+weasyprint>=60.0
+openpyxl>=3.1.0
+reportlab>=4.0.0
+
+# Advanced analytics and machine learning
+scikit-learn>=1.3.0
+scipy>=1.11.0
+statsmodels>=0.14.0
+
+# System monitoring and utilities
+psutil>=5.9.0
+aiofiles>=23.0.0
+python-multipart>=0.0.6
+
+# Optional database connectivity
+sqlalchemy>=2.0.0  # For external database connections
+psycopg2-binary>=2.9.0  # PostgreSQL support
+pymongo>=4.6.0  # MongoDB support
+
+# HTTP clients for external integrations
+aiohttp>=3.9.0
+requests>=2.31.0
+
+# Development and testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0

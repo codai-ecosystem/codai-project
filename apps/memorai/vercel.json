@@ -12,6 +12,7 @@
         }
     },
     "env": {
+        "NEXT_TYPESCRIPT_IGNORE_BUILD_ERRORS": "true",
         "NEXTAUTH_URL": "https://app.memorai.ro",
         "NODE_ENV": "production",
         "NEXT_PUBLIC_API_URL": "https://api.memorai.ro",

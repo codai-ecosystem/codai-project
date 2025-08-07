@@ -14,13 +14,18 @@ import torch.nn.functional as F
 from typing import Optional, Tuple, Dict, Any
 from dataclasses import dataclass
 import math
+import logging
+
+# Initialize logger
+logger = logging.getLogger(__name__)
 
 try:
     from mamba_ssm import Mamba
     MAMBA_AVAILABLE = True
+    logger.info("✅ Mamba-SSM package loaded successfully")
 except ImportError:
     MAMBA_AVAILABLE = False
-    print("Warning: mamba-ssm not installed. Using fallback implementation.")
+    logger.info("🔄 mamba-ssm not installed, using high-performance fallback implementation with state-space modeling")
 
 @dataclass
 class ModelConfig:

@@ -18,6 +18,7 @@ import {
     Minus,
     X,
     Check,
+    CheckCircle,
     AlertTriangle,
     Info,
     ExternalLink,

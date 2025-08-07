@@ -127,6 +127,19 @@ except ImportError:
     sys.exit(1)
 logger = logging.getLogger(__name__)
 
+# Romanian capabilities import
+try:
+    from ml.romanian_capabilities.enhanced_romanian_system import RomanianDatasetConfig
+    ROMANIAN_DATASET_CONFIG_AVAILABLE = True
+    logger.info("✅ Romanian Dataset Config imported successfully")
+except ImportError as e:
+    ROMANIAN_DATASET_CONFIG_AVAILABLE = False
+    logger.warning(f"⚠️ Romanian Dataset Config not available: {e}")
+    # Create fallback class
+    class RomanianDatasetConfig:
+        def __init__(self, **kwargs):
+            pass
+
 # Phase 4 Systems - Lightweight Implementation
 class PerformanceMetrics(BaseModel):
     """Performance metrics for monitoring system health"""
@@ -386,22 +399,42 @@ class SimplifiedPerformanceOptimizer:
         # Simulate optimization process
         await asyncio.sleep(1)
         
+        # Get real GPU utilization
+        real_gpu_util = 0.0
+        if self.gpu_available:
+            try:
+                import GPUtil
+                gpu = GPUtil.getGPUs()[0] if GPUtil.getGPUs() else None
+                real_gpu_util = gpu.load * 100 if gpu else 0.0
+            except:
+                real_gpu_util = 0.0
+        
         return PerformanceMetrics(
             system_readiness=95.0,
             processing_speed=88.0,
             memory_efficiency=92.0,
             romanian_cultural_accuracy=97.0,
-            gpu_utilization=45.0 if self.gpu_available else 0.0
+            gpu_utilization=real_gpu_util
         )
     
     async def get_metrics(self) -> PerformanceMetrics:
         """Get current performance metrics"""
+        # Get real GPU utilization
+        real_gpu_util = 0.0
+        if self.gpu_available:
+            try:
+                import GPUtil
+                gpu = GPUtil.getGPUs()[0] if GPUtil.getGPUs() else None
+                real_gpu_util = gpu.load * 100 if gpu else 0.0
+            except:
+                real_gpu_util = 0.0
+        
         return PerformanceMetrics(
             system_readiness=90.0,
             processing_speed=85.0,
             memory_efficiency=88.0,
             romanian_cultural_accuracy=95.0,
-            gpu_utilization=40.0 if self.gpu_available else 0.0
+            gpu_utilization=real_gpu_util
         )
 
 class SimplifiedTestingSystem:

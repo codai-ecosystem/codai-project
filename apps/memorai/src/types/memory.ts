@@ -1,35 +1,56 @@
 export interface Memory {
     id: string;
+    title: string;
     content: string;
-    title?: string;
+    type: 'note' | 'task' | 'idea' | 'reference' | 'reminder';
     category: string;
     tags: string[];
+    priority: 'low' | 'medium' | 'high';
+    createdAt: string | Date;
+    updatedAt: string | Date;
+    isPrivate: boolean;
+    isFavorite: boolean;
+    collaborators: string[];
+    attachments: any[];
+    linkedMemories: string[];
+    aiScore: number; // AI relevance/importance score 0-100
+    accessCount: number;
+    status: 'active' | 'archived' | 'deleted';
+    structuredKey?: string;
     embedding?: number[];
-    userId: string;
-    createdAt: Date | string;
-    updatedAt: Date | string;
-    importance?: number; // 1-10 scale
-    isPublic?: boolean;
+    userId?: string;
+    importance?: number; // Legacy field for backward compatibility
+    isPublic?: boolean; // Legacy field for backward compatibility
     metadata?: Record<string, any>;
 }
 
 export interface CreateMemoryRequest {
+    title: string;
     content: string;
-    title?: string;
+    type?: 'note' | 'task' | 'idea' | 'reference' | 'reminder';
     category?: string;
     tags?: string[];
-    importance?: number;
-    isPublic?: boolean;
+    priority?: 'low' | 'medium' | 'high';
+    isPrivate?: boolean;
+    userId?: string;
+    importance?: number; // Legacy field
+    isPublic?: boolean; // Legacy field
     metadata?: Record<string, any>;
 }
 
 export interface UpdateMemoryRequest {
-    content?: string;
     title?: string;
+    content?: string;
+    type?: 'note' | 'task' | 'idea' | 'reference' | 'reminder';
     category?: string;
     tags?: string[];
-    importance?: number;
-    isPublic?: boolean;
+    priority?: 'low' | 'medium' | 'high';
+    isPrivate?: boolean;
+    isFavorite?: boolean;
+    status?: 'active' | 'archived' | 'deleted';
+    userId?: string;
+    importance?: number; // Legacy field
+    isPublic?: boolean; // Legacy field
     metadata?: Record<string, any>;
 }
 

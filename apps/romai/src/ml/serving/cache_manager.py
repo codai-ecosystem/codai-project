@@ -323,6 +323,40 @@ class RomAICacheManager:
             logger.info("✅ Redis connections closed gracefully")
         except Exception as e:
             logger.warning(f"⚠️ Error closing Redis connections: {str(e)}")
+    
+    async def get_intelligence_response(self, query: str, mode: str = "default") -> Optional[Dict[str, Any]]:
+        """Get cached intelligence response"""
+        try:
+            cache_key = f"intelligence:{mode}:{hashlib.md5(query.encode()).hexdigest()}"
+            cached_data = await self.redis_client.get(cache_key)
+            
+            if cached_data:
+                self.stats["hits"] += 1
+                return json.loads(cached_data)
+            else:
+                self.stats["misses"] += 1
+                return None
+                
+        except Exception as e:
+            logger.error(f"❌ Error getting intelligence response from cache: {str(e)}")
+            self.stats["errors"] += 1
+            return None
+    
+    async def cache_intelligence_response(self, query: str, response: Dict[str, Any], mode: str = "default") -> bool:
+        """Cache intelligence response"""
+        try:
+            cache_key = f"intelligence:{mode}:{hashlib.md5(query.encode()).hexdigest()}"
+            await self.redis_client.setex(
+                cache_key,
+                self.config.intelligence_cache_ttl,
+                json.dumps(response)
+            )
+            return True
+            
+        except Exception as e:
+            logger.error(f"❌ Error caching intelligence response: {str(e)}")
+            self.stats["errors"] += 1
+            return False
 
 # Global cache manager instance
 cache_manager = RomAICacheManager()

@@ -206,3 +206,23 @@ export const withoutWindow = (callback: () => void) => {
     global.window = originalWindow;
   }
 };
+
+// Mock Radix UI components to avoid React hooks issues
+vi.mock('@radix-ui/react-progress', () => ({
+  Root: React.forwardRef<HTMLDivElement, any>(({ children, className, value, max = 100, ...props }, ref) =>
+    React.createElement('div', {
+      ref,
+      className,
+      'data-value': value,
+      'data-max': max,
+      role: 'progressbar',
+      'aria-valuenow': value,
+      'aria-valuemax': max,
+      'aria-valuemin': 0,
+      ...props
+    }, children)
+  ),
+  Indicator: React.forwardRef<HTMLDivElement, any>(({ className, style, ...props }, ref) =>
+    React.createElement('div', { ref, className, style, ...props })
+  ),
+}));

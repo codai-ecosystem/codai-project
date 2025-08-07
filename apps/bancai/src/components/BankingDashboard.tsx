@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useEffect, useState } from 'react'
 import { useBancaiStore } from '../store/bancai'
 import { motion } from 'framer-motion'
@@ -338,3 +340,4 @@ export default function BankingDashboard() {
         </div>
     )
 }
+

@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { signIn, getProviders } from 'next-auth/react';
 import { useEffect, useState } from 'react';
@@ -165,3 +167,4 @@ export default function SignInPage() {
         </div>
     );
 }
+

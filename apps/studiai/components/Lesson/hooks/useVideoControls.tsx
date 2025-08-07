@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { useCallback, useRef, useState, useEffect } from 'react';
 import { Lesson } from '@/types';
@@ -230,3 +232,4 @@ export const useVideoControls = ({
 };
 
 export default useVideoControls;
+

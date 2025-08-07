@@ -1,3 +1,4 @@
+import React from 'react'
 import { Github, Twitter, Linkedin } from 'lucide-react';
 import Link from 'next/link';
 import type { JSX } from 'react';
@@ -171,3 +172,4 @@ export function Footer(): JSX.Element {
     </footer>
   );
 }
+

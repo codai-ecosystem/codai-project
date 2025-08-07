@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// Model server configuration
-const MODEL_SERVER_URL = process.env.MODEL_SERVER_URL || 'http://localhost:8000';
+// RomAI AGI server configuration
+const MODEL_SERVER_URL = process.env.ROMAI_AGI_URL || 'http://localhost:6101';
 
 // Helper functions for data transformation
 function generateLossTrajectory(currentLoss: number, bestLoss: number): number[] {

@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { ComboBox } from './ComboBox';
 import type { ComboBoxProps } from './ComboBox';
@@ -9,3 +11,4 @@ const ComboBoxDefault: React.FC<ComboBoxProps> = (props) => {
 };
 
 export default ComboBoxDefault;
+

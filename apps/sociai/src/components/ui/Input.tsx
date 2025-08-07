@@ -1,3 +1,4 @@
+import React from 'react'
 import { type VariantProps, cva } from 'class-variance-authority';
 import { type InputHTMLAttributes, forwardRef, useId } from 'react';
 
@@ -113,3 +114,4 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 Input.displayName = 'Input';
 
 export { Input, inputVariants };
+

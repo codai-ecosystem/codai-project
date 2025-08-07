@@ -124,7 +124,7 @@ export class SystemMonitor {
                 try {
                     const controller = new AbortController();
                     const timeoutId = setTimeout(() => controller.abort(), 5000);
-                    
+
                     const response = await fetch(`http://localhost:${service.port}/health`, {
                         method: 'GET',
                         signal: controller.signal,

@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { useState, useEffect } from 'react';
 import { Tag, X, Plus, Hash, Search, TrendingUp } from 'lucide-react';
@@ -231,3 +233,4 @@ export default function MemoryTags({
         </div>
     );
 }
+

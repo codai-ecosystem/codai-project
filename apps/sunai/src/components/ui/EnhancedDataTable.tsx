@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * Enhanced Data Table Component
  *
@@ -947,3 +948,4 @@ export function EnhancedDataTable<T extends Record<string, unknown>>({
     </div>
   );
 }
+

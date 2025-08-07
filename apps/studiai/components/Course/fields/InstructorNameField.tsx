@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import Input from '@/components/ui/Input';
 import { FiUser } from '../../icons/FeatherIcons';
@@ -21,3 +23,4 @@ export default function InstructorNameField({
     />
   );
 }
+

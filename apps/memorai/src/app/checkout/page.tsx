@@ -273,8 +273,8 @@ function CheckoutContent() {
                                     <React.Fragment key={step}>
                                         <div className="flex items-center">
                                             <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${step <= currentStep
-                                                    ? 'bg-blue-600 text-white'
-                                                    : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                                                ? 'bg-blue-600 text-white'
+                                                : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
                                                 }`}>
                                                 {step < currentStep ? (
                                                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -285,8 +285,8 @@ function CheckoutContent() {
                                                 )}
                                             </div>
                                             <span className={`ml-2 text-sm font-medium ${step <= currentStep
-                                                    ? 'text-gray-900 dark:text-white'
-                                                    : 'text-gray-500 dark:text-gray-400'
+                                                ? 'text-gray-900 dark:text-white'
+                                                : 'text-gray-500 dark:text-gray-400'
                                                 }`}>
                                                 {step === 1 && 'Billing'}
                                                 {step === 2 && 'Payment'}
@@ -295,8 +295,8 @@ function CheckoutContent() {
                                         </div>
                                         {index < 2 && (
                                             <div className={`flex-1 h-px mx-4 ${step < currentStep
-                                                    ? 'bg-blue-600'
-                                                    : 'bg-gray-200 dark:bg-gray-700'
+                                                ? 'bg-blue-600'
+                                                : 'bg-gray-200 dark:bg-gray-700'
                                                 }`} />
                                         )}
                                     </React.Fragment>
@@ -496,8 +496,8 @@ function CheckoutContent() {
                                         <button
                                             onClick={() => setPaymentMethod(prev => ({ ...prev, type: 'card' }))}
                                             className={`p-4 border rounded-lg text-left transition-all ${paymentMethod.type === 'card'
-                                                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900'
-                                                    : 'border-gray-300 dark:border-gray-600 hover:border-blue-300'
+                                                ? 'border-blue-500 bg-blue-50 dark:bg-blue-900'
+                                                : 'border-gray-300 dark:border-gray-600 hover:border-blue-300'
                                                 }`}
                                         >
                                             <div className="flex items-center">
@@ -513,8 +513,8 @@ function CheckoutContent() {
                                         <button
                                             onClick={() => setPaymentMethod(prev => ({ ...prev, type: 'paypal' }))}
                                             className={`p-4 border rounded-lg text-left transition-all ${paymentMethod.type === 'paypal'
-                                                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900'
-                                                    : 'border-gray-300 dark:border-gray-600 hover:border-blue-300'
+                                                ? 'border-blue-500 bg-blue-50 dark:bg-blue-900'
+                                                : 'border-gray-300 dark:border-gray-600 hover:border-blue-300'
                                                 }`}
                                         >
                                             <div className="flex items-center">

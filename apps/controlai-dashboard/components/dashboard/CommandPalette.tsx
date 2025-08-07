@@ -2,12 +2,12 @@
 
 import React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { 
-  Search, 
-  Command, 
-  FolderKanban, 
-  CheckSquare, 
-  Users, 
+import {
+  Search,
+  Command,
+  FolderKanban,
+  CheckSquare,
+  Users,
   BarChart3,
   Settings,
   Plus,
@@ -229,15 +229,15 @@ export function CommandPalette({ isOpen = false, onClose, className = '' }: Comm
                       const globalIndex = filteredCommands.indexOf(command)
                       const isSelected = globalIndex === selectedIndex
                       const Icon = command.icon
-                      
+
                       return (
                         <motion.button
                           key={command.id}
                           whileHover={{ backgroundColor: 'rgba(59, 130, 246, 0.1)' }}
                           className={`
                             w-full flex items-center justify-between px-4 py-3 text-left transition-colors
-                            ${isSelected 
-                              ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' 
+                            ${isSelected
+                              ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
                               : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'
                             }
                           `}
@@ -255,7 +255,7 @@ export function CommandPalette({ isOpen = false, onClose, className = '' }: Comm
                               </div>
                             </div>
                           </div>
-                          
+
                           <div className="flex items-center space-x-2">
                             {command.shortcut && (
                               <div className="flex items-center space-x-1">

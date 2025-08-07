@@ -7,7 +7,7 @@ import { NextResponse } from 'next/server';
 
 // Mock ecosystem client for development
 class MockEcosystemCommunicationClient {
-    constructor(private serviceId: string, private apiKey: string) {}
+    constructor(private serviceId: string, private apiKey: string) { }
 
     async discoverServices() {
         return {
@@ -48,8 +48,8 @@ class MockEcosystemCommunicationClient {
 
 // Initialize MemorAI ecosystem client
 const memoraiClient = new MockEcosystemCommunicationClient(
-  'memorai',
-  process.env.ECOSYSTEM_API_KEY || 'memorai-ecosystem-key-2025'
+    'memorai',
+    process.env.ECOSYSTEM_API_KEY || 'memorai-ecosystem-key-2025'
 );
 
 /**
@@ -59,18 +59,18 @@ const memoraiClient = new MockEcosystemCommunicationClient(
 export async function GET(request: Request) {
     const url = new URL(request.url);
     const action = url.searchParams.get('action');
-    
+
     try {
         switch (action) {
             case 'health':
                 return await handleHealthCheck();
-            
+
             case 'discover':
                 return await handleServiceDiscovery();
-                
+
             case 'status':
                 return await handleEcosystemStatus();
-                
+
             default:
                 return NextResponse.json({
                     service: 'MemorAI Ecosystem Integration',
@@ -141,7 +141,7 @@ async function handleHealthCheck() {
             ecosystem: ecosystemHealth,
             capabilities: [
                 'memory_management',
-                'context_storage', 
+                'context_storage',
                 'intelligent_recall',
                 'agent_memory',
                 'ecosystem_integration'
@@ -166,7 +166,7 @@ async function handleHealthCheck() {
 async function handleServiceDiscovery() {
     try {
         const discovery = await memoraiClient.discoverServices();
-        
+
         return NextResponse.json({
             success: true,
             ecosystem: 'codai-ecosystem',
@@ -212,9 +212,9 @@ async function handleEcosystemStatus() {
 
         const results = healthChecks.map((result, index) => ({
             serviceId: services[index],
-            ...(result.status === 'fulfilled' ? result.value : { 
-                healthy: false, 
-                error: result.reason?.message || 'Health check failed' 
+            ...(result.status === 'fulfilled' ? result.value : {
+                healthy: false,
+                error: result.reason?.message || 'Health check failed'
             })
         }));
 
@@ -228,7 +228,7 @@ async function handleEcosystemStatus() {
                 role: 'Memory and context management service',
                 capabilities: [
                     'Cross-service memory sharing',
-                    'Context storage and retrieval', 
+                    'Context storage and retrieval',
                     'Intelligent memory recall',
                     'Agent memory management'
                 ]

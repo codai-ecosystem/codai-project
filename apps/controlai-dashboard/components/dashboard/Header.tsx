@@ -2,11 +2,11 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { 
-  Bell, 
-  Search, 
-  Settings, 
-  User, 
+import {
+  Bell,
+  Search,
+  Settings,
+  User,
   LogOut,
   Moon,
   Sun,

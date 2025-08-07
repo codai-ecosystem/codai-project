@@ -27,7 +27,7 @@ export default function MemoryEditor({ memory, isCreating, onSave, onCancel }: M
     const [isLoading, setIsLoading] = useState(false);
 
     const categories = [
-        'general', 'development', 'testing', 'planning', 
+        'general', 'development', 'testing', 'planning',
         'personal', 'work', 'research', 'ideas', 'notes'
     ];
 
@@ -81,7 +81,7 @@ export default function MemoryEditor({ memory, isCreating, onSave, onCancel }: M
                         </Button>
                     </div>
                 </CardHeader>
-                
+
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-6">
                         {/* Content */}
@@ -142,8 +142,8 @@ export default function MemoryEditor({ memory, isCreating, onSave, onCancel }: M
                                 {formData.tags.length > 0 && (
                                     <div className="flex flex-wrap gap-2">
                                         {formData.tags.map((tag, index) => (
-                                            <Badge 
-                                                key={index} 
+                                            <Badge
+                                                key={index}
                                                 variant="secondary"
                                                 className="cursor-pointer hover:bg-red-100 hover:text-red-600"
                                                 onClick={() => removeTag(tag)}

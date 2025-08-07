@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import dynamic from 'next/dynamic';
 import type { ComponentType, ComponentProps } from 'react';
@@ -38,3 +40,4 @@ const DateRangePicker: ComponentType<DateRangePickerProps> = dynamic(
 
 export default DatePicker;
 export { DatePicker, DateRangePicker };
+

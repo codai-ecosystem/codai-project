@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState, useEffect } from 'react'
 // Import types directly since agent-runtime may not be available in frontend
 interface EarningsData {
@@ -412,3 +414,4 @@ export function EarningsView() {
 		</div>
 	)
 }
+

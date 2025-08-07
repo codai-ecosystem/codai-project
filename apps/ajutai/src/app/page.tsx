@@ -1,3 +1,4 @@
+import React from 'react'
 import { AjutaiDashboard } from '@/components/ajutai/dashboard'
 
 export default function Home() {
@@ -7,3 +8,4 @@ export default function Home() {
     </div>
   )
 }
+

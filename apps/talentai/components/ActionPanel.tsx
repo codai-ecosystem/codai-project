@@ -1,3 +1,4 @@
+import React from 'react'
 interface ActionPanelProps {
   title: string;
   actions?: Array<{
@@ -29,3 +30,4 @@ export default function ActionPanel({ title, actions = [], className = '' }: Act
     </div>
   );
 }
+

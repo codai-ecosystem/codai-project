@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { useState, useEffect, useRef } from 'react';
 import { Review } from '@/types';
@@ -83,3 +85,4 @@ export const useFeaturedReviews = (count: number = 3): Review[] => {
 
   return reviews;
 };
+

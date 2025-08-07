@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -391,3 +393,4 @@ export default function EmailComposer({ isOpen, onClose, replyTo }: EmailCompose
         </AnimatePresence>
     )
 }
+

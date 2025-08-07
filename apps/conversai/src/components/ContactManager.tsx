@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
@@ -501,3 +503,4 @@ export default function ContactManager({ isOpen, onClose, onSelectContact }: Con
         </motion.div>
     )
 }
+

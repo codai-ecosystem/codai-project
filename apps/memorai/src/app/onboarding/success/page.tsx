@@ -366,10 +366,10 @@ function OnboardingSuccessContent() {
                                         <div className="flex items-center justify-between mb-3">
                                             <div className="flex items-center">
                                                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${step.dropoff > 150
-                                                        ? 'bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400'
-                                                        : step.dropoff > 100
-                                                            ? 'bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-400'
-                                                            : 'bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400'
+                                                    ? 'bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400'
+                                                    : step.dropoff > 100
+                                                        ? 'bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-400'
+                                                        : 'bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400'
                                                     }`}>
                                                     {step.id}
                                                 </div>
@@ -397,7 +397,7 @@ function OnboardingSuccessContent() {
                                         <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-3">
                                             <div
                                                 className={`h-2 rounded-full ${step.dropoff > 150 ? 'bg-red-500' :
-                                                        step.dropoff > 100 ? 'bg-yellow-500' : 'bg-green-500'
+                                                    step.dropoff > 100 ? 'bg-yellow-500' : 'bg-green-500'
                                                     }`}
                                                 style={{ width: `${(step.completed / metrics.totalUsers) * 100}%` }}
                                             />
@@ -406,8 +406,8 @@ function OnboardingSuccessContent() {
                                         <div className="flex items-center justify-between">
                                             <div className="text-sm">
                                                 <span className={`font-medium ${step.dropoff > 150 ? 'text-red-600 dark:text-red-400' :
-                                                        step.dropoff > 100 ? 'text-yellow-600 dark:text-yellow-400' :
-                                                            'text-green-600 dark:text-green-400'
+                                                    step.dropoff > 100 ? 'text-yellow-600 dark:text-yellow-400' :
+                                                        'text-green-600 dark:text-green-400'
                                                     }`}>
                                                     {step.dropoff} dropoffs
                                                 </span>
@@ -482,8 +482,8 @@ function OnboardingSuccessContent() {
                                                 </td>
                                                 <td className="py-3 px-4">
                                                     <span className={`font-medium ${segment.completionRate > 85 ? 'text-green-600 dark:text-green-400' :
-                                                            segment.completionRate > 70 ? 'text-yellow-600 dark:text-yellow-400' :
-                                                                'text-red-600 dark:text-red-400'
+                                                        segment.completionRate > 70 ? 'text-yellow-600 dark:text-yellow-400' :
+                                                            'text-red-600 dark:text-red-400'
                                                         }`}>
                                                         {segment.completionRate}%
                                                     </span>
@@ -522,10 +522,10 @@ function OnboardingSuccessContent() {
                                                         {suggestion.step}
                                                     </h4>
                                                     <span className={`px-2 py-1 text-xs font-medium rounded ${suggestion.priority === 'high'
-                                                            ? 'bg-red-100 dark:bg-red-800 text-red-800 dark:text-red-200'
-                                                            : suggestion.priority === 'medium'
-                                                                ? 'bg-yellow-100 dark:bg-yellow-800 text-yellow-800 dark:text-yellow-200'
-                                                                : 'bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200'
+                                                        ? 'bg-red-100 dark:bg-red-800 text-red-800 dark:text-red-200'
+                                                        : suggestion.priority === 'medium'
+                                                            ? 'bg-yellow-100 dark:bg-yellow-800 text-yellow-800 dark:text-yellow-200'
+                                                            : 'bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200'
                                                         }`}>
                                                         {suggestion.priority}
                                                     </span>

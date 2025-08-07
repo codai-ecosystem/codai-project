@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import dynamic from 'next/dynamic';
 import { LoadingSpinner } from './LoadingSpinner';
@@ -13,3 +15,4 @@ const AnimatedComponents = dynamic(
 
 export default AnimatedComponents;
 export { AnimatedComponents };
+

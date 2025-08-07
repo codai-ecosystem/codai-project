@@ -6,10 +6,10 @@ interface SafetyMonitorProps {
   className?: string;
 }
 
-export const SafetyMonitor: React.FC<SafetyMonitorProps> = ({ 
+export const SafetyMonitor: React.FC<SafetyMonitorProps> = ({
   safetyMetrics,
-  metrics, 
-  className 
+  metrics,
+  className
 }) => {
   return (
     <div className={`safety-monitor ${className || ''}`}>

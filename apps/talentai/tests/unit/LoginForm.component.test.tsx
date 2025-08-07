@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 LoginForm.tsx Component Tests
  * Comprehensive testing for talentai component

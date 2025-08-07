@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import type { JSX } from 'react';
 import {
@@ -250,3 +252,4 @@ export function DropdownMenuLabel({
     </div>
   );
 }
+

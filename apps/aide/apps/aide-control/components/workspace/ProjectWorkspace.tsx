@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -462,3 +464,4 @@ export function ProjectWorkspace({ project, onProjectUpdate }: ProjectWorkspaceP
     </div>
   )
 }
+

@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * Advanced Performance Monitoring
  * 
@@ -522,3 +523,4 @@ export default function AdvancedPerformanceMonitoringPage() {
     </DashboardLayout>
   );
 }
+

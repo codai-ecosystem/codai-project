@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * Security Validation Testing
  * 
@@ -587,3 +588,4 @@ export default function SecurityValidationPage() {
     </DashboardLayout>
   );
 }
+

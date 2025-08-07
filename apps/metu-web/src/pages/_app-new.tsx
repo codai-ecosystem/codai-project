@@ -1,3 +1,4 @@
+import React from 'react'
 import type { AppProps } from 'next/app';
 import { Inter, JetBrains_Mono, Lexend } from 'next/font/google';
 import Head from 'next/head';
@@ -62,3 +63,4 @@ function MyApp({ Component, pageProps }: AppProps) {
 }
 
 export default MyApp;
+

@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { ChevronDown, Languages } from 'lucide-react';
 import type { JSX } from 'react';
@@ -134,3 +136,4 @@ export function LanguageSwitcher({
     </div>
   );
 }
+

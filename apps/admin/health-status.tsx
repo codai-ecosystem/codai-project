@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🏥 HealthStatus Component
  * Enterprise health monitoring dashboard for ADMIN platform
@@ -197,3 +198,4 @@ export default function HealthStatus({
 
 // Export with lowercase alias for test compatibility
 export { HealthStatus as healthStatus };
+

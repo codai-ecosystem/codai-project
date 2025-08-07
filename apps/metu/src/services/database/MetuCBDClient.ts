@@ -72,7 +72,7 @@ export class MetuCBDClient extends EventEmitter {
 
     constructor(config: CBDClientConfig = {}) {
         super();
-        
+
         // Initialize enhanced CBD client with METU-specific configuration
         this.cbdClient = new CBDClient({
             ...config,
@@ -162,7 +162,7 @@ export class MetuCBDClient extends EventEmitter {
                 clearInterval(this.healthCheckInterval);
                 this.healthCheckInterval = undefined;
             }
-            
+
             await this.cbdClient.disconnect();
             this.isConnected = false;
             this.emit('disconnected');
@@ -184,7 +184,7 @@ export class MetuCBDClient extends EventEmitter {
         try {
             // Initialize CBD collections for METU data
             await this.cbdClient.initializeSchema();
-            
+
             // Ensure required collections exist
             const collections = ['devices', 'conversations', 'messages'];
             for (const collection of collections) {

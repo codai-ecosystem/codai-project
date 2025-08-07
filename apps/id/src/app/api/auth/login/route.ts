@@ -95,11 +95,13 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Generate JWT token
+    // Generate JWT token with role and groups
     const token = jwt.sign(
       {
         userId: user.id,
         email: user.email,
+        role: user.role,
+        groups: user.groups,
         iat: Math.floor(Date.now() / 1000),
         exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60) // 24 hours
       },
@@ -113,7 +115,9 @@ export async function POST(request: NextRequest) {
       user: {
         id: user.id,
         email: user.email,
-        name: user.name
+        name: user.name,
+        role: user.role,
+        groups: user.groups
       },
       token: token
     })

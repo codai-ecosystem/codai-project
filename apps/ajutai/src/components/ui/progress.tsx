@@ -1,3 +1,4 @@
+import React from 'react'
 interface ProgressProps {
     value: number
     max?: number
@@ -16,3 +17,4 @@ export function Progress({ value, max = 100, className = '' }: ProgressProps) {
         </div>
     )
 }
+

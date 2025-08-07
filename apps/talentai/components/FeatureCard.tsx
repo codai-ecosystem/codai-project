@@ -1,3 +1,4 @@
+import React from 'react'
 interface FeatureCardProps {
   title?: string;
   description?: string;
@@ -45,3 +46,4 @@ export default function FeatureCard({ title, description, icon, feature, classNa
     </div>
   );
 }
+

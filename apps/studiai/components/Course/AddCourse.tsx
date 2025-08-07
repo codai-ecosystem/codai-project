@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { useState, useContext, useEffect, useCallback } from 'react';
 import { AppContext } from '@/components/AppContext';
@@ -1140,3 +1142,4 @@ export default function AddCourse(props: AddCourseProps) {
     </>
   );
 }
+

@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { BarChart3, TrendingUp, Activity, Users, Target, Award, Zap, Globe, Shield, Layers, Brain, Rocket } from 'lucide-react'
@@ -251,3 +253,4 @@ function Stats({ title, content, onClick, onSubmit, data }: StatsProps) {
 // Export with both uppercase and lowercase for compatibility
 export default Stats
 export { Stats as stats }
+

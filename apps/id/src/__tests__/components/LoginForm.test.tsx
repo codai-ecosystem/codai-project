@@ -1,3 +1,4 @@
+import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 import LoginForm from '../../components/LoginForm'
@@ -47,3 +48,4 @@ describe('LoginForm Security Tests', () => {
     expect(document.querySelector('input[type="password"]')).toBeNull()
   })
 })
+

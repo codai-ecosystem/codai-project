@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import dynamic from 'next/dynamic';
 import type { ComponentType } from 'react';
@@ -26,3 +28,4 @@ export const MultiSelect: ComponentType<any> = dynamic(
 
 // Default export for backward compatibility
 export default ComboBox;
+

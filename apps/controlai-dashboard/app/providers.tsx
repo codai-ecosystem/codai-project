@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { ThemeProvider } from 'next-themes'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Toaster } from 'sonner'
@@ -40,3 +42,4 @@ export function Providers({ children }: { children: React.ReactNode }) {
     </ErrorBoundary>
   )
 }
+

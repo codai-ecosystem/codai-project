@@ -1,3 +1,4 @@
+import React from 'react'
 import { useEffect, useState } from 'react';
 
 import { ApiService } from '@/services/api';
@@ -89,3 +90,4 @@ export function BackendStatus({ className }: BackendStatusProps): JSX.Element {
     </div>
   );
 }
+

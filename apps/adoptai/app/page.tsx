@@ -1,3 +1,4 @@
+import React from 'react'
 import { Heart, Dog, Cat } from 'lucide-react'
 
 export default function HomePage() {
@@ -42,3 +43,4 @@ export default function HomePage() {
     </div>
   )
 }
+

@@ -26,10 +26,10 @@ describe('Health API Endpoint', () => {
         expect(data).toHaveProperty('version')
         expect(data).toHaveProperty('message')
 
-        expect(data.service).toBe('memorai-health')
+        expect(data.service).toBe('MemorAI Service')
         expect(data.status).toBe('operational')
         expect(data.version).toBe('1.0.0')
-        expect(data.message).toBe('MemorAI service is running successfully')
+        expect(data.message).toBe('MemorAI service is running successfully with ecosystem integration')
     })
 
     it('should return valid timestamp format', async () => {
@@ -81,10 +81,10 @@ describe('Health API Endpoint', () => {
 
         // All responses should have the same structure
         dataResults.forEach(data => {
-            expect(data.service).toBe('memorai-health')
+            expect(data.service).toBe('MemorAI Service')
             expect(data.status).toBe('operational')
             expect(data.version).toBe('1.0.0')
-            expect(data.message).toBe('MemorAI service is running successfully')
+            expect(data.message).toBe('MemorAI service is running successfully with ecosystem integration')
         })
 
         // All responses should be successful

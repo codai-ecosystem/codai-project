@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 Modal.tsx Component Tests
  * Comprehensive testing for x component

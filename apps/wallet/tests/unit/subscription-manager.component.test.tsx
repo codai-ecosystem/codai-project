@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 subscription-manager.tsx Component Tests
  * Comprehensive testing for wallet component

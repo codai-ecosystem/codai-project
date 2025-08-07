@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { ShoppingCart, Search, TrendingUp, Star, Users, Zap, BarChart3, Plus, Settings, Package, CreditCard } from 'lucide-react'
 
 export default function Dashboard() {
@@ -119,3 +121,4 @@ export default function Dashboard() {
     </div>
   )
 }
+

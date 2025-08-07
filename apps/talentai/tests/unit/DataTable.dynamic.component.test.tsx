@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 DataTable.dynamic.tsx Component Tests
  * Comprehensive testing for talentai component

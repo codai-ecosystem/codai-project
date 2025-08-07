@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { Line, Bar, Pie, Doughnut } from 'react-chartjs-2';
 import {
@@ -161,3 +163,4 @@ export function AreaChart({
     </div>
   );
 }
+

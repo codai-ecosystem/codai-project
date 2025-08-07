@@ -1,3 +1,4 @@
+import React from 'react'
 interface DashboardHeaderProps {
   title: string
   description: string
@@ -32,3 +33,4 @@ export function DashboardHeader({ title, description }: DashboardHeaderProps) {
     </div>
   )
 }
+

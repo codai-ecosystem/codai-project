@@ -1,3 +1,4 @@
+import React from 'react'
 "use client";
 
 import { signIn, getProviders, getSession } from "next-auth/react";
@@ -164,3 +165,4 @@ export default function SignIn() {
     </div>
   );
 }
+

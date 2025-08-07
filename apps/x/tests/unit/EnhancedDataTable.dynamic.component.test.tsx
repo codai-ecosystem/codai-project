@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 EnhancedDataTable.dynamic.tsx Component Tests
  * Comprehensive testing for x component

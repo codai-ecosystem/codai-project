@@ -42,27 +42,27 @@ export interface ToastProps extends React.HTMLAttributes<HTMLDivElement>, Varian
 }
 
 const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
-    ({ 
-        className, 
-        variant = 'default', 
+    ({
+        className,
+        variant = 'default',
         type, // Add type prop
-        title, 
-        description, 
+        title,
+        description,
         message, // Add message prop
-        action, 
+        action,
         onClose,
         showCloseButton = true,
         icon,
         duration,
-        ...props 
+        ...props
     }, ref) => {
         const [isVisible, setIsVisible] = React.useState(true)
         const [progress, setProgress] = React.useState(100)
-        
+
         // Use type as alias for variant if provided
         const effectiveVariant = type || variant || 'default'
         const IconComponent = iconMap[effectiveVariant]
-        
+
         React.useEffect(() => {
             if (duration && duration > 0) {
                 const interval = setInterval(() => {
@@ -76,22 +76,22 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
                         return newProgress
                     })
                 }, 100)
-                
+
                 return () => clearInterval(interval)
             }
         }, [duration])
-        
+
         const handleClose = () => {
             setIsVisible(false)
             setTimeout(() => {
                 onClose?.()
             }, 300)
         }
-        
+
         if (!isVisible) {
             return null
         }
-        
+
         return (
             <div
                 ref={ref}
@@ -112,7 +112,7 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
                             {icon || <IconComponent className="h-5 w-5" />}
                         </div>
                     )}
-                    
+
                     <div className="flex-1 space-y-1">
                         {title && (
                             <div className="text-sm font-semibold">
@@ -126,13 +126,13 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
                         )}
                     </div>
                 </div>
-                
+
                 {action && (
                     <div className="flex-shrink-0">
                         {action}
                     </div>
                 )}
-                
+
                 {showCloseButton && (
                     <button
                         onClick={handleClose}
@@ -142,10 +142,10 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
                         <X className="h-4 w-4" />
                     </button>
                 )}
-                
+
                 {duration && duration > 0 && (
-                    <div className="absolute bottom-0 left-0 h-1 bg-current opacity-30 transition-all duration-100 ease-out" 
-                         style={{ width: `${progress}%` }} />
+                    <div className="absolute bottom-0 left-0 h-1 bg-current opacity-30 transition-all duration-100 ease-out"
+                        style={{ width: `${progress}%` }} />
                 )}
             </div>
         )
@@ -171,15 +171,15 @@ const positionClasses = {
     'bottom-center': 'bottom-4 left-1/2 transform -translate-x-1/2',
 }
 
-export const ToastContainer: React.FC<ToastContainerProps> = ({ 
-    position = 'top-right', 
-    className, 
+export const ToastContainer: React.FC<ToastContainerProps> = ({
+    position = 'top-right',
+    className,
     children,
     toasts = [],
     onDismiss
 }) => {
     return (
-        <div 
+        <div
             data-testid="toast-container"
             className={cn(
                 'fixed z-50 flex flex-col space-y-2 w-full max-w-sm',
@@ -222,34 +222,34 @@ export interface ToastState {
 
 export const useToast = () => {
     const [toasts, setToasts] = React.useState<ToastState[]>([])
-    
+
     const addToast = React.useCallback((toast: Omit<ToastState, 'id'>) => {
         const id = Math.random().toString(36).substr(2, 9)
         setToasts((prev) => [...prev, { ...toast, id }])
     }, [])
-    
+
     const removeToast = React.useCallback((id: string) => {
         setToasts((prev) => prev.filter((toast) => toast.id !== id))
     }, [])
-    
+
     const clearAllToasts = React.useCallback(() => {
         setToasts([])
     }, [])
-    
+
     // Convenience methods
     const toast = React.useMemo(() => ({
-        success: (title: string, description?: string, options?: Partial<ToastState>) => 
+        success: (title: string, description?: string, options?: Partial<ToastState>) =>
             addToast({ title, description, variant: 'success', duration: 4000, ...options }),
-        error: (title: string, description?: string, options?: Partial<ToastState>) => 
+        error: (title: string, description?: string, options?: Partial<ToastState>) =>
             addToast({ title, description, variant: 'error', duration: 6000, ...options }),
-        warning: (title: string, description?: string, options?: Partial<ToastState>) => 
+        warning: (title: string, description?: string, options?: Partial<ToastState>) =>
             addToast({ title, description, variant: 'warning', duration: 5000, ...options }),
-        info: (title: string, description?: string, options?: Partial<ToastState>) => 
+        info: (title: string, description?: string, options?: Partial<ToastState>) =>
             addToast({ title, description, variant: 'info', duration: 4000, ...options }),
-        default: (title: string, description?: string, options?: Partial<ToastState>) => 
+        default: (title: string, description?: string, options?: Partial<ToastState>) =>
             addToast({ title, description, variant: 'default', duration: 4000, ...options }),
     }), [addToast])
-    
+
     return {
         toasts,
         addToast,

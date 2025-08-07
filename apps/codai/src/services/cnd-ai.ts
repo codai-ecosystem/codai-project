@@ -103,7 +103,7 @@ export class CodaiAIService {
             }
 
             const result = await response.json();
-            
+
             return {
                 message: result.message || `AI Response to: ${request.message}`,
                 usage: result.usage || {
@@ -116,7 +116,7 @@ export class CodaiAIService {
             };
         } catch (error) {
             console.error('Error processing AI request:', error);
-            
+
             // Fallback response
             return {
                 message: `AI Response to: ${request.message}`,
@@ -137,12 +137,12 @@ export class CodaiAIService {
     async getConversationHistory(sessionId: string): Promise<AIMessage[]> {
         try {
             const response = await fetch(`${this.baseUrl}/ai/conversations/${sessionId}/messages`);
-            
+
             if (response.ok) {
                 const result = await response.json();
                 return result.messages || [];
             }
-            
+
             return [];
         } catch (error) {
             console.error('Error fetching conversation history:', error);
@@ -156,7 +156,7 @@ export class CodaiAIService {
     async createSession(userId?: string, metadata?: Record<string, any>): Promise<string> {
         try {
             const sessionId = this.generateSessionId();
-            
+
             const response = await fetch(`${this.baseUrl}/ai/sessions`, {
                 method: 'POST',
                 headers: {
@@ -172,7 +172,7 @@ export class CodaiAIService {
             if (response.ok) {
                 return sessionId;
             }
-            
+
             throw new Error('Failed to create session');
         } catch (error) {
             console.error('Error creating session:', error);
@@ -247,11 +247,11 @@ export class CodaiAIService {
     async getSession(sessionId: string): Promise<ConversationSession | null> {
         try {
             const response = await fetch(`${this.baseUrl}/ai/sessions/${sessionId}`);
-            
+
             if (response.ok) {
                 const session = await response.json();
                 const messages = await this.getConversationHistory(sessionId);
-                
+
                 return {
                     id: session.id,
                     userId: session.userId,
@@ -261,7 +261,7 @@ export class CodaiAIService {
                     metadata: session.metadata || {}
                 };
             }
-            
+
             return null;
         } catch (error) {
             console.error('Error fetching session:', error);
@@ -284,7 +284,7 @@ export class CodaiAIService {
             const response = await fetch(`${this.baseUrl}/ai/sessions/${sessionId}`, {
                 method: 'DELETE'
             });
-            
+
             return response.ok;
         } catch (error) {
             console.error('Error deleting session:', error);
@@ -298,12 +298,12 @@ export class CodaiAIService {
     async getUserSessions(userId: string): Promise<ConversationSession[]> {
         try {
             const response = await fetch(`${this.baseUrl}/ai/users/${userId}/sessions`);
-            
+
             if (response.ok) {
                 const result = await response.json();
                 return result.sessions || [];
             }
-            
+
             return [];
         } catch (error) {
             console.error('Error fetching user sessions:', error);
@@ -325,12 +325,12 @@ export class CodaiAIService {
     async searchConversations(query: string, userId: string, limit: number = 10): Promise<ConversationSession[]> {
         try {
             const response = await fetch(`${this.baseUrl}/ai/search?query=${encodeURIComponent(query)}&userId=${encodeURIComponent(userId)}&limit=${limit}`);
-            
+
             if (response.ok) {
                 const result = await response.json();
                 return result.conversations || [];
             }
-            
+
             return [];
         } catch (error) {
             console.error('Error searching conversations:', error);
@@ -344,11 +344,11 @@ export class CodaiAIService {
     async getAnalytics(): Promise<any> {
         try {
             const response = await fetch(`${this.baseUrl}/ai/analytics`);
-            
+
             if (response.ok) {
                 return await response.json();
             }
-            
+
             return {
                 ai_metrics: {
                     total_sessions: 0,
@@ -381,10 +381,10 @@ export class CodaiAIService {
     async getHealthStatus(): Promise<any> {
         try {
             const response = await fetch(`${this.baseUrl}/health`);
-            
+
             if (response.ok) {
                 const cbdHealth = await response.json();
-                
+
                 return {
                     service: 'CODAI AI Service',
                     status: this.isInitialized ? 'healthy' : 'initializing',
@@ -392,7 +392,7 @@ export class CodaiAIService {
                     timestamp: new Date().toISOString()
                 };
             }
-            
+
             throw new Error('CBD service not responding');
         } catch (error) {
             return {
@@ -410,7 +410,7 @@ export class CodaiAIService {
     async getServiceMetrics(): Promise<any> {
         try {
             const analytics = await this.getAnalytics();
-            
+
             return {
                 total_conversations: analytics?.ai_metrics?.total_sessions || 0,
                 total_messages: analytics?.ai_metrics?.total_messages || 0,
@@ -438,11 +438,11 @@ export class CodaiAIService {
     async getAIModel(modelId: string): Promise<any> {
         try {
             const response = await fetch(`${this.baseUrl}/ai/models/${modelId}`);
-            
+
             if (response.ok) {
                 return await response.json();
             }
-            
+
             return null;
         } catch (error) {
             console.error('Error getting AI model:', error);
@@ -456,12 +456,12 @@ export class CodaiAIService {
     async getAIModels(): Promise<any[]> {
         try {
             const response = await fetch(`${this.baseUrl}/ai/models`);
-            
+
             if (response.ok) {
                 const result = await response.json();
                 return result.models || [];
             }
-            
+
             return [];
         } catch (error) {
             console.error('Error getting AI models:', error);
@@ -494,11 +494,11 @@ export class CodaiAIService {
                 },
                 body: JSON.stringify(modelData)
             });
-            
+
             if (response.ok) {
                 return await response.json();
             }
-            
+
             throw new Error('Model creation failed');
         } catch (error) {
             console.error('Error creating AI model:', error);
@@ -518,11 +518,11 @@ export class CodaiAIService {
                 },
                 body: JSON.stringify(trainingData)
             });
-            
+
             if (response.ok) {
                 return await response.json();
             }
-            
+
             throw new Error('Training failed');
         } catch (error) {
             console.error('Error training model:', error);
@@ -542,11 +542,11 @@ export class CodaiAIService {
                 },
                 body: JSON.stringify(trainingData)
             });
-            
+
             if (response.ok) {
                 return await response.json();
             }
-            
+
             throw new Error('Adding training data failed');
         } catch (error) {
             console.error('Error adding training data:', error);

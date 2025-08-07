@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 import {
   useContext,
   useEffect,
@@ -625,3 +627,4 @@ export default function Courses() {
     </div>
   );
 }
+

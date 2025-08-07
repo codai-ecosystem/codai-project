@@ -1,6 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone', // Enable standalone mode for Docker
   transpilePackages: ['@codai/security', '@codai/api-standards'],
+  serverExternalPackages: ['bcrypt', 'jsonwebtoken'],
+  experimental: {
+    // Temporarily disabled optimizeCss due to critters dependency issue
+    // optimizeCss: true,
+    scrollRestoration: true,
+  },
   turbopack: {
     resolveAlias: {
       canvas: './empty-module.js',
@@ -24,11 +31,6 @@ const nextConfig = {
     ],
   },
   // Production optimizations
-  experimental: {
-    // Temporarily disabled optimizeCss due to critters dependency issue
-    // optimizeCss: true,
-    scrollRestoration: true,
-  },
 };
 
 export default nextConfig;

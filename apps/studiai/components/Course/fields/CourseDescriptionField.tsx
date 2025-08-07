@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import Textarea from '@/components/ui/Textarea';
 import { CourseDescriptionFieldProps } from '@/types';
@@ -21,3 +23,4 @@ export default function CourseDescriptionField({
     />
   );
 }
+

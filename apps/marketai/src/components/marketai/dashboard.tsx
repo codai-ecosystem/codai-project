@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Store, TrendingUp, Users, ShoppingCart, Package, Star, Activity, DollarSign } from 'lucide-react'
@@ -174,3 +176,4 @@ export default function MarketaiDashboard() {
         </div>
     )
 }
+

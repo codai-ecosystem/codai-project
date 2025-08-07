@@ -1,3 +1,4 @@
+import React from 'react'
 import Link from 'next/link';
 
 interface HeaderProps {
@@ -21,7 +22,7 @@ export function Header({ title, subtitle, navigation, variant }: HeaderProps) {
               </div>
             </Link>
           </div>
-          
+
           <nav className="flex space-x-4">
             {navigation.map((item) => (
               <Link
@@ -38,3 +39,4 @@ export function Header({ title, subtitle, navigation, variant }: HeaderProps) {
     </header>
   );
 }
+

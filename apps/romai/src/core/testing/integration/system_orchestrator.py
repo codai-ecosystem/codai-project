@@ -58,26 +58,26 @@ from .performance_optimizer import (
 )
 
 # Import all Week 9 components
-from ..week_9_meta_learning import (
+from ..ml.meta_learning.meta_learning_api import (
     RomanianMetaLearningEngine,
     RomanianMetaAdaptationEngine,
     RomanianFewShotLearningEngine,
     MetaLearningIntegrationOrchestrator
 )
 
-from ..week_9_autonomous_reasoning import (
+from ..core.agi.reasoning.autonomous_reasoning import (
     RomanianAutonomousReasoningEngine,
     RomanianCulturalDecisionMaker,
     RomanianProblemSolvingIntelligence
 )
 
-from ..week_9_cultural_meta_learning import (
+from ..core.agi.cultural.cultural_meta_learning_integration import (
     RomanianCulturalMetaLearningIntegration,
     RomanianCulturalContextAwarenessEngine,
     RomanianCulturalIntegrationOrchestrator
 )
 
-from ..week_9_cultural_learning_validation import (
+from ..core.agi.cultural.cultural_learning_validation import (
     RomanianCulturalLearningValidator,
     RomanianCulturalQualityAssuranceSystem,
     RomanianCulturalLearningTestFramework

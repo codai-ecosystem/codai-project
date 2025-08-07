@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { motion } from 'framer-motion'
 import { Github, Linkedin, Mail, Globe, Heart } from 'lucide-react'
 
@@ -140,3 +142,4 @@ export function Footer() {
         </footer>
     )
 }
+

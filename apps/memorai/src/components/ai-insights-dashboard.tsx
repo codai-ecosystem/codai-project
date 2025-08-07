@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { 
-    Brain, 
-    TrendingUp, 
-    Target, 
-    Sparkles, 
-    BarChart3, 
-    PieChart, 
-    Lightbulb, 
+import {
+    Brain,
+    TrendingUp,
+    Target,
+    Sparkles,
+    BarChart3,
+    PieChart,
+    Lightbulb,
     Zap,
     Users,
     Clock,
@@ -53,7 +53,7 @@ const insightCardVariants = cva(
         variants: {
             impact: {
                 critical: "border-red-200 bg-red-50/50",
-                high: "border-orange-200 bg-orange-50/50", 
+                high: "border-orange-200 bg-orange-50/50",
                 medium: "border-yellow-200 bg-yellow-50/50",
                 low: "border-blue-200 bg-blue-50/50"
             }
@@ -153,7 +153,7 @@ export const AIInsightsDashboard: React.FC<AIInsightsDashboardProps> = ({
         if (action === 'accept' && onRecommendationAction) {
             onRecommendationAction(recommendation);
         }
-        
+
         showNotification({
             type: action === 'accept' ? 'success' : 'info',
             title: action === 'accept' ? 'Recommendation Applied' : 'Recommendation Dismissed',
@@ -210,7 +210,7 @@ export const AIInsightsDashboard: React.FC<AIInsightsDashboardProps> = ({
                         <Brain className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
                         <h3 className="text-lg font-semibold mb-2">No Insights Available</h3>
                         <p className="text-muted-foreground mb-4">
-                            {memories.length === 0 
+                            {memories.length === 0
                                 ? "Create some memories to see AI-powered insights and recommendations"
                                 : "AI insights will appear here once analysis is complete"
                             }
@@ -242,9 +242,9 @@ export const AIInsightsDashboard: React.FC<AIInsightsDashboardProps> = ({
                         </p>
                     </div>
                 </div>
-                <Button 
-                    variant="outline" 
-                    size="sm" 
+                <Button
+                    variant="outline"
+                    size="sm"
                     onClick={() => generateInsights(false)}
                     disabled={isRefreshing}
                 >
@@ -278,7 +278,7 @@ export const AIInsightsDashboard: React.FC<AIInsightsDashboardProps> = ({
                             </div>
                         ))}
                     </div>
-                    
+
                     {dashboardData.healthScore.recommendations.length > 0 && (
                         <div className="mt-4 p-3 bg-background/50 rounded-lg">
                             <h4 className="text-sm font-medium mb-2">Health Recommendations:</h4>
@@ -427,7 +427,7 @@ export const AIInsightsDashboard: React.FC<AIInsightsDashboardProps> = ({
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {dashboardData.patterns.map((pattern) => (
                                 <Card key={pattern.id} className="hover:shadow-md transition-shadow cursor-pointer"
-                                      onClick={() => onPatternExplore?.(pattern)}>
+                                    onClick={() => onPatternExplore?.(pattern)}>
                                     <CardHeader>
                                         <CardTitle className="text-base flex items-center space-x-2">
                                             {getPatternTypeIcon(pattern.type)}
@@ -529,8 +529,8 @@ export const AIInsightsDashboard: React.FC<AIInsightsDashboardProps> = ({
                                     {dashboardData.analytics.topCategories.slice(0, 5).map((category, index) => (
                                         <div key={category.category} className="flex items-center justify-between">
                                             <div className="flex items-center space-x-2">
-                                                <div className="w-2 h-2 rounded-full bg-primary opacity-80" 
-                                                     style={{ opacity: 1 - (index * 0.15) }} />
+                                                <div className="w-2 h-2 rounded-full bg-primary opacity-80"
+                                                    style={{ opacity: 1 - (index * 0.15) }} />
                                                 <span className="text-sm capitalize">{category.category}</span>
                                             </div>
                                             <div className="flex items-center space-x-2">

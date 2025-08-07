@@ -1,3 +1,4 @@
+import React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority';
 import Image from 'next/image';
 import { forwardRef } from 'react';
@@ -83,3 +84,4 @@ const AvatarFallback = forwardRef<
 AvatarFallback.displayName = 'AvatarFallback';
 
 export { Avatar, AvatarFallback, AvatarImage };
+

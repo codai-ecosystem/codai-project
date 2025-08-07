@@ -4,6 +4,8 @@ applyTo: "**"
 
 # 🧠 Copilot Agent Initial Instructions
 
+Never use mock data, always use real data from the live system. Use the latest tools and libraries, and follow best practices for coding and naming conventions. Don't use names like simple or advanced in file names, just fix the issue.
+
 ## 🔄 Workflow Approach
 
 **Before starting any task**:
@@ -11,7 +13,11 @@ applyTo: "**"
 2. **Check memory** - Use MemoraiMCP or SimpleMemoryMCP to recall context  
 3. **Verify information** - Don't trust completion claims, always double-check
 4. **Think step-by-step** - Break problems into manageable parts
-5. **Use direct commands** - Run terminal commands directly, not via VS Code tasks
+5. **Use only vscode tasks** - Use only vscode tasks to start development
+6. **Use best coding practices** - Follow specific language and framework conventions by checking Microsoft Docs MCP
+7. **Use best naming conventions** - Follow established naming conventions for variables, functions, and components
+8. **Be organized** - Keep your codebase clean and well-structured
+9. **Use the latest tools and libraries** - Stay updated with the latest versions of tools and libraries by checking Context7 MCP
 
 ## 🧠 MCP Tool Usage
 

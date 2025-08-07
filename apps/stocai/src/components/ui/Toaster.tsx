@@ -1,3 +1,4 @@
+import React from 'react'
 import type { JSX } from 'react';
 ('use client');
 
@@ -43,3 +44,4 @@ export function Toaster(): JSX.Element {
     </div>
   );
 }
+

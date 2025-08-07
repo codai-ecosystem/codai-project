@@ -1,99 +1,139 @@
 /**
- * Analytics API Route
+ * Analytics API Route - REAL RomAI AGI Integration ONLY
  * Path: /api/analytics
  * Methods: GET, POST
- * Purpose: Real-time analytics and usage metrics for RomAI platform
+ * Purpose: 100% Real-time analytics from native RomAI AGI server - NO FAKE DATA
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 
-// In-memory analytics store (for demo - in production use Redis/Database)
-const analyticsStore = {
-    dailyQueries: 342,
-    activeUsers: 28,
-    successRate: 98.7,
-    totalRequests: 1200000,
-    averageResponseTime: 245,
-    uptime: 99.8,
-    regionalData: [
-        { region: 'București', percentage: 35, users: 127, growth: '+12%' },
-        { region: 'Cluj-Napoca', percentage: 22, users: 89, growth: '+8%' },
-        { region: 'Timișoara', percentage: 18, users: 67, growth: '+15%' },
-        { region: 'Iași', percentage: 15, users: 54, growth: '+5%' },
-        { region: 'Constanța', percentage: 10, users: 38, growth: '+20%' }
-    ],
-    hourlyStats: generateHourlyStats(),
-    modelUsage: {
-        [process.env.AZURE_OPENAI_DEPLOYMENT_NAME || 'gpt-4o-realtime']: { requests: 156, percentage: 45.6, avgResponseTime: 230 },
-        'gpt-4o-mini': { requests: 98, percentage: 28.7, avgResponseTime: 180 },
-        'gpt-4-turbo': { requests: 67, percentage: 19.6, avgResponseTime: 280 },
-        'dall-e-3': { requests: 21, percentage: 6.1, avgResponseTime: 450 }
-    }
-};
+// Native RomAI AGI server configuration
+const ROMAI_AGI_BASE_URL = process.env.ROMAI_AGI_URL || 'http://localhost:6101';
+
+interface RealAGIMetrics {
+    health: any;
+    training: any;
+    capabilities: any;
+    status: any;
+}
+
+async function fetchRealAGIData(): Promise<RealAGIMetrics> {
+    // Fetch ONLY real data from AGI server - no fallbacks, no fake data
+    const [healthResponse, trainingResponse, capabilitiesResponse, statusResponse] = await Promise.allSettled([
+        fetch(`${ROMAI_AGI_BASE_URL}/health`),
+        fetch(`${ROMAI_AGI_BASE_URL}/training/metrics`),
+        fetch(`${ROMAI_AGI_BASE_URL}/capabilities/scores`),
+        fetch(`${ROMAI_AGI_BASE_URL}/training/status`)
+    ]);
+
+    // Extract real data or null - NO FAKE FALLBACKS
+    const healthData = healthResponse.status === 'fulfilled' && healthResponse.value.ok
+        ? await healthResponse.value.json()
+        : null;
+
+    const trainingData = trainingResponse.status === 'fulfilled' && trainingResponse.value.ok
+        ? await trainingResponse.value.json()
+        : null;
+
+    const capabilitiesData = capabilitiesResponse.status === 'fulfilled' && capabilitiesResponse.value.ok
+        ? await capabilitiesResponse.value.json()
+        : null;
+
+    const statusData = statusResponse.status === 'fulfilled' && statusResponse.value.ok
+        ? await statusResponse.value.json()
+        : null;
+
+    return {
+        health: healthData,
+        training: trainingData,
+        capabilities: capabilitiesData,
+        status: statusData
+    };
+}
 
 export async function GET(request: NextRequest) {
     try {
-        const { searchParams } = new URL(request.url);
-        const timeRange = searchParams.get('timeRange') || '24h';
-        const metric = searchParams.get('metric');
+        const realData = await fetchRealAGIData();
 
-        // Add some realistic variance to make data feel live
-        const variance = () => Math.random() * 0.1 - 0.05; // ±5% variance
+        // Check if we have any real data
+        if (!realData.health && !realData.training && !realData.capabilities && !realData.status) {
+            throw new Error('AGI server completely unavailable');
+        }
 
-        const liveAnalytics = {
-            ...analyticsStore,
-            dailyQueries: Math.round(analyticsStore.dailyQueries * (1 + variance())),
-            activeUsers: Math.round(analyticsStore.activeUsers * (1 + variance())),
-            averageResponseTime: Math.round(analyticsStore.averageResponseTime * (1 + variance())),
+        // Build response with ONLY real data - no simulation
+        const analyticsResponse = {
+            server_status: realData.health?.status || 'unknown',
+            server_uptime: realData.health?.uptime_seconds || 0,
+            models_loaded: realData.health?.models_loaded || 0,
+            total_inferences: realData.health?.total_inferences || 0,
+            server_version: realData.health?.server_version || null,
+
+            // Training metrics - real only
+            training_metrics: realData.training ? {
+                epochs_completed: realData.training.epochs_completed,
+                current_loss: realData.training.current_loss,
+                best_loss: realData.training.best_loss,
+                learning_rate: realData.training.learning_rate,
+                batch_size: realData.training.batch_size,
+                model_parameters: realData.training.model_parameters,
+                training_samples: realData.training.training_samples,
+                validation_accuracy: realData.training.validation_accuracy,
+                cultural_accuracy: realData.training.cultural_accuracy,
+                reasoning_score: realData.training.reasoning_score,
+                training_time_hours: realData.training.training_time_hours,
+                last_updated: realData.training.last_updated
+            } : null,
+
+            // Capability scores - real only
+            capabilities: realData.capabilities ? {
+                romanian_language_processing: realData.capabilities.romanian_language_processing,
+                cultural_understanding: realData.capabilities.cultural_understanding,
+                advanced_reasoning: realData.capabilities.advanced_reasoning,
+                multi_dimensional_intelligence: realData.capabilities.multi_dimensional_intelligence,
+                meta_learning: realData.capabilities.meta_learning,
+                autonomous_problem_solving: realData.capabilities.autonomous_problem_solving,
+                overall_agi_score: realData.capabilities.overall_agi_score,
+                confidence_interval: realData.capabilities.confidence_interval,
+                last_evaluated: realData.capabilities.last_evaluated
+            } : null,
+
+            // Training status - real only
+            training_status: realData.status ? {
+                is_training: realData.status.is_training,
+                current_epoch: realData.status.current_epoch,
+                total_epochs: realData.status.total_epochs,
+                current_step: realData.status.current_step,
+                current_loss: realData.status.current_loss,
+                best_loss: realData.status.best_loss,
+                learning_rate: realData.status.learning_rate,
+                eta_minutes: realData.status.eta_minutes,
+                message: realData.status.message
+            } : null,
+
+            data_source: 'real_agi_server',
             timestamp: new Date().toISOString(),
-            timeRange: timeRange,
-            performance: {
-                responseTime: `${Math.round(245 * (1 + variance()))}ms`,
-                uptime: `${(99.8 + variance()).toFixed(1)}%`,
-                requestsPerMinute: Math.round(45 * (1 + variance())),
-                errorRate: `${(0.2 + variance() * 0.1).toFixed(2)}%`
-            },
-            trends: {
-                queriesGrowth: '+15%',
-                usersGrowth: '+8%',
-                performanceImprovement: '-12ms',
-                uptimeImprovement: '+0.1%'
-            },
-            realTimeMetrics: {
-                currentLoad: Math.round(35 + variance() * 20),
-                memoryUsage: Math.round(68 + variance() * 15),
-                cpuUsage: Math.round(42 + variance() * 20),
-                networkLatency: Math.round(23 + variance() * 10)
+            available_endpoints: {
+                health: !!realData.health,
+                training_metrics: !!realData.training,
+                capabilities: !!realData.capabilities,
+                training_status: !!realData.status
             }
         };
 
-        // If specific metric requested, return just that
-        if (metric) {
-            const metricValue = getNestedValue(liveAnalytics, metric);
-            return NextResponse.json({
-                metric: metric,
-                value: metricValue,
-                timestamp: new Date().toISOString()
-            });
-        }
-
-        return NextResponse.json({
-            success: true,
-            data: liveAnalytics,
-            metadata: {
-                generatedAt: new Date().toISOString(),
-                source: 'RomAI Analytics Engine',
-                version: '1.0.0'
-            }
-        });
+        return NextResponse.json(analyticsResponse);
 
     } catch (error) {
-        console.error('Analytics API Error:', error);
+        console.error('Real AGI Analytics Error:', error);
 
+        // Return proper error - NO FAKE DATA FALLBACK
         return NextResponse.json({
-            error: 'Failed to fetch analytics data',
-            timestamp: new Date().toISOString()
-        }, { status: 500 });
+            error: 'AGI server connection failed',
+            message: 'Cannot provide analytics without real AGI server connection',
+            agi_server_url: ROMAI_AGI_BASE_URL,
+            required_action: 'Ensure RomAI AGI server is running on port 6101',
+            timestamp: new Date().toISOString(),
+            data_source: 'error_state'
+        }, { status: 503 });
     }
 }
 
@@ -101,57 +141,25 @@ export async function POST(request: NextRequest) {
     try {
         const { event, data } = await request.json();
 
-        // Track different types of events
-        switch (event) {
-            case 'chat_message':
-                analyticsStore.dailyQueries += 1;
-                break;
-            case 'model_test':
-                if (data.model && data.model in analyticsStore.modelUsage) {
-                    analyticsStore.modelUsage[data.model as keyof typeof analyticsStore.modelUsage].requests += 1;
-                }
-                break;
-            case 'user_active':
-                // Update active user count (simplified)
-                break;
-            default:
-                console.log('Unknown event:', event);
-        }
+        // Log real events only - no fake processing
+        console.log('🧠 Real AGI Analytics Event:', {
+            event,
+            data,
+            timestamp: new Date().toISOString(),
+            source: 'real_romai_frontend'
+        });
 
         return NextResponse.json({
             success: true,
-            message: 'Event tracked successfully',
+            event_logged: true,
             timestamp: new Date().toISOString()
         });
 
     } catch (error) {
-        console.error('Analytics Event Tracking Error:', error);
-
+        console.error('Real AGI Event Error:', error);
         return NextResponse.json({
-            error: 'Failed to track event',
+            error: 'Event logging failed',
             timestamp: new Date().toISOString()
         }, { status: 500 });
     }
-}
-
-// Helper functions
-function generateHourlyStats() {
-    const stats = [];
-    const now = new Date();
-
-    for (let i = 23; i >= 0; i--) {
-        const hour = new Date(now.getTime() - (i * 60 * 60 * 1000));
-        stats.push({
-            hour: hour.getHours(),
-            requests: Math.round(Math.random() * 50 + 20),
-            responseTime: Math.round(Math.random() * 100 + 200),
-            errors: Math.round(Math.random() * 3)
-        });
-    }
-
-    return stats;
-}
-
-function getNestedValue(obj: any, path: string) {
-    return path.split('.').reduce((current, key) => current?.[key], obj);
 }

@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { motion } from 'framer-motion'
 import {
     Code2, Database, Cloud, Shield, Cpu, Zap,
@@ -293,3 +295,4 @@ export function TechnicalExpertise() {
         </section>
     )
 }
+

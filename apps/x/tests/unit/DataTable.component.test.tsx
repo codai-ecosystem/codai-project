@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 DataTable.tsx Component Tests
  * Comprehensive testing for x component

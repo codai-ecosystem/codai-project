@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { useEffect } from 'react';
 import {
@@ -172,3 +174,4 @@ export default function ModalComponent({
     </Modal>
   );
 }
+

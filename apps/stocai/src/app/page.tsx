@@ -1,3 +1,4 @@
+import React from 'react'
 import { TradingDashboard } from '@/components/trading/dashboard'
 
 export default function Dashboard() {
@@ -7,3 +8,4 @@ export default function Dashboard() {
     </main>
   )
 }
+

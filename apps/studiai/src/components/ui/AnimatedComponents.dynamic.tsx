@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import dynamic from 'next/dynamic';
 import { LoadingSpinner } from './LoadingSpinner';
@@ -90,3 +92,4 @@ export type {
 } from './AnimatedComponents';
 
 export { ANIMATION_CONFIG, commonVariants } from './AnimatedComponents';
+

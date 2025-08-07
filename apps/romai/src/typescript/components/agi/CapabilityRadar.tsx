@@ -6,10 +6,10 @@ interface CapabilityRadarProps {
   className?: string;
 }
 
-export const CapabilityRadar: React.FC<CapabilityRadarProps> = ({ 
-  capabilities, 
+export const CapabilityRadar: React.FC<CapabilityRadarProps> = ({
+  capabilities,
   scores,
-  className 
+  className
 }) => {
   return (
     <div className={`capability-radar ${className || ''}`}>

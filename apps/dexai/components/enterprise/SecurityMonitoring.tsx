@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { motion } from 'framer-motion'
 import { Shield, AlertTriangle, CheckCircle, Lock, Key, Eye, Activity } from 'lucide-react'
 import { useState, useEffect } from 'react'

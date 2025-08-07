@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState, useEffect } from 'react'
 import {
   Users,
@@ -211,3 +213,4 @@ export function RealTimeStats() {
     </div>
   )
 }
+

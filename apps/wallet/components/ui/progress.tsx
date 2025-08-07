@@ -1,3 +1,4 @@
+import React from 'react'
 // Simple progress component fallback
 export function Progress({ value, className }: { value?: number; className?: string }) {
   return (
@@ -9,3 +10,4 @@ export function Progress({ value, className }: { value?: number; className?: str
     </div>
   );
 }
+

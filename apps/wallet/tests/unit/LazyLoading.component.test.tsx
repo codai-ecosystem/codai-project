@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 LazyLoading.tsx Component Tests
  * Comprehensive testing for wallet component

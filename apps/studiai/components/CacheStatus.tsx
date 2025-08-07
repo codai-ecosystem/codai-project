@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from './AppContext';
@@ -240,3 +242,4 @@ export default function CacheStatus() {
     </Card>
   );
 }
+

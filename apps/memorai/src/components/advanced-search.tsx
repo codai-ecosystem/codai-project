@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Memory } from '@/types/memory';
-import { useMemorAIApi } from '@/hooks/use-memorai-api';
+import { useMemorAI } from '@/lib/memorai-api';
 import { useNotificationContext } from '@/contexts/notification-context';
 import { cn } from '@/lib/utils';
 import { cva } from 'class-variance-authority';
@@ -89,7 +89,7 @@ export const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
     const [isFocused, setIsFocused] = useState(false);
 
     const { showNotification } = useNotificationContext();
-    const api = useMemorAIApi();
+    const api = useMemorAI();
 
     const handleSearch = useCallback(async (searchQuery?: string, searchFilters?: SearchFilters) => {
         const finalQuery = searchQuery || query;
@@ -107,10 +107,10 @@ export const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
         try {
             // Hide suggestions when searching
             setShowSuggestions(false);
-            
+
             // Call the parent search handler
             onSearch(finalQuery, finalFilters);
-            
+
             showNotification({
                 type: 'info',
                 title: 'Searching...',
@@ -130,7 +130,7 @@ export const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
         setFilters({});
         setShowSuggestions(false);
         onClear();
-        
+
         showNotification({
             type: 'info',
             title: 'Search Cleared',
@@ -175,9 +175,9 @@ export const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
     return (
         <div className={cn("space-y-4", className)}>
             {/* Main Search Interface */}
-            <div className={searchVariants({ 
+            <div className={searchVariants({
                 mode: showAdvanced ? 'advanced' : 'simple',
-                focus: isFocused 
+                focus: isFocused
             })}>
                 <div className="flex-1 relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -408,7 +408,7 @@ export const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
                             <X className="h-3 w-3 ml-1" />
                         </Badge>
                     ))}
-                    
+
                     {filters.importance && (
                         <Badge
                             variant="secondary"
@@ -419,7 +419,7 @@ export const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
                             <X className="h-3 w-3 ml-1" />
                         </Badge>
                     )}
-                    
+
                     {filters.isPublic !== undefined && (
                         <Badge
                             variant="secondary"
@@ -437,13 +437,13 @@ export const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
             {searchResults && (
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
                     <span>
-                        {resultsCount === 0 
-                            ? 'No memories found' 
+                        {resultsCount === 0
+                            ? 'No memories found'
                             : `Found ${resultsCount} ${resultsCount === 1 ? 'memory' : 'memories'}`
                         }
                         {query && ` for "${query}"`}
                     </span>
-                    
+
                     {resultsCount > 0 && (
                         <Badge variant="outline" className="text-xs">
                             <Clock className="h-3 w-3 mr-1" />

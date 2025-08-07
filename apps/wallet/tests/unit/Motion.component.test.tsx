@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 Motion.tsx Component Tests
  * Comprehensive testing for wallet component

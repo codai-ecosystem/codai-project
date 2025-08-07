@@ -27,14 +27,14 @@ app.use(express.urlencoded({ extended: true }));
 
 // Simple CORS middleware
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  if (req.method === 'OPTIONS') {
-    res.sendStatus(200);
-  } else {
-    next();
-  }
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    if (req.method === 'OPTIONS') {
+        res.sendStatus(200);
+    } else {
+        next();
+    }
 });
 
 // Helper function to wrap Zod schemas for validation middleware
@@ -43,12 +43,12 @@ const wrapSchema = (schema: z.ZodSchema) => schema as any;
 
 // Basic validation middleware
 const validate = (schema: z.ZodSchema) => (req: any, res: any, next: any) => {
-  try {
-    req.body = schema.parse(req.body);
-    next();
-  } catch (error) {
-    res.status(400).json({ error: 'Validation failed', details: error });
-  }
+    try {
+        req.body = schema.parse(req.body);
+        next();
+    } catch (error) {
+        res.status(400).json({ error: 'Validation failed', details: error });
+    }
 };
 
 // Setup universal CODAI middleware - simplified for deployment

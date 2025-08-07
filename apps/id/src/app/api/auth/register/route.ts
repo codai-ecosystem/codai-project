@@ -113,7 +113,10 @@ export async function POST(request: NextRequest) {
       id: Math.random().toString(36).substring(2, 15),
       email: sanitizedEmail,
       name: sanitizedName,
-      password: hashedPassword
+      password: hashedPassword,
+      role: 'admin' as const, // Default role for new users
+      groups: ['admins'], // Default groups
+      provider: 'local' as const
     }
 
     userStorage.addUser(user);

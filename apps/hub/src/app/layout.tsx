@@ -1,15 +1,15 @@
-import type { Metadata } from 'next';
+'use client'
+
+import React from 'react';
+
 import { Inter } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 import '../styles/animation-enhancements.css';
+import { AuthProvider } from '../lib/auth';
+import HubNavigation from '@/components/HubNavigation';
 
 const inter = Inter({ subsets: ['latin'] });
-
-export const metadata: Metadata = {
-  title: 'CODAI Hub - AI-Powered Central Platform',
-  description: 'Centralized hub for AI services and ecosystem management with advanced coordination capabilities',
-};
 
 export default function RootLayout({
   children,
@@ -19,6 +19,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <title>CODAI Hub - AI-Powered Central Platform</title>
+        <meta name="description" content="Centralized hub for AI services and ecosystem management with advanced coordination capabilities" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#3b82f6" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -46,13 +48,21 @@ export default function RootLayout({
         <a href="#main-content" className="skip-link sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded z-50">
           Skip to main content
         </a>
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-          <main id="main-content" role="main" className="animate-container">
-            {children}
-          </main>
-        </div>
+        <AuthProvider>
+          <div className="flex h-screen bg-gray-50">
+            <HubNavigation />
+            <main
+              id="main-content"
+              role="main"
+              className="flex-1 lg:ml-72 overflow-auto focus:outline-none animate-container"
+            >
+              {children}
+            </main>
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );
 }
+
 

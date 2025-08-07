@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 AnimatedComponents-test.tsx Component Tests
  * Comprehensive testing for talentai component

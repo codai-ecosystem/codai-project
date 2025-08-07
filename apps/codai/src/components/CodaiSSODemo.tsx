@@ -1,24 +1,26 @@
+import React from 'react'
 /**
- * CODAI SSO Integration Demo Component
- * Demonstrates enterprise authentication and authorization features
+ * CODAI Platform - Main Application with Integrated Authentication
+ * Cross-app authentication system with working navigation
  */
 
 'use client';
 
-import { useCodaiAuth, useRBAC, useDeviceSecurity } from '@/lib/sso-sdk-stub';
-import { signIn, signOut } from 'next-auth/react';
+import { useAuth, AppConfig, NavigationManager } from '../lib/auth';
+import { useState } from 'react';
+import { Shield, User, Settings, LogOut, Crown, Users, Code, Database, Cpu, Globe } from 'lucide-react';
 
 export default function CodaiSSODemo() {
-  const { user, isAuthenticated, isLoading, roles, permissions, hasRole, hasPermission } = useCodaiAuth();
-  const { isAuthorized: canManageApps } = useRBAC(['admin', 'developer'], ['apps:read']);
-  const { deviceId, riskLevel, isTrusted, isSecure } = useDeviceSecurity();
+  const { authState, logout, hasRole, hasAnyRole, isAdmin, canAccess } = useAuth();
+  const { user, isAuthenticated, isLoading } = authState;
+  const [activeTab, setActiveTab] = useState('overview');
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading authentication...</p>
+          <p className="mt-4 text-gray-600">Initializing CODAI Platform...</p>
         </div>
       </div>
     );
@@ -26,29 +28,35 @@ export default function CodaiSSODemo() {
 
   if (!isAuthenticated) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 rounded-lg shadow-lg border border-white/20 dark:border-gray-700/20 p-6 sm:p-8 md:p-10">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 px-4">
+        <div className="max-w-lg w-full bg-white/80 backdrop-blur-sm rounded-xl shadow-xl border border-white/20 p-8">
           <div className="text-center">
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">CODAI Enterprise</h1>
-            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-4 sm:mb-6">AI-native development environment with enterprise SSO</p>
+            <div className="flex items-center justify-center mb-6">
+              <Code className="h-12 w-12 text-blue-600 mr-3" />
+              <h1 className="text-3xl font-bold text-gray-900">CODAI Platform</h1>
+            </div>
+            <p className="text-gray-600 mb-8">AI-powered development environment for the CODAI ecosystem</p>
 
-            <div className="space-y-3 sm:space-y-4">
-              <div className="backdrop-blur-md bg-blue-50/70 dark:bg-blue-900/30 p-3 sm:p-4 rounded-lg border border-blue-200/30 dark:border-blue-700/30">
-                <h3 className="font-semibold text-blue-900 dark:text-blue-100 text-sm sm:text-base">🔐 Enterprise Features</h3>
-                <ul className="text-xs sm:text-sm text-blue-700 dark:text-blue-200 mt-2 space-y-1">
-                  <li>• Keycloak SSO Integration</li>
-                  <li>• Role-Based Access Control</li>
-                  <li>• Zero Trust Security</li>
-                  <li>• Cross-Application Sessions</li>
-                </ul>
-              </div>
+            <div className="bg-blue-50 p-6 rounded-lg border border-blue-200 mb-6">
+              <h3 className="font-semibold text-blue-900 mb-3">🚀 Platform Features</h3>
+              <ul className="text-sm text-blue-700 space-y-2 text-left">
+                <li>• AI-assisted code development</li>
+                <li>• Integrated authentication system</li>
+                <li>• Real-time collaboration tools</li>
+                <li>• Cross-application workspace</li>
+                <li>• Role-based project access</li>
+              </ul>
+            </div>
 
-              <button
-                onClick={() => signIn('keycloak')}
-                className="w-full backdrop-blur-sm bg-blue-600/90 hover:bg-blue-700/90 text-white font-semibold py-2 sm:py-3 px-3 sm:px-4 rounded-lg transition-all duration-200 border border-blue-500/30 shadow-lg hover:shadow-xl text-sm sm:text-base"
-              >
-                Sign In with CODAI ID
-              </button>
+            <button
+              onClick={() => NavigationManager.redirectToAuth(window.location.href)}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+            >
+              Sign In to CODAI Platform
+            </button>
+
+            <div className="mt-4 text-sm text-gray-500">
+              Secure authentication via CODAI Identity
             </div>
           </div>
         </div>
@@ -56,145 +64,237 @@ export default function CodaiSSODemo() {
     );
   }
 
+  const getRoleIcon = (role: string) => {
+    switch (role) {
+      case 'master_admin':
+        return <Crown className="h-5 w-5 text-yellow-500" />
+      case 'ai_admin':
+        return <Cpu className="h-5 w-5 text-blue-500" />
+      case 'admin':
+        return <Shield className="h-5 w-5 text-green-500" />
+      default:
+        return <User className="h-5 w-5 text-gray-500" />
+    }
+  };
+
+  const navigation = AppConfig.getNavigation('codai');
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       {/* Header */}
-      <header className="backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 shadow-sm border-b border-white/20 dark:border-gray-700/20">
+      <header className="bg-white/80 backdrop-blur-sm shadow-sm border-b border-white/20 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">CODAI Enterprise</h1>
-              <p className="text-gray-600 dark:text-gray-300">Welcome, {user?.name}</p>
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center">
+              <Code className="h-8 w-8 text-blue-600 mr-3" />
+              <div>
+                <h1 className="text-xl font-bold text-gray-900">CODAI Platform</h1>
+                <p className="text-xs text-gray-600">Development Environment</p>
+              </div>
             </div>
-            <nav className="flex items-center space-x-4">
-              <div className="text-sm text-gray-600 dark:text-gray-300 backdrop-blur-md bg-gray-100/70 dark:bg-gray-700/70 px-3 py-1 rounded-full border border-gray-200/30 dark:border-gray-600/30">
-                Device: {isTrusted ? '✅ Trusted' : '⚠️ Untrusted'} | Risk: {riskLevel}
+
+            <nav className="hidden md:flex items-center space-x-1">
+              {navigation.slice(0, 6).map((app) => (
+                <a
+                  key={app.key}
+                  href={app.url}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${app.active
+                      ? 'bg-blue-100 text-blue-700'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                    }`}
+                >
+                  {app.name}
+                </a>
+              ))}
+            </nav>
+
+            <div className="flex items-center space-x-4">
+              <div className="hidden sm:flex items-center space-x-2 text-sm text-gray-600">
+                {getRoleIcon(user?.role || 'customer')}
+                <span className="font-medium">{user?.name}</span>
               </div>
               <button
-                onClick={() => signOut()}
-                className="backdrop-blur-sm bg-red-600/90 hover:bg-red-700/90 text-white px-4 py-2 rounded-lg text-sm transition-all duration-200 border border-red-500/30 shadow-lg hover:shadow-xl"
+                onClick={logout}
+                className="flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 transition-colors"
               >
-                Sign Out
+                <LogOut className="h-4 w-4" />
+                <span className="hidden sm:inline">Logout</span>
               </button>
-            </nav>
+            </div>
           </div>
         </div>
       </header>
 
+      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-          {/* User Information */}
-          <article className="backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 rounded-lg shadow-lg border border-white/20 dark:border-gray-700/20 p-6 hover:shadow-xl transition-all duration-200 sm:p-4 md:p-6">
-            <header>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 sm:text-base md:text-lg">👤 User Profile</h2>
-            </header>
-            <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300 sm:text-xs md:text-sm">
-              <div><strong>Name:</strong> {user?.name}</div>
-              <div><strong>Email:</strong> {user?.email}</div>
-              <div><strong>ID:</strong> {user?.id}</div>
-              <div><strong>Verified:</strong> {user?.emailVerified ? '✅' : '❌'}</div>
-              <div><strong>MFA:</strong> {user?.mfaEnabled ? '✅' : '❌'}</div>
-            </div>
-          </article>
-
-          {/* Roles & Permissions */}
-          <article className="backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 rounded-lg shadow-lg border border-white/20 dark:border-gray-700/20 p-6 hover:shadow-xl transition-all duration-200 sm:p-4 md:p-6">
-            <header>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 sm:text-base md:text-lg">🔑 Access Control</h2>
-            </header>
-            <div className="space-y-3">
-              <div>
-                <strong className="text-sm text-gray-700 dark:text-gray-300 sm:text-xs md:text-sm">Roles:</strong>
-                <div className="flex flex-wrap gap-1 mt-1">
-                  {roles.map(role => (
-                    <span key={role} className="px-2 py-1 backdrop-blur-sm bg-blue-100/70 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 text-xs rounded border border-blue-200/30 dark:border-blue-700/30 sm:px-1 sm:text-xs md:px-2">
-                      {role}
-                    </span>
-                  ))}
-                </div>
+        <div className="space-y-6">
+          {/* Welcome Section */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl font-bold text-gray-900">Welcome back, {user?.name}!</h2>
+              <div className="flex items-center space-x-2">
+                {getRoleIcon(user?.role || 'customer')}
+                <span className="text-sm font-medium text-gray-600">{user?.role?.replace('_', ' ').toUpperCase()}</span>
               </div>
-              <div>
-                <strong className="text-sm text-gray-700 dark:text-gray-300 sm:text-xs md:text-sm">Key Permissions:</strong>
-                <div className="text-xs mt-1 space-y-1 text-gray-600 dark:text-gray-400 sm:text-xs">
-                  <div>Apps Management: {hasPermission('apps:write') ? '✅' : '❌'}</div>
-                  <div>User Management: {hasPermission('users:write') ? '✅' : '❌'}</div>
-                  <div>Code Access: {hasPermission('code:read') ? '✅' : '❌'}</div>
+            </div>
+            <p className="text-gray-600">Your AI-powered development environment is ready. Start building amazing applications with the CODAI ecosystem.</p>
+          </div>
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <Code className="h-8 w-8 text-blue-600" />
+                </div>
+                <div className="ml-4">
+                  <h3 className="text-lg font-semibold text-gray-900">Active Projects</h3>
+                  <p className="text-2xl font-bold text-blue-600">12</p>
                 </div>
               </div>
             </div>
-          </article>
 
-          {/* Security Status */}
-          <article className="backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 rounded-lg shadow-lg border border-white/20 dark:border-gray-700/20 p-6 hover:shadow-xl transition-all duration-200 sm:p-4 md:p-6">
-            <header>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 sm:text-base md:text-lg">🛡️ Security Status</h2>
-            </header>
-            <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300 sm:text-xs md:text-sm">
-              <div><strong>Device ID:</strong> {deviceId?.slice(-8)}...</div>
-              <div><strong>Trust Level:</strong> {isTrusted ? '✅ Trusted' : '⚠️ Untrusted'}</div>
-              <div><strong>Risk Level:</strong>
-                <span className={`ml-1 ${riskLevel === 'low' ? 'text-green-600 dark:text-green-400' :
-                  riskLevel === 'medium' ? 'text-yellow-600 dark:text-yellow-400' : 'text-red-600 dark:text-red-400'
-                  }`}>
-                  {riskLevel.toUpperCase()}
-                </span>
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <Database className="h-8 w-8 text-green-600" />
+                </div>
+                <div className="ml-4">
+                  <h3 className="text-lg font-semibold text-gray-900">Databases</h3>
+                  <p className="text-2xl font-bold text-green-600">8</p>
+                </div>
               </div>
-              <div><strong>Security Status:</strong> {isSecure ? '🟢 Secure' : '🟡 Monitor'}</div>
             </div>
-          </article>
 
-          {/* Development Features */}
-          {canManageApps && (
-            <section className="backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 rounded-lg shadow-lg border border-white/20 dark:border-gray-700/20 p-6 md:col-span-2 lg:col-span-3 hover:shadow-xl transition-all duration-200 sm:p-4 md:p-6">
-              <header>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 sm:text-base md:text-lg">🚀 Developer Features</h2>
-              </header>
-              <div className="backdrop-blur-md bg-green-50/70 dark:bg-green-900/30 p-4 rounded-lg border border-green-200/30 dark:border-green-700/30 sm:p-3 md:p-4">
-                <p className="text-green-800 dark:text-green-200 sm:text-sm">
-                  ✅ You have developer access! This section demonstrates role-based content visibility.
-                </p>
-                <nav className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-2 md:gap-4">
-                  <button className="backdrop-blur-sm bg-green-600/90 hover:bg-green-700/90 text-white px-4 py-2 rounded text-sm transition-all duration-200 border border-green-500/30 shadow-lg hover:shadow-xl sm:px-2 sm:py-1 sm:text-xs md:px-4 md:py-2 md:text-sm">
-                    Code Repository
-                  </button>
-                  <button className="backdrop-blur-sm bg-blue-600/90 hover:bg-blue-700/90 text-white px-4 py-2 rounded text-sm transition-all duration-200 border border-blue-500/30 shadow-lg hover:shadow-xl sm:px-2 sm:py-1 sm:text-xs md:px-4 md:py-2 md:text-sm">
-                    App Management
-                  </button>
-                  <button className="backdrop-blur-sm bg-purple-600/90 hover:bg-purple-700/90 text-white px-4 py-2 rounded text-sm transition-all duration-200 border border-purple-500/30 shadow-lg hover:shadow-xl sm:px-2 sm:py-1 sm:text-xs md:px-4 md:py-2 md:text-sm">
-                    Deployment Tools
-                  </button>
-                </nav>
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <Users className="h-8 w-8 text-purple-600" />
+                </div>
+                <div className="ml-4">
+                  <h3 className="text-lg font-semibold text-gray-900">Team Members</h3>
+                  <p className="text-2xl font-bold text-purple-600">24</p>
+                </div>
               </div>
-            </section>
+            </div>
+          </div>
+
+          {/* Quick Actions */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <button className="p-4 bg-blue-50 hover:bg-blue-100 rounded-lg border border-blue-200 transition-colors text-center">
+                <Code className="h-6 w-6 text-blue-600 mx-auto mb-2" />
+                <span className="text-sm font-medium text-blue-900">New Project</span>
+              </button>
+              <button className="p-4 bg-green-50 hover:bg-green-100 rounded-lg border border-green-200 transition-colors text-center">
+                <Database className="h-6 w-6 text-green-600 mx-auto mb-2" />
+                <span className="text-sm font-medium text-green-900">Connect DB</span>
+              </button>
+              <button className="p-4 bg-purple-50 hover:bg-purple-100 rounded-lg border border-purple-200 transition-colors text-center">
+                <Users className="h-6 w-6 text-purple-600 mx-auto mb-2" />
+                <span className="text-sm font-medium text-purple-900">Invite Team</span>
+              </button>
+              <button className="p-4 bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-200 transition-colors text-center">
+                <Settings className="h-6 w-6 text-gray-600 mx-auto mb-2" />
+                <span className="text-sm font-medium text-gray-900">Settings</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Admin Features */}
+          {isAdmin() && (
+            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl shadow-lg border border-yellow-200 p-6">
+              <div className="flex items-center mb-4">
+                <Crown className="h-6 w-6 text-yellow-600 mr-2" />
+                <h3 className="text-lg font-semibold text-yellow-900">Admin Controls</h3>
+              </div>
+              <p className="text-yellow-800 mb-4">You have administrative access to advanced platform features.</p>
+              <div className="flex flex-wrap gap-3">
+                <button className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg text-sm font-medium transition-colors">
+                  User Management
+                </button>
+                <button className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-sm font-medium transition-colors">
+                  System Settings
+                </button>
+                <button className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium transition-colors">
+                  Security Audit
+                </button>
+              </div>
+            </div>
           )}
 
-        </section>
-
-        {/* Integration Status */}
-        <section className="mt-8 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 rounded-lg shadow-lg border border-white/20 dark:border-gray-700/20 p-6 hover:shadow-xl transition-all duration-200 sm:mt-6 sm:p-4 md:mt-8 md:p-6">
-          <header>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 sm:text-base md:text-lg">📊 Phase 4 Integration Status</h2>
-          </header>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-2 md:gap-4">
-            <article className="text-center backdrop-blur-md bg-green-50/50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200/30 dark:border-green-700/30 sm:p-2 md:p-4">
-              <div className="text-2xl sm:text-xl md:text-2xl">✅</div>
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white sm:text-xs md:text-sm">CODAI SSO</h3>
-              <div className="text-xs text-gray-600 dark:text-gray-400">Integrated & Active</div>
-            </article>
-            <article className="text-center backdrop-blur-md bg-blue-50/50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200/30 dark:border-blue-700/30 sm:p-2 md:p-4">
-              <div className="text-2xl sm:text-xl md:text-2xl">🔄</div>
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white sm:text-xs md:text-sm">MEMORAI</h3>
-              <div className="text-xs text-gray-600 dark:text-gray-400">Next Integration</div>
-            </article>
-            <article className="text-center backdrop-blur-md bg-orange-50/50 dark:bg-orange-900/20 p-4 rounded-lg border border-orange-200/30 dark:border-orange-700/30 sm:p-2 md:p-4">
-              <div className="text-2xl sm:text-xl md:text-2xl">⏳</div>
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white sm:text-xs md:text-sm">BANCAI</h3>
-              <div className="text-xs text-gray-600 dark:text-gray-400">Planned Integration</div>
-            </article>
+          {/* Cross-App Navigation */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">🌐 CODAI Ecosystem</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+              {navigation.map((app) => (
+                <a
+                  key={app.key}
+                  href={app.url}
+                  className={`p-3 rounded-lg border transition-all duration-200 hover:shadow-md ${app.active
+                      ? 'bg-blue-50 border-blue-200 text-blue-900'
+                      : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100'
+                    }`}
+                >
+                  <div className="text-center">
+                    <div className="text-lg mb-1">{app.icon}</div>
+                    <div className="text-xs font-medium">{app.name}</div>
+                  </div>
+                </a>
+              ))}
+            </div>
           </div>
-        </section>
+
+          {/* Authentication Status */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">🔐 Authentication Status</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-green-900">Status</span>
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    Authenticated
+                  </span>
+                </div>
+                <div className="mt-2 text-sm text-green-700">
+                  <p>User: {user?.email}</p>
+                  <p>Role: {user?.role}</p>
+                  <p>Provider: {user?.provider}</p>
+                </div>
+              </div>
+              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-blue-900">Integration</span>
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    Active
+                  </span>
+                </div>
+                <div className="mt-2 text-sm text-blue-700">
+                  <p>Cross-app authentication: ✅</p>
+                  <p>Role-based access: ✅</p>
+                  <p>Session management: ✅</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
+
+      {/* Footer */}
+      <footer className="bg-white/60 backdrop-blur-sm border-t border-white/20 mt-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex justify-between items-center">
+            <div className="text-sm text-gray-600">
+              © 2025 CODAI Ecosystem. All rights reserved.
+            </div>
+            <div className="text-sm text-gray-600">
+              Authenticated as {user?.email}
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
+

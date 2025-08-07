@@ -3,6 +3,7 @@
 import { SessionProvider } from 'next-auth/react';
 import { ReactNode } from 'react';
 import { NotificationProvider } from './notifications';
+import { AuthProvider } from '../lib/auth';
 
 interface ProvidersProps {
     children: ReactNode;
@@ -11,9 +12,11 @@ interface ProvidersProps {
 export default function Providers({ children }: ProvidersProps) {
     return (
         <SessionProvider>
-            <NotificationProvider>
-                {children}
-            </NotificationProvider>
+            <AuthProvider>
+                <NotificationProvider>
+                    {children}
+                </NotificationProvider>
+            </AuthProvider>
         </SessionProvider>
     );
 }

@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../../lib/auth-context'
 import { useRouter } from 'next/navigation'
@@ -207,3 +209,4 @@ export default function DevelopPage() {
 	</DashboardLayout>
 	)
 }
+

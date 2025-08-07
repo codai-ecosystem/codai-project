@@ -1,3 +1,4 @@
+import React from 'react'
 import Button from '@/components/ui/Button';
 import { FiImage } from '../../icons/FeatherIconsExtended';
 import { CourseImageFieldProps } from '@/types';
@@ -55,3 +56,4 @@ export default function CourseImageField({
     </div>
   );
 }
+

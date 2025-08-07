@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { useCallback } from 'react';
 
@@ -11,3 +13,4 @@ export function useTranslation() {
 
   return { t };
 }
+

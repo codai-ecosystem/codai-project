@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { motion } from 'framer-motion'
 import { ChevronRight, Calendar, MapPin, Activity } from 'lucide-react'
 import { useState } from 'react'
@@ -203,3 +205,4 @@ export function DataTable({ colorScheme }: DataTableProps) {
         </motion.div>
     )
 }
+

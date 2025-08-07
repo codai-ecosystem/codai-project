@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * @jest-environment jsdom
  */
@@ -75,3 +76,4 @@ describe('Dictionary Page', () => {
         });
     });
 });
+

@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import FabricAILayout from '../../components/layout/FabricAILayout'
 import { Zap, Users, Settings, BarChart3, Plus, Shield } from 'lucide-react'
 
@@ -76,3 +78,4 @@ export default function Dashboard() {
     </FabricAILayout>
   )
 }
+

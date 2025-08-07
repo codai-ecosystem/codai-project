@@ -2,9 +2,9 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { 
-  Users, 
-  Activity, 
+import {
+  Users,
+  Activity,
   Zap,
   CheckCircle2,
   Clock,
@@ -128,13 +128,13 @@ function getTypeIcon(type: string) {
   }
 }
 
-export function AgentMonitor({ 
-  agents = mockAgents, 
-  data, 
-  loading = false, 
-  maxItems, 
-  showStatusOnly = false, 
-  className = '' 
+export function AgentMonitor({
+  agents = mockAgents,
+  data,
+  loading = false,
+  maxItems,
+  showStatusOnly = false,
+  className = ''
 }: AgentMonitorProps) {
   // Use data if provided, otherwise use agents prop or mock data
   const displayAgents = data?.agents || agents || mockAgents
@@ -198,7 +198,7 @@ export function AgentMonitor({
         {limitedAgents.map((agent, index) => {
           const StatusIcon = getStatusIcon(agent.status)
           const TypeIcon = getTypeIcon(agent.type)
-          
+
           return (
             <motion.div
               key={agent.id}
@@ -247,11 +247,10 @@ export function AgentMonitor({
                       initial={{ width: 0 }}
                       animate={{ width: `${agent.workload}%` }}
                       transition={{ duration: 1, delay: index * 0.1 }}
-                      className={`h-2 rounded-full ${
-                        agent.workload > 80 ? 'bg-red-500' :
-                        agent.workload > 60 ? 'bg-yellow-500' :
-                        'bg-green-500'
-                      }`}
+                      className={`h-2 rounded-full ${agent.workload > 80 ? 'bg-red-500' :
+                          agent.workload > 60 ? 'bg-yellow-500' :
+                            'bg-green-500'
+                        }`}
                     />
                   </div>
                 </div>

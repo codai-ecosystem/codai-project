@@ -1,10 +1,12 @@
+import React from 'react'
 import type { Metadata } from 'next';
 import './globals.css';
-import CodaiSessionProvider from '../components/providers/CodaiSessionProvider';
+import { AuthProvider } from '../lib/auth';
+import EcosystemNavigation from '../components/EcosystemNavigation';
 
 export const metadata: Metadata = {
-  title: 'Codai - CODAI Ecosystem Enterprise',
-  description: 'AI-native development environment with enterprise SSO integration',
+  title: 'CODAI Platform - AI Development Environment',
+  description: 'AI-powered development platform with integrated authentication and role-based access control',
 };
 
 export default function RootLayout({
@@ -15,9 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <CodaiSessionProvider>
+        <AuthProvider>
+          <EcosystemNavigation />
           {children}
-        </CodaiSessionProvider>
+        </AuthProvider>
       </body>
     </html>
   );

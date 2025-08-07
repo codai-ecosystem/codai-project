@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { motion } from 'framer-motion'
 import { ArrowRight, Sparkles, Cpu, Zap, Globe } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -187,3 +189,4 @@ export function HeroSection() {
         </section>
     )
 }
+

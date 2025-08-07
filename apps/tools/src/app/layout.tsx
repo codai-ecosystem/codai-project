@@ -1,3 +1,4 @@
+import React from 'react'
 import './globals.css'
 import type { Metadata } from 'next'
 
@@ -17,3 +18,4 @@ export default function RootLayout({
         </html>
     )
 }
+

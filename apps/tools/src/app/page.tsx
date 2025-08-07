@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { Wrench, Zap, Code, Database, FileText, Image, Music, Video, Calculator, Palette } from 'lucide-react'
 
 interface ToolsStats {
@@ -196,3 +198,4 @@ export default function ToolsDashboard() {
         </div>
     )
 }
+

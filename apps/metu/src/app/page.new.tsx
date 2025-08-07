@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import SettingsPanel from '../components/SettingsPanel';
@@ -920,3 +922,4 @@ export default function HomePage() {
         </div>
     );
 }
+

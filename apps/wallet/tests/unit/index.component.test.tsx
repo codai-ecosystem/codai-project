@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 index.ts Component Tests
  * Comprehensive testing for wallet component

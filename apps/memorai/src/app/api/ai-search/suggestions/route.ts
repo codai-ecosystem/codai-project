@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
 
         if (!query || query.trim().length < 2) {
             return NextResponse.json(
-                { 
+                {
                     error: 'Query must be at least 2 characters long',
                     code: 'INVALID_QUERY_LENGTH'
                 },

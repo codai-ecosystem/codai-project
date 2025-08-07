@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import dynamic from 'next/dynamic';
 
@@ -16,3 +18,4 @@ export const MultiSelect = dynamic(
   () => import('./ComboBox').then(mod => ({ default: mod.MultiSelect })),
   { loading: () => <LoadingSpinner className="h-8 w-8" />, ssr: false }
 );
+

@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 Modal-simple.tsx Component Tests
  * Comprehensive testing for talentai component

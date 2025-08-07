@@ -2,7 +2,11 @@
   "dashboard": {
     "id": null,
     "title": "CODAI Business Intelligence",
-    "tags": ["codai", "business", "analytics"],
+    "tags": [
+      "codai",
+      "business",
+      "analytics"
+    ],
     "timezone": "browser",
     "panels": [
       {

@@ -71,7 +71,7 @@ export class SecurityHeadersMiddleware {
     response.headers.set('Cross-Origin-Embedder-Policy', 'require-corp');
     response.headers.set('Cross-Origin-Opener-Policy', 'same-origin');
     response.headers.set('Cross-Origin-Resource-Policy', 'same-origin');
-    
+
     // Remove potentially sensitive headers
     response.headers.delete('Server');
     response.headers.delete('X-Powered-By');
@@ -112,22 +112,22 @@ export class RateLimiter {
   public isRateLimited(clientId: string): boolean {
     const now = Date.now();
     const windowStart = now - this.config.windowMs;
-    
+
     // Get existing requests for this client
     let clientRequests = this.requests.get(clientId) || [];
-    
+
     // Filter out old requests
     clientRequests = clientRequests.filter(timestamp => timestamp > windowStart);
-    
+
     // Check if limit exceeded
     if (clientRequests.length >= this.config.maxRequests) {
       return true;
     }
-    
+
     // Add current request
     clientRequests.push(now);
     this.requests.set(clientId, clientRequests);
-    
+
     return false;
   }
 
@@ -136,10 +136,10 @@ export class RateLimiter {
     const windowStart = now - this.config.windowMs;
     const clientRequests = (this.requests.get(clientId) || [])
       .filter(timestamp => timestamp > windowStart);
-    
+
     const remaining = Math.max(0, this.config.maxRequests - clientRequests.length);
     const resetTime = Math.ceil((windowStart + this.config.windowMs) / 1000);
-    
+
     return {
       'X-RateLimit-Limit': this.config.maxRequests.toString(),
       'X-RateLimit-Remaining': remaining.toString(),
@@ -248,38 +248,38 @@ export class CSRFProtection {
     const expires = Date.now() + (60 * 60 * 1000); // 1 hour
 
     this.tokens.set(sessionId, { token, expires });
-    
+
     // Cleanup expired tokens
     this.cleanupExpiredTokens();
-    
+
     return token;
   }
 
   public static validateToken(sessionId: string, token: string): boolean {
     const stored = this.tokens.get(sessionId);
-    
+
     if (!stored || stored.expires < Date.now()) {
       this.tokens.delete(sessionId);
       return false;
     }
-    
+
     return stored.token === token;
   }
 
   private static randomBytes(length: number): string {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
-    
+
     for (let i = 0; i < length; i++) {
       result += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-    
+
     return result;
   }
 
   private static cleanupExpiredTokens(): void {
     const now = Date.now();
-    
+
     for (const [sessionId, { expires }] of this.tokens.entries()) {
       if (expires < now) {
         this.tokens.delete(sessionId);

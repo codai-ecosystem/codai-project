@@ -2,9 +2,9 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { 
-  CheckSquare, 
-  Clock, 
+import {
+  CheckSquare,
+  Clock,
   AlertCircle,
   User,
   Calendar,
@@ -102,13 +102,13 @@ function getPriorityColor(priority: string) {
   }
 }
 
-export function TaskBoard({ 
-  tasks = mockTasks, 
-  data, 
-  loading = false, 
-  compact = false, 
-  maxItemsPerColumn, 
-  className = '' 
+export function TaskBoard({
+  tasks = mockTasks,
+  data,
+  loading = false,
+  compact = false,
+  maxItemsPerColumn,
+  className = ''
 }: TaskBoardProps) {
   // Use data if provided, otherwise use tasks prop or mock data
   const displayTasks = data?.tasks || tasks || mockTasks
@@ -255,7 +255,7 @@ export function TaskBoard({
         {statusColumns.map((column) => {
           const count = getTasksByStatus(column.id).length
           const percentage = tasks.length > 0 ? Math.round((count / tasks.length) * 100) : 0
-          
+
           return (
             <div
               key={column.id}

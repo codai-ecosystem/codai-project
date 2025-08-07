@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import dynamic from 'next/dynamic';
 import { LoadingSpinner } from './LoadingSpinner';
@@ -10,3 +12,4 @@ const Motion = dynamic(() => import('./Motion').then(mod => ({ default: mod.Page
 
 export default Motion;
 export { Motion };
+

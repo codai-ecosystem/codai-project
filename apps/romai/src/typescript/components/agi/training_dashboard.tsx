@@ -72,8 +72,8 @@ export default function AGITrainingDashboard() {
                             key={tab.id}
                             onClick={() => setSelectedView(tab.id)}
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedView === tab.id
-                                    ? 'bg-blue-600 text-white shadow-md'
-                                    : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'
+                                ? 'bg-blue-600 text-white shadow-md'
+                                : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'
                                 }`}
                         >
                             <span className="mr-2">{tab.icon}</span>
@@ -254,8 +254,8 @@ function TrainingProgress() {
                                     <span className="font-medium text-gray-900 dark:text-white">{phase.phase}</span>
                                     <div className="flex items-center space-x-2">
                                         <span className={`px-2 py-1 text-xs rounded-full ${phase.status === 'completed' ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' :
-                                                phase.status === 'active' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400' :
-                                                    'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400'
+                                            phase.status === 'active' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400' :
+                                                'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400'
                                             }`}>
                                             {phase.status}
                                         </span>
@@ -265,7 +265,7 @@ function TrainingProgress() {
                                 <div className="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2">
                                     <div
                                         className={`h-2 rounded-full transition-all duration-500 ${phase.status === 'completed' ? 'bg-green-600' :
-                                                phase.status === 'active' ? 'bg-blue-600' : 'bg-gray-400'
+                                            phase.status === 'active' ? 'bg-blue-600' : 'bg-gray-400'
                                             }`}
                                         style={{ width: `${phase.progress}%` }}
                                     />
@@ -375,8 +375,8 @@ function CapabilitiesView() {
                                     <td className="py-3 px-4 text-center text-gray-600 dark:text-gray-400">{row.claude}%</td>
                                     <td className="py-3 px-4 text-center">
                                         <span className={`px-2 py-1 text-xs rounded-full ${row.status === 'leading'
-                                                ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
-                                                : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
+                                            ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                                            : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
                                             }`}>
                                             {row.status}
                                         </span>
@@ -473,8 +473,8 @@ function TrainingControlView() {
                     <button
                         onClick={() => setIsTrainingPaused(!isTrainingPaused)}
                         className={`px-6 py-3 rounded-lg font-medium transition-colors ${isTrainingPaused
-                                ? 'bg-green-600 hover:bg-green-700 text-white'
-                                : 'bg-red-600 hover:bg-red-700 text-white'
+                            ? 'bg-green-600 hover:bg-green-700 text-white'
+                            : 'bg-red-600 hover:bg-red-700 text-white'
                             }`}
                     >
                         {isTrainingPaused ? '▶️ Resume Training' : '⏸️ Pause Training'}

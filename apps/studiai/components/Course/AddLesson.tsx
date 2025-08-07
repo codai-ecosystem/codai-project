@@ -1,3 +1,4 @@
+import React from 'react'
 import { motion } from 'framer-motion';
 import LessonForm from '@/components/Lesson/LessonForm';
 
@@ -21,3 +22,4 @@ export default function AddLesson(props: AddLessonProps) {
     </motion.div>
   );
 }
+

@@ -1,3 +1,4 @@
+import React from 'react'
 export function DashboardStats() {
   const stats = [
     {
@@ -53,3 +54,4 @@ export function DashboardStats() {
     </div>
   )
 }
+

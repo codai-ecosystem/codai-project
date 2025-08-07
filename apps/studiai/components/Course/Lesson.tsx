@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import React, {
   useEffect,
@@ -383,3 +385,4 @@ export default function Lesson({ lesson, onClose }: LessonProps) {
     </div>
   );
 }
+

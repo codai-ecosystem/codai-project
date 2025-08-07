@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { useState, useEffect, useMemo } from 'react';
 import { Memory } from '../types/memory';
@@ -350,3 +352,4 @@ export default function MemoryTimeline({
         </div>
     );
 }
+

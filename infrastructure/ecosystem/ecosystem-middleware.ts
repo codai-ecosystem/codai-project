@@ -35,7 +35,7 @@ export interface EcosystemMiddlewareOptions {
  */
 export function ecosystemMiddleware(options: EcosystemMiddlewareOptions) {
   const { serviceId, apiKey, enableHealthChecks = true } = options;
-  
+
   // Validate service ID
   if (!ECOSYSTEM_SERVICES[serviceId]) {
     throw new Error(`Invalid service ID: ${serviceId}. Must be one of: ${Object.keys(ECOSYSTEM_SERVICES).join(', ')}`);
@@ -85,7 +85,7 @@ export function ecosystemAuthMiddleware() {
     try {
       const authHeader = req.headers.authorization;
       const ecosystemKey = req.headers['x-ecosystem-key'] as string;
-      
+
       // Check for ecosystem API key
       if (ecosystemKey && ecosystemKey === process.env.ECOSYSTEM_API_KEY) {
         req.ecosystem = req.ecosystem || {} as any;
@@ -96,7 +96,7 @@ export function ecosystemAuthMiddleware() {
       // Check for Bearer token
       if (authHeader && authHeader.startsWith('Bearer ')) {
         const token = authHeader.substring(7);
-        
+
         // For now, simple token validation
         // In production, validate against ID service
         if (token && token.length > 10) {
@@ -140,7 +140,7 @@ export function serviceDiscoveryMiddleware() {
         }
 
         const discovery = await req.ecosystem.client.discoverServices();
-        
+
         res.json({
           success: true,
           ecosystem: 'codai-ecosystem',
@@ -157,7 +157,7 @@ export function serviceDiscoveryMiddleware() {
         return;
       }
     }
-    
+
     next();
   };
 }
@@ -171,7 +171,7 @@ export function ecosystemHealthMiddleware() {
       try {
         const serviceId = req.ecosystem?.serviceId || 'unknown';
         const service = ECOSYSTEM_SERVICES[serviceId];
-        
+
         const health = {
           service: service?.name || serviceId,
           status: 'healthy',
@@ -218,7 +218,7 @@ export function ecosystemHealthMiddleware() {
         return;
       }
     }
-    
+
     next();
   };
 }
@@ -246,9 +246,9 @@ export function ecosystemMetricsMiddleware() {
 
     // Override res.json to track service calls
     const originalJson = res.json;
-    res.json = function(data: any) {
+    res.json = function (data: any) {
       const duration = Date.now() - startTime;
-      
+
       // Track errors
       if (res.statusCode >= 400) {
         metrics.errors++;
@@ -260,7 +260,7 @@ export function ecosystemMetricsMiddleware() {
     // Add metrics endpoint
     if (req.path === '/ecosystem/metrics' && req.method === 'GET') {
       const uptime = Date.now() - metrics.startTime;
-      
+
       res.json({
         service: req.ecosystem?.serviceId || 'unknown',
         ecosystem: 'codai-ecosystem',
@@ -310,19 +310,19 @@ export function ecosystemErrorMiddleware() {
 export function setupEcosystemMiddleware(app: any, options: EcosystemMiddlewareOptions) {
   // Core ecosystem middleware
   app.use(ecosystemMiddleware(options));
-  
+
   // Authentication middleware
   app.use(ecosystemAuthMiddleware());
-  
+
   // Health check with ecosystem status
   app.use(ecosystemHealthMiddleware());
-  
+
   // Service discovery
   app.use(serviceDiscoveryMiddleware());
-  
+
   // Metrics collection
   app.use(ecosystemMetricsMiddleware());
-  
+
   // Error handling (should be last)
   app.use(ecosystemErrorMiddleware());
 

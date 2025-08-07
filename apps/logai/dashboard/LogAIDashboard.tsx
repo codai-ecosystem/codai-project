@@ -1,3 +1,4 @@
+import React from 'react'
 // LogAI Dashboard - AI Logging & Analytics Platform Dashboard
 
 'use client'
@@ -1013,3 +1014,4 @@ export default function LogAIDashboard() {
     </LogAILayout>
   )
 }
+

@@ -52,10 +52,9 @@ const MemoryCard: React.FC<{
 
     if (viewMode === 'grid') {
         return (
-            <Card 
-                className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
-                    isSelected ? 'ring-2 ring-blue-500 shadow-md' : ''
-                }`}
+            <Card
+                className={`cursor-pointer transition-all duration-200 hover:shadow-md ${isSelected ? 'ring-2 ring-blue-500 shadow-md' : ''
+                    }`}
                 onClick={onSelect}
             >
                 <CardContent className="p-4">
@@ -66,7 +65,7 @@ const MemoryCard: React.FC<{
                                 {memory.category}
                             </Badge>
                             <div className="flex items-center space-x-1">
-                                <Star 
+                                <Star
                                     className={`h-4 w-4 ${getImportanceColor(memory.importance || 5)}`}
                                     fill={memory.importance && memory.importance >= 8 ? "currentColor" : "none"}
                                 />
@@ -89,7 +88,7 @@ const MemoryCard: React.FC<{
                             <p className="text-sm text-gray-900 dark:text-white line-clamp-3">
                                 {truncateContent(memory.content, 120)}
                             </p>
-                            
+
                             {/* Tags */}
                             {memory.tags && memory.tags.length > 0 && (
                                 <div className="flex flex-wrap gap-1">
@@ -122,17 +121,16 @@ const MemoryCard: React.FC<{
 
     // List view
     return (
-        <Card 
-            className={`cursor-pointer transition-all duration-200 hover:shadow-sm ${
-                isSelected ? 'ring-2 ring-blue-500 shadow-sm' : ''
-            }`}
+        <Card
+            className={`cursor-pointer transition-all duration-200 hover:shadow-sm ${isSelected ? 'ring-2 ring-blue-500 shadow-sm' : ''
+                }`}
             onClick={onSelect}
         >
             <CardContent className="p-4">
                 <div className="flex items-start space-x-4">
                     {/* Importance indicator */}
                     <div className="flex-shrink-0 pt-1">
-                        <Star 
+                        <Star
                             className={`h-4 w-4 ${getImportanceColor(memory.importance || 5)}`}
                             fill={memory.importance && memory.importance >= 8 ? "currentColor" : "none"}
                         />
@@ -148,7 +146,7 @@ const MemoryCard: React.FC<{
                                 {formatDistanceToNow(new Date(memory.updatedAt), { addSuffix: true })}
                             </span>
                         </div>
-                        
+
                         <p className="text-sm text-gray-900 dark:text-white mb-2 line-clamp-2">
                             {memory.content}
                         </p>

@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     } catch (error) {
         console.error('Memory Clustering Error:', error);
         return NextResponse.json(
-            { 
+            {
                 error: 'Failed to perform memory clustering',
                 details: error instanceof Error ? error.message : 'Unknown error'
             },

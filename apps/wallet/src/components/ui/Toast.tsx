@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { cva, type VariantProps } from 'class-variance-authority';
 import { AlertCircle, AlertTriangle, CheckCircle, Info, X } from 'lucide-react';
@@ -169,3 +171,4 @@ export {
   type ToastActionElement,
   type ToastProps,
 };
+

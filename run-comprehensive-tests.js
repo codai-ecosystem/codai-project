@@ -41,25 +41,25 @@ class ComprehensiveTestAnalyzer {
     try {
       // Phase 1: Test File Discovery
       await this.discoverTestFiles();
-      
+
       // Phase 2: Test Framework Analysis
       await this.analyzeTestFrameworks();
-      
+
       // Phase 3: Service-Specific Testing
       await this.analyzeServiceTesting();
-      
+
       // Phase 4: Test Type Coverage
       await this.analyzeTestTypeCoverage();
-      
+
       // Phase 5: Production Readiness Assessment
       await this.assessProductionReadiness();
-      
+
       // Phase 6: Generate Comprehensive Report
       await this.generateFinalReport();
-      
+
       console.log('\n🎉 COMPREHENSIVE TESTING ANALYSIS COMPLETE!');
       return this.testResults;
-      
+
     } catch (error) {
       console.error('❌ Analysis failed:', error.message);
       throw error;
@@ -69,7 +69,7 @@ class ComprehensiveTestAnalyzer {
   async discoverTestFiles() {
     console.log('📁 Phase 1: Test File Discovery');
     console.log('===============================');
-    
+
     const testDirectories = [
       'tests',
       'apps/*/src/test',
@@ -78,16 +78,16 @@ class ComprehensiveTestAnalyzer {
       'packages/*/tests',
       'packages/*/src/test'
     ];
-    
+
     let totalTestFiles = 0;
     let totalSpecFiles = 0;
-    
+
     for (const dir of testDirectories) {
       try {
         const testFiles = await this.findTestFiles(dir);
         totalTestFiles += testFiles.testFiles;
         totalSpecFiles += testFiles.specFiles;
-        
+
         if (testFiles.testFiles > 0 || testFiles.specFiles > 0) {
           console.log(`✅ ${dir}: ${testFiles.testFiles} test files, ${testFiles.specFiles} spec files`);
         }
@@ -96,10 +96,10 @@ class ComprehensiveTestAnalyzer {
         console.log(`⚠️ ${dir}: Directory not found (optional)`);
       }
     }
-    
+
     this.testResults.testFileCount = totalTestFiles;
     this.testResults.specFileCount = totalSpecFiles;
-    
+
     console.log(`\n📊 Total Test Files Found: ${totalTestFiles + totalSpecFiles}`);
     console.log(`   - .test.* files: ${totalTestFiles}`);
     console.log(`   - .spec.* files: ${totalSpecFiles}`);
@@ -108,16 +108,16 @@ class ComprehensiveTestAnalyzer {
   async findTestFiles(pattern) {
     let testFiles = 0;
     let specFiles = 0;
-    
+
     try {
       // Use find command to search for test files
       const { stdout } = await execAsync(
         `find . -name "*.test.*" -o -name "*.spec.*" | head -100`,
         { cwd: this.workspaceRoot }
       );
-      
+
       const files = stdout.split('\n').filter(f => f.trim());
-      
+
       for (const file of files) {
         if (file.includes('.test.')) testFiles++;
         if (file.includes('.spec.')) specFiles++;
@@ -132,7 +132,7 @@ class ComprehensiveTestAnalyzer {
         // No test directory, which is fine
       }
     }
-    
+
     return { testFiles, specFiles };
   }
 
@@ -163,18 +163,18 @@ class ComprehensiveTestAnalyzer {
   async analyzeTestFrameworks() {
     console.log('\n🧪 Phase 2: Test Framework Analysis');
     console.log('==================================');
-    
+
     const packageJsonPath = join(this.workspaceRoot, 'package.json');
-    
+
     try {
       const packageContent = await readFile(packageJsonPath, 'utf8');
       const packageJson = JSON.parse(packageContent);
-      
+
       const dependencies = {
         ...packageJson.dependencies,
         ...packageJson.devDependencies
       };
-      
+
       // Detect testing frameworks
       const frameworks = {
         playwright: dependencies['@playwright/test'] || dependencies['playwright'],
@@ -185,7 +185,7 @@ class ComprehensiveTestAnalyzer {
         k6: dependencies['k6'],
         artillery: dependencies['artillery']
       };
-      
+
       console.log('📦 Detected Testing Frameworks:');
       for (const [framework, version] of Object.entries(frameworks)) {
         if (version) {
@@ -195,7 +195,7 @@ class ComprehensiveTestAnalyzer {
           console.log(`❌ ${framework}: Not installed`);
         }
       }
-      
+
     } catch (error) {
       console.log('⚠️ Could not analyze package.json');
     }
@@ -204,16 +204,16 @@ class ComprehensiveTestAnalyzer {
   async analyzeServiceTesting() {
     console.log('\n🏢 Phase 3: Service-Specific Testing');
     console.log('===================================');
-    
+
     const services = [
-      'codai', 'memorai', 'bancai', 'romai', 'admin', 
+      'codai', 'memorai', 'bancai', 'romai', 'admin',
       'hub', 'id', 'gateway', 'cbd', 'auth'
     ];
-    
+
     for (const service of services) {
       const serviceTests = await this.analyzeServiceTests(service);
       this.testResults.serviceAnalysis[service] = serviceTests;
-      
+
       const testCount = serviceTests.unit + serviceTests.integration + serviceTests.e2e;
       console.log(`${testCount > 0 ? '✅' : '❌'} ${service}: ${testCount} tests (${serviceTests.unit}u/${serviceTests.integration}i/${serviceTests.e2e}e)`);
     }
@@ -221,7 +221,7 @@ class ComprehensiveTestAnalyzer {
 
   async analyzeServiceTests(serviceName) {
     const testTypes = { unit: 0, integration: 0, e2e: 0, security: 0, performance: 0 };
-    
+
     try {
       // Search for service-specific test files
       const patterns = [
@@ -231,16 +231,16 @@ class ComprehensiveTestAnalyzer {
         `apps/${serviceName}/tests/**`,
         `apps/${serviceName}/src/test/**`
       ];
-      
+
       for (const pattern of patterns) {
         try {
           const { stdout } = await execAsync(
             `find . -path "*${serviceName}*" -name "*.test.*" -o -path "*${serviceName}*" -name "*.spec.*" | head -20`,
             { cwd: this.workspaceRoot }
           );
-          
+
           const files = stdout.split('\n').filter(f => f.trim());
-          
+
           for (const file of files) {
             if (file.includes('unit') || file.includes('.test.')) testTypes.unit++;
             if (file.includes('integration')) testTypes.integration++;
@@ -255,22 +255,22 @@ class ComprehensiveTestAnalyzer {
     } catch (error) {
       // Service might not have tests yet
     }
-    
+
     return testTypes;
   }
 
   async analyzeTestTypeCoverage() {
     console.log('\n📊 Phase 4: Test Type Coverage Analysis');
     console.log('======================================');
-    
+
     try {
       // Analyze npm scripts for test types
       const packageJsonPath = join(this.workspaceRoot, 'package.json');
       const packageContent = await readFile(packageJsonPath, 'utf8');
       const packageJson = JSON.parse(packageContent);
-      
+
       const scripts = packageJson.scripts || {};
-      
+
       // Count test script types
       let testScripts = {
         unit: 0,
@@ -281,7 +281,7 @@ class ComprehensiveTestAnalyzer {
         accessibility: 0,
         coverage: 0
       };
-      
+
       for (const [scriptName, scriptCommand] of Object.entries(scripts)) {
         if (scriptName.includes('test')) {
           if (scriptName.includes('unit')) testScripts.unit++;
@@ -293,7 +293,7 @@ class ComprehensiveTestAnalyzer {
           if (scriptName.includes('coverage')) testScripts.coverage++;
         }
       }
-      
+
       console.log('🎯 Test Type Coverage:');
       console.log(`✅ Unit Tests: ${testScripts.unit} scripts`);
       console.log(`✅ Integration Tests: ${testScripts.integration} scripts`);
@@ -302,9 +302,9 @@ class ComprehensiveTestAnalyzer {
       console.log(`✅ Security Tests: ${testScripts.security} scripts`);
       console.log(`✅ Accessibility Tests: ${testScripts.accessibility} scripts`);
       console.log(`✅ Coverage Reports: ${testScripts.coverage} scripts`);
-      
+
       this.testResults.testTypes = testScripts;
-      
+
     } catch (error) {
       console.log('⚠️ Could not analyze test scripts');
     }
@@ -313,7 +313,7 @@ class ComprehensiveTestAnalyzer {
   async assessProductionReadiness() {
     console.log('\n🚀 Phase 5: Production Readiness Assessment');
     console.log('==========================================');
-    
+
     const readinessChecks = {
       hasUnitTests: this.testResults.testTypes.unit > 0,
       hasIntegrationTests: this.testResults.testTypes.integration > 0,
@@ -322,28 +322,28 @@ class ComprehensiveTestAnalyzer {
       hasPerformanceTests: this.testResults.testTypes.performance > 0,
       hasTestingFrameworks: this.testResults.frameworksUsed.size > 0,
       hasComprehensiveTestSuite: this.testResults.testFileCount + this.testResults.specFileCount > 50,
-      hasServiceSpecificTests: Object.values(this.testResults.serviceAnalysis).some(s => 
+      hasServiceSpecificTests: Object.values(this.testResults.serviceAnalysis).some(s =>
         s.unit > 0 || s.integration > 0 || s.e2e > 0
       )
     };
-    
+
     // Calculate production readiness score
     const totalChecks = Object.keys(readinessChecks).length;
     const passedChecks = Object.values(readinessChecks).filter(Boolean).length;
     const readinessScore = Math.round((passedChecks / totalChecks) * 100);
-    
+
     console.log('🎯 Production Readiness Checklist:');
     for (const [check, passed] of Object.entries(readinessChecks)) {
       console.log(`${passed ? '✅' : '❌'} ${this.formatCheckName(check)}`);
     }
-    
+
     console.log(`\n📊 Production Readiness Score: ${readinessScore}%`);
-    
+
     this.testResults.productionReadiness = {
       score: readinessScore,
       checks: readinessChecks,
-      status: readinessScore >= 80 ? 'PRODUCTION_READY' : 
-              readinessScore >= 60 ? 'NEEDS_IMPROVEMENT' : 'NOT_READY'
+      status: readinessScore >= 80 ? 'PRODUCTION_READY' :
+        readinessScore >= 60 ? 'NEEDS_IMPROVEMENT' : 'NOT_READY'
     };
   }
 
@@ -357,7 +357,7 @@ class ComprehensiveTestAnalyzer {
   async generateFinalReport() {
     console.log('\n📋 Phase 6: Final Testing Report');
     console.log('===============================');
-    
+
     const report = {
       timestamp: new Date().toISOString(),
       summary: {
@@ -368,17 +368,17 @@ class ComprehensiveTestAnalyzer {
       },
       details: this.testResults
     };
-    
+
     console.log('🎯 COMPREHENSIVE TESTING SUMMARY');
     console.log('===============================');
     console.log(`📁 Total Test Files: ${report.summary.totalTestFiles}`);
     console.log(`🧪 Testing Frameworks: ${report.summary.frameworksUsed.join(', ')}`);
     console.log(`📊 Production Readiness: ${report.summary.productionReadinessScore}%`);
     console.log(`🚀 Status: ${report.summary.status}`);
-    
+
     console.log('\n🔍 DETAILED BREAKDOWN:');
     console.log('======================');
-    
+
     // Test Type Distribution
     console.log('📊 Test Type Distribution:');
     for (const [type, count] of Object.entries(this.testResults.testTypes)) {
@@ -386,7 +386,7 @@ class ComprehensiveTestAnalyzer {
         console.log(`   ${type}: ${count} test scripts`);
       }
     }
-    
+
     // Service Coverage
     console.log('\n🏢 Service-Specific Testing:');
     for (const [service, tests] of Object.entries(this.testResults.serviceAnalysis)) {
@@ -395,23 +395,23 @@ class ComprehensiveTestAnalyzer {
         console.log(`   ${service}: ${total} tests (${tests.unit}u/${tests.integration}i/${tests.e2e}e/${tests.security}s/${tests.performance}p)`);
       }
     }
-    
+
     // Framework Usage
     console.log('\n🧪 Framework Analysis:');
     for (const framework of this.testResults.frameworksUsed) {
       console.log(`   ✅ ${framework}: Active`);
     }
-    
+
     // Production Readiness Details
     console.log('\n🚀 Production Readiness Analysis:');
     for (const [check, passed] of Object.entries(this.testResults.productionReadiness.checks)) {
       console.log(`   ${passed ? '✅' : '❌'} ${this.formatCheckName(check)}`);
     }
-    
+
     // Final Assessment
     console.log('\n🏆 FINAL ASSESSMENT:');
     console.log('===================');
-    
+
     if (this.testResults.productionReadiness.score >= 80) {
       console.log('🎉 EXCELLENT! The CODAI ecosystem has comprehensive testing coverage.');
       console.log('✅ Production-ready with robust testing infrastructure.');
@@ -426,7 +426,7 @@ class ComprehensiveTestAnalyzer {
       console.log('🚨 Critical gaps in testing coverage.');
       console.log('🛠️ Implement comprehensive testing before production deployment.');
     }
-    
+
     return report;
   }
 }
@@ -434,7 +434,7 @@ class ComprehensiveTestAnalyzer {
 // CLI execution
 if (import.meta.url === `file://${process.argv[1]}`) {
   const analyzer = new ComprehensiveTestAnalyzer();
-  
+
   analyzer.runComprehensiveAnalysis()
     .then((results) => {
       console.log('\n🎯 Analysis completed successfully!');

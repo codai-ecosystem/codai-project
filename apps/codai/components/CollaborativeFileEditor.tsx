@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import RealTimeCodeAssistant from './RealTimeCodeAssistant'
@@ -755,3 +757,4 @@ export default function CollaborativeFileEditor({
         </div>
     )
 }
+

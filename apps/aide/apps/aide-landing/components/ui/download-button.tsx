@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
@@ -269,3 +271,4 @@ export function DownloadButton({
 		</div>
 	);
 }
+

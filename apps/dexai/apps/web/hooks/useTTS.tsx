@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { useCallback, useEffect, useState } from 'react';
 
@@ -163,3 +165,4 @@ export default function useTTS() {
     isEnabled: settings.enabled,
   };
 }
+

@@ -22,7 +22,7 @@ import cors from 'cors';
 const helmet = (req: Request, res: Response, next: NextFunction) => {
     // OWASP-compliant comprehensive security headers
     res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
-    res.setHeader('Content-Security-Policy', 
+    res.setHeader('Content-Security-Policy',
         "default-src 'self'; " +
         "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
         "style-src 'self' 'unsafe-inline'; " +
@@ -35,14 +35,14 @@ const helmet = (req: Request, res: Response, next: NextFunction) => {
     res.setHeader('X-Frame-Options', 'DENY');
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-    res.setHeader('Permissions-Policy', 
+    res.setHeader('Permissions-Policy',
         'camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), speaker=(), fullscreen=(self), sync-xhr=()'
     );
-    
+
     // Remove server identification headers
     res.removeHeader('X-Powered-By');
     res.removeHeader('Server');
-    
+
     next();
 };
 const compression = (req: Request, res: Response, next: NextFunction) => next();

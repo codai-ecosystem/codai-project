@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Activity, Users, Shield, TrendingUp, Bell, Settings, Lock, Globe, Zap, Database, AlertTriangle, Eye, BarChart3, Monitor } from 'lucide-react'
@@ -251,3 +253,4 @@ function Dashboard({ title, content, onClick, onSubmit, data }: DashboardProps) 
 // Export with both uppercase and lowercase for compatibility
 export default Dashboard
 export { Dashboard as dashboard }
+

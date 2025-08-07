@@ -38,7 +38,7 @@ export const ECOSYSTEM_SERVICES: Record<string, ServiceEndpoint> = {
     apiPath: '/api',
     capabilities: ['memory_management', 'context_storage', 'intelligent_recall', 'agent_memory']
   },
-  
+
   codai: {
     name: 'CODAI Platform',
     domain: 'codai.ro',
@@ -48,7 +48,7 @@ export const ECOSYSTEM_SERVICES: Record<string, ServiceEndpoint> = {
     apiPath: '/api',
     capabilities: ['code_generation', 'ai_assistance', 'project_management', 'development_tools']
   },
-  
+
   romai: {
     name: 'RomAI Intelligence',
     domain: 'romai.codai.ro',
@@ -58,7 +58,7 @@ export const ECOSYSTEM_SERVICES: Record<string, ServiceEndpoint> = {
     apiPath: '/api',
     capabilities: ['romanian_nlp', 'market_intelligence', 'regulatory_compliance', 'business_analysis']
   },
-  
+
   bancai: {
     name: 'BancAI FinTech',
     domain: 'bancai.codai.ro',
@@ -68,7 +68,7 @@ export const ECOSYSTEM_SERVICES: Record<string, ServiceEndpoint> = {
     apiPath: '/api',
     capabilities: ['financial_services', 'payment_processing', 'compliance_automation', 'risk_analysis']
   },
-  
+
   admin: {
     name: 'Admin Dashboard',
     domain: 'admin.codai.ro',
@@ -78,7 +78,7 @@ export const ECOSYSTEM_SERVICES: Record<string, ServiceEndpoint> = {
     apiPath: '/api',
     capabilities: ['system_administration', 'user_management', 'monitoring', 'configuration']
   },
-  
+
   hub: {
     name: 'CODAI Hub',
     domain: 'hub.codai.ro',
@@ -88,7 +88,7 @@ export const ECOSYSTEM_SERVICES: Record<string, ServiceEndpoint> = {
     apiPath: '/api',
     capabilities: ['service_integration', 'data_aggregation', 'workflow_orchestration', 'api_gateway']
   },
-  
+
   control: {
     name: 'ControlAI',
     domain: 'control.codai.ro',
@@ -98,7 +98,7 @@ export const ECOSYSTEM_SERVICES: Record<string, ServiceEndpoint> = {
     apiPath: '/api',
     capabilities: ['project_management', 'task_automation', 'resource_allocation', 'timeline_optimization']
   },
-  
+
   id: {
     name: 'ID Service',
     domain: 'id.codai.ro',
@@ -108,7 +108,7 @@ export const ECOSYSTEM_SERVICES: Record<string, ServiceEndpoint> = {
     apiPath: '/api',
     capabilities: ['authentication', 'authorization', 'user_identity', 'security_tokens']
   },
-  
+
   apps: {
     name: 'Applications Portal',
     domain: 'apps.codai.ro',
@@ -118,7 +118,7 @@ export const ECOSYSTEM_SERVICES: Record<string, ServiceEndpoint> = {
     apiPath: '/api',
     capabilities: ['app_deployment', 'marketplace', 'application_management', 'service_catalog']
   },
-  
+
   gateway: {
     name: 'API Gateway',
     domain: 'api.codai.ro',
@@ -128,7 +128,7 @@ export const ECOSYSTEM_SERVICES: Record<string, ServiceEndpoint> = {
     apiPath: '/v1',
     capabilities: ['api_routing', 'load_balancing', 'rate_limiting', 'authentication_proxy']
   },
-  
+
   // Local development service
   cbd: {
     name: 'CBD Universal Database',
@@ -165,7 +165,7 @@ export const COMMUNICATION_RULES: CommunicationRule[] = [
     retries: 3,
     authenticated: true
   },
-  
+
   // RomAI → MemorAI for Romanian context storage
   {
     from: 'romai',
@@ -176,7 +176,7 @@ export const COMMUNICATION_RULES: CommunicationRule[] = [
     retries: 3,
     authenticated: true
   },
-  
+
   // All services → ID Service for authentication
   {
     from: '*',
@@ -187,7 +187,7 @@ export const COMMUNICATION_RULES: CommunicationRule[] = [
     retries: 2,
     authenticated: false // Initial auth request
   },
-  
+
   // All services → Gateway for API access
   {
     from: '*',
@@ -198,7 +198,7 @@ export const COMMUNICATION_RULES: CommunicationRule[] = [
     retries: 3,
     authenticated: true
   },
-  
+
   // Admin → All services for monitoring
   {
     from: 'admin',
@@ -209,7 +209,7 @@ export const COMMUNICATION_RULES: CommunicationRule[] = [
     retries: 2,
     authenticated: true
   },
-  
+
   // Hub → All services for orchestration
   {
     from: 'hub',
@@ -220,7 +220,7 @@ export const COMMUNICATION_RULES: CommunicationRule[] = [
     retries: 3,
     authenticated: true
   },
-  
+
   // ControlAI → All services for project coordination
   {
     from: 'control',
@@ -231,7 +231,7 @@ export const COMMUNICATION_RULES: CommunicationRule[] = [
     retries: 3,
     authenticated: true
   },
-  
+
   // BancAI → ID Service for financial authentication
   {
     from: 'bancai',
@@ -258,7 +258,7 @@ export class EcosystemCommunicationClient {
     if (!service) {
       throw new Error(`Unknown service: ${serviceId}`);
     }
-    
+
     this.baseUrl = `${service.protocol}://${service.domain}:${service.port}`;
     this.apiKey = apiKey || process.env.ECOSYSTEM_API_KEY || '';
     this.timeout = 10000;
@@ -323,7 +323,7 @@ export class EcosystemCommunicationClient {
 
       } catch (error) {
         lastError = error as Error;
-        
+
         if (attempt < retries) {
           // Exponential backoff
           const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
@@ -387,7 +387,7 @@ export class EcosystemCommunicationClient {
       services.map(async (serviceId) => {
         const health = await this.checkServiceHealth(serviceId);
         const service = ECOSYSTEM_SERVICES[serviceId];
-        
+
         return {
           id: serviceId,
           name: service.name,
@@ -437,7 +437,7 @@ export class EcosystemConfig {
    */
   static isCommunicationAllowed(from: string, to: string, type: string): boolean {
     return COMMUNICATION_RULES.some(
-      rule => 
+      rule =>
         (rule.from === from || rule.from === '*') &&
         (rule.to === to || rule.to === '*') &&
         rule.type === type

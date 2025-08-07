@@ -21,28 +21,28 @@ class CODAIPlaywrightTester {
   async runComprehensiveE2ETests() {
     console.log('🎭 Starting Comprehensive E2E Testing with Playwright MCP');
     console.log('=========================================================');
-    
+
     try {
       // Phase 1: Application Load Testing
       await this.testApplicationLoading();
-      
+
       // Phase 2: Navigation Testing
       await this.testCrossApplicationNavigation();
-      
+
       // Phase 3: User Journey Testing
       await this.testCriticalUserJourneys();
-      
+
       // Phase 4: Interactive Feature Testing
       await this.testInteractiveFeatures();
-      
+
       // Phase 5: Performance Testing
       await this.testRuntimePerformance();
-      
+
       // Phase 6: Visual Testing
       await this.testVisualRegression();
-      
+
       await this.generateE2EReport();
-      
+
     } catch (error) {
       console.error('❌ E2E Testing Failed:', error.message);
       throw error;
@@ -52,17 +52,17 @@ class CODAIPlaywrightTester {
   async testApplicationLoading() {
     console.log('\n📱 Phase 1: Application Load Testing');
     console.log('------------------------------------');
-    
+
     for (const app of this.applications) {
       try {
         console.log(`🔄 Testing ${app.name} (${app.url})...`);
-        
+
         const startTime = Date.now();
-        
+
         // This would use Playwright MCP to navigate to the application
         // For now, we'll simulate the testing process
         const loadTime = await this.simulatePageLoad(app.url);
-        
+
         if (loadTime < 3000) {
           console.log(`✅ ${app.name}: Loaded in ${loadTime}ms`);
           this.testResults.push({
@@ -82,7 +82,7 @@ class CODAIPlaywrightTester {
             target: '<3000ms'
           });
         }
-        
+
       } catch (error) {
         console.log(`❌ ${app.name}: Load failed - ${error.message}`);
         this.testResults.push({
@@ -98,7 +98,7 @@ class CODAIPlaywrightTester {
   async testCrossApplicationNavigation() {
     console.log('\n🧭 Phase 2: Cross-Application Navigation');
     console.log('----------------------------------------');
-    
+
     const navigationTests = [
       { from: 'Hub', to: 'CODAI', description: 'Hub → CODAI navigation' },
       { from: 'Hub', to: 'MemorAI', description: 'Hub → MemorAI navigation' },
@@ -106,20 +106,20 @@ class CODAIPlaywrightTester {
       { from: 'CODAI', to: 'MemorAI', description: 'CODAI → MemorAI integration' },
       { from: 'MemorAI', to: 'CODAI', description: 'MemorAI → CODAI integration' }
     ];
-    
+
     for (const nav of navigationTests) {
       try {
         console.log(`🔄 Testing ${nav.description}...`);
-        
+
         await this.simulateNavigation(nav.from, nav.to);
-        
+
         console.log(`✅ ${nav.description}: Success`);
         this.testResults.push({
           category: 'Navigation',
           test: nav.description,
           status: 'passed'
         });
-        
+
       } catch (error) {
         console.log(`❌ ${nav.description}: Failed - ${error.message}`);
         this.testResults.push({
@@ -135,7 +135,7 @@ class CODAIPlaywrightTester {
   async testCriticalUserJourneys() {
     console.log('\n👤 Phase 3: Critical User Journey Testing');
     console.log('-----------------------------------------');
-    
+
     const userJourneys = [
       {
         name: 'Complete User Onboarding',
@@ -186,13 +186,13 @@ class CODAIPlaywrightTester {
         ]
       }
     ];
-    
+
     for (const journey of userJourneys) {
       try {
         console.log(`🔄 Testing ${journey.name}...`);
-        
+
         await this.executeUserJourney(journey);
-        
+
         console.log(`✅ ${journey.name}: Complete`);
         this.testResults.push({
           category: 'User Journeys',
@@ -200,7 +200,7 @@ class CODAIPlaywrightTester {
           status: 'passed',
           steps: journey.steps.length
         });
-        
+
       } catch (error) {
         console.log(`❌ ${journey.name}: Failed - ${error.message}`);
         this.testResults.push({
@@ -216,7 +216,7 @@ class CODAIPlaywrightTester {
   async testInteractiveFeatures() {
     console.log('\n🖱️ Phase 4: Interactive Feature Testing');
     console.log('---------------------------------------');
-    
+
     const interactiveTests = [
       { app: 'CODAI', feature: 'AI Code Generation', critical: true },
       { app: 'CODAI', feature: 'Real-time Chat', critical: true },
@@ -229,13 +229,13 @@ class CODAIPlaywrightTester {
       { app: 'Hub', feature: 'Service Discovery', critical: true },
       { app: 'ControlAI', feature: 'Project Management', critical: false }
     ];
-    
+
     for (const test of interactiveTests) {
       try {
         console.log(`🔄 Testing ${test.app} - ${test.feature}...`);
-        
+
         await this.testInteractiveFeature(test.app, test.feature);
-        
+
         console.log(`✅ ${test.app} - ${test.feature}: Working`);
         this.testResults.push({
           category: 'Interactive Features',
@@ -243,7 +243,7 @@ class CODAIPlaywrightTester {
           status: 'passed',
           critical: test.critical
         });
-        
+
       } catch (error) {
         console.log(`❌ ${test.app} - ${test.feature}: Failed - ${error.message}`);
         this.testResults.push({
@@ -260,7 +260,7 @@ class CODAIPlaywrightTester {
   async testRuntimePerformance() {
     console.log('\n⚡ Phase 5: Runtime Performance Testing');
     console.log('--------------------------------------');
-    
+
     const performanceTests = [
       { metric: 'Page Load Time', target: 2000, unit: 'ms' },
       { metric: 'First Contentful Paint', target: 1500, unit: 'ms' },
@@ -269,21 +269,21 @@ class CODAIPlaywrightTester {
       { metric: 'Memory Usage', target: 100, unit: 'MB' },
       { metric: 'CPU Usage', target: 50, unit: '%' }
     ];
-    
+
     for (const app of this.applications.slice(0, 4)) { // Test main apps
       console.log(`🔄 Performance testing ${app.name}...`);
-      
+
       for (const test of performanceTests) {
         try {
           const value = await this.measurePerformanceMetric(app, test.metric);
           const passed = value <= test.target;
-          
+
           if (passed) {
             console.log(`✅ ${app.name} - ${test.metric}: ${value}${test.unit} (target: <${test.target}${test.unit})`);
           } else {
             console.log(`❌ ${app.name} - ${test.metric}: ${value}${test.unit} (target: <${test.target}${test.unit})`);
           }
-          
+
           this.testResults.push({
             category: 'Performance',
             test: `${app.name} - ${test.metric}`,
@@ -291,7 +291,7 @@ class CODAIPlaywrightTester {
             value: `${value}${test.unit}`,
             target: `<${test.target}${test.unit}`
           });
-          
+
         } catch (error) {
           console.log(`❌ ${app.name} - ${test.metric}: Error - ${error.message}`);
           this.testResults.push({
@@ -308,7 +308,7 @@ class CODAIPlaywrightTester {
   async testVisualRegression() {
     console.log('\n👁️ Phase 6: Visual Regression Testing');
     console.log('------------------------------------');
-    
+
     const visualTests = [
       { app: 'Hub', page: 'Landing Page', critical: true },
       { app: 'CODAI', page: 'Dashboard', critical: true },
@@ -316,13 +316,13 @@ class CODAIPlaywrightTester {
       { app: 'BancAI', page: 'Account Overview', critical: true },
       { app: 'Admin', page: 'System Dashboard', critical: false }
     ];
-    
+
     for (const test of visualTests) {
       try {
         console.log(`🔄 Visual testing ${test.app} - ${test.page}...`);
-        
+
         await this.captureAndCompareScreenshot(test.app, test.page);
-        
+
         console.log(`✅ ${test.app} - ${test.page}: Visual consistency maintained`);
         this.testResults.push({
           category: 'Visual Regression',
@@ -330,7 +330,7 @@ class CODAIPlaywrightTester {
           status: 'passed',
           critical: test.critical
         });
-        
+
       } catch (error) {
         console.log(`❌ ${test.app} - ${test.page}: Visual differences detected - ${error.message}`);
         this.testResults.push({
@@ -371,7 +371,7 @@ class CODAIPlaywrightTester {
 
   async measurePerformanceMetric(app, metric) {
     await this.delay(100);
-    
+
     const metrics = {
       'Page Load Time': () => 800 + Math.random() * 400,
       'First Contentful Paint': () => 600 + Math.random() * 300,
@@ -380,7 +380,7 @@ class CODAIPlaywrightTester {
       'Memory Usage': () => 60 + Math.random() * 40,
       'CPU Usage': () => 20 + Math.random() * 30
     };
-    
+
     return Math.round(metrics[metric]() * 100) / 100;
   }
 
@@ -391,9 +391,9 @@ class CODAIPlaywrightTester {
 
   async generateE2EReport() {
     console.log('\n📊 Generating E2E Test Report...');
-    
+
     const summary = this.calculateTestSummary();
-    
+
     const report = {
       timestamp: new Date().toISOString(),
       summary,
@@ -401,17 +401,17 @@ class CODAIPlaywrightTester {
       applications: this.applications.length,
       categories: ['Application Loading', 'Navigation', 'User Journeys', 'Interactive Features', 'Performance', 'Visual Regression']
     };
-    
+
     const reportPath = 'tests/reports/e2e-test-report.json';
     require('fs').writeFileSync(reportPath, JSON.stringify(report, null, 2));
-    
+
     console.log(`📄 E2E Report saved: ${reportPath}`);
     console.log(`📊 Summary: ${summary.passed}/${summary.total} tests passed (${summary.passRate.toFixed(1)}%)`);
-    
+
     if (summary.criticalFailures > 0) {
       console.log(`⚠️ Critical Failures: ${summary.criticalFailures}`);
     }
-    
+
     return report;
   }
 
@@ -420,10 +420,10 @@ class CODAIPlaywrightTester {
     const passed = this.testResults.filter(r => r.status === 'passed').length;
     const failed = this.testResults.filter(r => r.status === 'failed').length;
     const errors = this.testResults.filter(r => r.status === 'error').length;
-    const criticalFailures = this.testResults.filter(r => 
+    const criticalFailures = this.testResults.filter(r =>
       (r.status === 'failed' || r.status === 'error') && r.critical
     ).length;
-    
+
     return {
       total,
       passed,

@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import Input from '@/components/ui/Input';
 import { FiBook } from '../../icons/FeatherIcons';
@@ -22,3 +24,4 @@ export default function CourseNameField({
     />
   );
 }
+

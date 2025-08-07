@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { motion } from 'framer-motion'
 import { Play, Pause, Download, Upload, RefreshCw, Settings } from 'lucide-react'
 import { useState } from 'react'
@@ -80,3 +82,4 @@ export function ActionPanel({ colorScheme }: ActionPanelProps) {
         </motion.div>
     )
 }
+

@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useAuth } from '../../lib/auth-context'
 import { EnhancedDashboard } from '../../components/enhanced/EnhancedDashboard'
 import { CommandPalette } from '../../components/enhanced/CommandPalette'
@@ -208,3 +210,4 @@ export default function AIDEDashboard() {
 		</AccessibilityProvider>
 	)
 }
+

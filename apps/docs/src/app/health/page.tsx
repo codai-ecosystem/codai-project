@@ -1,3 +1,4 @@
+import React from 'react'
 import { HealthStatus } from '@/components/health/health-status'
 
 export default function HealthPage() {
@@ -10,3 +11,4 @@ export default function HealthPage() {
     </main>
   )
 }
+

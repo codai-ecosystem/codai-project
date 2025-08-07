@@ -79,7 +79,7 @@ const memorai = {
   },
   memory: {
     store: async (context: string, data: any, metadata?: any) => ({ success: true }),
-    recall: async (context: string, query: string) => ({ 
+    recall: async (context: string, query: string) => ({
       memories: [
         // Sample memory structure
         {
@@ -90,9 +90,9 @@ const memorai = {
             type: 'project_creation'
           }
         }
-      ], 
-      results: [], 
-      success: true 
+      ],
+      results: [],
+      success: true
     })
   },
   storage: {
@@ -105,9 +105,9 @@ const enhancedAuth = {
   initialize: async () => ({ success: true }),
   authenticate: async (credentials: any) => ({ user: null, success: true }),
   authorize: async (user: any, resource: string) => ({ authorized: false, success: true }),
-  getCurrentUser: async () => ({ 
-    id: 'stub-user-id', 
-    email: 'stub@example.com', 
+  getCurrentUser: async () => ({
+    id: 'stub-user-id',
+    email: 'stub@example.com',
     name: 'Stub User',
     role: 'developer'
   }),

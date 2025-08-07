@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -558,3 +560,4 @@ const useLocalStorage = (key, initialValue) => {
     </div>
   )
 }
+

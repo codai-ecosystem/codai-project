@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { Download, WifiOff } from 'lucide-react';
 import { useEffect } from 'react';
@@ -137,3 +139,4 @@ export function ServiceWorkerProvider({
 
   return <div data-testid="service-worker-provider">{children}</div>;
 }
+

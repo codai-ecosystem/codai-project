@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { ProtectedRoute } from '@codai/shared-ui'
 import { DashboardPage } from '@codai/shared-ui'
 import {
@@ -148,3 +150,4 @@ export default function Dashboard() {
     </ProtectedRoute>
   )
 }
+

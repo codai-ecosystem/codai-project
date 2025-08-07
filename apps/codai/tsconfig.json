@@ -26,7 +26,9 @@
       "@/*": ["./src/*"],
       "@/components/*": ["./src/components/*"],
       "@/lib/*": ["./src/lib/*"],
-      "@/types/*": ["./src/types/*"]
+      "@/types/*": ["./src/types/*"],
+      "@codai/auth": ["../../packages/codai-auth/src"],
+      "@codai/auth/*": ["../../packages/codai-auth/src/*"]
     },
     "types": ["node", "react", "react-dom"],
     "typeRoots": [

@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -384,3 +386,4 @@ export function FileUpload({
     </div>
   )
 }
+

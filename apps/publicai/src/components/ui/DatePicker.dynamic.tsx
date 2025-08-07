@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import dynamic from 'next/dynamic';
 
@@ -21,3 +23,4 @@ export const Calendar = dynamic(
   () => import('./DatePicker').then(mod => ({ default: mod.Calendar })),
   { loading: () => <LoadingSpinner className="h-8 w-8" />, ssr: false }
 );
+

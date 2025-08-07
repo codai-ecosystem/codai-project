@@ -2,7 +2,11 @@
   "dashboard": {
     "id": null,
     "title": "CODAI Executive Dashboard",
-    "tags": ["codai", "executive", "overview"],
+    "tags": [
+      "codai",
+      "executive",
+      "overview"
+    ],
     "timezone": "browser",
     "panels": [
       {

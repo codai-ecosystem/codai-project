@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "next dev -p 4007",
     "build": "next build",
-    "start": "next start -p 4002",
+    "start": "next start -p 4007",
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",

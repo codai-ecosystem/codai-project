@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { DashboardPage } from '@codai/shared-ui'
 import { Zap, Users, Settings, BarChart3, Plus, Shield } from 'lucide-react'
 
@@ -83,3 +85,4 @@ export default function Dashboard() {
     </div>
   )
 }
+

@@ -1,3 +1,4 @@
+import React from 'react'
 import { LogOut, Menu, Settings, User } from 'lucide-react';
 import Link from 'next/link';
 import type { JSX } from 'react';
@@ -161,3 +162,4 @@ export function Header(): JSX.Element {
     </header>
   );
 }
+

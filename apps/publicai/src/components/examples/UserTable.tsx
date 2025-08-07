@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import type { JSX } from 'react';
 import { useEffect, useState } from 'react';
@@ -130,3 +132,4 @@ export function UserTable(): JSX.Element {
         </div>
     );
 }
+

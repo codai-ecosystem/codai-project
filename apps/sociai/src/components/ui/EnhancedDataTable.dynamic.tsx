@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import dynamic from 'next/dynamic';
 import type { ComponentType } from 'react';
@@ -19,3 +21,4 @@ export { useEnhancedDataTable, useVirtualScrolling } from './EnhancedDataTable';
 
 // Default export for backward compatibility
 export default EnhancedDataTable;
+

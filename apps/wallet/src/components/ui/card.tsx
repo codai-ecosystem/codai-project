@@ -1,3 +1,4 @@
+import React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority';
 import { forwardRef, type HTMLAttributes } from 'react';
 
@@ -112,3 +113,4 @@ export {
   CardHeader,
   CardTitle,
 };
+

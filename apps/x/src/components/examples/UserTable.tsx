@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { limit, orderBy } from 'firebase/firestore';
 import type { JSX } from 'react';
@@ -206,3 +208,4 @@ function LoadingSpinner({ className }: { className?: string }) {
     </svg>
   );
 }
+

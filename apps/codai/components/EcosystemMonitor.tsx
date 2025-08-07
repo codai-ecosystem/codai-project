@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
@@ -373,7 +375,7 @@ export function EcosystemMonitor() {
                         >
                             <div className="flex items-center space-x-3">
                                 <div className={`w-2 h-2 rounded-full ${app.status === 'online' ? 'bg-emerald-400 animate-pulse' :
-                                        app.status === 'maintenance' ? 'bg-yellow-400' : 'bg-red-400'
+                                    app.status === 'maintenance' ? 'bg-yellow-400' : 'bg-red-400'
                                     }`} />
                                 <span className="text-white">{app.name}</span>
                                 <span className="text-sm text-slate-400">
@@ -391,3 +393,4 @@ export function EcosystemMonitor() {
         </div>
     )
 }
+

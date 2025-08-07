@@ -3,7 +3,10 @@
     "ControlAIMCP": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "controlai-mcp"],
+      "args": [
+        "-y",
+        "controlai-mcp"
+      ],
       "env": {
         "NODE_ENV": "development",
         "DOTENV_CONFIG_PATH": "E:\\GitHub\\codai-project\\.env",
@@ -12,7 +15,9 @@
       },
       "dev": {
         "watch": "src/**/*.ts",
-        "debug": { "type": "node" }
+        "debug": {
+          "type": "node"
+        }
       },
       "resilience": {
         "enabled": true,
@@ -39,7 +44,9 @@
       },
       "dev": {
         "watch": "src/**/*.ts",
-        "debug": { "type": "node" }
+        "debug": {
+          "type": "node"
+        }
       },
       "resilience": {
         "enabled": true,
@@ -56,7 +63,10 @@
     "GlassMCP": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@codai/glass-mcp"],
+      "args": [
+        "-y",
+        "@codai/glass-mcp"
+      ],
       "env": {
         "GLASS_LOG_LEVEL": "debug",
         "GLASS_MAX_WINDOWS": "1000",
@@ -65,7 +75,9 @@
       },
       "dev": {
         "watch": "src/**/*.ts",
-        "debug": { "type": "node" }
+        "debug": {
+          "type": "node"
+        }
       },
       "resilience": {
         "enabled": true,
@@ -79,9 +91,14 @@
     "PlaywrightMCP": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@executeautomation/playwright-mcp-server"],
+      "args": [
+        "-y",
+        "@executeautomation/playwright-mcp-server"
+      ],
       "dev": {
-        "debug": { "type": "node" }
+        "debug": {
+          "type": "node"
+        }
       },
       "resilience": {
         "enabled": true,
@@ -93,9 +110,14 @@
     "SimpleMemoryMCP": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
       "dev": {
-        "debug": { "type": "node" }
+        "debug": {
+          "type": "node"
+        }
       },
       "resilience": {
         "enabled": true,
@@ -108,9 +130,14 @@
     "Context7MCP": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp"],
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ],
       "dev": {
-        "debug": { "type": "node" }
+        "debug": {
+          "type": "node"
+        }
       },
       "resilience": {
         "enabled": true,
@@ -122,9 +149,14 @@
     "SequentialThinkingMCP": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
       "dev": {
-        "debug": { "type": "node" }
+        "debug": {
+          "type": "node"
+        }
       },
       "resilience": {
         "enabled": true,
@@ -136,12 +168,17 @@
     "RomaiIntelligenceMCP": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@codai/romai-mcp-standalone"],
+      "args": [
+        "-y",
+        "@codai/romai-mcp-standalone"
+      ],
       "env": {
         "DOTENV_CONFIG_PATH": "E:\\GitHub\\codai-project\\.env"
       },
       "dev": {
-        "debug": { "type": "node" }
+        "debug": {
+          "type": "node"
+        }
       },
       "resilience": {
         "enabled": true,
@@ -166,7 +203,10 @@
     "monitoringInterval": 30000,
     "conversationProtection": {
       "enabled": true,
-      "criticalServers": ["MemoraiMCP", "ControlAIMCP"],
+      "criticalServers": [
+        "MemoraiMCP",
+        "ControlAIMCP"
+      ],
       "fallbackStrategies": {
         "memory": "local_session_cache",
         "coordination": "basic_task_management"
@@ -174,7 +214,10 @@
     },
     "notifications": {
       "enabled": true,
-      "channels": ["console", "file"],
+      "channels": [
+        "console",
+        "file"
+      ],
       "logPath": "E:\\GitHub\\codai-project\\logs\\mcp-resilience.log"
     }
   }

@@ -5,8 +5,8 @@ export function middleware(request: NextRequest) {
 
   // OWASP-compliant security headers
   response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
-  
-  response.headers.set('Content-Security-Policy', 
+
+  response.headers.set('Content-Security-Policy',
     "default-src 'self'; " +
     "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://va.vercel-scripts.com; " +
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
@@ -17,14 +17,14 @@ export function middleware(request: NextRequest) {
     "base-uri 'self'; " +
     "form-action 'self';"
   );
-  
+
   response.headers.set('X-Frame-Options', 'DENY');
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-  response.headers.set('Permissions-Policy', 
+  response.headers.set('Permissions-Policy',
     'camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), speaker=(), fullscreen=(self), sync-xhr=()'
   );
-  
+
   // CORS headers for API routes
   if (request.nextUrl.pathname.startsWith('/api/')) {
     response.headers.set('Access-Control-Allow-Origin', 'https://control.codai.ro');

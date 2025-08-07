@@ -1,3 +1,4 @@
+import React from 'react'
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowLeft, CheckCircle, Loader2, Mail } from 'lucide-react';
 import Link from 'next/link';
@@ -188,3 +189,4 @@ export function ForgotPasswordForm({
     </Card>
   );
 }
+

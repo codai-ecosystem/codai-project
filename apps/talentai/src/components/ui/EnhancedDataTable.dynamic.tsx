@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import dynamic from 'next/dynamic';
 
@@ -11,3 +13,4 @@ const EnhancedDataTable = dynamic(() => import('./EnhancedDataTable').then(mod =
 
 export default EnhancedDataTable;
 export { EnhancedDataTable };
+

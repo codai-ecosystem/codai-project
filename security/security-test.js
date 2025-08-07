@@ -24,12 +24,12 @@ class BasicSecurityTester {
   async checkSecurityHeaders(url) {
     try {
       console.log(`  Testing: ${url}`);
-      
-      const response = await fetch(url, { 
+
+      const response = await fetch(url, {
         method: 'HEAD',
         redirect: 'manual' // Don't follow redirects
       });
-      
+
       const headers = response.headers;
       const securityHeaders = {
         'strict-transport-security': headers.get('strict-transport-security'),
@@ -39,14 +39,14 @@ class BasicSecurityTester {
         'referrer-policy': headers.get('referrer-policy'),
         'permissions-policy': headers.get('permissions-policy')
       };
-      
+
       const score = Object.values(securityHeaders).filter(h => h).length;
       const grade = this.calculateGrade(score, 6);
-      
+
       console.log(`    Status: ${response.status}`);
       console.log(`    Security Score: ${score}/6 (${grade})`);
-      console.log(`    Headers Present: ${Object.entries(securityHeaders).filter(([k,v]) => v).map(([k]) => k).join(', ')}`);
-      
+      console.log(`    Headers Present: ${Object.entries(securityHeaders).filter(([k, v]) => v).map(([k]) => k).join(', ')}`);
+
       return {
         url,
         status: response.status,
@@ -81,28 +81,28 @@ class BasicSecurityTester {
     console.log('🔒 CODAI Security Headers Assessment');
     console.log('='.repeat(50));
     console.log('Testing OWASP-compliant security headers across all applications...\n');
-    
+
     const results = [];
-    
+
     for (const url of this.targetUrls) {
       const result = await this.checkSecurityHeaders(url);
       results.push(result);
-      
+
       if (result.error) {
         console.log(`❌ ${url} - FAILED: ${result.error}\n`);
       } else {
-        const statusIcon = result.grade === 'A+' || result.grade === 'A' ? '✅' : 
-                          result.grade === 'B' || result.grade === 'C' ? '⚠️' : '❌';
+        const statusIcon = result.grade === 'A+' || result.grade === 'A' ? '✅' :
+          result.grade === 'B' || result.grade === 'C' ? '⚠️' : '❌';
         console.log(`${statusIcon} ${url} - ${result.grade} Grade\n`);
       }
     }
-    
+
     // Generate summary
     const validResults = results.filter(r => !r.error);
-    const avgScore = validResults.length > 0 ? 
+    const avgScore = validResults.length > 0 ?
       validResults.reduce((sum, r) => sum + r.score, 0) / validResults.length : 0;
     const avgGrade = this.calculateGrade(avgScore, 6);
-    
+
     console.log('📊 SECURITY ASSESSMENT SUMMARY');
     console.log('='.repeat(50));
     console.log(`Total Applications Tested: ${this.targetUrls.length}`);
@@ -110,7 +110,7 @@ class BasicSecurityTester {
     console.log(`Failed Tests: ${results.filter(r => r.error).length}`);
     console.log(`Average Security Score: ${avgScore.toFixed(1)}/6`);
     console.log(`Overall Security Grade: ${avgGrade}`);
-    
+
     // Detailed breakdown
     console.log('\n📋 Detailed Results:');
     results.forEach(result => {
@@ -120,7 +120,7 @@ class BasicSecurityTester {
         console.log(`  ${result.url}: FAILED - ${result.error}`);
       }
     });
-    
+
     // Recommendations
     console.log('\n💡 Security Recommendations:');
     if (avgScore < 4) {
@@ -133,7 +133,7 @@ class BasicSecurityTester {
       console.log('  ✅ EXCELLENT: Strong security header implementation');
       console.log('  🔧 Maintain: Regular security audits and updates');
     }
-    
+
     return { results, avgScore, avgGrade };
   }
 }

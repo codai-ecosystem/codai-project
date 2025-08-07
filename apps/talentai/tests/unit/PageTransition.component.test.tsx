@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 PageTransition.tsx Component Tests
  * Comprehensive testing for talentai component

@@ -1,3 +1,4 @@
+import React from 'react'
 // LogAI Layout Component - AI Logging & Analytics Platform Layout
 
 'use client'
@@ -448,3 +449,4 @@ export default function LogAILayout({ children }: LogAILayoutProps) {
     </div>
   )
 }
+

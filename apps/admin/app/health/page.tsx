@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * Simple Health Check Page
  * Basic page for testing frontend functionality without complex dependencies
@@ -97,3 +98,4 @@ export default function HealthPage() {
         </div>
     );
 }
+

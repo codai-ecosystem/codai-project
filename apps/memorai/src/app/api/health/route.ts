@@ -14,7 +14,7 @@ export async function GET() {
             memory: process.memoryUsage(),
             capabilities: [
                 'memory_management',
-                'context_storage', 
+                'context_storage',
                 'intelligent_recall',
                 'agent_memory',
                 'ecosystem_integration'

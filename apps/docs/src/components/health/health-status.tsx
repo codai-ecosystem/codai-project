@@ -1,3 +1,4 @@
+import React from 'react'
 interface HealthStatusProps {
   serviceName: string
   port: string
@@ -99,3 +100,4 @@ export function HealthStatus({ serviceName, port }: HealthStatusProps) {
     </div>
   )
 }
+

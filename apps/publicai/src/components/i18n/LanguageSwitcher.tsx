@@ -1,3 +1,4 @@
+import React from 'react'
 import type { JSX } from 'react';
 
 interface LanguageSwitcherProps {
@@ -11,3 +12,4 @@ export function LanguageSwitcher({ mode = 'inline' }: LanguageSwitcherProps): JS
         </div>
     );
 }
+

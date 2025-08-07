@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 
 interface LoadingSpinnerProps {
@@ -51,3 +53,4 @@ export default function LoadingSpinner({
     </div>
   );
 }
+

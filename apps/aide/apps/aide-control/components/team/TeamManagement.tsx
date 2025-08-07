@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -600,3 +602,4 @@ function UserRoleEditor({ user, availableRoles, onRoleChange, onPermissionChange
     </motion.div>
   )
 }
+

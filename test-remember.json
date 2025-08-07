@@ -1,0 +1,21 @@
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/call",
+    "params": {
+        "name": "remember",
+        "arguments": {
+            "agentId": "github-copilot",
+            "content": "Direct HTTP test of MemorAI MCP after implementing CBD DELETE operations. Confirming all memory operations work correctly.",
+            "metadata": {
+                "entityType": "direct_test",
+                "importance": 9,
+                "project": "memorai-validation",
+                "tags": [
+                    "http-test",
+                    "validation"
+                ]
+            }
+        }
+    }
+}

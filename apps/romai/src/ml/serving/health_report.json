@@ -1,6 +1,6 @@
 {
   "timestamp": "2025-08-05T13:23:51.278847",
-  "server_url": "http://localhost:8000",
+  "server_url": "http://localhost:6101",
   "total_endpoints": 7,
   "healthy_endpoints": 5,
   "results": [

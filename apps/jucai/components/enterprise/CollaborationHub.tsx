@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { motion } from 'framer-motion'
 import { Users, MessageCircle, Video, Calendar, FileText, Clock } from 'lucide-react'
 import { useState, useEffect } from 'react'

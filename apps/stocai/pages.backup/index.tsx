@@ -1,3 +1,4 @@
+import React from 'react'
 export default function Home() {
     return (
         <div>
@@ -6,3 +7,4 @@ export default function Home() {
         </div>
     )
 }
+

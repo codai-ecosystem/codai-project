@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { ProtectedRoute } from '@codai/shared-ui'
 import { HomePage } from '@codai/shared-ui'
 
@@ -13,3 +15,4 @@ export default function Home() {
         </ProtectedRoute>
     )
 }
+

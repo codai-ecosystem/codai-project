@@ -1,0 +1,13 @@
+{
+    "jsonrpc": "2.0",
+    "id": 2,
+    "method": "tools/call",
+    "params": {
+        "name": "recall",
+        "arguments": {
+            "agentId": "github-copilot",
+            "query": "CBD DELETE operations",
+            "limit": 5
+        }
+    }
+}

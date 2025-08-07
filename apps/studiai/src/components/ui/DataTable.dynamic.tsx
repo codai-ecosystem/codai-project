@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import dynamic from 'next/dynamic';
 import { LoadingSpinner } from './LoadingSpinner';
@@ -16,3 +18,4 @@ export { DataTable };
 
 // Re-export types
 export type { DataTableColumn, DataTableProps } from './DataTable';
+

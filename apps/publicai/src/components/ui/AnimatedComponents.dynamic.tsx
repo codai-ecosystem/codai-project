@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import dynamic from 'next/dynamic';
 import { LoadingSpinner } from './LoadingSpinner';
@@ -48,3 +50,4 @@ export const Pulse = dynamic(
   () => import('./AnimatedComponents').then(mod => ({ default: mod.Pulse })),
   { loading: () => <LoadingSpinner className="h-8 w-8" />, ssr: false }
 );
+

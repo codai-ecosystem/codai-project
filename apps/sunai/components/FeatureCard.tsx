@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { motion } from 'framer-motion'
 import { LucideIcon } from 'lucide-react'
 
@@ -68,3 +70,4 @@ export function FeatureCard({ feature, colorScheme, delay = 0 }: FeatureCardProp
         </motion.div>
     )
 }
+

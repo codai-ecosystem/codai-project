@@ -1,6 +1,6 @@
+import React from 'react'
 import type { Metadata } from 'next'
-import { Header } from '../components/ui/Header'
-import { Footer } from '../components/ui/Footer'
+import { SharedEcosystemNavigation } from '@codai/shared-components'
 import Script from 'next/script'
 import './globals.css'
 import '../styles/animation-enhancements.css'
@@ -39,50 +39,26 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className="min-h-screen flex flex-col bg-gray-50 animate-auth-fade-in animate-container">
-        <a href="#main-content" className="skip-link sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded z-50">
-          Skip to main content
-        </a>
-        <Header
-          title="CODAI ID"
-          subtitle="Enterprise Identity & Authentication"
-          navigation={[
-            { href: "/", label: "Home" },
-            { href: "/auth/signin", label: "Sign In" },
-            { href: "/auth/signup", label: "Sign Up" }
+      <body className="min-h-screen flex bg-gray-50">
+        <SharedEcosystemNavigation
+          appName="ID"
+          currentPath="/"
+          navigationItems={[
+            { name: 'Dashboard', href: '/dashboard', icon: 'LayoutDashboard' },
+            { name: 'Authentication', href: '/auth', icon: 'Shield' },
+            { name: 'Users', href: '/users', icon: 'Users' },
+            { name: 'Sessions', href: '/sessions', icon: 'Clock' },
+            { name: 'Security', href: '/security', icon: 'Lock' },
+            { name: 'Audit Logs', href: '/audit', icon: 'FileText' },
+            { name: 'Settings', href: '/settings', icon: 'Settings' }
           ]}
-          variant="default"
         />
-        <main id="main-content" className="flex-1 animate-container" role="main">
+        <main className="flex-1 overflow-auto">
           {children}
         </main>
-        <Footer
-          brandText="CODAI ID"
-          copyrightText="© 2024 CODAI Ecosystem. All rights reserved."
-          variant="default"
-          sections={[
-            {
-              title: "Identity Services",
-              links: [
-                { label: "Sign In", href: "/auth/signin" },
-                { label: "Sign Up", href: "/auth/signup" },
-                { label: "Password Reset", href: "/auth/forgot-password" },
-                { label: "Account Settings", href: "/settings" }
-              ]
-            },
-            {
-              title: "Support",
-              links: [
-                { label: "Help Center", href: "/help" },
-                { label: "Privacy Policy", href: "/privacy" },
-                { label: "Terms of Service", href: "/terms" },
-                { label: "Contact Us", href: "/contact" }
-              ]
-            }
-          ]}
-        />
       </body>
     </html>
   )
 }
+
 

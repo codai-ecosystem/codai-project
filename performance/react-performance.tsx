@@ -57,11 +57,11 @@ export const createOptimizedDynamic = (
 };
 
 // Virtualized list component for large datasets
-export const VirtualizedList = memo(({ 
-  items, 
-  renderItem, 
+export const VirtualizedList = memo(({
+  items,
+  renderItem,
   itemHeight = 50,
-  containerHeight = 400 
+  containerHeight = 400
 }: {
   items: any[];
   renderItem: (item: any, index: number) => React.ReactNode;
@@ -69,26 +69,26 @@ export const VirtualizedList = memo(({
   containerHeight?: number;
 }) => {
   const [scrollTop, setScrollTop] = React.useState(0);
-  
+
   const visibleCount = Math.ceil(containerHeight / itemHeight);
   const startIndex = Math.floor(scrollTop / itemHeight);
   const endIndex = Math.min(startIndex + visibleCount + 1, items.length);
-  
-  const visibleItems = useMemo(() => 
+
+  const visibleItems = useMemo(() =>
     items.slice(startIndex, endIndex)
-  , [items, startIndex, endIndex]);
-  
+    , [items, startIndex, endIndex]);
+
   const totalHeight = items.length * itemHeight;
   const offsetY = startIndex * itemHeight;
-  
+
   return (
-    <div 
+    <div
       style={{ height: containerHeight, overflow: 'auto' }}
       onScroll={(e) => setScrollTop(e.currentTarget.scrollTop)}
     >
       <div style={{ height: totalHeight, position: 'relative' }}>
         <div style={{ transform: `translateY(${offsetY}px)` }}>
-          {visibleItems.map((item, index) => 
+          {visibleItems.map((item, index) =>
             renderItem(item, startIndex + index)
           )}
         </div>
@@ -108,7 +108,7 @@ export const OptimizedImage = memo(forwardRef<HTMLImageElement, {
   loading?: 'lazy' | 'eager';
 }>((props, ref) => {
   const { src, alt, width, height, className, priority = false, loading = 'lazy' } = props;
-  
+
   return (
     <img
       ref={ref}
@@ -127,11 +127,11 @@ export const OptimizedImage = memo(forwardRef<HTMLImageElement, {
 }));
 
 // Debounced input component
-export const DebouncedInput = memo(({ 
-  value, 
-  onChange, 
+export const DebouncedInput = memo(({
+  value,
+  onChange,
   delay = 300,
-  ...props 
+  ...props
 }: {
   value: string;
   onChange: (value: string) => void;
@@ -139,20 +139,20 @@ export const DebouncedInput = memo(({
   [key: string]: any;
 }) => {
   const [localValue, setLocalValue] = React.useState(value);
-  
+
   const debouncedOnChange = useCallback(
     debounce((val: string) => onChange(val), delay),
     [onChange, delay]
   );
-  
+
   React.useEffect(() => {
     setLocalValue(value);
   }, [value]);
-  
+
   React.useEffect(() => {
     debouncedOnChange(localValue);
   }, [localValue, debouncedOnChange]);
-  
+
   return (
     <input
       {...props}
@@ -182,13 +182,13 @@ export const useMemoizedComputation = <T>(
   return useMemo(computeFn, deps);
 };
 
-// Performance-optimized table component
-export const OptimizedTable = memo(({ 
-  data, 
-  columns,
-  pageSize = 50 
-}: {
-  data: any[];
+  // Performance-optimized table component
+  export const OptimizedTable = memo(({
+    data,
+    columns,
+    pageSize = 50
+  }: {
+    data: any[];
   columns: Array<{ key: string; header: string; render?: (value: any) => React.ReactNode }>;
   pageSize?: number;
 }) => {
@@ -196,73 +196,73 @@ export const OptimizedTable = memo(({
   
   const paginatedData = useMemo(() => {
     const start = currentPage * pageSize;
-    return data.slice(start, start + pageSize);
+  return data.slice(start, start + pageSize);
   }, [data, currentPage, pageSize]);
-  
+
   const totalPages = Math.ceil(data.length / pageSize);
-  
+
   return (
-    <div>
-      <table className="w-full border-collapse">
-        <thead>
-          <tr>
+  <div>
+    <table className="w-full border-collapse">
+      <thead>
+        <tr>
+          {columns.map((col) => (
+            <th key={col.key} className="border p-2 text-left">
+              {col.header}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {paginatedData.map((row, index) => (
+          <tr key={index}>
             {columns.map((col) => (
-              <th key={col.key} className="border p-2 text-left">
-                {col.header}
-              </th>
+              <td key={col.key} className="border p-2">
+                {col.render ? col.render(row[col.key]) : row[col.key]}
+              </td>
             ))}
           </tr>
-        </thead>
-        <tbody>
-          {paginatedData.map((row, index) => (
-            <tr key={index}>
-              {columns.map((col) => (
-                <td key={col.key} className="border p-2">
-                  {col.render ? col.render(row[col.key]) : row[col.key]}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      
-      {totalPages > 1 && (
-        <div className="flex justify-between items-center mt-4">
-          <button
-            onClick={() => setCurrentPage(Math.max(0, currentPage - 1))}
-            disabled={currentPage === 0}
-            className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
-          >
-            Previous
-          </button>
-          <span>
-            Page {currentPage + 1} of {totalPages}
-          </span>
-          <button
-            onClick={() => setCurrentPage(Math.min(totalPages - 1, currentPage + 1))}
-            disabled={currentPage === totalPages - 1}
-            className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
-          >
-            Next
-          </button>
-        </div>
-      )}
-    </div>
+        ))}
+      </tbody>
+    </table>
+
+    {totalPages > 1 && (
+      <div className="flex justify-between items-center mt-4">
+        <button
+          onClick={() => setCurrentPage(Math.max(0, currentPage - 1))}
+          disabled={currentPage === 0}
+          className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+        >
+          Previous
+        </button>
+        <span>
+          Page {currentPage + 1} of {totalPages}
+        </span>
+        <button
+          onClick={() => setCurrentPage(Math.min(totalPages - 1, currentPage + 1))}
+          disabled={currentPage === totalPages - 1}
+          className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+        >
+          Next
+        </button>
+      </div>
+    )}
+  </div>
   );
 });
 
-// Error boundary for performance isolation
-export class PerformanceErrorBoundary extends React.Component<
+  // Error boundary for performance isolation
+  export class PerformanceErrorBoundary extends React.Component<
   { children: React.ReactNode; fallback?: React.ComponentType<{ error: Error }> },
-  { hasError: boolean; error?: Error }
+  {hasError: boolean; error?: Error }
 > {
-  constructor(props: any) {
+    constructor(props: any) {
     super(props);
-    this.state = { hasError: false };
+  this.state = {hasError: false };
   }
 
   static getDerivedStateFromError(error: Error) {
-    return { hasError: true, error };
+    return {hasError: true, error };
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
@@ -272,47 +272,47 @@ export class PerformanceErrorBoundary extends React.Component<
   render() {
     if (this.state.hasError) {
       const FallbackComponent = this.props.fallback || DefaultErrorFallback;
-      return <FallbackComponent error={this.state.error!} />;
+  return <FallbackComponent error={this.state.error!} />;
     }
 
-    return this.props.children;
+  return this.props.children;
   }
 }
 
-const DefaultErrorFallback = ({ error }: { error: Error }) => (
+  const DefaultErrorFallback = ({error}: {error: Error }) => (
   <div className="p-4 border border-red-300 rounded bg-red-50">
     <h2 className="text-red-800 font-semibold">Something went wrong</h2>
     <p className="text-red-600 text-sm mt-1">{error.message}</p>
   </div>
-);
+  );
 
 // Web vitals monitoring
 export const WebVitalsMonitor = memo(() => {
-  React.useEffect(() => {
-    if (typeof window !== 'undefined' && 'web-vitals' in window) {
-      import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
-        getCLS(console.log);
-        getFID(console.log);
-        getFCP(console.log);
-        getLCP(console.log);
-        getTTFB(console.log);
-      });
-    }
-  }, []);
+    React.useEffect(() => {
+      if (typeof window !== 'undefined' && 'web-vitals' in window) {
+        import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+          getCLS(console.log);
+          getFID(console.log);
+          getFCP(console.log);
+          getLCP(console.log);
+          getTTFB(console.log);
+        });
+      }
+    }, []);
 
   return null;
 });
 
-export default {
-  usePerformanceMonitor,
-  LoadingSpinner,
-  LoadingSkeleton,
-  createOptimizedDynamic,
-  VirtualizedList,
-  OptimizedImage,
-  DebouncedInput,
-  useMemoizedComputation,
-  OptimizedTable,
-  PerformanceErrorBoundary,
-  WebVitalsMonitor,
+  export default {
+    usePerformanceMonitor,
+    LoadingSpinner,
+    LoadingSkeleton,
+    createOptimizedDynamic,
+    VirtualizedList,
+    OptimizedImage,
+    DebouncedInput,
+    useMemoizedComputation,
+    OptimizedTable,
+    PerformanceErrorBoundary,
+    WebVitalsMonitor,
 };

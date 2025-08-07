@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { motion } from 'framer-motion'
 import { TrendingUp, Users, Database, Zap, Clock, Activity } from 'lucide-react'
 import type { AppStats } from '../types'

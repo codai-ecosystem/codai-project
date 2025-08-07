@@ -1,3 +1,4 @@
+import React from 'react'
 import { lazy, useEffect, useRef, useState } from 'react';
 import type { ComponentType, LazyExoticComponent, RefObject } from 'react';
 
@@ -302,3 +303,4 @@ export function useLazyIntersection<
 
   return { ref, Component, isLoading, error };
 }
+

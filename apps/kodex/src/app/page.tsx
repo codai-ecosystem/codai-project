@@ -1,3 +1,4 @@
+import React from 'react'
 import { KodexDashboard } from '@/components/kodex/dashboard'
 
 export default function HomePage() {

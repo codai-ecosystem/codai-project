@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 index.tsx Component Tests
  * Comprehensive testing for talentai component
@@ -175,3 +176,4 @@ describe('index', () => {
     });
   });
 });
+

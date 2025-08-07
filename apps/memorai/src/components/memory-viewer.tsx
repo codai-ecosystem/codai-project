@@ -50,7 +50,7 @@ export const MemoryViewer: React.FC<MemoryViewerProps> = ({
                                 {memory.category}
                             </Badge>
                             <div className="flex items-center space-x-1">
-                                <Star 
+                                <Star
                                     className={`h-5 w-5 ${getImportanceColor(memory.importance || 5)}`}
                                     fill={memory.importance && memory.importance >= 8 ? "currentColor" : "none"}
                                 />
@@ -65,7 +65,7 @@ export const MemoryViewer: React.FC<MemoryViewerProps> = ({
                     </div>
                     <CardTitle className="text-xl">Memory Details</CardTitle>
                 </CardHeader>
-                
+
                 <CardContent className="space-y-6">
                     {/* Content */}
                     <div>
@@ -155,8 +155,8 @@ export const MemoryViewer: React.FC<MemoryViewerProps> = ({
                                 <Edit className="h-4 w-4 mr-2" />
                                 Edit
                             </Button>
-                            <Button 
-                                onClick={onDelete} 
+                            <Button
+                                onClick={onDelete}
                                 variant="outline"
                                 className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
                             >

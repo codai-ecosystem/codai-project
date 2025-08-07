@@ -90,7 +90,7 @@ export function NotificationCenter({ className = '' }: NotificationCenterProps) 
   })
 
   const markAsRead = (id: string) => {
-    setNotifications(prev => prev.map(n => 
+    setNotifications(prev => prev.map(n =>
       n.id === id ? { ...n, read: true } : n
     ))
   }
@@ -144,8 +144,8 @@ export function NotificationCenter({ className = '' }: NotificationCenterProps) 
             onClick={() => setFilter(filterOption)}
             className={`
               px-3 py-2 rounded-md text-sm font-medium transition-colors capitalize
-              ${filter === filterOption 
-                ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm' 
+              ${filter === filterOption
+                ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
                 : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
               }
             `}
@@ -169,16 +169,16 @@ export function NotificationCenter({ className = '' }: NotificationCenterProps) 
               No notifications
             </h3>
             <p className="text-gray-600 dark:text-gray-400">
-              {filter === 'unread' ? 'All notifications have been read' : 
-               filter === 'actionable' ? 'No actionable notifications' : 
-               'No notifications yet'}
+              {filter === 'unread' ? 'All notifications have been read' :
+                filter === 'actionable' ? 'No actionable notifications' :
+                  'No notifications yet'}
             </p>
           </div>
         ) : (
           filteredNotifications.map((notification, index) => {
             const Icon = getNotificationIcon(notification.type)
             const colorClasses = getNotificationColor(notification.type)
-            
+
             return (
               <motion.div
                 key={notification.id}
@@ -213,7 +213,7 @@ export function NotificationCenter({ className = '' }: NotificationCenterProps) 
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center space-x-2">
                     {!notification.read && (
                       <button
@@ -233,7 +233,7 @@ export function NotificationCenter({ className = '' }: NotificationCenterProps) 
                     </button>
                   </div>
                 </div>
-                
+
                 {notification.actionable && (
                   <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
                     <div className="flex space-x-2">

@@ -33,20 +33,35 @@ class MemorAIWebSocketServer {
         if (typeof global !== 'undefined' && !global.memoraiWebSocketServer) {
             console.log('🚀 Initializing MemorAI WebSocket Server');
 
-            this.wss = new WebSocketServer({
-                port: 4007, // Different port to avoid conflicts
-                perMessageDeflate: false,
-                clientTracking: true
-            });
+            // Use a unique port to avoid conflicts - default to 4087
+            const wsPort = parseInt(process.env.MEMORAI_WS_PORT || '4087');
 
-            this.wss.on('connection', (ws: ExtendedWebSocket, request: IncomingMessage) => {
-                this.handleConnection(ws, request);
-            });
+            try {
+                this.wss = new WebSocketServer({
+                    port: wsPort,
+                    perMessageDeflate: false,
+                    clientTracking: true
+                });
 
-            this.startPingInterval();
-            global.memoraiWebSocketServer = this;
+                this.wss.on('connection', (ws: ExtendedWebSocket, request: IncomingMessage) => {
+                    this.handleConnection(ws, request);
+                });
 
-            console.log('✅ MemorAI WebSocket Server running on port 4007');
+                this.wss.on('error', (error: Error) => {
+                    console.error(`❌ WebSocket Server Error on port ${wsPort}:`, error.message);
+                    // Don't crash the build process, just log the error
+                });
+
+                this.startPingInterval();
+                global.memoraiWebSocketServer = this;
+
+                console.log(`✅ MemorAI WebSocket Server running on port ${wsPort}`);
+            } catch (error: any) {
+                console.warn(`⚠️ Could not start WebSocket server on port ${wsPort}: ${error.message}`);
+                console.log('🔄 WebSocket functionality will be limited during build process');
+                // Don't set global instance if server failed to start
+                return null;
+            }
         } else if (global.memoraiWebSocketServer) {
             return global.memoraiWebSocketServer;
         }
@@ -242,18 +257,21 @@ declare global {
 const wsServer = new MemorAIWebSocketServer();
 
 // Export the WebSocket server instance for use in other API routes
-export const getWebSocketServer = (): MemorAIWebSocketServer => {
-    return global.memoraiWebSocketServer || wsServer;
+export const getWebSocketServer = (): MemorAIWebSocketServer | null => {
+    return global.memoraiWebSocketServer || null;
 };
 
 // Next.js API route handlers
 export async function GET(request: NextRequest) {
+    const wsPort = parseInt(process.env.MEMORAI_WS_PORT || '4087');
+    const server = getWebSocketServer();
+
     return new Response(JSON.stringify({
         status: 'WebSocket server running',
-        port: 4007,
-        connectedClients: getWebSocketServer().getConnectedClients(),
+        port: wsPort,
+        connectedClients: server ? server.getConnectedClients() : 0,
         endpoints: {
-            websocket: 'ws://localhost:4007',
+            websocket: `ws://localhost:${wsPort}`,
             info: '/api/ws'
         }
     }), {
@@ -267,6 +285,16 @@ export async function POST(request: NextRequest) {
         const { type, data, userId } = body;
 
         const server = getWebSocketServer();
+
+        if (!server) {
+            return new Response(JSON.stringify({
+                error: 'WebSocket server not available during build process',
+                success: false
+            }), {
+                status: 503,
+                headers: { 'Content-Type': 'application/json' }
+            });
+        }
 
         switch (type) {
             case 'memory_created':

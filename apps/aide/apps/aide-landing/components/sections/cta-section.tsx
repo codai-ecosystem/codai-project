@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -126,3 +128,4 @@ export function CTASection() {
 		</section>
 	);
 }
+

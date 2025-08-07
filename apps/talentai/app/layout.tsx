@@ -1,3 +1,4 @@
+import React from 'react'
 import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import { AuthProvider, I18nProvider } from '@codai/shared-ui'
@@ -49,3 +50,4 @@ export default function RootLayout({
     </html>
   )
 }
+

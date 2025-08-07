@@ -1,9 +1,12 @@
+import React from 'react'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import '../styles/modern-enhancements.css'
 import '../styles/animation-enhancements.css'
 import Script from 'next/script'
+import Providers from '../components/Providers'
+import AdminNavigation from '../components/AdminNavigation'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -74,7 +77,10 @@ export default function RootLayout({
         <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 animate-fade-in">
           <main id="main-content" role="main">
             <div className="animate-container">
-              {children}
+              <Providers>
+                <AdminNavigation />
+                {children}
+              </Providers>
             </div>
           </main>
         </div>
@@ -82,4 +88,5 @@ export default function RootLayout({
     </html>
   )
 }
+
 

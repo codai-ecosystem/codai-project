@@ -1,3 +1,4 @@
+import React from 'react'
 import { NextPageContext } from 'next';
 
 interface ErrorProps {
@@ -27,3 +28,4 @@ Error.getInitialProps = ({ res, err }: NextPageContext) => {
 };
 
 export default Error;
+

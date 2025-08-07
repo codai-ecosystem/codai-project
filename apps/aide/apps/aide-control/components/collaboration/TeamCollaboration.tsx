@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -541,3 +543,4 @@ export function TeamCollaboration({ teamId, currentUserId }: TeamCollaborationPr
     </div>
   )
 }
+

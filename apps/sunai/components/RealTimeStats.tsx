@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
@@ -169,3 +171,4 @@ export function RealTimeStats({ stats, colorScheme }: RealTimeStatsProps) {
     </motion.div>
   )
 }
+

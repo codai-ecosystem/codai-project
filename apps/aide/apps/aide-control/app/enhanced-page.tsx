@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState, useEffect } from 'react'
 import { useAuth } from '../lib/auth-context'
 import { AuthProvider } from '../lib/auth-context'
@@ -105,3 +107,4 @@ export default function Page() {
     </AuthProvider>
   )
 }
+

@@ -14,14 +14,14 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Memory } from '@/types/memory';
-import { 
-    AISearchQuery, 
-    AISearchResult, 
-    SmartSuggestion, 
+import {
+    AISearchQuery,
+    AISearchResult,
+    SmartSuggestion,
     IntentType,
     MatchType,
     ActionType,
-    SearchMetrics 
+    SearchMetrics
 } from '@/types/ai-search';
 import { aiSearchService } from '@/lib/ai-search';
 import { useNotifications } from '@/contexts/NotificationContext';
@@ -61,7 +61,7 @@ const AISearchComponent: React.FC<AISearchComponentProps> = ({
     showAnalytics = true
 }) => {
     const { addNotification } = useNotifications();
-    
+
     const [state, setState] = useState<SearchState>({
         query: '',
         results: [],
@@ -166,14 +166,14 @@ const AISearchComponent: React.FC<AISearchComponentProps> = ({
             }
 
             const results = await aiSearchService.performAISearch(aiQuery);
-            
+
             // Apply filters
             const filteredResults = applyFilters(results, state.filters);
 
-            setState(prev => ({ 
-                ...prev, 
+            setState(prev => ({
+                ...prev,
                 results: filteredResults,
-                isSearching: false 
+                isSearching: false
             }));
 
             addNotification({
@@ -201,23 +201,23 @@ const AISearchComponent: React.FC<AISearchComponentProps> = ({
         return results.filter(result => {
             // Relevance filter
             if (result.relevanceScore < filters.minRelevance) return false;
-            
+
             // Match type filter
-            if (filters.matchTypes.length > 0 && 
+            if (filters.matchTypes.length > 0 &&
                 !filters.matchTypes.includes(result.aiInsights.matchType)) {
                 return false;
             }
-            
+
             // Category filter (simplified)
             if (filters.categories.length > 0 && result.memory.tags) {
                 const hasCategory = filters.categories.some(category =>
-                    result.memory.tags!.some(tag => 
+                    result.memory.tags!.some(tag =>
                         tag.toLowerCase().includes(category.toLowerCase())
                     )
                 );
                 if (!hasCategory) return false;
             }
-            
+
             return true;
         });
     };
@@ -248,11 +248,11 @@ const AISearchComponent: React.FC<AISearchComponentProps> = ({
                         });
                     }
                     break;
-                    
+
                 case ActionType.REFINE_SEARCH:
                     setState(prev => ({ ...prev, showAdvanced: true }));
                     break;
-                    
+
                 case ActionType.SAVE_SEARCH:
                     // Save search to favorites (would implement with backend)
                     addNotification({
@@ -263,7 +263,7 @@ const AISearchComponent: React.FC<AISearchComponentProps> = ({
                         duration: 3000
                     });
                     break;
-                    
+
                 default:
                     console.log('Action not implemented:', action.type);
             }
@@ -295,8 +295,8 @@ const AISearchComponent: React.FC<AISearchComponentProps> = ({
 
     const memoizedResults = useMemo(() => {
         return state.results.map(result => (
-            <Card 
-                key={result.memory.id} 
+            <Card
+                key={result.memory.id}
                 className="mb-4 hover:shadow-md transition-shadow cursor-pointer"
                 onClick={() => handleResultClick(result)}
             >
@@ -323,7 +323,7 @@ const AISearchComponent: React.FC<AISearchComponentProps> = ({
                             {result.memory.content.substring(0, 200)}
                             {result.memory.content.length > 200 && '...'}
                         </p>
-                        
+
                         {/* AI Insights */}
                         <div className="bg-blue-50 p-3 rounded-lg">
                             <div className="flex items-center gap-2 mb-2">
@@ -337,7 +337,7 @@ const AISearchComponent: React.FC<AISearchComponentProps> = ({
                                 <div>Temporal: {Math.round(result.aiInsights.temporalRelevance * 100)}%</div>
                             </div>
                         </div>
-                        
+
                         {/* Reasoning */}
                         <div className="bg-gray-50 p-3 rounded-lg">
                             <div className="flex items-center gap-2 mb-1">
@@ -345,7 +345,7 @@ const AISearchComponent: React.FC<AISearchComponentProps> = ({
                                 <span className="text-sm font-medium text-gray-800">Why this result?</span>
                             </div>
                             <p className="text-xs text-gray-600">{result.reasoning.explanation}</p>
-                            
+
                             {/* Confidence Score */}
                             <div className="mt-2">
                                 <div className="flex justify-between text-xs text-gray-500 mb-1">
@@ -355,7 +355,7 @@ const AISearchComponent: React.FC<AISearchComponentProps> = ({
                                 <Progress value={result.reasoning.confidence * 100} className="h-1" />
                             </div>
                         </div>
-                        
+
                         {/* Related Memories */}
                         {result.relatedMemories.length > 0 && (
                             <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -372,7 +372,7 @@ const AISearchComponent: React.FC<AISearchComponentProps> = ({
                                 )}
                             </div>
                         )}
-                        
+
                         {/* Suggested Actions */}
                         <div className="flex flex-wrap gap-2">
                             {result.suggestedActions.map((action, idx) => (
@@ -390,7 +390,7 @@ const AISearchComponent: React.FC<AISearchComponentProps> = ({
                                 </Button>
                             ))}
                         </div>
-                        
+
                         {/* Memory Metadata */}
                         <div className="flex items-center justify-between text-xs text-gray-500 pt-2 border-t">
                             <div className="flex items-center gap-4">
@@ -409,271 +409,271 @@ const AISearchComponent: React.FC<AISearchComponentProps> = ({
                             </div>
                         </div>
                     </div>
-                </Card>
-            </div>
+            </Card>
+            </div >
         ));
     }, [state.results]);
 
-    return (
-        <div className={`w-full max-w-4xl mx-auto ${className}`}>
-            <Tabs defaultValue="search" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger value="search" className="flex items-center gap-2">
-                        <Sparkles className="w-4 h-4" />
-                        AI Search
+return (
+    <div className={`w-full max-w-4xl mx-auto ${className}`}>
+        <Tabs defaultValue="search" className="w-full">
+            <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="search" className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4" />
+                    AI Search
+                </TabsTrigger>
+                <TabsTrigger value="filters" className="flex items-center gap-2">
+                    <Filter className="w-4 h-4" />
+                    Advanced
+                </TabsTrigger>
+                {showAnalytics && (
+                    <TabsTrigger value="analytics" className="flex items-center gap-2">
+                        <TrendingUp className="w-4 h-4" />
+                        Analytics
                     </TabsTrigger>
-                    <TabsTrigger value="filters" className="flex items-center gap-2">
-                        <Filter className="w-4 h-4" />
-                        Advanced
-                    </TabsTrigger>
-                    {showAnalytics && (
-                        <TabsTrigger value="analytics" className="flex items-center gap-2">
-                            <TrendingUp className="w-4 h-4" />
-                            Analytics
-                        </TabsTrigger>
-                    )}
-                </TabsList>
+                )}
+            </TabsList>
 
-                <TabsContent value="search" className="space-y-4">
-                    {/* Main Search Interface */}
-                    <Card>
-                        <CardContent className="p-4">
-                            <div className="space-y-4">
-                                {/* Search Input */}
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <Search className="h-5 w-5 text-gray-400" />
-                                    </div>
-                                    <Input
-                                        type="text"
-                                        placeholder={placeholder}
-                                        value={state.query}
-                                        onChange={(e) => setState(prev => ({ ...prev, query: e.target.value }))}
-                                        onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                                        className="pl-10 pr-4 py-2 w-full border-2 border-blue-200 focus:border-blue-500 rounded-lg"
-                                        disabled={state.isSearching}
-                                    />
-                                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                        <Button
-                                            onClick={() => handleSearch()}
-                                            disabled={state.isSearching || !state.query.trim()}
-                                            size="sm"
-                                            className="bg-blue-600 hover:bg-blue-700"
-                                        >
-                                            {state.isSearching ? (
-                                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                                            ) : (
-                                                <Sparkles className="h-4 w-4" />
-                                            )}
-                                        </Button>
-                                    </div>
-                                </div>
-
-                                {/* Intent Selection */}
-                                <div className="flex flex-wrap gap-2">
-                                    <span className="text-sm text-gray-600 py-1">Search Intent:</span>
-                                    {Object.values(IntentType).map(intent => (
-                                        <Button
-                                            key={intent}
-                                            variant={state.selectedIntent === intent ? "default" : "outline"}
-                                            size="sm"
-                                            className="h-7 text-xs"
-                                            onClick={() => setState(prev => ({ 
-                                                ...prev, 
-                                                selectedIntent: prev.selectedIntent === intent ? null : intent 
-                                            }))}
-                                        >
-                                            {getIntentIcon(intent)}
-                                            <span className="ml-1">{intent.replace('_', ' ')}</span>
-                                        </Button>
-                                    ))}
-                                </div>
-
-                                {/* Smart Suggestions */}
-                                {state.suggestions.length > 0 && (
-                                    <div className="space-y-2">
-                                        <div className="text-sm text-gray-600">Smart Suggestions:</div>
-                                        <div className="flex flex-wrap gap-2">
-                                            {state.suggestions.map((suggestion, idx) => (
-                                                <Button
-                                                    key={idx}
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    className="h-7 text-xs border border-gray-200 hover:border-blue-300"
-                                                    onClick={() => handleSuggestionClick(suggestion)}
-                                                >
-                                                    <div className="flex items-center gap-1">
-                                                        <span>{suggestion.suggestion}</span>
-                                                        <Badge variant="secondary" className="text-xs ml-1">
-                                                            {Math.round(suggestion.score * 100)}%
-                                                        </Badge>
-                                                    </div>
-                                                </Button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    {/* Search Results */}
-                    {state.results.length > 0 && (
+            <TabsContent value="search" className="space-y-4">
+                {/* Main Search Interface */}
+                <Card>
+                    <CardContent className="p-4">
                         <div className="space-y-4">
-                            <div className="flex items-center justify-between">
-                                <h3 className="text-lg font-semibold flex items-center gap-2">
-                                    <Brain className="w-5 h-5 text-blue-600" />
-                                    AI-Powered Results ({state.results.length})
-                                </h3>
-                                <div className="flex items-center gap-2">
-                                    <Button variant="outline" size="sm">
-                                        <SortDesc className="w-4 h-4 mr-1" />
-                                        Sort by Relevance
+                            {/* Search Input */}
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <Search className="h-5 w-5 text-gray-400" />
+                                </div>
+                                <Input
+                                    type="text"
+                                    placeholder={placeholder}
+                                    value={state.query}
+                                    onChange={(e) => setState(prev => ({ ...prev, query: e.target.value }))}
+                                    onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                                    className="pl-10 pr-4 py-2 w-full border-2 border-blue-200 focus:border-blue-500 rounded-lg"
+                                    disabled={state.isSearching}
+                                />
+                                <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                    <Button
+                                        onClick={() => handleSearch()}
+                                        disabled={state.isSearching || !state.query.trim()}
+                                        size="sm"
+                                        className="bg-blue-600 hover:bg-blue-700"
+                                    >
+                                        {state.isSearching ? (
+                                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                                        ) : (
+                                            <Sparkles className="h-4 w-4" />
+                                        )}
                                     </Button>
                                 </div>
                             </div>
-                            
-                            <div className="space-y-4">
-                                {memoizedResults}
+
+                            {/* Intent Selection */}
+                            <div className="flex flex-wrap gap-2">
+                                <span className="text-sm text-gray-600 py-1">Search Intent:</span>
+                                {Object.values(IntentType).map(intent => (
+                                    <Button
+                                        key={intent}
+                                        variant={state.selectedIntent === intent ? "default" : "outline"}
+                                        size="sm"
+                                        className="h-7 text-xs"
+                                        onClick={() => setState(prev => ({
+                                            ...prev,
+                                            selectedIntent: prev.selectedIntent === intent ? null : intent
+                                        }))}
+                                    >
+                                        {getIntentIcon(intent)}
+                                        <span className="ml-1">{intent.replace('_', ' ')}</span>
+                                    </Button>
+                                ))}
+                            </div>
+
+                            {/* Smart Suggestions */}
+                            {state.suggestions.length > 0 && (
+                                <div className="space-y-2">
+                                    <div className="text-sm text-gray-600">Smart Suggestions:</div>
+                                    <div className="flex flex-wrap gap-2">
+                                        {state.suggestions.map((suggestion, idx) => (
+                                            <Button
+                                                key={idx}
+                                                variant="ghost"
+                                                size="sm"
+                                                className="h-7 text-xs border border-gray-200 hover:border-blue-300"
+                                                onClick={() => handleSuggestionClick(suggestion)}
+                                            >
+                                                <div className="flex items-center gap-1">
+                                                    <span>{suggestion.suggestion}</span>
+                                                    <Badge variant="secondary" className="text-xs ml-1">
+                                                        {Math.round(suggestion.score * 100)}%
+                                                    </Badge>
+                                                </div>
+                                            </Button>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* Search Results */}
+                {state.results.length > 0 && (
+                    <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                            <h3 className="text-lg font-semibold flex items-center gap-2">
+                                <Brain className="w-5 h-5 text-blue-600" />
+                                AI-Powered Results ({state.results.length})
+                            </h3>
+                            <div className="flex items-center gap-2">
+                                <Button variant="outline" size="sm">
+                                    <SortDesc className="w-4 h-4 mr-1" />
+                                    Sort by Relevance
+                                </Button>
                             </div>
                         </div>
-                    )}
 
-                    {/* No Results */}
-                    {state.results.length === 0 && state.query && !state.isSearching && (
-                        <Card>
-                            <CardContent className="p-8 text-center">
-                                <Brain className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                                <h3 className="text-lg font-semibold text-gray-600 mb-2">No results found</h3>
-                                <p className="text-gray-500 mb-4">
-                                    Try adjusting your search query or using different keywords
-                                </p>
-                                <Button 
-                                    variant="outline" 
-                                    onClick={() => setState(prev => ({ ...prev, showAdvanced: true }))}
-                                >
-                                    Try Advanced Search
-                                </Button>
-                            </CardContent>
-                        </Card>
-                    )}
-                </TabsContent>
+                        <div className="space-y-4">
+                            {memoizedResults}
+                        </div>
+                    </div>
+                )}
 
-                <TabsContent value="filters" className="space-y-4">
+                {/* No Results */}
+                {state.results.length === 0 && state.query && !state.isSearching && (
                     <Card>
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2">
-                                <Filter className="w-5 h-5" />
-                                Advanced Search Filters
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            {/* Relevance Threshold */}
-                            <div>
-                                <label className="text-sm font-medium text-gray-700 mb-2 block">
-                                    Minimum Relevance Score: {Math.round(state.filters.minRelevance * 100)}%
-                                </label>
-                                <input
-                                    type="range"
-                                    min="0"
-                                    max="1"
-                                    step="0.1"
-                                    value={state.filters.minRelevance}
-                                    onChange={(e) => setState(prev => ({
-                                        ...prev,
-                                        filters: { ...prev.filters, minRelevance: parseFloat(e.target.value) }
-                                    }))}
-                                    className="w-full"
-                                />
-                            </div>
-
-                            {/* Match Types */}
-                            <div>
-                                <label className="text-sm font-medium text-gray-700 mb-2 block">
-                                    Match Types
-                                </label>
-                                <div className="flex flex-wrap gap-2">
-                                    {Object.values(MatchType).map(type => (
-                                        <Button
-                                            key={type}
-                                            variant={state.filters.matchTypes.includes(type) ? "default" : "outline"}
-                                            size="sm"
-                                            onClick={() => {
-                                                setState(prev => ({
-                                                    ...prev,
-                                                    filters: {
-                                                        ...prev.filters,
-                                                        matchTypes: prev.filters.matchTypes.includes(type)
-                                                            ? prev.filters.matchTypes.filter(t => t !== type)
-                                                            : [...prev.filters.matchTypes, type]
-                                                    }
-                                                }));
-                                            }}
-                                        >
-                                            {type.replace('_', ' ')}
-                                        </Button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <Button 
-                                onClick={() => handleSearch()}
-                                className="w-full"
-                                disabled={!state.query.trim()}
+                        <CardContent className="p-8 text-center">
+                            <Brain className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                            <h3 className="text-lg font-semibold text-gray-600 mb-2">No results found</h3>
+                            <p className="text-gray-500 mb-4">
+                                Try adjusting your search query or using different keywords
+                            </p>
+                            <Button
+                                variant="outline"
+                                onClick={() => setState(prev => ({ ...prev, showAdvanced: true }))}
                             >
-                                Apply Filters & Search
+                                Try Advanced Search
                             </Button>
                         </CardContent>
                     </Card>
-                </TabsContent>
-
-                {showAnalytics && (
-                    <TabsContent value="analytics" className="space-y-4">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="flex items-center gap-2">
-                                    <TrendingUp className="w-5 h-5" />
-                                    Search Analytics
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                {state.searchMetrics ? (
-                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                        <div className="text-center">
-                                            <div className="text-2xl font-bold text-blue-600">
-                                                {state.searchMetrics.totalSearches}
-                                            </div>
-                                            <div className="text-sm text-gray-600">Total Searches</div>
-                                        </div>
-                                        <div className="text-center">
-                                            <div className="text-2xl font-bold text-green-600">
-                                                {Math.round((state.searchMetrics.successfulSearches / state.searchMetrics.totalSearches) * 100)}%
-                                            </div>
-                                            <div className="text-sm text-gray-600">Success Rate</div>
-                                        </div>
-                                        <div className="text-center">
-                                            <div className="text-2xl font-bold text-purple-600">
-                                                {state.searchMetrics.averageQueryTime}ms
-                                            </div>
-                                            <div className="text-sm text-gray-600">Avg Query Time</div>
-                                        </div>
-                                        <div className="text-center">
-                                            <div className="text-2xl font-bold text-orange-600">
-                                                {state.searchMetrics.userSatisfaction.toFixed(1)}
-                                            </div>
-                                            <div className="text-sm text-gray-600">Satisfaction</div>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div className="text-center text-gray-500">Loading analytics...</div>
-                                )}
-                            </CardContent>
-                        </Card>
-                    </TabsContent>
                 )}
-            </Tabs>
-        </div>
-    );
+            </TabsContent>
+
+            <TabsContent value="filters" className="space-y-4">
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <Filter className="w-5 h-5" />
+                            Advanced Search Filters
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        {/* Relevance Threshold */}
+                        <div>
+                            <label className="text-sm font-medium text-gray-700 mb-2 block">
+                                Minimum Relevance Score: {Math.round(state.filters.minRelevance * 100)}%
+                            </label>
+                            <input
+                                type="range"
+                                min="0"
+                                max="1"
+                                step="0.1"
+                                value={state.filters.minRelevance}
+                                onChange={(e) => setState(prev => ({
+                                    ...prev,
+                                    filters: { ...prev.filters, minRelevance: parseFloat(e.target.value) }
+                                }))}
+                                className="w-full"
+                            />
+                        </div>
+
+                        {/* Match Types */}
+                        <div>
+                            <label className="text-sm font-medium text-gray-700 mb-2 block">
+                                Match Types
+                            </label>
+                            <div className="flex flex-wrap gap-2">
+                                {Object.values(MatchType).map(type => (
+                                    <Button
+                                        key={type}
+                                        variant={state.filters.matchTypes.includes(type) ? "default" : "outline"}
+                                        size="sm"
+                                        onClick={() => {
+                                            setState(prev => ({
+                                                ...prev,
+                                                filters: {
+                                                    ...prev.filters,
+                                                    matchTypes: prev.filters.matchTypes.includes(type)
+                                                        ? prev.filters.matchTypes.filter(t => t !== type)
+                                                        : [...prev.filters.matchTypes, type]
+                                                }
+                                            }));
+                                        }}
+                                    >
+                                        {type.replace('_', ' ')}
+                                    </Button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <Button
+                            onClick={() => handleSearch()}
+                            className="w-full"
+                            disabled={!state.query.trim()}
+                        >
+                            Apply Filters & Search
+                        </Button>
+                    </CardContent>
+                </Card>
+            </TabsContent>
+
+            {showAnalytics && (
+                <TabsContent value="analytics" className="space-y-4">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <TrendingUp className="w-5 h-5" />
+                                Search Analytics
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            {state.searchMetrics ? (
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div className="text-center">
+                                        <div className="text-2xl font-bold text-blue-600">
+                                            {state.searchMetrics.totalSearches}
+                                        </div>
+                                        <div className="text-sm text-gray-600">Total Searches</div>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-2xl font-bold text-green-600">
+                                            {Math.round((state.searchMetrics.successfulSearches / state.searchMetrics.totalSearches) * 100)}%
+                                        </div>
+                                        <div className="text-sm text-gray-600">Success Rate</div>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-2xl font-bold text-purple-600">
+                                            {state.searchMetrics.averageQueryTime}ms
+                                        </div>
+                                        <div className="text-sm text-gray-600">Avg Query Time</div>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-2xl font-bold text-orange-600">
+                                            {state.searchMetrics.userSatisfaction.toFixed(1)}
+                                        </div>
+                                        <div className="text-sm text-gray-600">Satisfaction</div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="text-center text-gray-500">Loading analytics...</div>
+                            )}
+                        </CardContent>
+                    </Card>
+                </TabsContent>
+            )}
+        </Tabs>
+    </div>
+);
 };
 
 export default AISearchComponent;

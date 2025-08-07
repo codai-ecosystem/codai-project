@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import dynamic from 'next/dynamic';
 import type { ComponentType } from 'react';
@@ -68,3 +70,4 @@ const AnimatedComponents = {
 };
 
 export default AnimatedComponents;
+

@@ -316,6 +316,14 @@ export interface MarketItem {
   updatedAt: string
 }
 
+// ==================== ECOSYSTEM INTEGRATION EXPORTS ====================
+
+// Export all ecosystem integration types
+export * from './ecosystem';
+export * from './banking';
+export * from './auth';
+export * from './ui';
+
 // ==================== EXPORT ALL ====================
 
 // All types are defined in this file for the CodAI ecosystem

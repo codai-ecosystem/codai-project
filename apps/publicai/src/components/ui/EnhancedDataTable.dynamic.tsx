@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import dynamic from 'next/dynamic';
 
@@ -20,3 +22,4 @@ export const EnhancedDataTable = dynamic(
   () => import('./EnhancedDataTable').then(mod => ({ default: mod.EnhancedDataTable })),
   { loading: () => <LoadingSpinner className="h-8 w-8" />, ssr: false }
 );
+

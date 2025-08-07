@@ -1,3 +1,4 @@
+import React from 'react'
 import { useContext, useState, useEffect } from 'react';
 import { AppContext } from '@/components/AppContext';
 import {
@@ -309,3 +310,4 @@ export default function Reviews({
     </motion.div>
   );
 }
+

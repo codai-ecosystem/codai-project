@@ -1,3 +1,4 @@
+import React from 'react'
 "use client";
 
 export default function SignUp() {
@@ -103,3 +104,4 @@ export default function SignUp() {
         </div>
     );
 }
+

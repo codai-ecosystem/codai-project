@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * Advanced Analytics Chart Components
  * Phase 2 Dashboard Enhancement - Interactive Recharts Components
@@ -570,3 +571,4 @@ export function ChartSkeleton({ height = 300 }: { height?: number }) {
     </div>
   )
 }
+

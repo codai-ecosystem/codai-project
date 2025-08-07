@@ -46,7 +46,7 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent))
 
-from week_9_cultural_meta_learning.cultural_meta_learning_integration import (
+from core.agi.cultural.cultural_meta_learning_integration.cultural_meta_learning_integration import (
     RomanianCulturalMetaLearningIntegration,
     CulturalLearningTask,
     CulturalPattern,
@@ -55,7 +55,7 @@ from week_9_cultural_meta_learning.cultural_meta_learning_integration import (
     CulturalKnowledgeDomain
 )
 
-from week_9_cultural_meta_learning.cultural_context_awareness_engine import (
+from core.agi.cultural.cultural_meta_learning_integration.cultural_context_awareness_engine import (
     RomanianCulturalContextAwarenessEngine,
     CulturalContextInput,
     CulturalContextAnalysis,
@@ -64,7 +64,7 @@ from week_9_cultural_meta_learning.cultural_context_awareness_engine import (
     SocialHierarchy
 )
 
-from week_9_cultural_meta_learning.cultural_integration_orchestrator import (
+from core.agi.cultural.cultural_meta_learning_integration.cultural_integration_orchestrator import (
     RomanianCulturalIntegrationOrchestrator,
     CulturalIntegrationRequest,
     CulturalIntegrationResult,

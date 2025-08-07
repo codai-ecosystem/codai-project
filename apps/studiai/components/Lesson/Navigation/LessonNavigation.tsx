@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { Button, Card, Divider } from '@heroui/react';
 import {
@@ -203,3 +205,4 @@ export default function LessonNavigation({
     </div>
   );
 }
+

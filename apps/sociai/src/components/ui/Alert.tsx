@@ -1,3 +1,4 @@
+import React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority';
 import { forwardRef, type HTMLAttributes } from 'react';
 
@@ -69,3 +70,4 @@ const AlertDescription = forwardRef<
 AlertDescription.displayName = 'AlertDescription';
 
 export { Alert, AlertDescription, AlertTitle };
+

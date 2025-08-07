@@ -2,14 +2,14 @@
 
 import React from 'react'
 
-export function MetricsDashboard({ 
-  data, 
-  loading = false, 
-  className = '' 
-}: { 
+export function MetricsDashboard({
+  data,
+  loading = false,
+  className = ''
+}: {
   data?: any
   loading?: boolean
-  className?: string 
+  className?: string
 }) {
   if (loading) {
     return (

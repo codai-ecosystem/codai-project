@@ -30,7 +30,7 @@ const nextConfig = {
         '@xenova/transformers': false,
         'onnxruntime-web': false,
       };
-      
+
       config.externals = config.externals || [];
       config.externals.push({
         'onnxruntime-node': 'onnxruntime-node',

@@ -2,13 +2,13 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { 
-  LayoutDashboard, 
-  FolderKanban, 
-  CheckSquare, 
-  Users, 
-  BarChart3, 
-  Settings, 
+import {
+  LayoutDashboard,
+  FolderKanban,
+  CheckSquare,
+  Users,
+  BarChart3,
+  Settings,
   Bell,
   Search,
   Plus,
@@ -101,8 +101,8 @@ export function Sidebar({ isCollapsed = false, onToggle, className = '' }: Sideb
             onClick={() => setActiveItem(item.id)}
             className={`
               w-full flex items-center p-3 rounded-lg transition-all duration-200
-              ${activeItem === item.id 
-                ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 shadow-sm' 
+              ${activeItem === item.id
+                ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 shadow-sm'
                 : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
               }
               ${isCollapsed ? 'justify-center' : 'justify-start'}

@@ -1,3 +1,4 @@
+import React from 'react'
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff, Loader2, Lock, Mail, User } from 'lucide-react';
 import Link from 'next/link';
@@ -270,3 +271,4 @@ export function RegisterForm({
     </Card>
   );
 }
+

@@ -10,20 +10,20 @@ import { AISearchQuery, IntentType } from '@/types/ai-search';
 export async function POST(request: NextRequest) {
     try {
         console.log('🔍 AI Search API called');
-        
+
         const body = await request.json();
-        const { 
-            query, 
-            intent, 
-            context, 
-            personalization, 
-            aiEnhancements 
+        const {
+            query,
+            intent,
+            context,
+            personalization,
+            aiEnhancements
         } = body;
 
         // Validate required fields
         if (!query || typeof query !== 'string' || query.trim().length === 0) {
             return NextResponse.json(
-                { 
+                {
                     error: 'Query is required and must be a non-empty string',
                     code: 'INVALID_QUERY'
                 },
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
 
         console.log(`✅ AI search completed in ${searchTime}ms:`, {
             resultsCount: results.length,
-            avgRelevance: results.length > 0 ? 
+            avgRelevance: results.length > 0 ?
                 (results.reduce((sum, r) => sum + r.relevanceScore, 0) / results.length).toFixed(3) : 0,
             matchTypes: [...new Set(results.map(r => r.aiInsights.matchType))]
         });
@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
                 query: aiQuery.query,
                 searchTime,
                 totalResults: results.length,
-                averageRelevance: results.length > 0 ? 
+                averageRelevance: results.length > 0 ?
                     results.reduce((sum, r) => sum + r.relevanceScore, 0) / results.length : 0,
                 searchEnhancements: {
                     naturalLanguageProcessed: aiQuery.aiEnhancements.useNaturalLanguage,
@@ -122,11 +122,11 @@ export async function POST(request: NextRequest) {
 
     } catch (error) {
         console.error('❌ AI Search API error:', error);
-        
+
         // Return appropriate error response
         const errorMessage = error instanceof Error ? error.message : 'Unknown search error';
-        const statusCode = errorMessage.includes('timeout') ? 408 : 
-                          errorMessage.includes('not found') ? 404 : 500;
+        const statusCode = errorMessage.includes('timeout') ? 408 :
+            errorMessage.includes('not found') ? 404 : 500;
 
         return NextResponse.json(
             {
@@ -143,10 +143,10 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
     try {
         const { searchParams } = new URL(request.url);
-        
+
         // Handle different GET operations
         const operation = searchParams.get('operation');
-        
+
         switch (operation) {
             case 'suggestions':
                 return handleSuggestions(searchParams);

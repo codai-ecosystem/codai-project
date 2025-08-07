@@ -1,3 +1,4 @@
+import React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Loader2 } from 'lucide-react';
 import type { JSX } from 'react';
@@ -80,3 +81,4 @@ export function Loading({
 
   return <div className="flex items-center justify-center p-4">{content}</div>;
 }
+

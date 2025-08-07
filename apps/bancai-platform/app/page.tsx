@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState } from 'react'
 import {
   Calculator,
@@ -269,3 +271,4 @@ export default function HomePage() {
     </div>
   )
 }
+

@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { FileText, Edit, Save, Archive, Upload, Download, Search, Filter, Tags, BookOpen, Eye, Share2, Clock, Star } from 'lucide-react'
@@ -251,3 +253,4 @@ function Content({ title, content, onClick, onSubmit, data }: ContentProps) {
 // Export with both uppercase and lowercase for compatibility
 export default Content
 export { Content as content }
+

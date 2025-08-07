@@ -1,3 +1,4 @@
+import React from 'react'
 import { CheckCircle, AlertCircle, Activity, Server } from 'lucide-react'
 
 export default function HealthPage() {
@@ -100,3 +101,4 @@ export default function HealthPage() {
         </div>
     )
 }
+

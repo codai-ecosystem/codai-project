@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 📊 Simple Admin Dashboard Page
  * Simplified version for testing
@@ -53,3 +54,4 @@ export default function DashboardPage() {
         </div>
     );
 }
+

@@ -5,9 +5,9 @@ interface TrainingProgressChartProps {
   className?: string;
 }
 
-export const TrainingProgressChart: React.FC<TrainingProgressChartProps> = ({ 
-  data, 
-  className 
+export const TrainingProgressChart: React.FC<TrainingProgressChartProps> = ({
+  data,
+  className
 }) => {
   return (
     <div className={`training-progress-chart ${className || ''}`}>

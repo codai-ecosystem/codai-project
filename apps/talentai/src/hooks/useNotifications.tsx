@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { useState, useCallback } from 'react';
 
@@ -65,3 +67,4 @@ export function useNotifications() {
     toast,
   };
 }
+

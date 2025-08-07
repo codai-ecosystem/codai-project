@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import RealTimeCodeAssistant from './RealTimeCodeAssistant'
@@ -451,3 +453,4 @@ export default function FileEditorEnhanced({ projectId, fileName, onClose }: Fil
         </div>
     )
 }
+

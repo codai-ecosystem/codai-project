@@ -1,3 +1,4 @@
+import React from 'react'
 import { LegalizaiDashboard } from '../components/legalizai/dashboard'
 
 export default function HomePage() {

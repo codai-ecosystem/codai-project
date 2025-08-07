@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * CODAI Authentication React Hooks
  * 
@@ -631,3 +632,4 @@ export function useAuthSubscription(callback: (state: AuthState) => void) {
         return unsubscribe;
     }, [callback]);
 }
+

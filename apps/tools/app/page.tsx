@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { AppRouting } from '@codai/shared-ui'
 import { Wrench, Settings, Hammer, Package, Cog, Cpu } from 'lucide-react'
 
@@ -41,3 +43,4 @@ export default function HomePage() {
     />
   )
 }
+

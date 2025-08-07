@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
     } catch (error) {
         console.error('AI Insights API Error:', error);
         return NextResponse.json(
-            { 
+            {
                 error: 'Failed to generate AI insights',
                 details: error instanceof Error ? error.message : 'Unknown error'
             },
@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
     } catch (error) {
         console.error('AI Insights Generation Error:', error);
         return NextResponse.json(
-            { 
+            {
                 error: 'Failed to generate AI insights',
                 details: error instanceof Error ? error.message : 'Unknown error'
             },

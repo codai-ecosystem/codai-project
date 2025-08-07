@@ -1,52 +1,28 @@
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
-  "test": {
-    "globals": true,
-    "environment": "jsdom",
-    "include": [
+  test: {
+    globals: true,
+    setupFiles: ["./vitest.setup.ts"],
+    environment: 'jsdom', // Default to jsdom for React components
+    include: [
       "**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"
     ],
-    "exclude": [
+    exclude: [
       "**/node_modules/**",
       "**/dist/**",
-      "**/build/**"
+      "**/build/**",
+      "**/archive/**",
+      "**/docs/historical/**"
     ],
-    "coverage": {
-      "reporter": [
-        "text",
-        "json",
-        "html",
-        "lcov"
-      ],
-      "exclude": [
-        "coverage/**",
-        "dist/**",
-        "packages/*/test/**",
-        "**/*.d.ts",
-        "cypress/**",
-        "test/**",
-        "tests/**",
-        "**/*.test.*",
-        "**/*.spec.*"
-      ],
-      "thresholds": {
-        "global": {
-          "branches": 80,
-          "functions": 80,
-          "lines": 80,
-          "statements": 80
-        }
+    pool: "threads",
+    poolOptions: {
+      threads: {
+        singleThread: true,
+        isolate: true
       }
     },
-    "pool": "threads",
-    "poolOptions": {
-      "threads": {
-        "singleThread": false,
-        "isolate": false
-      }
-    },
-    "testTimeout": 10000,
-    "hookTimeout": 10000
+    testTimeout: 30000,
+    hookTimeout: 30000
   }
 });

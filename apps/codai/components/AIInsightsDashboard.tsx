@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -379,8 +381,8 @@ export function AIInsightsDashboard() {
                             <div className="flex items-center justify-between mb-2">
                                 <span className="text-xs text-slate-400">Trend</span>
                                 <span className={`text-xs px-2 py-1 rounded-full ${pattern.trend === 'increasing' ? 'text-emerald-400 bg-emerald-400/20' :
-                                        pattern.trend === 'decreasing' ? 'text-red-400 bg-red-400/20' :
-                                            'text-blue-400 bg-blue-400/20'
+                                    pattern.trend === 'decreasing' ? 'text-red-400 bg-red-400/20' :
+                                        'text-blue-400 bg-blue-400/20'
                                     }`}>
                                     {pattern.trend}
                                 </span>
@@ -475,3 +477,4 @@ export function AIInsightsDashboard() {
         </div>
     )
 }
+

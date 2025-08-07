@@ -38,10 +38,10 @@ export interface InputProps
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-    ({ 
-        className, 
-        variant, 
-        size, 
+    ({
+        className,
+        variant,
+        size,
         type = 'text',
         label,
         error,
@@ -51,16 +51,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         rightIcon,
         helperText,
         id,
-        ...props 
+        ...props
     }, ref) => {
         // Auto-determine variant based on state
         const effectiveVariant = error ? 'error' : success ? 'success' : warning ? 'warning' : variant;
         const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
-        
+
         return (
             <div className="space-y-2">
                 {label && (
-                    <label 
+                    <label
                         htmlFor={inputId}
                         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                     >
@@ -68,14 +68,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                         {props.required && <span className="text-red-500 ml-1">*</span>}
                     </label>
                 )}
-                
+
                 <div className="relative">
                     {leftIcon && (
                         <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
                             {leftIcon}
                         </div>
                     )}
-                    
+
                     <input
                         type={type}
                         id={inputId}
@@ -87,14 +87,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                         ref={ref}
                         {...props}
                     />
-                    
+
                     {rightIcon && (
                         <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
                             {rightIcon}
                         </div>
                     )}
                 </div>
-                
+
                 {(error || success || warning || helperText) && (
                     <div className="space-y-1">
                         {error && (

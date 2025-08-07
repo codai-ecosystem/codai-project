@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { Monitor, Moon, Sun } from 'lucide-react';
 import type { JSX } from 'react';
@@ -86,3 +88,4 @@ export function ThemeToggle({
     </DropdownMenu>
   );
 }
+

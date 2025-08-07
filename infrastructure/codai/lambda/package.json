@@ -6,7 +6,12 @@
   "dependencies": {
     "jsonwebtoken": "^9.0.2"
   },
-  "keywords": ["api", "security", "authorization", "jwt"],
+  "keywords": [
+    "api",
+    "security",
+    "authorization",
+    "jwt"
+  ],
   "author": "CODAI Ecosystem",
   "license": "MIT"
 }

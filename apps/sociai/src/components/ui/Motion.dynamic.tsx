@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import dynamic from 'next/dynamic';
 import type { ComponentType } from 'react';
@@ -29,3 +31,4 @@ const Motion = {
 };
 
 export default Motion;
+

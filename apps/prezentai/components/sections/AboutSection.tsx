@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { motion } from 'framer-motion'
 import { Brain, Target, Rocket, Shield, Users, Lightbulb } from 'lucide-react'
 
@@ -183,3 +185,4 @@ export function AboutSection() {
         </section>
     )
 }
+

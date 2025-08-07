@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { signInWithCustomToken } from '../../../lib/firebase-client'
@@ -104,3 +106,4 @@ export default function AuthSuccess() {
     </div>
   )
 }
+

@@ -33,7 +33,7 @@ export const ENHANCED_ECOSYSTEM_SERVICES: Record<string, EnhancedServiceEndpoint
     apiKey: 'memorai-production-api-key-2025',
     marketFocus: 'both'
   },
-  
+
   romai: {
     name: 'RomAI Intelligence',
     primaryDomain: 'romai.ro',             // 🇷🇴 Primary Romanian domain  
@@ -46,7 +46,7 @@ export const ENHANCED_ECOSYSTEM_SERVICES: Record<string, EnhancedServiceEndpoint
     apiKey: 'romai-production-api-key-2025',
     marketFocus: 'romanian'
   },
-  
+
   controlai: {
     name: 'ControlAI Management',
     primaryDomain: 'controlai.ro',         // 🇷🇴 Primary Romanian domain
@@ -59,7 +59,7 @@ export const ENHANCED_ECOSYSTEM_SERVICES: Record<string, EnhancedServiceEndpoint
     apiKey: 'controlai-production-api-key-2025',
     marketFocus: 'both'
   },
-  
+
   bancai: {
     name: 'BancAI FinTech',
     primaryDomain: 'bancai.ro',            // 🇷🇴 Primary Romanian domain (if available)
@@ -72,7 +72,7 @@ export const ENHANCED_ECOSYSTEM_SERVICES: Record<string, EnhancedServiceEndpoint
     apiKey: 'bancai-production-api-key-2025',
     marketFocus: 'romanian'
   },
-  
+
   // Ecosystem coordination services (remain on .codai.ro)
   codai: {
     name: 'CODAI Platform',
@@ -86,7 +86,7 @@ export const ENHANCED_ECOSYSTEM_SERVICES: Record<string, EnhancedServiceEndpoint
     apiKey: 'codai-ecosystem-master-key-2025',
     marketFocus: 'international'
   },
-  
+
   admin: {
     name: 'Admin Dashboard',
     primaryDomain: 'admin.codai.ro',       // 🔧 Administrative domain
@@ -99,7 +99,7 @@ export const ENHANCED_ECOSYSTEM_SERVICES: Record<string, EnhancedServiceEndpoint
     apiKey: 'admin-production-api-key-2025',
     marketFocus: 'international'
   },
-  
+
   hub: {
     name: 'CODAI Hub',
     primaryDomain: 'hub.codai.ro',         // 🌐 Service integration hub
@@ -112,7 +112,7 @@ export const ENHANCED_ECOSYSTEM_SERVICES: Record<string, EnhancedServiceEndpoint
     apiKey: 'hub-production-api-key-2025',
     marketFocus: 'international'
   },
-  
+
   id: {
     name: 'ID Service',
     primaryDomain: 'id.codai.ro',          // 🔐 Identity service
@@ -125,7 +125,7 @@ export const ENHANCED_ECOSYSTEM_SERVICES: Record<string, EnhancedServiceEndpoint
     apiKey: 'id-service-master-key-2025',
     marketFocus: 'international'
   },
-  
+
   apps: {
     name: 'Applications Portal',
     primaryDomain: 'apps.codai.ro',        // 🚀 App deployment platform
@@ -138,7 +138,7 @@ export const ENHANCED_ECOSYSTEM_SERVICES: Record<string, EnhancedServiceEndpoint
     apiKey: 'apps-production-api-key-2025',
     marketFocus: 'international'
   },
-  
+
   gateway: {
     name: 'API Gateway',
     primaryDomain: 'api.codai.ro',         // 🌉 Central API gateway
@@ -165,7 +165,7 @@ export const SECURITY_CONFIG = {
     rateLimitWindow: 900000, // 15 minutes
     rateLimitMax: 1000
   },
-  
+
   authentication: {
     jwtSecret: 'ecosystem-jwt-production-secret-2025',
     tokenExpiry: '24h',
@@ -173,7 +173,7 @@ export const SECURITY_CONFIG = {
     requireApiKey: true,
     requireSourceValidation: true
   },
-  
+
   communication: {
     enforceHttps: true,
     validateCertificates: true,
@@ -238,7 +238,7 @@ export class EnhancedEcosystemClient {
 
     const baseUrl = this.getServiceUrl(targetServiceId, options?.usePrimaryDomain);
     const url = `${baseUrl}${targetService.apiPath}${endpoint}`;
-    
+
     const timeout = options?.timeout || SECURITY_CONFIG.ecosystem.requestTimeout;
     const retries = options?.retries || SECURITY_CONFIG.ecosystem.maxRetries;
 
@@ -282,21 +282,21 @@ export class EnhancedEcosystemClient {
         }
 
         const result = await response.json();
-        
+
         console.log(`✅ Successfully called ${targetServiceId}`);
         return result;
 
       } catch (error) {
         lastError = error as Error;
         console.log(`❌ Failed to call ${targetServiceId}: ${lastError.message}`);
-        
+
         if (attempt < retries) {
           // Try with ecosystem domain if primary domain failed
           if (options?.usePrimaryDomain !== false && attempt === 1) {
             console.log(`🔄 Retrying with ecosystem domain...`);
             options = { ...options, usePrimaryDomain: false };
           }
-          
+
           // Exponential backoff
           const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
           await new Promise(resolve => setTimeout(resolve, delay));
@@ -399,7 +399,7 @@ export class EnhancedEcosystemClient {
       allServices.map(async (serviceId) => {
         const health = await this.checkServiceHealth(serviceId, true);
         const service = ENHANCED_ECOSYSTEM_SERVICES[serviceId];
-        
+
         return {
           id: serviceId,
           name: service.name,
@@ -470,7 +470,7 @@ export class EnhancedEcosystemConfig {
       services: romanianServices,
       advantages: [
         'Local market trust',
-        'SEO benefits in Romania', 
+        'SEO benefits in Romania',
         'Professional brand presence',
         'Regulatory compliance',
         'Cultural alignment'

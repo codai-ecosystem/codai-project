@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     } catch (error) {
         console.error('Usage Analytics Error:', error);
         return NextResponse.json(
-            { 
+            {
                 error: 'Failed to generate usage analytics',
                 details: error instanceof Error ? error.message : 'Unknown error'
             },

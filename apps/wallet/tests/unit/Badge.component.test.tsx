@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 Badge.tsx Component Tests
  * Comprehensive testing for wallet component

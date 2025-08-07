@@ -1,3 +1,4 @@
+import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Input } from '@/components/ui/Input';
@@ -63,3 +64,4 @@ export const WithError: Story = {
     className: 'border-red-500 focus:border-red-500',
   },
 };
+

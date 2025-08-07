@@ -23,7 +23,7 @@ const nextConfig = {
   // Compression and Optimization
   compress: true,
   poweredByHeader: false,
-  
+
   // Image Optimization
   images: {
     formats: ['image/avif', 'image/webp'],
@@ -84,7 +84,7 @@ const nextConfig = {
 
   // Output optimization
   output: 'standalone',
-  
+
   // Header optimization for caching
   async headers() {
     return [
@@ -143,12 +143,12 @@ const nextConfig = {
 
   // Optimize build output
   distDir: '.next',
-  
+
   // Runtime configuration
   publicRuntimeConfig: {
     // Only public config here
   },
-  
+
   serverRuntimeConfig: {
     // Server-only config here
   },

@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 error-message.tsx Component Tests
  * Comprehensive testing for x component

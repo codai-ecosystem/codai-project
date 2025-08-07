@@ -1,3 +1,4 @@
+import React from 'react'
 export default function NotFound() {
     return (
         <div className="flex min-h-screen items-center justify-center">
@@ -8,3 +9,4 @@ export default function NotFound() {
         </div>
     );
 }
+

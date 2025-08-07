@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { useState, useEffect } from 'react';
 import { Tag, FolderIcon, Filter, X, Search } from 'lucide-react';
@@ -197,3 +199,4 @@ export default function MemoryCategories({
         </div>
     );
 }
+

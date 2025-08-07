@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState, useEffect } from 'react'
 import { userPreferences, ThemeMode } from '../lib/user-preferences'
 
@@ -144,3 +146,4 @@ export function UserPreferencesExample() {
 }
 
 export default UserPreferencesExample
+

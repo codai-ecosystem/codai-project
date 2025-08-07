@@ -1,10 +1,11 @@
 /**
- * React Hook for Hub Memorai Integration
- * Provides easy access to memorai functionality within React components
+ * React Hook for Hub Memorai Integration with CBD Backend
+ * Provides easy access to enhanced memorai functionality within React components
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { hubMemoraiService } from '../MemoraiIntegrationSimple';
+import { enhancedHubMemoraiService } from '../services/EnhancedMemoraiService';
+import { CBDApiKey } from '../services/CBDIntegrationService';
 
 // Hook for project management
 export function useProjects() {
@@ -16,7 +17,7 @@ export function useProjects() {
     try {
       setLoading(true);
       setError(null);
-      const result = await hubMemoraiService.listProjects(filters);
+      const result = await enhancedHubMemoraiService.listProjects(filters);
       setProjects(result.projects);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load projects');
@@ -28,7 +29,7 @@ export function useProjects() {
   const createProject = useCallback(async (projectData: any) => {
     try {
       setError(null);
-      const newProject = await hubMemoraiService.createProject(projectData);
+      const newProject = await enhancedHubMemoraiService.createProject(projectData);
       setProjects(prev => [newProject, ...prev]);
       return newProject;
     } catch (err) {
@@ -41,7 +42,7 @@ export function useProjects() {
   const updateProject = useCallback(async (projectId: string, updates: any) => {
     try {
       setError(null);
-      const updatedProject = await hubMemoraiService.updateProject(projectId, updates);
+      const updatedProject = await enhancedHubMemoraiService.updateProject(projectId, updates);
       if (updatedProject) {
         setProjects(prev =>
           prev.map(p => p.id === projectId ? updatedProject : p)
@@ -58,7 +59,7 @@ export function useProjects() {
   const deleteProject = useCallback(async (projectId: string) => {
     try {
       setError(null);
-      const success = await hubMemoraiService.deleteProject(projectId);
+      const success = await enhancedHubMemoraiService.deleteProject(projectId);
       if (success) {
         setProjects(prev => prev.filter(p => p.id !== projectId));
       }
@@ -73,7 +74,8 @@ export function useProjects() {
   const searchProjects = useCallback(async (query: string) => {
     try {
       setError(null);
-      const searchResults = await hubMemoraiService.searchProjects(query);
+      const searchResults = await enhancedHubMemoraiService.searchProjects(query);
+      setProjects(searchResults);
       return searchResults;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to search projects';
@@ -108,7 +110,7 @@ export function useProject(projectId: string | null) {
     try {
       setLoading(true);
       setError(null);
-      const projectData = await hubMemoraiService.getProject(id);
+      const projectData = await enhancedHubMemoraiService.getProject(id);
       setProject(projectData);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load project');
@@ -145,10 +147,10 @@ export function useProjectFiles(projectId: string | null) {
     try {
       setUploading(true);
       setError(null);
-      const fileUrl = await hubMemoraiService.uploadProjectFile(projectId, file, category);
+      const fileUrl = await enhancedHubMemoraiService.uploadProjectFile(projectId, file, category);
 
       // Refresh file list
-      const updatedFiles = await hubMemoraiService.getProjectFiles(projectId);
+      const updatedFiles = await enhancedHubMemoraiService.getProjectFiles(projectId);
       setFiles(updatedFiles);
 
       return fileUrl;
@@ -166,7 +168,7 @@ export function useProjectFiles(projectId: string | null) {
 
     try {
       setError(null);
-      const projectFiles = await hubMemoraiService.getProjectFiles(projectId);
+      const projectFiles = await enhancedHubMemoraiService.getProjectFiles(projectId);
       setFiles(projectFiles);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load files');
@@ -186,6 +188,75 @@ export function useProjectFiles(projectId: string | null) {
   };
 }
 
+// Hook for API key management
+export function useApiKeys(projectId?: string) {
+  const [apiKeys, setApiKeys] = useState<CBDApiKey[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const loadApiKeys = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const keys = await enhancedHubMemoraiService.listApiKeys(projectId);
+      setApiKeys(keys);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load API keys');
+    } finally {
+      setLoading(false);
+    }
+  }, [projectId]);
+
+  const createApiKey = useCallback(async (keyData: {
+    name: string;
+    scopes: string[];
+    expiresIn?: string;
+  }) => {
+    if (!projectId) throw new Error('Project ID required for API key creation');
+
+    try {
+      setError(null);
+      const newKey = await enhancedHubMemoraiService.createApiKey(projectId, keyData);
+      setApiKeys(prev => [newKey, ...prev]);
+      return newKey;
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to create API key';
+      setError(errorMessage);
+      throw new Error(errorMessage);
+    }
+  }, [projectId]);
+
+  const revokeApiKey = useCallback(async (apiKeyId: string) => {
+    try {
+      setError(null);
+      const success = await enhancedHubMemoraiService.revokeApiKey(apiKeyId);
+      if (success) {
+        setApiKeys(prev => prev.filter(key => key.id !== apiKeyId));
+      }
+      return success;
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to revoke API key';
+      setError(errorMessage);
+      throw new Error(errorMessage);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (projectId) {
+      loadApiKeys();
+    }
+  }, [loadApiKeys, projectId]);
+
+  return {
+    apiKeys,
+    loading,
+    error,
+    createApiKey,
+    revokeApiKey,
+    refresh: loadApiKeys
+  };
+}
+
 // Hook for initialization
 export function useMemoraiInit() {
   const [initialized, setInitialized] = useState(false);
@@ -195,11 +266,11 @@ export function useMemoraiInit() {
   useEffect(() => {
     const initMemoraiService = async () => {
       try {
-        await hubMemoraiService.initialize();
+        await enhancedHubMemoraiService.initialize();
         setInitialized(true);
         setError(null);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to initialize Memorai service');
+        setError(err instanceof Error ? err.message : 'Failed to initialize Enhanced Memorai service');
       } finally {
         setInitializing(false);
       }

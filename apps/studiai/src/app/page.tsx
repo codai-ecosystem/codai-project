@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { Inter } from 'next/font/google'
 import { useState, useEffect } from 'react'
 

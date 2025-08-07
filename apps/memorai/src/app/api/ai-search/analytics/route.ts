@@ -201,7 +201,7 @@ async function processAnalyticsEvent(event: any, metadata: any): Promise<any> {
                 searchTime: event.searchTime,
                 processed: true
             };
-            
+
         case 'result_clicked':
             return {
                 type: 'result_clicked',
@@ -210,7 +210,7 @@ async function processAnalyticsEvent(event: any, metadata: any): Promise<any> {
                 relevanceScore: event.relevanceScore,
                 processed: true
             };
-            
+
         case 'suggestion_used':
             return {
                 type: 'suggestion_used',
@@ -219,7 +219,7 @@ async function processAnalyticsEvent(event: any, metadata: any): Promise<any> {
                 score: event.score,
                 processed: true
             };
-            
+
         default:
             return {
                 type: event.type,

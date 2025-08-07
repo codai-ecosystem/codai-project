@@ -836,7 +836,7 @@ app.get('/api/v1/accounts', async (req, res) => {
     //     totalBalance,
     //     totalByType
     // });
-    
+
     const response = {
         success: true,
         data: {

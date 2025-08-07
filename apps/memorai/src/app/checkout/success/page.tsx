@@ -3,6 +3,9 @@
 import React, { useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
+// Force dynamic rendering to prevent static generation issues
+export const dynamic = 'force-dynamic';
+
 function CheckoutSuccessContent() {
     const router = useRouter();
     const searchParams = useSearchParams();

@@ -1,0 +1,156 @@
+version: '3.8'
+
+services:
+  # CBD Universal Database
+  cbd-database:
+    build:
+      context: ./packages/cbd
+      dockerfile: Dockerfile
+    container_name: codai-cbd-prod
+    ports:
+      - "4190:4180"
+    environment:
+      - NODE_ENV=production
+      - PORT=4180
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - CBD_LOG_LEVEL=info
+    volumes:
+      - cbd_data:/app/data
+    networks:
+      - codai-production-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4180/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Hub Application
+  hub-app:
+    build:
+      context: ./apps/hub
+      dockerfile: Dockerfile
+    container_name: codai-hub-prod
+    ports:
+      - "4018:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - CBD_API_URL=http://cbd-database:4180
+      - NEXT_PUBLIC_CBD_API_URL=${NEXT_PUBLIC_CBD_API_URL}
+    networks:
+      - codai-production-net
+    depends_on:
+      cbd-database:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # MemorAI MCP Server
+  memorai-mcp:
+    build:
+      context: ./packages/memorai-mcp
+      dockerfile: Dockerfile
+    container_name: codai-memorai-mcp-prod
+    ports:
+      - "4951:4950"
+    environment:
+      - NODE_ENV=production
+      - PORT=4950
+      - MEMORAI_API_KEY=${MEMORAI_API_KEY}
+      - CBD_URL=http://cbd-database:4180
+    networks:
+      - codai-production-net
+    depends_on:
+      - cbd-database
+    restart: unless-stopped
+
+  # Gateway Service
+  gateway:
+    build:
+      context: ./apps/gateway
+      dockerfile: Dockerfile
+    container_name: codai-gateway-prod
+    ports:
+      - "4013:4003"
+    environment:
+      - NODE_ENV=production
+      - PORT=4003
+      - CBD_URL=http://cbd-database:4180
+      - HUB_URL=http://hub-app:3000
+    networks:
+      - codai-production-net
+    depends_on:
+      - cbd-database
+      - hub-app
+    restart: unless-stopped
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: codai-nginx-prod
+    ports:
+      - "8080:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+    networks:
+      - codai-production-net
+    depends_on:
+      - hub-app
+      - cbd-database
+      - gateway
+    restart: unless-stopped
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: codai-redis-prod
+    ports:
+      - "6389:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - codai-production-net
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: codai-postgres-prod
+    ports:
+      - "5442:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - codai-production-net
+    restart: unless-stopped
+
+networks:
+  codai-production-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/16
+
+volumes:
+  cbd_data:
+    driver: local
+  redis_data:
+    driver: local
+  postgres_data:
+    driver: local

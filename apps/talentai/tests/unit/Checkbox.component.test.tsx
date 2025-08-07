@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 Checkbox.tsx Component Tests
  * Comprehensive testing for talentai component

@@ -1,0 +1,892 @@
+openapi: 3.0.3
+info:
+  title: MemorAI REST API
+  description: |
+    Comprehensive REST API for MemorAI - AI-powered memory and knowledge management platform.
+    
+    ## Features
+    - **Memory Management**: Full CRUD operations for memories
+    - **Advanced Search**: Semantic search with filtering and ranking
+    - **Export/Import**: Backup and migrate memories in JSON/CSV formats
+    - **Analytics**: Usage insights and performance metrics
+    - **Real-time Updates**: WebSocket support for live synchronization
+    
+    ## Authentication
+    All API endpoints require authentication via Bearer token in the Authorization header:
+    ```
+    Authorization: Bearer your-api-key-here
+    ```
+    
+    ## Rate Limits
+    - **Free tier**: 1,000 requests per hour
+    - **Pro tier**: 10,000 requests per hour
+    - **Enterprise**: Custom limits
+    
+    ## Error Handling
+    All endpoints return consistent error responses with:
+    - HTTP status codes
+    - Error codes for programmatic handling
+    - Human-readable error messages
+    - Optional error details for debugging
+  version: 1.0.0
+  contact:
+    name: MemorAI Support
+    email: support@memorai.ro
+    url: https://memorai.ro/support
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: https://memorai.ro/terms
+
+servers:
+  - url: https://api.memorai.ro
+    description: Production server
+  - url: https://staging-api.memorai.ro
+    description: Staging server
+  - url: http://localhost:4006/api
+    description: Development server
+
+paths:
+  /memories:
+    get:
+      summary: List memories
+      description: Retrieve all memories for the authenticated user with optional filtering
+      tags:
+        - Memories
+      parameters:
+        - name: category
+          in: query
+          description: Filter by category
+          schema:
+            type: string
+            example: "work"
+        - name: tags
+          in: query
+          description: Filter by tags (comma-separated)
+          schema:
+            type: string
+            example: "ai,machine-learning"
+        - name: limit
+          in: query
+          description: Maximum number of memories to return
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 50
+            example: 10
+      responses:
+        '200':
+          description: Successfully retrieved memories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemoriesResponse'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: []
+
+    post:
+      summary: Create memory
+      description: Create a new memory with automatic categorization and tagging
+      tags:
+        - Memories
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMemoryRequest'
+      responses:
+        '201':
+          description: Memory created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemoryResponse'
+        '400':
+          description: Invalid memory data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: []
+
+  /memories/{id}:
+    get:
+      summary: Get memory
+      description: Retrieve a specific memory by ID
+      tags:
+        - Memories
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Memory ID
+          schema:
+            type: string
+            example: "memory-uuid-123"
+      responses:
+        '200':
+          description: Memory retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemoryResponse'
+        '404':
+          description: Memory not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: []
+
+    put:
+      summary: Update memory
+      description: Update an existing memory
+      tags:
+        - Memories
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Memory ID
+          schema:
+            type: string
+            example: "memory-uuid-123"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMemoryRequest'
+      responses:
+        '200':
+          description: Memory updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemoryResponse'
+        '400':
+          description: Invalid update data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Memory not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: []
+
+    delete:
+      summary: Delete memory
+      description: Delete a memory permanently
+      tags:
+        - Memories
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Memory ID
+          schema:
+            type: string
+            example: "memory-uuid-123"
+      responses:
+        '200':
+          description: Memory deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResponse'
+        '404':
+          description: Memory not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: []
+
+  /memories/export:
+    get:
+      summary: Export memories
+      description: Export memories in JSON or CSV format with optional filtering
+      tags:
+        - Import/Export
+      parameters:
+        - name: format
+          in: query
+          description: Export format
+          schema:
+            type: string
+            enum: [json, csv]
+            default: json
+            example: "json"
+        - name: project
+          in: query
+          description: Filter by project
+          schema:
+            type: string
+            example: "my-project"
+        - name: tags
+          in: query
+          description: Filter by tags (comma-separated)
+          schema:
+            type: string
+            example: "ai,productivity"
+        - name: dateFrom
+          in: query
+          description: Start date filter (ISO format)
+          schema:
+            type: string
+            format: date-time
+            example: "2024-01-01T00:00:00Z"
+        - name: dateTo
+          in: query
+          description: End date filter (ISO format)
+          schema:
+            type: string
+            format: date-time
+            example: "2024-12-31T23:59:59Z"
+      responses:
+        '200':
+          description: Export file generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportData'
+            text/csv:
+              schema:
+                type: string
+                example: |
+                  ID,Content,Agent ID,Importance,Project,Tags,Created At,Updated At
+                  mem-123,"Sample memory content","agent-456",7,"project-1","ai;ml","2024-01-01T10:00:00Z","2024-01-02T15:30:00Z"
+        '400':
+          description: Invalid export parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: No memories found to export
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: []
+
+  /memories/import:
+    post:
+      summary: Import memories
+      description: Import memories from JSON data with duplicate handling options
+      tags:
+        - Import/Export
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImportRequest'
+      responses:
+        '200':
+          description: Import completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportResponse'
+        '400':
+          description: Invalid import data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Import processing error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: []
+
+  /search:
+    get:
+      summary: Search memories
+      description: Search memories using advanced filtering and semantic search
+      tags:
+        - Search
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Search query
+          schema:
+            type: string
+            example: "machine learning algorithms"
+        - name: limit
+          in: query
+          description: Maximum number of results
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+            example: 20
+        - name: project
+          in: query
+          description: Filter by project
+          schema:
+            type: string
+            example: "ai-research"
+        - name: tags
+          in: query
+          description: Filter by tags (comma-separated)
+          schema:
+            type: string
+            example: "ai,research"
+        - name: importanceMin
+          in: query
+          description: Minimum importance score
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 10
+            example: 5
+        - name: importanceMax
+          in: query
+          description: Maximum importance score
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 10
+            example: 10
+        - name: dateFrom
+          in: query
+          description: Start date filter (ISO format)
+          schema:
+            type: string
+            format: date-time
+            example: "2024-01-01T00:00:00Z"
+        - name: dateTo
+          in: query
+          description: End date filter (ISO format)
+          schema:
+            type: string
+            format: date-time
+            example: "2024-12-31T23:59:59Z"
+      responses:
+        '200':
+          description: Search completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+        '400':
+          description: Invalid search parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: []
+
+  /health:
+    get:
+      summary: Health check
+      description: Get API health status and version information
+      tags:
+        - System
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Enter your API key in the format `Bearer your-api-key-here`
+
+  schemas:
+    Memory:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique memory identifier
+          example: "memory-uuid-123"
+        structuredKey:
+          type: string
+          description: Structured key for memory organization
+          example: "github-copilot-1754425791699-qc7scb1a1"
+        content:
+          type: string
+          description: Memory content
+          example: "Machine learning is transforming the way we solve complex problems"
+        agentId:
+          type: string  
+          description: Agent identifier that created the memory
+          example: "github-copilot"
+        importance:
+          type: integer
+          minimum: 0
+          maximum: 10
+          description: Importance score (0-10)
+          example: 7
+        project:
+          type: string
+          description: Project name
+          example: "ai-research"
+        tags:
+          type: array
+          items:
+            type: string
+          description: Memory tags
+          example: ["ai", "machine-learning", "research"]
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation timestamp
+          example: "2024-08-05T20:21:57.744Z"
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update timestamp
+          example: "2024-08-05T20:30:18.967Z"
+        metadata:
+          type: object
+          additionalProperties: true
+          description: Additional metadata
+          example:
+            entityType: "research_note"
+            priority: "high"
+
+    CreateMemoryRequest:
+      type: object
+      required:
+        - content
+        - agentId
+      properties:
+        content:
+          type: string
+          description: Memory content
+          example: "Important research finding about neural networks"
+        agentId:
+          type: string
+          description: Agent identifier
+          example: "github-copilot"
+        importance:
+          type: integer
+          minimum: 0
+          maximum: 10
+          description: Importance score (0-10)
+          example: 8
+        project:
+          type: string
+          description: Project name
+          example: "neural-network-research"
+        tags:
+          type: array
+          items:
+            type: string
+          description: Memory tags
+          example: ["neural-networks", "research", "deep-learning"]
+        metadata:
+          type: object
+          additionalProperties: true
+          description: Additional metadata
+          example:
+            entityType: "research_finding"
+            source: "academic_paper"
+
+    UpdateMemoryRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          description: Updated memory content
+          example: "Updated research finding with new insights"
+        importance:
+          type: integer
+          minimum: 0
+          maximum: 10
+          description: Updated importance score
+          example: 9
+        project:
+          type: string
+          description: Updated project name
+          example: "advanced-ai-research"
+        tags:
+          type: array
+          items:
+            type: string
+          description: Updated tags
+          example: ["ai", "breakthrough", "publication"]
+        metadata:
+          type: object
+          additionalProperties: true
+          description: Updated metadata
+
+    ImportRequest:
+      type: object
+      required:
+        - memories
+      properties:
+        memories:
+          type: array
+          items:
+            type: object
+            required:
+              - content
+              - agentId
+            properties:
+              content:
+                type: string
+                example: "Imported memory content"
+              agentId:
+                type: string
+                example: "import-agent"
+              importance:
+                type: integer
+                minimum: 0
+                maximum: 10
+                example: 5
+              project:
+                type: string
+                example: "imported-project"
+              tags:
+                type: array
+                items:
+                  type: string
+                example: ["imported", "backup"]
+          description: Array of memories to import
+        options:
+          type: object
+          properties:
+            skipDuplicates:
+              type: boolean
+              default: true
+              description: Skip duplicate memories
+            updateExisting:
+              type: boolean
+              default: false
+              description: Update existing memories
+            preserveTimestamps:
+              type: boolean
+              default: false
+              description: Preserve original timestamps
+
+    ExportData:
+      type: object
+      properties:
+        metadata:
+          type: object
+          properties:
+            exportedAt:
+              type: string
+              format: date-time
+              example: "2024-08-05T20:30:00Z"
+            totalMemories:
+              type: integer
+              example: 150
+            format:
+              type: string
+              example: "json"
+            version:
+              type: string
+              example: "1.0.0"
+            filters:
+              type: object
+              additionalProperties: true
+        memories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Memory'
+
+    MemoryResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/Memory'
+        meta:
+          type: object
+          properties:
+            timestamp:
+              type: string
+              format: date-time
+              example: "2024-08-05T20:30:00Z"
+            cached:
+              type: boolean
+              example: false
+
+    MemoriesResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Memory'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 25
+            timestamp:
+              type: string
+              format: date-time
+              example: "2024-08-05T20:30:00Z"
+            cached:
+              type: boolean
+              example: true
+            filters:
+              type: object
+              additionalProperties: true
+
+    SearchResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/Memory'
+              - type: object
+                properties:
+                  relevanceScore:
+                    type: number
+                    format: float
+                    description: Search relevance score
+                    example: 0.87
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 12
+            query:
+              type: string
+              example: "machine learning"
+            timestamp:
+              type: string
+              format: date-time
+              example: "2024-08-05T20:30:00Z"
+
+    ImportResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            summary:
+              type: object
+              properties:
+                totalProcessed:
+                  type: integer
+                  example: 100
+                imported:
+                  type: integer
+                  example: 85
+                updated:
+                  type: integer
+                  example: 10
+                skipped:
+                  type: integer
+                  example: 3
+                errors:
+                  type: integer
+                  example: 2
+            details:
+              type: object
+              properties:
+                errors:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      content:
+                        type: string
+                      error:
+                        type: string
+        meta:
+          type: object
+          properties:
+            timestamp:
+              type: string
+              format: date-time
+              example: "2024-08-05T20:30:00Z"
+            options:
+              type: object
+              additionalProperties: true
+
+    DeleteResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true  
+        data:
+          type: object
+          properties:
+            deleted:
+              type: boolean
+              example: true
+        meta:
+          type: object
+          properties:
+            timestamp:
+              type: string
+              format: date-time
+              example: "2024-08-05T20:30:00Z"
+
+    HealthResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            status:
+              type: string
+              example: "healthy"
+            version:
+              type: string
+              example: "1.0.0"
+            timestamp:
+              type: string
+              format: date-time
+              example: "2024-08-05T20:30:00Z"
+            uptime:
+              type: number
+              description: Server uptime in seconds
+              example: 86400
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code for programmatic handling
+              example: "VALIDATION_ERROR"
+            message:
+              type: string
+              description: Human-readable error message
+              example: "Memory content cannot be empty"
+            details:
+              type: object
+              additionalProperties: true
+              description: Additional error details
+        meta:
+          type: object
+          properties:
+            timestamp:
+              type: string
+              format: date-time
+              example: "2024-08-05T20:30:00Z"
+
+tags:
+  - name: Memories
+    description: Memory management operations
+  - name: Search
+    description: Advanced search capabilities
+  - name: Import/Export
+    description: Data import and export operations
+  - name: System
+    description: System health and status endpoints

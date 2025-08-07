@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { Resource } from '@/types';
 import { Card } from '@heroui/react';
@@ -80,3 +82,4 @@ export default function ResourcesList({
     </Card>
   );
 }
+

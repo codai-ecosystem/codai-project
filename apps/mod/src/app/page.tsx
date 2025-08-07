@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { Box, Zap, Link2, Play, Pause, Settings, Activity, Workflow } from 'lucide-react'
 
 interface ModuleStats {
@@ -203,3 +205,4 @@ export default function ModDashboard() {
         </div>
     )
 }
+

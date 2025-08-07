@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 Toast.tsx Component Tests
  * Comprehensive testing for x component

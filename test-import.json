@@ -1,0 +1,31 @@
+{
+  "memories": [
+    {
+      "content": "Phase 6.1 REST API Test Memory",
+      "agentId": "github-copilot",
+      "importance": 8,
+      "project": "MemorAI",
+      "tags": [
+        "api",
+        "test",
+        "phase6.1"
+      ]
+    },
+    {
+      "content": "SDK Development Validation Test",
+      "agentId": "github-copilot",
+      "importance": 7,
+      "project": "MemorAI",
+      "tags": [
+        "sdk",
+        "validation",
+        "typescript"
+      ]
+    }
+  ],
+  "options": {
+    "skipDuplicates": true,
+    "updateExisting": false,
+    "preserveTimestamps": false
+  }
+}

@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useAuth } from '../lib/auth-context'
 import { APIClient } from '../lib/api-client'
 import { useNotifications } from '../components/ui/Notifications'
@@ -951,3 +953,4 @@ function Home() {
 		</DashboardLayout>
 	);
 }
+

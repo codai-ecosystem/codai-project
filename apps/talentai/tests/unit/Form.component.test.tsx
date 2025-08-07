@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 Form.tsx Component Tests
  * Comprehensive testing for talentai component

@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { useState, useEffect, useRef } from 'react';
 import { useCourse } from '@/components/contexts/hooks';
@@ -138,3 +140,4 @@ export const useHeroStats = (): HeroStats => {
 
   return stats;
 };
+

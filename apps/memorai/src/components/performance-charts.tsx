@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * Performance Metrics Visualization Component
  * 
@@ -349,3 +350,4 @@ export function PerformanceTrend({ data, title, color = '#3B82F6', height = 150 
     </div>
   );
 }
+

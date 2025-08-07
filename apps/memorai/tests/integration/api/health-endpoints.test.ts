@@ -30,7 +30,7 @@ describe('Health API Integration Tests', () => {
             const data = await response.json()
 
             expect(data).toMatchObject({
-                service: 'memorai-health',
+                service: 'MemorAI Service',
                 status: 'operational',
                 version: '1.0.0'
             })
@@ -71,7 +71,7 @@ describe('Health API Integration Tests', () => {
             const response = await app.request(healthEndpoint)
             const data = await response.json()
 
-            expect(data.service).toBe('memorai-health')
+            expect(data.service).toBe('MemorAI Service')
             expect(data.status).toBe('operational')
             expect(data.version).toBe('1.0.0')
             expect(typeof data.timestamp).toBe('string')

@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 Dialog.tsx Component Tests
  * Comprehensive testing for x component

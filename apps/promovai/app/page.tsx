@@ -1,3 +1,4 @@
+import React from 'react'
 import { Target, TrendingUp, Users, DollarSign } from 'lucide-react'
 
 export default function HomePage() {
@@ -91,3 +92,4 @@ export default function HomePage() {
     </div>
   )
 }
+

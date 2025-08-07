@@ -1,3 +1,4 @@
+import React from 'react'
 import { useEffect, useState } from 'react';
 
 interface BackendStatusProps {
@@ -50,3 +51,4 @@ export function BackendStatus({ className }: BackendStatusProps) {
         </div>
     );
 }
+

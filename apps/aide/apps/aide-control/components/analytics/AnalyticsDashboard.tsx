@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -542,3 +544,4 @@ export function AnalyticsDashboard({ projectId, teamId, timeframe = '7d' }: Anal
 
 // Export alias for compatibility
 export { AnalyticsDashboard as EnhancedAnalyticsDashboard }
+

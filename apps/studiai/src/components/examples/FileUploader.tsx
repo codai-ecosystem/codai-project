@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import type { JSX } from 'react';
 import { useRef, useState, type ChangeEvent } from 'react';
@@ -204,3 +206,4 @@ export function FileUploader({
     </div>
   );
 }
+

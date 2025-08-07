@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     } catch (error) {
         console.error('Pattern Analysis Error:', error);
         return NextResponse.json(
-            { 
+            {
                 error: 'Failed to identify memory patterns',
                 details: error instanceof Error ? error.message : 'Unknown error'
             },

@@ -1,5 +1,7 @@
 'use client'
 
+import React from 'react'
+
 import { useState } from 'react'
 
 export function ForgotPasswordForm() {
@@ -116,3 +118,4 @@ export function ForgotPasswordForm() {
     </div>
   )
 }
+

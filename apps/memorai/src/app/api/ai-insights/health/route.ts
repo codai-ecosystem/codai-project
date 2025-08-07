@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     } catch (error) {
         console.error('Memory Health Calculation Error:', error);
         return NextResponse.json(
-            { 
+            {
                 error: 'Failed to calculate memory health score',
                 details: error instanceof Error ? error.message : 'Unknown error'
             },

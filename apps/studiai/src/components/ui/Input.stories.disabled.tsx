@@ -1,3 +1,4 @@
+import React from 'react'
 // Storybook file disabled - not configured in this project
 // import type { Meta, StoryObj } from '@storybook/react-vite';
 //
@@ -68,3 +69,4 @@ export const WithError: Story = {
   },
 };
 */
+

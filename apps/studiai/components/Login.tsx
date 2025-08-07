@@ -1,3 +1,4 @@
+import React from 'react'
 import { useState, useEffect } from 'react';
 import { firebaseAuth } from '@/utils/firebase/firebase.config';
 import {
@@ -512,3 +513,4 @@ export default function Login(props: any) {
     </motion.div>
   );
 }
+

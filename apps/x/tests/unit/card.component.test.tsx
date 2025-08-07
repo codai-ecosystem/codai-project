@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 card.tsx Component Tests
  * Comprehensive testing for x component
@@ -177,3 +178,4 @@ describe('card', () => {
     });
   });
 });
+

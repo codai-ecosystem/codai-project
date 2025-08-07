@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import dynamic from 'next/dynamic';
 import type { ComponentType, ComponentProps } from 'react';
@@ -27,3 +29,4 @@ const FadeTransition: ComponentType<TransitionProps> = dynamic(
 
 export { PageTransition, FadeTransition };
 export default PageTransition;
+

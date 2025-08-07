@@ -1,3 +1,4 @@
+import React from 'react'
 import { Inter, JetBrains_Mono, Lexend } from 'next/font/google';
 import Head from 'next/head';
 import '../src/styles/globals.css';
@@ -59,3 +60,4 @@ export default function MyApp({ Component, pageProps }: any) {
     </>
   );
 }
+

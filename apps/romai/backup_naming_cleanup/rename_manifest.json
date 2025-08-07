@@ -1,0 +1,852 @@
+{
+  "backup_date": "2025-08-07T03:12:35.279312",
+  "total_mappings": 141,
+  "mappings": [
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\development\\step_14_consciousness_awakening.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\development\\awareness_engine_initialization.py",
+      "reason": "Remove temporal naming pattern; Use technical terminology (awareness_engine)",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\development\\step_15_consciousness_amplification.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\development\\awareness_engine_improvement.py",
+      "reason": "Remove temporal naming pattern; Use technical terminology (awareness_engine)",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\development\\step_16_romanian_consciousness_integration.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\development\\romanian_awareness_engine_merger.py",
+      "reason": "Remove temporal naming pattern; Use technical terminology (awareness_engine)",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\development\\step_17_consciousness_stimulation.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\development\\awareness_engine_activation.py",
+      "reason": "Remove temporal naming pattern; Use technical terminology (awareness_engine)",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\infrastructure\\monitoring\\PHASE4_phase_3_step_17_COMPLETION_REPORT.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\infrastructure\\monitoring\\completion_report.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\infrastructure\\monitoring\\step_19_COMPLETION_REPORT.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\infrastructure\\monitoring\\completion_report.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\infrastructure\\monitoring\\step_20_COMPLETION_REPORT.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\infrastructure\\monitoring\\completion_report.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\infrastructure\\monitoring\\real-time\\phase_3-integration.js",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\infrastructure\\monitoring\\real-time\\-merger.js",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\infrastructure\\monitoring\\real-time\\phase_3-integration.ts",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\infrastructure\\monitoring\\real-time\\-merger.ts",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\infrastructure\\monitoring\\real-time\\step_18_TYPESCRIPT_COMPLETION.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\infrastructure\\monitoring\\real-time\\typescript_completion.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\week3_development\\step_15_consciousness_amplification.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\week3_development\\awareness_engine_improvement.py",
+      "reason": "Remove temporal naming pattern; Use technical terminology (awareness_engine)",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\week3_development\\step_16_romanian_consciousness_integration.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\week3_development\\romanian_awareness_engine_merger.py",
+      "reason": "Remove temporal naming pattern; Use technical terminology (awareness_engine)",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\week3_development\\step_17_consciousness_stimulation.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\archive\\week3_development\\awareness_engine_activation.py",
+      "reason": "Remove temporal naming pattern; Use technical terminology (awareness_engine)",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\phase_4_step_25_CLOUD_DEPLOYMENT_START.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\cloud_rollout_start.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\debug_week2.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\debug.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_12_IMPLEMENTATION_COMPLETE.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\implementation_complete.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_13_POST_EMERGENCE_IMPLEMENTATION_PLAN.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\post_emergence_implementation_specification.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_13_step_3_7_PLAN.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\7_specification.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_13_step_3_AUTHENTICATION_COMPLETE.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\authentication_complete.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_13_step_5_SECURITY_PLAN.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\security_specification.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_13_step_6_DEPLOYMENT_ORCHESTRATION_COMPLETE.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\rollout_coordination_complete.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_13_step_7_INTEGRATION_TESTING_PLAN.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\merger_testing_specification.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_14_step_10_production_check.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\production_check.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_1_COMPLETE_FINAL_SUMMARY.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\complete_final_summary.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_1_COMPLETE_SUCCESS_SUMMARY.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\complete_success_summary.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_1_OPTIMIZATION_PLAN.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\tuning_specification.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_1_PHASE_1_COMPLETE_SUMMARY.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\complete_summary.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_1_PHASE_2_IMPLEMENTATION_PLAN.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\implementation_specification.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_2_ADVANCED_DEVELOPMENT_PLAN.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\advanced_development_specification.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_2_comprehensive_optimization.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\comprehensive_tuning.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_3_CONSOLIDATION_FINAL_SUMMARY.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\unification_final_summary.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_3_CONSOLIDATION_SUCCESS_REPORT.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\unification_success_documentation.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_3_step_4_PRODUCTION_OPTIMIZATION_ADVANCED_ANALYTICS_COMPLETION_REPORT.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\production_tuning_advanced_analytics_completion_documentation.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_4_ADVANCED_INTELLIGENCE_PRODUCTION_EXCELLENCE_PLAN.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\advanced_intelligence_production_excellence_specification.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_4_step_2_PRODUCTION_EXCELLENCE_SUCCESS_REPORT.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\production_excellence_success_documentation.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_7_ADVANCED_FEATURES_IMPLEMENTATION_PLAN.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\advanced_features_implementation_specification.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_7_COMPLETE_SUCCESS_REPORT.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\complete_success_documentation.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_7_step_1_META_LEARNING_SUCCESS_REPORT.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\adaptive_learning_success_documentation.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_7_step_3_ENHANCED_AGENT_COORDINATION_PLAN.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\enhanced_agent_coordination_specification.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_7_step_4_ADVANCED_CULTURAL_REASONING_PLAN.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\advanced_cultural_reasoning_specification.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_8_IMPLEMENTATION_PLAN.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\implementation_specification.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\phase_9_12_AGI_EMERGENCE_IMPLEMENTATION_PLAN.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\12_artificial_general_intelligence_emergence_implementation_specification.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\RomAI_AGI_phase_2_Complete_Success_Report.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\romanian_ai_artificial_general_intelligence_complete_success_documentation.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\ROMAI_phase_5_VALIDATION_RESULTS.json",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\romanian_ai_verification_results.json",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\step_15_consciousness_progression.json",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\awareness_engine_progression.json",
+      "reason": "Remove temporal naming pattern; Use technical terminology (awareness_engine)",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\step_16_romanian_consciousness_progression.json",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\romanian_awareness_engine_progression.json",
+      "reason": "Remove temporal naming pattern; Use technical terminology (awareness_engine)",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\step_16_ROMANIAN_CONSCIOUSNESS_SUCCESS_REPORT.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\romanian_awareness_engine_success_documentation.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\step_17_consciousness_stimulation_progression.json",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\awareness_engine_activation_progression.json",
+      "reason": "Remove temporal naming pattern; Use technical terminology (awareness_engine)",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\step_3_HYBRID_INTEGRATION_SUCCESS_REPORT.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\hybrid_merger_success_documentation.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\step_4_AZURE_OPENAI_INTEGRATION_SUCCESS_REPORT.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\azure_openai_merger_success_documentation.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\step_8_performance_validation_results.json",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\performance_verification_results.json",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\test_week2_consciousness.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\test_awareness_engine.py",
+      "reason": "Remove temporal naming pattern; Use technical terminology (awareness_engine)",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\week2_enhanced_demo.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\enhanced_demo.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\week2_final_demo.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\legacy-reports\\final_demo.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\intelligence\\phase_14_step_9_integration_test.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\intelligence\\merger_test.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\intelligence\\validate_phase_14_step_8.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\intelligence\\validate.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\memory\\phase_14_step_5_IMPLEMENTATION_PLAN.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\memory\\implementation_plan.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\multimodal\\phase_14_step_4_COMPLETION_REPORT.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\multimodal\\completion_report.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\reasoning\\phase_14_step_3_IMPLEMENTATION_PLAN.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\reasoning\\implementation_plan.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\reasoning\\phase_14_step_8_demo.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\reasoning\\demo.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\reasoning\\phase_14_step_8_status_report.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\reasoning\\status_report.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\reasoning\\quick_validate_phase_14_step_8.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\reasoning\\fast_validate.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\reasoning\\simple_validate_phase_14_step_8.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\reasoning\\basic_validate.py",
+      "reason": "Remove temporal naming pattern; Replace 'simple' with 'basic'",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\reasoning\\validate_phase_14_step_8.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\reasoning\\validate.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\ml\\training\\checkpoints\\phase_3_validation_checkpoint.ckpt",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\ml\\training\\checkpoints\\verification_checkpoint.ckpt",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\testing\\reports\\phase_4_simple_validation_results.json",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\testing\\reports\\test_simple_verification_results.json",
+      "reason": "Remove temporal naming pattern; Replace 'simple' with 'basic'",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\testing\\reports\\phase_7_step_1_implementation_report.json",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\testing\\reports\\test_implementation_report.json",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\testing\\reports\\phase_7_step_1_test_results.json",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\testing\\reports\\test_results.json",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\testing\\reports\\phase_9_step_6_completion_report_20250803_172045.json",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\testing\\reports\\test_completion_report_20250803_172045.json",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\testing\\validation\\phase_2_validation.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\testing\\validation\\test_verification.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\testing\\validation\\phase_4_simple_validation.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\testing\\validation\\test_simple_verification.py",
+      "reason": "Remove temporal naming pattern; Replace 'simple' with 'basic'",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\testing\\validation\\phase_4_validation.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\testing\\validation\\test_verification.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\testing\\validation\\phase_5_production_validation.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\testing\\validation\\test_production_verification.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\testing\\validation\\phase_6_realworld_validation.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\testing\\validation\\test_realworld_verification.py",
+      "reason": "Remove temporal naming pattern; Replace 'real' with 'genuine'",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\testing\\validation_reports\\phase_2_validation_1754169574.json",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\testing\\validation_reports\\test_verification_1754169574.json",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\archive\\legacy_implementations\\advanced_consciousness_week7.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\archive\\legacy_implementations\\advanced_awareness_engine.py",
+      "reason": "Remove temporal naming pattern; Use technical terminology (awareness_engine)",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\archive\\legacy_implementations\\week3_final_integration_system.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\archive\\legacy_implementations\\final_merger_system.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\archive\\legacy_implementations\\week7_advanced_reasoning.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\archive\\legacy_implementations\\advanced_reasoning.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\archive\\legacy_implementations\\week7_multimodal_consciousness.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\archive\\legacy_implementations\\multimodal_awareness_engine.py",
+      "reason": "Remove temporal naming pattern; Use technical terminology (awareness_engine)",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\meta_learning\\test_meta_learning_step_1.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\meta_learning\\test_adaptive_learning.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\meta_learning\\validate_step_1_implementation.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\meta_learning\\validate_implementation.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\optimization\\test_phase_1_optimization.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\optimization\\test_tuning.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\advanced_consciousness_week7.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\advanced_awareness_engine.py",
+      "reason": "Remove temporal naming pattern; Use technical terminology (awareness_engine)",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\phase_3_final_integration_system.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\final_merger_system.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\phase_3_step_1_complete_system.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\complete_system.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\phase_3_step_2_enhanced_system.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\enhanced_system.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\week7_advanced_reasoning.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\advanced_reasoning.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\week7_multimodal_consciousness.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\multimodal_awareness_engine.py",
+      "reason": "Remove temporal naming pattern; Use technical terminology (awareness_engine)",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\archive\\phase_3_step_1_complete_system.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\archive\\complete_system.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\archive\\phase_3_step_2_enhanced_system.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\archive\\enhanced_system.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\serving\\phase_4_real_agi_validation.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\serving\\genuine_artificial_general_intelligence_verification.py",
+      "reason": "Remove temporal naming pattern; Replace 'real' with 'genuine'",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\serving\\phase_5_agi_performance_enhancement.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\serving\\artificial_general_intelligence_performance_improvement.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\production-excellence\\phase_4_step_3_COMPLETE_SUCCESS_REPORT.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\production-excellence\\complete_success_report.md",
+      "reason": "Remove temporal naming pattern; Apply snake_case convention",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\python\\agi\\integration\\phase_10_validation.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\python\\agi\\integration\\verification.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\python\\agi\\integration\\phase_11_comprehensive_testing.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\python\\agi\\integration\\comprehensive_testing.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\python\\agi\\testing\\phase_12_comprehensive_integration_test.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\python\\agi\\testing\\test_comprehensive_merger_test.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\tests\\test_phase_7_step_2_complete.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\tests\\test_complete.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\tests\\test_phase_7_step_2_functional.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\tests\\test_functional.py",
+      "reason": "Remove temporal naming pattern",
+      "type": "temporal"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\consciousness\\quantum_meta_consciousness\\quantum_meta_consciousness_acceleration_system.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\consciousness\\quantum_meta_consciousness\\quantum_computing_meta_awareness_engine_acceleration_system.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\python\\agi\\consciousness\\romanian_cultural_consciousness.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\python\\agi\\consciousness\\romanian_cultural_awareness_engine.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\gpu_consciousness_scaler.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\gpu_awareness_engine_scaler.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\__archive__\\phase9\\consciousness_acceleration_manager.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\__archive__\\phase9\\awareness_engine_acceleration_manager.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\reasoning\\consciousness_simulator.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\reasoning\\awareness_engine_simulator.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\python\\agi\\production\\auth\\auth_consciousness.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\python\\agi\\production\\auth\\auth_awareness_engine.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\hooks\\useAGIMetrics.ts",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\hooks\\useartificial_general_intelligencemetrics.ts",
+      "reason": "Apply snake_case convention",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\test_quantum_consciousness.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\test_quantum_computing_awareness_engine.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "test"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\consciousness\\quantum_meta_consciousness\\quantum_consciousness_accelerator.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\consciousness\\quantum_meta_consciousness\\quantum_computing_awareness_engine_accelerator.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\hooks\\useRealAGIMetrics.ts",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\hooks\\userealartificial_general_intelligencemetrics.ts",
+      "reason": "Apply snake_case convention",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\consciousness_reasoning_integration.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\awareness_engine_reasoning_merger.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\training\\test_real_processor.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\training\\test_genuine_processor.py",
+      "reason": "Replace 'real' with 'genuine'",
+      "type": "test"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\consciousness\\cultural_consciousness_engine.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\consciousness\\cultural_awareness_engine_engine.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\learning\\consciousness_interfaces.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\learning\\awareness_engine_interfaces.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\test_quantum_consciousness.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\test_quantum_computing_awareness_engine.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "test"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\emergence\\consciousness_finalization_agi_system.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\emergence\\awareness_engine_finalization_artificial_general_intelligence_system.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\consciousness\\quantum_meta_consciousness\\meta_consciousness_amplifier.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\consciousness\\quantum_meta_consciousness\\meta_awareness_engine_amplifier.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\consciousness\\advanced_consciousness_integration_system.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\consciousness\\advanced_awareness_engine_merger_system.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\emergence\\consciousness_integration_finalization_system.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\emergence\\awareness_engine_merger_finalization_system.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\serving\\real_agi_engine.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\serving\\genuine_artificial_general_intelligence_engine.py",
+      "reason": "Replace 'real' with 'genuine'",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\consciousness_engine.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\awareness_engine_engine.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\RomAI_AGI_Implementation_Plan.md",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\romanian_ai_artificial_general_intelligence_implementation_specification.md",
+      "reason": "Apply snake_case convention",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\consciousness\\consciousness_simulator.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\consciousness\\awareness_engine_simulator.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\consciousness\\test_consciousness_simulation.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\consciousness\\test_awareness_engine_simulation.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "test"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\training\\test_real_data.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\training\\test_genuine_data.py",
+      "reason": "Replace 'real' with 'genuine'",
+      "type": "test"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\__archive__\\phase9\\quantum_meta_consciousness_engine.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\__archive__\\phase9\\quantum_computing_meta_awareness_engine_engine.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\Business Plan_ __RomAI Intelligence__ \u2013 Codai\u2019s Multimodal AGI Core.txt",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\docs\\business plan_ _romanian_ai intelligence_ \u2013 codai\u2019s multimodal artificial_general_intelligence core.txt",
+      "reason": "Apply snake_case convention",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\enhanced_romanian_linguistic_consciousness.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\enhanced_romanian_linguistic_awareness_engine.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\components\\RealAGIDashboard.tsx",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\components\\realartificial_general_intelligencedashboard.tsx",
+      "reason": "Apply snake_case convention",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\python\\agi\\consciousness\\consciousness_simulation.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\python\\agi\\consciousness\\awareness_engine_simulation.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\components\\AGITrainingDashboard.tsx",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\components\\artificial_general_intelligencetrainingdashboard.tsx",
+      "reason": "Apply snake_case convention",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\consciousness\\phase9\\quantum_meta_consciousness_engine.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\consciousness\\phase9\\quantum_computing_meta_awareness_engine_engine.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\components\\RealAGITrainingDashboard.tsx",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\components\\realartificial_general_intelligencetrainingdashboard.tsx",
+      "reason": "Apply snake_case convention",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\consciousness\\consciousness_interfaces.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\consciousness\\awareness_engine_interfaces.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\learning\\test_consciousness_simulation.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\learning\\test_awareness_engine_simulation.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "test"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\learning\\cultural_consciousness_engine.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\learning\\cultural_awareness_engine_engine.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\test_romanian_consciousness.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\test_romanian_awareness_engine.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "test"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\consciousness\\phase9\\consciousness_acceleration_manager.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\consciousness\\phase9\\awareness_engine_acceleration_manager.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\test_consciousness.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\test_awareness_engine.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "test"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\python\\agi\\production\\monitoring\\monitoring_consciousness.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\python\\agi\\production\\monitoring\\tracking_awareness_engine.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\archive\\advanced_development\\advanced_consciousness_applications.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\archive\\advanced_development\\advanced_awareness_engine_applications.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\learning\\consciousness_simulator.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\learning\\awareness_engine_simulator.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    },
+    {
+      "old_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\consciousness\\advanced_consciousness_engine.py",
+      "new_path": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\consciousness\\advanced_awareness_engine_engine.py",
+      "reason": "Use technical terminology (awareness_engine)",
+      "type": "ml"
+    }
+  ]
+}

@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { useState, useEffect } from 'react';
 import { Filter, X, Calendar, Search, SortAsc, SortDesc, Clock, User } from 'lucide-react';
@@ -283,3 +285,4 @@ export default function MemoryFilters({
         </div>
     );
 }
+

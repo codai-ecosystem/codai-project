@@ -1,4 +1,6 @@
-'use client';
+'use client'
+
+import React from 'react';
 
 import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -264,3 +266,4 @@ export default function AuthErrorPage() {
         </Suspense>
     );
 }
+

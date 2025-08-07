@@ -15,7 +15,7 @@ class CODAIAnalyticsDashboard {
     this.server = createServer(this.app);
     this.wss = new WebSocketServer({ server: this.server });
     this.port = process.env.ANALYTICS_PORT || 9999;
-    
+
     this.metrics = {
       applications: {},
       performance: {},
@@ -25,7 +25,7 @@ class CODAIAnalyticsDashboard {
       users: {},
       business: {}
     };
-    
+
     this.setupRoutes();
     this.setupWebSocket();
     this.startMonitoring();
@@ -96,7 +96,7 @@ class CODAIAnalyticsDashboard {
   setupWebSocket() {
     this.wss.on('connection', (ws) => {
       console.log('📊 Analytics client connected');
-      
+
       // Send initial data
       ws.send(JSON.stringify({
         type: 'initial',
@@ -135,12 +135,12 @@ class CODAIAnalyticsDashboard {
       applications.map(async (app) => {
         try {
           const start = Date.now();
-          const response = await fetch(app.url, { 
+          const response = await fetch(app.url, {
             method: 'HEAD',
             signal: AbortSignal.timeout(5000)
           });
           const responseTime = Date.now() - start;
-          
+
           return {
             ...app,
             status: response.status >= 200 && response.status < 400 ? 'healthy' : 'unhealthy',
@@ -257,22 +257,22 @@ class CODAIAnalyticsDashboard {
 
   async startMonitoring() {
     console.log('🔍 Starting real-time monitoring...');
-    
+
     // Update metrics every 30 seconds
     setInterval(async () => {
       try {
         // Update application health
         this.metrics.applications = await this.checkApplicationsHealth();
-        
+
         // Update performance metrics
         this.metrics.performance = this.getPerformanceSummary();
-        
+
         // Update security status
         this.metrics.security = this.getSecurityStatus();
-        
+
         // Update business analytics
         this.metrics.business = this.getBusinessAnalytics();
-        
+
         // Update deployment metrics
         this.metrics.deployment = {
           lastDeployment: '2025-08-05T11:30:00Z',
@@ -280,10 +280,10 @@ class CODAIAnalyticsDashboard {
           successRate: '98.5%',
           averageDeployTime: '12 minutes'
         };
-        
+
         // Broadcast to connected clients
         this.broadcastUpdate();
-        
+
       } catch (error) {
         console.error('❌ Monitoring update failed:', error);
       }
@@ -609,7 +609,7 @@ class CODAIAnalyticsDashboard {
       console.log('📊 Real-time monitoring active');
       console.log('🔍 WebSocket streaming enabled');
     });
-    
+
     this.server.on('error', (error) => {
       console.error('❌ Server error:', error);
       if (error.code === 'EADDRINUSE') {
@@ -617,12 +617,12 @@ class CODAIAnalyticsDashboard {
         process.exit(1);
       }
     });
-    
+
     // Handle uncaught exceptions
     process.on('uncaughtException', (error) => {
       console.error('❌ Uncaught exception:', error);
     });
-    
+
     process.on('unhandledRejection', (reason, promise) => {
       console.error('❌ Unhandled rejection at:', promise, 'reason:', reason);
     });

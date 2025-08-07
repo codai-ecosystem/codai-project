@@ -2,10 +2,10 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { 
-  FolderKanban, 
-  Clock, 
-  CheckCircle2, 
+import {
+  FolderKanban,
+  Clock,
+  CheckCircle2,
   AlertTriangle,
   TrendingUp,
   Users,
@@ -95,13 +95,13 @@ function getPriorityColor(priority: string) {
   }
 }
 
-export function ProjectOverview({ 
-  projects = mockProjects, 
-  data, 
-  loading = false, 
-  maxItems, 
-  showCreateButton = true, 
-  className = '' 
+export function ProjectOverview({
+  projects = mockProjects,
+  data,
+  loading = false,
+  maxItems,
+  showCreateButton = true,
+  className = ''
 }: ProjectOverviewProps) {
   // Use data if provided, otherwise use projects prop or mock data
   const displayProjects = data?.projects || projects || mockProjects

@@ -2,7 +2,11 @@
   "dashboard": {
     "id": null,
     "title": "CODAI Technical Operations",
-    "tags": ["codai", "technical", "operations"],
+    "tags": [
+      "codai",
+      "technical",
+      "operations"
+    ],
     "timezone": "browser",
     "panels": [
       {

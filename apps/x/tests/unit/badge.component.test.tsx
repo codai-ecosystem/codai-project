@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 badge.tsx Component Tests
  * Comprehensive testing for x component
@@ -178,3 +179,4 @@ describe('badge', () => {
     });
   });
 });
+

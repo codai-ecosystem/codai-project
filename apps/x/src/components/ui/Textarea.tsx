@@ -1,3 +1,4 @@
+import React from 'react'
 import { forwardRef, type TextareaHTMLAttributes } from 'react';
 
 import { cn } from '@/lib/utils';
@@ -66,3 +67,4 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 Textarea.displayName = 'Textarea';
 
 export { Textarea };
+

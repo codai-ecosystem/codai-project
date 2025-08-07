@@ -10,15 +10,18 @@ export default defineConfig({
     testTimeout: 15000, // Increased timeout for interactive tests
     hookTimeout: 10000,
     include: [
-      '**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
-      '__tests__/**/*.{test,spec}.{js,ts,jsx,tsx}',
-      'tests/**/*.{test,spec}.{js,ts,jsx,tsx}'
+      'tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
+      '__tests__/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
+      'src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'
     ],
     exclude: [
       'node_modules/**',
+      '__tests__/node_modules/**',
       'dist/**',
       '.next/**',
-      'coverage/**'
+      'coverage/**',
+      '**/node_modules/**',
+      '**/*.d.ts'
     ],
     coverage: {
       provider: 'v8',
@@ -46,11 +49,11 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, '.'),
-      '@/components': path.resolve(__dirname, 'components'),
-      '@/lib': path.resolve(__dirname, 'lib'),
-      '@/utils': path.resolve(__dirname, 'utils'),
-      '@/app': path.resolve(__dirname, 'app'),
+      '@': path.resolve(__dirname, './src'),
+      '@/components': path.resolve(__dirname, './src/components'),
+      '@/lib': path.resolve(__dirname, './src/lib'),
+      '@/utils': path.resolve(__dirname, './src/utils'),
+      '@/app': path.resolve(__dirname, './src/app'),
     },
   },
 })

@@ -1,3 +1,4 @@
+import React from 'react'
 interface DataTableProps {
   data: Array<Record<string, any>>;
   columns: Array<{
@@ -37,3 +38,4 @@ export default function DataTable({ data, columns, className = '' }: DataTablePr
     </div>
   );
 }
+

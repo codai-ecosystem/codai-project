@@ -1,3 +1,4 @@
+import React from 'react'
 export default function HomePage() {
   return (
     <div className="container mx-auto px-4 py-8">
@@ -44,3 +45,4 @@ export default function HomePage() {
     </div>
   )
 }
+

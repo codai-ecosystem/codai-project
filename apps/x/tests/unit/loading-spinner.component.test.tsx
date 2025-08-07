@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 loading-spinner.tsx Component Tests
  * Comprehensive testing for x component

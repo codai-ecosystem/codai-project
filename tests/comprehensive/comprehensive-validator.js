@@ -24,7 +24,7 @@ class ComprehensiveValidator {
                 coverage: 0
             }
         };
-        
+
         this.services = [
             { name: 'CBD Database', port: 4180, critical: true },
             { name: 'Gateway Service', port: 4003, critical: true },
@@ -46,7 +46,7 @@ class ComprehensiveValidator {
             error: '\x1b[31m', // Red
             reset: '\x1b[0m'
         };
-        
+
         console.log(`${colors[level]}[${timestamp}] ${level.toUpperCase()}: ${message}${colors.reset}`);
     }
 
@@ -58,10 +58,10 @@ class ComprehensiveValidator {
             critical,
             timestamp: new Date().toISOString()
         };
-        
+
         this.results.tests.push(test);
         this.results.summary.total++;
-        
+
         if (result === 'PASS') {
             this.results.summary.passed++;
             this.log('success', `✅ ${name}: PASSED`);
@@ -72,7 +72,7 @@ class ComprehensiveValidator {
             this.results.summary.warnings++;
             this.log('warning', `⚠️ ${name}: WARNING`);
         }
-        
+
         if (details.message) {
             this.log('info', `   ${details.message}`);
         }
@@ -81,17 +81,17 @@ class ComprehensiveValidator {
     async validateServiceHealth() {
         this.log('info', '🩺 Phase 1: Service Health Validation');
         this.log('info', '=====================================');
-        
+
         const healthResults = [];
-        
+
         for (const service of this.services) {
             try {
-                const response = await axios.get(`http://localhost:${service.port}/health`, { 
-                    timeout: 5000 
+                const response = await axios.get(`http://localhost:${service.port}/health`, {
+                    timeout: 5000
                 });
-                
+
                 const responseTime = response.headers['x-response-time'] || 'unknown';
-                
+
                 await this.addTest(
                     `Service Health - ${service.name}`,
                     'PASS',
@@ -103,7 +103,7 @@ class ComprehensiveValidator {
                     },
                     service.critical
                 );
-                
+
                 healthResults.push({ ...service, healthy: true, response: response.data });
             } catch (error) {
                 const result = service.critical ? 'FAIL' : 'WARN';
@@ -117,23 +117,23 @@ class ComprehensiveValidator {
                     },
                     service.critical
                 );
-                
+
                 healthResults.push({ ...service, healthy: false, error: error.message });
             }
         }
-        
+
         const healthyServices = healthResults.filter(s => s.healthy).length;
         const healthPercentage = Math.round((healthyServices / this.services.length) * 100);
-        
+
         this.log('info', `📊 Overall Health: ${healthyServices}/${this.services.length} services (${healthPercentage}%)`);
-        
+
         return { healthResults, healthPercentage };
     }
 
     async validateAPIEndpoints() {
         this.log('info', '🔌 Phase 2: API Endpoint Validation');
         this.log('info', '===================================');
-        
+
         const endpoints = [
             { service: 'CBD', url: 'http://localhost:4180/stats', method: 'GET' },
             { service: 'CBD', url: 'http://localhost:4180/health', method: 'GET' },
@@ -141,7 +141,7 @@ class ComprehensiveValidator {
             { service: 'CODAI', url: 'http://localhost:4001/api/health', method: 'GET' },
             { service: 'Hub', url: 'http://localhost:4008/api/health', method: 'GET' }
         ];
-        
+
         for (const endpoint of endpoints) {
             try {
                 const startTime = Date.now();
@@ -151,7 +151,7 @@ class ComprehensiveValidator {
                     timeout: 10000
                 });
                 const responseTime = Date.now() - startTime;
-                
+
                 await this.addTest(
                     `API Endpoint - ${endpoint.service} ${endpoint.method}`,
                     'PASS',
@@ -179,24 +179,24 @@ class ComprehensiveValidator {
     async validatePerformance() {
         this.log('info', '⚡ Phase 3: Performance Validation');
         this.log('info', '==================================');
-        
+
         // Test CBD Database performance
         try {
             const iterations = 10;
             const times = [];
-            
+
             for (let i = 0; i < iterations; i++) {
                 const startTime = Date.now();
                 await axios.get('http://localhost:4180/health');
                 times.push(Date.now() - startTime);
             }
-            
+
             const avgTime = times.reduce((a, b) => a + b, 0) / times.length;
             const maxTime = Math.max(...times);
             const minTime = Math.min(...times);
-            
+
             const performanceResult = avgTime < 100 ? 'PASS' : avgTime < 500 ? 'WARN' : 'FAIL';
-            
+
             await this.addTest(
                 'Performance - CBD Database Response Time',
                 performanceResult,
@@ -220,24 +220,24 @@ class ComprehensiveValidator {
     async validateSecurity() {
         this.log('info', '🔒 Phase 4: Security Validation');
         this.log('info', '===============================');
-        
+
         // Check for common security headers
         try {
             const response = await axios.get('http://localhost:4180/health');
             const headers = response.headers;
-            
+
             const securityChecks = [
                 { name: 'X-Content-Type-Options', expected: 'nosniff' },
                 { name: 'X-Frame-Options', expected: ['DENY', 'SAMEORIGIN'] },
                 { name: 'X-XSS-Protection', expected: '1; mode=block' }
             ];
-            
+
             for (const check of securityChecks) {
                 const headerValue = headers[check.name.toLowerCase()];
-                const hasExpected = Array.isArray(check.expected) 
+                const hasExpected = Array.isArray(check.expected)
                     ? check.expected.includes(headerValue)
                     : headerValue === check.expected;
-                
+
                 await this.addTest(
                     `Security Header - ${check.name}`,
                     hasExpected ? 'PASS' : 'WARN',
@@ -260,7 +260,7 @@ class ComprehensiveValidator {
     async validateDataIntegrity() {
         this.log('info', '💾 Phase 5: Data Integrity Validation');
         this.log('info', '=====================================');
-        
+
         try {
             // Test CBD Database functionality
             const testData = {
@@ -271,14 +271,14 @@ class ComprehensiveValidator {
                     validator: 'comprehensive-validation-suite'
                 }
             };
-            
+
             // Insert test document
             const insertResponse = await axios.post(
                 'http://localhost:4180/document/',
                 testData,
                 { headers: { 'Content-Type': 'application/json' } }
             );
-            
+
             await this.addTest(
                 'Data Integrity - Document Insert',
                 'PASS',
@@ -288,13 +288,13 @@ class ComprehensiveValidator {
                     collection: testData.collection
                 }
             );
-            
+
             // Retrieve test document
             if (insertResponse.data.id) {
                 const retrieveResponse = await axios.get(
                     `http://localhost:4180/document/${testData.collection}/${insertResponse.data.id}`
                 );
-                
+
                 await this.addTest(
                     'Data Integrity - Document Retrieval',
                     'PASS',
@@ -317,11 +317,11 @@ class ComprehensiveValidator {
     async validateSystemResources() {
         this.log('info', '🖥️ Phase 6: System Resources Validation');
         this.log('info', '========================================');
-        
+
         try {
             // Check if we can get system stats from CBD
             const statsResponse = await axios.get('http://localhost:4180/stats');
-            
+
             await this.addTest(
                 'System Resources - CBD Stats Available',
                 'PASS',
@@ -330,7 +330,7 @@ class ComprehensiveValidator {
                     stats: statsResponse.data
                 }
             );
-            
+
             // Validate uptime
             if (statsResponse.data.uptime !== undefined) {
                 const uptimeMinutes = statsResponse.data.uptime / 60;
@@ -355,18 +355,18 @@ class ComprehensiveValidator {
     async generateReport() {
         this.log('info', '📊 Generating Comprehensive Validation Report');
         this.log('info', '==============================================');
-        
+
         // Calculate coverage and quality metrics
         const passRate = (this.results.summary.passed / this.results.summary.total) * 100;
         const criticalTests = this.results.tests.filter(t => t.critical);
-        const criticalPassRate = criticalTests.length > 0 
+        const criticalPassRate = criticalTests.length > 0
             ? (criticalTests.filter(t => t.result === 'PASS').length / criticalTests.length) * 100
             : 100;
-        
+
         this.results.summary.passRate = Math.round(passRate);
         this.results.summary.criticalPassRate = Math.round(criticalPassRate);
         this.results.summary.coverage = this.results.summary.passRate; // Simplified coverage metric
-        
+
         // Determine overall status
         let overallStatus = 'UNKNOWN';
         if (criticalPassRate === 100 && passRate >= 90) {
@@ -380,13 +380,13 @@ class ComprehensiveValidator {
         } else {
             overallStatus = 'CRITICAL_ISSUES';
         }
-        
+
         this.results.overallStatus = overallStatus;
-        
+
         // Save detailed report
         const reportPath = path.join(__dirname, `validation-report-${Date.now()}.json`);
         await fs.writeFile(reportPath, JSON.stringify(this.results, null, 2));
-        
+
         // Generate summary
         this.log('info', '');
         this.log('info', '🎯 COMPREHENSIVE VALIDATION SUMMARY');
@@ -398,7 +398,7 @@ class ComprehensiveValidator {
         this.log('info', `❌ Failures: ${this.results.summary.failed}`);
         this.log('info', `📄 Detailed Report: ${reportPath}`);
         this.log('info', '');
-        
+
         // Status-specific messages
         switch (overallStatus) {
             case 'EXCELLENT':
@@ -417,7 +417,7 @@ class ComprehensiveValidator {
                 this.log('error', '🚨 VALIDATION COMPLETE: Critical issues found. System not ready for production.');
                 break;
         }
-        
+
         return this.results;
     }
 
@@ -427,7 +427,7 @@ class ComprehensiveValidator {
         this.log('info', `Environment: ${this.results.environment}`);
         this.log('info', `Timestamp: ${this.results.timestamp}`);
         this.log('info', '');
-        
+
         try {
             // Run all validation phases
             await this.validateServiceHealth();
@@ -436,14 +436,14 @@ class ComprehensiveValidator {
             await this.validateSecurity();
             await this.validateDataIntegrity();
             await this.validateSystemResources();
-            
+
             // Generate final report
             const finalResults = await this.generateReport();
-            
+
             // Exit with appropriate code
             const exitCode = finalResults.overallStatus === 'CRITICAL_ISSUES' ? 1 : 0;
             process.exit(exitCode);
-            
+
         } catch (error) {
             this.log('error', `Validation suite failed: ${error.message}`);
             this.log('error', error.stack);

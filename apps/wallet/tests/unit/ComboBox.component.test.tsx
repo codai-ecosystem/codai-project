@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 ComboBox.tsx Component Tests
  * Comprehensive testing for wallet component

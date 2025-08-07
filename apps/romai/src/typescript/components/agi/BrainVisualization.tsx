@@ -5,9 +5,9 @@ interface BrainVisualizationProps {
   className?: string;
 }
 
-export const BrainVisualization: React.FC<BrainVisualizationProps> = ({ 
-  metrics, 
-  className 
+export const BrainVisualization: React.FC<BrainVisualizationProps> = ({
+  metrics,
+  className
 }) => {
   return (
     <div className={`brain-visualization ${className || ''}`}>

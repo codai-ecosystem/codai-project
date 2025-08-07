@@ -1,0 +1,200 @@
+{
+  "enhanced_status": "CRITICAL_ISSUES",
+  "timestamp": 1754169565.3438354,
+  "tests": {
+    "architecture": {
+      "status": "FAIL",
+      "components": {},
+      "error": "name 'RomAIHybridModel' is not defined"
+    },
+    "language_processing": {
+      "status": "FAIL",
+      "tests": {},
+      "error": "name 'RomanianLanguageModel' is not defined"
+    },
+    "cultural_context": {
+      "status": "PASS",
+      "cultural_tests": {
+        "food": {
+          "status": "PASS",
+          "elements_tested": 3,
+          "recognition_rate": 1.0,
+          "results": [
+            {
+              "element": "mici",
+              "sentence": "Vorbim despre mici în contextul cultural românesc.",
+              "cultural_score": 0.7233725769683393,
+              "recognized": true
+            },
+            {
+              "element": "sarmale",
+              "sentence": "Vorbim despre sarmale în contextul cultural românesc.",
+              "cultural_score": 0.7236803228499227,
+              "recognized": true
+            },
+            {
+              "element": "cozonac",
+              "sentence": "Vorbim despre cozonac în contextul cultural românesc.",
+              "cultural_score": 0.7760187775437022,
+              "recognized": true
+            }
+          ]
+        },
+        "regions": {
+          "status": "PASS",
+          "elements_tested": 3,
+          "recognition_rate": 1.0,
+          "results": [
+            {
+              "element": "Transilvania",
+              "sentence": "Vorbim despre Transilvania în contextul cultural românesc.",
+              "cultural_score": 0.8880685808599706,
+              "recognized": true
+            },
+            {
+              "element": "Moldova",
+              "sentence": "Vorbim despre Moldova în contextul cultural românesc.",
+              "cultural_score": 0.7651286174579626,
+              "recognized": true
+            },
+            {
+              "element": "Muntenia",
+              "sentence": "Vorbim despre Muntenia în contextul cultural românesc.",
+              "cultural_score": 0.716341356848759,
+              "recognized": true
+            }
+          ]
+        },
+        "history": {
+          "status": "PASS",
+          "elements_tested": 3,
+          "recognition_rate": 1.0,
+          "results": [
+            {
+              "element": "Mihai Viteazul",
+              "sentence": "Vorbim despre Mihai Viteazul în contextul cultural românesc.",
+              "cultural_score": 0.9351989456249705,
+              "recognized": true
+            },
+            {
+              "element": "Ștefan cel Mare",
+              "sentence": "Vorbim despre Ștefan cel Mare în contextul cultural românesc.",
+              "cultural_score": 0.8222912083335684,
+              "recognized": true
+            },
+            {
+              "element": "Vlad Țepeș",
+              "sentence": "Vorbim despre Vlad Țepeș în contextul cultural românesc.",
+              "cultural_score": 0.8443652053930009,
+              "recognized": true
+            }
+          ]
+        },
+        "traditions": {
+          "status": "PASS",
+          "elements_tested": 3,
+          "recognition_rate": 1.0,
+          "results": [
+            {
+              "element": "Mărțișor",
+              "sentence": "Vorbim despre Mărțișor în contextul cultural românesc.",
+              "cultural_score": 0.904628555820905,
+              "recognized": true
+            },
+            {
+              "element": "Dragobete",
+              "sentence": "Vorbim despre Dragobete în contextul cultural românesc.",
+              "cultural_score": 0.7235289432825293,
+              "recognized": true
+            },
+            {
+              "element": "Paște",
+              "sentence": "Vorbim despre Paște în contextul cultural românesc.",
+              "cultural_score": 0.7106863659577514,
+              "recognized": true
+            }
+          ]
+        }
+      },
+      "regional_tests": {
+        "ardeal": {
+          "status": "PASS",
+          "sentence": "În Ardeal se zice altfel.",
+          "region_detected": "ardeal",
+          "confidence": 0.7873496312370204
+        },
+        "moldova": {
+          "status": "PASS",
+          "sentence": "În Moldova au alte obiceiuri.",
+          "region_detected": "moldova",
+          "confidence": 0.9171205696209653
+        },
+        "oltenia": {
+          "status": "PASS",
+          "sentence": "La noi în Oltenia e diferit.",
+          "region_detected": "oltenia",
+          "confidence": 0.7623764114500294
+        }
+      }
+    },
+    "dataset": {
+      "status": "FAIL",
+      "datasets": {},
+      "error": "name 'RomanianCorpusCollector' is not defined"
+    },
+    "attention": {
+      "status": "FAIL",
+      "attention_tests": {},
+      "error": "name 'RomanianMultiHeadAttention' is not defined"
+    },
+    "inference": {
+      "status": "FAIL",
+      "inference_tests": {},
+      "error": "name 'InferenceConfig' is not defined"
+    },
+    "api": {
+      "status": "CONFIGURED",
+      "api_tests": {
+        "health": {
+          "status": "FAIL",
+          "error": "API server not running",
+          "details": "HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /health (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001880E3BABA0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))"
+        },
+        "models": {
+          "status": "FAIL",
+          "error": "HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /v1/models (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001880E3EA210>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))"
+        },
+        "chat_completion": {
+          "status": "CONFIGURED",
+          "request_structure": "valid",
+          "romanian_parameters": "included",
+          "openai_compatible": true
+        }
+      }
+    },
+    "performance": {
+      "status": "PASS",
+      "benchmarks": {
+        "memory": {
+          "status": "PASS",
+          "memory_used_mb": 114.12890625,
+          "memory_efficient": true
+        },
+        "speed": {
+          "status": "PASS",
+          "avg_inference_time": 0.007438516616821289,
+          "tokens_per_second": 17207.731943563016,
+          "real_time_capable": true
+        },
+        "romanian_processing": {
+          "status": "PASS",
+          "total_chars": 711,
+          "processing_time": 0.01498270034790039,
+          "chars_per_second": 47454.73002132332,
+          "efficient_processing": true
+        }
+      }
+    }
+  },
+  "completion_percentage": 37.5
+}

@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * 🧪 AnimatedComponents-simple.tsx Component Tests
  * Comprehensive testing for x component

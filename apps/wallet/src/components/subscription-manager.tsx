@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * Subscription Management Component
  *
@@ -253,3 +254,4 @@ export function SubscriptionManager({ className }: SubscriptionManagerProps) {
     </div>
   );
 }
+

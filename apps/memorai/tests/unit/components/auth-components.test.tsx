@@ -1,3 +1,4 @@
+import React from 'react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { AuthButton, ProtectedRoute, RoleBadge } from '@/components/auth/auth-components'
@@ -193,3 +194,4 @@ describe('RoleBadge Component', () => {
         expect(screen.getByText('admin')).toBeInTheDocument()
     })
 })
+

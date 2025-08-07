@@ -1,3 +1,4 @@
+import React from 'react'
 import Link from 'next/link';
 
 interface FooterProps {
@@ -22,7 +23,7 @@ export function Footer({ brandText, copyrightText, variant, sections }: FooterPr
             </div>
             <p className="text-gray-600 text-sm">{copyrightText}</p>
           </div>
-          
+
           {sections.map((section) => (
             <div key={section.title}>
               <h3 className="text-sm font-semibold text-gray-900 mb-4">{section.title}</h3>
@@ -45,3 +46,4 @@ export function Footer({ brandText, copyrightText, variant, sections }: FooterPr
     </footer>
   );
 }
+

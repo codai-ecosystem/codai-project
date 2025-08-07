@@ -42,7 +42,7 @@ class OWASPZAPScanner {
   async runSpiderScan(targetUrl) {
     return new Promise((resolve, reject) => {
       console.log(`🕷️ Starting spider scan for ${targetUrl}...`);
-      
+
       const zapProcess = spawn(this.zapPath, [
         '-daemon',
         '-host', '127.0.0.1',
@@ -56,10 +56,10 @@ class OWASPZAPScanner {
           // Spider scan via API
           const spiderUrl = `http://127.0.0.1:8080/JSON/spider/action/scan/?url=${encodeURIComponent(targetUrl)}`;
           const fetch = (await import('node-fetch')).default;
-          
+
           const response = await fetch(spiderUrl);
           const result = await response.json();
-          
+
           console.log(`✅ Spider scan completed for ${targetUrl}`);
           resolve(result);
         } catch (error) {
@@ -74,13 +74,13 @@ class OWASPZAPScanner {
     return new Promise(async (resolve, reject) => {
       try {
         console.log(`🔍 Starting active scan for ${targetUrl}...`);
-        
+
         const fetch = (await import('node-fetch')).default;
         const activeScanUrl = `http://127.0.0.1:8080/JSON/ascan/action/scan/?url=${encodeURIComponent(targetUrl)}`;
-        
+
         const response = await fetch(activeScanUrl);
         const result = await response.json();
-        
+
         console.log(`✅ Active scan completed for ${targetUrl}`);
         resolve(result);
       } catch (error) {
@@ -94,16 +94,16 @@ class OWASPZAPScanner {
     try {
       const fetch = (await import('node-fetch')).default;
       const reportUrl = `http://127.0.0.1:8080/OTHER/core/other/htmlreport/`;
-      
+
       const response = await fetch(reportUrl);
       const htmlReport = await response.text();
-      
+
       const sanitizedUrl = targetUrl.replace(/[^a-zA-Z0-9]/g, '_');
       const reportPath = path.join(this.outputDir, `zap_report_${sanitizedUrl}.html`);
-      
+
       await fs.writeFile(reportPath, htmlReport);
       console.log(`📄 Report generated: ${reportPath}`);
-      
+
       return reportPath;
     } catch (error) {
       console.error('Failed to generate report:', error);
@@ -114,24 +114,24 @@ class OWASPZAPScanner {
   async runSecurityScan() {
     console.log('🔒 Starting OWASP ZAP Security Scan for CODAI Ecosystem');
     console.log('='.repeat(60));
-    
+
     await this.ensureOutputDir();
-    
+
     const results = [];
-    
+
     for (const targetUrl of this.targetUrls) {
       try {
         console.log(`\n🎯 Scanning: ${targetUrl}`);
-        
+
         // Spider scan
         const spiderResult = await this.runSpiderScan(targetUrl);
-        
+
         // Active scan
         const activeScanResult = await this.runActiveScan(targetUrl);
-        
+
         // Generate report
         const reportPath = await this.generateReport(activeScanResult.scan, targetUrl);
-        
+
         results.push({
           url: targetUrl,
           status: 'completed',
@@ -139,7 +139,7 @@ class OWASPZAPScanner {
           activeScanResult,
           reportPath
         });
-        
+
       } catch (error) {
         console.error(`❌ Scan failed for ${targetUrl}:`, error);
         results.push({
@@ -149,10 +149,10 @@ class OWASPZAPScanner {
         });
       }
     }
-    
+
     // Generate summary report
     await this.generateSummaryReport(results);
-    
+
     return results;
   }
 
@@ -165,16 +165,16 @@ class OWASPZAPScanner {
       failed: results.filter(r => r.status === 'failed').length,
       results
     };
-    
+
     const summaryPath = path.join(this.outputDir, 'security_scan_summary.json');
     await fs.writeFile(summaryPath, JSON.stringify(summary, null, 2));
-    
+
     console.log('\n📊 Security Scan Summary:');
     console.log(`Total URLs: ${summary.totalUrls}`);
     console.log(`Successful: ${summary.successful}`);
     console.log(`Failed: ${summary.failed}`);
     console.log(`Summary report: ${summaryPath}`);
-    
+
     return summary;
   }
 }
@@ -200,7 +200,7 @@ class BasicSecurityTester {
     try {
       const fetch = (await import('node-fetch')).default;
       const response = await fetch(url, { method: 'HEAD' });
-      
+
       const headers = response.headers;
       const securityHeaders = {
         'strict-transport-security': headers.get('strict-transport-security'),
@@ -210,9 +210,9 @@ class BasicSecurityTester {
         'referrer-policy': headers.get('referrer-policy'),
         'permissions-policy': headers.get('permissions-policy')
       };
-      
+
       const score = Object.values(securityHeaders).filter(h => h).length;
-      
+
       return {
         url,
         headers: securityHeaders,
@@ -244,29 +244,29 @@ class BasicSecurityTester {
   async runBasicSecurityTest() {
     console.log('🔒 Running Basic Security Header Tests');
     console.log('='.repeat(50));
-    
+
     const results = [];
-    
+
     for (const url of this.targetUrls) {
       console.log(`Testing: ${url}`);
       const result = await this.checkSecurityHeaders(url);
       results.push(result);
-      
+
       if (result.error) {
         console.log(`❌ ${url} - Error: ${result.error}`);
       } else {
         console.log(`${result.grade === 'A+' || result.grade === 'A' ? '✅' : '⚠️'} ${url} - Grade: ${result.grade} (${result.score}/${result.maxScore})`);
       }
     }
-    
+
     // Generate summary
     const avgScore = results.reduce((sum, r) => sum + r.score, 0) / results.length;
     const avgGrade = this.calculateGrade(avgScore, 6);
-    
+
     console.log('\n📊 Security Test Summary:');
     console.log(`Average Score: ${avgScore.toFixed(1)}/6`);
     console.log(`Average Grade: ${avgGrade}`);
-    
+
     return { results, avgScore, avgGrade };
   }
 }
@@ -275,7 +275,7 @@ class BasicSecurityTester {
 async function main() {
   const args = process.argv.slice(2);
   const useZAP = args.includes('--zap');
-  
+
   if (useZAP) {
     const scanner = new OWASPZAPScanner();
     await scanner.runSecurityScan();

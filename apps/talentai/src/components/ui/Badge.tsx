@@ -1,3 +1,4 @@
+import React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
 import { forwardRef, type HTMLAttributes } from 'react';
@@ -65,3 +66,4 @@ const Badge = forwardRef<HTMLDivElement, BadgeProps>(
 Badge.displayName = 'Badge';
 
 export { Badge, badgeVariants };
+

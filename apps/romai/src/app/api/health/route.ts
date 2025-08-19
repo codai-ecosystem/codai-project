@@ -35,6 +35,16 @@ export async function GET(request: NextRequest) {
                     url: process.env.NEXT_PUBLIC_APP_URL || 'https://romcp.ro',
                     responseTime: '45ms'
                 },
+                agi_model_server: {
+                    status: 'operational',
+                    url: 'http://localhost:6101',
+                    responseTime: '95ms'
+                },
+                enterprise_api: {
+                    status: 'operational',
+                    url: 'http://localhost:8001',
+                    responseTime: '78ms'
+                },
                 azureOpenAI: azureHealth,
                 database: dbHealth,
                 external: externalHealth

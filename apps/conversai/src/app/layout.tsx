@@ -2,6 +2,7 @@ import React from 'react'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import ConversAILayout from './components/ConversAILayout'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -46,10 +47,10 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
       </head>
-      <body className={`${inter.className} h-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 antialiased`}>
-        <div className="min-h-full">
+      <body className={`${inter.className} h-full bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 antialiased`}>
+        <ConversAILayout>
           {children}
-        </div>
+        </ConversAILayout>
       </body>
     </html>
   )

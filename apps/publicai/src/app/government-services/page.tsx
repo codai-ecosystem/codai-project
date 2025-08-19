@@ -234,7 +234,7 @@ export default function GovernmentServices() {
   const filteredServices = services.filter(service => {
     const matchesCategory = selectedCategory === 'all' || service.category === selectedCategory
     const matchesSearch = service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         service.description.toLowerCase().includes(searchTerm.toLowerCase())
+      service.description.toLowerCase().includes(searchTerm.toLowerCase())
     return matchesCategory && matchesSearch
   })
 
@@ -254,7 +254,7 @@ export default function GovernmentServices() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 to-blue-50">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         className="bg-white/80 backdrop-blur-sm border-b border-teal-200/50 sticky top-0 z-40"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -272,7 +272,7 @@ export default function GovernmentServices() {
                 <p className="text-sm text-gray-600">AI-Powered Service Automation & Efficiency</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="hidden sm:flex items-center space-x-6 text-sm">
                 <div className="flex items-center space-x-2">
@@ -288,7 +288,7 @@ export default function GovernmentServices() {
                   <span className="text-gray-600">{serviceStats.averageWaitTime} Avg Wait</span>
                 </div>
               </div>
-              
+
               <button className="px-4 py-2 bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-lg hover:from-teal-600 hover:to-blue-600 transition-colors">
                 <RefreshCw className="w-4 h-4 inline mr-2" />
                 Refresh Status
@@ -314,11 +314,10 @@ export default function GovernmentServices() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors whitespace-nowrap ${
-                      activeTab === tab.id
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors whitespace-nowrap ${activeTab === tab.id
                         ? 'bg-gradient-to-r from-teal-500 to-blue-500 text-white'
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                    }`}
+                      }`}
                   >
                     <Icon className="w-4 h-4" />
                     <span>{tab.label}</span>
@@ -434,7 +433,7 @@ export default function GovernmentServices() {
                     />
                   </div>
                 </div>
-                
+
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center space-x-2">
                     <Filter className="w-4 h-4 text-gray-500" />
@@ -450,7 +449,7 @@ export default function GovernmentServices() {
                       ))}
                     </select>
                   </div>
-                  
+
                   <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
                     <Download className="w-4 h-4 inline mr-2" />
                     Export
@@ -475,18 +474,17 @@ export default function GovernmentServices() {
                         <div className={`w-12 h-12 bg-gradient-to-r ${service.color} rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform`}>
                           <Icon className="w-6 h-6 text-white" />
                         </div>
-                        <div className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          service.status === 'active' ? 'bg-green-100 text-green-800' :
-                          service.status === 'maintenance' ? 'bg-yellow-100 text-yellow-800' :
-                          'bg-red-100 text-red-800'
-                        }`}>
+                        <div className={`px-2 py-1 rounded-full text-xs font-medium ${service.status === 'active' ? 'bg-green-100 text-green-800' :
+                            service.status === 'maintenance' ? 'bg-yellow-100 text-yellow-800' :
+                              'bg-red-100 text-red-800'
+                          }`}>
                           {service.status}
                         </div>
                       </div>
-                      
+
                       <h3 className="font-semibold text-gray-900 mb-2">{service.name}</h3>
                       <p className="text-gray-600 text-sm mb-4">{service.description}</p>
-                      
+
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
                           <span className="text-gray-600">Active Users</span>
@@ -556,7 +554,7 @@ export default function GovernmentServices() {
               <h3 className="text-lg font-semibold mb-2">Service Automation</h3>
               <p className="text-teal-100 text-sm">AI-powered automation reduces processing time by 75% on average.</p>
             </motion.div>
-            
+
             <motion.div
               className="bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl p-6 text-white"
               whileHover={{ scale: 1.02 }}
@@ -565,7 +563,7 @@ export default function GovernmentServices() {
               <h3 className="text-lg font-semibold mb-2">Smart Processing</h3>
               <p className="text-blue-100 text-sm">Intelligent workflow optimization and predictive service delivery.</p>
             </motion.div>
-            
+
             <motion.div
               className="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl p-6 text-white"
               whileHover={{ scale: 1.02 }}

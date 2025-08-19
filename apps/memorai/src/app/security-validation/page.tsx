@@ -313,7 +313,7 @@ export default function SecurityValidationPage() {
             if (typeof window === 'undefined') {
               return { passed: true, details: 'Server-side validation skipped', warning: false };
             }
-            
+
             const isHttps = window.location.protocol === 'https:';
             const isLocalhost = window.location.hostname === 'localhost';
 
@@ -505,9 +505,9 @@ export default function SecurityValidationPage() {
 
               {testResults.map((result, index) => (
                 <div key={index} className={`border rounded-lg p-4 ${result.status === 'passed' ? 'border-green-200 bg-green-50' :
-                    result.status === 'warning' ? 'border-yellow-200 bg-yellow-50' :
-                      result.status === 'failed' ? 'border-red-200 bg-red-50' :
-                        'border-gray-200 bg-gray-50'
+                  result.status === 'warning' ? 'border-yellow-200 bg-yellow-50' :
+                    result.status === 'failed' ? 'border-red-200 bg-red-50' :
+                      'border-gray-200 bg-gray-50'
                   }`}>
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="font-semibold flex items-center">
@@ -522,9 +522,9 @@ export default function SecurityValidationPage() {
                         <span className="text-sm text-gray-500">{result.duration}ms</span>
                       )}
                       <span className={`font-bold text-sm ${result.status === 'passed' ? 'text-green-600' :
-                          result.status === 'warning' ? 'text-yellow-600' :
-                            result.status === 'failed' ? 'text-red-600' :
-                              'text-gray-600'
+                        result.status === 'warning' ? 'text-yellow-600' :
+                          result.status === 'failed' ? 'text-red-600' :
+                            'text-gray-600'
                         }`}>
                         {result.status.toUpperCase()}
                       </span>

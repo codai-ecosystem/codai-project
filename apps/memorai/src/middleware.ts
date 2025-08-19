@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
         '/pricing',
         '/contact',
         '/auth/signin',
-        '/auth/signup', 
+        '/auth/signup',
         '/auth/error',
         '/auth/verify',
         '/auth/unauthorized',

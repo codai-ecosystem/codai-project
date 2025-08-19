@@ -13,6 +13,13 @@ from dataclasses import dataclass
 from enum import Enum
 import logging
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 class RomanianCulturalDomain(Enum):
     """Romanian cultural domains for multimodal analysis"""
     LANGUAGE_HERITAGE = "language_heritage"

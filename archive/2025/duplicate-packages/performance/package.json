@@ -1,0 +1,66 @@
+{
+  "name": "@memorai/performance",
+  "version": "1.0.0",
+  "description": "Performance monitoring and optimization system for MemorAI Platform",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "lint": "eslint src/**/*.ts",
+    "clean": "rimraf dist"
+  },
+  "keywords": [
+    "performance",
+    "monitoring",
+    "optimization",
+    "memorai",
+    "database",
+    "caching"
+  ],
+  "author": "MemorAI Team",
+  "license": "MIT",
+  "dependencies": {
+    "lru-cache": "^10.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.9.2",
+    "vitest": "^2.1.8",
+    "eslint": "^9.0.0",
+    "rimraf": "^6.0.1"
+  },
+  "peerDependencies": {
+    "express": "^4.18.0"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./monitor": {
+      "import": "./dist/PerformanceMonitor.js",
+      "require": "./dist/PerformanceMonitor.js",
+      "types": "./dist/PerformanceMonitor.d.ts"
+    },
+    "./database": {
+      "import": "./dist/DatabaseOptimizer.js",
+      "require": "./dist/DatabaseOptimizer.js",
+      "types": "./dist/DatabaseOptimizer.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

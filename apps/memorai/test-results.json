@@ -1,0 +1,189 @@
+
+> memorai@1.0.0 test
+> vitest
+
+
+[1m[44m DEV [49m[22m [34mv3.2.4 [39m[90mE:/GitHub/codai-project/apps/memorai[39m
+
+ [32mΓ£ô[39m tests/unit/lib/auth.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+[90mstdout[2m | tests/integration/debug.test.ts[2m > [22m[2mDebug Integration Test[2m > [22m[2mshould test basic fetch functionality
+[22m[39mTesting basic fetch...
+
+ [32mΓ£ô[39m sdk/tests/utils.test.ts [2m([22m[2m18 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+[90mstdout[2m | tests/integration/fetch-test.test.ts[2m > [22m[2mFetch Integration Test[2m > [22m[2mshould make a real HTTP request to localhost:4006
+[22m[39mTesting fetch with localhost:4006...
+
+[90mstdout[2m | tests/integration/debug.test.ts[2m > [22m[2mDebug Integration Test[2m > [22m[2mshould test basic fetch functionality
+[22m[39mResponse received: Response {
+  status: [33m200[39m,
+  statusText: [32m'OK'[39m,
+  headers: Headers {
+    vary: [32m'RSC, Next-Router-State-Tree, Next-Router-Prefetch, Next-Router-Segment-Prefetch'[39m,
+    [32m'content-type'[39m: [32m'application/json'[39m,
+    date: [32m'Fri, 08 Aug 2025 16:33:09 GMT'[39m,
+    connection: [32m'keep-alive'[39m,
+    [32m'keep-alive'[39m: [32m'timeout=5'[39m,
+    [32m'transfer-encoding'[39m: [32m'chunked'[39m
+  },
+  body: ReadableStream { locked: [33mfalse[39m, state: [32m'readable'[39m, supportsBYOB: [33mtrue[39m },
+  bodyUsed: [33mfalse[39m,
+  ok: [33mtrue[39m,
+  redirected: [33mfalse[39m,
+  type: [32m'basic'[39m,
+  url: [32m'http://localhost:4006/api/health'[39m
+}
+Response status: [33m200[39m
+Response ok: [33mtrue[39m
+
+[90mstdout[2m | tests/integration/debug.test.ts[2m > [22m[2mDebug Integration Test[2m > [22m[2mshould test basic fetch functionality
+[22m[39mResponse data: {
+  service: [32m'MemorAI Service'[39m,
+  serviceId: [32m'memorai'[39m,
+  status: [32m'operational'[39m,
+  timestamp: [32m'2025-08-08T16:33:09.788Z'[39m,
+  version: [32m'1.0.0'[39m,
+  ecosystem: [32m'codai-ecosystem'[39m,
+  domain: [32m'memorai.codai.ro'[39m,
+  uptime: [33m2096[39m,
+  memory: {
+    rss: [33m790421504[39m,
+    heapTotal: [33m557731840[39m,
+    heapUsed: [33m481155896[39m,
+    external: [33m120093265[39m,
+    arrayBuffers: [33m115752603[39m
+  },
+  capabilities: [
+    [32m'memory_management'[39m,
+    [32m'context_storage'[39m,
+    [32m'intelligent_recall'[39m,
+    [32m'agent_memory'[39m,
+    [32m'ecosystem_integration'[39m
+  ],
+  endpoints: {
+    health: [32m'/api/health'[39m,
+    ecosystem: [32m'/api/ecosystem'[39m,
+    memories: [32m'/api/memories'[39m,
+    search: [32m'/api/search'[39m,
+    analytics: [32m'/api/analytics'[39m
+  },
+  communication: {
+    enabledServices: [ [32m'codai'[39m, [32m'romai'[39m, [32m'admin'[39m, [32m'hub'[39m, [32m'control'[39m, [32m'id'[39m ],
+    protocol: [32m'https'[39m,
+    authentication: [32m'ecosystem_token'[39m
+  },
+  message: [32m'MemorAI service is running successfully with ecosystem integration'[39m
+}
+
+[90mstdout[2m | tests/integration/debug.test.ts[2m > [22m[2mDebug Integration Test[2m > [22m[2mshould test with our helper function
+[22m[39mMaking request to: http://localhost:4006/api/health
+
+[90mstdout[2m | tests/integration/fetch-test.test.ts[2m > [22m[2mFetch Integration Test[2m > [22m[2mshould make a real HTTP request to localhost:4006
+[22m[39mResponse: Response {
+  status: [33m200[39m,
+  statusText: [32m'OK'[39m,
+  headers: Headers {
+    vary: [32m'RSC, Next-Router-State-Tree, Next-Router-Prefetch, Next-Router-Segment-Prefetch'[39m,
+    [32m'content-type'[39m: [32m'application/json'[39m,
+    date: [32m'Fri, 08 Aug 2025 16:33:09 GMT'[39m,
+    connection: [32m'keep-alive'[39m,
+    [32m'keep-alive'[39m: [32m'timeout=5'[39m,
+    [32m'transfer-encoding'[39m: [32m'chunked'[39m
+  },
+  body: ReadableStream { locked: [33mfalse[39m, state: [32m'readable'[39m, supportsBYOB: [33mtrue[39m },
+  bodyUsed: [33mfalse[39m,
+  ok: [33mtrue[39m,
+  redirected: [33mfalse[39m,
+  type: [32m'basic'[39m,
+  url: [32m'http://localhost:4006/api/health'[39m
+}
+Status: [33m200[39m
+OK: [33mtrue[39m
+
+[90mstdout[2m | tests/integration/fetch-test.test.ts[2m > [22m[2mFetch Integration Test[2m > [22m[2mshould make a real HTTP request to localhost:4006
+[22m[39mResponse data: {
+  service: [32m'MemorAI Service'[39m,
+  serviceId: [32m'memorai'[39m,
+  status: [32m'operational'[39m,
+  timestamp: [32m'2025-08-08T16:33:09.795Z'[39m,
+  version: [32m'1.0.0'[39m,
+  ecosystem: [32m'codai-ecosystem'[39m,
+  domain: [32m'memorai.codai.ro'[39m,
+  uptime: [33m2096[39m,
+  memory: {
+    rss: [33m790421504[39m,
+    heapTotal: [33m557731840[39m,
+    heapUsed: [33m482227328[39m,
+    external: [33m120117205[39m,
+    arrayBuffers: [33m115776543[39m
+  },
+  capabilities: [
+    [32m'memory_management'[39m,
+    [32m'context_storage'[39m,
+    [32m'intelligent_recall'[39m,
+    [32m'agent_memory'[39m,
+    [32m'ecosystem_integration'[39m
+  ],
+  endpoints: {
+    health: [32m'/api/health'[39m,
+    ecosystem: [32m'/api/ecosystem'[39m,
+    memories: [32m'/api/memories'[39m,
+    search: [32m'/api/search'[39m,
+    analytics: [32m'/api/analytics'[39m
+  },
+  communication: {
+    enabledServices: [ [32m'codai'[39m, [32m'romai'[39m, [32m'admin'[39m, [32m'hub'[39m, [32m'control'[39m, [32m'id'[39m ],
+    protocol: [32m'https'[39m,
+    authentication: [32m'ecosystem_token'[39m
+  },
+  message: [32m'MemorAI service is running successfully with ecosystem integration'[39m
+}
+
+[90mstdout[2m | tests/integration/debug.test.ts[2m > [22m[2mDebug Integration Test[2m > [22m[2mshould test with our helper function
+[22m[39mHelper response: Response {
+  status: [33m200[39m,
+  statusText: [32m'OK'[39m,
+  headers: Headers {
+    vary: [32m'RSC, Next-Router-State-Tree, Next-Router-Prefetch, Next-Router-Segment-Prefetch'[39m,
+    [32m'content-type'[39m: [32m'application/json'[39m,
+    date: [32m'Fri, 08 Aug 2025 16:33:09 GMT'[39m,
+    connection: [32m'keep-alive'[39m,
+    [32m'keep-alive'[39m: [32m'timeout=5'[39m,
+    [32m'transfer-encoding'[39m: [32m'chunked'[39m
+  },
+  body: ReadableStream { locked: [33mfalse[39m, state: [32m'readable'[39m, supportsBYOB: [33mtrue[39m },
+  bodyUsed: [33mfalse[39m,
+  ok: [33mtrue[39m,
+  redirected: [33mfalse[39m,
+  type: [32m'basic'[39m,
+  url: [32m'http://localhost:4006/api/health'[39m
+}
+
+ [32mΓ£ô[39m tests/integration/debug.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 116[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/app/api/health.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32mΓ£ô[39m tests/integration/fetch-test.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 144[2mms[22m[39m
+ [32mΓ£ô[39m sdk/tests/client.test.ts [2m([22m[2m16 tests[22m[2m | [22m[33m1 skipped[39m[2m)[22m[32m 12[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/components/auth-components.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[32m 61[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/components/ui/loading.test.tsx [2m([22m[2m26 tests[22m[2m)[22m[32m 164[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/components/ui/toast.test.tsx [2m([22m[2m18 tests[22m[2m | [22m[33m8 skipped[39m[2m)[22m[32m 104[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/components/ui/card.test.tsx [2m([22m[2m21 tests[22m[2m)[22m[32m 227[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/components/ui/button.test.tsx [2m([22m[2m12 tests[22m[2m)[22m[32m 218[2mms[22m[39m
+ [32mΓ£ô[39m tests/unit/components/ui/input.test.tsx [2m([22m[2m16 tests[22m[2m)[22m[32m 281[2mms[22m[39m
+ [32mΓ£ô[39m src/tests/integration/memory-workflows.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 1[2mms[22m[39m
+ [32mΓ£ô[39m tests/integration/api/health-endpoints.test.ts [2m([22m[2m12 tests[22m[2m)[22m[33m 1623[2mms[22m[39m
+ [32mΓ£ô[39m tests/integration/api/auth-endpoints.test.ts [2m([22m[2m21 tests[22m[2m)[22m[33m 1994[2mms[22m[39m
+ [32mΓ£ô[39m tests/integration/database/cbd-integration.test.ts [2m([22m[2m12 tests[22m[2m)[22m[33m 2933[2mms[22m[39m
+   [33m[2mΓ£ô[22m[39m CBD Database Integration Tests[2m > [22mCBD Database Connectivity[2m > [22mshould connect to CBD database health endpoint [33m 312[2mms[22m[39m
+ [32mΓ£ô[39m graphql/memorai-graphql-client.test.js [2m([22m[2m23 tests[22m[2m)[22m[33m 4001[2mms[22m[39m
+   [33m[2mΓ£ô[22m[39m MemorAI GraphQL Client[2m > [22mBatch Operations[2m > [22mshould perform batch memory operations [33m 578[2mms[22m[39m
+   [33m[2mΓ£ô[22m[39m MemorAI GraphQL Client[2m > [22mBatch Operations[2m > [22mshould import memories [33m 1192[2mms[22m[39m
+   [33m[2mΓ£ô[22m[39m GraphQL Integration Tests[2m > [22mshould handle complex search with facets [33m 638[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m17 passed[39m[22m[90m (17)[39m
+[2m      Tests [22m [1m[32m218 passed[39m[22m[2m | [22m[33m9 skipped[39m[90m (227)[39m
+[2m   Start at [22m 19:33:07
+[2m   Duration [22m 6.43s[2m (transform 1.23s, setup 4.61s, collect 3.86s, tests 11.92s, environment 17.17s, prepare 7.39s)[22m
+
+[1m[42m PASS [49m[22m [32mWaiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+[31mCancelling test run. Press CTRL+c again to exit forcefully.
+[39m

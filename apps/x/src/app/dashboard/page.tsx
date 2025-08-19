@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  DollarSign, 
+import {
+  TrendingUp,
+  TrendingDown,
+  DollarSign,
   BarChart3,
   Bot,
   Bell,
@@ -258,7 +258,7 @@ export default function TradingDashboard() {
                 <div className="space-y-4">
                   <div>
                     <label className="text-red-300 text-sm font-medium mb-2 block">Trading Pair</label>
-                    <select 
+                    <select
                       value={selectedPair}
                       onChange={(e) => setSelectedPair(e.target.value)}
                       className="w-full bg-red-900/50 border border-red-700/50 rounded-lg text-white p-3 focus:outline-none focus:ring-2 focus:ring-red-500"
@@ -273,23 +273,21 @@ export default function TradingDashboard() {
                   <div>
                     <label className="text-red-300 text-sm font-medium mb-2 block">Order Type</label>
                     <div className="flex space-x-2">
-                      <button 
+                      <button
                         onClick={() => setOrderType('BUY')}
-                        className={`flex-1 py-2 px-4 rounded-lg font-semibold transition-colors ${
-                          orderType === 'BUY' 
-                            ? 'bg-green-600 text-white' 
+                        className={`flex-1 py-2 px-4 rounded-lg font-semibold transition-colors ${orderType === 'BUY'
+                            ? 'bg-green-600 text-white'
                             : 'bg-green-600/30 text-green-300 hover:bg-green-600/50'
-                        }`}
+                          }`}
                       >
                         BUY
                       </button>
-                      <button 
+                      <button
                         onClick={() => setOrderType('SELL')}
-                        className={`flex-1 py-2 px-4 rounded-lg font-semibold transition-colors ${
-                          orderType === 'SELL' 
-                            ? 'bg-red-600 text-white' 
+                        className={`flex-1 py-2 px-4 rounded-lg font-semibold transition-colors ${orderType === 'SELL'
+                            ? 'bg-red-600 text-white'
                             : 'bg-red-600/30 text-red-300 hover:bg-red-600/50'
-                        }`}
+                          }`}
                       >
                         SELL
                       </button>
@@ -333,7 +331,7 @@ export default function TradingDashboard() {
                 <span>Available Balance: $15,420.50</span>
                 <span>Est. Total: ${amount && price ? (parseFloat(amount) * parseFloat(price)).toFixed(2) : '0.00'}</span>
               </div>
-              <button 
+              <button
                 onClick={handleTrade}
                 className="w-full mt-4 bg-gradient-to-r from-red-500 to-pink-500 text-white py-3 rounded-lg font-semibold hover:from-red-600 hover:to-pink-600 transition-all disabled:opacity-50"
                 disabled={!amount || !price}
@@ -360,7 +358,7 @@ export default function TradingDashboard() {
                   </button>
                 </div>
               </div>
-              
+
               <div className="space-y-3">
                 {marketData.map((market, index) => (
                   <div key={index} className="flex items-center justify-between py-3 border-b border-red-800/30 last:border-b-0">
@@ -411,11 +409,10 @@ export default function TradingDashboard() {
                   <div key={index} className="bg-red-900/30 rounded-lg p-4 border border-red-800/50">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-white font-medium">{signal.symbol}</span>
-                      <span className={`px-2 py-1 rounded text-xs font-semibold ${
-                        signal.signal === 'BUY' ? 'bg-green-600 text-white' :
-                        signal.signal === 'SELL' ? 'bg-red-600 text-white' :
-                        'bg-yellow-600 text-white'
-                      }`}>
+                      <span className={`px-2 py-1 rounded text-xs font-semibold ${signal.signal === 'BUY' ? 'bg-green-600 text-white' :
+                          signal.signal === 'SELL' ? 'bg-red-600 text-white' :
+                            'bg-yellow-600 text-white'
+                        }`}>
                         {signal.signal}
                       </span>
                     </div>
@@ -431,8 +428,8 @@ export default function TradingDashboard() {
                     </div>
                     <div className="mt-2 flex items-center justify-between">
                       <div className="w-full bg-red-800/30 rounded-full h-1.5">
-                        <div 
-                          className="bg-gradient-to-r from-red-500 to-pink-500 h-1.5 rounded-full" 
+                        <div
+                          className="bg-gradient-to-r from-red-500 to-pink-500 h-1.5 rounded-full"
                           style={{ width: `${signal.confidence}%` }}
                         ></div>
                       </div>

@@ -488,6 +488,13 @@ class CloudIntegrationManager:
             from azure.identity import DefaultAzureCredential
             from azure.mgmt.containerinstance import ContainerInstanceManagementClient
             from azure.mgmt.containerservice import ContainerServiceClient
+
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
             
             credential = DefaultAzureCredential()
             clients['azure'] = {

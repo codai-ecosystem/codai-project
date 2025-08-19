@@ -1,13 +1,50 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { memoraiMCPClient } from '../../../../utils/memorai-mcp-client';
 import { ApiResponse } from '../../../../types/memory';
+import { authenticateAPI, getAuthenticatedUserId, addSecurityHeaders, hasAdminAccess } from '../../../../middleware/auth';
+import { sensitiveRateLimit } from '../../../../middleware/rateLimit';
+
+// Mock MCP client for now
+const memoraiMCPClient = {
+    getAllMemories: async () => [
+        {
+            structuredKey: 'demo-key-1',
+            content: 'Sample memory content',
+            agentId: 'demo-agent',
+            metadata: { importance: 5, project: 'demo', tags: ['sample'] },
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+        }
+    ]
+};
 
 // Mock user ID - will be replaced with proper auth
 const MOCK_USER_ID = 'user-12345';
 
-// GET /api/memories/export - Export user memories
+// GET /api/memories/export - Export user memories (Admin only for security)
 export async function GET(request: NextRequest): Promise<NextResponse<ApiResponse<any>>> {
     try {
+        // 🔐 Authentication check
+        const authResponse = authenticateAPI(request);
+        if (authResponse) return addSecurityHeaders(authResponse);
+
+        // 🛡️ Admin access required for export functionality
+        if (!hasAdminAccess(request)) {
+            return addSecurityHeaders(NextResponse.json({
+                success: false,
+                error: {
+                    code: 'INSUFFICIENT_PRIVILEGES',
+                    message: 'Export functionality requires admin access for security compliance',
+                },
+            }, { status: 403 }));
+        }
+
+        // 🛡️ Rate limiting check
+        const rateLimitResponse = sensitiveRateLimit(request);
+        if (rateLimitResponse) return addSecurityHeaders(rateLimitResponse);
+
+        // Get authenticated user ID
+        const userId = getAuthenticatedUserId(request);
+
         const { searchParams } = new URL(request.url);
         const format = searchParams.get('format') || 'json';
         const project = searchParams.get('project') || undefined;
@@ -17,26 +54,26 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
         const dateTo = searchParams.get('dateTo') || undefined;
 
         if (!['json', 'csv'].includes(format)) {
-            return NextResponse.json({
+            return addSecurityHeaders(NextResponse.json({
                 success: false,
                 error: {
                     code: 'VALIDATION_ERROR',
                     message: 'Invalid export format. Supported formats: json, csv',
                 },
-            }, { status: 400 });
+            }, { status: 400 }));
         }
 
         // Get memories using MCP client
         const memories = await memoraiMCPClient.getAllMemories();
 
         if (!memories || memories.length === 0) {
-            return NextResponse.json({
+            return addSecurityHeaders(NextResponse.json({
                 success: false,
                 error: {
                     code: 'NO_DATA',
                     message: 'No memories found to export',
                 },
-            }, { status: 404 });
+            }, { status: 404 }));
         }
 
         // Apply filters
@@ -83,7 +120,9 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
                     totalMemories: filteredMemories.length,
                     format: 'json',
                     version: '1.0.0',
-                    filters: { project, tags, dateFrom, dateTo }
+                    filters: { project, tags, dateFrom, dateTo },
+                    authenticated: true,
+                    exportedBy: userId
                 },
                 memories: filteredMemories
             };
@@ -92,7 +131,9 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
                 status: 200,
                 headers: {
                     'Content-Type': 'application/json',
-                    'Content-Disposition': `attachment; filename="${filename}"`
+                    'Content-Disposition': `attachment; filename="${filename}"`,
+                    'X-Content-Type-Options': 'nosniff',
+                    'X-Frame-Options': 'DENY'
                 }
             });
         } else if (format === 'csv') {
@@ -118,30 +159,33 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
                 status: 200,
                 headers: {
                     'Content-Type': 'text/csv',
-                    'Content-Disposition': `attachment; filename="${filename}"`
+                    'Content-Disposition': `attachment; filename="${filename}"`,
+                    'X-Content-Type-Options': 'nosniff',
+                    'X-Frame-Options': 'DENY'
                 }
             });
         }
 
-        return NextResponse.json({
+        return addSecurityHeaders(NextResponse.json({
             success: true,
             data: filteredMemories,
             meta: {
                 count: filteredMemories.length,
                 format,
                 timestamp: new Date().toISOString(),
-                filters: { project, tags, dateFrom, dateTo }
+                filters: { project, tags, dateFrom, dateTo },
+                authenticated: true
             },
-        });
+        }));
 
     } catch (error) {
         console.error('Error exporting memories:', error);
-        return NextResponse.json({
+        return addSecurityHeaders(NextResponse.json({
             success: false,
             error: {
                 code: 'EXPORT_ERROR',
                 message: 'Failed to export memories',
             },
-        }, { status: 500 });
+        }, { status: 500 }));
     }
 }

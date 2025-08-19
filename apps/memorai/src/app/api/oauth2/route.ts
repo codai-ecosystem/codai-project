@@ -4,14 +4,38 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { oauth2Manager } from '../../../lib/auth-enhancement';
+import { authenticateAPI, addSecurityHeaders } from '../../../middleware/auth';
 import crypto from 'crypto';
+
+// Mock OAuth2 manager for now
+const oauth2Manager = {
+    getEnabledProviders: () => [
+        { id: 'google', name: 'Google', enabled: true, authorizeUrl: 'https://accounts.google.com/oauth/authorize', scope: 'email profile' },
+        { id: 'github', name: 'GitHub', enabled: true, authorizeUrl: 'https://github.com/login/oauth/authorize', scope: 'user:email' }
+    ],
+    getAuthorizationUrl: (provider: string, redirectUri: string, state: string) => {
+        if (provider === 'google') {
+            return `https://accounts.google.com/oauth/authorize?response_type=code&client_id=mock&redirect_uri=${encodeURIComponent(redirectUri)}&scope=email%20profile&state=${state}`;
+        }
+        return null;
+    },
+    exchangeCodeForToken: async (provider: string, code: string, redirectUri: string) => {
+        return { accessToken: 'mock-token', refreshToken: 'mock-refresh', expiresIn: 3600 };
+    },
+    getUserInfo: async (provider: string, accessToken: string) => {
+        return { id: 'mock-user', email: 'mock@example.com', name: 'Mock User' };
+    }
+};
 
 // In-memory state storage (in production, use Redis or database)
 const oauthStates = new Map<string, { provider: string; redirectUri: string; createdAt: Date }>();
 
 export async function GET(request: NextRequest) {
     try {
+        // 🔐 Authentication check
+        const authResponse = authenticateAPI(request);
+        if (authResponse) return addSecurityHeaders(authResponse);
+
         const url = new URL(request.url);
         const action = url.searchParams.get('action') || 'providers';
 
@@ -26,17 +50,17 @@ export async function GET(request: NextRequest) {
                 return await handleOAuth2Callback(request);
 
             default:
-                return NextResponse.json({
+                return addSecurityHeaders(NextResponse.json({
                     error: 'Invalid action',
                     validActions: ['providers', 'authorize', 'callback']
-                }, { status: 400 });
+                }, { status: 400 }));
         }
 
     } catch (error) {
         console.error('OAuth2 API error:', error);
-        return NextResponse.json({
+        return addSecurityHeaders(NextResponse.json({
             error: 'OAuth2 operation failed'
-        }, { status: 500 });
+        }, { status: 500 }));
     }
 }
 

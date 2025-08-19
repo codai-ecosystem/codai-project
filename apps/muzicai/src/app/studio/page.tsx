@@ -1,10 +1,10 @@
 'use client'
 
 import React, { useState } from 'react'
-import { 
-  Music, 
-  Play, 
-  Pause, 
+import {
+  Music,
+  Play,
+  Pause,
   Square,
   SkipBack,
   SkipForward,
@@ -200,7 +200,7 @@ export default function StudioPage() {
                 <p className="text-sm text-gray-600">Create AI-powered music</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
                 <span className="text-sm text-gray-600">Project:</span>
@@ -257,7 +257,7 @@ export default function StudioPage() {
                   <span>120 BPM</span>
                 </div>
               </div>
-              
+
               <div className="flex items-center justify-center space-x-6 mb-6">
                 <button className="p-3 text-gray-600 hover:text-purple-600 rounded-full hover:bg-purple-50 transition-all">
                   <SkipBack className="h-6 w-6" />
@@ -276,11 +276,10 @@ export default function StudioPage() {
                 </button>
                 <button
                   onClick={() => setIsRecording(!isRecording)}
-                  className={`p-3 rounded-full transition-all ${
-                    isRecording 
-                      ? 'bg-red-500 text-white' 
+                  className={`p-3 rounded-full transition-all ${isRecording
+                      ? 'bg-red-500 text-white'
                       : 'text-gray-600 hover:text-red-600 hover:bg-red-50'
-                  }`}
+                    }`}
                 >
                   <Mic className="h-6 w-6" />
                 </button>
@@ -315,11 +314,10 @@ export default function StudioPage() {
                 {tracks.map((track) => (
                   <div
                     key={track.id}
-                    className={`border rounded-lg p-4 transition-all ${
-                      activeTrack === track.id 
-                        ? 'border-purple-300 bg-purple-50' 
+                    className={`border rounded-lg p-4 transition-all ${activeTrack === track.id
+                        ? 'border-purple-300 bg-purple-50'
                         : 'border-gray-200 hover:border-purple-200'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center space-x-4">
                       {/* Track Info */}
@@ -335,7 +333,7 @@ export default function StudioPage() {
                             </div>
                           )}
                         </div>
-                        
+
                         {/* Waveform */}
                         <div className="flex items-end space-x-1 h-8">
                           {track.waveform.map((height, index) => (
@@ -352,20 +350,18 @@ export default function StudioPage() {
                       <div className="flex items-center space-x-2">
                         <button
                           onClick={() => setActiveTrack(track.id)}
-                          className={`p-2 rounded transition-colors ${
-                            track.muted 
-                              ? 'text-red-600 bg-red-50' 
+                          className={`p-2 rounded transition-colors ${track.muted
+                              ? 'text-red-600 bg-red-50'
                               : 'text-gray-600 hover:text-purple-600 hover:bg-purple-50'
-                          }`}
+                            }`}
                         >
                           {track.muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
                         </button>
                         <button
-                          className={`p-2 rounded transition-colors ${
-                            track.solo 
-                              ? 'text-yellow-600 bg-yellow-50' 
+                          className={`p-2 rounded transition-colors ${track.solo
+                              ? 'text-yellow-600 bg-yellow-50'
                               : 'text-gray-600 hover:text-yellow-600 hover:bg-yellow-50'
-                          }`}
+                            }`}
                         >
                           <Headphones className="h-4 w-4" />
                         </button>
@@ -479,7 +475,7 @@ export default function StudioPage() {
                     className="w-full"
                   />
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-2">
                   <button className="bg-purple-600 text-white py-2 px-3 rounded-lg text-sm hover:bg-purple-700 transition-colors">
                     <Save className="h-4 w-4 inline mr-1" />

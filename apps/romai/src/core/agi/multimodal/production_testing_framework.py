@@ -31,6 +31,13 @@ import requests
 import aiohttp
 import websockets
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 
 class TestType(Enum):
     """Types of tests"""

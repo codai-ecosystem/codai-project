@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    turbo: {},
+    turbopack: true,
     serverActions: {
       allowedOrigins: ['adoptai.ro', 'localhost:7100']
     }
@@ -32,4 +32,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

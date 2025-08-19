@@ -15,6 +15,13 @@ import json
 from abc import ABC, abstractmethod
 import math
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

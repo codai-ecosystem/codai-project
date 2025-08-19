@@ -2,16 +2,16 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  Settings, 
-  User, 
-  Shield, 
-  Bell, 
-  Palette, 
-  Database, 
-  Key, 
-  Monitor, 
-  Globe, 
+import {
+  Settings,
+  User,
+  Shield,
+  Bell,
+  Palette,
+  Database,
+  Key,
+  Monitor,
+  Globe,
   Crown,
   Save,
   RotateCcw,
@@ -311,7 +311,7 @@ const ToolsSettingsPage = () => {
               </div>
             </div>
             <p className="text-indigo-300 mb-4">{userProfile.email}</p>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-indigo-500/10 border border-indigo-400/20 rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-2">
@@ -345,7 +345,7 @@ const ToolsSettingsPage = () => {
           <CreditCard className="w-6 h-6 text-indigo-400" />
           Subscription Details
         </h4>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <div className="flex items-center gap-3 mb-4">
@@ -355,7 +355,7 @@ const ToolsSettingsPage = () => {
               </div>
               <span className="text-indigo-300">Expires: {new Date(userProfile.subscription.expiresAt).toLocaleDateString()}</span>
             </div>
-            
+
             <div className="space-y-2">
               {userProfile.subscription.features.map((feature, index) => (
                 <div key={index} className="flex items-center gap-2 text-indigo-300">
@@ -375,7 +375,7 @@ const ToolsSettingsPage = () => {
               <ExternalLink className="w-5 h-5" />
               Manage Subscription
             </motion.button>
-            
+
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -405,7 +405,7 @@ const ToolsSettingsPage = () => {
               <Monitor className="w-5 h-5 text-indigo-400" />
               Interface
             </h4>
-            
+
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -481,7 +481,7 @@ const ToolsSettingsPage = () => {
               <Zap className="w-5 h-5 text-indigo-400" />
               Processing
             </h4>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-white font-medium mb-2">Max File Size (MB)</label>
@@ -555,7 +555,7 @@ const ToolsSettingsPage = () => {
               <Lock className="w-5 h-5 text-indigo-400" />
               Authentication
             </h4>
-            
+
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -616,7 +616,7 @@ const ToolsSettingsPage = () => {
               <Eye className="w-5 h-5 text-indigo-400" />
               Data Protection
             </h4>
-            
+
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -686,7 +686,7 @@ const ToolsSettingsPage = () => {
               <Bell className="w-5 h-5 text-indigo-400" />
               Alert Preferences
             </h4>
-            
+
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -764,7 +764,7 @@ const ToolsSettingsPage = () => {
               <VolumeX className="w-5 h-5 text-indigo-400" />
               Quiet Hours
             </h4>
-            
+
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -852,7 +852,7 @@ const ToolsSettingsPage = () => {
               <Download className="w-5 h-5 text-indigo-400" />
               Export & Import
             </h4>
-            
+
             <div className="space-y-4">
               <motion.button
                 whileHover={{ scale: 1.02 }}
@@ -898,7 +898,7 @@ const ToolsSettingsPage = () => {
               <HardDrive className="w-5 h-5 text-indigo-400" />
               Backup & Recovery
             </h4>
-            
+
             <div className="space-y-4">
               <div className="bg-indigo-500/10 border border-indigo-400/20 rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-2">
@@ -945,7 +945,7 @@ const ToolsSettingsPage = () => {
             <HardDrive className="w-5 h-5 text-indigo-400" />
             Storage Usage
           </h4>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="text-center">
               <p className="text-2xl font-bold text-white">{metrics.storageUsed}</p>
@@ -987,7 +987,7 @@ const ToolsSettingsPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
       {/* Enhanced Header */}
-      <motion.header 
+      <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/10 backdrop-blur-sm border-b border-white/20 sticky top-0 z-50"
@@ -1001,7 +1001,7 @@ const ToolsSettingsPage = () => {
               </h1>
               <p className="text-indigo-300 mt-1">Platform configuration and preferences</p>
             </div>
-            
+
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-6 text-sm">
                 <div className="text-center">
@@ -1025,14 +1025,14 @@ const ToolsSettingsPage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex gap-8">
           {/* Settings Sidebar */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             className="w-80 flex-shrink-0"
           >
             <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 sticky top-24">
               <h3 className="text-lg font-semibold text-white mb-6">Settings Menu</h3>
-              
+
               <div className="space-y-2">
                 {settingsSections.map((section) => (
                   <motion.button
@@ -1040,11 +1040,10 @@ const ToolsSettingsPage = () => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => setActiveSection(section.id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-colors ${
-                      activeSection === section.id
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-colors ${activeSection === section.id
                         ? 'bg-indigo-500/30 border border-indigo-400/50 text-white'
                         : 'text-indigo-300 hover:bg-white/5'
-                    }`}
+                      }`}
                   >
                     <section.icon className="w-5 h-5" />
                     <div>
@@ -1090,7 +1089,7 @@ const ToolsSettingsPage = () => {
           </motion.div>
 
           {/* Settings Content */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             className="flex-1"
@@ -1101,7 +1100,7 @@ const ToolsSettingsPage = () => {
       </div>
 
       {/* Modern Footer */}
-      <motion.footer 
+      <motion.footer
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
@@ -1109,7 +1108,7 @@ const ToolsSettingsPage = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             >
@@ -1118,7 +1117,7 @@ const ToolsSettingsPage = () => {
               <p className="text-indigo-300">Advanced security features with encryption, audit logging, and compliance controls.</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             >
@@ -1127,7 +1126,7 @@ const ToolsSettingsPage = () => {
               <p className="text-indigo-300">Fine-tune processing settings, caching, and resource allocation for optimal performance.</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             >

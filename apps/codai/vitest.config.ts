@@ -1,13 +1,27 @@
+/// <reference types="vitest/config" />
 import { defineConfig } from 'vitest/config'
+import react from '@vitejs/plugin-react'
 import path from 'path'
 
 export default defineConfig({
+  plugins: [
+    react({
+      jsxImportSource: 'react',
+      jsxRuntime: 'automatic',
+      fastRefresh: false, // Disable for testing
+      include: '**/*.{jsx,tsx}',
+    })
+  ],
+  esbuild: {
+    jsx: 'automatic',
+    jsxImportSource: 'react',
+  },
   test: {
     name: 'codai-tests',
     globals: true,
-    environment: 'jsdom',
+    environment: 'jsdom', // Temporarily switch back to jsdom to debug
     setupFiles: ['__tests__/setup.ts'],
-    testTimeout: 15000, // Increased timeout for interactive tests
+    testTimeout: 15000,
     hookTimeout: 10000,
     include: [
       'tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
@@ -55,5 +69,5 @@ export default defineConfig({
       '@/utils': path.resolve(__dirname, './src/utils'),
       '@/app': path.resolve(__dirname, './src/app'),
     },
-  },
+  }
 })

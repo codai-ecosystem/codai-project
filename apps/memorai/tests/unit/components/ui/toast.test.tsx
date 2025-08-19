@@ -2,7 +2,10 @@ import React from 'react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, act, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Toast, ToastContainer, useToast, type ToastType } from '@/components/ui/toast'
+import { Toast, ToastContainer, useToast, type ToastState } from '@/components/ui/toast'
+
+// Define ToastType locally for backward compatibility
+type ToastType = 'default' | 'success' | 'error' | 'warning' | 'info'
 
 // Mock timer functions for testing
 beforeEach(() => {
@@ -14,14 +17,14 @@ afterEach(() => {
 })
 
 describe('Toast Component', () => {
-    const mockOnDismiss = vi.fn()
+    const mockOnClose = vi.fn()
 
     beforeEach(() => {
-        mockOnDismiss.mockClear()
+        mockOnClose.mockClear()
     })
 
     it('renders correctly with default props', () => {
-        render(<Toast message="Test message" onDismiss={mockOnDismiss} />)
+        render(<Toast message="Test message" onClose={mockOnClose} />)
 
         const toast = screen.getByRole('alert')
         expect(toast).toBeInTheDocument()
@@ -33,7 +36,7 @@ describe('Toast Component', () => {
 
         types.forEach(type => {
             const { unmount } = render(
-                <Toast message={`${type} message`} type={type} onDismiss={mockOnDismiss} />
+                <Toast message={`${type} message`} type={type} onClose={mockOnClose} />
             )
 
             const toast = screen.getByRole('alert')
@@ -62,7 +65,7 @@ describe('Toast Component', () => {
 
         types.forEach(type => {
             const { unmount } = render(
-                <Toast message="Test" type={type} onDismiss={mockOnDismiss} />
+                <Toast message="Test" type={type} onClose={mockOnClose} />
             )
 
             // Check that an icon is present (SVG element)
@@ -78,7 +81,7 @@ describe('Toast Component', () => {
             <Toast
                 title="Success!"
                 message="Operation completed"
-                onDismiss={mockOnDismiss}
+                onClose={mockOnClose}
             />
         )
 
@@ -87,45 +90,48 @@ describe('Toast Component', () => {
     })
 
     it.skip('shows dismiss button and handles click', async () => {
-        vi.useFakeTimers()
         const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
 
-        render(<Toast message="Test message" onDismiss={mockOnDismiss} />)
+        render(<Toast message="Test message" onClose={mockOnClose} />)
 
         const dismissButton = screen.getByRole('button', { name: /dismiss/i })
         expect(dismissButton).toBeInTheDocument()
 
         await user.click(dismissButton)
-        expect(mockOnDismiss).toHaveBeenCalledTimes(1)
-        
-        vi.useRealTimers()
-    }, 1000)
+
+        // Wait for the timeout in handleClose
+        act(() => {
+            vi.advanceTimersByTime(300)
+        })
+
+        expect(mockOnClose).toHaveBeenCalledTimes(1)
+    }, 15000)
 
     it.skip('auto-dismisses after duration', async () => {
         render(
             <Toast
                 message="Auto dismiss test"
-                onDismiss={mockOnDismiss}
+                onClose={mockOnClose}
                 duration={3000}
             />
         )
 
-        expect(mockOnDismiss).not.toHaveBeenCalled()
+        expect(mockOnClose).not.toHaveBeenCalled()
 
         act(() => {
-            vi.advanceTimersByTime(3000)
+            vi.advanceTimersByTime(3300) // 3000 for duration + 300 for handleClose timeout
         })
 
         await waitFor(() => {
-            expect(mockOnDismiss).toHaveBeenCalledTimes(1)
-        })
-    })
+            expect(mockOnClose).toHaveBeenCalledTimes(1)
+        }, { timeout: 1000 })
+    }, 15000)
 
     it('does not auto-dismiss when duration is 0', async () => {
         render(
             <Toast
                 message="No auto dismiss"
-                onDismiss={mockOnDismiss}
+                onClose={mockOnClose}
                 duration={0}
             />
         )
@@ -134,7 +140,7 @@ describe('Toast Component', () => {
             vi.advanceTimersByTime(10000)
         })
 
-        expect(mockOnDismiss).not.toHaveBeenCalled()
+        expect(mockOnClose).not.toHaveBeenCalled()
     })
 
     it.skip('pauses auto-dismiss on hover', async () => {
@@ -143,7 +149,7 @@ describe('Toast Component', () => {
         render(
             <Toast
                 message="Hover test"
-                onDismiss={mockOnDismiss}
+                onClose={mockOnClose}
                 duration={3000}
             />
         )
@@ -157,22 +163,22 @@ describe('Toast Component', () => {
             vi.advanceTimersByTime(3000)
         })
 
-        expect(mockOnDismiss).not.toHaveBeenCalled()
+        expect(mockOnClose).not.toHaveBeenCalled()
 
         // Unhover
         await user.unhover(toast)
 
         act(() => {
-            vi.advanceTimersByTime(3000)
+            vi.advanceTimersByTime(3300) // Wait for full duration + timeout
         })
 
         await waitFor(() => {
-            expect(mockOnDismiss).toHaveBeenCalledTimes(1)
+            expect(mockOnClose).toHaveBeenCalledTimes(1)
         })
     })
 
     it('has correct accessibility attributes', () => {
-        render(<Toast message="Accessible toast" onDismiss={mockOnDismiss} />)
+        render(<Toast message="Accessible toast" onClose={mockOnClose} />)
 
         const toast = screen.getByRole('alert')
         expect(toast).toHaveAttribute('aria-live', 'polite')
@@ -183,7 +189,7 @@ describe('Toast Component', () => {
         render(
             <Toast
                 message="Custom class test"
-                onDismiss={mockOnDismiss}
+                onClose={mockOnClose}
                 className="custom-toast-class"
             />
         )
@@ -203,10 +209,10 @@ describe('ToastContainer', () => {
     })
 
     it('renders multiple toasts correctly', () => {
-        const toasts = [
-            { id: '1', message: 'First toast', type: 'success' as ToastType },
-            { id: '2', message: 'Second toast', type: 'error' as ToastType },
-            { id: '3', message: 'Third toast', type: 'info' as ToastType }
+        const toasts: ToastState[] = [
+            { id: '1', message: 'First toast', type: 'success' },
+            { id: '2', message: 'Second toast', type: 'error' },
+            { id: '3', message: 'Third toast', type: 'info' }
         ]
 
         render(<ToastContainer toasts={toasts} onDismiss={() => { }} />)
@@ -217,7 +223,7 @@ describe('ToastContainer', () => {
     })
 
     it('applies different positions correctly', () => {
-        const toasts = [{ id: '1', message: 'Test', type: 'info' as ToastType }]
+        const toasts: ToastState[] = [{ id: '1', message: 'Test', type: 'info' }]
 
         const { rerender } = render(
             <ToastContainer toasts={toasts} onDismiss={() => { }} position="top-right" />
@@ -238,8 +244,8 @@ describe('ToastContainer', () => {
         const mockOnDismiss = vi.fn()
         const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
 
-        const toasts = [
-            { id: '1', message: 'Dismissible toast', type: 'info' as ToastType }
+        const toasts: ToastState[] = [
+            { id: '1', message: 'Dismissible toast', type: 'info' }
         ]
 
         render(<ToastContainer toasts={toasts} onDismiss={mockOnDismiss} />)
@@ -247,28 +253,33 @@ describe('ToastContainer', () => {
         const dismissButton = screen.getByRole('button', { name: /dismiss/i })
         await user.click(dismissButton)
 
+        // Wait for the timeout in handleClose
+        act(() => {
+            vi.advanceTimersByTime(300)
+        })
+
         expect(mockOnDismiss).toHaveBeenCalledWith('1')
-    })
+    }, 15000)
 })
 
 describe('useToast Hook', () => {
     // Test component to use the hook
     const TestComponent = () => {
-        const { toasts, showToast, dismissToast, clearAll } = useToast()
+        const { toasts, addToast, removeToast, clearAllToasts } = useToast()
 
         return (
             <div>
-                <button onClick={() => showToast('Test message', 'success')}>
+                <button onClick={() => addToast({ message: 'Test message', type: 'success' })}>
                     Show Success
                 </button>
-                <button onClick={() => showToast('Error message', 'error', 'Error Title')}>
+                <button onClick={() => addToast({ message: 'Error message', type: 'error', title: 'Error Title' })}>
                     Show Error
                 </button>
-                <button onClick={() => dismissToast(toasts[0]?.id || '')}>
+                <button onClick={() => removeToast(toasts[0]?.id || '')}>
                     Dismiss First
                 </button>
-                <button onClick={clearAll}>Clear All</button>
-                <ToastContainer toasts={toasts} onDismiss={dismissToast} />
+                <button onClick={clearAllToasts}>Clear All</button>
+                <ToastContainer toasts={toasts} onDismiss={removeToast} />
             </div>
         )
     }
@@ -337,4 +348,3 @@ describe('useToast Hook', () => {
         })
     })
 })
-

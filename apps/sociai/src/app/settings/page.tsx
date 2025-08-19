@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { 
+import {
   Settings, Save, Shield, Bell, Globe, User, Palette, Database,
   Key, Lock, Eye, EyeOff, Smartphone, Mail, MessageSquare,
   Monitor, Moon, Sun, Volume2, VolumeX, Vibrate, RotateCcw,
@@ -452,11 +452,10 @@ export default function SettingsPage() {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => setActiveSection(section.id)}
-                      className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
-                        activeSection === section.id
+                      className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${activeSection === section.id
                           ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-500'
                           : 'text-gray-700 hover:bg-gray-50'
-                      }`}
+                        }`}
                     >
                       <Icon className="h-5 w-5" />
                       <span className="font-medium">{section.label}</span>
@@ -480,7 +479,7 @@ export default function SettingsPage() {
                     className="p-6"
                   >
                     <h3 className="text-xl font-semibold text-gray-900 mb-6">General Settings</h3>
-                    
+
                     <div className="space-y-6">
                       {/* Language & Region */}
                       <div className="bg-gray-50 rounded-lg p-6">
@@ -534,14 +533,12 @@ export default function SettingsPage() {
                             </div>
                             <button
                               onClick={() => setIsDarkMode(!isDarkMode)}
-                              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                                isDarkMode ? 'bg-blue-600' : 'bg-gray-200'
-                              }`}
+                              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${isDarkMode ? 'bg-blue-600' : 'bg-gray-200'
+                                }`}
                             >
                               <span
-                                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                                  isDarkMode ? 'translate-x-6' : 'translate-x-1'
-                                }`}
+                                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${isDarkMode ? 'translate-x-6' : 'translate-x-1'
+                                  }`}
                               />
                             </button>
                           </div>
@@ -578,7 +575,7 @@ export default function SettingsPage() {
                     className="p-6"
                   >
                     <h3 className="text-xl font-semibold text-gray-900 mb-6">Account Information</h3>
-                    
+
                     <div className="space-y-6">
                       {/* Profile Information */}
                       <div className="bg-gray-50 rounded-lg p-6">
@@ -688,7 +685,7 @@ export default function SettingsPage() {
                     className="p-6"
                   >
                     <h3 className="text-xl font-semibold text-gray-900 mb-6">Notification Preferences</h3>
-                    
+
                     <div className="space-y-6">
                       {notificationSettings.map((setting) => (
                         <div key={setting.id} className="bg-gray-50 rounded-lg p-6">
@@ -699,18 +696,16 @@ export default function SettingsPage() {
                             </div>
                             <button
                               onClick={() => toggleNotification(setting.id, 'enabled')}
-                              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                                setting.enabled ? 'bg-blue-600' : 'bg-gray-200'
-                              }`}
+                              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${setting.enabled ? 'bg-blue-600' : 'bg-gray-200'
+                                }`}
                             >
                               <span
-                                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                                  setting.enabled ? 'translate-x-6' : 'translate-x-1'
-                                }`}
+                                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${setting.enabled ? 'translate-x-6' : 'translate-x-1'
+                                  }`}
                               />
                             </button>
                           </div>
-                          
+
                           {setting.enabled && (
                             <div className="grid grid-cols-3 gap-4">
                               <div className="flex items-center space-x-2">
@@ -760,7 +755,7 @@ export default function SettingsPage() {
                     className="p-6"
                   >
                     <h3 className="text-xl font-semibold text-gray-900 mb-6">Connected Accounts</h3>
-                    
+
                     <div className="space-y-4">
                       {connectedAccounts.map((account) => (
                         <div key={account.id} className="bg-gray-50 rounded-lg p-6">
@@ -829,7 +824,7 @@ export default function SettingsPage() {
                     className="p-6"
                   >
                     <h3 className="text-xl font-semibold text-gray-900 mb-6">AI Preferences</h3>
-                    
+
                     <div className="space-y-6">
                       {aiPreferences.map((preference) => (
                         <div key={preference.id} className="bg-gray-50 rounded-lg p-6">
@@ -837,29 +832,26 @@ export default function SettingsPage() {
                             <div>
                               <h4 className="font-medium text-gray-900">{preference.title}</h4>
                               <p className="text-sm text-gray-600 mt-1">{preference.description}</p>
-                              <span className={`inline-block mt-2 px-2 py-1 text-xs rounded-full ${
-                                preference.category === 'content' ? 'bg-blue-100 text-blue-700' :
-                                preference.category === 'analysis' ? 'bg-purple-100 text-purple-700' :
-                                preference.category === 'automation' ? 'bg-green-100 text-green-700' :
-                                'bg-orange-100 text-orange-700'
-                              }`}>
+                              <span className={`inline-block mt-2 px-2 py-1 text-xs rounded-full ${preference.category === 'content' ? 'bg-blue-100 text-blue-700' :
+                                  preference.category === 'analysis' ? 'bg-purple-100 text-purple-700' :
+                                    preference.category === 'automation' ? 'bg-green-100 text-green-700' :
+                                      'bg-orange-100 text-orange-700'
+                                }`}>
                                 {preference.category}
                               </span>
                             </div>
                             <button
                               onClick={() => toggleAIPreference(preference.id)}
-                              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                                preference.enabled ? 'bg-blue-600' : 'bg-gray-200'
-                              }`}
+                              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${preference.enabled ? 'bg-blue-600' : 'bg-gray-200'
+                                }`}
                             >
                               <span
-                                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                                  preference.enabled ? 'translate-x-6' : 'translate-x-1'
-                                }`}
+                                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${preference.enabled ? 'translate-x-6' : 'translate-x-1'
+                                  }`}
                               />
                             </button>
                           </div>
-                          
+
                           {preference.enabled && (
                             <div>
                               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -867,29 +859,26 @@ export default function SettingsPage() {
                               </label>
                               <div className="flex items-center space-x-4">
                                 <button
-                                  className={`px-3 py-1 rounded-full text-sm transition-colors ${
-                                    preference.level === 'conservative' 
-                                      ? 'bg-blue-500 text-white' 
+                                  className={`px-3 py-1 rounded-full text-sm transition-colors ${preference.level === 'conservative'
+                                      ? 'bg-blue-500 text-white'
                                       : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                  }`}
+                                    }`}
                                 >
                                   Conservative
                                 </button>
                                 <button
-                                  className={`px-3 py-1 rounded-full text-sm transition-colors ${
-                                    preference.level === 'balanced' 
-                                      ? 'bg-blue-500 text-white' 
+                                  className={`px-3 py-1 rounded-full text-sm transition-colors ${preference.level === 'balanced'
+                                      ? 'bg-blue-500 text-white'
                                       : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                  }`}
+                                    }`}
                                 >
                                   Balanced
                                 </button>
                                 <button
-                                  className={`px-3 py-1 rounded-full text-sm transition-colors ${
-                                    preference.level === 'aggressive' 
-                                      ? 'bg-blue-500 text-white' 
+                                  className={`px-3 py-1 rounded-full text-sm transition-colors ${preference.level === 'aggressive'
+                                      ? 'bg-blue-500 text-white'
                                       : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                  }`}
+                                    }`}
                                 >
                                   Aggressive
                                 </button>
@@ -911,7 +900,7 @@ export default function SettingsPage() {
                     className="p-6"
                   >
                     <h3 className="text-xl font-semibold text-gray-900 mb-6">Appearance & Themes</h3>
-                    
+
                     <div className="space-y-6">
                       <div className="bg-gray-50 rounded-lg p-6">
                         <h4 className="text-lg font-medium text-gray-900 mb-4">Theme Selection</h4>
@@ -922,11 +911,10 @@ export default function SettingsPage() {
                               whileHover={{ scale: 1.02 }}
                               whileTap={{ scale: 0.98 }}
                               onClick={() => setSelectedTheme(theme.id)}
-                              className={`p-4 border-2 rounded-lg text-left transition-colors ${
-                                selectedTheme === theme.id
+                              className={`p-4 border-2 rounded-lg text-left transition-colors ${selectedTheme === theme.id
                                   ? 'border-blue-500 bg-blue-50'
                                   : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                              }`}
+                                }`}
                             >
                               <div className={`h-16 w-full rounded-lg bg-gradient-to-r ${theme.gradient} mb-3`}></div>
                               <h5 className="font-medium text-gray-900">{theme.name}</h5>
@@ -981,7 +969,7 @@ export default function SettingsPage() {
                     className="p-6"
                   >
                     <h3 className="text-xl font-semibold text-gray-900 mb-6">Data & Storage</h3>
-                    
+
                     <div className="space-y-6">
                       <div className="bg-gray-50 rounded-lg p-6">
                         <h4 className="text-lg font-medium text-gray-900 mb-4">Storage Usage</h4>

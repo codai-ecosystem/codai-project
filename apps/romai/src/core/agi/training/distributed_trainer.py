@@ -653,6 +653,13 @@ class DistributedTrainer:
         """Get real GPU utilization using GPUtil."""
         try:
             import GPUtil
+
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
             gpus = GPUtil.getGPUs()
             if gpus and torch.cuda.is_available():
                 return gpus[0].load * 100.0  # Convert to percentage

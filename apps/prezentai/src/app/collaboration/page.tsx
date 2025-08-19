@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Users, 
-  Share2, 
-  MessageSquare, 
-  Bell, 
-  Settings, 
+import {
+  Users,
+  Share2,
+  MessageSquare,
+  Bell,
+  Settings,
   Plus,
   Search,
   Filter,
@@ -313,7 +313,7 @@ export default function CollaborationPage() {
 
   const filteredMembers = teamMembers.filter(member => {
     const matchesSearch = member.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         member.email.toLowerCase().includes(searchQuery.toLowerCase());
+      member.email.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesRole = selectedRole === 'all' || member.role === selectedRole;
     const matchesStatus = selectedStatus === 'all' || member.status === selectedStatus;
     return matchesSearch && matchesRole && matchesStatus;
@@ -322,7 +322,7 @@ export default function CollaborationPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/80 backdrop-blur-sm border-b border-purple-100 sticky top-0 z-40"
@@ -338,7 +338,7 @@ export default function CollaborationPage() {
               </p>
             </div>
             <div className="flex items-center space-x-4">
-              <button 
+              <button
                 onClick={() => setShowInviteModal(true)}
                 className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 flex items-center space-x-2"
               >
@@ -355,7 +355,7 @@ export default function CollaborationPage() {
       </motion.div>
 
       {/* Navigation Tabs */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.1 }}
@@ -374,11 +374,10 @@ export default function CollaborationPage() {
               <a
                 key={tab.name}
                 href={tab.href}
-                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${
-                  tab.current
+                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${tab.current
                     ? 'border-purple-500 text-purple-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
+                  }`}
               >
                 {tab.name}
               </a>
@@ -389,9 +388,9 @@ export default function CollaborationPage() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
+
         {/* Collaboration Stats */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -471,7 +470,7 @@ export default function CollaborationPage() {
         </motion.div>
 
         {/* Collaboration Tabs */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -488,11 +487,10 @@ export default function CollaborationPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 flex items-center space-x-2 ${
-                    activeTab === tab.id
+                  className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 flex items-center space-x-2 ${activeTab === tab.id
                       ? 'border-purple-500 text-purple-600'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                    }`}
                 >
                   {tab.icon}
                   <span>{tab.name}</span>
@@ -504,7 +502,7 @@ export default function CollaborationPage() {
 
         {/* Tab Content */}
         {activeTab === 'team' && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
@@ -525,7 +523,7 @@ export default function CollaborationPage() {
                     />
                   </div>
                 </div>
-                
+
                 <div className="flex items-center space-x-4">
                   <select
                     value={selectedRole}
@@ -538,7 +536,7 @@ export default function CollaborationPage() {
                     <option value="editor">Editor</option>
                     <option value="viewer">Viewer</option>
                   </select>
-                  
+
                   <select
                     value={selectedStatus}
                     onChange={(e) => setSelectedStatus(e.target.value)}
@@ -575,24 +573,24 @@ export default function CollaborationPage() {
                       <span className="text-xs font-medium text-gray-600 capitalize">{member.role}</span>
                     </div>
                   </div>
-                  
+
                   <div className="space-y-3">
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-gray-500">Last Active</span>
                       <span className="font-medium text-gray-900">{member.lastActive}</span>
                     </div>
-                    
+
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-gray-500">Presentations</span>
                       <span className="font-medium text-gray-900">{member.presentationsAccess}</span>
                     </div>
-                    
+
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-gray-500">Joined</span>
                       <span className="font-medium text-gray-900">{member.joinedAt}</span>
                     </div>
                   </div>
-                  
+
                   <div className="mt-4 pt-4 border-t border-purple-100">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
@@ -618,7 +616,7 @@ export default function CollaborationPage() {
         )}
 
         {activeTab === 'shared' && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
@@ -631,20 +629,18 @@ export default function CollaborationPage() {
                   {/* Presentation Thumbnail */}
                   <div className={`h-32 bg-${presentation.thumbnail} relative`}>
                     <div className="absolute top-3 left-3">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        presentation.status === 'active' ? 'bg-green-100 text-green-700' :
-                        presentation.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                        'bg-red-100 text-red-700'
-                      }`}>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${presentation.status === 'active' ? 'bg-green-100 text-green-700' :
+                          presentation.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
+                            'bg-red-100 text-red-700'
+                        }`}>
                         {presentation.status}
                       </span>
                     </div>
                     <div className="absolute top-3 right-3">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        presentation.permissions === 'admin' ? 'bg-purple-100 text-purple-700' :
-                        presentation.permissions === 'edit' ? 'bg-blue-100 text-blue-700' :
-                        'bg-gray-100 text-gray-700'
-                      }`}>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${presentation.permissions === 'admin' ? 'bg-purple-100 text-purple-700' :
+                          presentation.permissions === 'edit' ? 'bg-blue-100 text-blue-700' :
+                            'bg-gray-100 text-gray-700'
+                        }`}>
                         {presentation.permissions}
                       </span>
                     </div>
@@ -653,7 +649,7 @@ export default function CollaborationPage() {
                   {/* Presentation Details */}
                   <div className="p-6">
                     <h3 className="font-semibold text-gray-900 mb-2">{presentation.title}</h3>
-                    
+
                     <div className="grid grid-cols-2 gap-4 text-sm mb-4">
                       <div>
                         <p className="text-gray-500">Shared with</p>
@@ -672,12 +668,12 @@ export default function CollaborationPage() {
                         <p className="font-medium text-gray-900">{presentation.lastActivity}</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
                       <span>Shared by {presentation.sharedBy}</span>
                       <span>{presentation.sharedAt}</span>
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
                         <button className="text-gray-400 hover:text-blue-500 transition-colors duration-200">
@@ -702,7 +698,7 @@ export default function CollaborationPage() {
         )}
 
         {activeTab === 'comments' && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
@@ -716,7 +712,7 @@ export default function CollaborationPage() {
                     <div className={`w-10 h-10 bg-${comment.avatar} rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0`}>
                       {comment.author.charAt(0)}
                     </div>
-                    
+
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center space-x-2">
@@ -732,9 +728,9 @@ export default function CollaborationPage() {
                         </div>
                         <span className="text-sm text-gray-500">{comment.timestamp}</span>
                       </div>
-                      
+
                       <p className="text-gray-700 mb-3">{comment.message}</p>
-                      
+
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-4">
                           <button className="flex items-center space-x-1 text-gray-500 hover:text-red-500 transition-colors duration-200">
@@ -748,7 +744,7 @@ export default function CollaborationPage() {
                             </button>
                           )}
                         </div>
-                        
+
                         <div className="flex items-center space-x-2">
                           {!comment.isResolved && (
                             <button className="text-sm text-green-600 hover:text-green-700 font-medium">
@@ -764,7 +760,7 @@ export default function CollaborationPage() {
                   </div>
                 ))}
               </div>
-              
+
               {/* Add Comment */}
               <div className="mt-6 pt-6 border-t border-purple-100">
                 <div className="flex space-x-4">
@@ -801,7 +797,7 @@ export default function CollaborationPage() {
         )}
 
         {activeTab === 'activity' && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
@@ -834,7 +830,7 @@ export default function CollaborationPage() {
       </div>
 
       {/* Modern Footer */}
-      <motion.footer 
+      <motion.footer
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.7 }}
@@ -845,7 +841,7 @@ export default function CollaborationPage() {
             <div className="col-span-1 md:col-span-2">
               <h3 className="text-2xl font-bold mb-4">PrezentAI Collaboration</h3>
               <p className="text-purple-200 mb-6 max-w-md">
-                Work together seamlessly with your team on presentations. 
+                Work together seamlessly with your team on presentations.
                 Share, comment, and collaborate in real-time to create amazing presentations together.
               </p>
               <div className="flex space-x-4">
@@ -860,7 +856,7 @@ export default function CollaborationPage() {
                 </button>
               </div>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-semibold mb-4">Collaboration Tools</h4>
               <ul className="space-y-2 text-purple-200">
@@ -870,7 +866,7 @@ export default function CollaborationPage() {
                 <li><a href="#" className="hover:text-white transition-colors duration-200">Activity Tracking</a></li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-semibold mb-4">Team Features</h4>
               <ul className="space-y-2 text-purple-200">
@@ -881,7 +877,7 @@ export default function CollaborationPage() {
               </ul>
             </div>
           </div>
-          
+
           <div className="border-t border-purple-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-purple-200 text-sm">
               © 2025 PrezentAI Collaboration. Bringing teams together through presentations.

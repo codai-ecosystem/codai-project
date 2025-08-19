@@ -3,14 +3,14 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Brain, 
-  Cpu, 
-  Zap, 
-  Target, 
-  Globe, 
-  BarChart3, 
-  RefreshCw, 
+import {
+  Brain,
+  Cpu,
+  Zap,
+  Target,
+  Globe,
+  BarChart3,
+  RefreshCw,
   Server,
   Activity,
   TrendingUp,
@@ -205,9 +205,9 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 to-yellow-50">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 to-yellow-50" data-testid="dashboard-container">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         className="bg-white/80 backdrop-blur-sm border-b border-red-200/50 sticky top-0 z-40"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -225,7 +225,7 @@ export default function Dashboard() {
                 <p className="text-sm text-gray-600">Advanced Romanian AGI System</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="hidden sm:flex items-center space-x-6 text-sm">
                 <div className="flex items-center space-x-2">
@@ -241,14 +241,14 @@ export default function Dashboard() {
                   <span className="text-gray-600">Cultural AI</span>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-2">
                 <div className={`w-3 h-3 rounded-full animate-pulse ${agiData?.server_status === 'healthy' ? 'bg-green-500' : 'bg-red-500'}`}></div>
                 <span className="text-sm font-medium text-gray-700">
                   {agiData?.server_status || 'Unknown'}
                 </span>
               </div>
-              
+
               <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
                 <RefreshCw className="w-4 h-4" />
               </button>
@@ -267,11 +267,10 @@ export default function Dashboard() {
                 <button
                   key={tab.id}
                   onClick={() => setSelectedTab(tab.id)}
-                  className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                    selectedTab === tab.id
-                      ? 'border-red-500 text-red-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                  className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${selectedTab === tab.id
+                    ? 'border-red-500 text-red-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }`}
                 >
                   <Icon className="w-4 h-4" />
                   <span>{tab.label}</span>
@@ -469,7 +468,7 @@ export default function Dashboard() {
       </div>
 
       {/* Footer */}
-      <motion.footer 
+      <motion.footer
         className="bg-white/80 backdrop-blur-sm border-t border-red-200/50 mt-16"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

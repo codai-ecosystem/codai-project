@@ -2,41 +2,41 @@
 
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  Monitor, 
-  BarChart3, 
-  Users, 
-  FileText, 
-  Presentation, 
-  Palette, 
-  Share2, 
-  Download, 
-  Play, 
-  Edit3, 
-  Plus, 
-  Search, 
-  Filter, 
-  Grid3X3, 
-  List, 
-  Clock, 
-  Eye, 
-  Heart, 
-  MoreVertical, 
-  Copy, 
-  Trash2, 
-  Star, 
-  Folder, 
-  Settings, 
-  Zap, 
-  Camera, 
-  Video, 
-  Image, 
-  Mic, 
-  Layout, 
-  Type, 
-  PieChart, 
-  TrendingUp, 
-  Calendar, 
+import {
+  Monitor,
+  BarChart3,
+  Users,
+  FileText,
+  Presentation,
+  Palette,
+  Share2,
+  Download,
+  Play,
+  Edit3,
+  Plus,
+  Search,
+  Filter,
+  Grid3X3,
+  List,
+  Clock,
+  Eye,
+  Heart,
+  MoreVertical,
+  Copy,
+  Trash2,
+  Star,
+  Folder,
+  Settings,
+  Zap,
+  Camera,
+  Video,
+  Image,
+  Mic,
+  Layout,
+  Type,
+  PieChart,
+  TrendingUp,
+  Calendar,
   Bell,
   Award,
   Target,
@@ -84,59 +84,59 @@ interface QuickAction {
 }
 
 const overviewMetrics: PresentationMetric[] = [
-  { 
-    id: 'total-presentations', 
-    name: 'Total Presentations', 
-    value: '47', 
-    change: 12, 
-    changeType: 'increase', 
-    icon: Presentation, 
-    color: 'text-blue-400' 
+  {
+    id: 'total-presentations',
+    name: 'Total Presentations',
+    value: '47',
+    change: 12,
+    changeType: 'increase',
+    icon: Presentation,
+    color: 'text-blue-400'
   },
-  { 
-    id: 'total-views', 
-    name: 'Total Views', 
-    value: '12.8K', 
-    change: 24, 
-    changeType: 'increase', 
-    icon: Eye, 
-    color: 'text-green-400' 
+  {
+    id: 'total-views',
+    name: 'Total Views',
+    value: '12.8K',
+    change: 24,
+    changeType: 'increase',
+    icon: Eye,
+    color: 'text-green-400'
   },
-  { 
-    id: 'avg-engagement', 
-    name: 'Avg Engagement', 
-    value: '85%', 
-    change: 8, 
-    changeType: 'increase', 
-    icon: TrendingUp, 
-    color: 'text-purple-400' 
+  {
+    id: 'avg-engagement',
+    name: 'Avg Engagement',
+    value: '85%',
+    change: 8,
+    changeType: 'increase',
+    icon: TrendingUp,
+    color: 'text-purple-400'
   },
-  { 
-    id: 'templates-used', 
-    name: 'Templates Used', 
-    value: '23', 
-    change: 5, 
-    changeType: 'increase', 
-    icon: Layout, 
-    color: 'text-orange-400' 
+  {
+    id: 'templates-used',
+    name: 'Templates Used',
+    value: '23',
+    change: 5,
+    changeType: 'increase',
+    icon: Layout,
+    color: 'text-orange-400'
   },
-  { 
-    id: 'shared-presentations', 
-    name: 'Shared This Month', 
-    value: '18', 
-    change: 15, 
-    changeType: 'increase', 
-    icon: Share2, 
-    color: 'text-pink-400' 
+  {
+    id: 'shared-presentations',
+    name: 'Shared This Month',
+    value: '18',
+    change: 15,
+    changeType: 'increase',
+    icon: Share2,
+    color: 'text-pink-400'
   },
-  { 
-    id: 'collaboration-score', 
-    name: 'Collaboration Score', 
-    value: '92%', 
-    change: 3, 
-    changeType: 'increase', 
-    icon: Users, 
-    color: 'text-indigo-400' 
+  {
+    id: 'collaboration-score',
+    name: 'Collaboration Score',
+    value: '92%',
+    change: 3,
+    changeType: 'increase',
+    icon: Users,
+    color: 'text-indigo-400'
   }
 ]
 
@@ -328,15 +328,15 @@ export default function PrezentAIDashboard() {
 
   const filteredPresentations = mockPresentations.filter(presentation => {
     const matchesSearch = presentation.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         presentation.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+      presentation.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
     const matchesStatus = statusFilter === 'all' || presentation.status === statusFilter
-    
+
     return matchesSearch && matchesStatus
   })
 
   const handlePresentationSelect = (presentationId: string) => {
-    setSelectedPresentations(prev => 
-      prev.includes(presentationId) 
+    setSelectedPresentations(prev =>
+      prev.includes(presentationId)
         ? prev.filter(id => id !== presentationId)
         : [...prev, presentationId]
     )
@@ -350,7 +350,7 @@ export default function PrezentAIDashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="border-b border-purple-700/50 bg-purple-900/30 backdrop-blur-sm"
@@ -385,7 +385,7 @@ export default function PrezentAIDashboard() {
 
       {/* Overview Metrics */}
       <div className="max-w-7xl mx-auto px-6 py-8">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mb-8"
@@ -402,11 +402,10 @@ export default function PrezentAIDashboard() {
               >
                 <div className="flex items-center justify-between mb-2">
                   <Icon className={`w-5 h-5 ${metric.color}`} />
-                  <div className={`flex items-center space-x-1 text-sm ${
-                    metric.changeType === 'increase' ? 'text-green-400' :
-                    metric.changeType === 'decrease' ? 'text-red-400' :
-                    'text-gray-400'
-                  }`}>
+                  <div className={`flex items-center space-x-1 text-sm ${metric.changeType === 'increase' ? 'text-green-400' :
+                      metric.changeType === 'decrease' ? 'text-red-400' :
+                        'text-gray-400'
+                    }`}>
                     <TrendingUp className="w-3 h-3" />
                     <span>+{metric.change}%</span>
                   </div>
@@ -419,7 +418,7 @@ export default function PrezentAIDashboard() {
         </motion.div>
 
         {/* Navigation Tabs */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-purple-800/30 backdrop-blur-sm border border-purple-700/50 rounded-xl mb-6"
@@ -438,11 +437,10 @@ export default function PrezentAIDashboard() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center space-x-2 px-4 py-3 rounded-lg transition-all ${
-                    activeTab === tab.id
+                  className={`flex items-center space-x-2 px-4 py-3 rounded-lg transition-all ${activeTab === tab.id
                       ? 'bg-purple-600 text-white shadow-lg'
                       : 'text-purple-200 hover:text-white hover:bg-purple-700/50'
-                  }`}
+                    }`}
                 >
                   <Icon className="w-4 h-4" />
                   <span className="font-medium">{tab.label}</span>
@@ -453,7 +451,7 @@ export default function PrezentAIDashboard() {
         </motion.div>
 
         {/* Quick Actions Grid */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
@@ -481,7 +479,7 @@ export default function PrezentAIDashboard() {
         </motion.div>
 
         {/* Search and Filters */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-purple-800/30 backdrop-blur-sm border border-purple-700/50 rounded-xl p-6 mb-6"
@@ -543,7 +541,7 @@ export default function PrezentAIDashboard() {
         </motion.div>
 
         {/* Presentations Grid */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-purple-800/30 backdrop-blur-sm border border-purple-700/50 rounded-xl p-6"
@@ -664,7 +662,7 @@ export default function PrezentAIDashboard() {
         </motion.div>
 
         {/* Modern Footer */}
-        <motion.footer 
+        <motion.footer
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}

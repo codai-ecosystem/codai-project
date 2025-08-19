@@ -49,7 +49,7 @@ resource "aws_ecs_task_definition" "api" {
   cpu                      = "512"
   memory                   = "1024"
   execution_role_arn       = aws_iam_role.ecs_task_execution.arn
-  task_role_arn           = aws_iam_role.ecs_task.arn
+  task_role_arn            = aws_iam_role.ecs_task.arn
 
   container_definitions = jsonencode([
     {
@@ -65,22 +65,10 @@ resource "aws_ecs_task_definition" "api" {
       ]
 
       environment = [
-        {
-          name  = "NODE_ENV"
-          value = "production"
-        },
-        {
-          name  = "PORT"
-          value = "4006"
-        },
-        {
-          name  = "CBD_BASE_URL"
-          value = "http://cbd-database:4180"
-        },
-        {
-          name  = "MEMORAI_MCP_URL"
-          value = "http://memorai-mcp:4950"
-        }
+        { name = "NODE_ENV", value = "production" },
+        { name = "PORT", value = "4006" },
+        { name = "CBD_BASE_URL", value = "http://cbd-database:4180" },
+        { name = "MEMORAI_MCP_URL", value = "http://memorai-mcp:4950" }
       ]
 
       logConfiguration = {
@@ -115,7 +103,7 @@ resource "aws_ecs_task_definition" "mcp" {
   cpu                      = "256"
   memory                   = "512"
   execution_role_arn       = aws_iam_role.ecs_task_execution.arn
-  task_role_arn           = aws_iam_role.ecs_task.arn
+  task_role_arn            = aws_iam_role.ecs_task.arn
 
   container_definitions = jsonencode([
     {
@@ -131,58 +119,22 @@ resource "aws_ecs_task_definition" "mcp" {
       ]
 
       environment = [
-        {
-          name  = "NODE_ENV"
-          value = "production"
-        },
-        {
-          name  = "PORT"
-          value = "4950"
-        },
-        {
-          name  = "MEMORAI_MCP_PORT"
-          value = "4950"
-        },
-        {
-          name  = "CBD_BASE_URL"
-          value = "http://cbd-database:4180"
-        },
-        {
-          name  = "MEMORAI_API_KEY"
-          value = "memorai-prod-key-2025"
-        },
-        {
-          name  = "AZURE_OPENAI_ENDPOINT"
-          value = "https://swedencentral.api.cognitive.microsoft.com/"
-        },
-        {
-          name  = "AZURE_OPENAI_API_KEY"
-          value = "8f9d3fd033c04f5ab6b5886c15f16a2c"
-        },
-        {
-          name  = "AZURE_OPENAI_DEPLOYMENT_NAME"
-          value = "text-embedding-3-large"
-        },
-        {
-          name  = "AZURE_OPENAI_API_VERSION"
-          value = "2024-02-01"
-        },
-        {
-          name  = "ENABLE_VECTOR_SEARCH"
-          value = "true"
-        },
-        {
-          name  = "ENABLE_HYBRID_SEARCH"
-          value = "true"
-        },
-        {
-          name  = "ENABLE_RBAC"
-          value = "true"
-        },
-        {
-          name  = "ENABLE_ANALYTICS"
-          value = "true"
-        }
+        { name = "NODE_ENV", value = "production" },
+        { name = "PORT", value = "4950" },
+        { name = "MEMORAI_MCP_PORT", value = "4950" },
+        { name = "CBD_BASE_URL", value = "http://cbd-database:4180" },
+        { name = "AZURE_OPENAI_ENDPOINT", value = "https://swedencentral.api.cognitive.microsoft.com/" },
+        { name = "AZURE_OPENAI_DEPLOYMENT_NAME", value = "text-embedding-3-large" },
+        { name = "AZURE_OPENAI_API_VERSION", value = "2024-02-01" },
+        { name = "ENABLE_VECTOR_SEARCH", value = "true" },
+        { name = "ENABLE_HYBRID_SEARCH", value = "true" },
+        { name = "ENABLE_RBAC", value = "true" },
+        { name = "ENABLE_ANALYTICS", value = "true" }
+      ]
+
+      secrets = [
+        { name = "MEMORAI_API_KEY", valueFrom = aws_ssm_parameter.memoraimcp_api_key.arn },
+        { name = "AZURE_OPENAI_API_KEY", valueFrom = aws_ssm_parameter.azure_openai_api_key.arn }
       ]
 
       logConfiguration = {

@@ -20,6 +20,13 @@ import time
 from collections import deque, defaultdict
 import threading
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 class WorkingMemoryComponent(Enum):
     """Working memory component types"""
     PHONOLOGICAL_LOOP = "phonological_loop"  # Verbal and acoustic information

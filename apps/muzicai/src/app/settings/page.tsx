@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { 
+import {
   Settings,
   User,
   Music,
@@ -130,7 +130,7 @@ export default function SettingsPage() {
               </button>
             </div>
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Display Name</label>
             <input
@@ -139,7 +139,7 @@ export default function SettingsPage() {
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Username</label>
             <input
@@ -148,7 +148,7 @@ export default function SettingsPage() {
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             />
           </div>
-          
+
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">Bio</label>
             <textarea
@@ -157,7 +157,7 @@ export default function SettingsPage() {
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
             <input
@@ -166,7 +166,7 @@ export default function SettingsPage() {
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
             <input
@@ -244,7 +244,7 @@ export default function SettingsPage() {
               <option>Ultra</option>
             </select>
           </div>
-          
+
           <div className="flex items-center justify-between">
             <label className="text-sm font-medium text-gray-700">Real-time AI Processing</label>
             <label className="relative inline-flex items-center cursor-pointer">
@@ -252,7 +252,7 @@ export default function SettingsPage() {
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
             </label>
           </div>
-          
+
           <div className="flex items-center justify-between">
             <label className="text-sm font-medium text-gray-700">Auto-save Projects</label>
             <label className="relative inline-flex items-center cursor-pointer">
@@ -289,7 +289,7 @@ export default function SettingsPage() {
                 <input
                   type="checkbox"
                   checked={value}
-                  onChange={(e) => setNotifications({...notifications, [key]: e.target.checked})}
+                  onChange={(e) => setNotifications({ ...notifications, [key]: e.target.checked })}
                   className="sr-only peer"
                 />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
@@ -336,7 +336,7 @@ export default function SettingsPage() {
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
             </label>
           </div>
-          
+
           <div className="flex items-center justify-between">
             <div>
               <label className="text-sm font-medium text-gray-700">Show Online Status</label>
@@ -347,7 +347,7 @@ export default function SettingsPage() {
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
             </label>
           </div>
-          
+
           <div className="flex items-center justify-between">
             <div>
               <label className="text-sm font-medium text-gray-700">Allow Track Downloads</label>
@@ -374,7 +374,7 @@ export default function SettingsPage() {
               Enable
             </button>
           </div>
-          
+
           <div className="flex items-center justify-between">
             <div>
               <label className="text-sm font-medium text-gray-700">Change Password</label>
@@ -385,7 +385,7 @@ export default function SettingsPage() {
               Change
             </button>
           </div>
-          
+
           <div className="flex items-center justify-between">
             <div>
               <label className="text-sm font-medium text-gray-700">Active Sessions</label>
@@ -428,7 +428,7 @@ export default function SettingsPage() {
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
             </label>
           </div>
-          
+
           <div className="flex items-center justify-between">
             <label className="text-sm font-medium text-gray-700">Show Waveforms</label>
             <label className="relative inline-flex items-center cursor-pointer">
@@ -436,7 +436,7 @@ export default function SettingsPage() {
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
             </label>
           </div>
-          
+
           <div className="flex items-center justify-between">
             <label className="text-sm font-medium text-gray-700">Animation Effects</label>
             <label className="relative inline-flex items-center cursor-pointer">
@@ -457,11 +457,10 @@ export default function SettingsPage() {
           {subscriptionPlans.map((plan) => (
             <div
               key={plan.name}
-              className={`border-2 rounded-xl p-4 transition-all ${
-                plan.current 
-                  ? 'border-purple-500 bg-purple-50' 
+              className={`border-2 rounded-xl p-4 transition-all ${plan.current
+                  ? 'border-purple-500 bg-purple-50'
                   : 'border-gray-200 hover:border-purple-300'
-              } ${plan.popular ? 'ring-2 ring-purple-200' : ''}`}
+                } ${plan.popular ? 'ring-2 ring-purple-200' : ''}`}
             >
               {plan.popular && (
                 <div className="bg-purple-600 text-white text-xs px-2 py-1 rounded-full inline-block mb-2">
@@ -508,18 +507,16 @@ export default function SettingsPage() {
                 </div>
               </div>
               <div className="flex items-center space-x-2">
-                <span className={`text-xs px-2 py-1 rounded-full ${
-                  integration.status === 'connected' ? 'bg-green-100 text-green-800' :
-                  integration.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                  'bg-gray-100 text-gray-800'
-                }`}>
+                <span className={`text-xs px-2 py-1 rounded-full ${integration.status === 'connected' ? 'bg-green-100 text-green-800' :
+                    integration.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-gray-100 text-gray-800'
+                  }`}>
                   {integration.status}
                 </span>
-                <button className={`text-sm px-3 py-1 rounded transition-colors ${
-                  integration.status === 'connected' 
-                    ? 'text-red-600 hover:bg-red-50' 
+                <button className={`text-sm px-3 py-1 rounded transition-colors ${integration.status === 'connected'
+                    ? 'text-red-600 hover:bg-red-50'
                     : 'text-purple-600 hover:bg-purple-50'
-                }`}>
+                  }`}>
                   {integration.status === 'connected' ? 'Disconnect' : 'Connect'}
                 </button>
               </div>
@@ -541,7 +538,7 @@ export default function SettingsPage() {
               Export
             </button>
           </div>
-          
+
           <div className="flex items-center justify-between">
             <div>
               <label className="text-sm font-medium text-gray-700">Clear Cache</label>
@@ -552,7 +549,7 @@ export default function SettingsPage() {
               Clear
             </button>
           </div>
-          
+
           <div className="flex items-center justify-between text-red-600">
             <div>
               <label className="text-sm font-medium">Delete Account</label>
@@ -585,7 +582,7 @@ export default function SettingsPage() {
                 <p className="text-sm text-gray-600">Customize your MuzicAI experience</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <button className="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-purple-700 transition-colors">
                 <Save className="h-4 w-4 inline mr-1" />
@@ -611,11 +608,10 @@ export default function SettingsPage() {
                   <button
                     key={section.id}
                     onClick={() => setActiveSection(section.id)}
-                    className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors ${
-                      activeSection === section.id
+                    className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors ${activeSection === section.id
                         ? 'bg-purple-100 text-purple-700'
                         : 'text-gray-600 hover:bg-purple-50 hover:text-purple-600'
-                    }`}
+                      }`}
                   >
                     <section.icon className={`h-5 w-5 ${section.color}`} />
                     <span className="text-sm font-medium">{section.name}</span>

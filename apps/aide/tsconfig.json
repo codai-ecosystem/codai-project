@@ -1,38 +1,34 @@
 {
-	"extends": "./tsconfig.base.json",
-	"compilerOptions": {
-		"allowJs": true,
-		"resolveJsonModule": true,
-		"noEmit": true,
-		"jsx": "react-jsx",
-		"downlevelIteration": true,
-		"incremental": true,
-		"tsBuildInfoFile": ".tsbuildinfo",
-		"baseUrl": ".",		"paths": {			"@codai/*": ["packages/*/src"],
-			"@codai/memory-graph": ["packages/memory-graph/src"],
-			"@codai/agent-runtime": ["packages/agent-runtime/src"],
-			"@aide/ui-components": ["packages/ui-components/src"]
-		}
-	},	"include": ["packages/*/src/**/*", "apps/*/src/**/*"],
-	"exclude": [
-		"node_modules",
-		"packages/*/dist/**",
-		"packages/*/build/**",
-		"packages/*/out/**",
-		"apps/*/dist/**",
-		"apps/*/build/**",
-		"apps/*/out/**",
-		"**/dist/**",
-		"**/build/**",
-		"**/out/**",
-		"extensions",
-		"**/*.tsbuildinfo",
-		"**/.turbo/**",
-		"**/.next/**"
-	],
-	"references": [
-		{ "path": "./packages/memory-graph" },
-		{ "path": "./packages/agent-runtime" },
-		{ "path": "./packages/ui-components" }
-	]
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/vs/**"
+  ]
 }

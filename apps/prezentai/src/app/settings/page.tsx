@@ -2,13 +2,13 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Settings, 
-  User, 
-  Bell, 
-  Shield, 
-  Palette, 
-  Download, 
+import {
+  Settings,
+  User,
+  Bell,
+  Shield,
+  Palette,
+  Download,
   Upload,
   Globe,
   Key,
@@ -142,7 +142,7 @@ export default function SettingsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/80 backdrop-blur-sm border-b border-purple-100 sticky top-0 z-40"
@@ -158,7 +158,7 @@ export default function SettingsPage() {
               </p>
             </div>
             <div className="flex items-center space-x-4">
-              <button 
+              <button
                 onClick={handleSave}
                 className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 flex items-center space-x-2"
               >
@@ -175,7 +175,7 @@ export default function SettingsPage() {
       </motion.div>
 
       {/* Navigation Tabs */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.1 }}
@@ -195,11 +195,10 @@ export default function SettingsPage() {
               <a
                 key={tab.name}
                 href={tab.href}
-                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${
-                  tab.current
+                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${tab.current
                     ? 'border-purple-500 text-purple-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
+                  }`}
               >
                 {tab.name}
               </a>
@@ -210,7 +209,7 @@ export default function SettingsPage() {
 
       {/* Save Notification */}
       {showSaveNotification && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -50 }}
@@ -223,9 +222,9 @@ export default function SettingsPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          
+
           {/* Settings Navigation */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
@@ -246,11 +245,10 @@ export default function SettingsPage() {
                   <button
                     key={item.id}
                     onClick={() => setActiveTab(item.id)}
-                    className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-200 flex items-center space-x-3 ${
-                      activeTab === item.id
+                    className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-200 flex items-center space-x-3 ${activeTab === item.id
                         ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white'
                         : 'text-gray-600 hover:bg-purple-50 hover:text-purple-600'
-                    }`}
+                      }`}
                   >
                     {item.icon}
                     <span className="font-medium">{item.name}</span>
@@ -261,19 +259,19 @@ export default function SettingsPage() {
           </motion.div>
 
           {/* Settings Content */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
             className="lg:col-span-3"
           >
-            
+
             {/* Profile Settings */}
             {activeTab === 'profile' && (
               <div className="space-y-6">
                 <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-purple-100 p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-6">Profile Information</h3>
-                  
+
                   <div className="space-y-6">
                     {/* Avatar Section */}
                     <div className="flex items-center space-x-6">
@@ -296,46 +294,46 @@ export default function SettingsPage() {
                         <input
                           type="text"
                           value={userProfile.name}
-                          onChange={(e) => setUserProfile({...userProfile, name: e.target.value})}
+                          onChange={(e) => setUserProfile({ ...userProfile, name: e.target.value })}
                           className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/50"
                         />
                       </div>
-                      
+
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
                         <input
                           type="email"
                           value={userProfile.email}
-                          onChange={(e) => setUserProfile({...userProfile, email: e.target.value})}
+                          onChange={(e) => setUserProfile({ ...userProfile, email: e.target.value })}
                           className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/50"
                         />
                       </div>
-                      
+
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
                         <input
                           type="text"
                           value={userProfile.role}
-                          onChange={(e) => setUserProfile({...userProfile, role: e.target.value})}
+                          onChange={(e) => setUserProfile({ ...userProfile, role: e.target.value })}
                           className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/50"
                         />
                       </div>
-                      
+
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Company</label>
                         <input
                           type="text"
                           value={userProfile.company}
-                          onChange={(e) => setUserProfile({...userProfile, company: e.target.value})}
+                          onChange={(e) => setUserProfile({ ...userProfile, company: e.target.value })}
                           className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/50"
                         />
                       </div>
-                      
+
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Timezone</label>
                         <select
                           value={userProfile.timezone}
-                          onChange={(e) => setUserProfile({...userProfile, timezone: e.target.value})}
+                          onChange={(e) => setUserProfile({ ...userProfile, timezone: e.target.value })}
                           className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/50"
                         >
                           <option>UTC-8 (Pacific Time)</option>
@@ -344,12 +342,12 @@ export default function SettingsPage() {
                           <option>UTC+1 (Central European Time)</option>
                         </select>
                       </div>
-                      
+
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Language</label>
                         <select
                           value={userProfile.language}
-                          onChange={(e) => setUserProfile({...userProfile, language: e.target.value})}
+                          onChange={(e) => setUserProfile({ ...userProfile, language: e.target.value })}
                           className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/50"
                         >
                           <option>English (US)</option>
@@ -384,7 +382,7 @@ export default function SettingsPage() {
             {activeTab === 'notifications' && (
               <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-purple-100 p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-6">Notification Preferences</h3>
-                
+
                 <div className="space-y-6">
                   {Object.entries(notificationSettings).map(([key, value]) => (
                     <div key={key} className="flex items-center justify-between p-4 bg-white/50 rounded-lg border border-purple-50">
@@ -403,7 +401,7 @@ export default function SettingsPage() {
                         <input
                           type="checkbox"
                           checked={value}
-                          onChange={(e) => setNotificationSettings({...notificationSettings, [key]: e.target.checked})}
+                          onChange={(e) => setNotificationSettings({ ...notificationSettings, [key]: e.target.checked })}
                           className="sr-only peer"
                         />
                         <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
@@ -418,7 +416,7 @@ export default function SettingsPage() {
             {activeTab === 'privacy' && (
               <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-purple-100 p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-6">Privacy & Security Settings</h3>
-                
+
                 <div className="space-y-6">
                   <div className="p-4 bg-white/50 rounded-lg border border-purple-50">
                     <h4 className="font-medium text-gray-900 mb-2">Profile Visibility</h4>
@@ -431,7 +429,7 @@ export default function SettingsPage() {
                             name="profileVisibility"
                             value={option}
                             checked={privacySettings.profileVisibility === option}
-                            onChange={(e) => setPrivacySettings({...privacySettings, profileVisibility: e.target.value as any})}
+                            onChange={(e) => setPrivacySettings({ ...privacySettings, profileVisibility: e.target.value as any })}
                             className="mr-3 text-purple-600"
                           />
                           <span className="capitalize">{option}</span>
@@ -451,7 +449,7 @@ export default function SettingsPage() {
                             name="presentationDefaults"
                             value={option}
                             checked={privacySettings.presentationDefaults === option}
-                            onChange={(e) => setPrivacySettings({...privacySettings, presentationDefaults: e.target.value as any})}
+                            onChange={(e) => setPrivacySettings({ ...privacySettings, presentationDefaults: e.target.value as any })}
                             className="mr-3 text-purple-600"
                           />
                           <span className="capitalize">{option}</span>
@@ -474,7 +472,7 @@ export default function SettingsPage() {
                         <input
                           type="checkbox"
                           checked={privacySettings[key as keyof PrivacySettings] as boolean}
-                          onChange={(e) => setPrivacySettings({...privacySettings, [key]: e.target.checked})}
+                          onChange={(e) => setPrivacySettings({ ...privacySettings, [key]: e.target.checked })}
                           className="sr-only peer"
                         />
                         <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
@@ -489,13 +487,13 @@ export default function SettingsPage() {
             {activeTab === 'export' && (
               <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-purple-100 p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-6">Export & Download Settings</h3>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Default Export Format</label>
                     <select
                       value={exportSettings.format}
-                      onChange={(e) => setExportSettings({...exportSettings, format: e.target.value as any})}
+                      onChange={(e) => setExportSettings({ ...exportSettings, format: e.target.value as any })}
                       className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/50"
                     >
                       <option value="pdf">PDF</option>
@@ -509,7 +507,7 @@ export default function SettingsPage() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">Export Quality</label>
                     <select
                       value={exportSettings.quality}
-                      onChange={(e) => setExportSettings({...exportSettings, quality: e.target.value as any})}
+                      onChange={(e) => setExportSettings({ ...exportSettings, quality: e.target.value as any })}
                       className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/50"
                     >
                       <option value="high">High Quality</option>
@@ -534,7 +532,7 @@ export default function SettingsPage() {
                         <input
                           type="checkbox"
                           checked={exportSettings[key as keyof ExportSettings] as boolean}
-                          onChange={(e) => setExportSettings({...exportSettings, [key]: e.target.checked})}
+                          onChange={(e) => setExportSettings({ ...exportSettings, [key]: e.target.checked })}
                           className="sr-only peer"
                         />
                         <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
@@ -549,7 +547,7 @@ export default function SettingsPage() {
             {activeTab === 'integrations' && (
               <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-purple-100 p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-6">Connected Services</h3>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {integrations.map((integration) => (
                     <div key={integration.name} className="p-4 bg-white/50 rounded-lg border border-purple-50">
@@ -564,11 +562,10 @@ export default function SettingsPage() {
                           </div>
                         </div>
                         <button
-                          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
-                            integration.connected
+                          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${integration.connected
                               ? 'bg-red-100 text-red-600 hover:bg-red-200'
                               : 'bg-green-100 text-green-600 hover:bg-green-200'
-                          }`}
+                            }`}
                         >
                           {integration.connected ? 'Disconnect' : 'Connect'}
                         </button>
@@ -590,7 +587,7 @@ export default function SettingsPage() {
               <div className="space-y-6">
                 <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-purple-100 p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-6">API Access</h3>
-                  
+
                   <div className="space-y-4">
                     <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                       <div className="flex items-center space-x-2">
@@ -615,7 +612,7 @@ export default function SettingsPage() {
                           {showApiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
                       </div>
-                      
+
                       <div className="flex items-center space-x-3">
                         <code className="flex-1 px-3 py-2 bg-gray-100 rounded text-sm font-mono">
                           {showApiKey ? 'prezai_pk_1234567890abcdef' : '••••••••••••••••••••••••'}
@@ -624,7 +621,7 @@ export default function SettingsPage() {
                           <Copy className="w-4 h-4" />
                         </button>
                       </div>
-                      
+
                       <div className="mt-4 flex space-x-3">
                         <button className="bg-purple-100 text-purple-600 px-4 py-2 rounded-lg hover:bg-purple-200 transition-colors duration-200">
                           Regenerate Key
@@ -639,7 +636,7 @@ export default function SettingsPage() {
 
                 <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-purple-100 p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-6">API Usage</h3>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="text-center">
                       <div className="text-2xl font-bold text-purple-600">1,247</div>
@@ -662,7 +659,7 @@ export default function SettingsPage() {
             {activeTab === 'storage' && (
               <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-purple-100 p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-6">Storage & Data Management</h3>
-                
+
                 <div className="space-y-6">
                   {/* Storage Usage */}
                   <div className="p-4 bg-white/50 rounded-lg border border-purple-50">
@@ -673,7 +670,7 @@ export default function SettingsPage() {
                         <span className="text-sm font-medium">2.4 GB</span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div className="bg-purple-600 h-2 rounded-full" style={{width: '48%'}}></div>
+                        <div className="bg-purple-600 h-2 rounded-full" style={{ width: '48%' }}></div>
                       </div>
                       <div className="flex items-center justify-between text-sm text-gray-500">
                         <span>Used: 2.4 GB</span>
@@ -712,7 +709,7 @@ export default function SettingsPage() {
       </div>
 
       {/* Modern Footer */}
-      <motion.footer 
+      <motion.footer
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
@@ -723,7 +720,7 @@ export default function SettingsPage() {
             <div className="col-span-1 md:col-span-2">
               <h3 className="text-2xl font-bold mb-4">PrezentAI Settings</h3>
               <p className="text-purple-200 mb-6 max-w-md">
-                Customize your presentation experience with advanced settings and preferences. 
+                Customize your presentation experience with advanced settings and preferences.
                 Control privacy, notifications, integrations, and more.
               </p>
               <div className="flex space-x-4">
@@ -738,7 +735,7 @@ export default function SettingsPage() {
                 </button>
               </div>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-semibold mb-4">Account Settings</h4>
               <ul className="space-y-2 text-purple-200">
@@ -748,7 +745,7 @@ export default function SettingsPage() {
                 <li><a href="#" className="hover:text-white transition-colors duration-200">Data Export</a></li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-semibold mb-4">Platform Features</h4>
               <ul className="space-y-2 text-purple-200">
@@ -759,7 +756,7 @@ export default function SettingsPage() {
               </ul>
             </div>
           </div>
-          
+
           <div className="border-t border-purple-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-purple-200 text-sm">
               © 2025 PrezentAI Settings. Complete control over your presentation platform.

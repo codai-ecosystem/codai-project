@@ -22,6 +22,13 @@ import random
 from .base_multimodal import BaseMultimodalEngine, MultimodalConfig
 from .romanian_multimodal_culture import RomanianMultimodalCultureProcessor
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 class GenerationModalityType(Enum):
     """Types of generation modalities"""
     TEXT_TO_IMAGE = "text_to_image"

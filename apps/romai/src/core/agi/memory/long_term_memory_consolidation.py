@@ -23,6 +23,13 @@ import threading
 import json
 from datetime import datetime, timedelta
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 class ConsolidationType(Enum):
     """Types of memory consolidation"""
     SYSTEMS_CONSOLIDATION = "systems_consolidation"  # Hippocampus to neocortex

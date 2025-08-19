@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useState } from 'react';
-import { 
-  BarChart3, 
-  TrendingUp, 
-  TrendingDown, 
-  DollarSign, 
-  Target, 
-  Activity, 
+import {
+  BarChart3,
+  TrendingUp,
+  TrendingDown,
+  DollarSign,
+  Target,
+  Activity,
   Calendar,
   Clock,
   Filter,
@@ -518,11 +518,10 @@ const AnalyticsPage: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 ${
-                activeTab === tab.id
+              className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 ${activeTab === tab.id
                   ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white'
                   : 'text-gray-400 hover:text-white hover:bg-white/5'
-              }`}
+                }`}
             >
               <tab.icon className="w-4 h-4" />
               <span className="font-medium">{tab.label}</span>

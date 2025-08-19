@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  DollarSign, 
-  BarChart3, 
-  Activity, 
+import {
+  TrendingUp,
+  TrendingDown,
+  DollarSign,
+  BarChart3,
+  Activity,
   Bot,
   Search,
   Bell,
@@ -412,15 +412,13 @@ export default function WatchlistPage() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`group inline-flex items-center py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
-                      activeTab === tab.id
+                    className={`group inline-flex items-center py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${activeTab === tab.id
                         ? 'border-green-500 text-green-600'
                         : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                    }`}
+                      }`}
                   >
-                    <Icon className={`mr-2 h-5 w-5 ${
-                      activeTab === tab.id ? 'text-green-500' : 'text-gray-400 group-hover:text-gray-500'
-                    }`} />
+                    <Icon className={`mr-2 h-5 w-5 ${activeTab === tab.id ? 'text-green-500' : 'text-gray-400 group-hover:text-gray-500'
+                      }`} />
                     {tab.label}
                     {tab.id === 'alerts' && marketAlerts.filter(a => a.triggered).length > 0 && (
                       <span className="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
@@ -460,7 +458,7 @@ export default function WatchlistPage() {
                       ))}
                     </select>
                   </div>
-                  
+
                   <div className="flex items-center space-x-2">
                     <span className="text-sm text-gray-500">Rating:</span>
                     <select
@@ -722,7 +720,7 @@ export default function WatchlistPage() {
                 Start Screening <ChevronRight className="ml-1 h-4 w-4" />
               </button>
             </div>
-            
+
             <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-6 text-white">
               <Zap className="h-8 w-8 mb-3" />
               <h3 className="text-lg font-semibold mb-2">Smart Alerts</h3>
@@ -731,7 +729,7 @@ export default function WatchlistPage() {
                 Configure Alerts <ChevronRight className="ml-1 h-4 w-4" />
               </button>
             </div>
-            
+
             <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl p-6 text-white">
               <Target className="h-8 w-8 mb-3" />
               <h3 className="text-lg font-semibold mb-2">Market Intelligence</h3>

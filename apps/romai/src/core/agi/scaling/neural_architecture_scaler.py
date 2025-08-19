@@ -35,6 +35,13 @@ import json
 import logging
 from pathlib import Path
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 
 class ArchitectureType(Enum):
     """Neural architecture types for scaling"""

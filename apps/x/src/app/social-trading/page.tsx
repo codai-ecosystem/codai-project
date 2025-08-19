@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useState } from 'react';
-import { 
-  Users, 
-  Star, 
-  Copy, 
-  TrendingUp, 
-  TrendingDown, 
-  Eye, 
-  DollarSign, 
-  Target, 
-  Activity, 
+import {
+  Users,
+  Star,
+  Copy,
+  TrendingUp,
+  TrendingDown,
+  Eye,
+  DollarSign,
+  Target,
+  Activity,
   Award,
   Filter,
   Search,
@@ -343,9 +343,8 @@ const SocialTradingPage: React.FC = () => {
                   <div className="w-12 h-12 bg-gradient-to-r from-red-500/20 to-pink-500/20 rounded-full flex items-center justify-center text-2xl">
                     {trader.avatar}
                   </div>
-                  <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-black ${
-                    trader.status === 'online' ? 'bg-green-500' : 'bg-gray-500'
-                  }`} />
+                  <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-black ${trader.status === 'online' ? 'bg-green-500' : 'bg-gray-500'
+                    }`} />
                 </div>
                 <div>
                   <div className="flex items-center space-x-2">
@@ -430,7 +429,7 @@ const SocialTradingPage: React.FC = () => {
   const renderFeedTab = () => (
     <div className="space-y-6">
       <h2 className="text-xl font-bold text-white">Trading Feed</h2>
-      
+
       <div className="space-y-4">
         {recentTrades.map((trade) => (
           <div
@@ -447,9 +446,8 @@ const SocialTradingPage: React.FC = () => {
                   <p className="text-sm text-gray-400">{trade.timestamp}</p>
                 </div>
               </div>
-              <div className={`flex items-center space-x-1 px-2 py-1 rounded-full ${
-                trade.type === 'buy' ? 'bg-green-400/10 text-green-400' : 'bg-red-400/10 text-red-400'
-              }`}>
+              <div className={`flex items-center space-x-1 px-2 py-1 rounded-full ${trade.type === 'buy' ? 'bg-green-400/10 text-green-400' : 'bg-red-400/10 text-red-400'
+                }`}>
                 {trade.type === 'buy' ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
                 <span className="text-xs font-medium uppercase">{trade.type}</span>
               </div>
@@ -494,11 +492,10 @@ const SocialTradingPage: React.FC = () => {
                   <span className="text-sm">Share</span>
                 </button>
               </div>
-              <div className={`px-2 py-1 rounded text-xs font-medium ${
-                trade.status === 'open' 
-                  ? 'bg-blue-400/10 text-blue-400' 
+              <div className={`px-2 py-1 rounded text-xs font-medium ${trade.status === 'open'
+                  ? 'bg-blue-400/10 text-blue-400'
                   : 'bg-gray-400/10 text-gray-400'
-              }`}>
+                }`}>
                 {trade.status.toUpperCase()}
               </div>
             </div>
@@ -563,9 +560,8 @@ const SocialTradingPage: React.FC = () => {
                   <p className="text-sm text-gray-400">Started {position.startDate}</p>
                 </div>
               </div>
-              <div className={`px-2 py-1 rounded text-xs font-medium ${
-                position.status === 'active' ? 'bg-green-400/10 text-green-400' : 'bg-yellow-400/10 text-yellow-400'
-              }`}>
+              <div className={`px-2 py-1 rounded text-xs font-medium ${position.status === 'active' ? 'bg-green-400/10 text-green-400' : 'bg-yellow-400/10 text-yellow-400'
+                }`}>
                 {position.status.toUpperCase()}
               </div>
             </div>
@@ -643,11 +639,10 @@ const SocialTradingPage: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 ${
-                activeTab === tab.id
+              className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 ${activeTab === tab.id
                   ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white'
                   : 'text-gray-400 hover:text-white hover:bg-white/5'
-              }`}
+                }`}
             >
               <tab.icon className="w-4 h-4" />
               <span className="font-medium">{tab.label}</span>

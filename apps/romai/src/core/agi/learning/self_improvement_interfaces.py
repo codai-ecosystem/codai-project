@@ -22,6 +22,13 @@ import asyncio
 from pathlib import Path
 import logging
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 # Type variables for generic protocols
 T = TypeVar('T')
 SelfT = TypeVar('SelfT')

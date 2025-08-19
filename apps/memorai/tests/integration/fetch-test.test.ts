@@ -26,20 +26,20 @@ describe('Fetch Integration Test', () => {
 
   it('should make a real HTTP request to localhost:4006', async () => {
     console.log('Testing fetch with localhost:4006...')
-    
+
     const response = await fetch('http://localhost:4006/api/health')
-    
+
     console.log('Response:', response)
     console.log('Status:', response?.status)
     console.log('OK:', response?.ok)
-    
+
     expect(response).toBeDefined()
     expect(response.status).toBe(200)
     expect(response.ok).toBe(true)
-    
+
     const data = await response.json()
     console.log('Response data:', data)
-    
+
     expect(data).toHaveProperty('service')
     expect(data.service).toBe('MemorAI Service')
     expect(data).toHaveProperty('status')
@@ -48,7 +48,7 @@ describe('Fetch Integration Test', () => {
 
   it('should handle 404 responses properly', async () => {
     const response = await fetch('http://localhost:4006/api/nonexistent')
-    
+
     expect(response).toBeDefined()
     expect(response.status).toBe(404)
     expect(response.ok).toBe(false)

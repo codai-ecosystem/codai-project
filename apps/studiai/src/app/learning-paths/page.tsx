@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { 
+import {
   MapPin,
   Search,
   Filter,
@@ -333,19 +333,19 @@ export default function LearningPathsPage() {
 
   const filteredPaths = learningPaths.filter(path => {
     const matchesSearch = path.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         path.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         path.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()))
-    
+      path.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      path.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()))
+
     const matchesCategory = selectedCategory === 'all' || path.category === selectedCategory
     const matchesDifficulty = selectedDifficulty === 'all' || path.difficulty === selectedDifficulty
-    const matchesDuration = selectedDuration === 'all' || 
-                           (selectedDuration === 'short' && parseInt(path.duration) <= 4) ||
-                           (selectedDuration === 'medium' && parseInt(path.duration) > 4 && parseInt(path.duration) <= 6) ||
-                           (selectedDuration === 'long' && parseInt(path.duration) > 6)
+    const matchesDuration = selectedDuration === 'all' ||
+      (selectedDuration === 'short' && parseInt(path.duration) <= 4) ||
+      (selectedDuration === 'medium' && parseInt(path.duration) > 4 && parseInt(path.duration) <= 6) ||
+      (selectedDuration === 'long' && parseInt(path.duration) > 6)
     const matchesStatus = selectedStatus === 'all' ||
-                         (selectedStatus === 'not-started' && path.progress === 0) ||
-                         (selectedStatus === 'in-progress' && path.progress > 0 && path.progress < 100) ||
-                         (selectedStatus === 'completed' && path.progress === 100)
+      (selectedStatus === 'not-started' && path.progress === 0) ||
+      (selectedStatus === 'in-progress' && path.progress > 0 && path.progress < 100) ||
+      (selectedStatus === 'completed' && path.progress === 100)
 
     return matchesSearch && matchesCategory && matchesDifficulty && matchesDuration && matchesStatus
   })
@@ -399,7 +399,7 @@ export default function LearningPathsPage() {
                 <p className="text-sm text-gray-600">Structured journeys to mastery</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -413,9 +413,8 @@ export default function LearningPathsPage() {
               </div>
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className={`p-2 rounded-lg transition-colors ${
-                  showFilters ? 'bg-blue-100 text-blue-600' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
-                }`}
+                className={`p-2 rounded-lg transition-colors ${showFilters ? 'bg-blue-100 text-blue-600' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
+                  }`}
               >
                 <Filter className="h-5 w-5" />
               </button>
@@ -456,11 +455,10 @@ export default function LearningPathsPage() {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`flex items-center space-x-3 p-3 rounded-lg text-left transition-all ${
-                  selectedCategory === category.id
+                className={`flex items-center space-x-3 p-3 rounded-lg text-left transition-all ${selectedCategory === category.id
                     ? 'bg-blue-100 text-blue-700 border border-blue-300'
                     : 'hover:bg-gray-50 text-gray-700'
-                }`}
+                  }`}
               >
                 <div className={`w-8 h-8 ${category.color} rounded-lg flex items-center justify-center`}>
                   <category.icon className="h-4 w-4 text-white" />
@@ -496,7 +494,7 @@ export default function LearningPathsPage() {
                   <option value="advanced">Advanced</option>
                 </select>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Duration</label>
                 <select
@@ -510,7 +508,7 @@ export default function LearningPathsPage() {
                   <option value="long">Long (7+ months)</option>
                 </select>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
                 <select
@@ -524,7 +522,7 @@ export default function LearningPathsPage() {
                   <option value="completed">Completed</option>
                 </select>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
                 <select
@@ -540,23 +538,21 @@ export default function LearningPathsPage() {
                   <option value="price-high">Price: High to Low</option>
                 </select>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">View</label>
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => setViewMode('grid')}
-                    className={`p-2 rounded-lg transition-colors ${
-                      viewMode === 'grid' ? 'bg-blue-100 text-blue-600' : 'text-gray-400 hover:text-gray-600'
-                    }`}
+                    className={`p-2 rounded-lg transition-colors ${viewMode === 'grid' ? 'bg-blue-100 text-blue-600' : 'text-gray-400 hover:text-gray-600'
+                      }`}
                   >
                     <Grid className="h-4 w-4" />
                   </button>
                   <button
                     onClick={() => setViewMode('list')}
-                    className={`p-2 rounded-lg transition-colors ${
-                      viewMode === 'list' ? 'bg-blue-100 text-blue-600' : 'text-gray-400 hover:text-gray-600'
-                    }`}
+                    className={`p-2 rounded-lg transition-colors ${viewMode === 'list' ? 'bg-blue-100 text-blue-600' : 'text-gray-400 hover:text-gray-600'
+                      }`}
                   >
                     <List className="h-4 w-4" />
                   </button>
@@ -628,7 +624,7 @@ export default function LearningPathsPage() {
                     {/* Path Body */}
                     <div className="p-6">
                       <p className="text-gray-600 text-sm mb-4 line-clamp-2">{path.description}</p>
-                      
+
                       <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 mb-4">
                         <div className="flex items-center space-x-2">
                           <Clock className="h-4 w-4" />
@@ -656,12 +652,12 @@ export default function LearningPathsPage() {
                             <span className="font-medium">{path.progress}% ({path.completedCourses}/{path.totalCourses})</span>
                           </div>
                           <div className="w-full bg-gray-200 rounded-full h-2 mb-3">
-                            <div 
+                            <div
                               className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all"
                               style={{ width: `${path.progress}%` }}
                             ></div>
                           </div>
-                          
+
                           {/* Milestones */}
                           <div className="space-y-2">
                             <h4 className="text-sm font-medium text-gray-900">Learning Milestones</h4>
@@ -669,11 +665,10 @@ export default function LearningPathsPage() {
                               {path.milestones.map((milestone) => (
                                 <div key={milestone.id} className="flex items-center space-x-2 text-xs">
                                   {getStatusIcon(milestone.status)}
-                                  <span className={`${
-                                    milestone.status === 'completed' ? 'text-green-700' :
-                                    milestone.status === 'in-progress' ? 'text-blue-700' :
-                                    'text-gray-500'
-                                  }`}>
+                                  <span className={`${milestone.status === 'completed' ? 'text-green-700' :
+                                      milestone.status === 'in-progress' ? 'text-blue-700' :
+                                        'text-gray-500'
+                                    }`}>
                                     {milestone.title} ({milestone.courses} courses)
                                   </span>
                                 </div>
@@ -719,16 +714,15 @@ export default function LearningPathsPage() {
                         </div>
                       </div>
 
-                      <button className={`w-full mt-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                        path.isEnrolled
+                      <button className={`w-full mt-4 py-2 rounded-lg text-sm font-medium transition-colors ${path.isEnrolled
                           ? path.progress === 100
                             ? 'bg-green-600 text-white hover:bg-green-700'
                             : 'bg-blue-600 text-white hover:bg-blue-700'
                           : 'bg-purple-600 text-white hover:bg-purple-700'
-                      }`}>
-                        {path.isEnrolled 
-                          ? path.progress === 100 
-                            ? 'View Certificate' 
+                        }`}>
+                        {path.isEnrolled
+                          ? path.progress === 100
+                            ? 'View Certificate'
                             : 'Continue Learning'
                           : 'Start Learning Path'
                         }
@@ -757,11 +751,10 @@ export default function LearningPathsPage() {
                           <span className="text-blue-600">{path.progress}% complete</span>
                         )}
                         <span className="text-lg font-bold text-gray-900">${path.price}</span>
-                        <button className={`px-4 py-1 rounded text-sm transition-colors ${
-                          path.isEnrolled 
+                        <button className={`px-4 py-1 rounded text-sm transition-colors ${path.isEnrolled
                             ? 'bg-blue-600 text-white hover:bg-blue-700'
                             : 'bg-purple-600 text-white hover:bg-purple-700'
-                        }`}>
+                          }`}>
                           {path.isEnrolled ? 'Continue' : 'Start Path'}
                         </button>
                       </div>

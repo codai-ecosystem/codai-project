@@ -64,7 +64,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "@codai/frontend-architecture": "workspace:*",
-    "@codai/ui-components": "workspace:*",
+    "@codai/shared-ui": "workspace:*",
     "framer-motion": "^10.16.4",
     "react-spring": "^9.7.3",
     "lottie-react": "^2.4.0",

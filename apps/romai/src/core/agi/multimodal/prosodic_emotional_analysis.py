@@ -659,4 +659,11 @@ async def test_prosodic_emotional_analysis():
 if __name__ == "__main__":
     # Add missing import
     from enum import Enum
+
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
     asyncio.run(test_prosodic_emotional_analysis())

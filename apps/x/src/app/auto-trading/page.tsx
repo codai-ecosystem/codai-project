@@ -1,18 +1,18 @@
 "use client";
 
 import React, { useState } from 'react';
-import { 
-  Bot, 
-  Play, 
-  Pause, 
-  Settings, 
-  TrendingUp, 
-  TrendingDown, 
-  Zap, 
-  Clock, 
-  DollarSign, 
-  Target, 
-  Shield, 
+import {
+  Bot,
+  Play,
+  Pause,
+  Settings,
+  TrendingUp,
+  TrendingDown,
+  Zap,
+  Clock,
+  DollarSign,
+  Target,
+  Shield,
   AlertTriangle,
   Plus,
   Edit3,
@@ -186,7 +186,7 @@ const AutoTradingPage: React.FC = () => {
   const filteredBots = tradingBots.filter(bot => {
     const matchesStatus = filterStatus === 'all' || bot.status === filterStatus;
     const matchesSearch = bot.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         bot.strategy.toLowerCase().includes(searchTerm.toLowerCase());
+      bot.strategy.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesStatus && matchesSearch;
   });
 
@@ -441,7 +441,7 @@ const AutoTradingPage: React.FC = () => {
                 <span className="text-gray-400">Popularity</span>
                 <div className="flex items-center space-x-2">
                   <div className="w-16 h-2 bg-gray-700 rounded-full">
-                    <div 
+                    <div
                       className="h-full bg-gradient-to-r from-red-500 to-pink-500 rounded-full"
                       style={{ width: `${strategy.popularity}%` }}
                     />
@@ -494,11 +494,10 @@ const AutoTradingPage: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 ${
-                activeTab === tab.id
+              className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 ${activeTab === tab.id
                   ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white'
                   : 'text-gray-400 hover:text-white hover:bg-white/5'
-              }`}
+                }`}
             >
               <tab.icon className="w-4 h-4" />
               <span className="font-medium">{tab.label}</span>

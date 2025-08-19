@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
+import {
   Zap,
   Link,
   Globe,
@@ -476,9 +476,9 @@ export default function IntegrationsPage() {
   const filteredIntegrations = integrations.filter(integration => {
     const matchesCategory = selectedCategory === 'all' || integration.category === selectedCategory;
     const matchesSearch = integration.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         integration.description.toLowerCase().includes(searchTerm.toLowerCase());
+      integration.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = !showConnectedOnly || integration.status === 'connected';
-    
+
     return matchesCategory && matchesSearch && matchesStatus;
   });
 
@@ -487,7 +487,7 @@ export default function IntegrationsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/80 backdrop-blur-sm border-b border-blue-100 sticky top-0 z-40"
@@ -517,7 +517,7 @@ export default function IntegrationsPage() {
       </motion.div>
 
       {/* Navigation Tabs */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.1 }}
@@ -537,11 +537,10 @@ export default function IntegrationsPage() {
               <a
                 key={tab.name}
                 href={tab.href}
-                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${
-                  tab.current
+                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${tab.current
                     ? 'border-blue-500 text-blue-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
+                  }`}
               >
                 {tab.name}
               </a>
@@ -551,9 +550,9 @@ export default function IntegrationsPage() {
       </motion.div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
+
         {/* Connection Status Overview */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -609,7 +608,7 @@ export default function IntegrationsPage() {
         </motion.div>
 
         {/* Filters and Search */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -660,7 +659,7 @@ export default function IntegrationsPage() {
         </motion.div>
 
         {/* Categories Grid */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
@@ -672,11 +671,10 @@ export default function IntegrationsPage() {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`p-4 rounded-lg border-2 transition-all duration-200 ${
-                  selectedCategory === category.id
+                className={`p-4 rounded-lg border-2 transition-all duration-200 ${selectedCategory === category.id
                     ? 'border-blue-300 bg-blue-50'
                     : 'border-gray-200 bg-white/50 hover:border-blue-200'
-                }`}
+                  }`}
               >
                 <div className={`p-2 rounded-lg ${getCategoryColor(category.color)} mx-auto w-fit mb-2`}>
                   <IconComponent className="w-5 h-5" />
@@ -689,7 +687,7 @@ export default function IntegrationsPage() {
         </motion.div>
 
         {/* Integrations Grid */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
@@ -698,7 +696,7 @@ export default function IntegrationsPage() {
           {filteredIntegrations.map((integration) => {
             const IconComponent = integration.icon;
             const StatusIcon = getStatusIcon(integration.status);
-            
+
             return (
               <div key={integration.id} className="bg-white/70 backdrop-blur-sm rounded-xl border border-blue-100 p-6 hover:shadow-lg transition-all duration-200">
                 <div className="flex items-start justify-between mb-4">
@@ -755,7 +753,7 @@ export default function IntegrationsPage() {
                         Connect
                       </button>
                     )}
-                    <button 
+                    <button
                       onClick={() => setSelectedIntegration(integration.id)}
                       className="bg-gray-100 text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors duration-200 text-sm font-medium"
                     >
@@ -770,13 +768,13 @@ export default function IntegrationsPage() {
 
         {/* Integration Details Modal */}
         {selectedIntegrationData && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
             onClick={() => setSelectedIntegration(null)}
           >
-            <motion.div 
+            <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               className="bg-white rounded-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto"
@@ -793,7 +791,7 @@ export default function IntegrationsPage() {
                       <p className="text-gray-600">{selectedIntegrationData.provider}</p>
                     </div>
                   </div>
-                  <button 
+                  <button
                     onClick={() => setSelectedIntegration(null)}
                     className="p-2 hover:bg-gray-100 rounded-lg"
                   >
@@ -873,7 +871,7 @@ export default function IntegrationsPage() {
         )}
 
         {/* Quick Setup Guide */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
@@ -892,7 +890,7 @@ export default function IntegrationsPage() {
               <h3 className="font-semibold text-gray-900 mb-2">Choose Integration</h3>
               <p className="text-sm text-gray-600">Select from our library of pre-built integrations or create custom connections</p>
             </div>
-            
+
             <div className="text-center">
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
                 <span className="text-blue-600 font-bold">2</span>
@@ -900,7 +898,7 @@ export default function IntegrationsPage() {
               <h3 className="font-semibold text-gray-900 mb-2">Configure Settings</h3>
               <p className="text-sm text-gray-600">Follow our step-by-step setup process with authentication and configuration</p>
             </div>
-            
+
             <div className="text-center">
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
                 <span className="text-blue-600 font-bold">3</span>
@@ -913,7 +911,7 @@ export default function IntegrationsPage() {
       </div>
 
       {/* Modern Footer */}
-      <motion.footer 
+      <motion.footer
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
@@ -924,7 +922,7 @@ export default function IntegrationsPage() {
             <div className="col-span-1 md:col-span-2">
               <h3 className="text-2xl font-bold mb-4">METU Integrations</h3>
               <p className="text-blue-200 mb-6 max-w-md">
-                Connect your voice AI with the tools and services you use every day. 
+                Connect your voice AI with the tools and services you use every day.
                 Build powerful voice-controlled workflows across your digital ecosystem.
               </p>
               <div className="flex space-x-4">
@@ -939,7 +937,7 @@ export default function IntegrationsPage() {
                 </button>
               </div>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-semibold mb-4">Integration Categories</h4>
               <ul className="space-y-2 text-blue-200">
@@ -949,7 +947,7 @@ export default function IntegrationsPage() {
                 <li><a href="#" className="hover:text-white transition-colors duration-200">Voice Platforms</a></li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-semibold mb-4">Developer Tools</h4>
               <ul className="space-y-2 text-blue-200">
@@ -960,7 +958,7 @@ export default function IntegrationsPage() {
               </ul>
             </div>
           </div>
-          
+
           <div className="border-t border-blue-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-blue-200 text-sm">
               © 2025 METU Integrations. Connect everything with voice.

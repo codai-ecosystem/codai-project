@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { 
+import {
   Users, Plus, Search, Filter, Star, TrendingUp, MessageCircle,
   Calendar, MapPin, Globe, Lock, Eye, Settings, MoreHorizontal,
   Crown, Shield, Award, Zap, Bot, Heart, Share2, Bookmark,
@@ -306,8 +306,8 @@ export default function CommunitiesPage() {
   const filteredCommunities = communities.filter(community => {
     const matchesCategory = selectedCategory === 'all' || community.category === selectedCategory;
     const matchesSearch = community.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         community.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         community.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+      community.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      community.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
 
@@ -343,7 +343,7 @@ export default function CommunitiesPage() {
     const diff = now.getTime() - date.getTime();
     const minutes = Math.floor(diff / 60000);
     const hours = Math.floor(diff / 3600000);
-    
+
     if (minutes < 60) return `${minutes}m ago`;
     if (hours < 24) return `${hours}h ago`;
     return date.toLocaleDateString();
@@ -404,11 +404,10 @@ export default function CommunitiesPage() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`group inline-flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${
-                      activeTab === tab.id
+                    className={`group inline-flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${activeTab === tab.id
                         ? 'border-blue-500 text-blue-600'
                         : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                    } transition-colors`}
+                      } transition-colors`}
                   >
                     <Icon className="h-5 w-5" />
                     <span>{tab.label}</span>
@@ -490,11 +489,10 @@ export default function CommunitiesPage() {
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                             onClick={() => setSelectedCategory(category.id)}
-                            className={`p-4 rounded-lg border-2 transition-colors ${
-                              selectedCategory === category.id
+                            className={`p-4 rounded-lg border-2 transition-colors ${selectedCategory === category.id
                                 ? 'border-blue-500 bg-blue-50 text-blue-700'
                                 : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                            }`}
+                              }`}
                           >
                             <Icon className="h-6 w-6 mx-auto mb-2" />
                             <div className="text-sm font-medium">{category.name}</div>
@@ -509,8 +507,8 @@ export default function CommunitiesPage() {
                   <div>
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="text-lg font-semibold text-gray-900">
-                        {selectedCategory === 'all' ? 'All Communities' : 
-                         categories.find(c => c.id === selectedCategory)?.name + ' Communities'}
+                        {selectedCategory === 'all' ? 'All Communities' :
+                          categories.find(c => c.id === selectedCategory)?.name + ' Communities'}
                         <span className="text-gray-500 ml-2">({filteredCommunities.length})</span>
                       </h3>
                     </div>
@@ -556,9 +554,9 @@ export default function CommunitiesPage() {
                                   </span>
                                 </div>
                               </div>
-                              
+
                               <p className="text-sm text-gray-600 mb-3 line-clamp-2">{community.description}</p>
-                              
+
                               <div className="flex items-center justify-between text-sm text-gray-500 mb-3">
                                 <span className="flex items-center space-x-1">
                                   <User className="h-4 w-4" />
@@ -591,11 +589,10 @@ export default function CommunitiesPage() {
                                 <motion.button
                                   whileHover={{ scale: 1.05 }}
                                   whileTap={{ scale: 0.95 }}
-                                  className={`flex-1 py-2 px-4 rounded-lg font-medium text-sm transition-colors ${
-                                    community.isJoined
+                                  className={`flex-1 py-2 px-4 rounded-lg font-medium text-sm transition-colors ${community.isJoined
                                       ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                       : 'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:shadow-lg'
-                                  }`}
+                                    }`}
                                 >
                                   {community.isJoined ? 'Joined' : community.isPrivate ? 'Request to Join' : 'Join Community'}
                                 </motion.button>
@@ -661,11 +658,10 @@ export default function CommunitiesPage() {
                                   <motion.button
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
-                                    className={`py-2 px-4 rounded-lg font-medium text-sm transition-colors ${
-                                      community.isJoined
+                                    className={`py-2 px-4 rounded-lg font-medium text-sm transition-colors ${community.isJoined
                                         ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                         : 'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:shadow-lg'
-                                    }`}
+                                      }`}
                                   >
                                     {community.isJoined ? 'Joined' : community.isPrivate ? 'Request' : 'Join'}
                                   </motion.button>
@@ -741,7 +737,7 @@ export default function CommunitiesPage() {
                               <span className="text-sm text-blue-600">{post.communityName}</span>
                               {post.isPinned && <Pin className="h-4 w-4 text-yellow-500" />}
                             </div>
-                            
+
                             <div className="mb-4">
                               <p className="text-gray-900 whitespace-pre-wrap">{post.content}</p>
                               {post.media && post.media.length > 0 && (

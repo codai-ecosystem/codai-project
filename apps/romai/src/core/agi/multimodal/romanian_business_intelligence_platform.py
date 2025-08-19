@@ -44,6 +44,13 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'week_8_day_1_foun
 from romanian_multimodal_engine import RomanianMultimodalEngine, MultimodalInput
 from integration_pipeline import RomanianMultimodalIntegrationPipeline, IntegrationConfig
 from cultural_context_integration import (
+
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
     RomanianCulturalContextIntegrator, CulturalContext, CulturalMarker, CulturalDimension
 )
 

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { 
+import {
   Users,
   Search,
   Filter,
@@ -358,9 +358,9 @@ export default function CommunityPage() {
 
   const filteredPosts = posts.filter(post => {
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         post.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         post.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
-    
+      post.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+
     const matchesCategory = selectedCategory === 'all' || post.category === selectedCategory
 
     return matchesSearch && matchesCategory
@@ -409,7 +409,7 @@ export default function CommunityPage() {
                 <p className="text-sm text-gray-600">Connect, learn, and grow together</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -423,9 +423,8 @@ export default function CommunityPage() {
               </div>
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className={`p-2 rounded-lg transition-colors ${
-                  showFilters ? 'bg-blue-100 text-blue-600' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
-                }`}
+                className={`p-2 rounded-lg transition-colors ${showFilters ? 'bg-blue-100 text-blue-600' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
+                  }`}
               >
                 <Filter className="h-5 w-5" />
               </button>
@@ -470,11 +469,10 @@ export default function CommunityPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-colors flex-1 justify-center ${
-                  activeTab === tab.id
+                className={`flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-colors flex-1 justify-center ${activeTab === tab.id
                     ? 'bg-white text-blue-600 shadow-sm'
                     : 'text-gray-600 hover:text-gray-900'
-                }`}
+                  }`}
               >
                 <tab.icon className="h-4 w-4" />
                 <span>{tab.name}</span>
@@ -529,11 +527,10 @@ export default function CommunityPage() {
                     <button
                       key={category.id}
                       onClick={() => setSelectedCategory(category.id)}
-                      className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm transition-all ${
-                        selectedCategory === category.id
+                      className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm transition-all ${selectedCategory === category.id
                           ? 'bg-blue-100 text-blue-700 border border-blue-300'
                           : 'hover:bg-gray-50 text-gray-700'
-                      }`}
+                        }`}
                     >
                       <category.icon className="h-4 w-4" />
                       <span>{category.name}</span>
@@ -594,7 +591,7 @@ export default function CommunityPage() {
                     <div className="mb-4">
                       <h3 className="font-semibold text-gray-900 mb-2">{post.title}</h3>
                       <p className="text-gray-700 mb-3">{post.content}</p>
-                      
+
                       {/* Images */}
                       {post.images.length > 0 && (
                         <div className="flex space-x-2 mb-3">
@@ -619,9 +616,8 @@ export default function CommunityPage() {
                     {/* Post Actions */}
                     <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                       <div className="flex items-center space-x-6">
-                        <button className={`flex items-center space-x-1 transition-colors ${
-                          post.isLiked ? 'text-red-500' : 'text-gray-500 hover:text-red-500'
-                        }`}>
+                        <button className={`flex items-center space-x-1 transition-colors ${post.isLiked ? 'text-red-500' : 'text-gray-500 hover:text-red-500'
+                          }`}>
                           <Heart className={`h-4 w-4 ${post.isLiked ? 'fill-current' : ''}`} />
                           <span className="text-sm">{post.likes}</span>
                         </button>
@@ -635,9 +631,8 @@ export default function CommunityPage() {
                         </button>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <button className={`p-2 transition-colors ${
-                          post.isBookmarked ? 'text-yellow-500' : 'text-gray-400 hover:text-yellow-500'
-                        }`}>
+                        <button className={`p-2 transition-colors ${post.isBookmarked ? 'text-yellow-500' : 'text-gray-400 hover:text-yellow-500'
+                          }`}>
                           <Bookmark className={`h-4 w-4 ${post.isBookmarked ? 'fill-current' : ''}`} />
                         </button>
                         <div className={`flex items-center space-x-1 ${getEngagementColor(post.engagement)}`}>
@@ -684,11 +679,10 @@ export default function CommunityPage() {
                       <p className="text-xs text-gray-500 mt-1">{event.date} • {event.time}</p>
                       <div className="flex items-center justify-between mt-2">
                         <span className="text-xs text-gray-600">{event.attendees} attending</span>
-                        <button className={`text-xs px-2 py-1 rounded transition-colors ${
-                          event.isRegistered 
+                        <button className={`text-xs px-2 py-1 rounded transition-colors ${event.isRegistered
                             ? 'bg-green-100 text-green-700'
                             : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
-                        }`}>
+                          }`}>
                           {event.isRegistered ? 'Registered' : 'Register'}
                         </button>
                       </div>
@@ -718,7 +712,7 @@ export default function CommunityPage() {
                     <p className="text-sm text-gray-600 mt-1">{group.description}</p>
                   </div>
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 mb-4">
                   <div className="flex items-center space-x-2">
                     <Users className="h-4 w-4" />
@@ -743,11 +737,10 @@ export default function CommunityPage() {
                   ))}
                 </div>
 
-                <button className={`w-full py-2 rounded-lg text-sm font-medium transition-colors ${
-                  group.isJoined
+                <button className={`w-full py-2 rounded-lg text-sm font-medium transition-colors ${group.isJoined
                     ? 'bg-green-600 text-white hover:bg-green-700'
                     : 'bg-blue-600 text-white hover:bg-blue-700'
-                }`}>
+                  }`}>
                   {group.isJoined ? 'Joined' : 'Join Group'}
                 </button>
               </motion.div>
@@ -776,7 +769,7 @@ export default function CommunityPage() {
                     </span>
                   </div>
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 mb-4">
                   <div className="flex items-center space-x-2">
                     <Star className="h-4 w-4 text-yellow-500" />
@@ -799,11 +792,10 @@ export default function CommunityPage() {
                   </div>
                 </div>
 
-                <button className={`w-full py-2 rounded-lg text-sm font-medium transition-colors ${
-                  contributor.isFollowing
+                <button className={`w-full py-2 rounded-lg text-sm font-medium transition-colors ${contributor.isFollowing
                     ? 'bg-gray-600 text-white hover:bg-gray-700'
                     : 'bg-blue-600 text-white hover:bg-blue-700'
-                }`}>
+                  }`}>
                   {contributor.isFollowing ? 'Following' : 'Follow'}
                 </button>
               </motion.div>
@@ -829,7 +821,7 @@ export default function CommunityPage() {
                     {event.type}
                   </span>
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 mb-4">
                   <div className="flex items-center space-x-2">
                     <Calendar className="h-4 w-4" />
@@ -851,18 +843,17 @@ export default function CommunityPage() {
 
                 <div className="mb-4">
                   <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
+                    <div
                       className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full"
                       style={{ width: `${(event.attendees / event.maxAttendees) * 100}%` }}
                     ></div>
                   </div>
                 </div>
 
-                <button className={`w-full py-2 rounded-lg text-sm font-medium transition-colors ${
-                  event.isRegistered
+                <button className={`w-full py-2 rounded-lg text-sm font-medium transition-colors ${event.isRegistered
                     ? 'bg-green-600 text-white hover:bg-green-700'
                     : 'bg-blue-600 text-white hover:bg-blue-700'
-                }`}>
+                  }`}>
                   {event.isRegistered ? 'Registered ✓' : 'Register Now'}
                 </button>
               </motion.div>

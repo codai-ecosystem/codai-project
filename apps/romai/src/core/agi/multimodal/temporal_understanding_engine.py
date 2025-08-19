@@ -21,6 +21,13 @@ from datetime import datetime, timedelta
 from .base_multimodal import BaseMultimodalEngine, MultimodalConfig
 from .romanian_multimodal_culture import RomanianMultimodalCultureProcessor
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 class TemporalReasoningType(Enum):
     """Types of temporal reasoning tasks"""
     SEQUENCE_UNDERSTANDING = "sequence_understanding"

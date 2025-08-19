@@ -19,6 +19,13 @@ from .audio_analysis_core import (
 )
 from .spectral_features import SpectralFeatureExtractor, RomanianFormantAnalyzer
 from .prosodic_emotional_analysis import (
+
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
     RomanianProsodyExtractor, RomanianEmotionDetector, 
     RomanianCulturalProsodyAnalyzer, RomanianEmotionalTone
 )

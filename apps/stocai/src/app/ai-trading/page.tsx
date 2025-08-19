@@ -2,14 +2,14 @@
 
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  Bot, 
-  Brain, 
-  Zap, 
-  TrendingUp, 
-  TrendingDown, 
-  Target, 
-  Shield, 
+import {
+  Bot,
+  Brain,
+  Zap,
+  TrendingUp,
+  TrendingDown,
+  Target,
+  Shield,
   AlertTriangle,
   Search,
   Bell,
@@ -481,14 +481,12 @@ export default function AITradingPage() {
                 <span className="text-sm text-gray-600">AI Trading</span>
                 <button
                   onClick={() => setAiTradingEnabled(!aiTradingEnabled)}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full ${
-                    aiTradingEnabled ? 'bg-green-600' : 'bg-gray-200'
-                  }`}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full ${aiTradingEnabled ? 'bg-green-600' : 'bg-gray-200'
+                    }`}
                 >
                   <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${
-                      aiTradingEnabled ? 'translate-x-6' : 'translate-x-1'
-                    }`}
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${aiTradingEnabled ? 'translate-x-6' : 'translate-x-1'
+                      }`}
                   />
                 </button>
               </div>
@@ -572,15 +570,13 @@ export default function AITradingPage() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`group inline-flex items-center py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
-                      activeTab === tab.id
+                    className={`group inline-flex items-center py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${activeTab === tab.id
                         ? 'border-green-500 text-green-600'
                         : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                    }`}
+                      }`}
                   >
-                    <Icon className={`mr-2 h-5 w-5 ${
-                      activeTab === tab.id ? 'text-green-500' : 'text-gray-400 group-hover:text-gray-500'
-                    }`} />
+                    <Icon className={`mr-2 h-5 w-5 ${activeTab === tab.id ? 'text-green-500' : 'text-gray-400 group-hover:text-gray-500'
+                      }`} />
                     {tab.label}
                   </button>
                 )
@@ -612,7 +608,7 @@ export default function AITradingPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Risk Level</label>
-                    <select 
+                    <select
                       value={riskFilter}
                       onChange={(e) => setRiskFilter(e.target.value)}
                       className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500"
@@ -753,15 +749,13 @@ export default function AITradingPage() {
                         {strategy.status}
                       </span>
                       <button
-                        onClick={() => {/* Toggle strategy */}}
-                        className={`relative inline-flex h-6 w-11 items-center rounded-full ${
-                          strategy.enabled ? 'bg-green-600' : 'bg-gray-200'
-                        }`}
+                        onClick={() => {/* Toggle strategy */ }}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full ${strategy.enabled ? 'bg-green-600' : 'bg-gray-200'
+                          }`}
                       >
                         <span
-                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${
-                            strategy.enabled ? 'translate-x-6' : 'translate-x-1'
-                          }`}
+                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${strategy.enabled ? 'translate-x-6' : 'translate-x-1'
+                            }`}
                         />
                       </button>
                     </div>
@@ -839,7 +833,7 @@ export default function AITradingPage() {
                 Learn More <ChevronRight className="ml-1 h-4 w-4" />
               </button>
             </div>
-            
+
             <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-6 text-white">
               <Brain className="h-8 w-8 mb-3" />
               <h3 className="text-lg font-semibold mb-2">Strategy Optimization</h3>
@@ -848,7 +842,7 @@ export default function AITradingPage() {
                 Optimize Now <ChevronRight className="ml-1 h-4 w-4" />
               </button>
             </div>
-            
+
             <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl p-6 text-white">
               <Shield className="h-8 w-8 mb-3" />
               <h3 className="text-lg font-semibold mb-2">Risk Management</h3>

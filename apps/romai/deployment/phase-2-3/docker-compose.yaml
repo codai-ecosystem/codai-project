@@ -1,0 +1,624 @@
+# 🐳 RomAI Phase 2.3 Complete Enterprise Deployment
+# Docker Compose configuration for local development and testing
+# Includes all services, monitoring, and enterprise integrations
+
+version: '3.8'
+
+networks:
+  romai-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  postgres_data:
+  redis_data:
+  prometheus_data:
+  grafana_data:
+  cbd_data:
+  memorai_data:
+  agi_models:
+  logs_data:
+
+services:
+  # ============================================================================
+  # Core Infrastructure Services
+  # ============================================================================
+  
+  postgres:
+    image: postgres:15-alpine
+    container_name: romai-postgres
+    environment:
+      POSTGRES_DB: romai_enterprise
+      POSTGRES_USER: romai
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres123}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --locale=C"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - romai-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U romai -d romai_enterprise"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  redis:
+    image: redis:7-alpine
+    container_name: romai-redis
+    command: redis-server --requirepass ${REDIS_PASSWORD:-redis123} --appendonly yes
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-redis123}
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - romai-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ============================================================================
+  # RomAI Core Services
+  # ============================================================================
+
+  cbd-database:
+    build:
+      context: ../../../../packages/cbd
+      dockerfile: Dockerfile
+    container_name: romai-cbd-database
+    environment:
+      PORT: 4180
+      NODE_ENV: development
+      CBD_LOG_LEVEL: info
+      POSTGRES_URL: postgresql://romai:${POSTGRES_PASSWORD:-postgres123}@postgres:5432/romai_enterprise
+      REDIS_URL: redis://:${REDIS_PASSWORD:-redis123}@redis:6379
+    volumes:
+      - cbd_data:/app/data
+      - logs_data:/app/logs
+    ports:
+      - "4180:4180"
+    networks:
+      - romai-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4180/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  memorai-mcp:
+    build:
+      context: ../../../../packages/memorai-mcp
+      dockerfile: Dockerfile
+    container_name: romai-memorai-mcp
+    environment:
+      MEMORAI_API_KEY: memorai-dev-key-2025
+      MEMORAI_MCP_PORT: 4950
+      PORT: 4950
+      CBD_BASE_URL: http://cbd-database:4180
+      NODE_ENV: development
+      DEBUG: "memorai:*"
+      MEMORAI_DEBUG: "true"
+      MEMORAI_LOG_LEVEL: debug
+      ENABLE_VECTOR_SEARCH: "true"
+      ENABLE_HYBRID_SEARCH: "true"
+      ENABLE_FUZZY_MATCHING: "true"
+      ENABLE_KEYWORD_SEARCH: "true"
+      ENABLE_RBAC: "true"
+      ENABLE_REALTIME_COLLAB: "true"
+      ENABLE_ANALYTICS: "true"
+      ENABLE_TEMPORAL: "true"
+      ENABLE_PATTERNS: "true"
+      ENABLE_CLUSTERING: "true"
+      ENABLE_CROSS_REF: "true"
+      ENABLE_BACKUP: "true"
+      ENABLE_MONITORING: "true"
+      VECTOR_CACHE_TTL: "3600"
+      SEARCH_CACHE_TTL: "300"
+      AZURE_OPENAI_ENDPOINT: ${AZURE_OPENAI_ENDPOINT}
+      AZURE_OPENAI_API_KEY: ${AZURE_OPENAI_API_KEY}
+      AZURE_OPENAI_DEPLOYMENT_NAME: text-embedding-3-large
+      AZURE_OPENAI_API_VERSION: 2024-02-01
+      REDIS_URL: redis://:${REDIS_PASSWORD:-redis123}@redis:6379
+    volumes:
+      - memorai_data:/app/data
+      - logs_data:/app/logs
+    ports:
+      - "4950:4950"
+    networks:
+      - romai-network
+    depends_on:
+      cbd-database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4950/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  romai-agi:
+    build:
+      context: ../../
+      dockerfile: Dockerfile.agi
+    container_name: romai-agi-server
+    environment:
+      PYTHONPATH: /app/src:/app/src/ml/serving:/app/src/ml/models:/app/src/ml/quantum
+      PYTORCH_CUDA_ALLOC_CONF: max_split_size_mb:1024
+      TRANSFORMERS_CACHE: /app/.cache/transformers
+      HF_HOME: /app/.cache/huggingface
+      MODEL_CACHE_DIR: /app/.cache/models
+      ROMAI_AGI_PORT: 6101
+      ROMAI_AGI_HOST: 0.0.0.0
+      ROMAI_LOG_LEVEL: INFO
+      QUANTUM_ENABLED: "true"
+      CONSCIOUSNESS_ENGINE: "true"
+      CBD_BASE_URL: http://cbd-database:4180
+      MEMORAI_MCP_URL: http://memorai-mcp:4950
+      REDIS_URL: redis://:${REDIS_PASSWORD:-redis123}@redis:6379
+      POSTGRES_URL: postgresql://romai:${POSTGRES_PASSWORD:-postgres123}@postgres:5432/romai_enterprise
+    volumes:
+      - agi_models:/app/.cache
+      - logs_data:/app/logs
+    ports:
+      - "6101:6101"
+    networks:
+      - romai-network
+    depends_on:
+      memorai-mcp:
+        condition: service_healthy
+      cbd-database:
+        condition: service_healthy
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+        reservations:
+          memory: 4G
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6101/health"]
+      interval: 60s
+      timeout: 30s
+      retries: 3
+      start_period: 120s
+
+  romai-frontend:
+    build:
+      context: ../../
+      dockerfile: Dockerfile
+    container_name: romai-frontend
+    environment:
+      NODE_OPTIONS: --max-old-space-size=4096
+      NODE_ENV: development
+      NEXT_PUBLIC_API_URL: http://localhost:8001
+      NEXT_PUBLIC_AGI_URL: http://localhost:6101
+      NEXT_PUBLIC_GRAPHQL_URL: http://localhost:4500
+    ports:
+      - "6100:3000"
+    networks:
+      - romai-network
+    depends_on:
+      - romai-agi
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  memorai-graphql:
+    build:
+      context: ../../../../apps/memorai/graphql
+      dockerfile: Dockerfile
+    container_name: romai-memorai-graphql
+    environment:
+      NODE_ENV: development
+      MEMORAI_API_BASE_URL: http://memorai-mcp:4950
+      PORT: 4500
+      REDIS_URL: redis://:${REDIS_PASSWORD:-redis123}@redis:6379
+    ports:
+      - "4500:4500"
+    networks:
+      - romai-network
+    depends_on:
+      memorai-mcp:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4500/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  romai-enterprise-api:
+    build:
+      context: ../../
+      dockerfile: Dockerfile.enterprise
+    container_name: romai-enterprise-api
+    environment:
+      ROMAI_ENV: development
+      ROMAI_LOG_LEVEL: info
+      ENTERPRISE_API_PORT: 8001
+      ROMAI_AGI_BASE_URL: http://romai-agi:6101
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-dev-secret-key-for-enterprise-api-2025}
+      API_KEY_ENCRYPTION_KEY: ${API_KEY_ENCRYPTION_KEY:-dev-encryption-key-for-api-keys-2025}
+      RATE_LIMIT_ENABLED: "true"
+      CORS_ENABLED: "true"
+      CORS_ORIGINS: "http://localhost:3000,http://localhost:6100,http://localhost:4500"
+      COMPLIANCE_MODE: eu_ai_act
+      AUDIT_ENABLED: "true"
+      CBD_BASE_URL: http://cbd-database:4180
+      MEMORAI_MCP_URL: http://memorai-mcp:4950
+      REDIS_URL: redis://:${REDIS_PASSWORD:-redis123}@redis:6379
+      POSTGRES_URL: postgresql://romai:${POSTGRES_PASSWORD:-postgres123}@postgres:5432/romai_enterprise
+    volumes:
+      - logs_data:/app/logs
+    ports:
+      - "8001:8001"
+    networks:
+      - romai-network
+    depends_on:
+      romai-agi:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ============================================================================
+  # Monitoring Stack
+  # ============================================================================
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: romai-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+      - '--web.external-url=http://localhost:9090'
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - romai-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: romai-grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin123}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_SERVER_ROOT_URL: http://localhost:3000
+      GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-worldmap-panel
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources
+    ports:
+      - "3000:3000"
+    networks:
+      - romai-network
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: romai-alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+      - '--web.external-url=http://localhost:9093'
+    volumes:
+      - ./monitoring/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+    ports:
+      - "9093:9093"
+    networks:
+      - romai-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9093/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ============================================================================
+  # Development and Testing Tools
+  # ============================================================================
+
+  nginx-proxy:
+    image: nginx:alpine
+    container_name: romai-nginx-proxy
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - romai-network
+    depends_on:
+      - romai-frontend
+      - romai-enterprise-api
+      - grafana
+      - prometheus
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: romai-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@romai.com
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin123}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - ./pgadmin/servers.json:/pgadmin4/servers.json:ro
+    ports:
+      - "5050:80"
+    networks:
+      - romai-network
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: romai-redis-commander
+    environment:
+      REDIS_HOSTS: local:redis:6379:0:${REDIS_PASSWORD:-redis123}
+      HTTP_USER: admin
+      HTTP_PASSWORD: ${REDIS_COMMANDER_PASSWORD:-admin123}
+    ports:
+      - "8081:8081"
+    networks:
+      - romai-network
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  # ============================================================================
+  # Load Testing and Performance
+  # ============================================================================
+
+  locust:
+    build:
+      context: ./testing
+      dockerfile: Dockerfile.locust
+    container_name: romai-locust
+    environment:
+      TARGET_HOST: http://romai-enterprise-api:8001
+    volumes:
+      - ./testing/locustfile.py:/app/locustfile.py:ro
+    ports:
+      - "8089:8089"
+    networks:
+      - romai-network
+    depends_on:
+      - romai-enterprise-api
+    restart: "no"
+
+  # ============================================================================
+  # Enterprise Integration Testing
+  # ============================================================================
+
+  ldap-server:
+    image: osixia/openldap:latest
+    container_name: romai-ldap-test
+    environment:
+      LDAP_ORGANISATION: "RomAI Test"
+      LDAP_DOMAIN: "romai.test"
+      LDAP_ADMIN_PASSWORD: ${LDAP_ADMIN_PASSWORD:-admin123}
+      LDAP_CONFIG_PASSWORD: ${LDAP_CONFIG_PASSWORD:-config123}
+    volumes:
+      - ./ldap/test-users.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-test-users.ldif:ro
+    ports:
+      - "389:389"
+      - "636:636"
+    networks:
+      - romai-network
+    restart: unless-stopped
+
+  saml-idp:
+    image: kristophjunge/test-saml-idp:latest
+    container_name: romai-saml-idp-test
+    environment:
+      SIMPLESAMLPHP_SP_ENTITY_ID: romai-enterprise
+      SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE: http://localhost:8001/sso/acs
+    volumes:
+      - ./saml/authsources.php:/var/www/simplesamlphp/config/authsources.php:ro
+      - ./saml/users.php:/var/www/simplesamlphp/config/users.php:ro
+    ports:
+      - "8080:8080"
+    networks:
+      - romai-network
+    restart: unless-stopped
+
+  # ============================================================================
+  # Backup and Recovery
+  # ============================================================================
+
+  backup-manager:
+    build:
+      context: ./backup
+      dockerfile: Dockerfile.backup
+    container_name: romai-backup-manager
+    environment:
+      POSTGRES_URL: postgresql://romai:${POSTGRES_PASSWORD:-postgres123}@postgres:5432/romai_enterprise
+      REDIS_URL: redis://:${REDIS_PASSWORD:-redis123}@redis:6379
+      BACKUP_SCHEDULE: "0 2 * * *"  # Daily at 2 AM
+      S3_BUCKET: ${BACKUP_S3_BUCKET:-romai-backups}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./backup/scripts:/app/scripts:ro
+      - logs_data:/app/logs
+    networks:
+      - romai-network
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+
+  # ============================================================================
+  # Log Aggregation
+  # ============================================================================
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: romai-elasticsearch
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: -Xms1g -Xmx1g
+    volumes:
+      - ./elasticsearch/data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - romai-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    container_name: romai-kibana
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    networks:
+      - romai-network
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.11.0
+    container_name: romai-logstash
+    volumes:
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - logs_data:/app/logs:ro
+    ports:
+      - "5044:5044"
+    networks:
+      - romai-network
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
+
+  # ============================================================================
+  # Health Checks and Diagnostics
+  # ============================================================================
+
+  health-checker:
+    build:
+      context: ./health
+      dockerfile: Dockerfile.health
+    container_name: romai-health-checker
+    environment:
+      CHECK_INTERVAL: 60
+      SERVICES_TO_CHECK: >
+        cbd-database:4180,
+        memorai-mcp:4950,
+        romai-agi:6101,
+        romai-enterprise-api:8001,
+        romai-frontend:3000,
+        memorai-graphql:4500
+      ALERT_WEBHOOK: ${HEALTH_ALERT_WEBHOOK}
+    volumes:
+      - ./health/config.yml:/app/config.yml:ro
+      - logs_data:/app/logs
+    networks:
+      - romai-network
+    depends_on:
+      - romai-enterprise-api
+    restart: unless-stopped
+
+# ============================================================================
+# Development Commands
+# ============================================================================
+
+# Usage Examples:
+# 
+# 1. Start all services:
+#    docker-compose up -d
+#
+# 2. Start only core services:
+#    docker-compose up -d postgres redis cbd-database memorai-mcp romai-agi romai-enterprise-api
+#
+# 3. Start with monitoring:
+#    docker-compose up -d postgres redis cbd-database memorai-mcp romai-agi romai-enterprise-api prometheus grafana
+#
+# 4. View logs:
+#    docker-compose logs -f romai-agi
+#
+# 5. Scale services:
+#    docker-compose up -d --scale romai-enterprise-api=3
+#
+# 6. Health check:
+#    docker-compose ps
+#
+# 7. Stop all services:
+#    docker-compose down
+#
+# 8. Remove all data:
+#    docker-compose down -v
+#
+# Service URLs:
+# - Frontend: http://localhost:6100
+# - Enterprise API: http://localhost:8001
+# - AGI Model Server: http://localhost:6101
+# - GraphQL: http://localhost:4500
+# - MemorAI MCP: http://localhost:4950
+# - CBD Database: http://localhost:4180
+# - Prometheus: http://localhost:9090
+# - Grafana: http://localhost:3000 (admin/admin123)
+# - PgAdmin: http://localhost:5050 (admin@romai.com/admin123)
+# - Redis Commander: http://localhost:8081 (admin/admin123)
+# - Kibana: http://localhost:5601
+# - Load Testing: http://localhost:8089

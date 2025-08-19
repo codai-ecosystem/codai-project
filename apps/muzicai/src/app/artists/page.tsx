@@ -1,10 +1,10 @@
 'use client'
 
 import React, { useState } from 'react'
-import { 
-  Music, 
-  Play, 
-  Pause, 
+import {
+  Music,
+  Play,
+  Pause,
   Heart,
   Share2,
   Download,
@@ -219,8 +219,8 @@ export default function ArtistsPage() {
 
   const filteredArtists = artists.filter(artist => {
     const matchesSearch = artist.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         artist.bio.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         artist.genre.toLowerCase().includes(searchQuery.toLowerCase())
+      artist.bio.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      artist.genre.toLowerCase().includes(searchQuery.toLowerCase())
     const matchesGenre = filterGenre === 'all' || artist.genre.toLowerCase() === filterGenre.toLowerCase()
     return matchesSearch && matchesGenre
   })
@@ -253,7 +253,7 @@ export default function ArtistsPage() {
                 <p className="text-sm text-gray-600">Discover AI music creators</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -353,25 +353,23 @@ export default function ArtistsPage() {
                 </select>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-2 rounded-lg transition-colors ${
-                  viewMode === 'grid' 
-                    ? 'bg-purple-100 text-purple-600' 
+                className={`p-2 rounded-lg transition-colors ${viewMode === 'grid'
+                    ? 'bg-purple-100 text-purple-600'
                     : 'text-gray-600 hover:text-purple-600 hover:bg-purple-50'
-                }`}
+                  }`}
               >
                 <Grid className="h-4 w-4" />
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`p-2 rounded-lg transition-colors ${
-                  viewMode === 'list' 
-                    ? 'bg-purple-100 text-purple-600' 
+                className={`p-2 rounded-lg transition-colors ${viewMode === 'list'
+                    ? 'bg-purple-100 text-purple-600'
                     : 'text-gray-600 hover:text-purple-600 hover:bg-purple-50'
-                }`}
+                  }`}
               >
                 <List className="h-4 w-4" />
               </button>
@@ -421,11 +419,10 @@ export default function ArtistsPage() {
                       </div>
                       {/* Follow Button Overlay */}
                       <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
-                          artist.isFollowing 
-                            ? 'bg-white/20 backdrop-blur-sm text-white border border-white/30' 
+                        <button className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${artist.isFollowing
+                            ? 'bg-white/20 backdrop-blur-sm text-white border border-white/30'
                             : 'bg-white text-purple-600 hover:bg-purple-50'
-                        }`}>
+                          }`}>
                           {artist.isFollowing ? (
                             <>
                               <UserCheck className="h-3 w-3 inline mr-1" />
@@ -531,7 +528,7 @@ export default function ArtistsPage() {
                   <div className={`w-20 h-20 bg-gradient-to-br ${artist.color} rounded-xl flex items-center justify-center text-white text-2xl flex-shrink-0`}>
                     {artist.avatar}
                   </div>
-                  
+
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center space-x-2 mb-1">
                       <h3 className="font-semibold text-gray-900">{artist.name}</h3>
@@ -552,11 +549,10 @@ export default function ArtistsPage() {
                       <div className="text-sm font-medium text-gray-900">{artist.popularity}%</div>
                       <div className="text-xs text-gray-600">Popularity</div>
                     </div>
-                    <button className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                      artist.isFollowing 
-                        ? 'bg-purple-100 text-purple-600 hover:bg-purple-200' 
+                    <button className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${artist.isFollowing
+                        ? 'bg-purple-100 text-purple-600 hover:bg-purple-200'
                         : 'bg-purple-600 text-white hover:bg-purple-700'
-                    }`}>
+                      }`}>
                       {artist.isFollowing ? (
                         <>
                           <UserCheck className="h-4 w-4 inline mr-1" />

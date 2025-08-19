@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
+import {
   BarChart3,
   LineChart,
   PieChart,
@@ -300,7 +300,7 @@ export default function AnalyticsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/80 backdrop-blur-sm border-b border-blue-100 sticky top-0 z-40"
@@ -341,7 +341,7 @@ export default function AnalyticsPage() {
       </motion.div>
 
       {/* Navigation Tabs */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.1 }}
@@ -361,11 +361,10 @@ export default function AnalyticsPage() {
               <a
                 key={tab.name}
                 href={tab.href}
-                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${
-                  tab.current
+                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${tab.current
                     ? 'border-blue-500 text-blue-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
+                  }`}
               >
                 {tab.name}
               </a>
@@ -375,9 +374,9 @@ export default function AnalyticsPage() {
       </motion.div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
+
         {/* Overview Stats */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -449,7 +448,7 @@ export default function AnalyticsPage() {
         </motion.div>
 
         {/* Performance Metrics */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -460,7 +459,7 @@ export default function AnalyticsPage() {
               <BarChart3 className="w-5 h-5 text-blue-600" />
               <span>Performance Metrics</span>
             </h2>
-            <button 
+            <button
               onClick={() => setShowAdvanced(!showAdvanced)}
               className="text-blue-600 hover:text-blue-700 flex items-center space-x-1"
             >
@@ -487,16 +486,15 @@ export default function AnalyticsPage() {
                   <div className="space-y-2">
                     <div className="flex items-baseline space-x-2">
                       <span className="text-2xl font-bold text-gray-900">{metric.current}%</span>
-                      <span className={`text-sm font-medium ${
-                        metric.change > 0 ? 'text-green-600' : 
-                        metric.change < 0 ? 'text-red-600' : 'text-gray-600'
-                      }`}>
+                      <span className={`text-sm font-medium ${metric.change > 0 ? 'text-green-600' :
+                          metric.change < 0 ? 'text-red-600' : 'text-gray-600'
+                        }`}>
                         {metric.change > 0 ? '+' : ''}{metric.change}%
                       </span>
                     </div>
 
                     <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div 
+                      <div
                         className={`h-2 rounded-full bg-${metric.color}-500`}
                         style={{ width: `${(metric.current / 100) * 100}%` }}
                       />
@@ -513,7 +511,7 @@ export default function AnalyticsPage() {
           </div>
 
           {showAdvanced && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
@@ -544,9 +542,9 @@ export default function AnalyticsPage() {
 
         {/* Usage Patterns and Device Analytics */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          
+
           {/* Weekly Usage Patterns */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
@@ -568,12 +566,12 @@ export default function AnalyticsPage() {
                       <span>{day.accuracy}%</span>
                     </div>
                   </div>
-                  
+
                   <div className="grid grid-cols-3 gap-2">
                     <div className="space-y-1">
                       <div className="text-xs text-gray-500">Sessions</div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
+                        <div
                           className="h-2 rounded-full bg-blue-500"
                           style={{ width: `${(day.sessions / maxSessions) * 100}%` }}
                         />
@@ -582,7 +580,7 @@ export default function AnalyticsPage() {
                     <div className="space-y-1">
                       <div className="text-xs text-gray-500">Duration</div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
+                        <div
                           className="h-2 rounded-full bg-green-500"
                           style={{ width: `${(day.duration / maxDuration) * 100}%` }}
                         />
@@ -591,7 +589,7 @@ export default function AnalyticsPage() {
                     <div className="space-y-1">
                       <div className="text-xs text-gray-500">Accuracy</div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
+                        <div
                           className="h-2 rounded-full bg-purple-500"
                           style={{ width: `${day.accuracy}%` }}
                         />
@@ -614,7 +612,7 @@ export default function AnalyticsPage() {
           </motion.div>
 
           {/* Device Analytics */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5 }}
@@ -651,7 +649,7 @@ export default function AnalyticsPage() {
 
                     <div className="space-y-2">
                       <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
+                        <div
                           className="h-2 rounded-full bg-blue-500"
                           style={{ width: `${device.percentage}%` }}
                         />
@@ -679,7 +677,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Category Progress */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
@@ -707,7 +705,7 @@ export default function AnalyticsPage() {
 
                   <div className="space-y-3">
                     <div className="w-full bg-gray-200 rounded-full h-3">
-                      <div 
+                      <div
                         className={`h-3 rounded-full bg-${category.color}-500`}
                         style={{ width: `${category.progress}%` }}
                       />
@@ -753,7 +751,7 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Modern Footer */}
-      <motion.footer 
+      <motion.footer
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
@@ -764,7 +762,7 @@ export default function AnalyticsPage() {
             <div className="col-span-1 md:col-span-2">
               <h3 className="text-2xl font-bold mb-4">METU Analytics</h3>
               <p className="text-blue-200 mb-6 max-w-md">
-                Comprehensive voice performance analytics and insights. 
+                Comprehensive voice performance analytics and insights.
                 Track your progress, identify patterns, and optimize your voice training journey.
               </p>
               <div className="flex space-x-4">
@@ -779,7 +777,7 @@ export default function AnalyticsPage() {
                 </button>
               </div>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-semibold mb-4">Analytics Features</h4>
               <ul className="space-y-2 text-blue-200">
@@ -789,7 +787,7 @@ export default function AnalyticsPage() {
                 <li><a href="#" className="hover:text-white transition-colors duration-200">Device Analytics</a></li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-semibold mb-4">Insights & Reports</h4>
               <ul className="space-y-2 text-blue-200">
@@ -800,7 +798,7 @@ export default function AnalyticsPage() {
               </ul>
             </div>
           </div>
-          
+
           <div className="border-t border-blue-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-blue-200 text-sm">
               © 2025 METU Analytics. Data-driven voice improvement insights.

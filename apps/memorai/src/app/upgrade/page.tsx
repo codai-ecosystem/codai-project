@@ -83,8 +83,8 @@ export default function UpgradePage() {
                 {/* Pricing Cards */}
                 <div className="grid md:grid-cols-3 gap-8 mb-12">
                     {plans.map((plan, index) => (
-                        <Card 
-                            key={plan.name} 
+                        <Card
+                            key={plan.name}
                             className={`relative ${plan.popular ? 'border-blue-500 shadow-lg scale-105' : 'border-gray-200 dark:border-gray-700'}`}
                         >
                             {plan.popular && (
@@ -94,7 +94,7 @@ export default function UpgradePage() {
                                     </span>
                                 </div>
                             )}
-                            
+
                             <CardHeader className="text-center pb-4">
                                 <CardTitle className="text-2xl font-bold">
                                     {plan.name}
@@ -106,7 +106,7 @@ export default function UpgradePage() {
                                     {plan.description}
                                 </CardDescription>
                             </CardHeader>
-                            
+
                             <CardContent className="space-y-4">
                                 <ul className="space-y-3">
                                     {plan.features.map((feature, featureIndex) => (
@@ -118,9 +118,9 @@ export default function UpgradePage() {
                                         </li>
                                     ))}
                                 </ul>
-                                
+
                                 <div className="pt-4">
-                                    <Button 
+                                    <Button
                                         variant={plan.buttonVariant}
                                         className="w-full"
                                         size="lg"
@@ -144,7 +144,7 @@ export default function UpgradePage() {
                             Search through millions of memories in milliseconds
                         </p>
                     </div>
-                    
+
                     <div className="text-center space-y-3">
                         <Shield className="w-8 h-8 text-green-500 mx-auto" />
                         <h3 className="font-semibold text-gray-900 dark:text-white">
@@ -154,7 +154,7 @@ export default function UpgradePage() {
                             Bank-grade encryption and security protocols
                         </p>
                     </div>
-                    
+
                     <div className="text-center space-y-3">
                         <Users className="w-8 h-8 text-blue-500 mx-auto" />
                         <h3 className="font-semibold text-gray-900 dark:text-white">
@@ -164,7 +164,7 @@ export default function UpgradePage() {
                             Share and collaborate on memories with your team
                         </p>
                     </div>
-                    
+
                     <div className="text-center space-y-3">
                         <Star className="w-8 h-8 text-purple-500 mx-auto" />
                         <h3 className="font-semibold text-gray-900 dark:text-white">
@@ -191,7 +191,7 @@ export default function UpgradePage() {
                                     Yes, you can cancel your subscription at any time. Your data will remain accessible during your billing period.
                                 </p>
                             </div>
-                            
+
                             <div>
                                 <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
                                     Is my data secure?
@@ -200,7 +200,7 @@ export default function UpgradePage() {
                                     Absolutely. We use enterprise-grade encryption and security measures to protect your data.
                                 </p>
                             </div>
-                            
+
                             <div>
                                 <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
                                     Do you offer refunds?
@@ -209,7 +209,7 @@ export default function UpgradePage() {
                                     We offer a 30-day money-back guarantee for all paid plans. No questions asked.
                                 </p>
                             </div>
-                            
+
                             <div>
                                 <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
                                     Can I upgrade later?

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { 
+import {
   Database, BarChart3, PieChart, LineChart, TrendingUp, Filter,
   Download, Upload, Copy, Save, Trash2, Eye, EyeOff, Grid, LayoutList,
   Search, Star, Clock, Settings, RefreshCw, Plus, Edit3, Check, X,
@@ -267,7 +267,7 @@ export default function DataToolsPage() {
   // Filter tools based on search and category
   const filteredTools = dataTools.filter(tool => {
     const matchesSearch = tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         tool.description.toLowerCase().includes(searchTerm.toLowerCase())
+      tool.description.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesCategory = selectedCategory === 'all' || tool.category === selectedCategory
     return matchesSearch && matchesCategory
   })
@@ -278,11 +278,11 @@ export default function DataToolsPage() {
       try {
         const lines = dataProcessor.inputData.trim().split('\n')
         const delimiter = dataProcessor.delimiter
-        
+
         if (lines.length > 0) {
           const headers = dataProcessor.hasHeaders ? lines[0].split(delimiter) : []
           const dataLines = dataProcessor.hasHeaders ? lines.slice(1) : lines
-          
+
           const preview = dataLines.slice(0, 5).map(line => {
             const values = line.split(delimiter)
             const row: any = {}
@@ -297,7 +297,7 @@ export default function DataToolsPage() {
             }
             return row
           })
-          
+
           setDataProcessor(prev => ({
             ...prev,
             preview,
@@ -359,9 +359,9 @@ export default function DataToolsPage() {
 
         <div className="relative z-10 p-4 sm:p-6 lg:p-8">
           <div className="mx-auto max-w-7xl space-y-8">
-            
+
             {/* Enhanced Header */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 p-8 text-white shadow-2xl"
@@ -378,7 +378,7 @@ export default function DataToolsPage() {
                       <p className="text-cyan-100 text-lg">Advanced Data Analysis & Transformation Suite</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex flex-wrap items-center gap-4">
                     <div className="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2">
                       <div className="text-center">
@@ -404,7 +404,7 @@ export default function DataToolsPage() {
             </motion.div>
 
             {/* Data Processor Interface */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
@@ -432,7 +432,7 @@ export default function DataToolsPage() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Input Data */}
                 <div>
@@ -445,13 +445,13 @@ export default function DataToolsPage() {
                       >
                         <Upload className="h-4 w-4" />
                       </button>
-                      <button 
+                      <button
                         onClick={() => setShowPreview(!showPreview)}
                         className="p-2 text-gray-400 hover:text-green-500 transition-colors"
                       >
                         {showPreview ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </button>
-                      <button 
+                      <button
                         onClick={() => updateDataProcessor('inputData', '')}
                         className="p-2 text-gray-400 hover:text-red-500 transition-colors"
                       >
@@ -472,7 +472,7 @@ export default function DataToolsPage() {
                     onChange={handleFileUpload}
                     className="hidden"
                   />
-                  
+
                   {dataProcessor.format === 'csv' && (
                     <div className="mt-4 p-4 bg-gray-50 rounded-xl">
                       <div className="flex items-center gap-4 mb-2">
@@ -505,7 +505,7 @@ export default function DataToolsPage() {
                     </div>
                   )}
                 </div>
-                
+
                 {/* Output Data / Preview */}
                 <div>
                   <div className="flex items-center justify-between mb-2">
@@ -513,7 +513,7 @@ export default function DataToolsPage() {
                       {showPreview ? 'Data Preview' : 'Output Data'}
                     </label>
                     <div className="flex items-center gap-2">
-                      <button 
+                      <button
                         onClick={() => navigator.clipboard.writeText(dataProcessor.outputData)}
                         className="p-2 text-gray-400 hover:text-green-500 transition-colors"
                         disabled={!dataProcessor.outputData && !showPreview}
@@ -525,7 +525,7 @@ export default function DataToolsPage() {
                       </button>
                     </div>
                   </div>
-                  
+
                   {showPreview && dataProcessor.preview.length > 0 ? (
                     <div className="h-64 bg-white/50 border border-gray-200 rounded-xl overflow-auto">
                       <table className="w-full text-sm">
@@ -564,7 +564,7 @@ export default function DataToolsPage() {
             </motion.div>
 
             {/* Search and Filters */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
@@ -583,7 +583,7 @@ export default function DataToolsPage() {
                     />
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-4">
                   <select
                     value={selectedCategory}
@@ -597,21 +597,19 @@ export default function DataToolsPage() {
                       </option>
                     ))}
                   </select>
-                  
+
                   <div className="flex bg-white/50 rounded-xl p-1">
                     <button
                       onClick={() => setViewMode('grid')}
-                      className={`px-3 py-2 rounded-lg transition-all duration-200 ${
-                        viewMode === 'grid' ? 'bg-cyan-500 text-white' : 'text-gray-600 hover:text-gray-900'
-                      }`}
+                      className={`px-3 py-2 rounded-lg transition-all duration-200 ${viewMode === 'grid' ? 'bg-cyan-500 text-white' : 'text-gray-600 hover:text-gray-900'
+                        }`}
                     >
                       <Grid className="h-4 w-4" />
                     </button>
                     <button
                       onClick={() => setViewMode('list')}
-                      className={`px-3 py-2 rounded-lg transition-all duration-200 ${
-                        viewMode === 'list' ? 'bg-cyan-500 text-white' : 'text-gray-600 hover:text-gray-900'
-                      }`}
+                      className={`px-3 py-2 rounded-lg transition-all duration-200 ${viewMode === 'list' ? 'bg-cyan-500 text-white' : 'text-gray-600 hover:text-gray-900'
+                        }`}
                     >
                       <LayoutList className="h-4 w-4" />
                     </button>
@@ -621,7 +619,7 @@ export default function DataToolsPage() {
             </motion.div>
 
             {/* Categories Overview */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
@@ -636,33 +634,27 @@ export default function DataToolsPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 + index * 0.1 }}
                     onClick={() => setSelectedCategory(category.id)}
-                    className={`group p-6 rounded-2xl cursor-pointer transition-all duration-200 border ${
-                      selectedCategory === category.id 
-                        ? 'bg-cyan-500 text-white border-cyan-600 shadow-lg' 
+                    className={`group p-6 rounded-2xl cursor-pointer transition-all duration-200 border ${selectedCategory === category.id
+                        ? 'bg-cyan-500 text-white border-cyan-600 shadow-lg'
                         : 'bg-white/70 backdrop-blur-sm border-white/50 hover:border-cyan-300 hover:shadow-lg'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center justify-between mb-4">
-                      <IconComponent className={`h-8 w-8 ${
-                        selectedCategory === category.id ? 'text-white' : category.color
-                      }`} />
-                      <div className={`text-right ${
-                        selectedCategory === category.id ? 'text-white' : 'text-gray-900'
-                      }`}>
+                      <IconComponent className={`h-8 w-8 ${selectedCategory === category.id ? 'text-white' : category.color
+                        }`} />
+                      <div className={`text-right ${selectedCategory === category.id ? 'text-white' : 'text-gray-900'
+                        }`}>
                         <div className="text-2xl font-bold">{category.count}</div>
-                        <div className={`text-sm ${
-                          selectedCategory === category.id ? 'text-cyan-100' : 'text-gray-600'
-                        }`}>Tools</div>
+                        <div className={`text-sm ${selectedCategory === category.id ? 'text-cyan-100' : 'text-gray-600'
+                          }`}>Tools</div>
                       </div>
                     </div>
-                    <h3 className={`font-semibold mb-2 ${
-                      selectedCategory === category.id ? 'text-white' : 'text-gray-900'
-                    }`}>
+                    <h3 className={`font-semibold mb-2 ${selectedCategory === category.id ? 'text-white' : 'text-gray-900'
+                      }`}>
                       {category.name}
                     </h3>
-                    <p className={`text-sm ${
-                      selectedCategory === category.id ? 'text-cyan-100' : 'text-gray-600'
-                    }`}>
+                    <p className={`text-sm ${selectedCategory === category.id ? 'text-cyan-100' : 'text-gray-600'
+                      }`}>
                       {category.description}
                     </p>
                   </motion.div>
@@ -672,9 +664,9 @@ export default function DataToolsPage() {
 
             {/* Main Content Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              
+
               {/* Data Tools Grid */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4 }}
@@ -685,7 +677,7 @@ export default function DataToolsPage() {
                     <h3 className="text-xl font-semibold text-gray-900">Data Processing Tools</h3>
                     <div className="text-sm text-gray-600">{filteredTools.length} tools</div>
                   </div>
-                  
+
                   {viewMode === 'grid' ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {filteredTools.map((tool, index) => {
@@ -723,9 +715,9 @@ export default function DataToolsPage() {
                                 </div>
                               )}
                             </div>
-                            
+
                             <p className="text-sm text-gray-600 mb-3">{tool.description}</p>
-                            
+
                             <div className="flex flex-wrap gap-1 mb-4">
                               {tool.inputFormats.slice(0, 3).map(format => (
                                 <span key={format} className="text-xs bg-cyan-100 text-cyan-700 px-2 py-1 rounded">
@@ -736,7 +728,7 @@ export default function DataToolsPage() {
                                 <span className="text-xs text-gray-500">+{tool.inputFormats.length - 3}</span>
                               )}
                             </div>
-                            
+
                             <div className="flex items-center justify-between">
                               <span className="text-xs text-gray-500">Last used: {tool.lastUsed}</span>
                               <button
@@ -822,7 +814,7 @@ export default function DataToolsPage() {
               </motion.div>
 
               {/* Processing Queue & Stats */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 }}
@@ -833,7 +825,7 @@ export default function DataToolsPage() {
                     <h3 className="text-xl font-semibold text-gray-900">Processing Queue</h3>
                     <RefreshCw className="h-5 w-5 text-gray-400" />
                   </div>
-                  
+
                   <div className="space-y-4">
                     {processingJobs.map((job, index) => (
                       <motion.div
@@ -849,18 +841,17 @@ export default function DataToolsPage() {
                             <p className="text-xs text-gray-600">{job.recordCount.toLocaleString()} records • {job.dataSize}</p>
                             <p className="text-xs text-gray-500">Started {job.startTime}</p>
                           </div>
-                          <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                            job.status === 'completed' ? 'bg-green-100 text-green-800' :
-                            job.status === 'processing' ? 'bg-blue-100 text-blue-800' :
-                            'bg-red-100 text-red-800'
-                          }`}>
+                          <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${job.status === 'completed' ? 'bg-green-100 text-green-800' :
+                              job.status === 'processing' ? 'bg-blue-100 text-blue-800' :
+                                'bg-red-100 text-red-800'
+                            }`}>
                             {job.status === 'completed' && <Check className="h-3 w-3 mr-1" />}
                             {job.status === 'processing' && <RefreshCw className="h-3 w-3 mr-1 animate-spin" />}
                             {job.status === 'failed' && <X className="h-3 w-3 mr-1" />}
                             {job.status}
                           </div>
                         </div>
-                        
+
                         {job.status === 'processing' && (
                           <div className="mb-3">
                             <div className="flex items-center justify-between text-xs text-gray-600 mb-1">
@@ -868,14 +859,14 @@ export default function DataToolsPage() {
                               <span>{job.progress}%</span>
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-2">
-                              <div 
+                              <div
                                 className="bg-cyan-500 h-2 rounded-full transition-all duration-300"
                                 style={{ width: `${job.progress}%` }}
                               ></div>
                             </div>
                           </div>
                         )}
-                        
+
                         <div className="flex items-center justify-between text-xs text-gray-500">
                           <span>Size: {job.dataSize}</span>
                           {job.outputSize && (
@@ -892,7 +883,7 @@ export default function DataToolsPage() {
                 {/* Quick Stats */}
                 <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/50">
                   <h3 className="text-xl font-semibold text-gray-900 mb-6">Data Stats</h3>
-                  
+
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-gray-600">Active Users</span>
@@ -916,7 +907,7 @@ export default function DataToolsPage() {
             </div>
 
             {/* Modern Footer */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}

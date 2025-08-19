@@ -403,8 +403,8 @@ export default function AnalyticsPage() {
     }
   };
 
-  const filteredMetrics = selectedMetric === 'all' 
-    ? metrics 
+  const filteredMetrics = selectedMetric === 'all'
+    ? metrics
     : metrics.filter(metric => metric.category === selectedMetric);
 
   const filteredServices = selectedService === 'all'
@@ -429,7 +429,7 @@ export default function AnalyticsPage() {
                   <p className="text-sm text-gray-600">Advanced insights and performance metrics</p>
                 </div>
               </div>
-              
+
               <div className="hidden md:flex items-center space-x-6 ml-8">
                 <div className="text-center">
                   <p className="text-lg font-bold text-gray-900">{metrics.length}</p>
@@ -449,27 +449,26 @@ export default function AnalyticsPage() {
                 </div>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => setAutoRefresh(!autoRefresh)}
-                className={`px-3 py-2 rounded-lg flex items-center space-x-2 transition-colors ${
-                  autoRefresh 
-                    ? 'bg-green-100 text-green-700 hover:bg-green-200' 
+                className={`px-3 py-2 rounded-lg flex items-center space-x-2 transition-colors ${autoRefresh
+                    ? 'bg-green-100 text-green-700 hover:bg-green-200'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
+                  }`}
               >
                 {autoRefresh ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
                 <span className="text-sm">{autoRefresh ? 'Auto' : 'Manual'}</span>
               </button>
-              
-              <button 
+
+              <button
                 onClick={loadAnalyticsData}
                 className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
               >
                 <RefreshCw className="w-5 h-5" />
               </button>
-              
+
               <button className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center space-x-2">
                 <Download className="w-4 h-4" />
                 <span>Export Report</span>
@@ -537,7 +536,7 @@ export default function AnalyticsPage() {
               {filteredMetrics.map((metric, index) => {
                 const Icon = metric.icon;
                 const TrendIcon = getTrendIcon(metric.trend);
-                
+
                 return (
                   <motion.div
                     key={metric.id}
@@ -555,7 +554,7 @@ export default function AnalyticsPage() {
                         <span className="text-sm font-medium">{Math.abs(metric.change)}%</span>
                       </div>
                     </div>
-                    
+
                     <div className="space-y-2">
                       <h3 className="text-sm font-medium text-gray-600">{metric.name}</h3>
                       <p className="text-2xl font-bold text-gray-900">{metric.value}</p>
@@ -583,7 +582,7 @@ export default function AnalyticsPage() {
                     <span className="text-sm text-gray-600">24 hours</span>
                   </div>
                 </div>
-                
+
                 <div className="h-64 flex items-end justify-between space-x-1">
                   {timeSeriesData.slice(0, 12).map((data, index) => (
                     <div key={index} className="flex flex-col items-center">
@@ -609,7 +608,7 @@ export default function AnalyticsPage() {
                   <h3 className="text-lg font-semibold text-gray-900">Log Level Distribution</h3>
                   <PieChart className="w-5 h-5 text-blue-600" />
                 </div>
-                
+
                 <div className="space-y-4">
                   {logLevelDistribution.map((level) => (
                     <div key={level.level} className="flex items-center justify-between">
@@ -647,7 +646,7 @@ export default function AnalyticsPage() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead className="bg-gray-50/50">
@@ -692,11 +691,10 @@ export default function AnalyticsPage() {
                             {service.totalLogs.toLocaleString()}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <span className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${
-                              service.errorRate < 0.5 ? 'text-green-600 bg-green-100' :
-                              service.errorRate < 1.0 ? 'text-yellow-600 bg-yellow-100' :
-                              'text-red-600 bg-red-100'
-                            }`}>
+                            <span className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${service.errorRate < 0.5 ? 'text-green-600 bg-green-100' :
+                                service.errorRate < 1.0 ? 'text-yellow-600 bg-yellow-100' :
+                                  'text-red-600 bg-red-100'
+                              }`}>
                               {service.errorRate}%
                             </span>
                           </td>
@@ -707,11 +705,10 @@ export default function AnalyticsPage() {
                             {service.throughput.toLocaleString()}/min
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <span className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${
-                              service.availability >= 99.95 ? 'text-green-600 bg-green-100' :
-                              service.availability >= 99.9 ? 'text-yellow-600 bg-yellow-100' :
-                              'text-red-600 bg-red-100'
-                            }`}>
+                            <span className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${service.availability >= 99.95 ? 'text-green-600 bg-green-100' :
+                                service.availability >= 99.9 ? 'text-yellow-600 bg-yellow-100' :
+                                  'text-red-600 bg-red-100'
+                              }`}>
                               {service.availability}%
                             </span>
                           </td>
@@ -740,7 +737,7 @@ export default function AnalyticsPage() {
                   <h3 className="text-lg font-semibold text-gray-900">Alert Summary</h3>
                   <AlertTriangle className="w-5 h-5 text-orange-600" />
                 </div>
-                
+
                 <div className="space-y-4">
                   {alertMetrics.map((alert) => (
                     <div key={alert.id} className="flex items-center justify-between p-4 bg-gray-50/50 rounded-lg">
@@ -772,7 +769,7 @@ export default function AnalyticsPage() {
                   <h3 className="text-lg font-semibold text-gray-900">Top Errors</h3>
                   <XCircle className="w-5 h-5 text-red-600" />
                 </div>
-                
+
                 <div className="space-y-4">
                   {topErrors.map((error) => {
                     const TrendIcon = getTrendIcon(error.trend);
@@ -818,7 +815,7 @@ export default function AnalyticsPage() {
                 Explore Metrics →
               </button>
             </div>
-            
+
             <div className="bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl p-6">
               <div className="flex items-center space-x-3 mb-4">
                 <TrendingUp className="w-6 h-6 text-green-600" />
@@ -831,7 +828,7 @@ export default function AnalyticsPage() {
                 View Recommendations →
               </button>
             </div>
-            
+
             <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl p-6">
               <div className="flex items-center space-x-3 mb-4">
                 <Target className="w-6 h-6 text-purple-600" />
@@ -845,7 +842,7 @@ export default function AnalyticsPage() {
               </button>
             </div>
           </div>
-          
+
           <div className="border-t border-blue-100/50 mt-8 pt-6 text-center">
             <p className="text-sm text-gray-600">
               © 2024 LogAI Professional Analytics Platform by CODAI. All rights reserved.

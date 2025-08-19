@@ -290,11 +290,10 @@ export default function WeatherIntelligence() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center space-x-2 py-4 px-2 border-b-2 font-medium text-sm transition-colors ${
-                    activeTab === tab.id
+                  className={`flex items-center space-x-2 py-4 px-2 border-b-2 font-medium text-sm transition-colors ${activeTab === tab.id
                       ? 'border-yellow-500 text-yellow-600'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                    }`}
                 >
                   <Icon className="w-4 h-4" />
                   <span>{tab.name}</span>
@@ -369,13 +368,13 @@ export default function WeatherIntelligence() {
                     <h3 className="text-lg font-semibold text-gray-800">Solar Impact</h3>
                     <Zap className="w-6 h-6 text-yellow-600" />
                   </div>
-                  
+
                   <div className="space-y-4">
                     <div className="text-center">
                       <div className="text-3xl font-bold text-green-600">Excellent</div>
                       <div className="text-sm text-gray-600">Generation Conditions</div>
                     </div>
-                    
+
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
                         <span className="text-sm text-gray-600">Expected Production</span>
@@ -398,7 +397,7 @@ export default function WeatherIntelligence() {
                     <div className="pt-3 border-t border-gray-200">
                       <div className="text-xs text-gray-500 mb-2">Cloud Coverage</div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
+                        <div
                           className="bg-gradient-to-r from-blue-400 to-indigo-400 h-2 rounded-full"
                           style={{ width: `${currentWeather.cloudCover}%` }}
                         ></div>
@@ -430,7 +429,7 @@ export default function WeatherIntelligence() {
                   <div className="absolute inset-0 flex items-end justify-center">
                     <div className="w-full h-1 bg-gradient-to-r from-blue-200 via-yellow-200 to-orange-200 rounded"></div>
                   </div>
-                  
+
                   {/* Sun position indicator */}
                   <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
                     <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg">
@@ -475,7 +474,7 @@ export default function WeatherIntelligence() {
                     <h3 className="text-lg font-semibold text-gray-800">Active Weather Alerts</h3>
                     <AlertTriangle className="w-6 h-6 text-orange-600" />
                   </div>
-                  
+
                   <div className="space-y-3">
                     {weatherAlerts.slice(0, 2).map((alert) => (
                       <div key={alert.id} className={`p-4 rounded-lg border ${getSeverityColor(alert.severity)}`}>
@@ -492,9 +491,9 @@ export default function WeatherIntelligence() {
                       </div>
                     ))}
                   </div>
-                  
+
                   <div className="mt-4">
-                    <Link 
+                    <Link
                       href="#alerts"
                       onClick={() => setActiveTab('alerts')}
                       className="text-yellow-600 hover:text-yellow-700 text-sm font-medium flex items-center"
@@ -518,7 +517,7 @@ export default function WeatherIntelligence() {
               {/* 7-Day Weather Forecast */}
               <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-yellow-200/50 shadow-lg">
                 <h3 className="text-lg font-semibold text-gray-800 mb-6">7-Day Weather Forecast</h3>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
                   {weatherForecast.map((day, index) => {
                     const WeatherIcon = getWeatherIcon(day.condition)
@@ -527,11 +526,10 @@ export default function WeatherIntelligence() {
                       <motion.div
                         key={day.timestamp}
                         whileHover={{ scale: 1.02 }}
-                        className={`p-4 rounded-lg border text-center ${
-                          isToday 
-                            ? 'bg-yellow-50 border-yellow-300 shadow-md' 
+                        className={`p-4 rounded-lg border text-center ${isToday
+                            ? 'bg-yellow-50 border-yellow-300 shadow-md'
                             : 'bg-gray-50 border-gray-200'
-                        }`}
+                          }`}
                       >
                         <div className={`font-medium mb-2 ${isToday ? 'text-yellow-600' : 'text-gray-600'}`}>
                           {isToday ? 'Today' : new Date(day.timestamp).toLocaleDateString('en-US', { weekday: 'short' })}

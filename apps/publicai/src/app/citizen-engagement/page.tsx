@@ -304,7 +304,7 @@ export default function CitizenEngagement() {
     const matchesCategory = selectedCategory === 'all' || feedback.category === selectedCategory
     const matchesStatus = selectedStatus === 'all' || feedback.status === selectedStatus
     const matchesSearch = feedback.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         feedback.description.toLowerCase().includes(searchTerm.toLowerCase())
+      feedback.description.toLowerCase().includes(searchTerm.toLowerCase())
     return matchesCategory && matchesStatus && matchesSearch
   })
 
@@ -335,7 +335,7 @@ export default function CitizenEngagement() {
     const interval = setInterval(() => {
       setEngagementStats(prev => prev.map(stat => ({
         ...stat,
-        value: stat.id === 'active-citizens' 
+        value: stat.id === 'active-citizens'
           ? (parseInt(stat.value.replace(',', '')) + Math.floor(Math.random() * 5)).toLocaleString()
           : stat.value
       })))
@@ -347,7 +347,7 @@ export default function CitizenEngagement() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 to-blue-50">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         className="bg-white/80 backdrop-blur-sm border-b border-teal-200/50 sticky top-0 z-40"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -365,7 +365,7 @@ export default function CitizenEngagement() {
                 <p className="text-sm text-gray-600">Public Participation & Democratic Tools</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="hidden sm:flex items-center space-x-6 text-sm">
                 <div className="flex items-center space-x-2">
@@ -377,8 +377,8 @@ export default function CitizenEngagement() {
                   <span className="text-gray-600">{publicFeedback.length} Open Issues</span>
                 </div>
               </div>
-              
-              <button 
+
+              <button
                 onClick={() => setActiveTab('participate')}
                 className="px-4 py-2 bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-lg hover:from-teal-600 hover:to-blue-600 transition-colors"
               >
@@ -406,11 +406,10 @@ export default function CitizenEngagement() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors whitespace-nowrap ${
-                      activeTab === tab.id
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors whitespace-nowrap ${activeTab === tab.id
                         ? 'bg-gradient-to-r from-teal-500 to-blue-500 text-white'
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                    }`}
+                      }`}
                   >
                     <Icon className="w-4 h-4" />
                     <span>{tab.label}</span>
@@ -445,15 +444,14 @@ export default function CitizenEngagement() {
                       <div className={`w-12 h-12 bg-gradient-to-r ${metric.color} rounded-lg flex items-center justify-center`}>
                         <Icon className="w-6 h-6 text-white" />
                       </div>
-                      <div className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        metric.changeType === 'positive' ? 'bg-green-100 text-green-800' :
-                        metric.changeType === 'negative' ? 'bg-red-100 text-red-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
+                      <div className={`px-2 py-1 rounded-full text-xs font-medium ${metric.changeType === 'positive' ? 'bg-green-100 text-green-800' :
+                          metric.changeType === 'negative' ? 'bg-red-100 text-red-800' :
+                            'bg-gray-100 text-gray-800'
+                        }`}>
                         {metric.change}
                       </div>
                     </div>
-                    
+
                     <h3 className="font-semibold text-gray-900 mb-1">{metric.title}</h3>
                     <p className="text-2xl font-bold text-gray-900 mb-2">{metric.value}</p>
                     <p className="text-gray-600 text-sm">{metric.description}</p>
@@ -629,7 +627,7 @@ export default function CitizenEngagement() {
                     />
                   </div>
                 </div>
-                
+
                 <div className="flex items-center space-x-4">
                   <select
                     value={selectedCategory}
@@ -642,7 +640,7 @@ export default function CitizenEngagement() {
                       </option>
                     ))}
                   </select>
-                  
+
                   <select
                     value={selectedStatus}
                     onChange={(e) => setSelectedStatus(e.target.value)}
@@ -698,7 +696,7 @@ export default function CitizenEngagement() {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                     <div className="flex items-center space-x-6">
                       <button className="flex items-center space-x-2 text-gray-600 hover:text-teal-600 transition-colors">
@@ -716,7 +714,7 @@ export default function CitizenEngagement() {
                         </div>
                       )}
                     </div>
-                    
+
                     <button className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors">
                       <Share2 className="w-4 h-4" />
                       <span className="text-sm">Share</span>
@@ -764,7 +762,7 @@ export default function CitizenEngagement() {
               <h3 className="text-lg font-semibold mb-2">Citizen Voice</h3>
               <p className="text-teal-100 text-sm">Every citizen's input matters in shaping our community's future.</p>
             </motion.div>
-            
+
             <motion.div
               className="bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl p-6 text-white"
               whileHover={{ scale: 1.02 }}
@@ -773,7 +771,7 @@ export default function CitizenEngagement() {
               <h3 className="text-lg font-semibold mb-2">Democratic Process</h3>
               <p className="text-blue-100 text-sm">Transparent and inclusive decision-making for all citizens.</p>
             </motion.div>
-            
+
             <motion.div
               className="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl p-6 text-white"
               whileHover={{ scale: 1.02 }}

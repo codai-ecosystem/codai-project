@@ -33,6 +33,13 @@ import contextvars
 import threading
 import weakref
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 class APIOptimizationLevel(Enum):
     """API optimization levels"""
     BASIC = "basic"

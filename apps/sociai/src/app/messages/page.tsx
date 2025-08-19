@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { 
+import {
   MessageCircle, Send, Search, Phone, Video, MoreHorizontal,
   Smile, Paperclip, Image, Mic, User, Bot, Check, CheckCheck,
   Star, Archive, Trash2, Filter, Settings, Plus, Users,
@@ -252,7 +252,7 @@ export default function MessagesPage() {
   const emojis = ['😀', '😂', '❤️', '👍', '🔥', '💯', '🚀', '💡', '🎯', '✨'];
 
   const filteredConversations = conversations.filter(conv =>
-    conv.participants.some(p => 
+    conv.participants.some(p =>
       p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       p.username.toLowerCase().includes(searchQuery.toLowerCase())
     ) || conv.groupName?.toLowerCase().includes(searchQuery.toLowerCase())
@@ -375,9 +375,8 @@ export default function MessagesPage() {
                     key={conversation.id}
                     whileHover={{ backgroundColor: '#f8fafc' }}
                     onClick={() => setActiveConversation(conversation.id)}
-                    className={`p-4 border-b border-gray-100 cursor-pointer transition-colors ${
-                      activeConversation === conversation.id ? 'bg-blue-50 border-l-4 border-l-blue-500' : ''
-                    }`}
+                    className={`p-4 border-b border-gray-100 cursor-pointer transition-colors ${activeConversation === conversation.id ? 'bg-blue-50 border-l-4 border-l-blue-500' : ''
+                      }`}
                   >
                     <div className="flex items-start space-x-3">
                       {/* Avatar */}
@@ -508,13 +507,12 @@ export default function MessagesPage() {
                               <span className="text-xs text-gray-600">{message.senderName}</span>
                             </div>
                           )}
-                          <div className={`rounded-2xl px-4 py-2 ${
-                            message.senderId === 'current-user'
+                          <div className={`rounded-2xl px-4 py-2 ${message.senderId === 'current-user'
                               ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
                               : message.isAI
-                              ? 'bg-gradient-to-r from-purple-100 to-blue-100 text-gray-900 border border-purple-200'
-                              : 'bg-gray-100 text-gray-900'
-                          }`}>
+                                ? 'bg-gradient-to-r from-purple-100 to-blue-100 text-gray-900 border border-purple-200'
+                                : 'bg-gray-100 text-gray-900'
+                            }`}>
                             {message.type === 'ai-suggestion' ? (
                               <div className="space-y-2">
                                 <div className="flex items-center space-x-2 mb-2">
@@ -527,7 +525,7 @@ export default function MessagesPage() {
                               <div className="whitespace-pre-wrap">{message.content}</div>
                             )}
                           </div>
-                          
+
                           {/* Message Reactions */}
                           {message.reactions && message.reactions.length > 0 && (
                             <div className="flex items-center space-x-1 mt-1">
@@ -541,9 +539,8 @@ export default function MessagesPage() {
                           )}
 
                           {/* Message Status */}
-                          <div className={`flex items-center justify-end space-x-1 mt-1 ${
-                            message.senderId === 'current-user' ? 'block' : 'hidden'
-                          }`}>
+                          <div className={`flex items-center justify-end space-x-1 mt-1 ${message.senderId === 'current-user' ? 'block' : 'hidden'
+                            }`}>
                             <span className="text-xs text-gray-500">
                               {formatTime(message.timestamp)}
                             </span>
@@ -554,7 +551,7 @@ export default function MessagesPage() {
                         </div>
                       </motion.div>
                     ))}
-                    
+
                     {/* Typing Indicator */}
                     {isTyping && (
                       <motion.div
@@ -668,7 +665,7 @@ export default function MessagesPage() {
                           )}
                         </AnimatePresence>
                       </div>
-                      
+
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}

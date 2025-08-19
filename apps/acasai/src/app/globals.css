@@ -2,6 +2,437 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    /* AcasAI Smart Home Theme - Blue to Cyan Gradient */
+    --primary-50: 239 246 255;
+    /* blue-50 */
+    --primary-100: 219 234 254;
+    /* blue-100 */
+    --primary-200: 191 219 254;
+    /* blue-200 */
+    --primary-300: 147 197 253;
+    /* blue-300 */
+    --primary-400: 96 165 250;
+    /* blue-400 */
+    --primary-500: 59 130 246;
+    /* blue-500 */
+    --primary-600: 37 99 235;
+    /* blue-600 */
+    --primary-700: 29 78 216;
+    /* blue-700 */
+    --primary-800: 30 64 175;
+    /* blue-800 */
+    --primary-900: 30 58 138;
+    /* blue-900 */
+
+    --secondary-50: 236 254 255;
+    /* cyan-50 */
+    --secondary-100: 207 250 254;
+    /* cyan-100 */
+    --secondary-200: 165 243 252;
+    /* cyan-200 */
+    --secondary-300: 103 232 249;
+    /* cyan-300 */
+    --secondary-400: 34 211 238;
+    /* cyan-400 */
+    --secondary-500: 6 182 212;
+    /* cyan-500 */
+    --secondary-600: 8 145 178;
+    /* cyan-600 */
+    --secondary-700: 14 116 144;
+    /* cyan-700 */
+    --secondary-800: 21 94 117;
+    /* cyan-800 */
+    --secondary-900: 22 78 99;
+    /* cyan-900 */
+
+    /* Smart Home Status Colors */
+    --device-online: 34 197 94;
+    /* green-500 */
+    --device-offline: 239 68 68;
+    /* red-500 */
+    --device-maintenance: 245 158 11;
+    /* amber-500 */
+    --energy-efficient: 34 197 94;
+    /* green-500 */
+    --energy-warning: 245 158 11;
+    /* amber-500 */
+    --energy-critical: 239 68 68;
+    /* red-500 */
+    --security-armed: 34 197 94;
+    /* green-500 */
+    --security-disarmed: 245 158 11;
+    /* amber-500 */
+    --security-alert: 239 68 68;
+    /* red-500 */
+
+    /* Smart Home Automation Gradients */
+    --gradient-smart-home: linear-gradient(135deg, rgb(59 130 246) 0%, rgb(6 182 212) 100%);
+    --gradient-energy: linear-gradient(135deg, rgb(34 197 94) 0%, rgb(163 230 53) 100%);
+    --gradient-security: linear-gradient(135deg, rgb(239 68 68) 0%, rgb(245 158 11) 100%);
+    --gradient-automation: linear-gradient(135deg, rgb(168 85 247) 0%, rgb(59 130 246) 100%);
+
+    /* IoT Device Animation Variables */
+    --pulse-online: 0 0 0 4px rgba(34, 197, 94, 0.2);
+    --pulse-offline: 0 0 0 4px rgba(239, 68, 68, 0.2);
+    --pulse-warning: 0 0 0 4px rgba(245, 158, 11, 0.2);
+  }
+
+  * {
+    border-color: rgb(229 231 235);
+    /* gray-200 */
+  }
+
+  body {
+    background: linear-gradient(135deg, rgb(248 250 252) 0%, rgb(236 254 255) 50%, rgb(207 250 254) 100%);
+    color: rgb(15 23 42);
+    /* slate-900 */
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+
+  /* Smart Home Device Cards */
+  .device-card {
+    @apply bg-white rounded-xl border border-gray-200 p-4 transition-all duration-300 hover:shadow-lg hover:border-blue-300;
+  }
+
+  .device-card.online {
+    @apply border-green-200 bg-green-50/30;
+    box-shadow: var(--pulse-online);
+  }
+
+  .device-card.offline {
+    @apply border-red-200 bg-red-50/30;
+    box-shadow: var(--pulse-offline);
+  }
+
+  .device-card.maintenance {
+    @apply border-amber-200 bg-amber-50/30;
+    box-shadow: var(--pulse-warning);
+  }
+
+  /* Energy Status Indicators */
+  .energy-efficient {
+    @apply text-green-600 bg-green-100;
+  }
+
+  .energy-warning {
+    @apply text-amber-600 bg-amber-100;
+  }
+
+  .energy-critical {
+    @apply text-red-600 bg-red-100;
+  }
+
+  /* Security Status Badges */
+  .security-armed {
+    @apply text-green-700 bg-green-100 border border-green-200;
+  }
+
+  .security-disarmed {
+    @apply text-amber-700 bg-amber-100 border border-amber-200;
+  }
+
+  .security-alert {
+    @apply text-red-700 bg-red-100 border border-red-200;
+  }
+
+  /* Smart Home Gradient Buttons */
+  .btn-smart-home {
+    background: var(--gradient-smart-home);
+    @apply text-white border-0 hover:shadow-lg transition-all duration-300;
+  }
+
+  .btn-energy {
+    background: var(--gradient-energy);
+    @apply text-white border-0 hover:shadow-lg transition-all duration-300;
+  }
+
+  .btn-security {
+    background: var(--gradient-security);
+    @apply text-white border-0 hover:shadow-lg transition-all duration-300;
+  }
+
+  .btn-automation {
+    background: var(--gradient-automation);
+    @apply text-white border-0 hover:shadow-lg transition-all duration-300;
+  }
+
+  /* IoT Device Animations */
+  .device-pulse {
+    animation: devicePulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .energy-flow {
+    animation: energyFlow 3s linear infinite;
+  }
+
+  .security-scan {
+    animation: securityScan 4s ease-in-out infinite;
+  }
+
+  /* Smart Home Responsive Grid */
+  .smart-grid {
+    @apply grid gap-6;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  .device-grid {
+    @apply grid gap-4;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  /* Status Indicator Dots */
+  .status-dot {
+    @apply w-3 h-3 rounded-full inline-block;
+  }
+
+  .status-dot.online {
+    @apply bg-green-500;
+    box-shadow: 0 0 6px rgba(34, 197, 94, 0.6);
+  }
+
+  .status-dot.offline {
+    @apply bg-red-500;
+    box-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+  }
+
+  .status-dot.maintenance {
+    @apply bg-amber-500;
+    box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+  }
+}
+
+@layer utilities {
+
+  /* IoT Device Utilities */
+  .text-device-online {
+    color: rgb(var(--device-online));
+  }
+
+  .text-device-offline {
+    color: rgb(var(--device-offline));
+  }
+
+  .text-device-maintenance {
+    color: rgb(var(--device-maintenance));
+  }
+
+  .bg-device-online {
+    background-color: rgb(var(--device-online));
+  }
+
+  .bg-device-offline {
+    background-color: rgb(var(--device-offline));
+  }
+
+  .bg-device-maintenance {
+    background-color: rgb(var(--device-maintenance));
+  }
+
+  /* Smart Home Gradient Backgrounds */
+  .bg-gradient-smart-home {
+    background: var(--gradient-smart-home);
+  }
+
+  .bg-gradient-energy {
+    background: var(--gradient-energy);
+  }
+
+  .bg-gradient-security {
+    background: var(--gradient-security);
+  }
+
+  .bg-gradient-automation {
+    background: var(--gradient-automation);
+  }
+
+  /* Energy Efficiency Classes */
+  .energy-A {
+    @apply bg-green-500 text-white;
+  }
+
+  .energy-B {
+    @apply bg-green-400 text-white;
+  }
+
+  .energy-C {
+    @apply bg-yellow-400 text-gray-900;
+  }
+
+  .energy-D {
+    @apply bg-orange-400 text-white;
+  }
+
+  .energy-E {
+    @apply bg-red-400 text-white;
+  }
+
+  /* Smart Home Spacing */
+  .space-smart {
+    @apply space-y-6;
+  }
+
+  .gap-smart {
+    @apply gap-6;
+  }
+
+  /* Device Control Animations */
+  .animate-device-startup {
+    animation: deviceStartup 1s ease-out;
+  }
+
+  .animate-energy-pulse {
+    animation: energyPulse 2s ease-in-out infinite;
+  }
+
+  .animate-security-blink {
+    animation: securityBlink 1s ease-in-out infinite;
+  }
+}
+
+/* Custom Animations for Smart Home Platform */
+@keyframes devicePulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes energyFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes securityScan {
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(90deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+
+  75% {
+    transform: rotate(270deg);
+  }
+}
+
+@keyframes deviceStartup {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1) translateY(-5px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes energyPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(34, 197, 94, 0.5);
+  }
+
+  50% {
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.8), 0 0 30px rgba(34, 197, 94, 0.4);
+  }
+}
+
+@keyframes securityBlink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Responsive Design for Smart Home Controls */
+@media (max-width: 640px) {
+  .smart-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .device-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Custom Scrollbar for Smart Home Interface */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(248 250 252);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, rgb(59 130 246), rgb(6 182 212));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, rgb(37 99 235), rgb(8 145 178));
+}
+
+/* Print Styles for Smart Home Reports */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .device-card {
+    border: 1px solid #000 !important;
+    background: white !important;
+    box-shadow: none !important;
+  }
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -18,10 +449,7 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
+  background: linear-gradient(to bottom,
       transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
 }

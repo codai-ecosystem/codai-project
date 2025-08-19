@@ -1,0 +1,55 @@
+{
+  "name": "@codai/project-generator",
+  "version": "1.0.0",
+  "description": "CODAI Professional Project Generator with MemorAI and CBD Integration",
+  "main": "index.js",
+  "bin": {
+    "codai-create": "./bin/codai-create.js",
+    "codai-generate": "./bin/codai-create.js"
+  },
+  "scripts": {
+    "start": "node bin/codai-create.js",
+    "dev": "node --watch bin/codai-create.js",
+    "build": "echo 'No build needed for CLI tool'",
+    "test": "echo 'Tests coming soon'"
+  },
+  "keywords": [
+    "codai",
+    "project-generator",
+    "memorai",
+    "cbd",
+    "cli",
+    "templates",
+    "professional-ui"
+  ],
+  "author": "CODAI Team",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^12.1.0",
+    "inquirer": "^10.2.2",
+    "chalk": "^5.3.0",
+    "ora": "^8.1.0",
+    "fs-extra": "^11.2.0",
+    "axios": "^1.7.7",
+    "uuid": "^10.0.0",
+    "prettier": "^3.3.3",
+    "semver": "^7.6.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.4",
+    "@types/fs-extra": "^11.0.4",
+    "@types/uuid": "^10.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codai-ecosystem/codai-project.git",
+    "directory": "tools/codai-project-generator"
+  },
+  "bugs": {
+    "url": "https://github.com/codai-ecosystem/codai-project/issues"
+  },
+  "homepage": "https://codai.ro"
+}

@@ -19,6 +19,13 @@ import math
 import datetime
 from collections import defaultdict
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 class EpisodicMemoryType(Enum):
     """Types of episodic memories"""
     PERSONAL_EXPERIENCE = "personal_experience"

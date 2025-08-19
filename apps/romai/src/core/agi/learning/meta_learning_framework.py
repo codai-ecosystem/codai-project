@@ -22,6 +22,13 @@ import math
 
 from ...utils import get_logger, profile_operation, PerformanceMetrics
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 logger = get_logger(__name__)
 
 class MetaLearningAlgorithm(Enum):

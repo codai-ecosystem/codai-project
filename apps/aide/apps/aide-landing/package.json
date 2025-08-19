@@ -7,13 +7,22 @@
 		"dev:next": "next dev -p 42434",
 		"build": "next build",
 		"start": "next start -p 42434",
-		"lint": "next lint"
+		"lint": "next lint",
+		"test": "playwright test",
+		"test:headed": "playwright test --headed",
+		"test:ui": "playwright test --ui",
+		"test:debug": "playwright test --debug",
+		"test:report": "playwright show-report",
+		"test:install": "playwright install",
+		"test:all": "pnpm test:install && pnpm test",
+		"test:ci": "pnpm test --reporter=github"
 	},
 	"dependencies": {
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
 		"next": "^14.1.0",
 		"@aide/ui-components": "workspace:*",
+		"@codai/shared-ui": "workspace:*",
 		"@radix-ui/react-avatar": "^1.1.1",
 		"@radix-ui/react-dialog": "^1.1.2",
 		"@radix-ui/react-dropdown-menu": "^2.1.2",
@@ -43,6 +52,13 @@
 		"postcss": "^8.5.1",
 		"tailwindcss": "^3.4.14",
 		"eslint": "^9.15.0",
-		"eslint-config-next": "^14.1.0"
+		"eslint-config-next": "^14.1.0",
+		"@playwright/test": "^1.48.0",
+		"@testing-library/react": "^16.0.1",
+		"@testing-library/jest-dom": "^6.6.3",
+		"@testing-library/user-event": "^14.5.2",
+		"jest": "^29.7.0",
+		"jest-environment-jsdom": "^29.7.0",
+		"jest-axe": "^9.0.0"
 	}
 }

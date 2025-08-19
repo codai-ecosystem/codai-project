@@ -207,7 +207,7 @@ export default function Analytics() {
     const interval = setInterval(() => {
       setAnalyticsMetrics(prev => prev.map(metric => ({
         ...metric,
-        value: metric.id === 'total-engagement' 
+        value: metric.id === 'total-engagement'
           ? (parseInt(metric.value.replace(/,/g, '')) + Math.floor(Math.random() * 10)).toLocaleString()
           : metric.value
       })))
@@ -219,7 +219,7 @@ export default function Analytics() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 to-blue-50">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         className="bg-white/80 backdrop-blur-sm border-b border-teal-200/50 sticky top-0 z-40"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -237,7 +237,7 @@ export default function Analytics() {
                 <p className="text-sm text-gray-600">Data Insights & Engagement Metrics</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="hidden sm:flex items-center space-x-4">
                 <select
@@ -252,7 +252,7 @@ export default function Analytics() {
                   ))}
                 </select>
               </div>
-              
+
               <button className="px-4 py-2 bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-lg hover:from-teal-600 hover:to-blue-600 transition-colors">
                 <RefreshCw className="w-4 h-4 inline mr-2" />
                 Refresh Data
@@ -278,11 +278,10 @@ export default function Analytics() {
                   <button
                     key={view.id}
                     onClick={() => setViewType(view.id)}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors whitespace-nowrap ${
-                      viewType === view.id
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors whitespace-nowrap ${viewType === view.id
                         ? 'bg-gradient-to-r from-teal-500 to-blue-500 text-white'
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                    }`}
+                      }`}
                   >
                     <Icon className="w-4 h-4" />
                     <span>{view.label}</span>
@@ -324,7 +323,7 @@ export default function Analytics() {
                         </span>
                       </div>
                     </div>
-                    
+
                     <h3 className="font-semibold text-gray-900 mb-1">{metric.title}</h3>
                     <p className="text-2xl font-bold text-gray-900 mb-2">{metric.value}</p>
                     <p className="text-gray-600 text-sm">{metric.description}</p>
@@ -532,7 +531,7 @@ export default function Analytics() {
                       <h3 className="text-lg font-semibold text-gray-900">{district.district}</h3>
                       <MapPin className="w-5 h-5 text-teal-600" />
                     </div>
-                    
+
                     <div className="space-y-3">
                       <div className="flex justify-between">
                         <span className="text-gray-600">Population</span>
@@ -635,7 +634,7 @@ export default function Analytics() {
               <h3 className="text-lg font-semibold mb-2">Data-Driven Insights</h3>
               <p className="text-teal-100 text-sm">Making informed decisions with comprehensive analytics.</p>
             </motion.div>
-            
+
             <motion.div
               className="bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl p-6 text-white"
               whileHover={{ scale: 1.02 }}
@@ -644,7 +643,7 @@ export default function Analytics() {
               <h3 className="text-lg font-semibold mb-2">Performance Tracking</h3>
               <p className="text-blue-100 text-sm">Continuous monitoring of engagement and satisfaction metrics.</p>
             </motion.div>
-            
+
             <motion.div
               className="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl p-6 text-white"
               whileHover={{ scale: 1.02 }}

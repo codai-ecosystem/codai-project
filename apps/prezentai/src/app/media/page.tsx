@@ -2,16 +2,16 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Search, 
-  Filter, 
-  Grid3X3, 
-  List, 
-  Upload, 
-  FolderPlus, 
-  Image, 
-  Video, 
-  Music, 
+import {
+  Search,
+  Filter,
+  Grid3X3,
+  List,
+  Upload,
+  FolderPlus,
+  Image,
+  Video,
+  Music,
   FileText,
   Download,
   Heart,
@@ -217,7 +217,7 @@ export default function MediaLibraryPage() {
 
   const filteredItems = mediaItems.filter(item => {
     const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         item.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+      item.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
     const matchesType = selectedType === 'all' || item.type === selectedType;
     const matchesFolder = selectedFolder === 'all' || item.folder === selectedFolder;
     return matchesSearch && matchesType && matchesFolder;
@@ -253,8 +253,8 @@ export default function MediaLibraryPage() {
   };
 
   const toggleItemSelection = (itemId: string) => {
-    setSelectedItems(prev => 
-      prev.includes(itemId) 
+    setSelectedItems(prev =>
+      prev.includes(itemId)
         ? prev.filter(id => id !== itemId)
         : [...prev, itemId]
     );
@@ -263,7 +263,7 @@ export default function MediaLibraryPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/80 backdrop-blur-sm border-b border-purple-100 sticky top-0 z-40"
@@ -279,7 +279,7 @@ export default function MediaLibraryPage() {
               </p>
             </div>
             <div className="flex items-center space-x-4">
-              <button 
+              <button
                 onClick={() => setShowUploadModal(true)}
                 className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 flex items-center space-x-2"
               >
@@ -296,7 +296,7 @@ export default function MediaLibraryPage() {
       </motion.div>
 
       {/* Navigation Tabs */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.1 }}
@@ -315,11 +315,10 @@ export default function MediaLibraryPage() {
               <a
                 key={tab.name}
                 href={tab.href}
-                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${
-                  tab.current
+                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${tab.current
                     ? 'border-purple-500 text-purple-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
+                  }`}
               >
                 {tab.name}
               </a>
@@ -330,9 +329,9 @@ export default function MediaLibraryPage() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
+
         {/* Storage Overview */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -412,9 +411,9 @@ export default function MediaLibraryPage() {
         </motion.div>
 
         <div className="flex lg:flex-row flex-col gap-8">
-          
+
           {/* Folders Sidebar */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
@@ -427,11 +426,10 @@ export default function MediaLibraryPage() {
                   <button
                     key={folder.id}
                     onClick={() => setSelectedFolder(folder.id)}
-                    className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${
-                      selectedFolder === folder.id
+                    className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${selectedFolder === folder.id
                         ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-md'
                         : 'hover:bg-purple-50 text-gray-700'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center space-x-3">
                       <div className={`p-1 rounded ${selectedFolder === folder.id ? 'bg-white/20' : folder.color}`}>
@@ -452,9 +450,9 @@ export default function MediaLibraryPage() {
 
           {/* Media Grid */}
           <div className="flex-1">
-            
+
             {/* Search and Filters */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
@@ -473,7 +471,7 @@ export default function MediaLibraryPage() {
                     />
                   </div>
                 </div>
-                
+
                 <div className="flex items-center space-x-4">
                   <select
                     value={selectedType}
@@ -486,7 +484,7 @@ export default function MediaLibraryPage() {
                     <option value="audio">Audio</option>
                     <option value="document">Documents</option>
                   </select>
-                  
+
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
@@ -497,21 +495,19 @@ export default function MediaLibraryPage() {
                     <option value="size">File Size</option>
                     <option value="downloads">Most Downloaded</option>
                   </select>
-                  
+
                   <div className="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
                     <button
                       onClick={() => setViewMode('grid')}
-                      className={`p-2 rounded-md transition-colors duration-200 ${
-                        viewMode === 'grid' ? 'bg-white shadow-sm text-purple-600' : 'text-gray-600 hover:text-gray-900'
-                      }`}
+                      className={`p-2 rounded-md transition-colors duration-200 ${viewMode === 'grid' ? 'bg-white shadow-sm text-purple-600' : 'text-gray-600 hover:text-gray-900'
+                        }`}
                     >
                       <Grid3X3 className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => setViewMode('list')}
-                      className={`p-2 rounded-md transition-colors duration-200 ${
-                        viewMode === 'list' ? 'bg-white shadow-sm text-purple-600' : 'text-gray-600 hover:text-gray-900'
-                      }`}
+                      className={`p-2 rounded-md transition-colors duration-200 ${viewMode === 'list' ? 'bg-white shadow-sm text-purple-600' : 'text-gray-600 hover:text-gray-900'
+                        }`}
                     >
                       <List className="w-4 h-4" />
                     </button>
@@ -542,12 +538,12 @@ export default function MediaLibraryPage() {
             </motion.div>
 
             {/* Media Items Grid/List */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
               className={
-                viewMode === 'grid' 
+                viewMode === 'grid'
                   ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
                   : 'space-y-4'
               }
@@ -558,11 +554,10 @@ export default function MediaLibraryPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * index }}
-                  className={`group ${
-                    viewMode === 'grid'
+                  className={`group ${viewMode === 'grid'
                       ? 'bg-white/70 backdrop-blur-sm rounded-xl border border-purple-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:border-purple-300'
                       : 'bg-white/70 backdrop-blur-sm rounded-xl border border-purple-100 p-6 hover:shadow-lg transition-all duration-300'
-                  }`}
+                    }`}
                 >
                   {viewMode === 'grid' ? (
                     <>
@@ -586,7 +581,7 @@ export default function MediaLibraryPage() {
                             </div>
                           </div>
                         </div>
-                        
+
                         {/* Selection Checkbox */}
                         <div className="absolute top-3 left-3">
                           <input
@@ -631,23 +626,23 @@ export default function MediaLibraryPage() {
                             <Heart className={`w-4 h-4 ${item.isFavorite ? 'fill-current' : ''}`} />
                           </button>
                         </div>
-                        
+
                         <p className="text-sm text-gray-600 mb-3 line-clamp-2">
                           {item.description}
                         </p>
-                        
+
                         <div className="flex items-center justify-between text-sm text-gray-500 mb-3">
                           <span>{formatFileSize(item.size * 1024 * 1024)}</span>
                           {item.dimensions && (
                             <span>{item.dimensions.width}×{item.dimensions.height}</span>
                           )}
                         </div>
-                        
+
                         <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
                           <span>by {item.uploadedBy}</span>
                           <span>{item.uploadedAt}</span>
                         </div>
-                        
+
                         <div className="flex items-center justify-between">
                           <span className="text-sm text-gray-500">
                             {item.downloads} downloads
@@ -692,11 +687,11 @@ export default function MediaLibraryPage() {
                             {item.format}
                           </span>
                         </div>
-                        
+
                         <p className="text-sm text-gray-600 mt-1 line-clamp-1">
                           {item.description}
                         </p>
-                        
+
                         <div className="flex items-center space-x-4 mt-2 text-sm text-gray-500">
                           <span>{formatFileSize(item.size * 1024 * 1024)}</span>
                           {item.dimensions && (
@@ -736,72 +731,72 @@ export default function MediaLibraryPage() {
                   )}
                 </motion.div>
               ))}
-            </div>
           </div>
         </div>
       </div>
+    </div>
 
-      {/* Modern Footer */}
-      <motion.footer 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.7 }}
-        className="bg-gradient-to-r from-purple-900 via-blue-900 to-indigo-900 text-white mt-16"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="col-span-1 md:col-span-2">
-              <h3 className="text-2xl font-bold mb-4">PrezentAI Media Library</h3>
-              <p className="text-purple-200 mb-6 max-w-md">
-                Store, organize, and manage all your presentation media assets in one place. 
-                From high-quality images to videos and audio files, everything you need for stunning presentations.
-              </p>
-              <div className="flex space-x-4">
-                <button className="bg-white/10 hover:bg-white/20 p-3 rounded-lg transition-all duration-200">
-                  <Camera className="w-5 h-5" />
-                </button>
-                <button className="bg-white/10 hover:bg-white/20 p-3 rounded-lg transition-all duration-200">
-                  <Video className="w-5 h-5" />
-                </button>
-                <button className="bg-white/10 hover:bg-white/20 p-3 rounded-lg transition-all duration-200">
-                  <Music className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-            
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Media Tools</h4>
-              <ul className="space-y-2 text-purple-200">
-                <li><a href="#" className="hover:text-white transition-colors duration-200">AI Image Generator</a></li>
-                <li><a href="#" className="hover:text-white transition-colors duration-200">Stock Photo Library</a></li>
-                <li><a href="#" className="hover:text-white transition-colors duration-200">Video Editor</a></li>
-                <li><a href="#" className="hover:text-white transition-colors duration-200">Audio Mixer</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Storage & Sync</h4>
-              <ul className="space-y-2 text-purple-200">
-                <li><a href="#" className="hover:text-white transition-colors duration-200">Cloud Storage</a></li>
-                <li><a href="#" className="hover:text-white transition-colors duration-200">Team Collaboration</a></li>
-                <li><a href="#" className="hover:text-white transition-colors duration-200">Version Control</a></li>
-                <li><a href="#" className="hover:text-white transition-colors duration-200">Backup & Restore</a></li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="border-t border-purple-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-purple-200 text-sm">
-              © 2025 PrezentAI Media Library. Organize your creative assets with precision.
-            </p>
-            <div className="mt-4 md:mt-0">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-                💾 15.7 GB of Premium Media Assets
-              </span>
-            </div>
+      {/* Modern Footer */ }
+  <motion.footer
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ delay: 0.7 }}
+    className="bg-gradient-to-r from-purple-900 via-blue-900 to-indigo-900 text-white mt-16"
+  >
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="col-span-1 md:col-span-2">
+          <h3 className="text-2xl font-bold mb-4">PrezentAI Media Library</h3>
+          <p className="text-purple-200 mb-6 max-w-md">
+            Store, organize, and manage all your presentation media assets in one place.
+            From high-quality images to videos and audio files, everything you need for stunning presentations.
+          </p>
+          <div className="flex space-x-4">
+            <button className="bg-white/10 hover:bg-white/20 p-3 rounded-lg transition-all duration-200">
+              <Camera className="w-5 h-5" />
+            </button>
+            <button className="bg-white/10 hover:bg-white/20 p-3 rounded-lg transition-all duration-200">
+              <Video className="w-5 h-5" />
+            </button>
+            <button className="bg-white/10 hover:bg-white/20 p-3 rounded-lg transition-all duration-200">
+              <Music className="w-5 h-5" />
+            </button>
           </div>
         </div>
-      </motion.footer>
+
+        <div>
+          <h4 className="text-lg font-semibold mb-4">Media Tools</h4>
+          <ul className="space-y-2 text-purple-200">
+            <li><a href="#" className="hover:text-white transition-colors duration-200">AI Image Generator</a></li>
+            <li><a href="#" className="hover:text-white transition-colors duration-200">Stock Photo Library</a></li>
+            <li><a href="#" className="hover:text-white transition-colors duration-200">Video Editor</a></li>
+            <li><a href="#" className="hover:text-white transition-colors duration-200">Audio Mixer</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="text-lg font-semibold mb-4">Storage & Sync</h4>
+          <ul className="space-y-2 text-purple-200">
+            <li><a href="#" className="hover:text-white transition-colors duration-200">Cloud Storage</a></li>
+            <li><a href="#" className="hover:text-white transition-colors duration-200">Team Collaboration</a></li>
+            <li><a href="#" className="hover:text-white transition-colors duration-200">Version Control</a></li>
+            <li><a href="#" className="hover:text-white transition-colors duration-200">Backup & Restore</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="border-t border-purple-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p className="text-purple-200 text-sm">
+          © 2025 PrezentAI Media Library. Organize your creative assets with precision.
+        </p>
+        <div className="mt-4 md:mt-0">
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+            💾 15.7 GB of Premium Media Assets
+          </span>
+        </div>
+      </div>
     </div>
+  </motion.footer>
+    </div >
   );
 }

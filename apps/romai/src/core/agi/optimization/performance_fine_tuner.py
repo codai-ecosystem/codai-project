@@ -44,6 +44,13 @@ import copy
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 class PerformanceOptimizationStrategy(Enum):
     """Performance optimization strategies"""
     CULTURAL_PRIORITY = "cultural_priority"        # Cultural authenticity comes first

@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  BarChart3, 
-  TrendingUp, 
-  FileText, 
+import {
+  BarChart3,
+  TrendingUp,
+  FileText,
   Download,
   Share,
   Calendar,
@@ -240,7 +240,7 @@ export default function ReportsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50">
       {/* Enhanced Header */}
-      <motion.header 
+      <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/80 backdrop-blur-md border-b border-yellow-200/50 sticky top-0 z-50"
@@ -260,7 +260,7 @@ export default function ReportsPage() {
                 </p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-3">
               <button
                 onClick={() => setShowFilters(!showFilters)}
@@ -348,11 +348,10 @@ export default function ReportsPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center px-4 py-2 rounded-lg transition-all ${
-                  activeTab === tab.id
+                className={`flex items-center px-4 py-2 rounded-lg transition-all ${activeTab === tab.id
                     ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white shadow-md'
                     : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                }`}
+                  }`}
               >
                 <tab.icon className="h-4 w-4 mr-2" />
                 {tab.label}

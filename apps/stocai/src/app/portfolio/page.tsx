@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  DollarSign, 
-  BarChart3, 
-  Activity, 
+import {
+  TrendingUp,
+  TrendingDown,
+  DollarSign,
+  BarChart3,
+  Activity,
   Bot,
   Search,
   Bell,
@@ -311,7 +311,7 @@ export default function PortfolioPage() {
                 <p className="text-sm text-gray-500">{formatPercent(portfolioStats.totalReturnPercent)}</p>
               </div>
               <div className="p-3 bg-blue-100 rounded-lg">
-                {portfolioStats.totalReturn >= 0 ? 
+                {portfolioStats.totalReturn >= 0 ?
                   <TrendingUp className="h-6 w-6 text-blue-600" /> :
                   <TrendingDown className="h-6 w-6 text-blue-600" />
                 }
@@ -356,15 +356,13 @@ export default function PortfolioPage() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`group inline-flex items-center py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
-                      activeTab === tab.id
+                    className={`group inline-flex items-center py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${activeTab === tab.id
                         ? 'border-green-500 text-green-600'
                         : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                    }`}
+                      }`}
                   >
-                    <Icon className={`mr-2 h-5 w-5 ${
-                      activeTab === tab.id ? 'text-green-500' : 'text-gray-400 group-hover:text-gray-500'
-                    }`} />
+                    <Icon className={`mr-2 h-5 w-5 ${activeTab === tab.id ? 'text-green-500' : 'text-gray-400 group-hover:text-gray-500'
+                      }`} />
                     {tab.label}
                   </button>
                 )
@@ -399,7 +397,7 @@ export default function PortfolioPage() {
                       ))}
                     </select>
                   </div>
-                  
+
                   <div className="flex items-center space-x-2">
                     <span className="text-sm text-gray-500">Sort by:</span>
                     <select
@@ -533,7 +531,7 @@ export default function PortfolioPage() {
                 Optimize Portfolio <ChevronRight className="ml-1 h-4 w-4" />
               </button>
             </div>
-            
+
             <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-6 text-white">
               <Bot className="h-8 w-8 mb-3" />
               <h3 className="text-lg font-semibold mb-2">AI Investment Advisor</h3>
@@ -542,7 +540,7 @@ export default function PortfolioPage() {
                 Get AI Advice <ChevronRight className="ml-1 h-4 w-4" />
               </button>
             </div>
-            
+
             <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl p-6 text-white">
               <Target className="h-8 w-8 mb-3" />
               <h3 className="text-lg font-semibold mb-2">Risk Analytics</h3>

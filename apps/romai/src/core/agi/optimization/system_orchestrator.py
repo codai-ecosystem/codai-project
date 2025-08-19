@@ -39,6 +39,13 @@ import pickle
 from pathlib import Path
 import traceback
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 class OrchestrationMode(Enum):
     """System orchestration modes"""
     CULTURAL_PRIORITY = "cultural_priority"        # Culture-first orchestration

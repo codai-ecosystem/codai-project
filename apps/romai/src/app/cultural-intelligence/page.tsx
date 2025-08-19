@@ -3,9 +3,9 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Heart, 
-  Flag, 
+import {
+  Heart,
+  Flag,
   Crown,
   Star,
   MapPin,
@@ -345,7 +345,7 @@ export default function CulturalIntelligence() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-yellow-50">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         className="bg-white/80 backdrop-blur-sm border-b border-red-200/50 sticky top-0 z-40"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -363,7 +363,7 @@ export default function CulturalIntelligence() {
                 <p className="text-sm text-gray-600">Romanian Cultural Understanding & Analysis</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="hidden sm:flex items-center space-x-6 text-sm">
                 <div className="flex items-center space-x-2">
@@ -394,11 +394,10 @@ export default function CulturalIntelligence() {
                 <button
                   key={tab.id}
                   onClick={() => setSelectedTab(tab.id)}
-                  className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                    selectedTab === tab.id
+                  className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${selectedTab === tab.id
                       ? 'border-red-500 text-red-600'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                    }`}
                 >
                   <Icon className="w-4 h-4" />
                   <span>{tab.label}</span>
@@ -439,7 +438,7 @@ export default function CulturalIntelligence() {
                         </div>
                         {getTrendIcon(metric.trend)}
                       </div>
-                      
+
                       <div className="mb-3">
                         <div className="flex items-baseline space-x-1">
                           <span className="text-3xl font-bold text-gray-900">
@@ -448,9 +447,9 @@ export default function CulturalIntelligence() {
                           <span className="text-lg text-gray-600">{metric.unit}</span>
                         </div>
                       </div>
-                      
+
                       <p className="text-sm text-gray-600 mb-4">{metric.description}</p>
-                      
+
                       {metric.name.includes('%') && (
                         <div className="w-full bg-gray-200 rounded-full h-2">
                           <motion.div
@@ -470,7 +469,7 @@ export default function CulturalIntelligence() {
               {/* Featured Cultural Items */}
               <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-red-200/50 shadow-sm">
                 <h3 className="text-lg font-semibold text-gray-900 mb-6">Featured Cultural Elements</h3>
-                
+
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   {featuredCulturalItems.map((item, index) => (
                     <motion.div
@@ -524,7 +523,7 @@ export default function CulturalIntelligence() {
               {/* Cultural Categories Overview */}
               <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-red-200/50 shadow-sm">
                 <h3 className="text-lg font-semibold text-gray-900 mb-6">Cultural Categories Overview</h3>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {culturalCategories.map((category, index) => {
                     const Icon = category.icon;
@@ -637,7 +636,7 @@ export default function CulturalIntelligence() {
               {/* Regional Cultural Analysis */}
               <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-red-200/50 shadow-sm">
                 <h3 className="text-lg font-semibold text-gray-900 mb-6">Regional Cultural Density Map</h3>
-                
+
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   {/* Simulated Map Visualization */}
                   <div className="bg-gradient-to-br from-red-100 to-yellow-100 rounded-lg p-6 border border-red-200">
@@ -715,8 +714,8 @@ export default function CulturalIntelligence() {
                 Advanced {tabs.find(tab => tab.id === selectedTab)?.label.toLowerCase()} capabilities coming soon.
               </p>
               <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-yellow-500 rounded-lg flex items-center justify-center mx-auto">
-                {React.createElement(tabs.find(tab => tab.id === selectedTab)?.icon || Heart, { 
-                  className: "w-8 h-8 text-white" 
+                {React.createElement(tabs.find(tab => tab.id === selectedTab)?.icon || Heart, {
+                  className: "w-8 h-8 text-white"
                 })}
               </div>
             </div>
@@ -725,7 +724,7 @@ export default function CulturalIntelligence() {
       </div>
 
       {/* Footer */}
-      <motion.footer 
+      <motion.footer
         className="bg-white/80 backdrop-blur-sm border-t border-red-200/50 mt-16"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

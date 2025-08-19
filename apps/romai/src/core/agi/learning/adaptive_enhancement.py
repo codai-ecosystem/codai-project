@@ -38,6 +38,13 @@ import gc
 
 # Import consciousness components from Day 4
 from ..day_04_consciousness_simulation.consciousness_interfaces import (
+
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
     ConsciousnessLevel, ConsciousnessState, AwarenessType,
     ConsciousnessFrame, SelfModel, ConsciousnessProtocol
 )

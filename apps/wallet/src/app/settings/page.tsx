@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { 
+import {
   Settings,
   User,
   Shield,
@@ -345,9 +345,8 @@ const WalletSettingsPage = () => {
     <motion.button
       whileTap={{ scale: 0.95 }}
       onClick={() => !disabled && onChange(!checked)}
-      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-        checked ? 'bg-purple-500' : 'bg-slate-600'
-      } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${checked ? 'bg-purple-500' : 'bg-slate-600'
+        } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
       disabled={disabled}
     >
       <motion.span
@@ -374,7 +373,7 @@ const WalletSettingsPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900">
       {/* Enhanced Header */}
-      <motion.header 
+      <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/10 backdrop-blur-sm border-b border-white/20 sticky top-0 z-50"
@@ -388,7 +387,7 @@ const WalletSettingsPage = () => {
               </h1>
               <p className="text-slate-300 mt-1">Manage your wallet preferences and security</p>
             </div>
-            
+
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-6 text-sm">
                 <div className="text-center">
@@ -408,7 +407,7 @@ const WalletSettingsPage = () => {
                   <p className="text-slate-300">Categories</p>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-2">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -419,7 +418,7 @@ const WalletSettingsPage = () => {
                   <Download className="w-4 h-4" />
                   Export
                 </motion.button>
-                
+
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -429,7 +428,7 @@ const WalletSettingsPage = () => {
                   <Upload className="w-4 h-4" />
                   Import
                 </motion.button>
-                
+
                 {hasChanges && (
                   <motion.button
                     whileHover={{ scale: 1.05 }}
@@ -450,7 +449,7 @@ const WalletSettingsPage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex gap-8">
           {/* Settings Sidebar */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             className="w-80 flex-shrink-0"
@@ -466,7 +465,7 @@ const WalletSettingsPage = () => {
                   className="pl-10 pr-4 py-2 w-full bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
               </div>
-              
+
               <nav className="space-y-2">
                 {categories.map((category) => {
                   const Icon = category.icon
@@ -476,11 +475,10 @@ const WalletSettingsPage = () => {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => setSelectedCategory(category.id)}
-                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
-                        selectedCategory === category.id
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${selectedCategory === category.id
                           ? 'bg-gradient-to-r from-purple-500 to-blue-600 text-white'
                           : 'text-slate-300 hover:bg-white/10'
-                      }`}
+                        }`}
                     >
                       <Icon className="w-5 h-5" />
                       <span className="font-medium flex-1 text-left">{category.name}</span>
@@ -525,7 +523,7 @@ const WalletSettingsPage = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="space-y-4">
                       <div>
                         <label className="block text-sm text-slate-300 mb-2">Wallet Address</label>
@@ -550,14 +548,14 @@ const WalletSettingsPage = () => {
                           </motion.button>
                         </div>
                       </div>
-                      
+
                       <div>
                         <label className="block text-sm text-slate-300 mb-2">Member Since</label>
                         <p className="text-white">{formatDate(userProfile.joinDate)}</p>
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 pt-6 border-t border-white/20">
                     <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
                       <div>
@@ -566,7 +564,7 @@ const WalletSettingsPage = () => {
                       </div>
                       <Check className="w-5 h-5 text-green-400" />
                     </div>
-                    
+
                     <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
                       <div>
                         <p className="text-sm text-slate-300">Phone Verified</p>
@@ -574,7 +572,7 @@ const WalletSettingsPage = () => {
                       </div>
                       <Check className="w-5 h-5 text-green-400" />
                     </div>
-                    
+
                     <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
                       <div>
                         <p className="text-sm text-slate-300">Backup Enabled</p>
@@ -597,31 +595,31 @@ const WalletSettingsPage = () => {
                         <h4 className="text-white font-medium">Two-Factor Authentication</h4>
                         <p className="text-sm text-slate-300">Add an extra layer of security to your account</p>
                       </div>
-                      <ToggleSwitch 
-                        checked={securitySettings.twoFactorAuth} 
-                        onChange={(value: boolean) => setSecuritySettings({...securitySettings, twoFactorAuth: value})}
+                      <ToggleSwitch
+                        checked={securitySettings.twoFactorAuth}
+                        onChange={(value: boolean) => setSecuritySettings({ ...securitySettings, twoFactorAuth: value })}
                       />
                     </div>
-                    
+
                     <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
                       <div>
                         <h4 className="text-white font-medium">Biometric Authentication</h4>
                         <p className="text-sm text-slate-300">Use fingerprint or face recognition</p>
                       </div>
-                      <ToggleSwitch 
-                        checked={securitySettings.biometricAuth} 
-                        onChange={(value: boolean) => setSecuritySettings({...securitySettings, biometricAuth: value})}
+                      <ToggleSwitch
+                        checked={securitySettings.biometricAuth}
+                        onChange={(value: boolean) => setSecuritySettings({ ...securitySettings, biometricAuth: value })}
                       />
                     </div>
-                    
+
                     <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
                       <div>
                         <h4 className="text-white font-medium">Auto Lock</h4>
                         <p className="text-sm text-slate-300">Automatically lock the app when inactive</p>
                       </div>
-                      <ToggleSwitch 
-                        checked={securitySettings.autoLock} 
-                        onChange={(value: boolean) => setSecuritySettings({...securitySettings, autoLock: value})}
+                      <ToggleSwitch
+                        checked={securitySettings.autoLock}
+                        onChange={(value: boolean) => setSecuritySettings({ ...securitySettings, autoLock: value })}
                       />
                     </div>
                   </div>
@@ -631,9 +629,9 @@ const WalletSettingsPage = () => {
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm text-slate-300 mb-2">Session Timeout (minutes)</label>
-                      <select 
+                      <select
                         value={securitySettings.sessionTimeout}
-                        onChange={(e) => setSecuritySettings({...securitySettings, sessionTimeout: parseInt(e.target.value)})}
+                        onChange={(e) => setSecuritySettings({ ...securitySettings, sessionTimeout: parseInt(e.target.value) })}
                         className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                       >
                         <option value={15}>15 minutes</option>
@@ -643,12 +641,12 @@ const WalletSettingsPage = () => {
                         <option value={0}>Never</option>
                       </select>
                     </div>
-                    
+
                     <div>
                       <label className="block text-sm text-slate-300 mb-2">Encryption Level</label>
-                      <select 
+                      <select
                         value={securitySettings.encryptionLevel}
-                        onChange={(e) => setSecuritySettings({...securitySettings, encryptionLevel: e.target.value as any})}
+                        onChange={(e) => setSecuritySettings({ ...securitySettings, encryptionLevel: e.target.value as any })}
                         className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                       >
                         <option value="standard">Standard (AES-256)</option>
@@ -671,42 +669,42 @@ const WalletSettingsPage = () => {
                         <Mail className="w-5 h-5 text-blue-400" />
                         <span className="text-white">Email</span>
                       </div>
-                      <ToggleSwitch 
-                        checked={notificationSettings.email} 
-                        onChange={(value: boolean) => setNotificationSettings({...notificationSettings, email: value})}
+                      <ToggleSwitch
+                        checked={notificationSettings.email}
+                        onChange={(value: boolean) => setNotificationSettings({ ...notificationSettings, email: value })}
                       />
                     </div>
-                    
+
                     <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
                       <div className="flex items-center gap-3">
                         <Smartphone className="w-5 h-5 text-green-400" />
                         <span className="text-white">Push</span>
                       </div>
-                      <ToggleSwitch 
-                        checked={notificationSettings.push} 
-                        onChange={(value: boolean) => setNotificationSettings({...notificationSettings, push: value})}
+                      <ToggleSwitch
+                        checked={notificationSettings.push}
+                        onChange={(value: boolean) => setNotificationSettings({ ...notificationSettings, push: value })}
                       />
                     </div>
-                    
+
                     <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
                       <div className="flex items-center gap-3">
                         <MessageSquare className="w-5 h-5 text-purple-400" />
                         <span className="text-white">SMS</span>
                       </div>
-                      <ToggleSwitch 
-                        checked={notificationSettings.sms} 
-                        onChange={(value: boolean) => setNotificationSettings({...notificationSettings, sms: value})}
+                      <ToggleSwitch
+                        checked={notificationSettings.sms}
+                        onChange={(value: boolean) => setNotificationSettings({ ...notificationSettings, sms: value })}
                       />
                     </div>
-                    
+
                     <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
                       <div className="flex items-center gap-3">
                         <Bell className="w-5 h-5 text-yellow-400" />
                         <span className="text-white">In-App</span>
                       </div>
-                      <ToggleSwitch 
-                        checked={notificationSettings.inApp} 
-                        onChange={(value: boolean) => setNotificationSettings({...notificationSettings, inApp: value})}
+                      <ToggleSwitch
+                        checked={notificationSettings.inApp}
+                        onChange={(value: boolean) => setNotificationSettings({ ...notificationSettings, inApp: value })}
                       />
                     </div>
                   </div>
@@ -728,9 +726,9 @@ const WalletSettingsPage = () => {
                             <Icon className="w-5 h-5 text-slate-400" />
                             <span className="text-white">{item.label}</span>
                           </div>
-                          <ToggleSwitch 
-                            checked={(notificationSettings as any)[item.key]} 
-                            onChange={(value: boolean) => setNotificationSettings({...notificationSettings, [item.key]: value})}
+                          <ToggleSwitch
+                            checked={(notificationSettings as any)[item.key]}
+                            onChange={(value: boolean) => setNotificationSettings({ ...notificationSettings, [item.key]: value })}
                           />
                         </div>
                       )
@@ -753,12 +751,11 @@ const WalletSettingsPage = () => {
                             key={theme}
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            onClick={() => setAppearanceSettings({...appearanceSettings, theme: theme as any})}
-                            className={`p-3 rounded-xl border transition-all capitalize ${
-                              appearanceSettings.theme === theme
+                            onClick={() => setAppearanceSettings({ ...appearanceSettings, theme: theme as any })}
+                            className={`p-3 rounded-xl border transition-all capitalize ${appearanceSettings.theme === theme
                                 ? 'border-purple-500 bg-purple-500/20 text-purple-300'
                                 : 'border-white/20 bg-white/5 text-slate-300 hover:bg-white/10'
-                            }`}
+                              }`}
                           >
                             {theme === 'light' && <Sun className="w-5 h-5 mx-auto mb-2" />}
                             {theme === 'dark' && <Moon className="w-5 h-5 mx-auto mb-2" />}
@@ -768,12 +765,12 @@ const WalletSettingsPage = () => {
                         ))}
                       </div>
                     </div>
-                    
+
                     <div>
                       <label className="block text-sm text-slate-300 mb-2">Currency</label>
-                      <select 
+                      <select
                         value={appearanceSettings.currency}
-                        onChange={(e) => setAppearanceSettings({...appearanceSettings, currency: e.target.value as any})}
+                        onChange={(e) => setAppearanceSettings({ ...appearanceSettings, currency: e.target.value as any })}
                         className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                       >
                         {currencies.map((currency) => (
@@ -783,12 +780,12 @@ const WalletSettingsPage = () => {
                         ))}
                       </select>
                     </div>
-                    
+
                     <div>
                       <label className="block text-sm text-slate-300 mb-2">Language</label>
-                      <select 
+                      <select
                         value={appearanceSettings.language}
-                        onChange={(e) => setAppearanceSettings({...appearanceSettings, language: e.target.value})}
+                        onChange={(e) => setAppearanceSettings({ ...appearanceSettings, language: e.target.value })}
                         className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                       >
                         {languages.map((language) => (
@@ -817,9 +814,9 @@ const WalletSettingsPage = () => {
                             <Icon className="w-5 h-5 text-slate-400" />
                             <span className="text-white">{item.label}</span>
                           </div>
-                          <ToggleSwitch 
-                            checked={(appearanceSettings as any)[item.key]} 
-                            onChange={(value: boolean) => setAppearanceSettings({...appearanceSettings, [item.key]: value})}
+                          <ToggleSwitch
+                            checked={(appearanceSettings as any)[item.key]}
+                            onChange={(value: boolean) => setAppearanceSettings({ ...appearanceSettings, [item.key]: value })}
                           />
                         </div>
                       )
@@ -851,9 +848,9 @@ const WalletSettingsPage = () => {
                             <Icon className="w-5 h-5 text-slate-400" />
                             <span className="text-white">{item.label}</span>
                           </div>
-                          <ToggleSwitch 
-                            checked={(privacySettings as any)[item.key]} 
-                            onChange={(value: boolean) => setPrivacySettings({...privacySettings, [item.key]: value})}
+                          <ToggleSwitch
+                            checked={(privacySettings as any)[item.key]}
+                            onChange={(value: boolean) => setPrivacySettings({ ...privacySettings, [item.key]: value })}
                           />
                         </div>
                       )
@@ -873,28 +870,28 @@ const WalletSettingsPage = () => {
                         <h4 className="text-white font-medium">Cloud Backup</h4>
                         <p className="text-sm text-slate-300">Automatically backup to encrypted cloud storage</p>
                       </div>
-                      <ToggleSwitch 
-                        checked={backupSettings.cloudBackup} 
-                        onChange={(value: boolean) => setBackupSettings({...backupSettings, cloudBackup: value})}
+                      <ToggleSwitch
+                        checked={backupSettings.cloudBackup}
+                        onChange={(value: boolean) => setBackupSettings({ ...backupSettings, cloudBackup: value })}
                       />
                     </div>
-                    
+
                     <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
                       <div>
                         <h4 className="text-white font-medium">Seed Phrase Backup</h4>
                         <p className="text-sm text-slate-300">Backup your recovery seed phrase</p>
                       </div>
-                      <ToggleSwitch 
-                        checked={backupSettings.seedPhraseBackup} 
-                        onChange={(value: boolean) => setBackupSettings({...backupSettings, seedPhraseBackup: value})}
+                      <ToggleSwitch
+                        checked={backupSettings.seedPhraseBackup}
+                        onChange={(value: boolean) => setBackupSettings({ ...backupSettings, seedPhraseBackup: value })}
                       />
                     </div>
-                    
+
                     <div>
                       <label className="block text-sm text-slate-300 mb-2">Backup Frequency</label>
-                      <select 
+                      <select
                         value={backupSettings.backupFrequency}
-                        onChange={(e) => setBackupSettings({...backupSettings, backupFrequency: e.target.value as any})}
+                        onChange={(e) => setBackupSettings({ ...backupSettings, backupFrequency: e.target.value as any })}
                         className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                       >
                         <option value="daily">Daily</option>
@@ -902,7 +899,7 @@ const WalletSettingsPage = () => {
                         <option value="monthly">Monthly</option>
                       </select>
                     </div>
-                    
+
                     <div className="p-4 bg-blue-500/10 border border-blue-400/30 rounded-xl">
                       <div className="flex items-center gap-3 mb-2">
                         <Cloud className="w-5 h-5 text-blue-400" />
@@ -924,7 +921,7 @@ const WalletSettingsPage = () => {
                       <Download className="w-5 h-5" />
                       <span>Create Backup</span>
                     </motion.button>
-                    
+
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
@@ -933,7 +930,7 @@ const WalletSettingsPage = () => {
                       <Upload className="w-5 h-5" />
                       <span>Restore Backup</span>
                     </motion.button>
-                    
+
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
@@ -942,7 +939,7 @@ const WalletSettingsPage = () => {
                       <Key className="w-5 h-5" />
                       <span>View Seed Phrase</span>
                     </motion.button>
-                    
+
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
@@ -960,7 +957,7 @@ const WalletSettingsPage = () => {
       </div>
 
       {/* Modern Footer */}
-      <motion.footer 
+      <motion.footer
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
@@ -968,7 +965,7 @@ const WalletSettingsPage = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             >
@@ -977,7 +974,7 @@ const WalletSettingsPage = () => {
               <p className="text-slate-300">Multi-layer security with encryption, 2FA, and biometric authentication protection.</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             >
@@ -986,7 +983,7 @@ const WalletSettingsPage = () => {
               <p className="text-slate-300">Secure cloud backups with encrypted storage and recovery seed phrase protection.</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             >

@@ -108,19 +108,29 @@ export class RealBankingService {
         description: string;
         paymentMethodId?: string;
     }): Promise<any> {
-        if (!this.isStripeEnabled || !this.stripe) {
-            // Return mock payment success for development
-            return {
-                success: true,
-                paymentIntentId: `mock_pi_${Date.now()}`,
-                status: 'succeeded',
-                amount: paymentData.amount,
-                currency: paymentData.currency.toUpperCase(),
-                clientSecret: `mock_secret_${Date.now()}`
-            };
-        }
-
         try {
+            // Fraud validation
+            if (paymentData.amount > 10000) {
+                throw new Error('Payment amount exceeds fraud threshold');
+            }
+
+            // PCI DSS validation - check for raw card data
+            if ((paymentData as any).cardNumber) {
+                throw new Error('Raw card data not allowed - use tokenized payment methods');
+            }
+
+            if (!this.isStripeEnabled || !this.stripe) {
+                // Return mock payment success for development
+                return {
+                    success: true,
+                    paymentIntentId: `mock_pi_${Date.now()}`,
+                    status: 'succeeded',
+                    amount: paymentData.amount,
+                    currency: paymentData.currency.toUpperCase(),
+                    clientSecret: `mock_secret_${Date.now()}`
+                };
+            }
+
             // Create real Stripe payment
             const paymentIntent = await this.stripe.paymentIntents.create({
                 amount: Math.round(paymentData.amount * 100),
@@ -145,7 +155,7 @@ export class RealBankingService {
             };
         } catch (error) {
             console.error('Real payment processing error:', error);
-            throw new Error(`Payment failed: ${error}`);
+            throw new Error(`Payment failed: ${error.message}`);
         }
     }
 

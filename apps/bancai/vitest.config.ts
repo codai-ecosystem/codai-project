@@ -5,19 +5,23 @@ export default defineConfig({
   plugins: [react()],
   test: {
     name: 'bancai-tests',
-    environment: 'jsdom',
+    environment: 'jsdom',  // Changed to jsdom for React testing
     setupFiles: ['./tests/setup.ts'],
     globals: true,
     css: true,
     include: [
-      '**/*.{test,spec}.{js,ts,jsx,tsx}',
+      'tests/**/*.{test,spec}.{js,ts,jsx,tsx}',
       '__tests__/**/*.{test,spec}.{js,ts,jsx,tsx}',
       'src/**/*.{test,spec}.{js,ts,jsx,tsx}'
     ],
     exclude: [
       'node_modules/**',
+      'packages/**/node_modules/**',
+      '**/node_modules/**',
       'dist/**',
-      '.next/**'
+      '.next/**',
+      'packages/**/*.test.*',
+      'packages/**/*.spec.*'
     ],
     coverage: {
       provider: 'v8',
@@ -30,9 +34,13 @@ export default defineConfig({
       ]
     }
   },
+  define: {
+    global: 'globalThis',
+  },
   resolve: {
     alias: {
       '@': new URL('./src', import.meta.url).pathname,
+      crypto: 'crypto-browserify' // Fix crypto import for browser environment
     },
   },
 });

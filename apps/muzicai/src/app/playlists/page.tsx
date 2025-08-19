@@ -1,11 +1,11 @@
 'use client'
 
 import React, { useState } from 'react'
-import { 
-  Music, 
-  Play, 
-  Pause, 
-  Plus, 
+import {
+  Music,
+  Play,
+  Pause,
+  Plus,
   Heart,
   Share2,
   Download,
@@ -185,11 +185,11 @@ export default function PlaylistsPage() {
 
   const filteredPlaylists = playlists.filter(playlist => {
     const matchesSearch = playlist.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         playlist.description.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesFilter = filterStatus === 'all' || 
-                         (filterStatus === 'public' && playlist.isPublic) ||
-                         (filterStatus === 'private' && !playlist.isPublic) ||
-                         (filterStatus === 'liked' && playlist.isLiked)
+      playlist.description.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesFilter = filterStatus === 'all' ||
+      (filterStatus === 'public' && playlist.isPublic) ||
+      (filterStatus === 'private' && !playlist.isPublic) ||
+      (filterStatus === 'liked' && playlist.isLiked)
     return matchesSearch && matchesFilter
   })
 
@@ -221,7 +221,7 @@ export default function PlaylistsPage() {
                 <p className="text-sm text-gray-600">Manage your music collections</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -319,25 +319,23 @@ export default function PlaylistsPage() {
                 </select>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-2 rounded-lg transition-colors ${
-                  viewMode === 'grid' 
-                    ? 'bg-purple-100 text-purple-600' 
+                className={`p-2 rounded-lg transition-colors ${viewMode === 'grid'
+                    ? 'bg-purple-100 text-purple-600'
                     : 'text-gray-600 hover:text-purple-600 hover:bg-purple-50'
-                }`}
+                  }`}
               >
                 <Grid className="h-4 w-4" />
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`p-2 rounded-lg transition-colors ${
-                  viewMode === 'list' 
-                    ? 'bg-purple-100 text-purple-600' 
+                className={`p-2 rounded-lg transition-colors ${viewMode === 'list'
+                    ? 'bg-purple-100 text-purple-600'
                     : 'text-gray-600 hover:text-purple-600 hover:bg-purple-50'
-                }`}
+                  }`}
               >
                 <List className="h-4 w-4" />
               </button>
@@ -456,7 +454,7 @@ export default function PlaylistsPage() {
                   <div className={`w-16 h-16 bg-gradient-to-br ${playlist.color} rounded-lg flex items-center justify-center text-white text-xl flex-shrink-0`}>
                     {playlist.artwork}
                   </div>
-                  
+
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center space-x-2 mb-1">
                       <h3 className="font-semibold text-gray-900 truncate">{playlist.title}</h3>

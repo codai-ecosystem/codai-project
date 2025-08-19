@@ -1,179 +1,295 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Badge, Button } from '@codai/shared-ui'
+import {
+    Scale,
+    Shield,
+    Clock,
+    DollarSign,
+    FileText,
+    Search,
+    AlertShield,
+    Building,
+    Activity,
+    TrendingUp,
+    Calendar,
+    CheckCircle
+} from 'lucide-react'
 
-import { useState } from 'react'
+// TypeScript interfaces for legal data structures
+interface LegalStats {
+    activeCases: number
+    complianceScore: number
+    billableHours: number
+    revenue: number
+}
+
+interface CaseItem {
+    id: string
+    title: string
+    client: string
+    dueDate: string
+    status: 'active' | 'pending' | 'completed'
+    priority: 'high' | 'medium' | 'low'
+}
+
+interface ComplianceMetric {
+    category: string
+    score: number
+    status: 'excellent' | 'good' | 'needs-improvement'
+}
 
 export function LegalizaiDashboard() {
-    const [stats] = useState({
+    const [stats] = useState<LegalStats>({
         activeCases: 156,
         complianceScore: 94.2,
         billableHours: 2847,
         revenue: 1247000
     })
 
+    const [recentCases] = useState<CaseItem[]>([
+        {
+            id: '1',
+            title: 'Enterprise Software License Agreement',
+            client: 'TechCorp Industries',
+            dueDate: '2024-02-15',
+            status: 'active',
+            priority: 'high'
+        },
+        {
+            id: '2',
+            title: 'GDPR Compliance Audit',
+            client: 'DataFlow Solutions',
+            dueDate: '2024-01-30',
+            status: 'pending',
+            priority: 'medium'
+        }
+    ])
+
+    const [complianceMetrics] = useState<ComplianceMetric[]>([
+        { category: 'Data Privacy (GDPR)', score: 98, status: 'excellent' },
+        { category: 'Financial Compliance', score: 96, status: 'excellent' },
+        { category: 'Contract Management', score: 88, status: 'good' }
+    ])
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-6">
             <div className="mx-auto max-w-7xl space-y-8">
                 {/* Header */}
                 <div className="space-y-2">
-                    <div className="flex items-center gap-3">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg">
-                            <span className="text-xl font-bold">⚖️</span>
+                    <div className="flex items-center justify-center gap-3">
+                        <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg">
+                            <Scale className="h-8 w-8" />
                         </div>
-                        <div>
-                            <h1 className="text-3xl font-bold tracking-tight text-slate-900">LEGALIZAI</h1>
-                            <p className="text-slate-600">AI Legal & Compliance Management Platform</p>
+                        <div className="text-center">
+                            <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-blue-700 to-indigo-800 bg-clip-text text-transparent">
+                                LEGALIZAI
+                            </h1>
+                            <p className="text-lg text-slate-600">AI Legal & Compliance Management Platform</p>
                         </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                        <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-green-100 text-green-700">
+                    <div className="flex items-center justify-center gap-2">
+                        <Badge variant="default" className="bg-green-100 text-green-800 hover:bg-green-200">
+                            <CheckCircle className="mr-1 h-3 w-3" />
                             System Compliant
-                        </div>
-                        <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold">
+                        </Badge>
+                        <Badge variant="outline">
+                            <Activity className="mr-1 h-3 w-3" />
                             Legal Operations Active
-                        </div>
+                        </Badge>
                     </div>
                 </div>
 
                 {/* Core Stats Grid */}
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                    <div className="rounded-lg border bg-white/60 backdrop-blur-sm shadow-lg p-6">
-                        <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <h3 className="text-sm font-medium text-slate-600">Active Cases</h3>
-                            <span className="text-blue-600">⚖️</span>
-                        </div>
-                        <div>
-                            <div className="text-2xl font-bold text-slate-900">{stats.activeCases}</div>
-                            <p className="text-xs text-slate-500">+12% from last month</p>
-                        </div>
-                    </div>
+                    <Card className="bg-white/60 backdrop-blur-sm">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium text-slate-600">Active Cases</CardTitle>
+                            <Scale className="h-4 w-4 text-blue-600" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+                                {stats.activeCases}
+                            </div>
+                            <p className="text-xs text-slate-500 flex items-center">
+                                <TrendingUp className="mr-1 h-3 w-3" />
+                                +12% from last month
+                            </p>
+                        </CardContent>
+                    </Card>
 
-                    <div className="rounded-lg border bg-white/60 backdrop-blur-sm shadow-lg p-6">
-                        <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <h3 className="text-sm font-medium text-slate-600">Compliance Score</h3>
-                            <span className="text-green-600">🛡️</span>
-                        </div>
-                        <div>
-                            <div className="text-2xl font-bold text-slate-900">{stats.complianceScore}%</div>
+                    <Card className="bg-white/60 backdrop-blur-sm">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium text-slate-600">Compliance Score</CardTitle>
+                            <Shield className="h-4 w-4 text-green-600" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-700 bg-clip-text text-transparent">
+                                {stats.complianceScore}%
+                            </div>
                             <p className="text-xs text-slate-500">Excellent rating</p>
-                        </div>
-                    </div>
+                        </CardContent>
+                    </Card>
 
-                    <div className="rounded-lg border bg-white/60 backdrop-blur-sm shadow-lg p-6">
-                        <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <h3 className="text-sm font-medium text-slate-600">Billable Hours</h3>
-                            <span className="text-purple-600">⏰</span>
-                        </div>
-                        <div>
-                            <div className="text-2xl font-bold text-slate-900">{stats.billableHours.toLocaleString()}</div>
+                    <Card className="bg-white/60 backdrop-blur-sm">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium text-slate-600">Billable Hours</CardTitle>
+                            <Clock className="h-4 w-4 text-purple-600" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-violet-700 bg-clip-text text-transparent">
+                                {stats.billableHours.toLocaleString()}
+                            </div>
                             <p className="text-xs text-slate-500">This quarter</p>
-                        </div>
-                    </div>
+                        </CardContent>
+                    </Card>
 
-                    <div className="rounded-lg border bg-white/60 backdrop-blur-sm shadow-lg p-6">
-                        <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <h3 className="text-sm font-medium text-slate-600">Revenue</h3>
-                            <span className="text-emerald-600">💰</span>
-                        </div>
-                        <div>
-                            <div className="text-2xl font-bold text-slate-900">${(stats.revenue / 1000).toFixed(0)}K</div>
+                    <Card className="bg-white/60 backdrop-blur-sm">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium text-slate-600">Revenue</CardTitle>
+                            <DollarSign className="h-4 w-4 text-emerald-600" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-green-700 bg-clip-text text-transparent">
+                                ${(stats.revenue / 1000).toFixed(0)}K
+                            </div>
                             <p className="text-xs text-slate-500">YTD performance</p>
-                        </div>
-                    </div>
+                        </CardContent>
+                    </Card>
                 </div>
 
-                {/* Main Content */}
-                <div className="rounded-lg border bg-white/60 backdrop-blur-sm shadow-lg">
-                    <div className="flex flex-col space-y-1.5 p-6">
-                        <h3 className="text-2xl font-semibold leading-none tracking-tight flex items-center gap-2">
-                            <span>🛡️</span>
+                {/* Main Content - Legal Operations Center */}
+                <Card className="bg-white/60 backdrop-blur-sm">
+                    <CardHeader>
+                        <CardTitle className="text-2xl font-semibold flex items-center gap-2">
+                            <AlertShield className="h-6 w-6 text-blue-600" />
                             Legal Operations Center
-                        </h3>
-                        <p className="text-sm text-slate-600">Comprehensive legal case management and compliance monitoring</p>
-                    </div>
-                    <div className="p-6 pt-0">
+                        </CardTitle>
+                        <CardDescription>
+                            Comprehensive legal case management and compliance monitoring
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
                         <div className="grid gap-6 md:grid-cols-2">
+                            {/* Recent Cases */}
                             <div className="space-y-4">
-                                <h3 className="font-semibold">Recent Cases</h3>
-                                <div className="space-y-2">
-                                    <div className="p-3 rounded-lg bg-slate-50/50">
-                                        <p className="font-medium">Enterprise Software License Agreement</p>
-                                        <p className="text-sm text-slate-600">TechCorp Industries • Due: 2024-02-15</p>
-                                        <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold mt-1">
-                                            Active
-                                        </div>
-                                    </div>
-                                    <div className="p-3 rounded-lg bg-slate-50/50">
-                                        <p className="font-medium">GDPR Compliance Audit</p>
-                                        <p className="text-sm text-slate-600">DataFlow Solutions • Due: 2024-01-30</p>
-                                        <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold mt-1">
-                                            Pending
-                                        </div>
-                                    </div>
+                                <h3 className="font-semibold flex items-center gap-2">
+                                    <FileText className="h-4 w-4" />
+                                    Recent Cases
+                                </h3>
+                                <div className="space-y-3">
+                                    {recentCases.map((caseItem) => (
+                                        <Card key={caseItem.id} className="bg-slate-50/50">
+                                            <CardContent className="p-4">
+                                                <div className="space-y-2">
+                                                    <div className="flex items-start justify-between">
+                                                        <h4 className="font-medium text-slate-900">{caseItem.title}</h4>
+                                                        <Badge
+                                                            variant={caseItem.status === 'active' ? 'default' : 'outline'}
+                                                            className={
+                                                                caseItem.status === 'active'
+                                                                    ? 'bg-blue-100 text-blue-800'
+                                                                    : ''
+                                                            }
+                                                        >
+                                                            {caseItem.status}
+                                                        </Badge>
+                                                    </div>
+                                                    <p className="text-sm text-slate-600 flex items-center gap-1">
+                                                        <Building className="h-3 w-3" />
+                                                        {caseItem.client}
+                                                    </p>
+                                                    <p className="text-sm text-slate-500 flex items-center gap-1">
+                                                        <Calendar className="h-3 w-3" />
+                                                        Due: {caseItem.dueDate}
+                                                    </p>
+                                                </div>
+                                            </CardContent>
+                                        </Card>
+                                    ))}
                                 </div>
                             </div>
+
+                            {/* Compliance Metrics */}
                             <div className="space-y-4">
-                                <h3 className="font-semibold">Compliance Metrics</h3>
-                                <div className="space-y-3">
-                                    <div>
-                                        <div className="flex justify-between items-center mb-1">
-                                            <span className="text-sm">Data Privacy (GDPR)</span>
-                                            <span className="text-sm font-medium">98%</span>
+                                <h3 className="font-semibold flex items-center gap-2">
+                                    <Shield className="h-4 w-4" />
+                                    Compliance Metrics
+                                </h3>
+                                <div className="space-y-4">
+                                    {complianceMetrics.map((metric, index) => (
+                                        <div key={index} className="space-y-2">
+                                            <div className="flex justify-between items-center">
+                                                <span className="text-sm font-medium">{metric.category}</span>
+                                                <Badge
+                                                    variant="outline"
+                                                    className={
+                                                        metric.status === 'excellent'
+                                                            ? 'bg-green-100 text-green-800'
+                                                            : metric.status === 'good'
+                                                                ? 'bg-blue-100 text-blue-800'
+                                                                : 'bg-amber-100 text-amber-800'
+                                                    }
+                                                >
+                                                    {metric.score}%
+                                                </Badge>
+                                            </div>
+                                            <div className="w-full bg-slate-200 rounded-full h-2.5">
+                                                <div
+                                                    className={`h-2.5 rounded-full ${metric.status === 'excellent'
+                                                            ? 'bg-green-500'
+                                                            : metric.status === 'good'
+                                                                ? 'bg-blue-500'
+                                                                : 'bg-amber-500'
+                                                        }`}
+                                                    style={{ width: `${metric.score}%` }}
+                                                />
+                                            </div>
                                         </div>
-                                        <div className="w-full bg-slate-200 rounded-full h-2">
-                                            <div className="h-2 rounded-full bg-green-500" style={{ width: '98%' }}></div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="flex justify-between items-center mb-1">
-                                            <span className="text-sm">Financial Compliance</span>
-                                            <span className="text-sm font-medium">96%</span>
-                                        </div>
-                                        <div className="w-full bg-slate-200 rounded-full h-2">
-                                            <div className="h-2 rounded-full bg-green-500" style={{ width: '96%' }}></div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="flex justify-between items-center mb-1">
-                                            <span className="text-sm">Contract Management</span>
-                                            <span className="text-sm font-medium">88%</span>
-                                        </div>
-                                        <div className="w-full bg-slate-200 rounded-full h-2">
-                                            <div className="h-2 rounded-full bg-blue-500" style={{ width: '88%' }}></div>
-                                        </div>
-                                    </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </CardContent>
+                </Card>
 
                 {/* Action Buttons */}
                 <div className="flex flex-wrap gap-4">
-                    <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg h-10 px-4 py-2">
-                        📄 New Case
-                    </button>
-                    <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border border-slate-200 hover:bg-slate-50 h-10 px-4 py-2">
-                        🔍 Legal Research
-                    </button>
-                    <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border border-slate-200 hover:bg-slate-50 h-10 px-4 py-2">
-                        🛡️ Compliance Audit
-                    </button>
-                    <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border border-slate-200 hover:bg-slate-50 h-10 px-4 py-2">
-                        🏢 Client Portal
-                    </button>
+                    <Button className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg">
+                        <FileText className="mr-2 h-4 w-4" />
+                        New Case
+                    </Button>
+                    <Button variant="outline" className="hover:bg-slate-50">
+                        <Search className="mr-2 h-4 w-4" />
+                        Legal Research
+                    </Button>
+                    <Button variant="outline" className="hover:bg-slate-50">
+                        <AlertShield className="mr-2 h-4 w-4" />
+                        Compliance Audit
+                    </Button>
+                    <Button variant="outline" className="hover:bg-slate-50">
+                        <Building className="mr-2 h-4 w-4" />
+                        Client Portal
+                    </Button>
                 </div>
 
                 {/* Footer */}
                 <div className="border-t border-slate-200 pt-6">
                     <div className="flex items-center justify-between text-sm text-slate-500">
-                        <p>LEGALIZAI - AI Legal & Compliance Management Platform</p>
+                        <p className="flex items-center gap-2">
+                            <Scale className="h-4 w-4" />
+                            LEGALIZAI - AI Legal & Compliance Management Platform
+                        </p>
                         <div className="flex items-center gap-4">
-                            <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold border-green-200 text-green-700">
-                                🛡️ Compliant & Secure
-                            </div>
-                            <p>Last updated: {new Date().toLocaleTimeString()}</p>
+                            <Badge variant="outline" className="border-green-200 text-green-700">
+                                <Shield className="mr-1 h-3 w-3" />
+                                Compliant & Secure
+                            </Badge>
+                            <p className="flex items-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                Last updated: {new Date().toLocaleTimeString()}
+                            </p>
                         </div>
                     </div>
                 </div>

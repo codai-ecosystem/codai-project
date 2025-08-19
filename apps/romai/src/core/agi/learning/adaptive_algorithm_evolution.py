@@ -30,6 +30,13 @@ import importlib
 import sys
 
 from .self_improvement_interfaces import (
+
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
     BaseSelfImprovement, SelfModificationCapability, ImprovementProposal,
     ImprovementResult, ImprovementMetrics, CulturalImpact, SelfImprovementType,
     ImprovementStatus, ValidationResult, CulturalPreservationLevel

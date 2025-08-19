@@ -24,6 +24,13 @@ import copy
 import random
 import math
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 class MetaLearningAlgorithm(Enum):
     """Meta-learning algorithms"""
     MAML = "model_agnostic_meta_learning"

@@ -2,13 +2,13 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  BarChart3, 
-  TrendingUp, 
-  TrendingDown, 
-  Users, 
-  Eye, 
-  Clock, 
+import {
+  BarChart3,
+  TrendingUp,
+  TrendingDown,
+  Users,
+  Eye,
+  Clock,
   Calendar,
   Download,
   Share2,
@@ -224,7 +224,7 @@ export default function AnalyticsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/80 backdrop-blur-sm border-b border-purple-100 sticky top-0 z-40"
@@ -240,13 +240,12 @@ export default function AnalyticsPage() {
               </p>
             </div>
             <div className="flex items-center space-x-4">
-              <button 
+              <button
                 onClick={() => setIsRealTime(!isRealTime)}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 ${
-                  isRealTime 
-                    ? 'bg-green-100 text-green-700 border border-green-200' 
+                className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 ${isRealTime
+                    ? 'bg-green-100 text-green-700 border border-green-200'
                     : 'bg-gray-100 text-gray-600 border border-gray-200'
-                }`}
+                  }`}
               >
                 <div className={`w-2 h-2 rounded-full ${isRealTime ? 'bg-green-500 animate-pulse' : 'bg-gray-400'}`} />
                 <span className="text-sm font-medium">{isRealTime ? 'Live' : 'Paused'}</span>
@@ -272,7 +271,7 @@ export default function AnalyticsPage() {
       </motion.div>
 
       {/* Navigation Tabs */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.1 }}
@@ -291,11 +290,10 @@ export default function AnalyticsPage() {
               <a
                 key={tab.name}
                 href={tab.href}
-                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${
-                  tab.current
+                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${tab.current
                     ? 'border-purple-500 text-purple-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
+                  }`}
               >
                 {tab.name}
               </a>
@@ -306,9 +304,9 @@ export default function AnalyticsPage() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
+
         {/* Overview Metrics */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -320,12 +318,11 @@ export default function AnalyticsPage() {
                 <div className={`p-3 rounded-lg ${metric.color}`}>
                   {metric.icon}
                 </div>
-                <div className={`flex items-center space-x-1 text-sm font-medium ${
-                  metric.trend === 'up' ? 'text-green-600' : metric.trend === 'down' ? 'text-red-600' : 'text-gray-600'
-                }`}>
-                  {metric.trend === 'up' ? <ArrowUpRight className="w-4 h-4" /> : 
-                   metric.trend === 'down' ? <ArrowDownRight className="w-4 h-4" /> : 
-                   <div className="w-4 h-4" />}
+                <div className={`flex items-center space-x-1 text-sm font-medium ${metric.trend === 'up' ? 'text-green-600' : metric.trend === 'down' ? 'text-red-600' : 'text-gray-600'
+                  }`}>
+                  {metric.trend === 'up' ? <ArrowUpRight className="w-4 h-4" /> :
+                    metric.trend === 'down' ? <ArrowDownRight className="w-4 h-4" /> :
+                      <div className="w-4 h-4" />}
                   <span>{Math.abs(metric.change)}%</span>
                 </div>
               </div>
@@ -338,9 +335,9 @@ export default function AnalyticsPage() {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
+
           {/* Top Presentations */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
@@ -350,18 +347,17 @@ export default function AnalyticsPage() {
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-lg font-semibold text-gray-900">Top Performing Presentations</h3>
                 <div className="flex items-center space-x-2">
-                  <button 
+                  <button
                     onClick={() => setShowComparisons(!showComparisons)}
-                    className={`text-sm px-3 py-1 rounded-lg transition-colors duration-200 ${
-                      showComparisons ? 'bg-purple-100 text-purple-600' : 'bg-gray-100 text-gray-600'
-                    }`}
+                    className={`text-sm px-3 py-1 rounded-lg transition-colors duration-200 ${showComparisons ? 'bg-purple-100 text-purple-600' : 'bg-gray-100 text-gray-600'
+                      }`}
                   >
                     Compare
                   </button>
                   <RefreshCw className="w-4 h-4 text-gray-400 cursor-pointer hover:text-gray-600 transition-colors duration-200" />
                 </div>
               </div>
-              
+
               <div className="space-y-4">
                 {topPresentations.map((presentation, index) => (
                   <div key={presentation.id} className="p-4 bg-white/50 rounded-lg border border-purple-50 hover:bg-white/70 transition-all duration-200">
@@ -375,16 +371,15 @@ export default function AnalyticsPage() {
                           <p className="text-sm text-gray-500">Last viewed {presentation.lastViewed}</p>
                         </div>
                       </div>
-                      <div className={`flex items-center space-x-1 text-sm ${
-                        presentation.trend === 'up' ? 'text-green-600' : 
-                        presentation.trend === 'down' ? 'text-red-600' : 'text-gray-600'
-                      }`}>
-                        {presentation.trend === 'up' ? <TrendingUp className="w-4 h-4" /> : 
-                         presentation.trend === 'down' ? <TrendingDown className="w-4 h-4" /> : 
-                         <div className="w-4 h-4" />}
+                      <div className={`flex items-center space-x-1 text-sm ${presentation.trend === 'up' ? 'text-green-600' :
+                          presentation.trend === 'down' ? 'text-red-600' : 'text-gray-600'
+                        }`}>
+                        {presentation.trend === 'up' ? <TrendingUp className="w-4 h-4" /> :
+                          presentation.trend === 'down' ? <TrendingDown className="w-4 h-4" /> :
+                            <div className="w-4 h-4" />}
                       </div>
                     </div>
-                    
+
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                       <div>
                         <p className="text-gray-500">Views</p>
@@ -406,7 +401,7 @@ export default function AnalyticsPage() {
                         </div>
                       </div>
                     </div>
-                    
+
                     {/* Completion Rate Bar */}
                     <div className="mt-3">
                       <div className="flex items-center justify-between text-sm mb-1">
@@ -414,7 +409,7 @@ export default function AnalyticsPage() {
                         <span className="font-medium text-gray-900">{presentation.completionRate}%</span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
+                        <div
                           className="bg-gradient-to-r from-purple-500 to-blue-500 h-2 rounded-full transition-all duration-500"
                           style={{ width: `${presentation.completionRate}%` }}
                         />
@@ -427,13 +422,13 @@ export default function AnalyticsPage() {
           </motion.div>
 
           {/* Right Sidebar */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
             className="space-y-6"
           >
-            
+
             {/* Audience Geography */}
             <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-purple-100 p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Audience by Location</h3>
@@ -470,7 +465,7 @@ export default function AnalyticsPage() {
                     </div>
                     <div className="flex items-center space-x-2">
                       <div className="w-16 bg-gray-200 rounded-full h-2">
-                        <div 
+                        <div
                           className={`${device.color} h-2 rounded-full transition-all duration-500`}
                           style={{ width: `${device.percentage}%` }}
                         />
@@ -495,7 +490,7 @@ export default function AnalyticsPage() {
                   </div>
                   <span className="text-sm font-bold text-blue-600">+24.3%</span>
                 </div>
-                
+
                 <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
                   <div className="flex items-center space-x-3">
                     <div className="p-2 bg-green-100 rounded-lg">
@@ -505,7 +500,7 @@ export default function AnalyticsPage() {
                   </div>
                   <span className="text-sm font-bold text-green-600">Q3 Review</span>
                 </div>
-                
+
                 <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
                   <div className="flex items-center space-x-3">
                     <div className="p-2 bg-purple-100 rounded-lg">
@@ -522,7 +517,7 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Modern Footer */}
-      <motion.footer 
+      <motion.footer
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.6 }}
@@ -533,7 +528,7 @@ export default function AnalyticsPage() {
             <div className="col-span-1 md:col-span-2">
               <h3 className="text-2xl font-bold mb-4">PrezentAI Analytics</h3>
               <p className="text-purple-200 mb-6 max-w-md">
-                Gain deep insights into your presentation performance with advanced analytics. 
+                Gain deep insights into your presentation performance with advanced analytics.
                 Track engagement, audience behavior, and optimize your content for maximum impact.
               </p>
               <div className="flex space-x-4">
@@ -548,7 +543,7 @@ export default function AnalyticsPage() {
                 </button>
               </div>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-semibold mb-4">Analytics Features</h4>
               <ul className="space-y-2 text-purple-200">
@@ -558,7 +553,7 @@ export default function AnalyticsPage() {
                 <li><a href="#" className="hover:text-white transition-colors duration-200">Performance Reports</a></li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-semibold mb-4">Data Export</h4>
               <ul className="space-y-2 text-purple-200">
@@ -569,7 +564,7 @@ export default function AnalyticsPage() {
               </ul>
             </div>
           </div>
-          
+
           <div className="border-t border-purple-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-purple-200 text-sm">
               © 2025 PrezentAI Analytics. Transform data into actionable insights.

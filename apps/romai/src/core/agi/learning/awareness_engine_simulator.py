@@ -26,6 +26,13 @@ from .consciousness_interfaces import (
 from .self_awareness_engine import SelfAwarenessEngine
 from .cultural_consciousness_engine import CulturalConsciousnessEngine
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 logger = logging.getLogger(__name__)
 
 @dataclass

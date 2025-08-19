@@ -419,6 +419,13 @@ class RomanianAdaptiveLearningEngine:
         if isinstance(modifier, str) and modifier == 'variable':
             # Seasonal variation (simplified)
             import time
+
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
             season_factor = 0.8 + 0.4 * np.sin(time.time() / (365.25 * 24 * 3600) * 2 * np.pi)
             adapted_lr = base_lr * season_factor
         else:

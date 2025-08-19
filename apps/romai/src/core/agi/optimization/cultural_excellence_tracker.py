@@ -39,6 +39,13 @@ from pathlib import Path
 import pickle
 import yaml
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 class ExcellenceLevel(Enum):
     """Excellence certification levels"""
     EXCEPTIONAL = "exceptional"  # 95%+ across all metrics

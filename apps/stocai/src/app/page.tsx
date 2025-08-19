@@ -2,12 +2,12 @@
 
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  DollarSign, 
-  BarChart3, 
-  Activity, 
+import {
+  TrendingUp,
+  TrendingDown,
+  DollarSign,
+  BarChart3,
+  Activity,
   Bot,
   Search,
   Bell,
@@ -37,7 +37,7 @@ interface MarketIndex {
 export default function StocAIDashboard() {
   const [currentTime, setCurrentTime] = useState(new Date())
   const [activeTab, setActiveTab] = useState('overview')
-  
+
   const [marketData] = useState<MarketIndex[]>([
     { name: 'S&P 500', value: 4731.23, change: 12.45, changePercent: 0.26 },
     { name: 'DOW JONES', value: 36585.06, change: -89.22, changePercent: -0.24 },
@@ -61,19 +61,19 @@ export default function StocAIDashboard() {
   ])
 
   const [aiInsights] = useState([
-    { 
-      type: 'opportunity', 
-      confidence: 92, 
+    {
+      type: 'opportunity',
+      confidence: 92,
       text: 'Technology stocks showing strong momentum for Q4 - consider increasing allocation'
     },
-    { 
-      type: 'warning', 
-      confidence: 87, 
+    {
+      type: 'warning',
+      confidence: 87,
       text: 'High volatility detected in TSLA - recommend setting stop-loss orders'
     },
-    { 
-      type: 'strategy', 
-      confidence: 89, 
+    {
+      type: 'strategy',
+      confidence: 89,
       text: 'Energy sector presenting oversold opportunities in current market cycle'
     }
   ])
@@ -176,15 +176,13 @@ export default function StocAIDashboard() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`group inline-flex items-center py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
-                      activeTab === tab.id
+                    className={`group inline-flex items-center py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${activeTab === tab.id
                         ? 'border-green-500 text-green-600'
                         : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                    }`}
+                      }`}
                   >
-                    <Icon className={`mr-2 h-5 w-5 ${
-                      activeTab === tab.id ? 'text-green-500' : 'text-gray-400 group-hover:text-gray-500'
-                    }`} />
+                    <Icon className={`mr-2 h-5 w-5 ${activeTab === tab.id ? 'text-green-500' : 'text-gray-400 group-hover:text-gray-500'
+                      }`} />
                     {tab.label}
                   </button>
                 )
@@ -264,27 +262,27 @@ export default function StocAIDashboard() {
                   <Briefcase className="h-6 w-6 mb-2" />
                   <div className="text-sm font-medium">Portfolio</div>
                 </Link>
-                
+
                 <Link href="/watchlist" className="group p-4 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700 transition-all transform hover:scale-105">
                   <Eye className="h-6 w-6 mb-2" />
                   <div className="text-sm font-medium">Watchlist</div>
                 </Link>
-                
+
                 <Link href="/analytics" className="group p-4 rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:from-purple-600 hover:to-purple-700 transition-all transform hover:scale-105">
                   <PieChart className="h-6 w-6 mb-2" />
                   <div className="text-sm font-medium">Analytics</div>
                 </Link>
-                
+
                 <Link href="/ai-trading" className="group p-4 rounded-lg bg-gradient-to-r from-indigo-500 to-indigo-600 text-white hover:from-indigo-600 hover:to-indigo-700 transition-all transform hover:scale-105">
                   <Bot className="h-6 w-6 mb-2" />
                   <div className="text-sm font-medium">AI Trading</div>
                 </Link>
-                
+
                 <Link href="/settings" className="group p-4 rounded-lg bg-gradient-to-r from-gray-500 to-gray-600 text-white hover:from-gray-600 hover:to-gray-700 transition-all transform hover:scale-105">
                   <Settings className="h-6 w-6 mb-2" />
                   <div className="text-sm font-medium">Settings</div>
                 </Link>
-                
+
                 <button className="group p-4 rounded-lg bg-gradient-to-r from-orange-500 to-red-600 text-white hover:from-orange-600 hover:to-red-700 transition-all transform hover:scale-105">
                   <Target className="h-6 w-6 mb-2" />
                   <div className="text-sm font-medium">Trade Now</div>
@@ -328,11 +326,10 @@ export default function StocAIDashboard() {
                   {aiInsights.map((insight, index) => (
                     <div key={index} className="p-4 rounded-lg border border-purple-100 bg-gradient-to-r from-purple-50 to-blue-50">
                       <div className="flex items-start justify-between mb-2">
-                        <span className={`text-xs font-medium px-2 py-1 rounded-full ${
-                          insight.type === 'opportunity' ? 'bg-green-100 text-green-800' :
-                          insight.type === 'warning' ? 'bg-red-100 text-red-800' :
-                          'bg-blue-100 text-blue-800'
-                        }`}>
+                        <span className={`text-xs font-medium px-2 py-1 rounded-full ${insight.type === 'opportunity' ? 'bg-green-100 text-green-800' :
+                            insight.type === 'warning' ? 'bg-red-100 text-red-800' :
+                              'bg-blue-100 text-blue-800'
+                          }`}>
                           {insight.type.toUpperCase()}
                         </span>
                         <span className="text-xs text-gray-500">{insight.confidence}% confidence</span>
@@ -378,7 +375,7 @@ export default function StocAIDashboard() {
                 Explore Analytics <ChevronRight className="ml-1 h-4 w-4" />
               </button>
             </div>
-            
+
             <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl p-6 text-white">
               <Bot className="h-8 w-8 mb-3" />
               <h3 className="text-lg font-semibold mb-2">AI Trading Assistant</h3>
@@ -387,7 +384,7 @@ export default function StocAIDashboard() {
                 Start AI Trading <ChevronRight className="ml-1 h-4 w-4" />
               </button>
             </div>
-            
+
             <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl p-6 text-white">
               <Target className="h-8 w-8 mb-3" />
               <h3 className="text-lg font-semibold mb-2">Smart Risk Management</h3>

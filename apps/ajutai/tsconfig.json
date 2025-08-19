@@ -1,5 +1,4 @@
 {
-  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "target": "ES2020",
     "lib": ["dom", "dom.iterable", "es6"],
@@ -15,6 +14,8 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "skipDefaultLibCheck": true,
+    "types": [],
     "plugins": [
       {
         "name": "next"
@@ -26,12 +27,7 @@
       "@/components/*": ["./src/components/*"],
       "@/lib/*": ["./src/lib/*"],
       "@/types/*": ["./src/types/*"]
-    },
-    "typeRoots": [
-      "../../node_modules/@types",
-      "../../types",
-      "./src/types"
-    ]
+    }
   },
   "include": [
     "next-env.d.ts",
@@ -47,6 +43,8 @@
     "**/*.test.*",
     "**/*.spec.*",
     "tests/**/*",
-    "vitest.setup.ts"
+    "vitest.setup.ts",
+    "tailwind.config.ts",
+    "vitest.config.ts"
   ]
 }

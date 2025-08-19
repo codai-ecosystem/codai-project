@@ -1,0 +1,231 @@
+{
+  "timestamp": "2025-08-08T02:43:55.756464",
+  "success_rate": 83.33333333333334,
+  "status": "\u26a0\ufe0f",
+  "services_tested": 6,
+  "services_passed": 5,
+  "results": {
+    "CBD Database": {
+      "status": "\u2705 PASS",
+      "response_time": "16.9ms",
+      "data": {
+        "status": "healthy",
+        "service": "CODAI Better Database",
+        "version": "1.0.10",
+        "paradigms": 6,
+        "uptime": 1431,
+        "timestamp": "2025-08-07T23:43:52.923Z",
+        "engines": {
+          "document": "ready",
+          "vector": "ready",
+          "graph": "ready",
+          "keyValue": "ready",
+          "timeSeries": "ready",
+          "fileStorage": "ready"
+        },
+        "aiServices": {
+          "status": "ready",
+          "orchestrator": "active",
+          "mlTraining": "available",
+          "nlpProcessing": "available",
+          "documentIntelligence": "available",
+          "queryOptimization": "available",
+          "analytics": "available"
+        },
+        "security": {
+          "status": "secure",
+          "zeroTrust": "active",
+          "threatMonitoring": "active",
+          "complianceAutomation": "active",
+          "identityUnification": "active",
+          "encryption": "quantum_resistant"
+        },
+        "endpoints": {
+          "/health": "Service health check",
+          "/stats": "Service statistics",
+          "/document/*": "Document database operations",
+          "/vector/*": "Vector database operations",
+          "/graph/*": "Graph database operations",
+          "/kv/*": "Key-value database operations",
+          "/timeseries/*": "Time-series database operations",
+          "/files/*": "File and blob storage operations",
+          "/ai/*": "AI services (ML, NLP, Document Intelligence, Query Optimization, Analytics)",
+          "/security/*": "Enterprise security & compliance services",
+          "/ecosystem/*": "Developer ecosystem (SDKs, CI/CD, API Management, Power Platform)",
+          "/future/*": "Future technologies (Quantum, Digital Twins, Blockchain, Mixed Reality)"
+        }
+      }
+    },
+    "MemorAI MCP": {
+      "status": "\u2705 PASS",
+      "response_time": "8.4ms",
+      "data": {
+        "status": "healthy",
+        "service": "MemorAI MCP Server",
+        "version": "2.0.0-enterprise-rust",
+        "port": "4950",
+        "timestamp": "2025-08-07T23:43:52.934Z",
+        "uptime": 1427.9519486,
+        "memory": {
+          "rss": 72765440,
+          "heapTotal": 15642624,
+          "heapUsed": 13559200,
+          "external": 3704560,
+          "arrayBuffers": 162057
+        },
+        "features": {
+          "vectorSearch": true,
+          "hybridSearch": true,
+          "fuzzyMatching": true,
+          "keywordSearch": true,
+          "rbacSecurity": true,
+          "realtimeCollab": true,
+          "analytics": true,
+          "temporal": true,
+          "patterns": true,
+          "clustering": true,
+          "crossRef": true,
+          "backup": true,
+          "monitoring": true
+        },
+        "mcpProtocol": "2025-06-18",
+        "rustEngine": {
+          "enabled": false,
+          "status": "not_initialized",
+          "performance": {
+            "operations": 0,
+            "averageResponseTime": 0,
+            "vectorOperations": 0,
+            "averageVectorTime": 0,
+            "cacheHitRate": 0,
+            "targetResponseTime": 100,
+            "meetingTarget": true,
+            "maxVectorCapacity": 10000000,
+            "cacheSize": 0,
+            "maxCacheSize": 10000
+          },
+          "targetsMet": {
+            "responseTime": true,
+            "vectorCapacity": true
+          }
+        },
+        "cbdHealth": true,
+        "azureOpenAI": {
+          "enabled": "azure",
+          "provider": "azure",
+          "model": "text-embedding-3-large",
+          "failureCount": 0,
+          "maxFailures": 3
+        },
+        "enterprise": {
+          "rbacSecurity": true,
+          "realtimeCollab": true,
+          "analytics": true,
+          "temporal": true,
+          "patterns": true,
+          "clustering": true,
+          "crossRef": true,
+          "backup": true,
+          "monitoring": true
+        }
+      }
+    },
+    "RomAI AGI": {
+      "status": "\u2705 PASS",
+      "response_time": "256.6ms",
+      "data": {
+        "status": "healthy",
+        "uptime_seconds": 14340.559046,
+        "models_loaded": 13,
+        "total_inferences": 0,
+        "server_version": "1.0.0",
+        "timestamp": "2025-08-08T02:43:53.191360"
+      }
+    },
+    "Enterprise API": {
+      "status": "\u2705 PASS",
+      "response_time": "903.8ms",
+      "data": {
+        "status": "healthy",
+        "service": "RomAI Enterprise API Platform",
+        "version": "2.1.0",
+        "uptime": 8635.212686,
+        "timestamp": "2025-08-07T23:43:53.456056",
+        "components": {
+          "api_platform": "healthy",
+          "authentication": "healthy",
+          "rate_limiting": "healthy",
+          "romai_agi": "healthy",
+          "compliance": "active"
+        },
+        "compliance_status": "EU AI Act Ready"
+      }
+    },
+    "MemorAI GraphQL": {
+      "status": "\u274c FAIL (HTTP 400)",
+      "response_time": "268.1ms",
+      "data": null
+    },
+    "Frontend App": {
+      "status": "\u2705 PASS",
+      "response_time": "1389.0ms",
+      "data": {
+        "status": "healthy",
+        "service": "RomAI",
+        "timestamp": "2025-08-07T23:43:55.746Z",
+        "version": "1.0.0",
+        "environment": "development",
+        "responseTime": "772ms",
+        "services": {
+          "frontend": {
+            "status": "operational",
+            "url": "https://romcp.ro",
+            "responseTime": "45ms"
+          },
+          "azureOpenAI": {
+            "status": "operational",
+            "region": "Sweden Central",
+            "endpoint": "https://swedencentral.api.cognitive.microsoft.com/",
+            "responseTime": "388ms",
+            "models": [
+              "gpt-4o"
+            ]
+          },
+          "database": {
+            "status": "operational",
+            "type": "PostgreSQL",
+            "connection": "Configured"
+          },
+          "external": {
+            "vercel": {
+              "status": "operational",
+              "service": "Vercel",
+              "responseCode": 200
+            },
+            "aws": {
+              "status": "operational",
+              "service": "AWS API Gateway"
+            },
+            "cbd": {
+              "status": "operational",
+              "service": "CBD Database",
+              "responseCode": 200
+            }
+          }
+        },
+        "metrics": {
+          "uptime": 14375.5635703,
+          "memoryUsage": {
+            "rss": 411119616,
+            "heapTotal": 280719360,
+            "heapUsed": 138207288,
+            "external": 921896597,
+            "arrayBuffers": 917637453
+          },
+          "nodeVersion": "v24.1.0",
+          "platform": "win32"
+        }
+      }
+    }
+  }
+}

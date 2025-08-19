@@ -1,0 +1,13 @@
+# Exclude archived and fake tests from all test runs
+**/archived_tests/**
+**/archived_fake_tests/**
+**/*.backup_*
+**/*.fake
+**/*.archived
+**/old_tests/**
+**/deprecated_tests/**
+
+# Exclude specific patterns
+**/*_backup.py
+**/*_old.py
+**/*_deprecated.py

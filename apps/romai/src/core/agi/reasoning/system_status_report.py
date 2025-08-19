@@ -166,6 +166,13 @@ The Advanced Intelligence Enhancement & Cognitive Orchestration system represent
 import json
 from datetime import datetime
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 # Generate status data for integration
 STATUS_DATA = {
     "week": 14,

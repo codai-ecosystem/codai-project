@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { UpdateMemorySchema, sanitizeInput } from '../../../../lib/validation';
 import { vectorOperations } from '../../../../lib/vector-operations';
-import { cbdClient } from '../../../../lib/cbd-client';
+import { cbdClient } from '@/lib/cbd-client';
 import { ApiResponse, Memory, UpdateMemoryRequest } from '../../../../types/memory';
 
 // Mock user ID - will be replaced with proper auth
@@ -19,7 +19,7 @@ export async function GET(
     { params }: RouteParams
 ): Promise<NextResponse<ApiResponse<Memory>>> {
     try {
-        const { id } = params;
+        const { id } = await params;
 
         if (!id) {
             return NextResponse.json({
@@ -31,10 +31,10 @@ export async function GET(
             }, { status: 400 });
         }
 
-        // Get memory from CBD
-        const result = await cbdClient.getDocument('memories', id);
+        // Get memory from CBD using findById (which checks in-memory store)
+        const memory = await cbdClient.findById('memories', id);
 
-        if (!result.success || !result.data) {
+        if (!memory) {
             return NextResponse.json({
                 success: false,
                 error: {
@@ -43,8 +43,6 @@ export async function GET(
                 },
             }, { status: 404 });
         }
-
-        const memory = result.data as Memory;
 
         // Check if memory belongs to current user
         if (memory.userId !== MOCK_USER_ID) {
@@ -83,7 +81,7 @@ export async function PUT(
     { params }: RouteParams
 ): Promise<NextResponse<ApiResponse<Memory>>> {
     try {
-        const { id } = params;
+        const { id } = await params;
         const body: UpdateMemoryRequest = await request.json();
 
         if (!id) {
@@ -109,9 +107,9 @@ export async function PUT(
             }, { status: 400 });
         }
 
-        // Get existing memory
-        const existingResult = await cbdClient.getDocument('memories', id);
-        if (!existingResult.success || !existingResult.data) {
+        // Get existing memory using findById (which checks in-memory store)
+        const existingMemory = await cbdClient.findById('memories', id);
+        if (!existingMemory) {
             return NextResponse.json({
                 success: false,
                 error: {
@@ -120,8 +118,6 @@ export async function PUT(
                 },
             }, { status: 404 });
         }
-
-        const existingMemory = existingResult.data as Memory;
 
         // Check if memory belongs to current user
         if (existingMemory.userId !== MOCK_USER_ID) {
@@ -210,7 +206,7 @@ export async function DELETE(
     { params }: RouteParams
 ): Promise<NextResponse<ApiResponse<{ deleted: boolean }>>> {
     try {
-        const { id } = params;
+        const { id } = await params;
 
         if (!id) {
             return NextResponse.json({
@@ -222,9 +218,9 @@ export async function DELETE(
             }, { status: 400 });
         }
 
-        // Get existing memory to check ownership
-        const existingResult = await cbdClient.getDocument('memories', id);
-        if (!existingResult.success || !existingResult.data) {
+        // Get existing memory to check ownership using findById
+        const existingMemory = await cbdClient.findById('memories', id);
+        if (!existingMemory) {
             return NextResponse.json({
                 success: false,
                 error: {
@@ -233,8 +229,6 @@ export async function DELETE(
                 },
             }, { status: 404 });
         }
-
-        const existingMemory = existingResult.data as Memory;
 
         // Check if memory belongs to current user
         if (existingMemory.userId !== MOCK_USER_ID) {

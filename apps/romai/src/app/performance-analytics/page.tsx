@@ -3,8 +3,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  BarChart3, 
+import {
+  BarChart3,
   TrendingUp,
   TrendingDown,
   Activity,
@@ -374,11 +374,11 @@ export default function PerformanceAnalytics() {
   const getTrendIcon = (trend: string, change?: number) => {
     const isNegativeGood = change !== undefined && change < 0;
     switch (trend) {
-      case 'up': 
+      case 'up':
         return <ArrowUp className={`w-4 h-4 ${isNegativeGood ? 'text-red-500' : 'text-green-500'}`} />;
-      case 'down': 
+      case 'down':
         return <ArrowDown className={`w-4 h-4 ${isNegativeGood ? 'text-green-500' : 'text-red-500'}`} />;
-      default: 
+      default:
         return <Minus className="w-4 h-4 text-gray-500" />;
     }
   };
@@ -395,7 +395,7 @@ export default function PerformanceAnalytics() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-yellow-50">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         className="bg-white/80 backdrop-blur-sm border-b border-red-200/50 sticky top-0 z-40"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -413,7 +413,7 @@ export default function PerformanceAnalytics() {
                 <p className="text-sm text-gray-600">Real-time Romanian AI Performance Monitoring</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="hidden sm:flex items-center space-x-6 text-sm">
                 <div className="flex items-center space-x-2">
@@ -429,7 +429,7 @@ export default function PerformanceAnalytics() {
                   <span className="text-gray-600">99.97% Uptime</span>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-2">
                 <select
                   value={timeRange}
@@ -441,7 +441,7 @@ export default function PerformanceAnalytics() {
                   <option value="7d">Last 7 days</option>
                   <option value="30d">Last 30 days</option>
                 </select>
-                
+
                 <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
                   <RefreshCw className="w-4 h-4" />
                 </button>
@@ -461,11 +461,10 @@ export default function PerformanceAnalytics() {
                 <button
                   key={tab.id}
                   onClick={() => setSelectedTab(tab.id)}
-                  className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                    selectedTab === tab.id
+                  className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${selectedTab === tab.id
                       ? 'border-red-500 text-red-600'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                    }`}
                 >
                   <Icon className="w-4 h-4" />
                   <span>{tab.label}</span>
@@ -508,7 +507,7 @@ export default function PerformanceAnalytics() {
                           {metric.status}
                         </span>
                       </div>
-                      
+
                       <div className="mb-3">
                         <div className="flex items-baseline space-x-1">
                           <span className="text-3xl font-bold text-gray-900">
@@ -518,36 +517,34 @@ export default function PerformanceAnalytics() {
                         </div>
                         <div className="flex items-center space-x-2 mt-1">
                           {getTrendIcon(metric.trend, metric.change)}
-                          <span className={`text-sm ${
-                            (metric.trend === 'up' && metric.change > 0) || (metric.trend === 'down' && metric.change < 0)
-                              ? 'text-green-600' : metric.trend === 'stable' 
-                              ? 'text-gray-600' : 'text-red-600'
-                          }`}>
+                          <span className={`text-sm ${(metric.trend === 'up' && metric.change > 0) || (metric.trend === 'down' && metric.change < 0)
+                              ? 'text-green-600' : metric.trend === 'stable'
+                                ? 'text-gray-600' : 'text-red-600'
+                            }`}>
                             {metric.change > 0 ? '+' : ''}{metric.change}{metric.unit} vs last period
                           </span>
                         </div>
                       </div>
-                      
+
                       <p className="text-sm text-gray-600 mb-4">{metric.description}</p>
-                      
+
                       <div className="space-y-2">
                         <div className="flex items-center justify-between text-sm">
                           <span className="text-gray-600">Target: {metric.target}{metric.unit}</span>
-                          <span className={`font-medium ${
-                            metric.value >= metric.target ? 'text-green-600' : 'text-yellow-600'
-                          }`}>
+                          <span className={`font-medium ${metric.value >= metric.target ? 'text-green-600' : 'text-yellow-600'
+                            }`}>
                             {metric.value >= metric.target ? 'Target Met' : 'Below Target'}
                           </span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-2">
                           <motion.div
                             className="bg-gradient-to-r from-red-500 to-yellow-500 h-2 rounded-full"
-                            style={{ 
-                              width: `${Math.min((metric.value / (metric.target * 1.1)) * 100, 100)}%` 
+                            style={{
+                              width: `${Math.min((metric.value / (metric.target * 1.1)) * 100, 100)}%`
                             }}
                             initial={{ width: 0 }}
-                            animate={{ 
-                              width: `${Math.min((metric.value / (metric.target * 1.1)) * 100, 100)}%` 
+                            animate={{
+                              width: `${Math.min((metric.value / (metric.target * 1.1)) * 100, 100)}%`
                             }}
                             transition={{ duration: 1, delay: index * 0.2 }}
                           />
@@ -574,7 +571,7 @@ export default function PerformanceAnalytics() {
                     </button>
                   </div>
                 </div>
-                
+
                 <div className="h-64 bg-gradient-to-br from-red-50 to-yellow-50 rounded-lg border border-red-200 flex items-center justify-center">
                   <div className="text-center">
                     <LineChart className="w-12 h-12 text-red-600 mx-auto mb-2" />
@@ -638,7 +635,7 @@ export default function PerformanceAnalytics() {
               {/* Capability Performance Analysis */}
               <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-red-200/50 shadow-sm">
                 <h3 className="text-lg font-semibold text-gray-900 mb-6">Capability Performance Analysis</h3>
-                
+
                 <div className="space-y-6">
                   {capabilityPerformance.map((capability, index) => {
                     const Icon = capability.icon;
@@ -790,10 +787,9 @@ export default function PerformanceAnalytics() {
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-3">
                         <motion.div
-                          className={`h-3 rounded-full ${
-                            metric.current / metric.peak <= 0.7 ? 'bg-green-500' :
-                            metric.current / metric.peak <= 0.85 ? 'bg-yellow-500' : 'bg-red-500'
-                          }`}
+                          className={`h-3 rounded-full ${metric.current / metric.peak <= 0.7 ? 'bg-green-500' :
+                              metric.current / metric.peak <= 0.85 ? 'bg-yellow-500' : 'bg-red-500'
+                            }`}
                           style={{ width: `${(metric.current / metric.peak) * 100}%` }}
                           initial={{ width: 0 }}
                           animate={{ width: `${(metric.current / metric.peak) * 100}%` }}
@@ -808,7 +804,7 @@ export default function PerformanceAnalytics() {
               {/* System Health Overview */}
               <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-red-200/50 shadow-sm">
                 <h3 className="text-lg font-semibold text-gray-900 mb-6">System Health Overview</h3>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                   <div className="text-center">
                     <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-3">
@@ -851,7 +847,7 @@ export default function PerformanceAnalytics() {
               {/* Benchmark Comparisons */}
               <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-red-200/50 shadow-sm">
                 <h3 className="text-lg font-semibold text-gray-900 mb-6">Industry Benchmark Comparisons</h3>
-                
+
                 <div className="space-y-6">
                   {benchmarkComparisons.map((benchmark, index) => (
                     <motion.div
@@ -883,14 +879,14 @@ export default function PerformanceAnalytics() {
                           <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                             <motion.div
                               className="bg-red-500 h-2 rounded-full"
-                              style={{ 
-                                width: benchmark.metric === 'Response Time' 
+                              style={{
+                                width: benchmark.metric === 'Response Time'
                                   ? `${Math.max(100 - (benchmark.romai_score / benchmark.best_in_class) * 100, 10)}%`
                                   : `${(benchmark.romai_score / Math.max(benchmark.romai_score, benchmark.best_in_class)) * 100}%`
                               }}
                               initial={{ width: 0 }}
-                              animate={{ 
-                                width: benchmark.metric === 'Response Time' 
+                              animate={{
+                                width: benchmark.metric === 'Response Time'
                                   ? `${Math.max(100 - (benchmark.romai_score / benchmark.best_in_class) * 100, 10)}%`
                                   : `${(benchmark.romai_score / Math.max(benchmark.romai_score, benchmark.best_in_class)) * 100}%`
                               }}
@@ -908,14 +904,14 @@ export default function PerformanceAnalytics() {
                           <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                             <motion.div
                               className="bg-gray-400 h-2 rounded-full"
-                              style={{ 
-                                width: benchmark.metric === 'Response Time' 
+                              style={{
+                                width: benchmark.metric === 'Response Time'
                                   ? `${Math.max(100 - (benchmark.industry_average / benchmark.best_in_class) * 100, 10)}%`
                                   : `${(benchmark.industry_average / Math.max(benchmark.romai_score, benchmark.best_in_class)) * 100}%`
                               }}
                               initial={{ width: 0 }}
-                              animate={{ 
-                                width: benchmark.metric === 'Response Time' 
+                              animate={{
+                                width: benchmark.metric === 'Response Time'
                                   ? `${Math.max(100 - (benchmark.industry_average / benchmark.best_in_class) * 100, 10)}%`
                                   : `${(benchmark.industry_average / Math.max(benchmark.romai_score, benchmark.best_in_class)) * 100}%`
                               }}
@@ -933,14 +929,14 @@ export default function PerformanceAnalytics() {
                           <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                             <motion.div
                               className="bg-yellow-500 h-2 rounded-full"
-                              style={{ 
-                                width: benchmark.metric === 'Response Time' 
+                              style={{
+                                width: benchmark.metric === 'Response Time'
                                   ? `${Math.max(100 - (benchmark.best_in_class / benchmark.best_in_class) * 100, 10)}%`
                                   : `${(benchmark.best_in_class / Math.max(benchmark.romai_score, benchmark.best_in_class)) * 100}%`
                               }}
                               initial={{ width: 0 }}
-                              animate={{ 
-                                width: benchmark.metric === 'Response Time' 
+                              animate={{
+                                width: benchmark.metric === 'Response Time'
                                   ? `${Math.max(100 - (benchmark.best_in_class / benchmark.best_in_class) * 100, 10)}%`
                                   : `${(benchmark.best_in_class / Math.max(benchmark.romai_score, benchmark.best_in_class)) * 100}%`
                               }}
@@ -952,8 +948,8 @@ export default function PerformanceAnalytics() {
 
                       <div className="mt-4 p-3 bg-green-50 rounded-lg border border-green-200">
                         <p className="text-sm text-green-800">
-                          <strong>RomAI Advantage:</strong> 
-                          {benchmark.metric === 'Response Time' 
+                          <strong>RomAI Advantage:</strong>
+                          {benchmark.metric === 'Response Time'
                             ? ` ${((benchmark.industry_average - benchmark.romai_score) / benchmark.industry_average * 100).toFixed(1)}% faster than industry average`
                             : ` ${((benchmark.romai_score - benchmark.industry_average) / benchmark.industry_average * 100).toFixed(1)}% better than industry average`
                           }
@@ -976,8 +972,8 @@ export default function PerformanceAnalytics() {
                 Advanced {tabs.find(tab => tab.id === selectedTab)?.label.toLowerCase()} capabilities coming soon.
               </p>
               <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-yellow-500 rounded-lg flex items-center justify-center mx-auto">
-                {React.createElement(tabs.find(tab => tab.id === selectedTab)?.icon || BarChart3, { 
-                  className: "w-8 h-8 text-white" 
+                {React.createElement(tabs.find(tab => tab.id === selectedTab)?.icon || BarChart3, {
+                  className: "w-8 h-8 text-white"
                 })}
               </div>
             </div>
@@ -986,7 +982,7 @@ export default function PerformanceAnalytics() {
       </div>
 
       {/* Footer */}
-      <motion.footer 
+      <motion.footer
         className="bg-white/80 backdrop-blur-sm border-t border-red-200/50 mt-16"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

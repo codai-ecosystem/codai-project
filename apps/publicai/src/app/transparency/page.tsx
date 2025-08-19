@@ -200,7 +200,7 @@ export default function TransparencyPortal() {
   ]
 
   const departments = [
-    'all', 'Finance', 'City Council', 'Public Works', 'Housing Authority', 
+    'all', 'Finance', 'City Council', 'Public Works', 'Housing Authority',
     'Transportation', 'Environmental Services', 'Education', 'Healthcare'
   ]
 
@@ -240,8 +240,8 @@ export default function TransparencyPortal() {
     const matchesCategory = selectedCategory === 'all' || record.category === selectedCategory
     const matchesDepartment = selectedDepartment === 'all' || record.department === selectedDepartment
     const matchesSearch = record.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         record.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         record.department.toLowerCase().includes(searchTerm.toLowerCase())
+      record.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      record.department.toLowerCase().includes(searchTerm.toLowerCase())
     return matchesCategory && matchesDepartment && matchesSearch
   })
 
@@ -257,7 +257,7 @@ export default function TransparencyPortal() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 to-blue-50">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         className="bg-white/80 backdrop-blur-sm border-b border-teal-200/50 sticky top-0 z-40"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -275,7 +275,7 @@ export default function TransparencyPortal() {
                 <p className="text-sm text-gray-600">Open Government Data & Public Records</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="hidden sm:flex items-center space-x-6 text-sm">
                 <div className="flex items-center space-x-2">
@@ -287,7 +287,7 @@ export default function TransparencyPortal() {
                   <span className="text-gray-600">{publicRecords.length} Public Records</span>
                 </div>
               </div>
-              
+
               <button className="px-4 py-2 bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-lg hover:from-teal-600 hover:to-blue-600 transition-colors">
                 <RefreshCw className="w-4 h-4 inline mr-2" />
                 Update Data
@@ -313,11 +313,10 @@ export default function TransparencyPortal() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors whitespace-nowrap ${
-                      activeTab === tab.id
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors whitespace-nowrap ${activeTab === tab.id
                         ? 'bg-gradient-to-r from-teal-500 to-blue-500 text-white'
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                    }`}
+                      }`}
                   >
                     <Icon className="w-4 h-4" />
                     <span>{tab.label}</span>
@@ -352,15 +351,14 @@ export default function TransparencyPortal() {
                       <div className={`w-12 h-12 bg-gradient-to-r ${metric.color} rounded-lg flex items-center justify-center`}>
                         <Icon className="w-6 h-6 text-white" />
                       </div>
-                      <div className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        metric.changeType === 'positive' ? 'bg-green-100 text-green-800' :
-                        metric.changeType === 'negative' ? 'bg-red-100 text-red-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
+                      <div className={`px-2 py-1 rounded-full text-xs font-medium ${metric.changeType === 'positive' ? 'bg-green-100 text-green-800' :
+                          metric.changeType === 'negative' ? 'bg-red-100 text-red-800' :
+                            'bg-gray-100 text-gray-800'
+                        }`}>
                         {metric.change}
                       </div>
                     </div>
-                    
+
                     <h3 className="font-semibold text-gray-900 mb-1">{metric.title}</h3>
                     <p className="text-2xl font-bold text-gray-900 mb-2">{metric.value}</p>
                     <p className="text-gray-600 text-sm">{metric.description}</p>
@@ -477,7 +475,7 @@ export default function TransparencyPortal() {
                     />
                   </div>
                 </div>
-                
+
                 <div className="flex items-center space-x-4">
                   <select
                     value={selectedCategory}
@@ -490,7 +488,7 @@ export default function TransparencyPortal() {
                       </option>
                     ))}
                   </select>
-                  
+
                   <select
                     value={selectedDepartment}
                     onChange={(e) => setSelectedDepartment(e.target.value)}
@@ -523,18 +521,17 @@ export default function TransparencyPortal() {
                       <div className={`w-12 h-12 bg-gradient-to-r ${getTypeColor(record.type)} rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform`}>
                         <TypeIcon className="w-6 h-6 text-white" />
                       </div>
-                      <div className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        record.accessLevel === 'public' ? 'bg-green-100 text-green-800' :
-                        record.accessLevel === 'restricted' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-red-100 text-red-800'
-                      }`}>
+                      <div className={`px-3 py-1 rounded-full text-xs font-medium ${record.accessLevel === 'public' ? 'bg-green-100 text-green-800' :
+                          record.accessLevel === 'restricted' ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-red-100 text-red-800'
+                        }`}>
                         {record.accessLevel}
                       </div>
                     </div>
-                    
+
                     <h3 className="font-semibold text-gray-900 mb-2">{record.title}</h3>
                     <p className="text-gray-600 text-sm mb-4">{record.department} • {record.category}</p>
-                    
+
                     <div className="space-y-2 text-sm text-gray-600 mb-4">
                       <div className="flex justify-between">
                         <span>Published:</span>
@@ -653,7 +650,7 @@ export default function TransparencyPortal() {
               <h3 className="text-lg font-semibold mb-2">Open Government</h3>
               <p className="text-teal-100 text-sm">Committed to transparency and citizen access to information.</p>
             </motion.div>
-            
+
             <motion.div
               className="bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl p-6 text-white"
               whileHover={{ scale: 1.02 }}
@@ -662,7 +659,7 @@ export default function TransparencyPortal() {
               <h3 className="text-lg font-semibold mb-2">Data Security</h3>
               <p className="text-blue-100 text-sm">Ensuring privacy while maintaining maximum transparency.</p>
             </motion.div>
-            
+
             <motion.div
               className="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl p-6 text-white"
               whileHover={{ scale: 1.02 }}

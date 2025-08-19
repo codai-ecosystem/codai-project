@@ -472,6 +472,13 @@ if __name__ == "__main__":
     
     # Run the demonstration
     import asyncio
+
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
     results = asyncio.run(run_neural_scaling_demonstration())
     
     # Display final summary

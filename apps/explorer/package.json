@@ -1,7 +1,8 @@
 {
   "name": "explorer",
   "version": "1.0.0",
-  "description": "File and project explorer",
+  "description": "CodaiChain Blockchain Explorer",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev -p 4400",

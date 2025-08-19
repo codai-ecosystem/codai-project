@@ -1,10 +1,10 @@
 'use client'
 
 import React, { useState } from 'react'
-import { 
-  Music, 
-  Play, 
-  Pause, 
+import {
+  Music,
+  Play,
+  Pause,
   Heart,
   Share2,
   Download,
@@ -262,7 +262,7 @@ export default function DiscoverPage() {
                 <p className="text-sm text-gray-600">Explore new AI-generated music</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -314,11 +314,10 @@ export default function DiscoverPage() {
               <button
                 key={genre.id}
                 onClick={() => setActiveGenre(genre.id)}
-                className={`relative overflow-hidden rounded-xl p-4 text-center transition-all ${
-                  activeGenre === genre.id
+                className={`relative overflow-hidden rounded-xl p-4 text-center transition-all ${activeGenre === genre.id
                     ? 'ring-2 ring-purple-500 scale-105'
                     : 'hover:scale-105'
-                }`}
+                  }`}
               >
                 <div className={`absolute inset-0 bg-gradient-to-br ${genre.color} opacity-80`}></div>
                 <div className="relative z-10 text-white">
@@ -338,11 +337,10 @@ export default function DiscoverPage() {
               <button
                 key={mood.id}
                 onClick={() => setActiveMood(mood.id)}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-all ${
-                  activeMood === mood.id
+                className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-all ${activeMood === mood.id
                     ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white'
                     : 'bg-purple-50 text-purple-700 hover:bg-purple-100'
-                }`}
+                  }`}
               >
                 <span className="text-lg">{mood.emoji}</span>
                 <span className="font-medium text-sm">{mood.name}</span>

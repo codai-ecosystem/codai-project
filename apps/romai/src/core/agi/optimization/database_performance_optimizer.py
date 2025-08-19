@@ -26,6 +26,13 @@ from sqlalchemy.pool import QueuePool
 from elasticsearch import Elasticsearch
 import motor.motor_asyncio
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 class DatabaseOptimizationLevel(Enum):
     """Database optimization levels"""
     BASIC = "basic"

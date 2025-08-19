@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  PieChart, 
-  BarChart3, 
-  DollarSign, 
-  Wallet, 
-  Target, 
+import {
+  TrendingUp,
+  TrendingDown,
+  PieChart,
+  BarChart3,
+  DollarSign,
+  Wallet,
+  Target,
   AlertCircle,
   Plus,
   Minus,
@@ -310,7 +310,7 @@ export default function XPortfolioPage() {
 
   const filteredPositions = positions.filter(position => {
     const matchesSearch = position.symbol.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         position.name.toLowerCase().includes(searchTerm.toLowerCase())
+      position.name.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesType = filterType === 'all' || position.type === filterType
     return matchesSearch && matchesType
   }).sort((a, b) => {
@@ -331,7 +331,7 @@ export default function XPortfolioPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-red-900 to-slate-900">
       {/* Header */}
-      <motion.header 
+      <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-red-950/50 backdrop-blur-sm border-b border-red-700/50"
@@ -349,7 +349,7 @@ export default function XPortfolioPage() {
                 </div>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="text-right">
                 <p className="text-white font-bold text-xl">{formatCurrency(portfolio.totalValue)}</p>
@@ -364,9 +364,9 @@ export default function XPortfolioPage() {
                   </span>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-2">
-                <button 
+                <button
                   onClick={() => setShowValues(!showValues)}
                   className="p-2 text-red-300 hover:text-white hover:bg-red-800/50 rounded-lg transition-colors"
                   title={showValues ? 'Hide values' : 'Show values'}
@@ -398,11 +398,10 @@ export default function XPortfolioPage() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setSelectedTab(tab)}
-                className={`flex-1 py-4 px-6 font-medium capitalize transition-colors ${
-                  selectedTab === tab
+                className={`flex-1 py-4 px-6 font-medium capitalize transition-colors ${selectedTab === tab
                     ? 'text-white border-b-2 border-red-400 bg-red-900/30'
                     : 'text-red-300 hover:text-white hover:bg-red-900/20'
-                }`}
+                  }`}
               >
                 {tab}
               </motion.button>
@@ -548,7 +547,7 @@ export default function XPortfolioPage() {
                       className="pl-10 pr-4 py-2 bg-red-900/50 border border-red-700/50 rounded-lg text-white placeholder-red-300 focus:outline-none focus:border-red-500"
                     />
                   </div>
-                  
+
                   <select
                     value={filterType}
                     onChange={(e) => setFilterType(e.target.value as any)}
@@ -561,7 +560,7 @@ export default function XPortfolioPage() {
                     <option value="commodity">Commodities</option>
                     <option value="bond">Bonds</option>
                   </select>
-                  
+
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as any)}
@@ -573,25 +572,23 @@ export default function XPortfolioPage() {
                     <option value="symbol">Sort by Symbol</option>
                   </select>
                 </div>
-                
+
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => setViewMode('grid')}
-                    className={`p-2 rounded-lg transition-colors ${
-                      viewMode === 'grid' 
-                        ? 'bg-red-800/50 text-white' 
+                    className={`p-2 rounded-lg transition-colors ${viewMode === 'grid'
+                        ? 'bg-red-800/50 text-white'
                         : 'text-red-400 hover:text-white hover:bg-red-800/30'
-                    }`}
+                      }`}
                   >
                     <Grid className="w-5 h-5" />
                   </button>
                   <button
                     onClick={() => setViewMode('list')}
-                    className={`p-2 rounded-lg transition-colors ${
-                      viewMode === 'list' 
-                        ? 'bg-red-800/50 text-white' 
+                    className={`p-2 rounded-lg transition-colors ${viewMode === 'list'
+                        ? 'bg-red-800/50 text-white'
                         : 'text-red-400 hover:text-white hover:bg-red-800/30'
-                    }`}
+                      }`}
                   >
                     <List className="w-5 h-5" />
                   </button>
@@ -607,9 +604,8 @@ export default function XPortfolioPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className={`bg-red-950/50 backdrop-blur-sm border border-red-700/50 rounded-xl p-6 ${
-                    viewMode === 'list' ? 'flex items-center justify-between' : ''
-                  }`}
+                  className={`bg-red-950/50 backdrop-blur-sm border border-red-700/50 rounded-xl p-6 ${viewMode === 'list' ? 'flex items-center justify-between' : ''
+                    }`}
                 >
                   <div className={`${viewMode === 'list' ? 'flex items-center space-x-4' : 'mb-4'}`}>
                     <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center">
@@ -621,7 +617,7 @@ export default function XPortfolioPage() {
                       <p className="text-red-400 text-xs">{position.exchange}</p>
                     </div>
                   </div>
-                  
+
                   <div className={`${viewMode === 'list' ? 'text-center' : 'space-y-2'}`}>
                     <div className="flex items-center justify-between">
                       <span className="text-red-300 text-sm">Quantity:</span>
@@ -646,7 +642,7 @@ export default function XPortfolioPage() {
                       </span>
                     </div>
                   </div>
-                  
+
                   <div className={`${viewMode === 'list' ? 'flex items-center space-x-2' : 'mt-4 flex justify-between'}`}>
                     <button className="p-2 text-red-400 hover:text-white hover:bg-red-800/30 rounded-lg transition-colors">
                       <Eye className="w-4 h-4" />

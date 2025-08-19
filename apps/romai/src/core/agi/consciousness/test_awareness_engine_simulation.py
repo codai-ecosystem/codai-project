@@ -34,6 +34,19 @@ from .cultural_consciousness_engine import (
     CulturalMemory
 )
 
+# Real infrastructure imports - NO MOCK DATA  
+try:
+    from ..real_database import (
+        RealDatabaseManager, RealDatabaseOperations, 
+        real_api_manager, real_performance_monitor
+    )
+except ImportError:
+    # Mock for testing if real database not available
+    RealDatabaseManager = MagicMock()
+    RealDatabaseOperations = MagicMock()
+    real_api_manager = MagicMock()
+    real_performance_monitor = MagicMock()
+
 logger = logging.getLogger(__name__)
 
 class TestConsciousnessInterfaces:

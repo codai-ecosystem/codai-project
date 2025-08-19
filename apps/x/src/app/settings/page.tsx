@@ -1,15 +1,15 @@
 "use client";
 
 import React, { useState } from 'react';
-import { 
-  Settings, 
-  User, 
-  Shield, 
-  Bell, 
-  DollarSign, 
-  Smartphone, 
-  Globe, 
-  Eye, 
+import {
+  Settings,
+  User,
+  Shield,
+  Bell,
+  DollarSign,
+  Smartphone,
+  Globe,
+  Eye,
   EyeOff,
   Key,
   CreditCard,
@@ -202,9 +202,9 @@ const SettingsPage: React.FC = () => {
   ]);
 
   const updateNotificationSetting = (id: string, channel: 'email' | 'push' | 'sms', value: boolean) => {
-    setNotificationSettings(prev => 
-      prev.map(setting => 
-        setting.id === id 
+    setNotificationSettings(prev =>
+      prev.map(setting =>
+        setting.id === id
           ? { ...setting, [channel]: value }
           : setting
       )
@@ -240,11 +240,10 @@ const SettingsPage: React.FC = () => {
           <button
             key={item.id}
             onClick={() => setActiveSection(item.id as any)}
-            className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-all duration-200 ${
-              activeSection === item.id
+            className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-all duration-200 ${activeSection === item.id
                 ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white'
                 : 'text-gray-400 hover:text-white hover:bg-white/5'
-            }`}
+              }`}
           >
             <item.icon className="w-4 h-4" />
             <span className="font-medium">{item.label}</span>
@@ -257,7 +256,7 @@ const SettingsPage: React.FC = () => {
   const renderGeneralSettings = () => (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-white">General Settings</h2>
-      
+
       <div className="bg-black/40 border border-white/10 rounded-xl p-6">
         <h3 className="text-lg font-semibold text-white mb-4">Preferences</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -321,14 +320,12 @@ const SettingsPage: React.FC = () => {
               <p className="text-sm text-gray-400">Automatically refresh market data</p>
             </div>
             <button
-              onClick={() => {}}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                true ? 'bg-gradient-to-r from-red-500 to-pink-500' : 'bg-gray-600'
-              }`}
+              onClick={() => { }}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${true ? 'bg-gradient-to-r from-red-500 to-pink-500' : 'bg-gray-600'
+                }`}
             >
-              <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                true ? 'translate-x-6' : 'translate-x-1'
-              }`} />
+              <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${true ? 'translate-x-6' : 'translate-x-1'
+                }`} />
             </button>
           </div>
         </div>
@@ -339,7 +336,7 @@ const SettingsPage: React.FC = () => {
   const renderAccountSettings = () => (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-white">Account Information</h2>
-      
+
       <div className="bg-black/40 border border-white/10 rounded-xl p-6">
         <h3 className="text-lg font-semibold text-white mb-4">Profile</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -397,7 +394,7 @@ const SettingsPage: React.FC = () => {
   const renderSecuritySettings = () => (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-white">Security & Privacy</h2>
-      
+
       {/* Two-Factor Authentication */}
       <div className="bg-black/40 border border-white/10 rounded-xl p-6">
         <div className="flex items-center justify-between mb-4">
@@ -407,13 +404,11 @@ const SettingsPage: React.FC = () => {
           </div>
           <button
             onClick={() => setTwoFAEnabled(!twoFAEnabled)}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-              twoFAEnabled ? 'bg-gradient-to-r from-red-500 to-pink-500' : 'bg-gray-600'
-            }`}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${twoFAEnabled ? 'bg-gradient-to-r from-red-500 to-pink-500' : 'bg-gray-600'
+              }`}
           >
-            <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-              twoFAEnabled ? 'translate-x-6' : 'translate-x-1'
-            }`} />
+            <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${twoFAEnabled ? 'translate-x-6' : 'translate-x-1'
+              }`} />
           </button>
         </div>
         {twoFAEnabled && (
@@ -432,14 +427,13 @@ const SettingsPage: React.FC = () => {
             Create API Key
           </button>
         </div>
-        
+
         <div className="space-y-3">
           {apiKeys.map((apiKey) => (
             <div key={apiKey.id} className="flex items-center justify-between p-4 bg-black/20 rounded-lg">
               <div className="flex items-center space-x-4">
-                <div className={`w-3 h-3 rounded-full ${
-                  apiKey.status === 'active' ? 'bg-green-400' : 'bg-gray-400'
-                }`} />
+                <div className={`w-3 h-3 rounded-full ${apiKey.status === 'active' ? 'bg-green-400' : 'bg-gray-400'
+                  }`} />
                 <div>
                   <h4 className="text-white font-medium">{apiKey.name}</h4>
                   <p className="text-sm text-gray-400">
@@ -499,7 +493,7 @@ const SettingsPage: React.FC = () => {
   const renderNotificationsSettings = () => (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-white">Notification Preferences</h2>
-      
+
       <div className="bg-black/40 border border-white/10 rounded-xl p-6">
         <h3 className="text-lg font-semibold text-white mb-4">Notification Channels</h3>
         <div className="overflow-x-auto">
@@ -524,37 +518,31 @@ const SettingsPage: React.FC = () => {
                   <td className="text-center py-4">
                     <button
                       onClick={() => updateNotificationSetting(setting.id, 'email', !setting.email)}
-                      className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
-                        setting.email ? 'bg-gradient-to-r from-red-500 to-pink-500' : 'bg-gray-600'
-                      }`}
+                      className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${setting.email ? 'bg-gradient-to-r from-red-500 to-pink-500' : 'bg-gray-600'
+                        }`}
                     >
-                      <span className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${
-                        setting.email ? 'translate-x-5' : 'translate-x-1'
-                      }`} />
+                      <span className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${setting.email ? 'translate-x-5' : 'translate-x-1'
+                        }`} />
                     </button>
                   </td>
                   <td className="text-center py-4">
                     <button
                       onClick={() => updateNotificationSetting(setting.id, 'push', !setting.push)}
-                      className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
-                        setting.push ? 'bg-gradient-to-r from-red-500 to-pink-500' : 'bg-gray-600'
-                      }`}
+                      className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${setting.push ? 'bg-gradient-to-r from-red-500 to-pink-500' : 'bg-gray-600'
+                        }`}
                     >
-                      <span className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${
-                        setting.push ? 'translate-x-5' : 'translate-x-1'
-                      }`} />
+                      <span className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${setting.push ? 'translate-x-5' : 'translate-x-1'
+                        }`} />
                     </button>
                   </td>
                   <td className="text-center py-4">
                     <button
                       onClick={() => updateNotificationSetting(setting.id, 'sms', !setting.sms)}
-                      className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
-                        setting.sms ? 'bg-gradient-to-r from-red-500 to-pink-500' : 'bg-gray-600'
-                      }`}
+                      className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${setting.sms ? 'bg-gradient-to-r from-red-500 to-pink-500' : 'bg-gray-600'
+                        }`}
                     >
-                      <span className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${
-                        setting.sms ? 'translate-x-5' : 'translate-x-1'
-                      }`} />
+                      <span className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${setting.sms ? 'translate-x-5' : 'translate-x-1'
+                        }`} />
                     </button>
                   </td>
                 </tr>
@@ -569,7 +557,7 @@ const SettingsPage: React.FC = () => {
   const renderTradingSettings = () => (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-white">Trading Preferences</h2>
-      
+
       <div className="bg-black/40 border border-white/10 rounded-xl p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -578,13 +566,11 @@ const SettingsPage: React.FC = () => {
           </div>
           <button
             onClick={() => setTradingEnabled(!tradingEnabled)}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-              tradingEnabled ? 'bg-gradient-to-r from-red-500 to-pink-500' : 'bg-gray-600'
-            }`}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${tradingEnabled ? 'bg-gradient-to-r from-red-500 to-pink-500' : 'bg-gray-600'
+              }`}
           >
-            <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-              tradingEnabled ? 'translate-x-6' : 'translate-x-1'
-            }`} />
+            <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${tradingEnabled ? 'translate-x-6' : 'translate-x-1'
+              }`} />
           </button>
         </div>
 
@@ -616,13 +602,11 @@ const SettingsPage: React.FC = () => {
               {pref.type === 'boolean' && (
                 <button
                   onClick={() => updateTradingPreference(pref.id, !pref.value)}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                    pref.value ? 'bg-gradient-to-r from-red-500 to-pink-500' : 'bg-gray-600'
-                  }`}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${pref.value ? 'bg-gradient-to-r from-red-500 to-pink-500' : 'bg-gray-600'
+                    }`}
                 >
-                  <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                    pref.value ? 'translate-x-6' : 'translate-x-1'
-                  }`} />
+                  <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${pref.value ? 'translate-x-6' : 'translate-x-1'
+                    }`} />
                 </button>
               )}
             </div>
@@ -635,7 +619,7 @@ const SettingsPage: React.FC = () => {
   const renderAISettings = () => (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-white">AI Preferences</h2>
-      
+
       <div className="bg-black/40 border border-white/10 rounded-xl p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -644,13 +628,11 @@ const SettingsPage: React.FC = () => {
           </div>
           <button
             onClick={() => setAIEnabled(!aiEnabled)}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-              aiEnabled ? 'bg-gradient-to-r from-red-500 to-pink-500' : 'bg-gray-600'
-            }`}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${aiEnabled ? 'bg-gradient-to-r from-red-500 to-pink-500' : 'bg-gray-600'
+              }`}
           >
-            <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-              aiEnabled ? 'translate-x-6' : 'translate-x-1'
-            }`} />
+            <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${aiEnabled ? 'translate-x-6' : 'translate-x-1'
+              }`} />
           </button>
         </div>
 
@@ -667,13 +649,11 @@ const SettingsPage: React.FC = () => {
               <div className="flex items-center justify-between mb-3">
                 <h4 className="text-white font-medium">{feature.label}</h4>
                 <button
-                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
-                    feature.enabled ? 'bg-gradient-to-r from-red-500 to-pink-500' : 'bg-gray-600'
-                  }`}
+                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${feature.enabled ? 'bg-gradient-to-r from-red-500 to-pink-500' : 'bg-gray-600'
+                    }`}
                 >
-                  <span className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${
-                    feature.enabled ? 'translate-x-5' : 'translate-x-1'
-                  }`} />
+                  <span className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${feature.enabled ? 'translate-x-5' : 'translate-x-1'
+                    }`} />
                 </button>
               </div>
               {feature.enabled && (
@@ -719,7 +699,7 @@ const SettingsPage: React.FC = () => {
         {/* Content */}
         <div className="flex gap-8">
           {renderSidebar()}
-          
+
           <div className="flex-1">
             {activeSection === 'general' && renderGeneralSettings()}
             {activeSection === 'account' && renderAccountSettings()}

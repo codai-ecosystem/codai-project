@@ -17,6 +17,13 @@ import datetime
 import numpy as np
 
 from .self_improvement_interfaces import (
+
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
     BaseSelfImprovement, ValidationResult, CulturalPreservationLevel
 )
 

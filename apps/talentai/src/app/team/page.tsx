@@ -319,17 +319,17 @@ export default function TeamManagementPage() {
 
   const filteredMembers = teamMembers.filter(member => {
     const matchesSearch = member.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         member.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         member.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         member.department.toLowerCase().includes(searchTerm.toLowerCase())
-    
+      member.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      member.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      member.department.toLowerCase().includes(searchTerm.toLowerCase())
+
     if (activeFilter === 'all') return matchesSearch
     return matchesSearch && member.role === activeFilter
   })
 
   const handleMemberSelection = (memberId: string) => {
-    setSelectedMembers(prev => 
-      prev.includes(memberId) 
+    setSelectedMembers(prev =>
+      prev.includes(memberId)
         ? prev.filter(id => id !== memberId)
         : [...prev, memberId]
     )
@@ -692,7 +692,7 @@ export default function TeamManagementPage() {
               <h3 className="text-lg font-semibold text-white mb-2">Team Collaboration</h3>
               <p className="text-slate-400 text-sm">Enhanced team coordination with real-time communication and task management</p>
             </motion.div>
-            
+
             <motion.div
               className="glassmorphism p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-purple-500/50 transition-all"
               whileHover={{ scale: 1.05 }}
@@ -703,7 +703,7 @@ export default function TeamManagementPage() {
               <h3 className="text-lg font-semibold text-white mb-2">Performance Tracking</h3>
               <p className="text-slate-400 text-sm">Comprehensive performance monitoring with goal tracking and analytics</p>
             </motion.div>
-            
+
             <motion.div
               className="glassmorphism p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-purple-500/50 transition-all"
               whileHover={{ scale: 1.05 }}

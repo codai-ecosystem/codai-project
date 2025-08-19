@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  Brain, 
-  Signal, 
-  TrendingUp, 
-  TrendingDown, 
-  Target, 
+import {
+  Brain,
+  Signal,
+  TrendingUp,
+  TrendingDown,
+  Target,
   AlertCircle,
   CheckCircle,
   XCircle,
@@ -404,20 +404,20 @@ export default function XAISignalsPage() {
 
   const filteredSignals = aiSignals.filter(signal => {
     const matchesSearch = signal.symbol.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         signal.name.toLowerCase().includes(searchTerm.toLowerCase())
+      signal.name.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesSignal = filterSignal === 'all' || signal.signal === filterSignal
-    const matchesConfidence = filterConfidence === 'all' || 
+    const matchesConfidence = filterConfidence === 'all' ||
       (filterConfidence === 'high' && signal.confidence >= 85) ||
       (filterConfidence === 'medium' && signal.confidence >= 70 && signal.confidence < 85) ||
       (filterConfidence === 'low' && signal.confidence < 70)
     const matchesRisk = filterRisk === 'all' || signal.riskLevel === filterRisk
-    
+
     return matchesSearch && matchesSignal && matchesConfidence && matchesRisk
   })
 
   const toggleWatchlist = (signalId: string) => {
-    setAiSignals(prev => prev.map(signal => 
-      signal.id === signalId 
+    setAiSignals(prev => prev.map(signal =>
+      signal.id === signalId
         ? { ...signal, isWatchlisted: !signal.isWatchlisted }
         : signal
     ))
@@ -426,7 +426,7 @@ export default function XAISignalsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-red-900 to-slate-900">
       {/* Header */}
-      <motion.header 
+      <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-red-950/50 backdrop-blur-sm border-b border-red-700/50"
@@ -444,7 +444,7 @@ export default function XAISignalsPage() {
                 </div>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="text-right">
                 <div className="flex items-center space-x-2">
@@ -456,26 +456,24 @@ export default function XAISignalsPage() {
                   <span className="text-blue-400">Models: 3 Active</span>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-2">
-                <button 
+                <button
                   onClick={() => setAutoRefresh(!autoRefresh)}
-                  className={`p-2 rounded-lg transition-colors ${
-                    autoRefresh 
-                      ? 'bg-green-800/50 text-green-400' 
+                  className={`p-2 rounded-lg transition-colors ${autoRefresh
+                      ? 'bg-green-800/50 text-green-400'
                       : 'text-red-400 hover:text-white hover:bg-red-800/50'
-                  }`}
+                    }`}
                   title={autoRefresh ? 'Auto-refresh ON' : 'Auto-refresh OFF'}
                 >
                   <RefreshCw className={`w-5 h-5 ${autoRefresh ? 'animate-spin' : ''}`} />
                 </button>
-                <button 
+                <button
                   onClick={() => setNotificationsEnabled(!notificationsEnabled)}
-                  className={`p-2 rounded-lg transition-colors ${
-                    notificationsEnabled 
-                      ? 'bg-blue-800/50 text-blue-400' 
+                  className={`p-2 rounded-lg transition-colors ${notificationsEnabled
+                      ? 'bg-blue-800/50 text-blue-400'
                       : 'text-red-400 hover:text-white hover:bg-red-800/50'
-                  }`}
+                    }`}
                   title={notificationsEnabled ? 'Notifications ON' : 'Notifications OFF'}
                 >
                   {notificationsEnabled ? <Bell className="w-5 h-5" /> : <BellOff className="w-5 h-5" />}
@@ -499,11 +497,10 @@ export default function XAISignalsPage() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setSelectedTab(tab)}
-                className={`flex-1 py-4 px-6 font-medium capitalize transition-colors ${
-                  selectedTab === tab
+                className={`flex-1 py-4 px-6 font-medium capitalize transition-colors ${selectedTab === tab
                     ? 'text-white border-b-2 border-red-400 bg-red-900/30'
                     : 'text-red-300 hover:text-white hover:bg-red-900/20'
-                }`}
+                  }`}
               >
                 {tab === 'signals' && <Signal className="w-4 h-4 mr-2" />}
                 {tab === 'models' && <Brain className="w-4 h-4 mr-2" />}
@@ -533,7 +530,7 @@ export default function XAISignalsPage() {
                       className="pl-10 pr-4 py-2 bg-red-900/50 border border-red-700/50 rounded-lg text-white placeholder-red-300 focus:outline-none focus:border-red-500"
                     />
                   </div>
-                  
+
                   <select
                     value={filterSignal}
                     onChange={(e) => setFilterSignal(e.target.value as any)}
@@ -544,7 +541,7 @@ export default function XAISignalsPage() {
                     <option value="SELL">Sell Signals</option>
                     <option value="HOLD">Hold Signals</option>
                   </select>
-                  
+
                   <select
                     value={filterConfidence}
                     onChange={(e) => setFilterConfidence(e.target.value as any)}
@@ -555,7 +552,7 @@ export default function XAISignalsPage() {
                     <option value="medium">Medium (70-84%)</option>
                     <option value="low">Low (<70%)</option>
                   </select>
-                  
+
                   <select
                     value={filterRisk}
                     onChange={(e) => setFilterRisk(e.target.value as any)}
@@ -567,7 +564,7 @@ export default function XAISignalsPage() {
                     <option value="HIGH">High Risk</option>
                   </select>
                 </div>
-                
+
                 <div className="flex items-center space-x-2">
                   <span className="text-red-300 text-sm">{filteredSignals.length} signals found</span>
                 </div>
@@ -601,11 +598,10 @@ export default function XAISignalsPage() {
                       </span>
                       <button
                         onClick={() => toggleWatchlist(signal.id)}
-                        className={`p-1 rounded transition-colors ${
-                          signal.isWatchlisted 
-                            ? 'text-yellow-400 hover:text-yellow-300' 
+                        className={`p-1 rounded transition-colors ${signal.isWatchlisted
+                            ? 'text-yellow-400 hover:text-yellow-300'
                             : 'text-red-400 hover:text-white'
-                        }`}
+                          }`}
                       >
                         {signal.isWatchlisted ? <Star className="w-4 h-4 fill-current" /> : <StarOff className="w-4 h-4" />}
                       </button>
@@ -641,8 +637,8 @@ export default function XAISignalsPage() {
                         <p className="text-red-300 text-sm">Confidence</p>
                         <div className="flex items-center space-x-2">
                           <div className="w-20 bg-red-900/50 rounded-full h-2">
-                            <div 
-                              className="bg-gradient-to-r from-red-500 to-pink-500 h-2 rounded-full" 
+                            <div
+                              className="bg-gradient-to-r from-red-500 to-pink-500 h-2 rounded-full"
                               style={{ width: `${signal.confidence}%` }}
                             ></div>
                           </div>

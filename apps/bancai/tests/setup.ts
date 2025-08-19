@@ -1,54 +1,71 @@
-import '@testing-library/jest-dom'
 import { vi } from 'vitest'
+import '@testing-library/jest-dom/vitest' // Add testing library matchers
+import { randomUUID } from 'crypto'
 
-// Mock Next.js router
-vi.mock('next/navigation', () => ({
-  useRouter: () => ({
-    push: vi.fn(),
-    back: vi.fn(),
-    forward: vi.fn(),
-    refresh: vi.fn(),
-    replace: vi.fn(),
-    prefetch: vi.fn(),
-  }),
-  usePathname: () => '/',
-  useSearchParams: () => new URLSearchParams(),
-}))
-
-// Mock framer-motion
-vi.mock('framer-motion', () => ({
-  motion: {
-    div: 'div',
-    button: 'button',
-    h1: 'h1',
-    h2: 'h2',
-    p: 'p',
-    span: 'span',
+// Comprehensive crypto mocking for test environment
+Object.defineProperty(global, 'crypto', {
+  value: {
+    randomUUID: () => 'test-uuid-' + Math.random().toString(36).substr(2, 9),
+    getRandomValues: (arr: Uint8Array) => {
+      for (let i = 0; i < arr.length; i++) {
+        arr[i] = Math.floor(Math.random() * 256);
+      }
+      return arr;
+    },
+    createCipher: vi.fn(),
+    createDecipher: vi.fn(),
+    subtle: {
+      digest: vi.fn(),
+      encrypt: vi.fn(),
+      decrypt: vi.fn(),
+      generateKey: vi.fn(),
+      importKey: vi.fn(),
+      exportKey: vi.fn()
+    }
   },
-  AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
-}))
-
-// Mock window.matchMedia
-Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: vi.fn().mockImplementation(query => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  })),
-})
+  configurable: true
+});
 
-// Mock ResizeObserver
-global.ResizeObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}))
+// Mock Node.js crypto module for imports
+vi.mock('crypto', () => ({
+  default: {
+    randomUUID: () => 'test-uuid-' + Math.random().toString(36).substr(2, 9),
+    randomBytes: vi.fn((size: number) => Buffer.alloc(size, 0)),
+    createCipher: vi.fn(() => ({
+      update: vi.fn(() => 'encrypted-data'),
+      final: vi.fn(() => ''),
+      setAutoPadding: vi.fn(),
+      getAuthTag: vi.fn(() => Buffer.alloc(16, 0))
+    })),
+    createDecipher: vi.fn(() => ({
+      update: vi.fn(() => 'decrypted-data'),
+      final: vi.fn(() => ''),
+      setAutoPadding: vi.fn(),
+      setAuthTag: vi.fn()
+    })),
+    getRandomValues: (arr: Uint8Array) => {
+      for (let i = 0; i < arr.length; i++) {
+        arr[i] = Math.floor(Math.random() * 256);
+      }
+      return arr;
+    }
+  },
+  randomUUID: () => 'test-uuid-' + Math.random().toString(36).substr(2, 9),
+  randomBytes: vi.fn((size: number) => Buffer.alloc(size, 0)),
+  createCipher: vi.fn(() => ({
+    update: vi.fn(() => 'encrypted-data'),
+    final: vi.fn(() => ''),
+    setAutoPadding: vi.fn(),
+    getAuthTag: vi.fn(() => Buffer.alloc(16, 0))
+  })),
+  createDecipher: vi.fn(() => ({
+    update: vi.fn(() => 'decrypted-data'),
+    final: vi.fn(() => ''),
+    setAutoPadding: vi.fn(),
+    setAuthTag: vi.fn()
+  }))
+}));
 
 // Mock fetch for API calls
 global.fetch = vi.fn()

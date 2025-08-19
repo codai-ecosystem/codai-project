@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { 
+import {
   Send,
   Download,
   ArrowUpRight,
@@ -121,7 +121,7 @@ const SendReceivePage = () => {
       verified: true
     },
     {
-      id: '2', 
+      id: '2',
       name: 'Bob Wilson',
       address: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
       avatar: '👨‍💻',
@@ -249,14 +249,14 @@ const SendReceivePage = () => {
 
   const calculateFees = (amount: number, asset: Asset | null, gasPrice: string) => {
     if (!asset || !amount) return { fee: 0, time: 0, total: 0 }
-    
+
     const gasMultipliers = { slow: 0.8, standard: 1, fast: 1.5 }
     const timeMultipliers = { slow: 2, standard: 1, fast: 0.5 }
-    
+
     const baseFee = asset.transferFee * gasMultipliers[gasPrice]
     const estimatedTime = asset.confirmations * timeMultipliers[gasPrice]
     const total = amount + baseFee
-    
+
     return { fee: baseFee, time: estimatedTime, total }
   }
 
@@ -276,7 +276,7 @@ const SendReceivePage = () => {
 
   const handleSend = async () => {
     if (!transfer.selectedAsset || !transfer.amount || !transfer.recipient) return
-    
+
     // Simulate transaction
     console.log('Sending transaction:', {
       asset: transfer.selectedAsset.symbol,
@@ -284,7 +284,7 @@ const SendReceivePage = () => {
       recipient: transfer.recipient,
       fee: transfer.estimatedFee
     })
-    
+
     alert('Transaction sent successfully!')
   }
 
@@ -295,7 +295,7 @@ const SendReceivePage = () => {
 
   const generateReceiveAddress = () => {
     if (!transfer.selectedAsset) return 'No asset selected'
-    
+
     // Mock addresses for different networks
     const addresses = {
       bitcoin: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
@@ -303,14 +303,14 @@ const SendReceivePage = () => {
       solana: '7xKXQhKHkdKdXhKdKdX7xKXQhKHkdKdXhKdKdX7',
       polygon: '0x742d35Cc6635C0532925a3b8D0897dBF7BDF3Ac7'
     }
-    
+
     return addresses[transfer.selectedAsset.network as keyof typeof addresses] || 'Address not available'
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900">
       {/* Enhanced Header */}
-      <motion.header 
+      <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/10 backdrop-blur-sm border-b border-white/20 sticky top-0 z-50"
@@ -324,7 +324,7 @@ const SendReceivePage = () => {
               </h1>
               <p className="text-slate-300 mt-1">Transfer cryptocurrencies securely across networks</p>
             </div>
-            
+
             <div className="flex items-center gap-4">
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -342,7 +342,7 @@ const SendReceivePage = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Mode Toggle */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="flex justify-center mb-8"
@@ -353,11 +353,10 @@ const SendReceivePage = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setTransfer(prev => ({ ...prev, mode: 'send' }))}
-                className={`flex items-center gap-2 px-6 py-3 rounded-xl transition-colors ${
-                  transfer.mode === 'send' 
-                    ? 'bg-gradient-to-r from-red-500 to-pink-600 text-white' 
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl transition-colors ${transfer.mode === 'send'
+                    ? 'bg-gradient-to-r from-red-500 to-pink-600 text-white'
                     : 'text-slate-300 hover:bg-white/10'
-                }`}
+                  }`}
               >
                 <ArrowUpRight className="w-5 h-5" />
                 Send
@@ -366,11 +365,10 @@ const SendReceivePage = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setTransfer(prev => ({ ...prev, mode: 'receive' }))}
-                className={`flex items-center gap-2 px-6 py-3 rounded-xl transition-colors ${
-                  transfer.mode === 'receive' 
-                    ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white' 
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl transition-colors ${transfer.mode === 'receive'
+                    ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white'
                     : 'text-slate-300 hover:bg-white/10'
-                }`}
+                  }`}
               >
                 <ArrowDownLeft className="w-5 h-5" />
                 Receive
@@ -382,7 +380,7 @@ const SendReceivePage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Transfer Interface */}
           <div className="lg:col-span-2">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
@@ -414,11 +412,10 @@ const SendReceivePage = () => {
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
                           onClick={() => setTransfer(prev => ({ ...prev, selectedAsset: asset }))}
-                          className={`p-4 rounded-xl border transition-all ${
-                            transfer.selectedAsset?.id === asset.id
+                          className={`p-4 rounded-xl border transition-all ${transfer.selectedAsset?.id === asset.id
                               ? 'bg-purple-500/30 border-purple-400 text-white'
                               : 'bg-white/5 border-white/20 text-slate-300 hover:bg-white/10'
-                          }`}
+                            }`}
                         >
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-600 rounded-lg flex items-center justify-center text-xl">
@@ -499,9 +496,9 @@ const SendReceivePage = () => {
                         <motion.button
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
-                          onClick={() => setTransfer(prev => ({ 
-                            ...prev, 
-                            amount: prev.selectedAsset ? (prev.selectedAsset.balance - prev.selectedAsset.transferFee).toString() : '' 
+                          onClick={() => setTransfer(prev => ({
+                            ...prev,
+                            amount: prev.selectedAsset ? (prev.selectedAsset.balance - prev.selectedAsset.transferFee).toString() : ''
                           }))}
                           className="text-purple-400 hover:text-purple-300 font-medium"
                         >
@@ -521,11 +518,10 @@ const SendReceivePage = () => {
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
                           onClick={() => setTransfer(prev => ({ ...prev, gasPrice: speed }))}
-                          className={`p-4 rounded-xl border transition-all ${
-                            transfer.gasPrice === speed
+                          className={`p-4 rounded-xl border transition-all ${transfer.gasPrice === speed
                               ? 'bg-purple-500/30 border-purple-400 text-white'
                               : 'bg-white/5 border-white/20 text-slate-300 hover:bg-white/10'
-                          }`}
+                            }`}
                         >
                           <div className="text-center">
                             <p className="font-bold capitalize">{speed}</p>
@@ -595,11 +591,10 @@ const SendReceivePage = () => {
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
                           onClick={() => setTransfer(prev => ({ ...prev, selectedAsset: asset }))}
-                          className={`p-4 rounded-xl border transition-all ${
-                            transfer.selectedAsset?.id === asset.id
+                          className={`p-4 rounded-xl border transition-all ${transfer.selectedAsset?.id === asset.id
                               ? 'bg-green-500/30 border-green-400 text-white'
                               : 'bg-white/5 border-white/20 text-slate-300 hover:bg-white/10'
-                          }`}
+                            }`}
                         >
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg flex items-center justify-center text-xl">
@@ -660,7 +655,7 @@ const SendReceivePage = () => {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Recent Contacts */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
@@ -698,7 +693,7 @@ const SendReceivePage = () => {
             </motion.div>
 
             {/* Network Status */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 }}
@@ -731,7 +726,7 @@ const SendReceivePage = () => {
       </div>
 
       {/* Modern Footer */}
-      <motion.footer 
+      <motion.footer
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
@@ -739,7 +734,7 @@ const SendReceivePage = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             >
@@ -748,7 +743,7 @@ const SendReceivePage = () => {
               <p className="text-slate-300">Multi-signature security with hardware wallet support and transaction verification.</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             >
@@ -757,7 +752,7 @@ const SendReceivePage = () => {
               <p className="text-slate-300">Support for Bitcoin, Ethereum, Solana, Polygon and other major blockchain networks.</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             >

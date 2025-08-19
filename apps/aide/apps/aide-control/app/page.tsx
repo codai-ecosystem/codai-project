@@ -1,956 +1,535 @@
 'use client'
 
-import React from 'react'
-
-import { useAuth } from '../lib/auth-context'
-import { APIClient } from '../lib/api-client'
-import { useNotifications } from '../components/ui/Notifications'
-import { useSettings } from '../components/ui/Settings'
-import { formatDistanceToNow, format } from 'date-fns'
-import { DashboardLayout } from '../components/layout/DashboardLayout'
-import { AgentOrchestrator } from '../components/agents/AgentOrchestrator'
-import { userPreferences } from '../lib/user-preferences'
-import { EnhancedAnalyticsDashboard } from '../components/analytics/AnalyticsDashboard'
-import { WorkflowManagement } from '../components/workflow/WorkflowManagement'
-import { DeploymentManagement } from '../components/deployment/DeploymentManagement'
-import { CommandPalette } from '../components/enhanced/CommandPalette'
-import { AccessibilityProvider, SkipToContent } from '../components/accessibility/AccessibilityProvider'
-import Link from 'next/link'
-import { useEffect, useState, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
+import React, { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import {
-	HomeIcon,
-	UsersIcon,
-	KeyIcon,
-	CreditCardIcon,
-	ChartBarIcon,
-	CogIcon,
-	UserCircleIcon,
-	ClipboardDocumentListIcon,
-	ArrowPathIcon,
-	DocumentTextIcon,
-	ServerIcon
-} from '@heroicons/react/24/outline'
-import { Bot } from 'lucide-react'
+	Code2,
+	Terminal,
+	Bot,
+	Zap,
+	Layers,
+	CheckCircle,
+	TrendingUp,
+	Activity,
+	Play,
+	Pause,
+	Eye,
+	Settings,
+	Bell,
+	Search,
+	Plus,
+	ChevronRight,
+	AlertCircle,
+	Clock,
+	FileText,
+	GitBranch,
+	Rocket,
+	Database,
+	Users
+} from 'lucide-react'
 
-// Type definitions
-interface DashboardStats {
-	totalUsers: number
-	activeSubscriptions: number
-	monthlyRevenue: number
-	apiCallsToday: number
-	systemStatus: 'operational' | 'degraded' | 'down'
-	lastUpdated: Date
+// TypeScript interfaces for AIDE development platform
+interface DevelopmentMetrics {
+	activeProjects: number
+	aiAssistRequests: number
+	buildSuccessRate: number
+	linesOfCode: number
+	developersActive: number
+	deploymentsToday: number
+	codeQualityScore: number
+	systemUptime: number
 }
 
-interface RecentActivity {
+interface Project {
 	id: string
-	type: 'user_signup' | 'subscription_created' | 'payment_succeeded' | 'api_key_created'
-	message: string
-	timestamp: string
+	name: string
+	description: string
+	language: string
+	status: 'active' | 'building' | 'deployed' | 'error'
+	progress: number
+	lastCommit: string
+	aiAssisted: boolean
 }
 
-// Dashboard Overview Component
-function DashboardOverview() {
-	const [stats, setStats] = useState<DashboardStats>({
-		totalUsers: 0,
-		activeSubscriptions: 0,
-		monthlyRevenue: 0,
-		apiCallsToday: 0,
-		systemStatus: 'operational',
-		lastUpdated: new Date(),
-	})
-	const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([])
-	const [loading, setLoading] = useState(true)
-	const [refreshing, setRefreshing] = useState(false)
+interface AIActivity {
+	id: string
+	type: 'code_generation' | 'bug_fix' | 'optimization' | 'testing'
+	project: string
+	description: string
+	timestamp: string
+	confidence: number
+}
 
+export default function AIDEDashboard() {
+	const [activeTab, setActiveTab] = useState('overview')
+	const [metrics, setMetrics] = useState<DevelopmentMetrics>({
+		activeProjects: 24,
+		aiAssistRequests: 342,
+		buildSuccessRate: 94,
+		linesOfCode: 487650,
+		developersActive: 18,
+		deploymentsToday: 12,
+		codeQualityScore: 87,
+		systemUptime: 99.8
+	})
+
+	const [recentProjects] = useState<Project[]>([
+		{
+			id: '1',
+			name: 'CODAI Frontend',
+			description: 'Next.js frontend for CODAI ecosystem',
+			language: 'TypeScript',
+			status: 'active',
+			progress: 87,
+			lastCommit: '2 hours ago',
+			aiAssisted: true
+		},
+		{
+			id: '2',
+			name: 'AI Model Server',
+			description: 'Machine learning model serving infrastructure',
+			language: 'Python',
+			status: 'building',
+			progress: 65,
+			lastCommit: '15 minutes ago',
+			aiAssisted: true
+		},
+		{
+			id: '3',
+			name: 'API Gateway',
+			description: 'Microservices API gateway and routing',
+			language: 'Go',
+			status: 'deployed',
+			progress: 100,
+			lastCommit: '1 day ago',
+			aiAssisted: false
+		}
+	])
+
+	const [aiActivity] = useState<AIActivity[]>([
+		{
+			id: '1',
+			type: 'code_generation',
+			project: 'CODAI Frontend',
+			description: 'Generated responsive dashboard components',
+			timestamp: '5 minutes ago',
+			confidence: 96
+		},
+		{
+			id: '2',
+			type: 'bug_fix',
+			project: 'AI Model Server',
+			description: 'Fixed memory leak in inference pipeline',
+			timestamp: '18 minutes ago',
+			confidence: 89
+		},
+		{
+			id: '3',
+			type: 'optimization',
+			project: 'API Gateway',
+			description: 'Optimized database query performance',
+			timestamp: '1 hour ago',
+			confidence: 94
+		}
+	])
+
+	// Real-time updates
 	useEffect(() => {
-		loadDashboardStats()
+		const interval = setInterval(() => {
+			setMetrics(prev => ({
+				...prev,
+				aiAssistRequests: prev.aiAssistRequests + Math.floor(Math.random() * 3),
+				systemUptime: Math.max(99.0, Math.min(100, prev.systemUptime + (Math.random() - 0.5) * 0.1))
+			}))
+		}, 5000)
+
+		return () => clearInterval(interval)
 	}, [])
 
-	const loadDashboardStats = async () => {
-		setLoading(true)
-		try {
-			// Mock data for now - replace with actual API calls
-			const mockStats: DashboardStats = {
-				totalUsers: 1247,
-				activeSubscriptions: 89,
-				monthlyRevenue: 15679,
-				apiCallsToday: 42150,
-				systemStatus: 'operational',
-				lastUpdated: new Date(),
-			}
-
-			const mockActivity: RecentActivity[] = [
-				{
-					id: '1',
-					type: 'user_signup',
-					message: 'New user registered: john.doe@example.com',
-					timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
-				},
-				{
-					id: '2',
-					type: 'subscription_created',
-					message: 'Pro subscription activated for Acme Corp',
-					timestamp: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
-				},
-				{
-					id: '3',
-					type: 'api_key_created',
-					message: 'New API key generated for project: mobile-app',
-					timestamp: new Date(Date.now() - 1000 * 60 * 120).toISOString(),
-				},
-			]
-
-			setTimeout(() => {
-				setStats(mockStats)
-				setRecentActivity(mockActivity)
-				setLoading(false)
-			}, 500)
-		} catch (error) {
-			console.error('Failed to load dashboard stats:', error)
-			setLoading(false)
+	const getStatusColor = (status: string) => {
+		switch (status) {
+			case 'active':
+			case 'deployed': return 'text-green-600 bg-green-100'
+			case 'building': return 'text-yellow-600 bg-yellow-100'
+			case 'error': return 'text-red-600 bg-red-100'
+			default: return 'text-gray-600 bg-gray-100'
 		}
 	}
 
-	const refreshDashboardStats = async () => {
-		setRefreshing(true)
-		await loadDashboardStats()
-		setRefreshing(false)
+	const getActivityIcon = (type: string) => {
+		switch (type) {
+			case 'code_generation': return <Code2 className="w-4 h-4 text-blue-500" />
+			case 'bug_fix': return <CheckCircle className="w-4 h-4 text-green-500" />
+			case 'optimization': return <Zap className="w-4 h-4 text-yellow-500" />
+			case 'testing': return <FileText className="w-4 h-4 text-purple-500" />
+			default: return <Bot className="w-4 h-4 text-gray-500" />
+		}
 	}
 
-	if (loading) {
-		return (
-			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-				{[...Array(4)].map((_, i) => (
-					<div key={i} className="bg-white dark:bg-gray-800 rounded-lg p-6 animate-pulse">
-						<div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"></div>
-						<div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-					</div>
-				))}
-			</div>
-		)
+	const getLanguageColor = (language: string) => {
+		switch (language.toLowerCase()) {
+			case 'typescript':
+			case 'javascript': return 'bg-yellow-100 text-yellow-700'
+			case 'python': return 'bg-green-100 text-green-700'
+			case 'go': return 'bg-blue-100 text-blue-700'
+			default: return 'bg-gray-100 text-gray-700'
+		}
 	}
 
 	return (
-		<div className="space-y-8">
-			{/* Stats Grid */}
-			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-				<div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-					<div className="flex items-center">
-						<div className="flex-1">
-							<p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Users</p>
-							<p className="text-3xl font-bold text-gray-900 dark:text-white">
-								{stats.totalUsers.toLocaleString()}
-							</p>
-						</div>
-						<UsersIcon className="h-8 w-8 text-blue-600" />
-					</div>
-				</div>
-
-				<div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-					<div className="flex items-center">
-						<div className="flex-1">
-							<p className="text-sm font-medium text-gray-600 dark:text-gray-400">Active Subscriptions</p>
-							<p className="text-3xl font-bold text-gray-900 dark:text-white">
-								{stats.activeSubscriptions}
-							</p>
-						</div>
-						<CreditCardIcon className="h-8 w-8 text-green-600" />
-					</div>
-				</div>
-
-				<div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-					<div className="flex items-center">
-						<div className="flex-1">
-							<p className="text-sm font-medium text-gray-600 dark:text-gray-400">Monthly Revenue</p>
-							<p className="text-3xl font-bold text-gray-900 dark:text-white">
-								${stats.monthlyRevenue.toLocaleString()}
-							</p>
-						</div>
-						<ChartBarIcon className="h-8 w-8 text-purple-600" />
-					</div>
-				</div>
-
-				<div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-					<div className="flex items-center">
-						<div className="flex-1">
-							<p className="text-sm font-medium text-gray-600 dark:text-gray-400">API Calls Today</p>
-							<p className="text-3xl font-bold text-gray-900 dark:text-white">
-								{stats.apiCallsToday.toLocaleString()}
-							</p>
-						</div>
-						<KeyIcon className="h-8 w-8 text-orange-600" />
-					</div>
-				</div>
-			</div>
-
-			{/* Recent Activity */}
-			<div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-				<div className="p-6 border-b border-gray-200 dark:border-gray-700">
-					<div className="flex items-center justify-between">
-						<h3 className="text-lg font-medium text-gray-900 dark:text-white">Recent Activity</h3>
-						<button
-							onClick={refreshDashboardStats}
-							disabled={refreshing}
-							className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
-						>
-							<ArrowPathIcon className={`h-5 w-5 ${refreshing ? 'animate-spin' : ''}`} />
-						</button>
-					</div>
-				</div>
-
-				<div className="p-6">
-					<div className="space-y-4">
-						{recentActivity.map((activity) => (
-							<div key={activity.id} className="flex items-start space-x-3">
-								<div className="flex-shrink-0">
-									<div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
-										<Bot className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-									</div>
-								</div>
-								<div className="flex-1">
-									<p className="text-sm text-gray-900 dark:text-white">
-										{activity.message}
-									</p>
-									<p className="text-xs text-gray-500 dark:text-gray-400">
-										{formatDistanceToNow(new Date(activity.timestamp), { addSuffix: true })}
-									</p>
-								</div>
+		<div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50">
+			{/* Enhanced Header */}
+			<motion.header
+				initial={{ y: -20, opacity: 0 }}
+				animate={{ y: 0, opacity: 1 }}
+				className="relative bg-gradient-to-r from-slate-700 via-slate-600 to-blue-600 text-white py-8 shadow-xl overflow-hidden"
+			>
+				<div className="absolute inset-0 bg-black/10"></div>
+				<div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div className="flex justify-between items-center mb-6">
+						<div className="flex items-center space-x-3">
+							<div className="p-2 bg-white/20 rounded-xl backdrop-blur-sm">
+								<Code2 className="w-8 h-8" />
 							</div>
+							<div>
+								<h1 className="text-3xl font-bold">AIDE Development Dashboard</h1>
+								<p className="text-slate-100">AI-Powered Development Environment & Code Intelligence</p>
+							</div>
+						</div>
+						<div className="flex items-center space-x-4">
+							<div className="text-right">
+								<div className="text-sm text-slate-100">System Uptime</div>
+								<div className="text-2xl font-bold">{metrics.systemUptime.toFixed(1)}%</div>
+							</div>
+							<div className="flex space-x-2">
+								<button className="p-2 bg-white/20 rounded-lg backdrop-blur-sm hover:bg-white/30 transition-colors">
+									<Bell className="w-5 h-5" />
+								</button>
+								<button className="p-2 bg-white/20 rounded-lg backdrop-blur-sm hover:bg-white/30 transition-colors">
+									<Settings className="w-5 h-5" />
+								</button>
+							</div>
+						</div>
+					</div>
+
+					{/* Development Metrics */}
+					<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+						<div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+							<div className="flex items-center justify-between">
+								<div>
+									<div className="text-slate-100 text-sm">Active Projects</div>
+									<div className="text-2xl font-bold">{metrics.activeProjects}</div>
+								</div>
+								<Layers className="w-8 h-8 text-slate-200" />
+							</div>
+						</div>
+						<div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+							<div className="flex items-center justify-between">
+								<div>
+									<div className="text-slate-100 text-sm">AI Assists Today</div>
+									<div className="text-2xl font-bold">{metrics.aiAssistRequests}</div>
+								</div>
+								<Bot className="w-8 h-8 text-slate-200" />
+							</div>
+						</div>
+						<div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+							<div className="flex items-center justify-between">
+								<div>
+									<div className="text-slate-100 text-sm">Build Success Rate</div>
+									<div className="text-2xl font-bold">{metrics.buildSuccessRate}%</div>
+								</div>
+								<CheckCircle className="w-8 h-8 text-slate-200" />
+							</div>
+						</div>
+						<div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+							<div className="flex items-center justify-between">
+								<div>
+									<div className="text-slate-100 text-sm">Lines of Code</div>
+									<div className="text-2xl font-bold">{(metrics.linesOfCode / 1000).toFixed(0)}k</div>
+								</div>
+								<Code2 className="w-8 h-8 text-slate-200" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</motion.header>
+
+			{/* Tab Navigation */}
+			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+				<div className="bg-white rounded-xl shadow-lg p-1 mb-8">
+					<div className="flex space-x-1">
+						{[
+							{ id: 'overview', label: 'Overview', icon: <Activity className="w-4 h-4" /> },
+							{ id: 'projects', label: 'Projects', icon: <Layers className="w-4 h-4" />, count: recentProjects.length },
+							{ id: 'ai-assistant', label: 'AI Assistant', icon: <Bot className="w-4 h-4" />, count: aiActivity.length },
+							{ id: 'environments', label: 'Environments', icon: <Database className="w-4 h-4" /> },
+							{ id: 'analytics', label: 'Analytics', icon: <TrendingUp className="w-4 h-4" /> },
+							{ id: 'team', label: 'Team', icon: <Users className="w-4 h-4" /> }
+						].map((tab) => (
+							<button
+								key={tab.id}
+								onClick={() => setActiveTab(tab.id)}
+								className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 ${activeTab === tab.id
+										? 'bg-gradient-to-r from-slate-500 to-blue-500 text-white shadow-lg'
+										: 'text-gray-600 hover:text-slate-600 hover:bg-slate-50'
+									}`}
+							>
+								{tab.icon}
+								<span className="font-medium">{tab.label}</span>
+								{tab.count && (
+									<span className={`px-2 py-1 rounded-full text-xs font-bold ${activeTab === tab.id ? 'bg-white text-slate-600' : 'bg-slate-100 text-slate-600'
+										}`}>
+										{tab.count}
+									</span>
+								)}
+							</button>
 						))}
 					</div>
 				</div>
-			</div>
-		</div>
-	)
-}
 
-// Phase 3: Enhanced UI/UX Implementation
-export default function DashboardPage() {
-	const { user } = useAuth()
-	const [showEnhancedView, setShowEnhancedView] = useState(true)
-	const [showCommandPalette, setShowCommandPalette] = useState(false)
-	const [activeTab, setActiveTab] = useState<'overview' | 'analytics' | 'workflows' | 'deployments'>('overview')
-
-	// Handle keyboard shortcuts for enhanced accessibility
-	useEffect(() => {
-		const handleKeyDown = (e: KeyboardEvent) => {
-			// Command palette shortcut (Ctrl/Cmd + K)
-			if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-				e.preventDefault()
-				setShowCommandPalette(true)
-			}
-
-			// Toggle enhanced view (Ctrl/Cmd + Shift + E)
-			if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'E') {
-				e.preventDefault()
-				setShowEnhancedView(!showEnhancedView)
-			}
-		}
-
-		document.addEventListener('keydown', handleKeyDown)
-		return () => document.removeEventListener('keydown', handleKeyDown)
-	}, [showEnhancedView])
-
-	// Phase 3: Enhanced Dashboard with accessibility and tabs
-	if (showEnhancedView) {
-		return (
-			<AccessibilityProvider>
-				<SkipToContent />
-				<main id="main-content">
-					<div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-						<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-							{/* Page Header */}
-							<div className="mb-8">
-								<h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-									AIDE Control Center
-								</h1>
-								<p className="text-gray-600 dark:text-gray-400">
-									Comprehensive platform management and analytics
-								</p>
-							</div>
-
-							{/* Navigation Tabs */}
-							<div className="border-b border-gray-200 dark:border-gray-700 mb-8">
-								<nav className="flex space-x-8">
-									{[
-										{ id: 'overview', label: 'Overview', icon: HomeIcon },
-										{ id: 'analytics', label: 'Analytics', icon: ChartBarIcon },
-										{ id: 'workflows', label: 'Workflows', icon: CogIcon },
-										{ id: 'deployments', label: 'Deployments', icon: ServerIcon }
-									].map(tab => (
-										<button
-											key={tab.id}
-											onClick={() => setActiveTab(tab.id as any)}
-											className={`flex items-center space-x-2 pb-4 px-1 border-b-2 font-medium text-sm ${activeTab === tab.id
-													? 'border-blue-500 text-blue-600 dark:text-blue-400'
-													: 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
-												}`}
-										>
-											<tab.icon className="w-5 h-5" />
-											<span>{tab.label}</span>
+				{/* Tab Content */}
+				<motion.div
+					key={activeTab}
+					initial={{ opacity: 0, y: 20 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.3 }}
+				>
+					{activeTab === 'overview' && (
+						<div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+							{/* Main Content */}
+							<div className="lg:col-span-2">
+								{/* Quick Actions */}
+								<div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+									<h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+									<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+										<button className="flex flex-col items-center p-4 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors">
+											<Plus className="w-6 h-6 text-slate-600 mb-2" />
+											<span className="text-sm font-medium text-slate-700">New Project</span>
 										</button>
-									))}
-								</nav>
-							</div>
+										<button className="flex flex-col items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+											<Bot className="w-6 h-6 text-blue-600 mb-2" />
+											<span className="text-sm font-medium text-blue-700">AI Assistant</span>
+										</button>
+										<button className="flex flex-col items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+											<Rocket className="w-6 h-6 text-green-600 mb-2" />
+											<span className="text-sm font-medium text-green-700">Deploy</span>
+										</button>
+										<button className="flex flex-col items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+											<TrendingUp className="w-6 h-6 text-purple-600 mb-2" />
+											<span className="text-sm font-medium text-purple-700">Analytics</span>
+										</button>
+									</div>
+								</div>
 
-							{/* Tab Content */}
-							<div className="space-y-8">
-								{activeTab === 'overview' && <DashboardOverview />}
-								{activeTab === 'analytics' && <EnhancedAnalyticsDashboard projectId="codai-aide" />}
-								{activeTab === 'workflows' && <WorkflowManagement projectId="codai-aide" />}
-								{activeTab === 'deployments' && <DeploymentManagement projectId="codai-aide" />}
-							</div>
-						</div>
-					</div>
-
-					<CommandPalette
-						isOpen={showCommandPalette}
-						onClose={() => setShowCommandPalette(false)}
-						onCommand={(command) => {
-							console.log('Command executed:', command.title)
-						}}
-					/>
-				</main>
-			</AccessibilityProvider>
-		)
-	}
-
-	// Legacy dashboard (fallback) - moved the content here instead
-	return <Home />
-}
-
-// Original dashboard implementation preserved as fallback
-function Home() {
-	const { user, loading } = useAuth()
-	const router = useRouter()
-	const [isAdmin, setIsAdmin] = useState(false)
-	const [showAgentOrchestrator, setShowAgentOrchestrator] = useState(false)
-	const [stats, setStats] = useState<DashboardStats>({
-		totalUsers: 0,
-		activeSubscriptions: 0,
-		monthlyRevenue: 0,
-		apiCallsToday: 0,
-		systemStatus: 'operational',
-		lastUpdated: new Date()
-	})
-	const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([])
-	const [isLoadingStats, setIsLoadingStats] = useState(true)
-	const [refreshing, setRefreshing] = useState(false)
-	const [searchQuery, setSearchQuery] = useState('')
-	const { addNotification } = useNotifications()
-
-	// Define navigation items for the dashboard layout
-	const navigationItems = [
-		{
-			label: 'Dashboard',
-			href: '/',
-			icon: <HomeIcon className="h-5 w-5" />,
-			isActive: true
-		},
-		{
-			label: 'Users',
-			href: '/users',
-			icon: <UsersIcon className="h-5 w-5" />
-		},
-		{
-			label: 'API Keys',
-			href: '/api-keys',
-			icon: <KeyIcon className="h-5 w-5" />
-		},
-		{
-			label: 'Billing',
-			href: '/billing',
-			icon: <CreditCardIcon className="h-5 w-5" />
-		},
-		{
-			label: 'Analytics',
-			href: '/analytics',
-			icon: <ChartBarIcon className="h-5 w-5" />,
-			subItems: [
-				{
-					label: 'Usage Metrics',
-					href: '/analytics/usage',
-					icon: <ChartBarIcon className="h-4 w-4" />
-				},
-				{
-					label: 'Performance',
-					href: '/analytics/performance',
-					icon: <ServerIcon className="h-4 w-4" />
-				}
-			]
-		},
-		{
-			label: 'Documentation',
-			href: '/docs',
-			icon: <DocumentTextIcon className="h-5 w-5" />
-		},
-		{
-			label: 'Settings',
-			href: '/settings',
-			icon: <CogIcon className="h-5 w-5" />
-		}
-	]
-	// User info for dashboard layout
-	const userInfo = user ? {
-		name: user.displayName || user.email?.split('@')[0] || 'User',
-		email: user.email || '',
-		role: isAdmin ? 'Administrator' : 'User'
-	} : undefined
-
-	// Keyboard shortcuts
-	useEffect(() => {
-		const handleKeyDown = (event: KeyboardEvent) => {
-			// Escape to clear search
-			if (event.key === 'Escape' && searchQuery) {
-				setSearchQuery('');
-			}
-			// Cmd+R or Ctrl+R to refresh data
-			if ((event.metaKey || event.ctrlKey) && event.key === 'r') {
-				event.preventDefault();
-				refreshDashboardStats();
-			}
-		};
-
-		document.addEventListener('keydown', handleKeyDown);
-		return () => document.removeEventListener('keydown', handleKeyDown);
-	}, [searchQuery]);
-
-	useEffect(() => {
-		// Redirect to login if not authenticated
-		if (!loading && !user) {
-			router.push('/login')
-		}
-
-		// Check if user is admin (example implementation)
-		const checkAdminStatus = async () => {
-			if (user) {
-				// In a real implementation, we would fetch the user profile from Firestore
-				// For now, we'll assume the first user is an admin
-				setIsAdmin(true)
-			}
-		}
-
-		if (user) {
-			checkAdminStatus()
-		}
-	}, [user, loading, router])
-
-	// Fetch dashboard statistics
-	const fetchDashboardStats = useCallback(async () => {
-		if (!user) return;
-
-		try {
-			setIsLoadingStats(true);
-
-			// Fetch dashboard stats from API
-			const response = await fetch('/api/admin/dashboard-stats');
-			if (response.ok) {
-				const data = await response.json();
-				setStats({
-					...data.stats,
-					lastUpdated: new Date()
-				});
-				setRecentActivity(data.recentActivity || []);
-
-				// Show success notification
-				addNotification({
-					type: 'success',
-					title: 'Data refreshed',
-					message: 'Dashboard statistics have been updated successfully.',
-					duration: 3000
-				});
-			} else {
-				// Mock data for development
-				setStats({
-					totalUsers: 42,
-					activeSubscriptions: 28,
-					monthlyRevenue: 1450,
-					apiCallsToday: 12847,
-					systemStatus: 'operational',
-					lastUpdated: new Date()
-				});
-				setRecentActivity([
-					{
-						id: '1',
-						type: 'user_signup',
-						message: 'New user registered: john@example.com',
-						timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString()
-					},
-					{
-						id: '2',
-						type: 'subscription_created',
-						message: 'Pro subscription activated for user123',
-						timestamp: new Date(Date.now() - 1000 * 60 * 45).toISOString()
-					},
-					{
-						id: '3',
-						type: 'payment_succeeded',
-						message: 'Payment of $29.99 processed successfully',
-						timestamp: new Date(Date.now() - 1000 * 60 * 120).toISOString()
-					}
-				]);
-
-				// Show fallback notification
-				addNotification({
-					type: 'info',
-					title: 'Using sample data',
-					message: 'Could not connect to the API. Displaying sample data instead.',
-					duration: 5000
-				});
-			}
-		} catch (error) {
-			console.error('Failed to fetch dashboard stats:', error);
-
-			// Show error notification
-			addNotification({
-				type: 'error',
-				title: 'Failed to fetch data',
-				message: 'Could not retrieve dashboard statistics. Please try again later.',
-				duration: 7000,
-				actions: [
-					{
-						label: 'Retry',
-						action: fetchDashboardStats,
-						variant: 'primary'
-					}
-				]
-			});
-		} finally {
-			setIsLoadingStats(false);
-			setRefreshing(false);
-		}
-	}, [user, addNotification]);
-
-	// Function to handle manual refresh
-	const refreshDashboardStats = () => {
-		if (refreshing) return;
-		setRefreshing(true);
-		fetchDashboardStats();
-	};
-	// Initial fetch
-	useEffect(() => {
-		if (user && isAdmin) {
-			fetchDashboardStats();
-		}
-	}, [user, isAdmin, fetchDashboardStats])
-
-	// Format currency
-	const formatCurrency = (amount: number) => {
-		return new Intl.NumberFormat('en-US', {
-			style: 'currency',
-			currency: 'USD'
-		}).format(amount);
-	};
-
-	// Format relative time
-	const formatRelativeTime = (timestamp: string) => {
-		const now = new Date();
-		const then = new Date(timestamp);
-		const diffInMinutes = Math.floor((now.getTime() - then.getTime()) / (1000 * 60));
-
-		if (diffInMinutes < 1) return 'Just now';
-		if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
-		if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`;
-		return `${Math.floor(diffInMinutes / 1440)}d ago`;
-	};
-
-	// Get activity icon
-	const getActivityIcon = (type: RecentActivity['type']) => {
-		switch (type) {
-			case 'user_signup': return '👤';
-			case 'subscription_created': return '💳';
-			case 'payment_succeeded': return '✅';
-			case 'api_key_created': return '🔑';
-			default: return '📝';
-		}
-	};
-
-	// Format refresh time
-	const formatLastUpdated = (date?: Date) => {
-		if (!date) return '';
-
-		const now = new Date();
-		const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-		if (diffInSeconds < 60) return 'Updated just now';
-		if (diffInSeconds < 3600) return `Updated ${Math.floor(diffInSeconds / 60)}m ago`;
-		if (diffInSeconds < 86400) return `Updated ${Math.floor(diffInSeconds / 3600)}h ago`;
-		return `Updated ${Math.floor(diffInSeconds / 86400)}d ago`;
-	};
-
-	if (loading) {
-		return (
-			<div className="flex min-h-screen items-center justify-center">
-				<div className="flex flex-col items-center space-y-4">
-					<div className="w-16 h-16 border-t-4 border-b-4 border-indigo-600 rounded-full animate-spin"></div>
-					<p className="text-lg font-medium text-gray-700 dark:text-gray-300">Loading dashboard...</p>
-				</div>
-			</div>
-		)
-	}
-
-	if (!user) {
-		return null // Will redirect to login
-	}
-
-	// Dashboard content
-	const DashboardContent = (
-		<>
-			<div className="flex justify-between items-center mb-8">
-				<div className="flex flex-col sm:flex-row sm:items-center gap-4">
-					<h2 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard Overview</h2>
-					<div className="flex items-center">
-						<div className={`w-2.5 h-2.5 rounded-full ${stats.systemStatus === 'operational' ? 'bg-green-500' :
-							stats.systemStatus === 'degraded' ? 'bg-yellow-500' : 'bg-red-500'
-							}`}></div>
-						<span className="ml-2 text-sm font-medium text-gray-600 dark:text-gray-400 capitalize">
-							System Status: {stats.systemStatus}
-						</span>
-					</div>
-				</div>
-				<div className="flex items-center">
-					<span className="hidden md:block text-xs text-gray-500 dark:text-gray-400 mr-2">
-						{formatLastUpdated(stats.lastUpdated)}
-					</span>
-					<button
-						onClick={refreshDashboardStats}
-						disabled={refreshing || isLoadingStats}
-						className={`p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100
-							dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800 transition-all duration-200
-							${(refreshing || isLoadingStats) ? 'opacity-50 cursor-not-allowed' : ''}`}
-						aria-label="Refresh dashboard data"
-						title="Refresh dashboard data (Ctrl+R)"
-					>
-						<ArrowPathIcon className={`h-5 w-5 ${refreshing ? 'animate-spin' : ''}`} />
-					</button>
-				</div>
-			</div>
-
-			{/* Dashboard Stats */}
-			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-				{/* Total Users */}
-				<div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow hover:shadow-md transition-shadow">
-					<div className="flex items-center justify-between">
-						<div className="flex items-center">
-							<div className="p-2 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 rounded-lg">
-								<UsersIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-							</div>
-							<div className="ml-4">
-								<p className="text-sm font-medium text-gray-600 dark:text-gray-300">Total Users</p>
-								<div className="flex items-baseline">
-									<p className="text-2xl font-semibold text-gray-900 dark:text-white">
-										{isLoadingStats ? (
-											<div className="h-8 w-16 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-										) : stats.totalUsers.toLocaleString()}
-									</p>
+								{/* Recent Projects */}
+								<div className="bg-white rounded-xl shadow-lg p-6">
+									<div className="flex justify-between items-center mb-4">
+										<h3 className="text-lg font-semibold text-gray-900">Recent Projects</h3>
+										<button className="text-slate-600 hover:text-slate-700 flex items-center space-x-1">
+											<span>View All</span>
+											<ChevronRight className="w-4 h-4" />
+										</button>
+									</div>
+									<div className="space-y-4">
+										{recentProjects.map((project) => (
+											<div key={project.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+												<div className="flex items-start justify-between mb-3">
+													<div className="flex-1">
+														<div className="flex items-center space-x-2 mb-1">
+															<h4 className="font-medium text-gray-900">{project.name}</h4>
+															{project.aiAssisted && (
+																<span className="bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs font-medium">
+																	AI
+																</span>
+															)}
+														</div>
+														<p className="text-sm text-gray-600 mb-2">{project.description}</p>
+														<div className="flex items-center space-x-4 text-xs text-gray-500">
+															<span className={`px-2 py-1 rounded-md ${getLanguageColor(project.language)}`}>
+																{project.language}
+															</span>
+															<span>Last commit: {project.lastCommit}</span>
+														</div>
+													</div>
+													<span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(project.status)}`}>
+														{project.status}
+													</span>
+												</div>
+												<div className="w-full bg-gray-200 rounded-full h-2">
+													<div
+														className="bg-slate-500 h-2 rounded-full transition-all duration-300"
+														style={{ width: `${project.progress}%` }}
+													/>
+												</div>
+											</div>
+										))}
+									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-				</div>
 
-				{/* Active Subscriptions */}
-				<div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow hover:shadow-md transition-shadow">
-					<div className="flex items-center justify-between">
-						<div className="flex items-center">
-							<div className="p-2 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30 rounded-lg">
-								<CreditCardIcon className="h-6 w-6 text-green-600 dark:text-green-400" />
-							</div>
-							<div className="ml-4">
-								<p className="text-sm font-medium text-gray-600 dark:text-gray-300">Active Subscriptions</p>
-								<div className="flex items-baseline">
-									<p className="text-2xl font-semibold text-gray-900 dark:text-white">
-										{isLoadingStats ? (
-											<div className="h-8 w-16 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-										) : stats.activeSubscriptions.toLocaleString()}
-									</p>
+							{/* Sidebar */}
+							<div className="space-y-6">
+								{/* AI Activity */}
+								<div className="bg-white rounded-xl shadow-lg p-6">
+									<h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+										<Bot className="w-5 h-5 text-blue-500 mr-2" />
+										AI Assistant Activity
+									</h3>
+									<div className="space-y-3">
+										{aiActivity.map((activity) => (
+											<div key={activity.id} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+												{getActivityIcon(activity.type)}
+												<div className="flex-1 min-w-0">
+													<p className="text-sm text-gray-900 font-medium">{activity.project}</p>
+													<p className="text-xs text-gray-600">{activity.description}</p>
+													<div className="flex items-center justify-between mt-1">
+														<span className="text-xs text-gray-500">{activity.timestamp}</span>
+														<span className="text-xs text-green-600 font-medium">{activity.confidence}% confidence</span>
+													</div>
+												</div>
+											</div>
+										))}
+									</div>
+								</div>
+
+								{/* System Status */}
+								<div className="bg-white rounded-xl shadow-lg p-6">
+									<h3 className="text-lg font-semibold text-gray-900 mb-4">System Status</h3>
+									<div className="space-y-3">
+										<div className="flex justify-between items-center">
+											<span className="text-sm text-gray-600">Build Queue</span>
+											<span className="text-sm font-medium text-green-600">3 jobs</span>
+										</div>
+										<div className="flex justify-between items-center">
+											<span className="text-sm text-gray-600">Active Deployments</span>
+											<span className="text-sm font-medium text-blue-600">{metrics.deploymentsToday}</span>
+										</div>
+										<div className="flex justify-between items-center">
+											<span className="text-sm text-gray-600">Code Quality Score</span>
+											<span className="text-sm font-medium text-purple-600">{metrics.codeQualityScore}%</span>
+										</div>
+										<div className="flex justify-between items-center">
+											<span className="text-sm text-gray-600">Developers Online</span>
+											<span className="text-sm font-medium text-orange-600">{metrics.developersActive}</span>
+										</div>
+									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-				</div>
-
-				{/* Monthly Revenue */}
-				<div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow hover:shadow-md transition-shadow">
-					<div className="flex items-center justify-between">
-						<div className="flex items-center">
-							<div className="p-2 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 rounded-lg">
-								<svg className="h-6 w-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-								</svg>
-							</div>
-							<div className="ml-4">
-								<p className="text-sm font-medium text-gray-600 dark:text-gray-300">Monthly Revenue</p>
-								<div className="flex items-baseline">
-									<p className="text-2xl font-semibold text-gray-900 dark:text-white">
-										{isLoadingStats ? (
-											<div className="h-8 w-24 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-										) : formatCurrency(stats.monthlyRevenue)}
-									</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				{/* API Calls Today */}
-				<div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow hover:shadow-md transition-shadow">
-					<div className="flex items-center justify-between">
-						<div className="flex items-center">
-							<div className="p-2 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/30 dark:to-orange-800/30 rounded-lg">
-								<ServerIcon className="h-6 w-6 text-orange-600 dark:text-orange-400" />
-							</div>
-							<div className="ml-4">
-								<p className="text-sm font-medium text-gray-600 dark:text-gray-300">API Calls Today</p>
-								<div className="flex items-baseline">
-									<p className="text-2xl font-semibold text-gray-900 dark:text-white">
-										{isLoadingStats ? (
-											<div className="h-8 w-20 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-										) : stats.apiCallsToday.toLocaleString()}
-									</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			{/* Main Content */}
-			<div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-				{/* Quick Actions and Navigation Cards */}
-				<div className="lg:col-span-2 space-y-6">					{/* Quick Actions */}
-					<div>
-						<h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-							Quick Actions
-						</h2>
-
-						<div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-							<button
-								onClick={() => setShowAgentOrchestrator(!showAgentOrchestrator)}
-								className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow hover:shadow-md transition-all flex flex-col items-center justify-center text-center gap-3 hover:bg-gray-50 dark:hover:bg-gray-700/70"
-							>
-								<div className="p-2 bg-purple-100 dark:bg-purple-900/40 rounded-full">
-									<Bot className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-								</div>
-								<span className="text-sm font-medium text-gray-700 dark:text-gray-200">AI Agents</span>
-							</button>
-
-							<button
-								onClick={() => router.push('/users/new')}
-								className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow hover:shadow-md transition-all flex flex-col items-center justify-center text-center gap-3 hover:bg-gray-50 dark:hover:bg-gray-700/70"
-							>
-								<div className="p-2 bg-blue-100 dark:bg-blue-900/40 rounded-full">
-									<UserCircleIcon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-								</div>
-								<span className="text-sm font-medium text-gray-700 dark:text-gray-200">Add User</span>
-							</button>
-
-							<button
-								onClick={() => router.push('/api-keys/new')}
-								className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow hover:shadow-md transition-all flex flex-col items-center justify-center text-center gap-3 hover:bg-gray-50 dark:hover:bg-gray-700/70"
-							>
-								<div className="p-2 bg-green-100 dark:bg-green-900/40 rounded-full">
-									<KeyIcon className="h-5 w-5 text-green-600 dark:text-green-400" />
-								</div>
-								<span className="text-sm font-medium text-gray-700 dark:text-gray-200">New API Key</span>
-							</button>
-
-							<button
-								onClick={() => router.push('/analytics/usage')}
-								className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow hover:shadow-md transition-all flex flex-col items-center justify-center text-center gap-3 hover:bg-gray-50 dark:hover:bg-gray-700/70"
-							>
-								<div className="p-2 bg-orange-100 dark:bg-orange-900/40 rounded-full">
-									<ChartBarIcon className="h-5 w-5 text-orange-600 dark:text-orange-400" />
-								</div>								<span className="text-sm font-medium text-gray-700 dark:text-gray-200">Usage Report</span>
-							</button>
-						</div>
-					</div>
-
-					{/* Agent Orchestrator Section */}
-					{showAgentOrchestrator && (
-						<div>
-							<div className="flex items-center justify-between mb-4">
-								<h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-									AI Agent Management
-								</h2>
-								<button
-									onClick={() => setShowAgentOrchestrator(false)}
-									className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
-								>
-									<svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-									</svg>
-								</button>
-							</div>
-							<AgentOrchestrator className="mb-6" />
 						</div>
 					)}
 
-					{/* Administration Cards */}
-					<div>
-						<h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-							Administration
-						</h2>
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-							<Link href="/users" className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow hover:shadow-md transition-shadow group">
-								<div className="flex items-center mb-4">
-									<div className="p-2 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/40 dark:to-blue-800/40 rounded-lg group-hover:from-blue-100 group-hover:to-blue-200 dark:group-hover:from-blue-800/40 dark:group-hover:to-blue-700/40">
-										<UsersIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-									</div>
-									<h3 className="text-lg font-medium text-gray-900 dark:text-white ml-3">
-										Users
-									</h3>
-								</div>
-								<p className="text-gray-600 dark:text-gray-300 text-sm">
-									Manage users, permissions, and access levels across the platform
-								</p>
-								<div className="mt-4 flex items-center text-blue-600 dark:text-blue-400">
-									<span className="text-sm font-medium">Manage users</span>
-									<svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-									</svg>
-								</div>
-							</Link>
-
-							<Link href="/api-keys" className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow hover:shadow-md transition-shadow group">
-								<div className="flex items-center mb-4">
-									<div className="p-2 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/40 dark:to-green-800/40 rounded-lg group-hover:from-green-100 group-hover:to-green-200 dark:group-hover:from-green-800/40 dark:group-hover:to-green-700/40">
-										<KeyIcon className="h-6 w-6 text-green-600 dark:text-green-400" />
-									</div>
-									<h3 className="text-lg font-medium text-gray-900 dark:text-white ml-3">
-										API Keys
-									</h3>
-								</div>
-								<p className="text-gray-600 dark:text-gray-300 text-sm">
-									Configure and manage service credentials and API access tokens
-								</p>
-								<div className="mt-4 flex items-center text-green-600 dark:text-green-400">
-									<span className="text-sm font-medium">Manage API keys</span>
-									<svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-									</svg>
-								</div>
-							</Link>
-
-							<Link href="/billing" className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow hover:shadow-md transition-shadow group">
-								<div className="flex items-center mb-4">
-									<div className="p-2 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/40 dark:to-purple-800/40 rounded-lg group-hover:from-purple-100 group-hover:to-purple-200 dark:group-hover:from-purple-800/40 dark:group-hover:to-purple-700/40">
-										<CreditCardIcon className="h-6 w-6 text-purple-600 dark:text-purple-400" />
-									</div>
-									<h3 className="text-lg font-medium text-gray-900 dark:text-white ml-3">
-										Billing
-									</h3>
-								</div>
-								<p className="text-gray-600 dark:text-gray-300 text-sm">
-									Define and manage subscription plans, pricing, and billing cycles
-								</p>
-								<div className="mt-4 flex items-center text-purple-600 dark:text-purple-400">
-									<span className="text-sm font-medium">Manage billing</span>
-									<svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-									</svg>
-								</div>
-							</Link>
-
-							<Link href="/analytics" className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow hover:shadow-md transition-shadow group">
-								<div className="flex items-center mb-4">
-									<div className="p-2 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/40 dark:to-orange-800/40 rounded-lg group-hover:from-orange-100 group-hover:to-orange-200 dark:group-hover:from-orange-800/40 dark:group-hover:to-orange-700/40">
-										<ChartBarIcon className="h-6 w-6 text-orange-600 dark:text-orange-400" />
-									</div>
-									<h3 className="text-lg font-medium text-gray-900 dark:text-white ml-3">
-										Analytics
-									</h3>
-								</div>
-								<p className="text-gray-600 dark:text-gray-300 text-sm">
-									View platform usage statistics and performance analytics
-								</p>
-								<div className="mt-4 flex items-center text-orange-600 dark:text-orange-400">
-									<span className="text-sm font-medium">View analytics</span>
-									<svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-									</svg>
-								</div>
-							</Link>
-						</div>
-					</div>
-				</div>
-
-				{/* Recent Activity */}
-				<div className="space-y-6">
-					{/* Activity Feed */}
-					<div>
-						<div className="flex items-center justify-between mb-4">
-							<h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-								Recent Activity
-							</h2>
-							<Link href="/activity" className="text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">
-								View all
-							</Link>
-						</div>
-
-						<div className="bg-white dark:bg-gray-800 rounded-xl shadow">
-							<div className="p-5">
-								{isLoadingStats ? (
-									<div className="space-y-4">
-										{[...Array(3)].map((_, i) => (
-											<div key={i} className="flex items-start space-x-3">
-												<div className="h-8 w-8 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"></div>
-												<div className="flex-1">
-													<div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2 animate-pulse"></div>
-													<div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2 animate-pulse"></div>
-												</div>
-											</div>
-										))}
-									</div>
-								) : recentActivity.length > 0 ? (
-									<div className="space-y-4">
-										{recentActivity.map((activity) => (
-											<div key={activity.id} className="flex items-start space-x-3">
-												<div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 flex items-center justify-center">
-													<span className="text-base">{getActivityIcon(activity.type)}</span>
-												</div>
-												<div className="flex-1 min-w-0">
-													<p className="text-sm text-gray-900 dark:text-white font-medium">
-														{activity.message}
-													</p>
-													<p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-														{formatRelativeTime(activity.timestamp)}
-													</p>
-												</div>
-											</div>
-										))}
-									</div>
-								) : (
-									<div className="text-center py-8">
-										<ClipboardDocumentListIcon className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-600" />
-										<p className="mt-4 text-gray-500 dark:text-gray-400">
-											No recent activity to display
-										</p>
-										<p className="text-sm text-gray-400 dark:text-gray-500 mt-2">
-											System events will appear here as they occur
-										</p>
-									</div>
-								)}
+					{/* Other tab content placeholders */}
+					{activeTab === 'projects' && (
+						<div className="bg-white rounded-xl shadow-lg p-6">
+							<h3 className="text-xl font-semibold text-gray-900 mb-4">Project Management</h3>
+							<div className="text-center py-12">
+								<Layers className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+								<h4 className="text-lg font-medium text-gray-900 mb-2">Project Management Coming Soon</h4>
+								<p className="text-gray-600">Comprehensive project management with AI-powered insights and automation.</p>
 							</div>
 						</div>
+					)}
+
+					{activeTab === 'ai-assistant' && (
+						<div className="bg-white rounded-xl shadow-lg p-6">
+							<h3 className="text-xl font-semibold text-gray-900 mb-4">AI Development Assistant</h3>
+							<div className="text-center py-12">
+								<Bot className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+								<h4 className="text-lg font-medium text-gray-900 mb-2">AI Assistant Coming Soon</h4>
+								<p className="text-gray-600">Intelligent code generation, bug fixing, and optimization assistance.</p>
+							</div>
+						</div>
+					)}
+
+					{activeTab === 'environments' && (
+						<div className="bg-white rounded-xl shadow-lg p-6">
+							<h3 className="text-xl font-semibold text-gray-900 mb-4">Development Environments</h3>
+							<div className="text-center py-12">
+								<Database className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+								<h4 className="text-lg font-medium text-gray-900 mb-2">Environment Management Coming Soon</h4>
+								<p className="text-gray-600">Manage development, staging, and production environments with monitoring.</p>
+							</div>
+						</div>
+					)}
+
+					{activeTab === 'analytics' && (
+						<div className="bg-white rounded-xl shadow-lg p-6">
+							<h3 className="text-xl font-semibent text-gray-900 mb-4">Development Analytics</h3>
+							<div className="text-center py-12">
+								<TrendingUp className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+								<h4 className="text-lg font-medium text-gray-900 mb-2">Analytics Dashboard Coming Soon</h4>
+								<p className="text-gray-600">Comprehensive development metrics, performance insights, and team productivity analytics.</p>
+							</div>
+						</div>
+					)}
+
+					{activeTab === 'team' && (
+						<div className="bg-white rounded-xl shadow-lg p-6">
+							<h3 className="text-xl font-semibold text-gray-900 mb-4">Team Collaboration</h3>
+							<div className="text-center py-12">
+								<Users className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+								<h4 className="text-lg font-medium text-gray-900 mb-2">Team Management Coming Soon</h4>
+								<p className="text-gray-600">Developer team management, collaboration tools, and productivity tracking.</p>
+							</div>
+						</div>
+					)}
+				</motion.div>
+			</div>
+
+			{/* Footer */}
+			<footer className="bg-gradient-to-r from-slate-700 via-slate-600 to-blue-600 text-white py-12 mt-12">
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+						<motion.div
+							whileHover={{ scale: 1.05 }}
+							className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center"
+						>
+							<Code2 className="w-8 h-8 mx-auto mb-4" />
+							<h3 className="text-lg font-semibold mb-2">AI-Powered Development</h3>
+							<p className="text-slate-100 text-sm mb-4">
+								Accelerate development with intelligent code generation and assistance
+							</p>
+							<button className="bg-white text-slate-600 px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors font-medium">
+								Start Coding
+							</button>
+						</motion.div>
+
+						<motion.div
+							whileHover={{ scale: 1.05 }}
+							className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center"
+						>
+							<Rocket className="w-8 h-8 mx-auto mb-4" />
+							<h3 className="text-lg font-semibold mb-2">Rapid Deployment</h3>
+							<p className="text-slate-100 text-sm mb-4">
+								Deploy applications instantly with automated CI/CD pipelines
+							</p>
+							<button className="bg-white text-slate-600 px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors font-medium">
+								Deploy Now
+							</button>
+						</motion.div>
+
+						<motion.div
+							whileHover={{ scale: 1.05 }}
+							className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center"
+						>
+							<TrendingUp className="w-8 h-8 mx-auto mb-4" />
+							<h3 className="text-lg font-semibold mb-2">Performance Insights</h3>
+							<p className="text-slate-100 text-sm mb-4">
+								Monitor and optimize your development workflow with detailed analytics
+							</p>
+							<button className="bg-white text-slate-600 px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors font-medium">
+								View Analytics
+							</button>
+						</motion.div>
+					</div>
+
+					<div className="text-center mt-8 pt-8 border-t border-white/20">
+						<p className="text-slate-100">
+							© 2025 AIDE - AI Development Environment. Part of the CODAI Ecosystem.
+						</p>
 					</div>
 				</div>
-			</div>
-		</>
-	);
-
-	// Render using the DashboardLayout
-	return (
-		<DashboardLayout
-			navigationItems={navigationItems}
-			userInfo={userInfo}
-			pageTitle="Dashboard"
-			breadcrumbs={[]}
-		>
-			{DashboardContent}
-		</DashboardLayout>
-	);
+			</footer>
+		</div>
+	)
 }
-

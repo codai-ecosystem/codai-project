@@ -407,8 +407,8 @@ export default function LogAIPage() {
               <button
                 onClick={() => setRealTimeEnabled(!realTimeEnabled)}
                 className={`px-3 py-2 rounded-lg flex items-center space-x-2 transition-colors ${realTimeEnabled
-                    ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
               >
                 {realTimeEnabled ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
@@ -441,8 +441,8 @@ export default function LogAIPage() {
                   key={tab.id}
                   {...(tab.href ? { href: tab.href } : { onClick: () => setSelectedTab(tab.id) })}
                   className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all ${selectedTab === tab.id
-                      ? 'bg-white text-blue-600 shadow-md'
-                      : 'text-gray-600 hover:text-blue-600 hover:bg-white/50'
+                    ? 'bg-white text-blue-600 shadow-md'
+                    : 'text-gray-600 hover:text-blue-600 hover:bg-white/50'
                     }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -490,10 +490,10 @@ export default function LogAIPage() {
                         </div>
                         <div className="flex items-center space-x-1 text-sm">
                           <TrendIcon className={`w-3 h-3 ${metric.trend === 'up' ? 'text-green-600' :
-                              metric.trend === 'down' ? 'text-red-600' : 'text-gray-600'
+                            metric.trend === 'down' ? 'text-red-600' : 'text-gray-600'
                             }`} />
                           <span className={`text-xs ${metric.change > 0 ? 'text-green-600' :
-                              metric.change < 0 ? 'text-red-600' : 'text-gray-600'
+                            metric.change < 0 ? 'text-red-600' : 'text-gray-600'
                             }`}>
                             {metric.change > 0 ? '+' : ''}{metric.change}%
                           </span>
@@ -528,9 +528,9 @@ export default function LogAIPage() {
                       <div className="flex-1">
                         <div className="flex items-center space-x-2 mb-1">
                           <span className={`px-2 py-1 text-xs font-medium rounded-full uppercase ${alert.level === 'critical' ? 'bg-red-100 text-red-700' :
-                              alert.level === 'high' ? 'bg-orange-100 text-orange-700' :
-                                alert.level === 'medium' ? 'bg-yellow-100 text-yellow-700' :
-                                  'bg-blue-100 text-blue-700'
+                            alert.level === 'high' ? 'bg-orange-100 text-orange-700' :
+                              alert.level === 'medium' ? 'bg-yellow-100 text-yellow-700' :
+                                'bg-blue-100 text-blue-700'
                             }`}>
                             {alert.level}
                           </span>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { 
+import {
   Wallet,
   TrendingUp,
   TrendingDown,
@@ -361,7 +361,7 @@ const WalletDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
       {/* Enhanced Header */}
-      <motion.header 
+      <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/10 backdrop-blur-sm border-b border-white/20 sticky top-0 z-50"
@@ -375,7 +375,7 @@ const WalletDashboard = () => {
               </h1>
               <p className="text-purple-300 mt-1">Manage your digital assets and DeFi positions</p>
             </div>
-            
+
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-6 text-sm">
                 <div className="text-center">
@@ -422,7 +422,7 @@ const WalletDashboard = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Portfolio Balance Section */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 mb-8"
@@ -435,7 +435,7 @@ const WalletDashboard = () => {
               </h2>
               <p className="text-purple-300 mt-1">Your total crypto holdings</p>
             </div>
-            
+
             <div className="flex items-center gap-4">
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -497,7 +497,7 @@ const WalletDashboard = () => {
         </motion.div>
 
         {/* Quick Actions */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
@@ -507,7 +507,7 @@ const WalletDashboard = () => {
             <Zap className="w-5 h-5 text-purple-400" />
             Quick Actions
           </h3>
-          
+
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {quickActions.map((action) => (
               <Link key={action.id} href={action.href}>
@@ -529,7 +529,7 @@ const WalletDashboard = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Crypto Assets */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
@@ -540,7 +540,7 @@ const WalletDashboard = () => {
                 <Coins className="w-5 h-5 text-purple-400" />
                 Your Assets
               </h3>
-              
+
               <div className="flex items-center gap-2">
                 <div className="relative">
                   <Search className="w-4 h-4 text-purple-300 absolute left-3 top-1/2 transform -translate-y-1/2" />
@@ -552,7 +552,7 @@ const WalletDashboard = () => {
                     className="pl-10 pr-4 py-2 bg-white/10 border border-white/20 rounded-xl text-white placeholder-purple-300 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
                   />
                 </div>
-                
+
                 <Link href="/portfolio">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
@@ -603,7 +603,7 @@ const WalletDashboard = () => {
           </motion.div>
 
           {/* Recent Transactions */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
@@ -614,7 +614,7 @@ const WalletDashboard = () => {
                 <Activity className="w-5 h-5 text-purple-400" />
                 Recent Activity
               </h3>
-              
+
               <Link href="/transactions">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -637,11 +637,10 @@ const WalletDashboard = () => {
                     className="flex items-center justify-between p-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-all cursor-pointer"
                   >
                     <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                        tx.type === 'send' ? 'bg-red-500/20 text-red-400' :
-                        tx.type === 'receive' ? 'bg-green-500/20 text-green-400' :
-                        'bg-blue-500/20 text-blue-400'
-                      }`}>
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${tx.type === 'send' ? 'bg-red-500/20 text-red-400' :
+                          tx.type === 'receive' ? 'bg-green-500/20 text-green-400' :
+                            'bg-blue-500/20 text-blue-400'
+                        }`}>
                         <TransactionIcon className="w-5 h-5" />
                       </div>
                       <div>
@@ -671,7 +670,7 @@ const WalletDashboard = () => {
         </div>
 
         {/* DeFi Positions */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
@@ -682,7 +681,7 @@ const WalletDashboard = () => {
               <Zap className="w-5 h-5 text-purple-400" />
               DeFi Positions
             </h3>
-            
+
             <Link href="/defi">
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -737,7 +736,7 @@ const WalletDashboard = () => {
       </div>
 
       {/* Modern Footer */}
-      <motion.footer 
+      <motion.footer
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
@@ -745,7 +744,7 @@ const WalletDashboard = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             >
@@ -754,7 +753,7 @@ const WalletDashboard = () => {
               <p className="text-purple-300">Multi-signature wallets, hardware security modules, and advanced encryption protect your assets.</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             >
@@ -763,7 +762,7 @@ const WalletDashboard = () => {
               <p className="text-purple-300">Access Bitcoin, Ethereum, Solana, and 50+ blockchain networks from one wallet.</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             >

@@ -3,8 +3,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Beaker, 
+import {
+  Beaker,
   Brain,
   Lightbulb,
   Rocket,
@@ -351,7 +351,7 @@ export default function ResearchDevelopment() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-yellow-50">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         className="bg-white/80 backdrop-blur-sm border-b border-red-200/50 sticky top-0 z-40"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -369,7 +369,7 @@ export default function ResearchDevelopment() {
                 <p className="text-sm text-gray-600">Romanian AI Innovation & Research Hub</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="hidden sm:flex items-center space-x-6 text-sm">
                 <div className="flex items-center space-x-2">
@@ -385,7 +385,7 @@ export default function ResearchDevelopment() {
                   <span className="text-gray-600">53 Researchers</span>
                 </div>
               </div>
-              
+
               <button className="px-4 py-2 bg-gradient-to-r from-red-500 to-yellow-500 text-white rounded-lg hover:from-red-600 hover:to-yellow-600 transition-colors">
                 <Plus className="w-4 h-4 inline mr-2" />
                 New Project
@@ -405,11 +405,10 @@ export default function ResearchDevelopment() {
                 <button
                   key={tab.id}
                   onClick={() => setSelectedTab(tab.id)}
-                  className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                    selectedTab === tab.id
+                  className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${selectedTab === tab.id
                       ? 'border-red-500 text-red-600'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                    }`}
                 >
                   <Icon className="w-4 h-4" />
                   <span>{tab.label}</span>
@@ -458,7 +457,7 @@ export default function ResearchDevelopment() {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {researchProjects
-                  .filter(project => 
+                  .filter(project =>
                     (filterStatus === 'all' || project.status === filterStatus) &&
                     project.name.toLowerCase().includes(searchTerm.toLowerCase())
                   )
@@ -612,12 +611,11 @@ export default function ResearchDevelopment() {
                       </div>
 
                       <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
-                        <span className={`px-2 py-1 rounded text-xs font-medium ${
-                          tool.type === 'framework' ? 'bg-blue-100 text-blue-800' :
-                          tool.type === 'library' ? 'bg-green-100 text-green-800' :
-                          tool.type === 'platform' ? 'bg-purple-100 text-purple-800' :
-                          'bg-gray-100 text-gray-800'
-                        }`}>
+                        <span className={`px-2 py-1 rounded text-xs font-medium ${tool.type === 'framework' ? 'bg-blue-100 text-blue-800' :
+                            tool.type === 'library' ? 'bg-green-100 text-green-800' :
+                              tool.type === 'platform' ? 'bg-purple-100 text-purple-800' :
+                                'bg-gray-100 text-gray-800'
+                          }`}>
                           {tool.type}
                         </span>
                         <div className="flex items-center space-x-2">
@@ -669,12 +667,11 @@ export default function ResearchDevelopment() {
                               <span className="font-semibold text-gray-900">{innovation.impact_score}/10</span>
                             </div>
                           </div>
-                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                            innovation.category === 'algorithm' ? 'bg-blue-100 text-blue-800' :
-                            innovation.category === 'architecture' ? 'bg-green-100 text-green-800' :
-                            innovation.category === 'dataset' ? 'bg-purple-100 text-purple-800' :
-                            'bg-orange-100 text-orange-800'
-                          }`}>
+                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${innovation.category === 'algorithm' ? 'bg-blue-100 text-blue-800' :
+                              innovation.category === 'architecture' ? 'bg-green-100 text-green-800' :
+                                innovation.category === 'dataset' ? 'bg-purple-100 text-purple-800' :
+                                  'bg-orange-100 text-orange-800'
+                            }`}>
                             {innovation.category}
                           </span>
                         </div>
@@ -709,8 +706,8 @@ export default function ResearchDevelopment() {
                 Advanced {tabs.find(tab => tab.id === selectedTab)?.label.toLowerCase()} features coming soon.
               </p>
               <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-yellow-500 rounded-lg flex items-center justify-center mx-auto">
-                {React.createElement(tabs.find(tab => tab.id === selectedTab)?.icon || Beaker, { 
-                  className: "w-8 h-8 text-white" 
+                {React.createElement(tabs.find(tab => tab.id === selectedTab)?.icon || Beaker, {
+                  className: "w-8 h-8 text-white"
                 })}
               </div>
             </div>
@@ -719,7 +716,7 @@ export default function ResearchDevelopment() {
       </div>
 
       {/* Footer */}
-      <motion.footer 
+      <motion.footer
         className="bg-white/80 backdrop-blur-sm border-t border-red-200/50 mt-16"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

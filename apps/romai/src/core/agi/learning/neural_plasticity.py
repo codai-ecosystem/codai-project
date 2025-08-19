@@ -19,6 +19,13 @@ from concurrent.futures import ThreadPoolExecutor
 import json
 
 from .cognitive_interfaces import (
+
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
     BaseNeuralPlasticity, CognitivePlasticityLevel, RomanianCognitivePattern,
     CognitiveModule, CognitiveConnection, CognitiveAdaptationResult
 )

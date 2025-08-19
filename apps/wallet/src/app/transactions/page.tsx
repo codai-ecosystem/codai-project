@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { 
+import {
   Activity,
   ArrowUpRight,
   ArrowDownLeft,
@@ -341,7 +341,7 @@ const WalletTransactionsPage = () => {
       tx.status,
       tx.hash
     ].join(',')).join('\n')
-    
+
     const blob = new Blob([csvContent], { type: 'text/csv' })
     const url = window.URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -360,7 +360,7 @@ const WalletTransactionsPage = () => {
 
     const sorted = [...filteredTransactions].sort((a, b) => {
       let aValue, bValue
-      
+
       switch (field) {
         case 'timestamp':
           aValue = new Date(a.timestamp).getTime()
@@ -398,7 +398,7 @@ const WalletTransactionsPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900">
       {/* Enhanced Header */}
-      <motion.header 
+      <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/10 backdrop-blur-sm border-b border-white/20 sticky top-0 z-50"
@@ -412,7 +412,7 @@ const WalletTransactionsPage = () => {
               </h1>
               <p className="text-slate-300 mt-1">Track and manage your crypto transactions</p>
             </div>
-            
+
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-6 text-sm">
                 <div className="text-center">
@@ -439,7 +439,7 @@ const WalletTransactionsPage = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Transaction Metrics */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8"
@@ -488,7 +488,7 @@ const WalletTransactionsPage = () => {
         </motion.div>
 
         {/* Controls & Filters */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
@@ -564,7 +564,7 @@ const WalletTransactionsPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
                 <select
                   value={filters.type}
-                  onChange={(e) => setFilters({...filters, type: e.target.value})}
+                  onChange={(e) => setFilters({ ...filters, type: e.target.value })}
                   className="px-3 py-2 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                 >
                   <option value="all">All Types</option>
@@ -578,7 +578,7 @@ const WalletTransactionsPage = () => {
 
                 <select
                   value={filters.status}
-                  onChange={(e) => setFilters({...filters, status: e.target.value})}
+                  onChange={(e) => setFilters({ ...filters, status: e.target.value })}
                   className="px-3 py-2 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                 >
                   <option value="all">All Status</option>
@@ -590,7 +590,7 @@ const WalletTransactionsPage = () => {
 
                 <select
                   value={filters.asset}
-                  onChange={(e) => setFilters({...filters, asset: e.target.value})}
+                  onChange={(e) => setFilters({ ...filters, asset: e.target.value })}
                   className="px-3 py-2 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                 >
                   <option value="all">All Assets</option>
@@ -604,7 +604,7 @@ const WalletTransactionsPage = () => {
 
                 <select
                   value={filters.network}
-                  onChange={(e) => setFilters({...filters, network: e.target.value})}
+                  onChange={(e) => setFilters({ ...filters, network: e.target.value })}
                   className="px-3 py-2 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                 >
                   <option value="all">All Networks</option>
@@ -615,7 +615,7 @@ const WalletTransactionsPage = () => {
 
                 <select
                   value={filters.dateRange}
-                  onChange={(e) => setFilters({...filters, dateRange: e.target.value})}
+                  onChange={(e) => setFilters({ ...filters, dateRange: e.target.value })}
                   className="px-3 py-2 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                 >
                   <option value="all">All Time</option>
@@ -647,7 +647,7 @@ const WalletTransactionsPage = () => {
         </motion.div>
 
         {/* Transactions List */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -663,9 +663,8 @@ const WalletTransactionsPage = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleSort('timestamp')}
-                  className={`px-3 py-1 rounded-lg transition-colors ${
-                    sortBy === 'timestamp' ? 'bg-purple-500/30 text-purple-300' : 'text-slate-300 hover:bg-white/10'
-                  }`}
+                  className={`px-3 py-1 rounded-lg transition-colors ${sortBy === 'timestamp' ? 'bg-purple-500/30 text-purple-300' : 'text-slate-300 hover:bg-white/10'
+                    }`}
                 >
                   Date {sortBy === 'timestamp' && (sortOrder === 'desc' ? '↓' : '↑')}
                 </motion.button>
@@ -673,9 +672,8 @@ const WalletTransactionsPage = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleSort('amount')}
-                  className={`px-3 py-1 rounded-lg transition-colors ${
-                    sortBy === 'amount' ? 'bg-purple-500/30 text-purple-300' : 'text-slate-300 hover:bg-white/10'
-                  }`}
+                  className={`px-3 py-1 rounded-lg transition-colors ${sortBy === 'amount' ? 'bg-purple-500/30 text-purple-300' : 'text-slate-300 hover:bg-white/10'
+                    }`}
                 >
                   Amount {sortBy === 'amount' && (sortOrder === 'desc' ? '↓' : '↑')}
                 </motion.button>
@@ -683,9 +681,8 @@ const WalletTransactionsPage = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleSort('status')}
-                  className={`px-3 py-1 rounded-lg transition-colors ${
-                    sortBy === 'status' ? 'bg-purple-500/30 text-purple-300' : 'text-slate-300 hover:bg-white/10'
-                  }`}
+                  className={`px-3 py-1 rounded-lg transition-colors ${sortBy === 'status' ? 'bg-purple-500/30 text-purple-300' : 'text-slate-300 hover:bg-white/10'
+                    }`}
                 >
                   Status {sortBy === 'status' && (sortOrder === 'desc' ? '↓' : '↑')}
                 </motion.button>
@@ -699,7 +696,7 @@ const WalletTransactionsPage = () => {
               const TransactionIcon = getTransactionIcon(transaction.type)
               const StatusIcon = getStatusIcon(transaction.status)
               const networkInfo = getNetworkInfo(transaction.network)
-              
+
               return (
                 <motion.div
                   key={transaction.id}
@@ -797,7 +794,7 @@ const WalletTransactionsPage = () => {
       </div>
 
       {/* Modern Footer */}
-      <motion.footer 
+      <motion.footer
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
@@ -805,7 +802,7 @@ const WalletTransactionsPage = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             >
@@ -814,7 +811,7 @@ const WalletTransactionsPage = () => {
               <p className="text-slate-300">Monitor all your transactions across multiple blockchains with instant updates and confirmations.</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             >
@@ -823,7 +820,7 @@ const WalletTransactionsPage = () => {
               <p className="text-slate-300">Transaction verification, multi-signature support, and comprehensive audit trails for all operations.</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             >

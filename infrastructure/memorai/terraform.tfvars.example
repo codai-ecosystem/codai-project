@@ -1,0 +1,7 @@
+# Copy to terraform.tfvars and fill with real values before apply
+# DO NOT COMMIT secrets
+
+graphql_service_token = "REPLACE_WITH_STRONG_BEARER"
+mcp_api_key           = "REPLACE_WITH_MEMORAI_MCP_API_KEY"
+azure_openai_api_key  = "REPLACE_WITH_AZURE_OPENAI_KEY"
+memorai_api_base_url  = "http://api.memorai.ro"

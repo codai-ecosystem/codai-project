@@ -260,11 +260,10 @@ export default function AnalyticsPage() {
                 <button
                   key={type}
                   onClick={() => setActiveReport(type)}
-                  className={`px-4 py-2 rounded text-sm font-medium transition-all ${
-                    activeReport === type
+                  className={`px-4 py-2 rounded text-sm font-medium transition-all ${activeReport === type
                       ? 'bg-purple-500 text-white'
                       : 'text-slate-400 hover:text-white'
-                  }`}
+                    }`}
                 >
                   {type.charAt(0).toUpperCase() + type.slice(1)}
                 </button>
@@ -494,7 +493,7 @@ export default function AnalyticsPage() {
               <h3 className="text-lg font-semibold text-white mb-2">Real-time Analytics</h3>
               <p className="text-slate-400 text-sm">Live performance tracking with automated insights and trend analysis</p>
             </motion.div>
-            
+
             <motion.div
               className="glassmorphism p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-purple-500/50 transition-all"
               whileHover={{ scale: 1.05 }}
@@ -505,7 +504,7 @@ export default function AnalyticsPage() {
               <h3 className="text-lg font-semibold text-white mb-2">Custom Reports</h3>
               <p className="text-slate-400 text-sm">Generate detailed reports with advanced filtering and export capabilities</p>
             </motion.div>
-            
+
             <motion.div
               className="glassmorphism p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-purple-500/50 transition-all"
               whileHover={{ scale: 1.05 }}

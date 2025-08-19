@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { 
+import {
   BookOpen,
   Search,
   Filter,
@@ -257,18 +257,18 @@ export default function CoursesPage() {
 
   const filteredCourses = courses.filter(course => {
     const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         course.instructor.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         course.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()))
-    
+      course.instructor.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      course.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()))
+
     const matchesCategory = selectedCategory === 'all' || course.category === selectedCategory
     const matchesLevel = selectedLevel === 'all' || course.level === selectedLevel
-    const matchesDuration = selectedDuration === 'all' || 
-                           (selectedDuration === 'short' && parseInt(course.duration) <= 8) ||
-                           (selectedDuration === 'medium' && parseInt(course.duration) > 8 && parseInt(course.duration) <= 16) ||
-                           (selectedDuration === 'long' && parseInt(course.duration) > 16)
-    const matchesRating = selectedRating === 'all' || 
-                         (selectedRating === '4.5+' && course.rating >= 4.5) ||
-                         (selectedRating === '4.0+' && course.rating >= 4.0)
+    const matchesDuration = selectedDuration === 'all' ||
+      (selectedDuration === 'short' && parseInt(course.duration) <= 8) ||
+      (selectedDuration === 'medium' && parseInt(course.duration) > 8 && parseInt(course.duration) <= 16) ||
+      (selectedDuration === 'long' && parseInt(course.duration) > 16)
+    const matchesRating = selectedRating === 'all' ||
+      (selectedRating === '4.5+' && course.rating >= 4.5) ||
+      (selectedRating === '4.0+' && course.rating >= 4.0)
 
     return matchesSearch && matchesCategory && matchesLevel && matchesDuration && matchesRating
   })
@@ -307,7 +307,7 @@ export default function CoursesPage() {
                 <p className="text-sm text-gray-600">Discover AI-powered learning experiences</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -321,9 +321,8 @@ export default function CoursesPage() {
               </div>
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className={`p-2 rounded-lg transition-colors ${
-                  showFilters ? 'bg-blue-100 text-blue-600' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
-                }`}
+                className={`p-2 rounded-lg transition-colors ${showFilters ? 'bg-blue-100 text-blue-600' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
+                  }`}
               >
                 <Filter className="h-5 w-5" />
               </button>
@@ -364,11 +363,10 @@ export default function CoursesPage() {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`flex items-center space-x-3 p-3 rounded-lg text-left transition-all ${
-                  selectedCategory === category.id
+                className={`flex items-center space-x-3 p-3 rounded-lg text-left transition-all ${selectedCategory === category.id
                     ? 'bg-blue-100 text-blue-700 border border-blue-300'
                     : 'hover:bg-gray-50 text-gray-700'
-                }`}
+                  }`}
               >
                 <div className={`w-8 h-8 ${category.color} rounded-lg flex items-center justify-center`}>
                   <category.icon className="h-4 w-4 text-white" />
@@ -404,7 +402,7 @@ export default function CoursesPage() {
                   <option value="advanced">Advanced</option>
                 </select>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Duration</label>
                 <select
@@ -418,7 +416,7 @@ export default function CoursesPage() {
                   <option value="long">Long (17+ weeks)</option>
                 </select>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Rating</label>
                 <select
@@ -431,7 +429,7 @@ export default function CoursesPage() {
                   <option value="4.0+">4.0+ Stars</option>
                 </select>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
                 <select
@@ -461,21 +459,19 @@ export default function CoursesPage() {
                 {selectedCategory !== 'all' && `in ${categories.find(c => c.id === selectedCategory)?.name}`}
               </p>
             </div>
-            
+
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-2 rounded-lg transition-colors ${
-                  viewMode === 'grid' ? 'bg-blue-100 text-blue-600' : 'text-gray-400 hover:text-gray-600'
-                }`}
+                className={`p-2 rounded-lg transition-colors ${viewMode === 'grid' ? 'bg-blue-100 text-blue-600' : 'text-gray-400 hover:text-gray-600'
+                  }`}
               >
                 <Grid className="h-4 w-4" />
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`p-2 rounded-lg transition-colors ${
-                  viewMode === 'list' ? 'bg-blue-100 text-blue-600' : 'text-gray-400 hover:text-gray-600'
-                }`}
+                className={`p-2 rounded-lg transition-colors ${viewMode === 'list' ? 'bg-blue-100 text-blue-600' : 'text-gray-400 hover:text-gray-600'
+                  }`}
               >
                 <List className="h-4 w-4" />
               </button>
@@ -488,9 +484,8 @@ export default function CoursesPage() {
                 key={course.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className={`border border-gray-200 rounded-lg overflow-hidden hover:border-blue-300 transition-all group cursor-pointer ${
-                  viewMode === 'list' ? 'flex items-center space-x-6 p-4' : ''
-                }`}
+                className={`border border-gray-200 rounded-lg overflow-hidden hover:border-blue-300 transition-all group cursor-pointer ${viewMode === 'list' ? 'flex items-center space-x-6 p-4' : ''
+                  }`}
               >
                 {viewMode === 'grid' ? (
                   <div>
@@ -533,7 +528,7 @@ export default function CoursesPage() {
                     {/* Course Body */}
                     <div className="p-6">
                       <p className="text-gray-600 text-sm mb-4 line-clamp-3">{course.description}</p>
-                      
+
                       <div className="flex flex-wrap gap-2 mb-4">
                         {course.skills.slice(0, 3).map((skill, index) => (
                           <span key={index} className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
@@ -573,7 +568,7 @@ export default function CoursesPage() {
                             <span className="font-medium">{course.progress}%</span>
                           </div>
                           <div className="w-full bg-gray-200 rounded-full h-2">
-                            <div 
+                            <div
                               className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all"
                               style={{ width: `${course.progress}%` }}
                             ></div>
@@ -603,11 +598,10 @@ export default function CoursesPage() {
                         </div>
                       </div>
 
-                      <button className={`w-full mt-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                        course.isEnrolled
+                      <button className={`w-full mt-4 py-2 rounded-lg text-sm font-medium transition-colors ${course.isEnrolled
                           ? 'bg-green-600 text-white hover:bg-green-700'
                           : 'bg-blue-600 text-white hover:bg-blue-700'
-                      }`}>
+                        }`}>
                         {course.isEnrolled ? 'Continue Learning' : 'Enroll Now'}
                       </button>
                     </div>

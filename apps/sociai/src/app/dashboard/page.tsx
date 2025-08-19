@@ -123,7 +123,7 @@ export default function SociAIDashboard() {
 
   const loadDashboardData = async () => {
     setIsLoading(true)
-    
+
     // Simulate API calls with realistic data
     setTimeout(() => {
       setMetrics({
@@ -505,11 +505,10 @@ export default function SociAIDashboard() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center space-x-2 px-4 py-3 rounded-xl font-medium transition-all duration-200 whitespace-nowrap ${
-                    activeTab === tab.id
+                  className={`flex items-center space-x-2 px-4 py-3 rounded-xl font-medium transition-all duration-200 whitespace-nowrap ${activeTab === tab.id
                       ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
                       : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
-                  }`}
+                    }`}
                 >
                   {tab.icon}
                   <span>{tab.label}</span>
@@ -695,11 +694,10 @@ export default function SociAIDashboard() {
                           <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
-                            className={`flex items-center space-x-2 transition-colors ${
-                              post.interactions.liked
+                            className={`flex items-center space-x-2 transition-colors ${post.interactions.liked
                                 ? 'text-red-600'
                                 : 'text-gray-500 hover:text-red-600'
-                            }`}
+                              }`}
                           >
                             <Heart className={`w-5 h-5 ${post.interactions.liked ? 'fill-current' : ''}`} />
                             <span className="text-sm">Like</span>
@@ -719,11 +717,10 @@ export default function SociAIDashboard() {
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
-                          className={`p-2 rounded-lg transition-colors ${
-                            post.interactions.bookmarked
+                          className={`p-2 rounded-lg transition-colors ${post.interactions.bookmarked
                               ? 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900/30'
                               : 'text-gray-500 hover:text-yellow-600 hover:bg-yellow-100 dark:hover:bg-yellow-900/30'
-                          }`}
+                            }`}
                         >
                           <Bookmark className={`w-5 h-5 ${post.interactions.bookmarked ? 'fill-current' : ''}`} />
                         </motion.button>

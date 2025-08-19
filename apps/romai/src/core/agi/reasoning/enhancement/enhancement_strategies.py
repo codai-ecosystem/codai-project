@@ -32,6 +32,13 @@ from .intelligence_types import (
 )
 from .cultural_context import RomanianIntelligenceContext
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 
 @dataclass
 class EnhancementContext:

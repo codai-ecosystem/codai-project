@@ -23,6 +23,13 @@ import random
 import copy
 import hashlib
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 
 class SelfImprovementMode(Enum):
     """Modes of autonomous self-improvement"""

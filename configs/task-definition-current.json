@@ -1,0 +1,111 @@
+{
+    "taskDefinition": {
+        "taskDefinitionArn": "arn:aws:ecs:eu-central-1:567877624442:task-definition/memorai-api-prod:1",
+        "containerDefinitions": [
+            {
+                "name": "memorai-api",
+                "image": "567877624442.dkr.ecr.eu-central-1.amazonaws.com/memorai-api:latest",
+                "cpu": 0,
+                "portMappings": [
+                    {
+                        "containerPort": 4006,
+                        "hostPort": 4006,
+                        "protocol": "tcp"
+                    }
+                ],
+                "essential": true,
+                "environment": [
+                    {
+                        "name": "MEMORAI_MCP_URL",
+                        "value": "http://memorai-mcp:4950"
+                    },
+                    {
+                        "name": "NODE_ENV",
+                        "value": "production"
+                    },
+                    {
+                        "name": "CBD_BASE_URL",
+                        "value": "http://cbd-database:4180"
+                    },
+                    {
+                        "name": "PORT",
+                        "value": "4006"
+                    }
+                ],
+                "mountPoints": [],
+                "volumesFrom": [],
+                "logConfiguration": {
+                    "logDriver": "awslogs",
+                    "options": {
+                        "awslogs-group": "/ecs/memorai-api-prod",
+                        "awslogs-region": "eu-central-1",
+                        "awslogs-stream-prefix": "ecs"
+                    }
+                },
+                "healthCheck": {
+                    "command": [
+                        "CMD-SHELL",
+                        "curl -f http://localhost:4006/api/health || exit 1"
+                    ],
+                    "interval": 30,
+                    "timeout": 5,
+                    "retries": 3,
+                    "startPeriod": 60
+                },
+                "systemControls": []
+            }
+        ],
+        "family": "memorai-api-prod",
+        "taskRoleArn": "arn:aws:iam::567877624442:role/memorai-ecs-task-prod",
+        "executionRoleArn": "arn:aws:iam::567877624442:role/memorai-ecs-task-execution-prod",
+        "networkMode": "awsvpc",
+        "revision": 1,
+        "volumes": [],
+        "status": "ACTIVE",
+        "requiresAttributes": [
+            {
+                "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+            },
+            {
+                "name": "ecs.capability.execution-role-awslogs"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.ecr-auth"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.task-iam-role"
+            },
+            {
+                "name": "ecs.capability.container-health-check"
+            },
+            {
+                "name": "ecs.capability.execution-role-ecr-pull"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+            },
+            {
+                "name": "ecs.capability.task-eni"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+            }
+        ],
+        "placementConstraints": [],
+        "compatibilities": [
+            "EC2",
+            "FARGATE"
+        ],
+        "requiresCompatibilities": [
+            "FARGATE"
+        ],
+        "cpu": "512",
+        "memory": "1024",
+        "registeredAt": "2025-08-07T17:34:41.522000+03:00",
+        "registeredBy": "arn:aws:iam::567877624442:user/codai-deployer"
+    },
+    "tags": []
+}

@@ -2,36 +2,36 @@
 
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  Settings, 
-  User, 
-  Bell, 
-  Shield, 
-  Database, 
-  Zap, 
-  Palette, 
-  Globe, 
-  Key, 
-  Mail, 
-  Smartphone, 
-  Clock, 
-  Server, 
-  HardDrive, 
-  Network, 
-  Eye, 
-  EyeOff, 
-  Save, 
-  RotateCcw, 
-  Download, 
-  Upload, 
-  Trash2, 
-  AlertTriangle, 
-  CheckCircle, 
-  Info, 
-  Monitor, 
-  Moon, 
-  Sun, 
-  Volume2, 
+import {
+  Settings,
+  User,
+  Bell,
+  Shield,
+  Database,
+  Zap,
+  Palette,
+  Globe,
+  Key,
+  Mail,
+  Smartphone,
+  Clock,
+  Server,
+  HardDrive,
+  Network,
+  Eye,
+  EyeOff,
+  Save,
+  RotateCcw,
+  Download,
+  Upload,
+  Trash2,
+  AlertTriangle,
+  CheckCircle,
+  Info,
+  Monitor,
+  Moon,
+  Sun,
+  Volume2,
   VolumeX,
   Sliders,
   Lock,
@@ -186,21 +186,21 @@ export default function SettingsPage() {
   }
 
   const handleNotificationToggle = (id: string) => {
-    setNotifications(prev => prev.map(notif => 
+    setNotifications(prev => prev.map(notif =>
       notif.id === id ? { ...notif, enabled: !notif.enabled } : notif
     ))
     setUnsavedChanges(true)
   }
 
   const handleIntegrationToggle = (id: string) => {
-    setIntegrations(prev => prev.map(integration => 
+    setIntegrations(prev => prev.map(integration =>
       integration.id === id ? { ...integration, enabled: !integration.enabled } : integration
     ))
     setUnsavedChanges(true)
   }
 
   const handleSystemSettingChange = (id: string, value: any) => {
-    setSystemSettings(prev => prev.map(setting => 
+    setSystemSettings(prev => prev.map(setting =>
       setting.id === id ? { ...setting, value } : setting
     ))
     setUnsavedChanges(true)
@@ -227,20 +227,18 @@ export default function SettingsPage() {
           <div className="flex items-center space-x-2">
             <button
               onClick={() => handleSystemSettingChange(setting.id, !setting.value)}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                setting.value ? 'bg-blue-600' : 'bg-gray-600'
-              }`}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${setting.value ? 'bg-blue-600' : 'bg-gray-600'
+                }`}
             >
               <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                  setting.value ? 'translate-x-6' : 'translate-x-1'
-                }`}
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${setting.value ? 'translate-x-6' : 'translate-x-1'
+                  }`}
               />
             </button>
             <span className="text-sm text-blue-200">{setting.value ? 'Enabled' : 'Disabled'}</span>
           </div>
         )
-      
+
       case 'select':
         return (
           <select
@@ -253,7 +251,7 @@ export default function SettingsPage() {
             ))}
           </select>
         )
-      
+
       case 'slider':
         return (
           <div className="flex items-center space-x-4 w-full max-w-md">
@@ -270,7 +268,7 @@ export default function SettingsPage() {
             </span>
           </div>
         )
-      
+
       case 'number':
         return (
           <div className="flex items-center space-x-2">
@@ -283,7 +281,7 @@ export default function SettingsPage() {
             {setting.unit && <span className="text-blue-200">{setting.unit}</span>}
           </div>
         )
-      
+
       default:
         return (
           <input
@@ -299,7 +297,7 @@ export default function SettingsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="border-b border-blue-700/50 bg-blue-900/30 backdrop-blur-sm"
@@ -347,7 +345,7 @@ export default function SettingsPage() {
 
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Settings Navigation */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-blue-800/30 backdrop-blur-sm border border-blue-700/50 rounded-xl mb-6"
@@ -366,11 +364,10 @@ export default function SettingsPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center space-x-2 px-4 py-3 rounded-lg transition-all whitespace-nowrap ${
-                    activeTab === tab.id
+                  className={`flex items-center space-x-2 px-4 py-3 rounded-lg transition-all whitespace-nowrap ${activeTab === tab.id
                       ? 'bg-blue-600 text-white shadow-lg'
                       : 'text-blue-200 hover:text-white hover:bg-blue-700/50'
-                  }`}
+                    }`}
                 >
                   <Icon className="w-4 h-4" />
                   <span className="font-medium">{tab.label}</span>
@@ -381,7 +378,7 @@ export default function SettingsPage() {
         </motion.div>
 
         {/* Settings Content */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-blue-800/30 backdrop-blur-sm border border-blue-700/50 rounded-xl p-6"
@@ -390,7 +387,7 @@ export default function SettingsPage() {
           {activeTab === 'general' && (
             <div className="space-y-6">
               <h2 className="text-xl font-semibold text-white mb-6">General Settings</h2>
-              
+
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div>
@@ -398,22 +395,20 @@ export default function SettingsPage() {
                     <div className="flex items-center space-x-4">
                       <button
                         onClick={() => setTheme('light')}
-                        className={`flex items-center space-x-2 px-4 py-2 rounded-lg border transition-colors ${
-                          theme === 'light' 
-                            ? 'bg-blue-600 border-blue-500 text-white' 
+                        className={`flex items-center space-x-2 px-4 py-2 rounded-lg border transition-colors ${theme === 'light'
+                            ? 'bg-blue-600 border-blue-500 text-white'
                             : 'bg-blue-700/50 border-blue-600/50 text-blue-200 hover:text-white'
-                        }`}
+                          }`}
                       >
                         <Sun className="w-4 h-4" />
                         <span>Light</span>
                       </button>
                       <button
                         onClick={() => setTheme('dark')}
-                        className={`flex items-center space-x-2 px-4 py-2 rounded-lg border transition-colors ${
-                          theme === 'dark' 
-                            ? 'bg-blue-600 border-blue-500 text-white' 
+                        className={`flex items-center space-x-2 px-4 py-2 rounded-lg border transition-colors ${theme === 'dark'
+                            ? 'bg-blue-600 border-blue-500 text-white'
                             : 'bg-blue-700/50 border-blue-600/50 text-blue-200 hover:text-white'
-                        }`}
+                          }`}
                       >
                         <Moon className="w-4 h-4" />
                         <span>Dark</span>
@@ -475,14 +470,12 @@ export default function SettingsPage() {
                     </div>
                     <button
                       onClick={() => setShowAdvanced(!showAdvanced)}
-                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                        showAdvanced ? 'bg-blue-600' : 'bg-gray-600'
-                      }`}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${showAdvanced ? 'bg-blue-600' : 'bg-gray-600'
+                        }`}
                     >
                       <span
-                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                          showAdvanced ? 'translate-x-6' : 'translate-x-1'
-                        }`}
+                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${showAdvanced ? 'translate-x-6' : 'translate-x-1'
+                          }`}
                       />
                     </button>
                   </div>
@@ -505,7 +498,7 @@ export default function SettingsPage() {
           {activeTab === 'notifications' && (
             <div className="space-y-6">
               <h2 className="text-xl font-semibold text-white mb-6">Notification Settings</h2>
-              
+
               <div className="space-y-4">
                 {notifications.map((notification) => (
                   <div key={notification.id} className="flex items-center justify-between p-4 bg-blue-700/30 border border-blue-600/50 rounded-lg">
@@ -527,14 +520,12 @@ export default function SettingsPage() {
                     </div>
                     <button
                       onClick={() => handleNotificationToggle(notification.id)}
-                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                        notification.enabled ? 'bg-blue-600' : 'bg-gray-600'
-                      }`}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${notification.enabled ? 'bg-blue-600' : 'bg-gray-600'
+                        }`}
                     >
                       <span
-                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                          notification.enabled ? 'translate-x-6' : 'translate-x-1'
-                        }`}
+                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${notification.enabled ? 'translate-x-6' : 'translate-x-1'
+                          }`}
                       />
                     </button>
                   </div>
@@ -547,7 +538,7 @@ export default function SettingsPage() {
           {activeTab === 'integrations' && (
             <div className="space-y-6">
               <h2 className="text-xl font-semibold text-white mb-6">Integration Settings</h2>
-              
+
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {integrations.map((integration) => (
                   <div key={integration.id} className="p-6 bg-blue-700/30 border border-blue-600/50 rounded-lg">
@@ -565,14 +556,12 @@ export default function SettingsPage() {
                         </span>
                         <button
                           onClick={() => handleIntegrationToggle(integration.id)}
-                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                            integration.enabled ? 'bg-blue-600' : 'bg-gray-600'
-                          }`}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${integration.enabled ? 'bg-blue-600' : 'bg-gray-600'
+                            }`}
                         >
                           <span
-                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                              integration.enabled ? 'translate-x-6' : 'translate-x-1'
-                            }`}
+                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${integration.enabled ? 'translate-x-6' : 'translate-x-1'
+                              }`}
                           />
                         </button>
                       </div>
@@ -597,7 +586,7 @@ export default function SettingsPage() {
           {activeTab === 'system' && (
             <div className="space-y-6">
               <h2 className="text-xl font-semibold text-white mb-6">System Settings</h2>
-              
+
               {['logging', 'storage', 'performance', 'security'].map((category) => (
                 <div key={category} className="space-y-4">
                   <h3 className="text-lg font-medium text-white flex items-center space-x-2 capitalize">
@@ -628,7 +617,7 @@ export default function SettingsPage() {
           {activeTab === 'security' && (
             <div className="space-y-6">
               <h2 className="text-xl font-semibold text-white mb-6">Security Settings</h2>
-              
+
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div className="p-4 bg-blue-700/30 border border-blue-600/50 rounded-lg">
@@ -678,7 +667,7 @@ export default function SettingsPage() {
           {activeTab === 'backup' && (
             <div className="space-y-6">
               <h2 className="text-xl font-semibold text-white mb-6">Backup & Export</h2>
-              
+
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div className="p-4 bg-blue-700/30 border border-blue-600/50 rounded-lg">
@@ -740,7 +729,7 @@ export default function SettingsPage() {
         </motion.div>
 
         {/* Modern Footer */}
-        <motion.footer 
+        <motion.footer
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}

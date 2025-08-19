@@ -39,6 +39,13 @@ except ImportError:
 try:
     import unicodedata
     import sqlite3
+
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
     HAS_DATABASE = True
 except ImportError:
     HAS_DATABASE = False

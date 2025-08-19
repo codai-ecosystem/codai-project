@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { 
+import {
   Settings,
   User,
   Bell,
@@ -180,45 +180,45 @@ export default function SettingsPage() {
   })
 
   const settingSections = [
-    { 
-      id: 'profile', 
-      name: 'Profile', 
+    {
+      id: 'profile',
+      name: 'Profile',
       icon: User,
       description: 'Personal information and public profile'
     },
-    { 
-      id: 'notifications', 
-      name: 'Notifications', 
+    {
+      id: 'notifications',
+      name: 'Notifications',
       icon: Bell,
       description: 'Email, push, and reminder preferences'
     },
-    { 
-      id: 'privacy', 
-      name: 'Privacy', 
+    {
+      id: 'privacy',
+      name: 'Privacy',
       icon: Shield,
       description: 'Data sharing and visibility settings'
     },
-    { 
-      id: 'learning', 
-      name: 'Learning', 
+    {
+      id: 'learning',
+      name: 'Learning',
       icon: Brain,
       description: 'Study preferences and learning goals'
     },
-    { 
-      id: 'security', 
-      name: 'Security', 
+    {
+      id: 'security',
+      name: 'Security',
       icon: Lock,
       description: 'Password, 2FA, and access control'
     },
-    { 
-      id: 'billing', 
-      name: 'Billing', 
+    {
+      id: 'billing',
+      name: 'Billing',
       icon: CreditCard,
       description: 'Subscription and payment methods'
     },
-    { 
-      id: 'data', 
-      name: 'Data Management', 
+    {
+      id: 'data',
+      name: 'Data Management',
       icon: Database,
       description: 'Export, import, and delete account data'
     }
@@ -263,7 +263,7 @@ export default function SettingsPage() {
                 <p className="text-sm text-gray-600">Customize your learning experience</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <button
                 onClick={handleSave}
@@ -294,11 +294,10 @@ export default function SettingsPage() {
                   <button
                     key={section.id}
                     onClick={() => setActiveSection(section.id)}
-                    className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors ${
-                      activeSection === section.id
+                    className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors ${activeSection === section.id
                         ? 'bg-blue-100 text-blue-700 border border-blue-200'
                         : 'text-gray-700 hover:bg-gray-50'
-                    }`}
+                      }`}
                   >
                     <section.icon className="h-5 w-5" />
                     <div className="flex-1">
@@ -323,7 +322,7 @@ export default function SettingsPage() {
               >
                 <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-blue-100">
                   <h3 className="text-lg font-semibold text-gray-900 mb-6">Profile Information</h3>
-                  
+
                   {/* Profile Picture */}
                   <div className="flex items-center space-x-6 mb-6">
                     <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl">
@@ -344,7 +343,7 @@ export default function SettingsPage() {
                       <input
                         type="text"
                         value={profileData.firstName}
-                        onChange={(e) => setProfileData({...profileData, firstName: e.target.value})}
+                        onChange={(e) => setProfileData({ ...profileData, firstName: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
@@ -353,7 +352,7 @@ export default function SettingsPage() {
                       <input
                         type="text"
                         value={profileData.lastName}
-                        onChange={(e) => setProfileData({...profileData, lastName: e.target.value})}
+                        onChange={(e) => setProfileData({ ...profileData, lastName: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
@@ -362,7 +361,7 @@ export default function SettingsPage() {
                       <input
                         type="email"
                         value={profileData.email}
-                        onChange={(e) => setProfileData({...profileData, email: e.target.value})}
+                        onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
@@ -371,7 +370,7 @@ export default function SettingsPage() {
                       <input
                         type="tel"
                         value={profileData.phone}
-                        onChange={(e) => setProfileData({...profileData, phone: e.target.value})}
+                        onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
@@ -380,7 +379,7 @@ export default function SettingsPage() {
                       <input
                         type="text"
                         value={profileData.location}
-                        onChange={(e) => setProfileData({...profileData, location: e.target.value})}
+                        onChange={(e) => setProfileData({ ...profileData, location: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
@@ -388,7 +387,7 @@ export default function SettingsPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Timezone</label>
                       <select
                         value={profileData.timezone}
-                        onChange={(e) => setProfileData({...profileData, timezone: e.target.value})}
+                        onChange={(e) => setProfileData({ ...profileData, timezone: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       >
                         <option value="America/Los_Angeles">Pacific Time (PT)</option>
@@ -407,7 +406,7 @@ export default function SettingsPage() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">Bio</label>
                     <textarea
                       value={profileData.bio}
-                      onChange={(e) => setProfileData({...profileData, bio: e.target.value})}
+                      onChange={(e) => setProfileData({ ...profileData, bio: e.target.value })}
                       rows={3}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Tell us about yourself..."
@@ -423,7 +422,7 @@ export default function SettingsPage() {
                         <input
                           type="url"
                           value={profileData.website}
-                          onChange={(e) => setProfileData({...profileData, website: e.target.value})}
+                          onChange={(e) => setProfileData({ ...profileData, website: e.target.value })}
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                           placeholder="https://yourwebsite.com"
                         />
@@ -433,7 +432,7 @@ export default function SettingsPage() {
                         <input
                           type="text"
                           value={profileData.linkedin}
-                          onChange={(e) => setProfileData({...profileData, linkedin: e.target.value})}
+                          onChange={(e) => setProfileData({ ...profileData, linkedin: e.target.value })}
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                           placeholder="linkedin.com/in/username"
                         />
@@ -443,7 +442,7 @@ export default function SettingsPage() {
                         <input
                           type="text"
                           value={profileData.github}
-                          onChange={(e) => setProfileData({...profileData, github: e.target.value})}
+                          onChange={(e) => setProfileData({ ...profileData, github: e.target.value })}
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                           placeholder="github.com/username"
                         />
@@ -463,7 +462,7 @@ export default function SettingsPage() {
               >
                 <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-blue-100">
                   <h3 className="text-lg font-semibold text-gray-900 mb-6">Notification Preferences</h3>
-                  
+
                   {/* Communication Preferences */}
                   <div className="mb-8">
                     <h4 className="text-md font-medium text-gray-900 mb-4">Communication Methods</h4>
@@ -482,7 +481,7 @@ export default function SettingsPage() {
                             <input
                               type="checkbox"
                               checked={notifications[item.key]}
-                              onChange={(e) => setNotifications({...notifications, [item.key]: e.target.checked})}
+                              onChange={(e) => setNotifications({ ...notifications, [item.key]: e.target.checked })}
                               className="sr-only peer"
                             />
                             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
@@ -514,7 +513,7 @@ export default function SettingsPage() {
                             <input
                               type="checkbox"
                               checked={notifications[item.key]}
-                              onChange={(e) => setNotifications({...notifications, [item.key]: e.target.checked})}
+                              onChange={(e) => setNotifications({ ...notifications, [item.key]: e.target.checked })}
                               className="sr-only peer"
                             />
                             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
@@ -536,7 +535,7 @@ export default function SettingsPage() {
               >
                 <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-blue-100">
                   <h3 className="text-lg font-semibold text-gray-900 mb-6">Privacy Settings</h3>
-                  
+
                   {/* Profile Visibility */}
                   <div className="mb-8">
                     <h4 className="text-md font-medium text-gray-900 mb-4">Profile Visibility</h4>
@@ -545,7 +544,7 @@ export default function SettingsPage() {
                         <label className="block text-sm font-medium text-gray-700 mb-2">Who can see your profile?</label>
                         <select
                           value={privacy.profileVisibility}
-                          onChange={(e) => setPrivacy({...privacy, profileVisibility: e.target.value})}
+                          onChange={(e) => setPrivacy({ ...privacy, profileVisibility: e.target.value })}
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         >
                           <option value="public">Everyone</option>
@@ -553,7 +552,7 @@ export default function SettingsPage() {
                           <option value="private">Private</option>
                         </select>
                       </div>
-                      
+
                       {[
                         { key: 'showProgress', label: 'Show Learning Progress', description: 'Display your course progress and achievements' },
                         { key: 'showAchievements', label: 'Show Achievements', description: 'Display badges and certificates on your profile' },
@@ -569,7 +568,7 @@ export default function SettingsPage() {
                             <input
                               type="checkbox"
                               checked={privacy[item.key]}
-                              onChange={(e) => setPrivacy({...privacy, [item.key]: e.target.checked})}
+                              onChange={(e) => setPrivacy({ ...privacy, [item.key]: e.target.checked })}
                               className="sr-only peer"
                             />
                             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
@@ -597,7 +596,7 @@ export default function SettingsPage() {
                             <input
                               type="checkbox"
                               checked={privacy[item.key]}
-                              onChange={(e) => setPrivacy({...privacy, [item.key]: e.target.checked})}
+                              onChange={(e) => setPrivacy({ ...privacy, [item.key]: e.target.checked })}
                               className="sr-only peer"
                             />
                             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
@@ -619,14 +618,14 @@ export default function SettingsPage() {
               >
                 <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-blue-100">
                   <h3 className="text-lg font-semibold text-gray-900 mb-6">Learning Preferences</h3>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Language */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">Preferred Language</label>
                       <select
                         value={learningPrefs.language}
-                        onChange={(e) => setLearningPrefs({...learningPrefs, language: e.target.value})}
+                        onChange={(e) => setLearningPrefs({ ...learningPrefs, language: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       >
                         <option value="en">English</option>
@@ -644,7 +643,7 @@ export default function SettingsPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Default Difficulty</label>
                       <select
                         value={learningPrefs.difficulty}
-                        onChange={(e) => setLearningPrefs({...learningPrefs, difficulty: e.target.value})}
+                        onChange={(e) => setLearningPrefs({ ...learningPrefs, difficulty: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       >
                         <option value="beginner">Beginner</option>
@@ -659,7 +658,7 @@ export default function SettingsPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Daily Study Goal (hours)</label>
                       <select
                         value={learningPrefs.studyGoal}
-                        onChange={(e) => setLearningPrefs({...learningPrefs, studyGoal: e.target.value})}
+                        onChange={(e) => setLearningPrefs({ ...learningPrefs, studyGoal: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       >
                         <option value="0.5">30 minutes</option>
@@ -675,7 +674,7 @@ export default function SettingsPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Preferred Study Time</label>
                       <select
                         value={learningPrefs.preferredTime}
-                        onChange={(e) => setLearningPrefs({...learningPrefs, preferredTime: e.target.value})}
+                        onChange={(e) => setLearningPrefs({ ...learningPrefs, preferredTime: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       >
                         <option value="morning">Morning (6AM - 12PM)</option>
@@ -690,7 +689,7 @@ export default function SettingsPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Reminder Frequency</label>
                       <select
                         value={learningPrefs.reminderFrequency}
-                        onChange={(e) => setLearningPrefs({...learningPrefs, reminderFrequency: e.target.value})}
+                        onChange={(e) => setLearningPrefs({ ...learningPrefs, reminderFrequency: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       >
                         <option value="none">No reminders</option>
@@ -705,7 +704,7 @@ export default function SettingsPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Default Playback Speed</label>
                       <select
                         value={learningPrefs.playbackSpeed}
-                        onChange={(e) => setLearningPrefs({...learningPrefs, playbackSpeed: e.target.value})}
+                        onChange={(e) => setLearningPrefs({ ...learningPrefs, playbackSpeed: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       >
                         <option value="0.5x">0.5x</option>
@@ -735,7 +734,7 @@ export default function SettingsPage() {
                             <input
                               type="checkbox"
                               checked={learningPrefs[item.key]}
-                              onChange={(e) => setLearningPrefs({...learningPrefs, [item.key]: e.target.checked})}
+                              onChange={(e) => setLearningPrefs({ ...learningPrefs, [item.key]: e.target.checked })}
                               className="sr-only peer"
                             />
                             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
@@ -753,7 +752,7 @@ export default function SettingsPage() {
                         <label className="block text-sm font-medium text-gray-700 mb-2">Theme</label>
                         <select
                           value={learningPrefs.theme}
-                          onChange={(e) => setLearningPrefs({...learningPrefs, theme: e.target.value})}
+                          onChange={(e) => setLearningPrefs({ ...learningPrefs, theme: e.target.value })}
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         >
                           <option value="light">Light</option>
@@ -765,7 +764,7 @@ export default function SettingsPage() {
                         <label className="block text-sm font-medium text-gray-700 mb-2">Font Size</label>
                         <select
                           value={learningPrefs.fontSize}
-                          onChange={(e) => setLearningPrefs({...learningPrefs, fontSize: e.target.value})}
+                          onChange={(e) => setLearningPrefs({ ...learningPrefs, fontSize: e.target.value })}
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         >
                           <option value="small">Small</option>
@@ -789,7 +788,7 @@ export default function SettingsPage() {
               >
                 <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-blue-100">
                   <h3 className="text-lg font-semibold text-gray-900 mb-6">Security Settings</h3>
-                  
+
                   {/* Password */}
                   <div className="mb-8">
                     <h4 className="text-md font-medium text-gray-900 mb-4">Password</h4>
@@ -822,12 +821,11 @@ export default function SettingsPage() {
                           <span className="text-gray-500 text-sm">Disabled</span>
                         )}
                         <button
-                          onClick={() => setSecurity({...security, twoFactorAuth: !security.twoFactorAuth})}
-                          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                            security.twoFactorAuth
+                          onClick={() => setSecurity({ ...security, twoFactorAuth: !security.twoFactorAuth })}
+                          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${security.twoFactorAuth
                               ? 'bg-red-100 text-red-700 hover:bg-red-200'
                               : 'bg-green-100 text-green-700 hover:bg-green-200'
-                          }`}
+                            }`}
                         >
                           {security.twoFactorAuth ? 'Disable' : 'Enable'}
                         </button>
@@ -843,7 +841,7 @@ export default function SettingsPage() {
                         <label className="block text-sm font-medium text-gray-700 mb-2">Session Timeout</label>
                         <select
                           value={security.sessionTimeout}
-                          onChange={(e) => setSecurity({...security, sessionTimeout: e.target.value})}
+                          onChange={(e) => setSecurity({ ...security, sessionTimeout: e.target.value })}
                           className="w-full md:w-auto px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         >
                           <option value="1">1 hour</option>
@@ -853,7 +851,7 @@ export default function SettingsPage() {
                           <option value="never">Never</option>
                         </select>
                       </div>
-                      
+
                       {[
                         { key: 'loginAlerts', label: 'Login Alerts', description: 'Get notified of new login attempts' },
                         { key: 'deviceManagement', label: 'Device Management', description: 'Track and manage logged-in devices' }
@@ -867,7 +865,7 @@ export default function SettingsPage() {
                             <input
                               type="checkbox"
                               checked={security[item.key]}
-                              onChange={(e) => setSecurity({...security, [item.key]: e.target.checked})}
+                              onChange={(e) => setSecurity({ ...security, [item.key]: e.target.checked })}
                               className="sr-only peer"
                             />
                             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
@@ -923,7 +921,7 @@ export default function SettingsPage() {
               >
                 <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-blue-100">
                   <h3 className="text-lg font-semibold text-gray-900 mb-6">Billing & Subscription</h3>
-                  
+
                   {/* Current Plan */}
                   <div className="mb-8">
                     <h4 className="text-md font-medium text-gray-900 mb-4">Current Plan</h4>
@@ -1009,7 +1007,7 @@ export default function SettingsPage() {
               >
                 <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-blue-100">
                   <h3 className="text-lg font-semibold text-gray-900 mb-6">Data Management</h3>
-                  
+
                   {/* Export Data */}
                   <div className="mb-8">
                     <h4 className="text-md font-medium text-gray-900 mb-4">Export Your Data</h4>
@@ -1064,7 +1062,7 @@ export default function SettingsPage() {
                         <Trash2 className="h-4 w-4" />
                         <span>Delete Account</span>
                       </button>
-                      
+
                       {showDeleteConfirm && (
                         <div className="mt-4 p-4 bg-red-100 rounded-lg">
                           <p className="text-red-800 text-sm mb-3">

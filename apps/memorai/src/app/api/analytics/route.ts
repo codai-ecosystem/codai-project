@@ -3,6 +3,8 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { MemoryAnalyticsEngine, AnalyticsFilter } from '@/lib/analytics-engine';
+import { authenticateAPI, getAuthenticatedUserId, addSecurityHeaders, hasAdminAccess } from '../../../middleware/auth';
+import { sensitiveRateLimit } from '../../../middleware/rateLimit';
 
 const analyticsEngine = new MemoryAnalyticsEngine();
 
@@ -10,8 +12,16 @@ export async function GET(request: NextRequest) {
   const startTime = Date.now();
 
   try {
-    // For demo purposes, using a default user ID
-    const userId = 'demo-user-123';
+    // 🔐 Authentication check
+    const authResponse = authenticateAPI(request);
+    if (authResponse) return addSecurityHeaders(authResponse);
+
+    // 🛡️ Rate limiting check
+    const rateLimitResponse = sensitiveRateLimit(request);
+    if (rateLimitResponse) return addSecurityHeaders(rateLimitResponse);
+
+    // Get authenticated user ID
+    const userId = getAuthenticatedUserId(request);
 
     const { searchParams } = new URL(request.url);
 
@@ -41,16 +51,27 @@ export async function GET(request: NextRequest) {
     if (realtime) {
       const realtimeMetrics = await analyticsEngine.getRealTimeMetrics(userId);
 
-      return NextResponse.json({
+      return addSecurityHeaders(NextResponse.json({
         success: true,
         data: realtimeMetrics,
         responseTime: Date.now() - startTime,
-        timestamp: new Date().toISOString()
-      });
+        timestamp: new Date().toISOString(),
+        authenticated: true
+      }));
     }
 
-    // Handle export request
+    // Handle export request (admin only for security)
     if (exportFormat) {
+      if (!hasAdminAccess(request)) {
+        return addSecurityHeaders(NextResponse.json({
+          success: false,
+          error: {
+            code: 'INSUFFICIENT_PRIVILEGES',
+            message: 'Export functionality requires admin access'
+          }
+        }, { status: 403 }));
+      }
+
       const exportData = await analyticsEngine.exportAnalytics(
         userId,
         exportFormat,
@@ -61,7 +82,9 @@ export async function GET(request: NextRequest) {
         status: 200,
         headers: {
           'Content-Type': exportData.mimeType,
-          'Content-Disposition': `attachment; filename="${exportData.filename}"`
+          'Content-Disposition': `attachment; filename="${exportData.filename}"`,
+          'X-Content-Type-Options': 'nosniff',
+          'X-Frame-Options': 'DENY'
         }
       });
     }
@@ -69,10 +92,17 @@ export async function GET(request: NextRequest) {
     // Generate comprehensive analytics
     const analytics = await analyticsEngine.generateAnalytics(userId, filter);
 
+    // Map the analytics data to match GraphQL schema expectations
+    const mappedAnalytics = {
+      ...analytics,
+      categories: analytics.categoriesDistribution || [],
+      tags: analytics.tagsDistribution || []
+    };
+
     // Add metadata
     const response = {
       success: true,
-      data: analytics,
+      data: mappedAnalytics,
       metadata: {
         userId: userId,
         filter: {
@@ -84,16 +114,17 @@ export async function GET(request: NextRequest) {
           tags: filter.tags || []
         },
         generated: new Date().toISOString(),
-        responseTime: Date.now() - startTime
+        responseTime: Date.now() - startTime,
+        authenticated: true
       }
     };
 
-    return NextResponse.json(response);
+    return addSecurityHeaders(NextResponse.json(response));
 
   } catch (error) {
     console.error('Analytics API error:', error);
 
-    return NextResponse.json(
+    return addSecurityHeaders(NextResponse.json(
       {
         success: false,
         error: 'Failed to generate analytics',
@@ -101,7 +132,7 @@ export async function GET(request: NextRequest) {
         responseTime: Date.now() - startTime
       },
       { status: 500 }
-    );
+    ));
   }
 }
 
@@ -109,17 +140,31 @@ export async function POST(request: NextRequest) {
   const startTime = Date.now();
 
   try {
-    // For demo purposes, using a default user ID
-    const userId = 'demo-user-123';
+    // 🔐 Authentication check
+    const authResponse = authenticateAPI(request);
+    if (authResponse) return addSecurityHeaders(authResponse);
+
+    // 🛡️ Rate limiting check
+    const rateLimitResponse = sensitiveRateLimit(request);
+    if (rateLimitResponse) return addSecurityHeaders(rateLimitResponse);
+
+    // Get authenticated user ID
+    const userId = getAuthenticatedUserId(request);
 
     const body = await request.json();
     const { metric, period } = body;
 
     if (!metric || !period) {
-      return NextResponse.json(
-        { error: 'Missing required parameters: metric, period' },
+      return addSecurityHeaders(NextResponse.json(
+        {
+          success: false,
+          error: {
+            code: 'VALIDATION_ERROR',
+            message: 'Missing required parameters: metric, period'
+          }
+        },
         { status: 400 }
-      );
+      ));
     }
 
     // Validate parameters
@@ -127,17 +172,29 @@ export async function POST(request: NextRequest) {
     const validPeriods = ['24h', '7d', '30d', '90d'];
 
     if (!validMetrics.includes(metric)) {
-      return NextResponse.json(
-        { error: `Invalid metric. Must be one of: ${validMetrics.join(', ')}` },
+      return addSecurityHeaders(NextResponse.json(
+        {
+          success: false,
+          error: {
+            code: 'VALIDATION_ERROR',
+            message: `Invalid metric. Must be one of: ${validMetrics.join(', ')}`
+          }
+        },
         { status: 400 }
-      );
+      ));
     }
 
     if (!validPeriods.includes(period)) {
-      return NextResponse.json(
-        { error: `Invalid period. Must be one of: ${validPeriods.join(', ')}` },
+      return addSecurityHeaders(NextResponse.json(
+        {
+          success: false,
+          error: {
+            code: 'VALIDATION_ERROR',
+            message: `Invalid period. Must be one of: ${validPeriods.join(', ')}`
+          }
+        },
         { status: 400 }
-      );
+      ));
     }
 
     // Get time series data
@@ -147,7 +204,7 @@ export async function POST(request: NextRequest) {
       period
     );
 
-    return NextResponse.json({
+    return addSecurityHeaders(NextResponse.json({
       success: true,
       data: {
         metric,
@@ -162,13 +219,14 @@ export async function POST(request: NextRequest) {
         }
       },
       responseTime: Date.now() - startTime,
-      timestamp: new Date().toISOString()
-    });
+      timestamp: new Date().toISOString(),
+      authenticated: true
+    }));
 
   } catch (error) {
     console.error('Time series analytics error:', error);
 
-    return NextResponse.json(
+    return addSecurityHeaders(NextResponse.json(
       {
         success: false,
         error: 'Failed to generate time series data',
@@ -176,6 +234,6 @@ export async function POST(request: NextRequest) {
         responseTime: Date.now() - startTime
       },
       { status: 500 }
-    );
+    ));
   }
 }

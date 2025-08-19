@@ -1,0 +1,376 @@
+/**
+ * 🧪 RomAI Frontend Component Tests
+ * Testing React components and user interface functionality
+ */
+
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
+import userEvent from '@testing-library/user-event'
+import '@testing-library/jest-dom'
+import React from 'react'
+
+// Mock the AGI API client
+const mockAGIClient = {
+    solveMathematical: vi.fn(),
+    processLogicalReasoning: vi.fn(),
+    integrateComponents: vi.fn(),
+    getHealth: vi.fn()
+}
+
+vi.mock('../src/services/agi-client', () => ({
+    AGIClient: () => mockAGIClient
+}))
+
+// Mock components (these should be replaced with actual component imports)
+const MockedMathematicalInterface = ({ onResult }: { onResult?: (result: any) => void }) => (
+    <div data-testid="mathematical-interface">
+        <h2>Mathematical Engine (98% Performance)</h2>
+        <input
+            data-testid="math-input"
+            placeholder="Enter mathematical problem"
+            onChange={(e) => onResult?.({ solution: e.target.value })}
+        />
+        <button data-testid="solve-button">Solve</button>
+        <div data-testid="math-result">Result will appear here</div>
+    </div>
+)
+
+const MockedLogicalInterface = ({ onResult }: { onResult?: (result: any) => void }) => (
+    <div data-testid="logical-interface">
+        <h2>Logical Reasoning (97.5% Performance)</h2>
+        <textarea
+            data-testid="logic-input"
+            placeholder="Enter logical problem"
+            onChange={(e) => onResult?.({ conclusion: e.target.value })}
+        />
+        <button data-testid="reason-button">Reason</button>
+        <div data-testid="fallacy-detection">Fallacy Detection: 97.5%</div>
+        <div data-testid="logic-result">Reasoning will appear here</div>
+    </div>
+)
+
+const MockedAGIChat = () => (
+    <div data-testid="agi-chat">
+        <h1>RomAI AGI Assistant</h1>
+        <div data-testid="chat-messages">
+            <div>Welcome to RomAI - World-class AGI at 89.4% performance</div>
+        </div>
+        <input data-testid="chat-input" placeholder="Ask me anything..." />
+        <button data-testid="send-button">Send</button>
+    </div>
+)
+
+const MockedPerformanceMetrics = () => (
+    <div data-testid="performance-metrics">
+        <h3>AGI Performance Metrics</h3>
+        <div data-testid="mathematical-score">Mathematical: 98.0%</div>
+        <div data-testid="logical-score">Logical: 97.5%</div>
+        <div data-testid="integration-score">Integration: 100.0%</div>
+        <div data-testid="overall-score">Overall: 89.4%</div>
+    </div>
+)
+
+// Test wrapper with Router
+const TestWrapper = ({ children }: { children: React.ReactNode }) => (
+    <MemoryRouter>
+        {children}
+    </MemoryRouter>
+)
+
+describe('RomAI Frontend Components', () => {
+    beforeEach(() => {
+        vi.clearAllMocks()
+        mockAGIClient.getHealth.mockResolvedValue({
+            status: 'healthy',
+            version: '1.0.0',
+            performance: {
+                mathematical: 0.98,
+                logical: 0.975,
+                integration: 1.0,
+                overall: 0.894
+            }
+        })
+    })
+
+    describe('Mathematical Interface Component', () => {
+        it('renders mathematical interface with correct performance indicator', () => {
+            render(<MockedMathematicalInterface />, { wrapper: TestWrapper })
+
+            expect(screen.getByText('Mathematical Engine (98% Performance)')).toBeInTheDocument()
+            expect(screen.getByTestId('math-input')).toBeInTheDocument()
+            expect(screen.getByTestId('solve-button')).toBeInTheDocument()
+            expect(screen.getByTestId('math-result')).toBeInTheDocument()
+        })
+
+        it('handles mathematical problem input', async () => {
+            const user = userEvent.setup()
+            const mockOnResult = vi.fn()
+
+            render(<MockedMathematicalInterface onResult={mockOnResult} />, { wrapper: TestWrapper })
+
+            const input = screen.getByTestId('math-input')
+            await user.type(input, 'derivative of x^2 + 3x + 2')
+
+            expect(mockOnResult).toHaveBeenCalledWith({
+                solution: 'derivative of x^2 + 3x + 2'
+            })
+        })
+
+        it('displays solve button and result area', () => {
+            render(<MockedMathematicalInterface />, { wrapper: TestWrapper })
+
+            const solveButton = screen.getByTestId('solve-button')
+            const resultArea = screen.getByTestId('math-result')
+
+            expect(solveButton).toBeInTheDocument()
+            expect(resultArea).toBeInTheDocument()
+            expect(resultArea).toHaveTextContent('Result will appear here')
+        })
+    })
+
+    describe('Logical Reasoning Interface Component', () => {
+        it('renders logical reasoning interface with performance metrics', () => {
+            render(<MockedLogicalInterface />, { wrapper: TestWrapper })
+
+            expect(screen.getByText('Logical Reasoning (97.5% Performance)')).toBeInTheDocument()
+            expect(screen.getByText('Fallacy Detection: 97.5%')).toBeInTheDocument()
+            expect(screen.getByTestId('logic-input')).toBeInTheDocument()
+            expect(screen.getByTestId('reason-button')).toBeInTheDocument()
+        })
+
+        it('handles logical reasoning input', async () => {
+            const user = userEvent.setup()
+            const mockOnResult = vi.fn()
+
+            render(<MockedLogicalInterface onResult={mockOnResult} />, { wrapper: TestWrapper })
+
+            const textarea = screen.getByTestId('logic-input')
+            await user.type(textarea, 'All humans are mortal. Socrates is human.')
+
+            expect(mockOnResult).toHaveBeenCalledWith({
+                conclusion: 'All humans are mortal. Socrates is human.'
+            })
+        })
+
+        it('displays fallacy detection capability', () => {
+            render(<MockedLogicalInterface />, { wrapper: TestWrapper })
+
+            const fallacyDetection = screen.getByTestId('fallacy-detection')
+            expect(fallacyDetection).toHaveTextContent('Fallacy Detection: 97.5%')
+        })
+    })
+
+    describe('AGI Chat Interface Component', () => {
+        it('renders chat interface with welcome message', () => {
+            render(<MockedAGIChat />, { wrapper: TestWrapper })
+
+            expect(screen.getByText('RomAI AGI Assistant')).toBeInTheDocument()
+            expect(screen.getByText('Welcome to RomAI - World-class AGI at 89.4% performance')).toBeInTheDocument()
+            expect(screen.getByTestId('chat-input')).toBeInTheDocument()
+            expect(screen.getByTestId('send-button')).toBeInTheDocument()
+        })
+
+        it('has functional chat input and send button', async () => {
+            const user = userEvent.setup()
+            render(<MockedAGIChat />, { wrapper: TestWrapper })
+
+            const chatInput = screen.getByTestId('chat-input')
+            const sendButton = screen.getByTestId('send-button')
+
+            await user.type(chatInput, 'What is the derivative of x^2?')
+            expect(chatInput).toHaveValue('What is the derivative of x^2?')
+
+            await user.click(sendButton)
+            // In real implementation, this would trigger message sending
+            expect(sendButton).toBeInTheDocument()
+        })
+
+        it('displays performance information in welcome message', () => {
+            render(<MockedAGIChat />, { wrapper: TestWrapper })
+
+            const welcomeMessage = screen.getByText('Welcome to RomAI - World-class AGI at 89.4% performance')
+            expect(welcomeMessage).toBeInTheDocument()
+        })
+    })
+
+    describe('Performance Metrics Component', () => {
+        it('displays all performance metrics correctly', () => {
+            render(<MockedPerformanceMetrics />, { wrapper: TestWrapper })
+
+            expect(screen.getByText('AGI Performance Metrics')).toBeInTheDocument()
+            expect(screen.getByText('Mathematical: 98.0%')).toBeInTheDocument()
+            expect(screen.getByText('Logical: 97.5%')).toBeInTheDocument()
+            expect(screen.getByText('Integration: 100.0%')).toBeInTheDocument()
+            expect(screen.getByText('Overall: 89.4%')).toBeInTheDocument()
+        })
+
+        it('shows world-class performance indicators', () => {
+            render(<MockedPerformanceMetrics />, { wrapper: TestWrapper })
+
+            const mathematicalScore = screen.getByTestId('mathematical-score')
+            const logicalScore = screen.getByTestId('logical-score')
+            const integrationScore = screen.getByTestId('integration-score')
+            const overallScore = screen.getByTestId('overall-score')
+
+            expect(mathematicalScore).toHaveTextContent('98.0%') // World-class
+            expect(logicalScore).toHaveTextContent('97.5%')     // World-class
+            expect(integrationScore).toHaveTextContent('100.0%') // Perfect
+            expect(overallScore).toHaveTextContent('89.4%')     // World-class overall
+        })
+    })
+
+    describe('Integration Tests', () => {
+        it('integrates mathematical and logical components together', () => {
+            const Container = () => (
+                <div data-testid="integrated-container">
+                    <MockedMathematicalInterface />
+                    <MockedLogicalInterface />
+                    <MockedPerformanceMetrics />
+                </div>
+            )
+
+            render(<Container />, { wrapper: TestWrapper })
+
+            // Verify all components are present
+            expect(screen.getByText('Mathematical Engine (98% Performance)')).toBeInTheDocument()
+            expect(screen.getByText('Logical Reasoning (97.5% Performance)')).toBeInTheDocument()
+            expect(screen.getByText('AGI Performance Metrics')).toBeInTheDocument()
+
+            // Verify performance consistency across components
+            expect(screen.getByText('Mathematical: 98.0%')).toBeInTheDocument()
+            expect(screen.getByText('Logical: 97.5%')).toBeInTheDocument()
+        })
+
+        it('handles user workflow from mathematical to logical reasoning', async () => {
+            const user = userEvent.setup()
+
+            const WorkflowContainer = () => {
+                const [mathResult, setMathResult] = React.useState('')
+                const [logicResult, setLogicResult] = React.useState('')
+
+                return (
+                    <div data-testid="workflow-container">
+                        <MockedMathematicalInterface onResult={(result) => setMathResult(result.solution)} />
+                        <MockedLogicalInterface onResult={(result) => setLogicResult(result.conclusion)} />
+                        <div data-testid="workflow-results">
+                            <div data-testid="math-workflow-result">{mathResult}</div>
+                            <div data-testid="logic-workflow-result">{logicResult}</div>
+                        </div>
+                    </div>
+                )
+            }
+
+            render(<WorkflowContainer />, { wrapper: TestWrapper })
+
+            // Test mathematical input
+            const mathInput = screen.getByTestId('math-input')
+            await user.type(mathInput, '2x')
+
+            await waitFor(() => {
+                expect(screen.getByTestId('math-workflow-result')).toHaveTextContent('2x')
+            })
+
+            // Test logical input
+            const logicInput = screen.getByTestId('logic-input')
+            await user.type(logicInput, 'Therefore x = 2')
+
+            await waitFor(() => {
+                expect(screen.getByTestId('logic-workflow-result')).toHaveTextContent('Therefore x = 2')
+            })
+        })
+    })
+
+    describe('Error Handling', () => {
+        it('handles API errors gracefully', async () => {
+            mockAGIClient.getHealth.mockRejectedValue(new Error('Network error'))
+
+            const ErrorHandlingComponent = () => {
+                const [error, setError] = React.useState('')
+
+                React.useEffect(() => {
+                    mockAGIClient.getHealth().catch((err: Error) => {
+                        setError(err.message)
+                    })
+                }, [])
+
+                return (
+                    <div data-testid="error-component">
+                        {error && <div data-testid="error-message">Error: {error}</div>}
+                        <MockedAGIChat />
+                    </div>
+                )
+            }
+
+            render(<ErrorHandlingComponent />, { wrapper: TestWrapper })
+
+            await waitFor(() => {
+                expect(screen.getByTestId('error-message')).toHaveTextContent('Error: Network error')
+            })
+        })
+
+        it('displays fallback content when AGI services are unavailable', () => {
+            const FallbackComponent = () => (
+                <div data-testid="fallback-component">
+                    <div data-testid="service-unavailable">
+                        AGI services temporarily unavailable. Please try again later.
+                    </div>
+                    <div data-testid="offline-capabilities">
+                        Limited offline functionality available.
+                    </div>
+                </div>
+            )
+
+            render(<FallbackComponent />, { wrapper: TestWrapper })
+
+            expect(screen.getByTestId('service-unavailable')).toBeInTheDocument()
+            expect(screen.getByTestId('offline-capabilities')).toBeInTheDocument()
+        })
+    })
+
+    describe('Accessibility', () => {
+        it('has proper ARIA labels and accessibility features', () => {
+            const AccessibleComponent = () => (
+                <div data-testid="accessible-component">
+                    <h1>RomAI AGI Interface</h1>
+                    <label htmlFor="accessible-math-input">Mathematical Problem:</label>
+                    <input
+                        id="accessible-math-input"
+                        aria-label="Enter mathematical problem for solving"
+                        data-testid="accessible-math-input"
+                    />
+                    <button
+                        aria-label="Solve mathematical problem"
+                        data-testid="accessible-solve-button"
+                    >
+                        Solve
+                    </button>
+                </div>
+            )
+
+            render(<AccessibleComponent />, { wrapper: TestWrapper })
+
+            const input = screen.getByTestId('accessible-math-input')
+            const button = screen.getByTestId('accessible-solve-button')
+
+            expect(input).toHaveAttribute('aria-label', 'Enter mathematical problem for solving')
+            expect(button).toHaveAttribute('aria-label', 'Solve mathematical problem')
+        })
+
+        it('supports keyboard navigation', async () => {
+            const user = userEvent.setup()
+
+            render(<MockedMathematicalInterface />, { wrapper: TestWrapper })
+
+            const input = screen.getByTestId('math-input')
+            const button = screen.getByTestId('solve-button')
+
+            // Test keyboard navigation
+            await user.tab()
+            expect(input).toHaveFocus()
+
+            await user.tab()
+            expect(button).toHaveFocus()
+        })
+    })
+})

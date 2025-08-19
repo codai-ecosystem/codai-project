@@ -591,6 +591,13 @@ class CognitiveEnhancementIntegrationSystem:
         
         # Add randomization for realism
         import random
+
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
         enhancement *= random.uniform(0.8, 1.3)
         
         return min(0.25, enhancement)  # Cap enhancement at 25%

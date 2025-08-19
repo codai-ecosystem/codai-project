@@ -28,6 +28,13 @@ from .romanian_object_detection import (
     RomanianObjectCategory, SceneType
 )
 from .romanian_text_recognition import (
+
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
     RomanianOCREngine, RomanianTextAnalysis, TextRegion, TextType, RomanianTextCategory
 )
 

@@ -132,7 +132,13 @@ export async function GET(request: NextRequest) {
             agi_server_url: ROMAI_AGI_BASE_URL,
             required_action: 'Ensure RomAI AGI server is running on port 6101',
             timestamp: new Date().toISOString(),
-            data_source: 'error_state'
+            data_source: 'error_state',
+            available_endpoints: {
+                health: false,
+                training_metrics: false,
+                capabilities: false,
+                training_status: false
+            }
         }, { status: 503 });
     }
 }

@@ -21,7 +21,7 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@codai/ui": "workspace:*",
+    "@codai/shared-ui": "workspace:*",
     "@codai/shared-types": "workspace:*",
     "next": "15.0.3",
     "react": "19.0.0-rc-66855b96-20241106",

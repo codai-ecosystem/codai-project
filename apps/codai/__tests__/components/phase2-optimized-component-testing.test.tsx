@@ -3,16 +3,115 @@ import { describe, test, expect, vi } from 'vitest'
 import { render, screen, fireEvent, act } from '@testing-library/react'
 import React, { useState } from 'react'
 
+// Component Definitions - Available to all tests
+const SimpleCard = ({ title, content, theme = 'light' }) => (
+  <div className={`card ${theme}`}>
+    <h3 className="card-title">{title}</h3>
+    <p className="card-content">{content}</p>
+  </div>
+)
+
+const Counter = ({ onValueChange }) => {
+  const [count, setCount] = useState(0)
+
+  const increment = () => {
+    const newCount = count + 1
+    setCount(newCount)
+    if (onValueChange) onValueChange(newCount)
+  }
+
+  const decrement = () => {
+    const newCount = count - 1
+    setCount(newCount)
+    if (onValueChange) onValueChange(newCount)
+  }
+
+  return (
+    <div className="counter">
+      <button onClick={decrement} aria-label="decrement">-</button>
+      <span data-testid="count-display">{count}</span>
+      <button onClick={increment} aria-label="increment">+</button>
+    </div>
+  )
+}
+
+const ContactForm = ({ onSubmit }) => {
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' })
+  const [errors, setErrors] = useState({})
+
+  const validateEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  }
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }))
+    }
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const newErrors = {}
+
+    if (!formData.name.trim()) newErrors.name = 'Name is required'
+    if (!formData.email.trim()) newErrors.email = 'Email is required'
+    else if (!validateEmail(formData.email)) newErrors.email = 'Invalid email format'
+    if (!formData.message.trim()) newErrors.message = 'Message is required'
+
+    setErrors(newErrors)
+
+    if (Object.keys(newErrors).length === 0 && onSubmit) {
+      onSubmit(formData)
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="contact-form">
+      <div>
+        <label htmlFor="name">Name:</label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          value={formData.name}
+          onChange={handleInputChange}
+        />
+        {errors.name && <span className="error">{errors.name}</span>}
+      </div>
+
+      <div>
+        <label htmlFor="email">Email:</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          value={formData.email}
+          onChange={handleInputChange}
+        />
+        {errors.email && <span className="error">{errors.email}</span>}
+      </div>
+
+      <div>
+        <label htmlFor="message">Message:</label>
+        <textarea
+          id="message"
+          name="message"
+          value={formData.message}
+          onChange={handleInputChange}
+        />
+        {errors.message && <span className="error">{errors.message}</span>}
+      </div>
+
+      <button type="submit">Submit</button>
+    </form>
+  )
+}
+
 describe('Phase 2 Complete Component Testing Suite - OPTIMIZED', () => {
 
   describe('SimpleCard Component', () => {
-    // Component Definition
-    const SimpleCard = ({ title, content, theme = 'light' }) => (
-      <div className={`card ${theme}`}>
-        <h3 className="card-title">{title}</h3>
-        <p className="card-content">{content}</p>
-      </div>
-    )
 
     test('renders with title and content', () => {
       render(<SimpleCard title="Test Title" content="Test Content" />)
@@ -43,35 +142,13 @@ describe('Phase 2 Complete Component Testing Suite - OPTIMIZED', () => {
     test('handles empty content gracefully', () => {
       render(<SimpleCard title="Empty Content" content="" />)
       expect(screen.getByText('Empty Content')).toBeInTheDocument()
-      expect(screen.getByText('')).toBeInTheDocument()
+      const contentElement = document.querySelector('.card-content')
+      expect(contentElement).toBeInTheDocument()
+      expect(contentElement).toHaveTextContent('')
     })
   })
 
   describe('Counter Component', () => {
-    // Component Definition with useState
-    const Counter = ({ onValueChange }) => {
-      const [count, setCount] = useState(0)
-
-      const increment = () => {
-        const newCount = count + 1
-        setCount(newCount)
-        if (onValueChange) onValueChange(newCount)
-      }
-
-      const decrement = () => {
-        const newCount = count - 1
-        setCount(newCount)
-        if (onValueChange) onValueChange(newCount)
-      }
-
-      return (
-        <div className="counter">
-          <button onClick={decrement} aria-label="decrement">-</button>
-          <span data-testid="count-display">{count}</span>
-          <button onClick={increment} aria-label="increment">+</button>
-        </div>
-      )
-    }
 
     test('renders with initial count of 0', () => {
       render(<Counter />)
@@ -131,80 +208,6 @@ describe('Phase 2 Complete Component Testing Suite - OPTIMIZED', () => {
   })
 
   describe('ContactForm Component', () => {
-    // Component Definition with form validation
-    const ContactForm = ({ onSubmit }) => {
-      const [formData, setFormData] = useState({ name: '', email: '', message: '' })
-      const [errors, setErrors] = useState({})
-
-      const validateEmail = (email) => {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-      }
-
-      const handleInputChange = (e) => {
-        const { name, value } = e.target
-        setFormData(prev => ({ ...prev, [name]: value }))
-        if (errors[name]) {
-          setErrors(prev => ({ ...prev, [name]: '' }))
-        }
-      }
-
-      const handleSubmit = (e) => {
-        e.preventDefault()
-        const newErrors = {}
-
-        if (!formData.name.trim()) newErrors.name = 'Name is required'
-        if (!formData.email.trim()) newErrors.email = 'Email is required'
-        else if (!validateEmail(formData.email)) newErrors.email = 'Invalid email format'
-        if (!formData.message.trim()) newErrors.message = 'Message is required'
-
-        setErrors(newErrors)
-
-        if (Object.keys(newErrors).length === 0 && onSubmit) {
-          onSubmit(formData)
-        }
-      }
-
-      return (
-        <form onSubmit={handleSubmit} className="contact-form">
-          <div>
-            <label htmlFor="name">Name:</label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              value={formData.name}
-              onChange={handleInputChange}
-            />
-            {errors.name && <span className="error">{errors.name}</span>}
-          </div>
-
-          <div>
-            <label htmlFor="email">Email:</label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleInputChange}
-            />
-            {errors.email && <span className="error">{errors.email}</span>}
-          </div>
-
-          <div>
-            <label htmlFor="message">Message:</label>
-            <textarea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleInputChange}
-            />
-            {errors.message && <span className="error">{errors.message}</span>}
-          </div>
-
-          <button type="submit">Submit</button>
-        </form>
-      )
-    }
 
     test('renders all form fields', () => {
       render(<ContactForm />)
@@ -246,12 +249,16 @@ describe('Phase 2 Complete Component Testing Suite - OPTIMIZED', () => {
 
     test('shows validation error for invalid email format', async () => {
       render(<ContactForm />)
+      const nameInput = screen.getByLabelText('Name:')
       const emailInput = screen.getByLabelText('Email:')
-      const submitBtn = screen.getByRole('button', { name: 'Submit' })
+      const messageInput = screen.getByLabelText('Message:')
+      const form = document.querySelector('form')
 
       await act(async () => {
+        fireEvent.change(nameInput, { target: { value: 'John Doe' } })
         fireEvent.change(emailInput, { target: { value: 'invalid-email' } })
-        fireEvent.click(submitBtn)
+        fireEvent.change(messageInput, { target: { value: 'Test message' } })
+        fireEvent.submit(form)
       })
 
       expect(screen.getByText('Invalid email format')).toBeInTheDocument()
@@ -343,12 +350,12 @@ describe('Phase 2 Complete Component Testing Suite - OPTIMIZED', () => {
       render(<Counter />)
       const incrementBtn = screen.getByLabelText('increment')
 
-      // Rapid clicks
-      await act(async () => {
-        for (let i = 0; i < 10; i++) {
+      // Rapid clicks - each in separate act() to ensure state updates
+      for (let i = 0; i < 10; i++) {
+        await act(async () => {
           fireEvent.click(incrementBtn)
-        }
-      })
+        })
+      }
 
       expect(screen.getByTestId('count-display')).toHaveTextContent('10')
     })

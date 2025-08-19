@@ -28,6 +28,13 @@ import redis
 from pympler import tracker, muppy, summary
 import tracemalloc
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 class MemoryOptimizationLevel(Enum):
     """Memory optimization levels"""
     BASIC = "basic"

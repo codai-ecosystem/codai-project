@@ -120,7 +120,7 @@ export default function SunAIDashboard() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date())
-      
+
       // Simulate real-time energy data updates
       setEnergyMetrics(prev => ({
         ...prev,
@@ -232,11 +232,10 @@ export default function SunAIDashboard() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center space-x-2 py-4 px-2 border-b-2 font-medium text-sm transition-colors ${
-                      activeTab === tab.id
+                    className={`flex items-center space-x-2 py-4 px-2 border-b-2 font-medium text-sm transition-colors ${activeTab === tab.id
                         ? 'border-yellow-500 text-yellow-600'
                         : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                    }`}
+                      }`}
                   >
                     <Icon className="w-4 h-4" />
                     <span>{tab.name}</span>
@@ -251,11 +250,10 @@ export default function SunAIDashboard() {
                 <button
                   key={range.id}
                   onClick={() => setSelectedTimeRange(range.id)}
-                  className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
-                    selectedTimeRange === range.id
+                  className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${selectedTimeRange === range.id
                       ? 'bg-yellow-100 text-yellow-700'
                       : 'text-gray-600 hover:bg-gray-100'
-                  }`}
+                    }`}
                 >
                   {range.name}
                 </button>
@@ -369,7 +367,7 @@ export default function SunAIDashboard() {
                 <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-yellow-200/50 shadow-lg">
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-lg font-semibold text-gray-800">Solar Systems</h3>
-                    <Link 
+                    <Link
                       href="/maintenance"
                       className="text-yellow-600 hover:text-yellow-700 text-sm font-medium flex items-center"
                     >
@@ -402,7 +400,7 @@ export default function SunAIDashboard() {
                 <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-blue-200/50 shadow-lg">
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-lg font-semibold text-gray-800">Weather Conditions</h3>
-                    <Link 
+                    <Link
                       href="/weather"
                       className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center"
                     >

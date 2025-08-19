@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { 
+import {
   GraduationCap,
   BookOpen,
   Users,
@@ -186,7 +186,7 @@ export default function DashboardPage() {
                 <p className="text-sm text-gray-600">AI-powered education platform</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -247,11 +247,10 @@ export default function DashboardPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                  activeTab === tab.id
+                className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === tab.id
                     ? 'bg-blue-600 text-white'
                     : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
-                }`}
+                  }`}
               >
                 <tab.icon className="h-4 w-4" />
                 <span>{tab.name}</span>
@@ -292,17 +291,15 @@ export default function DashboardPage() {
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={() => setViewMode('grid')}
-                      className={`p-2 rounded-lg transition-colors ${
-                        viewMode === 'grid' ? 'bg-blue-100 text-blue-600' : 'text-gray-400 hover:text-gray-600'
-                      }`}
+                      className={`p-2 rounded-lg transition-colors ${viewMode === 'grid' ? 'bg-blue-100 text-blue-600' : 'text-gray-400 hover:text-gray-600'
+                        }`}
                     >
                       <Grid className="h-4 w-4" />
                     </button>
                     <button
                       onClick={() => setViewMode('list')}
-                      className={`p-2 rounded-lg transition-colors ${
-                        viewMode === 'list' ? 'bg-blue-100 text-blue-600' : 'text-gray-400 hover:text-gray-600'
-                      }`}
+                      className={`p-2 rounded-lg transition-colors ${viewMode === 'list' ? 'bg-blue-100 text-blue-600' : 'text-gray-400 hover:text-gray-600'
+                        }`}
                     >
                       <List className="h-4 w-4" />
                     </button>
@@ -319,11 +316,10 @@ export default function DashboardPage() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between mb-2">
                             <h3 className="font-semibold text-gray-900 truncate">{course.title}</h3>
-                            <span className={`text-xs px-2 py-1 rounded-full ${
-                              course.difficulty === 'Beginner' ? 'bg-green-100 text-green-800' :
-                              course.difficulty === 'Intermediate' ? 'bg-yellow-100 text-yellow-800' :
-                              'bg-red-100 text-red-800'
-                            }`}>
+                            <span className={`text-xs px-2 py-1 rounded-full ${course.difficulty === 'Beginner' ? 'bg-green-100 text-green-800' :
+                                course.difficulty === 'Intermediate' ? 'bg-yellow-100 text-yellow-800' :
+                                  'bg-red-100 text-red-800'
+                              }`}>
                               {course.difficulty}
                             </span>
                           </div>
@@ -344,7 +340,7 @@ export default function DashboardPage() {
                               <span className="font-medium">{course.progress}%</span>
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-2">
-                              <div 
+                              <div
                                 className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all"
                                 style={{ width: `${course.progress}%` }}
                               ></div>
@@ -384,12 +380,11 @@ export default function DashboardPage() {
                         </div>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
-                          className={`h-2 rounded-full transition-all ${
-                            metric.percentage >= 80 ? 'bg-green-500' :
-                            metric.percentage >= 60 ? 'bg-yellow-500' :
-                            'bg-red-500'
-                          }`}
+                        <div
+                          className={`h-2 rounded-full transition-all ${metric.percentage >= 80 ? 'bg-green-500' :
+                              metric.percentage >= 60 ? 'bg-yellow-500' :
+                                'bg-red-500'
+                            }`}
                           style={{ width: `${metric.percentage}%` }}
                         ></div>
                       </div>
@@ -409,11 +404,10 @@ export default function DashboardPage() {
                     <div key={lesson.id} className="border border-gray-200 rounded-lg p-3 hover:border-blue-300 transition-colors">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm font-medium text-gray-900">{lesson.lesson}</span>
-                        <span className={`text-xs px-2 py-1 rounded-full ${
-                          lesson.type === 'video' ? 'bg-blue-100 text-blue-800' :
-                          lesson.type === 'interactive' ? 'bg-green-100 text-green-800' :
-                          'bg-purple-100 text-purple-800'
-                        }`}>
+                        <span className={`text-xs px-2 py-1 rounded-full ${lesson.type === 'video' ? 'bg-blue-100 text-blue-800' :
+                            lesson.type === 'interactive' ? 'bg-green-100 text-green-800' :
+                              'bg-purple-100 text-purple-800'
+                          }`}>
                           {lesson.type}
                         </span>
                       </div>
@@ -436,9 +430,8 @@ export default function DashboardPage() {
                 <div className="space-y-3">
                   {achievements.map((achievement, index) => (
                     <div key={achievement.name} className="flex items-center space-x-3">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center text-lg ${
-                        achievement.earned ? 'bg-yellow-100' : 'bg-gray-100'
-                      }`}>
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center text-lg ${achievement.earned ? 'bg-yellow-100' : 'bg-gray-100'
+                        }`}>
                         {achievement.icon}
                       </div>
                       <div className="flex-1">
@@ -446,7 +439,7 @@ export default function DashboardPage() {
                         <div className="text-xs text-gray-600">{achievement.description}</div>
                         {!achievement.earned && achievement.progress && (
                           <div className="w-full bg-gray-200 rounded-full h-1 mt-1">
-                            <div 
+                            <div
                               className="bg-blue-500 h-1 rounded-full transition-all"
                               style={{ width: `${achievement.progress}%` }}
                             ></div>

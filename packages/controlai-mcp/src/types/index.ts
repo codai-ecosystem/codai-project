@@ -305,17 +305,19 @@ export interface ReportTemplate {
     name: string;
     description: string;
     type: ReportType;
-    parameters: ReportParameter[];
-    schedule?: ReportSchedule;
-    format: ReportFormat[];
+    schedule: string;
     recipients: string[];
+    sections: string[];
+    parameters: Record<string, any>;
 }
 
 export interface TimeSeriesData {
-    timestamp: Date;
-    metric: string;
-    value: number;
-    metadata?: Record<string, unknown>;
+    id: string;
+    name: string;
+    description: string;
+    dataPoints: TimeSeriesPoint[];
+    aggregation: string;
+    unit: string;
 }
 
 export interface TimeSeriesPoint {
@@ -346,20 +348,23 @@ export interface BottleneckData {
 export interface RiskIndicator {
     type: RiskType;
     level: RiskLevel;
+    probability: number;
+    impact: string;
     description: string;
-    probability: number; // 0-100
-    impact: number; // 0-100
     mitigation: string[];
-    owner?: string;
+    owner: string;
 }
 
 export interface MilestoneProgress {
-    milestoneId: string;
     name: string;
-    targetDate: Date;
-    currentProgress: number; // 0-100
-    predictedCompletion: Date;
-    isOnTrack: boolean;
+    description: string;
+    targetDate: Date | null;
+    progressPercentage: number;
+    status: 'on_track' | 'at_risk' | 'delayed';
+    tasksCompleted: number;
+    tasksTotal: number;
+    criticalPath: string[];
+    dependencies: string[];
     risks: string[];
 }
 
@@ -372,36 +377,68 @@ export interface AgentSpecialization {
 }
 
 export interface ResourceAllocation {
-    resourceType: string;
-    allocated: number;
-    available: number;
-    utilized: number; // 0-100
-    trend: TimeSeriesPoint[];
+    agentId: string;
+    agentName: string;
+    totalCapacityHours: number;
+    allocatedHours: number;
+    utilizationPercentage: number;
+    efficiency: number;
+    workloadDistribution: {
+        capabilities: Record<string, number>;
+        projects: Record<string, number>;
+        priorities: Record<string, number>;
+    };
+    timeAllocation: {
+        activeWork: number;
+        plannedWork: number;
+        overhead: number;
+    };
+    capacityForecast: {
+        nextWeek: number;
+        nextMonth: number;
+    };
 }
 
 export interface ResourceBottleneck {
+    type: BottleneckType;
     resourceType: string;
+    resourceId: string;
+    resourceName: string;
     severity: Severity;
-    description: string;
-    suggestedActions: string[];
-    estimatedImpact: string;
+    utilizationRate: number;
+    capacity: number;
+    demand: number;
+    impact: {
+        affectedTasks: string[];
+        estimatedDelay: number;
+        qualityRisk: string;
+    };
+    recommendations: string[];
 }
 
 export interface OptimizationOpportunity {
     type: OptimizationType;
+    title: string;
     description: string;
-    potentialImprovement: string;
+    potentialImpact: {
+        efficiency: number;
+        throughput: number;
+        qualityImprovement: number;
+        costReduction: number;
+    };
     implementationEffort: ImplementationEffort;
-    priority: Priority;
-    estimatedROI: number; // percentage
+    estimatedROI: number;
+    affectedResources: string[];
+    actionItems: string[];
+    timeline: string;
+    riskLevel: RiskLevel;
 }
 
 export interface PredictionFactor {
-    name: string;
-    weight: number; // 0-100
-    currentValue: number;
-    trend: 'increasing' | 'decreasing' | 'stable';
-    impact: 'positive' | 'negative' | 'neutral';
+    factor: string;
+    weight: number;
+    impact: string;
+    likelihood: string;
 }
 
 export interface ReportParameter {
@@ -424,6 +461,8 @@ export interface ReportSchedule {
 export enum PredictionType {
     PROJECT_COMPLETION = 'project_completion',
     RESOURCE_DEMAND = 'resource_demand',
+    BOTTLENECK_RISK = 'bottleneck_risk',
+    SKILL_BOTTLENECK = 'skill_bottleneck',
     BOTTLENECK_EMERGENCE = 'bottleneck_emergence',
     QUALITY_DEGRADATION = 'quality_degradation',
     TEAM_PERFORMANCE = 'team_performance'
@@ -437,6 +476,10 @@ export enum RiskLevel {
 }
 
 export enum RiskType {
+    SCHEDULE_DELAY = 'schedule_delay',
+    RESOURCE_SHORTAGE = 'resource_shortage',
+    QUALITY_DEGRADATION = 'quality_degradation',
+    SCOPE_CREEP = 'scope_creep',
     SCHEDULE = 'schedule',
     RESOURCE = 'resource',
     QUALITY = 'quality',
@@ -445,6 +488,9 @@ export enum RiskType {
 }
 
 export enum ReportType {
+    PERFORMANCE = 'performance',
+    ANALYTICS = 'analytics',
+    PROJECT_STATUS = 'project_status',
     DASHBOARD = 'dashboard',
     EXECUTIVE_SUMMARY = 'executive_summary',
     DETAILED_ANALYSIS = 'detailed_analysis',
@@ -476,8 +522,10 @@ export enum Severity {
 }
 
 export enum OptimizationType {
-    RESOURCE_REALLOCATION = 'resource_reallocation',
+    LOAD_BALANCING = 'load_balancing',
+    SPECIALIZATION = 'specialization',
     PROCESS_IMPROVEMENT = 'process_improvement',
+    RESOURCE_REALLOCATION = 'resource_reallocation',
     SKILL_DEVELOPMENT = 'skill_development',
     TOOL_UPGRADE = 'tool_upgrade',
     WORKFLOW_OPTIMIZATION = 'workflow_optimization'

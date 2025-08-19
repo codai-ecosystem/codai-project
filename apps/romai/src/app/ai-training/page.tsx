@@ -3,11 +3,11 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Brain, 
-  Play, 
-  Pause, 
-  Square, 
+import {
+  Brain,
+  Play,
+  Pause,
+  Square,
   RotateCcw,
   TrendingUp,
   TrendingDown,
@@ -224,7 +224,7 @@ export default function AITraining() {
   };
 
   const handleTrainingAction = (sessionId: string, action: 'start' | 'pause' | 'stop') => {
-    setTrainingSessions(prev => 
+    setTrainingSessions(prev =>
       prev.map(session => {
         if (session.id === sessionId) {
           switch (action) {
@@ -246,7 +246,7 @@ export default function AITraining() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-yellow-50">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         className="bg-white/80 backdrop-blur-sm border-b border-red-200/50 sticky top-0 z-40"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -264,7 +264,7 @@ export default function AITraining() {
                 <p className="text-sm text-gray-600">Romanian AGI Model Development</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="hidden sm:flex items-center space-x-6 text-sm">
                 <div className="flex items-center space-x-2">
@@ -280,7 +280,7 @@ export default function AITraining() {
                   <span className="text-gray-600">Romanian AI</span>
                 </div>
               </div>
-              
+
               <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
                 <RefreshCw className="w-4 h-4" />
               </button>
@@ -299,11 +299,10 @@ export default function AITraining() {
                 <button
                   key={tab.id}
                   onClick={() => setSelectedTab(tab.id)}
-                  className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                    selectedTab === tab.id
+                  className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${selectedTab === tab.id
                       ? 'border-red-500 text-red-600'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                    }`}
                 >
                   <Icon className="w-4 h-4" />
                   <span>{tab.label}</span>
@@ -394,7 +393,7 @@ export default function AITraining() {
               {/* Current Training Status */}
               <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-red-200/50 shadow-sm">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Current Training Sessions</h3>
-                
+
                 <div className="space-y-4">
                   {trainingSessions.slice(0, 2).map((session, index) => (
                     <motion.div
@@ -663,11 +662,10 @@ export default function AITraining() {
                     >
                       <div className="flex items-center justify-between mb-4">
                         <h4 className="font-semibold text-gray-900">{dataset.name}</h4>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          dataset.status === 'ready' ? 'bg-green-100 text-green-800' :
-                          dataset.status === 'processing' ? 'bg-yellow-100 text-yellow-800' :
-                          'bg-red-100 text-red-800'
-                        }`}>
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${dataset.status === 'ready' ? 'bg-green-100 text-green-800' :
+                            dataset.status === 'processing' ? 'bg-yellow-100 text-yellow-800' :
+                              'bg-red-100 text-red-800'
+                          }`}>
                           {dataset.status.charAt(0).toUpperCase() + dataset.status.slice(1)}
                         </span>
                       </div>
@@ -730,8 +728,8 @@ export default function AITraining() {
                 Advanced {tabs.find(tab => tab.id === selectedTab)?.label.toLowerCase()} capabilities coming soon.
               </p>
               <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-yellow-500 rounded-lg flex items-center justify-center mx-auto">
-                {React.createElement(tabs.find(tab => tab.id === selectedTab)?.icon || Brain, { 
-                  className: "w-8 h-8 text-white" 
+                {React.createElement(tabs.find(tab => tab.id === selectedTab)?.icon || Brain, {
+                  className: "w-8 h-8 text-white"
                 })}
               </div>
             </div>
@@ -740,7 +738,7 @@ export default function AITraining() {
       </div>
 
       {/* Footer */}
-      <motion.footer 
+      <motion.footer
         className="bg-white/80 backdrop-blur-sm border-t border-red-200/50 mt-16"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

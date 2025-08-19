@@ -272,9 +272,9 @@ export default function JobsPage() {
 
   const filteredJobs = jobPostings.filter(job => {
     const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         job.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         job.location.toLowerCase().includes(searchTerm.toLowerCase())
-    
+      job.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.location.toLowerCase().includes(searchTerm.toLowerCase())
+
     if (activeFilter === 'all') return matchesSearch
     if (activeFilter === 'high-priority') return matchesSearch && job.priority === 'high'
     return matchesSearch && job.status === activeFilter
@@ -297,8 +297,8 @@ export default function JobsPage() {
   })
 
   const handleJobSelection = (jobId: string) => {
-    setSelectedJobs(prev => 
-      prev.includes(jobId) 
+    setSelectedJobs(prev =>
+      prev.includes(jobId)
         ? prev.filter(id => id !== jobId)
         : [...prev, jobId]
     )
@@ -766,7 +766,7 @@ export default function JobsPage() {
                       <span className="text-sm text-slate-300">{channel.channel}</span>
                       <div className="flex items-center space-x-3">
                         <div className="w-24 h-2 bg-white/20 rounded-full">
-                          <div 
+                          <div
                             className="h-full bg-gradient-to-r from-purple-500 to-violet-500 rounded-full"
                             style={{ width: `${channel.percentage}%` }}
                           ></div>
@@ -787,7 +787,7 @@ export default function JobsPage() {
                       <span className="text-sm text-slate-300">{stage.stage}</span>
                       <div className="flex items-center space-x-3">
                         <div className="w-24 h-2 bg-white/20 rounded-full">
-                          <div 
+                          <div
                             className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
                             style={{ width: `${stage.percentage}%` }}
                           ></div>
@@ -852,7 +852,7 @@ export default function JobsPage() {
               <h3 className="text-lg font-semibold text-white mb-2">AI-Powered Optimization</h3>
               <p className="text-slate-400 text-sm">Automatically optimize job postings for maximum reach and quality applications</p>
             </motion.div>
-            
+
             <motion.div
               className="glassmorphism p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-purple-500/50 transition-all"
               whileHover={{ scale: 1.05 }}
@@ -863,7 +863,7 @@ export default function JobsPage() {
               <h3 className="text-lg font-semibold text-white mb-2">Advanced Analytics</h3>
               <p className="text-slate-400 text-sm">Track job performance, conversion rates, and hiring metrics in real-time</p>
             </motion.div>
-            
+
             <motion.div
               className="glassmorphism p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-purple-500/50 transition-all"
               whileHover={{ scale: 1.05 }}

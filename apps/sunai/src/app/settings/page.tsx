@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Settings, 
-  User, 
-  Shield, 
-  Bell, 
+import {
+  Settings,
+  User,
+  Shield,
+  Bell,
   Zap,
   Sun,
   Battery,
@@ -164,23 +164,23 @@ export default function SettingsPage() {
       notifications: notificationSettings,
       security: { ...securitySettings, loginHistory: undefined }
     };
-    
+
     const dataStr = JSON.stringify(allSettings, null, 2);
     const dataBlob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(dataBlob);
-    
+
     const link = document.createElement('a');
     link.href = url;
     link.download = 'sunai-settings-export.json';
     link.click();
-    
+
     URL.revokeObjectURL(url);
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50">
       {/* Enhanced Header */}
-      <motion.header 
+      <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/80 backdrop-blur-md border-b border-yellow-200/50 sticky top-0 z-50"
@@ -200,7 +200,7 @@ export default function SettingsPage() {
                 </p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-3">
               <button
                 onClick={handleExportSettings}
@@ -241,11 +241,10 @@ export default function SettingsPage() {
                   <button
                     key={section.id}
                     onClick={() => setActiveSection(section.id)}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-all mb-1 ${
-                      activeSection === section.id
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-all mb-1 ${activeSection === section.id
                         ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white shadow-md'
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center space-x-3">
                       <section.icon className="h-4 w-4" />
@@ -448,14 +447,12 @@ export default function SettingsPage() {
                             setSystemSettings(prev => ({ ...prev, gridConnection: !prev.gridConnection }));
                             setHasChanges(true);
                           }}
-                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                            systemSettings.gridConnection ? 'bg-yellow-500' : 'bg-gray-300'
-                          }`}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${systemSettings.gridConnection ? 'bg-yellow-500' : 'bg-gray-300'
+                            }`}
                         >
                           <span
-                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                              systemSettings.gridConnection ? 'translate-x-6' : 'translate-x-1'
-                            }`}
+                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${systemSettings.gridConnection ? 'translate-x-6' : 'translate-x-1'
+                              }`}
                           />
                         </button>
                       </div>
@@ -470,14 +467,12 @@ export default function SettingsPage() {
                             setSystemSettings(prev => ({ ...prev, autoOptimization: !prev.autoOptimization }));
                             setHasChanges(true);
                           }}
-                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                            systemSettings.autoOptimization ? 'bg-yellow-500' : 'bg-gray-300'
-                          }`}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${systemSettings.autoOptimization ? 'bg-yellow-500' : 'bg-gray-300'
+                            }`}
                         >
                           <span
-                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                              systemSettings.autoOptimization ? 'translate-x-6' : 'translate-x-1'
-                            }`}
+                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${systemSettings.autoOptimization ? 'translate-x-6' : 'translate-x-1'
+                              }`}
                           />
                         </button>
                       </div>
@@ -524,14 +519,12 @@ export default function SettingsPage() {
                             setNotificationSettings(prev => ({ ...prev, email: !prev.email }));
                             setHasChanges(true);
                           }}
-                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                            notificationSettings.email ? 'bg-yellow-500' : 'bg-gray-300'
-                          }`}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${notificationSettings.email ? 'bg-yellow-500' : 'bg-gray-300'
+                            }`}
                         >
                           <span
-                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                              notificationSettings.email ? 'translate-x-6' : 'translate-x-1'
-                            }`}
+                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${notificationSettings.email ? 'translate-x-6' : 'translate-x-1'
+                              }`}
                           />
                         </button>
                       </div>
@@ -549,14 +542,12 @@ export default function SettingsPage() {
                             setNotificationSettings(prev => ({ ...prev, push: !prev.push }));
                             setHasChanges(true);
                           }}
-                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                            notificationSettings.push ? 'bg-yellow-500' : 'bg-gray-300'
-                          }`}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${notificationSettings.push ? 'bg-yellow-500' : 'bg-gray-300'
+                            }`}
                         >
                           <span
-                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                              notificationSettings.push ? 'translate-x-6' : 'translate-x-1'
-                            }`}
+                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${notificationSettings.push ? 'translate-x-6' : 'translate-x-1'
+                              }`}
                           />
                         </button>
                       </div>
@@ -574,14 +565,12 @@ export default function SettingsPage() {
                             setNotificationSettings(prev => ({ ...prev, sms: !prev.sms }));
                             setHasChanges(true);
                           }}
-                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                            notificationSettings.sms ? 'bg-yellow-500' : 'bg-gray-300'
-                          }`}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${notificationSettings.sms ? 'bg-yellow-500' : 'bg-gray-300'
+                            }`}
                         >
                           <span
-                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                              notificationSettings.sms ? 'translate-x-6' : 'translate-x-1'
-                            }`}
+                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${notificationSettings.sms ? 'translate-x-6' : 'translate-x-1'
+                              }`}
                           />
                         </button>
                       </div>
@@ -608,14 +597,12 @@ export default function SettingsPage() {
                               setNotificationSettings(prev => ({ ...prev, [item.key]: !prev[item.key as keyof NotificationSettings] }));
                               setHasChanges(true);
                             }}
-                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                              notificationSettings[item.key as keyof NotificationSettings] ? 'bg-yellow-500' : 'bg-gray-300'
-                            }`}
+                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${notificationSettings[item.key as keyof NotificationSettings] ? 'bg-yellow-500' : 'bg-gray-300'
+                              }`}
                           >
                             <span
-                              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                                notificationSettings[item.key as keyof NotificationSettings] ? 'translate-x-6' : 'translate-x-1'
-                              }`}
+                              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${notificationSettings[item.key as keyof NotificationSettings] ? 'translate-x-6' : 'translate-x-1'
+                                }`}
                             />
                           </button>
                         </div>
@@ -644,14 +631,12 @@ export default function SettingsPage() {
                             setSecuritySettings(prev => ({ ...prev, twoFactorEnabled: !prev.twoFactorEnabled }));
                             setHasChanges(true);
                           }}
-                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                            securitySettings.twoFactorEnabled ? 'bg-yellow-500' : 'bg-gray-300'
-                          }`}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${securitySettings.twoFactorEnabled ? 'bg-yellow-500' : 'bg-gray-300'
+                            }`}
                         >
                           <span
-                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                              securitySettings.twoFactorEnabled ? 'translate-x-6' : 'translate-x-1'
-                            }`}
+                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${securitySettings.twoFactorEnabled ? 'translate-x-6' : 'translate-x-1'
+                              }`}
                           />
                         </button>
                       </div>
@@ -666,14 +651,12 @@ export default function SettingsPage() {
                             setSecuritySettings(prev => ({ ...prev, biometricEnabled: !prev.biometricEnabled }));
                             setHasChanges(true);
                           }}
-                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                            securitySettings.biometricEnabled ? 'bg-yellow-500' : 'bg-gray-300'
-                          }`}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${securitySettings.biometricEnabled ? 'bg-yellow-500' : 'bg-gray-300'
+                            }`}
                         >
                           <span
-                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                              securitySettings.biometricEnabled ? 'translate-x-6' : 'translate-x-1'
-                            }`}
+                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${securitySettings.biometricEnabled ? 'translate-x-6' : 'translate-x-1'
+                              }`}
                           />
                         </button>
                       </div>

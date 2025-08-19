@@ -49,7 +49,7 @@ vi.mock('next/navigation', () => ({
   useSearchParams: () => new URLSearchParams(),
 }))
 
-// Mock Lucide React icons - comprehensive icon mocking
+// Mock Lucide React icons - comprehensive icon mocking with proper React 18 patterns
 vi.mock('lucide-react', () => {
   const React = require('react');
   const mockIcon = (name: string) => {
@@ -58,8 +58,14 @@ vi.mock('lucide-react', () => {
         'data-testid': `icon-${name.toLowerCase()}`,
         'data-icon': name,
         className: props.className || '',
-        ...props
-      }, name);
+        style: props.style || {},
+        onClick: props.onClick || undefined,
+        onMouseEnter: props.onMouseEnter || undefined,
+        onMouseLeave: props.onMouseLeave || undefined,
+        role: props.role || 'img',
+        'aria-label': props['aria-label'] || name,
+        children: props.children || name
+      });
     };
     MockedIcon.displayName = `Mocked${name}Icon`;
     return MockedIcon;
@@ -75,11 +81,16 @@ vi.mock('lucide-react', () => {
   });
 });
 
-// Mock Next.js Link component
+// Mock Next.js Link component with proper React 18 element cloning
 vi.mock('next/link', () => ({
-  default: ({ children, href }: any) => {
+  default: ({ children, href, ...props }: any) => {
     const React = require('react')
-    return React.cloneElement(children, { href })
+    // Handle both single child and multiple children
+    if (React.isValidElement(children)) {
+      return React.cloneElement(children, { href, ...props })
+    }
+    // Fallback for non-React elements
+    return React.createElement('a', { href, ...props }, children)
   },
 }))
 

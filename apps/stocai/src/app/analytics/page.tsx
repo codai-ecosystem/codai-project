@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  DollarSign, 
-  BarChart3, 
-  Activity, 
+import {
+  TrendingUp,
+  TrendingDown,
+  DollarSign,
+  BarChart3,
+  Activity,
   Bot,
   Search,
   Bell,
@@ -374,7 +374,7 @@ export default function AnalyticsPage() {
                 <p className="text-sm text-gray-500">{timeRange} period</p>
               </div>
               <div className="p-3 bg-green-100 rounded-lg">
-                {currentPerformance.portfolioReturn >= 0 ? 
+                {currentPerformance.portfolioReturn >= 0 ?
                   <TrendingUp className="h-6 w-6 text-green-600" /> :
                   <TrendingDown className="h-6 w-6 text-green-600" />
                 }
@@ -447,15 +447,13 @@ export default function AnalyticsPage() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`group inline-flex items-center py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
-                      activeTab === tab.id
+                    className={`group inline-flex items-center py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${activeTab === tab.id
                         ? 'border-green-500 text-green-600'
                         : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                    }`}
+                      }`}
                   >
-                    <Icon className={`mr-2 h-5 w-5 ${
-                      activeTab === tab.id ? 'text-green-500' : 'text-gray-400 group-hover:text-gray-500'
-                    }`} />
+                    <Icon className={`mr-2 h-5 w-5 ${activeTab === tab.id ? 'text-green-500' : 'text-gray-400 group-hover:text-gray-500'
+                      }`} />
                     {tab.label}
                   </button>
                 )
@@ -492,7 +490,7 @@ export default function AnalyticsPage() {
                   </button>
                 </div>
               </div>
-              
+
               {/* Performance Chart Placeholder */}
               <div className="h-64 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg flex items-center justify-center border border-gray-200">
                 <div className="text-center">
@@ -585,22 +583,22 @@ export default function AnalyticsPage() {
                       <div className="flex items-center space-x-3">
                         <div className="text-right">
                           <div className="text-sm font-medium text-gray-900">
-                            {metric.metric.includes('%') || metric.metric.includes('Ratio') || metric.metric.includes('Correlation') ? 
-                              metric.value.toFixed(2) : 
+                            {metric.metric.includes('%') || metric.metric.includes('Ratio') || metric.metric.includes('Correlation') ?
+                              metric.value.toFixed(2) :
                               formatPercent(metric.value)
                             }
                           </div>
                           <div className="text-xs text-gray-500">
-                            vs {metric.metric.includes('%') || metric.metric.includes('Ratio') || metric.metric.includes('Correlation') ? 
-                              metric.benchmark.toFixed(2) : 
+                            vs {metric.metric.includes('%') || metric.metric.includes('Ratio') || metric.metric.includes('Correlation') ?
+                              metric.benchmark.toFixed(2) :
                               formatPercent(metric.benchmark)
                             }
                           </div>
                         </div>
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(metric.status)}`}>
-                          {metric.status === 'good' ? <CheckCircle className="w-3 h-3 mr-1" /> : 
-                           metric.status === 'warning' ? <AlertTriangle className="w-3 h-3 mr-1" /> :
-                           <TrendingDown className="w-3 h-3 mr-1" />}
+                          {metric.status === 'good' ? <CheckCircle className="w-3 h-3 mr-1" /> :
+                            metric.status === 'warning' ? <AlertTriangle className="w-3 h-3 mr-1" /> :
+                              <TrendingDown className="w-3 h-3 mr-1" />}
                           {metric.status}
                         </span>
                       </div>
@@ -641,7 +639,7 @@ export default function AnalyticsPage() {
                 Explore Analytics <ChevronRight className="ml-1 h-4 w-4" />
               </button>
             </div>
-            
+
             <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-6 text-white">
               <Target className="h-8 w-8 mb-3" />
               <h3 className="text-lg font-semibold mb-2">Performance Attribution</h3>
@@ -650,7 +648,7 @@ export default function AnalyticsPage() {
                 View Attribution <ChevronRight className="ml-1 h-4 w-4" />
               </button>
             </div>
-            
+
             <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl p-6 text-white">
               <Calculator className="h-8 w-8 mb-3" />
               <h3 className="text-lg font-semibold mb-2">Risk Management</h3>

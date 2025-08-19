@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { 
-  User, Settings, Camera, Edit3, MapPin, Calendar, 
-  Link as LinkIcon, Mail, Globe, Phone, Twitter, 
-  Instagram, Linkedin, Github, Heart, MessageCircle, 
+import {
+  User, Settings, Camera, Edit3, MapPin, Calendar,
+  Link as LinkIcon, Mail, Globe, Phone, Twitter,
+  Instagram, Linkedin, Github, Heart, MessageCircle,
   Share2, Bookmark, TrendingUp, Award, Users, Star,
   MoreHorizontal, Image, Video, FileText, Music,
   Upload, Save, X, Check, Bell, Shield, Eye,
@@ -45,47 +45,47 @@ export default function ProfilePage() {
   ];
 
   const achievements = [
-    { 
-      icon: Crown, 
-      title: 'Content Creator Pro', 
-      description: '1000+ high-quality posts', 
+    {
+      icon: Crown,
+      title: 'Content Creator Pro',
+      description: '1000+ high-quality posts',
       color: 'text-yellow-400',
-      earned: true 
+      earned: true
     },
-    { 
-      icon: TrendingUp, 
-      title: 'Viral Content', 
-      description: 'Post reached 100K+ views', 
+    {
+      icon: TrendingUp,
+      title: 'Viral Content',
+      description: 'Post reached 100K+ views',
       color: 'text-green-400',
-      earned: true 
+      earned: true
     },
-    { 
-      icon: Users, 
-      title: 'Community Builder', 
-      description: '10K+ followers milestone', 
+    {
+      icon: Users,
+      title: 'Community Builder',
+      description: '10K+ followers milestone',
       color: 'text-blue-400',
-      earned: true 
+      earned: true
     },
-    { 
-      icon: Trophy, 
-      title: 'AI Pioneer', 
-      description: 'Early AI content adopter', 
+    {
+      icon: Trophy,
+      title: 'AI Pioneer',
+      description: 'Early AI content adopter',
       color: 'text-purple-400',
-      earned: true 
+      earned: true
     },
-    { 
-      icon: Target, 
-      title: 'Engagement Master', 
-      description: '95% engagement rate', 
+    {
+      icon: Target,
+      title: 'Engagement Master',
+      description: '95% engagement rate',
       color: 'text-pink-400',
-      earned: false 
+      earned: false
     },
-    { 
-      icon: Zap, 
-      title: 'Consistency King', 
-      description: '365 day posting streak', 
+    {
+      icon: Zap,
+      title: 'Consistency King',
+      description: '365 day posting streak',
       color: 'text-orange-400',
-      earned: false 
+      earned: false
     }
   ];
 
@@ -236,7 +236,7 @@ export default function ProfilePage() {
                   <input
                     type="text"
                     value={profileData.name}
-                    onChange={(e) => setProfileData({...profileData, name: e.target.value})}
+                    onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
                     className="text-2xl font-bold text-gray-900 bg-gray-100 rounded-lg px-3 py-1 border-none outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 ) : (
@@ -244,13 +244,13 @@ export default function ProfilePage() {
                 )}
                 <Verified className="h-6 w-6 text-blue-500" />
               </div>
-              
+
               <p className="text-gray-600 mb-3">{profileData.username}</p>
-              
+
               {editMode ? (
                 <textarea
                   value={profileData.bio}
-                  onChange={(e) => setProfileData({...profileData, bio: e.target.value})}
+                  onChange={(e) => setProfileData({ ...profileData, bio: e.target.value })}
                   className="w-full text-gray-700 bg-gray-100 rounded-lg px-3 py-2 border-none outline-none focus:ring-2 focus:ring-blue-500"
                   rows={3}
                 />
@@ -357,11 +357,10 @@ export default function ProfilePage() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`group inline-flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${
-                      activeTab === tab.id
+                    className={`group inline-flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${activeTab === tab.id
                         ? 'border-blue-500 text-blue-600'
                         : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                    } transition-colors`}
+                      } transition-colors`}
                   >
                     <Icon className="h-5 w-5" />
                     <span>{tab.label}</span>
@@ -423,11 +422,10 @@ export default function ProfilePage() {
                           <motion.div
                             key={index}
                             whileHover={{ scale: 1.02 }}
-                            className={`p-4 rounded-lg border-2 transition-colors ${
-                              achievement.earned
+                            className={`p-4 rounded-lg border-2 transition-colors ${achievement.earned
                                 ? 'border-blue-200 bg-blue-50'
                                 : 'border-gray-200 bg-gray-50 opacity-60'
-                            }`}
+                              }`}
                           >
                             <div className="flex items-center space-x-3">
                               <Icon className={`h-8 w-8 ${achievement.color}`} />
@@ -572,7 +570,7 @@ export default function ProfilePage() {
                   className="space-y-6"
                 >
                   <h3 className="text-lg font-semibold text-gray-900">Profile Analytics</h3>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div className="bg-white border border-gray-200 rounded-lg p-6">
                       <div className="flex items-center justify-between mb-4">
@@ -682,11 +680,10 @@ export default function ProfilePage() {
                           <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            className={`flex-1 py-2 px-4 rounded-lg font-medium text-sm transition-colors ${
-                              connection.isFollowing
+                            className={`flex-1 py-2 px-4 rounded-lg font-medium text-sm transition-colors ${connection.isFollowing
                                 ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                 : 'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:shadow-lg'
-                            }`}
+                              }`}
                           >
                             {connection.isFollowing ? 'Following' : 'Follow'}
                           </motion.button>
@@ -713,7 +710,7 @@ export default function ProfilePage() {
                   className="space-y-6"
                 >
                   <h3 className="text-lg font-semibold text-gray-900">Profile Settings</h3>
-                  
+
                   <div className="space-y-6">
                     {/* Privacy Settings */}
                     <div className="bg-white border border-gray-200 rounded-lg p-6">

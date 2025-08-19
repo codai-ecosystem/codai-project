@@ -3,9 +3,9 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Brain, 
-  Zap, 
+import {
+  Brain,
+  Zap,
   Globe,
   MessageSquare,
   FileText,
@@ -543,7 +543,7 @@ export default function Capabilities() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-yellow-50">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         className="bg-white/80 backdrop-blur-sm border-b border-red-200/50 sticky top-0 z-40"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -561,7 +561,7 @@ export default function Capabilities() {
                 <p className="text-sm text-gray-600">Advanced Romanian AGI Features</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="hidden sm:flex items-center space-x-6 text-sm">
                 <div className="flex items-center space-x-2">
@@ -592,11 +592,10 @@ export default function Capabilities() {
                 <button
                   key={tab.id}
                   onClick={() => setSelectedTab(tab.id)}
-                  className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                    selectedTab === tab.id
+                  className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${selectedTab === tab.id
                       ? 'border-red-500 text-red-600'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                    }`}
                 >
                   <Icon className="w-4 h-4" />
                   <span>{tab.label}</span>
@@ -628,13 +627,13 @@ export default function Capabilities() {
                     </div>
                     <h3 className="text-lg font-semibold text-gray-900">Romanian AGI Excellence</h3>
                   </div>
-                  
+
                   <div className="space-y-4">
                     <p className="text-gray-700">
-                      RomAI represents the pinnacle of Romanian artificial general intelligence, combining 
+                      RomAI represents the pinnacle of Romanian artificial general intelligence, combining
                       advanced reasoning capabilities with deep cultural understanding.
                     </p>
-                    
+
                     <div className="grid grid-cols-2 gap-4">
                       <div className="bg-red-50 p-4 rounded-lg border border-red-200">
                         <div className="flex items-center space-x-2 mb-2">
@@ -643,7 +642,7 @@ export default function Capabilities() {
                         </div>
                         <p className="text-sm text-red-700">Deep understanding of Romanian culture, traditions, and contextual nuances</p>
                       </div>
-                      
+
                       <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
                         <div className="flex items-center space-x-2 mb-2">
                           <Zap className="w-5 h-5 text-yellow-600" />
@@ -667,7 +666,7 @@ export default function Capabilities() {
                     </div>
                     <h3 className="text-lg font-semibold text-gray-900">Core Strengths</h3>
                   </div>
-                  
+
                   <div className="space-y-3">
                     <div className="flex items-center space-x-3">
                       <div className="w-2 h-2 bg-red-500 rounded-full"></div>
@@ -713,19 +712,18 @@ export default function Capabilities() {
                         </div>
                         <h3 className="font-semibold text-gray-900">{category.name}</h3>
                       </div>
-                      
+
                       <p className="text-gray-600 text-sm mb-4">{category.description}</p>
-                      
+
                       <div className="flex items-center justify-between">
                         <span className="text-sm text-gray-500">{category.capabilities.length} capabilities</span>
                         <div className="flex items-center space-x-1">
                           {category.capabilities.slice(0, 3).map((cap, i) => (
                             <div
                               key={i}
-                              className={`w-2 h-2 rounded-full ${
-                                cap.status === 'active' ? 'bg-green-500' :
-                                cap.status === 'beta' ? 'bg-yellow-500' : 'bg-gray-400'
-                              }`}
+                              className={`w-2 h-2 rounded-full ${cap.status === 'active' ? 'bg-green-500' :
+                                  cap.status === 'beta' ? 'bg-yellow-500' : 'bg-gray-400'
+                                }`}
                             />
                           ))}
                         </div>
@@ -738,7 +736,7 @@ export default function Capabilities() {
               {/* Quick Stats */}
               <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-red-200/50 shadow-sm">
                 <h3 className="text-lg font-semibold text-gray-900 mb-6">Capability Statistics</h3>
-                
+
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                   <div className="text-center">
                     <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-3">
@@ -747,7 +745,7 @@ export default function Capabilities() {
                     <h4 className="text-2xl font-bold text-gray-900">{capabilityCategories.reduce((acc, cat) => acc + cat.capabilities.length, 0)}</h4>
                     <p className="text-sm text-gray-600">Total Capabilities</p>
                   </div>
-                  
+
                   <div className="text-center">
                     <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center mx-auto mb-3">
                       <Star className="w-8 h-8 text-white" />
@@ -755,7 +753,7 @@ export default function Capabilities() {
                     <h4 className="text-2xl font-bold text-gray-900">{capabilityCategories.reduce((acc, cat) => acc + cat.capabilities.filter(c => c.status === 'active').length, 0)}</h4>
                     <p className="text-sm text-gray-600">Active Features</p>
                   </div>
-                  
+
                   <div className="text-center">
                     <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-3">
                       <FlaskConical className="w-8 h-8 text-white" />
@@ -763,7 +761,7 @@ export default function Capabilities() {
                     <h4 className="text-2xl font-bold text-gray-900">{capabilityCategories.reduce((acc, cat) => acc + cat.capabilities.filter(c => c.status === 'beta').length, 0)}</h4>
                     <p className="text-sm text-gray-600">Beta Features</p>
                   </div>
-                  
+
                   <div className="text-center">
                     <div className="w-16 h-16 bg-gradient-to-r from-red-600 to-red-700 rounded-full flex items-center justify-center mx-auto mb-3">
                       <Flag className="w-8 h-8 text-white" />
@@ -800,16 +798,16 @@ export default function Capabilities() {
                         </div>
                         {getTrendIcon(metric.trend)}
                       </div>
-                      
+
                       <div className="mb-3">
                         <div className="flex items-baseline space-x-1">
                           <span className="text-3xl font-bold text-gray-900">{metric.value}</span>
                           <span className="text-lg text-gray-600">{metric.unit}</span>
                         </div>
                       </div>
-                      
+
                       <p className="text-sm text-gray-600">{metric.description}</p>
-                      
+
                       {metric.name.includes('%') && (
                         <div className="mt-4">
                           <div className="w-full bg-gray-200 rounded-full h-2">
@@ -831,7 +829,7 @@ export default function Capabilities() {
               {/* Performance Comparison Chart */}
               <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-red-200/50 shadow-sm">
                 <h3 className="text-lg font-semibold text-gray-900 mb-6">Performance Comparison</h3>
-                
+
                 <div className="space-y-6">
                   {performanceMetrics.slice(0, 4).map((metric, index) => (
                     <div key={metric.name} className="space-y-2">
@@ -937,8 +935,8 @@ export default function Capabilities() {
                 Advanced {tabs.find(tab => tab.id === selectedTab)?.label.toLowerCase()} capabilities coming soon.
               </p>
               <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-yellow-500 rounded-lg flex items-center justify-center mx-auto">
-                {React.createElement(tabs.find(tab => tab.id === selectedTab)?.icon || Brain, { 
-                  className: "w-8 h-8 text-white" 
+                {React.createElement(tabs.find(tab => tab.id === selectedTab)?.icon || Brain, {
+                  className: "w-8 h-8 text-white"
                 })}
               </div>
             </div>
@@ -1032,7 +1030,7 @@ export default function Capabilities() {
       )}
 
       {/* Footer */}
-      <motion.footer 
+      <motion.footer
         className="bg-white/80 backdrop-blur-sm border-t border-red-200/50 mt-16"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

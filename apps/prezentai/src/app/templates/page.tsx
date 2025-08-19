@@ -2,15 +2,15 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Search, 
-  Filter, 
-  Grid3X3, 
-  List, 
-  Download, 
-  Heart, 
-  Share2, 
-  PlayCircle, 
+import {
+  Search,
+  Filter,
+  Grid3X3,
+  List,
+  Download,
+  Heart,
+  Share2,
+  PlayCircle,
   Star,
   BarChart3,
   MonitorPlay,
@@ -150,7 +150,7 @@ export default function TemplatesPage() {
 
   const filteredTemplates = templates.filter(template => {
     const matchesSearch = template.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         template.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+      template.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
     const matchesCategory = selectedCategory === 'all' || template.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -173,7 +173,7 @@ export default function TemplatesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/80 backdrop-blur-sm border-b border-purple-100 sticky top-0 z-40"
@@ -199,7 +199,7 @@ export default function TemplatesPage() {
       </motion.div>
 
       {/* Navigation Tabs */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.1 }}
@@ -218,11 +218,10 @@ export default function TemplatesPage() {
               <a
                 key={tab.name}
                 href={tab.href}
-                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${
-                  tab.current
+                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${tab.current
                     ? 'border-purple-500 text-purple-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
+                  }`}
               >
                 {tab.name}
               </a>
@@ -234,9 +233,9 @@ export default function TemplatesPage() {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex lg:flex-row flex-col gap-8">
-          
+
           {/* Category Sidebar */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
@@ -249,11 +248,10 @@ export default function TemplatesPage() {
                   <button
                     key={category.id}
                     onClick={() => setSelectedCategory(category.id)}
-                    className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${
-                      selectedCategory === category.id
+                    className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${selectedCategory === category.id
                         ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-md'
                         : 'hover:bg-purple-50 text-gray-700'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center space-x-3">
                       <div className={`p-1 rounded ${selectedCategory === category.id ? 'bg-white/20' : category.color}`}>
@@ -272,9 +270,9 @@ export default function TemplatesPage() {
 
           {/* Templates Grid */}
           <div className="flex-1">
-            
+
             {/* Search and Filters */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
@@ -293,7 +291,7 @@ export default function TemplatesPage() {
                     />
                   </div>
                 </div>
-                
+
                 <div className="flex items-center space-x-4">
                   <select
                     value={sortBy}
@@ -305,21 +303,19 @@ export default function TemplatesPage() {
                     <option value="newest">Newest</option>
                     <option value="name">Name</option>
                   </select>
-                  
+
                   <div className="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
                     <button
                       onClick={() => setViewMode('grid')}
-                      className={`p-2 rounded-md transition-colors duration-200 ${
-                        viewMode === 'grid' ? 'bg-white shadow-sm text-purple-600' : 'text-gray-600 hover:text-gray-900'
-                      }`}
+                      className={`p-2 rounded-md transition-colors duration-200 ${viewMode === 'grid' ? 'bg-white shadow-sm text-purple-600' : 'text-gray-600 hover:text-gray-900'
+                        }`}
                     >
                       <Grid3X3 className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => setViewMode('list')}
-                      className={`p-2 rounded-md transition-colors duration-200 ${
-                        viewMode === 'list' ? 'bg-white shadow-sm text-purple-600' : 'text-gray-600 hover:text-gray-900'
-                      }`}
+                      className={`p-2 rounded-md transition-colors duration-200 ${viewMode === 'list' ? 'bg-white shadow-sm text-purple-600' : 'text-gray-600 hover:text-gray-900'
+                        }`}
                     >
                       <List className="w-4 h-4" />
                     </button>
@@ -329,12 +325,12 @@ export default function TemplatesPage() {
             </motion.div>
 
             {/* Templates Grid/List */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
               className={
-                viewMode === 'grid' 
+                viewMode === 'grid'
                   ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
                   : 'space-y-4'
               }
@@ -345,11 +341,10 @@ export default function TemplatesPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * index }}
-                  className={`group ${
-                    viewMode === 'grid'
+                  className={`group ${viewMode === 'grid'
                       ? 'bg-white/70 backdrop-blur-sm rounded-xl border border-purple-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:border-purple-300'
                       : 'bg-white/70 backdrop-blur-sm rounded-xl border border-purple-100 p-6 hover:shadow-lg transition-all duration-300'
-                  }`}
+                    }`}
                 >
                   {viewMode === 'grid' ? (
                     <>
@@ -380,11 +375,11 @@ export default function TemplatesPage() {
                             <Heart className="w-4 h-4" />
                           </button>
                         </div>
-                        
+
                         <p className="text-sm text-gray-600 mb-3 line-clamp-2">
                           {template.description}
                         </p>
-                        
+
                         <div className="flex items-center justify-between text-sm text-gray-500 mb-3">
                           <span>{template.slides} slides</span>
                           <div className="flex items-center space-x-1">
@@ -392,7 +387,7 @@ export default function TemplatesPage() {
                             <span>{template.rating}</span>
                           </div>
                         </div>
-                        
+
                         <div className="flex items-center justify-between">
                           <span className="text-sm text-gray-500">
                             {template.downloads.toLocaleString()} downloads
@@ -431,11 +426,11 @@ export default function TemplatesPage() {
                             <span className="text-sm text-gray-600">{template.rating}</span>
                           </div>
                         </div>
-                        
+
                         <p className="text-sm text-gray-600 mt-1 line-clamp-1">
                           {template.description}
                         </p>
-                        
+
                         <div className="flex items-center space-x-4 mt-2 text-sm text-gray-500">
                           <span>{template.slides} slides</span>
                           <span>{template.downloads.toLocaleString()} downloads</span>
@@ -460,72 +455,72 @@ export default function TemplatesPage() {
                   )}
                 </motion.div>
               ))}
-            </div>
           </div>
         </div>
       </div>
+    </div>
 
-      {/* Modern Footer */}
-      <motion.footer 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.6 }}
-        className="bg-gradient-to-r from-purple-900 via-blue-900 to-indigo-900 text-white mt-16"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="col-span-1 md:col-span-2">
-              <h3 className="text-2xl font-bold mb-4">PrezentAI Templates</h3>
-              <p className="text-purple-200 mb-6 max-w-md">
-                Discover thousands of professional presentation templates designed to make your ideas shine. 
-                From business pitches to creative portfolios, find the perfect template for every occasion.
-              </p>
-              <div className="flex space-x-4">
-                <button className="bg-white/10 hover:bg-white/20 p-3 rounded-lg transition-all duration-200">
-                  <Users className="w-5 h-5" />
-                </button>
-                <button className="bg-white/10 hover:bg-white/20 p-3 rounded-lg transition-all duration-200">
-                  <Share2 className="w-5 h-5" />
-                </button>
-                <button className="bg-white/10 hover:bg-white/20 p-3 rounded-lg transition-all duration-200">
-                  <BarChart3 className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-            
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Popular Categories</h4>
-              <ul className="space-y-2 text-purple-200">
-                <li><a href="#" className="hover:text-white transition-colors duration-200">Business Presentations</a></li>
-                <li><a href="#" className="hover:text-white transition-colors duration-200">Educational Templates</a></li>
-                <li><a href="#" className="hover:text-white transition-colors duration-200">Creative Portfolios</a></li>
-                <li><a href="#" className="hover:text-white transition-colors duration-200">Marketing Campaigns</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Template Tools</h4>
-              <ul className="space-y-2 text-purple-200">
-                <li><a href="#" className="hover:text-white transition-colors duration-200">Template Builder</a></li>
-                <li><a href="#" className="hover:text-white transition-colors duration-200">Custom Themes</a></li>
-                <li><a href="#" className="hover:text-white transition-colors duration-200">Brand Guidelines</a></li>
-                <li><a href="#" className="hover:text-white transition-colors duration-200">Export Options</a></li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="border-t border-purple-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-purple-200 text-sm">
-              © 2025 PrezentAI Templates. Crafted with precision for professional presentations.
-            </p>
-            <div className="mt-4 md:mt-0">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-                ✨ 247 Premium Templates Available
-              </span>
-            </div>
+      {/* Modern Footer */ }
+  <motion.footer
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ delay: 0.6 }}
+    className="bg-gradient-to-r from-purple-900 via-blue-900 to-indigo-900 text-white mt-16"
+  >
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="col-span-1 md:col-span-2">
+          <h3 className="text-2xl font-bold mb-4">PrezentAI Templates</h3>
+          <p className="text-purple-200 mb-6 max-w-md">
+            Discover thousands of professional presentation templates designed to make your ideas shine.
+            From business pitches to creative portfolios, find the perfect template for every occasion.
+          </p>
+          <div className="flex space-x-4">
+            <button className="bg-white/10 hover:bg-white/20 p-3 rounded-lg transition-all duration-200">
+              <Users className="w-5 h-5" />
+            </button>
+            <button className="bg-white/10 hover:bg-white/20 p-3 rounded-lg transition-all duration-200">
+              <Share2 className="w-5 h-5" />
+            </button>
+            <button className="bg-white/10 hover:bg-white/20 p-3 rounded-lg transition-all duration-200">
+              <BarChart3 className="w-5 h-5" />
+            </button>
           </div>
         </div>
-      </motion.footer>
+
+        <div>
+          <h4 className="text-lg font-semibold mb-4">Popular Categories</h4>
+          <ul className="space-y-2 text-purple-200">
+            <li><a href="#" className="hover:text-white transition-colors duration-200">Business Presentations</a></li>
+            <li><a href="#" className="hover:text-white transition-colors duration-200">Educational Templates</a></li>
+            <li><a href="#" className="hover:text-white transition-colors duration-200">Creative Portfolios</a></li>
+            <li><a href="#" className="hover:text-white transition-colors duration-200">Marketing Campaigns</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="text-lg font-semibold mb-4">Template Tools</h4>
+          <ul className="space-y-2 text-purple-200">
+            <li><a href="#" className="hover:text-white transition-colors duration-200">Template Builder</a></li>
+            <li><a href="#" className="hover:text-white transition-colors duration-200">Custom Themes</a></li>
+            <li><a href="#" className="hover:text-white transition-colors duration-200">Brand Guidelines</a></li>
+            <li><a href="#" className="hover:text-white transition-colors duration-200">Export Options</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="border-t border-purple-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p className="text-purple-200 text-sm">
+          © 2025 PrezentAI Templates. Crafted with precision for professional presentations.
+        </p>
+        <div className="mt-4 md:mt-0">
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+            ✨ 247 Premium Templates Available
+          </span>
+        </div>
+      </div>
     </div>
+  </motion.footer>
+    </div >
   );
 }

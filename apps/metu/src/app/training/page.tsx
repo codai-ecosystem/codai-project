@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
+import {
   GraduationCap,
   Mic,
   MicOff,
@@ -317,8 +317,8 @@ export default function TrainingPage() {
 
   const filteredModules = trainingModules.filter(module => {
     const matchesSearch = module.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         module.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         module.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+      module.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      module.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
     const matchesCategory = selectedCategory === 'all' || module.category === selectedCategory;
     const matchesDifficulty = selectedDifficulty === 'all' || module.difficulty === selectedDifficulty;
     return matchesSearch && matchesCategory && matchesDifficulty;
@@ -329,7 +329,7 @@ export default function TrainingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/80 backdrop-blur-sm border-b border-blue-100 sticky top-0 z-40"
@@ -359,7 +359,7 @@ export default function TrainingPage() {
       </motion.div>
 
       {/* Navigation Tabs */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.1 }}
@@ -379,11 +379,10 @@ export default function TrainingPage() {
               <a
                 key={tab.name}
                 href={tab.href}
-                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${
-                  tab.current
+                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${tab.current
                     ? 'border-blue-500 text-blue-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
+                  }`}
               >
                 {tab.name}
               </a>
@@ -393,9 +392,9 @@ export default function TrainingPage() {
       </motion.div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
+
         {/* Current Metrics Dashboard */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -406,7 +405,7 @@ export default function TrainingPage() {
               <Activity className="w-5 h-5 text-blue-600" />
               <span>Current Voice Metrics</span>
             </h2>
-            <button 
+            <button
               onClick={() => setShowMetrics(!showMetrics)}
               className="text-blue-600 hover:text-blue-700 flex items-center space-x-1"
             >
@@ -429,12 +428,11 @@ export default function TrainingPage() {
                 <div className="text-2xl font-bold text-gray-900">{value.toFixed(1)}%</div>
                 <div className="text-sm text-gray-600 capitalize">{metric}</div>
                 <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
-                  <div 
-                    className={`h-2 rounded-full ${
-                      value >= 90 ? 'bg-green-500' :
-                      value >= 75 ? 'bg-blue-500' :
-                      value >= 60 ? 'bg-yellow-500' : 'bg-red-500'
-                    }`}
+                  <div
+                    className={`h-2 rounded-full ${value >= 90 ? 'bg-green-500' :
+                        value >= 75 ? 'bg-blue-500' :
+                          value >= 60 ? 'bg-yellow-500' : 'bg-red-500'
+                      }`}
                     style={{ width: `${value}%` }}
                   />
                 </div>
@@ -443,7 +441,7 @@ export default function TrainingPage() {
           </div>
 
           {showMetrics && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
@@ -473,7 +471,7 @@ export default function TrainingPage() {
         </motion.div>
 
         {/* Filters and Search */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -492,7 +490,7 @@ export default function TrainingPage() {
                 />
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <select
                 value={selectedCategory}
@@ -507,7 +505,7 @@ export default function TrainingPage() {
                 <option value="vocabulary">Vocabulary</option>
                 <option value="conversation">Conversation</option>
               </select>
-              
+
               <select
                 value={selectedDifficulty}
                 onChange={(e) => setSelectedDifficulty(e.target.value)}
@@ -566,9 +564,9 @@ export default function TrainingPage() {
 
         {/* Training Modules */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
+
           {/* Modules List/Grid */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
@@ -585,13 +583,12 @@ export default function TrainingPage() {
 
               <div className={`grid gap-4 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'} max-h-[700px] overflow-y-auto`}>
                 {filteredModules.map((module) => (
-                  <div 
-                    key={module.id} 
-                    className={`p-4 rounded-lg border transition-all duration-300 cursor-pointer ${
-                      selectedModule === module.id
+                  <div
+                    key={module.id}
+                    className={`p-4 rounded-lg border transition-all duration-300 cursor-pointer ${selectedModule === module.id
                         ? 'bg-blue-50 border-blue-200 shadow-md'
                         : 'bg-white/50 border-blue-50 hover:bg-blue-25 hover:border-blue-100'
-                    }`}
+                      }`}
                     onClick={() => setSelectedModule(module.id)}
                   >
                     <div className="flex items-start justify-between mb-3">
@@ -617,10 +614,9 @@ export default function TrainingPage() {
 
                     <div className="space-y-2">
                       <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
-                          className={`h-2 rounded-full ${
-                            module.completed ? 'bg-green-500' : 'bg-blue-500'
-                          }`}
+                        <div
+                          className={`h-2 rounded-full ${module.completed ? 'bg-green-500' : 'bg-blue-500'
+                            }`}
                           style={{ width: `${module.progress}%` }}
                         />
                       </div>
@@ -671,7 +667,7 @@ export default function TrainingPage() {
           </motion.div>
 
           {/* Module Details & Recent Sessions */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5 }}
@@ -729,10 +725,9 @@ export default function TrainingPage() {
                   <div>
                     <span className="font-medium text-gray-700">Progress:</span>
                     <div className="mt-1 w-full bg-gray-200 rounded-full h-3">
-                      <div 
-                        className={`h-3 rounded-full ${
-                          selectedModuleData.completed ? 'bg-green-500' : 'bg-blue-500'
-                        }`}
+                      <div
+                        className={`h-3 rounded-full ${selectedModuleData.completed ? 'bg-green-500' : 'bg-blue-500'
+                          }`}
                         style={{ width: `${selectedModuleData.progress}%` }}
                       />
                     </div>
@@ -744,7 +739,7 @@ export default function TrainingPage() {
 
                   <div className="pt-4 border-t border-blue-100">
                     <div className="grid grid-cols-2 gap-2">
-                      <button 
+                      <button
                         className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm font-medium flex items-center justify-center space-x-2"
                         onClick={() => setIsTraining(true)}
                       >
@@ -797,7 +792,7 @@ export default function TrainingPage() {
                           {session.quality}
                         </span>
                       </div>
-                      
+
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-gray-600">Score: {session.score}%</span>
                         <span className="text-gray-600">Accuracy: {session.accuracy}%</span>
@@ -821,7 +816,7 @@ export default function TrainingPage() {
       </div>
 
       {/* Modern Footer */}
-      <motion.footer 
+      <motion.footer
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
@@ -832,7 +827,7 @@ export default function TrainingPage() {
             <div className="col-span-1 md:col-span-2">
               <h3 className="text-2xl font-bold mb-4">METU Voice Training</h3>
               <p className="text-blue-200 mb-6 max-w-md">
-                Enhance your voice skills with our comprehensive training modules. 
+                Enhance your voice skills with our comprehensive training modules.
                 From pronunciation basics to advanced conversation techniques.
               </p>
               <div className="flex space-x-4">
@@ -847,7 +842,7 @@ export default function TrainingPage() {
                 </button>
               </div>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-semibold mb-4">Training Categories</h4>
               <ul className="space-y-2 text-blue-200">
@@ -857,7 +852,7 @@ export default function TrainingPage() {
                 <li><a href="#" className="hover:text-white transition-colors duration-200">Vocabulary Building</a></li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-semibold mb-4">Progress Tracking</h4>
               <ul className="space-y-2 text-blue-200">
@@ -868,7 +863,7 @@ export default function TrainingPage() {
               </ul>
             </div>
           </div>
-          
+
           <div className="border-t border-blue-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-blue-200 text-sm">
               © 2025 METU Training. Improve your voice, unlock your potential.

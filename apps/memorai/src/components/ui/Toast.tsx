@@ -58,6 +58,8 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
     }, ref) => {
         const [isVisible, setIsVisible] = React.useState(true)
         const [progress, setProgress] = React.useState(100)
+        const [isPaused, setIsPaused] = React.useState(false)
+        const intervalRef = React.useRef<NodeJS.Timeout | null>(null)
 
         // Use type as alias for variant if provided
         const effectiveVariant = type || variant || 'default'
@@ -65,27 +67,49 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
 
         React.useEffect(() => {
             if (duration && duration > 0) {
-                const interval = setInterval(() => {
-                    setProgress((prev) => {
-                        const newProgress = prev - (100 / (duration / 100))
-                        if (newProgress <= 0) {
-                            clearInterval(interval)
-                            handleClose()
-                            return 0
-                        }
-                        return newProgress
-                    })
-                }, 100)
+                const startProgress = () => {
+                    if (intervalRef.current) {
+                        clearInterval(intervalRef.current)
+                    }
 
-                return () => clearInterval(interval)
+                    intervalRef.current = setInterval(() => {
+                        if (!isPaused) {
+                            setProgress((prev) => {
+                                const newProgress = prev - (100 / (duration / 100))
+                                if (newProgress <= 0) {
+                                    clearInterval(intervalRef.current!)
+                                    handleClose()
+                                    return 0
+                                }
+                                return newProgress
+                            })
+                        }
+                    }, 100)
+                }
+
+                startProgress()
+
+                return () => {
+                    if (intervalRef.current) {
+                        clearInterval(intervalRef.current)
+                    }
+                }
             }
-        }, [duration])
+        }, [duration, isPaused])
 
         const handleClose = () => {
             setIsVisible(false)
             setTimeout(() => {
                 onClose?.()
             }, 300)
+        }
+
+        const handleMouseEnter = () => {
+            setIsPaused(true)
+        }
+
+        const handleMouseLeave = () => {
+            setIsPaused(false)
         }
 
         if (!isVisible) {
@@ -104,6 +128,8 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
                     isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0',
                     className
                 )}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
                 {...props}
             >
                 <div className="flex items-start space-x-3 flex-1">

@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  BarChart3, 
-  LineChart, 
+import {
+  BarChart3,
+  LineChart,
   CandlestickChart,
-  TrendingUp, 
-  TrendingDown, 
+  TrendingUp,
+  TrendingDown,
   Globe,
   DollarSign,
   Activity,
@@ -441,7 +441,7 @@ export default function XMarketAnalysisPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-red-900 to-slate-900">
       {/* Header */}
-      <motion.header 
+      <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-red-950/50 backdrop-blur-sm border-b border-red-700/50"
@@ -459,7 +459,7 @@ export default function XMarketAnalysisPage() {
                 </div>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="text-right">
                 <div className="flex items-center space-x-2">
@@ -480,15 +480,14 @@ export default function XMarketAnalysisPage() {
                   <span className="text-yellow-400">Last Update: 2min ago</span>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-2">
-                <button 
+                <button
                   onClick={() => setLiveData(!liveData)}
-                  className={`p-2 rounded-lg transition-colors ${
-                    liveData 
-                      ? 'bg-green-800/50 text-green-400' 
+                  className={`p-2 rounded-lg transition-colors ${liveData
+                      ? 'bg-green-800/50 text-green-400'
                       : 'text-red-400 hover:text-white hover:bg-red-800/50'
-                  }`}
+                    }`}
                   title={liveData ? 'Live data ON' : 'Live data OFF'}
                 >
                   {liveData ? <Play className="w-5 h-5" /> : <Pause className="w-5 h-5" />}
@@ -518,11 +517,10 @@ export default function XMarketAnalysisPage() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setSelectedTab(tab)}
-                className={`flex-1 py-4 px-6 font-medium capitalize transition-colors ${
-                  selectedTab === tab
+                className={`flex-1 py-4 px-6 font-medium capitalize transition-colors ${selectedTab === tab
                     ? 'text-white border-b-2 border-red-400 bg-red-900/30'
                     : 'text-red-300 hover:text-white hover:bg-red-900/20'
-                }`}
+                  }`}
               >
                 {tab === 'overview' && <Monitor className="w-4 h-4 mr-2" />}
                 {tab === 'indices' && <BarChart3 className="w-4 h-4 mr-2" />}
@@ -553,24 +551,23 @@ export default function XMarketAnalysisPage() {
                       className="pl-10 pr-4 py-2 bg-red-900/50 border border-red-700/50 rounded-lg text-white placeholder-red-300 focus:outline-none focus:border-red-500"
                     />
                   </div>
-                  
+
                   <div className="flex items-center space-x-2">
                     {(['1D', '1W', '1M', '3M', '1Y'] as const).map((period) => (
                       <button
                         key={period}
                         onClick={() => setTimeframe(period)}
-                        className={`px-3 py-1 rounded-md text-sm transition-colors ${
-                          timeframe === period
+                        className={`px-3 py-1 rounded-md text-sm transition-colors ${timeframe === period
                             ? 'bg-red-600 text-white'
                             : 'text-red-300 hover:text-white hover:bg-red-800/30'
-                        }`}
+                          }`}
                       >
                         {period}
                       </button>
                     ))}
                   </div>
                 </div>
-                
+
                 <div className="flex items-center space-x-2">
                   <span className="text-red-300 text-sm">{filteredMarketData.length} assets</span>
                 </div>
@@ -688,9 +685,8 @@ export default function XMarketAnalysisPage() {
                 >
                   <div className="flex items-center justify-between mb-4">
                     <h4 className="text-white font-semibold">{index.name}</h4>
-                    <span className={`px-2 py-1 rounded text-xs font-medium ${
-                      index.status === 'open' ? 'bg-green-900/30 text-green-400' : 'bg-gray-900/30 text-gray-400'
-                    }`}>
+                    <span className={`px-2 py-1 rounded text-xs font-medium ${index.status === 'open' ? 'bg-green-900/30 text-green-400' : 'bg-gray-900/30 text-gray-400'
+                      }`}>
                       {index.status}
                     </span>
                   </div>

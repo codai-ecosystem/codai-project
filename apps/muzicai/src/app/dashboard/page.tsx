@@ -1,14 +1,14 @@
 'use client'
 
 import React, { useState } from 'react'
-import { 
-  Music, 
-  Play, 
-  Pause, 
-  SkipForward, 
-  SkipBack, 
-  Volume2, 
-  Shuffle, 
+import {
+  Music,
+  Play,
+  Pause,
+  SkipForward,
+  SkipBack,
+  Volume2,
+  Shuffle,
   Repeat,
   Heart,
   Share2,
@@ -43,39 +43,39 @@ export default function MuzicAIDashboard() {
   ]
 
   const recentTracks = [
-    { 
-      id: 1, 
-      title: 'Cosmic Dreams', 
-      artist: 'AI Creator', 
-      genre: 'Ambient', 
-      duration: '3:45', 
+    {
+      id: 1,
+      title: 'Cosmic Dreams',
+      artist: 'AI Creator',
+      genre: 'Ambient',
+      duration: '3:45',
       plays: '12.5K',
       artwork: '🌌'
     },
-    { 
-      id: 2, 
-      title: 'Electric Pulse', 
-      artist: 'Neural Net', 
-      genre: 'Electronic', 
-      duration: '4:12', 
+    {
+      id: 2,
+      title: 'Electric Pulse',
+      artist: 'Neural Net',
+      genre: 'Electronic',
+      duration: '4:12',
       plays: '8.7K',
       artwork: '⚡'
     },
-    { 
-      id: 3, 
-      title: 'Ocean Waves', 
-      artist: 'Deep Mind', 
-      genre: 'Nature', 
-      duration: '5:23', 
+    {
+      id: 3,
+      title: 'Ocean Waves',
+      artist: 'Deep Mind',
+      genre: 'Nature',
+      duration: '5:23',
       plays: '15.3K',
       artwork: '🌊'
     },
-    { 
-      id: 4, 
-      title: 'Urban Beat', 
-      artist: 'City AI', 
-      genre: 'Hip Hop', 
-      duration: '3:28', 
+    {
+      id: 4,
+      title: 'Urban Beat',
+      artist: 'City AI',
+      genre: 'Hip Hop',
+      duration: '3:28',
       plays: '9.1K',
       artwork: '🏙️'
     }
@@ -145,7 +145,7 @@ export default function MuzicAIDashboard() {
                 <p className="text-sm text-gray-600">AI Music Platform</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -174,11 +174,10 @@ export default function MuzicAIDashboard() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all ${
-                  activeTab === tab.id
+                className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all ${activeTab === tab.id
                     ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
                     : 'text-gray-600 hover:text-purple-600 hover:bg-purple-50'
-                }`}
+                  }`}
               >
                 <tab.icon className="h-4 w-4" />
                 <span>{tab.label}</span>
@@ -301,7 +300,7 @@ export default function MuzicAIDashboard() {
               {/* Progress Bar */}
               <div className="mb-8">
                 <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
-                  <div 
+                  <div
                     className="bg-gradient-to-r from-purple-600 to-pink-600 h-2 rounded-full transition-all"
                     style={{ width: `${currentlyPlaying.progress}%` }}
                   ></div>

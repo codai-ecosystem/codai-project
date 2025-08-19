@@ -344,14 +344,12 @@ export default function EnergyManagement() {
                 <span className="text-sm text-gray-600">Auto Optimize:</span>
                 <button
                   onClick={() => setAutoOptimization(!autoOptimization)}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                    autoOptimization ? 'bg-green-600' : 'bg-gray-300'
-                  }`}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${autoOptimization ? 'bg-green-600' : 'bg-gray-300'
+                    }`}
                 >
                   <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                      autoOptimization ? 'translate-x-6' : 'translate-x-1'
-                    }`}
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${autoOptimization ? 'translate-x-6' : 'translate-x-1'
+                      }`}
                   />
                 </button>
               </div>
@@ -376,11 +374,10 @@ export default function EnergyManagement() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center space-x-2 py-4 px-2 border-b-2 font-medium text-sm transition-colors ${
-                    activeTab === tab.id
+                  className={`flex items-center space-x-2 py-4 px-2 border-b-2 font-medium text-sm transition-colors ${activeTab === tab.id
                       ? 'border-yellow-500 text-yellow-600'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                    }`}
                 >
                   <Icon className="w-4 h-4" />
                   <span>{tab.name}</span>
@@ -416,7 +413,7 @@ export default function EnergyManagement() {
                     </div>
                     <div className="text-sm text-gray-600 mb-4">Real-time usage</div>
                     <div className="w-full bg-gray-200 rounded-full h-3 mb-2">
-                      <div 
+                      <div
                         className="bg-gradient-to-r from-yellow-400 to-orange-400 h-3 rounded-full transition-all duration-500"
                         style={{ width: `${Math.min((totalConsumption / 50) * 100, 100)}%` }}
                       ></div>
@@ -523,7 +520,7 @@ export default function EnergyManagement() {
                               <div className="font-bold text-gray-800">{consumer.currentLoad.toFixed(1)} kW</div>
                               <div className="text-xs text-gray-500">Current Load</div>
                             </div>
-                            
+
                             {showAdvanced && (
                               <>
                                 <div className="text-right">
@@ -561,7 +558,7 @@ export default function EnergyManagement() {
                               <span className="text-gray-600">{((consumer.currentLoad / consumer.maxLoad) * 100).toFixed(1)}%</span>
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                              <div 
+                              <div
                                 className="bg-gradient-to-r from-yellow-400 to-orange-400 h-2 rounded-full transition-all duration-500"
                                 style={{ width: `${(consumer.currentLoad / consumer.maxLoad) * 100}%` }}
                               ></div>

@@ -3,10 +3,18 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from '@/lib/hooks/use-in-view';
-import { Button } from '@/components/ui/button';
 import { Check, Zap, Crown, Rocket, Star, ExternalLink } from 'lucide-react';
+import {
+	Button,
+	Badge,
+	Card,
+	CardContent,
+	LoadingSpinner,
+	useTranslation
+} from '@codai/shared-ui';
 
 export function PricingSection() {
+	const { t } = useTranslation();
 	const [ref, inView] = useInView({
 		triggerOnce: true,
 		threshold: 0.1,
@@ -95,27 +103,27 @@ export function PricingSection() {
 
 	const plans = [
 		{
-			name: 'Starter',
+			name: t('aide.pricing.plans.starter.name'),
 			icon: Zap,
-			description: 'Perfect for individual developers and small projects',
+			description: t('aide.pricing.plans.starter.description'),
 			price: {
 				monthly: 0,
 				yearly: 0,
 			},
 			features: [
-				'5,000 AI requests/month',
-				'2 active projects',
-				'Basic VS Code integration',
-				'Community support',
-				'Standard deployment',
-				'1GB storage',
+				t('aide.pricing.plans.starter.features.requests'),
+				t('aide.pricing.plans.starter.features.projects'),
+				t('aide.pricing.plans.starter.features.integration'),
+				t('aide.pricing.plans.starter.features.support'),
+				t('aide.pricing.plans.starter.features.deployment'),
+				t('aide.pricing.plans.starter.features.storage'),
 			],
 			popular: false,
-			cta: 'Start Free',
+			cta: t('aide.pricing.plans.starter.cta'),
 		}, {
-			name: 'Professional',
+			name: t('aide.pricing.plans.professional.name'),
 			icon: Crown,
-			description: 'For growing teams and production applications',
+			description: t('aide.pricing.plans.professional.description'),
 			price: {
 				monthly: 29,
 				yearly: 24,
@@ -125,22 +133,22 @@ export function PricingSection() {
 				yearly: stripePriceIds.professional.yearly,
 			},
 			features: [
-				'50,000 AI requests/month',
-				'Unlimited projects',
-				'Advanced AI features',
-				'Priority support',
-				'Auto-scaling deployment',
-				'100GB storage',
-				'Team collaboration',
-				'Custom integrations',
+				t('aide.pricing.plans.professional.features.requests'),
+				t('aide.pricing.plans.professional.features.projects'),
+				t('aide.pricing.plans.professional.features.advanced'),
+				t('aide.pricing.plans.professional.features.support'),
+				t('aide.pricing.plans.professional.features.deployment'),
+				t('aide.pricing.plans.professional.features.storage'),
+				t('aide.pricing.plans.professional.features.collaboration'),
+				t('aide.pricing.plans.professional.features.integrations'),
 			],
 			popular: true,
-			cta: 'Start Trial',
+			cta: t('aide.pricing.plans.professional.cta'),
 		},
 		{
-			name: 'Enterprise',
+			name: t('aide.pricing.plans.enterprise.name'),
 			icon: Rocket,
-			description: 'For large organizations with custom needs',
+			description: t('aide.pricing.plans.enterprise.description'),
 			price: {
 				monthly: 99,
 				yearly: 79,
@@ -150,19 +158,19 @@ export function PricingSection() {
 				yearly: stripePriceIds.enterprise.yearly,
 			},
 			features: [
-				'Unlimited AI requests',
-				'Unlimited projects',
-				'Custom AI models',
-				'24/7 dedicated support',
-				'Multi-cloud deployment',
-				'Unlimited storage',
-				'Advanced security',
-				'Custom integrations',
-				'SLA guarantee',
-				'On-premise option',
+				t('aide.pricing.plans.enterprise.features.requests'),
+				t('aide.pricing.plans.enterprise.features.projects'),
+				t('aide.pricing.plans.enterprise.features.models'),
+				t('aide.pricing.plans.enterprise.features.support'),
+				t('aide.pricing.plans.enterprise.features.deployment'),
+				t('aide.pricing.plans.enterprise.features.storage'),
+				t('aide.pricing.plans.enterprise.features.security'),
+				t('aide.pricing.plans.enterprise.features.integrations'),
+				t('aide.pricing.plans.enterprise.features.sla'),
+				t('aide.pricing.plans.enterprise.features.onPremise'),
 			],
 			popular: false,
-			cta: 'Contact Sales',
+			cta: t('aide.pricing.plans.enterprise.cta'),
 		},
 	];
 
@@ -176,21 +184,24 @@ export function PricingSection() {
 					animate={inView ? "visible" : "hidden"}
 					className="text-center mb-16"
 				>
-					<motion.div
-						variants={itemVariants}
-						className="inline-flex items-center space-x-2 bg-primary/10 text-primary border border-primary/20 rounded-full px-4 py-2 text-sm font-medium mb-6"
-					>
-						<Star className="h-4 w-4" />
-						<span>Pricing Plans</span>
+					<motion.div variants={itemVariants}>
+						<Badge
+							variant="secondary"
+							size="lg"
+							className="inline-flex items-center space-x-2 mb-6"
+						>
+							<Star className="h-4 w-4" />
+							<span>{t('aide.pricing.badge')}</span>
+						</Badge>
 					</motion.div>
 
 					<motion.h2
 						variants={itemVariants}
 						className="text-3xl sm:text-5xl font-bold text-foreground mb-6"
 					>
-						Choose your
+						{t('aide.pricing.title.part1')}
 						<span className="bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">
-							{' '}perfect plan
+							{' '}{t('aide.pricing.title.part2')}
 						</span>
 					</motion.h2>
 
@@ -198,8 +209,7 @@ export function PricingSection() {
 						variants={itemVariants}
 						className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8"
 					>
-						Start building for free, then scale as you grow. All plans include core AI features
-						and VS Code integration.
+						{t('aide.pricing.subtitle')}
 					</motion.p>
 
 					{/* Billing Toggle */}
@@ -214,7 +224,7 @@ export function PricingSection() {
 								: 'text-muted-foreground hover:text-foreground'
 								}`}
 						>
-							Monthly
+							{t('aide.pricing.billing.monthly')}
 						</button>
 						<button
 							onClick={() => setBillingPeriod('yearly')}
@@ -223,10 +233,10 @@ export function PricingSection() {
 								: 'text-muted-foreground hover:text-foreground'
 								}`}
 						>
-							Yearly
-							<span className="ml-2 text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
-								Save 20%
-							</span>
+							{t('aide.pricing.billing.yearly')}
+							<Badge variant="outline" size="sm" className="ml-2 bg-green-100 text-green-700">
+								{t('aide.pricing.billing.save')}
+							</Badge>
 						</button>
 					</motion.div>
 				</motion.div>
@@ -241,84 +251,88 @@ export function PricingSection() {
 						<motion.div
 							key={index}
 							variants={itemVariants}
-							className={`relative bg-card border rounded-3xl p-8 ${plan.popular
-								? 'border-primary shadow-xl scale-105'
-								: 'border-border hover:border-primary/50'
-								} transition-all duration-300 hover:shadow-lg`}
 						>
-							{/* Popular Badge */}
-							{plan.popular && (
-								<div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-									<div className="bg-primary text-primary-foreground px-6 py-2 rounded-full text-sm font-medium">
-										Most Popular
-									</div>
-								</div>
-							)}
-
-							{/* Plan Header */}
-							<div className="text-center mb-8">
-								<div className="inline-flex items-center justify-center w-12 h-12 bg-primary/10 text-primary rounded-xl mb-4">
-									<plan.icon className="h-6 w-6" />
-								</div>
-								<h3 className="text-2xl font-bold text-foreground mb-2">{plan.name}</h3>
-								<p className="text-muted-foreground">{plan.description}</p>
-							</div>
-
-							{/* Pricing */}
-							<div className="text-center mb-8">
-								<div className="flex items-baseline justify-center">
-									<span className="text-5xl font-bold text-foreground">
-										${plan.price[billingPeriod]}
-									</span>
-									<span className="text-muted-foreground ml-2">
-										/{billingPeriod === 'yearly' ? 'month' : 'month'}
-									</span>
-								</div>
-								{billingPeriod === 'yearly' && plan.price.yearly > 0 && (
-									<p className="text-sm text-muted-foreground mt-2">
-										Billed annually (${plan.price.yearly * 12}/year)
-									</p>
-								)}
-							</div>
-
-							{/* Features */}
-							<ul className="space-y-4 mb-8">
-								{plan.features.map((feature, featureIndex) => (
-									<li key={featureIndex} className="flex items-start space-x-3">
-										<Check className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-										<span className="text-muted-foreground">{feature}</span>
-									</li>
-								))}
-							</ul>							{/* CTA Button */}
-							<Button
-								onClick={() => handleSubscribe(
-									plan.name,
-									plan.priceId ? plan.priceId[billingPeriod] : undefined
-								)}
-								disabled={isLoading === plan.name}
-								className={`w-full ${plan.popular ? 'bg-primary hover:bg-primary/90' : ''
-									}`}
-								variant={plan.popular ? 'default' : 'outline'}
-								size="lg"
+							<Card
+								className={`relative h-full ${plan.popular
+									? 'border-primary shadow-xl scale-105'
+									: 'hover:border-primary/50'
+									} transition-all duration-300 hover:shadow-lg`}
 							>
-								{isLoading === plan.name ? (
-									<>
-										<motion.div
-											className="w-4 h-4 border-2 border-current border-t-transparent rounded-full mr-2"
-											animate={{ rotate: 360 }}
-											transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-										/>
-										Processing...
-									</>
-								) : (
-									<>
-										{plan.cta}
-										{plan.name !== 'Starter' && (
-											<ExternalLink className="w-4 h-4 ml-2" />
-										)}
-									</>
+								{/* Popular Badge */}
+								{plan.popular && (
+									<div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+										<Badge variant="default" size="lg">
+											{t('aide.pricing.mostPopular')}
+										</Badge>
+									</div>
 								)}
-							</Button>
+
+								<CardContent className="p-8">
+									{/* Plan Header */}
+									<div className="text-center mb-8">
+										<div className="inline-flex items-center justify-center w-12 h-12 bg-primary/10 text-primary rounded-xl mb-4">
+											<plan.icon className="h-6 w-6" />
+										</div>
+										<h3 className="text-2xl font-bold text-foreground mb-2">{plan.name}</h3>
+										<p className="text-muted-foreground">{plan.description}</p>
+									</div>
+
+									{/* Pricing */}
+									<div className="text-center mb-8">
+										<div className="flex items-baseline justify-center">
+											<span className="text-5xl font-bold text-foreground">
+												${plan.price[billingPeriod]}
+											</span>
+											<span className="text-muted-foreground ml-2">
+												/{t('aide.pricing.billing.month')}
+											</span>
+										</div>
+										{billingPeriod === 'yearly' && plan.price.yearly > 0 && (
+											<p className="text-sm text-muted-foreground mt-2">
+												{t('aide.pricing.billing.billedAnnually', {
+													amount: plan.price.yearly * 12
+												})}
+											</p>
+										)}
+									</div>
+
+									{/* Features */}
+									<ul className="space-y-4 mb-8">
+										{plan.features.map((feature, featureIndex) => (
+											<li key={featureIndex} className="flex items-start space-x-3">
+												<Check className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+												<span className="text-muted-foreground">{feature}</span>
+											</li>
+										))}
+									</ul>
+
+									{/* CTA Button */}
+									<Button
+										onClick={() => handleSubscribe(
+											plan.name,
+											plan.priceId ? plan.priceId[billingPeriod] : undefined
+										)}
+										disabled={isLoading === plan.name}
+										className="w-full"
+										variant={plan.popular ? 'default' : 'outline'}
+										size="lg"
+									>
+										{isLoading === plan.name ? (
+											<>
+												<LoadingSpinner size="sm" className="mr-2" />
+												{t('aide.pricing.processing')}
+											</>
+										) : (
+											<>
+												{plan.cta}
+												{plan.name !== t('aide.pricing.plans.starter.name') && (
+													<ExternalLink className="w-4 h-4 ml-2" />
+												)}
+											</>
+										)}
+									</Button>
+								</CardContent>
+							</Card>
 						</motion.div>
 					))}
 				</motion.div>
@@ -328,25 +342,26 @@ export function PricingSection() {
 					variants={itemVariants}
 					initial="hidden"
 					animate={inView ? "visible" : "hidden"}
-					className="text-center mt-16"
+					className="mt-16"
 				>
-					<div className="bg-gradient-to-r from-primary/5 via-purple-500/5 to-blue-500/5 border border-primary/20 rounded-2xl p-8 max-w-4xl mx-auto">
-						<h3 className="text-2xl font-bold text-foreground mb-3">
-							Need a custom solution?
-						</h3>
-						<p className="text-muted-foreground mb-6">
-							Get in touch with our sales team to discuss enterprise features,
-							custom deployments, and volume pricing.
-						</p>
-						<div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-							<Button size="lg">
-								Schedule a Demo
-							</Button>
-							<Button variant="outline" size="lg">
-								Contact Sales
-							</Button>
-						</div>
-					</div>
+					<Card className="bg-gradient-to-r from-primary/5 via-purple-500/5 to-blue-500/5 border-primary/20 max-w-4xl mx-auto">
+						<CardContent className="text-center p-8">
+							<h3 className="text-2xl font-bold text-foreground mb-3">
+								{t('aide.pricing.enterprise.title')}
+							</h3>
+							<p className="text-muted-foreground mb-6">
+								{t('aide.pricing.enterprise.description')}
+							</p>
+							<div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+								<Button size="lg">
+									{t('aide.pricing.enterprise.scheduleDemo')}
+								</Button>
+								<Button variant="outline" size="lg">
+									{t('aide.pricing.enterprise.contactSales')}
+								</Button>
+							</div>
+						</CardContent>
+					</Card>
 				</motion.div>
 			</div>
 		</section>

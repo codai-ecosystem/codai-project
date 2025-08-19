@@ -24,6 +24,13 @@ from queue import Queue, PriorityQueue
 import pickle
 import hashlib
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 class NeuralOptimizationLevel(Enum):
     """Neural network optimization levels"""
     BASIC = "basic"

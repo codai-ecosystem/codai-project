@@ -44,6 +44,13 @@ from romanian_cultural_reasoning import (
     CulturalContext
 )
 from intelligence_optimizer import (
+
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
     IntelligenceOptimizer,
     OptimizationStrategy,
     IntelligenceMetric

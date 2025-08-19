@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { 
+import {
   Wallet,
   TrendingUp,
   TrendingDown,
@@ -400,7 +400,7 @@ const WalletPortfolioPage = () => {
 
     const sorted = [...filteredAssets].sort((a, b) => {
       let aValue, bValue
-      
+
       switch (field) {
         case 'value':
           aValue = a.value
@@ -451,7 +451,7 @@ const WalletPortfolioPage = () => {
       asset.profit,
       asset.profitPercentage
     ].join(',')).join('\n')
-    
+
     const blob = new Blob([csvContent], { type: 'text/csv' })
     const url = window.URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -461,8 +461,8 @@ const WalletPortfolioPage = () => {
   }
 
   const toggleWatchlist = (assetId: string) => {
-    setAssets(prev => prev.map(asset => 
-      asset.id === assetId 
+    setAssets(prev => prev.map(asset =>
+      asset.id === assetId
         ? { ...asset, watchlisted: !asset.watchlisted }
         : asset
     ))
@@ -471,7 +471,7 @@ const WalletPortfolioPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900">
       {/* Enhanced Header */}
-      <motion.header 
+      <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/10 backdrop-blur-sm border-b border-white/20 sticky top-0 z-50"
@@ -485,7 +485,7 @@ const WalletPortfolioPage = () => {
               </h1>
               <p className="text-slate-300 mt-1">Comprehensive asset allocation and performance tracking</p>
             </div>
-            
+
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-8 text-sm">
                 <div className="text-center">
@@ -516,7 +516,7 @@ const WalletPortfolioPage = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Portfolio Overview */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8"
@@ -532,11 +532,10 @@ const WalletPortfolioPage = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setTimeframe(period.toLowerCase() as any)}
-                    className={`px-3 py-1 rounded-lg text-sm transition-colors ${
-                      timeframe === period.toLowerCase() 
-                        ? 'bg-purple-500/30 text-purple-300' 
+                    className={`px-3 py-1 rounded-lg text-sm transition-colors ${timeframe === period.toLowerCase()
+                        ? 'bg-purple-500/30 text-purple-300'
                         : 'text-slate-300 hover:bg-white/10'
-                    }`}
+                      }`}
                   >
                     {period}
                   </motion.button>
@@ -645,7 +644,7 @@ const WalletPortfolioPage = () => {
         </motion.div>
 
         {/* Controls & Filters */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
@@ -680,9 +679,8 @@ const WalletPortfolioPage = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setViewMode('grid')}
-                  className={`p-2 rounded-lg transition-colors ${
-                    viewMode === 'grid' ? 'bg-purple-500/30 text-purple-300' : 'text-slate-300 hover:bg-white/10'
-                  }`}
+                  className={`p-2 rounded-lg transition-colors ${viewMode === 'grid' ? 'bg-purple-500/30 text-purple-300' : 'text-slate-300 hover:bg-white/10'
+                    }`}
                 >
                   <Grid3X3 className="w-4 h-4" />
                 </motion.button>
@@ -690,9 +688,8 @@ const WalletPortfolioPage = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setViewMode('list')}
-                  className={`p-2 rounded-lg transition-colors ${
-                    viewMode === 'list' ? 'bg-purple-500/30 text-purple-300' : 'text-slate-300 hover:bg-white/10'
-                  }`}
+                  className={`p-2 rounded-lg transition-colors ${viewMode === 'list' ? 'bg-purple-500/30 text-purple-300' : 'text-slate-300 hover:bg-white/10'
+                    }`}
                 >
                   <List className="w-4 h-4" />
                 </motion.button>
@@ -798,7 +795,7 @@ const WalletPortfolioPage = () => {
         </motion.div>
 
         {/* Assets Display */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -813,9 +810,8 @@ const WalletPortfolioPage = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleSort('value')}
-                  className={`px-3 py-1 rounded-lg transition-colors ${
-                    sortBy === 'value' ? 'bg-purple-500/30 text-purple-300' : 'text-slate-300 hover:bg-white/10'
-                  }`}
+                  className={`px-3 py-1 rounded-lg transition-colors ${sortBy === 'value' ? 'bg-purple-500/30 text-purple-300' : 'text-slate-300 hover:bg-white/10'
+                    }`}
                 >
                   Value {sortBy === 'value' && (sortOrder === 'desc' ? '↓' : '↑')}
                 </motion.button>
@@ -823,9 +819,8 @@ const WalletPortfolioPage = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleSort('change')}
-                  className={`px-3 py-1 rounded-lg transition-colors ${
-                    sortBy === 'change' ? 'bg-purple-500/30 text-purple-300' : 'text-slate-300 hover:bg-white/10'
-                  }`}
+                  className={`px-3 py-1 rounded-lg transition-colors ${sortBy === 'change' ? 'bg-purple-500/30 text-purple-300' : 'text-slate-300 hover:bg-white/10'
+                    }`}
                 >
                   Change {sortBy === 'change' && (sortOrder === 'desc' ? '↓' : '↑')}
                 </motion.button>
@@ -833,9 +828,8 @@ const WalletPortfolioPage = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleSort('allocation')}
-                  className={`px-3 py-1 rounded-lg transition-colors ${
-                    sortBy === 'allocation' ? 'bg-purple-500/30 text-purple-300' : 'text-slate-300 hover:bg-white/10'
-                  }`}
+                  className={`px-3 py-1 rounded-lg transition-colors ${sortBy === 'allocation' ? 'bg-purple-500/30 text-purple-300' : 'text-slate-300 hover:bg-white/10'
+                    }`}
                 >
                   Allocation {sortBy === 'allocation' && (sortOrder === 'desc' ? '↓' : '↑')}
                 </motion.button>
@@ -848,7 +842,7 @@ const WalletPortfolioPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
               {filteredAssets.map((asset, index) => {
                 const CategoryIcon = getCategoryIcon(asset.category)
-                
+
                 return (
                   <motion.div
                     key={asset.id}
@@ -877,9 +871,8 @@ const WalletPortfolioPage = () => {
                             e.stopPropagation()
                             toggleWatchlist(asset.id)
                           }}
-                          className={`p-1 rounded-lg transition-colors ${
-                            asset.watchlisted ? 'text-yellow-400' : 'text-slate-400 hover:text-yellow-400'
-                          }`}
+                          className={`p-1 rounded-lg transition-colors ${asset.watchlisted ? 'text-yellow-400' : 'text-slate-400 hover:text-yellow-400'
+                            }`}
                         >
                           <Star className={`w-4 h-4 ${asset.watchlisted ? 'fill-current' : ''}`} />
                         </motion.button>
@@ -937,7 +930,7 @@ const WalletPortfolioPage = () => {
             <div className="divide-y divide-white/10">
               {filteredAssets.map((asset, index) => {
                 const CategoryIcon = getCategoryIcon(asset.category)
-                
+
                 return (
                   <motion.div
                     key={asset.id}
@@ -1014,9 +1007,8 @@ const WalletPortfolioPage = () => {
                               e.stopPropagation()
                               toggleWatchlist(asset.id)
                             }}
-                            className={`p-2 rounded-lg transition-colors ${
-                              asset.watchlisted ? 'text-yellow-400' : 'text-slate-400 hover:text-yellow-400'
-                            }`}
+                            className={`p-2 rounded-lg transition-colors ${asset.watchlisted ? 'text-yellow-400' : 'text-slate-400 hover:text-yellow-400'
+                              }`}
                           >
                             <Star className={`w-4 h-4 ${asset.watchlisted ? 'fill-current' : ''}`} />
                           </motion.button>
@@ -1032,7 +1024,7 @@ const WalletPortfolioPage = () => {
       </div>
 
       {/* Modern Footer */}
-      <motion.footer 
+      <motion.footer
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
@@ -1040,7 +1032,7 @@ const WalletPortfolioPage = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             >
@@ -1049,7 +1041,7 @@ const WalletPortfolioPage = () => {
               <p className="text-slate-300">AI-powered portfolio analysis with risk assessment and optimization recommendations.</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             >
@@ -1058,7 +1050,7 @@ const WalletPortfolioPage = () => {
               <p className="text-slate-300">Set investment goals and track progress with automated rebalancing suggestions.</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             >

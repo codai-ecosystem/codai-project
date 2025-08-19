@@ -354,14 +354,12 @@ function NotificationSettings() {
               </div>
               <button
                 onClick={() => toggleNotification('email', key)}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  value ? 'bg-purple-500' : 'bg-gray-600'
-                }`}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${value ? 'bg-purple-500' : 'bg-gray-600'
+                  }`}
               >
                 <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                    value ? 'translate-x-6' : 'translate-x-1'
-                  }`}
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${value ? 'translate-x-6' : 'translate-x-1'
+                    }`}
                 />
               </button>
             </div>
@@ -391,14 +389,12 @@ function NotificationSettings() {
               </div>
               <button
                 onClick={() => toggleNotification('push', key)}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  value ? 'bg-purple-500' : 'bg-gray-600'
-                }`}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${value ? 'bg-purple-500' : 'bg-gray-600'
+                  }`}
               >
                 <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                    value ? 'translate-x-6' : 'translate-x-1'
-                  }`}
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${value ? 'translate-x-6' : 'translate-x-1'
+                    }`}
                 />
               </button>
             </div>
@@ -427,14 +423,12 @@ function NotificationSettings() {
               </div>
               <button
                 onClick={() => toggleNotification('inApp', key)}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  value ? 'bg-purple-500' : 'bg-gray-600'
-                }`}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${value ? 'bg-purple-500' : 'bg-gray-600'
+                  }`}
               >
                 <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                    value ? 'translate-x-6' : 'translate-x-1'
-                  }`}
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${value ? 'translate-x-6' : 'translate-x-1'
+                    }`}
                 />
               </button>
             </div>
@@ -470,7 +464,7 @@ function IntegrationSettings() {
   return (
     <div className="space-y-6">
       <h3 className="text-lg font-semibold text-white">Third-Party Integrations</h3>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {Object.entries(integrations).map(([key, integration]) => (
           <div key={key} className="glassmorphism p-4 rounded-lg border border-white/10">
@@ -498,19 +492,17 @@ function IntegrationSettings() {
                     ...prev,
                     [key]: { ...integration, enabled: !integration.enabled }
                   }))}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                    integration.enabled ? 'bg-purple-500' : 'bg-gray-600'
-                  }`}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${integration.enabled ? 'bg-purple-500' : 'bg-gray-600'
+                    }`}
                 >
                   <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                      integration.enabled ? 'translate-x-6' : 'translate-x-1'
-                    }`}
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${integration.enabled ? 'translate-x-6' : 'translate-x-1'
+                      }`}
                   />
                 </button>
               </div>
             </div>
-            
+
             {integration.enabled && (
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
@@ -519,11 +511,10 @@ function IntegrationSettings() {
                     {integration.connected ? 'Connected' : 'Not Connected'}
                   </span>
                 </div>
-                <button className={`w-full py-2 px-3 rounded text-sm font-medium transition-all ${
-                  integration.connected 
-                    ? 'bg-red-500/20 text-red-400 hover:bg-red-500/30' 
+                <button className={`w-full py-2 px-3 rounded text-sm font-medium transition-all ${integration.connected
+                    ? 'bg-red-500/20 text-red-400 hover:bg-red-500/30'
                     : 'bg-purple-500/20 text-purple-400 hover:bg-purple-500/30'
-                }`}>
+                  }`}>
                   {integration.connected ? 'Disconnect' : 'Connect'}
                 </button>
               </div>
@@ -563,19 +554,17 @@ function SecuritySettings() {
             </span>
             <button
               onClick={() => setSecurity(prev => ({ ...prev, twoFactorEnabled: !prev.twoFactorEnabled }))}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                security.twoFactorEnabled ? 'bg-green-500' : 'bg-gray-600'
-              }`}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${security.twoFactorEnabled ? 'bg-green-500' : 'bg-gray-600'
+                }`}
             >
               <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                  security.twoFactorEnabled ? 'translate-x-6' : 'translate-x-1'
-                }`}
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${security.twoFactorEnabled ? 'translate-x-6' : 'translate-x-1'
+                  }`}
               />
             </button>
           </div>
         </div>
-        
+
         {security.twoFactorEnabled && (
           <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4">
             <div className="flex items-center text-green-400 mb-2">
@@ -593,7 +582,7 @@ function SecuritySettings() {
           <Key className="w-5 h-5 text-purple-400 mr-2" />
           Password Security
         </h3>
-        
+
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
@@ -604,7 +593,7 @@ function SecuritySettings() {
               Change Password
             </button>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">Session Timeout (minutes)</label>
@@ -634,7 +623,7 @@ function SecuritySettings() {
           <Lock className="w-5 h-5 text-red-400 mr-2" />
           Advanced Security
         </h3>
-        
+
         <div className="space-y-4">
           <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
             <div>
@@ -643,18 +632,16 @@ function SecuritySettings() {
             </div>
             <button
               onClick={() => setSecurity(prev => ({ ...prev, ipWhitelisting: !prev.ipWhitelisting }))}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                security.ipWhitelisting ? 'bg-red-500' : 'bg-gray-600'
-              }`}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${security.ipWhitelisting ? 'bg-red-500' : 'bg-gray-600'
+                }`}
             >
               <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                  security.ipWhitelisting ? 'translate-x-6' : 'translate-x-1'
-                }`}
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${security.ipWhitelisting ? 'translate-x-6' : 'translate-x-1'
+                  }`}
               />
             </button>
           </div>
-          
+
           <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
             <div>
               <div className="text-white font-medium">Audit Logging</div>
@@ -662,14 +649,12 @@ function SecuritySettings() {
             </div>
             <button
               onClick={() => setSecurity(prev => ({ ...prev, auditLog: !prev.auditLog }))}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                security.auditLog ? 'bg-purple-500' : 'bg-gray-600'
-              }`}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${security.auditLog ? 'bg-purple-500' : 'bg-gray-600'
+                }`}
             >
               <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                  security.auditLog ? 'translate-x-6' : 'translate-x-1'
-                }`}
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${security.auditLog ? 'translate-x-6' : 'translate-x-1'
+                  }`}
               />
             </button>
           </div>
@@ -709,7 +694,7 @@ function SystemSettings() {
   const toggleWorkingDay = (day: string) => {
     setWorkingHours(prev => ({
       ...prev,
-      days: prev.days.includes(day) 
+      days: prev.days.includes(day)
         ? prev.days.filter(d => d !== day)
         : [...prev.days, day]
     }))
@@ -723,7 +708,7 @@ function SystemSettings() {
           <Building className="w-5 h-5 text-purple-400 mr-2" />
           Organization Settings
         </h3>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">Organization Name</label>
@@ -767,7 +752,7 @@ function SystemSettings() {
           <Clock className="w-5 h-5 text-blue-400 mr-2" />
           Working Hours
         </h3>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-4">
             <div>
@@ -789,7 +774,7 @@ function SystemSettings() {
               />
             </div>
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">Working Days</label>
             <div className="grid grid-cols-2 gap-2">
@@ -797,11 +782,10 @@ function SystemSettings() {
                 <button
                   key={day.key}
                   onClick={() => toggleWorkingDay(day.key)}
-                  className={`p-2 rounded-lg text-sm font-medium transition-all ${
-                    workingHours.days.includes(day.key)
+                  className={`p-2 rounded-lg text-sm font-medium transition-all ${workingHours.days.includes(day.key)
                       ? 'bg-purple-500 text-white'
                       : 'bg-white/10 text-slate-400 hover:bg-white/20'
-                  }`}
+                    }`}
                 >
                   {day.label}
                 </button>
@@ -817,7 +801,7 @@ function SystemSettings() {
           <Users className="w-5 h-5 text-green-400 mr-2" />
           Hiring Configuration
         </h3>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-4">
             <div>
@@ -848,7 +832,7 @@ function SystemSettings() {
               />
             </div>
           </div>
-          
+
           <div className="space-y-4">
             {Object.entries(hiringSettings).slice(3).map(([key, value]) => (
               <div key={key} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
@@ -866,14 +850,12 @@ function SystemSettings() {
                 {typeof value === 'boolean' ? (
                   <button
                     onClick={() => setHiringSettings(prev => ({ ...prev, [key]: !value }))}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      value ? 'bg-purple-500' : 'bg-gray-600'
-                    }`}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${value ? 'bg-purple-500' : 'bg-gray-600'
+                      }`}
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                        value ? 'translate-x-6' : 'translate-x-1'
-                      }`}
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${value ? 'translate-x-6' : 'translate-x-1'
+                        }`}
                     />
                   </button>
                 ) : (
@@ -1027,11 +1009,10 @@ export default function SettingsPage() {
                     <button
                       key={section.id}
                       onClick={() => setActiveSection(section.id)}
-                      className={`w-full flex items-center space-x-3 p-3 rounded-lg text-left transition-all ${
-                        activeSection === section.id
+                      className={`w-full flex items-center space-x-3 p-3 rounded-lg text-left transition-all ${activeSection === section.id
                           ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
                           : 'text-slate-300 hover:bg-white/10 hover:text-white'
-                      }`}
+                        }`}
                     >
                       <Icon className="w-5 h-5" />
                       <div>
@@ -1073,7 +1054,7 @@ export default function SettingsPage() {
               <h3 className="text-lg font-semibold text-white mb-2">Profile Management</h3>
               <p className="text-slate-400 text-sm">Customize your profile, preferences, and personal settings for optimal experience</p>
             </motion.div>
-            
+
             <motion.div
               className="glassmorphism p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-purple-500/50 transition-all"
               whileHover={{ scale: 1.05 }}
@@ -1084,7 +1065,7 @@ export default function SettingsPage() {
               <h3 className="text-lg font-semibold text-white mb-2">Security & Privacy</h3>
               <p className="text-slate-400 text-sm">Advanced security settings with two-factor authentication and access control</p>
             </motion.div>
-            
+
             <motion.div
               className="glassmorphism p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-purple-500/50 transition-all"
               whileHover={{ scale: 1.05 }}

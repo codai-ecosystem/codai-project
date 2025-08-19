@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "declaration": true,
+    "outDir": "./dist",
+    "strict": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "noEmit": false,
+    "incremental": true,
+    "jsx": "preserve",
+    "paths": {
+      "@codai/*": ["../../packages/*/src", "../../apps/*/src", "../../libs/*/src"],
+      "@/*": ["./src/*", "../*/src"],
+      "~/*": ["./src/*"]
+    },
+    "types": ["node", "react", "react-dom"],
+    "typeRoots": ["../../types", "../../node_modules/@types", "./node_modules/@types"],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "../../types/**/*",
+    "src/**/*",
+    "app/**/*",
+    "pages/**/*",
+    "components/**/*",
+    "lib/**/*",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": ["node_modules", "dist", "build", "coverage", "test-results", ".next"]
+}

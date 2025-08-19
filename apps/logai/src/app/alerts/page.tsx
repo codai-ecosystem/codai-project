@@ -392,8 +392,8 @@ export default function AlertsPage() {
   };
 
   const toggleAlertSelection = (alertId: string) => {
-    setSelectedAlerts(prev => 
-      prev.includes(alertId) 
+    setSelectedAlerts(prev =>
+      prev.includes(alertId)
         ? prev.filter(id => id !== alertId)
         : [...prev, alertId]
     );
@@ -408,56 +408,56 @@ export default function AlertsPage() {
   };
 
   const acknowledgeAlert = (alertId: string) => {
-    setAlerts(prev => prev.map(alert => 
-      alert.id === alertId 
-        ? { 
-            ...alert, 
-            status: 'acknowledged', 
-            acknowledgedBy: 'current-user@company.com',
-            acknowledgedAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-          }
+    setAlerts(prev => prev.map(alert =>
+      alert.id === alertId
+        ? {
+          ...alert,
+          status: 'acknowledged',
+          acknowledgedBy: 'current-user@company.com',
+          acknowledgedAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        }
         : alert
     ));
   };
 
   const resolveAlert = (alertId: string) => {
-    setAlerts(prev => prev.map(alert => 
-      alert.id === alertId 
-        ? { 
-            ...alert, 
-            status: 'resolved', 
-            resolvedAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-          }
+    setAlerts(prev => prev.map(alert =>
+      alert.id === alertId
+        ? {
+          ...alert,
+          status: 'resolved',
+          resolvedAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        }
         : alert
     ));
   };
 
   const bulkAcknowledge = () => {
-    setAlerts(prev => prev.map(alert => 
+    setAlerts(prev => prev.map(alert =>
       selectedAlerts.includes(alert.id) && alert.status === 'active'
-        ? { 
-            ...alert, 
-            status: 'acknowledged', 
-            acknowledgedBy: 'current-user@company.com',
-            acknowledgedAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-          }
+        ? {
+          ...alert,
+          status: 'acknowledged',
+          acknowledgedBy: 'current-user@company.com',
+          acknowledgedAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        }
         : alert
     ));
     setSelectedAlerts([]);
   };
 
   const bulkResolve = () => {
-    setAlerts(prev => prev.map(alert => 
+    setAlerts(prev => prev.map(alert =>
       selectedAlerts.includes(alert.id) && (alert.status === 'active' || alert.status === 'acknowledged')
-        ? { 
-            ...alert, 
-            status: 'resolved', 
-            resolvedAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-          }
+        ? {
+          ...alert,
+          status: 'resolved',
+          resolvedAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        }
         : alert
     ));
     setSelectedAlerts([]);
@@ -491,8 +491,8 @@ export default function AlertsPage() {
   const activeCriticalAlerts = alerts.filter(alert => alert.status === 'active' && alert.severity === 'critical').length;
   const activeAlerts = alerts.filter(alert => alert.status === 'active').length;
   const acknowledgedAlerts = alerts.filter(alert => alert.status === 'acknowledged').length;
-  const resolvedToday = alerts.filter(alert => 
-    alert.status === 'resolved' && 
+  const resolvedToday = alerts.filter(alert =>
+    alert.status === 'resolved' &&
     new Date(alert.resolvedAt || '').toDateString() === new Date().toDateString()
   ).length;
 
@@ -514,7 +514,7 @@ export default function AlertsPage() {
                   <p className="text-sm text-gray-600">Monitor, configure, and manage system alerts</p>
                 </div>
               </div>
-              
+
               <div className="hidden md:flex items-center space-x-6 ml-8">
                 <div className="text-center">
                   <p className="text-lg font-bold text-red-600">{activeCriticalAlerts}</p>
@@ -534,28 +534,27 @@ export default function AlertsPage() {
                 </div>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => setAutoRefresh(!autoRefresh)}
-                className={`px-3 py-2 rounded-lg flex items-center space-x-2 transition-colors ${
-                  autoRefresh 
-                    ? 'bg-green-100 text-green-700 hover:bg-green-200' 
+                className={`px-3 py-2 rounded-lg flex items-center space-x-2 transition-colors ${autoRefresh
+                    ? 'bg-green-100 text-green-700 hover:bg-green-200'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
+                  }`}
               >
                 {autoRefresh ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
                 <span className="text-sm">{autoRefresh ? 'Live' : 'Paused'}</span>
               </button>
-              
-              <button 
+
+              <button
                 onClick={loadAlertsData}
                 className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
               >
                 <RefreshCw className="w-5 h-5" />
               </button>
-              
-              <button 
+
+              <button
                 onClick={() => setShowCreateRule(true)}
                 className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center space-x-2"
               >
@@ -578,11 +577,10 @@ export default function AlertsPage() {
                 <button
                   key={tab.id}
                   onClick={() => setSelectedTab(tab.id as any)}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all ${
-                    selectedTab === tab.id
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all ${selectedTab === tab.id
                       ? 'bg-white text-blue-600 shadow-md'
                       : 'text-gray-600 hover:text-blue-600 hover:bg-white/50'
-                  }`}
+                    }`}
                 >
                   <Icon className="w-4 h-4" />
                   <span>{tab.label}</span>
@@ -648,9 +646,8 @@ export default function AlertsPage() {
 
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className={`p-2 border border-gray-200 rounded-lg transition-colors ${
-                  showFilters ? 'bg-blue-100 text-blue-600' : 'bg-white/70 text-gray-600 hover:bg-gray-50'
-                }`}
+                className={`p-2 border border-gray-200 rounded-lg transition-colors ${showFilters ? 'bg-blue-100 text-blue-600' : 'bg-white/70 text-gray-600 hover:bg-gray-50'
+                  }`}
               >
                 <Filter className="w-4 h-4" />
               </button>
@@ -758,19 +755,18 @@ export default function AlertsPage() {
                     const isExpanded = expandedAlert === alert.id;
                     const SeverityIcon = getSeverityIcon(alert.severity);
                     const StatusIcon = getStatusIcon(alert.status);
-                    
+
                     return (
                       <motion.div
                         key={alert.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.05 }}
-                        className={`border rounded-xl transition-all ${
-                          isSelected ? 'border-blue-300 bg-blue-50/50' : 'border-gray-200 bg-white/50 hover:shadow-md'
-                        } ${alert.severity === 'critical' ? 'border-l-4 border-l-red-500' : 
-                             alert.severity === 'high' ? 'border-l-4 border-l-orange-500' :
-                             alert.severity === 'medium' ? 'border-l-4 border-l-yellow-500' :
-                             'border-l-4 border-l-blue-500'}`}
+                        className={`border rounded-xl transition-all ${isSelected ? 'border-blue-300 bg-blue-50/50' : 'border-gray-200 bg-white/50 hover:shadow-md'
+                          } ${alert.severity === 'critical' ? 'border-l-4 border-l-red-500' :
+                            alert.severity === 'high' ? 'border-l-4 border-l-orange-500' :
+                              alert.severity === 'medium' ? 'border-l-4 border-l-yellow-500' :
+                                'border-l-4 border-l-blue-500'}`}
                       >
                         <div className="p-6">
                           <div className="flex items-start space-x-4">
@@ -780,35 +776,35 @@ export default function AlertsPage() {
                               onChange={() => toggleAlertSelection(alert.id)}
                               className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 mt-1"
                             />
-                            
+
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center space-x-3 mb-3">
                                 <span className={`inline-flex items-center px-3 py-1 text-sm font-medium rounded-full border ${getSeverityColor(alert.severity)}`}>
                                   <SeverityIcon className="w-4 h-4 mr-1" />
                                   {alert.severity.toUpperCase()}
                                 </span>
-                                
+
                                 <span className={`inline-flex items-center px-3 py-1 text-sm font-medium rounded-full ${getStatusColor(alert.status)}`}>
                                   <StatusIcon className="w-4 h-4 mr-1" />
                                   {alert.status.charAt(0).toUpperCase() + alert.status.slice(1)}
                                 </span>
-                                
+
                                 <span className="text-sm text-gray-500">
                                   {new Date(alert.createdAt).toLocaleString()}
                                 </span>
-                                
+
                                 <span className="text-sm text-blue-600 bg-blue-100 px-2 py-1 rounded">
                                   {alert.service}
                                 </span>
-                                
+
                                 <span className="text-sm text-purple-600 bg-purple-100 px-2 py-1 rounded">
                                   {alert.environment}
                                 </span>
                               </div>
-                              
+
                               <h3 className="text-lg font-semibold text-gray-900 mb-2">{alert.title}</h3>
                               <p className="text-gray-700 mb-3">{alert.description}</p>
-                              
+
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center space-x-6 text-sm text-gray-500">
                                   <span>Count: {alert.count}</span>
@@ -816,7 +812,7 @@ export default function AlertsPage() {
                                   {alert.assignedTo && <span>Assigned: {alert.assignedTo}</span>}
                                   <span>Notifications: {alert.notificationsSent}</span>
                                 </div>
-                                
+
                                 <div className="flex items-center space-x-2">
                                   {alert.status === 'active' && (
                                     <>
@@ -850,12 +846,12 @@ export default function AlertsPage() {
                                   </button>
                                 </div>
                               </div>
-                              
+
                               {/* Tags */}
                               {alert.tags.length > 0 && (
                                 <div className="flex flex-wrap gap-2 mt-3">
                                   {alert.tags.map((tag) => (
-                                    <span 
+                                    <span
                                       key={tag}
                                       className="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded-md"
                                     >
@@ -864,7 +860,7 @@ export default function AlertsPage() {
                                   ))}
                                 </div>
                               )}
-                              
+
                               {/* Expanded Metadata */}
                               {isExpanded && alert.metadata && (
                                 <motion.div
@@ -925,7 +921,7 @@ export default function AlertsPage() {
                 <h2 className="text-lg font-semibold text-gray-900">
                   Alert Rules ({alertRules.length})
                 </h2>
-                <button 
+                <button
                   onClick={() => setShowCreateRule(true)}
                   className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center space-x-2"
                 >
@@ -949,9 +945,8 @@ export default function AlertsPage() {
                       <div className="flex-1">
                         <div className="flex items-center space-x-3 mb-2">
                           <h3 className="text-lg font-semibold text-gray-900">{rule.name}</h3>
-                          <span className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${
-                            rule.enabled ? 'text-green-600 bg-green-100' : 'text-gray-600 bg-gray-100'
-                          }`}>
+                          <span className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${rule.enabled ? 'text-green-600 bg-green-100' : 'text-gray-600 bg-gray-100'
+                            }`}>
                             {rule.enabled ? 'Enabled' : 'Disabled'}
                           </span>
                           <span className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${getSeverityColor(rule.severity)}`}>
@@ -981,7 +976,7 @@ export default function AlertsPage() {
                         </div>
                         <div className="flex flex-wrap gap-2 mt-3">
                           {rule.services.map((service) => (
-                            <span 
+                            <span
                               key={service}
                               className="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded-md"
                             >
@@ -1041,7 +1036,7 @@ export default function AlertsPage() {
                 View Playbooks →
               </button>
             </div>
-            
+
             <div className="bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl p-6">
               <div className="flex items-center space-x-3 mb-4">
                 <Settings className="w-6 h-6 text-blue-600" />
@@ -1054,7 +1049,7 @@ export default function AlertsPage() {
                 Create Rules →
               </button>
             </div>
-            
+
             <div className="bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl p-6">
               <div className="flex items-center space-x-3 mb-4">
                 <Bell className="w-6 h-6 text-green-600" />
@@ -1068,7 +1063,7 @@ export default function AlertsPage() {
               </button>
             </div>
           </div>
-          
+
           <div className="border-t border-blue-100/50 mt-8 pt-6 text-center">
             <p className="text-sm text-gray-600">
               © 2024 LogAI Professional Alert Management by CODAI. All rights reserved.

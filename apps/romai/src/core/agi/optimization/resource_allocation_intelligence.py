@@ -23,6 +23,13 @@ import gc
 import sys
 import os
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 class ResourceType(Enum):
     """Resource types"""
     CPU = "cpu"

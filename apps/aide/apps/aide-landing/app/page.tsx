@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { EnhancedThemeProvider, TranslationProvider, useTranslationEnhanced } from '@codai/shared-ui';
 import { HeroSection } from '@/components/sections/hero-section';
 import { FeaturesSection } from '@/components/sections/features-section';
 import { PricingSection } from '@/components/sections/pricing-section';
@@ -10,9 +11,11 @@ import { CTASection } from '@/components/sections/cta-section';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 
-export default function HomePage() {
+function HomePageContent() {
+	const { t } = useTranslationEnhanced();
+
 	return (
-		<div className="min-h-screen bg-background">
+		<div className="min-h-screen">
 			<Header />
 			<main>
 				<HeroSection />
@@ -23,5 +26,15 @@ export default function HomePage() {
 			</main>
 			<Footer />
 		</div>
+	);
+}
+
+export default function HomePage() {
+	return (
+		<EnhancedThemeProvider appName="aide" defaultThemeMode="system">
+			<TranslationProvider defaultLocale="en" supportedLocales={['en', 'ro']}>
+				<HomePageContent />
+			</TranslationProvider>
+		</EnhancedThemeProvider>
 	);
 }

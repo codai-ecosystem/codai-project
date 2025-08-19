@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { 
+import {
   Video, Image, Music, Mic, Camera, Film, Volume2, VolumeX,
   Play, Pause, SkipForward, SkipBack, Maximize, Minimize,
   Download, Upload, Copy, Save, Trash2, Eye, EyeOff, Grid, LayoutList,
@@ -313,7 +313,7 @@ export default function MediaToolsPage() {
   // Filter tools based on search and category
   const filteredTools = mediaTools.filter(tool => {
     const matchesSearch = tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         tool.description.toLowerCase().includes(searchTerm.toLowerCase())
+      tool.description.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesCategory = selectedCategory === 'all' || tool.category === selectedCategory
     return matchesSearch && matchesCategory
   })
@@ -324,11 +324,11 @@ export default function MediaToolsPage() {
     if (file) {
       const url = URL.createObjectURL(file)
       let type: 'image' | 'video' | 'audio' | null = null
-      
+
       if (file.type.startsWith('image/')) type = 'image'
       else if (file.type.startsWith('video/')) type = 'video'
       else if (file.type.startsWith('audio/')) type = 'audio'
-      
+
       setMediaPlayer({
         file,
         url,
@@ -403,9 +403,9 @@ export default function MediaToolsPage() {
 
         <div className="relative z-10 p-4 sm:p-6 lg:p-8">
           <div className="mx-auto max-w-7xl space-y-8">
-            
+
             {/* Enhanced Header */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 p-8 text-white shadow-2xl"
@@ -422,7 +422,7 @@ export default function MediaToolsPage() {
                       <p className="text-purple-100 text-lg">Professional Media Processing & Enhancement Suite</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex flex-wrap items-center gap-4">
                     <div className="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2">
                       <div className="text-center">
@@ -448,7 +448,7 @@ export default function MediaToolsPage() {
             </motion.div>
 
             {/* Media Player Interface */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
@@ -470,7 +470,7 @@ export default function MediaToolsPage() {
                   </div>
                 </div>
               </div>
-              
+
               <input
                 ref={fileInputRef}
                 type="file"
@@ -478,7 +478,7 @@ export default function MediaToolsPage() {
                 onChange={handleFileUpload}
                 className="hidden"
               />
-              
+
               {showPlayer && mediaPlayer.file ? (
                 <div className="space-y-4">
                   {/* Media Preview */}
@@ -497,8 +497,8 @@ export default function MediaToolsPage() {
                         className="w-full max-h-96"
                         onLoadedMetadata={(e) => {
                           const target = e.target as HTMLVideoElement
-                          setMediaPlayer(prev => ({ 
-                            ...prev, 
+                          setMediaPlayer(prev => ({
+                            ...prev,
                             duration: target.duration,
                             dimensions: { width: target.videoWidth, height: target.videoHeight }
                           }))
@@ -531,7 +531,7 @@ export default function MediaToolsPage() {
                       </div>
                     )}
                   </div>
-                  
+
                   {/* Media Controls */}
                   {(mediaPlayer.type === 'video' || mediaPlayer.type === 'audio') && (
                     <div className="bg-gray-100 rounded-xl p-4">
@@ -563,17 +563,17 @@ export default function MediaToolsPage() {
                           {Math.floor(mediaPlayer.currentTime)}s / {Math.floor(mediaPlayer.duration)}s
                         </div>
                       </div>
-                      
+
                       {/* Progress Bar */}
                       <div className="w-full bg-gray-300 rounded-full h-2">
-                        <div 
+                        <div
                           className="bg-purple-500 h-2 rounded-full transition-all duration-200"
                           style={{ width: `${(mediaPlayer.currentTime / mediaPlayer.duration) * 100}%` }}
                         ></div>
                       </div>
                     </div>
                   )}
-                  
+
                   {/* File Info */}
                   <div className="bg-gray-50 rounded-xl p-4">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
@@ -614,7 +614,7 @@ export default function MediaToolsPage() {
             </motion.div>
 
             {/* Search and Filters */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
@@ -633,7 +633,7 @@ export default function MediaToolsPage() {
                     />
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-4">
                   <select
                     value={selectedCategory}
@@ -647,21 +647,19 @@ export default function MediaToolsPage() {
                       </option>
                     ))}
                   </select>
-                  
+
                   <div className="flex bg-white/50 rounded-xl p-1">
                     <button
                       onClick={() => setViewMode('grid')}
-                      className={`px-3 py-2 rounded-lg transition-all duration-200 ${
-                        viewMode === 'grid' ? 'bg-purple-500 text-white' : 'text-gray-600 hover:text-gray-900'
-                      }`}
+                      className={`px-3 py-2 rounded-lg transition-all duration-200 ${viewMode === 'grid' ? 'bg-purple-500 text-white' : 'text-gray-600 hover:text-gray-900'
+                        }`}
                     >
                       <Grid className="h-4 w-4" />
                     </button>
                     <button
                       onClick={() => setViewMode('list')}
-                      className={`px-3 py-2 rounded-lg transition-all duration-200 ${
-                        viewMode === 'list' ? 'bg-purple-500 text-white' : 'text-gray-600 hover:text-gray-900'
-                      }`}
+                      className={`px-3 py-2 rounded-lg transition-all duration-200 ${viewMode === 'list' ? 'bg-purple-500 text-white' : 'text-gray-600 hover:text-gray-900'
+                        }`}
                     >
                       <LayoutList className="h-4 w-4" />
                     </button>
@@ -671,7 +669,7 @@ export default function MediaToolsPage() {
             </motion.div>
 
             {/* Categories Overview */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
@@ -686,33 +684,27 @@ export default function MediaToolsPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 + index * 0.1 }}
                     onClick={() => setSelectedCategory(category.id)}
-                    className={`group p-6 rounded-2xl cursor-pointer transition-all duration-200 border ${
-                      selectedCategory === category.id 
-                        ? 'bg-purple-500 text-white border-purple-600 shadow-lg' 
+                    className={`group p-6 rounded-2xl cursor-pointer transition-all duration-200 border ${selectedCategory === category.id
+                        ? 'bg-purple-500 text-white border-purple-600 shadow-lg'
                         : 'bg-white/70 backdrop-blur-sm border-white/50 hover:border-purple-300 hover:shadow-lg'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center justify-between mb-4">
-                      <IconComponent className={`h-8 w-8 ${
-                        selectedCategory === category.id ? 'text-white' : category.color
-                      }`} />
-                      <div className={`text-right ${
-                        selectedCategory === category.id ? 'text-white' : 'text-gray-900'
-                      }`}>
+                      <IconComponent className={`h-8 w-8 ${selectedCategory === category.id ? 'text-white' : category.color
+                        }`} />
+                      <div className={`text-right ${selectedCategory === category.id ? 'text-white' : 'text-gray-900'
+                        }`}>
                         <div className="text-2xl font-bold">{category.count}</div>
-                        <div className={`text-sm ${
-                          selectedCategory === category.id ? 'text-purple-100' : 'text-gray-600'
-                        }`}>Tools</div>
+                        <div className={`text-sm ${selectedCategory === category.id ? 'text-purple-100' : 'text-gray-600'
+                          }`}>Tools</div>
                       </div>
                     </div>
-                    <h3 className={`font-semibold mb-2 ${
-                      selectedCategory === category.id ? 'text-white' : 'text-gray-900'
-                    }`}>
+                    <h3 className={`font-semibold mb-2 ${selectedCategory === category.id ? 'text-white' : 'text-gray-900'
+                      }`}>
                       {category.name}
                     </h3>
-                    <p className={`text-sm ${
-                      selectedCategory === category.id ? 'text-purple-100' : 'text-gray-600'
-                    }`}>
+                    <p className={`text-sm ${selectedCategory === category.id ? 'text-purple-100' : 'text-gray-600'
+                      }`}>
                       {category.description}
                     </p>
                   </motion.div>
@@ -722,9 +714,9 @@ export default function MediaToolsPage() {
 
             {/* Main Content Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              
+
               {/* Media Tools Grid */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4 }}
@@ -735,7 +727,7 @@ export default function MediaToolsPage() {
                     <h3 className="text-xl font-semibold text-gray-900">Media Processing Tools</h3>
                     <div className="text-sm text-gray-600">{filteredTools.length} tools</div>
                   </div>
-                  
+
                   {viewMode === 'grid' ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {filteredTools.map((tool, index) => {
@@ -773,9 +765,9 @@ export default function MediaToolsPage() {
                                 </div>
                               )}
                             </div>
-                            
+
                             <p className="text-sm text-gray-600 mb-3">{tool.description}</p>
-                            
+
                             <div className="flex flex-wrap gap-1 mb-4">
                               {tool.supportedFormats.slice(0, 3).map(format => (
                                 <span key={format} className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">
@@ -786,7 +778,7 @@ export default function MediaToolsPage() {
                                 <span className="text-xs text-gray-500">+{tool.supportedFormats.length - 3}</span>
                               )}
                             </div>
-                            
+
                             <div className="flex items-center justify-between">
                               <div className="text-xs text-gray-500">
                                 <div>Max: {tool.maxFileSize}</div>
@@ -876,7 +868,7 @@ export default function MediaToolsPage() {
               </motion.div>
 
               {/* Processing Queue & Stats */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 }}
@@ -887,7 +879,7 @@ export default function MediaToolsPage() {
                     <h3 className="text-xl font-semibold text-gray-900">Processing Queue</h3>
                     <RefreshCw className="h-5 w-5 text-gray-400" />
                   </div>
-                  
+
                   <div className="space-y-4">
                     {processingJobs.map((job, index) => (
                       <motion.div
@@ -903,18 +895,17 @@ export default function MediaToolsPage() {
                             <p className="text-xs text-gray-600 truncate">{job.fileName}</p>
                             <p className="text-xs text-gray-500">Started {job.startTime}</p>
                           </div>
-                          <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                            job.status === 'completed' ? 'bg-green-100 text-green-800' :
-                            job.status === 'processing' ? 'bg-blue-100 text-blue-800' :
-                            'bg-red-100 text-red-800'
-                          }`}>
+                          <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${job.status === 'completed' ? 'bg-green-100 text-green-800' :
+                              job.status === 'processing' ? 'bg-blue-100 text-blue-800' :
+                                'bg-red-100 text-red-800'
+                            }`}>
                             {job.status === 'completed' && <Check className="h-3 w-3 mr-1" />}
                             {job.status === 'processing' && <RefreshCw className="h-3 w-3 mr-1 animate-spin" />}
                             {job.status === 'failed' && <X className="h-3 w-3 mr-1" />}
                             {job.status}
                           </div>
                         </div>
-                        
+
                         {job.status === 'processing' && (
                           <div className="mb-3">
                             <div className="flex items-center justify-between text-xs text-gray-600 mb-1">
@@ -922,14 +913,14 @@ export default function MediaToolsPage() {
                               <span>{job.progress}%</span>
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-2">
-                              <div 
+                              <div
                                 className="bg-purple-500 h-2 rounded-full transition-all duration-300"
                                 style={{ width: `${job.progress}%` }}
                               ></div>
                             </div>
                           </div>
                         )}
-                        
+
                         <div className="flex items-center justify-between text-xs text-gray-500">
                           <span>Size: {job.fileSize}</span>
                           {job.outputSize && (
@@ -946,7 +937,7 @@ export default function MediaToolsPage() {
                 {/* Quick Stats */}
                 <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/50">
                   <h3 className="text-xl font-semibold text-gray-900 mb-6">Media Stats</h3>
-                  
+
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-gray-600">Active Users</span>
@@ -970,7 +961,7 @@ export default function MediaToolsPage() {
             </div>
 
             {/* Modern Footer */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}

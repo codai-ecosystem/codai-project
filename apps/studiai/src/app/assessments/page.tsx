@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { 
+import {
   ClipboardCheck,
   Search,
   Filter,
@@ -290,9 +290,9 @@ export default function AssessmentsPage() {
 
   const filteredAssessments = assessments.filter(assessment => {
     const matchesSearch = assessment.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         assessment.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         assessment.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
-    
+      assessment.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      assessment.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+
     const matchesCategory = selectedCategory === 'all' || assessment.category === selectedCategory
     const matchesType = selectedType === 'all' || assessment.type === selectedType
     const matchesDifficulty = selectedDifficulty === 'all' || assessment.difficulty === selectedDifficulty
@@ -386,7 +386,7 @@ export default function AssessmentsPage() {
                 <p className="text-sm text-gray-600">Test your knowledge and track progress</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -400,9 +400,8 @@ export default function AssessmentsPage() {
               </div>
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className={`p-2 rounded-lg transition-colors ${
-                  showFilters ? 'bg-blue-100 text-blue-600' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
-                }`}
+                className={`p-2 rounded-lg transition-colors ${showFilters ? 'bg-blue-100 text-blue-600' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
+                  }`}
               >
                 <Filter className="h-5 w-5" />
               </button>
@@ -443,11 +442,10 @@ export default function AssessmentsPage() {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`flex items-center space-x-3 p-3 rounded-lg text-left transition-all ${
-                  selectedCategory === category.id
+                className={`flex items-center space-x-3 p-3 rounded-lg text-left transition-all ${selectedCategory === category.id
                     ? 'bg-blue-100 text-blue-700 border border-blue-300'
                     : 'hover:bg-gray-50 text-gray-700'
-                }`}
+                  }`}
               >
                 <div className={`w-8 h-8 ${category.color} rounded-lg flex items-center justify-center`}>
                   <category.icon className="h-4 w-4 text-white" />
@@ -485,7 +483,7 @@ export default function AssessmentsPage() {
                   <option value="simulation">Simulation</option>
                 </select>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Difficulty</label>
                 <select
@@ -499,7 +497,7 @@ export default function AssessmentsPage() {
                   <option value="advanced">Advanced</option>
                 </select>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
                 <select
@@ -516,7 +514,7 @@ export default function AssessmentsPage() {
                   <option value="locked">Locked</option>
                 </select>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
                 <select
@@ -530,23 +528,21 @@ export default function AssessmentsPage() {
                   <option value="duration">Duration</option>
                 </select>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">View</label>
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => setViewMode('grid')}
-                    className={`p-2 rounded-lg transition-colors ${
-                      viewMode === 'grid' ? 'bg-blue-100 text-blue-600' : 'text-gray-400 hover:text-gray-600'
-                    }`}
+                    className={`p-2 rounded-lg transition-colors ${viewMode === 'grid' ? 'bg-blue-100 text-blue-600' : 'text-gray-400 hover:text-gray-600'
+                      }`}
                   >
                     <Grid className="h-4 w-4" />
                   </button>
                   <button
                     onClick={() => setViewMode('list')}
-                    className={`p-2 rounded-lg transition-colors ${
-                      viewMode === 'list' ? 'bg-blue-100 text-blue-600' : 'text-gray-400 hover:text-gray-600'
-                    }`}
+                    className={`p-2 rounded-lg transition-colors ${viewMode === 'list' ? 'bg-blue-100 text-blue-600' : 'text-gray-400 hover:text-gray-600'
+                      }`}
                   >
                     <List className="h-4 w-4" />
                   </button>
@@ -616,7 +612,7 @@ export default function AssessmentsPage() {
                     {/* Assessment Body */}
                     <div className="p-6">
                       <p className="text-gray-600 text-sm mb-4 line-clamp-2">{assessment.description}</p>
-                      
+
                       <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 mb-4">
                         <div className="flex items-center space-x-2">
                           <Hash className="h-4 w-4" />
@@ -641,19 +637,17 @@ export default function AssessmentsPage() {
                         <div className="mb-4">
                           <div className="flex items-center justify-between text-sm mb-2">
                             <span className="text-gray-600">Best Score</span>
-                            <span className={`font-bold ${
-                              assessment.bestScore >= assessment.passingScore ? 'text-green-600' : 'text-red-600'
-                            }`}>
+                            <span className={`font-bold ${assessment.bestScore >= assessment.passingScore ? 'text-green-600' : 'text-red-600'
+                              }`}>
                               {assessment.bestScore}%
                             </span>
                           </div>
                           <div className="w-full bg-gray-200 rounded-full h-2">
-                            <div 
-                              className={`h-2 rounded-full transition-all ${
-                                assessment.bestScore >= assessment.passingScore 
-                                  ? 'bg-gradient-to-r from-green-500 to-green-600' 
+                            <div
+                              className={`h-2 rounded-full transition-all ${assessment.bestScore >= assessment.passingScore
+                                  ? 'bg-gradient-to-r from-green-500 to-green-600'
                                   : 'bg-gradient-to-r from-red-500 to-red-600'
-                              }`}
+                                }`}
                               style={{ width: `${assessment.bestScore}%` }}
                             ></div>
                           </div>
@@ -697,22 +691,21 @@ export default function AssessmentsPage() {
                       )}
 
                       {/* Action Button */}
-                      <button 
-                        className={`w-full py-2 rounded-lg text-sm font-medium transition-colors ${
-                          assessment.status === 'locked'
+                      <button
+                        className={`w-full py-2 rounded-lg text-sm font-medium transition-colors ${assessment.status === 'locked'
                             ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                             : assessment.status === 'completed' || assessment.status === 'passed'
-                            ? 'bg-green-600 text-white hover:bg-green-700'
-                            : assessment.status === 'in-progress'
-                            ? 'bg-blue-600 text-white hover:bg-blue-700'
-                            : 'bg-purple-600 text-white hover:bg-purple-700'
-                        }`}
+                              ? 'bg-green-600 text-white hover:bg-green-700'
+                              : assessment.status === 'in-progress'
+                                ? 'bg-blue-600 text-white hover:bg-blue-700'
+                                : 'bg-purple-600 text-white hover:bg-purple-700'
+                          }`}
                         disabled={assessment.status === 'locked'}
                       >
                         {assessment.status === 'locked' ? 'Prerequisites Required' :
-                         assessment.status === 'completed' || assessment.status === 'passed' ? 'Retake Assessment' :
-                         assessment.status === 'in-progress' ? 'Continue Assessment' :
-                         'Start Assessment'}
+                          assessment.status === 'completed' || assessment.status === 'passed' ? 'Retake Assessment' :
+                            assessment.status === 'in-progress' ? 'Continue Assessment' :
+                              'Start Assessment'}
                       </button>
                     </div>
                   </div>
@@ -737,17 +730,15 @@ export default function AssessmentsPage() {
                       <div className="flex items-center space-x-4 text-sm text-gray-500">
                         <span>Pass: {assessment.passingScore}%</span>
                         {assessment.bestScore !== null && (
-                          <span className={`font-medium ${
-                            assessment.bestScore >= assessment.passingScore ? 'text-green-600' : 'text-red-600'
-                          }`}>
+                          <span className={`font-medium ${assessment.bestScore >= assessment.passingScore ? 'text-green-600' : 'text-red-600'
+                            }`}>
                             Best: {assessment.bestScore}%
                           </span>
                         )}
-                        <button className={`px-4 py-1 rounded text-sm transition-colors ${
-                          assessment.status === 'locked'
+                        <button className={`px-4 py-1 rounded text-sm transition-colors ${assessment.status === 'locked'
                             ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                             : 'bg-blue-600 text-white hover:bg-blue-700'
-                        }`}>
+                          }`}>
                           {assessment.status === 'locked' ? 'Locked' : 'Start'}
                         </button>
                       </div>

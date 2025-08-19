@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  Image, Camera, Crop, Palette, Layers, Filter, Download, Upload, 
+import {
+  Image, Camera, Crop, Palette, Layers, Filter, Download, Upload,
   RotateCw, ZoomIn, ZoomOut, Move, Square, Circle, Triangle,
   Sliders, Contrast, Brightness4, Blur, Sharpen, Droplets,
   Scissors, Copy, Save, Trash2, Eye, EyeOff, Grid, LayoutList,
@@ -281,7 +281,7 @@ export default function ImageToolsPage() {
   // Filter tools based on search and category
   const filteredTools = imageTools.filter(tool => {
     const matchesSearch = tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         tool.description.toLowerCase().includes(searchTerm.toLowerCase())
+      tool.description.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesCategory = selectedCategory === 'all' || tool.category === selectedCategory
     return matchesSearch && matchesCategory
   })
@@ -323,7 +323,7 @@ export default function ImageToolsPage() {
   // Process image with selected tool
   const processImage = (toolId: string) => {
     if (!selectedFile) return
-    
+
     setActiveProcessor(toolId)
     // Simulate processing
     setTimeout(() => {
@@ -346,9 +346,9 @@ export default function ImageToolsPage() {
 
         <div className="relative z-10 p-4 sm:p-6 lg:p-8">
           <div className="mx-auto max-w-7xl space-y-8">
-            
+
             {/* Enhanced Header */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 p-8 text-white shadow-2xl"
@@ -365,7 +365,7 @@ export default function ImageToolsPage() {
                       <p className="text-purple-100 text-lg">Advanced Image Processing & Editing Suite</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex flex-wrap items-center gap-4">
                     <div className="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2">
                       <div className="text-center">
@@ -391,7 +391,7 @@ export default function ImageToolsPage() {
             </motion.div>
 
             {/* Image Upload & Preview Interface */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
@@ -404,20 +404,20 @@ export default function ImageToolsPage() {
                   <span className="text-sm text-gray-600">Avg: {imageMetrics.avgProcessingTime}</span>
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Upload Area */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Upload Image</label>
-                  <div 
+                  <div
                     onClick={() => fileInputRef.current?.click()}
                     className="w-full h-64 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 hover:bg-blue-50/50 transition-all duration-200"
                   >
                     {imagePreview.original ? (
                       <div className="relative w-full h-full">
-                        <img 
-                          src={imagePreview.original} 
-                          alt="Preview" 
+                        <img
+                          src={imagePreview.original}
+                          alt="Preview"
                           className="w-full h-full object-contain rounded-xl"
                         />
                         <div className="absolute top-2 right-2 bg-black/60 text-white px-2 py-1 rounded text-xs">
@@ -441,7 +441,7 @@ export default function ImageToolsPage() {
                     onChange={handleFileUpload}
                     className="hidden"
                   />
-                  
+
                   {selectedFile && (
                     <div className="mt-4 p-4 bg-gray-50 rounded-xl">
                       <div className="flex items-center justify-between">
@@ -451,7 +451,7 @@ export default function ImageToolsPage() {
                             {imagePreview.size} • {imagePreview.width} × {imagePreview.height}
                           </p>
                         </div>
-                        <button 
+                        <button
                           onClick={() => {
                             setSelectedFile(null)
                             setImagePreview({ original: null, processed: null, width: 0, height: 0, size: '0 KB' })
@@ -464,15 +464,15 @@ export default function ImageToolsPage() {
                     </div>
                   )}
                 </div>
-                
+
                 {/* Preview Area */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Processed Image</label>
                   <div className="w-full h-64 bg-gray-50 border border-gray-200 rounded-xl flex items-center justify-center">
                     {imagePreview.processed ? (
-                      <img 
-                        src={imagePreview.processed} 
-                        alt="Processed" 
+                      <img
+                        src={imagePreview.processed}
+                        alt="Processed"
                         className="w-full h-full object-contain rounded-xl"
                       />
                     ) : (
@@ -482,7 +482,7 @@ export default function ImageToolsPage() {
                       </div>
                     )}
                   </div>
-                  
+
                   {imagePreview.processed && (
                     <div className="mt-4 flex gap-2">
                       <button className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
@@ -500,7 +500,7 @@ export default function ImageToolsPage() {
             </motion.div>
 
             {/* Search and Filters */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
@@ -519,7 +519,7 @@ export default function ImageToolsPage() {
                     />
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-4">
                   <select
                     value={selectedCategory}
@@ -533,21 +533,19 @@ export default function ImageToolsPage() {
                       </option>
                     ))}
                   </select>
-                  
+
                   <div className="flex bg-white/50 rounded-xl p-1">
                     <button
                       onClick={() => setViewMode('grid')}
-                      className={`px-3 py-2 rounded-lg transition-all duration-200 ${
-                        viewMode === 'grid' ? 'bg-purple-500 text-white' : 'text-gray-600 hover:text-gray-900'
-                      }`}
+                      className={`px-3 py-2 rounded-lg transition-all duration-200 ${viewMode === 'grid' ? 'bg-purple-500 text-white' : 'text-gray-600 hover:text-gray-900'
+                        }`}
                     >
                       <Grid className="h-4 w-4" />
                     </button>
                     <button
                       onClick={() => setViewMode('list')}
-                      className={`px-3 py-2 rounded-lg transition-all duration-200 ${
-                        viewMode === 'list' ? 'bg-purple-500 text-white' : 'text-gray-600 hover:text-gray-900'
-                      }`}
+                      className={`px-3 py-2 rounded-lg transition-all duration-200 ${viewMode === 'list' ? 'bg-purple-500 text-white' : 'text-gray-600 hover:text-gray-900'
+                        }`}
                     >
                       <LayoutList className="h-4 w-4" />
                     </button>
@@ -557,7 +555,7 @@ export default function ImageToolsPage() {
             </motion.div>
 
             {/* Categories Overview */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
@@ -572,33 +570,27 @@ export default function ImageToolsPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 + index * 0.1 }}
                     onClick={() => setSelectedCategory(category.id)}
-                    className={`group p-6 rounded-2xl cursor-pointer transition-all duration-200 border ${
-                      selectedCategory === category.id 
-                        ? 'bg-purple-500 text-white border-purple-600 shadow-lg' 
+                    className={`group p-6 rounded-2xl cursor-pointer transition-all duration-200 border ${selectedCategory === category.id
+                        ? 'bg-purple-500 text-white border-purple-600 shadow-lg'
                         : 'bg-white/70 backdrop-blur-sm border-white/50 hover:border-purple-300 hover:shadow-lg'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center justify-between mb-4">
-                      <IconComponent className={`h-8 w-8 ${
-                        selectedCategory === category.id ? 'text-white' : category.color
-                      }`} />
-                      <div className={`text-right ${
-                        selectedCategory === category.id ? 'text-white' : 'text-gray-900'
-                      }`}>
+                      <IconComponent className={`h-8 w-8 ${selectedCategory === category.id ? 'text-white' : category.color
+                        }`} />
+                      <div className={`text-right ${selectedCategory === category.id ? 'text-white' : 'text-gray-900'
+                        }`}>
                         <div className="text-2xl font-bold">{category.count}</div>
-                        <div className={`text-sm ${
-                          selectedCategory === category.id ? 'text-purple-100' : 'text-gray-600'
-                        }`}>Tools</div>
+                        <div className={`text-sm ${selectedCategory === category.id ? 'text-purple-100' : 'text-gray-600'
+                          }`}>Tools</div>
                       </div>
                     </div>
-                    <h3 className={`font-semibold mb-2 ${
-                      selectedCategory === category.id ? 'text-white' : 'text-gray-900'
-                    }`}>
+                    <h3 className={`font-semibold mb-2 ${selectedCategory === category.id ? 'text-white' : 'text-gray-900'
+                      }`}>
                       {category.name}
                     </h3>
-                    <p className={`text-sm ${
-                      selectedCategory === category.id ? 'text-purple-100' : 'text-gray-600'
-                    }`}>
+                    <p className={`text-sm ${selectedCategory === category.id ? 'text-purple-100' : 'text-gray-600'
+                      }`}>
                       {category.description}
                     </p>
                   </motion.div>
@@ -608,9 +600,9 @@ export default function ImageToolsPage() {
 
             {/* Main Content Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              
+
               {/* Image Tools Grid */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4 }}
@@ -621,7 +613,7 @@ export default function ImageToolsPage() {
                     <h3 className="text-xl font-semibold text-gray-900">Image Processing Tools</h3>
                     <div className="text-sm text-gray-600">{filteredTools.length} tools</div>
                   </div>
-                  
+
                   {viewMode === 'grid' ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {filteredTools.map((tool, index) => {
@@ -659,9 +651,9 @@ export default function ImageToolsPage() {
                                 </div>
                               )}
                             </div>
-                            
+
                             <p className="text-sm text-gray-600 mb-3">{tool.description}</p>
-                            
+
                             <div className="flex flex-wrap gap-1 mb-4">
                               {tool.inputFormats.slice(0, 3).map(format => (
                                 <span key={format} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
@@ -672,7 +664,7 @@ export default function ImageToolsPage() {
                                 <span className="text-xs text-gray-500">+{tool.inputFormats.length - 3}</span>
                               )}
                             </div>
-                            
+
                             <div className="flex items-center justify-between">
                               <span className="text-xs text-gray-500">Last used: {tool.lastUsed}</span>
                               <button
@@ -758,7 +750,7 @@ export default function ImageToolsPage() {
               </motion.div>
 
               {/* Processing Queue & Stats */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 }}
@@ -769,7 +761,7 @@ export default function ImageToolsPage() {
                     <h3 className="text-xl font-semibold text-gray-900">Processing Queue</h3>
                     <RefreshCw className="h-5 w-5 text-gray-400" />
                   </div>
-                  
+
                   <div className="space-y-4">
                     {processingJobs.map((job, index) => (
                       <motion.div
@@ -785,17 +777,16 @@ export default function ImageToolsPage() {
                             <p className="text-xs text-gray-600">{job.inputFile}</p>
                             <p className="text-xs text-gray-500">Started {job.startTime}</p>
                           </div>
-                          <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                            job.status === 'completed' ? 'bg-green-100 text-green-800' :
-                            job.status === 'processing' ? 'bg-blue-100 text-blue-800' :
-                            'bg-red-100 text-red-800'
-                          }`}>
+                          <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${job.status === 'completed' ? 'bg-green-100 text-green-800' :
+                              job.status === 'processing' ? 'bg-blue-100 text-blue-800' :
+                                'bg-red-100 text-red-800'
+                            }`}>
                             {job.status === 'completed' && <Download className="h-3 w-3 mr-1" />}
                             {job.status === 'processing' && <RefreshCw className="h-3 w-3 mr-1 animate-spin" />}
                             {job.status}
                           </div>
                         </div>
-                        
+
                         {job.status === 'processing' && (
                           <div className="mb-3">
                             <div className="flex items-center justify-between text-xs text-gray-600 mb-1">
@@ -803,14 +794,14 @@ export default function ImageToolsPage() {
                               <span>{job.progress}%</span>
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-2">
-                              <div 
+                              <div
                                 className="bg-purple-500 h-2 rounded-full transition-all duration-300"
                                 style={{ width: `${job.progress}%` }}
                               ></div>
                             </div>
                           </div>
                         )}
-                        
+
                         <div className="flex items-center justify-between text-xs text-gray-500">
                           <span>Size: {job.fileSize}</span>
                           {job.outputFile && (
@@ -827,7 +818,7 @@ export default function ImageToolsPage() {
                 {/* Quick Stats */}
                 <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/50">
                   <h3 className="text-xl font-semibold text-gray-900 mb-6">Image Stats</h3>
-                  
+
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-gray-600">Active Users</span>
@@ -851,7 +842,7 @@ export default function ImageToolsPage() {
             </div>
 
             {/* Modern Footer */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}

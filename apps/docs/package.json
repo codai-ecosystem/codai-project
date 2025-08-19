@@ -12,6 +12,14 @@
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest watch",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:report": "playwright show-report",
+    "test:e2e:install": "playwright install",
+    "test:all": "pnpm test:run && pnpm test:e2e",
+    "test:ci": "pnpm test:run --reporter=junit --outputFile=unit-test-results.xml && pnpm test:e2e --reporter=junit",
     "lint": "next lint",
     "type-check": "pnpm exec tsc --noEmit"
   },
@@ -38,6 +46,7 @@
   },
   "devDependencies": {
     "@codai/eslint-config": "workspace:*",
+    "@playwright/test": "^1.48.2",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",

@@ -228,8 +228,8 @@ export default function TalentaiPage() {
 
   const filteredCandidates = topCandidates.filter(candidate => {
     const matchesSearch = candidate.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         candidate.position.toLowerCase().includes(searchTerm.toLowerCase())
-    
+      candidate.position.toLowerCase().includes(searchTerm.toLowerCase())
+
     if (activeFilter === 'all') return matchesSearch
     return matchesSearch && candidate.status === activeFilter
   })
@@ -458,7 +458,7 @@ export default function TalentaiPage() {
                   </button>
                 </div>
               </div>
-              
+
               <div className="space-y-4">
                 {filteredCandidates.map((candidate, index) => (
                   <motion.div
@@ -494,7 +494,7 @@ export default function TalentaiPage() {
                       <div className="text-right">
                         <div className="flex items-center space-x-2 mb-2">
                           <div className="w-12 h-2 bg-white/20 rounded-full">
-                            <div 
+                            <div
                               className="h-full bg-gradient-to-r from-green-500 to-blue-500 rounded-full"
                               style={{ width: `${candidate.score}%` }}
                             ></div>
@@ -547,7 +547,7 @@ export default function TalentaiPage() {
                 </div>
                 <h3 className="text-lg font-semibold text-white">Urgent Jobs</h3>
               </div>
-              
+
               <div className="space-y-4">
                 {urgentJobs.map((job, index) => (
                   <motion.div
@@ -581,7 +581,7 @@ export default function TalentaiPage() {
                 </div>
                 <h3 className="text-lg font-semibold text-white">Recent Activity</h3>
               </div>
-              
+
               <div className="space-y-4">
                 {metrics.recentActivity.map((activity, index) => (
                   <motion.div
@@ -611,14 +611,14 @@ export default function TalentaiPage() {
                 </div>
                 <h3 className="text-lg font-semibold text-white">Hiring Funnel</h3>
               </div>
-              
+
               <div className="space-y-3">
                 {metrics.hiringFunnel.map((stage, index) => (
                   <div key={index} className="flex items-center justify-between">
                     <span className="text-sm text-slate-300">{stage.stage}</span>
                     <div className="flex items-center space-x-2">
                       <div className="w-16 h-2 bg-white/20 rounded-full">
-                        <div 
+                        <div
                           className="h-full bg-gradient-to-r from-purple-500 to-violet-500 rounded-full"
                           style={{ width: `${stage.percentage}%` }}
                         ></div>
@@ -647,7 +647,7 @@ export default function TalentaiPage() {
               <h3 className="text-lg font-semibold text-white mb-2">AI-Powered Matching</h3>
               <p className="text-slate-400 text-sm">Advanced algorithms match candidates with perfect job opportunities</p>
             </motion.div>
-            
+
             <motion.div
               className="glassmorphism p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-purple-500/50 transition-all"
               whileHover={{ scale: 1.05 }}
@@ -658,7 +658,7 @@ export default function TalentaiPage() {
               <h3 className="text-lg font-semibold text-white mb-2">Real-time Analytics</h3>
               <p className="text-slate-400 text-sm">Monitor hiring performance and optimize your recruitment strategy</p>
             </motion.div>
-            
+
             <motion.div
               className="glassmorphism p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-purple-500/50 transition-all"
               whileHover={{ scale: 1.05 }}

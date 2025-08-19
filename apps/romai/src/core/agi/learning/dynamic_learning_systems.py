@@ -52,6 +52,13 @@ from .romanian_capability_evolution import (
 
 # Import consciousness components
 from ..day4.consciousness_interfaces import (
+
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
     ConsciousnessLevel, ConsciousnessState, AwarenessType
 )
 

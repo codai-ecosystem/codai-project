@@ -601,6 +601,13 @@ class NeuralOptimizationEngine:
             try:
                 # Run async measurement in sync context
                 import asyncio
+
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
                 loop = asyncio.new_event_loop()
                 asyncio.set_event_loop(loop)
                 metrics = loop.run_until_complete(self._measure_performance())

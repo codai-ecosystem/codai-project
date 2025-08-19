@@ -1,0 +1,88 @@
+{
+  "validation_timestamp": "2025-08-08T00:20:06.166370",
+  "validation_duration": 3.6743764877319336,
+  "file_results": {
+    "real_time_learning_engine.py": {
+      "exists": true,
+      "size": 29859
+    },
+    "adaptive_model_updater.py": {
+      "exists": true,
+      "size": 34573
+    },
+    "knowledge_integration_pipeline.py": {
+      "exists": true,
+      "size": 42135
+    },
+    "learning_analytics_dashboard.py": {
+      "exists": true,
+      "size": 44545
+    },
+    "real_time_learning_integration.py": {
+      "exists": true,
+      "size": 43677
+    }
+  },
+  "import_results": {
+    "real_time_learning_engine": true,
+    "adaptive_model_updater": true,
+    "knowledge_integration_pipeline": true,
+    "learning_analytics_dashboard": true,
+    "real_time_learning_integration": true
+  },
+  "functionality_results": {
+    "learning_engine_creation": true,
+    "model_updater_creation": true,
+    "knowledge_pipeline_creation": true,
+    "analytics_dashboard_creation": true,
+    "integration_creation": true
+  },
+  "integration_success": true,
+  "quality_results": {
+    "real_time_learning_engine.py": {
+      "total_lines": 776,
+      "code_lines": 572,
+      "comment_lines": 53,
+      "comment_ratio": 0.06829896907216494,
+      "quality_score": 0.7
+    },
+    "adaptive_model_updater.py": {
+      "total_lines": 922,
+      "code_lines": 677,
+      "comment_lines": 58,
+      "comment_ratio": 0.06290672451193059,
+      "quality_score": 0.7
+    },
+    "knowledge_integration_pipeline.py": {
+      "total_lines": 1104,
+      "code_lines": 790,
+      "comment_lines": 88,
+      "comment_ratio": 0.07971014492753623,
+      "quality_score": 0.7
+    },
+    "learning_analytics_dashboard.py": {
+      "total_lines": 1133,
+      "code_lines": 833,
+      "comment_lines": 69,
+      "comment_ratio": 0.06090026478375993,
+      "quality_score": 0.7
+    },
+    "real_time_learning_integration.py": {
+      "total_lines": 1081,
+      "code_lines": 796,
+      "comment_lines": 81,
+      "comment_ratio": 0.07493061979648474,
+      "quality_score": 0.7
+    }
+  },
+  "overall_score": 1.0,
+  "status": "READY",
+  "summary": {
+    "files_present": "5/5",
+    "imports_working": "5/5",
+    "functionality_working": "5/5",
+    "integration_working": true,
+    "average_quality": 0.7,
+    "total_code_lines": 3668
+  }
+}

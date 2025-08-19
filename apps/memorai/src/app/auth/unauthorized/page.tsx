@@ -50,7 +50,7 @@ export default function UnauthorizedPage() {
                             <div className="text-sm text-gray-600 dark:text-gray-400">
                                 <strong>Possible actions:</strong>
                             </div>
-                            
+
                             <div className="space-y-2">
                                 <div className="flex items-start space-x-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                                     <Users className="w-5 h-5 text-blue-500 mt-0.5" />
@@ -106,8 +106,8 @@ export default function UnauthorizedPage() {
                         <div className="text-center text-sm text-gray-600 dark:text-gray-400 pt-2 border-t">
                             <p>
                                 Need immediate help?{' '}
-                                <Link 
-                                    href="/support" 
+                                <Link
+                                    href="/support"
                                     className="text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300 underline"
                                 >
                                     Contact our support team

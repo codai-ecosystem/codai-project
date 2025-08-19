@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
+import {
   Brain,
   Heart,
   Smile,
@@ -443,7 +443,7 @@ export default function PersonalityPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/80 backdrop-blur-sm border-b border-blue-100 sticky top-0 z-40"
@@ -459,7 +459,7 @@ export default function PersonalityPage() {
               </p>
             </div>
             <div className="flex items-center space-x-4">
-              <button 
+              <button
                 onClick={() => setIsCustomizing(!isCustomizing)}
                 className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 flex items-center space-x-2"
               >
@@ -476,7 +476,7 @@ export default function PersonalityPage() {
       </motion.div>
 
       {/* Navigation Tabs */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.1 }}
@@ -496,11 +496,10 @@ export default function PersonalityPage() {
               <a
                 key={tab.name}
                 href={tab.href}
-                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${
-                  tab.current
+                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${tab.current
                     ? 'border-blue-500 text-blue-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
+                  }`}
               >
                 {tab.name}
               </a>
@@ -510,9 +509,9 @@ export default function PersonalityPage() {
       </motion.div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
+
         {/* Personality Tabs */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -531,11 +530,10 @@ export default function PersonalityPage() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id as any)}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
-                      activeTab === tab.id
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${activeTab === tab.id
                         ? 'bg-blue-600 text-white shadow-sm'
                         : 'text-gray-600 hover:text-gray-900'
-                    }`}
+                      }`}
                   >
                     <IconComponent className="w-4 h-4" />
                     <span>{tab.name}</span>
@@ -543,7 +541,7 @@ export default function PersonalityPage() {
                 );
               })}
             </div>
-            
+
             {selectedPresetData && (
               <div className="flex items-center space-x-3">
                 <span className="text-sm text-gray-600">Current:</span>
@@ -580,7 +578,7 @@ export default function PersonalityPage() {
 
                       <div className="space-y-3">
                         <div className="w-full bg-gray-200 rounded-full h-2">
-                          <div 
+                          <div
                             className={`h-2 rounded-full bg-${trait.color}-500`}
                             style={{ width: `${trait.value}%` }}
                           />
@@ -814,13 +812,12 @@ export default function PersonalityPage() {
                 {personalityPresets.map((preset) => {
                   const IconComponent = preset.icon;
                   return (
-                    <div 
-                      key={preset.id} 
-                      className={`p-6 rounded-lg border-2 transition-all duration-300 cursor-pointer ${
-                        selectedPreset === preset.id
+                    <div
+                      key={preset.id}
+                      className={`p-6 rounded-lg border-2 transition-all duration-300 cursor-pointer ${selectedPreset === preset.id
                           ? 'border-blue-300 bg-blue-50'
                           : 'border-blue-100 bg-white/50 hover:border-blue-200'
-                      }`}
+                        }`}
                       onClick={() => setSelectedPreset(preset.id)}
                     >
                       <div className="flex items-start justify-between mb-4">
@@ -887,7 +884,7 @@ export default function PersonalityPage() {
         </motion.div>
 
         {/* Quick Actions */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
@@ -916,7 +913,7 @@ export default function PersonalityPage() {
       </div>
 
       {/* Modern Footer */}
-      <motion.footer 
+      <motion.footer
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.9 }}
@@ -927,7 +924,7 @@ export default function PersonalityPage() {
             <div className="col-span-1 md:col-span-2">
               <h3 className="text-2xl font-bold mb-4">METU Personality</h3>
               <p className="text-blue-200 mb-6 max-w-md">
-                Customize your AI assistant's personality to match your communication style and preferences. 
+                Customize your AI assistant's personality to match your communication style and preferences.
                 Create the perfect digital companion for any context.
               </p>
               <div className="flex space-x-4">
@@ -942,7 +939,7 @@ export default function PersonalityPage() {
                 </button>
               </div>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-semibold mb-4">Personality Features</h4>
               <ul className="space-y-2 text-blue-200">
@@ -952,7 +949,7 @@ export default function PersonalityPage() {
                 <li><a href="#" className="hover:text-white transition-colors duration-200">Preset Templates</a></li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-semibold mb-4">Customization Tools</h4>
               <ul className="space-y-2 text-blue-200">
@@ -963,7 +960,7 @@ export default function PersonalityPage() {
               </ul>
             </div>
           </div>
-          
+
           <div className="border-t border-blue-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-blue-200 text-sm">
               © 2025 METU Personality. Your AI, your way.

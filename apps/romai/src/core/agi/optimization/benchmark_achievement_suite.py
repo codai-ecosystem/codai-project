@@ -24,6 +24,13 @@ import sys
 import os
 import math
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 class BenchmarkCategory(Enum):
     """Benchmark categories"""
     PERFORMANCE = "performance"

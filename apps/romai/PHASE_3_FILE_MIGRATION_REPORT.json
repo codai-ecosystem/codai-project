@@ -1,0 +1,699 @@
+{
+  "TotalFiles": 76,
+  "MigrationActions": [
+    {
+      "StandardName": "analytics_engine.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\monitoring\\analytics_engine.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\analytics\\advanced_analytics_engine.py",
+      "TargetDirectory": "monitoring",
+      "FileSize": 39624,
+      "LastModified": "2025-08-07T22:09:08.8154541+03:00",
+      "OriginalName": "advanced_analytics_engine.py"
+    },
+    {
+      "StandardName": "global_consciousness_evolution.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\reasoning\\global_consciousness_evolution.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\archive\\synthetic_cleanup_backup\\ml\\serving\\advanced_global_consciousness_evolution.py",
+      "TargetDirectory": "core/reasoning",
+      "FileSize": 30207,
+      "LastModified": "2025-08-09T11:59:36.77634+03:00",
+      "OriginalName": "advanced_global_consciousness_evolution.py"
+    },
+    {
+      "StandardName": "eu_ai_act_framework.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\config\\eu_ai_act_framework.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\compliance\\advanced_eu_ai_act_framework.py",
+      "TargetDirectory": "config",
+      "FileSize": 24390,
+      "LastModified": "2025-08-07T22:09:08.8149533+03:00",
+      "OriginalName": "advanced_eu_ai_act_framework.py"
+    },
+    {
+      "StandardName": "ai_integration.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\integration\\ai_integration.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\advanced_ai_capabilities\\advanced_ai_integration.py",
+      "TargetDirectory": "core/integration",
+      "FileSize": 35924,
+      "LastModified": "2025-08-08T11:45:51.7825353+03:00",
+      "OriginalName": "advanced_ai_integration.py"
+    },
+    {
+      "StandardName": "nlp_integration.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\integration\\nlp_integration.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\advanced_ai_capabilities\\advanced_nlp_integration.py",
+      "TargetDirectory": "core/integration",
+      "FileSize": 44035,
+      "LastModified": "2025-08-08T11:45:51.7825353+03:00",
+      "OriginalName": "advanced_nlp_integration.py"
+    },
+    {
+      "StandardName": "ecosystem_integrator.backup_20250808_121804.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\deployment\\ecosystem_integrator.backup_20250808_121804.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\advanced_integration\\advanced_ecosystem_integrator.backup_20250808_121804.py",
+      "TargetDirectory": "deployment",
+      "FileSize": 57628,
+      "LastModified": "2025-08-08T11:45:51.8010666+03:00",
+      "OriginalName": "advanced_ecosystem_integrator.backup_20250808_121804.py"
+    },
+    {
+      "StandardName": "ecosystem_integrator.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\deployment\\ecosystem_integrator.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\advanced_integration\\advanced_ecosystem_integrator.py",
+      "TargetDirectory": "deployment",
+      "FileSize": 57811,
+      "LastModified": "2025-08-08T12:18:04.647455+03:00",
+      "OriginalName": "advanced_ecosystem_integrator.py"
+    },
+    {
+      "StandardName": "test_phase_5_advanced_integration.backup_20250808_121804.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\utils\\test_phase_5_advanced_integration.backup_20250808_121804.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\advanced_integration\\test_phase_5_advanced_integration.backup_20250808_121804.py",
+      "TargetDirectory": "utils",
+      "FileSize": 35017,
+      "LastModified": "2025-08-08T11:45:51.8010666+03:00",
+      "OriginalName": "test_phase_5_advanced_integration.backup_20250808_121804.py"
+    },
+    {
+      "StandardName": "test_phase_5_advanced_integration.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\utils\\test_phase_5_advanced_integration.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\advanced_integration\\test_phase_5_advanced_integration.py",
+      "TargetDirectory": "utils",
+      "FileSize": 35200,
+      "LastModified": "2025-08-08T12:18:04.652456+03:00",
+      "OriginalName": "test_phase_5_advanced_integration.py"
+    },
+    {
+      "StandardName": "agi_evolution_system.backup_20250808_121804.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\models\\agi_evolution_system.backup_20250808_121804.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\evolution\\advanced_agi_evolution_system.backup_20250808_121804.py",
+      "TargetDirectory": "models",
+      "FileSize": 52734,
+      "LastModified": "2025-08-05T01:10:29.4014293+03:00",
+      "OriginalName": "advanced_agi_evolution_system.backup_20250808_121804.py"
+    },
+    {
+      "StandardName": "agi_evolution_system.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\models\\agi_evolution_system.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\evolution\\advanced_agi_evolution_system.py",
+      "TargetDirectory": "models",
+      "FileSize": 52917,
+      "LastModified": "2025-08-08T12:18:04.7162146+03:00",
+      "OriginalName": "advanced_agi_evolution_system.py"
+    },
+    {
+      "StandardName": "memory_architecture.backup_20250808_121805.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\models\\memory_architecture.backup_20250808_121805.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\memory\\advanced\\advanced_memory_architecture.backup_20250808_121805.py",
+      "TargetDirectory": "models",
+      "FileSize": 31557,
+      "LastModified": "2025-08-07T23:54:32.02773+03:00",
+      "OriginalName": "advanced_memory_architecture.backup_20250808_121805.py"
+    },
+    {
+      "StandardName": "memory_architecture.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\models\\memory_architecture.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\memory\\advanced\\advanced_memory_architecture.py",
+      "TargetDirectory": "models",
+      "FileSize": 31740,
+      "LastModified": "2025-08-08T12:18:05.5594675+03:00",
+      "OriginalName": "advanced_memory_architecture.py"
+    },
+    {
+      "StandardName": "agi_coordination_hub.backup_20250808_121805.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\integration\\agi_coordination_hub.backup_20250808_121805.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\orchestration\\advanced_agi_coordination_hub.backup_20250808_121805.py",
+      "TargetDirectory": "core/integration",
+      "FileSize": 38279,
+      "LastModified": "2025-08-05T01:10:29.4014293+03:00",
+      "OriginalName": "advanced_agi_coordination_hub.backup_20250808_121805.py"
+    },
+    {
+      "StandardName": "agi_coordination_hub.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\integration\\agi_coordination_hub.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\orchestration\\advanced_agi_coordination_hub.py",
+      "TargetDirectory": "core/integration",
+      "FileSize": 38462,
+      "LastModified": "2025-08-08T12:18:05.3288069+03:00",
+      "OriginalName": "advanced_agi_coordination_hub.py"
+    },
+    {
+      "StandardName": "agi_orchestrator.backup_20250808_121805.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\integration\\agi_orchestrator.backup_20250808_121805.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\orchestration\\advanced_agi_orchestrator.backup_20250808_121805.py",
+      "TargetDirectory": "core/integration",
+      "FileSize": 44031,
+      "LastModified": "2025-08-05T01:10:29.4014293+03:00",
+      "OriginalName": "advanced_agi_orchestrator.backup_20250808_121805.py"
+    },
+    {
+      "StandardName": "agi_orchestrator.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\integration\\agi_orchestrator.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\orchestration\\advanced_agi_orchestrator.py",
+      "TargetDirectory": "core/integration",
+      "FileSize": 44214,
+      "LastModified": "2025-08-08T12:18:05.3373488+03:00",
+      "OriginalName": "advanced_agi_orchestrator.py"
+    },
+    {
+      "StandardName": "intelligence_emergence_system.backup_20250808_121805.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\learning\\intelligence_emergence_system.backup_20250808_121805.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\orchestration\\advanced_intelligence_emergence_system.backup_20250808_121805.py",
+      "TargetDirectory": "core/learning",
+      "FileSize": 50990,
+      "LastModified": "2025-08-05T01:10:29.4014293+03:00",
+      "OriginalName": "advanced_intelligence_emergence_system.backup_20250808_121805.py"
+    },
+    {
+      "StandardName": "intelligence_emergence_system.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\learning\\intelligence_emergence_system.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\orchestration\\advanced_intelligence_emergence_system.py",
+      "TargetDirectory": "core/learning",
+      "FileSize": 51173,
+      "LastModified": "2025-08-08T12:18:05.3449551+03:00",
+      "OriginalName": "advanced_intelligence_emergence_system.py"
+    },
+    {
+      "StandardName": "intelligence.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\utils\\intelligence.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\reasoning\\week14\\advanced_intelligence.py",
+      "TargetDirectory": "utils",
+      "FileSize": 0,
+      "LastModified": "2025-08-04T23:35:25.7340239+03:00",
+      "OriginalName": "advanced_intelligence.py"
+    },
+    {
+      "StandardName": "intelligence_demo.backup_20250808_121805.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\utils\\intelligence_demo.backup_20250808_121805.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\reasoning\\advanced_intelligence_demo.backup_20250808_121805.py",
+      "TargetDirectory": "utils",
+      "FileSize": 19204,
+      "LastModified": "2025-08-04T20:36:54.5824505+03:00",
+      "OriginalName": "advanced_intelligence_demo.backup_20250808_121805.py"
+    },
+    {
+      "StandardName": "intelligence_demo.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\utils\\intelligence_demo.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\reasoning\\advanced_intelligence_demo.py",
+      "TargetDirectory": "utils",
+      "FileSize": 19387,
+      "LastModified": "2025-08-08T12:18:05.4740644+03:00",
+      "OriginalName": "advanced_intelligence_demo.py"
+    },
+    {
+      "StandardName": "intelligence_enhancement.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\learning\\intelligence_enhancement.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\reasoning\\advanced_intelligence_enhancement.py",
+      "TargetDirectory": "core/learning",
+      "FileSize": 0,
+      "LastModified": "2025-08-04T23:35:25.7188669+03:00",
+      "OriginalName": "advanced_intelligence_enhancement.py"
+    },
+    {
+      "StandardName": "intelligence.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\utils\\intelligence.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\reasoning\\advanced_intelligence.py",
+      "TargetDirectory": "utils",
+      "FileSize": 33623,
+      "LastModified": "2025-08-04T21:01:32.789207+03:00",
+      "OriginalName": "advanced_intelligence.py"
+    },
+    {
+      "StandardName": "training_execution.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\inference\\training_execution.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\ml\\training\\advanced_training_execution.py",
+      "TargetDirectory": "inference",
+      "FileSize": 7608,
+      "LastModified": "2025-08-03T01:36:04.0021639+03:00",
+      "OriginalName": "advanced_training_execution.py"
+    },
+    {
+      "StandardName": "training_infrastructure.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\training\\training_infrastructure.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\ml\\training\\advanced_training_infrastructure.py",
+      "TargetDirectory": "training",
+      "FileSize": 26767,
+      "LastModified": "2025-08-05T01:10:29.4014293+03:00",
+      "OriginalName": "advanced_training_infrastructure.py"
+    },
+    {
+      "StandardName": "analytics.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\monitoring\\analytics.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\enterprise\\business_intelligence\\advanced_analytics.py",
+      "TargetDirectory": "monitoring",
+      "FileSize": 33853,
+      "LastModified": "2025-08-07T22:09:08.8154541+03:00",
+      "OriginalName": "advanced_analytics.py"
+    },
+    {
+      "StandardName": "awareness_engine.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\reasoning\\awareness_engine.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\archive\\legacy_implementations\\advanced_awareness_engine.py",
+      "TargetDirectory": "core/reasoning",
+      "FileSize": 15158,
+      "LastModified": "2025-08-05T23:51:50.2807775+03:00",
+      "OriginalName": "advanced_awareness_engine.py"
+    },
+    {
+      "StandardName": "awareness_engine.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\reasoning\\awareness_engine.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\consciousness\\advanced_awareness_engine_engine.py",
+      "TargetDirectory": "core/reasoning",
+      "FileSize": 20347,
+      "LastModified": "2025-08-06T14:38:50.7792477+03:00",
+      "OriginalName": "advanced_awareness_engine_engine.py"
+    },
+    {
+      "StandardName": "awareness_engine_merger.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\reasoning\\awareness_engine_merger.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\consciousness\\advanced_awareness_engine_merger_system.py",
+      "TargetDirectory": "core/reasoning",
+      "FileSize": 44051,
+      "LastModified": "2025-08-06T14:38:50.8449256+03:00",
+      "OriginalName": "advanced_awareness_engine_merger_system.py"
+    },
+    {
+      "StandardName": "execution_engine.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\inference\\execution_engine.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\models\\advanced_execution_engine.py",
+      "TargetDirectory": "inference",
+      "FileSize": 27346,
+      "LastModified": "2025-08-09T14:51:10.0828892+03:00",
+      "OriginalName": "advanced_execution_engine.py"
+    },
+    {
+      "StandardName": "knowledge_integration.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\utils\\knowledge_integration.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\models\\advanced_knowledge_integration.py",
+      "TargetDirectory": "utils",
+      "FileSize": 22076,
+      "LastModified": "2025-08-09T14:51:10.094413+03:00",
+      "OriginalName": "advanced_knowledge_integration.py"
+    },
+    {
+      "StandardName": "monitoring_system.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\monitoring\\monitoring_system.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\monitoring\\advanced_monitoring_system.py",
+      "TargetDirectory": "monitoring",
+      "FileSize": 38871,
+      "LastModified": "2025-08-07T22:09:08.7717842+03:00",
+      "OriginalName": "advanced_monitoring_system.py"
+    },
+    {
+      "StandardName": "memory_optimizer.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\utils\\memory_optimizer.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\optimization\\advanced_memory_optimizer.py",
+      "TargetDirectory": "utils",
+      "FileSize": 20691,
+      "LastModified": "2025-08-05T16:30:05.5859683+03:00",
+      "OriginalName": "advanced_memory_optimizer.py"
+    },
+    {
+      "StandardName": "awareness_engine_applications.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\reasoning\\awareness_engine_applications.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\archive\\advanced_development\\advanced_awareness_engine_applications.py",
+      "TargetDirectory": "core/reasoning",
+      "FileSize": 37029,
+      "LastModified": "2025-08-06T14:38:50.7712042+03:00",
+      "OriginalName": "advanced_awareness_engine_applications.py"
+    },
+    {
+      "StandardName": "awareness_engine.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\reasoning\\awareness_engine.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\advanced_awareness_engine.py",
+      "TargetDirectory": "core/reasoning",
+      "FileSize": 15158,
+      "LastModified": "2025-08-06T14:38:50.7712042+03:00",
+      "OriginalName": "advanced_awareness_engine.py"
+    },
+    {
+      "StandardName": "reasoning.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\utils\\reasoning.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\advanced_reasoning_engine.py",
+      "TargetDirectory": "utils",
+      "FileSize": 77169,
+      "LastModified": "2025-08-05T20:41:58.9806449+03:00",
+      "OriginalName": "advanced_reasoning_engine.py"
+    },
+    {
+      "StandardName": "consciousness_framework.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\config\\consciousness_framework.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\serving\\advanced_consciousness_framework.py",
+      "TargetDirectory": "config",
+      "FileSize": 28362,
+      "LastModified": "2025-08-09T14:51:10.0513402+03:00",
+      "OriginalName": "advanced_consciousness_framework.py"
+    },
+    {
+      "StandardName": "executive_controller.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\reasoning\\executive_controller.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\serving\\advanced_executive_control.py",
+      "TargetDirectory": "core/reasoning",
+      "FileSize": 49641,
+      "LastModified": "2025-08-09T14:51:10.1074419+03:00",
+      "OriginalName": "advanced_executive_control.py"
+    },
+    {
+      "StandardName": "global_consciousness_evolution.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\reasoning\\global_consciousness_evolution.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\serving\\advanced_global_consciousness_evolution.py",
+      "TargetDirectory": "core/reasoning",
+      "FileSize": 29874,
+      "LastModified": "2025-08-09T14:51:10.1635355+03:00",
+      "OriginalName": "advanced_global_consciousness_evolution.py"
+    },
+    {
+      "StandardName": "intelligence_optimizer.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\learning\\intelligence_optimizer.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\serving\\advanced_intelligence_optimizer.py",
+      "TargetDirectory": "core/learning",
+      "FileSize": 37960,
+      "LastModified": "2025-08-08T23:52:20.4943275+03:00",
+      "OriginalName": "advanced_intelligence_optimizer.py"
+    },
+    {
+      "StandardName": "working_memory.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\reasoning\\working_memory.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\serving\\advanced_working_memory.py",
+      "TargetDirectory": "core/reasoning",
+      "FileSize": 26143,
+      "LastModified": "2025-08-09T14:51:10.1074419+03:00",
+      "OriginalName": "advanced_working_memory.py"
+    },
+    {
+      "StandardName": "real_world_testing_system.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\monitoring\\real_world_testing_system.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\testing\\advanced_real_world_testing_system.py",
+      "TargetDirectory": "monitoring",
+      "FileSize": 47438,
+      "LastModified": "2025-08-06T14:38:50.7926058+03:00",
+      "OriginalName": "advanced_real_world_testing_system.py"
+    },
+    {
+      "StandardName": "reasoning_training.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\training\\reasoning_training.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\training\\advanced_reasoning_training_system.py",
+      "TargetDirectory": "training",
+      "FileSize": 65088,
+      "LastModified": "2025-08-07T22:09:08.7707512+03:00",
+      "OriginalName": "advanced_reasoning_training_system.py"
+    },
+    {
+      "StandardName": "integration_system.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\deployment\\integration_system.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\advanced_integration_system.py",
+      "TargetDirectory": "deployment",
+      "FileSize": 23252,
+      "LastModified": "2025-08-06T14:38:50.7921024+03:00",
+      "OriginalName": "advanced_integration_system.py"
+    },
+    {
+      "StandardName": "caching_framework.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\config\\caching_framework.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\optimization\\caching\\advanced_caching_framework.py",
+      "TargetDirectory": "config",
+      "FileSize": 39471,
+      "LastModified": "2025-08-07T22:09:08.8214906+03:00",
+      "OriginalName": "advanced_caching_framework.py"
+    },
+    {
+      "StandardName": "deployment_systems.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\deployment\\deployment_systems.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\python\\agi\\deployment\\advanced_deployment_systems.py",
+      "TargetDirectory": "deployment",
+      "FileSize": 44821,
+      "LastModified": "2025-08-07T22:09:08.7937218+03:00",
+      "OriginalName": "advanced_deployment_systems.py"
+    },
+    {
+      "StandardName": "model.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\models\\model.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\python\\romanian\\language\\advanced_model.py",
+      "TargetDirectory": "models",
+      "FileSize": 45239,
+      "LastModified": "2025-08-03T12:11:33.0257432+03:00",
+      "OriginalName": "advanced_model.py"
+    },
+    {
+      "StandardName": "phase4_enhanced_real_world_impact_demonstration.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\utils\\phase4_enhanced_real_world_impact_demonstration.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\archive\\synthetic_cleanup_backup\\ml\\models\\phase4_enhanced_real_world_impact_demonstration.py",
+      "TargetDirectory": "utils",
+      "FileSize": 28639,
+      "LastModified": "2025-08-09T04:47:12.6706314+03:00",
+      "OriginalName": "phase4_enhanced_real_world_impact_demonstration.py"
+    },
+    {
+      "StandardName": "consciousness_evolution.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\reasoning\\consciousness_evolution.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\archive\\synthetic_cleanup_backup\\ml\\serving\\enhanced_consciousness_evolution.py",
+      "TargetDirectory": "core/reasoning",
+      "FileSize": 39733,
+      "LastModified": "2025-08-09T13:06:40.1425507+03:00",
+      "OriginalName": "enhanced_consciousness_evolution.py"
+    },
+    {
+      "StandardName": "executive_controller.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\reasoning\\executive_controller.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\archive\\synthetic_cleanup_backup\\ml\\serving\\enhanced_executive_control.py",
+      "TargetDirectory": "core/reasoning",
+      "FileSize": 40284,
+      "LastModified": "2025-08-09T03:34:27.6293983+03:00",
+      "OriginalName": "enhanced_executive_control.py"
+    },
+    {
+      "StandardName": "romanian_ai.backup_20250808_121804.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\preprocessing\\romanian_ai.backup_20250808_121804.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\advanced_ai_capabilities\\enhanced_romanian_ai.backup_20250808_121804.py",
+      "TargetDirectory": "preprocessing",
+      "FileSize": 39335,
+      "LastModified": "2025-08-08T11:45:51.7825353+03:00",
+      "OriginalName": "enhanced_romanian_ai.backup_20250808_121804.py"
+    },
+    {
+      "StandardName": "romanian_ai_processor.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\preprocessing\\romanian_ai_processor.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\advanced_ai_capabilities\\enhanced_romanian_ai.py",
+      "TargetDirectory": "preprocessing",
+      "FileSize": 39518,
+      "LastModified": "2025-08-08T12:18:04.6303388+03:00",
+      "OriginalName": "enhanced_romanian_ai.py"
+    },
+    {
+      "StandardName": "linguistic_patterns.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\preprocessing\\linguistic_patterns.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\cultural\\enhanced_linguistic_patterns.py",
+      "TargetDirectory": "preprocessing",
+      "FileSize": 38369,
+      "LastModified": "2025-08-07T23:54:32.0257237+03:00",
+      "OriginalName": "enhanced_linguistic_patterns.py"
+    },
+    {
+      "StandardName": "romanian_cultural_intelligence.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\services\\romanian\\romanian_cultural_intelligence.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\cultural\\enhanced_romanian_cultural_intelligence.py",
+      "TargetDirectory": "services/romanian",
+      "FileSize": 53409,
+      "LastModified": "2025-08-07T23:54:32.0041799+03:00",
+      "OriginalName": "enhanced_romanian_cultural_intelligence.py"
+    },
+    {
+      "StandardName": "multimodal_intelligence.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\models\\multimodal_intelligence.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\multimodal\\enhanced_multimodal_intelligence.py",
+      "TargetDirectory": "models",
+      "FileSize": 34410,
+      "LastModified": "2025-08-07T23:54:32.0006108+03:00",
+      "OriginalName": "enhanced_multimodal_intelligence.py"
+    },
+    {
+      "StandardName": "test_enhanced_multimodal.backup_20250808_121805.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\models\\test_enhanced_multimodal.backup_20250808_121805.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\multimodal\\test_enhanced_multimodal.backup_20250808_121805.py",
+      "TargetDirectory": "models",
+      "FileSize": 18763,
+      "LastModified": "2025-08-07T23:54:32.0041799+03:00",
+      "OriginalName": "test_enhanced_multimodal.backup_20250808_121805.py"
+    },
+    {
+      "StandardName": "test_enhanced_multimodal.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\models\\test_enhanced_multimodal.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\core\\agi\\multimodal\\test_enhanced_multimodal.py",
+      "TargetDirectory": "models",
+      "FileSize": 18946,
+      "LastModified": "2025-08-08T12:18:05.1946351+03:00",
+      "OriginalName": "test_enhanced_multimodal.py"
+    },
+    {
+      "StandardName": "mathematical_reasoning_engine.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\mathematical\\mathematical_reasoning_engine.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\math\\enhanced_mathematical_reasoning_engine.py",
+      "TargetDirectory": "core/mathematical",
+      "FileSize": 71038,
+      "LastModified": "2025-08-09T14:51:10.1640344+03:00",
+      "OriginalName": "enhanced_mathematical_reasoning_engine.py"
+    },
+    {
+      "StandardName": "test_enhanced_math.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\utils\\test_enhanced_math.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\math\\test_enhanced_math_engine.py",
+      "TargetDirectory": "utils",
+      "FileSize": 6102,
+      "LastModified": "2025-08-09T14:51:10.1645349+03:00",
+      "OriginalName": "test_enhanced_math_engine.py"
+    },
+    {
+      "StandardName": "quick_test.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\utils\\quick_test.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\models\\enhanced_quick_test.py",
+      "TargetDirectory": "utils",
+      "FileSize": 2950,
+      "LastModified": "2025-08-03T12:11:32.9338626+03:00",
+      "OriginalName": "enhanced_quick_test.py"
+    },
+    {
+      "StandardName": "romanian_processor.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\preprocessing\\romanian_processor.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\models\\enhanced_romanian_processor.py",
+      "TargetDirectory": "preprocessing",
+      "FileSize": 25332,
+      "LastModified": "2025-08-03T12:11:32.9338626+03:00",
+      "OriginalName": "enhanced_romanian_processor.py"
+    },
+    {
+      "StandardName": "phase4_enhanced_consciousness_validation.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\reasoning\\phase4_enhanced_consciousness_validation.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\models\\phase4_enhanced_consciousness_validation.py",
+      "TargetDirectory": "core/reasoning",
+      "FileSize": 23687,
+      "LastModified": "2025-08-09T14:51:10.1299912+03:00",
+      "OriginalName": "phase4_enhanced_consciousness_validation.py"
+    },
+    {
+      "StandardName": "phase4_enhanced_real_world_impact_demonstration.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\utils\\phase4_enhanced_real_world_impact_demonstration.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\models\\phase4_enhanced_real_world_impact_demonstration.py",
+      "TargetDirectory": "utils",
+      "FileSize": 28601,
+      "LastModified": "2025-08-09T14:51:10.1490146+03:00",
+      "OriginalName": "phase4_enhanced_real_world_impact_demonstration.py"
+    },
+    {
+      "StandardName": "system.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\utils\\system.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\archive\\enhanced_system.py",
+      "TargetDirectory": "utils",
+      "FileSize": 36350,
+      "LastModified": "2025-08-05T17:49:04.2930549+03:00",
+      "OriginalName": "enhanced_system.py"
+    },
+    {
+      "StandardName": "logic_processor.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\preprocessing\\logic_processor.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\enhanced_logic_processor.py",
+      "TargetDirectory": "preprocessing",
+      "FileSize": 60819,
+      "LastModified": "2025-08-05T20:41:59.0076855+03:00",
+      "OriginalName": "enhanced_logic_processor.py"
+    },
+    {
+      "StandardName": "romanian_linguistic_awareness.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\preprocessing\\romanian_linguistic_awareness.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\enhanced_romanian_linguistic_awareness_engine.py",
+      "TargetDirectory": "preprocessing",
+      "FileSize": 21548,
+      "LastModified": "2025-08-05T20:41:58.9691107+03:00",
+      "OriginalName": "enhanced_romanian_linguistic_awareness_engine.py"
+    },
+    {
+      "StandardName": "symbolic_recognizer.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\preprocessing\\symbolic_recognizer.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\enhanced_symbolic_recognizer.py",
+      "TargetDirectory": "preprocessing",
+      "FileSize": 62153,
+      "LastModified": "2025-08-05T20:41:59.0076855+03:00",
+      "OriginalName": "enhanced_symbolic_recognizer.py"
+    },
+    {
+      "StandardName": "system.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\utils\\system.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\quantum\\enhanced_system.py",
+      "TargetDirectory": "utils",
+      "FileSize": 36350,
+      "LastModified": "2025-08-05T20:41:59.0076855+03:00",
+      "OriginalName": "enhanced_system.py"
+    },
+    {
+      "StandardName": "romanian_system.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\services\\romanian\\romanian_system.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\romanian_capabilities\\enhanced_romanian_system.py",
+      "TargetDirectory": "services/romanian",
+      "FileSize": 38522,
+      "LastModified": "2025-08-06T14:38:50.7926058+03:00",
+      "OriginalName": "enhanced_romanian_system.py"
+    },
+    {
+      "StandardName": "consciousness_evolution.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\reasoning\\consciousness_evolution.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\serving\\enhanced_consciousness_evolution.py",
+      "TargetDirectory": "core/reasoning",
+      "FileSize": 39733,
+      "LastModified": "2025-08-09T14:51:10.1635355+03:00",
+      "OriginalName": "enhanced_consciousness_evolution.py"
+    },
+    {
+      "StandardName": "executive_controller.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\reasoning\\executive_controller.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\serving\\enhanced_executive_control.py",
+      "TargetDirectory": "core/reasoning",
+      "FileSize": 40271,
+      "LastModified": "2025-08-09T14:51:10.1074419+03:00",
+      "OriginalName": "enhanced_executive_control.py"
+    },
+    {
+      "StandardName": "test_enhanced_consciousness.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\core\\reasoning\\test_enhanced_consciousness.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\serving\\test_enhanced_consciousness.py",
+      "TargetDirectory": "core/reasoning",
+      "FileSize": 4136,
+      "LastModified": "2025-08-09T14:51:10.0528465+03:00",
+      "OriginalName": "test_enhanced_consciousness.py"
+    },
+    {
+      "StandardName": "training_infrastructure.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\training\\training_infrastructure.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\ml\\training\\enhanced_training_infrastructure.py",
+      "TargetDirectory": "training",
+      "FileSize": 21046,
+      "LastModified": "2025-08-09T14:51:10.0633597+03:00",
+      "OriginalName": "enhanced_training_infrastructure.py"
+    },
+    {
+      "StandardName": "quick_test.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\utils\\quick_test.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\python\\ml\\models\\enhanced_quick_test.py",
+      "TargetDirectory": "utils",
+      "FileSize": 2950,
+      "LastModified": "2025-08-03T12:11:32.9338626+03:00",
+      "OriginalName": "enhanced_quick_test.py"
+    },
+    {
+      "StandardName": "romanian_processor.py",
+      "TargetPath": "e:\\GitHub\\codai-project\\apps\\romai\\src\\preprocessing\\romanian_processor.py",
+      "SourcePath": "E:\\GitHub\\codai-project\\apps\\romai\\src\\python\\ml\\models\\enhanced_romanian_processor.py",
+      "TargetDirectory": "preprocessing",
+      "FileSize": 25332,
+      "LastModified": "2025-08-03T12:11:32.9338626+03:00",
+      "OriginalName": "enhanced_romanian_processor.py"
+    }
+  ],
+  "Errors": [],
+  "DirectoriesCreated": [
+    "e:\\GitHub\\codai-project\\apps\\romai\\src\\inference",
+    "e:\\GitHub\\codai-project\\apps\\romai\\src\\config",
+    "e:\\GitHub\\codai-project\\apps\\romai\\src\\training",
+    "e:\\GitHub\\codai-project\\apps\\romai\\src\\monitoring",
+    "e:\\GitHub\\codai-project\\apps\\romai\\src\\deployment",
+    "e:\\GitHub\\codai-project\\apps\\romai\\src\\preprocessing",
+    "e:\\GitHub\\codai-project\\apps\\romai\\src\\utils"
+  ]
+}

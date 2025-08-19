@@ -32,6 +32,13 @@ import pstats
 import io
 
 from .self_improvement_interfaces import (
+
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
     BasePerformanceSelfImprovement, SelfModificationCapability,
     ImprovementProposal, ImprovementResult, ImprovementMetrics,
     CulturalImpact, SelfImprovementType, ImprovementStatus,

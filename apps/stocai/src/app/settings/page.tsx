@@ -2,13 +2,13 @@
 
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  Settings, 
-  User, 
-  Shield, 
-  Bell, 
-  Palette, 
-  DollarSign, 
+import {
+  Settings,
+  User,
+  Shield,
+  Bell,
+  Palette,
+  DollarSign,
   Bot,
   Search,
   ChevronRight,
@@ -330,11 +330,10 @@ export default function SettingsPage() {
                     <button
                       key={section.id}
                       onClick={() => setActiveSection(section.id)}
-                      className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors ${
-                        activeSection === section.id
+                      className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors ${activeSection === section.id
                           ? 'bg-green-100 text-green-700'
                           : 'text-gray-600 hover:bg-gray-100'
-                      }`}
+                        }`}
                     >
                       <Icon className="h-5 w-5" />
                       <span className="font-medium">{section.label}</span>
@@ -357,7 +356,7 @@ export default function SettingsPage() {
               >
                 <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
                   <h2 className="text-lg font-semibold text-gray-900 mb-6">General Settings</h2>
-                  
+
                   <div className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
@@ -424,7 +423,7 @@ export default function SettingsPage() {
               >
                 <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
                   <h2 className="text-lg font-semibold text-gray-900 mb-6">Account Information</h2>
-                  
+
                   <div className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
@@ -489,7 +488,7 @@ export default function SettingsPage() {
               >
                 <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
                   <h2 className="text-lg font-semibold text-gray-900 mb-6">Security & Privacy</h2>
-                  
+
                   <div className="space-y-6">
                     {/* Two-Factor Authentication */}
                     <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
@@ -504,14 +503,12 @@ export default function SettingsPage() {
                       </div>
                       <button
                         onClick={() => setTwoFactorEnabled(!twoFactorEnabled)}
-                        className={`relative inline-flex h-6 w-11 items-center rounded-full ${
-                          twoFactorEnabled ? 'bg-green-600' : 'bg-gray-200'
-                        }`}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full ${twoFactorEnabled ? 'bg-green-600' : 'bg-gray-200'
+                          }`}
                       >
                         <span
-                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${
-                            twoFactorEnabled ? 'translate-x-6' : 'translate-x-1'
-                          }`}
+                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${twoFactorEnabled ? 'translate-x-6' : 'translate-x-1'
+                            }`}
                         />
                       </button>
                     </div>
@@ -580,7 +577,7 @@ export default function SettingsPage() {
               >
                 <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
                   <h2 className="text-lg font-semibold text-gray-900 mb-6">Notification Preferences</h2>
-                  
+
                   <div className="space-y-6">
                     <div className="overflow-x-auto">
                       <table className="w-full">
@@ -642,7 +639,7 @@ export default function SettingsPage() {
               >
                 <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
                   <h2 className="text-lg font-semibold text-gray-900 mb-6">Trading Preferences</h2>
-                  
+
                   <div className="space-y-6">
                     {tradingPreferences.map((pref) => (
                       <div key={pref.id} className="flex items-center justify-between py-4 border-b border-gray-100 last:border-b-0">
@@ -653,14 +650,12 @@ export default function SettingsPage() {
                         <div className="ml-4">
                           {pref.type === 'boolean' ? (
                             <button
-                              className={`relative inline-flex h-6 w-11 items-center rounded-full ${
-                                pref.value ? 'bg-green-600' : 'bg-gray-200'
-                              }`}
+                              className={`relative inline-flex h-6 w-11 items-center rounded-full ${pref.value ? 'bg-green-600' : 'bg-gray-200'
+                                }`}
                             >
                               <span
-                                className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${
-                                  pref.value ? 'translate-x-6' : 'translate-x-1'
-                                }`}
+                                className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${pref.value ? 'translate-x-6' : 'translate-x-1'
+                                  }`}
                               />
                             </button>
                           ) : pref.type === 'select' ? (
@@ -702,19 +697,17 @@ export default function SettingsPage() {
                       <span className="text-sm text-gray-600">AI Trading</span>
                       <button
                         onClick={() => setAiTradingEnabled(!aiTradingEnabled)}
-                        className={`relative inline-flex h-6 w-11 items-center rounded-full ${
-                          aiTradingEnabled ? 'bg-green-600' : 'bg-gray-200'
-                        }`}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full ${aiTradingEnabled ? 'bg-green-600' : 'bg-gray-200'
+                          }`}
                       >
                         <span
-                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${
-                            aiTradingEnabled ? 'translate-x-6' : 'translate-x-1'
-                          }`}
+                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${aiTradingEnabled ? 'translate-x-6' : 'translate-x-1'
+                            }`}
                         />
                       </button>
                     </div>
                   </div>
-                  
+
                   <div className="space-y-6">
                     {aiPreferences.map((pref) => (
                       <div key={pref.id} className="border border-gray-200 rounded-lg p-4">
@@ -726,14 +719,12 @@ export default function SettingsPage() {
                             </div>
                           </div>
                           <button
-                            className={`relative inline-flex h-6 w-11 items-center rounded-full ${
-                              pref.enabled ? 'bg-green-600' : 'bg-gray-200'
-                            }`}
+                            className={`relative inline-flex h-6 w-11 items-center rounded-full ${pref.enabled ? 'bg-green-600' : 'bg-gray-200'
+                              }`}
                           >
                             <span
-                              className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${
-                                pref.enabled ? 'translate-x-6' : 'translate-x-1'
-                              }`}
+                              className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${pref.enabled ? 'translate-x-6' : 'translate-x-1'
+                                }`}
                             />
                           </button>
                         </div>
@@ -790,7 +781,7 @@ export default function SettingsPage() {
                 Customize More <ChevronRight className="ml-1 h-4 w-4" />
               </button>
             </div>
-            
+
             <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-6 text-white">
               <Shield className="h-8 w-8 mb-3" />
               <h3 className="text-lg font-semibold mb-2">Security Center</h3>
@@ -799,7 +790,7 @@ export default function SettingsPage() {
                 Security Settings <ChevronRight className="ml-1 h-4 w-4" />
               </button>
             </div>
-            
+
             <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl p-6 text-white">
               <Bot className="h-8 w-8 mb-3" />
               <h3 className="text-lg font-semibold mb-2">AI Configuration</h3>

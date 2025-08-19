@@ -8,6 +8,7 @@ Advanced General Intelligence systems for RomAI including:
 - memory: Knowledge and memory systems
 - coordination: Multi-agent coordination
 - cultural: Romanian cultural intelligence integration
+- multimodal: Enhanced multimodal intelligence (Vision + Language + Audio)
 """
 
 from .learning import (
@@ -21,6 +22,19 @@ from .learning import (
     Week9Day1MetaLearningFoundation
 )
 
+from .multimodal import (
+    EnhancedMultimodalIntelligence,
+    EnhancedMultimodalConfig,
+    MultimodalInput,
+    MultimodalOutput,
+    VisionLanguageModel,
+    MultimodalArchitectureType,
+    ProcessingQuality,
+    RomanianMultimodalEngine,
+    RomanianMultimodalResult,
+    FusionStrategy
+)
+
 __all__ = [
     # Learning Systems  
     "RomanianMetaLearningEngine",
@@ -30,5 +44,17 @@ __all__ = [
     "RomanianFewShotLearningEngine",
     "FewShotResult",
     "MetaLearningIntegrationOrchestrator",
-    "Week9Day1MetaLearningFoundation"
+    "Week9Day1MetaLearningFoundation",
+    
+    # Enhanced Multimodal Intelligence (NEW)
+    "EnhancedMultimodalIntelligence",
+    "EnhancedMultimodalConfig",
+    "MultimodalInput", 
+    "MultimodalOutput",
+    "VisionLanguageModel",
+    "MultimodalArchitectureType",
+    "ProcessingQuality",
+    "RomanianMultimodalEngine",
+    "RomanianMultimodalResult",
+    "FusionStrategy"
 ]

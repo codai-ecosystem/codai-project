@@ -1,5 +1,4 @@
 {
-  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "es6"],
     "allowJs": true,
@@ -24,17 +23,30 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "exactOptionalPropertyTypes": false,
+    "target": "ES2020",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": []
   },
   "include": [
-    "src/index-minimal.tsx"
+    "src/components/**/*",
+    "src/config/**/*",
+    "src/contexts/**/*",
+    "src/lib/**/*",
+    "src/utils/**/*",
+    "src/hooks/**/*",
+    "src/middleware/**/*",
+    "src/index.ts"
   ],
   "exclude": [
     "node_modules",
     "dist",
     "**/*.test.*",
-    "**/*.spec.*"
+    "**/*.spec.*",
+    "src/animations/**/*",
+    "src/gestures/**/*",
+    "src/accessibility.tsx",
+    "src/spectacular/**/*"
   ]
 }

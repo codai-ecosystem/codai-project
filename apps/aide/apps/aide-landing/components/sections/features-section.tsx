@@ -17,8 +17,16 @@ import {
 	Layers,
 	Target
 } from 'lucide-react';
+import {
+	Card,
+	CardContent,
+	Badge,
+	Button,
+	useTranslation
+} from '@codai/shared-ui';
 
 export function FeaturesSection() {
+	const { t } = useTranslation();
 	const [ref, inView] = useInView({
 		triggerOnce: true,
 		threshold: 0.1,
@@ -48,57 +56,57 @@ export function FeaturesSection() {
 	const features = [
 		{
 			icon: Brain,
-			title: 'Autonomous AI Agent',
-			description: 'AI that understands context, writes code, fixes bugs, and makes architectural decisions independently.',
-			category: 'AI-Powered',
+			title: t('aide.features.autonomous.title'),
+			description: t('aide.features.autonomous.description'),
+			category: t('aide.features.categories.aiPowered'),
 		},
 		{
 			icon: Code2,
-			title: 'VS Code Integration',
-			description: 'Seamless integration with your favorite editor. Work in familiar environment with AI superpowers.',
-			category: 'Development',
+			title: t('aide.features.vscode.title'),
+			description: t('aide.features.vscode.description'),
+			category: t('aide.features.categories.development'),
 		},
 		{
 			icon: Rocket,
-			title: 'One-Click Deployment',
-			description: 'Deploy to production with a single command. Automatic scaling, monitoring, and rollbacks included.',
-			category: 'DevOps',
+			title: t('aide.features.deployment.title'),
+			description: t('aide.features.deployment.description'),
+			category: t('aide.features.categories.devops'),
 		},
 		{
 			icon: Database,
-			title: 'Smart Database Management',
-			description: 'AI-optimized database schemas, migrations, and queries. Supports PostgreSQL, MongoDB, and more.',
-			category: 'Data',
+			title: t('aide.features.database.title'),
+			description: t('aide.features.database.description'),
+			category: t('aide.features.categories.data'),
 		},
 		{
 			icon: GitBranch,
-			title: 'Intelligent Version Control',
-			description: 'AI-powered git workflows with automatic branch management, conflict resolution, and code reviews.',
-			category: 'Collaboration',
+			title: t('aide.features.versionControl.title'),
+			description: t('aide.features.versionControl.description'),
+			category: t('aide.features.categories.collaboration'),
 		},
 		{
 			icon: Shield,
-			title: 'Built-in Security',
-			description: 'Automated security scanning, vulnerability detection, and compliance checks in your development workflow.',
-			category: 'Security',
+			title: t('aide.features.security.title'),
+			description: t('aide.features.security.description'),
+			category: t('aide.features.categories.security'),
 		},
 		{
 			icon: Cloud,
-			title: 'Multi-Cloud Support',
-			description: 'Deploy to AWS, Google Cloud, Azure, or any cloud provider with optimized configurations.',
-			category: 'Infrastructure',
+			title: t('aide.features.multiCloud.title'),
+			description: t('aide.features.multiCloud.description'),
+			category: t('aide.features.categories.infrastructure'),
 		},
 		{
 			icon: Users,
-			title: 'Team Collaboration',
-			description: 'Real-time collaboration with shared AI context, live coding sessions, and team knowledge bases.',
-			category: 'Collaboration',
+			title: t('aide.features.collaboration.title'),
+			description: t('aide.features.collaboration.description'),
+			category: t('aide.features.categories.collaboration'),
 		},
 		{
 			icon: Zap,
-			title: 'Lightning Fast',
-			description: 'Optimized development workflows that are 10x faster than traditional development processes.',
-			category: 'Performance',
+			title: t('aide.features.performance.title'),
+			description: t('aide.features.performance.description'),
+			category: t('aide.features.categories.performance'),
 		},
 	];
 
@@ -112,21 +120,24 @@ export function FeaturesSection() {
 					animate={inView ? "visible" : "hidden"}
 					className="text-center mb-16"
 				>
-					<motion.div
-						variants={itemVariants}
-						className="inline-flex items-center space-x-2 bg-primary/10 text-primary border border-primary/20 rounded-full px-4 py-2 text-sm font-medium mb-6"
-					>
-						<Target className="h-4 w-4" />
-						<span>Core Features</span>
+					<motion.div variants={itemVariants}>
+						<Badge
+							variant="secondary"
+							size="lg"
+							className="inline-flex items-center space-x-2 mb-6"
+						>
+							<Target className="h-4 w-4" />
+							<span>{t('aide.features.badge')}</span>
+						</Badge>
 					</motion.div>
 
 					<motion.h2
 						variants={itemVariants}
 						className="text-3xl sm:text-5xl font-bold text-foreground mb-6"
 					>
-						Everything you need to
+						{t('aide.features.title.part1')}
 						<span className="bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">
-							{' '}build faster
+							{' '}{t('aide.features.title.part2')}
 						</span>
 					</motion.h2>
 
@@ -134,8 +145,7 @@ export function FeaturesSection() {
 						variants={itemVariants}
 						className="text-xl text-muted-foreground max-w-3xl mx-auto"
 					>
-						AIDE combines the power of AI with modern development tools to create
-						the most advanced development environment ever built.
+						{t('aide.features.subtitle')}
 					</motion.p>
 				</motion.div>
 
@@ -149,32 +159,35 @@ export function FeaturesSection() {
 						<motion.div
 							key={index}
 							variants={itemVariants}
-							className="group relative bg-card border border-border rounded-2xl p-8 hover:shadow-lg hover:border-primary/20 transition-all duration-300"
 						>
-							{/* Category Badge */}
-							<div className="absolute top-6 right-6">
-								<span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
-									{feature.category}
-								</span>
-							</div>
-
-							{/* Icon */}
-							<div className="mb-6">
-								<div className="inline-flex items-center justify-center w-12 h-12 bg-primary/10 text-primary rounded-xl group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
-									<feature.icon className="h-6 w-6" />
+							<Card className="group relative h-full hover:shadow-lg hover:border-primary/20 transition-all duration-300">
+								{/* Category Badge */}
+								<div className="absolute top-6 right-6">
+									<Badge variant="outline" size="sm">
+										{feature.category}
+									</Badge>
 								</div>
-							</div>
 
-							{/* Content */}
-							<h3 className="text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors duration-300">
-								{feature.title}
-							</h3>
-							<p className="text-muted-foreground leading-relaxed">
-								{feature.description}
-							</p>
+								<CardContent className="p-8">
+									{/* Icon */}
+									<div className="mb-6">
+										<div className="inline-flex items-center justify-center w-12 h-12 bg-primary/10 text-primary rounded-xl group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
+											<feature.icon className="h-6 w-6" />
+										</div>
+									</div>
 
-							{/* Hover Effect */}
-							<div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-purple-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+									{/* Content */}
+									<h3 className="text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors duration-300">
+										{feature.title}
+									</h3>
+									<p className="text-muted-foreground leading-relaxed">
+										{feature.description}
+									</p>
+								</CardContent>
+
+								{/* Hover Effect */}
+								<div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-purple-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+							</Card>
 						</motion.div>
 					))}
 				</motion.div>
@@ -184,26 +197,27 @@ export function FeaturesSection() {
 					variants={itemVariants}
 					initial="hidden"
 					animate={inView ? "visible" : "hidden"}
-					className="text-center mt-16"
+					className="mt-16"
 				>
-					<div className="bg-gradient-to-r from-primary/10 via-purple-500/10 to-blue-500/10 border border-primary/20 rounded-2xl p-8">
-						<Bot className="h-12 w-12 text-primary mx-auto mb-4" />
-						<h3 className="text-2xl font-bold text-foreground mb-3">
-							Ready to experience the future?
-						</h3>
-						<p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-							Join thousands of developers who are already building with AI.
-							Start your free trial today and see the difference.
-						</p>
-						<div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
-							<Layers className="h-4 w-4" />
-							<span>No credit card required</span>
-							<span>•</span>
-							<span>Free 14-day trial</span>
-							<span>•</span>
-							<span>Cancel anytime</span>
-						</div>
-					</div>
+					<Card className="bg-gradient-to-r from-primary/10 via-purple-500/10 to-blue-500/10 border-primary/20">
+						<CardContent className="text-center p-8">
+							<Bot className="h-12 w-12 text-primary mx-auto mb-4" />
+							<h3 className="text-2xl font-bold text-foreground mb-3">
+								{t('aide.features.cta.title')}
+							</h3>
+							<p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+								{t('aide.features.cta.description')}
+							</p>
+							<div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
+								<Layers className="h-4 w-4" />
+								<span>{t('aide.features.cta.noCreditCard')}</span>
+								<span>•</span>
+								<span>{t('aide.features.cta.freeTrial')}</span>
+								<span>•</span>
+								<span>{t('aide.features.cta.cancelAnytime')}</span>
+							</div>
+						</CardContent>
+					</Card>
 				</motion.div>
 			</div>
 		</section>

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { 
+import {
   BarChart3,
   TrendingUp,
   TrendingDown,
@@ -92,61 +92,61 @@ export default function AnalyticsPage() {
   const [viewMode, setViewMode] = useState('overview')
 
   const analyticsStats = [
-    { 
-      icon: Users, 
-      label: 'Total Learners', 
-      value: '2,847', 
-      change: '+12.5%', 
+    {
+      icon: Users,
+      label: 'Total Learners',
+      value: '2,847',
+      change: '+12.5%',
       trend: 'up',
       color: 'text-blue-600',
       bgColor: 'bg-blue-50',
       description: 'Active students this month'
     },
-    { 
-      icon: BookOpen, 
-      label: 'Course Completions', 
-      value: '1,234', 
-      change: '+8.3%', 
+    {
+      icon: BookOpen,
+      label: 'Course Completions',
+      value: '1,234',
+      change: '+8.3%',
       trend: 'up',
       color: 'text-green-600',
       bgColor: 'bg-green-50',
       description: 'Courses completed this month'
     },
-    { 
-      icon: Clock, 
-      label: 'Study Hours', 
-      value: '89.5K', 
-      change: '+15.7%', 
+    {
+      icon: Clock,
+      label: 'Study Hours',
+      value: '89.5K',
+      change: '+15.7%',
       trend: 'up',
       color: 'text-purple-600',
       bgColor: 'bg-purple-50',
       description: 'Total learning time logged'
     },
-    { 
-      icon: Award, 
-      label: 'Certificates Earned', 
-      value: '856', 
-      change: '+22.1%', 
+    {
+      icon: Award,
+      label: 'Certificates Earned',
+      value: '856',
+      change: '+22.1%',
       trend: 'up',
       color: 'text-yellow-600',
       bgColor: 'bg-yellow-50',
       description: 'Certificates issued this month'
     },
-    { 
-      icon: Target, 
-      label: 'Goal Achievement', 
-      value: '78%', 
-      change: '+5.2%', 
+    {
+      icon: Target,
+      label: 'Goal Achievement',
+      value: '78%',
+      change: '+5.2%',
       trend: 'up',
       color: 'text-indigo-600',
       bgColor: 'bg-indigo-50',
       description: 'Students meeting learning goals'
     },
-    { 
-      icon: TrendingUp, 
-      label: 'Engagement Rate', 
-      value: '94.2%', 
-      change: '+3.8%', 
+    {
+      icon: TrendingUp,
+      label: 'Engagement Rate',
+      value: '94.2%',
+      change: '+3.8%',
       trend: 'up',
       color: 'text-pink-600',
       bgColor: 'bg-pink-50',
@@ -353,7 +353,7 @@ export default function AnalyticsPage() {
                 <p className="text-sm text-gray-600">Track progress and performance insights</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <select
                 value={selectedTimeRange}
@@ -419,11 +419,10 @@ export default function AnalyticsPage() {
               <button
                 key={tab.id}
                 onClick={() => setViewMode(tab.id)}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-colors flex-1 justify-center ${
-                  viewMode === tab.id
+                className={`flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-colors flex-1 justify-center ${viewMode === tab.id
                     ? 'bg-white text-blue-600 shadow-sm'
                     : 'text-gray-600 hover:text-gray-900'
-                }`}
+                  }`}
               >
                 <tab.icon className="h-4 w-4" />
                 <span>{tab.name}</span>
@@ -464,7 +463,7 @@ export default function AnalyticsPage() {
                       </div>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
-                      <div 
+                      <div
                         className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full"
                         style={{ width: `${path.avgProgress}%` }}
                       ></div>
@@ -541,16 +540,16 @@ export default function AnalyticsPage() {
                   <div key={metric.day} className="text-center">
                     <div className="text-xs text-gray-500 mb-2">{metric.day}</div>
                     <div className="relative">
-                      <div 
+                      <div
                         className="bg-blue-100 rounded-t mx-auto mb-1"
-                        style={{ 
+                        style={{
                           height: `${(metric.sessions / 1600) * 100}px`,
                           width: '24px'
                         }}
                       ></div>
-                      <div 
+                      <div
                         className="bg-purple-500 rounded-t mx-auto"
-                        style={{ 
+                        style={{
                           height: `${(metric.completions / 200) * 60}px`,
                           width: '24px'
                         }}
@@ -627,7 +626,7 @@ export default function AnalyticsPage() {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="w-full bg-gray-200 rounded-full h-2 mr-2">
-                            <div 
+                            <div
                               className="bg-gradient-to-r from-green-400 to-green-600 h-2 rounded-full"
                               style={{ width: `${course.completionRate}%` }}
                             ></div>
@@ -688,7 +687,7 @@ export default function AnalyticsPage() {
               <div className="mt-6 space-y-2">
                 {deviceAnalytics.map((device) => (
                   <div key={device.device} className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
+                    <div
                       className={`h-2 rounded-full ${device.color}`}
                       style={{ width: `${device.percentage}%` }}
                     ></div>
@@ -713,9 +712,9 @@ export default function AnalyticsPage() {
                 ].map((slot, index) => (
                   <div key={index} className="text-center">
                     <div className="text-xs text-gray-500 mb-2">{slot.time}</div>
-                    <div 
+                    <div
                       className={`${slot.color} rounded-lg mx-auto mb-2`}
-                      style={{ 
+                      style={{
                         height: `${slot.percentage}px`,
                         width: '32px'
                       }}

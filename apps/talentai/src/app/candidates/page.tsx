@@ -402,11 +402,11 @@ export default function CandidatesPage() {
 
   const filteredCandidates = candidates.filter(candidate => {
     const matchesSearch = candidate.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         candidate.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         candidate.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         candidate.currentRole.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         candidate.skills.some(skill => skill.name.toLowerCase().includes(searchTerm.toLowerCase()))
-    
+      candidate.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      candidate.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      candidate.currentRole.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      candidate.skills.some(skill => skill.name.toLowerCase().includes(searchTerm.toLowerCase()))
+
     if (activeFilter === 'all') return matchesSearch
     if (activeFilter === 'high-priority') return matchesSearch && candidate.priority === 'high'
     return matchesSearch && candidate.status === activeFilter
@@ -428,8 +428,8 @@ export default function CandidatesPage() {
   })
 
   const handleCandidateSelection = (candidateId: string) => {
-    setSelectedCandidates(prev => 
-      prev.includes(candidateId) 
+    setSelectedCandidates(prev =>
+      prev.includes(candidateId)
         ? prev.filter(id => id !== candidateId)
         : [...prev, candidateId]
     )
@@ -768,10 +768,10 @@ export default function CandidatesPage() {
                         <div className="text-xs text-slate-400">AI Match</div>
                       </div>
                       <div className="w-12 h-2 bg-white/20 rounded-full">
-                        <div 
-                          className={`h-full rounded-full ${candidate.aiMatchScore >= 90 ? 'bg-gradient-to-r from-green-500 to-emerald-500' : 
-                            candidate.aiMatchScore >= 80 ? 'bg-gradient-to-r from-blue-500 to-purple-500' : 
-                            'bg-gradient-to-r from-yellow-500 to-orange-500'}`}
+                        <div
+                          className={`h-full rounded-full ${candidate.aiMatchScore >= 90 ? 'bg-gradient-to-r from-green-500 to-emerald-500' :
+                            candidate.aiMatchScore >= 80 ? 'bg-gradient-to-r from-blue-500 to-purple-500' :
+                              'bg-gradient-to-r from-yellow-500 to-orange-500'}`}
                           style={{ width: `${candidate.aiMatchScore}%` }}
                         ></div>
                       </div>
@@ -852,7 +852,7 @@ export default function CandidatesPage() {
                       <span className="text-sm text-slate-300">{source.source}</span>
                       <div className="flex items-center space-x-3">
                         <div className="w-24 h-2 bg-white/20 rounded-full">
-                          <div 
+                          <div
                             className="h-full bg-gradient-to-r from-purple-500 to-violet-500 rounded-full"
                             style={{ width: `${source.percentage}%` }}
                           ></div>
@@ -873,7 +873,7 @@ export default function CandidatesPage() {
                       <span className="text-sm text-slate-300">{stage.stage}</span>
                       <div className="flex items-center space-x-3">
                         <div className="w-24 h-2 bg-white/20 rounded-full">
-                          <div 
+                          <div
                             className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
                             style={{ width: `${stage.percentage}%` }}
                           ></div>
@@ -897,7 +897,7 @@ export default function CandidatesPage() {
                       </div>
                       <div className="flex items-center space-x-3">
                         <div className="w-16 h-2 bg-white/20 rounded-full">
-                          <div 
+                          <div
                             className="h-full bg-gradient-to-r from-green-500 to-blue-500 rounded-full"
                             style={{ width: `${(skill.count / candidateAnalytics.totalCandidates) * 100}%` }}
                           ></div>
@@ -918,7 +918,7 @@ export default function CandidatesPage() {
                       <span className="text-sm text-slate-300">{location.location}</span>
                       <div className="flex items-center space-x-3">
                         <div className="w-20 h-2 bg-white/20 rounded-full">
-                          <div 
+                          <div
                             className="h-full bg-gradient-to-r from-orange-500 to-red-500 rounded-full"
                             style={{ width: `${location.percentage}%` }}
                           ></div>
@@ -948,7 +948,7 @@ export default function CandidatesPage() {
               <h3 className="text-lg font-semibold text-white mb-2">AI-Powered Screening</h3>
               <p className="text-slate-400 text-sm">Intelligent candidate matching and automated screening with skill verification</p>
             </motion.div>
-            
+
             <motion.div
               className="glassmorphism p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-purple-500/50 transition-all"
               whileHover={{ scale: 1.05 }}
@@ -959,7 +959,7 @@ export default function CandidatesPage() {
               <h3 className="text-lg font-semibold text-white mb-2">Advanced Analytics</h3>
               <p className="text-slate-400 text-sm">Comprehensive recruitment analytics and pipeline performance insights</p>
             </motion.div>
-            
+
             <motion.div
               className="glassmorphism p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-purple-500/50 transition-all"
               whileHover={{ scale: 1.05 }}

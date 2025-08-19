@@ -15,6 +15,13 @@ from typing import Dict, List, Any, Optional
 from dataclasses import dataclass, field
 import statistics
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 # Add the intelligence directory to path
 intelligence_dir = Path(__file__).parent.parent / "intelligence"
 sys.path.insert(0, str(intelligence_dir))

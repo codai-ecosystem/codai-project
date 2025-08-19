@@ -26,6 +26,13 @@ const navigationItems: NavigationItem[] = [
         description: 'AGI System Overview'
     },
     {
+        label: 'Self-Learning',
+        href: '/self-learning',
+        icon: '🧠',
+        description: 'AI Learning Interface',
+        badge: 'Live'
+    },
+    {
         label: 'Training Center',
         href: '/training',
         icon: '🎯',

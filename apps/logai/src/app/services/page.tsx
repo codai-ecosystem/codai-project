@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  Server, 
-  Activity, 
-  Database, 
-  Cloud, 
-  Cpu, 
+import {
+  Server,
+  Activity,
+  Database,
+  Cloud,
+  Cpu,
   MemoryStick,
   Network,
   Shield,
@@ -259,23 +259,23 @@ export default function ServicesPage() {
 
   const filteredServices = services.filter(service => {
     const matchesSearch = service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         service.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+      service.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
     const matchesStatus = statusFilter === 'all' || service.status === statusFilter
     const matchesType = typeFilter === 'all' || service.type === typeFilter
     const matchesEnvironment = environmentFilter === 'all' || service.environment === environmentFilter
-    
+
     return matchesSearch && matchesStatus && matchesType && matchesEnvironment
   })
 
   const sortedServices = [...filteredServices].sort((a, b) => {
     let aValue: any = a[sortBy as keyof Service]
     let bValue: any = b[sortBy as keyof Service]
-    
+
     if (typeof aValue === 'string') {
       aValue = aValue.toLowerCase()
       bValue = bValue.toLowerCase()
     }
-    
+
     if (sortOrder === 'asc') {
       return aValue < bValue ? -1 : aValue > bValue ? 1 : 0
     } else {
@@ -303,7 +303,7 @@ export default function ServicesPage() {
 
   const handleBulkAction = (action: string) => {
     if (selectedServices.length === 0) return
-    
+
     setServices(prev => prev.map(service => {
       if (selectedServices.includes(service.id)) {
         switch (action) {
@@ -325,7 +325,7 @@ export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="border-b border-blue-700/50 bg-blue-900/30 backdrop-blur-sm"
@@ -360,7 +360,7 @@ export default function ServicesPage() {
 
       {/* Overview Metrics */}
       <div className="max-w-7xl mx-auto px-6 py-8">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mb-8"
@@ -375,24 +375,22 @@ export default function ServicesPage() {
             >
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-sm font-medium text-blue-200">{metric.name}</h3>
-                <div className={`px-2 py-1 rounded-full text-xs ${
-                  metric.status === 'healthy' ? 'bg-green-500/20 text-green-300' :
-                  metric.status === 'warning' ? 'bg-yellow-500/20 text-yellow-300' :
-                  'bg-red-500/20 text-red-300'
-                }`}>
+                <div className={`px-2 py-1 rounded-full text-xs ${metric.status === 'healthy' ? 'bg-green-500/20 text-green-300' :
+                    metric.status === 'warning' ? 'bg-yellow-500/20 text-yellow-300' :
+                      'bg-red-500/20 text-red-300'
+                  }`}>
                   {metric.status}
                 </div>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-2xl font-bold text-white">{metric.value}</span>
-                <div className={`flex items-center space-x-1 text-sm ${
-                  metric.changeType === 'increase' ? 'text-green-400' :
-                  metric.changeType === 'decrease' ? 'text-red-400' :
-                  'text-gray-400'
-                }`}>
+                <div className={`flex items-center space-x-1 text-sm ${metric.changeType === 'increase' ? 'text-green-400' :
+                    metric.changeType === 'decrease' ? 'text-red-400' :
+                      'text-gray-400'
+                  }`}>
                   {metric.changeType === 'increase' ? <ArrowUp className="w-3 h-3" /> :
-                   metric.changeType === 'decrease' ? <ArrowDown className="w-3 h-3" /> :
-                   <Minus className="w-3 h-3" />}
+                    metric.changeType === 'decrease' ? <ArrowDown className="w-3 h-3" /> :
+                      <Minus className="w-3 h-3" />}
                   <span>{Math.abs(metric.change)}%</span>
                 </div>
               </div>
@@ -401,7 +399,7 @@ export default function ServicesPage() {
         </motion.div>
 
         {/* Navigation Tabs */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-blue-800/30 backdrop-blur-sm border border-blue-700/50 rounded-xl mb-6"
@@ -420,11 +418,10 @@ export default function ServicesPage() {
                 <button
                   key={tab.id}
                   onClick={() => setSelectedTab(tab.id)}
-                  className={`flex items-center space-x-2 px-4 py-3 rounded-lg transition-all ${
-                    selectedTab === tab.id
+                  className={`flex items-center space-x-2 px-4 py-3 rounded-lg transition-all ${selectedTab === tab.id
                       ? 'bg-blue-600 text-white shadow-lg'
                       : 'text-blue-200 hover:text-white hover:bg-blue-700/50'
-                  }`}
+                    }`}
                 >
                   <Icon className="w-4 h-4" />
                   <span className="font-medium">{tab.label}</span>
@@ -435,7 +432,7 @@ export default function ServicesPage() {
         </motion.div>
 
         {/* Search and Filters */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-blue-800/30 backdrop-blur-sm border border-blue-700/50 rounded-xl p-6 mb-6"
@@ -520,7 +517,7 @@ export default function ServicesPage() {
         </motion.div>
 
         {/* Services Table */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-blue-800/30 backdrop-blur-sm border border-blue-700/50 rounded-xl overflow-hidden"
@@ -636,11 +633,10 @@ export default function ServicesPage() {
                       <div className="flex flex-col space-y-1">
                         {service.dependencies.slice(0, 2).map((dep) => (
                           <div key={dep.id} className="flex items-center space-x-2">
-                            <div className={`w-2 h-2 rounded-full ${
-                              dep.status === 'healthy' ? 'bg-green-500' :
-                              dep.status === 'degraded' ? 'bg-yellow-500' :
-                              'bg-red-500'
-                            }`} />
+                            <div className={`w-2 h-2 rounded-full ${dep.status === 'healthy' ? 'bg-green-500' :
+                                dep.status === 'degraded' ? 'bg-yellow-500' :
+                                  'bg-red-500'
+                              }`} />
                             <span className="text-blue-300 text-xs">{dep.name}</span>
                           </div>
                         ))}
@@ -695,7 +691,7 @@ export default function ServicesPage() {
         </motion.div>
 
         {/* Modern Footer */}
-        <motion.footer 
+        <motion.footer
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}

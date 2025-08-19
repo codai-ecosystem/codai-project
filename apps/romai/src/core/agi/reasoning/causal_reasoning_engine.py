@@ -27,6 +27,13 @@ import networkx as nx
 from scipy import stats
 from sklearn.metrics import accuracy_score, precision_score, recall_score
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 class CausalInferenceMethod(Enum):
     """Causal inference methods"""
     CAUSAL_DISCOVERY = "causal_discovery"

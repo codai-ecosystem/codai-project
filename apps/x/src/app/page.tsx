@@ -7,7 +7,7 @@ export default function XPage() {
   // Redirect to dashboard as the main landing page
   redirect('/dashboard')
 }
-  Play,
+Play,
   Image,
   Video,
   Mic,
@@ -246,7 +246,7 @@ const XDashboardPage = () => {
     const now = new Date()
     const past = new Date(timestamp)
     const diffInMinutes = Math.floor((now.getTime() - past.getTime()) / (1000 * 60))
-    
+
     if (diffInMinutes < 60) {
       return `${diffInMinutes}m`
     } else if (diffInMinutes < 1440) {
@@ -315,9 +315,9 @@ const XDashboardPage = () => {
               </motion.button>
             </div>
           </div>
-          
+
           <p className="text-white mb-4 leading-relaxed">{post.content}</p>
-          
+
           {post.media && post.media.length > 0 && (
             <div className="mb-4">
               {post.media.map((item, index) => (
@@ -329,20 +329,19 @@ const XDashboardPage = () => {
               ))}
             </div>
           )}
-          
+
           <div className="flex items-center justify-between pt-3 border-t border-white/10">
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => handleLike(post.id)}
-              className={`flex items-center gap-2 px-3 py-2 rounded-full transition-colors ${
-                post.liked ? 'text-red-400 bg-red-400/10' : 'text-slate-400 hover:bg-red-400/10 hover:text-red-400'
-              }`}
+              className={`flex items-center gap-2 px-3 py-2 rounded-full transition-colors ${post.liked ? 'text-red-400 bg-red-400/10' : 'text-slate-400 hover:bg-red-400/10 hover:text-red-400'
+                }`}
             >
               <Heart className={`w-4 h-4 ${post.liked ? 'fill-current' : ''}`} />
               <span className="text-sm">{formatNumber(post.likes)}</span>
             </motion.button>
-            
+
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -351,30 +350,28 @@ const XDashboardPage = () => {
               <MessageCircle className="w-4 h-4" />
               <span className="text-sm">{formatNumber(post.comments)}</span>
             </motion.button>
-            
+
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => handleRepost(post.id)}
-              className={`flex items-center gap-2 px-3 py-2 rounded-full transition-colors ${
-                post.reposted ? 'text-green-400 bg-green-400/10' : 'text-slate-400 hover:bg-green-400/10 hover:text-green-400'
-              }`}
+              className={`flex items-center gap-2 px-3 py-2 rounded-full transition-colors ${post.reposted ? 'text-green-400 bg-green-400/10' : 'text-slate-400 hover:bg-green-400/10 hover:text-green-400'
+                }`}
             >
               <Repeat2 className="w-4 h-4" />
               <span className="text-sm">{formatNumber(post.reposts)}</span>
             </motion.button>
-            
+
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => handleBookmark(post.id)}
-              className={`flex items-center gap-2 px-3 py-2 rounded-full transition-colors ${
-                post.bookmarked ? 'text-yellow-400 bg-yellow-400/10' : 'text-slate-400 hover:bg-yellow-400/10 hover:text-yellow-400'
-              }`}
+              className={`flex items-center gap-2 px-3 py-2 rounded-full transition-colors ${post.bookmarked ? 'text-yellow-400 bg-yellow-400/10' : 'text-slate-400 hover:bg-yellow-400/10 hover:text-yellow-400'
+                }`}
             >
               <Bookmark className={`w-4 h-4 ${post.bookmarked ? 'fill-current' : ''}`} />
             </motion.button>
-            
+
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -391,7 +388,7 @@ const XDashboardPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-red-900 to-pink-900">
       {/* Enhanced Header */}
-      <motion.header 
+      <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/10 backdrop-blur-sm border-b border-white/20 sticky top-0 z-50"
@@ -405,7 +402,7 @@ const XDashboardPage = () => {
               </h1>
               <p className="text-slate-300 mt-1">Connect, share, and discover amazing content</p>
             </div>
-            
+
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-6 text-sm">
                 <div className="text-center">
@@ -425,7 +422,7 @@ const XDashboardPage = () => {
                   <p className="text-slate-300">Trends</p>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-2 px-3 py-2 bg-green-500/20 border border-green-400/30 rounded-xl">
                   <div className={`w-3 h-3 rounded-full ${isOnline ? 'bg-green-400' : 'bg-red-400'} animate-pulse`}></div>
@@ -442,85 +439,85 @@ const XDashboardPage = () => {
         </div>
       </motion.header>
 
-        {/* Content */}
-        <div className="relative z-10 container mx-auto px-4 py-16">
-          <div className="text-center mb-16">
-            <h1 className="text-6xl font-bold mb-6">
-              <span className="gradient-text animate-gradient-x">
-                X Trading
-              </span>
-            </h1>
-            <p className="text-xl text-slate-300 max-w-2xl mx-auto mb-8">
-              AI Trading Platform
-            </p>
-            <div className="flex items-center justify-center space-x-2 text-red-400">
-              <div className="w-3 h-3 bg-red-400 rounded-full animate-pulse"></div>
-              <span className="text-sm font-medium">Running on port 4039</span>
-            </div>
-          </div>
-
-          {/* Feature Cards */}
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <div className="glass-card p-6 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
-              <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-purple-600 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Real-time Data</h3>
-              <p className="text-slate-400">Live data streaming and real-time updates across all components.</p>
-            </div>
-
-            <div className="glass-card p-6 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
-              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m-9 4v10a2 2 0 002 2h6a2 2 0 002-2V8M7 8h10M10 12h4" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Modern UI</h3>
-              <p className="text-slate-400">Beautiful animations, glass morphism, and responsive design.</p>
-            </div>
-
-            <div className="glass-card p-6 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
-              <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-red-600 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Tested & Reliable</h3>
-              <p className="text-slate-400">Comprehensive Playwright testing for all user flows.</p>
-            </div>
-          </div>
-
-          {/* Real-time Status */}
-          <div className="mt-16 text-center">
-            <div className="inline-flex items-center px-6 py-3 glass-card">
-              <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse mr-3"></div>
-              <span className="text-red-400 font-medium">System Operational • Live Data Streaming</span>
-            </div>
-          </div>
-
-          {/* Modern Stats Grid */}
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="glass-card p-4 text-center">
-              <div className="text-2xl font-bold text-red-400">99.9%</div>
-              <div className="text-sm text-slate-400">Uptime</div>
-            </div>
-            <div className="glass-card p-4 text-center">
-              <div className="text-2xl font-bold text-emerald-400">&lt;100ms</div>
-              <div className="text-sm text-slate-400">Response</div>
-            </div>
-            <div className="glass-card p-4 text-center">
-              <div className="text-2xl font-bold text-blue-400">24/7</div>
-              <div className="text-sm text-slate-400">Available</div>
-            </div>
-            <div className="glass-card p-4 text-center">
-              <div className="text-2xl font-bold text-purple-400">AI</div>
-              <div className="text-sm text-slate-400">Powered</div>
-            </div>
+      {/* Content */}
+      <div className="relative z-10 container mx-auto px-4 py-16">
+        <div className="text-center mb-16">
+          <h1 className="text-6xl font-bold mb-6">
+            <span className="gradient-text animate-gradient-x">
+              X Trading
+            </span>
+          </h1>
+          <p className="text-xl text-slate-300 max-w-2xl mx-auto mb-8">
+            AI Trading Platform
+          </p>
+          <div className="flex items-center justify-center space-x-2 text-red-400">
+            <div className="w-3 h-3 bg-red-400 rounded-full animate-pulse"></div>
+            <span className="text-sm font-medium">Running on port 4039</span>
           </div>
         </div>
-      </main>
-    </div>
+
+        {/* Feature Cards */}
+        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="glass-card p-6 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
+            <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-purple-600 rounded-lg flex items-center justify-center mb-4">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold mb-2">Real-time Data</h3>
+            <p className="text-slate-400">Live data streaming and real-time updates across all components.</p>
+          </div>
+
+          <div className="glass-card p-6 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
+            <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg flex items-center justify-center mb-4">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m-9 4v10a2 2 0 002 2h6a2 2 0 002-2V8M7 8h10M10 12h4" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold mb-2">Modern UI</h3>
+            <p className="text-slate-400">Beautiful animations, glass morphism, and responsive design.</p>
+          </div>
+
+          <div className="glass-card p-6 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
+            <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-red-600 rounded-lg flex items-center justify-center mb-4">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold mb-2">Tested & Reliable</h3>
+            <p className="text-slate-400">Comprehensive Playwright testing for all user flows.</p>
+          </div>
+        </div>
+
+        {/* Real-time Status */}
+        <div className="mt-16 text-center">
+          <div className="inline-flex items-center px-6 py-3 glass-card">
+            <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse mr-3"></div>
+            <span className="text-red-400 font-medium">System Operational • Live Data Streaming</span>
+          </div>
+        </div>
+
+        {/* Modern Stats Grid */}
+        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="glass-card p-4 text-center">
+            <div className="text-2xl font-bold text-red-400">99.9%</div>
+            <div className="text-sm text-slate-400">Uptime</div>
+          </div>
+          <div className="glass-card p-4 text-center">
+            <div className="text-2xl font-bold text-emerald-400">&lt;100ms</div>
+            <div className="text-sm text-slate-400">Response</div>
+          </div>
+          <div className="glass-card p-4 text-center">
+            <div className="text-2xl font-bold text-blue-400">24/7</div>
+            <div className="text-sm text-slate-400">Available</div>
+          </div>
+          <div className="glass-card p-4 text-center">
+            <div className="text-2xl font-bold text-purple-400">AI</div>
+            <div className="text-sm text-slate-400">Powered</div>
+          </div>
+        </div>
+      </div>
+    </main>
+    </div >
   )
 }

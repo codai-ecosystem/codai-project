@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { 
+import {
   Calculator, Percent, DollarSign, TrendingUp, PieChart, BarChart3,
   Calendar, Clock, Ruler, Thermometer, Zap, Fuel, Home, Car,
   Download, Upload, Copy, Save, Trash2, Eye, EyeOff, Grid, LayoutList,
@@ -320,7 +320,7 @@ export default function CalculatorsPage() {
   // Filter tools based on search and category
   const filteredTools = calculatorTools.filter(tool => {
     const matchesSearch = tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         tool.description.toLowerCase().includes(searchTerm.toLowerCase())
+      tool.description.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesCategory = selectedCategory === 'all' || tool.category === selectedCategory
     return matchesSearch && matchesCategory
   })
@@ -386,7 +386,7 @@ export default function CalculatorsPage() {
 
     if (calculator.previousValue !== null && calculator.operation) {
       const newValue = calculate(calculator.previousValue, inputValue, calculator.operation)
-      
+
       setCalculator(prev => ({
         ...prev,
         display: String(newValue),
@@ -444,9 +444,9 @@ export default function CalculatorsPage() {
 
         <div className="relative z-10 p-4 sm:p-6 lg:p-8">
           <div className="mx-auto max-w-7xl space-y-8">
-            
+
             {/* Enhanced Header */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 p-8 text-white shadow-2xl"
@@ -463,7 +463,7 @@ export default function CalculatorsPage() {
                       <p className="text-green-100 text-lg">Advanced Mathematical & Utility Calculator Suite</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex flex-wrap items-center gap-4">
                     <div className="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2">
                       <div className="text-center">
@@ -489,7 +489,7 @@ export default function CalculatorsPage() {
             </motion.div>
 
             {/* Interactive Calculator Interface */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
@@ -500,9 +500,8 @@ export default function CalculatorsPage() {
                 <div className="flex items-center gap-4">
                   <button
                     onClick={() => setShowHistory(!showHistory)}
-                    className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
-                      showHistory ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                    }`}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${showHistory ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
                   >
                     <History className="h-4 w-4" />
                     History
@@ -513,7 +512,7 @@ export default function CalculatorsPage() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Calculator Display */}
                 <div className="lg:col-span-2">
@@ -529,7 +528,7 @@ export default function CalculatorsPage() {
                       )}
                     </div>
                   </div>
-                  
+
                   {/* Calculator Buttons */}
                   <div className="grid grid-cols-4 gap-3">
                     {/* Row 1 */}
@@ -557,7 +556,7 @@ export default function CalculatorsPage() {
                     >
                       ÷
                     </button>
-                    
+
                     {/* Row 2 */}
                     <button
                       onClick={() => inputNumber('7')}
@@ -583,7 +582,7 @@ export default function CalculatorsPage() {
                     >
                       ×
                     </button>
-                    
+
                     {/* Row 3 */}
                     <button
                       onClick={() => inputNumber('4')}
@@ -609,7 +608,7 @@ export default function CalculatorsPage() {
                     >
                       −
                     </button>
-                    
+
                     {/* Row 4 */}
                     <button
                       onClick={() => inputNumber('1')}
@@ -635,7 +634,7 @@ export default function CalculatorsPage() {
                     >
                       +
                     </button>
-                    
+
                     {/* Row 5 */}
                     <button
                       onClick={() => inputNumber('0')}
@@ -657,7 +656,7 @@ export default function CalculatorsPage() {
                     </button>
                   </div>
                 </div>
-                
+
                 {/* Calculator History */}
                 <div className="space-y-4">
                   {showHistory && (
@@ -677,7 +676,7 @@ export default function CalculatorsPage() {
                       </div>
                     </div>
                   )}
-                  
+
                   <div className="bg-gray-50 rounded-xl p-4">
                     <h4 className="font-semibold text-gray-900 mb-3">Quick Stats</h4>
                     <div className="space-y-3">
@@ -700,7 +699,7 @@ export default function CalculatorsPage() {
             </motion.div>
 
             {/* Search and Filters */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
@@ -719,7 +718,7 @@ export default function CalculatorsPage() {
                     />
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-4">
                   <select
                     value={selectedCategory}
@@ -733,21 +732,19 @@ export default function CalculatorsPage() {
                       </option>
                     ))}
                   </select>
-                  
+
                   <div className="flex bg-white/50 rounded-xl p-1">
                     <button
                       onClick={() => setViewMode('grid')}
-                      className={`px-3 py-2 rounded-lg transition-all duration-200 ${
-                        viewMode === 'grid' ? 'bg-green-500 text-white' : 'text-gray-600 hover:text-gray-900'
-                      }`}
+                      className={`px-3 py-2 rounded-lg transition-all duration-200 ${viewMode === 'grid' ? 'bg-green-500 text-white' : 'text-gray-600 hover:text-gray-900'
+                        }`}
                     >
                       <Grid className="h-4 w-4" />
                     </button>
                     <button
                       onClick={() => setViewMode('list')}
-                      className={`px-3 py-2 rounded-lg transition-all duration-200 ${
-                        viewMode === 'list' ? 'bg-green-500 text-white' : 'text-gray-600 hover:text-gray-900'
-                      }`}
+                      className={`px-3 py-2 rounded-lg transition-all duration-200 ${viewMode === 'list' ? 'bg-green-500 text-white' : 'text-gray-600 hover:text-gray-900'
+                        }`}
                     >
                       <LayoutList className="h-4 w-4" />
                     </button>
@@ -757,7 +754,7 @@ export default function CalculatorsPage() {
             </motion.div>
 
             {/* Categories Overview */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
@@ -772,33 +769,27 @@ export default function CalculatorsPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 + index * 0.1 }}
                     onClick={() => setSelectedCategory(category.id)}
-                    className={`group p-6 rounded-2xl cursor-pointer transition-all duration-200 border ${
-                      selectedCategory === category.id 
-                        ? 'bg-green-500 text-white border-green-600 shadow-lg' 
+                    className={`group p-6 rounded-2xl cursor-pointer transition-all duration-200 border ${selectedCategory === category.id
+                        ? 'bg-green-500 text-white border-green-600 shadow-lg'
                         : 'bg-white/70 backdrop-blur-sm border-white/50 hover:border-green-300 hover:shadow-lg'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center justify-between mb-4">
-                      <IconComponent className={`h-8 w-8 ${
-                        selectedCategory === category.id ? 'text-white' : category.color
-                      }`} />
-                      <div className={`text-right ${
-                        selectedCategory === category.id ? 'text-white' : 'text-gray-900'
-                      }`}>
+                      <IconComponent className={`h-8 w-8 ${selectedCategory === category.id ? 'text-white' : category.color
+                        }`} />
+                      <div className={`text-right ${selectedCategory === category.id ? 'text-white' : 'text-gray-900'
+                        }`}>
                         <div className="text-2xl font-bold">{category.count}</div>
-                        <div className={`text-sm ${
-                          selectedCategory === category.id ? 'text-green-100' : 'text-gray-600'
-                        }`}>Calculators</div>
+                        <div className={`text-sm ${selectedCategory === category.id ? 'text-green-100' : 'text-gray-600'
+                          }`}>Calculators</div>
                       </div>
                     </div>
-                    <h3 className={`font-semibold mb-2 ${
-                      selectedCategory === category.id ? 'text-white' : 'text-gray-900'
-                    }`}>
+                    <h3 className={`font-semibold mb-2 ${selectedCategory === category.id ? 'text-white' : 'text-gray-900'
+                      }`}>
                       {category.name}
                     </h3>
-                    <p className={`text-sm ${
-                      selectedCategory === category.id ? 'text-green-100' : 'text-gray-600'
-                    }`}>
+                    <p className={`text-sm ${selectedCategory === category.id ? 'text-green-100' : 'text-gray-600'
+                      }`}>
                       {category.description}
                     </p>
                   </motion.div>
@@ -808,9 +799,9 @@ export default function CalculatorsPage() {
 
             {/* Main Content Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              
+
               {/* Calculator Tools Grid */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4 }}
@@ -821,7 +812,7 @@ export default function CalculatorsPage() {
                     <h3 className="text-xl font-semibold text-gray-900">Available Calculators</h3>
                     <div className="text-sm text-gray-600">{filteredTools.length} calculators</div>
                   </div>
-                  
+
                   {viewMode === 'grid' ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {filteredTools.map((tool, index) => {
@@ -859,15 +850,15 @@ export default function CalculatorsPage() {
                                 </div>
                               )}
                             </div>
-                            
+
                             <p className="text-sm text-gray-600 mb-3">{tool.description}</p>
-                            
+
                             {tool.formula && (
                               <div className="bg-gray-100 rounded-lg p-2 mb-3">
                                 <code className="text-xs text-gray-700">{tool.formula}</code>
                               </div>
                             )}
-                            
+
                             <div className="space-y-1 mb-4">
                               <div className="text-xs text-gray-500 font-medium">Examples:</div>
                               {tool.examples.slice(0, 2).map((example, idx) => (
@@ -876,16 +867,15 @@ export default function CalculatorsPage() {
                                 </div>
                               ))}
                             </div>
-                            
+
                             <div className="flex items-center justify-between">
                               <span className="text-xs text-gray-500">Last used: {tool.lastUsed}</span>
                               <button
                                 onClick={() => switchCalculator(tool.id)}
-                                className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm ${
-                                  activeCalculatorId === tool.id
+                                className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm ${activeCalculatorId === tool.id
                                     ? 'bg-green-500 text-white'
                                     : 'bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600'
-                                }`}
+                                  }`}
                               >
                                 {activeCalculatorId === tool.id ? (
                                   <>
@@ -937,11 +927,10 @@ export default function CalculatorsPage() {
                             </div>
                             <button
                               onClick={() => switchCalculator(tool.id)}
-                              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 ${
-                                activeCalculatorId === tool.id
+                              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 ${activeCalculatorId === tool.id
                                   ? 'bg-green-500 text-white'
                                   : 'bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600'
-                              }`}
+                                }`}
                             >
                               {activeCalculatorId === tool.id ? (
                                 <>
@@ -964,7 +953,7 @@ export default function CalculatorsPage() {
               </motion.div>
 
               {/* Recent Calculations & Stats */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 }}
@@ -975,7 +964,7 @@ export default function CalculatorsPage() {
                     <h3 className="text-xl font-semibold text-gray-900">Recent Calculations</h3>
                     <RefreshCw className="h-5 w-5 text-gray-400" />
                   </div>
-                  
+
                   <div className="space-y-4">
                     {calculationHistory.map((calc, index) => (
                       <motion.div
@@ -994,7 +983,7 @@ export default function CalculatorsPage() {
                             <span className="text-xs text-gray-500">{calc.timestamp}</span>
                           </div>
                         </div>
-                        
+
                         <div className="font-mono text-sm">
                           <div className="text-gray-600">{calc.input}</div>
                           <div className="text-green-600 font-semibold">= {calc.result}</div>
@@ -1007,7 +996,7 @@ export default function CalculatorsPage() {
                 {/* Calculator Stats */}
                 <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/50">
                   <h3 className="text-xl font-semibold text-gray-900 mb-6">Calculator Stats</h3>
-                  
+
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-gray-600">Active Users</span>
@@ -1031,7 +1020,7 @@ export default function CalculatorsPage() {
             </div>
 
             {/* Modern Footer */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}

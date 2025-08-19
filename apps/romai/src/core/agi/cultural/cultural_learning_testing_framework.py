@@ -57,6 +57,13 @@ from .cultural_learning_validator import (
 )
 
 from .cultural_quality_assurance_system import (
+
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
     RomanianCulturalQualityAssuranceSystem,
     CulturalQualityMetrics,
     QualityAssuranceReport,

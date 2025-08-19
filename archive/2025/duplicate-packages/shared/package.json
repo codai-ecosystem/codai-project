@@ -1,0 +1,19 @@
+{
+  "version": "0.1.0",
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "vitest": "^3.2.4",
+    "@types/node": "^22.0.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "description": "CODAI shared package",
+  "name": "@codai/shared",
+  "types": "dist/index.d.ts",
+  "main": "dist/index.js"
+}

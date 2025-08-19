@@ -1,0 +1,6 @@
+{
+  "id": "test-entity-123",
+  "type": "user",
+  "name": "Test User",
+  "description": "A test user entity for testing the CBD Database API"
+}

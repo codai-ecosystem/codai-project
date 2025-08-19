@@ -1,40 +1,47 @@
 {
   "users": [
     {
-      "id": "admin_1754557121298_a4fz3gwzg",
+      "id": "user_1754803960600_ik8gmefmy",
       "username": "admin",
-      "email": "admin@codai.ro",
-      "password": "$2b$12$NXRkp2Cf87AH2TzC5j71k.llAEisne.e1kNNrFnbiZXjcdGs3.lGe",
+      "email": "admin-1754803960357-44@test.com",
+      "password": "$2b$12$hezbcOV5VMASlrWHu2pi6es9sGHAvtQFUTUxXmQMI52QthGzcTZfm",
       "profile": {
         "name": "Admin User"
       },
-      "role": "admin",
       "isActive": true,
-      "emailVerified": true,
-      "createdAt": "2025-08-07T08:58:41.298Z",
-      "updatedAt": "2025-08-07T08:58:41.298Z"
-    },
-    {
-      "id": "test_1754557121488_9ktlyfbe7",
-      "username": "testuser",
-      "email": "test@codai.ro",
-      "password": "$2b$12$v5IFzmZioUcQOL99NBMgAOUzzt88EoWXe1TBI6/gvSKMPS5sWsZdi",
-      "profile": {
-        "name": "Test User"
-      },
-      "role": "user",
-      "isActive": true,
-      "emailVerified": true,
-      "createdAt": "2025-08-07T08:58:41.487Z",
-      "updatedAt": "2025-08-07T08:58:41.487Z"
+      "emailVerified": false,
+      "createdAt": "2025-08-10T05:32:40.600Z",
+      "updatedAt": "2025-08-10T05:32:40.600Z",
+      "failedLoginAttempts": 0,
+      "passwordHistory": [
+        "$2b$12$hezbcOV5VMASlrWHu2pi6es9sGHAvtQFUTUxXmQMI52QthGzcTZfm"
+      ],
+      "lastPasswordChange": "2025-08-10T05:32:40.600Z",
+      "ipAddresses": [],
+      "suspiciousActivityDetected": false
     }
   ],
   "sessions": [],
-  "auditLogs": [],
+  "auditLogs": [
+    {
+      "id": "audit_1754803960600_gjtg6exgl",
+      "action": "user_created",
+      "resource": "user_management",
+      "userId": "user_1754803960600_ik8gmefmy",
+      "details": {
+        "email": "admin-1754803960357-44@test.com",
+        "username": "admin",
+        "passwordStrengthMet": true
+      },
+      "timestamp": "2025-08-10T05:32:40.600Z",
+      "severity": "info",
+      "status": "success"
+    }
+  ],
   "metrics": {
     "loginAttempts": 0,
     "loginSuccess": 0,
     "loginFailures": 0,
-    "userRegistrations": 0
+    "userRegistrations": 1
   }
 }

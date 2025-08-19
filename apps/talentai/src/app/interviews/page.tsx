@@ -382,9 +382,9 @@ export default function InterviewsAssessmentsPage() {
 
   const filteredInterviews = interviews.filter(interview => {
     const matchesSearch = interview.candidateName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         interview.jobTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         interview.interviewer.toLowerCase().includes(searchTerm.toLowerCase())
-    
+      interview.jobTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      interview.interviewer.toLowerCase().includes(searchTerm.toLowerCase())
+
     if (activeFilter === 'all') return matchesSearch
     if (activeFilter === 'today') {
       const today = new Date().toDateString()
@@ -402,7 +402,7 @@ export default function InterviewsAssessmentsPage() {
     return matchesSearch && interview.status === activeFilter
   })
 
-  const upcomingInterviews = interviews.filter(interview => 
+  const upcomingInterviews = interviews.filter(interview =>
     interview.status === 'scheduled' && new Date(interview.scheduledDate) > new Date()
   ).slice(0, 5)
 
@@ -753,7 +753,7 @@ export default function InterviewsAssessmentsPage() {
               <h3 className="text-lg font-semibold text-white mb-2">Smart Scheduling</h3>
               <p className="text-slate-400 text-sm">Automated interview scheduling with calendar integration and conflict resolution</p>
             </motion.div>
-            
+
             <motion.div
               className="glassmorphism p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-purple-500/50 transition-all"
               whileHover={{ scale: 1.05 }}
@@ -764,7 +764,7 @@ export default function InterviewsAssessmentsPage() {
               <h3 className="text-lg font-semibold text-white mb-2">AI Assessments</h3>
               <p className="text-slate-400 text-sm">Intelligent skill assessments with automated scoring and detailed feedback</p>
             </motion.div>
-            
+
             <motion.div
               className="glassmorphism p-6 rounded-xl border border-white/10 group cursor-pointer hover:border-purple-500/50 transition-all"
               whileHover={{ scale: 1.05 }}

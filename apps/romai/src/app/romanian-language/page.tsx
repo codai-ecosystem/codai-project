@@ -3,11 +3,11 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Languages, 
-  MessageSquare, 
-  FileText, 
-  Globe, 
+import {
+  Languages,
+  MessageSquare,
+  FileText,
+  Globe,
   BookOpen,
   Mic,
   Volume2,
@@ -140,9 +140,9 @@ export default function RomanianLanguage() {
 
   const handleTranslation = async () => {
     if (!inputText.trim()) return;
-    
+
     setIsProcessing(true);
-    
+
     // Simulate API call to Romanian language processing service
     setTimeout(() => {
       const newTranslation: TranslationResult = {
@@ -156,7 +156,7 @@ export default function RomanianLanguage() {
         processing_time: Math.random() * 50 + 100,
         timestamp: new Date().toISOString()
       };
-      
+
       setTranslationResult(newTranslation);
       setIsProcessing(false);
     }, 2000);
@@ -165,7 +165,7 @@ export default function RomanianLanguage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-yellow-50">
       {/* Enhanced Header */}
-      <motion.div 
+      <motion.div
         className="bg-white/80 backdrop-blur-sm border-b border-red-200/50 sticky top-0 z-40"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -183,7 +183,7 @@ export default function RomanianLanguage() {
                 <p className="text-sm text-gray-600">Advanced Romanian AI Language Tools</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="hidden sm:flex items-center space-x-6 text-sm">
                 <div className="flex items-center space-x-2">
@@ -199,7 +199,7 @@ export default function RomanianLanguage() {
                   <span className="text-gray-600">{languageData.cultural_context_score}% Cultural</span>
                 </div>
               </div>
-              
+
               <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
                 <Settings className="w-4 h-4" />
               </button>
@@ -218,11 +218,10 @@ export default function RomanianLanguage() {
                 <button
                   key={tab.id}
                   onClick={() => setSelectedTab(tab.id)}
-                  className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                    selectedTab === tab.id
+                  className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${selectedTab === tab.id
                       ? 'border-red-500 text-red-600'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                    }`}
                 >
                   <Icon className="w-4 h-4" />
                   <span>{tab.label}</span>
@@ -311,7 +310,7 @@ export default function RomanianLanguage() {
               {/* Real-time Processing Interface */}
               <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-red-200/50 shadow-sm">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Real-time Language Processing</h3>
-                
+
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -450,7 +449,7 @@ export default function RomanianLanguage() {
               {/* Cultural Context Analysis */}
               <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-red-200/50 shadow-sm">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Romanian Cultural Phrases</h3>
-                
+
                 <div className="space-y-4">
                   {culturalPhrases.map((phrase, index) => (
                     <motion.div
@@ -527,8 +526,8 @@ export default function RomanianLanguage() {
                 Advanced {tabs.find(tab => tab.id === selectedTab)?.label.toLowerCase()} capabilities coming soon.
               </p>
               <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-yellow-500 rounded-lg flex items-center justify-center mx-auto">
-                {React.createElement(tabs.find(tab => tab.id === selectedTab)?.icon || Languages, { 
-                  className: "w-8 h-8 text-white" 
+                {React.createElement(tabs.find(tab => tab.id === selectedTab)?.icon || Languages, {
+                  className: "w-8 h-8 text-white"
                 })}
               </div>
             </div>
@@ -537,7 +536,7 @@ export default function RomanianLanguage() {
       </div>
 
       {/* Footer */}
-      <motion.footer 
+      <motion.footer
         className="bg-white/80 backdrop-blur-sm border-t border-red-200/50 mt-16"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

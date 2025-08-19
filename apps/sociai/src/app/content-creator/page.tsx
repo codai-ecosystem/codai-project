@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { 
+import {
   Edit3, Plus, Sparkles, Wand2, Image, Video, FileText, Mic,
   Calendar, Clock, Target, Hash, AtSign, Globe, Lock, Eye,
   Save, Download, Share2, Copy, Trash2, MoreHorizontal,
@@ -481,11 +481,10 @@ export default function ContentCreatorPage() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`group inline-flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${
-                      activeTab === tab.id
+                    className={`group inline-flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${activeTab === tab.id
                         ? 'border-blue-500 text-blue-600'
                         : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                    } transition-colors`}
+                      } transition-colors`}
                   >
                     <Icon className="h-5 w-5" />
                     <span>{tab.label}</span>
@@ -518,11 +517,10 @@ export default function ContentCreatorPage() {
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                             onClick={() => setContentType(type.id as any)}
-                            className={`p-4 rounded-lg border-2 transition-colors ${
-                              contentType === type.id
+                            className={`p-4 rounded-lg border-2 transition-colors ${contentType === type.id
                                 ? 'border-blue-500 bg-blue-50 text-blue-700'
                                 : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                            }`}
+                              }`}
                           >
                             <Icon className="h-8 w-8 mx-auto mb-2" />
                             <div className="font-medium">{type.name}</div>
@@ -549,11 +547,10 @@ export default function ContentCreatorPage() {
                               setSelectedPlatforms([...selectedPlatforms, platform.id]);
                             }
                           }}
-                          className={`p-3 rounded-lg border-2 transition-colors ${
-                            selectedPlatforms.includes(platform.id)
+                          className={`p-3 rounded-lg border-2 transition-colors ${selectedPlatforms.includes(platform.id)
                               ? 'border-blue-500 bg-blue-50'
                               : 'border-gray-200 hover:border-gray-300'
-                          }`}
+                            }`}
                         >
                           <div className="text-2xl mb-1">{platform.icon}</div>
                           <div className="text-sm font-medium">{platform.name}</div>
@@ -927,9 +924,9 @@ export default function ContentCreatorPage() {
                             </div>
                           </div>
                         </div>
-                        
+
                         <p className="text-gray-600 mb-4">{tool.description}</p>
-                        
+
                         <div className="mb-4">
                           <div className="flex justify-between text-sm text-gray-600 mb-1">
                             <span>Usage</span>
@@ -947,11 +944,10 @@ export default function ContentCreatorPage() {
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
                           disabled={tool.isPremium && tool.usageCount >= tool.maxUsage}
-                          className={`w-full py-2 px-4 rounded-lg font-medium transition-colors ${
-                            tool.isPremium && tool.usageCount >= tool.maxUsage
+                          className={`w-full py-2 px-4 rounded-lg font-medium transition-colors ${tool.isPremium && tool.usageCount >= tool.maxUsage
                               ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                               : 'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:shadow-lg'
-                          }`}
+                            }`}
                         >
                           {tool.isPremium && tool.usageCount >= tool.maxUsage ? 'Upgrade Required' : 'Use Tool'}
                         </motion.button>
@@ -1018,7 +1014,7 @@ export default function ContentCreatorPage() {
                             </button>
                           </div>
                         </div>
-                        
+
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                           <div className="text-center">
                             <div className="text-lg font-semibold text-green-600">
@@ -1033,10 +1029,9 @@ export default function ContentCreatorPage() {
                             <div className="text-gray-500">Trending Score</div>
                           </div>
                           <div className="text-center">
-                            <div className={`text-lg font-semibold ${
-                              idea.difficulty === 'easy' ? 'text-green-600' :
-                              idea.difficulty === 'medium' ? 'text-yellow-600' : 'text-red-600'
-                            }`}>
+                            <div className={`text-lg font-semibold ${idea.difficulty === 'easy' ? 'text-green-600' :
+                                idea.difficulty === 'medium' ? 'text-yellow-600' : 'text-red-600'
+                              }`}>
                               {idea.difficulty}
                             </div>
                             <div className="text-gray-500">Difficulty</div>

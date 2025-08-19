@@ -312,8 +312,8 @@ export default function AdvancedPerformanceMonitoringPage() {
             <button
               onClick={toggleMonitoring}
               className={`px-6 py-2 rounded-lg font-semibold transition-colors ${isMonitoring
-                  ? 'bg-red-600 hover:bg-red-700 text-white'
-                  : 'bg-green-600 hover:bg-green-700 text-white'
+                ? 'bg-red-600 hover:bg-red-700 text-white'
+                : 'bg-green-600 hover:bg-green-700 text-white'
                 }`}
             >
               {isMonitoring ? '🛑 Stop Monitoring' : '🚀 Start Monitoring'}
@@ -482,8 +482,8 @@ export default function AdvancedPerformanceMonitoringPage() {
                 <div
                   key={alert.id}
                   className={`p-3 rounded-lg border-l-4 ${alert.type === 'critical'
-                      ? 'bg-red-50 border-red-500'
-                      : 'bg-yellow-50 border-yellow-500'
+                    ? 'bg-red-50 border-red-500'
+                    : 'bg-yellow-50 border-yellow-500'
                     }`}
                 >
                   <div className="flex justify-between items-center">

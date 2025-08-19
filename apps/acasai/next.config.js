@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    turbo: {
+    turbopack: {
       resolveAlias: {
         canvas: './empty-module.js',
       },
@@ -13,7 +13,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: false,
   },
-  swcMinify: true,
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },

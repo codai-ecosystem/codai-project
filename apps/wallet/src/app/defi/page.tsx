@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { 
+import {
   Zap,
   TrendingUp,
   TrendingDown,
@@ -357,11 +357,10 @@ const DeFiStakingPage = () => {
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       onClick={() => onClick(id)}
-      className={`px-6 py-3 rounded-xl font-medium transition-all ${
-        isActive
+      className={`px-6 py-3 rounded-xl font-medium transition-all ${isActive
           ? 'bg-gradient-to-r from-purple-500 to-blue-600 text-white'
           : 'text-slate-300 hover:bg-white/10'
-      }`}
+        }`}
     >
       {children}
     </motion.button>
@@ -370,7 +369,7 @@ const DeFiStakingPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900">
       {/* Enhanced Header */}
-      <motion.header 
+      <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/10 backdrop-blur-sm border-b border-white/20 sticky top-0 z-50"
@@ -384,7 +383,7 @@ const DeFiStakingPage = () => {
               </h1>
               <p className="text-slate-300 mt-1">Earn rewards through decentralized finance protocols</p>
             </div>
-            
+
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-6 text-sm">
                 <div className="text-center">
@@ -408,7 +407,7 @@ const DeFiStakingPage = () => {
                   <p className="text-slate-300">Monthly</p>
                 </div>
               </div>
-              
+
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -425,7 +424,7 @@ const DeFiStakingPage = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Tab Navigation */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="flex justify-center mb-8"
@@ -452,7 +451,7 @@ const DeFiStakingPage = () => {
         {selectedTab === 'overview' && (
           <div className="space-y-8">
             {/* Metrics Cards */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="grid grid-cols-1 md:grid-cols-4 gap-6"
@@ -499,7 +498,7 @@ const DeFiStakingPage = () => {
             </motion.div>
 
             {/* Top Protocols */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
@@ -550,7 +549,7 @@ const DeFiStakingPage = () => {
         {selectedTab === 'stake' && (
           <div className="space-y-8">
             {/* Filters */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
@@ -566,7 +565,7 @@ const DeFiStakingPage = () => {
                     className="pl-10 pr-4 py-2 w-full bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
                   />
                 </div>
-                
+
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
@@ -603,7 +602,7 @@ const DeFiStakingPage = () => {
             </motion.div>
 
             {/* Staking Pools */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
@@ -612,11 +611,11 @@ const DeFiStakingPage = () => {
               <div className="bg-white/5 border-b border-white/20 p-6">
                 <h3 className="text-xl font-bold text-white">Available Staking Pools</h3>
               </div>
-              
+
               <div className="divide-y divide-white/10">
                 {stakingPools.map((pool, index) => {
                   const TypeIcon = getTypeIcon(pool.type)
-                  
+
                   return (
                     <motion.div
                       key={pool.id}
@@ -654,7 +653,7 @@ const DeFiStakingPage = () => {
                             <p className="text-2xl font-bold text-green-400">{pool.apy}%</p>
                             <p className="text-sm text-slate-300">APY</p>
                           </div>
-                          
+
                           {pool.userStaked > 0 ? (
                             <div className="text-right">
                               <p className="font-bold text-white">
@@ -686,7 +685,7 @@ const DeFiStakingPage = () => {
 
         {/* Positions Tab */}
         {selectedTab === 'positions' && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl overflow-hidden"
@@ -702,12 +701,12 @@ const DeFiStakingPage = () => {
                 </div>
               </div>
             </div>
-            
+
             <div className="divide-y divide-white/10">
               {positions.map((position, index) => {
                 const TypeIcon = getTypeIcon(position.type)
                 const daysStaked = Math.floor((new Date().getTime() - new Date(position.startDate).getTime()) / (1000 * 60 * 60 * 24))
-                
+
                 return (
                   <motion.div
                     key={position.id}
@@ -747,12 +746,12 @@ const DeFiStakingPage = () => {
                             {hideAmounts ? '••••••••' : formatCurrency(position.value)}
                           </p>
                         </div>
-                        
+
                         <div className="text-right">
                           <p className="text-lg font-bold text-green-400">{position.apy}%</p>
                           <p className="text-sm text-slate-300">APY</p>
                         </div>
-                        
+
                         <div className="text-right">
                           <p className="font-bold text-yellow-400">
                             {hideAmounts ? '••••' : formatCrypto(position.rewards, 2)}
@@ -787,7 +786,7 @@ const DeFiStakingPage = () => {
       </div>
 
       {/* Modern Footer */}
-      <motion.footer 
+      <motion.footer
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
@@ -795,7 +794,7 @@ const DeFiStakingPage = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             >
@@ -804,7 +803,7 @@ const DeFiStakingPage = () => {
               <p className="text-slate-300">Earn competitive rewards through validated staking protocols with automated compounding.</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             >
@@ -813,7 +812,7 @@ const DeFiStakingPage = () => {
               <p className="text-slate-300">Advanced risk assessment with diversified protocol selection and safety scoring.</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             >

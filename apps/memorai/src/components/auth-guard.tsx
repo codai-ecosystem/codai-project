@@ -116,7 +116,7 @@ export function useAuthGuard() {
         hasRole: (role: string) => hasRole(session as CodaiSession, role),
         hasPermission: (permission: string) => hasPermission(session as CodaiSession, permission),
         isMemorAIUser: () => isMemorAIUser(session as CodaiSession),
-        canAccess: (requirements: AuthRequirements) => 
+        canAccess: (requirements: AuthRequirements) =>
             checkAuthorization(session as CodaiSession, requirements)
     };
 }
@@ -131,11 +131,11 @@ interface ConditionalRenderProps {
     fallback?: React.ReactNode;
 }
 
-export function ConditionalRender({ 
-    children, 
-    condition, 
-    value, 
-    fallback = null 
+export function ConditionalRender({
+    children,
+    condition,
+    value,
+    fallback = null
 }: ConditionalRenderProps) {
     const { session, isAuthenticated, isLoading } = useAuthGuard();
 
@@ -237,7 +237,7 @@ function UnauthorizedFallback() {
                 </div>
                 <h2 className="text-lg font-semibold text-gray-900 mb-2">Access Denied</h2>
                 <p className="text-gray-600 mb-4">You don't have permission to access this resource.</p>
-                <button 
+                <button
                     onClick={() => window.location.href = '/auth/signin'}
                     className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
                 >

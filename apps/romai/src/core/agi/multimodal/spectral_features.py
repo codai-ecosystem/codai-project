@@ -11,6 +11,13 @@ from typing import Dict, List, Optional, Tuple, Union, Any
 import time
 
 from .audio_analysis_core import (
+
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
     FeatureExtractorBase, AudioSegment, FeatureVector, 
     AudioFeatureType, AnalysisQuality, logger
 )

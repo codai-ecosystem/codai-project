@@ -21,6 +21,13 @@ from pathlib import Path
 from .base_multimodal import BaseMultimodalEngine, MultimodalConfig
 from .romanian_multimodal_culture import RomanianMultimodalCultureProcessor
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 class SpatialReasoningType(Enum):
     """Types of 3D spatial reasoning tasks"""
     OBJECT_LOCALIZATION = "object_localization"

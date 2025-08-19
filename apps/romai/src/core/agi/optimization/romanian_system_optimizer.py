@@ -42,6 +42,13 @@ from collections import defaultdict, deque
 import pickle
 import joblib
 
+# Real infrastructure imports - NO MOCK DATA
+from ..real_database import (
+    RealDatabaseManager, RealDatabaseOperations, 
+    real_api_manager, real_performance_monitor
+)
+
+
 class OptimizationType(Enum):
     """Types of optimization strategies"""
     PERFORMANCE_FIRST = "performance_first"

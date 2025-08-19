@@ -426,13 +426,12 @@ export default function MaintenanceMonitoring() {
               <button className="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors">
                 <Download className="w-5 h-5" />
               </button>
-              <button 
+              <button
                 onClick={() => setShowFilters(!showFilters)}
-                className={`p-2 rounded-lg transition-colors ${
-                  showFilters 
-                    ? 'text-yellow-600 bg-yellow-100' 
+                className={`p-2 rounded-lg transition-colors ${showFilters
+                    ? 'text-yellow-600 bg-yellow-100'
                     : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
-                }`}
+                  }`}
               >
                 <Filter className="w-5 h-5" />
               </button>
@@ -451,11 +450,10 @@ export default function MaintenanceMonitoring() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center space-x-2 py-4 px-2 border-b-2 font-medium text-sm transition-colors ${
-                    activeTab === tab.id
+                  className={`flex items-center space-x-2 py-4 px-2 border-b-2 font-medium text-sm transition-colors ${activeTab === tab.id
                       ? 'border-yellow-500 text-yellow-600'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                    }`}
                 >
                   <Icon className="w-4 h-4" />
                   <span>{tab.name}</span>
@@ -568,7 +566,7 @@ export default function MaintenanceMonitoring() {
               <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-yellow-200/50 shadow-lg">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-semibold text-gray-800">System Components Status</h3>
-                  <Link 
+                  <Link
                     href="#components"
                     onClick={() => setActiveTab('components')}
                     className="text-yellow-600 hover:text-yellow-700 text-sm font-medium flex items-center"
@@ -599,7 +597,7 @@ export default function MaintenanceMonitoring() {
                           </div>
                           <StatusIcon className={`w-5 h-5 ${getStatusColor(component.status)}`} />
                         </div>
-                        
+
                         <div className="grid grid-cols-2 gap-2 text-xs">
                           <div>
                             <span className="text-gray-500">Health:</span>
@@ -634,7 +632,7 @@ export default function MaintenanceMonitoring() {
                 <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-red-200/50 shadow-lg">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold text-gray-800">Recent Alerts</h3>
-                    <Link 
+                    <Link
                       href="#alerts"
                       onClick={() => setActiveTab('alerts')}
                       className="text-yellow-600 hover:text-yellow-700 text-sm font-medium flex items-center"
@@ -642,7 +640,7 @@ export default function MaintenanceMonitoring() {
                       View All <ChevronRight className="w-4 h-4 ml-1" />
                     </Link>
                   </div>
-                  
+
                   <div className="space-y-3">
                     {performanceAlerts.slice(0, 3).map((alert) => (
                       <div key={alert.id} className={`p-3 rounded-lg border ${getSeverityColor(alert.severity)}`}>
@@ -665,7 +663,7 @@ export default function MaintenanceMonitoring() {
                 <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-blue-200/50 shadow-lg">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold text-gray-800">Upcoming Maintenance</h3>
-                    <Link 
+                    <Link
                       href="#maintenance"
                       onClick={() => setActiveTab('maintenance')}
                       className="text-yellow-600 hover:text-yellow-700 text-sm font-medium flex items-center"
@@ -673,7 +671,7 @@ export default function MaintenanceMonitoring() {
                       View Schedule <ChevronRight className="w-4 h-4 ml-1" />
                     </Link>
                   </div>
-                  
+
                   <div className="space-y-3">
                     {maintenanceTasks.slice(0, 3).map((task) => (
                       <div key={task.id} className="p-3 bg-gray-50 rounded-lg">

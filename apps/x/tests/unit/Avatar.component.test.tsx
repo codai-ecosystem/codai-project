@@ -4,20 +4,23 @@ import React from 'react'
  * Comprehensive testing for x component
  */
 
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import Avatar from '../../Avatar';
 
 describe('Avatar', () => {
-  const user = userEvent.setup();
+  let user: ReturnType<typeof userEvent.setup>;
 
   beforeEach(() => {
     vi.clearAllMocks();
+    cleanup(); // Clean up DOM before each test
+    user = userEvent.setup();
   });
 
   afterEach(() => {
     vi.restoreAllMocks();
+    cleanup(); // Clean up DOM after each test
   });
 
   describe('Rendering', () => {

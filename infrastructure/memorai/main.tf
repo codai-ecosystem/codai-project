@@ -11,7 +11,7 @@ terraform {
 
 provider "aws" {
   region = var.aws_region
-  
+
   default_tags {
     tags = {
       Project     = "MemorAI"
@@ -25,7 +25,7 @@ provider "aws" {
 provider "aws" {
   alias  = "us_east_1"
   region = "us-east-1"
-  
+
   default_tags {
     tags = {
       Project     = "MemorAI"
@@ -52,6 +52,33 @@ variable "domain_name" {
   description = "Domain name for the application"
   type        = string
   default     = "memorai.ro"
+}
+
+variable "graphql_service_token" {
+  description = "Bearer token for GraphQL server to call internal services"
+  type        = string
+  default     = null
+  sensitive   = true
+}
+
+variable "mcp_api_key" {
+  description = "API key for MemorAI MCP service"
+  type        = string
+  default     = null
+  sensitive   = true
+}
+
+variable "azure_openai_api_key" {
+  description = "Azure OpenAI API Key"
+  type        = string
+  default     = null
+  sensitive   = true
+}
+
+variable "memorai_api_base_url" {
+  description = "Base URL for MemorAI API"
+  type        = string
+  default     = null
 }
 
 # Data sources
@@ -335,23 +362,25 @@ resource "aws_route53_zone" "main" {
 }
 
 # ALB Listeners
-resource "aws_lb_listener" "https" {
-  load_balancer_arn = aws_lb.main.arn
-  port              = "443"
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
-  certificate_arn   = aws_acm_certificate.main.arn
-
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.api.arn
-  }
-
-  # Remove certificate validation dependency temporarily
-  lifecycle {
-    ignore_changes = [certificate_arn]
-  }
-}
+## HTTPS listener temporarily disabled until ACM certificate validated
+## Keeping certificate resources & DNS validation records so cert can validate, but listener will be re-added later.
+# resource "aws_lb_listener" "https" {
+#   load_balancer_arn = aws_lb.main.arn
+#   port              = "443"
+#   protocol          = "HTTPS"
+#   ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
+#   certificate_arn   = aws_acm_certificate.main.arn
+#
+#   default_action {
+#     type             = "forward"
+#     target_group_arn = aws_lb_target_group.api.arn
+#   }
+#
+#   # Remove certificate validation dependency temporarily
+#   lifecycle {
+#     ignore_changes = [certificate_arn]
+#   }
+# }
 
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.main.arn
@@ -365,9 +394,14 @@ resource "aws_lb_listener" "http" {
 }
 
 # Listener Rule for MCP Server
-resource "aws_lb_listener_rule" "mcp" {
+## Removed legacy path-based MCP rule (replaced by host-based rule aws_lb_listener_rule.mcp_host)
+
+
+# Host-based routing for MCP subdomain -> sends all paths (including "/") to MCP target group
+resource "aws_lb_listener_rule" "mcp_host" {
   listener_arn = aws_lb_listener.http.arn
-  priority     = 100
+  # Lower priority number = higher precedence than path rule
+  priority = 50
 
   action {
     type             = "forward"
@@ -375,8 +409,10 @@ resource "aws_lb_listener_rule" "mcp" {
   }
 
   condition {
-    path_pattern {
-      values = ["/mcp/*"]
+    host_header {
+      values = [
+        "mcp.${var.domain_name}"
+      ]
     }
   }
 }
@@ -429,110 +465,64 @@ resource "aws_route53_record" "cloudfront_cert_validation" {
 }
 
 # CloudFront Distribution - Following CBD pattern
-resource "aws_cloudfront_distribution" "main" {
-  enabled             = true
-  is_ipv6_enabled     = true
-  comment             = "MemorAI CDN Distribution"
-  default_root_object = "index.html"
-  aliases             = ["api.${var.domain_name}", "mcp.${var.domain_name}"]
-
-  origin {
-    domain_name = aws_lb.main.dns_name
-    origin_id   = "memorai-alb-origin"
-
-    custom_origin_config {
-      http_port              = 80
-      https_port             = 443
-      origin_protocol_policy = "http-only"
-      origin_ssl_protocols   = ["TLSv1.2"]
-    }
-  }
-
-  default_cache_behavior {
-    allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-    cached_methods         = ["GET", "HEAD"]
-    target_origin_id       = "memorai-alb-origin"
-    compress               = true
-    viewer_protocol_policy = "redirect-to-https"
-
-    forwarded_values {
-      query_string = true
-      headers      = ["Authorization", "Content-Type", "Accept", "Origin", "Host"]
-      
-      cookies {
-        forward = "all"
-      }
-    }
-
-    min_ttl     = 0
-    default_ttl = 0
-    max_ttl     = 86400
-  }
-
-  # Cache behavior for API endpoints
-  ordered_cache_behavior {
-    path_pattern           = "/api/*"
-    allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-    cached_methods         = ["GET", "HEAD"]
-    target_origin_id       = "memorai-alb-origin"
-    compress               = true
-    viewer_protocol_policy = "redirect-to-https"
-
-    forwarded_values {
-      query_string = true
-      headers      = ["*"]
-      
-      cookies {
-        forward = "all"
-      }
-    }
-
-    min_ttl     = 0
-    default_ttl = 0
-    max_ttl     = 0
-  }
-
-  # Cache behavior for MCP endpoints
-  ordered_cache_behavior {
-    path_pattern           = "/mcp/*"
-    allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-    cached_methods         = ["GET", "HEAD"]
-    target_origin_id       = "memorai-alb-origin"
-    compress               = true
-    viewer_protocol_policy = "redirect-to-https"
-
-    forwarded_values {
-      query_string = true
-      headers      = ["*"]
-      
-      cookies {
-        forward = "all"
-      }
-    }
-
-    min_ttl     = 0
-    default_ttl = 0
-    max_ttl     = 0
-  }
-
-  price_class = "PriceClass_100"
-
-  restrictions {
-    geo_restriction {
-      restriction_type = "none"
-    }
-  }
-
-  viewer_certificate {
-    acm_certificate_arn      = aws_acm_certificate.cloudfront.arn
-    ssl_support_method       = "sni-only"
-    minimum_protocol_version = "TLSv1.2_2021"
-  }
-
-  tags = {
-    Name = "memorai-cloudfront-${var.environment}"
-  }
-}
+## CloudFront distribution temporarily disabled until certificates validate and HTTPS listener re-enabled
+## Keeping ACM us-east-1 certificate & validation records so it can complete.
+# resource "aws_cloudfront_distribution" "main" {
+#   enabled             = true
+#   is_ipv6_enabled     = true
+#   comment             = "MemorAI CDN Distribution"
+#   default_root_object = "index.html"
+#   aliases             = ["api.${var.domain_name}", "mcp.${var.domain_name}"]
+#
+#   origin {
+#     domain_name = aws_lb.main.dns_name
+#     origin_id   = "memorai-alb-origin"
+#
+#     custom_origin_config {
+#       http_port              = 80
+#       https_port             = 443
+#       origin_protocol_policy = "http-only"
+#       origin_ssl_protocols   = ["TLSv1.2"]
+#     }
+#   }
+#
+#   default_cache_behavior {
+#     allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+#     cached_methods         = ["GET", "HEAD"]
+#     target_origin_id       = "memorai-alb-origin"
+#     compress               = true
+#     viewer_protocol_policy = "redirect-to-https"
+#
+#     forwarded_values {
+#       query_string = true
+#       headers      = ["Authorization", "Content-Type", "Accept", "Origin", "Host"]
+#       
+#       cookies {
+#         forward = "all"
+#       }
+#     }
+#   }
+#
+#   # (Optional future ordered_cache_behavior blocks for /api/* and /mcp/* may be added when re-enabling)
+#
+#   price_class = "PriceClass_100"
+#
+#   restrictions {
+#     geo_restriction {
+#       restriction_type = "none"
+#     }
+#   }
+#
+#   viewer_certificate {
+#     acm_certificate_arn      = aws_acm_certificate.cloudfront.arn
+#     ssl_support_method       = "sni-only"
+#     minimum_protocol_version = "TLSv1.2_2021"
+#   }
+#
+#   tags = {
+#     Name = "memorai-cloudfront-${var.environment}"
+#   }
+# }
 
 # DNS Records for CloudFront Subdomains
 resource "aws_route53_record" "api_subdomain" {
@@ -541,8 +531,8 @@ resource "aws_route53_record" "api_subdomain" {
   type    = "A"
 
   alias {
-    name                   = aws_cloudfront_distribution.main.domain_name
-    zone_id                = aws_cloudfront_distribution.main.hosted_zone_id
+    name                   = aws_lb.main.dns_name
+    zone_id                = aws_lb.main.zone_id
     evaluate_target_health = false
   }
 }
@@ -553,8 +543,8 @@ resource "aws_route53_record" "mcp_subdomain" {
   type    = "A"
 
   alias {
-    name                   = aws_cloudfront_distribution.main.domain_name
-    zone_id                = aws_cloudfront_distribution.main.hosted_zone_id
+    name                   = aws_lb.main.dns_name
+    zone_id                = aws_lb.main.zone_id
     evaluate_target_health = false
   }
 }
@@ -667,6 +657,44 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
+# Allow ECS task execution role to read secrets from SSM Parameter Store / Secrets Manager
+resource "aws_iam_role_policy" "ecs_task_execution_secrets_access" {
+  name = "memorai-ecs-execution-secrets-access-${var.environment}"
+  role = aws_iam_role.ecs_task_execution.id
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid    = "SSMRead",
+        Effect = "Allow",
+        Action = [
+          "ssm:GetParameter",
+          "ssm:GetParameters",
+          "ssm:GetParametersByPath"
+        ],
+        Resource = "*"
+      },
+      {
+        Sid    = "SecretsManagerRead",
+        Effect = "Allow",
+        Action = [
+          "secretsmanager:GetSecretValue"
+        ],
+        Resource = "*"
+      },
+      {
+        Sid    = "KMSDecrypt",
+        Effect = "Allow",
+        Action = [
+          "kms:Decrypt"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
 # CloudWatch Log Groups
 resource "aws_cloudwatch_log_group" "api" {
   name              = "/ecs/memorai-api-${var.environment}"
@@ -684,6 +712,32 @@ resource "aws_cloudwatch_log_group" "mcp" {
   tags = {
     Name = "memorai-mcp-logs-${var.environment}"
   }
+}
+
+# Parameter Store for sensitive config
+resource "aws_ssm_parameter" "memoraigql_service_token" {
+  name  = "/memorai/${var.environment}/graphql/service_token"
+  type  = "SecureString"
+  value = var.graphql_service_token != null ? var.graphql_service_token : ""
+}
+
+resource "aws_ssm_parameter" "memoraimcp_api_key" {
+  name  = "/memorai/${var.environment}/mcp/api_key"
+  type  = "SecureString"
+  value = var.mcp_api_key != null ? var.mcp_api_key : ""
+}
+
+resource "aws_ssm_parameter" "azure_openai_api_key" {
+  name  = "/memorai/${var.environment}/azure/openai_api_key"
+  type  = "SecureString"
+  value = var.azure_openai_api_key != null ? var.azure_openai_api_key : ""
+}
+
+# Non-secret parameters
+resource "aws_ssm_parameter" "memorai_api_base_url" {
+  name  = "/memorai/${var.environment}/api/base_url"
+  type  = "String"
+  value = var.memorai_api_base_url != null ? var.memorai_api_base_url : "http://localhost:4006"
 }
 
 # Outputs
@@ -747,12 +801,13 @@ output "cloudfront_certificate_arn" {
   value       = aws_acm_certificate.cloudfront.arn
 }
 
-output "cloudfront_distribution_id" {
-  description = "CloudFront Distribution ID"
-  value       = aws_cloudfront_distribution.main.id
-}
+## CloudFront outputs commented out while distribution disabled
+# output "cloudfront_distribution_id" {
+#   description = "CloudFront Distribution ID"
+#   value       = aws_cloudfront_distribution.main.id
+# }
 
-output "cloudfront_domain_name" {
-  description = "CloudFront Distribution Domain Name"
-  value       = aws_cloudfront_distribution.main.domain_name
-}
+# output "cloudfront_domain_name" {
+#   description = "CloudFront Distribution Domain Name"
+#   value       = aws_cloudfront_distribution.main.domain_name
+# }

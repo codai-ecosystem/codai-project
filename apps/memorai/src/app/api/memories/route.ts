@@ -4,6 +4,8 @@ import { vectorOperations } from '../../../lib/vector-operations';
 import { memoryCategorizationService } from '../../../lib/categorization';
 import { memoryCache, cacheHelpers, CACHE_CONFIGS } from '../../../lib/cache';
 import { ApiResponse, Memory, CreateMemoryRequest, SearchMemoryResult } from '../../../types/memory';
+import { authenticateAPI, getAuthenticatedUserId, addSecurityHeaders } from '../../../middleware/auth';
+import { sensitiveRateLimit, createRateLimit } from '../../../middleware/rateLimit';
 import { v4 as uuidv4 } from 'uuid';
 
 // Mock user ID - will be replaced with proper auth
@@ -12,19 +14,30 @@ const MOCK_USER_ID = 'user-12345';
 // POST /api/memories - Create new memory
 export async function POST(request: NextRequest): Promise<NextResponse<ApiResponse<Memory>>> {
     try {
+        // 🔐 Authentication check
+        const authResponse = authenticateAPI(request);
+        if (authResponse) return addSecurityHeaders(authResponse);
+
+        // 🛡️ Rate limiting check (strict for creation)
+        const rateLimitResponse = createRateLimit(request);
+        if (rateLimitResponse) return addSecurityHeaders(rateLimitResponse);
+
+        // Get authenticated user ID
+        const userId = getAuthenticatedUserId(request);
+
         const body: CreateMemoryRequest = await request.json();
 
         // Validate input
         const validationResult = CreateMemorySchema.safeParse(body);
         if (!validationResult.success) {
-            return NextResponse.json({
+            return addSecurityHeaders(NextResponse.json({
                 success: false,
                 error: {
                     code: 'VALIDATION_ERROR',
                     message: 'Invalid memory data',
                     details: validationResult.error.errors,
                 },
-            }, { status: 400 });
+            }, { status: 400 }));
         }
 
         const { content, title, category, tags = [] } = validationResult.data;
@@ -36,19 +49,19 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
         const sanitizedTags = tags.map(tag => sanitizeInput(tag));
 
         if (sanitizedContent.trim().length === 0) {
-            return NextResponse.json({
+            return addSecurityHeaders(NextResponse.json({
                 success: false,
                 error: {
                     code: 'VALIDATION_ERROR',
                     message: 'Memory content cannot be empty',
                 },
-            }, { status: 400 });
+            }, { status: 400 }));
         }
 
         // Create memory object
         const memory: Memory = {
             id: uuidv4(),
-            userId: MOCK_USER_ID,
+            userId: userId,
             content: sanitizedContent,
             title: sanitizedTitle,
             category: sanitizedCategory,
@@ -75,13 +88,13 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
         const result = await vectorOperations.storeMemoryWithVector(memory);
 
         if (!result.success) {
-            return NextResponse.json({
+            return addSecurityHeaders(NextResponse.json({
                 success: false,
                 error: {
                     code: 'STORAGE_ERROR',
                     message: result.error || 'Failed to store memory',
                 },
-            }, { status: 500 });
+            }, { status: 500 }));
         }
 
         // Cache the created memory
@@ -91,30 +104,42 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
         // Invalidate user's memory list cache
         cacheHelpers.invalidateUserCache(memory.userId);
 
-        return NextResponse.json({
+        return addSecurityHeaders(NextResponse.json({
             success: true,
             data: memory,
             meta: {
                 timestamp: new Date().toISOString(),
-                cached: true
+                cached: true,
+                authenticated: true
             },
-        }, { status: 201 });
+        }, { status: 201 }));
 
     } catch (error) {
         console.error('Error creating memory:', error);
-        return NextResponse.json({
+        return addSecurityHeaders(NextResponse.json({
             success: false,
             error: {
                 code: 'INTERNAL_ERROR',
                 message: 'Failed to create memory',
             },
-        }, { status: 500 });
+        }, { status: 500 }));
     }
 }
 
 // GET /api/memories - List user memories
 export async function GET(request: NextRequest): Promise<NextResponse<ApiResponse<Memory[]>>> {
     try {
+        // 🔐 Authentication check
+        const authResponse = authenticateAPI(request);
+        if (authResponse) return addSecurityHeaders(authResponse);
+
+        // 🛡️ Rate limiting check
+        const rateLimitResponse = sensitiveRateLimit(request);
+        if (rateLimitResponse) return addSecurityHeaders(rateLimitResponse);
+
+        // Get authenticated user ID
+        const userId = getAuthenticatedUserId(request);
+
         const { searchParams } = new URL(request.url);
         const category = searchParams.get('category') || undefined;
         const tagsParam = searchParams.get('tags');
@@ -124,7 +149,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
 
         // Generate cache key for this specific query
         const filters = JSON.stringify({ category, tags, limit });
-        const cacheKey = cacheHelpers.userMemoriesKey(MOCK_USER_ID, filters);
+        const cacheKey = cacheHelpers.userMemoriesKey(userId, filters);
 
         // Try to get from cache first
         let filteredMemories = memoryCache.get<Memory[]>(cacheKey);
@@ -134,7 +159,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
             fromCache = true;
         } else {
             // Get all user memories
-            const memories = await vectorOperations.getAllUserMemories(MOCK_USER_ID);
+            const memories = await vectorOperations.getAllUserMemories(userId);
 
             // Apply filters
             filteredMemories = memories;
@@ -167,25 +192,26 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
 
-        return NextResponse.json({
+        return addSecurityHeaders(NextResponse.json({
             success: true,
             data: filteredMemories,
             meta: {
                 count: filteredMemories.length,
                 timestamp: new Date().toISOString(),
                 cached: fromCache,
-                filters: { category, tags, limit }
+                filters: { category, tags, limit },
+                authenticated: true
             },
-        });
+        }));
 
     } catch (error) {
         console.error('Error fetching memories:', error);
-        return NextResponse.json({
+        return addSecurityHeaders(NextResponse.json({
             success: false,
             error: {
                 code: 'FETCH_ERROR',
                 message: 'Failed to fetch memories',
             },
-        }, { status: 500 });
+        }, { status: 500 }));
     }
 }

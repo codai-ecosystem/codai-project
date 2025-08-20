@@ -10,14 +10,14 @@ services:
   romai-agi:
     build:
       context: .
-      dockerfile: Dockerfile.week3
+      dockerfile: Dockerfile
       args:
         BUILD_REVISION: ${BUILD_REVISION:-local}
-        BUILD_DATE: ${BUILD_DATE:-2025-08-03}
-    image: romai-agi:week3-local
+        BUILD_DATE: ${BUILD_DATE:-2025-08-20}
+    image: romai-agi:local
     container_name: romai-agi-app
     ports:
-      - "3000:3000"    # Next.js Frontend
+      - "6100:6100"    # Next.js Frontend
       - "8001:8001"    # Python AI API
     environment:
       - NODE_ENV=production
@@ -26,6 +26,10 @@ services:
       - CBD_API_URL=http://cbd-database:4180
       - REDIS_URL=redis://redis-cache:6379
       - DATABASE_URL=postgresql://romai:romai123@postgres-db:5432/romai_production
+      - AZURE_OPENAI_ENDPOINT=https://swedencentral.api.cognitive.microsoft.com/
+      - AZURE_OPENAI_API_KEY=8f9d3fd033c04f5ab6b5886c15f16a2c
+      - AZURE_OPENAI_DEPLOYMENT_NAME=text-embedding-3-large
+      - AZURE_OPENAI_API_VERSION=2024-02-01
     volumes:
       - romai-data:/app/data
       - romai-logs:/app/logs
@@ -38,7 +42,7 @@ services:
       - romai-network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:6100/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -56,7 +60,10 @@ services:
   # 🗄️ CBD Database (Codai Better Database)
   # =============================================================================
   cbd-database:
-    image: codai/cbd:4.0.0
+    build:
+      context: ../../packages/cbd
+      dockerfile: Dockerfile
+    image: romai-cbd:local
     container_name: romai-cbd-db
     ports:
       - "4180:4180"

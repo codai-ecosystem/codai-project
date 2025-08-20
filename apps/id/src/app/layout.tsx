@@ -41,17 +41,8 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen flex bg-gray-50">
         <SharedEcosystemNavigation
-          appName="ID"
+          appName="id"
           currentPath="/"
-          navigationItems={[
-            { name: 'Dashboard', href: '/dashboard', icon: 'LayoutDashboard' },
-            { name: 'Authentication', href: '/auth', icon: 'Shield' },
-            { name: 'Users', href: '/users', icon: 'Users' },
-            { name: 'Sessions', href: '/sessions', icon: 'Clock' },
-            { name: 'Security', href: '/security', icon: 'Lock' },
-            { name: 'Audit Logs', href: '/audit', icon: 'FileText' },
-            { name: 'Settings', href: '/settings', icon: 'Settings' }
-          ]}
         />
         <main className="flex-1 overflow-auto">
           {children}

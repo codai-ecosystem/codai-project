@@ -1,4 +1,4 @@
-# MemoraiMCP Ecosystem Prometheus Configuration
+# Prometheus configuration for CODAI Ecosystem
 global:
   scrape_interval: 15s
   evaluation_interval: 15s
@@ -8,38 +8,64 @@ rule_files:
   # - "second_rules.yml"
 
 scrape_configs:
-  # MemoraiMCP Service Metrics
-  - job_name: 'memorai-mcp'
-    static_configs:
-      - targets: ['memorai-mcp-server:4950']
-    scrape_interval: 30s
-    metrics_path: /metrics
-    params:
-      format: ['prometheus']
-
-  # CBD Database Metrics
-  - job_name: 'cbd-database'
-    static_configs:
-      - targets: ['cbd-database:4180']
-    scrape_interval: 30s
-    metrics_path: /stats
-    params:
-      format: ['prometheus']
-
-  # Redis Metrics (if Redis exporter is available)
-  - job_name: 'redis'
-    static_configs:
-      - targets: ['redis-cache:6379']
-    scrape_interval: 30s
-
-  # Nginx Metrics
-  - job_name: 'nginx'
-    static_configs:
-      - targets: ['memorai-nginx:80']
-    scrape_interval: 30s
-    metrics_path: /nginx_status
-
-  # Self-monitoring
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
+
+  - job_name: 'codai-gateway'
+    static_configs:
+      - targets: ['gateway:4003']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  - job_name: 'codai-app'
+    static_configs:
+      - targets: ['codai-app:3000']
+    metrics_path: '/api/metrics'
+    scrape_interval: 30s
+
+  - job_name: 'codai-hub'
+    static_configs:
+      - targets: ['hub:3000']
+    metrics_path: '/api/metrics'
+    scrape_interval: 30s
+
+  - job_name: 'codai-bancai'
+    static_configs:
+      - targets: ['bancai:3000']
+    metrics_path: '/api/metrics'
+    scrape_interval: 30s
+
+  - job_name: 'codai-id-service'
+    static_configs:
+      - targets: ['id-service:3000']
+    metrics_path: '/api/metrics'
+    scrape_interval: 30s
+
+  - job_name: 'romai-platform'
+    static_configs:
+      - targets: ['romai-platform:6100']
+    metrics_path: '/metrics'
+    scrape_interval: 60s
+
+  - job_name: 'romai-enterprise'
+    static_configs:
+      - targets: ['romai-enterprise:8001']
+    metrics_path: '/api/v1/metrics'
+    scrape_interval: 30s
+
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres:5432']
+    scrape_interval: 30s
+
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+    scrape_interval: 30s
+
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['nginx:80']
+    metrics_path: '/nginx_status'
+    scrape_interval: 30s

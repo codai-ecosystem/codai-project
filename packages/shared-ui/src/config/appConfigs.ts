@@ -181,6 +181,39 @@ export const appConfigs: Record<string, AppConfig> = {
         }
     },
 
+    id: {
+        name: 'CODAI ID',
+        description: 'Enterprise Identity & Authentication Platform',
+        tagline: 'Secure identity services for the CODAI ecosystem',
+        port: 4004,
+        theme: {
+            primary: 'rgb(59, 130, 246)',
+            secondary: 'rgb(37, 99, 235)',
+            accent: 'rgb(34, 197, 94)'
+        },
+        features: ['Identity Management', 'Multi-factor Authentication', 'Single Sign-On', 'Audit Logging'],
+        navigation: [
+            { label: 'Dashboard', labelKey: 'nav.dashboard', href: '/dashboard', requiresAuth: true },
+            { label: 'Users', labelKey: 'nav.users', href: '/users', requiresAuth: true },
+            { label: 'Authentication', labelKey: 'nav.auth', href: '/auth', requiresAuth: true },
+            { label: 'Sessions', labelKey: 'nav.sessions', href: '/sessions', requiresAuth: true },
+            { label: 'Security', labelKey: 'nav.security', href: '/security', requiresAuth: true },
+            { label: 'Audit Logs', labelKey: 'nav.audit', href: '/audit', requiresAuth: true },
+            { label: 'Settings', labelKey: 'nav.settings', href: '/settings', requiresAuth: true }
+        ],
+        auth: {
+            enabled: true,
+            landingPage: '/',
+            dashboardPage: '/dashboard',
+            loginPage: '/login',
+            signupPage: '/signup'
+        },
+        i18n: {
+            defaultLanguage: 'en',
+            supportedLanguages: ['en', 'ro']
+        }
+    },
+
     // Add more apps as needed...
     stocai: {
         name: 'STOCAI',

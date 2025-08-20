@@ -1,0 +1,18 @@
+{
+    "name": "@codai/shared-components",
+    "version": "1.0.0",
+    "description": "Shared components alias for CODAI ecosystem (redirects to @codai/shared-ui)",
+    "main": "index.js",
+    "types": "index.d.ts",
+    "files": [
+        "index.js",
+        "index.d.ts"
+    ],
+    "scripts": {
+        "build": "echo 'Alias package - no build needed'",
+        "dev": "echo 'Alias package - no dev needed'"
+    },
+    "dependencies": {
+        "@codai/shared-ui": "workspace:*"
+    }
+}

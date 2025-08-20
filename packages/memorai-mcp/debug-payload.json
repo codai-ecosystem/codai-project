@@ -1,0 +1,9 @@
+{
+  "jsonrpc": "2.0",
+  "id": "debug-test-1",
+  "method": "remember",
+  "params": {
+    "agentId": "debug-agent",
+    "content": "Debug test memory content"
+  }
+}

@@ -51,8 +51,8 @@ RUN pip install --no-cache-dir \
 # Copy application code
 COPY apps/romai/src/ /app/src/
 
-# Copy startup scripts
-COPY apps/romai/scripts/docker/ /app/scripts/ 2>/dev/null || echo "No docker scripts directory"
+# Copy startup scripts (conditional copy)
+COPY --from=builder /app/apps/romai/scripts/docker/ /app/scripts/ || true
 
 # Create necessary directories
 RUN mkdir -p /app/logs /app/data /app/cache /app/models /app/config

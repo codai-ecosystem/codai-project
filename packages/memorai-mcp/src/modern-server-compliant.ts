@@ -203,6 +203,9 @@ class MemoryStore {
     }
 }
 
+// Export MemoryStore for testing
+export { MemoryStore };
+
 /**
  * Microsoft-Compliant MemorAI MCP Server
  * Following exact patterns from Microsoft documentation

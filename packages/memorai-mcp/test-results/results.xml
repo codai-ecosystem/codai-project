@@ -1,0 +1,24 @@
+<testsuites id="" name="" tests="10" failures="0" skipped="0" errors="0" time="0.836112">
+<testsuite name="mcp-server.e2e.test.ts" timestamp="2025-08-20T04:15:11.385Z" hostname="api-tests" tests="10" failures="0" skipped="0" time="0.399" errors="0">
+<testcase name="MemorAI MCP Server E2E Tests › should have health endpoint responding" classname="mcp-server.e2e.test.ts" time="0.027">
+</testcase>
+<testcase name="MemorAI MCP Server E2E Tests › should handle remember tool via HTTP" classname="mcp-server.e2e.test.ts" time="0.028">
+</testcase>
+<testcase name="MemorAI MCP Server E2E Tests › should handle recall tool via HTTP" classname="mcp-server.e2e.test.ts" time="0.048">
+</testcase>
+<testcase name="MemorAI MCP Server E2E Tests › should handle context tool via HTTP" classname="mcp-server.e2e.test.ts" time="0.029">
+</testcase>
+<testcase name="MemorAI MCP Server E2E Tests › should handle error cases gracefully" classname="mcp-server.e2e.test.ts" time="0.025">
+</testcase>
+<testcase name="MemorAI MCP Server E2E Tests › should maintain memory isolation between agents" classname="mcp-server.e2e.test.ts" time="0.045">
+</testcase>
+<testcase name="MemorAI MCP Server E2E Tests › should handle concurrent requests efficiently" classname="mcp-server.e2e.test.ts" time="0.09">
+</testcase>
+<testcase name="MemorAI MCP Server E2E Tests › should validate response format compliance" classname="mcp-server.e2e.test.ts" time="0.03">
+</testcase>
+<testcase name="MemorAI MCP Server E2E Tests › should handle large content payloads" classname="mcp-server.e2e.test.ts" time="0.038">
+</testcase>
+<testcase name="MemorAI MCP Server E2E Tests › should handle special characters and Unicode" classname="mcp-server.e2e.test.ts" time="0.039">
+</testcase>
+</testsuite>
+</testsuites>

@@ -1,0 +1,200 @@
+# CBD Enterprise Production Configuration
+# 
+# This configuration is optimized for production deployment with
+# enterprise-grade security, performance, and reliability features.
+
+[server]
+# Server configuration
+host = "0.0.0.0"
+port = 8080
+https_port = 8443
+workers = 4
+max_connections = 10000
+keep_alive_timeout = 30
+request_timeout = 60
+
+# TLS/SSL Configuration
+[server.tls]
+enabled = true
+cert_file = "/app/config/tls/server.crt"
+key_file = "/app/config/tls/server.key"
+ca_file = "/app/config/tls/ca.crt"
+protocols = ["TLSv1.2", "TLSv1.3"]
+cipher_suites = [
+    "TLS_AES_256_GCM_SHA384",
+    "TLS_CHACHA20_POLY1305_SHA256",
+    "TLS_AES_128_GCM_SHA256"
+]
+
+[database]
+# RocksDB Configuration for Production
+engine = "rocksdb"
+data_dir = "/app/data/rocksdb"
+wal_dir = "/app/data/wal"
+max_open_files = 1000
+write_buffer_size = "64MB"
+max_write_buffer_number = 3
+target_file_size_base = "64MB"
+max_bytes_for_level_base = "256MB"
+compression = "snappy"
+block_cache_size = "512MB"
+
+# Backup configuration
+[database.backup]
+enabled = true
+interval_hours = 6
+retention_days = 30
+backup_dir = "/app/data/backups"
+
+[vector]
+# Vector Engine Configuration
+engine = "faiss"
+index_type = "IVF_FLAT"
+dimension = 128
+nlist = 1024
+nprobe = 32
+metric = "L2"
+data_dir = "/app/data/vectors"
+
+# Vector index optimization
+[vector.optimization]
+training_threshold = 10000
+rebuild_threshold = 100000
+memory_limit = "2GB"
+
+[security]
+# Enterprise Security Configuration
+enabled = true
+mode = "enterprise"
+
+# Encryption settings
+[security.encryption]
+algorithm = "AES-256-GCM"
+key_rotation_days = 90
+hsm_enabled = false
+
+# Authentication
+[security.auth]
+jwt_secret_file = "/app/config/secrets/jwt.key"
+jwt_expiry_hours = 24
+session_timeout_minutes = 60
+max_failed_attempts = 5
+lockout_duration_minutes = 30
+
+# Authorization (RBAC)
+[security.rbac]
+enabled = true
+default_role = "user"
+admin_role = "admin"
+roles_file = "/app/config/rbac/roles.yaml"
+policies_file = "/app/config/rbac/policies.yaml"
+
+[monitoring]
+# Observability Configuration
+enabled = true
+metrics_port = 9090
+health_check_port = 8081
+
+# Logging configuration
+[monitoring.logging]
+level = "info"
+format = "json"
+output_dir = "/app/logs"
+max_file_size = "100MB"
+max_files = 10
+rotate_daily = true
+
+# Metrics configuration
+[monitoring.metrics]
+enabled = true
+prometheus_enabled = true
+histogram_buckets = [0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0]
+
+# Distributed tracing
+[monitoring.tracing]
+enabled = true
+jaeger_endpoint = "http://jaeger-collector:14268/api/traces"
+sample_rate = 0.1
+
+[performance]
+# Performance Optimization
+cache_size = "1GB"
+thread_pool_size = 16
+io_thread_pool_size = 8
+query_timeout_seconds = 30
+transaction_timeout_seconds = 300
+
+# Connection pooling
+[performance.connection_pool]
+max_connections = 100
+min_connections = 10
+connection_timeout_seconds = 30
+idle_timeout_seconds = 600
+
+[clustering]
+# Clustering Configuration (if enabled)
+enabled = false
+node_id = "cbd-node-1"
+cluster_name = "cbd-production"
+peers = []
+election_timeout_ms = 5000
+heartbeat_interval_ms = 1000
+
+# Gossip protocol
+[clustering.gossip]
+enabled = true
+port = 7946
+seed_nodes = []
+sync_interval_seconds = 30
+
+[compliance]
+# Compliance and Governance
+audit_enabled = true
+gdpr_enabled = true
+hipaa_enabled = false
+pci_dss_enabled = false
+
+# Data retention
+[compliance.retention]
+default_retention_days = 365
+audit_log_retention_days = 2555  # 7 years
+user_data_retention_days = 1095  # 3 years
+
+# Privacy controls
+[compliance.privacy]
+anonymization_enabled = true
+encryption_at_rest = true
+encryption_in_transit = true
+data_masking_enabled = true
+
+[environment]
+# Environment-specific settings
+name = "production"
+region = "us-east-1"
+availability_zone = "us-east-1a"
+instance_type = "cbd-enterprise"
+deployment_id = "${DEPLOYMENT_ID:-production-001}"
+
+# Resource limits
+[environment.resources]
+max_memory = "8GB"
+max_cpu_cores = 8
+max_disk_space = "500GB"
+max_network_bandwidth = "1Gbps"
+
+[alerts]
+# Alerting configuration
+enabled = true
+webhook_url = "${ALERT_WEBHOOK_URL}"
+slack_webhook = "${SLACK_WEBHOOK_URL}"
+email_smtp_server = "${SMTP_SERVER}"
+email_from = "${ALERT_EMAIL_FROM}"
+
+# Alert thresholds
+[alerts.thresholds]
+cpu_usage_percent = 80
+memory_usage_percent = 85
+disk_usage_percent = 90
+response_time_ms = 1000
+error_rate_percent = 5
+connection_pool_usage_percent = 90

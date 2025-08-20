@@ -1,0 +1,20 @@
+{
+    "data": [
+        {
+            "timestamp": "2025-01-01",
+            "users": 1000,
+            "revenue": 50000
+        },
+        {
+            "timestamp": "2025-01-02",
+            "users": 1200,
+            "revenue": 55000
+        },
+        {
+            "timestamp": "2025-01-03",
+            "users": 1150,
+            "revenue": 52000
+        }
+    ],
+    "analysisType": "predictive_analytics"
+}

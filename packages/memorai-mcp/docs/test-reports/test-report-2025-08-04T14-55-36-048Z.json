@@ -1,0 +1,1066 @@
+{
+  "summary": {
+    "totalPhases": 6,
+    "passedPhases": 1,
+    "totalTests": 30,
+    "passedTests": 9,
+    "successRate": 30,
+    "totalDuration": 423,
+    "overallAvgResponse": 1
+  },
+  "phases": [
+    {
+      "phase": 2,
+      "name": "CBD Integration",
+      "port": 8002,
+      "server": "memorai-mcp-advanced-phase4.cjs",
+      "tests": [
+        {
+          "name": "Health Endpoint",
+          "success": false,
+          "responseTime": 24,
+          "error": "",
+          "endpoint": "/health"
+        },
+        {
+          "name": "Basic API Structure",
+          "success": false,
+          "responseTime": 2,
+          "endpointResults": [
+            {
+              "endpoint": "/health",
+              "success": false,
+              "error": ""
+            }
+          ],
+          "successRate": "0/1"
+        },
+        {
+          "name": "Memory Operations",
+          "success": false,
+          "responseTime": 2,
+          "error": ""
+        },
+        {
+          "name": "Performance Test",
+          "success": false,
+          "responseTime": 6,
+          "avgResponseTime": 1,
+          "maxResponseTime": 2,
+          "minResponseTime": 0,
+          "successRate": "0/5",
+          "performanceGrade": "A"
+        },
+        {
+          "name": "Phase 2 Specific Features",
+          "success": false,
+          "responseTime": 1,
+          "details": {
+            "success": false,
+            "feature": "CBD Integration",
+            "error": ""
+          }
+        }
+      ],
+      "startTime": 1754319335628,
+      "endTime": 1754319335664,
+      "duration": 36,
+      "status": "failed",
+      "overallSuccess": false
+    },
+    {
+      "phase": 3,
+      "name": "Intelligence Layer",
+      "port": 8003,
+      "server": "memorai-mcp-intelligent.cjs",
+      "tests": [
+        {
+          "name": "Health Endpoint",
+          "success": false,
+          "responseTime": 1,
+          "error": "",
+          "endpoint": "/health"
+        },
+        {
+          "name": "Basic API Structure",
+          "success": false,
+          "responseTime": 1,
+          "endpointResults": [
+            {
+              "endpoint": "/health",
+              "success": false,
+              "error": ""
+            }
+          ],
+          "successRate": "0/1"
+        },
+        {
+          "name": "Memory Operations",
+          "success": false,
+          "responseTime": 1,
+          "error": ""
+        },
+        {
+          "name": "Performance Test",
+          "success": false,
+          "responseTime": 6,
+          "avgResponseTime": 1,
+          "maxResponseTime": 2,
+          "minResponseTime": 1,
+          "successRate": "0/5",
+          "performanceGrade": "A"
+        },
+        {
+          "name": "Phase 3 Specific Features",
+          "success": false,
+          "responseTime": 2,
+          "details": {
+            "success": false,
+            "feature": "Intelligence Layer",
+            "error": ""
+          }
+        }
+      ],
+      "startTime": 1754319335665,
+      "endTime": 1754319335677,
+      "duration": 12,
+      "status": "failed",
+      "overallSuccess": false
+    },
+    {
+      "phase": 4,
+      "name": "Enterprise Features",
+      "port": 8004,
+      "server": "memorai-mcp-advanced-phase4.cjs",
+      "tests": [
+        {
+          "name": "Health Endpoint",
+          "success": false,
+          "responseTime": 2,
+          "error": "",
+          "endpoint": "/health"
+        },
+        {
+          "name": "Basic API Structure",
+          "success": false,
+          "responseTime": 3,
+          "endpointResults": [
+            {
+              "endpoint": "/health",
+              "success": false,
+              "error": ""
+            },
+            {
+              "endpoint": "/stats",
+              "success": false,
+              "error": ""
+            }
+          ],
+          "successRate": "0/2"
+        },
+        {
+          "name": "Memory Operations",
+          "success": false,
+          "responseTime": 2,
+          "error": ""
+        },
+        {
+          "name": "Performance Test",
+          "success": false,
+          "responseTime": 5,
+          "avgResponseTime": 1,
+          "maxResponseTime": 1,
+          "minResponseTime": 1,
+          "successRate": "0/5",
+          "performanceGrade": "A"
+        },
+        {
+          "name": "Phase 4 Specific Features",
+          "success": false,
+          "responseTime": 1,
+          "details": {
+            "success": false,
+            "feature": "Enterprise Features",
+            "error": ""
+          }
+        }
+      ],
+      "startTime": 1754319335677,
+      "endTime": 1754319335691,
+      "duration": 14,
+      "status": "failed",
+      "overallSuccess": false
+    },
+    {
+      "phase": 5,
+      "name": "Performance Optimization",
+      "port": 8005,
+      "server": "memorai-mcp-performance-phase5.cjs",
+      "tests": [
+        {
+          "name": "Health Endpoint",
+          "success": false,
+          "responseTime": 1,
+          "error": "",
+          "endpoint": "/health"
+        },
+        {
+          "name": "Basic API Structure",
+          "success": false,
+          "responseTime": 2,
+          "endpointResults": [
+            {
+              "endpoint": "/health",
+              "success": false,
+              "error": ""
+            },
+            {
+              "endpoint": "/stats",
+              "success": false,
+              "error": ""
+            }
+          ],
+          "successRate": "0/2"
+        },
+        {
+          "name": "Memory Operations",
+          "success": false,
+          "responseTime": 2,
+          "error": ""
+        },
+        {
+          "name": "Performance Test",
+          "success": false,
+          "responseTime": 6,
+          "avgResponseTime": 1,
+          "maxResponseTime": 2,
+          "minResponseTime": 1,
+          "successRate": "0/5",
+          "performanceGrade": "A"
+        },
+        {
+          "name": "Phase 5 Specific Features",
+          "success": false,
+          "responseTime": 1,
+          "details": {
+            "success": false,
+            "feature": "Performance Clustering",
+            "error": ""
+          }
+        }
+      ],
+      "startTime": 1754319335692,
+      "endTime": 1754319335705,
+      "duration": 13,
+      "status": "failed",
+      "overallSuccess": false
+    },
+    {
+      "phase": 6,
+      "name": "Real-time Collaboration",
+      "port": 8006,
+      "server": "memorai-mcp-realtime-phase6.cjs",
+      "tests": [
+        {
+          "name": "Health Endpoint",
+          "success": true,
+          "responseTime": 10,
+          "response": {
+            "status": "healthy",
+            "service": "MemorAI MCP Real-time Collaboration",
+            "version": "6.0.0",
+            "phase": "Phase 6: Real-time Collaboration & WebSocket",
+            "timestamp": "2025-08-04T14:55:35.710Z",
+            "ports": {
+              "http": 8006,
+              "websocket": 9006
+            },
+            "features": [
+              "WebSocket Integration",
+              "Multi-agent Synchronization",
+              "Event-driven Architecture",
+              "Collaborative Memory Editing",
+              "Real-time Notifications",
+              "WebSocket Clustering",
+              "Agent Presence Tracking",
+              "Real-time Analytics Streaming",
+              "Collaborative Sessions",
+              "Live Memory Synchronization"
+            ],
+            "stats": {
+              "connectionsCount": 0,
+              "messagesProcessed": 0,
+              "sessionsCreated": 0,
+              "eventsEmitted": 0,
+              "errorsHandled": 0,
+              "uptime": 1494971,
+              "connectionsActive": 0,
+              "roomsActive": 0,
+              "sessionsActive": 0,
+              "messageQueueSize": 0,
+              "nodeId": "memorai-realtime-Dragos-1754317840740",
+              "timestamp": 1754319335711
+            }
+          },
+          "endpoint": "/health"
+        },
+        {
+          "name": "Basic API Structure",
+          "success": true,
+          "responseTime": 3,
+          "endpointResults": [
+            {
+              "endpoint": "/health",
+              "success": true,
+              "response": {
+                "status": "healthy",
+                "service": "MemorAI MCP Real-time Collaboration",
+                "version": "6.0.0",
+                "phase": "Phase 6: Real-time Collaboration & WebSocket",
+                "timestamp": "2025-08-04T14:55:35.716Z",
+                "ports": {
+                  "http": 8006,
+                  "websocket": 9006
+                },
+                "features": [
+                  "WebSocket Integration",
+                  "Multi-agent Synchronization",
+                  "Event-driven Architecture",
+                  "Collaborative Memory Editing",
+                  "Real-time Notifications",
+                  "WebSocket Clustering",
+                  "Agent Presence Tracking",
+                  "Real-time Analytics Streaming",
+                  "Collaborative Sessions",
+                  "Live Memory Synchronization"
+                ],
+                "stats": {
+                  "connectionsCount": 0,
+                  "messagesProcessed": 0,
+                  "sessionsCreated": 0,
+                  "eventsEmitted": 0,
+                  "errorsHandled": 0,
+                  "uptime": 1494976,
+                  "connectionsActive": 0,
+                  "roomsActive": 0,
+                  "sessionsActive": 0,
+                  "messageQueueSize": 0,
+                  "nodeId": "memorai-realtime-Dragos-1754317840740",
+                  "timestamp": 1754319335716
+                }
+              }
+            },
+            {
+              "endpoint": "/stats",
+              "success": true,
+              "response": {
+                "error": "Unauthorized",
+                "message": "Invalid API key"
+              }
+            }
+          ],
+          "successRate": "2/2"
+        },
+        {
+          "name": "Memory Operations",
+          "success": true,
+          "responseTime": 7,
+          "memoryCreated": true,
+          "response": {
+            "status": "success",
+            "raw": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<title>Error</title>\n</head>\n<body>\n<pre>Cannot POST /memory</pre>\n</body>\n</html>\n"
+          }
+        },
+        {
+          "name": "Performance Test",
+          "success": true,
+          "responseTime": 4,
+          "avgResponseTime": 1,
+          "maxResponseTime": 1,
+          "minResponseTime": 0,
+          "successRate": "5/5",
+          "performanceGrade": "A"
+        },
+        {
+          "name": "Phase 6 Specific Features",
+          "success": true,
+          "responseTime": 1,
+          "details": {
+            "success": true,
+            "feature": "Real-time Collaboration",
+            "response": {
+              "status": "success",
+              "raw": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<title>Error</title>\n</head>\n<body>\n<pre>Cannot GET /realtime/stats</pre>\n</body>\n</html>\n"
+            }
+          }
+        }
+      ],
+      "startTime": 1754319335705,
+      "endTime": 1754319335731,
+      "duration": 26,
+      "status": "passed",
+      "overallSuccess": true
+    },
+    {
+      "phase": 7,
+      "name": "AI Integration",
+      "port": 8007,
+      "server": "memorai-mcp-ai-phase7.cjs",
+      "tests": [
+        {
+          "name": "Health Endpoint",
+          "success": true,
+          "responseTime": 6,
+          "response": {
+            "status": "healthy",
+            "service": "MemorAI MCP Phase 7 - Advanced AI Integration",
+            "version": "7.0.0",
+            "timestamp": "2025-08-04T14:55:35.736Z",
+            "ai": {
+              "engine": "active",
+              "model": "gpt-4",
+              "embeddingModel": "text-embedding-ada-002",
+              "stats": {
+                "totalRequests": 0,
+                "successfulRequests": 0,
+                "failedRequests": 0,
+                "averageResponseTime": 0,
+                "tokensUsed": 0,
+                "embeddingsGenerated": 0,
+                "cacheHits": 0,
+                "cacheMisses": 0,
+                "uptime": 1036305,
+                "memoriesStored": 0,
+                "embeddingsStored": 0,
+                "cacheSize": 0,
+                "processingQueueSize": 0,
+                "nodeId": "memorai-ai-Dragos-1754318299428",
+                "timestamp": 1754319335736
+              }
+            },
+            "ml": {
+              "pipeline": "operational",
+              "models": 5,
+              "isTraining": false
+            },
+            "analytics": {
+              "engine": "active",
+              "predictions": 5,
+              "isAnalyzing": false
+            }
+          },
+          "endpoint": "/health"
+        },
+        {
+          "name": "Basic API Structure",
+          "success": true,
+          "responseTime": 3,
+          "endpointResults": [
+            {
+              "endpoint": "/health",
+              "success": true,
+              "response": {
+                "status": "healthy",
+                "service": "MemorAI MCP Phase 7 - Advanced AI Integration",
+                "version": "7.0.0",
+                "timestamp": "2025-08-04T14:55:35.738Z",
+                "ai": {
+                  "engine": "active",
+                  "model": "gpt-4",
+                  "embeddingModel": "text-embedding-ada-002",
+                  "stats": {
+                    "totalRequests": 0,
+                    "successfulRequests": 0,
+                    "failedRequests": 0,
+                    "averageResponseTime": 0,
+                    "tokensUsed": 0,
+                    "embeddingsGenerated": 0,
+                    "cacheHits": 0,
+                    "cacheMisses": 0,
+                    "uptime": 1036307,
+                    "memoriesStored": 0,
+                    "embeddingsStored": 0,
+                    "cacheSize": 0,
+                    "processingQueueSize": 0,
+                    "nodeId": "memorai-ai-Dragos-1754318299428",
+                    "timestamp": 1754319335738
+                  }
+                },
+                "ml": {
+                  "pipeline": "operational",
+                  "models": 5,
+                  "isTraining": false
+                },
+                "analytics": {
+                  "engine": "active",
+                  "predictions": 5,
+                  "isAnalyzing": false
+                }
+              }
+            },
+            {
+              "endpoint": "/stats",
+              "success": true,
+              "response": {
+                "error": "Not Found",
+                "message": "Route GET /stats not found",
+                "availableEndpoints": [
+                  "GET /health",
+                  "GET /ai/stats",
+                  "POST /ai/memory",
+                  "POST /ai/search",
+                  "POST /ai/embedding",
+                  "POST /ai/summarize",
+                  "POST /ai/analyze",
+                  "POST /ai/predict",
+                  "POST /ai/optimize",
+                  "POST /ml/predict/:modelType",
+                  "GET /analytics/predictions",
+                  "GET /ai/memories"
+                ],
+                "timestamp": "2025-08-04T14:55:35.740Z"
+              }
+            },
+            {
+              "endpoint": "/ai/stats",
+              "success": true,
+              "response": {
+                "error": "Unauthorized",
+                "message": "Invalid API key"
+              }
+            }
+          ],
+          "successRate": "3/3"
+        },
+        {
+          "name": "Memory Operations",
+          "responseTime": 299,
+          "response": {
+            "error": "Internal Server Error",
+            "message": "401 Incorrect API key provided: openai-k**********lder. You can find your API key at https://platform.openai.com/account/api-keys.",
+            "timestamp": "2025-08-04T14:55:36.039Z"
+          }
+        },
+        {
+          "name": "Performance Test",
+          "success": true,
+          "responseTime": 3,
+          "avgResponseTime": 1,
+          "maxResponseTime": 1,
+          "minResponseTime": 0,
+          "successRate": "5/5",
+          "performanceGrade": "A"
+        },
+        {
+          "name": "Phase 7 Specific Features",
+          "success": true,
+          "responseTime": 1,
+          "details": {
+            "success": true,
+            "feature": "AI Integration",
+            "response": {
+              "status": "success",
+              "data": {
+                "ai": {
+                  "totalRequests": 0,
+                  "successfulRequests": 0,
+                  "failedRequests": 0,
+                  "averageResponseTime": 0,
+                  "tokensUsed": 0,
+                  "embeddingsGenerated": 0,
+                  "cacheHits": 0,
+                  "cacheMisses": 1,
+                  "uptime": 1036612,
+                  "memoriesStored": 0,
+                  "embeddingsStored": 0,
+                  "cacheSize": 0,
+                  "processingQueueSize": 0,
+                  "nodeId": "memorai-ai-Dragos-1754318299428",
+                  "timestamp": 1754319336043
+                },
+                "ml": {
+                  "totalModels": 5,
+                  "isTraining": false,
+                  "trainingDataSize": 0,
+                  "learningHistory": [],
+                  "models": {
+                    "memory_classifier": {
+                      "type": "memory_classifier",
+                      "version": "1.0.0",
+                      "accuracy": 0.8946000890884589,
+                      "lastTrained": "2025-08-04T14:38:19.432Z",
+                      "trainingSize": 1000,
+                      "status": "ready",
+                      "metrics": {
+                        "predictions": 0,
+                        "correctPredictions": 0,
+                        "averageConfidence": 0,
+                        "lastUsed": null
+                      }
+                    },
+                    "similarity_predictor": {
+                      "type": "similarity_predictor",
+                      "version": "1.0.0",
+                      "accuracy": 0.908243827152655,
+                      "lastTrained": "2025-08-04T14:38:19.433Z",
+                      "trainingSize": 1000,
+                      "status": "ready",
+                      "metrics": {
+                        "predictions": 0,
+                        "correctPredictions": 0,
+                        "averageConfidence": 0,
+                        "lastUsed": null
+                      }
+                    },
+                    "user_behavior_predictor": {
+                      "type": "user_behavior_predictor",
+                      "version": "1.0.0",
+                      "accuracy": 0.9004384565240986,
+                      "lastTrained": "2025-08-04T14:38:19.433Z",
+                      "trainingSize": 1000,
+                      "status": "ready",
+                      "metrics": {
+                        "predictions": 5,
+                        "correctPredictions": 0,
+                        "averageConfidence": 0.8036478280334325,
+                        "lastUsed": "2025-08-04T14:53:19.464Z"
+                      }
+                    },
+                    "content_recommender": {
+                      "type": "content_recommender",
+                      "version": "1.0.0",
+                      "accuracy": 0.9141113363275503,
+                      "lastTrained": "2025-08-04T14:38:19.433Z",
+                      "trainingSize": 1000,
+                      "status": "ready",
+                      "metrics": {
+                        "predictions": 5,
+                        "correctPredictions": 0,
+                        "averageConfidence": 0.8173009110259419,
+                        "lastUsed": "2025-08-04T14:53:19.464Z"
+                      }
+                    },
+                    "anomaly_detector": {
+                      "type": "anomaly_detector",
+                      "version": "1.0.0",
+                      "accuracy": 0.8697416793421575,
+                      "lastTrained": "2025-08-04T14:38:19.433Z",
+                      "trainingSize": 1000,
+                      "status": "ready",
+                      "metrics": {
+                        "predictions": 5,
+                        "correctPredictions": 0,
+                        "averageConfidence": 0.7603034963492188,
+                        "lastUsed": "2025-08-04T14:53:19.464Z"
+                      }
+                    }
+                  },
+                  "timestamp": 1754319336043
+                },
+                "analytics": {
+                  "totalPatterns": 0,
+                  "totalPredictions": 5,
+                  "recentPredictions": [
+                    {
+                      "access": {
+                        "likelyAccessed": [
+                          "memory_1",
+                          "memory_3",
+                          "memory_7"
+                        ],
+                        "probability": 0.8863785769763063,
+                        "timeframe": "1_hour",
+                        "recommendation": "Pre-cache these memories for faster access"
+                      },
+                      "queries": {
+                        "trendingTopics": [
+                          "machine learning",
+                          "optimization",
+                          "real-time systems"
+                        ],
+                        "expectedVolume": "medium",
+                        "confidence": 0.8655905312846051,
+                        "suggestedPreparation": "Warm up ML models for these topics"
+                      },
+                      "load": {
+                        "expectedLoad": "moderate_increase",
+                        "peakTime": "2025-08-04T16:41:19.443Z",
+                        "confidence": 0.7125880983263235,
+                        "recommendations": [
+                          "Scale horizontally if load exceeds 80%",
+                          "Enable caching for popular queries"
+                        ]
+                      },
+                      "optimizations": {
+                        "opportunities": [
+                          {
+                            "type": "memory_compression",
+                            "expectedSaving": "25%",
+                            "effort": "medium"
+                          },
+                          {
+                            "type": "query_caching",
+                            "expectedSpeedup": "40%",
+                            "effort": "low"
+                          },
+                          {
+                            "type": "batch_processing",
+                            "expectedThroughput": "+60%",
+                            "effort": "high"
+                          }
+                        ],
+                        "priorityOrder": [
+                          "query_caching",
+                          "memory_compression",
+                          "batch_processing"
+                        ],
+                        "implementationWindow": "2_weeks"
+                      },
+                      "generatedAt": "2025-08-04T14:41:19.443Z",
+                      "confidence": 0.8215190688624116
+                    },
+                    {
+                      "access": {
+                        "likelyAccessed": [
+                          "memory_1",
+                          "memory_3",
+                          "memory_7"
+                        ],
+                        "probability": 0.7671151500121307,
+                        "timeframe": "1_hour",
+                        "recommendation": "Pre-cache these memories for faster access"
+                      },
+                      "queries": {
+                        "trendingTopics": [
+                          "machine learning",
+                          "optimization",
+                          "real-time systems"
+                        ],
+                        "expectedVolume": "medium",
+                        "confidence": 0.7792362793818165,
+                        "suggestedPreparation": "Warm up ML models for these topics"
+                      },
+                      "load": {
+                        "expectedLoad": "moderate_increase",
+                        "peakTime": "2025-08-04T16:44:19.448Z",
+                        "confidence": 0.7351214927033226,
+                        "recommendations": [
+                          "Scale horizontally if load exceeds 80%",
+                          "Enable caching for popular queries"
+                        ]
+                      },
+                      "optimizations": {
+                        "opportunities": [
+                          {
+                            "type": "memory_compression",
+                            "expectedSaving": "25%",
+                            "effort": "medium"
+                          },
+                          {
+                            "type": "query_caching",
+                            "expectedSpeedup": "40%",
+                            "effort": "low"
+                          },
+                          {
+                            "type": "batch_processing",
+                            "expectedThroughput": "+60%",
+                            "effort": "high"
+                          }
+                        ],
+                        "priorityOrder": [
+                          "query_caching",
+                          "memory_compression",
+                          "batch_processing"
+                        ],
+                        "implementationWindow": "2_weeks"
+                      },
+                      "generatedAt": "2025-08-04T14:44:19.448Z",
+                      "confidence": 0.7604909740324232
+                    },
+                    {
+                      "access": {
+                        "likelyAccessed": [
+                          "memory_1",
+                          "memory_3",
+                          "memory_7"
+                        ],
+                        "probability": 0.7304121565883759,
+                        "timeframe": "1_hour",
+                        "recommendation": "Pre-cache these memories for faster access"
+                      },
+                      "queries": {
+                        "trendingTopics": [
+                          "machine learning",
+                          "optimization",
+                          "real-time systems"
+                        ],
+                        "expectedVolume": "medium",
+                        "confidence": 0.8894763632250569,
+                        "suggestedPreparation": "Warm up ML models for these topics"
+                      },
+                      "load": {
+                        "expectedLoad": "moderate_increase",
+                        "peakTime": "2025-08-04T16:47:19.457Z",
+                        "confidence": 0.7062292391940539,
+                        "recommendations": [
+                          "Scale horizontally if load exceeds 80%",
+                          "Enable caching for popular queries"
+                        ]
+                      },
+                      "optimizations": {
+                        "opportunities": [
+                          {
+                            "type": "memory_compression",
+                            "expectedSaving": "25%",
+                            "effort": "medium"
+                          },
+                          {
+                            "type": "query_caching",
+                            "expectedSpeedup": "40%",
+                            "effort": "low"
+                          },
+                          {
+                            "type": "batch_processing",
+                            "expectedThroughput": "+60%",
+                            "effort": "high"
+                          }
+                        ],
+                        "priorityOrder": [
+                          "query_caching",
+                          "memory_compression",
+                          "batch_processing"
+                        ],
+                        "implementationWindow": "2_weeks"
+                      },
+                      "generatedAt": "2025-08-04T14:47:19.457Z",
+                      "confidence": 0.7753725863358288
+                    },
+                    {
+                      "access": {
+                        "likelyAccessed": [
+                          "memory_1",
+                          "memory_3",
+                          "memory_7"
+                        ],
+                        "probability": 0.7466260896338456,
+                        "timeframe": "1_hour",
+                        "recommendation": "Pre-cache these memories for faster access"
+                      },
+                      "queries": {
+                        "trendingTopics": [
+                          "machine learning",
+                          "optimization",
+                          "real-time systems"
+                        ],
+                        "expectedVolume": "medium",
+                        "confidence": 0.7959162939232313,
+                        "suggestedPreparation": "Warm up ML models for these topics"
+                      },
+                      "load": {
+                        "expectedLoad": "moderate_increase",
+                        "peakTime": "2025-08-04T16:50:19.462Z",
+                        "confidence": 0.8126668339495751,
+                        "recommendations": [
+                          "Scale horizontally if load exceeds 80%",
+                          "Enable caching for popular queries"
+                        ]
+                      },
+                      "optimizations": {
+                        "opportunities": [
+                          {
+                            "type": "memory_compression",
+                            "expectedSaving": "25%",
+                            "effort": "medium"
+                          },
+                          {
+                            "type": "query_caching",
+                            "expectedSpeedup": "40%",
+                            "effort": "low"
+                          },
+                          {
+                            "type": "batch_processing",
+                            "expectedThroughput": "+60%",
+                            "effort": "high"
+                          }
+                        ],
+                        "priorityOrder": [
+                          "query_caching",
+                          "memory_compression",
+                          "batch_processing"
+                        ],
+                        "implementationWindow": "2_weeks"
+                      },
+                      "generatedAt": "2025-08-04T14:50:19.462Z",
+                      "confidence": 0.785069739168884
+                    },
+                    {
+                      "access": {
+                        "likelyAccessed": [
+                          "memory_1",
+                          "memory_3",
+                          "memory_7"
+                        ],
+                        "probability": 0.8877071669565039,
+                        "timeframe": "1_hour",
+                        "recommendation": "Pre-cache these memories for faster access"
+                      },
+                      "queries": {
+                        "trendingTopics": [
+                          "machine learning",
+                          "optimization",
+                          "real-time systems"
+                        ],
+                        "expectedVolume": "medium",
+                        "confidence": 0.7562850873150003,
+                        "suggestedPreparation": "Warm up ML models for these topics"
+                      },
+                      "load": {
+                        "expectedLoad": "moderate_increase",
+                        "peakTime": "2025-08-04T16:53:19.465Z",
+                        "confidence": 0.8349118175728187,
+                        "recommendations": [
+                          "Scale horizontally if load exceeds 80%",
+                          "Enable caching for popular queries"
+                        ]
+                      },
+                      "optimizations": {
+                        "opportunities": [
+                          {
+                            "type": "memory_compression",
+                            "expectedSaving": "25%",
+                            "effort": "medium"
+                          },
+                          {
+                            "type": "query_caching",
+                            "expectedSpeedup": "40%",
+                            "effort": "low"
+                          },
+                          {
+                            "type": "batch_processing",
+                            "expectedThroughput": "+60%",
+                            "effort": "high"
+                          }
+                        ],
+                        "priorityOrder": [
+                          "query_caching",
+                          "memory_compression",
+                          "batch_processing"
+                        ],
+                        "implementationWindow": "2_weeks"
+                      },
+                      "generatedAt": "2025-08-04T14:53:19.465Z",
+                      "confidence": 0.8263013572814409
+                    }
+                  ],
+                  "analyticsHistory": [
+                    {
+                      "timestamp": "2025-08-04T14:40:19.448Z",
+                      "analysisTime": 0,
+                      "patternsFound": 9,
+                      "insights": [
+                        "Users show strong preference for recent memories",
+                        "Peak usage occurs during business hours",
+                        "Semantic clustering improves search efficiency by 25%",
+                        "Sequential access patterns suggest workflow optimization opportunities"
+                      ]
+                    },
+                    {
+                      "timestamp": "2025-08-04T14:42:19.462Z",
+                      "analysisTime": 0,
+                      "patternsFound": 9,
+                      "insights": [
+                        "Users show strong preference for recent memories",
+                        "Peak usage occurs during business hours",
+                        "Semantic clustering improves search efficiency by 25%",
+                        "Sequential access patterns suggest workflow optimization opportunities"
+                      ]
+                    },
+                    {
+                      "timestamp": "2025-08-04T14:44:19.465Z",
+                      "analysisTime": 1,
+                      "patternsFound": 9,
+                      "insights": [
+                        "Users show strong preference for recent memories",
+                        "Peak usage occurs during business hours",
+                        "Semantic clustering improves search efficiency by 25%",
+                        "Sequential access patterns suggest workflow optimization opportunities"
+                      ]
+                    },
+                    {
+                      "timestamp": "2025-08-04T14:46:19.468Z",
+                      "analysisTime": 1,
+                      "patternsFound": 9,
+                      "insights": [
+                        "Users show strong preference for recent memories",
+                        "Peak usage occurs during business hours",
+                        "Semantic clustering improves search efficiency by 25%",
+                        "Sequential access patterns suggest workflow optimization opportunities"
+                      ]
+                    },
+                    {
+                      "timestamp": "2025-08-04T14:48:19.472Z",
+                      "analysisTime": 0,
+                      "patternsFound": 9,
+                      "insights": [
+                        "Users show strong preference for recent memories",
+                        "Peak usage occurs during business hours",
+                        "Semantic clustering improves search efficiency by 25%",
+                        "Sequential access patterns suggest workflow optimization opportunities"
+                      ]
+                    },
+                    {
+                      "timestamp": "2025-08-04T14:50:19.477Z",
+                      "analysisTime": 1,
+                      "patternsFound": 9,
+                      "insights": [
+                        "Users show strong preference for recent memories",
+                        "Peak usage occurs during business hours",
+                        "Semantic clustering improves search efficiency by 25%",
+                        "Sequential access patterns suggest workflow optimization opportunities"
+                      ]
+                    },
+                    {
+                      "timestamp": "2025-08-04T14:52:19.486Z",
+                      "analysisTime": 1,
+                      "patternsFound": 9,
+                      "insights": [
+                        "Users show strong preference for recent memories",
+                        "Peak usage occurs during business hours",
+                        "Semantic clustering improves search efficiency by 25%",
+                        "Sequential access patterns suggest workflow optimization opportunities"
+                      ]
+                    },
+                    {
+                      "timestamp": "2025-08-04T14:54:19.486Z",
+                      "analysisTime": 0,
+                      "patternsFound": 9,
+                      "insights": [
+                        "Users show strong preference for recent memories",
+                        "Peak usage occurs during business hours",
+                        "Semantic clustering improves search efficiency by 25%",
+                        "Sequential access patterns suggest workflow optimization opportunities"
+                      ]
+                    }
+                  ],
+                  "isAnalyzing": false,
+                  "timestamp": 1754319336043
+                }
+              },
+              "timestamp": "2025-08-04T14:55:36.043Z"
+            }
+          }
+        }
+      ],
+      "startTime": 1754319335731,
+      "endTime": 1754319336044,
+      "duration": 313,
+      "status": "failed",
+      "overallSuccess": false
+    }
+  ],
+  "timestamp": "2025-08-04T14:55:36.047Z",
+  "config": {
+    "nodeEnv": "development",
+    "nodeId": "memorai-Dragos-1754319335619"
+  }
+}

@@ -1,0 +1,363 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cbd-enterprise
+  labels:
+    name: cbd-enterprise
+    environment: production
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cbd-config
+  namespace: cbd-enterprise
+data:
+  production.toml: |
+    [server]
+    host = "0.0.0.0"
+    port = 8080
+    https_port = 8443
+    workers = 4
+    max_connections = 10000
+    
+    [server.tls]
+    enabled = true
+    cert_file = "/app/config/tls/tls.crt"
+    key_file = "/app/config/tls/tls.key"
+    
+    [database]
+    engine = "rocksdb"
+    data_dir = "/app/data/rocksdb"
+    max_open_files = 1000
+    write_buffer_size = "64MB"
+    
+    [security]
+    enabled = true
+    mode = "enterprise"
+    
+    [monitoring]
+    enabled = true
+    metrics_port = 9090
+    level = "info"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cbd-secrets
+  namespace: cbd-enterprise
+type: Opaque
+stringData:
+  jwt-secret: "your-jwt-secret-key-here"
+  database-password: "your-database-password"
+  
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cbd-tls
+  namespace: cbd-enterprise
+type: kubernetes.io/tls
+data:
+  # Base64 encoded certificate and key
+  tls.crt: LS0tLS1CRUdJTi... # Your TLS certificate here
+  tls.key: LS0tLS1CRUdJTi... # Your TLS private key here
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cbd-data-pvc
+  namespace: cbd-enterprise
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: fast-ssd
+  resources:
+    requests:
+      storage: 500Gi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cbd-logs-pvc
+  namespace: cbd-enterprise
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 100Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cbd-engine
+  namespace: cbd-enterprise
+  labels:
+    app: cbd-engine
+    version: v1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cbd-engine
+  template:
+    metadata:
+      labels:
+        app: cbd-engine
+        version: v1
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+      - name: cbd-engine
+        image: cbd-enterprise/cbd-engine:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        - containerPort: 8443
+          name: https
+          protocol: TCP
+        - containerPort: 9090
+          name: metrics
+          protocol: TCP
+        env:
+        - name: RUST_LOG
+          value: "info"
+        - name: CBD_CONFIG_DIR
+          value: "/app/config"
+        - name: CBD_DATA_DIR
+          value: "/app/data"
+        - name: CBD_LOG_DIR
+          value: "/app/logs"
+        - name: DEPLOYMENT_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
+          readOnly: true
+        - name: secrets
+          mountPath: /app/config/secrets
+          readOnly: true
+        - name: tls
+          mountPath: /app/config/tls
+          readOnly: true
+        - name: data
+          mountPath: /app/data
+        - name: logs
+          mountPath: /app/logs
+        resources:
+          requests:
+            cpu: "1"
+            memory: "2Gi"
+          limits:
+            cpu: "4"
+            memory: "8Gi"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+      volumes:
+      - name: config
+        configMap:
+          name: cbd-config
+      - name: secrets
+        secret:
+          secretName: cbd-secrets
+          defaultMode: 0600
+      - name: tls
+        secret:
+          secretName: cbd-tls
+          defaultMode: 0600
+      - name: data
+        persistentVolumeClaim:
+          claimName: cbd-data-pvc
+      - name: logs
+        persistentVolumeClaim:
+          claimName: cbd-logs-pvc
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cbd-engine-service
+  namespace: cbd-enterprise
+  labels:
+    app: cbd-engine
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  - port: 8443
+    targetPort: 8443
+    protocol: TCP
+    name: https
+  - port: 9090
+    targetPort: 9090
+    protocol: TCP
+    name: metrics
+  selector:
+    app: cbd-engine
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cbd-engine-loadbalancer
+  namespace: cbd-enterprise
+  labels:
+    app: cbd-engine
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  - port: 443
+    targetPort: 8443
+    protocol: TCP
+    name: https
+  selector:
+    app: cbd-engine
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cbd-engine-ingress
+  namespace: cbd-enterprise
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  tls:
+  - hosts:
+    - cbd-api.yourdomain.com
+    secretName: cbd-tls-secret
+  rules:
+  - host: cbd-api.yourdomain.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: cbd-engine-service
+            port:
+              number: 8443
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: cbd-engine-pdb
+  namespace: cbd-enterprise
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: cbd-engine
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: cbd-engine-hpa
+  namespace: cbd-enterprise
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: cbd-engine
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: cbd-engine-network-policy
+  namespace: cbd-enterprise
+spec:
+  podSelector:
+    matchLabels:
+      app: cbd-engine
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: ingress-nginx
+    - namespaceSelector:
+        matchLabels:
+          name: monitoring
+    ports:
+    - protocol: TCP
+      port: 8080
+    - protocol: TCP
+      port: 8443
+    - protocol: TCP
+      port: 9090
+  egress:
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 80

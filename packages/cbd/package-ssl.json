@@ -1,0 +1,51 @@
+{
+  "name": "cbd-ssl-manager",
+  "version": "1.0.0",
+  "description": "Independent SSL Certificate Manager for CBD Universal Database",
+  "main": "cbd-ssl-manager.js",
+  "scripts": {
+    "start": "node cbd-ssl-manager.js start",
+    "ssl:request": "node cbd-ssl-manager.js request",
+    "ssl:renew": "node cbd-ssl-manager.js renew",
+    "ssl:status": "curl -s http://cbd.memorai.ro/health | jq",
+    "ssl:test": "curl -k -s https://cbd.memorai.ro/health | jq",
+    "install:certbot": "npm run install:certbot:linux",
+    "install:certbot:linux": "sudo apt-get update && sudo apt-get install -y certbot",
+    "install:certbot:centos": "sudo yum install -y certbot",
+    "install:certbot:macos": "brew install certbot",
+    "setup:linux": "chmod +x setup-ssl-independent.sh && sudo ./setup-ssl-independent.sh",
+    "setup:windows": "powershell -ExecutionPolicy Bypass -File setup-ssl-windows.ps1",
+    "proxy:start": "node ssl-proxy-server.js",
+    "nginx:test": "sudo nginx -t",
+    "nginx:reload": "sudo systemctl reload nginx",
+    "cert:info": "sudo certbot certificates",
+    "cert:renew": "sudo certbot renew",
+    "cert:test": "sudo certbot renew --dry-run"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "http-proxy-middleware": "^2.0.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "ssl",
+    "https",
+    "certificate",
+    "letsencrypt",
+    "cbd",
+    "database",
+    "independent",
+    "no-cloud"
+  ],
+  "author": "CODAI Ecosystem",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codai-ecosystem/cbd-ssl-manager"
+  }
+}

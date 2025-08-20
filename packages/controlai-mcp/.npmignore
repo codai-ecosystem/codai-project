@@ -1,0 +1,23 @@
+# Development files
+src/
+docs/
+archive/
+.turbo/
+*.md
+!README.md
+test-*.js
+test-*.mjs
+verify-*.js
+create-sample-*.js
+create-sample-*.mjs
+build-and-publish.*
+publish.bat
+lint-results.txt
+eslint.config.js
+tsconfig.json
+.env.example
+
+# Only keep essential files for the package:
+# - dist/ (compiled code)
+# - package.json
+# - README.md

@@ -1,0 +1,23 @@
+[package]
+name = "cbd-vector"
+version = "0.1.0"
+edition = "2021"
+description = "CBD Enterprise Vector Index with HNSW"
+license = "MIT"
+
+[dependencies]
+cbd-core = { path = "../cbd-core" }
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+uuid = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+async-trait = { workspace = true }
+ordered-float = "4.0"
+rand = "0.8"
+num_cpus = "1.0"
+
+[dev-dependencies]
+tokio-test = "0.4"

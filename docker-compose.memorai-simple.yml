@@ -1,0 +1,122 @@
+version: '3.8'
+
+services:
+  # CBD Database - Universal database service
+  cbd-database:
+    image: node:20-alpine
+    container_name: memorai-cbd-database
+    ports:
+      - "4180:4180"
+    working_dir: /app
+    environment:
+      - PORT=4180
+      - NODE_ENV=development
+      - CBD_LOG_LEVEL=info
+    volumes:
+      - ./packages/cbd:/app
+      - memorai_cbd_data:/app/data
+      - memorai_cbd_logs:/app/logs
+    command: >
+      sh -c "
+        npm install --only=production && 
+        npm install tsx &&
+        npx tsx src/start.ts
+      "
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:4180/health", "||", "exit", "1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - memorai-network
+
+  # Redis Cache for performance
+  redis:
+    image: redis:7-alpine
+    container_name: memorai-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - memorai_redis_data:/data
+    command: redis-server --appendonly yes --appendfsync everysec
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - memorai-network
+
+  # MemoraiMCP Server - Main MCP service
+  memorai-mcp:
+    image: codai-project-memorai-mcp
+    container_name: memorai-mcp-server
+    ports:
+      - "4950:4950"
+    environment:
+      - MEMORAI_API_KEY=memorai-dev-key-2025
+      - MEMORAI_MCP_PORT=4950
+      - PORT=4950
+      - CBD_BASE_URL=http://cbd-database:4180
+      - NODE_ENV=development
+      - DEBUG=memorai:*
+      - MEMORAI_DEBUG=true
+      - MEMORAI_LOG_LEVEL=debug
+      - ENABLE_VECTOR_SEARCH=true
+      - ENABLE_HYBRID_SEARCH=true
+      - ENABLE_FUZZY_MATCHING=true
+      - ENABLE_KEYWORD_SEARCH=true
+      - ENABLE_RBAC=true
+      - ENABLE_REALTIME_COLLAB=true
+      - ENABLE_ANALYTICS=true
+      - ENABLE_TEMPORAL=true
+      - ENABLE_PATTERNS=true
+      - ENABLE_CLUSTERING=true
+      - ENABLE_CROSS_REF=true
+      - ENABLE_BACKUP=true
+      - ENABLE_MONITORING=true
+      - VECTOR_CACHE_TTL=3600
+      - SEARCH_CACHE_TTL=300
+      - AZURE_OPENAI_ENDPOINT=https://swedencentral.api.cognitive.microsoft.com/
+      - AZURE_OPENAI_API_KEY=8f9d3fd033c04f5ab6b5886c15f16a2c
+      - AZURE_OPENAI_DEPLOYMENT_NAME=text-embedding-3-large
+      - AZURE_OPENAI_API_VERSION=2024-02-01
+      - OPENAI_API_KEY=your-openai-api-key-here
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - memorai_mcp_data:/app/data
+      - memorai_mcp_logs:/app/logs
+    depends_on:
+      cbd-database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4950/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - memorai-network
+
+networks:
+  memorai-network:
+    driver: bridge
+    name: memorai-network
+
+volumes:
+  memorai_cbd_data:
+    driver: local
+  memorai_cbd_logs:
+    driver: local
+  memorai_redis_data:
+    driver: local
+  memorai_mcp_data:
+    driver: local
+  memorai_mcp_logs:
+    driver: local

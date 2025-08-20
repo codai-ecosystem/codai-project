@@ -1,0 +1,70 @@
+{
+    "name": "@codai/testing-framework",
+    "version": "1.0.0",
+    "description": "Comprehensive testing framework for the CODAI ecosystem",
+    "type": "module",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        },
+        "./generators": {
+            "types": "./dist/generators/index.d.ts",
+            "import": "./dist/generators/index.js"
+        },
+        "./utilities": {
+            "types": "./dist/utilities/index.d.ts",
+            "import": "./dist/utilities/index.js"
+        },
+        "./templates": {
+            "types": "./dist/templates/index.d.ts",
+            "import": "./dist/templates/index.js"
+        }
+    },
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch",
+        "lint": "eslint src --ext .ts",
+        "type-check": "tsc --noEmit",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:coverage": "vitest run --coverage"
+    },
+    "keywords": [
+        "testing",
+        "framework",
+        "automation",
+        "codai",
+        "ecosystem",
+        "vitest",
+        "playwright",
+        "test-generation"
+    ],
+    "dependencies": {
+        "vitest": "^3.2.4",
+        "playwright": "^1.50.0",
+        "@testing-library/react": "^16.1.0",
+        "@testing-library/jest-dom": "^6.6.3",
+        "supertest": "^7.0.0",
+        "msw": "^2.7.0",
+        "@types/supertest": "^6.0.2",
+        "typescript": "^5.8.3"
+    },
+    "devDependencies": {
+        "@types/supertest": "^6.0.2",
+        "eslint": "^9.18.0",
+        "@vitest/coverage-v8": "^3.2.4",
+        "@testing-library/jest-dom": "^6.6.3",
+        "vitest": "^3.2.4",
+        "@types/node": "^22.0.0"
+    },
+    "peerDependencies": {
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

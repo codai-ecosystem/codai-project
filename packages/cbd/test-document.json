@@ -1,0 +1,13 @@
+{
+    "document": {
+        "type": "invoice",
+        "format": "pdf",
+        "size": "2MB",
+        "content": "Sample invoice document content..."
+    },
+    "operations": [
+        "extract",
+        "classify",
+        "validate"
+    ]
+}

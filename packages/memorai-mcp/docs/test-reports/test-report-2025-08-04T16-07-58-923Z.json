@@ -1,0 +1,479 @@
+{
+  "summary": {
+    "totalPhases": 6,
+    "passedPhases": 1,
+    "totalTests": 30,
+    "passedTests": 5,
+    "successRate": 17,
+    "totalDuration": 89,
+    "overallAvgResponse": 1
+  },
+  "phases": [
+    {
+      "phase": 2,
+      "name": "CBD Integration",
+      "port": 8002,
+      "server": "memorai-mcp-advanced-phase4.cjs",
+      "tests": [
+        {
+          "name": "Health Endpoint",
+          "success": false,
+          "responseTime": 21,
+          "error": "",
+          "endpoint": "/health"
+        },
+        {
+          "name": "Basic API Structure",
+          "success": false,
+          "responseTime": 1,
+          "endpointResults": [
+            {
+              "endpoint": "/health",
+              "success": false,
+              "error": ""
+            }
+          ],
+          "successRate": "0/1"
+        },
+        {
+          "name": "Memory Operations",
+          "success": false,
+          "responseTime": 1,
+          "error": ""
+        },
+        {
+          "name": "Performance Test",
+          "success": false,
+          "responseTime": 5,
+          "avgResponseTime": 1,
+          "maxResponseTime": 1,
+          "minResponseTime": 1,
+          "successRate": "0/5",
+          "performanceGrade": "A"
+        },
+        {
+          "name": "Phase 2 Specific Features",
+          "success": false,
+          "responseTime": 1,
+          "details": {
+            "success": false,
+            "feature": "CBD Integration",
+            "error": ""
+          }
+        }
+      ],
+      "startTime": 1754323678835,
+      "endTime": 1754323678867,
+      "duration": 32,
+      "status": "failed",
+      "overallSuccess": false
+    },
+    {
+      "phase": 3,
+      "name": "Intelligence Layer",
+      "port": 8003,
+      "server": "memorai-mcp-intelligent.cjs",
+      "tests": [
+        {
+          "name": "Health Endpoint",
+          "success": false,
+          "responseTime": 0,
+          "error": "",
+          "endpoint": "/health"
+        },
+        {
+          "name": "Basic API Structure",
+          "success": false,
+          "responseTime": 1,
+          "endpointResults": [
+            {
+              "endpoint": "/health",
+              "success": false,
+              "error": ""
+            }
+          ],
+          "successRate": "0/1"
+        },
+        {
+          "name": "Memory Operations",
+          "success": false,
+          "responseTime": 1,
+          "error": ""
+        },
+        {
+          "name": "Performance Test",
+          "success": false,
+          "responseTime": 4,
+          "avgResponseTime": 1,
+          "maxResponseTime": 1,
+          "minResponseTime": 0,
+          "successRate": "0/5",
+          "performanceGrade": "A"
+        },
+        {
+          "name": "Phase 3 Specific Features",
+          "success": false,
+          "responseTime": 1,
+          "details": {
+            "success": false,
+            "feature": "Intelligence Layer",
+            "error": ""
+          }
+        }
+      ],
+      "startTime": 1754323678868,
+      "endTime": 1754323678875,
+      "duration": 7,
+      "status": "failed",
+      "overallSuccess": false
+    },
+    {
+      "phase": 4,
+      "name": "Enterprise Features",
+      "port": 8004,
+      "server": "memorai-mcp-advanced-phase4.cjs",
+      "tests": [
+        {
+          "name": "Health Endpoint",
+          "success": false,
+          "responseTime": 1,
+          "error": "",
+          "endpoint": "/health"
+        },
+        {
+          "name": "Basic API Structure",
+          "success": false,
+          "responseTime": 2,
+          "endpointResults": [
+            {
+              "endpoint": "/health",
+              "success": false,
+              "error": ""
+            },
+            {
+              "endpoint": "/stats",
+              "success": false,
+              "error": ""
+            }
+          ],
+          "successRate": "0/2"
+        },
+        {
+          "name": "Memory Operations",
+          "success": false,
+          "responseTime": 1,
+          "error": ""
+        },
+        {
+          "name": "Performance Test",
+          "success": false,
+          "responseTime": 3,
+          "avgResponseTime": 1,
+          "maxResponseTime": 1,
+          "minResponseTime": 0,
+          "successRate": "0/5",
+          "performanceGrade": "A"
+        },
+        {
+          "name": "Phase 4 Specific Features",
+          "success": false,
+          "responseTime": 1,
+          "details": {
+            "success": false,
+            "feature": "Enterprise Features",
+            "error": ""
+          }
+        }
+      ],
+      "startTime": 1754323678875,
+      "endTime": 1754323678883,
+      "duration": 8,
+      "status": "failed",
+      "overallSuccess": false
+    },
+    {
+      "phase": 5,
+      "name": "Performance Optimization",
+      "port": 8005,
+      "server": "memorai-mcp-performance-phase5.cjs",
+      "tests": [
+        {
+          "name": "Health Endpoint",
+          "success": false,
+          "responseTime": 0,
+          "error": "",
+          "endpoint": "/health"
+        },
+        {
+          "name": "Basic API Structure",
+          "success": false,
+          "responseTime": 1,
+          "endpointResults": [
+            {
+              "endpoint": "/health",
+              "success": false,
+              "error": ""
+            },
+            {
+              "endpoint": "/stats",
+              "success": false,
+              "error": ""
+            }
+          ],
+          "successRate": "0/2"
+        },
+        {
+          "name": "Memory Operations",
+          "success": false,
+          "responseTime": 1,
+          "error": ""
+        },
+        {
+          "name": "Performance Test",
+          "success": false,
+          "responseTime": 3,
+          "avgResponseTime": 1,
+          "maxResponseTime": 1,
+          "minResponseTime": 0,
+          "successRate": "0/5",
+          "performanceGrade": "A"
+        },
+        {
+          "name": "Phase 5 Specific Features",
+          "success": false,
+          "responseTime": 0,
+          "details": {
+            "success": false,
+            "feature": "Performance Clustering",
+            "error": ""
+          }
+        }
+      ],
+      "startTime": 1754323678884,
+      "endTime": 1754323678891,
+      "duration": 7,
+      "status": "failed",
+      "overallSuccess": false
+    },
+    {
+      "phase": 6,
+      "name": "Real-time Collaboration",
+      "port": 8006,
+      "server": "memorai-mcp-realtime-phase6.cjs",
+      "tests": [
+        {
+          "name": "Health Endpoint",
+          "success": true,
+          "responseTime": 3,
+          "response": {
+            "status": "healthy",
+            "service": "MemorAI MCP Real-time Collaboration",
+            "version": "6.0.0",
+            "phase": "Phase 6: Real-time Collaboration & WebSocket",
+            "timestamp": "2025-08-04T16:07:58.893Z",
+            "ports": {
+              "http": 8006,
+              "websocket": 9006
+            },
+            "features": [
+              "WebSocket Integration",
+              "Multi-agent Synchronization",
+              "Event-driven Architecture",
+              "Collaborative Memory Editing",
+              "Real-time Notifications",
+              "WebSocket Clustering",
+              "Agent Presence Tracking",
+              "Real-time Analytics Streaming",
+              "Collaborative Sessions",
+              "Live Memory Synchronization"
+            ],
+            "stats": {
+              "connectionsCount": 0,
+              "messagesProcessed": 0,
+              "sessionsCreated": 0,
+              "eventsEmitted": 0,
+              "errorsHandled": 0,
+              "uptime": 333,
+              "connectionsActive": 0,
+              "roomsActive": 0,
+              "sessionsActive": 0,
+              "messageQueueSize": 0,
+              "nodeId": "memorai-realtime-Dragos-1754323678559",
+              "timestamp": 1754323678893
+            }
+          },
+          "endpoint": "/health"
+        },
+        {
+          "name": "Basic API Structure",
+          "success": true,
+          "responseTime": 2,
+          "endpointResults": [
+            {
+              "endpoint": "/health",
+              "success": true,
+              "response": {
+                "status": "healthy",
+                "service": "MemorAI MCP Real-time Collaboration",
+                "version": "6.0.0",
+                "phase": "Phase 6: Real-time Collaboration & WebSocket",
+                "timestamp": "2025-08-04T16:07:58.896Z",
+                "ports": {
+                  "http": 8006,
+                  "websocket": 9006
+                },
+                "features": [
+                  "WebSocket Integration",
+                  "Multi-agent Synchronization",
+                  "Event-driven Architecture",
+                  "Collaborative Memory Editing",
+                  "Real-time Notifications",
+                  "WebSocket Clustering",
+                  "Agent Presence Tracking",
+                  "Real-time Analytics Streaming",
+                  "Collaborative Sessions",
+                  "Live Memory Synchronization"
+                ],
+                "stats": {
+                  "connectionsCount": 0,
+                  "messagesProcessed": 0,
+                  "sessionsCreated": 0,
+                  "eventsEmitted": 0,
+                  "errorsHandled": 0,
+                  "uptime": 336,
+                  "connectionsActive": 0,
+                  "roomsActive": 0,
+                  "sessionsActive": 0,
+                  "messageQueueSize": 0,
+                  "nodeId": "memorai-realtime-Dragos-1754323678559",
+                  "timestamp": 1754323678896
+                }
+              }
+            },
+            {
+              "endpoint": "/stats",
+              "success": true,
+              "response": {
+                "error": "Unauthorized",
+                "message": "Invalid API key"
+              }
+            }
+          ],
+          "successRate": "2/2"
+        },
+        {
+          "name": "Memory Operations",
+          "success": true,
+          "responseTime": 7,
+          "memoryCreated": true,
+          "response": {
+            "status": "success",
+            "raw": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<title>Error</title>\n</head>\n<body>\n<pre>Cannot POST /memory</pre>\n</body>\n</html>\n"
+          }
+        },
+        {
+          "name": "Performance Test",
+          "success": true,
+          "responseTime": 3,
+          "avgResponseTime": 1,
+          "maxResponseTime": 1,
+          "minResponseTime": 0,
+          "successRate": "5/5",
+          "performanceGrade": "A"
+        },
+        {
+          "name": "Phase 6 Specific Features",
+          "success": true,
+          "responseTime": 1,
+          "details": {
+            "success": true,
+            "feature": "Real-time Collaboration",
+            "response": {
+              "status": "success",
+              "raw": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<title>Error</title>\n</head>\n<body>\n<pre>Cannot GET /realtime/stats</pre>\n</body>\n</html>\n"
+            }
+          }
+        }
+      ],
+      "startTime": 1754323678892,
+      "endTime": 1754323678908,
+      "duration": 16,
+      "status": "passed",
+      "overallSuccess": true
+    },
+    {
+      "phase": 7,
+      "name": "AI Integration",
+      "port": 8007,
+      "server": "memorai-mcp-ai-phase7.cjs",
+      "tests": [
+        {
+          "name": "Health Endpoint",
+          "success": false,
+          "responseTime": 1,
+          "error": "",
+          "endpoint": "/health"
+        },
+        {
+          "name": "Basic API Structure",
+          "success": false,
+          "responseTime": 3,
+          "endpointResults": [
+            {
+              "endpoint": "/health",
+              "success": false,
+              "error": ""
+            },
+            {
+              "endpoint": "/stats",
+              "success": false,
+              "error": ""
+            },
+            {
+              "endpoint": "/ai/stats",
+              "success": false,
+              "error": ""
+            }
+          ],
+          "successRate": "0/3"
+        },
+        {
+          "name": "Memory Operations",
+          "success": false,
+          "responseTime": 0,
+          "error": ""
+        },
+        {
+          "name": "Performance Test",
+          "success": false,
+          "responseTime": 3,
+          "avgResponseTime": 1,
+          "maxResponseTime": 1,
+          "minResponseTime": 0,
+          "successRate": "0/5",
+          "performanceGrade": "A"
+        },
+        {
+          "name": "Phase 7 Specific Features",
+          "success": false,
+          "responseTime": 1,
+          "details": {
+            "success": false,
+            "feature": "AI Integration",
+            "error": ""
+          }
+        }
+      ],
+      "startTime": 1754323678909,
+      "endTime": 1754323678918,
+      "duration": 9,
+      "status": "failed",
+      "overallSuccess": false
+    }
+  ],
+  "timestamp": "2025-08-04T16:07:58.922Z",
+  "config": {
+    "nodeEnv": "development",
+    "nodeId": "memorai-Dragos-1754323678828"
+  }
+}

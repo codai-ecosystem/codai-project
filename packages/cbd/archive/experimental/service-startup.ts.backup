@@ -1,0 +1,314 @@
+/**
+ * CBD Universal Database Service - Startup Script
+ * Simple startup for the next-generation multi-paradigm database
+ */
+
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import compression from 'compression';
+
+/**
+ * Simple CBD Universal Service for Phase 1
+ */
+export class CBDUniversalService {
+    private app: express.Application;
+    private server: any;
+    private initialized = false;
+    private startTime = new Date();
+    private stats = {
+        totalRequests: 0,
+        sqlRequests: 0,
+        uptime: 0,
+        memoryUsage: process.memoryUsage()
+    };
+
+    constructor(private port: number = 4180) {
+        this.app = express();
+        this.setupMiddleware();
+        this.setupRoutes();
+        this.setupErrorHandling();
+    }
+
+    async start(): Promise<void> {
+        if (this.initialized) return;
+
+        try {
+            console.log('🚀 Starting CBD Universal Database Service (Phase 1)...');
+            console.log(`📊 Multi-paradigm database supporting SQL, NoSQL, Vector, Graph, and Time-Series`);
+
+            this.server = this.app.listen(this.port, 'localhost', () => {
+                console.log(`✅ CBD Universal Database running at http://localhost:${this.port}`);
+                console.log(`🔗 Health check: http://localhost:${this.port}/health`);
+                console.log(`📊 Statistics: http://localhost:${this.port}/stats`);
+                console.log(`🗄️  SQL endpoint: http://localhost:${this.port}/sql/query`);
+                this.initialized = true;
+            });
+
+            this.setupGracefulShutdown();
+
+        } catch (error) {
+            console.error('❌ Failed to start service:', error);
+            throw error;
+        }
+    }
+
+    async stop(): Promise<void> {
+        if (!this.initialized) return;
+
+        console.log('🛑 Stopping CBD Universal Database Service...');
+
+        if (this.server) {
+            await new Promise<void>((resolve) => {
+                this.server.close(() => resolve());
+            });
+        }
+
+        this.initialized = false;
+        console.log('✅ Service stopped gracefully');
+    }
+
+    private setupMiddleware(): void {
+        this.app.use(helmet());
+        this.app.use(cors());
+        this.app.use(compression());
+        this.app.use(express.json({ limit: '10mb' }));
+        this.app.use(express.urlencoded({ extended: true }));
+
+        // Request logging
+        this.app.use((req, res, next) => {
+            this.stats.totalRequests++;
+            if (req.path.startsWith('/sql')) this.stats.sqlRequests++;
+            next();
+        });
+    }
+
+    private setupRoutes(): void {
+        // Health check
+        this.app.get('/health', (req, res) => {
+            res.json({
+                status: 'healthy',
+                uptime: (Date.now() - this.startTime.getTime()) / 1000,
+                service: 'cbd-universal-database',
+                version: '2.0.0-phase1',
+                paradigms: {
+                    sql: true,
+                    document: false, // Phase 1.2
+                    vector: false,   // Phase 1.3
+                    graph: false,    // Phase 2
+                    timeseries: false, // Phase 2
+                    keyvalue: false    // Phase 2
+                },
+                storage: {
+                    engine: 'universal',
+                    status: 'healthy'
+                },
+                timestamp: new Date().toISOString()
+            });
+        });
+
+        // Service statistics
+        this.app.get('/stats', (req, res) => {
+            this.stats.uptime = (Date.now() - this.startTime.getTime()) / 1000;
+            this.stats.memoryUsage = process.memoryUsage();
+
+            res.json({
+                ...this.stats,
+                storage: {
+                    totalRecords: 0,
+                    relationalRecords: 0,
+                    documentRecords: 0,
+                    vectorRecords: 0,
+                    totalSizeBytes: 0,
+                    compressionRatio: 1.0,
+                    averageReadLatency: 0,
+                    averageWriteLatency: 0,
+                    cacheHitRate: 0,
+                    indexEfficiency: 1.0
+                }
+            });
+        });
+
+        // SQL Query endpoint (Phase 1 implementation)
+        this.app.post('/sql/query', (req, res) => {
+            try {
+                const { sql, parameters = [] } = req.body;
+
+                if (!sql) {
+                    return res.status(400).json({ error: 'SQL query is required' });
+                }
+
+                console.log(`🔍 SQL Query: ${sql.substring(0, 100)}${sql.length > 100 ? '...' : ''}`);
+
+                // Phase 1: Return success response for demonstration
+                // In Phase 1.1, this will connect to UniversalSQLEngine
+                const result = {
+                    data: [],
+                    columns: [],
+                    rowCount: 0,
+                    metadata: {
+                        sql,
+                        parameters,
+                        executionTime: Math.random() * 50 + 10, // Simulated
+                        recordsScanned: 0,
+                        recordsReturned: 0,
+                        indexesUsed: [],
+                        queryType: this.detectQueryType(sql),
+                        cacheHit: false
+                    }
+                };
+
+                res.json(result);
+
+            } catch (error) {
+                res.status(500).json({ error: (error as Error).message });
+            }
+        });
+
+        // Transaction management (Phase 1 stubs)
+        this.app.post('/sql/transaction/begin', (req, res) => {
+            const transactionId = `txn_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+            console.log(`📘 Transaction ${transactionId} started`);
+            res.json({ transactionId });
+        });
+
+        this.app.post('/sql/transaction/:id/commit', (req, res) => {
+            const { id } = req.params;
+            console.log(`✅ Transaction ${id} committed`);
+            res.json({ success: true, message: 'Transaction committed' });
+        });
+
+        this.app.post('/sql/transaction/:id/rollback', (req, res) => {
+            const { id } = req.params;
+            console.log(`🔄 Transaction ${id} rolled back`);
+            res.json({ success: true, message: 'Transaction rolled back' });
+        });
+
+        // Future paradigm endpoints (Phase 1 placeholders)
+        this.app.post('/document/*', (req, res) => {
+            res.status(501).json({
+                error: 'Document database endpoints coming in Phase 1.2',
+                expectedRelease: 'Q1 2024'
+            });
+        });
+
+        this.app.post('/vector/*', (req, res) => {
+            res.status(501).json({
+                error: 'Vector database endpoints coming in Phase 1.3',
+                expectedRelease: 'Q1 2024'
+            });
+        });
+
+        this.app.post('/graph/*', (req, res) => {
+            res.status(501).json({
+                error: 'Graph database endpoints coming in Phase 2',
+                expectedRelease: 'Q2 2024'
+            });
+        });
+
+        this.app.post('/timeseries/*', (req, res) => {
+            res.status(501).json({
+                error: 'Time-series database endpoints coming in Phase 2',
+                expectedRelease: 'Q2 2024'
+            });
+        });
+
+        // Legacy CBD compatibility endpoints
+        this.app.post('/api/memory/store', (req, res) => {
+            const { content, summary, metadata = {} } = req.body;
+
+            if (!content) {
+                return res.status(400).json({ error: 'Content is required' });
+            }
+
+            const structuredKey = `legacy_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+            console.log(`📝 Legacy memory stored: ${structuredKey}`);
+
+            res.json({
+                success: true,
+                structuredKey,
+                message: 'Memory stored successfully (legacy compatibility mode)'
+            });
+        });
+
+        this.app.post('/api/memory/search', (req, res) => {
+            const { query, limit = 10 } = req.body;
+
+            if (!query) {
+                return res.status(400).json({ error: 'Query is required' });
+            }
+
+            console.log(`🔍 Legacy memory search: ${query}`);
+
+            res.json({
+                memories: [],
+                message: 'Search completed (legacy compatibility mode - no results in Phase 1)'
+            });
+        });
+
+        this.app.get('/api/memory/get/:key', (req, res) => {
+            const { key } = req.params;
+            console.log(`📖 Legacy memory get: ${key}`);
+
+            res.status(404).json({
+                error: 'Memory not found (legacy compatibility mode)',
+                message: 'Memory persistence coming in Phase 1.1'
+            });
+        });
+
+        this.app.get('/api/stats', (req, res) => {
+            res.json({
+                totalMemories: 0,
+                uniqueAgents: 1,
+                uniqueProjects: 1,
+                averageImportance: 0.5,
+                databaseSize: 0,
+                lastUpdated: new Date().toISOString(),
+                message: 'Legacy compatibility mode - full stats coming in Phase 1.1'
+            });
+        });
+    }
+
+    private setupErrorHandling(): void {
+        this.app.use((error: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+            console.error('❌ Unhandled error:', error);
+
+            res.status(500).json({
+                error: 'Internal server error',
+                message: error.message,
+                timestamp: new Date().toISOString()
+            });
+        });
+    }
+
+    private setupGracefulShutdown(): void {
+        const shutdown = async (signal: string) => {
+            console.log(`📡 Received ${signal}, shutting down gracefully...`);
+            try {
+                await this.stop();
+                process.exit(0);
+            } catch (error) {
+                console.error('Error during shutdown:', error);
+                process.exit(1);
+            }
+        };
+
+        process.on('SIGINT', () => shutdown('SIGINT'));
+        process.on('SIGTERM', () => shutdown('SIGTERM'));
+    }
+
+    private detectQueryType(sql: string): string {
+        const trimmed = sql.trim().toUpperCase();
+        if (trimmed.startsWith('SELECT')) return 'SELECT';
+        if (trimmed.startsWith('INSERT')) return 'INSERT';
+        if (trimmed.startsWith('UPDATE')) return 'UPDATE';
+        if (trimmed.startsWith('DELETE')) return 'DELETE';
+        if (trimmed.startsWith('CREATE')) return 'CREATE';
+        if (trimmed.startsWith('DROP')) return 'DROP';
+        if (trimmed.startsWith('ALTER')) return 'ALTER';
+        return 'UNKNOWN';
+    }
+}
+
+// Export for use in startup scripts
+export default CBDUniversalService;

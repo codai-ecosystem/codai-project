@@ -1,0 +1,8 @@
+{
+    "query": {
+        "type": "SELECT",
+        "sql": "SELECT * FROM users WHERE status = 'active' AND created_date > '2024-01-01'",
+        "database": "postgresql",
+        "estimated_rows": 100000
+    }
+}

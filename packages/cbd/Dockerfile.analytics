@@ -1,0 +1,44 @@
+# 🐳 CBD AI Analytics Engine - Docker Configuration
+
+# Production-ready Docker build for CBD AI Analytics Engine
+FROM node:24.1.0-alpine AS production
+
+# Install security updates
+RUN apk update && apk upgrade && apk add --no-cache dumb-init
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && adduser -S cbd-analytics -u 1001 -G nodejs
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install production dependencies
+RUN npm install --only=production
+
+# Copy application files
+COPY --chown=cbd-analytics:nodejs cbd-ai-analytics-engine.cjs ./
+COPY --chown=cbd-analytics:nodejs src/ ./src/
+
+# Set ownership
+RUN chown -R cbd-analytics:nodejs /app
+
+# Switch to non-root user
+USER cbd-analytics
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:4700/health', (res) => { \
+    if (res.statusCode === 200) process.exit(0); else process.exit(1); \
+  }).on('error', () => process.exit(1));"
+
+# Expose port
+EXPOSE 4700
+
+# Use dumb-init to handle signals properly
+ENTRYPOINT ["dumb-init", "--"]
+
+# Start the AI analytics engine
+CMD ["node", "cbd-ai-analytics-engine.cjs"]

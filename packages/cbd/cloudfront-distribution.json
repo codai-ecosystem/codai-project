@@ -1,0 +1,69 @@
+{
+    "CallerReference": "cbd-memorai-ro-1754178081",
+    "Aliases": {
+        "Quantity": 1,
+        "Items": [
+            "cbd.memorai.ro"
+        ]
+    },
+    "DefaultRootObject": "",
+    "Origins": {
+        "Quantity": 1,
+        "Items": [
+            {
+                "Id": "cbd-alb-origin",
+                "DomainName": "cbd-universal-alb-1527097302.eu-west-1.elb.amazonaws.com",
+                "CustomOriginConfig": {
+                    "HTTPPort": 80,
+                    "HTTPSPort": 443,
+                    "OriginProtocolPolicy": "http-only",
+                    "OriginSslProtocols": {
+                        "Quantity": 1,
+                        "Items": [
+                            "TLSv1.2"
+                        ]
+                    },
+                    "OriginReadTimeout": 30,
+                    "OriginKeepaliveTimeout": 5
+                }
+            }
+        ]
+    },
+    "DefaultCacheBehavior": {
+        "TargetOriginId": "cbd-alb-origin",
+        "ViewerProtocolPolicy": "redirect-to-https",
+        "TrustedSigners": {
+            "Enabled": false,
+            "Quantity": 0
+        },
+        "ForwardedValues": {
+            "QueryString": true,
+            "Cookies": {
+                "Forward": "all"
+            },
+            "Headers": {
+                "Quantity": 5,
+                "Items": [
+                    "Authorization",
+                    "Content-Type",
+                    "Accept",
+                    "Origin",
+                    "Host"
+                ]
+            }
+        },
+        "MinTTL": 0,
+        "DefaultTTL": 0,
+        "MaxTTL": 86400
+    },
+    "Comment": "CBD Universal Database SSL Distribution",
+    "Enabled": true,
+    "ViewerCertificate": {
+        "ACMCertificateArn": "arn:aws:acm:us-east-1:567877624442:certificate/411620e4-af7f-4d54-8066-8db899607874",
+        "SSLSupportMethod": "sni-only",
+        "MinimumProtocolVersion": "TLSv1.2_2021"
+    },
+    "HttpVersion": "http2",
+    "IsIPV6Enabled": true,
+    "PriceClass": "PriceClass_100"
+}

@@ -1,0 +1,95 @@
+version: '3.8'
+services:
+  cbd-core:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+    container_name: cbd-production-core
+    ports:
+      - "4180:4180"
+    environment:
+      - NODE_ENV=production
+      - PORT=4180
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4180/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  cbd-collaboration:
+    build: .
+    container_name: cbd-production-collaboration
+    ports:
+      - "4600:4600"
+    environment:
+      - NODE_ENV=production
+      - PORT=4600
+    command: node cbd-collaboration-service.cjs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4600/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    depends_on:
+      - cbd-core
+
+  cbd-analytics:
+    build: .
+    container_name: cbd-production-analytics
+    ports:
+      - "4700:4700"
+    environment:
+      - NODE_ENV=production
+      - PORT=4700
+    command: node cbd-ai-analytics-engine.cjs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4700/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    depends_on:
+      - cbd-core
+
+  cbd-graphql:
+    build: .
+    container_name: cbd-production-graphql
+    ports:
+      - "4800:4800"
+    environment:
+      - NODE_ENV=production
+      - PORT=4800
+    command: node cbd-graphql-gateway.cjs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4800/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    depends_on:
+      - cbd-core
+
+  nginx:
+    image: nginx:alpine
+    container_name: cbd-production-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - cbd-core
+      - cbd-collaboration
+      - cbd-analytics
+      - cbd-graphql
+    restart: unless-stopped
+
+networks:
+  default:
+    name: cbd-production-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.26.0.0/16

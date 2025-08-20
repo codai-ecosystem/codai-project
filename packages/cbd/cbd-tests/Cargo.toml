@@ -1,0 +1,16 @@
+[package]
+name = "cbd-integration-tests"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+cbd-core = { path = "../cbd-core" }
+cbd-vector = { path = "../cbd-vector" }
+tokio = { workspace = true, features = ["test-util"] }
+anyhow = { workspace = true }
+uuid = { workspace = true }
+async-trait = { workspace = true }
+
+[[test]]
+name = "integration_test"
+path = "tests/integration_test.rs"

@@ -1,0 +1,491 @@
+/**
+ * CBD Universal Database Service - Phase 3 Simple & Working
+ * Streamlined implementation with proper TypeScript types
+ */
+
+import express, { Request, Response, NextFunction } from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import compression from 'compression';
+import { DocumentStorageEngine } from './engines/DocumentStorageEngine';
+import { VectorStorageEngine } from './engines/VectorStorageEngine';
+import { GraphStorageEngine } from './engines/GraphStorageEngine';
+import { KeyValueStorageEngine } from './engines/KeyValueStorageEngine';
+import { TimeSeriesStorageEngine } from './engines/TimeSeriesStorageEngine';
+
+export class CBDUniversalServiceSimple {
+    private app: express.Application;
+    private server: any;
+    private documentEngine: DocumentStorageEngine;
+    private vectorEngine: VectorStorageEngine;
+    private graphEngine: GraphStorageEngine;
+    private keyValueEngine: KeyValueStorageEngine;
+    private timeSeriesEngine: TimeSeriesStorageEngine;
+    private initialized = false;
+    private startTime = Date.now();
+
+    constructor(private port: number = 4180) {
+        this.app = express();
+        this.documentEngine = new DocumentStorageEngine();
+        this.vectorEngine = new VectorStorageEngine();
+        this.graphEngine = new GraphStorageEngine();
+        this.keyValueEngine = new KeyValueStorageEngine();
+        this.timeSeriesEngine = new TimeSeriesStorageEngine();
+    }
+
+    async initialize(): Promise<void> {
+        if (this.initialized) return;
+
+        // Middleware
+        this.app.use(helmet({
+            contentSecurityPolicy: false,
+            crossOriginResourcePolicy: false
+        }));
+        this.app.use(cors({
+            origin: ['http://localhost:3000', 'http://localhost:4006', 'http://localhost:4180'],
+            credentials: true,
+            methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+            allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+        }));
+        this.app.use(compression());
+        this.app.use(express.json({ limit: '50mb' }));
+        this.app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+
+        this.setupRoutes();
+        this.setupErrorHandling();
+
+        this.initialized = true;
+        console.log('✅ CBD Universal Database Service Phase 3 Simple initialized');
+    }
+
+    private setupRoutes(): void {
+        // Health check
+        this.app.get('/health', (_req: Request, res: Response) => {
+            return res.json({
+                status: 'healthy',
+                version: '3.0.0-simple',
+                uptime: Date.now() - this.startTime,
+                paradigms: ['Document', 'Vector', 'Graph', 'Key-Value', 'Time-Series'],
+                engines: {
+                    document: 'ready',
+                    vector: 'ready',
+                    graph: 'ready',
+                    keyValue: 'ready',
+                    timeSeries: 'ready'
+                }
+            });
+        });
+
+        // Stats endpoint
+        this.app.get('/stats', async (_req: Request, res: Response) => {
+            try {
+                const documentStats = await this.documentEngine.getCollectionStats();
+                const vectorStats = await this.vectorEngine.getIndexStats();
+                const timeSeriesStats = await this.timeSeriesEngine.getTimeSeriesStats();
+
+                return res.json({
+                    uptime: Date.now() - this.startTime,
+                    document: documentStats,
+                    vector: vectorStats,
+                    timeSeries: {
+                        totalPoints: timeSeriesStats.totalPoints,
+                        measurements: Object.fromEntries(timeSeriesStats.measurements),
+                        timeRange: timeSeriesStats.timeRange
+                    },
+                    memory: process.memoryUsage(),
+                    timestamp: new Date().toISOString()
+                });
+            } catch (error) {
+                return res.status(500).json({ error: 'Failed to get stats' });
+            }
+        });
+
+        this.setupDocumentRoutes();
+        this.setupVectorRoutes();
+        this.setupGraphRoutes();
+        this.setupKeyValueRoutes();
+        this.setupTimeSeriesRoutes();
+    }
+
+    private setupDocumentRoutes(): void {
+        // Insert document
+        this.app.post('/document/:collection', async (req: Request, res: Response) => {
+            try {
+                const collection = req.params.collection;
+                if (!collection) {
+                    return res.status(400).json({ error: 'Collection name required' });
+                }
+
+                const { document } = req.body;
+                if (!document) {
+                    return res.status(400).json({ error: 'Document required' });
+                }
+
+                const id = await this.documentEngine.insertOne(collection, document);
+                return res.json({ insertedId: id });
+            } catch (error) {
+                return res.status(500).json({ error: 'Insert failed' });
+            }
+        });
+
+        // Find documents
+        this.app.get('/document/:collection', async (req: Request, res: Response) => {
+            try {
+                const collection = req.params.collection;
+                if (!collection) {
+                    return res.status(400).json({ error: 'Collection name required' });
+                }
+
+                const results = await this.documentEngine.find(collection);
+                return res.json({ documents: results, count: results.length });
+            } catch (error) {
+                return res.status(500).json({ error: 'Find failed' });
+            }
+        });
+
+        // Update document
+        this.app.put('/document/:collection/:id', async (req: Request, res: Response) => {
+            try {
+                const collection = req.params.collection;
+                const id = req.params.id;
+                if (!collection || !id) {
+                    return res.status(400).json({ error: 'Collection and ID required' });
+                }
+
+                const { update } = req.body;
+                const result = await this.documentEngine.updateOne(collection, { _id: id }, update);
+                return res.json(result);
+            } catch (error) {
+                return res.status(500).json({ error: 'Update failed' });
+            }
+        });
+
+        // Delete document
+        this.app.delete('/document/:collection/:id', async (req: Request, res: Response) => {
+            try {
+                const collection = req.params.collection;
+                const id = req.params.id;
+                if (!collection || !id) {
+                    return res.status(400).json({ error: 'Collection and ID required' });
+                }
+
+                const deletedCount = await this.documentEngine.deleteOne(collection, { _id: id });
+                return res.json({ deletedCount });
+            } catch (error) {
+                return res.status(500).json({ error: 'Delete failed' });
+            }
+        });
+    }
+
+    private setupVectorRoutes(): void {
+        // Store vector
+        this.app.post('/vector/store', async (req: Request, res: Response) => {
+            try {
+                const { id, vector, metadata, indexName } = req.body;
+                if (!id || !vector || !Array.isArray(vector)) {
+                    return res.status(400).json({ error: 'ID and vector array required' });
+                }
+
+                await this.vectorEngine.storeVector(id, vector, metadata || {}, indexName || 'default');
+                return res.json({ success: true, id });
+            } catch (error) {
+                return res.status(500).json({ error: 'Vector store failed' });
+            }
+        });
+
+        // Search similar vectors
+        this.app.post('/vector/search', async (req: Request, res: Response) => {
+            try {
+                const { vector, limit = 10, indexName } = req.body;
+                if (!vector || !Array.isArray(vector)) {
+                    return res.status(400).json({ error: 'Vector array required' });
+                }
+
+                const results = await this.vectorEngine.findSimilar(
+                    vector,
+                    { limit },
+                    indexName || 'default'
+                );
+                return res.json({ results, count: results.length });
+            } catch (error) {
+                return res.status(500).json({ error: 'Vector search failed' });
+            }
+        });
+    }
+
+    private setupGraphRoutes(): void {
+        // Create node
+        this.app.post('/graph/node', async (req: Request, res: Response) => {
+            try {
+                const { id, labels, properties } = req.body;
+                if (!id) {
+                    return res.status(400).json({ error: 'Node ID required' });
+                }
+
+                const node = await this.graphEngine.createNode(id, labels || [], properties || {});
+                return res.json({ success: true, node });
+            } catch (error) {
+                return res.status(500).json({ error: 'Node creation failed' });
+            }
+        });
+
+        // Create relationship
+        this.app.post('/graph/relationship', async (req: Request, res: Response) => {
+            try {
+                const { fromNodeId, toNodeId, type, properties } = req.body;
+                if (!fromNodeId || !toNodeId || !type) {
+                    return res.status(400).json({ error: 'fromNodeId, toNodeId, and type required' });
+                }
+
+                const rel = await this.graphEngine.createRelationship(
+                    fromNodeId, toNodeId, type, properties || {}
+                );
+                return res.json({ success: true, relationship: rel });
+            } catch (error) {
+                return res.status(500).json({ error: 'Relationship creation failed' });
+            }
+        });
+
+        // Get node
+        this.app.get('/graph/node/:id', async (req: Request, res: Response) => {
+            try {
+                const id = req.params.id;
+                if (!id) {
+                    return res.status(400).json({ error: 'Node ID required' });
+                }
+
+                const node = await this.graphEngine.getNode(id);
+                if (!node) {
+                    return res.status(404).json({ error: 'Node not found' });
+                }
+                return res.json({ node });
+            } catch (error) {
+                return res.status(500).json({ error: 'Get node failed' });
+            }
+        });
+    }
+
+    private setupKeyValueRoutes(): void {
+        // Set key-value
+        this.app.post('/kv/set', async (req: Request, res: Response) => {
+            try {
+                const { key, value, ttl } = req.body;
+                if (!key || value === undefined) {
+                    return res.status(400).json({ error: 'Key and value required' });
+                }
+
+                await this.keyValueEngine.set(key, value, { ttl });
+                return res.json({ success: true });
+            } catch (error) {
+                return res.status(500).json({ error: 'Set failed' });
+            }
+        });
+
+        // Get value
+        this.app.get('/kv/:key', async (req: Request, res: Response) => {
+            try {
+                const key = req.params.key;
+                if (!key) {
+                    return res.status(400).json({ error: 'Key required' });
+                }
+
+                const value = await this.keyValueEngine.get(key);
+                if (value === null) {
+                    return res.status(404).json({ error: 'Key not found' });
+                }
+                return res.json({ key, value });
+            } catch (error) {
+                return res.status(500).json({ error: 'Get failed' });
+            }
+        });
+
+        // Delete key
+        this.app.delete('/kv/:key', async (req: Request, res: Response) => {
+            try {
+                const key = req.params.key;
+                if (!key) {
+                    return res.status(400).json({ error: 'Key required' });
+                }
+
+                const deleted = await this.keyValueEngine.delete(key);
+                return res.json({ deleted });
+            } catch (error) {
+                return res.status(500).json({ error: 'Delete failed' });
+            }
+        });
+    }
+
+    private setupTimeSeriesRoutes(): void {
+        // Write time-series point
+        this.app.post('/timeseries/write', async (req: Request, res: Response) => {
+            try {
+                const { measurement, tags, fields, timestamp } = req.body;
+                if (!measurement || !fields) {
+                    return res.status(400).json({ error: 'Measurement and fields required' });
+                }
+
+                const point = {
+                    measurement,
+                    tags: tags || {},
+                    fields,
+                    timestamp: timestamp ? new Date(timestamp) : new Date()
+                };
+
+                await this.timeSeriesEngine.writePoint(point);
+                return res.json({ success: true, timestamp: point.timestamp });
+            } catch (error) {
+                return res.status(500).json({ error: 'Write failed' });
+            }
+        });
+
+        // Write multiple points
+        this.app.post('/timeseries/write-batch', async (req: Request, res: Response) => {
+            try {
+                const { points } = req.body;
+                if (!points || !Array.isArray(points)) {
+                    return res.status(400).json({ error: 'Points array required' });
+                }
+
+                const processedPoints = points.map(p => ({
+                    measurement: p.measurement,
+                    tags: p.tags || {},
+                    fields: p.fields,
+                    timestamp: p.timestamp ? new Date(p.timestamp) : new Date()
+                }));
+
+                await this.timeSeriesEngine.writePoints(processedPoints);
+                return res.json({ success: true, count: processedPoints.length });
+            } catch (error) {
+                return res.status(500).json({ error: 'Batch write failed' });
+            }
+        });
+
+        // Query time-series data
+        this.app.post('/timeseries/query', async (req: Request, res: Response) => {
+            try {
+                const query = req.body;
+                if (!query.measurement) {
+                    return res.status(400).json({ error: 'Measurement required' });
+                }
+
+                // Parse date strings
+                if (query.startTime) query.startTime = new Date(query.startTime);
+                if (query.endTime) query.endTime = new Date(query.endTime);
+
+                const result = await this.timeSeriesEngine.query(query);
+                return res.json(result);
+            } catch (error) {
+                return res.status(500).json({ error: 'Query failed' });
+            }
+        });
+
+        // Get time-series statistics
+        this.app.get('/timeseries/stats', async (_req: Request, res: Response) => {
+            try {
+                const stats = await this.timeSeriesEngine.getTimeSeriesStats();
+                return res.json(stats);
+            } catch (error) {
+                return res.status(500).json({ error: 'Stats failed' });
+            }
+        });
+
+        // List measurements
+        this.app.get('/timeseries/measurements', async (_req: Request, res: Response) => {
+            try {
+                const measurements = await this.timeSeriesEngine.listMeasurements();
+                return res.json({ measurements });
+            } catch (error) {
+                return res.status(500).json({ error: 'List measurements failed' });
+            }
+        });
+
+        // Get measurement schema
+        this.app.get('/timeseries/measurements/:name/schema', async (req: Request, res: Response) => {
+            try {
+                const name = req.params.name;
+                if (!name) {
+                    return res.status(400).json({ error: 'Measurement name required' });
+                }
+
+                const schema = await this.timeSeriesEngine.getMeasurementSchema(name);
+                if (!schema) {
+                    return res.status(404).json({ error: 'Measurement not found' });
+                }
+
+                return res.json({
+                    measurement: schema.name,
+                    tags: Array.from(schema.tags),
+                    fields: Object.fromEntries(schema.fields),
+                    pointCount: schema.pointCount,
+                    timeRange: {
+                        first: schema.firstPoint,
+                        last: schema.lastPoint
+                    }
+                });
+            } catch (error) {
+                return res.status(500).json({ error: 'Get schema failed' });
+            }
+        });
+
+        // Delete measurement
+        this.app.delete('/timeseries/measurements/:name', async (req: Request, res: Response) => {
+            try {
+                const name = req.params.name;
+                if (!name) {
+                    return res.status(400).json({ error: 'Measurement name required' });
+                }
+
+                const deleted = await this.timeSeriesEngine.deleteMeasurement(name);
+                return res.json({ deleted });
+            } catch (error) {
+                return res.status(500).json({ error: 'Delete measurement failed' });
+            }
+        });
+    }
+
+    private setupErrorHandling(): void {
+        // 404 handler
+        this.app.use((_req: Request, res: Response) => {
+            return res.status(404).json({ error: 'Endpoint not found' });
+        });
+
+        // Error handler
+        this.app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+            console.error('CBD Service Error:', err);
+            return res.status(500).json({
+                error: 'Internal server error',
+                message: err.message,
+                timestamp: new Date().toISOString()
+            });
+        });
+    }
+
+    async start(): Promise<void> {
+        await this.initialize();
+
+        return new Promise((resolve, reject) => {
+            this.server = this.app.listen(this.port, '0.0.0.0', () => {
+                console.log(`🚀 CBD Universal Database Service running on port ${this.port}`);
+                console.log(`📊 Available paradigms: Document, Vector, Graph, Key-Value, Time-Series`);
+                console.log(`🌍 Health check: http://localhost:${this.port}/health`);
+                resolve();
+            });
+
+            this.server.on('error', (error: Error) => {
+                console.error('❌ Server error:', error);
+                reject(error);
+            });
+        });
+    }
+
+    async stop(): Promise<void> {
+        if (this.server) {
+            return new Promise((resolve) => {
+                this.server.close(() => {
+                    console.log('🛑 CBD Universal Database Service stopped');
+                    resolve();
+                });
+            });
+        }
+    }
+}

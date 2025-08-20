@@ -1,0 +1,123 @@
+# MemoraiMCP Service Addition for CODAI Ecosystem
+# Add this service to the main docker-compose.yml file
+
+services:
+  # MemoraiMCP - Enterprise Memory Management Service
+  memorai-mcp:
+    build:
+      context: ./packages/memorai-mcp
+      dockerfile: Dockerfile
+    container_name: memorai-mcp-server
+    ports:
+      - "4950:4950"  # Expose MCP server on port 4950
+    environment:
+      # Core Configuration
+      - NODE_ENV=development
+      - PORT=4950
+      - MEMORAI_MCP_PORT=4950
+      - MEMORAI_API_KEY=memorai-dev-key-2025
+      
+      # CBD Database Connection
+      - CBD_BASE_URL=http://cbd:4180
+      - MEMORAI_CBD_PATH=/app/memorai-cbd-data
+      
+      # Debug and Logging
+      - DEBUG=memorai:*
+      - MEMORAI_DEBUG=true
+      - MEMORAI_LOG_LEVEL=debug
+      
+      # Feature Flags
+      - ENABLE_VECTOR_SEARCH=true
+      - ENABLE_HYBRID_SEARCH=true
+      - ENABLE_FUZZY_MATCHING=true
+      - ENABLE_KEYWORD_SEARCH=true
+      - ENABLE_RBAC=true
+      - ENABLE_REALTIME_COLLAB=true
+      - ENABLE_ANALYTICS=true
+      - ENABLE_TEMPORAL=true
+      - ENABLE_PATTERNS=true
+      - ENABLE_CLUSTERING=true
+      - ENABLE_CROSS_REF=true
+      - ENABLE_BACKUP=true
+      - ENABLE_MONITORING=true
+      
+      # Cache Configuration
+      - VECTOR_CACHE_TTL=3600
+      - SEARCH_CACHE_TTL=300
+      
+      # Azure OpenAI Configuration
+      - AZURE_OPENAI_ENDPOINT=https://swedencentral.api.cognitive.microsoft.com/
+      - AZURE_OPENAI_API_KEY=8f9d3fd033c04f5ab6b5886c15f16a2c
+      - AZURE_OPENAI_DEPLOYMENT_NAME=text-embedding-3-large
+      - AZURE_OPENAI_API_VERSION=2024-02-01
+      - OPENAI_API_KEY=your-openai-api-key-here
+      
+    volumes:
+      - memorai_cbd_data:/app/memorai-cbd-data
+      - memorai_logs:/var/log/memorai
+    depends_on:
+      - cbd
+      - redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4950/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - codai
+
+  # CBD Database Service (if not already present)
+  cbd:
+    build:
+      context: ./packages/cbd
+      dockerfile: Dockerfile
+    container_name: cbd-database
+    ports:
+      - "4180:4180"
+    environment:
+      - PORT=4180
+      - NODE_ENV=development
+      - CBD_LOG_LEVEL=info
+    volumes:
+      - cbd_data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4180/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - codai
+
+  # Redis Service for caching
+  redis:
+    image: redis:7-alpine
+    container_name: memorai-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - codai
+
+networks:
+  codai:
+    driver: bridge
+
+volumes:
+  memorai_cbd_data:
+    driver: local
+  memorai_logs:
+    driver: local
+  cbd_data:
+    driver: local
+  redis_data:
+    driver: local

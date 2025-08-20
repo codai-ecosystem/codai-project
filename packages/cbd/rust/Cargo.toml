@@ -1,0 +1,98 @@
+[package]
+name = "cbd-engine"
+version = "0.1.0"
+edition = "2021"
+description = "CBD Enterprise Database Engine - High-performance Rust core"
+license = "MIT"
+authors = ["CBD Team <team@codai.ai>"]
+repository = "https://github.com/codai-ecosystem/codai-project"
+
+[lib]
+name = "cbd_engine"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+# Async runtime
+tokio = { version = "1.40", features = ["full"] }
+async-trait = "0.1"
+
+# Storage backend
+rocksdb = { version = "0.21", features = ["multi-threaded-cf"], optional = true }
+rusqlite = { version = "0.31", features = ["bundled", "chrono", "serde_json"] }
+
+# HTTP client for memory operations
+reqwest = { version = "0.11", features = ["json", "rustls-tls"], default-features = false }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+bincode = "1.3"
+
+# Vector operations
+faiss = { version = "0.12", optional = true }
+
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Metrics
+prometheus = "0.13"
+
+# Crypto for security
+aes-gcm = { version = "0.10", optional = true }
+jsonwebtoken = { version = "9.0", optional = true }
+sha2 = { version = "0.10", optional = true }
+pbkdf2 = { version = "0.12", optional = true }
+rand = { version = "0.8", optional = true }
+hex = { version = "0.4", optional = true }
+base64 = { version = "0.21", optional = true }
+argon2 = "0.5"
+ring = "0.17"
+
+# TLS support
+tokio-rustls = { version = "0.24", optional = true }
+rustls-pemfile = { version = "1.0", optional = true }
+
+# Utilities
+uuid = { version = "1.10", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+lazy_static = "1.4"
+
+# Node.js bindings
+neon = { version = "1.0", default-features = false, features = ["napi-6"], optional = true }
+
+# Clustering and networking
+tonic = { version = "0.12", optional = true }
+prost = { version = "0.13", optional = true }
+hnsw_rs = "0.3.2"
+candle-core = "0.9.1"
+
+[build-dependencies]
+tonic-build = { version = "0.12", optional = true }
+
+[features]
+default = ["memory-storage", "simple-vector", "security"]
+memory-storage = []
+simple-vector = []
+security = ["aes-gcm", "jsonwebtoken", "sha2", "pbkdf2", "rand", "hex", "base64", "tokio-rustls", "rustls-pemfile"]
+clustering = ["tonic", "prost"]
+nodejs = ["neon"]
+rocksdb-backend = ["rocksdb"]
+faiss-vector = ["faiss"]
+full-enterprise = ["rocksdb", "faiss", "clustering", "security", "nodejs"]
+
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[dev-dependencies]
+tokio-test = "0.4"
+tempfile = "3.8"
+
+[profile.dev]
+debug = true

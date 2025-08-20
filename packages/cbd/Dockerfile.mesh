@@ -1,0 +1,44 @@
+# 🐳 CBD Service Mesh Gateway - Docker Configuration
+
+# Production-ready Docker build for CBD Service Mesh Gateway
+FROM node:24.1.0-alpine AS production
+
+# Install security updates
+RUN apk update && apk upgrade && apk add --no-cache dumb-init
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && adduser -S cbd-mesh -u 1001 -G nodejs
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install production dependencies
+RUN npm install --only=production
+
+# Copy application files
+COPY --chown=cbd-mesh:nodejs cbd-service-mesh-gateway.cjs ./
+COPY --chown=cbd-mesh:nodejs src/ ./src/
+
+# Set ownership
+RUN chown -R cbd-mesh:nodejs /app
+
+# Switch to non-root user
+USER cbd-mesh
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:4000/health', (res) => { \
+    if (res.statusCode === 200) process.exit(0); else process.exit(1); \
+  }).on('error', () => process.exit(1));"
+
+# Expose port
+EXPOSE 4000
+
+# Use dumb-init to handle signals properly
+ENTRYPOINT ["dumb-init", "--"]
+
+# Start the service mesh gateway
+CMD ["node", "cbd-service-mesh-gateway.cjs"]

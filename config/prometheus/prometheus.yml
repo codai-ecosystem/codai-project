@@ -1,0 +1,45 @@
+# MemoraiMCP Ecosystem Prometheus Configuration
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+scrape_configs:
+  # MemoraiMCP Service Metrics
+  - job_name: 'memorai-mcp'
+    static_configs:
+      - targets: ['memorai-mcp-server:4950']
+    scrape_interval: 30s
+    metrics_path: /metrics
+    params:
+      format: ['prometheus']
+
+  # CBD Database Metrics
+  - job_name: 'cbd-database'
+    static_configs:
+      - targets: ['cbd-database:4180']
+    scrape_interval: 30s
+    metrics_path: /stats
+    params:
+      format: ['prometheus']
+
+  # Redis Metrics (if Redis exporter is available)
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis-cache:6379']
+    scrape_interval: 30s
+
+  # Nginx Metrics
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['memorai-nginx:80']
+    scrape_interval: 30s
+    metrics_path: /nginx_status
+
+  # Self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']

@@ -1,0 +1,150 @@
+version: '3.8'
+
+services:
+  # CBD Database Service
+  cbd-database:
+    image: memorairegistry.azurecr.io/cbd-database:latest
+    container_name: cbd-database-prod
+    ports:
+      - "4180:4180"
+    environment:
+      - NODE_ENV=production
+      - PORT=4180
+      - CBD_LOG_LEVEL=info
+      - ENABLE_MONITORING=true
+      - ENABLE_BACKUP=true
+    volumes:
+      - cbd_data:/app/data
+      - cbd_logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4180/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # MemorAI MCP Server
+  memorai-mcp-server:
+    image: memorairegistry.azurecr.io/memorai-mcp:latest
+    container_name: memorai-mcp-prod
+    ports:
+      - "4950:4950"
+    environment:
+      - NODE_ENV=production
+      - MEMORAI_MCP_PORT=4950
+      - CBD_BASE_URL=http://cbd-database:4180
+      - MEMORAI_API_KEY=${MEMORAI_PROD_API_KEY}
+      - ENABLE_VECTOR_SEARCH=true
+      - ENABLE_HYBRID_SEARCH=true
+      - ENABLE_MONITORING=true
+      - ENABLE_LOGGING=true
+      - AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT}
+      - AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}
+      - AZURE_OPENAI_DEPLOYMENT_NAME=text-embedding-3-large
+    depends_on:
+      cbd-database:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4950/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # MemorAI Frontend Application
+  memorai-app:
+    image: memorairegistry.azurecr.io/memorai-app:latest
+    container_name: memorai-app-prod
+    ports:
+      - "4006:4006"
+    environment:
+      - NODE_ENV=production
+      - PORT=4006
+      - NEXT_PUBLIC_API_URL=https://your-domain.com
+      - MEMORAI_API_BASE_URL=http://memorai-mcp-server:4950
+    depends_on:
+      memorai-mcp-server:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4006/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Gateway Service
+  gateway:
+    image: memorairegistry.azurecr.io/gateway:latest
+    container_name: gateway-prod
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production
+      - GATEWAY_PORT=4000
+      - MEMORAI_APP_URL=http://memorai-app:4006
+      - MEMORAI_MCP_URL=http://memorai-mcp-server:4950
+    depends_on:
+      - memorai-app
+      - memorai-mcp-server
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Nginx Reverse Proxy (SSL Termination)
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-prod
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./config/nginx/prod.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - gateway
+      - memorai-app
+      - memorai-mcp-server
+    restart: unless-stopped
+
+  # Monitoring and Logging
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus-prod
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./config/prometheus/prod.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana-prod
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+    volumes:
+      - grafana_data:/var/lib/grafana
+    restart: unless-stopped
+
+volumes:
+  cbd_data:
+    driver: local
+  cbd_logs:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+
+networks:
+  default:
+    driver: bridge

@@ -26,7 +26,7 @@ from dataclasses import dataclass
 import re
 import random
 
-from core_testing_framework import (
+from .core_testing_framework import (
     BaseTestCase, TestConfig, TestCategory, TestStatus,
     test_environment, wait_for_service
 )
@@ -630,7 +630,7 @@ class CreativityTest(BaseTestCase):
 # Factory function to create AGI capability test suite
 def create_agi_capability_test_suite(base_url: str = "http://localhost:6100") -> 'TestSuite':
     """Create a comprehensive AGI capability test suite"""
-    from core_testing_framework import TestSuite
+    from .core_testing_framework import TestSuite
     
     suite = TestSuite("AGI Capability Tests", "Comprehensive testing of RomAI AGI capabilities")
     

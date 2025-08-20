@@ -1,0 +1,53 @@
+{
+	"name": "@codai/immersive-environment",
+	"version": "1.0.0",
+	"description": "Revolutionary 3D code visualization and spatial debugging environment for AIDE",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"build": "tsup",
+		"dev": "tsup --watch",
+		"test": "vitest",
+		"test:coverage": "vitest --coverage",
+		"lint": "eslint src --ext .ts,.tsx",
+		"type-check": "tsc --noEmit"
+	},
+	"keywords": [
+		"3d-visualization",
+		"spatial-debugging",
+		"immersive-development",
+		"code-visualization",
+		"vr-coding",
+		"ar-development",
+		"ide-innovation"
+	],
+	"author": "AIDE Team",
+	"license": "MIT",
+	"dependencies": {
+		"three": "^0.158.0",
+		"@types/three": "^0.158.3",
+		"cannon-es": "^0.20.0",
+		"three-mesh-bvh": "^0.7.0",
+		"dat.gui": "^0.7.9",
+		"stats.js": "^0.17.0"
+	},
+	"devDependencies": {
+		"@types/dat.gui": "^0.7.13",
+		"@types/stats.js": "^0.17.3",
+		"tsup": "^8.0.1",
+		"typescript": "^5.3.3",
+		"vitest": "^1.0.4",
+		"eslint": "^8.56.0"
+	},
+	"files": [
+		"dist"
+	],
+	"engines": {
+		"node": ">=18.0.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/aide-dev/aide.git",
+		"directory": "packages/immersive-environment"
+	}
+}

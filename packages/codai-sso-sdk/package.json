@@ -1,0 +1,50 @@
+{
+  "name": "@codai/sso-sdk",
+  "version": "1.0.0",
+  "description": "Enterprise SSO Integration SDK for CODAI Ecosystem",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test:run": "vitest run",
+    "lint": "eslint src --ext .ts,.tsx",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "keywords": [
+    "sso",
+    "keycloak",
+    "enterprise",
+    "authentication",
+    "codai",
+    "oauth2",
+    "oidc"
+  ],
+  "dependencies": {
+    "@auth/core": "^0.40.0",
+    "keycloak-js": "^26.0.7",
+    "jose": "^6.0.12",
+    "next-auth": "^4.24.11",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.8",
+    "@typescript-eslint/eslint-plugin": "^8.37.0",
+    "@typescript-eslint/parser": "^8.37.0",
+    "eslint": "^9.31.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4",
+    "@types/node": "^22.0.0"
+  },
+  "peerDependencies": {
+    "next": "^15.0.0",
+    "react": "^19.0.0"
+  }
+}

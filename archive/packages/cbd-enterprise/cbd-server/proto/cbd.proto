@@ -1,0 +1,276 @@
+syntax = "proto3";
+
+package cbd;
+
+// CBD gRPC service
+service Cbd {
+  // Store a memory
+  rpc StoreMemory(StoreMemoryRequest) returns (StoreMemoryResponse);
+  
+  // Search memories by vector similarity
+  rpc SearchMemories(SearchMemoriesRequest) returns (SearchMemoriesResponse);
+  
+  // Get a specific memory by key
+  rpc GetMemory(GetMemoryRequest) returns (GetMemoryResponse);
+  
+  // Delete a memory
+  rpc DeleteMemory(DeleteMemoryRequest) returns (DeleteMemoryResponse);
+  
+  // Get engine statistics
+  rpc GetStats(GetStatsRequest) returns (GetStatsResponse);
+  
+  // Health check
+  rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse);
+  
+  // Get engine configuration
+  rpc GetConfig(GetConfigRequest) returns (GetConfigResponse);
+  
+  // List all memory keys
+  rpc ListKeys(ListKeysRequest) returns (ListKeysResponse);
+  
+  // Batch operations
+  rpc BatchStore(BatchStoreRequest) returns (BatchStoreResponse);
+  rpc BatchSearch(BatchSearchRequest) returns (BatchSearchResponse);
+}
+
+// Store memory request
+message StoreMemoryRequest {
+  string key = 1;
+  string content = 2;
+  repeated float vector = 3;
+  optional string metadata = 4;
+  optional int64 ttl_seconds = 5;
+  repeated string tags = 6;
+}
+
+// Store memory response
+message StoreMemoryResponse {
+  bool success = 1;
+  string message = 2;
+  optional string memory_id = 3;
+}
+
+// Search memories request
+message SearchMemoriesRequest {
+  repeated float query_vector = 1;
+  uint32 limit = 2;
+  float threshold = 3;
+  optional string metadata_filter = 4;
+  repeated string tag_filters = 5;
+  bool include_vectors = 6;
+}
+
+// Search memories response
+message SearchMemoriesResponse {
+  repeated MemoryResult results = 1;
+  uint32 total_found = 2;
+  float max_distance = 3;
+  float min_distance = 4;
+}
+
+// Memory search result
+message MemoryResult {
+  string key = 1;
+  string content = 2;
+  float distance = 3;
+  string metadata = 4;
+  repeated string tags = 5;
+  optional int64 timestamp = 6;
+  repeated float vector = 7; // Optional, only if requested
+}
+
+// Get memory request
+message GetMemoryRequest {
+  string key = 1;
+  bool include_vector = 2;
+}
+
+// Get memory response
+message GetMemoryResponse {
+  bool found = 1;
+  optional MemoryResult memory = 2;
+}
+
+// Delete memory request
+message DeleteMemoryRequest {
+  string key = 1;
+}
+
+// Delete memory response
+message DeleteMemoryResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// Get stats request
+message GetStatsRequest {
+  bool include_detailed = 1;
+}
+
+// Get stats response
+message GetStatsResponse {
+  string node_id = 1;
+  string cluster_role = 2;
+  uint64 total_operations = 3;
+  uint64 active_transactions = 4;
+  uint64 total_vectors = 5;
+  uint64 index_size_bytes = 6;
+  uint64 storage_size_bytes = 7;
+  uint32 active_connections = 8;
+  StorageStats storage_stats = 9;
+  VectorStats vector_stats = 10;
+  ClusterStats cluster_stats = 11;
+  SecurityStats security_stats = 12;
+}
+
+// Storage statistics
+message StorageStats {
+  uint64 total_keys = 1;
+  uint64 total_size_bytes = 2;
+  uint64 free_space_bytes = 3;
+  uint32 active_transactions = 4;
+  double cache_hit_ratio = 5;
+}
+
+// Vector statistics
+message VectorStats {
+  uint64 total_vectors = 1;
+  uint32 dimensions = 2;
+  uint64 index_size_bytes = 3;
+  double index_density = 4;
+  uint32 max_connections_per_node = 5;
+}
+
+// Cluster statistics
+message ClusterStats {
+  uint32 total_nodes = 1;
+  uint32 active_nodes = 2;
+  string leader_node = 3;
+  uint64 current_term = 4;
+  bool is_leader = 5;
+}
+
+// Security statistics
+message SecurityStats {
+  uint64 total_sessions = 1;
+  uint64 active_sessions = 2;
+  uint64 failed_authentications = 3;
+  uint64 successful_authentications = 4;
+}
+
+// Health check request
+message HealthCheckRequest {
+  bool include_components = 1;
+}
+
+// Health check response
+message HealthCheckResponse {
+  string status = 1; // SERVING, NOT_SERVING, UNKNOWN
+  string message = 2;
+  repeated ComponentHealth components = 3;
+}
+
+// Component health
+message ComponentHealth {
+  string name = 1;
+  string status = 2;
+  string last_check = 3;
+  optional string details = 4;
+}
+
+// Get config request
+message GetConfigRequest {}
+
+// Get config response
+message GetConfigResponse {
+  ServerConfiguration config = 1;
+}
+
+// Server configuration
+message ServerConfiguration {
+  NetworkConfig network = 1;
+  DatabaseConfig database = 2;
+  SecurityConfig security = 3;
+  MonitoringConfig monitoring = 4;
+}
+
+// Network configuration
+message NetworkConfig {
+  string bind_address = 1;
+  uint32 grpc_port = 2;
+  uint32 rest_port = 3;
+  uint32 admin_port = 4;
+  uint32 max_connections = 5;
+}
+
+// Database configuration
+message DatabaseConfig {
+  string storage_path = 1;
+  uint32 vector_dimensions = 2;
+  string distance_metric = 3;
+  bool enable_persistence = 4;
+}
+
+// Security configuration
+message SecurityConfig {
+  bool require_authentication = 1;
+  repeated string allowed_origins = 2;
+  uint32 session_timeout_minutes = 3;
+  uint32 max_login_attempts = 4;
+}
+
+// Monitoring configuration
+message MonitoringConfig {
+  bool enable_metrics = 1;
+  bool enable_tracing = 2;
+  string log_level = 3;
+  optional string jaeger_endpoint = 4;
+}
+
+// List keys request
+message ListKeysRequest {
+  optional string prefix = 1;
+  uint32 limit = 2;
+  optional string start_after = 3;
+  bool include_metadata = 4;
+}
+
+// List keys response
+message ListKeysResponse {
+  repeated KeyInfo keys = 1;
+  bool has_more = 2;
+  optional string next_token = 3;
+}
+
+// Key information
+message KeyInfo {
+  string key = 1;
+  int64 created_at = 2;
+  int64 updated_at = 3;
+  uint64 size_bytes = 4;
+  optional string metadata = 5;
+  repeated string tags = 6;
+}
+
+// Batch store request
+message BatchStoreRequest {
+  repeated StoreMemoryRequest requests = 1;
+  bool fail_on_error = 2;
+}
+
+// Batch store response
+message BatchStoreResponse {
+  repeated StoreMemoryResponse responses = 1;
+  uint32 successful_count = 2;
+  uint32 failed_count = 3;
+}
+
+// Batch search request
+message BatchSearchRequest {
+  repeated SearchMemoriesRequest requests = 1;
+}
+
+// Batch search response
+message BatchSearchResponse {
+  repeated SearchMemoriesResponse responses = 1;
+}

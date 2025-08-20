@@ -1,0 +1,48 @@
+{
+	"name": "@codai/ai-orchestra",
+	"version": "1.0.0",
+	"description": "Multi-Model AI Orchestra - Orchestrates multiple AI models for superior development assistance",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"type": "module",
+	"scripts": {
+		"build": "tsc",
+		"dev": "tsc --watch",
+		"test": "vitest",
+		"lint": "eslint src/ --ext .ts",
+		"clean": "rimraf dist"
+	},
+	"dependencies": {
+		"@codai/predictive-engine": "workspace:*",
+		"@codai/agent-runtime": "workspace:*",
+		"@codai/memory-graph": "workspace:*",
+		"openai": "^4.65.0",
+		"@anthropic-ai/sdk": "^0.53.0",
+		"@google/generative-ai": "^0.21.0",
+		"tiktoken": "^1.0.15",
+		"uuid": "^10.0.0",
+		"async-retry": "^1.3.3",
+		"p-queue": "^8.0.1"
+	},
+	"devDependencies": {
+		"@types/node": "^20.17.6",
+		"@types/uuid": "^10.0.0",
+		"typescript": "^5.6.3",
+		"vitest": "^2.1.3",
+		"eslint": "^9.16.0",
+		"rimraf": "^6.0.1"
+	},
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		}
+	},
+	"files": [
+		"dist",
+		"README.md"
+	],
+	"publishConfig": {
+		"access": "restricted"
+	}
+}

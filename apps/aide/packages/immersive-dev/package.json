@@ -1,0 +1,59 @@
+{
+	"name": "@codai/immersive-dev",
+	"version": "1.0.0",
+	"description": "Immersive Development Environment with 3D code visualization, spatial debugging, and AR/VR integration",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"build": "tsup",
+		"dev": "tsup --watch",
+		"test": "vitest",
+		"test:coverage": "vitest --coverage",
+		"lint": "eslint src --ext .ts,.tsx",
+		"type-check": "tsc --noEmit"
+	},
+	"dependencies": {
+		"three": "^0.159.0",
+		"@types/three": "^0.159.0",
+		"cannon-es": "^0.20.0",
+		"@react-three/fiber": "^8.15.11",
+		"@react-three/drei": "^9.88.13",
+		"@react-three/xr": "^5.7.0",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"d3-force-3d": "^3.0.5",
+		"@tweenjs/tween.js": "^21.0.0",
+		"web-vitals": "^3.5.0"
+	},
+	"devDependencies": {
+		"@types/react": "^18.2.0",
+		"@types/react-dom": "^18.2.0",
+		"typescript": "^5.3.0",
+		"tsup": "^8.0.0",
+		"vitest": "^1.0.0",
+		"eslint": "^8.55.0"
+	},
+	"keywords": [
+		"3d",
+		"visualization",
+		"immersive",
+		"vr",
+		"ar",
+		"spatial-debugging",
+		"code-visualization",
+		"three.js",
+		"development-environment"
+	],
+	"author": "CODAI Team",
+	"license": "MIT",
+	"files": [
+		"dist"
+	],
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs"
+		}
+	}
+}

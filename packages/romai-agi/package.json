@@ -1,0 +1,67 @@
+{
+  "name": "@codai/romai-agi",
+  "version": "0.1.1",
+  "description": "World's first Quantum-Ready AGI with Romanian Intelligence",
+  "type": "module",
+  "main": "dist/index-publish.js",
+  "types": "dist/index-publish.d.ts",
+  "keywords": [
+    "agi",
+    "artificial-general-intelligence",
+    "quantum-computing",
+    "romanian-ai",
+    "machine-learning",
+    "cognitive-computing"
+  ],
+  "author": "CODAI Team",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc --project tsconfig.publish.json",
+    "dev": "tsc --watch",
+    "test": "vitest",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run tests/integration",
+    "test:performance": "vitest run tests/performance",
+    "benchmark": "node benchmarks/run-benchmarks.js",
+    "demo": "node examples/basic-demo.js",
+    "demo:reasoning": "node examples/reasoning-demo.js",
+    "demo:romanian": "node examples/romanian-demo.js",
+    "demo:quantum": "node examples/quantum-demo.js",
+    "clean": "rimraf dist",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write src/**/*.ts"
+  },
+  "dependencies": {
+    "@codai/memorai": "workspace:*",
+    "@codai/romai": "workspace:*",
+    "rxjs": "^7.8.1",
+    "zod": "^3.22.4",
+    "uuid": "^9.0.1",
+    "ws": "^8.14.2",
+    "@tensorflow/tfjs": "^4.15.0",
+    "openai": "^4.20.1",
+    "langchain": "^0.0.212"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "vitest": "^2.1.8",
+    "@types/node": "^24.0.13",
+    "@types/uuid": "^9.0.7",
+    "@types/ws": "^8.5.10",
+    "eslint": "^8.57.0",
+    "prettier": "^3.1.0",
+    "rimraf": "^5.0.5"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codai-project/romai-agi"
+  }
+}

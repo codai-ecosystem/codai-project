@@ -1,0 +1,39 @@
+{
+	"name": "@codai/conversational-interface",
+	"version": "1.0.0",
+	"description": "Revolutionary conversational development interface enabling natural language programming and AI-powered development workflows",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"build": "tsc",
+		"dev": "tsc --watch",
+		"test": "vitest",
+		"lint": "eslint src",
+		"clean": "rimraf dist"
+	},
+	"keywords": [
+		"conversational-ai",
+		"natural-language-programming",
+		"ai-development",
+		"code-generation",
+		"voice-coding",
+		"intelligent-assistance"
+	],
+	"author": "AIDE Team",
+	"license": "MIT",
+	"dependencies": {
+		"@codai/predictive-engine": "workspace:*",
+		"@codai/memory-graph": "workspace:*",
+		"openai": "^4.47.1"
+	},
+	"devDependencies": {
+		"@types/node": "^20.12.12",
+		"typescript": "^5.4.5",
+		"vitest": "^1.6.0",
+		"eslint": "^8.57.0",
+		"rimraf": "^5.0.7"
+	},
+	"peerDependencies": {
+		"@types/vscode": "^1.89.0"
+	}
+}

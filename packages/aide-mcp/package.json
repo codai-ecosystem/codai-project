@@ -1,0 +1,47 @@
+{
+  "name": "@codai/aide-mcp",
+  "version": "1.0.0",
+  "description": "AIDE MCP - Model Context Protocol integration for the CODAI AIDE platform. Provides AI agent orchestration, memory management, and automation capabilities.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "clean": "rimraf dist",
+    "start:server": "node dist/server.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@codai/shared-types": "workspace:*",
+    "@codai/config": "workspace:*",
+    "controlai-mcp": "workspace:*",
+    "@codai/memorai": "workspace:*",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "typescript": "^5.6.3",
+    "eslint": "^9.11.1",
+    "vitest": "^3.2.4"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./server": {
+      "import": "./dist/server.js",
+      "require": "./dist/server.js",
+      "types": "./dist/server.d.ts"
+    }
+  }
+}

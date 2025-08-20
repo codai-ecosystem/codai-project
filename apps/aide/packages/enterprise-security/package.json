@@ -1,0 +1,60 @@
+{
+	"name": "@codai/enterprise-security",
+	"version": "1.0.0",
+	"description": "Enterprise-grade security suite for AIDE development environment",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"keywords": [
+		"security",
+		"enterprise",
+		"authentication",
+		"authorization",
+		"audit",
+		"compliance",
+		"encryption",
+		"rbac",
+		"sso",
+		"mfa"
+	],
+	"scripts": {
+		"build": "tsc",
+		"dev": "tsc --watch",
+		"clean": "rm -rf dist",
+		"lint": "eslint src/**/*.ts",
+		"test": "vitest"
+	},
+	"dependencies": {
+		"bcryptjs": "^2.4.3",
+		"jsonwebtoken": "^9.0.2",
+		"speakeasy": "^2.0.0",
+		"passport": "^0.7.0",
+		"passport-saml": "^3.2.4",
+		"passport-oauth2": "^1.7.0",
+		"express-rate-limit": "^7.1.5",
+		"helmet": "^7.1.0",
+		"express-validator": "^7.0.1",
+		"crypto": "^1.0.1",
+		"node-forge": "^1.3.1",
+		"argon2": "^0.31.2",
+		"csurf": "^1.11.0",
+		"express-session": "^1.17.3",
+		"connect-redis": "^7.1.0",
+		"winston": "^3.11.0",
+		"uuid": "^9.0.1",
+		"zod": "^3.22.4"
+	},
+	"devDependencies": {
+		"@types/bcryptjs": "^2.4.6",
+		"@types/jsonwebtoken": "^9.0.5",
+		"@types/speakeasy": "^2.0.10",
+		"@types/passport": "^1.0.16",
+		"@types/passport-saml": "^1.1.6",
+		"@types/passport-oauth2": "^1.4.15",
+		"@types/node-forge": "^1.3.10",
+		"@types/csurf": "^1.11.5",
+		"@types/express-session": "^1.17.10",
+		"@types/uuid": "^9.0.7",
+		"typescript": "^5.3.3",
+		"vitest": "^1.1.0"
+	}
+}

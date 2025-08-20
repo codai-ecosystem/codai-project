@@ -1,0 +1,119 @@
+{
+  "name": "@aide/enterprise",
+  "version": "1.0.0",
+  "description": "Enterprise features for AIDE - SSO, RBAC, Audit, AI Code Assistant",
+  "keywords": [
+    "aide",
+    "enterprise",
+    "sso",
+    "rbac",
+    "audit",
+    "ai",
+    "security"
+  ],
+  "author": "AIDE Team",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./sso": {
+      "types": "./dist/sso/index.d.ts",
+      "import": "./dist/sso/index.js",
+      "require": "./dist/sso/index.js"
+    },
+    "./rbac": {
+      "types": "./dist/rbac/index.d.ts",
+      "import": "./dist/rbac/index.js",
+      "require": "./dist/rbac/index.js"
+    },
+    "./audit": {
+      "types": "./dist/audit/index.d.ts",
+      "import": "./dist/audit/index.js",
+      "require": "./dist/audit/index.js"
+    },
+    "./ai": {
+      "types": "./dist/ai/index.d.ts",
+      "import": "./dist/ai/index.js",
+      "require": "./dist/ai/index.js"
+    },
+    "./config": {
+      "types": "./dist/config/index.d.ts",
+      "import": "./dist/config/index.js",
+      "require": "./dist/config/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsc && tsc-alias",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "type-check": "tsc --noEmit",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "openai": "^4.28.4",
+    "jsonwebtoken": "^9.0.2",
+    "google-auth-library": "^9.6.3",
+    "@azure/msal-node": "^2.6.6",
+    "@node-saml/passport-saml": "^4.0.4",
+    "typescript": "^5.3.3",
+    "eslint": "^8.56.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.17",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "tsc-alias": "^1.8.8",
+    "vitest": "^1.2.2",
+    "@vitest/ui": "^1.2.2",
+    "@vitest/coverage-v8": "^1.2.2"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "next": "^14.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    },
+    "next": {
+      "optional": true
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codai-ecosystem/codai-project",
+    "directory": "packages/aide-enterprise"
+  },
+  "bugs": {
+    "url": "https://github.com/codai-ecosystem/codai-project/issues"
+  },
+  "homepage": "https://aide.dev/enterprise",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}

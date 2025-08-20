@@ -1,0 +1,51 @@
+{
+  "name": "@codai/aide-sdk",
+  "version": "1.0.0",
+  "description": "AIDE SDK - Software Development Kit for integrating with the CODAI AIDE platform. Provides APIs for external tools and extensions.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "clean": "rimraf dist",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@codai/shared-types": "workspace:*",
+    "@codai/config": "workspace:*",
+    "@codai/auth": "workspace:*",
+    "zod": "^3.23.8",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "typescript": "^5.6.3",
+    "eslint": "^9.11.1",
+    "vitest": "^3.2.4"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./client": {
+      "import": "./dist/client/index.js",
+      "require": "./dist/client/index.js",
+      "types": "./dist/client/index.d.ts"
+    },
+    "./types": {
+      "import": "./dist/types/index.js",
+      "require": "./dist/types/index.js",
+      "types": "./dist/types/index.d.ts"
+    }
+  }
+}

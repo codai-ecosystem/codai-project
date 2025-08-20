@@ -135,7 +135,6 @@ obj/
 *.suo
 *.sln.docstates
 .vs/
-packages/
 *.nupkg
 *.snupkg
 project.lock.json

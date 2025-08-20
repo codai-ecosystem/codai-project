@@ -1,0 +1,28 @@
+# Build artifacts and debug files
+rust/target/
+rust/Cargo.lock
+bindings/
+.turbo/
+node_modules/
+cbd-data/
+test/
+
+# Documentation and development files
+*.md
+!README.md
+*.mjs
+*.js.map
+*.ts.map
+
+# Environment and config files
+.env
+.env.*
+*.config.js
+*.config.ts
+
+# Development artifacts
+src/
+tsconfig.json
+
+# Only include built distribution
+!dist/

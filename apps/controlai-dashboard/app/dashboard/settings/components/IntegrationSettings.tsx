@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Integration Settings Component - API Connections and Third-party Services
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import {
@@ -585,4 +586,5 @@ export function IntegrationSettings({ settings, onChange }: IntegrationSettingsP
         </motion.div>
     )
 }
+
 

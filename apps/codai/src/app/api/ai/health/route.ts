@@ -1,79 +1,160 @@
 /**
- * AI Service Health API Route - CND Enhanced
- * Provides comprehensive health monitoring for AI service
+ * CodAI AI Health Status Route - Migrated to CBD Database
+ * Path: /api/ai/health
+ * Methods: GET
+ * Purpose: AI service health monitoring using CBD Universal Service
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getCNDAIService } from '../../../../services/cnd-ai';
+import { getCBDAIService, getCBDHealthStatus, getAIServiceAnalytics } from '@codai/api-utils';
 
 export async function GET(request: NextRequest) {
   try {
-    const aiService = getCNDAIService();
-    await aiService.initialize();
+    console.log('🏥 CodAI AI Health Check - Using CBD Universal Service');
 
-    const healthStatus = await aiService.getHealthStatus();
-    const metrics = await aiService.getServiceMetrics();
+    // Get CBD AI service instance
+    const cbdService = await getCBDAIService();
+
+    // Get comprehensive health status
+    const healthStatus = await getCBDHealthStatus();
+
+    // Get AI service analytics
+    const analytics = await getAIServiceAnalytics();
+
+    // Determine overall AI health
+    const isHealthy = healthStatus.status === 'healthy';
 
     const response = {
-      success: true,
+      service: 'CodAI AI Service',
+      status: isHealthy ? 'healthy' : 'degraded',
       timestamp: new Date().toISOString(),
-      service: 'codai-ai-service',
-      version: '1.0.0',
-      status: healthStatus.status || 'healthy',
-      cnd: {
-        connected: true,
-        enterprise: {
-          enabled: true,
-          features: [
-            'serviceDiscovery',
-            'authentication',
-            'authorization',
-            'audit',
-            'monitoring'
-          ]
-        }
-      },
+      version: '3.0.0',
+      success: isHealthy,
+
+      // CBD Database Integration
       database: {
-        connected: true,
+        service: 'CBD Universal Service',
+        status: healthStatus.database,
+        paradigms: healthStatus.database.paradigms || 6,
+        connection: 'active',
+        url: `http://${process.env.CBD_HOST || 'localhost'}:${process.env.CBD_PORT || '4180'}`,
         tables: [
+          'metu_devices',
+          'metu_conversations',
+          'metu_messages',
           'ai_models',
-          'conversations',
-          'training_data',
-          'conversation_embeddings'
+          'training_data'
         ]
       },
+
+      // AI Service Capabilities
       ai: {
         capabilities: [
           'modelStorage',
           'conversationManagement',
           'vectorSearch',
-          'trainingData'
+          'trainingData',
+          'chat-completion',
+          'analytics-reporting'
         ],
-        metrics: metrics.aiMetrics || {
-          activeModels: 0,
-          activeConversations: 0,
-          trainingDataPoints: 0
+        metrics: {
+          activeModels: analytics.top_models.length,
+          activeConversations: analytics.active_conversations,
+          trainingDataPoints: analytics.total_requests,
+          averageResponseTime: analytics.average_response_time
         }
       },
-      performance: metrics || {},
-      uptime: process.uptime()
+
+      // Current Analytics
+      analytics: {
+        total_ai_requests: analytics.total_requests,
+        active_conversations: analytics.active_conversations,
+        messages_today: analytics.messages_today,
+        average_response_time: analytics.average_response_time,
+        top_models: analytics.top_models
+      },
+
+      // Service Integration Status
+      services: healthStatus.services,
+
+      // Enterprise Features
+      enterprise: {
+        enabled: true,
+        features: [
+          'serviceDiscovery',
+          'authentication',
+          'authorization',
+          'audit',
+          'monitoring',
+          'rateLimit',
+          'encryption'
+        ],
+        authentication: 'enabled',
+        service_discovery: 'active',
+        audit_logging: 'enabled',
+        metrics_collection: 'active',
+        rate_limiting: 'enabled'
+      },
+
+      // Migration Status
+      migration: {
+        from: 'CND (deprecated)',
+        to: 'CBD Universal Service',
+        status: 'completed',
+        benefits: [
+          'Multi-paradigm database support',
+          'Enhanced service discovery',
+          'Improved enterprise features',
+          'Better analytics and monitoring',
+          'Scalable architecture'
+        ]
+      },
+
+      performance: {
+        uptime: process.uptime(),
+        memory_usage: process.memoryUsage(),
+        node_version: process.version
+      }
     };
 
-    // Set appropriate HTTP status based on health
-    const httpStatus = healthStatus.status === 'critical' ? 503 : 200;
+    console.log(`✅ CodAI AI Health: ${response.status.toUpperCase()}`);
 
-    return NextResponse.json(response, { status: httpStatus });
+    return NextResponse.json(response, {
+      status: isHealthy ? 200 : 503,
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      }
+    });
 
   } catch (error) {
-    console.error('Health check failed:', error);
+    console.error('❌ CodAI AI Health Check Error:', error);
 
-    return NextResponse.json({
-      success: false,
-      timestamp: new Date().toISOString(),
-      service: 'codai-ai-service',
+    const errorResponse = {
+      service: 'CodAI AI Service',
       status: 'unhealthy',
-      error: 'Health check failed',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 503 });
+      timestamp: new Date().toISOString(),
+      version: '3.0.0',
+      success: false,
+      error: {
+        type: 'HEALTH_CHECK_FAILED',
+        message: 'Failed to perform AI health check',
+        details: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.message : String(error)) : undefined
+      },
+      database: {
+        service: 'CBD Universal Service',
+        status: 'connection_failed',
+        url: `http://${process.env.CBD_HOST || 'localhost'}:${process.env.CBD_PORT || '4180'}`
+      },
+      migration: {
+        from: 'CND (deprecated)',
+        to: 'CBD Universal Service',
+        status: 'error',
+        error: error instanceof Error ? error.message : String(error)
+      }
+    };
+
+    return NextResponse.json(errorResponse, { status: 503 });
   }
 }

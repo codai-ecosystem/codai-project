@@ -23,7 +23,8 @@
     "i18next": "^24.2.0",
     "i18next-browser-languagedetector": "^8.0.0",
     "i18next-http-backend": "^3.0.1",
-    "react-i18next": "^15.3.0"
+    "react-i18next": "^15.3.0",
+    "tslib": "^2.8.1"
   },
   "devDependencies": {
     "@types/react": "^19.1.8",

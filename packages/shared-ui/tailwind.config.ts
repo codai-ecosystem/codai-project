@@ -1,5 +1,14 @@
 import type { Config } from 'tailwindcss'
 
+/**
+ * CODAI Shared UI - Standard Tailwind Configuration
+ * 
+ * This is the base configuration for the CODAI design system.
+ * Apps should use the createCodaiTailwindConfig factory from tailwind-master.config.ts
+ * for app-specific customizations.
+ * 
+ * @deprecated Use createCodaiTailwindConfig from tailwind-master.config.ts instead
+ */
 const config: Config = {
   darkMode: 'class',
   content: [
@@ -7,6 +16,9 @@ const config: Config = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
+    // Include shared packages
+    '../../packages/shared-ui/src/**/*.{ts,tsx}',
+    '../../packages/ui/src/**/*.{ts,tsx}',
   ],
   theme: {
     container: {
@@ -188,3 +200,4 @@ const config: Config = {
 }
 
 export default config
+

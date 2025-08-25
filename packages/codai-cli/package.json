@@ -1,7 +1,7 @@
 {
-  "name": "@codai/cli",
+  "name": "@codai/cli-legacy",
   "version": "1.0.0",
-  "description": "CODAI Ecosystem CLI - Service management, deployment, and monitoring tools",
+  "description": "CODAI Ecosystem CLI (Legacy) - Service management, deployment, and monitoring tools",
   "main": "dist/index.js",
   "bin": {
     "codai": "./bin/codai"

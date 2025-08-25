@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Analytics Overview Component - Key Metrics Summary
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import {
@@ -260,4 +261,5 @@ export function AnalyticsOverview({
         </div>
     )
 }
+
 

@@ -32,7 +32,7 @@
     "zustand": "^4.4.7"
   },
   "devDependencies": {
-    "@playwright/test": "^1.40.1",
+    "@playwright/test": "^1.54.2",
     "@testing-library/jest-dom": "^6.1.5",
     "@types/node": "^20",
     "@types/react": "^19",

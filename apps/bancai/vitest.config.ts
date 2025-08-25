@@ -1,46 +1,79 @@
-import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react';
+/**
+ * Vitest Configuration for BancAI
+ * Following 2025 best practices with self-contained configuration
+ */
+
+import { defineConfig } from 'vitest/config'
+import { resolve } from 'path'
+import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+
   test: {
-    name: 'bancai-tests',
-    environment: 'jsdom',  // Changed to jsdom for React testing
+    name: 'bancai-banking-tests',
+    environment: 'jsdom',
     setupFiles: ['./tests/setup.ts'],
     globals: true,
-    css: true,
-    include: [
-      'tests/**/*.{test,spec}.{js,ts,jsx,tsx}',
-      '__tests__/**/*.{test,spec}.{js,ts,jsx,tsx}',
-      'src/**/*.{test,spec}.{js,ts,jsx,tsx}'
-    ],
-    exclude: [
-      'node_modules/**',
-      'packages/**/node_modules/**',
-      '**/node_modules/**',
-      'dist/**',
-      '.next/**',
-      'packages/**/*.test.*',
-      'packages/**/*.spec.*'
-    ],
+
+    // Coverage settings for world-class standards
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
+      reportsDirectory: './coverage',
       exclude: [
         'node_modules/',
-        'tests/',
+        '.next/',
+        'public/',
+        'coverage/',
         '**/*.d.ts',
-        '**/*.config.*'
-      ]
-    }
+        '**/*.config.*',
+        'middleware.*'
+      ],
+      thresholds: {
+        global: {
+          branches: 80,
+          functions: 80,
+          lines: 80,
+          statements: 80
+        }
+      }
+    },
+
+    // Performance optimizations
+    pool: 'threads',
+    poolOptions: {
+      threads: {
+        singleThread: false,
+        maxThreads: 4
+      }
+    },
+
+    // Test patterns
+    include: [
+      'src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
+      'tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'
+    ],
+    exclude: [
+      'node_modules/',
+      '.next/',
+      'e2e/**'
+    ],
+
+    // Timeouts and retries for stability
+    testTimeout: 15000,
+    hookTimeout: 10000,
+    retry: 2
   },
-  define: {
-    global: 'globalThis',
-  },
+
+  // Path resolution
   resolve: {
     alias: {
-      '@': new URL('./src', import.meta.url).pathname,
-      crypto: 'crypto-browserify' // Fix crypto import for browser environment
-    },
-  },
-});
+      '@': resolve(__dirname, './src'),
+      '@/tests': resolve(__dirname, './tests'),
+      '@/components': resolve(__dirname, './src/components'),
+      '@/lib': resolve(__dirname, './src/lib'),
+      '@/app': resolve(__dirname, './src/app')
+    }
+  }
+})

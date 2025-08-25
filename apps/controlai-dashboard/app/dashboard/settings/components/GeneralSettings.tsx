@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * General Settings Component - Profile and Basic Preferences
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import { User, Mail, Globe, Calendar, Clock, MapPin, Language } from 'lucide-react'
@@ -311,4 +312,5 @@ export function GeneralSettings({ settings, onChange }: GeneralSettingsProps) {
         </motion.div>
     )
 }
+
 

@@ -1,0 +1,154 @@
+{
+  "timestamp": 1755944341.4786747,
+  "total_tests": 3,
+  "passed_tests": 2,
+  "failed_tests": 1,
+  "test_results": [
+    {
+      "test_name": "continuous_learning_basic",
+      "pipeline_initialized": true,
+      "tasks_registered": 2,
+      "learning_results": [
+        {
+          "step": 0,
+          "loss": 1.097132921218872,
+          "success": true
+        },
+        {
+          "step": 1,
+          "loss": 1.1114658117294312,
+          "success": true
+        },
+        {
+          "step": 2,
+          "loss": 1.0861917734146118,
+          "success": true
+        },
+        {
+          "step": 3,
+          "loss": 1.0896198749542236,
+          "success": true
+        },
+        {
+          "step": 4,
+          "loss": 1.1081236600875854,
+          "success": true
+        },
+        {
+          "step": 5,
+          "loss": 1.1127474308013916,
+          "success": true
+        },
+        {
+          "step": 6,
+          "loss": 1.1260050535202026,
+          "success": true
+        },
+        {
+          "step": 7,
+          "loss": 1.085707664489746,
+          "success": true
+        },
+        {
+          "step": 8,
+          "loss": 1.1096141338348389,
+          "success": true
+        },
+        {
+          "step": 9,
+          "loss": 1.0907444953918457,
+          "success": true
+        },
+        {
+          "step": 10,
+          "loss": 1.0957101583480835,
+          "success": true
+        },
+        {
+          "step": 11,
+          "loss": 1.0797147750854492,
+          "success": true
+        },
+        {
+          "step": 12,
+          "loss": 1.1104035377502441,
+          "success": true
+        },
+        {
+          "step": 13,
+          "loss": 1.0998899936676025,
+          "success": true
+        },
+        {
+          "step": 14,
+          "loss": 1.0621505975723267,
+          "success": true
+        },
+        {
+          "step": 15,
+          "loss": 1.0904347896575928,
+          "success": true
+        },
+        {
+          "step": 16,
+          "loss": 1.0879101753234863,
+          "success": true
+        },
+        {
+          "step": 17,
+          "loss": 1.0918290615081787,
+          "success": true
+        },
+        {
+          "step": 18,
+          "loss": 1.0805203914642334,
+          "success": true
+        },
+        {
+          "step": 19,
+          "loss": 1.1036298274993896,
+          "success": true
+        }
+      ],
+      "replay_results": {
+        "success": false,
+        "error": "Expected target size [4, 3], got [4, 2]"
+      },
+      "consolidation_results": {
+        "success": false,
+        "error": "Expected target size [20, 3], got [20, 2]"
+      },
+      "statistics": {
+        "learning_steps": 20,
+        "buffer_size": 20,
+        "active_tasks": 2
+      },
+      "summary": {
+        "overall_success": false,
+        "learning_success_rate": 1.0,
+        "components_working": {
+          "online_learning": true,
+          "experience_replay": false,
+          "knowledge_consolidation": false
+        }
+      }
+    },
+    {
+      "test_name": "meta_learning_simple",
+      "success": true,
+      "error": null,
+      "query_accuracy": 0.5,
+      "query_loss": 1.5620346069335938
+    },
+    {
+      "test_name": "forgetting_prevention",
+      "success": true,
+      "task_a_performance_before": 0.6,
+      "task_a_performance_after": 0.6,
+      "performance_retention": 1.0
+    }
+  ],
+  "overall_status": "GOOD",
+  "total_time": 1.4793064594268799,
+  "success_rate": 66.66666666666666
+}

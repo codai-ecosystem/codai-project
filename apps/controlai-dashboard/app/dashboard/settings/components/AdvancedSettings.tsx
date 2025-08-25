@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Advanced Settings Component - Developer Options and Experimental Features
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import {
@@ -448,4 +449,5 @@ export function AdvancedSettings({ settings, onChange }: AdvancedSettingsProps) 
         </motion.div>
     )
 }
+
 

@@ -58,20 +58,20 @@ except ImportError:
                 'mock_engine': True
             }
 
-# Import reasoning engine - Enhanced Version
+# Import reasoning engine - Standard Version
 try:
-    from advanced_reasoning_engine import (
-        EnhancedAdvancedReasoningEngine,
+    from core.reasoning.reasoning_engine import (
+        ReasoningEngine,
         FormalLogicProcessor, SymbolicReasoningSystem, RomanianPhilosophicalReasoner,
         LogicType, ReasoningMethod, LogicalPremise, ReasoningResult
     )
     REASONING_AVAILABLE = True
     ENHANCED_REASONING_AVAILABLE = True
-    logging.info("✅ Enhanced reasoning engine imported successfully")
+    logging.info("✅ Standard reasoning engine imported successfully")
 except ImportError as e:
-    logging.warning(f"Enhanced reasoning engine not available: {e}")
+    logging.warning(f"Standard reasoning engine not available: {e}")
     try:
-        from advanced_reasoning_engine import (
+        from core.reasoning.reasoning_engine import (
             FormalLogicProcessor, SymbolicReasoningSystem, RomanianPhilosophicalReasoner,
             LogicType, ReasoningMethod, LogicalPremise, ReasoningResult
         )

@@ -1,52 +1,92 @@
-import { defineConfig } from 'vitest/config'
-import { resolve } from 'path'
+/// <reference types="vitest" />
+import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import path from 'path'
 
 export default defineConfig({
-    plugins: [react()],
-    test: {
-        environment: 'jsdom',
-        setupFiles: ['./tests/setup.ts'],
-        coverage: {
-            provider: 'v8',
-            reporter: ['text', 'json', 'html', 'lcov'],
-            reportsDirectory: './coverage',
-            thresholds: {
-                global: {
-                    branches: 90,
-                    functions: 90,
-                    lines: 90,
-                    statements: 90
-                }
-            },
-            exclude: [
-                'node_modules/',
-                'tests/',
-                '.next/',
-                'coverage/',
-                '**/*.d.ts',
-                '**/*.config.*',
-                '**/middleware.*'
-            ]
-        },
-        alias: {
-            '@': resolve(__dirname, './src'),
-            '@/tests': resolve(__dirname, './tests'),
-            '@/components': resolve(__dirname, './src/components'),
-            '@/lib': resolve(__dirname, './src/lib'),
-            '@/pages': resolve(__dirname, './src/pages'),
-            '@/app': resolve(__dirname, './src/app')
-        },
-        testTimeout: 10000,
-        hookTimeout: 10000,
-        teardownTimeout: 5000,
-        globals: true
+  plugins: [react()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@/components': path.resolve(__dirname, './src/components'),
+      '@/lib': path.resolve(__dirname, './src/lib'),
+      '@/app': path.resolve(__dirname, './src/app'),
     },
-    resolve: {
-        alias: {
-            '@': resolve(__dirname, './src'),
-            '@/tests': resolve(__dirname, './tests'),
-            'next-auth/react': resolve(__dirname, './__mocks__/next-auth/react.ts')
+  },
+  test: {
+    name: 'memorai-tests',
+    environment: 'happy-dom', // 2025 Best Practice: happy-dom is faster than jsdom
+    setupFiles: ['src/tests/setup.tsx'],
+    globals: true,
+    css: true,
+    includeSource: ['src/**/*.{js,ts,jsx,tsx}'],
+    pool: 'threads',
+    poolOptions: {
+      threads: {
+        singleThread: false,
+        useAtomics: true // 2025 Performance optimization
+      },
+    },
+    include: [
+      'src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
+      'tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'
+    ],
+    exclude: [
+      'node_modules/**',
+      'dist/**',
+      '.next/**',
+      'public/**',
+      'tests/e2e/**',
+      '**/*.e2e.{test,spec}.{js,ts}',
+    ],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'html', 'lcov', 'json'],
+      reportsDirectory: './coverage',
+      include: ['src/**/*.{ts,tsx}'],
+      exclude: [
+        'src/**/*.test.{ts,tsx}',
+        'src/**/*.spec.{ts,tsx}',
+        'src/**/*.stories.{ts,tsx}',
+        'src/**/*.d.ts',
+        'src/pages/**', // Next.js pages tested via E2E
+        'src/app/layout.tsx',
+        'src/app/page.tsx',
+        'src/app/globals.css',
+        'src/**/loading.tsx',
+        'src/**/not-found.tsx',
+        'src/**/error.tsx',
+        '**/index.{js,ts}' // Re-exports
+      ],
+      thresholds: {
+        global: {
+          branches: 90, // 2025 Best Practice: Higher coverage standards
+          functions: 90,
+          lines: 90,
+          statements: 90,
+        },
+        // Critical modules require higher coverage
+        'src/services/**': {
+          branches: 95,
+          functions: 95,
+          lines: 95,
+          statements: 95
+        },
+        'src/utils/**': {
+          branches: 85,
+          functions: 85,
+          lines: 85,
+          statements: 85
         }
+      },
+    },
+    testTimeout: 10000, // Faster feedback
+    hookTimeout: 10000,
+    bail: process.env.CI ? 1 : 0,
+    reporter: process.env.CI ? ['junit', 'json', 'verbose'] : ['verbose'],
+    outputFile: {
+      junit: './test-results/junit.xml',
+      json: './test-results/results.json'
     }
+  },
 })

@@ -7,10 +7,10 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from enhanced_mathematical_reasoning_engine import EnhancedMathematicalReasoningEngine
+from ml.math.mathematical_reasoning_engine import MathematicalReasoningEngine
 
 # Test algebra problems
-engine = EnhancedMathematicalReasoningEngine()
+engine = MathematicalReasoningEngine()
 
 problems = [
     "Solve for x: 2x + 5 = 15",

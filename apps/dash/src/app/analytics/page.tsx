@@ -423,10 +423,10 @@ export default function RealTimeAnalyticsPage() {
                 const newEvent: RealTimeEvent = {
                     id: Math.random().toString(36).substr(2, 9),
                     timestamp: new Date().toISOString(),
-                    type: eventTypes[Math.floor(Math.random() * eventTypes.length)],
-                    message: messages[Math.floor(Math.random() * messages.length)],
-                    source: sources[Math.floor(Math.random() * sources.length)],
-                    severity: severities[Math.floor(Math.random() * severities.length)]
+                    type: eventTypes[Math.floor(Math.random() * eventTypes.length)] || 'info',
+                    message: messages[Math.floor(Math.random() * messages.length)] || 'Unknown event',
+                    source: sources[Math.floor(Math.random() * sources.length)] || 'system',
+                    severity: severities[Math.floor(Math.random() * severities.length)] || 'low'
                 }
 
                 setRealtimeEvents(prev => [newEvent, ...prev.slice(0, 19)]) // Keep only 20 events
@@ -521,8 +521,8 @@ export default function RealTimeAnalyticsPage() {
                             <button
                                 onClick={() => setIsLiveMode(!isLiveMode)}
                                 className={`px-4 py-2 rounded-lg backdrop-blur-sm flex items-center space-x-2 transition-colors ${isLiveMode
-                                        ? 'bg-green-500/20 hover:bg-green-500/30 text-green-100'
-                                        : 'bg-white/20 hover:bg-white/30'
+                                    ? 'bg-green-500/20 hover:bg-green-500/30 text-green-100'
+                                    : 'bg-white/20 hover:bg-white/30'
                                     }`}
                             >
                                 {isLiveMode ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
@@ -531,8 +531,8 @@ export default function RealTimeAnalyticsPage() {
                             <button
                                 onClick={() => setAlertsEnabled(!alertsEnabled)}
                                 className={`p-2 rounded-lg backdrop-blur-sm transition-colors ${alertsEnabled
-                                        ? 'bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-100'
-                                        : 'bg-white/20 hover:bg-white/30'
+                                    ? 'bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-100'
+                                    : 'bg-white/20 hover:bg-white/30'
                                     }`}
                             >
                                 {alertsEnabled ? <Bell className="w-5 h-5" /> : <BellOff className="w-5 h-5" />}
@@ -552,8 +552,8 @@ export default function RealTimeAnalyticsPage() {
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         className={`p-4 rounded-xl mb-8 ${criticalAlertsCount > 0
-                                ? 'bg-red-100 border-l-4 border-red-500'
-                                : 'bg-yellow-100 border-l-4 border-yellow-500'
+                            ? 'bg-red-100 border-l-4 border-red-500'
+                            : 'bg-yellow-100 border-l-4 border-yellow-500'
                             }`}
                     >
                         <div className="flex items-center justify-between">
@@ -683,7 +683,7 @@ export default function RealTimeAnalyticsPage() {
                                             </div>
                                             <div className="flex items-center justify-between">
                                                 <div className={`flex items-center space-x-1 text-sm ${metric.trend === 'up' ? 'text-green-600' :
-                                                        metric.trend === 'down' ? 'text-red-600' : 'text-gray-600'
+                                                    metric.trend === 'down' ? 'text-red-600' : 'text-gray-600'
                                                     }`}>
                                                     {metric.trend === 'up' ? <TrendingUp className="w-4 h-4" /> :
                                                         metric.trend === 'down' ? <TrendingDown className="w-4 h-4" /> :

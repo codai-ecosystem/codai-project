@@ -30,7 +30,7 @@
     "@codai/logai-integration": "workspace:*",
     "@codai/logai-sdk": "workspace:*",
     "@codai/sdk": "workspace:*",
-    "@codai/ui": "workspace:*",
+    "@codai/shared-ui": "workspace:*",
     "@expo/vector-icons": "^14.1.0",
     "@react-navigation/bottom-tabs": "^7.4.2",
     "@react-navigation/native": "^7.1.14",

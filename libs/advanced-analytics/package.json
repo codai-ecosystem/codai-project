@@ -150,7 +150,7 @@
     "vitest": "^0.34.0",
     "@vitest/coverage-c8": "^0.33.0",
     "playwright": "^1.36.0",
-    "@playwright/test": "^1.36.0",
+    "@playwright/test": "^1.54.2",
     "eslint": "^8.46.0",
     "@typescript-eslint/parser": "^6.2.0",
     "@typescript-eslint/eslint-plugin": "^6.2.0",

@@ -1,0 +1,27 @@
+{
+  "romai_agi_v1": [
+    {
+      "model_id": "job_exp_romai_agi_v1_1755966089_model_1755966094",
+      "model_name": "romai_agi_v1",
+      "version": "1.0.1755966094",
+      "experiment_id": "exp_romai_agi_v1_1755966089",
+      "model_path": "model_registry\\romai_agi_v1\\1.0.1755966094\\model.pth",
+      "metrics": {
+        "accuracy": 0.95,
+        "loss": 0.05,
+        "f1_score": 0.93
+      },
+      "parameters": {
+        "learning_rate": 0.0001,
+        "batch_size": 16,
+        "epochs": 5,
+        "hidden_size": 256
+      },
+      "training_data_hash": "dummy_hash",
+      "created_at": "2025-08-23T19:21:34.422000",
+      "size_mb": 0.0023012161254882812,
+      "framework": "pytorch",
+      "tags": []
+    }
+  ]
+}

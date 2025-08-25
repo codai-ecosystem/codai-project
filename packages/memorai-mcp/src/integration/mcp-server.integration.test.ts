@@ -22,7 +22,7 @@ describe('MCP Server Integration Tests', () => {
     // Create Express app for testing
     app = express();
     app.use(express.json());
-    
+
     // Set up CORS
     app.use((req, res, next) => {
       res.header('Access-Control-Allow-Origin', '*');
@@ -45,7 +45,7 @@ describe('MCP Server Integration Tests', () => {
     // Mock MCP endpoints for testing
     app.post('/mcp', async (req, res) => {
       const { method, params } = req.body;
-      
+
       try {
         switch (method) {
           case 'remember':
@@ -65,7 +65,7 @@ describe('MCP Server Integration Tests', () => {
               }
             });
             break;
-            
+
           case 'recall':
             res.json({
               jsonrpc: '2.0',
@@ -84,7 +84,7 @@ describe('MCP Server Integration Tests', () => {
               }
             });
             break;
-            
+
           case 'forget':
             res.json({
               jsonrpc: '2.0',
@@ -95,7 +95,7 @@ describe('MCP Server Integration Tests', () => {
               }
             });
             break;
-            
+
           case 'context':
             res.json({
               jsonrpc: '2.0',
@@ -114,7 +114,7 @@ describe('MCP Server Integration Tests', () => {
               }
             });
             break;
-            
+
           default:
             res.status(400).json({
               jsonrpc: '2.0',
@@ -494,14 +494,14 @@ describe('MCP Server Integration Tests', () => {
 
     it('should maintain reasonable response times under load', async () => {
       const startTime = Date.now();
-      
+
       const requests = Array.from({ length: 50 }, () =>
         request(app)
           .get('/health')
       );
 
       await Promise.all(requests);
-      
+
       const endTime = Date.now();
       const avgResponseTime = (endTime - startTime) / 50;
 

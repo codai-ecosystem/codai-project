@@ -4,12 +4,17 @@ import React from 'react';
 
 import { Inter } from 'next/font/google';
 import Script from 'next/script';
+import './lib/i18n/config';
 import './globals.css';
 import '../styles/animation-enhancements.css';
 import { AuthProvider } from '../lib/auth';
 import HubNavigation from '@/components/HubNavigation';
 
 const inter = Inter({ subsets: ['latin'] });
+
+
+// Initialize i18n for hub
+// This import must be before any components that use translations
 
 export default function RootLayout({
   children,

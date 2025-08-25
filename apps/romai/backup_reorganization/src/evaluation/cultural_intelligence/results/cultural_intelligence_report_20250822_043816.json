@@ -1,0 +1,51 @@
+{
+  "report_id": "a7605a4a-2145-42b7-9fbd-bb1106a1851c",
+  "timestamp": "2025-08-22T01:38:16.902914+00:00",
+  "overall_score": 0.9533333333333334,
+  "cultural_mastery_classification": "ADVANCED_CULTURAL_INTELLIGENCE",
+  "native_speaker_equivalence": 0.9600000000000001,
+  "cultural_expert_alignment": 0.9733333333333335,
+  "business_cultural_readiness": 0.9733333333333335,
+  "success_rate": 0.9533333333333334,
+  "domain_scores": {
+    "BUSINESS_ETIQUETTE": 0.9600000000000001,
+    "REGIONAL_VARIATIONS": 0.9500000000000001,
+    "HISTORICAL_CONTEXT": 0.9400000000000001,
+    "LANGUAGE_NUANCES": 0.9500000000000001,
+    "SOCIAL_DYNAMICS": 0.9600000000000001,
+    "REGULATORY_ENVIRONMENT": 0.9700000000000001,
+    "CONTEMPORARY_VALUES": 0.9400000000000001
+  },
+  "regional_scores": {
+    "WALLACHIA": 0.9550000000000001,
+    "TRANSYLVANIA": 0.9525000000000001,
+    "MOLDAVIA": 0.9500000000000001
+  },
+  "cultural_strengths": [
+    "🏆 World-class Romanian business etiquette and formal protocol mastery",
+    "🗺️ Exceptional regional cultural variation understanding across all Romanian regions",
+    "📚 Deep historical context awareness with cultural sensitivity excellence",
+    "🗣️ Outstanding language nuance recognition and formality level adaptation",
+    "🤝 Superior social dynamics understanding and relationship building expertise",
+    "⚖️ Comprehensive regulatory environment mastery (GDPR, ANSPDCP, EU AI Act)",
+    "💼 Excellent Romanian market knowledge and economic sector expertise",
+    "🌟 Strong contemporary Romanian values integration and generational awareness"
+  ],
+  "cultural_gaps": [],
+  "competitive_advantages": [
+    "World-class Romanian cultural intelligence",
+    "Native-level business etiquette mastery",
+    "Superior regional adaptation capabilities",
+    "Exceptional regulatory compliance knowledge"
+  ],
+  "cultural_differentiation_factors": [
+    "Deep Romanian historical context awareness",
+    "Authentic regional cultural variation understanding",
+    "Advanced Romanian business protocol knowledge",
+    "Contemporary Romanian values integration"
+  ],
+  "strongest_regional_knowledge": "WALLACHIA",
+  "regional_knowledge_gaps": [],
+  "confidence_consistency": 0.95,
+  "scenarios_evaluated": 9
+}

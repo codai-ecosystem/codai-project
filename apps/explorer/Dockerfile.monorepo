@@ -1,0 +1,77 @@
+# CODAI Explorer Application - Monorepo Docker Configuration
+# Multi-stage build following Microsoft best practices for containerized applications
+
+FROM node:18-alpine AS base
+# Install dependencies only when needed
+RUN apk add --no-cache libc6-compat curl
+
+FROM base AS deps
+WORKDIR /app
+
+# Copy root pnpm workspace config
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml* ./
+COPY tsconfig.base.json ./
+
+# Copy workspace dependencies
+COPY packages/shared-ui packages/shared-ui/
+COPY packages/translations packages/translations/
+
+# Copy explorer app
+COPY apps/explorer/ apps/explorer/
+
+# Install pnpm and dependencies
+RUN npm install -g pnpm
+RUN pnpm install --frozen-lockfile --prefer-offline
+
+FROM base AS builder
+WORKDIR /app
+
+# Copy dependencies from deps stage  
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/packages ./packages
+COPY --from=deps /app/apps/explorer ./apps/explorer
+
+# Copy workspace configuration
+COPY --from=deps /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
+COPY --from=deps /app/package.json ./package.json
+COPY --from=deps /app/tsconfig.base.json ./tsconfig.base.json
+
+# Set build environment
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_OPTIONS="--max-old-space-size=2048"
+
+# Change to app directory and build
+WORKDIR /app/apps/explorer
+RUN npm install -g pnpm && pnpm build
+
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Create user
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# Copy built application
+COPY --from=builder /app/apps/explorer/public ./public
+COPY --from=builder /app/apps/explorer/.next/standalone ./
+COPY --from=builder /app/apps/explorer/.next/static ./.next/static
+
+# Set permissions
+RUN chown -R nextjs:nodejs /app
+
+USER nextjs
+
+EXPOSE 4400
+
+ENV PORT=4400
+ENV HOSTNAME="0.0.0.0"
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+  CMD curl -f http://localhost:4400/health || exit 1
+
+# Start the application
+CMD ["node", "server.js"]

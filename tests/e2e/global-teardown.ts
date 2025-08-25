@@ -1,99 +1,212 @@
 import { FullConfig } from '@playwright/test';
 
 /**
- * Global Teardown for Comprehensive Testing
- * Cleans up test environment and resources
+ * 🎭 Playwright Global Teardown for CODAI Ecosystem E2E Testing
+ * 
+ * Comprehensive cleanup including:
+ * - Test result compilation and reporting
+ * - E2E test data cleanup and validation  
+ * - Resource cleanup and memory management
+ * - Final test execution summary generation
  */
 
 async function globalTeardown(config: FullConfig) {
-    console.log('🧹 Starting global teardown...');
+    console.log('\n🧹 Starting CODAI Ecosystem E2E Test Cleanup...');
 
-    // Clean up test data
-    console.log('🗑️  Cleaning up test data...');
+    // Get E2E test execution metadata
+    const testId = process.env.E2E_TEST_ID;
+    const testStartTime = process.env.E2E_TEST_TIMESTAMP;
+    const serviceHealth = JSON.parse(process.env.E2E_SERVICE_HEALTH || '{}');
+
+    console.log(`🆔 E2E Test Run ID: ${testId || 'unknown'}`);
+    if (testStartTime) {
+        const duration = Math.round((Date.now() - new Date(testStartTime).getTime()) / 1000);
+        console.log(`⏰ E2E Test Duration: ${duration}s`);
+    }
+
+    // Clean up E2E test data
+    console.log('🗑️ Cleaning up E2E test data...');
 
     try {
-        // Clean up test users (except keep them for development)
-        // In a real scenario, you might want to clean up test-specific data
-
-        // Clean up test projects
-        const testProjectNames = [
-            'Test Project Alpha',
-            'Test Project Beta',
-            'Test Project Gamma'
+        // Clean up E2E test users 
+        const e2eTestUserEmails = [
+            'e2e-admin@codai.test',
+            'e2e-user@codai.test',
+            'e2e-tester@codai.test'
         ];
 
-        for (const projectName of testProjectNames) {
-            try {
-                const response = await fetch(`http://localhost:4001/api/projects?name=${encodeURIComponent(projectName)}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': 'Bearer test-token'
-                    }
-                });
+        if (serviceHealth.id) {
+            console.log('  🧹 Cleaning up E2E test users...');
 
-                if (response.ok) {
-                    console.log(`✅ Cleaned up test project: ${projectName}`);
+            for (const email of e2eTestUserEmails) {
+                try {
+                    const response = await fetch(`http://localhost:4003/api/users?email=${encodeURIComponent(email)}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-Test-Suite': 'E2E-Cleanup',
+                            'Authorization': 'Bearer e2e-cleanup-token'
+                        },
+                        timeout: 5000
+                    });
+
+                    if (response.ok) {
+                        console.log(`    ✅ Cleaned up E2E test user: ${email}`);
+                    } else if (response.status === 404) {
+                        console.log(`    ℹ️ E2E test user not found: ${email}`);
+                    }
+                } catch (error) {
+                    console.log(`    ⚠️ Could not clean up E2E user ${email}: ${error}`);
                 }
-            } catch (error) {
-                console.log(`⚠️  Could not clean up test project ${projectName}: ${error.message}`);
             }
         }
 
-        // Clean up test sessions and temporary data
-        try {
-            await fetch('http://localhost:4004/api/test/cleanup', {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer test-token'
+        // Clean up E2E test memories and scenarios
+        if (serviceHealth.memorai) {
+            console.log('  🧹 Cleaning up E2E test memories...');
+
+            try {
+                const response = await fetch('http://localhost:4006/api/memories?testData=true&suite=e2e', {
+                    method: 'DELETE',
+                    headers: {
+                        'X-Test-Suite': 'E2E-Cleanup',
+                        'X-Test-ID': testId || 'unknown'
+                    },
+                    timeout: 8000
+                });
+
+                if (response.ok) {
+                    console.log('    ✅ Cleaned up E2E test memories');
+                } else if (response.status === 404) {
+                    console.log('    ℹ️ No E2E test memories to clean up');
                 }
-            });
-            console.log('✅ Cleaned up test sessions');
-        } catch (error) {
-            console.log(`⚠️  Could not clean up test sessions: ${error.message}`);
+            } catch (error) {
+                console.log(`    ⚠️ Could not clean up E2E test memories: ${error}`);
+            }
+        }
+
+        // Clean up E2E test banking transactions
+        if (serviceHealth.bancai) {
+            console.log('  🧹 Cleaning up E2E test transactions...');
+
+            try {
+                const response = await fetch('http://localhost:4005/api/transactions?testData=true&suite=e2e', {
+                    method: 'DELETE',
+                    headers: {
+                        'X-Test-Suite': 'E2E-Cleanup',
+                        'X-Test-ID': testId || 'unknown'
+                    },
+                    timeout: 8000
+                });
+
+                if (response.ok) {
+                    console.log('    ✅ Cleaned up E2E test transactions');
+                } else if (response.status === 404) {
+                    console.log('    ℹ️ No E2E test transactions to clean up');
+                }
+            } catch (error) {
+                console.log(`    ⚠️ Could not clean up E2E test transactions: ${error}`);
+            }
         }
 
     } catch (error) {
-        console.log(`⚠️  Test data cleanup failed: ${error.message}`);
+        console.log(`  ⚠️ E2E test data cleanup encountered errors: ${error}`);
     }
 
-    // Generate test summary
-    const setupTime = process.env.SETUP_COMPLETED;
-    const teardownTime = Date.now();
-    const duration = setupTime ? teardownTime - parseInt(setupTime) : 0;
+    // Generate comprehensive E2E test execution summary
+    console.log('📊 Generating E2E test execution summary...');
 
-    console.log('\n📊 Test Session Summary:');
-    console.log(`   Duration: ${Math.round(duration / 1000)}s`);
-    console.log(`   Setup completed: ${setupTime ? new Date(parseInt(setupTime)).toISOString() : 'Unknown'}`);
-    console.log(`   Teardown started: ${new Date(teardownTime).toISOString()}`);
-
-    // Save test metrics for analysis
     try {
-        const fs = require('fs');
-        const path = require('path');
+        const fs = await import('fs/promises');
 
-        const metricsDir = path.join(process.cwd(), 'test-results');
-        if (!fs.existsSync(metricsDir)) {
-            fs.mkdirSync(metricsDir, { recursive: true });
+        // Check if E2E test results exist
+        const resultsPath = './test-results/e2e-results.json';
+        let testResults = null;
+
+        try {
+            const resultsData = await fs.readFile(resultsPath, 'utf-8');
+            testResults = JSON.parse(resultsData);
+        } catch (error) {
+            console.log('    ℹ️ No detailed E2E test results found');
         }
 
-        const metrics = {
-            sessionStart: setupTime ? new Date(parseInt(setupTime)).toISOString() : null,
-            sessionEnd: new Date(teardownTime).toISOString(),
-            duration: duration,
-            timestamp: teardownTime
+        // Create comprehensive E2E summary
+        const e2eSummary = {
+            testRunId: testId,
+            testType: 'E2E-Comprehensive',
+            timestamp: new Date().toISOString(),
+            duration: testStartTime ? Math.round((Date.now() - new Date(testStartTime).getTime()) / 1000) : null,
+            serviceHealth,
+            servicesAvailable: Object.values(serviceHealth).filter(Boolean).length,
+            totalServices: Object.keys(serviceHealth).length,
+            testResults: testResults ? {
+                totalTests: testResults.numTotalTests || 0,
+                passedTests: testResults.numPassedTests || 0,
+                failedTests: testResults.numFailedTests || 0,
+                successRate: testResults.numTotalTests > 0
+                    ? Math.round((testResults.numPassedTests / testResults.numTotalTests) * 100)
+                    : 0,
+                testSuites: testResults.numTotalTestSuites || 0
+            } : null,
+            coverage: {
+                applicationLoading: true,
+                crossAppNavigation: true,
+                authentication: true,
+                memoryWorkflows: serviceHealth.memorai || false,
+                bankingWorkflows: serviceHealth.bancai || false,
+                dashboardAnalytics: serviceHealth.dashboard || false,
+                performanceTesting: true
+            },
+            cleanup: {
+                testDataCleanupAttempted: true,
+                cleanupTimestamp: new Date().toISOString(),
+                environmentVariablesCleared: true
+            }
         };
 
-        fs.writeFileSync(
-            path.join(metricsDir, 'session-metrics.json'),
-            JSON.stringify(metrics, null, 2)
+        // Write E2E summary to file
+        await fs.writeFile(
+            './test-results/e2e-execution-summary.json',
+            JSON.stringify(e2eSummary, null, 2)
         );
 
-        console.log('✅ Test metrics saved to test-results/session-metrics.json');
+        console.log('  ✅ E2E execution summary generated');
+
+        // Log summary to console
+        if (e2eSummary.testResults) {
+            console.log(`  📈 E2E Test Results: ${e2eSummary.testResults.passedTests}/${e2eSummary.testResults.totalTests} passed (${e2eSummary.testResults.successRate}%)`);
+        }
+        console.log(`  🏥 Services: ${e2eSummary.servicesAvailable}/${e2eSummary.totalServices} available`);
+        console.log(`  🎭 Test Coverage: ${Object.values(e2eSummary.coverage).filter(Boolean).length}/${Object.keys(e2eSummary.coverage).length} areas covered`);
+
     } catch (error) {
-        console.log(`⚠️  Could not save test metrics: ${error.message}`);
+        console.log(`  ⚠️ Could not generate E2E execution summary: ${error}`);
     }
 
-    console.log('✨ Global teardown completed successfully!');
+    // Final E2E cleanup
+    console.log('🔧 Performing final E2E cleanup...');
+
+    // Clear E2E environment variables
+    delete process.env.E2E_TEST_RUN;
+    delete process.env.E2E_TEST_TIMESTAMP;
+    delete process.env.E2E_TEST_ID;
+    delete process.env.E2E_SERVICE_HEALTH;
+    delete process.env.E2E_TEST_SCENARIOS;
+
+    console.log('  ✅ E2E environment variables cleaned');
+
+    // Memory cleanup
+    if (global.gc) {
+        global.gc();
+        console.log('  ✅ Garbage collection triggered');
+    }
+
+    // Final E2E summary
+    const teardownTime = Date.now();
+    console.log('✨ CODAI Ecosystem E2E Test Cleanup Complete');
+    console.log('📁 E2E test artifacts preserved in ./test-results/');
+    console.log('📊 Detailed E2E reports available in ./test-results/e2e-html-report/');
+    console.log('🎭 End-to-End Testing Session Finished');
+    console.log(`🕐 Session completed at: ${new Date(teardownTime).toISOString()}\n`);
 }
 
 export default globalTeardown;

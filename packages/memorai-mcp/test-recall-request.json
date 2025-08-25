@@ -1,0 +1,12 @@
+{
+  "jsonrpc": "2.0",
+  "method": "tools/call",
+  "params": {
+    "name": "recall",
+    "arguments": {
+      "agentId": "romai_agi_agent",
+      "query": "test-time compute scaling chain-of-thought verification loops GPT-5 thinking mode"
+    }
+  },
+  "id": 1
+}

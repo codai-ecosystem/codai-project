@@ -1,22 +1,22 @@
 {
   "users": [
     {
-      "id": "user_1754803960600_ik8gmefmy",
+      "id": "user_1755665639370_pmncqx7d9",
       "username": "admin",
-      "email": "admin-1754803960357-44@test.com",
-      "password": "$2b$12$hezbcOV5VMASlrWHu2pi6es9sGHAvtQFUTUxXmQMI52QthGzcTZfm",
+      "email": "admin-1755665639170-44@test.com",
+      "password": "$2b$12$WIzWJPuWlUd3FVP4zoGmrOqSE2d3TT0Oa9rtOMPzTKOr3fqA1Rd06",
       "profile": {
         "name": "Admin User"
       },
       "isActive": true,
       "emailVerified": false,
-      "createdAt": "2025-08-10T05:32:40.600Z",
-      "updatedAt": "2025-08-10T05:32:40.600Z",
+      "createdAt": "2025-08-20T04:53:59.370Z",
+      "updatedAt": "2025-08-20T04:53:59.370Z",
       "failedLoginAttempts": 0,
       "passwordHistory": [
-        "$2b$12$hezbcOV5VMASlrWHu2pi6es9sGHAvtQFUTUxXmQMI52QthGzcTZfm"
+        "$2b$12$WIzWJPuWlUd3FVP4zoGmrOqSE2d3TT0Oa9rtOMPzTKOr3fqA1Rd06"
       ],
-      "lastPasswordChange": "2025-08-10T05:32:40.600Z",
+      "lastPasswordChange": "2025-08-20T04:53:59.370Z",
       "ipAddresses": [],
       "suspiciousActivityDetected": false
     }
@@ -24,16 +24,16 @@
   "sessions": [],
   "auditLogs": [
     {
-      "id": "audit_1754803960600_gjtg6exgl",
+      "id": "audit_1755665639370_o7x072uhk",
       "action": "user_created",
       "resource": "user_management",
-      "userId": "user_1754803960600_ik8gmefmy",
+      "userId": "user_1755665639370_pmncqx7d9",
       "details": {
-        "email": "admin-1754803960357-44@test.com",
+        "email": "admin-1755665639170-44@test.com",
         "username": "admin",
         "passwordStrengthMet": true
       },
-      "timestamp": "2025-08-10T05:32:40.600Z",
+      "timestamp": "2025-08-20T04:53:59.370Z",
       "severity": "info",
       "status": "success"
     }

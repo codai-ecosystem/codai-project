@@ -1,0 +1,79 @@
+# CODAI Kodex Application - Simplified Build
+FROM node:20-alpine AS base
+RUN apk add --no-cache libc6-compat curl
+
+# Build stage
+FROM base AS builder
+WORKDIR /app
+
+# Install pnpm
+RUN npm install -g pnpm
+
+# Copy workspace files
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml tsconfig.base.json ./
+
+# Copy necessary packages
+COPY packages/shared-ui ./packages/shared-ui/
+COPY packages/api-utils ./packages/api-utils/
+COPY packages/testing-utils ./packages/testing-utils/
+COPY packages/config-consolidated/eslint-config ./packages/config-consolidated/eslint-config/
+COPY packages/translations ./packages/translations/
+
+# Copy kodex app
+COPY apps/kodex ./apps/kodex/
+
+# Set build environment - ignore errors for now
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_OPTIONS="--max-old-space-size=2048"
+
+# Install dependencies for necessary packages and kodex app
+RUN pnpm install --filter=@codai/api-utils --filter=@codai/shared-ui --filter=@codai/translations --filter=kodex --prod=false
+
+# Build the required packages first  
+WORKDIR /app/packages/api-utils
+RUN pnpm build
+WORKDIR /app/packages/shared-ui  
+RUN pnpm build
+WORKDIR /app/packages/translations
+RUN pnpm build
+
+# Build the kodex app
+    WORKDIR /app/apps/kodex
+    
+    # Generate Prisma client
+    RUN pnpm prisma generate
+    
+    RUN pnpm build
+    
+    # Runtime stage
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Create user
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# Copy the built application
+COPY --from=builder /app/apps/kodex/.next/standalone ./
+COPY --from=builder /app/apps/kodex/.next/static ./apps/kodex/.next/static
+COPY --from=builder /app/apps/kodex/public ./apps/kodex/public
+
+# Set permissions
+RUN chown -R nextjs:nodejs /app
+
+USER nextjs
+
+EXPOSE 5000
+
+ENV PORT=5000
+ENV HOSTNAME="0.0.0.0"
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+  CMD curl -f http://localhost:5000/health || exit 1
+
+# Start the application  
+CMD ["node", "apps/kodex/server.js"]

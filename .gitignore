@@ -316,3 +316,12 @@ credentials/
 **/.electron-cache/
 *.electron-cache
 
+# Large model files
+apps/romai/trained_models/*.pt
+apps/romai/src/checkpoints/**/*.pth  
+apps/romai/src/best_model_*.pth
+apps/romai/src/ml/data/*.db
+packages/cbd/cbd-data/collections.json
+eksctl.zip
+configs/app/TESTING_FRAMEWORK_INTEGRATION_REPORT.json
+configs/app/TEST_SUITE_ORGANIZATION.json

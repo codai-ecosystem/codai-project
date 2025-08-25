@@ -1,0 +1,36 @@
+{
+    "task_context": {
+        "task_id": "image_classification_task",
+        "task_type": "classification",
+        "input_examples": [
+            {
+                "image_url": "cat1.jpg",
+                "class": "cat"
+            },
+            {
+                "image_url": "dog1.jpg",
+                "class": "dog"
+            },
+            {
+                "image_url": "cat2.jpg",
+                "class": "cat"
+            }
+        ],
+        "target_examples": [
+            {
+                "image_url": "test1.jpg",
+                "expected_class": "cat"
+            }
+        ],
+        "domain": "computer_vision",
+        "constraints": {
+            "max_training_time": 300,
+            "accuracy_threshold": 0.85
+        },
+        "success_criteria": {
+            "accuracy": 0.9,
+            "inference_speed": 0.1
+        }
+    },
+    "strategy": "few_shot"
+}

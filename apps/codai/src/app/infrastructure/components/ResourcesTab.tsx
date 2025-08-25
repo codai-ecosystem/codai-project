@@ -4,7 +4,7 @@ import {
     Database,
     HardDrive,
     Cpu,
-    Memory,
+    MemoryStick,
     Play,
     Pause,
     Square,

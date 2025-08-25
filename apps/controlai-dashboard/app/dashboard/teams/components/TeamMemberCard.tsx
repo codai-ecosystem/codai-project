@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * TeamMemberCard Component - Individual team member card
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import {
@@ -173,4 +174,5 @@ export function TeamMemberCard({ member, selected, onSelect, onAction }: TeamMem
         </motion.div>
     )
 }
+
 

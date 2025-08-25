@@ -66,8 +66,8 @@ class AuthenticAGIEngine:
         # Enhanced mathematical reasoning for Phase 1 Day 3
         try:
             sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'math'))
-            from enhanced_mathematical_reasoning_engine import EnhancedMathematicalReasoningEngine
-            self.mathematical_engine = EnhancedMathematicalReasoningEngine()
+            from ml.math.mathematical_reasoning_engine import MathematicalReasoningEngine
+            self.mathematical_engine = MathematicalReasoningEngine()
             logger.info("✅ Enhanced Mathematical Engine loaded successfully")
         except ImportError:
             from mathematical_reasoning_engine import MathematicalReasoningEngine

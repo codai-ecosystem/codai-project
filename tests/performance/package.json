@@ -1,0 +1,17 @@
+{
+    "name": "@codai/performance-tests",
+    "version": "1.0.0",
+    "description": "CODAI Ecosystem Performance Testing Suite",
+    "scripts": {
+        "test": "vitest run comprehensive-performance.test.ts",
+        "test:watch": "vitest comprehensive-performance.test.ts",
+        "test:coverage": "vitest run --coverage comprehensive-performance.test.ts"
+    },
+    "dependencies": {
+        "vitest": "^3.2.4"
+    },
+    "devDependencies": {
+        "@types/node": "^22.12.5",
+        "typescript": "^5.9.2"
+    }
+}

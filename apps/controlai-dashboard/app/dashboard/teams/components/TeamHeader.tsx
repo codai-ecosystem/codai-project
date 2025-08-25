@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * TeamHeader Component - Enhanced header with search and controls
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import { Users, Search, Filter, Settings, UserPlus, Bell, Wifi } from 'lucide-react'
@@ -117,4 +118,5 @@ export function TeamHeader({
         </header>
     )
 }
+
 

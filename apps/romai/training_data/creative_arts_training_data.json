@@ -1,0 +1,425 @@
+{
+    "creative_arts_test_cases": [
+        {
+            "id": "visual_arts_001",
+            "description": "Oil painting of a stormy seascape with dramatic lighting and dynamic brushwork, painted in the Romantic tradition",
+            "discipline": "visual_arts",
+            "category": "painting",
+            "test_data": {
+                "composition_score": 0.85,
+                "color_harmony": 0.80,
+                "technical_skill": 0.75,
+                "originality": 0.70,
+                "emotional_impact": 0.85
+            },
+            "expected_results": {
+                "artistic_discipline": "visual_arts",
+                "creative_category": "painting",
+                "confidence_range": [
+                    0.80,
+                    0.95
+                ],
+                "key_evaluation_points": [
+                    "composition",
+                    "color harmony",
+                    "brushwork technique",
+                    "emotional expression"
+                ]
+            }
+        },
+        {
+            "id": "music_composition_001",
+            "description": "Jazz composition featuring complex harmonic progressions with modal interchange and sophisticated rhythmic patterns",
+            "discipline": "music",
+            "category": "composition",
+            "test_data": {
+                "harmonic_complexity": 0.90,
+                "melodic_quality": 0.75,
+                "rhythmic_interest": 0.85,
+                "structural_coherence": 0.80,
+                "emotional_expression": 0.70
+            },
+            "expected_results": {
+                "artistic_discipline": "music",
+                "creative_category": "composition",
+                "confidence_range": [
+                    0.80,
+                    0.90
+                ],
+                "key_evaluation_points": [
+                    "harmonic sophistication",
+                    "rhythmic complexity",
+                    "structural integrity"
+                ]
+            }
+        },
+        {
+            "id": "literature_poetry_001",
+            "description": "Contemporary poem exploring themes of identity and belonging through vivid imagery and metaphorical language",
+            "discipline": "literature",
+            "category": "poetry",
+            "test_data": {
+                "narrative_structure": 0.70,
+                "character_development": 0.60,
+                "style_quality": 0.85,
+                "thematic_depth": 0.80,
+                "literary_devices": 0.85
+            },
+            "expected_results": {
+                "artistic_discipline": "literature",
+                "creative_category": "poetry",
+                "confidence_range": [
+                    0.75,
+                    0.90
+                ],
+                "key_evaluation_points": [
+                    "imagery",
+                    "metaphorical language",
+                    "thematic exploration",
+                    "poetic devices"
+                ]
+            }
+        },
+        {
+            "id": "design_digital_001",
+            "description": "User interface design for mobile banking app with intuitive navigation and accessibility features",
+            "discipline": "design",
+            "category": "digital_design",
+            "test_data": {
+                "visual_hierarchy": 0.85,
+                "usability_score": 0.90,
+                "aesthetic_appeal": 0.75,
+                "innovation_level": 0.70,
+                "user_experience": 0.85
+            },
+            "expected_results": {
+                "artistic_discipline": "design",
+                "creative_category": "digital_design",
+                "confidence_range": [
+                    0.80,
+                    0.90
+                ],
+                "key_evaluation_points": [
+                    "usability",
+                    "visual hierarchy",
+                    "accessibility",
+                    "user experience"
+                ]
+            }
+        },
+        {
+            "id": "performing_arts_theater_001",
+            "description": "Theatrical performance of contemporary drama with method acting techniques and innovative staging",
+            "discipline": "performing_arts",
+            "category": "theater",
+            "test_data": {
+                "technical_execution": 0.80,
+                "artistic_expression": 0.85,
+                "stage_presence": 0.75,
+                "creativity": 0.70,
+                "audience_engagement": 0.80
+            },
+            "expected_results": {
+                "artistic_discipline": "performing_arts",
+                "creative_category": "theater",
+                "confidence_range": [
+                    0.75,
+                    0.90
+                ],
+                "key_evaluation_points": [
+                    "acting technique",
+                    "artistic expression",
+                    "audience connection"
+                ]
+            }
+        },
+        {
+            "id": "visual_arts_photography_001",
+            "description": "Portrait photography series capturing human emotion with dramatic lighting and compositional excellence",
+            "discipline": "visual_arts",
+            "category": "photography",
+            "test_data": {
+                "composition_score": 0.90,
+                "color_harmony": 0.75,
+                "technical_skill": 0.85,
+                "originality": 0.75,
+                "emotional_impact": 0.85
+            },
+            "expected_results": {
+                "artistic_discipline": "visual_arts",
+                "creative_category": "photography",
+                "confidence_range": [
+                    0.80,
+                    0.95
+                ],
+                "key_evaluation_points": [
+                    "composition",
+                    "lighting mastery",
+                    "emotional capture",
+                    "technical proficiency"
+                ]
+            }
+        },
+        {
+            "id": "music_performance_001",
+            "description": "Classical piano performance of Chopin nocturne with exceptional technical skill and musical interpretation",
+            "discipline": "music",
+            "category": "performance",
+            "test_data": {
+                "harmonic_complexity": 0.85,
+                "melodic_quality": 0.80,
+                "rhythmic_interest": 0.70,
+                "structural_coherence": 0.85,
+                "emotional_expression": 0.90
+            },
+            "expected_results": {
+                "artistic_discipline": "music",
+                "creative_category": "performance",
+                "confidence_range": [
+                    0.80,
+                    0.90
+                ],
+                "key_evaluation_points": [
+                    "technical mastery",
+                    "musical interpretation",
+                    "emotional expression"
+                ]
+            }
+        },
+        {
+            "id": "literature_fiction_001",
+            "description": "Short story exploring family relationships with rich character development and symbolic narrative structure",
+            "discipline": "literature",
+            "category": "fiction",
+            "test_data": {
+                "narrative_structure": 0.85,
+                "character_development": 0.80,
+                "style_quality": 0.75,
+                "thematic_depth": 0.80,
+                "literary_devices": 0.75
+            },
+            "expected_results": {
+                "artistic_discipline": "literature",
+                "creative_category": "fiction",
+                "confidence_range": [
+                    0.75,
+                    0.90
+                ],
+                "key_evaluation_points": [
+                    "character development",
+                    "narrative structure",
+                    "thematic exploration"
+                ]
+            }
+        },
+        {
+            "id": "design_brand_001",
+            "description": "Logo design and brand identity for sustainable fashion company with modern minimalist aesthetic",
+            "discipline": "design",
+            "category": "brand_design",
+            "test_data": {
+                "visual_hierarchy": 0.80,
+                "usability_score": 0.75,
+                "aesthetic_appeal": 0.85,
+                "innovation_level": 0.75,
+                "user_experience": 0.70
+            },
+            "expected_results": {
+                "artistic_discipline": "design",
+                "creative_category": "brand_design",
+                "confidence_range": [
+                    0.75,
+                    0.90
+                ],
+                "key_evaluation_points": [
+                    "brand coherence",
+                    "aesthetic appeal",
+                    "memorable design",
+                    "target audience alignment"
+                ]
+            }
+        },
+        {
+            "id": "performing_arts_dance_001",
+            "description": "Contemporary dance choreography exploring themes of freedom through innovative movement vocabulary",
+            "discipline": "performing_arts",
+            "category": "dance",
+            "test_data": {
+                "technical_execution": 0.85,
+                "artistic_expression": 0.80,
+                "stage_presence": 0.85,
+                "creativity": 0.80,
+                "audience_engagement": 0.75
+            },
+            "expected_results": {
+                "artistic_discipline": "performing_arts",
+                "creative_category": "dance",
+                "confidence_range": [
+                    0.80,
+                    0.90
+                ],
+                "key_evaluation_points": [
+                    "technical proficiency",
+                    "creative choreography",
+                    "expressive movement",
+                    "thematic coherence"
+                ]
+            }
+        },
+        {
+            "id": "visual_arts_sculpture_001",
+            "description": "Abstract bronze sculpture exploring organic forms with masterful craftsmanship and spatial awareness",
+            "discipline": "visual_arts",
+            "category": "sculpture",
+            "test_data": {
+                "composition_score": 0.80,
+                "color_harmony": 0.65,
+                "technical_skill": 0.90,
+                "originality": 0.85,
+                "emotional_impact": 0.75
+            },
+            "expected_results": {
+                "artistic_discipline": "visual_arts",
+                "creative_category": "sculpture",
+                "confidence_range": [
+                    0.80,
+                    0.95
+                ],
+                "key_evaluation_points": [
+                    "craftsmanship",
+                    "form innovation",
+                    "spatial relationships",
+                    "material mastery"
+                ]
+            }
+        },
+        {
+            "id": "music_arrangement_001",
+            "description": "Orchestral arrangement of contemporary song with sophisticated instrumentation and harmonic reharmonization",
+            "discipline": "music",
+            "category": "arrangement",
+            "test_data": {
+                "harmonic_complexity": 0.85,
+                "melodic_quality": 0.75,
+                "rhythmic_interest": 0.70,
+                "structural_coherence": 0.80,
+                "emotional_expression": 0.75
+            },
+            "expected_results": {
+                "artistic_discipline": "music",
+                "creative_category": "arrangement",
+                "confidence_range": [
+                    0.80,
+                    0.90
+                ],
+                "key_evaluation_points": [
+                    "instrumentation",
+                    "harmonic sophistication",
+                    "orchestral balance",
+                    "creative adaptation"
+                ]
+            }
+        },
+        {
+            "id": "literature_drama_001",
+            "description": "One-act play addressing social justice themes with compelling dialogue and dramatic tension",
+            "discipline": "literature",
+            "category": "drama",
+            "test_data": {
+                "narrative_structure": 0.80,
+                "character_development": 0.85,
+                "style_quality": 0.75,
+                "thematic_depth": 0.85,
+                "literary_devices": 0.70
+            },
+            "expected_results": {
+                "artistic_discipline": "literature",
+                "creative_category": "drama",
+                "confidence_range": [
+                    0.75,
+                    0.90
+                ],
+                "key_evaluation_points": [
+                    "dramatic structure",
+                    "character depth",
+                    "social commentary",
+                    "dialogue quality"
+                ]
+            }
+        },
+        {
+            "id": "design_spatial_001",
+            "description": "Interior design for modern office space emphasizing natural light and collaborative work environment",
+            "discipline": "design",
+            "category": "spatial_design",
+            "test_data": {
+                "visual_hierarchy": 0.75,
+                "usability_score": 0.85,
+                "aesthetic_appeal": 0.80,
+                "innovation_level": 0.70,
+                "user_experience": 0.85
+            },
+            "expected_results": {
+                "artistic_discipline": "design",
+                "creative_category": "spatial_design",
+                "confidence_range": [
+                    0.80,
+                    0.90
+                ],
+                "key_evaluation_points": [
+                    "space efficiency",
+                    "lighting design",
+                    "collaborative functionality",
+                    "aesthetic integration"
+                ]
+            }
+        },
+        {
+            "id": "performing_arts_film_001",
+            "description": "Independent film with innovative cinematography exploring narrative through visual storytelling techniques",
+            "discipline": "performing_arts",
+            "category": "film",
+            "test_data": {
+                "technical_execution": 0.80,
+                "artistic_expression": 0.85,
+                "stage_presence": 0.70,
+                "creativity": 0.85,
+                "audience_engagement": 0.80
+            },
+            "expected_results": {
+                "artistic_discipline": "performing_arts",
+                "creative_category": "film",
+                "confidence_range": [
+                    0.80,
+                    0.90
+                ],
+                "key_evaluation_points": [
+                    "cinematography",
+                    "visual storytelling",
+                    "narrative innovation",
+                    "artistic vision"
+                ]
+            }
+        }
+    ],
+    "evaluation_criteria": {
+        "confidence_thresholds": {
+            "high_confidence": 0.85,
+            "medium_confidence": 0.70,
+            "low_confidence": 0.50
+        },
+        "success_metrics": {
+            "discipline_accuracy": "95%",
+            "category_accuracy": "90%",
+            "confidence_calibration": "85%",
+            "evaluation_consistency": "90%"
+        },
+        "assessment_categories": {
+            "technical_proficiency": "Skill and craftsmanship evaluation",
+            "creative_innovation": "Originality and artistic risk assessment",
+            "aesthetic_merit": "Beauty and cultural significance evaluation",
+            "cultural_context": "Historical and social relevance analysis",
+            "artistic_impact": "Emotional resonance and audience engagement"
+        }
+    }
+}

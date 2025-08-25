@@ -1,9 +1,10 @@
+'use client'
+
 import React from 'react'
 /**
  * Enhanced Tasks Management Page - Advanced ControlAI Task Center
  * Comprehensive task management with real-time updates and AI-powered insights
  */
-'use client'
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -1309,4 +1310,5 @@ function StatsCard({
         </Card>
     )
 }
+
 

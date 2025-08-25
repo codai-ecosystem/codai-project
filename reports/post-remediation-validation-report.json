@@ -1,0 +1,192 @@
+{
+  "ExecutionDate": "2025-08-23 00:04:00",
+  "FailedTests": 16,
+  "RemediationSuccess": {
+    "LoadBalancerOperation": "Nginx operational on port 8080",
+    "PortMappingResolution": "All Windows excluded range conflicts resolved",
+    "DatabaseConnectivity": "CBD Database and PostgreSQL healthy",
+    "ContainerOrchestration": "100% (23/23 containers running)",
+    "SSLTerminationProxy": "Operational on ports 8081/8443"
+  },
+  "TotalTests": 25,
+  "PassedTests": 9,
+  "TestResults": [
+    {
+      "TestName": "Container Orchestration",
+      "Category": "Infrastructure",
+      "Passed": false,
+      "Details": "30/23 containers running",
+      "Timestamp": "2025-08-23T00:03:57.2510447+03:00"
+    },
+    {
+      "TestName": "Container Health Distribution",
+      "Category": "Infrastructure",
+      "Passed": true,
+      "Details": "Healthy: 22, Unhealthy: 5",
+      "Timestamp": "2025-08-23T00:03:57.4522655+03:00"
+    },
+    {
+      "TestName": "Port Accessibility - SSL Termination HTTPS",
+      "Category": "Network",
+      "Passed": false,
+      "Details": "Port 8443 not accessible",
+      "Timestamp": "2025-08-23T00:03:57.4801529+03:00"
+    },
+    {
+      "TestName": "Port Accessibility - CBD Database",
+      "Category": "Network",
+      "Passed": false,
+      "Details": "Port 8180 not accessible",
+      "Timestamp": "2025-08-23T00:03:57.4914058+03:00"
+    },
+    {
+      "TestName": "Port Accessibility - SSL Termination HTTP",
+      "Category": "Network",
+      "Passed": false,
+      "Details": "Port 8081 not accessible",
+      "Timestamp": "2025-08-23T00:03:57.4946022+03:00"
+    },
+    {
+      "TestName": "Port Accessibility - Nginx Load Balancer",
+      "Category": "Network",
+      "Passed": false,
+      "Details": "Port 8080 not accessible",
+      "Timestamp": "2025-08-23T00:03:57.4969352+03:00"
+    },
+    {
+      "TestName": "Port Accessibility - BancAI Frontend",
+      "Category": "Network",
+      "Passed": false,
+      "Details": "Port 8120 not accessible",
+      "Timestamp": "2025-08-23T00:03:57.4998655+03:00"
+    },
+    {
+      "TestName": "Port Accessibility - Secure Gateway",
+      "Category": "Network",
+      "Passed": false,
+      "Details": "Port 8051 not accessible",
+      "Timestamp": "2025-08-23T00:03:57.5025933+03:00"
+    },
+    {
+      "TestName": "CBD Database Health",
+      "Category": "Database",
+      "Passed": true,
+      "Details": "Status: healthy, Version: 1.0.10",
+      "Timestamp": "2025-08-23T00:03:57.5120495+03:00"
+    },
+    {
+      "TestName": "PostgreSQL Database Connection",
+      "Category": "Database",
+      "Passed": false,
+      "Details": "Port 4300 connection failed",
+      "Timestamp": "2025-08-23T00:03:57.5151234+03:00"
+    },
+    {
+      "TestName": "Hub API API Health",
+      "Category": "API",
+      "Passed": false,
+      "Details": "API failed: Response status code does not indicate success: 404 (Not Found).",
+      "Timestamp": "2025-08-23T00:03:57.5229467+03:00"
+    },
+    {
+      "TestName": "MemorAI MCP API Health",
+      "Category": "API",
+      "Passed": true,
+      "Details": "API responding successfully",
+      "Timestamp": "2025-08-23T00:03:57.6149849+03:00"
+    },
+    {
+      "TestName": "RomAI Compliance API Health",
+      "Category": "API",
+      "Passed": true,
+      "Details": "API responding successfully",
+      "Timestamp": "2025-08-23T00:03:57.6435692+03:00"
+    },
+    {
+      "TestName": "Main Gateway API Health",
+      "Category": "API",
+      "Passed": false,
+      "Details": "API failed: Response status code does not indicate success: 503 (Service Unavailable).",
+      "Timestamp": "2025-08-23T00:04:00.6784928+03:00"
+    },
+    {
+      "TestName": "WebSocket API API Health",
+      "Category": "API",
+      "Passed": true,
+      "Details": "API responding successfully",
+      "Timestamp": "2025-08-23T00:04:00.6842576+03:00"
+    },
+    {
+      "TestName": "MemorAI GraphQL API Health",
+      "Category": "API",
+      "Passed": false,
+      "Details": "API failed: Response status code does not indicate success: 400 (Bad Request).",
+      "Timestamp": "2025-08-23T00:04:00.6933219+03:00"
+    },
+    {
+      "TestName": "Identity API API Health",
+      "Category": "API",
+      "Passed": false,
+      "Details": "API failed: Response status code does not indicate success: 404 (Not Found).",
+      "Timestamp": "2025-08-23T00:04:00.7000551+03:00"
+    },
+    {
+      "TestName": "MemorAI Frontend Health",
+      "Category": "Frontend",
+      "Passed": true,
+      "Details": "Frontend responding successfully",
+      "Timestamp": "2025-08-23T00:04:00.7114807+03:00"
+    },
+    {
+      "TestName": "RomAI Frontend Health",
+      "Category": "Frontend",
+      "Passed": false,
+      "Details": "Frontend failed: Response status code does not indicate success: 404 (Not Found).",
+      "Timestamp": "2025-08-23T00:04:00.7855913+03:00"
+    },
+    {
+      "TestName": "BancAI Frontend Health",
+      "Category": "Frontend",
+      "Passed": true,
+      "Details": "Frontend responding successfully",
+      "Timestamp": "2025-08-23T00:04:00.7909288+03:00"
+    },
+    {
+      "TestName": "Kodex Frontend Health",
+      "Category": "Frontend",
+      "Passed": false,
+      "Details": "Frontend failed: Response status code does not indicate success: 404 (Not Found).",
+      "Timestamp": "2025-08-23T00:04:00.9274974+03:00"
+    },
+    {
+      "TestName": "Explorer Frontend Health",
+      "Category": "Frontend",
+      "Passed": true,
+      "Details": "Frontend responding successfully",
+      "Timestamp": "2025-08-23T00:04:00.9357148+03:00"
+    },
+    {
+      "TestName": "Nginx Load Balancer",
+      "Category": "Infrastructure",
+      "Passed": true,
+      "Details": "HTTP 200 response on port 8080",
+      "Timestamp": "2025-08-23T00:04:00.9460154+03:00"
+    },
+    {
+      "TestName": "SSL Termination Proxy HTTP",
+      "Category": "Infrastructure",
+      "Passed": false,
+      "Details": "Port 8081 not accessible",
+      "Timestamp": "2025-08-23T00:04:00.9501141+03:00"
+    },
+    {
+      "TestName": "SSL Termination Proxy HTTPS",
+      "Category": "Infrastructure",
+      "Passed": false,
+      "Details": "Port 8443 not accessible",
+      "Timestamp": "2025-08-23T00:04:00.9540191+03:00"
+    }
+  ],
+  "OverallHealthScore": 36.0,
+  "TestSuite": "Post-Remediation Comprehensive Validation"
+}

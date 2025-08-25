@@ -1,0 +1,314 @@
+"""
+Docker Compose Configuration for RomAI Production Deployment
+Scalable, production-ready setup with Romanian cultural AI consciousness
+"""
+
+version: '3.8'
+
+services:
+  # Main RomAI AGI Model Server
+  romai-agi-server:
+    build:
+      context: ../../
+      dockerfile: deployment/docker/Dockerfile
+      target: production
+    image: romai/agi-server:latest
+    container_name: romai-agi-server
+    restart: unless-stopped
+    
+    ports:
+      - "6101:6101"  # Main AGI API
+    
+    environment:
+      - ROMAI_ENV=production
+      - ROMAI_AGI_PORT=6101
+      - ROMAI_AGI_HOST=0.0.0.0
+      - ROMAI_LOG_LEVEL=INFO
+      - PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:1024
+      - MODEL_CACHE_DIR=/app/.cache/models
+      - QUANTUM_ENABLED=true
+      - CONSCIOUSNESS_ENGINE=true
+      - ROMANIAN_CULTURAL_MODE=enhanced
+    
+    volumes:
+      - romai-models:/app/.cache/models
+      - romai-logs:/app/logs
+      - romai-data:/app/data
+    
+    networks:
+      - romai-network
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6101/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+          cpus: '4'
+        reservations:
+          memory: 4G
+          cpus: '2'
+
+  # RomAI Enterprise API
+  romai-enterprise-api:
+    build:
+      context: ../../
+      dockerfile: deployment/docker/Dockerfile.enterprise
+    image: romai/enterprise-api:latest
+    container_name: romai-enterprise-api
+    restart: unless-stopped
+    
+    ports:
+      - "8001:8001"  # Enterprise API
+    
+    environment:
+      - ROMAI_ENV=production
+      - ENTERPRISE_API_PORT=8001
+      - ROMAI_AGI_BASE_URL=http://romai-agi-server:6101
+      - JWT_SECRET_KEY_FILE=/run/secrets/jwt_secret
+      - API_KEY_ENCRYPTION_KEY_FILE=/run/secrets/api_encryption
+      - RATE_LIMIT_ENABLED=true
+      - CORS_ENABLED=true
+      - COMPLIANCE_MODE=eu_ai_act
+      - AUDIT_ENABLED=true
+      - ROMANIAN_CULTURAL_COMPLIANCE=strict
+    
+    secrets:
+      - jwt_secret
+      - api_encryption
+    
+    volumes:
+      - romai-enterprise-logs:/app/logs
+      - romai-audit:/app/audit
+    
+    networks:
+      - romai-network
+    
+    depends_on:
+      romai-agi-server:
+        condition: service_healthy
+      romai-redis:
+        condition: service_healthy
+      romai-postgres:
+        condition: service_healthy
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Romanian Cultural API Gateway
+  romai-cultural-gateway:
+    build:
+      context: ../../
+      dockerfile: deployment/docker/Dockerfile.gateway
+    image: romai/cultural-gateway:latest
+    container_name: romai-cultural-gateway
+    restart: unless-stopped
+    
+    ports:
+      - "8080:8080"  # Gateway port
+    
+    environment:
+      - GATEWAY_PORT=8080
+      - ROMAI_AGI_UPSTREAM=http://romai-agi-server:6101
+      - ROMAI_ENTERPRISE_UPSTREAM=http://romai-enterprise-api:8001
+      - LOAD_BALANCER_STRATEGY=romanian_cultural_aware
+      - RATE_LIMIT_RPM=1000
+      - RATE_LIMIT_BURST=100
+      - CULTURAL_CONTEXT_ENHANCEMENT=enabled
+      - DIACRITICS_NORMALIZATION=enabled
+    
+    volumes:
+      - romai-gateway-logs:/app/logs
+      - ./config/gateway/:/app/config/
+    
+    networks:
+      - romai-network
+    
+    depends_on:
+      - romai-agi-server
+      - romai-enterprise-api
+
+  # Redis for caching and rate limiting
+  romai-redis:
+    image: redis:7-alpine
+    container_name: romai-redis
+    restart: unless-stopped
+    
+    ports:
+      - "6379:6379"
+    
+    volumes:
+      - romai-redis-data:/data
+      - ./config/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    
+    networks:
+      - romai-network
+    
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1'
+
+  # PostgreSQL for enterprise data and audit logs
+  romai-postgres:
+    image: postgres:15-alpine
+    container_name: romai-postgres
+    restart: unless-stopped
+    
+    environment:
+      - POSTGRES_DB=romai_enterprise
+      - POSTGRES_USER=romai
+      - POSTGRES_PASSWORD_FILE=/run/secrets/postgres_password
+      - POSTGRES_INITDB_ARGS="--locale=ro_RO.UTF-8 --encoding=UTF8"
+    
+    secrets:
+      - postgres_password
+    
+    volumes:
+      - romai-postgres-data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/01-init.sql
+    
+    networks:
+      - romai-network
+    
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "romai", "-d", "romai_enterprise"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Monitoring with Prometheus
+  romai-prometheus:
+    image: prom/prometheus:latest
+    container_name: romai-prometheus
+    restart: unless-stopped
+    
+    ports:
+      - "9090:9090"
+    
+    volumes:
+      - ./config/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - romai-prometheus-data:/prometheus
+    
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    
+    networks:
+      - romai-network
+
+  # Grafana for monitoring dashboards
+  romai-grafana:
+    image: grafana/grafana:latest
+    container_name: romai-grafana
+    restart: unless-stopped
+    
+    ports:
+      - "3000:3000"
+    
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD_FILE=/run/secrets/grafana_admin_password
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-worldmap-panel
+    
+    secrets:
+      - grafana_admin_password
+    
+    volumes:
+      - romai-grafana-data:/var/lib/grafana
+      - ./config/monitoring/grafana/:/etc/grafana/provisioning/
+    
+    networks:
+      - romai-network
+    
+    depends_on:
+      - romai-prometheus
+
+  # Nginx Load Balancer
+  romai-nginx:
+    image: nginx:alpine
+    container_name: romai-nginx
+    restart: unless-stopped
+    
+    ports:
+      - "80:80"
+      - "443:443"
+    
+    volumes:
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./config/nginx/conf.d/:/etc/nginx/conf.d/
+      - romai-nginx-logs:/var/log/nginx
+      - ./ssl/:/etc/nginx/ssl/
+    
+    networks:
+      - romai-network
+    
+    depends_on:
+      - romai-cultural-gateway
+    
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+# Networks
+networks:
+  romai-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# Volumes
+volumes:
+  romai-models:
+    driver: local
+  romai-logs:
+    driver: local
+  romai-data:
+    driver: local
+  romai-enterprise-logs:
+    driver: local
+  romai-audit:
+    driver: local
+  romai-gateway-logs:
+    driver: local
+  romai-redis-data:
+    driver: local
+  romai-postgres-data:
+    driver: local
+  romai-prometheus-data:
+    driver: local
+  romai-grafana-data:
+    driver: local
+  romai-nginx-logs:
+    driver: local
+
+# Secrets
+secrets:
+  jwt_secret:
+    file: ./secrets/jwt_secret.txt
+  api_encryption:
+    file: ./secrets/api_encryption.txt
+  postgres_password:
+    file: ./secrets/postgres_password.txt
+  grafana_admin_password:
+    file: ./secrets/grafana_admin_password.txt

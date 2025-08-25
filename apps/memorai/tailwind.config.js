@@ -1,65 +1,41 @@
-/** @type {import('tailwindcss').Config} */
+
 module.exports = {
-    content: [
-        './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-        './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-        './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-    ],
-    darkMode: 'class',
-    theme: {
-        extend: {
-            colors: {
-                background: "var(--background)",
-                foreground: "var(--foreground)",
-            },
-            fontFamily: {
-                sans: ['var(--font-geist-sans)', 'Arial', 'sans-serif'],
-                mono: ['var(--font-geist-mono)', 'monospace'],
-            },
-            screens: {
-                'xs': '475px',
-                'sm': '640px',
-                'md': '768px',
-                'lg': '1024px',
-                'xl': '1280px',
-                '2xl': '1536px',
-            },
-            spacing: {
-                '18': '4.5rem',
-                '88': '22rem',
-                '128': '32rem',
-            },
-            animation: {
-                'fade-in': 'fadeIn 0.5s ease-out',
-                'slide-up': 'slideUp 0.3s ease-out',
-                'slide-down': 'slideDown 0.3s ease-out',
-                'scale-in': 'scaleIn 0.2s ease-out',
-            },
-            keyframes: {
-                fadeIn: {
-                    '0%': { opacity: '0' },
-                    '100%': { opacity: '1' },
-                },
-                slideUp: {
-                    '0%': { transform: 'translateY(10px)', opacity: '0' },
-                    '100%': { transform: 'translateY(0)', opacity: '1' },
-                },
-                slideDown: {
-                    '0%': { transform: 'translateY(-10px)', opacity: '0' },
-                    '100%': { transform: 'translateY(0)', opacity: '1' },
-                },
-                scaleIn: {
-                    '0%': { transform: 'scale(0.95)', opacity: '0' },
-                    '100%': { transform: 'scale(1)', opacity: '1' },
-                },
-            },
-            backdropBlur: {
-                xs: '2px',
-            },
+  content: ['./src/**/*.{js,ts,jsx,tsx}'],
+  theme: {
+    extend: {
+      screens: {
+        'xs': '320px',
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        '2xl': '1536px',
+      },
+      spacing: {
+        'safe-top': 'env(safe-area-inset-top)',
+        'safe-bottom': 'env(safe-area-inset-bottom)',
+        'safe-left': 'env(safe-area-inset-left)',
+        'safe-right': 'env(safe-area-inset-right)',
+      }
+    }
+  },
+  plugins: [
+    function({ addUtilities }) {
+      addUtilities({
+        '.touch-target': {
+          minHeight: '44px',
+          minWidth: '44px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         },
-    },
-    plugins: [
-        require('@tailwindcss/forms'),
-        require('@tailwindcss/typography'),
-    ],
+        '.safe-area-inset': {
+          paddingTop: 'env(safe-area-inset-top)',
+          paddingBottom: 'env(safe-area-inset-bottom)',
+          paddingLeft: 'env(safe-area-inset-left)',
+          paddingRight: 'env(safe-area-inset-right)',
+        }
+      })
+    }
+  ]
 }

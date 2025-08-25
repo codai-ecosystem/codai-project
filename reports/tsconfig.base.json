@@ -1,0 +1,115 @@
+{
+  "compilerOptions": {
+    // Language and Environment
+    "target": "ES2022",
+    "lib": ["DOM", "DOM.Iterable", "ES6", "ES2022"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    
+    // Type Checking
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "allowUnusedLabels": false,
+    "allowUnreachableCode": false,
+    
+    // Modules
+    "moduleDetection": "force",
+    "allowImportingTsExtensions": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "verbatimModuleSyntax": false,
+    "resolveJsonModule": true,
+    
+    // Emit
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "removeComments": false,
+    "importHelpers": true,
+    "downlevelIteration": true,
+    
+    // JavaScript Support
+    "allowJs": true,
+    "checkJs": false,
+    "maxNodeModuleJsDepth": 1,
+    
+    // Interop Constraints
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    
+    // Language Features
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "jsx": "preserve",
+    "jsxImportSource": "react",
+    
+    // Performance
+    "incremental": true,
+    "tsBuildInfoFile": ".tsbuildinfo",
+    
+    // Path Mapping (Base paths - packages extend with specific paths)
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/styles/*": ["./src/styles/*"],
+      
+      // Shared packages (relative to workspace root)
+      "@codai/shared-ui": ["./packages/shared-ui/src"],
+      "@codai/shared-ui/*": ["./packages/shared-ui/src/*"],
+      "@codai/shared-types": ["./packages/shared-types/src"],
+      "@codai/shared-types/*": ["./packages/shared-types/src/*"],
+      "@codai/testing-utils": ["./packages/testing-utils/src"],
+      "@codai/testing-utils/*": ["./packages/testing-utils/src/*"],
+      "@codai/shared-services": ["./packages/shared-services/src"],
+      "@codai/shared-services/*": ["./packages/shared-services/src/*"]
+    }
+  },
+  
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.mjs",
+    ".next/types/**/*.ts"
+  ],
+  
+  "exclude": [
+    "node_modules",
+    ".next",
+    "dist",
+    "build",
+    "out",
+    "coverage",
+    "**/*.min.js",
+    "**/vendor/**",
+    "**/.git/**",
+    "**/tmp/**",
+    "**/temp/**",
+    "playwright-report",
+    "test-results",
+    "e2e-results",
+    "*.d.ts"
+  ],
+  
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  }
+}

@@ -1,0 +1,389 @@
+{
+    "language_literature_test_cases": [
+        {
+            "test_id": "literary_analysis_001",
+            "category": "poetry_analysis",
+            "input": {
+                "text": "The road not taken by Robert Frost: Two roads diverged in a yellow wood, And sorry I could not travel both And be one traveler, long I stood And looked down one as far as I could To where it bent in the undergrowth",
+                "context": {
+                    "author": "Robert Frost",
+                    "period": "modern",
+                    "form": "poetry"
+                }
+            },
+            "expected": {
+                "analysis_type": "literary_analysis",
+                "primary_language": "english",
+                "literary_genre": "poetry",
+                "themes": [
+                    "choice",
+                    "regret",
+                    "life_paths"
+                ],
+                "literary_devices": [
+                    "metaphor",
+                    "symbolism",
+                    "first_person_narrative"
+                ],
+                "min_confidence": 80.0
+            }
+        },
+        {
+            "test_id": "literary_analysis_002",
+            "category": "prose_analysis",
+            "input": {
+                "text": "It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness",
+                "context": {
+                    "author": "Charles Dickens",
+                    "work": "A Tale of Two Cities",
+                    "period": "Victorian"
+                }
+            },
+            "expected": {
+                "analysis_type": "literary_analysis",
+                "primary_language": "english",
+                "literary_genre": "prose",
+                "themes": [
+                    "duality",
+                    "social_conflict",
+                    "historical_change"
+                ],
+                "literary_devices": [
+                    "antithesis",
+                    "parallelism",
+                    "repetition"
+                ],
+                "min_confidence": 85.0
+            }
+        },
+        {
+            "test_id": "literary_analysis_003",
+            "category": "drama_analysis",
+            "input": {
+                "text": "HAMLET: To be or not to be, that is the question: Whether 'tis nobler in the mind to suffer The slings and arrows of outrageous fortune, Or to take arms against a sea of troubles And by opposing end them.",
+                "context": {
+                    "author": "William Shakespeare",
+                    "work": "Hamlet",
+                    "period": "Elizabethan"
+                }
+            },
+            "expected": {
+                "analysis_type": "literary_analysis",
+                "primary_language": "english",
+                "literary_genre": "drama",
+                "themes": [
+                    "existentialism",
+                    "mortality",
+                    "decision"
+                ],
+                "literary_devices": [
+                    "soliloquy",
+                    "metaphor",
+                    "rhetorical_question"
+                ],
+                "min_confidence": 90.0
+            }
+        },
+        {
+            "test_id": "linguistic_analysis_001",
+            "category": "comprehensive_linguistic",
+            "input": {
+                "text": "The quick brown fox jumps over the lazy dog. This pangram contains every letter of the alphabet and demonstrates various phonetic and morphological features.",
+                "analysis_level": "comprehensive"
+            },
+            "expected": {
+                "analysis_type": "linguistic_analysis",
+                "primary_language": "english",
+                "linguistic_features": [
+                    "alliteration",
+                    "varied_sentence_structure",
+                    "complex_morphology"
+                ],
+                "phonetic_features": [
+                    "alliteration"
+                ],
+                "syntactic_features": [
+                    "complex_sentences"
+                ],
+                "min_confidence": 85.0
+            }
+        },
+        {
+            "test_id": "linguistic_analysis_002",
+            "category": "phonetic_analysis",
+            "input": {
+                "text": "Peter Piper picked a peck of pickled peppers. A peck of pickled peppers Peter Piper picked.",
+                "analysis_level": "comprehensive"
+            },
+            "expected": {
+                "analysis_type": "linguistic_analysis",
+                "primary_language": "english",
+                "linguistic_features": [
+                    "alliteration",
+                    "repetition"
+                ],
+                "phonetic_features": [
+                    "alliteration"
+                ],
+                "min_confidence": 90.0
+            }
+        },
+        {
+            "test_id": "translation_001",
+            "category": "cultural_translation",
+            "input": {
+                "text": "Hello world",
+                "source_lang": "english",
+                "target_lang": "spanish",
+                "approach": "cultural"
+            },
+            "expected": {
+                "analysis_type": "translation",
+                "primary_language": "english",
+                "secondary_language": "spanish",
+                "translation_quality": 85.0,
+                "cultural_bridges": [
+                    "shared_human_experience"
+                ],
+                "min_confidence": 80.0
+            }
+        },
+        {
+            "test_id": "translation_002",
+            "category": "semantic_translation",
+            "input": {
+                "text": "Good morning",
+                "source_lang": "english",
+                "target_lang": "spanish",
+                "approach": "semantic"
+            },
+            "expected": {
+                "analysis_type": "translation",
+                "primary_language": "english",
+                "secondary_language": "spanish",
+                "translation_quality": 83.0,
+                "min_confidence": 78.0
+            }
+        },
+        {
+            "test_id": "cross_cultural_001",
+            "category": "cultural_analysis",
+            "input": {
+                "text": "The concept of ubuntu in African philosophy emphasizes the interconnectedness of all humanity, expressed as 'I am because we are'.",
+                "context": {
+                    "cultural_background": "African",
+                    "philosophical_concept": "ubuntu"
+                }
+            },
+            "expected": {
+                "analysis_type": "literary_analysis",
+                "primary_language": "english",
+                "cultural_context": {
+                    "detected_contexts": {
+                        "african": 1
+                    },
+                    "primary_context": "african"
+                },
+                "themes": [
+                    "identity",
+                    "society"
+                ],
+                "min_confidence": 82.0
+            }
+        },
+        {
+            "test_id": "comparative_literature_001",
+            "category": "comparative_analysis",
+            "input": {
+                "text": "Like Odysseus wandering the wine-dark sea, the modern traveler searches for meaning in an uncertain world, guided only by the distant lighthouse of hope.",
+                "context": {
+                    "literary_tradition": "classical",
+                    "modern_adaptation": true
+                }
+            },
+            "expected": {
+                "analysis_type": "literary_analysis",
+                "primary_language": "english",
+                "literary_genre": "prose",
+                "literary_devices": [
+                    "simile",
+                    "metaphor",
+                    "allusion"
+                ],
+                "themes": [
+                    "journey",
+                    "search_for_meaning"
+                ],
+                "cultural_context": {
+                    "detected_contexts": {
+                        "western": 1
+                    }
+                },
+                "min_confidence": 88.0
+            }
+        },
+        {
+            "test_id": "modern_poetry_001",
+            "category": "contemporary_literature",
+            "input": {
+                "text": "i carry your heart with me(i carry it in my heart)i am never without it(anywhere i go you go,my dear; and whatever is done by only me is your doing,my darling)",
+                "context": {
+                    "author": "e.e. cummings",
+                    "style": "modernist",
+                    "period": "20th_century"
+                }
+            },
+            "expected": {
+                "analysis_type": "literary_analysis",
+                "primary_language": "english",
+                "literary_genre": "poetry",
+                "themes": [
+                    "love",
+                    "unity"
+                ],
+                "literary_devices": [
+                    "unconventional_punctuation",
+                    "repetition",
+                    "parenthetical_expression"
+                ],
+                "style_complexity": "experimental",
+                "min_confidence": 85.0
+            }
+        },
+        {
+            "test_id": "technical_writing_001",
+            "category": "academic_analysis",
+            "input": {
+                "text": "The methodology employed in this research utilizes a mixed-methods approach, incorporating both quantitative data analysis and qualitative phenomenological investigation to ensure comprehensive understanding of the phenomenon under study.",
+                "context": {
+                    "text_type": "academic",
+                    "register": "formal"
+                }
+            },
+            "expected": {
+                "analysis_type": "linguistic_analysis",
+                "primary_language": "english",
+                "linguistic_features": [
+                    "complex_morphology",
+                    "complex_sentences",
+                    "formal_register"
+                ],
+                "literary_genre": "non_fiction",
+                "register": "academic",
+                "min_confidence": 87.0
+            }
+        },
+        {
+            "test_id": "dialect_analysis_001",
+            "category": "sociolinguistic_analysis",
+            "input": {
+                "text": "Y'all come back now, ya hear? Don't be a stranger, and make sure you bring the whole family next time you visit.",
+                "context": {
+                    "dialect": "Southern American English",
+                    "register": "informal"
+                }
+            },
+            "expected": {
+                "analysis_type": "linguistic_analysis",
+                "primary_language": "english",
+                "linguistic_features": [
+                    "dialectal_variation",
+                    "informal_register",
+                    "direct_address"
+                ],
+                "pragmatic_features": [
+                    "politeness_markers",
+                    "direct_address"
+                ],
+                "cultural_context": {
+                    "regional": "american_south"
+                },
+                "min_confidence": 83.0
+            }
+        },
+        {
+            "test_id": "rhetorical_analysis_001",
+            "category": "persuasive_discourse",
+            "input": {
+                "text": "Ask not what your country can do for you—ask what you can do for your country. Let us never negotiate out of fear, but let us never fear to negotiate.",
+                "context": {
+                    "speaker": "John F. Kennedy",
+                    "occasion": "inaugural_address",
+                    "genre": "political_speech"
+                }
+            },
+            "expected": {
+                "analysis_type": "literary_analysis",
+                "primary_language": "english",
+                "literary_genre": "non_fiction",
+                "literary_devices": [
+                    "chiasmus",
+                    "parallelism",
+                    "antithesis"
+                ],
+                "rhetorical_strategies": [
+                    "appeal_to_patriotism",
+                    "call_to_action"
+                ],
+                "min_confidence": 90.0
+            }
+        },
+        {
+            "test_id": "multilingual_analysis_001",
+            "category": "code_switching",
+            "input": {
+                "text": "Mi abuela used to say that la vida es como un libro, and each day we write una nueva página. Life is beautiful, ¿verdad?",
+                "context": {
+                    "languages": [
+                        "english",
+                        "spanish"
+                    ],
+                    "phenomenon": "code_switching"
+                }
+            },
+            "expected": {
+                "analysis_type": "linguistic_analysis",
+                "primary_language": "english",
+                "secondary_language": "spanish",
+                "linguistic_features": [
+                    "code_switching",
+                    "bilingual_competence",
+                    "cultural_integration"
+                ],
+                "cultural_context": {
+                    "detected_contexts": {
+                        "bilingual": 1
+                    }
+                },
+                "min_confidence": 85.0
+            }
+        },
+        {
+            "test_id": "narrative_structure_001",
+            "category": "structural_analysis",
+            "input": {
+                "text": "Once upon a time, in a kingdom far away, there lived a princess who possessed a magical gift. Unlike other fairy tales, this story began at the end, when the princess had already saved her kingdom and was reflecting on the journey that brought her there.",
+                "context": {
+                    "narrative_technique": "reverse_chronology",
+                    "genre": "fairy_tale_adaptation"
+                }
+            },
+            "expected": {
+                "analysis_type": "literary_analysis",
+                "primary_language": "english",
+                "literary_genre": "prose",
+                "narrative_structure": "reverse_chronology",
+                "literary_devices": [
+                    "meta_narrative",
+                    "subversion",
+                    "traditional_opening"
+                ],
+                "themes": [
+                    "heroism",
+                    "reflection"
+                ],
+                "min_confidence": 88.0
+            }
+        }
+    ]
+}

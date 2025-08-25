@@ -67,7 +67,22 @@
     "health:check": "node -e \"console.log('ROMAI Health Check: OK')\"",
     "version:check": "node -e \"console.log('ROMAI Version:', require('./package.json').version)\"",
     "start": "next start -p 6100",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "build:analyze": "ANALYZE=true next build",
+    "build:speed": "SPEED_MEASURE=true next build",
+    "build:prod": "NODE_ENV=production next build",
+    "build:fast": "NEXT_PHASE=production-server next build",
+    "analyze:bundle": "node ../../analysis/bundle-analysis.js",
+    "analyze:build": "ANALYZE=true pnpm build",
+    "monitor:build": "node ../../lib/build-monitoring/build-monitor.js",
+    "cache:clear": "rm -rf .next/cache && rm -rf node_modules/.cache",
+    "cache:analyze": "next info",
+    "dev:fast": "next dev --turbo",
+    "dev:profile": "next dev --profile",
+    "start:prod": "NODE_ENV=production next start",
+    "preview": "pnpm build && pnpm start",
+    "check:all": "pnpm type-check && pnpm lint && pnpm test",
+    "check:fast": "pnpm type-check && pnpm lint --fix"
   },
   "dependencies": {
     "@codai/shared-types": "^1.0.0",
@@ -82,7 +97,12 @@
     "react-dom": "^19.1.1",
     "react-router": "^6.30.1",
     "react-router-dom": "^6.30.1",
-    "typescript": "^5.8.4"
+    "typescript": "^5.8.4",
+    "react-i18next": "^15.3.0",
+    "i18next": "^24.2.0",
+    "i18next-browser-languagedetector": "^8.0.0",
+    "i18next-http-backend": "^3.0.1",
+    "@codai/translations": "workspace:*"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",
@@ -108,6 +128,14 @@
     "prettier": "^3.6.2",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "i18next-parser": "^9.0.0",
+    "@types/react-i18next": "^8.1.0"
+  },
+  "nextBundleAnalysis": {
+    "enabled": true,
+    "openAnalyzer": false,
+    "analyzerMode": "static",
+    "generateStatsFile": true
   }
 }

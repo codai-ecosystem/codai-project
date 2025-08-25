@@ -1,19 +1,7 @@
-/**
- * 🧪 Test Setup for @codai/api-standards
- * Global test configuration and mocks
- */
+// Generated Vitest setup for api-standards app
+// Consolidates common test setup patterns using @codai/testing-utils
 
-import { vi } from 'vitest';
+import '@codai/testing-utils/setups/vitest/base.setup'
+import '@codai/testing-utils/setups/vitest/nextjs.setup'
 
-// Mock console methods for cleaner test output
-global.console = {
-  ...console,
-  log: vi.fn(),
-  debug: vi.fn(),
-  info: vi.fn(),
-  warn: vi.fn(),
-  error: vi.fn(),
-};
-
-// Mock fetch for API calls
-global.fetch = vi.fn();
+// App-specific customizations

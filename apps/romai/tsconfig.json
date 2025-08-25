@@ -22,7 +22,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@/components/*": ["./src/typescript/components/*"],
+      "@/components/*": ["./src/components/*", "./src/typescript/components/*"],
       "@/lib/*": ["./src/lib/*"],
       "@/types/*": ["./src/types/*"],
       "@/python/*": ["./src/python/*"],

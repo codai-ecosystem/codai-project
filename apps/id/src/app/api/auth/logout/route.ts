@@ -1,36 +1,20 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { createEnhancedLogoutEndpoint } from '@codai/api-utils/auth';
 
-export async function POST(request: NextRequest) {
-  try {
-    // Clear authentication cookies
-    const response = NextResponse.json({
-      success: true,
-      message: 'Logged out successfully'
-    })
+/**
+ * CODAI ID Logout API
+ * Migrated to use @codai/api-utils standardized auth utilities
+ */
 
-    response.cookies.set('codai_auth_token', '', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 0, // Expire immediately
-      domain: process.env.NODE_ENV === 'production' ? '.codai.ro' : undefined
-    })
-
-    response.cookies.set('codai_refresh_token', '', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 0, // Expire immediately
-      domain: process.env.NODE_ENV === 'production' ? '.codai.ro' : undefined
-    })
-
-    return response
-
-  } catch (error) {
-    console.error('Logout error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+// Create standardized logout endpoint with multiple cookie clearing
+const logoutEndpoint = createEnhancedLogoutEndpoint({
+  service: 'CODAI ID',
+  cookieName: 'codai_auth_token',
+  cookieDomain: process.env.NODE_ENV === 'production' ? '.codai.ro' : undefined,
+  onSuccess: async (user, request) => {
+    console.log(`[CODAI ID] User logged out successfully`);
+    // TODO: Log logout event for security monitoring
+    // TODO: Revoke refresh tokens if applicable
   }
-}
+});
+
+export const { POST } = logoutEndpoint;

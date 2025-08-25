@@ -46,7 +46,7 @@ try:
 except ImportError:
     try:
         # Fallback to old import during transition
-        from enhanced_mathematical_reasoning_engine import EnhancedMathematicalReasoningEngine as MathematicalEngine
+        from core.mathematical.mathematical_reasoning_engine import MathematicalReasoningEngine as MathematicalEngine
         MATH_ENGINE_AVAILABLE = True
         logging.info("✅ Mathematical Engine imported (legacy path)")
     except ImportError:

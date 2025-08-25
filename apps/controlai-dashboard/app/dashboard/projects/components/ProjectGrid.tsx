@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Project Grid Component - Card-based project display
  */
-'use client'
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
@@ -343,4 +344,5 @@ export function ProjectGrid({
         </div>
     )
 }
+
 

@@ -1,0 +1,546 @@
+# RomAI AGI Kubernetes Production Deployment
+# Comprehensive orchestration for world-class AGI system with auto-scaling
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: romai-agi
+  labels:
+    name: romai-agi
+    tier: production
+    component: agi-system
+
+---
+# ConfigMap for production configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: romai-config
+  namespace: romai-agi
+data:
+  NODE_ENV: "production"
+  ROMAI_LOG_LEVEL: "info"
+  PROMETHEUS_ENABLED: "true"
+  METRICS_PORT: "9090"
+  HEALTH_CHECK_ENABLED: "true"
+  ROMANIAN_LANGUAGE_ENABLED: "true"
+  CULTURAL_ANALYSIS_ENABLED: "true"
+  MODEL_PARALLEL_ENABLED: "true"
+  GPU_ACCELERATION: "true"
+  MAX_CONCURRENT_REQUESTS: "100"
+  REQUEST_TIMEOUT: "30s"
+  
+---
+# Secret for sensitive configuration
+apiVersion: v1
+kind: Secret
+metadata:
+  name: romai-secrets
+  namespace: romai-agi
+type: Opaque
+stringData:
+  REDIS_PASSWORD: "romai-secure-password-2025"
+  JWT_SECRET: "romai-agi-jwt-secret-key-2025"
+  API_KEY_HASH: "romai-api-key-production-2025"
+  DATABASE_URL: "postgresql://romai:secure_password@romai-postgres:5432/romai_agi"
+
+---
+# Persistent Volume for model caching
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: romai-models-pvc
+  namespace: romai-agi
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: fast-ssd
+
+---
+# Redis Deployment for caching
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: romai-redis
+  namespace: romai-agi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: romai-redis
+  template:
+    metadata:
+      labels:
+        app: romai-redis
+        tier: cache
+    spec:
+      containers:
+      - name: redis
+        image: redis:7.2-alpine
+        ports:
+        - containerPort: 6379
+        env:
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: romai-secrets
+              key: REDIS_PASSWORD
+        command:
+        - redis-server
+        - --requirepass
+        - $(REDIS_PASSWORD)
+        - --maxmemory
+        - 2gb
+        - --maxmemory-policy
+        - allkeys-lru
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 2Gi
+        volumeMounts:
+        - name: redis-data
+          mountPath: /data
+      volumes:
+      - name: redis-data
+        emptyDir: {}
+
+---
+# Redis Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: romai-redis
+  namespace: romai-agi
+spec:
+  selector:
+    app: romai-redis
+  ports:
+  - port: 6379
+    targetPort: 6379
+  type: ClusterIP
+
+---
+# PostgreSQL Deployment for production database
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: romai-postgres
+  namespace: romai-agi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: romai-postgres
+  template:
+    metadata:
+      labels:
+        app: romai-postgres
+        tier: database
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15-alpine
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: "romai_agi"
+        - name: POSTGRES_USER
+          value: "romai"
+        - name: POSTGRES_PASSWORD
+          value: "secure_password"
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: postgres-pvc
+
+---
+# PostgreSQL PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  namespace: romai-agi
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: fast-ssd
+
+---
+# PostgreSQL Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: romai-postgres
+  namespace: romai-agi
+spec:
+  selector:
+    app: romai-postgres
+  ports:
+  - port: 5432
+    targetPort: 5432
+  type: ClusterIP
+
+---
+# RomAI AGI Main Application Deployment with GPU support
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: romai-agi
+  namespace: romai-agi
+  labels:
+    app: romai-agi
+    version: v1.0.0
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: romai-agi
+  template:
+    metadata:
+      labels:
+        app: romai-agi
+        tier: application
+        version: v1.0.0
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/metrics"
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - romai-agi
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - name: romai-agi
+        image: romai/agi:production-latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 6100
+          name: frontend
+        - containerPort: 6101
+          name: ml-api
+        - containerPort: 9090
+          name: metrics
+        env:
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: romai-config
+              key: NODE_ENV
+        - name: REDIS_HOST
+          value: "romai-redis"
+        - name: REDIS_PORT
+          value: "6379"
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: romai-secrets
+              key: REDIS_PASSWORD
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: romai-secrets
+              key: DATABASE_URL
+        envFrom:
+        - configMapRef:
+            name: romai-config
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 4Gi
+            nvidia.com/gpu: 1
+          limits:
+            cpu: 4000m
+            memory: 16Gi
+            nvidia.com/gpu: 1
+        volumeMounts:
+        - name: model-cache
+          mountPath: /app/cache
+        - name: logs
+          mountPath: /app/logs
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 6101
+          initialDelaySeconds: 120
+          periodSeconds: 30
+          timeoutSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 6101
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        startupProbe:
+          httpGet:
+            path: /health
+            port: 6101
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 12
+      volumes:
+      - name: model-cache
+        persistentVolumeClaim:
+          claimName: romai-models-pvc
+      - name: logs
+        emptyDir: {}
+      nodeSelector:
+        accelerator: nvidia-tesla-v100
+      tolerations:
+      - key: nvidia.com/gpu
+        operator: Exists
+        effect: NoSchedule
+
+---
+# Horizontal Pod Autoscaler for dynamic scaling
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: romai-agi-hpa
+  namespace: romai-agi
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: romai-agi
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  - type: Pods
+    pods:
+      metric:
+        name: requests_per_second
+      target:
+        type: AverageValue
+        averageValue: "100"
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 60
+
+---
+# Service for RomAI AGI Application
+apiVersion: v1
+kind: Service
+metadata:
+  name: romai-agi-service
+  namespace: romai-agi
+  labels:
+    app: romai-agi
+spec:
+  selector:
+    app: romai-agi
+  ports:
+  - name: frontend
+    port: 6100
+    targetPort: 6100
+  - name: ml-api
+    port: 6101
+    targetPort: 6101
+  - name: metrics
+    port: 9090
+    targetPort: 9090
+  type: ClusterIP
+
+---
+# LoadBalancer Service for external access
+apiVersion: v1
+kind: Service
+metadata:
+  name: romai-agi-lb
+  namespace: romai-agi
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+spec:
+  selector:
+    app: romai-agi
+  ports:
+  - name: frontend
+    port: 80
+    targetPort: 6100
+    protocol: TCP
+  - name: ml-api
+    port: 8080
+    targetPort: 6101
+    protocol: TCP
+  type: LoadBalancer
+
+---
+# Ingress for advanced routing and SSL termination
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: romai-agi-ingress
+  namespace: romai-agi
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/rate-limit-window: "1m"
+spec:
+  tls:
+  - hosts:
+    - api.romai.ai
+    - app.romai.ai
+    secretName: romai-agi-tls
+  rules:
+  - host: app.romai.ai
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: romai-agi-service
+            port:
+              number: 6100
+  - host: api.romai.ai
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: romai-agi-service
+            port:
+              number: 6101
+
+---
+# Network Policy for security
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: romai-agi-netpol
+  namespace: romai-agi
+spec:
+  podSelector:
+    matchLabels:
+      app: romai-agi
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: nginx-ingress
+    - namespaceSelector:
+        matchLabels:
+          name: monitoring
+    ports:
+    - protocol: TCP
+      port: 6100
+    - protocol: TCP
+      port: 6101
+    - protocol: TCP
+      port: 9090
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: romai-redis
+    ports:
+    - protocol: TCP
+      port: 6379
+  - to:
+    - podSelector:
+        matchLabels:
+          app: romai-postgres
+    ports:
+    - protocol: TCP
+      port: 5432
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 80
+
+---
+# ServiceMonitor for Prometheus monitoring
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: romai-agi-metrics
+  namespace: romai-agi
+  labels:
+    app: romai-agi
+spec:
+  selector:
+    matchLabels:
+      app: romai-agi
+  endpoints:
+  - port: metrics
+    path: /metrics
+    interval: 30s
+    scrapeTimeout: 10s

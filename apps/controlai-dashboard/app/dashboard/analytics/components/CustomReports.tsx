@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Custom Reports Component - Advanced Report Generation
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import { useState } from 'react'
@@ -417,4 +418,5 @@ export function CustomReports({ metrics, timeRange, onExport }: CustomReportsPro
         </div>
     )
 }
+
 

@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Project Navigation Component - View mode switcher and options
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import {
@@ -250,4 +251,5 @@ export function ProjectNavigation({ activeView, onViewChange }: ProjectNavigatio
         </div>
     )
 }
+
 

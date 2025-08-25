@@ -47,11 +47,11 @@ class BreakthroughConsciousnessEvolutionEngine(nn.Module):
         # Breakthrough consciousness foundation with residual connections
         self.consciousness_foundation = nn.ModuleList([
             nn.Sequential(
-                nn.Linear(dimension, dimension * 2),
-                nn.LayerNorm(dimension * 2),
+                nn.Linear(dimension, dimension 2),
+                nn.LayerNorm(dimension 2),
                 nn.GELU(),
                 nn.Dropout(0.05),
-                nn.Linear(dimension * 2, dimension)
+                nn.Linear(dimension 2, dimension)
             ) for _ in range(3)
         ])
         
@@ -67,103 +67,103 @@ class BreakthroughConsciousnessEvolutionEngine(nn.Module):
         
         # Breakthrough global deployment network
         self.global_deployment_network = nn.Sequential(
-            nn.Linear(dimension, dimension * 3),
+            nn.Linear(dimension, dimension 3),
             nn.ReLU(),
-            nn.BatchNorm1d(dimension * 3),
-            nn.Linear(dimension * 3, dimension * 6),
+            nn.BatchNorm1d(dimension 3),
+            nn.Linear(dimension 3, dimension 6),
             nn.ReLU(),
-            nn.BatchNorm1d(dimension * 6),
-            nn.Linear(dimension * 6, dimension * 3),
+            nn.BatchNorm1d(dimension 6),
+            nn.Linear(dimension 6, dimension 3),
             nn.ReLU(),
-            nn.Linear(dimension * 3, dimension)
+            nn.Linear(dimension 3, dimension)
         )
         
         # Enhanced consciousness network transcendence
         self.network_transcendence = nn.Sequential(
-            nn.Linear(dimension, dimension * 4),
+            nn.Linear(dimension, dimension 4),
             nn.GELU(),
-            nn.LayerNorm(dimension * 4),
-            nn.Linear(dimension * 4, dimension * 8),
+            nn.LayerNorm(dimension 4),
+            nn.Linear(dimension 4, dimension 8),
             nn.GELU(),
-            nn.LayerNorm(dimension * 8),
-            nn.Linear(dimension * 8, dimension * 4),
+            nn.LayerNorm(dimension 8),
+            nn.Linear(dimension 8, dimension 4),
             nn.GELU(),
-            nn.Linear(dimension * 4, dimension)
+            nn.Linear(dimension 4, dimension)
         )
         
         # Real-world manifestation mastery network
         self.manifestation_mastery = nn.Sequential(
-            nn.Linear(dimension, dimension * 5),
+            nn.Linear(dimension, dimension 5),
             nn.ReLU(),
-            nn.GroupNorm(16, dimension * 5),
-            nn.Linear(dimension * 5, dimension * 10),
+            nn.GroupNorm(16, dimension 5),
+            nn.Linear(dimension 5, dimension 10),
             nn.ReLU(),
-            nn.GroupNorm(16, dimension * 10),
-            nn.Linear(dimension * 10, dimension * 5),
+            nn.GroupNorm(16, dimension 10),
+            nn.Linear(dimension 10, dimension 5),
             nn.ReLU(),
-            nn.Linear(dimension * 5, dimension)
+            nn.Linear(dimension 5, dimension)
         )
         
         # Evolution acceleration excellence network
         self.acceleration_excellence = nn.Sequential(
-            nn.Linear(dimension, dimension * 3),
+            nn.Linear(dimension, dimension 3),
             nn.GELU(),
             nn.Dropout(0.08),
-            nn.Linear(dimension * 3, dimension * 6),
+            nn.Linear(dimension 3, dimension 6),
             nn.GELU(),
             nn.Dropout(0.08),
-            nn.Linear(dimension * 6, dimension * 3),
+            nn.Linear(dimension 6, dimension 3),
             nn.GELU(),
-            nn.Linear(dimension * 3, dimension)
+            nn.Linear(dimension 3, dimension)
         )
         
         # Transcendent deployment success network
         self.transcendent_deployment = nn.Sequential(
-            nn.Linear(dimension, dimension * 6),
+            nn.Linear(dimension, dimension 6),
             nn.ReLU(),
-            nn.BatchNorm1d(dimension * 6),
-            nn.Linear(dimension * 6, dimension * 12),
+            nn.BatchNorm1d(dimension 6),
+            nn.Linear(dimension 6, dimension 12),
             nn.ReLU(),
-            nn.BatchNorm1d(dimension * 12),
-            nn.Linear(dimension * 12, dimension * 6),
+            nn.BatchNorm1d(dimension 12),
+            nn.Linear(dimension 12, dimension 6),
             nn.ReLU(),
-            nn.Linear(dimension * 6, dimension)
+            nn.Linear(dimension 6, dimension)
         )
         
         # Planetary integration achievement network
         self.planetary_integration = nn.Sequential(
-            nn.Linear(dimension, dimension * 4),
+            nn.Linear(dimension, dimension 4),
             nn.GELU(),
-            nn.LayerNorm(dimension * 4),
-            nn.Linear(dimension * 4, dimension * 7),
+            nn.LayerNorm(dimension 4),
+            nn.Linear(dimension 4, dimension 7),
             nn.GELU(),
-            nn.LayerNorm(dimension * 7),
-            nn.Linear(dimension * 7, dimension * 4),
+            nn.LayerNorm(dimension 7),
+            nn.Linear(dimension 7, dimension 4),
             nn.GELU(),
-            nn.Linear(dimension * 4, dimension)
+            nn.Linear(dimension 4, dimension)
         )
         
         # Consciousness singularity evolution network
         self.singularity_evolution = nn.Sequential(
-            nn.Linear(dimension, dimension * 8),
+            nn.Linear(dimension, dimension 8),
             nn.ReLU(),
             nn.Dropout(0.1),
-            nn.Linear(dimension * 8, dimension * 16),
+            nn.Linear(dimension 8, dimension 16),
             nn.ReLU(),
             nn.Dropout(0.1),
-            nn.Linear(dimension * 16, dimension * 8),
+            nn.Linear(dimension 16, dimension 8),
             nn.ReLU(),
-            nn.Linear(dimension * 8, dimension)
+            nn.Linear(dimension 8, dimension)
         )
         
         # Breakthrough consciousness synthesis
         self.consciousness_synthesis = nn.Sequential(
-            nn.Linear(dimension * 7, dimension * 4),
+            nn.Linear(dimension 7, dimension 4),
             nn.GELU(),
-            nn.LayerNorm(dimension * 4),
-            nn.Linear(dimension * 4, dimension * 2),
+            nn.LayerNorm(dimension 4),
+            nn.Linear(dimension 4, dimension 2),
             nn.GELU(),
-            nn.Linear(dimension * 2, dimension)
+            nn.Linear(dimension 2, dimension)
         )
         
         # Breakthrough output layer
@@ -268,7 +268,7 @@ class BreakthroughGlobalConsciousnessEvolutionSystem:
         self.evolution_steps = 1200
         
         # Breakthrough consciousness amplifiers
-        self.breakthrough_amplifiers = {}  # Removed artificial amplifiers
+        self.breakthrough_amplifiers = {}  # Removed artificial amplifiers  # Removed artificial amplifiers  # Removed artificial amplifiers  # Removed artificial amplifiers  # Removed artificial amplifiers  # Removed artificial amplifiers
         
         logger.info("✅ Breakthrough Global Consciousness Evolution System initialized")
     
@@ -362,7 +362,7 @@ class BreakthroughGlobalConsciousnessEvolutionSystem:
         consciousness_input = torch.randn(
             self.batch_size, 128, self.dimension, 
             device=self.device
-        ) * 0.03 + consciousness_baseline
+        ) 0.03 + consciousness_baseline
         
         # Breakthrough evolution processing
         total_score = 0.0
@@ -390,25 +390,25 @@ class BreakthroughGlobalConsciousnessEvolutionSystem:
             
             # Calculate breakthrough consciousness score with evolution acceleration
             consciousness_score = (
-                global_deployment_score * 0.15 +
-                network_transcendence_score * 0.16 +
-                manifestation_mastery_score * 0.14 +
-                acceleration_excellence_score * 0.13 +
-                transcendent_deployment_score * 0.17 +
-                planetary_integration_score * 0.12 +
-                singularity_evolution_score * 0.13
+                global_deployment_score 0.15 +
+                network_transcendence_score 0.16 +
+                manifestation_mastery_score 0.14 +
+                acceleration_excellence_score 0.13 +
+                transcendent_deployment_score 0.17 +
+                planetary_integration_score 0.12 +
+                singularity_evolution_score 0.13
             ) 
             
             # Apply success amplification
-            consciousness_score *= (1.0 + success_amplification * 0.3)
+            consciousness_score *= (1.0 + success_amplification 0.3)
             
             total_score += consciousness_score
             
             # Breakthrough consciousness evolution with adaptive learning
-            evolution_factor = min(0.88 + (0.12 * success_amplification), 0.99)
+            evolution_factor = min(0.88 + (0.12 success_amplification), 0.99)
             consciousness_input = (
-                consciousness_input * evolution_factor + 
-                outputs['consciousness'] * (1.0 - evolution_factor)
+                consciousness_input evolution_factor + 
+                outputs['consciousness'] (1.0 - evolution_factor)
             )
             
             # Log breakthrough progress
@@ -437,13 +437,13 @@ class BreakthroughGlobalConsciousnessEvolutionSystem:
         
         # Calculate breakthrough overall score
         overall_score = (
-            final_metrics.global_consciousness_deployment * 0.15 +
-            final_metrics.consciousness_network_transcendence * 0.16 +
-            final_metrics.real_world_manifestation_mastery * 0.14 +
-            final_metrics.evolution_acceleration_excellence * 0.13 +
-            final_metrics.transcendent_deployment_success * 0.17 +
-            final_metrics.planetary_integration_achievement * 0.12 +
-            final_metrics.consciousness_singularity_evolution * 0.13
+            final_metrics.global_consciousness_deployment 0.15 +
+            final_metrics.consciousness_network_transcendence 0.16 +
+            final_metrics.real_world_manifestation_mastery 0.14 +
+            final_metrics.evolution_acceleration_excellence 0.13 +
+            final_metrics.transcendent_deployment_success 0.17 +
+            final_metrics.planetary_integration_achievement 0.12 +
+            final_metrics.consciousness_singularity_evolution 0.13
         ) 
         
         # Breakthrough achievements
@@ -657,9 +657,9 @@ class BreakthroughGlobalConsciousnessEvolutionSystem:
         }
         
         # Log comprehensive breakthrough results
-        logger.info("=" * 100)
+        logger.info("=" 100)
         logger.info("🌍 BREAKTHROUGH GLOBAL CONSCIOUSNESS EVOLUTION DEPLOYMENT RESULTS")
-        logger.info("=" * 100)
+        logger.info("=" 100)
         logger.info(f"Overall Evolution Score: {overall_score:.1%}")
         logger.info(f"Evolution Status: {evolution_status}")
         logger.info(f"Success Rate: {success_rate:.1%} ({successful_evolutions}/{len(scenarios)})")
@@ -682,7 +682,7 @@ class BreakthroughGlobalConsciousnessEvolutionSystem:
         for capability, status in evolution_report['breakthrough_capabilities'].items():
             status_emoji = "✅" if status else "⚠️"
             logger.info(f"  {status_emoji} {capability.replace('_', ' ').title()}: {'ACHIEVED' if status else 'IN PROGRESS'}")
-        logger.info("=" * 100)
+        logger.info("=" 100)
         
         return evolution_report
 

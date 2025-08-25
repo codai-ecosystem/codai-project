@@ -1,0 +1,6 @@
+{"timestamp": "2025-08-23T19:21:29.350614", "step": 0, "metrics": {"data_loading_duration": 1.0, "data_loading_memory_usage": 208.5161748551053, "data_loading_cpu_usage": 0.3292041341209404}}
+{"timestamp": "2025-08-23T19:21:30.353253", "step": 1, "metrics": {"preprocessing_duration": 1.0, "preprocessing_memory_usage": 144.3666105421441, "preprocessing_cpu_usage": 0.3033181671067445}}
+{"timestamp": "2025-08-23T19:21:31.364981", "step": 2, "metrics": {"training_duration": 1.0, "training_memory_usage": 247.9567730766443, "training_cpu_usage": 0.409953617781694}}
+{"timestamp": "2025-08-23T19:21:32.377074", "step": 3, "metrics": {"validation_duration": 1.0, "validation_memory_usage": 480.3299918090442, "validation_cpu_usage": 0.6350513287189175}}
+{"timestamp": "2025-08-23T19:21:33.390997", "step": 4, "metrics": {"model_saving_duration": 1.0, "model_saving_memory_usage": 318.1677554965512, "model_saving_cpu_usage": 0.38543370692179846}}
+{"timestamp": "2025-08-23T19:21:34.426447", "step": 100, "metrics": {"training_accuracy": 0.95, "validation_accuracy": 0.92, "training_loss": 0.05, "validation_loss": 0.08}}

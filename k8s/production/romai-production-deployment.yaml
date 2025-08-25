@@ -1,0 +1,540 @@
+# 🚀 RomAI Production Kubernetes Configuration
+# Enterprise-grade Kubernetes deployment manifests for 99.9% uptime SLA
+
+---
+# Namespace for RomAI Production
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: romai-production
+  labels:
+    app: romai
+    environment: production
+    tier: enterprise
+
+---
+# RomAI ML API Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: romai-ml-api
+  namespace: romai-production
+  labels:
+    app: romai-ml-api
+    version: v1.0
+    tier: production
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: romai-ml-api
+  template:
+    metadata:
+      labels:
+        app: romai-ml-api
+        version: v1.0
+    spec:
+      containers:
+      - name: romai-ml-api
+        image: codai/romai-ml-api:latest
+        ports:
+        - containerPort: 6101
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 2Gi
+            nvidia.com/gpu: 1
+          limits:
+            cpu: 4000m
+            memory: 8Gi
+            nvidia.com/gpu: 1
+        env:
+        - name: ROMAI_ENV
+          value: "production"
+        - name: PYTORCH_CUDA_ALLOC_CONF
+          value: "max_split_size_mb:1024"
+        - name: ROMAI_AGI_PORT
+          value: "6101"
+        - name: QUANTUM_ENABLED
+          value: "true"
+        - name: CONSCIOUSNESS_ENGINE
+          value: "true"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 6101
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 6101
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        volumeMounts:
+        - name: model-cache
+          mountPath: /app/.cache
+        - name: logs
+          mountPath: /app/logs
+      volumes:
+      - name: model-cache
+        persistentVolumeClaim:
+          claimName: romai-model-cache
+      - name: logs
+        persistentVolumeClaim:
+          claimName: romai-logs
+      nodeSelector:
+        kubernetes.io/arch: amd64
+        node-type: gpu-enabled
+      tolerations:
+      - key: nvidia.com/gpu
+        operator: Exists
+        effect: NoSchedule
+
+---
+# RomAI ML API Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: romai-ml-api-service
+  namespace: romai-production
+  labels:
+    app: romai-ml-api
+spec:
+  selector:
+    app: romai-ml-api
+  ports:
+  - port: 6101
+    targetPort: 6101
+    protocol: TCP
+    name: api
+  type: ClusterIP
+
+---
+# RomAI ML API Horizontal Pod Autoscaler
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: romai-ml-api-hpa
+  namespace: romai-production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: romai-ml-api
+  minReplicas: 3
+  maxReplicas: 100
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  - type: Pods
+    pods:
+      metric:
+        name: romai_reasoning_requests_per_second
+      target:
+        type: AverageValue
+        averageValue: "30"
+
+---
+# MemorAI MCP Service Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memorai-mcp-service
+  namespace: romai-production
+  labels:
+    app: memorai-mcp-service
+    version: v1.0
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: memorai-mcp-service
+  template:
+    metadata:
+      labels:
+        app: memorai-mcp-service
+    spec:
+      containers:
+      - name: memorai-mcp
+        image: codai/memorai-mcp:latest
+        ports:
+        - containerPort: 4950
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 2000m
+            memory: 4Gi
+        env:
+        - name: MEMORAI_ENV
+          value: "production"
+        - name: MEMORAI_MCP_PORT
+          value: "4950"
+        - name: CBD_BASE_URL
+          value: "http://cbd-database-service:4180"
+        - name: ENABLE_VECTOR_SEARCH
+          value: "true"
+        - name: ENABLE_HYBRID_SEARCH
+          value: "true"
+        - name: ENABLE_RBAC
+          value: "true"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 4950
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 4950
+          initialDelaySeconds: 5
+          periodSeconds: 5
+
+---
+# MemorAI MCP Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: memorai-mcp-service
+  namespace: romai-production
+spec:
+  selector:
+    app: memorai-mcp-service
+  ports:
+  - port: 4950
+    targetPort: 4950
+    name: mcp-api
+  type: ClusterIP
+
+---
+# PostgreSQL Cluster (Primary)
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgresql-primary
+  namespace: romai-production
+spec:
+  serviceName: postgresql-primary
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgresql
+      role: primary
+  template:
+    metadata:
+      labels:
+        app: postgresql
+        role: primary
+    spec:
+      containers:
+      - name: postgresql
+        image: postgres:15-alpine
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: "romai_production"
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-secret
+              key: username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-secret
+              key: password
+        - name: POSTGRES_REPLICATION_USER
+          value: "replicator"
+        - name: POSTGRES_REPLICATION_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-secret
+              key: replication-password
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 4Gi
+            storage: 100Gi
+          limits:
+            cpu: 4000m
+            memory: 16Gi
+        volumeMounts:
+        - name: postgresql-storage
+          mountPath: /var/lib/postgresql/data
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+          initialDelaySeconds: 5
+          periodSeconds: 5
+  volumeClaimTemplates:
+  - metadata:
+      name: postgresql-storage
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "fast-ssd"
+      resources:
+        requests:
+          storage: 500Gi
+
+---
+# Redis Cluster
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis-cluster
+  namespace: romai-production
+spec:
+  serviceName: redis-cluster
+  replicas: 6
+  selector:
+    matchLabels:
+      app: redis-cluster
+  template:
+    metadata:
+      labels:
+        app: redis-cluster
+    spec:
+      containers:
+      - name: redis
+        image: redis:7-alpine
+        ports:
+        - containerPort: 6379
+        - containerPort: 16379
+        command:
+        - redis-server
+        - /etc/redis/redis.conf
+        - --cluster-enabled
+        - "yes"
+        - --cluster-config-file
+        - nodes.conf
+        - --cluster-node-timeout
+        - "5000"
+        - --appendonly
+        - "yes"
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 2000m
+            memory: 4Gi
+        volumeMounts:
+        - name: redis-storage
+          mountPath: /data
+        - name: redis-config
+          mountPath: /etc/redis
+      volumes:
+      - name: redis-config
+        configMap:
+          name: redis-config
+  volumeClaimTemplates:
+  - metadata:
+      name: redis-storage
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "fast-ssd"
+      resources:
+        requests:
+          storage: 50Gi
+
+---
+# NGINX Load Balancer
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-load-balancer
+  namespace: romai-production
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-load-balancer
+  template:
+    metadata:
+      labels:
+        app: nginx-load-balancer
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.25-alpine
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        resources:
+          requests:
+            cpu: 250m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+        - name: ssl-certs
+          mountPath: /etc/nginx/ssl
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx-config
+      - name: ssl-certs
+        secret:
+          secretName: ssl-certificates
+
+---
+# NGINX Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-load-balancer
+  namespace: romai-production
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx-load-balancer
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+    protocol: TCP
+  - name: https
+    port: 443
+    targetPort: 443
+    protocol: TCP
+
+---
+# Network Policy for Production Security
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: romai-production-network-policy
+  namespace: romai-production
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: romai-production
+    - namespaceSelector:
+        matchLabels:
+          name: monitoring
+  - from: []
+    ports:
+    - protocol: TCP
+      port: 80
+    - protocol: TCP
+      port: 443
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: romai-production
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443  # HTTPS outbound
+    - protocol: TCP
+      port: 53   # DNS
+    - protocol: UDP
+      port: 53   # DNS
+
+---
+# Pod Disruption Budget for High Availability
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: romai-ml-api-pdb
+  namespace: romai-production
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: romai-ml-api
+
+---
+# Persistent Volume Claims
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: romai-model-cache
+  namespace: romai-production
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: "efs-storage"
+  resources:
+    requests:
+      storage: 1Ti
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: romai-logs
+  namespace: romai-production
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: "efs-storage"
+  resources:
+    requests:
+      storage: 100Gi

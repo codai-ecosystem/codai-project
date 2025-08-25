@@ -1,11 +1,4 @@
-import '@testing-library/jest-dom';
+// Generated Jest setup for apps app
+// Uses consolidated setup from @codai/testing-utils
 
-// Mock console methods to reduce noise in tests
-global.console = {
-  ...console,
-  log: jest.fn(),
-  debug: jest.fn(),
-  info: jest.fn(),
-  warn: jest.fn(),
-  error: jest.fn(),
-};
+require('@codai/testing-utils/setups/jest/base.setup');

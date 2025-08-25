@@ -1,0 +1,301 @@
+[
+    {
+        "case": "portfolio_optimization_conservative",
+        "question": "Create an optimal portfolio allocation for a conservative investor with $1,000,000 to invest",
+        "input_data": {
+            "investment_amount": 1000000,
+            "risk_tolerance": "conservative",
+            "time_horizon": "medium_term",
+            "assets": [
+                "stocks",
+                "bonds",
+                "commodities",
+                "cash"
+            ]
+        },
+        "expected_analysis_type": "portfolio_optimization",
+        "learning_objective": "Portfolio optimization with risk tolerance constraints and asset allocation theory"
+    },
+    {
+        "case": "dcf_valuation_tech_company",
+        "question": "What is the fair value of a technology company with projected cash flows of $500K, $750K, $1M, $1.2M, $1.5M over 5 years?",
+        "input_data": {
+            "cash_flows": [
+                500000,
+                750000,
+                1000000,
+                1200000,
+                1500000
+            ],
+            "discount_rate": 0.11,
+            "terminal_growth": 0.025,
+            "industry": "technology",
+            "revenue": 5000000,
+            "ebitda": 1800000
+        },
+        "expected_analysis_type": "valuation",
+        "learning_objective": "Discounted cash flow valuation with terminal value calculation and comparable multiples"
+    },
+    {
+        "case": "value_at_risk_calculation",
+        "question": "Calculate the 99% Value at Risk for a $5 million portfolio with 25% annual volatility",
+        "input_data": {
+            "portfolio_value": 5000000,
+            "volatility": 0.25,
+            "confidence_level": 0.99,
+            "time_horizon_days": 1,
+            "beta": 1.2,
+            "correlation": 0.85
+        },
+        "expected_analysis_type": "risk_assessment",
+        "learning_objective": "Risk metrics calculation including VaR, expected shortfall, and portfolio risk assessment"
+    },
+    {
+        "case": "momentum_trading_strategy",
+        "question": "Evaluate the performance of a momentum trading strategy over the last 10 periods",
+        "input_data": {
+            "strategy_type": "momentum",
+            "returns": [
+                0.08,
+                -0.03,
+                0.12,
+                0.05,
+                -0.02,
+                0.15,
+                0.01,
+                -0.05,
+                0.09,
+                0.03
+            ],
+            "benchmark": [
+                0.06,
+                -0.01,
+                0.08,
+                0.04,
+                -0.01,
+                0.07,
+                0.02,
+                -0.02,
+                0.05,
+                0.02
+            ]
+        },
+        "expected_analysis_type": "trading_strategy",
+        "learning_objective": "Trading strategy performance evaluation with risk-adjusted metrics and alpha calculation"
+    },
+    {
+        "case": "financial_health_analysis",
+        "question": "Analyze the financial health of a company based on its financial statements",
+        "input_data": {
+            "revenue": 10000000,
+            "net_income": 1200000,
+            "total_assets": 25000000,
+            "total_equity": 15000000,
+            "current_assets": 8000000,
+            "current_liabilities": 3500000,
+            "total_debt": 10000000,
+            "interest_expense": 500000,
+            "inventory": 2000000,
+            "cogs": 6000000
+        },
+        "expected_analysis_type": "financial_ratios",
+        "learning_objective": "Comprehensive financial ratio analysis with profitability, liquidity, and leverage assessment"
+    },
+    {
+        "case": "options_pricing_analysis",
+        "question": "What factors should be considered in options pricing and derivatives analysis?",
+        "input_data": {
+            "stock_price": 100,
+            "strike_price": 105,
+            "risk_free_rate": 0.05,
+            "volatility": 0.30,
+            "time_to_expiry": 0.25,
+            "option_type": "call"
+        },
+        "expected_analysis_type": "general_analysis",
+        "learning_objective": "Options pricing theory with Black-Scholes model components and derivatives analysis"
+    },
+    {
+        "case": "credit_risk_assessment",
+        "question": "Assess the credit risk of a BBB-rated corporate bond investment",
+        "input_data": {
+            "credit_rating": "bbb",
+            "bond_amount": 1000000,
+            "maturity_years": 10,
+            "coupon_rate": 0.055,
+            "market_yield": 0.062,
+            "sector": "industrials"
+        },
+        "expected_analysis_type": "risk_assessment",
+        "learning_objective": "Credit risk evaluation with probability of default, loss given default, and expected loss calculation"
+    },
+    {
+        "case": "merger_valuation",
+        "question": "Evaluate the financial impact of a potential merger and acquisition transaction",
+        "input_data": {
+            "acquirer_market_cap": 50000000000,
+            "target_market_cap": 8000000000,
+            "expected_synergies": 500000000,
+            "integration_costs": 200000000,
+            "premium_paid": 0.25,
+            "financing_method": "cash_and_stock"
+        },
+        "expected_analysis_type": "valuation",
+        "learning_objective": "M&A valuation analysis with synergy evaluation, accretion/dilution analysis, and deal structuring"
+    },
+    {
+        "case": "real_estate_investment",
+        "question": "Analyze a real estate investment opportunity with rental income projections",
+        "input_data": {
+            "property_value": 2500000,
+            "annual_rental_income": 200000,
+            "operating_expenses": 50000,
+            "vacancy_rate": 0.05,
+            "cap_rate_market": 0.065,
+            "financing_rate": 0.045,
+            "loan_to_value": 0.75
+        },
+        "expected_analysis_type": "valuation",
+        "learning_objective": "Real estate investment analysis with cap rate evaluation, cash-on-cash returns, and financing impact"
+    },
+    {
+        "case": "currency_hedging_strategy",
+        "question": "Design a currency hedging strategy for international portfolio exposure",
+        "input_data": {
+            "portfolio_value": 10000000,
+            "international_exposure": 0.40,
+            "base_currency": "USD",
+            "foreign_currencies": [
+                "EUR",
+                "GBP",
+                "JPY"
+            ],
+            "hedging_ratio": 0.75,
+            "hedging_cost": 0.015
+        },
+        "expected_analysis_type": "risk_assessment",
+        "learning_objective": "Currency risk management with hedging strategies, forward contracts, and international diversification"
+    },
+    {
+        "case": "pension_fund_optimization",
+        "question": "Optimize asset allocation for a pension fund with long-term liabilities",
+        "input_data": {
+            "fund_assets": 5000000000,
+            "liability_duration": 15,
+            "required_return": 0.065,
+            "risk_budget": 0.12,
+            "asset_classes": [
+                "equities",
+                "bonds",
+                "alternatives",
+                "cash"
+            ],
+            "liability_matching": true
+        },
+        "expected_analysis_type": "portfolio_optimization",
+        "learning_objective": "Asset-liability matching with duration management, liability-driven investment, and institutional portfolio optimization"
+    },
+    {
+        "case": "startup_valuation",
+        "question": "Value an early-stage technology startup using multiple valuation approaches",
+        "input_data": {
+            "projected_revenues": [
+                2000000,
+                5000000,
+                12000000,
+                25000000,
+                45000000
+            ],
+            "industry": "technology",
+            "stage": "series_a",
+            "comparable_multiples": {
+                "revenue_multiple": 8.5,
+                "user_multiple": 150
+            },
+            "discount_rate": 0.25,
+            "probability_of_success": 0.30,
+            "exit_multiple": 12
+        },
+        "expected_analysis_type": "valuation",
+        "learning_objective": "Startup valuation with venture capital methods, comparable analysis, and risk-adjusted NPV calculation"
+    },
+    {
+        "case": "fixed_income_duration",
+        "question": "Analyze the duration and convexity of a bond portfolio for interest rate risk management",
+        "input_data": {
+            "portfolio_value": 50000000,
+            "bonds": [
+                {
+                    "face_value": 10000000,
+                    "coupon": 0.04,
+                    "maturity": 5,
+                    "yield": 0.045
+                },
+                {
+                    "face_value": 20000000,
+                    "coupon": 0.055,
+                    "maturity": 10,
+                    "yield": 0.05
+                },
+                {
+                    "face_value": 20000000,
+                    "coupon": 0.035,
+                    "maturity": 15,
+                    "yield": 0.048
+                }
+            ],
+            "target_duration": 8.5
+        },
+        "expected_analysis_type": "risk_assessment",
+        "learning_objective": "Fixed income analytics with duration, convexity, and interest rate sensitivity analysis"
+    },
+    {
+        "case": "private_equity_fund",
+        "question": "Evaluate the performance and risk characteristics of a private equity fund investment",
+        "input_data": {
+            "fund_size": 1000000000,
+            "committed_capital": 50000000,
+            "management_fee": 0.02,
+            "carried_interest": 0.20,
+            "hurdle_rate": 0.08,
+            "investment_period": 8,
+            "expected_irr": 0.15,
+            "vintage_year": 2020
+        },
+        "expected_analysis_type": "valuation",
+        "learning_objective": "Private equity analysis with IRR calculations, fee structures, and alternative investment evaluation"
+    },
+    {
+        "case": "bank_stress_testing",
+        "question": "Conduct stress testing analysis for a bank's loan portfolio under adverse scenarios",
+        "input_data": {
+            "loan_portfolio": 10000000000,
+            "loan_categories": {
+                "residential_mortgages": 0.40,
+                "commercial_real_estate": 0.25,
+                "corporate_loans": 0.20,
+                "consumer_loans": 0.15
+            },
+            "base_default_rates": [
+                0.02,
+                0.04,
+                0.03,
+                0.05
+            ],
+            "stress_multipliers": [
+                2.5,
+                3.0,
+                2.8,
+                2.2
+            ],
+            "recovery_rates": [
+                0.75,
+                0.60,
+                0.65,
+                0.40
+            ]
+        },
+        "expected_analysis_type": "risk_assessment",
+        "learning_objective": "Banking risk analysis with credit loss modeling, stress testing, and regulatory capital assessment"
+    }
+]

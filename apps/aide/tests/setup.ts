@@ -1,12 +1,7 @@
-import { vi } from 'vitest';
+// Generated Vitest setup for aide app
+// Consolidates common test setup patterns using @codai/testing-utils
 
-// Global test setup
-beforeEach(() => {
-  vi.clearAllMocks();
-});
+import '@codai/testing-utils/setups/vitest/base.setup'
+import '@codai/testing-utils/setups/vitest/nextjs.setup'
 
-// Mock global objects if needed
-Object.defineProperty(global, 'fetch', {
-  value: vi.fn(),
-  writable: true
-});
+// App-specific customizations

@@ -4,9 +4,9 @@
   "description": "Main dashboard",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 4000",
+    "dev": "next dev -p 4009",
     "build": "next build",
-    "start": "next start -p 4000",
+    "start": "next start -p 4009",
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
@@ -35,10 +35,10 @@
     "zustand": "^5.0.6",
     "geist": "^1.4.2",
     "@codai/shared-ui": "workspace:*",
-    "@codai/translations": "workspace:*"
+    "@codai/translations": "workspace:*",
+    "@codai/api-utils": "workspace:*"
   },
   "devDependencies": {
-    "@codai/eslint-config": "workspace:*",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",

@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Security Settings Component - Authentication and Access Control
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import {
@@ -382,4 +383,5 @@ export function SecuritySettings({ settings, onChange }: SecuritySettingsProps) 
         </motion.div>
     )
 }
+
 

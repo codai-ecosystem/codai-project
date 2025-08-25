@@ -1,5 +1,5 @@
 # CODAI RomAI Application - Multi-Service Docker Configuration
-FROM node:18-alpine as frontend-builder
+FROM node:20-alpine as frontend-builder
 
 # Set working directory
 WORKDIR /app
@@ -8,17 +8,16 @@ WORKDIR /app
 RUN apk add --no-cache curl python3 py3-pip
 
 # Copy package files
-COPY package.json pnpm-lock.yaml* ./
+COPY package.json package-lock.json* ./
 
-# Install pnpm and dependencies
-RUN npm install -g pnpm
-RUN pnpm install --frozen-lockfile --prefer-offline
+# Install dependencies
+RUN npm ci --prefer-offline --legacy-peer-deps
 
 # Copy source code
 COPY . .
 
 # Build the frontend application
-RUN pnpm build
+RUN npm run build
 
 # Python runtime stage
 FROM python:3.11-slim as python-runtime
@@ -32,7 +31,7 @@ WORKDIR /app/python
 RUN pip install -r requirements.txt
 
 # Final stage combining both
-FROM node:18-alpine
+FROM node:20-alpine
 
 # Install system dependencies including Python
 RUN apk add --no-cache curl python3 py3-pip
@@ -56,19 +55,15 @@ COPY --chown=romai:nodejs src/ ./src/
 # Install Python requirements
 RUN pip3 install --break-system-packages fastapi uvicorn pydantic python-multipart httpx
 
-# Change ownership of the app directory
-RUN chown -R romai:nodejs /app
-
 # Switch to non-root user
 USER romai
 
 # Expose ports
 EXPOSE 6100
-EXPOSE 8001
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
   CMD curl -f http://localhost:6100/api/health || exit 1
 
-# Start both services
-CMD ["sh", "-c", "pnpm start & python3 -m uvicorn src.api.enterprise.api_platform_minimal:app --host 0.0.0.0 --port 8001 & wait"]
+# Start the frontend service
+CMD ["npm", "start"]

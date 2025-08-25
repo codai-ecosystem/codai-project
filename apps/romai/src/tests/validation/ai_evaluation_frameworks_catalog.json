@@ -1,0 +1,373 @@
+{
+  "benchmarks": {
+    "humaneval": {
+      "name": "HumanEval",
+      "category": "coding",
+      "description": "Evaluates code generation from natural language descriptions. 164 programming problems.",
+      "dataset_size": 164,
+      "evaluation_metric": "pass@1",
+      "current_sota_score": 0.92,
+      "current_sota_model": "Claude 3.7 Sonnet",
+      "dataset_source": "OpenAI",
+      "testing_methodology": "Execute generated code against unit tests",
+      "sample_difficulty": "Intermediate programming problems",
+      "requires_internet": false,
+      "requires_code_execution": true,
+      "multimodal": false
+    },
+    "humanevalplus": {
+      "name": "HumanEval+",
+      "category": "coding",
+      "description": "Extended version of HumanEval with additional test cases",
+      "dataset_size": 164,
+      "evaluation_metric": "pass@1",
+      "current_sota_score": 0.89,
+      "current_sota_model": "Claude 3.7 Sonnet",
+      "dataset_source": "BigCode Project",
+      "testing_methodology": "Execute generated code against comprehensive unit tests",
+      "sample_difficulty": "Intermediate to advanced programming problems",
+      "requires_internet": false,
+      "requires_code_execution": true,
+      "multimodal": false
+    },
+    "mbpp": {
+      "name": "MBPP (Mostly Basic Python Problems)",
+      "category": "coding",
+      "description": "974 short Python programming problems for code generation evaluation",
+      "dataset_size": 974,
+      "evaluation_metric": "pass@1",
+      "current_sota_score": 0.86,
+      "current_sota_model": "GPT-4o",
+      "dataset_source": "Google Research",
+      "testing_methodology": "Execute generated Python code against test cases",
+      "sample_difficulty": "Basic to intermediate Python problems",
+      "requires_internet": false,
+      "requires_code_execution": true,
+      "multimodal": false
+    },
+    "mbppplus": {
+      "name": "MBPP+",
+      "category": "coding",
+      "description": "Enhanced version of MBPP with additional test cases",
+      "dataset_size": 974,
+      "evaluation_metric": "pass@1",
+      "current_sota_score": 0.82,
+      "current_sota_model": "Claude 3.7 Sonnet",
+      "dataset_source": "BigCode Project",
+      "testing_methodology": "Execute generated Python code against comprehensive test cases",
+      "sample_difficulty": "Basic to intermediate Python problems with rigorous testing",
+      "requires_internet": false,
+      "requires_code_execution": true,
+      "multimodal": false
+    },
+    "swebench": {
+      "name": "SWE-bench",
+      "category": "coding",
+      "description": "Software engineering benchmark with real-world GitHub issues",
+      "dataset_size": 2294,
+      "evaluation_metric": "exact_match",
+      "current_sota_score": 0.727,
+      "current_sota_model": "Claude 4",
+      "dataset_source": "Princeton University",
+      "testing_methodology": "Solve real GitHub issues and pass existing tests",
+      "sample_difficulty": "Real-world software engineering problems",
+      "requires_internet": true,
+      "requires_code_execution": true,
+      "multimodal": false
+    },
+    "mmlu": {
+      "name": "MMLU (Massive Multitask Language Understanding)",
+      "category": "reasoning",
+      "description": "57 subjects spanning elementary to professional level knowledge",
+      "dataset_size": 15908,
+      "evaluation_metric": "accuracy",
+      "current_sota_score": 0.86,
+      "current_sota_model": "GPT-4o",
+      "dataset_source": "UC Berkeley",
+      "testing_methodology": "Multiple-choice questions across academic subjects",
+      "sample_difficulty": "Elementary to graduate level across diverse subjects",
+      "requires_internet": false,
+      "requires_code_execution": false,
+      "multimodal": false
+    },
+    "mmlu_pro": {
+      "name": "MMLU-Pro",
+      "category": "reasoning",
+      "description": "Enhanced version of MMLU with more challenging questions",
+      "dataset_size": 12000,
+      "evaluation_metric": "accuracy",
+      "current_sota_score": 0.78,
+      "current_sota_model": "Claude 3.7 Sonnet",
+      "dataset_source": "Academic community",
+      "testing_methodology": "Multiple-choice questions with increased difficulty",
+      "sample_difficulty": "Advanced undergraduate to graduate level",
+      "requires_internet": false,
+      "requires_code_execution": false,
+      "multimodal": false
+    },
+    "bigbench_hard": {
+      "name": "BigBench-Hard",
+      "category": "reasoning",
+      "description": "Subset of BigBench focusing on challenging reasoning tasks",
+      "dataset_size": 6511,
+      "evaluation_metric": "exact_match",
+      "current_sota_score": 0.83,
+      "current_sota_model": "GPT-4o",
+      "dataset_source": "Google Research",
+      "testing_methodology": "Diverse reasoning tasks requiring chain-of-thought",
+      "sample_difficulty": "Challenging reasoning problems",
+      "requires_internet": false,
+      "requires_code_execution": false,
+      "multimodal": false
+    },
+    "arc_challenge": {
+      "name": "ARC Challenge",
+      "category": "reasoning",
+      "description": "AI2 Reasoning Challenge with grade-school science questions",
+      "dataset_size": 1172,
+      "evaluation_metric": "accuracy",
+      "current_sota_score": 0.85,
+      "current_sota_model": "GPT-4o",
+      "dataset_source": "Allen Institute for AI",
+      "testing_methodology": "Multiple-choice science reasoning questions",
+      "sample_difficulty": "Grade-school level science reasoning",
+      "requires_internet": false,
+      "requires_code_execution": false,
+      "multimodal": false
+    },
+    "ifeval": {
+      "name": "IFEval (Instruction Following Evaluation)",
+      "category": "reasoning",
+      "description": "Tests ability to follow complex instructions accurately",
+      "dataset_size": 541,
+      "evaluation_metric": "exact_match",
+      "current_sota_score": 0.87,
+      "current_sota_model": "Claude 3.7 Sonnet",
+      "dataset_source": "Google Research",
+      "testing_methodology": "Evaluate adherence to specific instruction constraints",
+      "sample_difficulty": "Complex multi-step instructions",
+      "requires_internet": false,
+      "requires_code_execution": false,
+      "multimodal": false
+    },
+    "math": {
+      "name": "MATH Dataset",
+      "category": "mathematics",
+      "description": "Competition mathematics problems requiring multi-step reasoning",
+      "dataset_size": 12500,
+      "evaluation_metric": "exact_match",
+      "current_sota_score": 0.78,
+      "current_sota_model": "GPT-4o",
+      "dataset_source": "UC Berkeley",
+      "testing_methodology": "Step-by-step mathematical problem solving",
+      "sample_difficulty": "High school to undergraduate competition level",
+      "requires_internet": false,
+      "requires_code_execution": false,
+      "multimodal": false
+    },
+    "gsm8k": {
+      "name": "GSM8K",
+      "category": "mathematics",
+      "description": "Grade school math word problems requiring multi-step reasoning",
+      "dataset_size": 8500,
+      "evaluation_metric": "exact_match",
+      "current_sota_score": 0.95,
+      "current_sota_model": "Multiple models",
+      "dataset_source": "OpenAI",
+      "testing_methodology": "Solve grade-school level math word problems",
+      "sample_difficulty": "Elementary to middle school math",
+      "requires_internet": false,
+      "requires_code_execution": false,
+      "multimodal": false
+    },
+    "hellaswag": {
+      "name": "HellaSwag",
+      "category": "general_knowledge",
+      "description": "Commonsense reasoning about physical situations",
+      "dataset_size": 10042,
+      "evaluation_metric": "accuracy",
+      "current_sota_score": 0.87,
+      "current_sota_model": "GPT-4o",
+      "dataset_source": "University of Washington",
+      "testing_methodology": "Multiple-choice completion of everyday scenarios",
+      "sample_difficulty": "Commonsense reasoning about everyday situations",
+      "requires_internet": false,
+      "requires_code_execution": false,
+      "multimodal": false
+    },
+    "gpqa": {
+      "name": "GPQA (Graduate-Level Google-Proof Q&A)",
+      "category": "question_answering",
+      "description": "Graduate-level questions in biology, physics, and chemistry",
+      "dataset_size": 448,
+      "evaluation_metric": "accuracy",
+      "current_sota_score": 0.74,
+      "current_sota_model": "GPT-4o",
+      "dataset_source": "NYU",
+      "testing_methodology": "Multiple-choice questions requiring expert knowledge",
+      "sample_difficulty": "Graduate-level scientific knowledge",
+      "requires_internet": false,
+      "requires_code_execution": false,
+      "multimodal": false
+    },
+    "arena_hard": {
+      "name": "Arena-Hard",
+      "category": "question_answering",
+      "description": "Challenging questions selected from Chatbot Arena",
+      "dataset_size": 500,
+      "evaluation_metric": "accuracy",
+      "current_sota_score": 0.82,
+      "current_sota_model": "GPT-4o",
+      "dataset_source": "LMSYS",
+      "testing_methodology": "Human-preference based evaluation on challenging queries",
+      "sample_difficulty": "Expert-level questions across domains",
+      "requires_internet": false,
+      "requires_code_execution": false,
+      "multimodal": false
+    },
+    "superglue": {
+      "name": "SuperGLUE",
+      "category": "language_understanding",
+      "description": "Suite of challenging language understanding tasks",
+      "dataset_size": 8678,
+      "evaluation_metric": "f1_score",
+      "current_sota_score": 0.89,
+      "current_sota_model": "GPT-4o",
+      "dataset_source": "NYU & others",
+      "testing_methodology": "Multiple language understanding tasks",
+      "sample_difficulty": "Advanced language understanding",
+      "requires_internet": false,
+      "requires_code_execution": false,
+      "multimodal": false
+    },
+    "latency": {
+      "name": "Response Latency",
+      "category": "performance",
+      "description": "Mean time to first token generation",
+      "dataset_size": 1000,
+      "evaluation_metric": "accuracy",
+      "current_sota_score": 0.2,
+      "current_sota_model": "Various optimized models",
+      "dataset_source": "Infrastructure testing",
+      "testing_methodology": "Measure response time across diverse queries",
+      "sample_difficulty": "N/A - Performance metric",
+      "requires_internet": false,
+      "requires_code_execution": false,
+      "multimodal": false
+    },
+    "throughput": {
+      "name": "Token Throughput",
+      "category": "performance",
+      "description": "Tokens generated per second",
+      "dataset_size": 1000,
+      "evaluation_metric": "accuracy",
+      "current_sota_score": 100.0,
+      "current_sota_model": "Various optimized models",
+      "dataset_source": "Infrastructure testing",
+      "testing_methodology": "Measure token generation speed",
+      "sample_difficulty": "N/A - Performance metric",
+      "requires_internet": false,
+      "requires_code_execution": false,
+      "multimodal": false
+    }
+  },
+  "summary": {
+    "total_benchmarks": 18,
+    "categories": {
+      "coding": {
+        "count": 5,
+        "benchmarks": [
+          "HumanEval",
+          "HumanEval+",
+          "MBPP (Mostly Basic Python Problems)",
+          "MBPP+",
+          "SWE-bench"
+        ],
+        "avg_sota_score": 0.8433999999999999
+      },
+      "reasoning": {
+        "count": 5,
+        "benchmarks": [
+          "MMLU (Massive Multitask Language Understanding)",
+          "MMLU-Pro",
+          "BigBench-Hard",
+          "ARC Challenge",
+          "IFEval (Instruction Following Evaluation)"
+        ],
+        "avg_sota_score": 0.8379999999999999
+      },
+      "mathematics": {
+        "count": 2,
+        "benchmarks": [
+          "MATH Dataset",
+          "GSM8K"
+        ],
+        "avg_sota_score": 0.865
+      },
+      "general_knowledge": {
+        "count": 1,
+        "benchmarks": [
+          "HellaSwag"
+        ],
+        "avg_sota_score": 0.87
+      },
+      "question_answering": {
+        "count": 2,
+        "benchmarks": [
+          "GPQA (Graduate-Level Google-Proof Q&A)",
+          "Arena-Hard"
+        ],
+        "avg_sota_score": 0.78
+      },
+      "language_understanding": {
+        "count": 1,
+        "benchmarks": [
+          "SuperGLUE"
+        ],
+        "avg_sota_score": 0.89
+      },
+      "performance": {
+        "count": 2,
+        "benchmarks": [
+          "Response Latency",
+          "Token Throughput"
+        ],
+        "avg_sota_score": 50.1
+      }
+    },
+    "top_performers": {
+      "Claude 3.7 Sonnet": {
+        "benchmark_count": 5,
+        "average_score": 0.8560000000000001,
+        "max_score": 0.92,
+        "min_score": 0.78
+      },
+      "GPT-4o": {
+        "benchmark_count": 9,
+        "average_score": 0.8333333333333334,
+        "max_score": 0.89,
+        "min_score": 0.74
+      },
+      "Claude 4": {
+        "benchmark_count": 1,
+        "average_score": 0.727,
+        "max_score": 0.727,
+        "min_score": 0.727
+      },
+      "Multiple models": {
+        "benchmark_count": 1,
+        "average_score": 0.95,
+        "max_score": 0.95,
+        "min_score": 0.95
+      },
+      "Various optimized models": {
+        "benchmark_count": 2,
+        "average_score": 50.1,
+        "max_score": 100.0,
+        "min_score": 0.2
+      }
+    },
+    "average_performance": {}
+  },
+  "methodology_guide": "\n# AI Model Testing Methodology Guide\n=====================================\n\n## Overview\nThis guide provides standardized methodologies for testing AI models across all major benchmarks.\n\n## General Principles\n1. **Consistency**: Use identical test datasets and evaluation criteria\n2. **Reproducibility**: Document all parameters and random seeds\n3. **Statistical Rigor**: Include confidence intervals and significance tests\n4. **Transparency**: Provide clear documentation of methodology\n\n## Benchmark Categories & Methodologies:\n\n\n### Coding Benchmarks\n\n**HumanEval**\n- Dataset Size: 164\n- Evaluation Metric: pass@1\n- Current SOTA: 0.920 (Claude 3.7 Sonnet)\n- Methodology: Execute generated code against unit tests\n- Difficulty: Intermediate programming problems\n- Special Requirements: Code execution\n\n\n**HumanEval+**\n- Dataset Size: 164\n- Evaluation Metric: pass@1\n- Current SOTA: 0.890 (Claude 3.7 Sonnet)\n- Methodology: Execute generated code against comprehensive unit tests\n- Difficulty: Intermediate to advanced programming problems\n- Special Requirements: Code execution\n\n\n**MBPP (Mostly Basic Python Problems)**\n- Dataset Size: 974\n- Evaluation Metric: pass@1\n- Current SOTA: 0.860 (GPT-4o)\n- Methodology: Execute generated Python code against test cases\n- Difficulty: Basic to intermediate Python problems\n- Special Requirements: Code execution\n\n\n**MBPP+**\n- Dataset Size: 974\n- Evaluation Metric: pass@1\n- Current SOTA: 0.820 (Claude 3.7 Sonnet)\n- Methodology: Execute generated Python code against comprehensive test cases\n- Difficulty: Basic to intermediate Python problems with rigorous testing\n- Special Requirements: Code execution\n\n\n**SWE-bench**\n- Dataset Size: 2294\n- Evaluation Metric: exact_match\n- Current SOTA: 0.727 (Claude 4)\n- Methodology: Solve real GitHub issues and pass existing tests\n- Difficulty: Real-world software engineering problems\n- Special Requirements: Code execution, Internet access\n\n\n### Reasoning Benchmarks\n\n**MMLU (Massive Multitask Language Understanding)**\n- Dataset Size: 15908\n- Evaluation Metric: accuracy\n- Current SOTA: 0.860 (GPT-4o)\n- Methodology: Multiple-choice questions across academic subjects\n- Difficulty: Elementary to graduate level across diverse subjects\n- Special Requirements: None\n\n\n**MMLU-Pro**\n- Dataset Size: 12000\n- Evaluation Metric: accuracy\n- Current SOTA: 0.780 (Claude 3.7 Sonnet)\n- Methodology: Multiple-choice questions with increased difficulty\n- Difficulty: Advanced undergraduate to graduate level\n- Special Requirements: None\n\n\n**BigBench-Hard**\n- Dataset Size: 6511\n- Evaluation Metric: exact_match\n- Current SOTA: 0.830 (GPT-4o)\n- Methodology: Diverse reasoning tasks requiring chain-of-thought\n- Difficulty: Challenging reasoning problems\n- Special Requirements: None\n\n\n**ARC Challenge**\n- Dataset Size: 1172\n- Evaluation Metric: accuracy\n- Current SOTA: 0.850 (GPT-4o)\n- Methodology: Multiple-choice science reasoning questions\n- Difficulty: Grade-school level science reasoning\n- Special Requirements: None\n\n\n**IFEval (Instruction Following Evaluation)**\n- Dataset Size: 541\n- Evaluation Metric: exact_match\n- Current SOTA: 0.870 (Claude 3.7 Sonnet)\n- Methodology: Evaluate adherence to specific instruction constraints\n- Difficulty: Complex multi-step instructions\n- Special Requirements: None\n\n\n### Mathematics Benchmarks\n\n**MATH Dataset**\n- Dataset Size: 12500\n- Evaluation Metric: exact_match\n- Current SOTA: 0.780 (GPT-4o)\n- Methodology: Step-by-step mathematical problem solving\n- Difficulty: High school to undergraduate competition level\n- Special Requirements: None\n\n\n**GSM8K**\n- Dataset Size: 8500\n- Evaluation Metric: exact_match\n- Current SOTA: 0.950 (Multiple models)\n- Methodology: Solve grade-school level math word problems\n- Difficulty: Elementary to middle school math\n- Special Requirements: None\n\n\n### General_Knowledge Benchmarks\n\n**HellaSwag**\n- Dataset Size: 10042\n- Evaluation Metric: accuracy\n- Current SOTA: 0.870 (GPT-4o)\n- Methodology: Multiple-choice completion of everyday scenarios\n- Difficulty: Commonsense reasoning about everyday situations\n- Special Requirements: None\n\n\n### Question_Answering Benchmarks\n\n**GPQA (Graduate-Level Google-Proof Q&A)**\n- Dataset Size: 448\n- Evaluation Metric: accuracy\n- Current SOTA: 0.740 (GPT-4o)\n- Methodology: Multiple-choice questions requiring expert knowledge\n- Difficulty: Graduate-level scientific knowledge\n- Special Requirements: None\n\n\n**Arena-Hard**\n- Dataset Size: 500\n- Evaluation Metric: accuracy\n- Current SOTA: 0.820 (GPT-4o)\n- Methodology: Human-preference based evaluation on challenging queries\n- Difficulty: Expert-level questions across domains\n- Special Requirements: None\n\n\n### Language_Understanding Benchmarks\n\n**SuperGLUE**\n- Dataset Size: 8678\n- Evaluation Metric: f1_score\n- Current SOTA: 0.890 (GPT-4o)\n- Methodology: Multiple language understanding tasks\n- Difficulty: Advanced language understanding\n- Special Requirements: None\n\n\n### Performance Benchmarks\n\n**Response Latency**\n- Dataset Size: 1000\n- Evaluation Metric: accuracy\n- Current SOTA: 0.200 (Various optimized models)\n- Methodology: Measure response time across diverse queries\n- Difficulty: N/A - Performance metric\n- Special Requirements: None\n\n\n**Token Throughput**\n- Dataset Size: 1000\n- Evaluation Metric: accuracy\n- Current SOTA: 100.000 (Various optimized models)\n- Methodology: Measure token generation speed\n- Difficulty: N/A - Performance metric\n- Special Requirements: None\n\n\n## Statistical Analysis Requirements\n\n1. **Sample Size**: Use complete benchmark datasets\n2. **Confidence Intervals**: Report 95% confidence intervals\n3. **Significance Testing**: Use appropriate statistical tests\n4. **Multiple Testing Correction**: Apply Bonferroni correction for multiple comparisons\n5. **Effect Size**: Report effect sizes along with significance\n\n## Performance Validation Protocol\n\n1. **Baseline Establishment**: Test against known model performance\n2. **Reproducibility Check**: Run tests multiple times with different seeds  \n3. **Cross-Validation**: Use proper train/validation/test splits\n4. **Edge Case Testing**: Include difficult and edge cases\n5. **Comparative Analysis**: Direct comparison with leading models\n\n## Quality Assurance\n\n1. **Data Integrity**: Verify test datasets match published versions\n2. **Implementation Validation**: Cross-check evaluation implementations\n3. **Results Verification**: Validate against published baselines\n4. **Documentation**: Maintain detailed testing logs and parameters\n"
+}

@@ -306,8 +306,8 @@ class CrossModalKnowledgeIntegrationEngine:
             # Import enhanced mathematical reasoning engine from correct path
             import sys
             sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'math'))
-            from enhanced_mathematical_reasoning_engine import EnhancedMathematicalReasoningEngine
-            self.mathematical_engine = EnhancedMathematicalReasoningEngine()
+            from ml.math.mathematical_reasoning_engine import MathematicalReasoningEngine
+            self.mathematical_engine = MathematicalReasoningEngine()
             self.logger.info("✅ Enhanced Mathematical Reasoning Engine loaded (86.1% proven)")
         except ImportError as e:
             self.logger.warning(f"Mathematical engine not available: {e}")

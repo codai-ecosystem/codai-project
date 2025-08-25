@@ -1,0 +1,12 @@
+{
+  "jsonrpc": "2.0",
+  "method": "tools/call",
+  "params": {
+    "name": "intelligence_query",
+    "arguments": {
+      "query": "What is 144 + 256?",
+      "context": "Simple mathematical calculation test"
+    }
+  },
+  "id": 1
+}

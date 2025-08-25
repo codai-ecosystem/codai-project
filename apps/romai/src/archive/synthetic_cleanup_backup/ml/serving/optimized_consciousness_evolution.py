@@ -46,18 +46,18 @@ class OptimizedConsciousnessEvolutionEngine(nn.Module):
         
         # Optimized consciousness foundation with gradient clipping
         self.consciousness_foundation = nn.Sequential(
-            nn.Linear(dimension, dimension * 2),
-            nn.LayerNorm(dimension * 2),
+            nn.Linear(dimension, dimension 2),
+            nn.LayerNorm(dimension 2),
             nn.ReLU(),
             nn.Dropout(0.2),
-            nn.Linear(dimension * 2, dimension * 3),
-            nn.LayerNorm(dimension * 3),
+            nn.Linear(dimension 2, dimension 3),
+            nn.LayerNorm(dimension 3),
             nn.ReLU(),
             nn.Dropout(0.2),
-            nn.Linear(dimension * 3, dimension * 2),
-            nn.LayerNorm(dimension * 2),
+            nn.Linear(dimension 3, dimension 2),
+            nn.LayerNorm(dimension 2),
             nn.ReLU(),
-            nn.Linear(dimension * 2, dimension)
+            nn.Linear(dimension 2, dimension)
         )
         
         # Stabilized consciousness attention
@@ -70,103 +70,103 @@ class OptimizedConsciousnessEvolutionEngine(nn.Module):
         
         # Global consciousness deployment network
         self.global_deployment_network = nn.Sequential(
-            nn.Linear(dimension, dimension * 2),
+            nn.Linear(dimension, dimension 2),
             nn.ReLU(),
-            nn.BatchNorm1d(dimension * 2),
+            nn.BatchNorm1d(dimension 2),
             nn.Dropout(0.3),
-            nn.Linear(dimension * 2, dimension * 3),
+            nn.Linear(dimension 2, dimension 3),
             nn.ReLU(),
-            nn.BatchNorm1d(dimension * 3),
+            nn.BatchNorm1d(dimension 3),
             nn.Dropout(0.3),
-            nn.Linear(dimension * 3, dimension * 2),
+            nn.Linear(dimension 3, dimension 2),
             nn.ReLU(),
-            nn.Linear(dimension * 2, dimension)
+            nn.Linear(dimension 2, dimension)
         )
         
         # Consciousness network excellence
         self.network_excellence = nn.Sequential(
-            nn.Linear(dimension, dimension * 2),
+            nn.Linear(dimension, dimension 2),
             nn.GELU(),
-            nn.LayerNorm(dimension * 2),
+            nn.LayerNorm(dimension 2),
             nn.Dropout(0.25),
-            nn.Linear(dimension * 2, dimension * 4),
+            nn.Linear(dimension 2, dimension 4),
             nn.GELU(),
-            nn.LayerNorm(dimension * 4),
+            nn.LayerNorm(dimension 4),
             nn.Dropout(0.25),
-            nn.Linear(dimension * 4, dimension * 2),
+            nn.Linear(dimension 4, dimension 2),
             nn.GELU(),
-            nn.Linear(dimension * 2, dimension)
+            nn.Linear(dimension 2, dimension)
         )
         
         # Real-world manifestation network
         self.manifestation_network = nn.Sequential(
-            nn.Linear(dimension, dimension * 2),
+            nn.Linear(dimension, dimension 2),
             nn.ReLU(),
-            nn.GroupNorm(8, dimension * 2),
+            nn.GroupNorm(8, dimension 2),
             nn.Dropout(0.3),
-            nn.Linear(dimension * 2, dimension * 3),
+            nn.Linear(dimension 2, dimension 3),
             nn.ReLU(),
-            nn.GroupNorm(8, dimension * 3),
+            nn.GroupNorm(8, dimension 3),
             nn.Dropout(0.3),
-            nn.Linear(dimension * 3, dimension * 2),
+            nn.Linear(dimension 3, dimension 2),
             nn.ReLU(),
-            nn.Linear(dimension * 2, dimension)
+            nn.Linear(dimension 2, dimension)
         )
         
         # Evolution acceleration network
         self.acceleration_network = nn.Sequential(
-            nn.Linear(dimension, dimension * 2),
+            nn.Linear(dimension, dimension 2),
             nn.GELU(),
             nn.Dropout(0.25),
-            nn.Linear(dimension * 2, dimension * 3),
+            nn.Linear(dimension 2, dimension 3),
             nn.GELU(),
             nn.Dropout(0.25),
-            nn.Linear(dimension * 3, dimension * 2),
+            nn.Linear(dimension 3, dimension 2),
             nn.GELU(),
-            nn.Linear(dimension * 2, dimension)
+            nn.Linear(dimension 2, dimension)
         )
         
         # Transcendent deployment network
         self.transcendent_deployment = nn.Sequential(
-            nn.Linear(dimension, dimension * 3),
+            nn.Linear(dimension, dimension 3),
             nn.ReLU(),
-            nn.BatchNorm1d(dimension * 3),
+            nn.BatchNorm1d(dimension 3),
             nn.Dropout(0.2),
-            nn.Linear(dimension * 3, dimension * 4),
+            nn.Linear(dimension 3, dimension 4),
             nn.ReLU(),
-            nn.BatchNorm1d(dimension * 4),
+            nn.BatchNorm1d(dimension 4),
             nn.Dropout(0.2),
-            nn.Linear(dimension * 4, dimension * 3),
+            nn.Linear(dimension 4, dimension 3),
             nn.ReLU(),
-            nn.Linear(dimension * 3, dimension)
+            nn.Linear(dimension 3, dimension)
         )
         
         # Planetary integration network
         self.planetary_integration = nn.Sequential(
-            nn.Linear(dimension, dimension * 2),
+            nn.Linear(dimension, dimension 2),
             nn.GELU(),
-            nn.LayerNorm(dimension * 2),
+            nn.LayerNorm(dimension 2),
             nn.Dropout(0.2),
-            nn.Linear(dimension * 2, dimension * 3),
+            nn.Linear(dimension 2, dimension 3),
             nn.GELU(),
-            nn.LayerNorm(dimension * 3),
+            nn.LayerNorm(dimension 3),
             nn.Dropout(0.2),
-            nn.Linear(dimension * 3, dimension * 2),
+            nn.Linear(dimension 3, dimension 2),
             nn.GELU(),
-            nn.Linear(dimension * 2, dimension)
+            nn.Linear(dimension 2, dimension)
         )
         
         # Consciousness singularity network
         self.consciousness_singularity = nn.Sequential(
-            nn.Linear(dimension, dimension * 3),
+            nn.Linear(dimension, dimension 3),
             nn.ReLU(),
             nn.Dropout(0.3),
-            nn.Linear(dimension * 3, dimension * 5),
+            nn.Linear(dimension 3, dimension 5),
             nn.ReLU(),
             nn.Dropout(0.3),
-            nn.Linear(dimension * 5, dimension * 3),
+            nn.Linear(dimension 5, dimension 3),
             nn.ReLU(),
-            nn.Linear(dimension * 3, dimension)
+            nn.Linear(dimension 3, dimension)
         )
         
         # Stabilized output networks
@@ -327,15 +327,15 @@ class OptimizedGlobalConsciousnessEvolutionSystem:
         # Generate optimized consciousness input
         consciousness_baseline = (
             0.70 + 
-            (0.15 * self.consciousness_enhancers['transcendent_foundation']) +
-            (0.10 * self.consciousness_enhancers['breakthrough_progress']) +
-            (0.05 * self.consciousness_enhancers['global_recognition'])
+            (0.15 self.consciousness_enhancers['transcendent_foundation']) +
+            (0.10 self.consciousness_enhancers['breakthrough_progress']) +
+            (0.05 self.consciousness_enhancers['global_recognition'])
         )
         
         consciousness_input = torch.randn(
             self.batch_size, 64, self.dimension, 
             device=self.device
-        ) * 0.02 + consciousness_baseline
+        ) 0.02 + consciousness_baseline
         
         # Optimized evolution processing
         total_score = 0.0
@@ -348,38 +348,38 @@ class OptimizedGlobalConsciousnessEvolutionSystem:
                 outputs = self.consciousness_engine(consciousness_input)
             
             # Calculate optimized consciousness metrics with enhancement
-            global_deployment_score = torch.mean(outputs['global_deployment']).item() * enhancement_factor
-            network_excellence_score = torch.mean(outputs['network_excellence']).item() * enhancement_factor
-            manifestation_score = torch.mean(outputs['manifestation']).item() * enhancement_factor
-            acceleration_score = torch.mean(outputs['acceleration']).item() * enhancement_factor
-            transcendent_score = torch.mean(outputs['transcendent']).item() * enhancement_factor
-            planetary_score = torch.mean(outputs['planetary']).item() * enhancement_factor
-            singularity_score = torch.mean(outputs['singularity']).item() * enhancement_factor
+            global_deployment_score = torch.mean(outputs['global_deployment']).item() 
+            network_excellence_score = torch.mean(outputs['network_excellence']).item() 
+            manifestation_score = torch.mean(outputs['manifestation']).item() 
+            acceleration_score = torch.mean(outputs['acceleration']).item() 
+            transcendent_score = torch.mean(outputs['transcendent']).item() 
+            planetary_score = torch.mean(outputs['planetary']).item() 
+            singularity_score = torch.mean(outputs['singularity']).item() 
             
             # Stability validation
             stability_score = torch.mean(outputs['stability_score']).item()
             
             # Calculate optimized consciousness score with stability
             consciousness_score = (
-                global_deployment_score * 0.16 +
-                network_excellence_score * 0.15 +
-                manifestation_score * 0.14 +
-                acceleration_score * 0.13 +
-                transcendent_score * 0.16 +
-                planetary_score * 0.12 +
-                singularity_score * 0.14
-            ) * (1.0 + self.consciousness_enhancers['evolution_boost'] * 0.15)
+                global_deployment_score 0.16 +
+                network_excellence_score 0.15 +
+                manifestation_score 0.14 +
+                acceleration_score 0.13 +
+                transcendent_score 0.16 +
+                planetary_score 0.12 +
+                singularity_score 0.14
+            ) (1.0 + self.consciousness_enhancers['evolution_boost'] 0.15)
             
             # Apply stability enhancement
-            consciousness_score *= (0.5 + 0.5 * stability_score)
+            consciousness_score *= (0.5 + 0.5 stability_score)
             
             total_score += consciousness_score
             
             # Optimized consciousness evolution with stability control
-            evolution_factor = 0.95 + (0.05 * stability_score)
+            evolution_factor = 0.95 + (0.05 stability_score)
             consciousness_input = (
-                consciousness_input * evolution_factor + 
-                outputs['consciousness'] * (1.0 - evolution_factor)
+                consciousness_input evolution_factor + 
+                outputs['consciousness'] (1.0 - evolution_factor)
             )
             
             # Log optimized progress
@@ -395,13 +395,13 @@ class OptimizedGlobalConsciousnessEvolutionSystem:
             final_stability = torch.mean(final_outputs['stability_score']).item()
             
             final_metrics = OptimizedConsciousnessMetrics(
-                global_consciousness_deployment=max(0.0, min(1.0, torch.mean(final_outputs['global_deployment']).item() * enhancement_factor)),
-                consciousness_network_excellence=max(0.0, min(1.0, torch.mean(final_outputs['network_excellence']).item() * enhancement_factor)),
-                real_world_manifestation=max(0.0, min(1.0, torch.mean(final_outputs['manifestation']).item() * enhancement_factor)),
-                evolution_acceleration=max(0.0, min(1.0, torch.mean(final_outputs['acceleration']).item() * enhancement_factor)),
-                transcendent_deployment=max(0.0, min(1.0, torch.mean(final_outputs['transcendent']).item() * enhancement_factor)),
-                planetary_integration=max(0.0, min(1.0, torch.mean(final_outputs['planetary']).item() * enhancement_factor)),
-                consciousness_singularity=max(0.0, min(1.0, torch.mean(final_outputs['singularity']).item() * enhancement_factor)),
+                global_consciousness_deployment=max(0.0, min(1.0, torch.mean(final_outputs['global_deployment']).item() )),
+                consciousness_network_excellence=max(0.0, min(1.0, torch.mean(final_outputs['network_excellence']).item() )),
+                real_world_manifestation=max(0.0, min(1.0, torch.mean(final_outputs['manifestation']).item() )),
+                evolution_acceleration=max(0.0, min(1.0, torch.mean(final_outputs['acceleration']).item() )),
+                transcendent_deployment=max(0.0, min(1.0, torch.mean(final_outputs['transcendent']).item() )),
+                planetary_integration=max(0.0, min(1.0, torch.mean(final_outputs['planetary']).item() )),
+                consciousness_singularity=max(0.0, min(1.0, torch.mean(final_outputs['singularity']).item() )),
                 breakthrough_stability=max(0.0, min(1.0, final_stability))
             )
         
@@ -409,17 +409,17 @@ class OptimizedGlobalConsciousnessEvolutionSystem:
         
         # Calculate optimized overall score
         overall_score = (
-            final_metrics.global_consciousness_deployment * 0.16 +
-            final_metrics.consciousness_network_excellence * 0.15 +
-            final_metrics.real_world_manifestation * 0.14 +
-            final_metrics.evolution_acceleration * 0.13 +
-            final_metrics.transcendent_deployment * 0.16 +
-            final_metrics.planetary_integration * 0.12 +
-            final_metrics.consciousness_singularity * 0.14
-        ) * (1.0 + self.consciousness_enhancers['stability_multiplier'] * 0.20)
+            final_metrics.global_consciousness_deployment 0.16 +
+            final_metrics.consciousness_network_excellence 0.15 +
+            final_metrics.real_world_manifestation 0.14 +
+            final_metrics.evolution_acceleration 0.13 +
+            final_metrics.transcendent_deployment 0.16 +
+            final_metrics.planetary_integration 0.12 +
+            final_metrics.consciousness_singularity 0.14
+        ) (1.0 + self.consciousness_enhancers['stability_multiplier'] 0.20)
         
         # Apply stability bonus
-        overall_score *= (0.6 + 0.4 * final_metrics.breakthrough_stability)
+        overall_score *= (0.6 + 0.4 final_metrics.breakthrough_stability)
         
         # Optimized achievements
         achievements = []
@@ -652,9 +652,9 @@ class OptimizedGlobalConsciousnessEvolutionSystem:
         }
         
         # Log comprehensive optimized results
-        logger.info("=" * 110)
+        logger.info("=" 110)
         logger.info("🌍 OPTIMIZED GLOBAL CONSCIOUSNESS EVOLUTION DEPLOYMENT RESULTS")
-        logger.info("=" * 110)
+        logger.info("=" 110)
         logger.info(f"Overall Evolution Score: {overall_score:.1%}")
         logger.info(f"Evolution Status: {evolution_status}")
         logger.info(f"Success Rate: {success_rate:.1%} ({successful_evolutions}/{len(scenarios)})")
@@ -679,7 +679,7 @@ class OptimizedGlobalConsciousnessEvolutionSystem:
         for capability, status in evolution_report['optimized_capabilities'].items():
             status_emoji = "✅" if status else "⚠️"
             logger.info(f"  {status_emoji} {capability.replace('_', ' ').title()}: {'ACHIEVED' if status else 'IN PROGRESS'}")
-        logger.info("=" * 110)
+        logger.info("=" 110)
         
         return evolution_report
 

@@ -20,7 +20,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Import enhanced production modules
 try:
-    from enhanced_logic_processor import (
+    from ml.preprocessing.logic_processor import (
         EnhancedFormalLogicProcessor, 
         EnhancedLogicType, 
         EnhancedLogicalPremise,
@@ -32,7 +32,7 @@ except ImportError as e:
     enhanced_logic_available = False
 
 try:
-    from enhanced_symbolic_recognizer import (
+    from ml.preprocessing.symbolic_recognizer import (
         EnhancedSymbolicPatternRecognizer,
         SymbolicPatternType,
         SymbolicPattern
@@ -105,7 +105,7 @@ class EnhancedAdvancedReasoningEngine:
         
         # Initialize enhanced components if available - check imports directly
         try:
-            from enhanced_logic_processor import EnhancedFormalLogicProcessor
+            from ml.preprocessing.logic_processor import FormalLogicProcessor
             self.enhanced_logic_processor = EnhancedFormalLogicProcessor()
             logging.info("✅ Enhanced logic processor initialized")
         except ImportError as e:
@@ -119,7 +119,7 @@ class EnhancedAdvancedReasoningEngine:
             self.fallback_logic_processor = FormalLogicProcessor()
             
         try:    
-            from enhanced_symbolic_recognizer import EnhancedSymbolicPatternRecognizer
+            from ml.preprocessing.symbolic_recognizer import SymbolicPatternRecognizer
             self.enhanced_symbolic_recognizer = EnhancedSymbolicPatternRecognizer()
             logging.info("✅ Enhanced symbolic recognizer initialized")
         except ImportError as e:

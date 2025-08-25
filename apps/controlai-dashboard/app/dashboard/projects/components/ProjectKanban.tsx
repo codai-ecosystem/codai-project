@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Project Kanban Component - Status-based board view
  */
-'use client'
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -334,4 +335,5 @@ export function ProjectKanban({ projects, onProjectUpdate }: ProjectKanbanProps)
         </div>
     )
 }
+
 

@@ -1,0 +1,602 @@
+# Kubernetes Deployment for RomAI Distributed Neural Architecture
+# Production-ready deployment with GPU support, autoscaling, and monitoring
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: romai-neural
+  labels:
+    name: romai-neural
+---
+# ConfigMap for Neural Architecture Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: romai-neural-config
+  namespace: romai-neural
+data:
+  PYTORCH_CUDA_ALLOC_CONF: "max_split_size_mb:512"
+  TRANSFORMERS_CACHE: "/app/cache/transformers"
+  HF_HOME: "/app/cache/huggingface"
+  PYTHONPATH: "/app/src"
+  LOG_LEVEL: "info"
+  DEPLOYMENT_MODE: "kubernetes"
+---
+# PersistentVolume for Neural Models Cache
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: neural-models-pv
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: neural-storage
+  nfs:
+    server: nfs-server.romai-neural.svc.cluster.local
+    path: /neural/models
+---
+# PersistentVolumeClaim for Neural Models Cache
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: neural-models-pvc
+  namespace: romai-neural
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: neural-storage
+---
+# Neural Orchestrator Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: romai-neural-orchestrator
+  namespace: romai-neural
+  labels:
+    app: romai-neural-orchestrator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: romai-neural-orchestrator
+  template:
+    metadata:
+      labels:
+        app: romai-neural-orchestrator
+    spec:
+      containers:
+      - name: neural-orchestrator
+        image: romai/neural-orchestrator:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+          name: api
+        - containerPort: 8001
+          name: health
+        - containerPort: 8002
+          name: metrics
+        resources:
+          limits:
+            cpu: "2"
+            memory: "4Gi"
+          requests:
+            cpu: "1"
+            memory: "2Gi"
+        env:
+        - name: NODE_TYPE
+          value: "orchestrator"
+        envFrom:
+        - configMapRef:
+            name: romai-neural-config
+        volumeMounts:
+        - name: neural-models-storage
+          mountPath: /app/cache
+        - name: logs-storage
+          mountPath: /app/logs
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+      volumes:
+      - name: neural-models-storage
+        persistentVolumeClaim:
+          claimName: neural-models-pvc
+      - name: logs-storage
+        emptyDir: {}
+      restartPolicy: Always
+---
+# Neural Orchestrator Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: romai-neural-orchestrator-service
+  namespace: romai-neural
+  labels:
+    app: romai-neural-orchestrator
+spec:
+  selector:
+    app: romai-neural-orchestrator
+  ports:
+  - name: api
+    port: 8000
+    targetPort: 8000
+    protocol: TCP
+  - name: health
+    port: 8001
+    targetPort: 8001
+    protocol: TCP
+  - name: metrics
+    port: 8002
+    targetPort: 8002
+    protocol: TCP
+  type: ClusterIP
+---
+# Neural Inference Deployment (GPU-enabled)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: romai-neural-inference
+  namespace: romai-neural
+  labels:
+    app: romai-neural-inference
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: romai-neural-inference
+  template:
+    metadata:
+      labels:
+        app: romai-neural-inference
+    spec:
+      nodeSelector:
+        accelerator: nvidia-tesla-k80
+      containers:
+      - name: neural-inference
+        image: romai/neural-inference:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+          name: api
+        resources:
+          limits:
+            cpu: "4"
+            memory: "8Gi"
+            nvidia.com/gpu: "1"
+          requests:
+            cpu: "2"
+            memory: "4Gi"
+            nvidia.com/gpu: "1"
+        env:
+        - name: NODE_TYPE
+          value: "inference"
+        - name: ORCHESTRATOR_URL
+          value: "http://romai-neural-orchestrator-service:8000"
+        - name: GPU_ENABLED
+          value: "true"
+        envFrom:
+        - configMapRef:
+            name: romai-neural-config
+        volumeMounts:
+        - name: neural-models-storage
+          mountPath: /app/cache
+        - name: logs-storage
+          mountPath: /app/logs
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 120
+          periodSeconds: 30
+          timeoutSeconds: 15
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 60
+          periodSeconds: 15
+          timeoutSeconds: 10
+          failureThreshold: 3
+      volumes:
+      - name: neural-models-storage
+        persistentVolumeClaim:
+          claimName: neural-models-pvc
+      - name: logs-storage
+        emptyDir: {}
+      restartPolicy: Always
+---
+# Neural Inference Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: romai-neural-inference-service
+  namespace: romai-neural
+  labels:
+    app: romai-neural-inference
+spec:
+  selector:
+    app: romai-neural-inference
+  ports:
+  - name: api
+    port: 8000
+    targetPort: 8000
+    protocol: TCP
+  type: ClusterIP
+---
+# Neural Perception Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: romai-neural-perception
+  namespace: romai-neural
+  labels:
+    app: romai-neural-perception
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: romai-neural-perception
+  template:
+    metadata:
+      labels:
+        app: romai-neural-perception
+    spec:
+      nodeSelector:
+        accelerator: nvidia-tesla-k80
+      containers:
+      - name: neural-perception
+        image: romai/neural-perception:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+          name: api
+        resources:
+          limits:
+            cpu: "6"
+            memory: "12Gi"
+            nvidia.com/gpu: "1"
+          requests:
+            cpu: "3"
+            memory: "6Gi"
+            nvidia.com/gpu: "1"
+        env:
+        - name: NODE_TYPE
+          value: "perception"
+        - name: ORCHESTRATOR_URL
+          value: "http://romai-neural-orchestrator-service:8000"
+        - name: GPU_ENABLED
+          value: "true"
+        envFrom:
+        - configMapRef:
+            name: romai-neural-config
+        volumeMounts:
+        - name: neural-models-storage
+          mountPath: /app/cache
+        - name: logs-storage
+          mountPath: /app/logs
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 120
+          periodSeconds: 30
+          timeoutSeconds: 15
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 60
+          periodSeconds: 15
+          timeoutSeconds: 10
+          failureThreshold: 3
+      volumes:
+      - name: neural-models-storage
+        persistentVolumeClaim:
+          claimName: neural-models-pvc
+      - name: logs-storage
+        emptyDir: {}
+      restartPolicy: Always
+---
+# Neural Perception Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: romai-neural-perception-service
+  namespace: romai-neural
+  labels:
+    app: romai-neural-perception
+spec:
+  selector:
+    app: romai-neural-perception
+  ports:
+  - name: api
+    port: 8000
+    targetPort: 8000
+    protocol: TCP
+  type: ClusterIP
+---
+# Neural Consciousness Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: romai-neural-consciousness
+  namespace: romai-neural
+  labels:
+    app: romai-neural-consciousness
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: romai-neural-consciousness
+  template:
+    metadata:
+      labels:
+        app: romai-neural-consciousness
+    spec:
+      containers:
+      - name: neural-consciousness
+        image: romai/neural-consciousness:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+          name: api
+        resources:
+          limits:
+            cpu: "4"
+            memory: "8Gi"
+          requests:
+            cpu: "2"
+            memory: "4Gi"
+        env:
+        - name: NODE_TYPE
+          value: "consciousness"
+        - name: ORCHESTRATOR_URL
+          value: "http://romai-neural-orchestrator-service:8000"
+        - name: GPU_ENABLED
+          value: "false"
+        envFrom:
+        - configMapRef:
+            name: romai-neural-config
+        volumeMounts:
+        - name: neural-models-storage
+          mountPath: /app/cache
+        - name: logs-storage
+          mountPath: /app/logs
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 120
+          periodSeconds: 30
+          timeoutSeconds: 15
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 60
+          periodSeconds: 15
+          timeoutSeconds: 10
+          failureThreshold: 3
+      volumes:
+      - name: neural-models-storage
+        persistentVolumeClaim:
+          claimName: neural-models-pvc
+      - name: logs-storage
+        emptyDir: {}
+      restartPolicy: Always
+---
+# Neural Consciousness Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: romai-neural-consciousness-service
+  namespace: romai-neural
+  labels:
+    app: romai-neural-consciousness
+spec:
+  selector:
+    app: romai-neural-consciousness
+  ports:
+  - name: api
+    port: 8000
+    targetPort: 8000
+    protocol: TCP
+  type: ClusterIP
+---
+# Horizontal Pod Autoscaler for Inference Nodes
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: romai-neural-inference-hpa
+  namespace: romai-neural
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: romai-neural-inference
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+---
+# Horizontal Pod Autoscaler for Perception Nodes
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: romai-neural-perception-hpa
+  namespace: romai-neural
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: romai-neural-perception
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+---
+# Ingress for External Access
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: romai-neural-ingress
+  namespace: romai-neural
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+spec:
+  tls:
+  - hosts:
+    - romai-neural.example.com
+    secretName: romai-neural-tls
+  rules:
+  - host: romai-neural.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: romai-neural-orchestrator-service
+            port:
+              number: 8000
+  - host: romai-inference.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: romai-neural-inference-service
+            port:
+              number: 8000
+---
+# Network Policy for Security
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: romai-neural-network-policy
+  namespace: romai-neural
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: romai-neural
+    - namespaceSelector:
+        matchLabels:
+          name: monitoring
+  - ports:
+    - protocol: TCP
+      port: 8000
+    - protocol: TCP
+      port: 8001
+    - protocol: TCP
+      port: 8002
+  egress:
+  - {}
+---
+# ServiceMonitor for Prometheus
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: romai-neural-metrics
+  namespace: romai-neural
+  labels:
+    app: romai-neural
+spec:
+  selector:
+    matchLabels:
+      app: romai-neural-orchestrator
+  endpoints:
+  - port: metrics
+    interval: 30s
+    path: /metrics
+---
+# PrometheusRule for Neural Alerting
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: romai-neural-alerts
+  namespace: romai-neural
+  labels:
+    app: romai-neural
+spec:
+  groups:
+  - name: romai-neural.rules
+    rules:
+    - alert: NeuralNodeDown
+      expr: up{job="romai-neural-metrics"} == 0
+      for: 5m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Neural node {{ $labels.instance }} is down"
+        description: "Neural node {{ $labels.instance }} has been down for more than 5 minutes"
+    - alert: HighNeuralProcessingLatency
+      expr: histogram_quantile(0.95, rate(neural_processing_duration_seconds_bucket[5m])) > 10
+      for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High neural processing latency"
+        description: "95th percentile processing latency is {{ $value }}s"
+    - alert: GPUMemoryHigh
+      expr: nvidia_ml_py_device_memory_used_bytes / nvidia_ml_py_device_memory_total_bytes > 0.9
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High GPU memory usage"
+        description: "GPU memory usage is {{ $value | humanizePercentage }}"

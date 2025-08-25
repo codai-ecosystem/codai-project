@@ -1,0 +1,90 @@
+{
+  "overall_status": "PARTIAL",
+  "success_rate": 57.14285714285714,
+  "successful_tests": 4,
+  "total_tests": 7,
+  "execution_time": "2025-08-25 21:44:35",
+  "tests": {
+    "capabilities": {
+      "result": {
+        "available": false,
+        "message": "Advanced multimodal processing not available",
+        "basic_capabilities": {
+          "text_processing": true,
+          "basic_multimodal": false,
+          "image_processing": false,
+          "audio_processing": false,
+          "video_processing": false
+        },
+        "timestamp": "2025-08-25T21:44:35.328987"
+      },
+      "execution_time": 0.0012760162353515625,
+      "timestamp": "2025-08-25 21:44:35"
+    },
+    "model_status": {
+      "result": {
+        "error": "Status code: 404"
+      },
+      "execution_time": 0.0010066032409667969,
+      "timestamp": "2025-08-25 21:44:35"
+    },
+    "image_captioning": {
+      "result": {
+        "basic_captioning": {
+          "success": false,
+          "error": "Status 404: {\"detail\":\"Not Found\"}"
+        },
+        "romanian_context_captioning": {
+          "success": false,
+          "error": "Status 404: {\"detail\":\"Not Found\"}"
+        }
+      },
+      "execution_time": 0.04760003089904785,
+      "timestamp": "2025-08-25 21:44:35"
+    },
+    "visual_qa": {
+      "result": {
+        "math_question": {
+          "success": false,
+          "error": "Status 404: {\"detail\":\"Not Found\"}"
+        },
+        "romanian_question": {
+          "success": false,
+          "error": "Status 404: {\"detail\":\"Not Found\"}"
+        }
+      },
+      "execution_time": 0.004472017288208008,
+      "timestamp": "2025-08-25 21:44:35"
+    },
+    "image_text_similarity": {
+      "result": {
+        "high_similarity": {
+          "success": false,
+          "error": "Status 404: {\"detail\":\"Not Found\"}"
+        },
+        "low_similarity": {
+          "success": false,
+          "error": "Status 404: {\"detail\":\"Not Found\"}"
+        }
+      },
+      "execution_time": 0.004312753677368164,
+      "timestamp": "2025-08-25 21:44:35"
+    },
+    "romanian_cultural_analysis": {
+      "result": {
+        "success": false,
+        "error": "Status 404: {\"detail\":\"Not Found\"}"
+      },
+      "execution_time": 0.0035037994384765625,
+      "timestamp": "2025-08-25 21:44:35"
+    },
+    "object_detection": {
+      "result": {
+        "success": false,
+        "error": "Status 404: {\"detail\":\"Not Found\"}"
+      },
+      "execution_time": 0.0035545825958251953,
+      "timestamp": "2025-08-25 21:44:35"
+    }
+  }
+}

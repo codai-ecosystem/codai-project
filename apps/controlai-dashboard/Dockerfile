@@ -1,41 +1,77 @@
 # CODAI ControlAI Dashboard - Docker Configuration
-FROM node:18-alpine
+FROM node:20-alpine AS base
+RUN apk add --no-cache libc6-compat curl
 
-# Set working directory
+# Install dependencies
+FROM base AS deps
 WORKDIR /app
 
-# Install system dependencies
-RUN apk add --no-cache curl
+# Copy root package files for workspace
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json ./
 
-# Copy package files
-COPY package.json pnpm-lock.yaml* ./
+# Copy packages directory for workspace dependencies
+COPY packages ./packages
+
+# Copy this app's package.json
+COPY apps/controlai-dashboard/package.json ./apps/controlai-dashboard/
 
 # Install pnpm and dependencies
 RUN npm install -g pnpm
-RUN pnpm install --frozen-lockfile --prefer-offline
+RUN pnpm install --no-frozen-lockfile --prefer-offline
 
-# Copy source code
-COPY . .
+# Build stage
+FROM base AS builder
+WORKDIR /app
+
+# Copy root workspace files
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/package.json ./package.json
+COPY --from=deps /app/packages ./packages
+COPY --from=deps /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
+COPY --from=deps /app/tsconfig.base.json ./tsconfig.base.json
+
+# Copy source code for this specific app
+COPY apps/controlai-dashboard ./apps/controlai-dashboard
+
+# Set build environment
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_OPTIONS="--max-old-space-size=2048"
 
 # Build the application
-RUN pnpm build
+WORKDIR /app/apps/controlai-dashboard
+RUN npm install -g pnpm && pnpm build
 
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S controlai -u 1001
+# Runtime stage
+FROM base AS runner
+WORKDIR /app
 
-# Change ownership of the app directory
-RUN chown -R controlai:nodejs /app
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
-# Switch to non-root user
-USER controlai
+# Create user
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
-# Expose port
+# Copy built application
+COPY --from=builder /app/apps/controlai-dashboard/.next/standalone ./
+COPY --from=builder /app/apps/controlai-dashboard/.next/static ./.next/static
+
+# Create public directory if it doesn't exist
+RUN mkdir -p ./public
+
+# Set permissions
+RUN chown -R nextjs:nodejs /app
+
+USER nextjs
+
 EXPOSE 4200
+
+ENV PORT=4200
+ENV HOSTNAME="0.0.0.0"
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
   CMD curl -f http://localhost:4200/health || exit 1
 
 # Start the application
-CMD ["pnpm", "start"]
+CMD ["node", "server.js"]

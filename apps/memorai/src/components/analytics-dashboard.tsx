@@ -9,7 +9,7 @@ import {
   SimpleLineChart,
   SimplePieChart,
   MetricCard
-} from './simple-charts';
+} from './analytics-charts';
 import {
   Calendar, TrendingUp, Search, Database, Clock, Target,
   Download, Filter, RefreshCw, AlertCircle, CheckCircle,
@@ -212,8 +212,8 @@ export function AnalyticsDashboard({ className = '' }: AnalyticsDashboardProps) 
             <button
               onClick={() => setAutoRefresh(!autoRefresh)}
               className={`p-2 rounded-lg transition-colors ${autoRefresh
-                  ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400'
-                  : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
+                ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400'
+                : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
                 }`}
               title={autoRefresh ? 'Disable auto-refresh' : 'Enable auto-refresh'}
             >
@@ -272,8 +272,8 @@ export function AnalyticsDashboard({ className = '' }: AnalyticsDashboardProps) 
               key={id}
               onClick={() => setActiveTab(id as any)}
               className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === id
-                  ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                 }`}
             >
               <Icon className="h-4 w-4 mr-2" />
@@ -549,18 +549,18 @@ export function AnalyticsDashboard({ className = '' }: AnalyticsDashboardProps) 
                           </h4>
                           <div className="flex items-center space-x-2">
                             <span className={`px-2 py-1 text-xs rounded-full ${insight.priority === 'high'
-                                ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300'
-                                : insight.priority === 'medium'
-                                  ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300'
-                                  : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+                              ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300'
+                              : insight.priority === 'medium'
+                                ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300'
+                                : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
                               }`}>
                               {insight.priority}
                             </span>
                             <span className={`px-2 py-1 text-xs rounded-full ${insight.type === 'alert'
-                                ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300'
-                                : insight.type === 'achievement'
-                                  ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'
-                                  : 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-300'
+                              ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300'
+                              : insight.type === 'achievement'
+                                ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'
+                                : 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-300'
                               }`}>
                               {insight.type}
                             </span>

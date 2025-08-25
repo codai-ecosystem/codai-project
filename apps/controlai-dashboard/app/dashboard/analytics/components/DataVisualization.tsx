@@ -1,13 +1,14 @@
+'use client'
+
 import React from 'react'
 /**
  * Data Visualization Component - Advanced Chart Display
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import {
-    BarChart3, LineChart, PieChart, Scatter, TrendingUp, Zap,
+    BarChart3, LineChart, PieChart, Activity, TrendingUp, Zap,
     Maximize2, Minimize2, Settings, Filter, Download, RefreshCw
 } from 'lucide-react'
 
@@ -26,7 +27,7 @@ export function DataVisualization({ chartData, metrics, viewMode }: DataVisualiz
         { id: 'line', label: 'Line Chart', icon: LineChart, description: 'Trend analysis over time' },
         { id: 'bar', label: 'Bar Chart', icon: BarChart3, description: 'Comparative analysis' },
         { id: 'pie', label: 'Pie Chart', icon: PieChart, description: 'Distribution analysis' },
-        { id: 'scatter', label: 'Scatter Plot', icon: Scatter, description: 'Correlation analysis' }
+        { id: 'scatter', label: 'Scatter Plot', icon: Activity, description: 'Correlation analysis' }
     ]
 
     const colors = [
@@ -60,8 +61,8 @@ export function DataVisualization({ chartData, metrics, viewMode }: DataVisualiz
                                     key={type.id}
                                     onClick={() => setSelectedChart(type.id)}
                                     className={`p-2 rounded-md transition-all duration-200 ${selectedChart === type.id
-                                            ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm'
-                                            : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                                        ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm'
+                                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                                         }`}
                                     title={type.description}
                                 >
@@ -114,8 +115,8 @@ export function DataVisualization({ chartData, metrics, viewMode }: DataVisualiz
                             <div
                                 key={metric.id}
                                 className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${isSelected
-                                        ? 'border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20'
-                                        : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                                    ? 'border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
                                     }`}
                                 onClick={() => {
                                     setSelectedMetrics(prev =>
@@ -131,8 +132,8 @@ export function DataVisualization({ chartData, metrics, viewMode }: DataVisualiz
                                         style={{ backgroundColor: color }}
                                     ></div>
                                     <div className={`w-5 h-5 rounded border-2 transition-all duration-200 ${isSelected
-                                            ? 'bg-blue-500 border-blue-500'
-                                            : 'border-gray-300 dark:border-gray-600'
+                                        ? 'bg-blue-500 border-blue-500'
+                                        : 'border-gray-300 dark:border-gray-600'
                                         }`}>
                                         {isSelected && (
                                             <svg className="w-3 h-3 text-white ml-0.5 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
@@ -335,4 +336,5 @@ export function DataVisualization({ chartData, metrics, viewMode }: DataVisualiz
         </div>
     )
 }
+
 

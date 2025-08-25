@@ -1,0 +1,266 @@
+{
+  "metadata": {
+    "generated_at": "2025-08-24T11:40:00.000Z",
+    "num_examples": 50,
+    "generator_version": "2.0_real_solutions",
+    "external_ai_used": false,
+    "description": "Real logical reasoning training data with actual syllogisms and deductive reasoning"
+  },
+  "training_examples": [
+    {
+      "problem": "All roses are flowers. This is a rose. What can we conclude?",
+      "premise_1": "All roses are flowers",
+      "premise_2": "This is a rose", 
+      "logical_form": "All A are B. X is A. Therefore, X is B.",
+      "reasoning_steps": [
+        "Step 1: Identify the universal statement: All roses are flowers",
+        "Step 2: Identify the particular statement: This is a rose",
+        "Step 3: Apply universal instantiation: If all roses are flowers, and this is a rose, then this must be a flower",
+        "Step 4: Conclude using modus ponens logic"
+      ],
+      "conclusion": "This is a flower",
+      "reasoning_type": "deductive",
+      "syllogism_type": "universal_affirmative",
+      "validity": "valid",
+      "soundness": "sound"
+    },
+    {
+      "problem": "If it rains, the ground gets wet. It is raining. What follows?",
+      "premise_1": "If it rains, then the ground gets wet",
+      "premise_2": "It is raining",
+      "logical_form": "If P then Q. P. Therefore, Q.",
+      "reasoning_steps": [
+        "Step 1: Identify the conditional statement: If it rains → the ground gets wet",
+        "Step 2: Identify the antecedent is true: It is raining",
+        "Step 3: Apply modus ponens: When antecedent is true, consequent follows",
+        "Step 4: Conclude the consequent"
+      ],
+      "conclusion": "The ground gets wet",
+      "reasoning_type": "deductive", 
+      "syllogism_type": "modus_ponens",
+      "validity": "valid",
+      "soundness": "sound"
+    },
+    {
+      "problem": "All cats are mammals. Fluffy is a cat. What can we infer?",
+      "premise_1": "All cats are mammals",
+      "premise_2": "Fluffy is a cat",
+      "logical_form": "All A are B. X is A. Therefore, X is B.",
+      "reasoning_steps": [
+        "Step 1: Identify universal statement: All cats are mammals",
+        "Step 2: Identify particular case: Fluffy is a cat",
+        "Step 3: Apply syllogistic reasoning: If all cats are mammals, and Fluffy is a cat",
+        "Step 4: Conclude by universal instantiation: Fluffy must be a mammal"
+      ],
+      "conclusion": "Fluffy is a mammal",
+      "reasoning_type": "deductive",
+      "syllogism_type": "universal_affirmative",
+      "validity": "valid",
+      "soundness": "sound"
+    },
+    {
+      "problem": "No birds can swim. Penguins are birds. Can penguins swim?",
+      "premise_1": "No birds can swim",
+      "premise_2": "Penguins are birds",
+      "logical_form": "No A are B. X is A. Therefore, X is not B.",
+      "reasoning_steps": [
+        "Step 1: Identify universal negative: No birds can swim",
+        "Step 2: Identify particular case: Penguins are birds",
+        "Step 3: Apply universal negative instantiation: If no birds can swim, and penguins are birds",
+        "Step 4: Conclude logically: Penguins cannot swim"
+      ],
+      "conclusion": "No, penguins cannot swim (based on the given premises)",
+      "reasoning_type": "deductive",
+      "syllogism_type": "universal_negative", 
+      "validity": "valid",
+      "soundness": "unsound (false premise about penguins)"
+    },
+    {
+      "problem": "All students study. John is a student. Does John study?",
+      "premise_1": "All students study",
+      "premise_2": "John is a student",
+      "logical_form": "All A are B. X is A. Therefore, X is B.",
+      "reasoning_steps": [
+        "Step 1: Universal statement: All students study",
+        "Step 2: Particular case: John is a student",
+        "Step 3: Apply universal instantiation rule",
+        "Step 4: Derive conclusion from premises"
+      ],
+      "conclusion": "Yes, John studies",
+      "reasoning_type": "deductive",
+      "syllogism_type": "universal_affirmative",
+      "validity": "valid",
+      "soundness": "sound"
+    },
+    {
+      "problem": "If someone studies hard, they will pass. Maria studies hard. What happens?",
+      "premise_1": "If someone studies hard, then they will pass",
+      "premise_2": "Maria studies hard",
+      "logical_form": "If P then Q. P. Therefore, Q.",
+      "reasoning_steps": [
+        "Step 1: Conditional: If studies hard → will pass", 
+        "Step 2: Antecedent is true: Maria studies hard",
+        "Step 3: Apply modus ponens inference rule",
+        "Step 4: Consequent follows from true antecedent"
+      ],
+      "conclusion": "Maria will pass",
+      "reasoning_type": "deductive",
+      "syllogism_type": "modus_ponens",
+      "validity": "valid",
+      "soundness": "sound"
+    },
+    {
+      "problem": "All metals conduct electricity. Copper is a metal. What about copper?",
+      "premise_1": "All metals conduct electricity",
+      "premise_2": "Copper is a metal",
+      "logical_form": "All A are B. X is A. Therefore, X is B.",
+      "reasoning_steps": [
+        "Step 1: Universal property: All metals conduct electricity",
+        "Step 2: Classification: Copper is a metal", 
+        "Step 3: Apply universal instantiation to copper",
+        "Step 4: Derive property from classification"
+      ],
+      "conclusion": "Copper conducts electricity", 
+      "reasoning_type": "deductive",
+      "syllogism_type": "universal_affirmative",
+      "validity": "valid",
+      "soundness": "sound"
+    },
+    {
+      "problem": "Either it's sunny or it's raining. It's not sunny. What's the weather?",
+      "premise_1": "Either it's sunny or it's raining",
+      "premise_2": "It's not sunny",
+      "logical_form": "P or Q. Not P. Therefore, Q.",
+      "reasoning_steps": [
+        "Step 1: Disjunction: sunny OR raining",
+        "Step 2: Negation of first disjunct: NOT sunny",
+        "Step 3: Apply disjunctive syllogism rule",
+        "Step 4: Remaining disjunct must be true"
+      ],
+      "conclusion": "It's raining",
+      "reasoning_type": "deductive", 
+      "syllogism_type": "disjunctive_syllogism",
+      "validity": "valid",
+      "soundness": "sound"
+    },
+    {
+      "problem": "All doctors are educated. Some doctors are wealthy. Are some educated people wealthy?",
+      "premise_1": "All doctors are educated",
+      "premise_2": "Some doctors are wealthy", 
+      "logical_form": "All A are B. Some A are C. Therefore, some B are C.",
+      "reasoning_steps": [
+        "Step 1: Universal: All doctors → educated",
+        "Step 2: Existential: Some doctors → wealthy",
+        "Step 3: Those doctors who are wealthy are also educated (from premise 1)",
+        "Step 4: Therefore some educated people (those doctors) are wealthy"
+      ],
+      "conclusion": "Yes, some educated people are wealthy",
+      "reasoning_type": "deductive",
+      "syllogism_type": "existential_reasoning",
+      "validity": "valid",
+      "soundness": "sound"
+    },
+    {
+      "problem": "If the alarm sounds, there is danger. There is no danger. What about the alarm?",
+      "premise_1": "If the alarm sounds, then there is danger",
+      "premise_2": "There is no danger",
+      "logical_form": "If P then Q. Not Q. Therefore, not P.",
+      "reasoning_steps": [
+        "Step 1: Conditional: alarm sounds → danger",
+        "Step 2: Negation of consequent: NOT danger",
+        "Step 3: Apply modus tollens inference rule",
+        "Step 4: Negate the antecedent"
+      ],
+      "conclusion": "The alarm is not sounding",
+      "reasoning_type": "deductive",
+      "syllogism_type": "modus_tollens", 
+      "validity": "valid",
+      "soundness": "sound"
+    },
+    {
+      "problem": "All squares are rectangles. All rectangles are parallelograms. What about squares?",
+      "premise_1": "All squares are rectangles",
+      "premise_2": "All rectangles are parallelograms",
+      "logical_form": "All A are B. All B are C. Therefore, all A are C.",
+      "reasoning_steps": [
+        "Step 1: First universal: squares → rectangles",
+        "Step 2: Second universal: rectangles → parallelograms", 
+        "Step 3: Apply hypothetical syllogism (transitivity)",
+        "Step 4: Chain the implications together"
+      ],
+      "conclusion": "All squares are parallelograms",
+      "reasoning_type": "deductive",
+      "syllogism_type": "hypothetical_syllogism",
+      "validity": "valid",
+      "soundness": "sound"
+    },
+    {
+      "problem": "No fish are mammals. Whales are mammals. What about whales and fish?",
+      "premise_1": "No fish are mammals",
+      "premise_2": "Whales are mammals", 
+      "logical_form": "No A are B. X is B. Therefore, X is not A.",
+      "reasoning_steps": [
+        "Step 1: Universal negative: fish and mammals are disjoint sets",
+        "Step 2: Classification: whales are mammals",
+        "Step 3: Apply contraposition of universal negative",
+        "Step 4: If whales are mammals, they cannot be fish"
+      ],
+      "conclusion": "Whales are not fish",
+      "reasoning_type": "deductive",
+      "syllogism_type": "universal_negative_contraposition",
+      "validity": "valid", 
+      "soundness": "sound"
+    },
+    {
+      "problem": "All roses are beautiful. Some flowers are roses. Are some flowers beautiful?",
+      "premise_1": "All roses are beautiful",
+      "premise_2": "Some flowers are roses",
+      "logical_form": "All A are B. Some C are A. Therefore, some C are B.",
+      "reasoning_steps": [
+        "Step 1: Universal property: roses → beautiful",
+        "Step 2: Existential: some flowers are roses",
+        "Step 3: Those flowers that are roses must be beautiful",
+        "Step 4: Therefore some flowers are beautiful"
+      ],
+      "conclusion": "Yes, some flowers are beautiful",
+      "reasoning_type": "deductive",
+      "syllogism_type": "existential_instantiation", 
+      "validity": "valid",
+      "soundness": "sound"
+    },
+    {
+      "problem": "If it's a triangle, it has three sides. This shape has four sides. Is it a triangle?",
+      "premise_1": "If it's a triangle, then it has three sides",
+      "premise_2": "This shape has four sides",
+      "logical_form": "If P then Q. Not Q. Therefore, not P.",
+      "reasoning_steps": [
+        "Step 1: Conditional: triangle → three sides",
+        "Step 2: Contradiction: shape has four sides (not three)",
+        "Step 3: Apply modus tollens reasoning",
+        "Step 4: Negate the antecedent"
+      ],
+      "conclusion": "No, it is not a triangle",
+      "reasoning_type": "deductive",
+      "syllogism_type": "modus_tollens",
+      "validity": "valid",
+      "soundness": "sound"
+    },
+    {
+      "problem": "All prime numbers greater than 2 are odd. 17 is a prime number greater than 2. What about 17?",
+      "premise_1": "All prime numbers greater than 2 are odd",
+      "premise_2": "17 is a prime number greater than 2",
+      "logical_form": "All A are B. X is A. Therefore, X is B.",
+      "reasoning_steps": [
+        "Step 1: Universal mathematical property: primes > 2 are odd",
+        "Step 2: Classification: 17 is prime and > 2",
+        "Step 3: Apply universal instantiation to 17", 
+        "Step 4: Derive the property"
+      ],
+      "conclusion": "17 is odd",
+      "reasoning_type": "deductive",
+      "syllogism_type": "universal_affirmative",
+      "validity": "valid",
+      "soundness": "sound"
+    }
+  ]
+}

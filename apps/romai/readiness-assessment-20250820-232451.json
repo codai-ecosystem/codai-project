@@ -1,0 +1,61 @@
+{
+  "CheckResults": [
+    {
+      "Status": "PASS",
+      "Details": "Docker version 28.3.2, build 578ccf6",
+      "Check": "Docker Version"
+    },
+    {
+      "Status": "PASS",
+      "Details": "Docker Compose version v2.39.1-desktop.1",
+      "Check": "Docker Compose"
+    },
+    {
+      "Status": "WARNING",
+      "Details": "Busy ports: 6379, 6101",
+      "Check": "Port Availability"
+    },
+    {
+      "Status": "PASS",
+      "Details": "16 directories verified",
+      "Check": "Directory Structure"
+    },
+    {
+      "Status": "PASS",
+      "Details": "File exists, 18493 bytes",
+      "Check": "Production Docker Compose"
+    },
+    {
+      "Status": "PASS",
+      "Details": "File exists, 13473 bytes",
+      "Check": "Deployment Script"
+    },
+    {
+      "Status": "PASS",
+      "Details": "File exists, 2396 bytes",
+      "Check": "Environment Template"
+    },
+    {
+      "Status": "WARNING",
+      "Details": "Images will be built during deployment",
+      "Check": "Docker Images"
+    },
+    {
+      "Status": "PASS",
+      "Details": "192GB total, 116.12GB available",
+      "Check": "System Memory"
+    },
+    {
+      "Status": "PASS",
+      "Details": "498.89GB free of 3725.29GB",
+      "Check": "Disk Space"
+    }
+  ],
+  "FailedChecks": 0,
+  "Timestamp": "2025-08-20 23:24:51",
+  "CriticalIssues": [],
+  "TotalChecks": 10,
+  "PassedChecks": 8,
+  "WarningChecks": 2,
+  "DeploymentReady": true
+}

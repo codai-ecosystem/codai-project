@@ -1,0 +1,396 @@
+[
+  {
+    "Category": "REST API Testing",
+    "TestName": "CBD Database - Health Check",
+    "Status": "PASS",
+    "Details": "HTTP 200 (GET)",
+    "Expected": "200",
+    "Actual": 200,
+    "Duration": 56.7214,
+    "Timestamp": "2025-08-23T00:31:24.0255246+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "CBD Database - Health Check JSON",
+    "Status": "PASS",
+    "Details": "Valid JSON response",
+    "Expected": "Valid JSON",
+    "Actual": "Valid",
+    "Duration": 56.7214,
+    "Timestamp": "2025-08-23T00:31:24.0333869+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "CBD Database - API Root",
+    "Status": "PASS",
+    "Details": "HTTP 200 (GET)",
+    "Expected": "200 404",
+    "Actual": 200,
+    "Duration": 4.4929,
+    "Timestamp": "2025-08-23T00:31:24.0762171+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "CBD Database - API Root JSON",
+    "Status": "PASS",
+    "Details": "Valid JSON response",
+    "Expected": "Valid JSON",
+    "Actual": "Valid",
+    "Duration": 4.4929,
+    "Timestamp": "2025-08-23T00:31:24.0773423+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "CBD Database - Status",
+    "Status": "PASS",
+    "Details": "Expected error: HTTP 404",
+    "Expected": "200 404",
+    "Actual": 404,
+    "Duration": 12.7554,
+    "Timestamp": "2025-08-23T00:31:24.0945611+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "CBD Database - Metrics",
+    "Status": "PASS",
+    "Details": "Expected error: HTTP 404",
+    "Expected": "200 404",
+    "Actual": 404,
+    "Duration": 4.9979,
+    "Timestamp": "2025-08-23T00:31:24.1017699+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "MemorAI MCP - Health Check",
+    "Status": "PASS",
+    "Details": "HTTP 200 (GET)",
+    "Expected": "200",
+    "Actual": 200,
+    "Duration": 93.1954,
+    "Timestamp": "2025-08-23T00:31:24.1963937+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "MemorAI MCP - Health Check JSON",
+    "Status": "PASS",
+    "Details": "Valid JSON response",
+    "Expected": "Valid JSON",
+    "Actual": "Valid",
+    "Duration": 93.1954,
+    "Timestamp": "2025-08-23T00:31:24.1999237+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "MemorAI MCP - Root Endpoint",
+    "Status": "PASS",
+    "Details": "Expected error: HTTP 404",
+    "Expected": "200 404",
+    "Actual": 404,
+    "Duration": 5.5292,
+    "Timestamp": "2025-08-23T00:31:24.2081465+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "MemorAI MCP - Memory API",
+    "Status": "PASS",
+    "Details": "Expected error: HTTP 404",
+    "Expected": "200 404 401",
+    "Actual": 404,
+    "Duration": 4.4667,
+    "Timestamp": "2025-08-23T00:31:24.2136531+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "MemorAI MCP - Recall API",
+    "Status": "PASS",
+    "Details": "Expected error: HTTP 404",
+    "Expected": "200 400 401 404",
+    "Actual": 404,
+    "Duration": 5.1085,
+    "Timestamp": "2025-08-23T00:31:24.2198119+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "GraphQL API - Health Check",
+    "Status": "FAIL",
+    "Details": "HTTP 400",
+    "Expected": "200",
+    "Actual": 400,
+    "Duration": 5.3366,
+    "Timestamp": "2025-08-23T00:31:24.2265453+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "GraphQL API - GraphQL Introspection",
+    "Status": "PASS",
+    "Details": "Expected error: HTTP 400",
+    "Expected": "200 400",
+    "Actual": 400,
+    "Duration": 10.114,
+    "Timestamp": "2025-08-23T00:31:24.2377136+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "GraphQL API - GraphQL Query",
+    "Status": "PASS",
+    "Details": "HTTP 200 (POST)",
+    "Expected": "200 400",
+    "Actual": 200,
+    "Duration": 19.8133,
+    "Timestamp": "2025-08-23T00:31:24.258673+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "GraphQL API - GraphQL Query JSON",
+    "Status": "PASS",
+    "Details": "Valid JSON response",
+    "Expected": "Valid JSON",
+    "Actual": "Valid",
+    "Duration": 19.8133,
+    "Timestamp": "2025-08-23T00:31:24.25947+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "MemorAI Frontend - Home Page",
+    "Status": "PASS",
+    "Details": "HTTP 200 (GET)",
+    "Expected": "200",
+    "Actual": 200,
+    "Duration": 10.0964,
+    "Timestamp": "2025-08-23T00:31:24.2718432+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "MemorAI Frontend - API Endpoint",
+    "Status": "PASS",
+    "Details": "HTTP 200 (GET)",
+    "Expected": "200 404",
+    "Actual": 200,
+    "Duration": 37.3994,
+    "Timestamp": "2025-08-23T00:31:24.3122854+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "MemorAI Frontend - API Endpoint JSON",
+    "Status": "PASS",
+    "Details": "Valid JSON response",
+    "Expected": "Valid JSON",
+    "Actual": "Valid",
+    "Duration": 37.3994,
+    "Timestamp": "2025-08-23T00:31:24.3134027+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "BancAI Frontend - Home Page",
+    "Status": "PASS",
+    "Details": "HTTP 200 (GET)",
+    "Expected": "200",
+    "Actual": 200,
+    "Duration": 3.5093,
+    "Timestamp": "2025-08-23T00:31:24.3192383+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "BancAI Frontend - Home Page JSON",
+    "Status": "PASS",
+    "Details": "Valid JSON response",
+    "Expected": "Valid JSON",
+    "Actual": "Valid",
+    "Duration": 3.5093,
+    "Timestamp": "2025-08-23T00:31:24.320115+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "BancAI Frontend - API Endpoint",
+    "Status": "PASS",
+    "Details": "HTTP 200 (GET)",
+    "Expected": "200 404",
+    "Actual": 200,
+    "Duration": 3.6476,
+    "Timestamp": "2025-08-23T00:31:24.3257666+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "BancAI Frontend - API Endpoint JSON",
+    "Status": "PASS",
+    "Details": "Valid JSON response",
+    "Expected": "Valid JSON",
+    "Actual": "Valid",
+    "Duration": 3.6476,
+    "Timestamp": "2025-08-23T00:31:24.3265993+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "Main Gateway - Health Check",
+    "Status": "PASS",
+    "Details": "HTTP 200 (GET)",
+    "Expected": "200 404",
+    "Actual": 200,
+    "Duration": 117.165,
+    "Timestamp": "2025-08-23T00:31:24.4466897+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "Main Gateway - Health Check JSON",
+    "Status": "PASS",
+    "Details": "Valid JSON response",
+    "Expected": "Valid JSON",
+    "Actual": "Valid",
+    "Duration": 117.165,
+    "Timestamp": "2025-08-23T00:31:24.4476022+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "Hub Service - Health Check",
+    "Status": "PASS",
+    "Details": "Expected error: HTTP 404",
+    "Expected": "200 404",
+    "Actual": 404,
+    "Duration": 5.1981,
+    "Timestamp": "2025-08-23T00:31:24.4549873+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "Identity Service - Health Check",
+    "Status": "PASS",
+    "Details": "Expected error: HTTP 404",
+    "Expected": "200 404",
+    "Actual": 404,
+    "Duration": 5.0243,
+    "Timestamp": "2025-08-23T00:31:24.4608409+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "WebSocket Service - Health Check",
+    "Status": "PASS",
+    "Details": "HTTP 200 (GET)",
+    "Expected": "200 404",
+    "Actual": 200,
+    "Duration": 3.6188,
+    "Timestamp": "2025-08-23T00:31:24.4657246+03:00"
+  },
+  {
+    "Category": "REST API Testing",
+    "TestName": "WebSocket Service - Health Check JSON",
+    "Status": "PASS",
+    "Details": "Valid JSON response",
+    "Expected": "Valid JSON",
+    "Actual": "Valid",
+    "Duration": 3.6188,
+    "Timestamp": "2025-08-23T00:31:24.4667321+03:00"
+  },
+  {
+    "Category": "GraphQL Testing",
+    "TestName": "Schema Introspection",
+    "Status": "FAIL",
+    "Details": "Response status code does not indicate success: 400 (Bad Request).",
+    "Expected": "Schema Data",
+    "Actual": "Error",
+    "Duration": 7.6445,
+    "Timestamp": "2025-08-23T00:31:24.4836202+03:00"
+  },
+  {
+    "Category": "GraphQL Testing",
+    "TestName": "Health Query",
+    "Status": "PASS",
+    "Details": "Health data retrieved",
+    "Expected": "Health Object",
+    "Actual": "Available",
+    "Duration": 13.0548,
+    "Timestamp": "2025-08-23T00:31:24.4992105+03:00"
+  },
+  {
+    "Category": "GraphQL Testing",
+    "TestName": "Error Handling",
+    "Status": "FAIL",
+    "Details": "Response status code does not indicate success: 400 (Bad Request).",
+    "Expected": "Error Array",
+    "Actual": "Exception",
+    "Duration": 6.0183,
+    "Timestamp": "2025-08-23T00:31:24.5063801+03:00"
+  },
+  {
+    "Category": "WebSocket Testing",
+    "TestName": "WebSocket Port Connectivity",
+    "Status": "PASS",
+    "Details": "Port 4900 accessible",
+    "Expected": "Connected",
+    "Actual": "Success",
+    "Duration": 6.6601,
+    "Timestamp": "2025-08-23T00:31:24.5147208+03:00"
+  },
+  {
+    "Category": "WebSocket Testing",
+    "TestName": "WebSocket Upgrade Support",
+    "Status": "WARN",
+    "Details": "Non-standard WebSocket response",
+    "Expected": "101 or 426",
+    "Actual": 400,
+    "Duration": 6.8636,
+    "Timestamp": "2025-08-23T00:31:24.5225417+03:00"
+  },
+  {
+    "Category": "Service Communication",
+    "TestName": "Client → Gateway → CBD Database",
+    "Status": "WARN",
+    "Details": "HTTP 404",
+    "Expected": "2xx",
+    "Actual": 404,
+    "Duration": 5.547,
+    "Timestamp": "2025-08-23T00:31:24.5314539+03:00"
+  },
+  {
+    "Category": "Service Communication",
+    "TestName": "Client → Gateway → MemorAI MCP",
+    "Status": "WARN",
+    "Details": "HTTP 404",
+    "Expected": "2xx",
+    "Actual": 404,
+    "Duration": 4.631,
+    "Timestamp": "2025-08-23T00:31:24.5369589+03:00"
+  },
+  {
+    "Category": "Service Communication",
+    "TestName": "Client → Direct CBD Database",
+    "Status": "PASS",
+    "Details": "Communication successful (HTTP 200)",
+    "Expected": "2xx",
+    "Actual": 200,
+    "Duration": 4.4121,
+    "Timestamp": "2025-08-23T00:31:24.5422078+03:00"
+  },
+  {
+    "Category": "Service Communication",
+    "TestName": "Client → Direct MemorAI MCP",
+    "Status": "PASS",
+    "Details": "Communication successful (HTTP 200)",
+    "Expected": "2xx",
+    "Actual": 200,
+    "Duration": 92.4694,
+    "Timestamp": "2025-08-23T00:31:24.6359407+03:00"
+  },
+  {
+    "Category": "API Format Testing",
+    "TestName": "CBD Database Response Format",
+    "Status": "PASS",
+    "Details": "All expected fields present",
+    "Expected": [
+      "status"
+    ],
+    "Actual": "Complete",
+    "Duration": 5.3907,
+    "Timestamp": "2025-08-23T00:31:24.6452804+03:00"
+  },
+  {
+    "Category": "API Format Testing",
+    "TestName": "MemorAI MCP Response Format",
+    "Status": "PASS",
+    "Details": "All expected fields present",
+    "Expected": [
+      "status"
+    ],
+    "Actual": "Complete",
+    "Duration": 92.3751,
+    "Timestamp": "2025-08-23T00:31:24.7390861+03:00"
+  }
+]

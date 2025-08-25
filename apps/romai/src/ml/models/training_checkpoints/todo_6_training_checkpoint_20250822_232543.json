@@ -1,0 +1,65 @@
+{
+  "training_mode": "hybrid_multi_modal_training",
+  "phases_completed": [
+    "foundation_training",
+    "domain_specialization",
+    "human_alignment"
+  ],
+  "phase_results": {
+    "foundation_training": {
+      "phase": "foundation_training",
+      "metrics": {
+        "language_modeling_loss": 2.5,
+        "reasoning_capability": 0.75,
+        "knowledge_retention": 0.8,
+        "multilingual_performance": 0.7,
+        "success_score": 0.75
+      },
+      "training_time": 1.0,
+      "success_score": 0.75
+    },
+    "domain_specialization": {
+      "phase": "domain_specialization",
+      "metrics": {
+        "romanian_language_fluency": 0.85,
+        "cultural_understanding": 0.9,
+        "historical_knowledge": 0.8,
+        "linguistic_accuracy": 0.88,
+        "cultural_sensitivity": 0.92,
+        "success_score": 0.87
+      },
+      "dataset_size": 18,
+      "training_time": 2.0,
+      "success_score": 0.87
+    },
+    "human_alignment": {
+      "phase": "human_alignment",
+      "rlhf_metrics": {
+        "human_preference_alignment": 0.83,
+        "safety_compliance": 0.91,
+        "helpful_response_rate": 0.87,
+        "harmful_content_avoidance": 0.95,
+        "success_score": 0.89
+      },
+      "constitutional_metrics": {
+        "constitutional_compliance": 0.88,
+        "value_alignment": 0.85,
+        "ethical_reasoning": 0.82,
+        "principle_adherence": 0.9,
+        "success_score": 0.86
+      },
+      "feedback_samples": 22,
+      "training_time": 3.0,
+      "success_score": 0.875
+    }
+  },
+  "overall_metrics": {
+    "success_rate": 83.16666666666667,
+    "total_phases": 3,
+    "best_phase_score": 0.875,
+    "worst_phase_score": 0.75,
+    "training_consistency": 0.9305212993051715,
+    "overall_readiness": "development"
+  },
+  "timestamp": "2025-08-22T23:25:37.529334"
+}

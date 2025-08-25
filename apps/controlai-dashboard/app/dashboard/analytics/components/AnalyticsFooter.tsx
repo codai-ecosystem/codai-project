@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Analytics Footer Component - Navigation and Actions for Analytics Dashboard
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import { useState } from 'react'
@@ -277,4 +278,5 @@ export function AnalyticsFooter({
         </motion.footer>
     )
 }
+
 

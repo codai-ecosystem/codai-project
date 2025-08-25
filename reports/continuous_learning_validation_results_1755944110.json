@@ -1,0 +1,54 @@
+{
+  "timestamp": 1755944106.1340616,
+  "total_tests": 7,
+  "passed_tests": 1,
+  "failed_tests": 6,
+  "test_results": [
+    {
+      "test_name": "test_online_learning_basic",
+      "status": "ERROR",
+      "error": "'float' object has no attribute 'item'"
+    },
+    {
+      "test_name": "test_experience_replay",
+      "status": "ERROR",
+      "error": "'float' object has no attribute 'item'"
+    },
+    {
+      "test_name": "meta_learning_adaptation",
+      "status": "FAIL",
+      "query_accuracy": 0.4,
+      "query_loss": 3.621244430541992,
+      "adaptation_steps": 5,
+      "support_size": 3,
+      "query_size": 5
+    },
+    {
+      "test_name": "test_catastrophic_forgetting_prevention",
+      "status": "ERROR",
+      "error": "'float' object has no attribute 'item'"
+    },
+    {
+      "test_name": "test_knowledge_consolidation",
+      "status": "ERROR",
+      "error": "'float' object has no attribute 'item'"
+    },
+    {
+      "test_name": "online_learning_thread",
+      "status": "PASS",
+      "queue_size_before": 0,
+      "queue_size_after": 20,
+      "queue_size_processed": 0,
+      "learning_steps_completed": 20,
+      "processing_efficiency": 1.0
+    },
+    {
+      "test_name": "test_checkpoint_save_load",
+      "status": "ERROR",
+      "error": "'float' object has no attribute 'item'"
+    }
+  ],
+  "overall_status": "NEEDS_IMPROVEMENT",
+  "total_time": 4.00701117515564,
+  "success_rate": 14.285714285714285
+}

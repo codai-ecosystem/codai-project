@@ -1,0 +1,176 @@
+{
+  "benchmark_start": "2025-08-25T04:47:10.202161",
+  "phase1_status": "active",
+  "server_url": "http://localhost:6101",
+  "test_results": {
+    "mmlu_simulation": {
+      "score": 0.25,
+      "passed_tests": 2,
+      "total_tests": 8,
+      "domain_scores": {
+        "mathematics": 1.0,
+        "physics": 0.0,
+        "history": 0.0,
+        "biology": 0.0,
+        "computer_science": 0.0,
+        "literature": 0.0,
+        "economics": 1.0,
+        "psychology": 0.0
+      },
+      "duration_seconds": 16.404329299926758,
+      "category": "MMLU Simulation"
+    },
+    "mathematical_reasoning": {
+      "score": 0.0,
+      "passed_tests": 0,
+      "total_tests": 8,
+      "average_confidence": 0.3,
+      "average_quality_score": 0.2,
+      "duration_seconds": 16.37618851661682,
+      "category": "Mathematical Reasoning"
+    },
+    "swe_bench_simulation": {
+      "score": 0.0,
+      "passed_tests": 0,
+      "total_tests": 6,
+      "category_results": {
+        "basic_programming": {
+          "correct": 0,
+          "total": 1
+        },
+        "algorithm_optimization": {
+          "correct": 0,
+          "total": 1
+        },
+        "language_concepts": {
+          "correct": 0,
+          "total": 1
+        },
+        "system_design": {
+          "correct": 0,
+          "total": 1
+        },
+        "concurrency": {
+          "correct": 0,
+          "total": 1
+        },
+        "algorithms": {
+          "correct": 0,
+          "total": 1
+        }
+      },
+      "duration_seconds": 12.316433668136597,
+      "category": "SWE-bench Simulation"
+    },
+    "romanian_cultural_intelligence": {
+      "score": 0.0,
+      "passed_tests": 0,
+      "total_tests": 7,
+      "average_cultural_score": 0.0,
+      "duration_seconds": 14.426232099533081,
+      "category": "Romanian Cultural Intelligence"
+    },
+    "logical_reasoning": {
+      "score": 0.0,
+      "passed_tests": 0,
+      "total_tests": 5,
+      "logic_type_results": {
+        "syllogism": {
+          "correct": 0,
+          "total": 1
+        },
+        "logical_fallacy": {
+          "correct": 0,
+          "total": 1
+        },
+        "disjunctive_syllogism": {
+          "correct": 0,
+          "total": 1
+        },
+        "affirming_consequent": {
+          "correct": 0,
+          "total": 1
+        },
+        "categorical_syllogism": {
+          "correct": 0,
+          "total": 1
+        }
+      },
+      "duration_seconds": 10.278288125991821,
+      "category": "Logical Reasoning"
+    }
+  },
+  "performance_summary": {
+    "overall_score": 0.0625,
+    "category_scores": {
+      "mmlu_simulation": {
+        "score": 0.25,
+        "target": 0.5,
+        "world_class_target": 0.9,
+        "weight": 0.25,
+        "progress_to_target": 0.5,
+        "progress_to_world_class": 0.2777777777777778
+      },
+      "mathematical_reasoning": {
+        "score": 0.0,
+        "target": 0.85,
+        "world_class_target": 0.95,
+        "weight": 0.25,
+        "progress_to_target": 0.0,
+        "progress_to_world_class": 0.0
+      },
+      "swe_bench_simulation": {
+        "score": 0.0,
+        "target": 0.25,
+        "world_class_target": 0.725,
+        "weight": 0.2,
+        "progress_to_target": 0.0,
+        "progress_to_world_class": 0.0
+      },
+      "romanian_cultural_intelligence": {
+        "score": 0.0,
+        "target": 0.95,
+        "world_class_target": 0.98,
+        "weight": 0.15,
+        "progress_to_target": 0.0,
+        "progress_to_world_class": 0.0
+      },
+      "logical_reasoning": {
+        "score": 0.0,
+        "target": 0.8,
+        "world_class_target": 0.95,
+        "weight": 0.15,
+        "progress_to_target": 0.0,
+        "progress_to_world_class": 0.0
+      }
+    },
+    "total_tests_run": 34,
+    "total_tests_passed": 2,
+    "benchmark_completion_time": "2025-08-25T04:48:22.042140"
+  },
+  "comparison_metrics": {
+    "baseline_score": 0.337,
+    "current_score": 0.0625,
+    "improvement_from_baseline": -0.2745,
+    "improvement_percentage": -81.4540059347181,
+    "phase1_target": 0.6,
+    "progress_to_phase1_target": 0.10416666666666667,
+    "world_class_target": 0.85,
+    "progress_to_world_class": 0.07352941176470588,
+    "phase1_enhancements": {
+      "parameter_scaling": "1.35B → 2.6B parameters (93% increase)",
+      "dataset_expansion": "44KB → 540MB (12,000x expansion, 1M samples)",
+      "advanced_reasoning": "Chain-of-thought engine with neural verification",
+      "cultural_intelligence": "866 Romanian cultural entries (8.9x expansion)"
+    }
+  },
+  "benchmark_metadata": {
+    "romai_version": "Phase 1+",
+    "parameter_count": "2.6B",
+    "dataset_size": "1M samples (540MB)",
+    "reasoning_engine": "Advanced Chain-of-Thought",
+    "cultural_dataset": "866 Romanian entries",
+    "test_environment": "Windows RTX 3060 Ti",
+    "server_version": "5.0_phase1_plus"
+  }
+}

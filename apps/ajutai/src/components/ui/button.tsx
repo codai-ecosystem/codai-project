@@ -1,33 +1,18 @@
-import { ReactNode } from 'react'
+// CONSOLIDATED: This component has been replaced by @codai/shared-ui Button component
+// The shared-ui Button provides comprehensive functionality including:
+// - 16+ variants with app-specific theming
+// - Advanced features: loading states, icons, tooltips, pulse effects
+// - Touch-friendly sizes and accessibility features
+// - Animated effects and gradient variants
 
-interface ButtonProps {
-    children: ReactNode
-    onClick?: () => void
-    className?: string
-    size?: 'sm' | 'md' | 'lg'
-    variant?: 'default' | 'outline'
-}
+// Use the shared Button component instead:
+// import { Button } from "@codai/shared-ui"
 
-export function Button({ children, onClick, className = '', size = 'md', variant = 'default' }: ButtonProps) {
-    const baseClasses = 'inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background'
+import { Button } from "@codai/shared-ui"
 
-    const sizeClasses = {
-        sm: 'h-9 px-3 text-sm',
-        md: 'h-10 py-2 px-4',
-        lg: 'h-11 px-8'
-    }
+// Re-export for backward compatibility
+export { Button, buttonVariants } from "@codai/shared-ui"
+export type { ButtonProps } from "@codai/shared-ui"
 
-    const variantClasses = {
-        default: 'bg-blue-600 text-white hover:bg-blue-700',
-        outline: 'border border-gray-300 bg-white hover:bg-gray-50 text-gray-900'
-    }
-
-    return (
-        <button
-            onClick={onClick}
-            className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`}
-        >
-            {children}
-        </button>
-    )
-}
+// For existing imports to continue working
+export default Button

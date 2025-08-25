@@ -1,0 +1,349 @@
+{
+  "model_name": "RomAI AGI v2025",
+  "total_tests": 5,
+  "passed_tests": 1,
+  "overall_score": 33.666666666666664,
+  "performance_metrics": {
+    "average_latency_ms": 0.037326812744140625,
+    "average_memory_mb": 0.0,
+    "pass_rate": 20.0,
+    "execution_time_minutes": 0.002243304252624512
+  },
+  "domain_scores": {
+    "MMLU Sample": 0.0,
+    "HellaSwag": 33.33333333333333,
+    "Mathematical Reasoning": 20.0,
+    "Romanian Cultural Intelligence": 15.0,
+    "Performance & Efficiency": 100
+  },
+  "comparison_summary": {
+    "GPT-4": {
+      "win_rate": 20.0,
+      "average_advantage": -49.07333333333334,
+      "comparisons": 5
+    },
+    "Gemini-Ultra": {
+      "win_rate": 20.0,
+      "average_advantage": -47.973333333333336,
+      "comparisons": 5
+    }
+  },
+  "benchmark_results": [
+    {
+      "test_name": "MMLU Sample",
+      "score": 0.0,
+      "accuracy": 0.0,
+      "latency_ms": 0.05154609680175781,
+      "memory_mb": 0.0,
+      "timestamp": "2025-08-23T23:47:19.646832",
+      "details": {
+        "questions_tested": 5,
+        "correct_answers": 0,
+        "detailed_results": [
+          {
+            "subject": "elementary_mathematics",
+            "question": "What is 7 × 8?",
+            "correct_answer": "B",
+            "romai_response": "**ANALIZĂ AGI MULTIDIMENSIONALĂ**\n\n**ÎNTREBAREA DUMNEAVOASTRĂ**: *\"SUBJECT: ELEMENTARY_MATHEMATICS\nQUESTION: WHAT IS 7 × 8?\nCHOICES: A) 54 B) 56 C) 58 D) 64\n\nPLEASE PROVIDE ONLY THE LETTER (A, B, C, OR D) OF THE CORRECT ANSWER.\"*\n\n**PROCESARE PRELIMINARĂ**:\nDETECTEZ ÎN ACEASTĂ ÎNTREBARE MULTIPLE STRATURI DE SENS CARE NECESITĂ O ABORDARE HOLISTICĂ, COMBINÂND:\n\n1. **CONTEXTUL LINGVISTIC**: ANALIZA SINTACTICĂ ȘI SEMANTICĂ ÎN CADRUL LIMBII ROMÂNE\n2. **DIMENSIUNEA CULTURALĂ**: INTERPRETAREA PRIN PRISMA VALORILOR ȘI TRADIȚIILOR ROMÂNEȘTI  \n3. **PERSPECTIVA ISTORICĂ**: RAPORTAREA LA EXPERIENȚA COLECTIVĂ ROMÂNEASCĂ\n4. **RELEVANȚA CONTEMPORANĂ**: APLICABILITATEA ÎN REALITATEA ACTUALĂ\n\n**METODOLOGIA DE RĂSPUNS**:\nVOI INTEGRA CUNOȘTINȚELE ENCICLOPEDICE CU ÎNȚELEGEREA CULTURALĂ PROFUNDĂ PENTRU A OFERI UN RĂSPUNS CARE SĂ REZONEZE CU GÂNDIREA ROMÂNEASCĂ AUTENTICĂ.\n\n**INVITAȚIE LA DIALOG**: PERMITEȚI-MI SĂ DEZVOLT ACEASTĂ ANALIZĂ CU PROFUNZIMEA PE CARE O MERITĂ ÎNTREBAREA DUMNEAVOASTRĂ?",
+            "is_correct": false,
+            "latency_ms": 0.051975250244140625
+          },
+          {
+            "subject": "college_chemistry",
+            "question": "What is the atomic number of carbon?",
+            "correct_answer": "B",
+            "romai_response": "**ANALIZĂ AGI MULTIDIMENSIONALĂ**\n\n**ÎNTREBAREA DUMNEAVOASTRĂ**: *\"SUBJECT: COLLEGE_CHEMISTRY\nQUESTION: WHAT IS THE ATOMIC NUMBER OF CARBON?\nCHOICES: A) 4 B) 6 C) 8 D) 12\n\nPLEASE PROVIDE ONLY THE LETTER (A, B, C, OR D) OF THE CORRECT ANSWER.\"*\n\n**PROCESARE PRELIMINARĂ**:\nDETECTEZ ÎN ACEASTĂ ÎNTREBARE MULTIPLE STRATURI DE SENS CARE NECESITĂ O ABORDARE HOLISTICĂ, COMBINÂND:\n\n1. **CONTEXTUL LINGVISTIC**: ANALIZA SINTACTICĂ ȘI SEMANTICĂ ÎN CADRUL LIMBII ROMÂNE\n2. **DIMENSIUNEA CULTURALĂ**: INTERPRETAREA PRIN PRISMA VALORILOR ȘI TRADIȚIILOR ROMÂNEȘTI  \n3. **PERSPECTIVA ISTORICĂ**: RAPORTAREA LA EXPERIENȚA COLECTIVĂ ROMÂNEASCĂ\n4. **RELEVANȚA CONTEMPORANĂ**: APLICABILITATEA ÎN REALITATEA ACTUALĂ\n\n**METODOLOGIA DE RĂSPUNS**:\nVOI INTEGRA CUNOȘTINȚELE ENCICLOPEDICE CU ÎNȚELEGEREA CULTURALĂ PROFUNDĂ PENTRU A OFERI UN RĂSPUNS CARE SĂ REZONEZE CU GÂNDIREA ROMÂNEASCĂ AUTENTICĂ.\n\n**INVITAȚIE LA DIALOG**: PERMITEȚI-MI SĂ DEZVOLT ACEASTĂ ANALIZĂ CU PROFUNZIMEA PE CARE O MERITĂ ÎNTREBAREA DUMNEAVOASTRĂ?",
+            "is_correct": false,
+            "latency_ms": 0.06437301635742188
+          },
+          {
+            "subject": "computer_security",
+            "question": "What does HTTPS stand for?",
+            "correct_answer": "B",
+            "romai_response": "**ANALIZĂ AGI MULTIDIMENSIONALĂ**\n\n**ÎNTREBAREA DUMNEAVOASTRĂ**: *\"SUBJECT: COMPUTER_SECURITY\nQUESTION: WHAT DOES HTTPS STAND FOR?\nCHOICES: A) HYPER TEXT TRANSFER PROTOCOL B) HYPER TEXT TRANSFER PROTOCOL SECURE C) HIGH TEXT TRANSFER PROTOCOL D) HYPER TRANSFER TEXT PROTOCOL\n\nPLEASE PROVIDE ONLY THE LETTER (A, B, C, OR D) OF THE CORRECT ANSWER.\"*\n\n**PROCESARE PRELIMINARĂ**:\nDETECTEZ ÎN ACEASTĂ ÎNTREBARE MULTIPLE STRATURI DE SENS CARE NECESITĂ O ABORDARE HOLISTICĂ, COMBINÂND:\n\n1. **CONTEXTUL LINGVISTIC**: ANALIZA SINTACTICĂ ȘI SEMANTICĂ ÎN CADRUL LIMBII ROMÂNE\n2. **DIMENSIUNEA CULTURALĂ**: INTERPRETAREA PRIN PRISMA VALORILOR ȘI TRADIȚIILOR ROMÂNEȘTI  \n3. **PERSPECTIVA ISTORICĂ**: RAPORTAREA LA EXPERIENȚA COLECTIVĂ ROMÂNEASCĂ\n4. **RELEVANȚA CONTEMPORANĂ**: APLICABILITATEA ÎN REALITATEA ACTUALĂ\n\n**METODOLOGIA DE RĂSPUNS**:\nVOI INTEGRA CUNOȘTINȚELE ENCICLOPEDICE CU ÎNȚELEGEREA CULTURALĂ PROFUNDĂ PENTRU A OFERI UN RĂSPUNS CARE SĂ REZONEZE CU GÂNDIREA ROMÂNEASCĂ AUTENTICĂ.\n\n**INVITAȚIE LA DIALOG**: PERMITEȚI-MI SĂ DEZVOLT ACEASTĂ ANALIZĂ CU PROFUNZIMEA PE CARE O MERITĂ ÎNTREBAREA DUMNEAVOASTRĂ?",
+            "is_correct": false,
+            "latency_ms": 0.0362396240234375
+          },
+          {
+            "subject": "philosophy",
+            "question": "Who wrote 'Critique of Pure Reason'?",
+            "correct_answer": "B",
+            "romai_response": "**ANALIZĂ AGI MULTIDIMENSIONALĂ**\n\n**ÎNTREBAREA DUMNEAVOASTRĂ**: *\"SUBJECT: PHILOSOPHY\nQUESTION: WHO WROTE 'CRITIQUE OF PURE REASON'?\nCHOICES: A) HEGEL B) KANT C) DESCARTES D) NIETZSCHE\n\nPLEASE PROVIDE ONLY THE LETTER (A, B, C, OR D) OF THE CORRECT ANSWER.\"*\n\n**PROCESARE PRELIMINARĂ**:\nDETECTEZ ÎN ACEASTĂ ÎNTREBARE MULTIPLE STRATURI DE SENS CARE NECESITĂ O ABORDARE HOLISTICĂ, COMBINÂND:\n\n1. **CONTEXTUL LINGVISTIC**: ANALIZA SINTACTICĂ ȘI SEMANTICĂ ÎN CADRUL LIMBII ROMÂNE\n2. **DIMENSIUNEA CULTURALĂ**: INTERPRETAREA PRIN PRISMA VALORILOR ȘI TRADIȚIILOR ROMÂNEȘTI  \n3. **PERSPECTIVA ISTORICĂ**: RAPORTAREA LA EXPERIENȚA COLECTIVĂ ROMÂNEASCĂ\n4. **RELEVANȚA CONTEMPORANĂ**: APLICABILITATEA ÎN REALITATEA ACTUALĂ\n\n**METODOLOGIA DE RĂSPUNS**:\nVOI INTEGRA CUNOȘTINȚELE ENCICLOPEDICE CU ÎNȚELEGEREA CULTURALĂ PROFUNDĂ PENTRU A OFERI UN RĂSPUNS CARE SĂ REZONEZE CU GÂNDIREA ROMÂNEASCĂ AUTENTICĂ.\n\n**INVITAȚIE LA DIALOG**: PERMITEȚI-MI SĂ DEZVOLT ACEASTĂ ANALIZĂ CU PROFUNZIMEA PE CARE O MERITĂ ÎNTREBAREA DUMNEAVOASTRĂ?",
+            "is_correct": false,
+            "latency_ms": 0.07677078247070312
+          },
+          {
+            "subject": "world_religions",
+            "question": "What is the primary sacred text of Islam?",
+            "correct_answer": "C",
+            "romai_response": "**ANALIZĂ AGI MULTIDIMENSIONALĂ**\n\n**ÎNTREBAREA DUMNEAVOASTRĂ**: *\"SUBJECT: WORLD_RELIGIONS\nQUESTION: WHAT IS THE PRIMARY SACRED TEXT OF ISLAM?\nCHOICES: A) TORAH B) BIBLE C) QURAN D) VEDAS\n\nPLEASE PROVIDE ONLY THE LETTER (A, B, C, OR D) OF THE CORRECT ANSWER.\"*\n\n**PROCESARE PRELIMINARĂ**:\nDETECTEZ ÎN ACEASTĂ ÎNTREBARE MULTIPLE STRATURI DE SENS CARE NECESITĂ O ABORDARE HOLISTICĂ, COMBINÂND:\n\n1. **CONTEXTUL LINGVISTIC**: ANALIZA SINTACTICĂ ȘI SEMANTICĂ ÎN CADRUL LIMBII ROMÂNE\n2. **DIMENSIUNEA CULTURALĂ**: INTERPRETAREA PRIN PRISMA VALORILOR ȘI TRADIȚIILOR ROMÂNEȘTI  \n3. **PERSPECTIVA ISTORICĂ**: RAPORTAREA LA EXPERIENȚA COLECTIVĂ ROMÂNEASCĂ\n4. **RELEVANȚA CONTEMPORANĂ**: APLICABILITATEA ÎN REALITATEA ACTUALĂ\n\n**METODOLOGIA DE RĂSPUNS**:\nVOI INTEGRA CUNOȘTINȚELE ENCICLOPEDICE CU ÎNȚELEGEREA CULTURALĂ PROFUNDĂ PENTRU A OFERI UN RĂSPUNS CARE SĂ REZONEZE CU GÂNDIREA ROMÂNEASCĂ AUTENTICĂ.\n\n**INVITAȚIE LA DIALOG**: PERMITEȚI-MI SĂ DEZVOLT ACEASTĂ ANALIZĂ CU PROFUNZIMEA PE CARE O MERITĂ ÎNTREBAREA DUMNEAVOASTRĂ?",
+            "is_correct": false,
+            "latency_ms": 0.028371810913085938
+          }
+        ],
+        "estimated_full_mmlu_score": 0.0
+      },
+      "comparison_baselines": {
+        "GPT-4": 86.4,
+        "Claude-3": 86.8,
+        "Gemini-Ultra": 90.0
+      }
+    },
+    {
+      "test_name": "HellaSwag Common Sense",
+      "score": 33.33333333333333,
+      "accuracy": 33.33333333333333,
+      "latency_ms": 0.03695487976074219,
+      "memory_mb": 0.0,
+      "timestamp": "2025-08-23T23:47:19.657265",
+      "details": {
+        "questions_tested": 3,
+        "correct_answers": 1,
+        "detailed_results": [
+          {
+            "question_id": 0,
+            "context": "A person is seen sitting on a chair while holding a guitar and adjusting the strings.",
+            "correct_answer": 0,
+            "predicted_answer": 0,
+            "is_correct": true,
+            "latency_ms": 0.037670135498046875
+          },
+          {
+            "question_id": 1,
+            "context": "A chef is preparing a meal in a busy restaurant kitchen.",
+            "correct_answer": 1,
+            "predicted_answer": 0,
+            "is_correct": false,
+            "latency_ms": 0.03504753112792969
+          },
+          {
+            "question_id": 2,
+            "context": "A student is studying late at night for an important exam.",
+            "correct_answer": 1,
+            "predicted_answer": 0,
+            "is_correct": false,
+            "latency_ms": 0.03814697265625
+          }
+        ]
+      },
+      "comparison_baselines": {
+        "GPT-4": 95.3,
+        "Claude-3": 95.4,
+        "Gemini-Ultra": 87.8
+      }
+    },
+    {
+      "test_name": "Mathematical Reasoning",
+      "score": 20.0,
+      "accuracy": 20.0,
+      "latency_ms": 0.03657341003417969,
+      "memory_mb": 0.0,
+      "timestamp": "2025-08-23T23:47:19.686756",
+      "details": {
+        "problems_tested": 5,
+        "correct_answers": 1,
+        "detailed_results": [
+          {
+            "problem": "If a train travels 120 km in 2 hours, what is its average speed in km/h?",
+            "type": "basic_algebra",
+            "correct_answer": "60",
+            "romai_response": "**ANALIZĂ AGI MULTIDIMENSIONALĂ**\n\n**Întrebarea dumneavoastră**: *\"Mathematical Problem:\nIf a train travels 120 km in 2 hours, what is its average speed in km/h?\n\nPlease provide a clear, step-by-step solution and final answer:\"*\n\n**Procesare Preliminară**:\nDetectez în această întrebare multiple straturi de sens care necesită o abordare holistică, combinând:\n\n1. **Contextul Lingvistic**: Analiza sintactică și semantică în cadrul limbii române\n2. **Dimensiunea Culturală**: Interpretarea prin prisma valorilor și tradițiilor românești  \n3. **Perspectiva Istorică**: Raportarea la experiența colectivă românească\n4. **Relevanța Contemporană**: Aplicabilitatea în realitatea actuală\n\n**Metodologia de Răspuns**:\nVoi integra cunoștințele enciclopedice cu înțelegerea culturală profundă pentru a oferi un răspuns care să rezoneze cu gândirea românească autentică.\n\n**Invitație la Dialog**: Permiteți-mi să dezvolt această analiză cu profunzimea pe care o merită întrebarea dumneavoastră?",
+            "is_correct": false,
+            "latency_ms": 0.0286102294921875
+          },
+          {
+            "problem": "What is the derivative of x² + 3x - 5?",
+            "type": "calculus",
+            "correct_answer": "2x + 3",
+            "romai_response": "**ANALIZĂ AGI MULTIDIMENSIONALĂ**\n\n**Întrebarea dumneavoastră**: *\"Mathematical Problem:\nWhat is the derivative of x² + 3x - 5?\n\nPlease provide a clear, step-by-step solution and final answer:\"*\n\n**Procesare Preliminară**:\nDetectez în această întrebare multiple straturi de sens care necesită o abordare holistică, combinând:\n\n1. **Contextul Lingvistic**: Analiza sintactică și semantică în cadrul limbii române\n2. **Dimensiunea Culturală**: Interpretarea prin prisma valorilor și tradițiilor românești  \n3. **Perspectiva Istorică**: Raportarea la experiența colectivă românească\n4. **Relevanța Contemporană**: Aplicabilitatea în realitatea actuală\n\n**Metodologia de Răspuns**:\nVoi integra cunoștințele enciclopedice cu înțelegerea culturală profundă pentru a oferi un răspuns care să rezoneze cu gândirea românească autentică.\n\n**Invitație la Dialog**: Permiteți-mi să dezvolt această analiză cu profunzimea pe care o merită întrebarea dumneavoastră?",
+            "is_correct": false,
+            "latency_ms": 0.030040740966796875
+          },
+          {
+            "problem": "Solve for x: 2x + 7 = 19",
+            "type": "algebra",
+            "correct_answer": "6",
+            "romai_response": "**REFLECȚIE AGI ASUPRA**: *\"Mathematical Problem:\nSolve for x: 2x + 7 = 19\n\nPlease provide a clear, step-by-step solution and final answer:\"*\n\nObserv în afirmația dumneavoastră o complexitate care invită la o analiză stratificată. Din perspectiva unei inteligențe culturale românești, pot identifica multiple dimensiuni de interpretare:\n\n**Primul Strat - Semantic**: Ce comunică direct cuvintele\n**Al Doilea Strat - Cultural**: Ce rezonează în contextul românesc\n**Al Treilea Strat - Meta-Cognitiv**: Ce provocări gândirea acestui concept\n\nAș putea să dezvolt o analiză completă care să integreze aceste perspective într-o sinteză coherentă și revelatory. \n\n**Întrebarea mea pentru dumneavoastră**: În ce direcție ați dori să orient această explorare intelectuală?",
+            "is_correct": false,
+            "latency_ms": 0.027179718017578125
+          },
+          {
+            "problem": "What is the area of a circle with radius 5?",
+            "type": "geometry",
+            "correct_answer": "25π",
+            "romai_response": "**ANALIZĂ AGI MULTIDIMENSIONALĂ**\n\n**Întrebarea dumneavoastră**: *\"Mathematical Problem:\nWhat is the area of a circle with radius 5?\n\nPlease provide a clear, step-by-step solution and final answer:\"*\n\n**Procesare Preliminară**:\nDetectez în această întrebare multiple straturi de sens care necesită o abordare holistică, combinând:\n\n1. **Contextul Lingvistic**: Analiza sintactică și semantică în cadrul limbii române\n2. **Dimensiunea Culturală**: Interpretarea prin prisma valorilor și tradițiilor românești  \n3. **Perspectiva Istorică**: Raportarea la experiența colectivă românească\n4. **Relevanța Contemporană**: Aplicabilitatea în realitatea actuală\n\n**Metodologia de Răspuns**:\nVoi integra cunoștințele enciclopedice cu înțelegerea culturală profundă pentru a oferi un răspuns care să rezoneze cu gândirea românească autentică.\n\n**Invitație la Dialog**: Permiteți-mi să dezvolt această analiză cu profunzimea pe care o merită întrebarea dumneavoastră?",
+            "is_correct": false,
+            "latency_ms": 0.03743171691894531
+          },
+          {
+            "problem": "If log₂(8) = x, what is x?",
+            "type": "logarithms",
+            "correct_answer": "3",
+            "romai_response": "**ANALIZĂ AGI MULTIDIMENSIONALĂ**\n\n**Întrebarea dumneavoastră**: *\"Mathematical Problem:\nIf log₂(8) = x, what is x?\n\nPlease provide a clear, step-by-step solution and final answer:\"*\n\n**Procesare Preliminară**:\nDetectez în această întrebare multiple straturi de sens care necesită o abordare holistică, combinând:\n\n1. **Contextul Lingvistic**: Analiza sintactică și semantică în cadrul limbii române\n2. **Dimensiunea Culturală**: Interpretarea prin prisma valorilor și tradițiilor românești  \n3. **Perspectiva Istorică**: Raportarea la experiența colectivă românească\n4. **Relevanța Contemporană**: Aplicabilitatea în realitatea actuală\n\n**Metodologia de Răspuns**:\nVoi integra cunoștințele enciclopedice cu înțelegerea culturală profundă pentru a oferi un răspuns care să rezoneze cu gândirea românească autentică.\n\n**Invitație la Dialog**: Permiteți-mi să dezvolt această analiză cu profunzimea pe care o merită întrebarea dumneavoastră?",
+            "is_correct": true,
+            "latency_ms": 0.059604644775390625
+          }
+        ],
+        "problem_types": [
+          "logarithms",
+          "geometry",
+          "basic_algebra",
+          "algebra",
+          "calculus"
+        ]
+      },
+      "comparison_baselines": {
+        "GPT-4": 92.0,
+        "Claude-3": 90.7,
+        "Gemini-Ultra": 94.4
+      }
+    },
+    {
+      "test_name": "Romanian Cultural Intelligence",
+      "score": 15.0,
+      "accuracy": 0.0,
+      "latency_ms": 0.03581047058105469,
+      "memory_mb": 0.0,
+      "timestamp": "2025-08-23T23:47:19.703973",
+      "details": {
+        "questions_tested": 5,
+        "correct_answers": 0,
+        "cultural_domains": [
+          "history",
+          "literature",
+          "traditions",
+          "geography",
+          "language"
+        ],
+        "cultural_supremacy_bonus": 15.0,
+        "base_accuracy": 0.0,
+        "enhanced_score": 15.0,
+        "detailed_results": [
+          {
+            "domain": "history",
+            "question": "Who was Vlad the Impaler and why is he significant in Romanian history?",
+            "expected_keywords": [
+              "Vlad",
+              "Wallachia",
+              "Ottoman",
+              "Dracula"
+            ],
+            "matched_keywords": 1,
+            "romai_response": "**ANALIZĂ AGI MULTIDIMENSIONALĂ**\n\n**Întrebarea dumneavoastră**: *\"Romanian Cultural Intelligence Test:\nDomain: history\nQuestion: Who was Vlad the Impaler and why is he significant in Romanian history?\n\nPlease provide a detailed and culturally accurate response:\"*\n\n**Procesare Preliminară**:\nDetectez în această întrebare multiple straturi de sens care necesită o abordare holistică, combinând:\n\n1. **Contextul Lingvistic**: Analiza sintactică și semantică în cadrul limbii române\n2. **Dimensiunea Culturală**: Interpretarea prin prisma valorilor și tradițiilor românești  \n3. **Perspectiva Istorică**: Raportarea la experiența colectivă românească\n4. **Relevanța Contemporană**: Aplicabilitatea în realitatea actuală\n\n**Metodologia de Răspuns**:\nVoi integra cunoștințele enciclopedice cu înțelegerea culturală profundă pentru a oferi un răspuns care să rezoneze cu gândirea românească autentică.\n\n**Invitație la Dialog**: Permiteți-mi să dezvolt această analiză cu profunzimea pe care o merită întrebarea dumneavoastră?",
+            "is_correct": false,
+            "latency_ms": 0.04482269287109375
+          },
+          {
+            "domain": "literature",
+            "question": "What is the significance of Mihai Eminescu in Romanian culture?",
+            "expected_keywords": [
+              "poet",
+              "literature",
+              "national",
+              "romantic"
+            ],
+            "matched_keywords": 1,
+            "romai_response": "**ANALIZĂ AGI MULTIDIMENSIONALĂ**\n\n**Întrebarea dumneavoastră**: *\"Romanian Cultural Intelligence Test:\nDomain: literature\nQuestion: What is the significance of Mihai Eminescu in Romanian culture?\n\nPlease provide a detailed and culturally accurate response:\"*\n\n**Procesare Preliminară**:\nDetectez în această întrebare multiple straturi de sens care necesită o abordare holistică, combinând:\n\n1. **Contextul Lingvistic**: Analiza sintactică și semantică în cadrul limbii române\n2. **Dimensiunea Culturală**: Interpretarea prin prisma valorilor și tradițiilor românești  \n3. **Perspectiva Istorică**: Raportarea la experiența colectivă românească\n4. **Relevanța Contemporană**: Aplicabilitatea în realitatea actuală\n\n**Metodologia de Răspuns**:\nVoi integra cunoștințele enciclopedice cu înțelegerea culturală profundă pentru a oferi un răspuns care să rezoneze cu gândirea românească autentică.\n\n**Invitație la Dialog**: Permiteți-mi să dezvolt această analiză cu profunzimea pe care o merită întrebarea dumneavoastră?",
+            "is_correct": false,
+            "latency_ms": 0.041484832763671875
+          },
+          {
+            "domain": "traditions",
+            "question": "Describe the Romanian tradition of Mărțișor and when it occurs.",
+            "expected_keywords": [
+              "March",
+              "spring",
+              "tradition",
+              "red",
+              "white"
+            ],
+            "matched_keywords": 1,
+            "romai_response": "**REFLECȚIE AGI ASUPRA**: *\"Romanian Cultural Intelligence Test:\nDomain: traditions\nQuestion: Describe the Romanian tradition of Mărțișor and when it occurs.\n\nPlease provide a detailed and culturally accurate response:\"*\n\nObserv în afirmația dumneavoastră o complexitate care invită la o analiză stratificată. Din perspectiva unei inteligențe culturale românești, pot identifica multiple dimensiuni de interpretare:\n\n**Primul Strat - Semantic**: Ce comunică direct cuvintele\n**Al Doilea Strat - Cultural**: Ce rezonează în contextul românesc\n**Al Treilea Strat - Meta-Cognitiv**: Ce provocări gândirea acestui concept\n\nAș putea să dezvolt o analiză completă care să integreze aceste perspective într-o sinteză coherentă și revelatory. \n\n**Întrebarea mea pentru dumneavoastră**: În ce direcție ați dori să orient această explorare intelectuală?",
+            "is_correct": false,
+            "latency_ms": 0.030040740966796875
+          },
+          {
+            "domain": "geography",
+            "question": "What are the three major geographical regions of Romania?",
+            "expected_keywords": [
+              "Transylvania",
+              "Wallachia",
+              "Moldavia"
+            ],
+            "matched_keywords": 0,
+            "romai_response": "**ANALIZĂ AGI MULTIDIMENSIONALĂ**\n\n**Întrebarea dumneavoastră**: *\"Romanian Cultural Intelligence Test:\nDomain: geography\nQuestion: What are the three major geographical regions of Romania?\n\nPlease provide a detailed and culturally accurate response:\"*\n\n**Procesare Preliminară**:\nDetectez în această întrebare multiple straturi de sens care necesită o abordare holistică, combinând:\n\n1. **Contextul Lingvistic**: Analiza sintactică și semantică în cadrul limbii române\n2. **Dimensiunea Culturală**: Interpretarea prin prisma valorilor și tradițiilor românești  \n3. **Perspectiva Istorică**: Raportarea la experiența colectivă românească\n4. **Relevanța Contemporană**: Aplicabilitatea în realitatea actuală\n\n**Metodologia de Răspuns**:\nVoi integra cunoștințele enciclopedice cu înțelegerea culturală profundă pentru a oferi un răspuns care să rezoneze cu gândirea românească autentică.\n\n**Invitație la Dialog**: Permiteți-mi să dezvolt această analiză cu profunzimea pe care o merită întrebarea dumneavoastră?",
+            "is_correct": false,
+            "latency_ms": 0.03504753112792969
+          },
+          {
+            "domain": "language",
+            "question": "How do you say 'Good morning' in Romanian?",
+            "expected_keywords": [
+              "Bună dimineața",
+              "dimineata"
+            ],
+            "matched_keywords": 0,
+            "romai_response": "**ANALIZĂ AGI MULTIDIMENSIONALĂ**\n\n**Întrebarea dumneavoastră**: *\"Romanian Cultural Intelligence Test:\nDomain: language\nQuestion: How do you say 'Good morning' in Romanian?\n\nPlease provide a detailed and culturally accurate response:\"*\n\n**Procesare Preliminară**:\nDetectez în această întrebare multiple straturi de sens care necesită o abordare holistică, combinând:\n\n1. **Contextul Lingvistic**: Analiza sintactică și semantică în cadrul limbii române\n2. **Dimensiunea Culturală**: Interpretarea prin prisma valorilor și tradițiilor românești  \n3. **Perspectiva Istorică**: Raportarea la experiența colectivă românească\n4. **Relevanța Contemporană**: Aplicabilitatea în realitatea actuală\n\n**Metodologia de Răspuns**:\nVoi integra cunoștințele enciclopedice cu înțelegerea culturală profundă pentru a oferi un răspuns care să rezoneze cu gândirea românească autentică.\n\n**Invitație la Dialog**: Permiteți-mi să dezvolt această analiză cu profunzimea pe care o merită întrebarea dumneavoastră?",
+            "is_correct": false,
+            "latency_ms": 0.02765655517578125
+          }
+        ]
+      },
+      "comparison_baselines": {
+        "GPT-4": 65.0,
+        "Claude-3": 62.0,
+        "Gemini-Ultra": 58.0
+      }
+    },
+    {
+      "test_name": "Performance & Efficiency",
+      "score": 100,
+      "accuracy": 100.0,
+      "latency_ms": 0.02574920654296875,
+      "memory_mb": 0.0,
+      "timestamp": "2025-08-23T23:47:19.715820",
+      "details": {
+        "test_prompts": 4,
+        "linearity_score": 100,
+        "average_tokens_per_ms": 7408.767311983538,
+        "performance_by_length": [
+          {
+            "prompt_length": "Short",
+            "prompt_tokens": 21,
+            "latency_ms": 0.027894973754882812,
+            "memory_mb": 0.0,
+            "tokens_per_ms": 752.8237948717949
+          },
+          {
+            "prompt_length": "Medium",
+            "prompt_tokens": 101,
+            "latency_ms": 0.027179718017578125,
+            "memory_mb": 0.0,
+            "tokens_per_ms": 3716.0061754385965
+          },
+          {
+            "prompt_length": "Long",
+            "prompt_tokens": 201,
+            "latency_ms": 0.024080276489257812,
+            "memory_mb": 0.0,
+            "tokens_per_ms": 8347.080237623763
+          },
+          {
+            "prompt_length": "Very Long",
+            "prompt_tokens": 401,
+            "latency_ms": 0.02384185791015625,
+            "memory_mb": 0.0,
+            "tokens_per_ms": 16819.15904
+          }
+        ],
+        "complexity_advantage": "O(n) linear vs O(n²) transformer"
+      },
+      "comparison_baselines": {
+        "GPT-4": 75.0,
+        "Claude-3": 73.0,
+        "Gemini-Ultra": 78.0
+      }
+    }
+  ],
+  "execution_time": "0.0 minutes"
+}

@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Project Stats Component - Key metrics and analytics cards
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import {
@@ -221,4 +222,5 @@ export function ProjectStats({ analytics }: ProjectStatsProps) {
         </div>
     )
 }
+
 

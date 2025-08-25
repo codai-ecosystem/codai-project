@@ -16,7 +16,7 @@ import {
     Target,
     Search,
     Filter,
-    Toggle,
+    ToggleLeft,
     Zap,
     Activity,
     BarChart3

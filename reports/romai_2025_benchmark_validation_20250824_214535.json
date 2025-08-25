@@ -1,0 +1,362 @@
+{
+  "timestamp": "2025-08-24T21:45:35.721372",
+  "total_validation_time_seconds": 53.40858459472656,
+  "targets_achieved": 0,
+  "total_targets": 3,
+  "achievement_rate": 0.0,
+  "results": {
+    "AIME_2025_Math": {
+      "name": "AIME_2025_Math",
+      "target_score": 95.0,
+      "total_problems": 10,
+      "correct_answers": 0,
+      "accuracy": 0.0,
+      "avg_response_time": 0.0,
+      "avg_confidence": 0.0,
+      "results": [
+        {
+          "problem_id": "aime_2025_1",
+          "category": "number_theory",
+          "problem_text": "Find the number of positive integers n \u2264 1000 such that n\u00b2 + n + 41 is divisible by 7.",
+          "expected_answer": "1080",
+          "romai_answer": "Intelligence processing failed",
+          "is_correct": false,
+          "response_time_ms": 2059.5967769622803,
+          "confidence_score": 0.0,
+          "reasoning_steps": "Error occurred",
+          "model_used": "error"
+        },
+        {
+          "problem_id": "aime_2025_2",
+          "category": "geometry",
+          "problem_text": "In triangle ABC, AB = 13, BC = 14, CA = 15. Find the area of the triangle.",
+          "expected_answer": "84",
+          "romai_answer": "Intelligence processing failed",
+          "is_correct": false,
+          "response_time_ms": 2041.0926342010498,
+          "confidence_score": 0.0,
+          "reasoning_steps": "Error occurred",
+          "model_used": "error"
+        },
+        {
+          "problem_id": "aime_2025_3",
+          "category": "algebra",
+          "problem_text": "If x\u00b3 + 2x\u00b2 + 3x + 4 = 0, find the sum of all possible values of x\u00b2.",
+          "expected_answer": "8",
+          "romai_answer": "Intelligence processing failed",
+          "is_correct": false,
+          "response_time_ms": 2056.7448139190674,
+          "confidence_score": 0.0,
+          "reasoning_steps": "Error occurred",
+          "model_used": "error"
+        },
+        {
+          "problem_id": "aime_2025_4",
+          "category": "combinatorics",
+          "problem_text": "How many ways can you arrange the letters of MATHEMATICS such that no two M's are adjacent?",
+          "expected_answer": "246",
+          "romai_answer": "Intelligence processing failed",
+          "is_correct": false,
+          "response_time_ms": 2080.5349349975586,
+          "confidence_score": 0.0,
+          "reasoning_steps": "Error occurred",
+          "model_used": "error"
+        },
+        {
+          "problem_id": "aime_2025_5",
+          "category": "trigonometry",
+          "problem_text": "Find the number of solutions to sin(3x) = cos(2x) in the interval [0, 2\u03c0].",
+          "expected_answer": "3",
+          "romai_answer": "Intelligence processing failed",
+          "is_correct": false,
+          "response_time_ms": 2071.2122917175293,
+          "confidence_score": 0.0,
+          "reasoning_steps": "Error occurred",
+          "model_used": "error"
+        },
+        {
+          "problem_id": "aime_2025_6",
+          "category": "number_theory",
+          "problem_text": "Find the remainder when 2\u00b2\u2070\u00b2\u2075 is divided by 97.",
+          "expected_answer": "36",
+          "romai_answer": "Intelligence processing failed",
+          "is_correct": false,
+          "response_time_ms": 2026.7469882965088,
+          "confidence_score": 0.0,
+          "reasoning_steps": "Error occurred",
+          "model_used": "error"
+        },
+        {
+          "problem_id": "aime_2025_7",
+          "category": "combinatorics",
+          "problem_text": "In how many ways can we place 8 non-attacking rooks on a chessboard such that exactly 3 rooks are on white squares?",
+          "expected_answer": "697176298126",
+          "romai_answer": "Intelligence processing failed",
+          "is_correct": false,
+          "response_time_ms": 2072.465181350708,
+          "confidence_score": 0.0,
+          "reasoning_steps": "Error occurred",
+          "model_used": "error"
+        },
+        {
+          "problem_id": "aime_2025_8",
+          "category": "algebra",
+          "problem_text": "If f(x) = x\u2074 - 4x\u00b3 + 6x\u00b2 - 4x + 1, find the minimum value of f(x) for real x.",
+          "expected_answer": "1",
+          "romai_answer": "Intelligence processing failed",
+          "is_correct": false,
+          "response_time_ms": 2072.0129013061523,
+          "confidence_score": 0.0,
+          "reasoning_steps": "Error occurred",
+          "model_used": "error"
+        },
+        {
+          "problem_id": "aime_2025_9",
+          "category": "geometry",
+          "problem_text": "Find the area of the region bounded by |x| + |y| = 5 and x\u00b2 + y\u00b2 = 25.",
+          "expected_answer": "12.5",
+          "romai_answer": "Intelligence processing failed",
+          "is_correct": false,
+          "response_time_ms": 2054.7571182250977,
+          "confidence_score": 0.0,
+          "reasoning_steps": "Error occurred",
+          "model_used": "error"
+        },
+        {
+          "problem_id": "aime_2025_10",
+          "category": "combinatorics",
+          "problem_text": "How many 10-digit numbers have exactly 4 distinct digits?",
+          "expected_answer": "715",
+          "romai_answer": "Intelligence processing failed",
+          "is_correct": false,
+          "response_time_ms": 2054.638385772705,
+          "confidence_score": 0.0,
+          "reasoning_steps": "Error occurred",
+          "model_used": "error"
+        }
+      ]
+    },
+    "GPQA_Diamond_Reasoning": {
+      "name": "GPQA_Diamond_Reasoning",
+      "target_score": 90.0,
+      "total_problems": 10,
+      "correct_answers": 0,
+      "accuracy": 0.0,
+      "avg_response_time": 0.0,
+      "avg_confidence": 0.0,
+      "results": [
+        {
+          "problem_id": "gpqa_chem_1",
+          "category": "chemistry",
+          "problem_text": "Calculate the pH of a 0.1 M solution of acetic acid (Ka = 1.8 \u00d7 10\u207b\u2075).",
+          "expected_answer": "7.0",
+          "romai_answer": "Exception: sequence item 0: expected str instance, dict found",
+          "is_correct": false,
+          "response_time_ms": 0,
+          "confidence_score": 0.0,
+          "reasoning_steps": "Error occurred",
+          "model_used": "error"
+        },
+        {
+          "problem_id": "gpqa_phys_1",
+          "category": "physics",
+          "problem_text": "A photon with wavelength 500 nm hits a metal surface. If the work function is 2.1 eV, what is the maximum kinetic energy of emitted electrons in eV?",
+          "expected_answer": "0.5",
+          "romai_answer": "Exception: sequence item 0: expected str instance, dict found",
+          "is_correct": false,
+          "response_time_ms": 0,
+          "confidence_score": 0.0,
+          "reasoning_steps": "Error occurred",
+          "model_used": "error"
+        },
+        {
+          "problem_id": "gpqa_bio_1",
+          "category": "biology",
+          "problem_text": "If a population has an initial size of 1000 and grows at 3% per year, what will be the population after 20 years? (Round to 2 decimal places)",
+          "expected_answer": "0.48",
+          "romai_answer": "Exception: sequence item 0: expected str instance, dict found",
+          "is_correct": false,
+          "response_time_ms": 0,
+          "confidence_score": 0.0,
+          "reasoning_steps": "Error occurred",
+          "model_used": "error"
+        },
+        {
+          "problem_id": "gpqa_chem_2",
+          "category": "chemistry",
+          "problem_text": "Calculate the enthalpy change for the combustion of 1 mol of methane at 298K given: \u0394Hf(CH4) = -74.8 kJ/mol, \u0394Hf(CO2) = -393.5 kJ/mol, \u0394Hf(H2O) = -285.8 kJ/mol",
+          "expected_answer": "-474.3",
+          "romai_answer": "Exception: sequence item 0: expected str instance, dict found",
+          "is_correct": false,
+          "response_time_ms": 0,
+          "confidence_score": 0.0,
+          "reasoning_steps": "Error occurred",
+          "model_used": "error"
+        },
+        {
+          "problem_id": "gpqa_phys_2",
+          "category": "physics",
+          "problem_text": "A car travels in a circle of radius 50m at constant speed. If the centripetal acceleration is 10 m/s\u00b2, what is the period of circular motion?",
+          "expected_answer": "1.0",
+          "romai_answer": "Exception: sequence item 0: expected str instance, dict found",
+          "is_correct": false,
+          "response_time_ms": 0,
+          "confidence_score": 0.0,
+          "reasoning_steps": "Error occurred",
+          "model_used": "error"
+        },
+        {
+          "problem_id": "gpqa_bio_2",
+          "category": "biology",
+          "problem_text": "If crossing two heterozygous individuals (Aa \u00d7 Aa) produces 6400 offspring, how many would you expect to show the recessive phenotype?",
+          "expected_answer": "6400",
+          "romai_answer": "Exception: sequence item 0: expected str instance, dict found",
+          "is_correct": false,
+          "response_time_ms": 0,
+          "confidence_score": 0.0,
+          "reasoning_steps": "Error occurred",
+          "model_used": "error"
+        },
+        {
+          "problem_id": "gpqa_chem_3",
+          "category": "chemistry",
+          "problem_text": "What is the molarity of OH\u207b ions in a 0.01 M Ba(OH)\u2082 solution?",
+          "expected_answer": "2.87",
+          "romai_answer": "Exception: sequence item 0: expected str instance, dict found",
+          "is_correct": false,
+          "response_time_ms": 0,
+          "confidence_score": 0.0,
+          "reasoning_steps": "Error occurred",
+          "model_used": "error"
+        },
+        {
+          "problem_id": "gpqa_phys_3",
+          "category": "physics",
+          "problem_text": "Light travels from air (n=1.0) into glass (n=1.5) at an incident angle of 30\u00b0. What is the refracted angle in radians?",
+          "expected_answer": "0.18",
+          "romai_answer": "Exception: sequence item 0: expected str instance, dict found",
+          "is_correct": false,
+          "response_time_ms": 0,
+          "confidence_score": 0.0,
+          "reasoning_steps": "Error occurred",
+          "model_used": "error"
+        },
+        {
+          "problem_id": "gpqa_bio_3",
+          "category": "biology",
+          "problem_text": "In a Hardy-Weinberg population, if the frequency of allele A is 0.7, what is the frequency of the aa genotype?",
+          "expected_answer": "0.0625",
+          "romai_answer": "Exception: sequence item 0: expected str instance, dict found",
+          "is_correct": false,
+          "response_time_ms": 0,
+          "confidence_score": 0.0,
+          "reasoning_steps": "Error occurred",
+          "model_used": "error"
+        },
+        {
+          "problem_id": "gpqa_chem_4",
+          "category": "chemistry",
+          "problem_text": "For the reaction A + B \u21cc C + D, if Kc = 4 at 298K, what is the equilibrium constant Kc for the reverse reaction C + D \u21cc A + B?",
+          "expected_answer": "0.5",
+          "romai_answer": "Exception: sequence item 0: expected str instance, dict found",
+          "is_correct": false,
+          "response_time_ms": 0,
+          "confidence_score": 0.0,
+          "reasoning_steps": "Error occurred",
+          "model_used": "error"
+        }
+      ]
+    },
+    "SWE_bench_Coding": {
+      "name": "SWE_bench_Coding",
+      "target_score": 80.0,
+      "total_problems": 5,
+      "correct_answers": 3,
+      "accuracy": 60.0,
+      "avg_response_time": 2054.895830154419,
+      "avg_confidence": 0.8,
+      "results": [
+        {
+          "problem_id": "swe_algo_1",
+          "category": "algorithms",
+          "problem_text": "Implement a binary search algorithm that returns the index of target in a sorted array, or -1 if not found.",
+          "expected_answer": "def binary_search(arr, target):\n    left, right = 0, len(arr) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    return -1",
+          "romai_answer": "def optimized_solution_implementation(data, **kwargs):\n    \"\"\"\n    Optimized optimized_solution implementation\n    Generated by RomAI Advanced Code Generation Engine\n    \"\"\"\n    # Implementation would be generated based on specific algorithm\n    result = process_data_optimally(data)\n    return result\n\ndef process_data_optimally(data):\n    \"\"\"Core processing logic with optimizations\"\"\"\n    # Algorithm-specific implementation\n    return data",
+          "is_correct": true,
+          "response_time_ms": 2075.305938720703,
+          "confidence_score": 0.8,
+          "reasoning_steps": "",
+          "model_used": "romai_code_generator"
+        },
+        {
+          "problem_id": "swe_debug_1",
+          "category": "debugging",
+          "problem_text": "Fix this buggy code: def find_max(arr): i = 0; max_val = 0; while i < len(arr) or max_val < arr[i]: max_val = arr[i]; i += 1; return max_val",
+          "expected_answer": "Change 'or' to 'and' in while condition and add bounds checking",
+          "romai_answer": "def optimized_solution_implementation(data, **kwargs):\n    \"\"\"\n    Optimized optimized_solution implementation\n    Generated by RomAI Advanced Code Generation Engine\n    \"\"\"\n    # Implementation would be generated based on specific algorithm\n    result = process_data_optimally(data)\n    return result\n\ndef process_data_optimally(data):\n    \"\"\"Core processing logic with optimizations\"\"\"\n    # Algorithm-specific implementation\n    return data",
+          "is_correct": false,
+          "response_time_ms": 2041.5217876434326,
+          "confidence_score": 0.8,
+          "reasoning_steps": "",
+          "model_used": "romai_code_generator"
+        },
+        {
+          "problem_id": "swe_opt_1",
+          "category": "optimization",
+          "problem_text": "Implement Kadane's algorithm to find maximum subarray sum efficiently.",
+          "expected_answer": "def max_subarray_sum(arr):\n    max_sum = current_sum = arr[0]\n    for i in range(1, len(arr)):\n        current_sum = max(arr[i], current_sum + arr[i])\n        max_sum = max(max_sum, current_sum)\n    return max_sum",
+          "romai_answer": "def optimized_solution_implementation(data, **kwargs):\n    \"\"\"\n    Optimized optimized_solution implementation\n    Generated by RomAI Advanced Code Generation Engine\n    \"\"\"\n    # Implementation would be generated based on specific algorithm\n    result = process_data_optimally(data)\n    return result\n\ndef process_data_optimally(data):\n    \"\"\"Core processing logic with optimizations\"\"\"\n    # Algorithm-specific implementation\n    return data",
+          "is_correct": true,
+          "response_time_ms": 2053.9560317993164,
+          "confidence_score": 0.8,
+          "reasoning_steps": "",
+          "model_used": "romai_code_generator"
+        },
+        {
+          "problem_id": "swe_ds_1",
+          "category": "data_structures",
+          "problem_text": "Design a data structure that supports insert, delete, and getRandom operations in O(1) average time.",
+          "expected_answer": "Use ArrayList + HashMap: HashMap maps values to indices, ArrayList stores values. For getRandom, use random index.",
+          "romai_answer": "def optimized_solution_implementation(data, **kwargs):\n    \"\"\"\n    Optimized optimized_solution implementation\n    Generated by RomAI Advanced Code Generation Engine\n    \"\"\"\n    # Implementation would be generated based on specific algorithm\n    result = process_data_optimally(data)\n    return result\n\ndef process_data_optimally(data):\n    \"\"\"Core processing logic with optimizations\"\"\"\n    # Algorithm-specific implementation\n    return data",
+          "is_correct": false,
+          "response_time_ms": 2049.1645336151123,
+          "confidence_score": 0.8,
+          "reasoning_steps": "",
+          "model_used": "romai_code_generator"
+        },
+        {
+          "problem_id": "swe_algo_2",
+          "category": "algorithms",
+          "problem_text": "Implement Floyd's cycle detection algorithm to detect if a linked list has a cycle.",
+          "expected_answer": "def has_cycle(head):\n    if not head or not head.next:\n        return False\n    slow = fast = head\n    while fast and fast.next:\n        slow = slow.next\n        fast = fast.next.next\n        if slow == fast:\n            return True\n    return False",
+          "romai_answer": "def optimized_solution_implementation(data, **kwargs):\n    \"\"\"\n    Optimized optimized_solution implementation\n    Generated by RomAI Advanced Code Generation Engine\n    \"\"\"\n    # Implementation would be generated based on specific algorithm\n    result = process_data_optimally(data)\n    return result\n\ndef process_data_optimally(data):\n    \"\"\"Core processing logic with optimizations\"\"\"\n    # Algorithm-specific implementation\n    return data",
+          "is_correct": true,
+          "response_time_ms": 2054.5308589935303,
+          "confidence_score": 0.8,
+          "reasoning_steps": "",
+          "model_used": "romai_code_generator"
+        }
+      ]
+    }
+  },
+  "competitor_baselines": {
+    "AIME_2025_Math": {
+      "GPT-5": 94.6,
+      "Gemini_2.5_Pro": 89.7,
+      "Claude_Opus_4.1": 87.2,
+      "Grok-4": 78.1
+    },
+    "GPQA_Diamond_Reasoning": {
+      "GPT-5": 88.4,
+      "Claude_Opus_4.1": 91.2,
+      "Gemini_2.5_Pro": 85.3,
+      "Grok-4": 82.1
+    },
+    "SWE_bench_Coding": {
+      "Grok-4": 75.0,
+      "Claude_Opus_4.1": 76.8,
+      "GPT-5": 72.3,
+      "Gemini_2.5_Pro": 69.4
+    }
+  }
+}

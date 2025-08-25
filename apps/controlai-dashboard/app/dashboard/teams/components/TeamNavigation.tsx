@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * TeamNavigation Component - View mode navigation
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import { Grid, List, MessageSquare, BarChart3 } from 'lucide-react'
@@ -45,4 +46,5 @@ export function TeamNavigation({ activeView, onViewChange }: TeamNavigationProps
         </nav>
     )
 }
+
 

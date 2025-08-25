@@ -1,24 +1,15 @@
-import { NextResponse } from 'next/server'
+import { createHealthEndpoint } from '@codai/api-utils/health'
 
-export async function GET() {
-  const healthData = {
-    status: 'healthy',
-    timestamp: new Date().toISOString(),
-    service: '${APP_NAME}',
-    port: '${PORT}',
-    version: '1.0.0',
-    framework: 'Next.js 15',
-    uptime: process.uptime(),
-    memory: process.memoryUsage(),
-    environment: process.env.NODE_ENV || 'development'
+// Export the health endpoint using @codai/api-utils
+export const GET = createHealthEndpoint({
+  serviceName: 'Dashboard Service',
+  version: '1.0.0',
+  checks: {
+    external: [
+      {
+        name: 'nextjs',
+        check: () => Promise.resolve({ status: 'healthy', message: 'Next.js 15 framework ready' })
+      }
+    ]
   }
-
-  return NextResponse.json(healthData, {
-    status: 200,
-    headers: {
-      'Cache-Control': 'no-cache, no-store, must-revalidate',
-      'Pragma': 'no-cache',
-      'Expires': '0'
-    }
-  })
-}
+})

@@ -1,0 +1,352 @@
+[
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Total Container Count",
+    "Status": "PASS",
+    "Details": "Expected: >= 23, Found: 23",
+    "Expected": 23,
+    "Actual": 23,
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.9419837+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-ssl-termination-proxy",
+    "Status": "PASS",
+    "Details": "Up 7 minutes (healthy)",
+    "Expected": "Healthy/Up",
+    "Actual": "Up 7 minutes (healthy)",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.9469006+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-nginx-load-balancer",
+    "Status": "FAIL",
+    "Details": "Restarting (1) 7 seconds ago",
+    "Expected": "Healthy/Up",
+    "Actual": "Restarting (1) 7 seconds ago",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.9476064+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-memorai-frontend",
+    "Status": "PASS",
+    "Details": "Up 7 minutes (healthy)",
+    "Expected": "Healthy/Up",
+    "Actual": "Up 7 minutes (healthy)",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.9483293+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-secure-api-gateway",
+    "Status": "PASS",
+    "Details": "Up 7 minutes (unhealthy)",
+    "Expected": "Healthy/Up",
+    "Actual": "Up 7 minutes (unhealthy)",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.9491058+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-memorai-graphql-api",
+    "Status": "PASS",
+    "Details": "Up 7 minutes (healthy)",
+    "Expected": "Healthy/Up",
+    "Actual": "Up 7 minutes (healthy)",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.9504881+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-hub-api",
+    "Status": "PASS",
+    "Details": "Up 7 minutes (healthy)",
+    "Expected": "Healthy/Up",
+    "Actual": "Up 7 minutes (healthy)",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.951601+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-identity-api",
+    "Status": "PASS",
+    "Details": "Up 7 minutes (healthy)",
+    "Expected": "Healthy/Up",
+    "Actual": "Up 7 minutes (healthy)",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.952452+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-memorai-mcp-api",
+    "Status": "PASS",
+    "Details": "Up 7 minutes (healthy)",
+    "Expected": "Healthy/Up",
+    "Actual": "Up 7 minutes (healthy)",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.9530463+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-bancai-frontend",
+    "Status": "PASS",
+    "Details": "Up 7 minutes (healthy)",
+    "Expected": "Healthy/Up",
+    "Actual": "Up 7 minutes (healthy)",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.9540268+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-main-api-gateway",
+    "Status": "PASS",
+    "Details": "Up 7 minutes (healthy)",
+    "Expected": "Healthy/Up",
+    "Actual": "Up 7 minutes (healthy)",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.9552378+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-websocket-api",
+    "Status": "PASS",
+    "Details": "Up 7 minutes (healthy)",
+    "Expected": "Healthy/Up",
+    "Actual": "Up 7 minutes (healthy)",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.9565809+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-romai-ml-api",
+    "Status": "PASS",
+    "Details": "Up 8 minutes (healthy)",
+    "Expected": "Healthy/Up",
+    "Actual": "Up 8 minutes (healthy)",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.9578971+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-redis-cache",
+    "Status": "PASS",
+    "Details": "Up 8 minutes (healthy)",
+    "Expected": "Healthy/Up",
+    "Actual": "Up 8 minutes (healthy)",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.9589404+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-postgresql-db",
+    "Status": "PASS",
+    "Details": "Up 8 minutes (healthy)",
+    "Expected": "Healthy/Up",
+    "Actual": "Up 8 minutes (healthy)",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.9599619+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-cbd-db",
+    "Status": "PASS",
+    "Details": "Up 8 minutes (healthy)",
+    "Expected": "Healthy/Up",
+    "Actual": "Up 8 minutes (healthy)",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.9609051+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-kibana",
+    "Status": "PASS",
+    "Details": "Up 3 hours",
+    "Expected": "Healthy/Up",
+    "Actual": "Up 3 hours",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.9619334+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-jaeger",
+    "Status": "PASS",
+    "Details": "Up 3 hours",
+    "Expected": "Healthy/Up",
+    "Actual": "Up 3 hours",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.9632305+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-monitoring-grafana",
+    "Status": "PASS",
+    "Details": "Up 3 hours",
+    "Expected": "Healthy/Up",
+    "Actual": "Up 3 hours",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.9642058+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-monitoring-redis",
+    "Status": "PASS",
+    "Details": "Up 3 hours",
+    "Expected": "Healthy/Up",
+    "Actual": "Up 3 hours",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.965281+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-monitoring-elasticsearch",
+    "Status": "PASS",
+    "Details": "Up 3 hours",
+    "Expected": "Healthy/Up",
+    "Actual": "Up 3 hours",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.9666712+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-monitoring-alertmanager",
+    "Status": "PASS",
+    "Details": "Up 3 hours",
+    "Expected": "Healthy/Up",
+    "Actual": "Up 3 hours",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.9675737+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-node-exporter",
+    "Status": "PASS",
+    "Details": "Up 3 hours",
+    "Expected": "Healthy/Up",
+    "Actual": "Up 3 hours",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.9686227+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "Container: codai-monitoring-prometheus",
+    "Status": "PASS",
+    "Details": "Up 3 hours",
+    "Expected": "Healthy/Up",
+    "Actual": "Up 3 hours",
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.96932+03:00"
+  },
+  {
+    "Category": "Container Health & Status",
+    "TestName": "No Exited Containers",
+    "Status": "PASS",
+    "Details": "All containers running",
+    "Expected": 0,
+    "Actual": 0,
+    "Duration": null,
+    "Timestamp": "2025-08-23T00:26:14.98293+03:00"
+  },
+  {
+    "Category": "Port Accessibility & Networking",
+    "TestName": "Port 8180 (CBD Database)",
+    "Status": "PASS",
+    "Details": "HTTP Status: 200",
+    "Expected": "200-299",
+    "Actual": 200,
+    "Duration": 57.2136,
+    "Timestamp": "2025-08-23T00:26:15.0458297+03:00"
+  },
+  {
+    "Category": "Port Accessibility & Networking",
+    "TestName": "Port 4950 (MemorAI MCP)",
+    "Status": "WARN",
+    "Details": "HTTP Status: 404",
+    "Expected": "200-299",
+    "Actual": 404,
+    "Duration": 11.2118,
+    "Timestamp": "2025-08-23T00:26:15.0610145+03:00"
+  },
+  {
+    "Category": "Port Accessibility & Networking",
+    "TestName": "Port 8080 (Nginx Load Balancer)",
+    "Status": "FAIL",
+    "Details": "No connection could be made because the target machine actively refused it. (localhost:8080)",
+    "Expected": "Accessible",
+    "Actual": "Connection failed",
+    "Duration": 4086.0002,
+    "Timestamp": "2025-08-23T00:26:19.1504358+03:00"
+  },
+  {
+    "Category": "Port Accessibility & Networking",
+    "TestName": "Port 8081 (SSL Proxy HTTP)",
+    "Status": "FAIL",
+    "Details": "The SSL connection could not be established, see inner exception.",
+    "Expected": "Accessible",
+    "Actual": "Connection failed",
+    "Duration": 259.5836,
+    "Timestamp": "2025-08-23T00:26:19.411033+03:00"
+  },
+  {
+    "Category": "Port Accessibility & Networking",
+    "TestName": "Port 8443 (SSL Proxy HTTPS)",
+    "Status": "FAIL",
+    "Details": "The SSL connection could not be established, see inner exception.",
+    "Expected": "Accessible",
+    "Actual": "Connection failed",
+    "Duration": 7.5434,
+    "Timestamp": "2025-08-23T00:26:19.4194888+03:00"
+  },
+  {
+    "Category": "Port Accessibility & Networking",
+    "TestName": "Port 4500 (GraphQL API)",
+    "Status": "WARN",
+    "Details": "HTTP Status: 400",
+    "Expected": "200-299",
+    "Actual": 400,
+    "Duration": 7.9492,
+    "Timestamp": "2025-08-23T00:26:19.4284663+03:00"
+  },
+  {
+    "Category": "Port Accessibility & Networking",
+    "TestName": "Port 8006 (MemorAI Frontend)",
+    "Status": "PASS",
+    "Details": "HTTP Status: 200",
+    "Expected": "200-299",
+    "Actual": 200,
+    "Duration": 21.5561,
+    "Timestamp": "2025-08-23T00:26:19.4509191+03:00"
+  },
+  {
+    "Category": "Port Accessibility & Networking",
+    "TestName": "Port 8120 (BancAI Frontend)",
+    "Status": "PASS",
+    "Details": "HTTP Status: 200",
+    "Expected": "200-299",
+    "Actual": 200,
+    "Duration": 4.0508,
+    "Timestamp": "2025-08-23T00:26:19.4560018+03:00"
+  },
+  {
+    "Category": "Port Accessibility & Networking",
+    "TestName": "Port 4300 (PostgreSQL)",
+    "Status": "PASS",
+    "Details": "TCP connection successful",
+    "Expected": "Accessible",
+    "Actual": "Accessible",
+    "Duration": 6.3261,
+    "Timestamp": "2025-08-23T00:26:19.4633727+03:00"
+  },
+  {
+    "Category": "Port Accessibility & Networking",
+    "TestName": "Port 8020 (Redis Cache)",
+    "Status": "PASS",
+    "Details": "TCP connection successful",
+    "Expected": "Accessible",
+    "Actual": "Accessible",
+    "Duration": 1.7139,
+    "Timestamp": "2025-08-23T00:26:19.4661794+03:00"
+  }
+]

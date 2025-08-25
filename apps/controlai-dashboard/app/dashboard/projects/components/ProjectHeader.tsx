@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Project Header Component - Enhanced header with search and actions
  */
-'use client'
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
@@ -235,4 +236,5 @@ export function ProjectHeader({
         </div>
     )
 }
+
 

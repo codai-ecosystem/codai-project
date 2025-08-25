@@ -1,0 +1,240 @@
+{
+  "summary": {
+    "status": "NEEDS_IMPROVEMENT",
+    "status_emoji": "❌",
+    "total_tests": 15,
+    "passed_tests": 3,
+    "failed_tests": 12,
+    "success_rate": 0.2,
+    "average_confidence": 0.8493333333333334,
+    "test_duration_seconds": 0.004411
+  },
+  "discipline_performance": {
+    "psychology": {
+      "total": 3,
+      "passed": 1,
+      "avg_confidence": 0.84,
+      "success_rate": 0.3333333333333333
+    },
+    "physics": {
+      "total": 3,
+      "passed": 0,
+      "avg_confidence": 0.88,
+      "success_rate": 0.0
+    },
+    "chemistry": {
+      "total": 3,
+      "passed": 0,
+      "avg_confidence": 0.86,
+      "success_rate": 0.0
+    },
+    "biology": {
+      "total": 3,
+      "passed": 1,
+      "avg_confidence": 0.8099999999999999,
+      "success_rate": 0.3333333333333333
+    },
+    "earth_sciences": {
+      "total": 3,
+      "passed": 1,
+      "avg_confidence": 0.8566666666666666,
+      "success_rate": 0.3333333333333333
+    }
+  },
+  "quality_metrics": {
+    "avg_methodology_score": 0.9660714285714286,
+    "avg_design_quality_score": 0.9821428571428571
+  },
+  "detailed_results": [
+    {
+      "test_case": "Design an experimental study to investigate the effectiveness of a new antidepressant medication com...",
+      "discipline": "psychology",
+      "study_type": "experimental",
+      "result": "ResearchResult(research_conclusion='Physics research shows 97.5% methodology validity with 100.0% experimental design quality', research_reasoning=['Physics Research Analysis: Experimental', 'Sample Size: 200 measurements', 'Measurement Precision: ±1.00%', 'Experimental Conditions: 3', 'Statistical Power: 80.0%', 'Experimental Design Score: 100.0%', 'Methodology Validity: 97.5%'], confidence_score=0.88, statistical_results={'sample_size': 200, 'statistical_power': 0.95, 'detectable_effect_size': 50.0}, experimental_design={'design_score': 1.0, 'study_type': 'experimental', 'sample_adequacy': 1.0}, methodology_assessment={'validity_score': 0.975, 'reproducibility_score': 0.85}, data_analysis={'primary_analysis': ['t_test', 'anova'], 'effect_size_calculation': True, 'confidence_intervals': True}, validity_assessment={'internal_validity': 1.0, 'external_validity': 0.975, 'construct_validity': 0.9875}, recommendations=['Ensure measurement precision meets field standards', 'Conduct power analysis for sample size determination'], research_discipline='physics', study_type='experimental', publication_readiness={'readiness_score': 0.8775, 'target_journals': ['Nature Physics', 'Physical Review', 'Science'], 'estimated_impact_factor': 8.5, 'publication_timeline': '3-6 months'})",
+      "confidence": 0.88,
+      "passed": false,
+      "issues": [
+        "Incorrect discipline: physics vs psychology"
+      ],
+      "performance_score": 90.0
+    },
+    {
+      "test_case": "Analyze the quantum coherence properties of superconducting qubits at different temperatures and mag...",
+      "discipline": "physics",
+      "study_type": "experimental",
+      "result": "ResearchResult(research_conclusion='Physics research shows 97.5% methodology validity with 100.0% experimental design quality', research_reasoning=['Physics Research Analysis: Computational', 'Sample Size: 300 measurements', 'Measurement Precision: ±0.05%', 'Experimental Conditions: 8', 'Statistical Power: 90.0%', 'Experimental Design Score: 100.0%', 'Methodology Validity: 97.5%'], confidence_score=0.88, statistical_results={'sample_size': 300, 'statistical_power': 0.95, 'detectable_effect_size': 1000.0}, experimental_design={'design_score': 1.0, 'study_type': 'computational', 'sample_adequacy': 1.0}, methodology_assessment={'validity_score': 0.975, 'reproducibility_score': 0.85}, data_analysis={'primary_analysis': ['t_test', 'anova'], 'effect_size_calculation': True, 'confidence_intervals': True}, validity_assessment={'internal_validity': 1.0, 'external_validity': 0.975, 'construct_validity': 0.9875}, recommendations=['Ensure measurement precision meets field standards', 'Conduct power analysis for sample size determination'], research_discipline='physics', study_type='computational', publication_readiness={'readiness_score': 0.8775, 'target_journals': ['Nature Physics', 'Physical Review', 'Science'], 'estimated_impact_factor': 8.5, 'publication_timeline': '3-6 months'})",
+      "confidence": 0.88,
+      "passed": false,
+      "issues": [
+        "Incorrect study type: computational vs experimental"
+      ],
+      "performance_score": 90.0
+    },
+    {
+      "test_case": "Synthesize and characterize novel organic photovoltaic materials with improved efficiency and stabil...",
+      "discipline": "chemistry",
+      "study_type": "synthetic",
+      "result": "ResearchResult(research_conclusion='Chemistry research demonstrates 100.0% methodological rigor with 100.0% experimental quality', research_reasoning=['Chemistry Research Analysis: Experimental', 'Reaction Yield: 78.5%', 'Product Purity: 96.2%', 'Replicates: 5', 'Analytical Methods: NMR, UV-Vis, XRD, DSC, GPC', 'Experimental Rigor: 100.0%', 'Methodology Score: 100.0%'], confidence_score=0.86, statistical_results={'reaction_yield': 78.5, 'product_purity': 96.2, 'replicates': 5, 'statistical_confidence': 1.0}, experimental_design={'rigor_score': 1.0, 'study_type': 'experimental'}, methodology_assessment={'method_score': 1.0, 'reproducibility_estimate': 0.82}, data_analysis={'spectroscopic_analysis': True, 'yield_optimization': True, 'purity_assessment': True}, validity_assessment={'internal_validity': 0.75, 'external_validity': 1.0, 'construct_validity': 0.875}, recommendations=['Ensure analytical methods are appropriate', 'Include adequate replication'], research_discipline='chemistry', study_type='experimental', publication_readiness={'readiness_score': 0.9, 'target_journals': ['Nature Chemistry', 'JACS', 'Angewandte Chemie'], 'estimated_impact_factor': 12.3, 'publication_timeline': '3-6 months'})",
+      "confidence": 0.86,
+      "passed": false,
+      "issues": [
+        "Incorrect study type: experimental vs synthetic"
+      ],
+      "performance_score": 90.0
+    },
+    {
+      "test_case": "Investigate gene expression patterns in cancer stem cells using single-cell RNA sequencing to identi...",
+      "discipline": "biology",
+      "study_type": "molecular",
+      "result": "ResearchResult(research_conclusion='Biology research achieves 95.0% statistical power with 97.5% experimental validity', research_reasoning=['Biology Research Analysis: Molecular', 'Sample Size: 120 (Control: 60)', 'Biological Replicates: 8', 'Expected Effect Size: 0.6', 'Statistical Power: 95.0%', 'Experimental Validity: 97.5%'], confidence_score=0.84, statistical_results={'total_sample_size': 180, 'statistical_power': 0.95, 'effect_size': 0.6}, experimental_design={'design_quality': 1.0, 'sample_adequacy': 1.0}, methodology_assessment={'validity_score': 0.975, 'reproducibility_estimate': 0.68}, data_analysis={'statistical_tests': ['t_test', 'anova'], 'multiple_comparison_correction': True, 'biological_significance': True}, validity_assessment={'internal_validity': 1.0, 'external_validity': 0.975, 'construct_validity': 0.9875}, recommendations=['Ensure adequate biological replication', 'Include statistical power analysis'], research_discipline='biology', study_type='molecular', publication_readiness={'readiness_score': 0.8775, 'target_journals': ['Nature', 'Cell', 'Science'], 'estimated_impact_factor': 15.2, 'publication_timeline': '3-6 months'})",
+      "confidence": 0.84,
+      "passed": true,
+      "issues": [],
+      "performance_score": 105.0
+    },
+    {
+      "test_case": "Model climate change impacts on Arctic sea ice dynamics using satellite data and machine learning ap...",
+      "discipline": "earth_sciences",
+      "study_type": "modeling",
+      "result": "ResearchResult(research_conclusion='Psychology research design achieves 95.0% statistical power with 100.0% methodological quality', research_reasoning=['Psychology Research Analysis: Observational', 'Sample Size: 120 participants', \"Expected Effect Size: 0.3 (Cohen's d)\", 'Statistical Power: 95.0%', 'Alpha Level: 0.05', 'Randomization: Yes', 'Design Quality: 100.0%'], confidence_score=0.82, statistical_results={'achieved_power': 0.95, 'effect_size': 0.3, 'sample_size': 120}, experimental_design={'quality_score': 1.0, 'randomization_quality': 1.0}, methodology_assessment={'design_rigor': 1.0, 'statistical_adequacy': 0.95, 'reproducibility_concern': 0.61}, data_analysis={'preregistration': True, 'effect_size_reporting': True, 'bayesian_analysis': True}, validity_assessment={'internal_validity': 1.0, 'external_validity': 0.7, 'construct_validity': 0.85}, recommendations=['Preregister study design', 'Report effect sizes and confidence intervals'], research_discipline='psychology', study_type='observational', publication_readiness={'readiness_score': 0.675, 'target_journals': ['Psychological Science', 'Nature Human Behaviour'], 'estimated_impact_factor': 6.8, 'publication_timeline': '6-12 months'})",
+      "confidence": 0.82,
+      "passed": false,
+      "issues": [
+        "Incorrect discipline: psychology vs earth_sciences",
+        "Incorrect study type: observational vs modeling"
+      ],
+      "performance_score": 75.0
+    },
+    {
+      "test_case": "Evaluate the cognitive behavioral therapy effectiveness for adolescent anxiety disorders in a multic...",
+      "discipline": "psychology",
+      "study_type": "experimental",
+      "result": "ResearchResult(research_conclusion='Psychology research design achieves 95.0% statistical power with 100.0% methodological quality', research_reasoning=['Psychology Research Analysis: Experimental', 'Sample Size: 300 participants', \"Expected Effect Size: 0.35 (Cohen's d)\", 'Statistical Power: 95.0%', 'Alpha Level: 0.05', 'Randomization: Yes', 'Design Quality: 100.0%'], confidence_score=0.82, statistical_results={'achieved_power': 0.95, 'effect_size': 0.35, 'sample_size': 300}, experimental_design={'quality_score': 1.0, 'randomization_quality': 1.0}, methodology_assessment={'design_rigor': 1.0, 'statistical_adequacy': 0.95, 'reproducibility_concern': 0.61}, data_analysis={'preregistration': True, 'effect_size_reporting': True, 'bayesian_analysis': True}, validity_assessment={'internal_validity': 1.0, 'external_validity': 0.7, 'construct_validity': 0.85}, recommendations=['Preregister study design', 'Report effect sizes and confidence intervals'], research_discipline='psychology', study_type='experimental', publication_readiness={'readiness_score': 0.675, 'target_journals': ['Psychological Science', 'Nature Human Behaviour'], 'estimated_impact_factor': 6.8, 'publication_timeline': '6-12 months'})",
+      "confidence": 0.82,
+      "passed": true,
+      "issues": [],
+      "performance_score": 100.0
+    },
+    {
+      "test_case": "Investigate protein-protein interactions in Alzheimer's disease using cryo-electron microscopy and s...",
+      "discipline": "biology",
+      "study_type": "experimental",
+      "result": "ResearchResult(research_conclusion='Biology research achieves 95.0% statistical power with 97.5% experimental validity', research_reasoning=['Biology Research Analysis: Molecular', 'Sample Size: 200 (Control: 100)', 'Biological Replicates: 6', 'Expected Effect Size: 0.7', 'Statistical Power: 95.0%', 'Experimental Validity: 97.5%'], confidence_score=0.84, statistical_results={'total_sample_size': 300, 'statistical_power': 0.95, 'effect_size': 0.7}, experimental_design={'design_quality': 1.0, 'sample_adequacy': 1.0}, methodology_assessment={'validity_score': 0.975, 'reproducibility_estimate': 0.68}, data_analysis={'statistical_tests': ['t_test', 'anova'], 'multiple_comparison_correction': True, 'biological_significance': True}, validity_assessment={'internal_validity': 1.0, 'external_validity': 0.975, 'construct_validity': 0.9875}, recommendations=['Ensure adequate biological replication', 'Include statistical power analysis'], research_discipline='biology', study_type='molecular', publication_readiness={'readiness_score': 0.8775, 'target_journals': ['Nature', 'Cell', 'Science'], 'estimated_impact_factor': 15.2, 'publication_timeline': '3-6 months'})",
+      "confidence": 0.84,
+      "passed": false,
+      "issues": [
+        "Incorrect study type: molecular vs experimental"
+      ],
+      "performance_score": 95.0
+    },
+    {
+      "test_case": "Develop novel metal-organic frameworks for carbon dioxide capture and storage applications...",
+      "discipline": "chemistry",
+      "study_type": "synthetic",
+      "result": "ResearchResult(research_conclusion='Chemistry research demonstrates 100.0% methodological rigor with 100.0% experimental quality', research_reasoning=['Chemistry Research Analysis: Experimental', 'Reaction Yield: 82.1%', 'Product Purity: 98.5%', 'Replicates: 4', 'Analytical Methods: XRD, BET, TGA, FTIR, SEM', 'Experimental Rigor: 100.0%', 'Methodology Score: 100.0%'], confidence_score=0.86, statistical_results={'reaction_yield': 82.1, 'product_purity': 98.5, 'replicates': 4, 'statistical_confidence': 1.0}, experimental_design={'rigor_score': 1.0, 'study_type': 'experimental'}, methodology_assessment={'method_score': 1.0, 'reproducibility_estimate': 0.82}, data_analysis={'spectroscopic_analysis': False, 'yield_optimization': True, 'purity_assessment': True}, validity_assessment={'internal_validity': 0.75, 'external_validity': 1.0, 'construct_validity': 0.875}, recommendations=['Ensure analytical methods are appropriate', 'Include adequate replication'], research_discipline='chemistry', study_type='experimental', publication_readiness={'readiness_score': 0.9, 'target_journals': ['Nature Chemistry', 'JACS', 'Angewandte Chemie'], 'estimated_impact_factor': 12.3, 'publication_timeline': '3-6 months'})",
+      "confidence": 0.86,
+      "passed": false,
+      "issues": [
+        "Incorrect study type: experimental vs synthetic"
+      ],
+      "performance_score": 90.0
+    },
+    {
+      "test_case": "Study dark matter particle interactions using underground detector arrays and statistical analysis o...",
+      "discipline": "physics",
+      "study_type": "experimental",
+      "result": "ResearchResult(research_conclusion='Physics research shows 97.5% methodology validity with 100.0% experimental design quality', research_reasoning=['Physics Research Analysis: Computational', 'Sample Size: 100000 measurements', 'Measurement Precision: ±0.01%', 'Experimental Conditions: 12', 'Statistical Power: 95.0%', 'Experimental Design Score: 100.0%', 'Methodology Validity: 97.5%'], confidence_score=0.88, statistical_results={'sample_size': 100000, 'statistical_power': 0.95, 'detectable_effect_size': 5000.0}, experimental_design={'design_score': 1.0, 'study_type': 'computational', 'sample_adequacy': 1.0}, methodology_assessment={'validity_score': 0.975, 'reproducibility_score': 0.85}, data_analysis={'primary_analysis': ['t_test', 'anova'], 'effect_size_calculation': True, 'confidence_intervals': True}, validity_assessment={'internal_validity': 1.0, 'external_validity': 0.975, 'construct_validity': 0.9875}, recommendations=['Ensure measurement precision meets field standards', 'Conduct power analysis for sample size determination'], research_discipline='physics', study_type='computational', publication_readiness={'readiness_score': 0.8775, 'target_journals': ['Nature Physics', 'Physical Review', 'Science'], 'estimated_impact_factor': 8.5, 'publication_timeline': '3-6 months'})",
+      "confidence": 0.88,
+      "passed": false,
+      "issues": [
+        "Incorrect study type: computational vs experimental"
+      ],
+      "performance_score": 90.0
+    },
+    {
+      "test_case": "Assess the impact of microplastics on marine ecosystem food webs through field sampling and laborato...",
+      "discipline": "earth_sciences",
+      "study_type": "field_study",
+      "result": "ResearchResult(research_conclusion='Physics research shows 97.5% methodology validity with 100.0% experimental design quality', research_reasoning=['Physics Research Analysis: Computational', 'Sample Size: 100 measurements', 'Measurement Precision: ±1.00%', 'Experimental Conditions: 3', 'Statistical Power: 80.0%', 'Experimental Design Score: 100.0%', 'Methodology Validity: 97.5%'], confidence_score=0.88, statistical_results={'sample_size': 100, 'statistical_power': 0.95, 'detectable_effect_size': 50.0}, experimental_design={'design_score': 1.0, 'study_type': 'computational', 'sample_adequacy': 1.0}, methodology_assessment={'validity_score': 0.975, 'reproducibility_score': 0.85}, data_analysis={'primary_analysis': ['t_test', 'anova'], 'effect_size_calculation': True, 'confidence_intervals': True}, validity_assessment={'internal_validity': 1.0, 'external_validity': 0.975, 'construct_validity': 0.9875}, recommendations=['Ensure measurement precision meets field standards', 'Conduct power analysis for sample size determination'], research_discipline='physics', study_type='computational', publication_readiness={'readiness_score': 0.8775, 'target_journals': ['Nature Physics', 'Physical Review', 'Science'], 'estimated_impact_factor': 8.5, 'publication_timeline': '3-6 months'})",
+      "confidence": 0.88,
+      "passed": false,
+      "issues": [
+        "Incorrect discipline: physics vs earth_sciences",
+        "Incorrect study type: computational vs field_study"
+      ],
+      "performance_score": 75.0
+    },
+    {
+      "test_case": "Investigate social media influence on adolescent mental health using longitudinal survey data and ne...",
+      "discipline": "psychology",
+      "study_type": "longitudinal",
+      "result": "ResearchResult(research_conclusion='Psychology research design achieves 95.0% statistical power with 100.0% methodological quality', research_reasoning=['Psychology Research Analysis: Correlational', 'Sample Size: 2500 participants', \"Expected Effect Size: 0.25 (Cohen's d)\", 'Statistical Power: 95.0%', 'Alpha Level: 0.05', 'Randomization: No', 'Design Quality: 100.0%'], confidence_score=0.82, statistical_results={'achieved_power': 0.95, 'effect_size': 0.25, 'sample_size': 2500}, experimental_design={'quality_score': 1.0, 'randomization_quality': 0.0}, methodology_assessment={'design_rigor': 1.0, 'statistical_adequacy': 0.95, 'reproducibility_concern': 0.61}, data_analysis={'preregistration': True, 'effect_size_reporting': True, 'bayesian_analysis': True}, validity_assessment={'internal_validity': 1.0, 'external_validity': 0.7, 'construct_validity': 0.85}, recommendations=['Preregister study design', 'Report effect sizes and confidence intervals'], research_discipline='psychology', study_type='correlational', publication_readiness={'readiness_score': 0.675, 'target_journals': ['Psychological Science', 'Nature Human Behaviour'], 'estimated_impact_factor': 6.8, 'publication_timeline': '6-12 months'})",
+      "confidence": 0.82,
+      "passed": false,
+      "issues": [
+        "Incorrect study type: correlational vs longitudinal"
+      ],
+      "performance_score": 90.0
+    },
+    {
+      "test_case": "Develop high-temperature superconductors through computational materials design and experimental val...",
+      "discipline": "physics",
+      "study_type": "computational",
+      "result": "ResearchResult(research_conclusion='Physics research shows 97.5% methodology validity with 100.0% experimental design quality', research_reasoning=['Physics Research Analysis: Experimental', 'Sample Size: 150 measurements', 'Measurement Precision: ±0.10%', 'Experimental Conditions: 6', 'Statistical Power: 88.0%', 'Experimental Design Score: 100.0%', 'Methodology Validity: 97.5%'], confidence_score=0.88, statistical_results={'sample_size': 150, 'statistical_power': 0.95, 'detectable_effect_size': 500.0}, experimental_design={'design_score': 1.0, 'study_type': 'experimental', 'sample_adequacy': 1.0}, methodology_assessment={'validity_score': 0.975, 'reproducibility_score': 0.85}, data_analysis={'primary_analysis': ['t_test', 'anova'], 'effect_size_calculation': True, 'confidence_intervals': True}, validity_assessment={'internal_validity': 1.0, 'external_validity': 0.975, 'construct_validity': 0.9875}, recommendations=['Ensure measurement precision meets field standards', 'Conduct power analysis for sample size determination'], research_discipline='physics', study_type='experimental', publication_readiness={'readiness_score': 0.8775, 'target_journals': ['Nature Physics', 'Physical Review', 'Science'], 'estimated_impact_factor': 8.5, 'publication_timeline': '3-6 months'})",
+      "confidence": 0.88,
+      "passed": false,
+      "issues": [
+        "Incorrect study type: experimental vs computational"
+      ],
+      "performance_score": 90.0
+    },
+    {
+      "test_case": "Characterize antibiotic resistance mechanisms in bacterial biofilms using genomic and proteomic appr...",
+      "discipline": "biology",
+      "study_type": "molecular",
+      "result": "ResearchResult(research_conclusion='General research design shows 75.0% methodological quality with 75.0% experimental design adequacy', research_reasoning=['General Research Analysis: Exploratory', 'Sample Size: 180', 'Variables: 3', 'Measurements: 5', 'Controls: Present', 'Design Quality: 75.0%', 'Methodology Score: 75.0%'], confidence_score=0.75, statistical_results={'sample_size': 180, 'effect_size_detectable': 0.5, 'statistical_power': 0.75, 'confidence_level': 0.95, 'analysis_complexity': 15}, experimental_design={'design_type': 'exploratory', 'sample_adequacy': 1.0, 'variable_complexity': 0.6, 'measurement_frequency': 1.0, 'control_presence': 1.0, 'overall_score': 0.75}, methodology_assessment={'design_rigor': 0.7, 'measurement_quality': 0.75, 'analysis_appropriateness': 0.8, 'overall_quality': 0.75}, data_analysis={'recommended_tests': ['descriptive_statistics', 'correlation_analysis'], 'sample_size_adequacy': 'adequate'}, validity_assessment={'internal_validity': 0.7, 'external_validity': 0.65, 'construct_validity': 0.75}, recommendations=['Conduct thorough literature review', 'Ensure appropriate statistical analysis', 'Consider replication and reproducibility'], research_discipline='general', study_type='exploratory', publication_readiness={'readiness_score': 0.7, 'required_improvements': []})",
+      "confidence": 0.75,
+      "passed": false,
+      "issues": [
+        "Incorrect discipline: general vs biology",
+        "Incorrect study type: exploratory vs molecular",
+        "Statistical power mismatch: 0.75 vs expected 0.90"
+      ],
+      "performance_score": 70.0
+    },
+    {
+      "test_case": "Optimize green hydrogen production through electrochemical water splitting using novel catalyst mate...",
+      "discipline": "chemistry",
+      "study_type": "experimental",
+      "result": "ResearchResult(research_conclusion='Chemistry research demonstrates 100.0% methodological rigor with 100.0% experimental quality', research_reasoning=['Chemistry Research Analysis: Synthetic', 'Reaction Yield: 75.8%', 'Product Purity: 99.9%', 'Replicates: 6', 'Analytical Methods: XPS, XRD, SEM, Electrochemical, GC', 'Experimental Rigor: 100.0%', 'Methodology Score: 100.0%'], confidence_score=0.86, statistical_results={'reaction_yield': 75.8, 'product_purity': 99.9, 'replicates': 6, 'statistical_confidence': 1.0}, experimental_design={'rigor_score': 1.0, 'study_type': 'synthetic'}, methodology_assessment={'method_score': 1.0, 'reproducibility_estimate': 0.82}, data_analysis={'spectroscopic_analysis': False, 'yield_optimization': True, 'purity_assessment': True}, validity_assessment={'internal_validity': 0.75, 'external_validity': 1.0, 'construct_validity': 0.875}, recommendations=['Ensure analytical methods are appropriate', 'Include adequate replication'], research_discipline='chemistry', study_type='synthetic', publication_readiness={'readiness_score': 0.9, 'target_journals': ['Nature Chemistry', 'JACS', 'Angewandte Chemie'], 'estimated_impact_factor': 12.3, 'publication_timeline': '3-6 months'})",
+      "confidence": 0.86,
+      "passed": false,
+      "issues": [
+        "Incorrect study type: synthetic vs experimental"
+      ],
+      "performance_score": 90.0
+    },
+    {
+      "test_case": "Model global ocean circulation changes under different climate scenarios using coupled atmosphere-oc...",
+      "discipline": "earth_sciences",
+      "study_type": "modeling",
+      "result": "ResearchResult(research_conclusion='Earth sciences research provides 100.0% data quality with 100.0% methodological robustness', research_reasoning=['Earth Sciences Research Analysis: Modeling', 'Data Points: 1000000', 'Temporal Coverage: 100 years', 'Spatial Coverage: 510000000 km²', 'Measurement Accuracy: ±1.0%', 'Data Quality: 100.0%'], confidence_score=0.87, statistical_results={'data_points': 1000000, 'data_quality_score': 1.0}, experimental_design={'design_strength': 1.0, 'temporal_adequacy': 1.0}, methodology_assessment={'robustness_score': 1.0, 'model_validation': True, 'reproducibility_estimate': 0.78}, data_analysis={'time_series_analysis': True, 'spatial_analysis': True, 'uncertainty_quantification': True}, validity_assessment={'internal_validity': 0.75, 'external_validity': 0.7, 'construct_validity': 0.725}, recommendations=['Ensure adequate temporal coverage', 'Include model validation'], research_discipline='earth_sciences', study_type='modeling', publication_readiness={'readiness_score': 0.675, 'target_journals': ['Nature Geoscience', 'Science'], 'estimated_impact_factor': 9.1, 'publication_timeline': '6-12 months'})",
+      "confidence": 0.87,
+      "passed": true,
+      "issues": [],
+      "performance_score": 100.0
+    }
+  ],
+  "recommendations": [
+    "Improve experimental design evaluation accuracy",
+    "Enhance statistical analysis validation",
+    "Strengthen methodology assessment framework",
+    "Refine discipline-specific research standards",
+    "Improve publication readiness evaluation",
+    "Improve psychology research methodology evaluation",
+    "Improve physics research methodology evaluation",
+    "Improve chemistry research methodology evaluation",
+    "Improve biology research methodology evaluation",
+    "Improve earth_sciences research methodology evaluation"
+  ]
+}

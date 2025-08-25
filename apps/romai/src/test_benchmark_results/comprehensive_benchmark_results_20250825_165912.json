@@ -1,0 +1,766 @@
+{
+  "model_name": "RUAGA-NOVA-Test-v1.0",
+  "evaluation_timestamp": "2025-08-25T16:59:12.640128",
+  "total_execution_time_seconds": 30.64618444442749,
+  "overall_performance": {
+    "overall_score": 0.7287083333333334,
+    "weighted_score": 0.7225709219858156,
+    "target_accuracy": 0.95,
+    "target_met": "False",
+    "excellence_achieved": "False"
+  },
+  "suite_performance": {
+    "academic": {
+      "overall_score": 0.5323333333333333,
+      "completed_count": 3,
+      "failed_count": 0,
+      "total_count": 3,
+      "status": "completed",
+      "category_metrics": {
+        "accuracy": 0.6075,
+        "precision": 0.215,
+        "recall": 0.215,
+        "pass_at_k": 1.0,
+        "exact_match": 0.691
+      },
+      "benchmark_names": [
+        "MMLU",
+        "HumanEval",
+        "MATH"
+      ],
+      "execution_time": 0.014280080795288086
+    },
+    "romanian_cultural": {
+      "overall_score": 0.6825000000000001,
+      "completed_count": 3,
+      "failed_count": 0,
+      "total_count": 3,
+      "status": "completed",
+      "category_metrics": {
+        "accuracy": 0.6825000000000001,
+        "cultural_appropriateness": 0.6027777777777777
+      },
+      "benchmark_names": [
+        "Romanian Language",
+        "Romanian Folklore",
+        "Romanian History"
+      ],
+      "execution_time": 0.00023746490478515625
+    },
+    "action_taking": {
+      "overall_score": 1.0,
+      "completed_count": 3,
+      "failed_count": 0,
+      "total_count": 3,
+      "status": "completed",
+      "category_metrics": {
+        "accuracy": 1.0,
+        "safety": 1.0,
+        "efficiency": 1.0
+      },
+      "benchmark_names": [
+        "File Operations",
+        "System Commands",
+        "Web Interactions"
+      ],
+      "execution_time": 3.8623809814453125e-05
+    },
+    "performance": {
+      "overall_score": 0.7000000000000001,
+      "completed_count": 3,
+      "failed_count": 0,
+      "total_count": 3,
+      "status": "completed",
+      "category_metrics": {
+        "latency": 0.46401196000166234,
+        "accuracy": 0.7000000000000001,
+        "efficiency": 0.6020500000000001,
+        "throughput": 1.0,
+        "memory_usage": 1.0
+      },
+      "benchmark_names": [
+        "Latency",
+        "Throughput",
+        "Resource Usage"
+      ],
+      "execution_time": 30.629506587982178
+    }
+  },
+  "category_excellence": {
+    "academic": {
+      "score": 0.5323333333333333,
+      "excellence": "False",
+      "target_met": "False"
+    },
+    "romanian_cultural": {
+      "score": 0.6825000000000001,
+      "excellence": "False",
+      "target_met": "False"
+    },
+    "action_taking": {
+      "score": 1.0,
+      "excellence": true,
+      "target_met": true
+    },
+    "performance": {
+      "score": 0.7000000000000001,
+      "excellence": "False",
+      "target_met": "False"
+    }
+  },
+  "comprehensive_insights": {
+    "strengths": [
+      "Exceptional action taking performance (100.0%)"
+    ],
+    "weaknesses": [
+      "Academic requires significant improvement (53.2%)"
+    ],
+    "competitive_advantages": [
+      "Superior action-taking capabilities (100.0%)"
+    ],
+    "improvement_areas": [
+      "Romanian Cultural needs optimization (68.3%)",
+      "Performance needs optimization (70.0%)"
+    ]
+  },
+  "improvement_recommendations": [
+    "Academic Performance: Improve MMLU reasoning, HumanEval code generation, and MATH problem-solving (current: 53.2%)",
+    "Romanian Cultural: Enhance language grammar, folklore knowledge, and historical understanding (current: 68.3%)",
+    "Performance: Optimize latency, throughput, and resource utilization (current: 70.0%)",
+    "Implement comprehensive model fine-tuning across all domains to achieve 95%+ accuracy target",
+    "Focus on multi-domain training to achieve balanced excellence across all categories"
+  ],
+  "aggregated_metrics": {
+    "summary": {
+      "total_benchmarks": 12,
+      "completed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "completion_rate": 1.0,
+      "overall_score": 0.7287083333333332,
+      "median_score": 0.7112499999999999,
+      "score_range": [
+        0.215,
+        1.0
+      ],
+      "score_std": 0.2641953553033983
+    },
+    "category_performance": {
+      "academic": {
+        "total_benchmarks": 3,
+        "completed": 3,
+        "avg_score": 0.5323333333333333,
+        "best_score": 1.0,
+        "worst_score": 0.215,
+        "benchmarks": [
+          "MMLU",
+          "HumanEval",
+          "MATH"
+        ]
+      },
+      "romanian_cultural": {
+        "total_benchmarks": 3,
+        "completed": 3,
+        "avg_score": 0.6825000000000001,
+        "best_score": 0.7625,
+        "worst_score": 0.625,
+        "benchmarks": [
+          "Romanian Language",
+          "Romanian Folklore",
+          "Romanian History"
+        ]
+      },
+      "action_taking": {
+        "total_benchmarks": 3,
+        "completed": 3,
+        "avg_score": 1.0,
+        "best_score": 1.0,
+        "worst_score": 1.0,
+        "benchmarks": [
+          "File Operations",
+          "System Commands",
+          "Web Interactions"
+        ]
+      },
+      "performance": {
+        "total_benchmarks": 3,
+        "completed": 3,
+        "avg_score": 0.7000000000000001,
+        "best_score": 1.0,
+        "worst_score": 0.5,
+        "benchmarks": [
+          "Latency",
+          "Throughput",
+          "Resource Usage"
+        ]
+      }
+    },
+    "performance_metrics": {
+      "avg_execution_time": 2.553671896457672,
+      "total_execution_time": 30.644062757492065,
+      "avg_memory_usage": 0.0,
+      "peak_memory_usage": 0.0,
+      "total_samples_processed": 1355,
+      "avg_samples_per_benchmark": 112.91666666666667
+    },
+    "cultural_performance": {
+      "cultural_benchmarks_count": 3,
+      "avg_cultural_score": 0.6825000000000001,
+      "cultural_excellence": "False",
+      "top_cultural_benchmarks": [
+        {
+          "name": "Romanian History",
+          "score": 0.7625
+        },
+        {
+          "name": "Romanian Folklore",
+          "score": 0.66
+        },
+        {
+          "name": "Romanian Language",
+          "score": 0.625
+        }
+      ]
+    },
+    "target_achievement": {
+      "score_target": 0.95,
+      "benchmarks_above_target": 5,
+      "total_benchmarks": 12,
+      "target_achievement_rate": 0.4166666666666667,
+      "avg_score": 0.7287083333333332,
+      "target_met": false,
+      "performance_targets": {
+        "latency_target_met": false,
+        "memory_target_met": true,
+        "all_performance_targets_met": false
+      }
+    },
+    "detailed_results": [
+      {
+        "name": "MMLU",
+        "category": "academic",
+        "status": "completed",
+        "primary_score": 0.215,
+        "metrics": {
+          "accuracy": 0.215,
+          "precision": 0.215,
+          "recall": 0.215
+        },
+        "execution_time": 0.012923002243041992,
+        "memory_usage": 0.0,
+        "sample_count": 200,
+        "error_message": null,
+        "metadata": {
+          "subjects_evaluated": 57,
+          "subject_scores": {
+            "abstract_algebra": 0.15,
+            "anatomy": 0.25,
+            "astronomy": 0.35,
+            "business_ethics": 0.15,
+            "clinical_knowledge": 0.3,
+            "college_biology": 0.1,
+            "college_chemistry": 0.3,
+            "college_computer_science": 0.2,
+            "college_mathematics": 0.05,
+            "college_medicine": 0.3
+          },
+          "difficulty_breakdown": {
+            "easy": 0.24242424242424243,
+            "medium": 0.234375,
+            "hard": 0.17142857142857143
+          }
+        }
+      },
+      {
+        "name": "HumanEval",
+        "category": "academic",
+        "status": "completed",
+        "primary_score": 0.38199999999999995,
+        "metrics": {
+          "pass_at_k": 1.0,
+          "exact_match": 0.38199999999999995
+        },
+        "execution_time": 0.00036072731018066406,
+        "memory_usage": 0.0,
+        "sample_count": 50,
+        "error_message": null,
+        "metadata": {
+          "problems_evaluated": 50,
+          "pass_at_k_breakdown": {
+            "pass@1": 1.0,
+            "pass@10": 1.0,
+            "pass@100": 0.0
+          },
+          "common_errors": []
+        }
+      },
+      {
+        "name": "MATH",
+        "category": "academic",
+        "status": "completed",
+        "primary_score": 1.0,
+        "metrics": {
+          "accuracy": 1.0,
+          "exact_match": 1.0
+        },
+        "execution_time": 0.0009963512420654297,
+        "memory_usage": 0.0,
+        "sample_count": 140,
+        "error_message": null,
+        "metadata": {
+          "problem_types_evaluated": 7,
+          "type_scores": {
+            "algebra": 1.0,
+            "number_theory": 1.0,
+            "counting_and_probability": 1.0,
+            "geometry": 1.0,
+            "intermediate_algebra": 1.0,
+            "prealgebra": 1.0,
+            "precalculus": 1.0
+          },
+          "difficulty_breakdown": {
+            "Level 1": 1.0,
+            "Level 2": 1.0,
+            "Level 3": 1.0,
+            "Level 4": 1.0,
+            "Level 5": 1.0
+          }
+        }
+      },
+      {
+        "name": "Romanian Language",
+        "category": "romanian_cultural",
+        "status": "completed",
+        "primary_score": 0.625,
+        "metrics": {
+          "accuracy": 0.625,
+          "cultural_appropriateness": 0.5833333333333333
+        },
+        "execution_time": 0.0001251697540283203,
+        "memory_usage": 0.0,
+        "sample_count": 8,
+        "error_message": null,
+        "metadata": {
+          "grammar_score": 0.6666666666666666,
+          "vocabulary_score": 0.6666666666666666,
+          "diacritics_score": 0.5,
+          "difficulty_breakdown": {
+            "basic": 0.6666666666666666,
+            "intermediate": 0.3333333333333333,
+            "advanced": 1.0,
+            "expert": 1.0
+          }
+        }
+      },
+      {
+        "name": "Romanian Folklore",
+        "category": "romanian_cultural",
+        "status": "completed",
+        "primary_score": 0.66,
+        "metrics": {
+          "accuracy": 0.66,
+          "cultural_appropriateness": 0.4625
+        },
+        "execution_time": 4.863739013671875e-05,
+        "memory_usage": 0.0,
+        "sample_count": 5,
+        "error_message": null,
+        "metadata": {
+          "story_knowledge_score": 0.0,
+          "character_knowledge_score": 0.925,
+          "symbolism_understanding": 0.6,
+          "regional_variations": {
+            "regional_score": 0.85
+          }
+        }
+      },
+      {
+        "name": "Romanian History",
+        "category": "romanian_cultural",
+        "status": "completed",
+        "primary_score": 0.7625,
+        "metrics": {
+          "accuracy": 0.7625,
+          "cultural_appropriateness": 0.7625
+        },
+        "execution_time": 6.365776062011719e-05,
+        "memory_usage": 0.0,
+        "sample_count": 4,
+        "error_message": null,
+        "metadata": {
+          "ancient_history_score": 0.8,
+          "medieval_history_score": 0.5,
+          "modern_history_score": 0.875,
+          "historical_figures_score": 0.7625
+        }
+      },
+      {
+        "name": "File Operations",
+        "category": "action_taking",
+        "status": "completed",
+        "primary_score": 1.0,
+        "metrics": {
+          "accuracy": 1.0,
+          "safety": 1.0,
+          "efficiency": 1.0
+        },
+        "execution_time": 1.5974044799804688e-05,
+        "memory_usage": 0.0,
+        "sample_count": 5,
+        "error_message": null,
+        "metadata": {
+          "successful_operations": 5,
+          "failed_operations": 0,
+          "safety_violations": 0,
+          "operation_breakdown": {
+            "create_file": {
+              "success": 1,
+              "failed": 0
+            },
+            "read_file": {
+              "success": 1,
+              "failed": 0
+            },
+            "append_to_file": {
+              "success": 1,
+              "failed": 0
+            },
+            "list_files": {
+              "success": 1,
+              "failed": 0
+            },
+            "delete_file": {
+              "success": 1,
+              "failed": 0
+            }
+          }
+        }
+      },
+      {
+        "name": "System Commands",
+        "category": "action_taking",
+        "status": "completed",
+        "primary_score": 1.0,
+        "metrics": {
+          "accuracy": 1.0,
+          "safety": 1.0,
+          "efficiency": 1.0
+        },
+        "execution_time": 1.33514404296875e-05,
+        "memory_usage": 0.0,
+        "sample_count": 4,
+        "error_message": null,
+        "metadata": {
+          "successful_commands": 4,
+          "failed_commands": 0,
+          "safety_violations": 0,
+          "command_breakdown": {
+            "list_directory": {
+              "success": 1,
+              "failed": 0
+            },
+            "check_date": {
+              "success": 1,
+              "failed": 0
+            },
+            "environment_variable": {
+              "success": 1,
+              "failed": 0
+            },
+            "system_info": {
+              "success": 1,
+              "failed": 0
+            }
+          }
+        }
+      },
+      {
+        "name": "Web Interactions",
+        "category": "action_taking",
+        "status": "completed",
+        "primary_score": 1.0,
+        "metrics": {
+          "accuracy": 1.0,
+          "safety": 1.0,
+          "efficiency": 1.0
+        },
+        "execution_time": 9.298324584960938e-06,
+        "memory_usage": 0.0,
+        "sample_count": 4,
+        "error_message": null,
+        "metadata": {
+          "successful_interactions": 4,
+          "failed_interactions": 0,
+          "safety_violations": 0,
+          "interaction_breakdown": {
+            "navigate_to_url": {
+              "success": 1,
+              "failed": 0
+            },
+            "find_element": {
+              "success": 1,
+              "failed": 0
+            },
+            "click_element": {
+              "success": 1,
+              "failed": 0
+            },
+            "fill_form": {
+              "success": 1,
+              "failed": 0
+            }
+          }
+        }
+      },
+      {
+        "name": "Latency",
+        "category": "performance",
+        "status": "completed",
+        "primary_score": 0.6,
+        "metrics": {
+          "latency": 0.46401196000166234,
+          "accuracy": 0.6,
+          "efficiency": 0.3
+        },
+        "execution_time": 13.401227712631226,
+        "memory_usage": 0.0,
+        "sample_count": 5,
+        "error_message": null,
+        "metadata": {
+          "mean_latency_ms": 267.9940199991688,
+          "p50_latency_ms": 234.47870000381954,
+          "p95_latency_ms": 489.50490998831805,
+          "p99_latency_ms": 498.585872000549,
+          "max_latency_ms": 498.96180001087487,
+          "latency_distribution": {
+            "under_100ms": 0.2,
+            "under_200ms": 0.3,
+            "under_500ms": 1.0,
+            "over_500ms": 0.0
+          },
+          "workload_breakdown": {
+            "simple_query": {
+              "mean_latency_ms": 71.86357000027783,
+              "p50_latency_ms": 77.73675001226366,
+              "p95_latency_ms": 78.76967499178136,
+              "target_latency_ms": 100,
+              "target_met": "True"
+            },
+            "medium_query": {
+              "mean_latency_ms": 196.49363999487832,
+              "p50_latency_ms": 194.05764999100938,
+              "p95_latency_ms": 235.22390998405172,
+              "target_latency_ms": 300,
+              "target_met": "True"
+            },
+            "complex_query": {
+              "mean_latency_ms": 411.3684599957196,
+              "p50_latency_ms": 415.46804999234155,
+              "p95_latency_ms": 489.5049099883181,
+              "target_latency_ms": 500,
+              "target_met": "True"
+            },
+            "code_generation": {
+              "mean_latency_ms": 225.48575000837445,
+              "p50_latency_ms": 226.72495000006165,
+              "p95_latency_ms": 243.56568001094274,
+              "target_latency_ms": 200,
+              "target_met": "False"
+            },
+            "data_analysis": {
+              "mean_latency_ms": 434.75867999659386,
+              "p50_latency_ms": 446.37174998933915,
+              "p95_latency_ms": 498.6165600013919,
+              "target_latency_ms": 400,
+              "target_met": "False"
+            }
+          }
+        }
+      },
+      {
+        "name": "Throughput",
+        "category": "performance",
+        "status": "completed",
+        "primary_score": 1.0,
+        "metrics": {
+          "throughput": 1.0,
+          "accuracy": 1.0,
+          "efficiency": 1.0
+        },
+        "execution_time": 6.985687494277954,
+        "memory_usage": 0.0,
+        "sample_count": 910,
+        "error_message": null,
+        "metadata": {
+          "requests_per_second": 353.4285003240641,
+          "peak_rps": 353.4285003240641,
+          "concurrent_users": 50,
+          "success_rate": 1.0,
+          "error_rate": 0.0,
+          "throughput_over_time": [
+            {
+              "concurrent_users": 1,
+              "requests_per_second": 7.418669497233462,
+              "success_rate": 1.0,
+              "error_rate": 0.0,
+              "avg_latency_ms": 134.78143999818712
+            },
+            {
+              "concurrent_users": 5,
+              "requests_per_second": 36.58424334144818,
+              "success_rate": 1.0,
+              "error_rate": 0.0,
+              "avg_latency_ms": 132.92451599845663
+            },
+            {
+              "concurrent_users": 10,
+              "requests_per_second": 71.63664518155394,
+              "success_rate": 1.0,
+              "error_rate": 0.0,
+              "avg_latency_ms": 133.51983499946073
+            },
+            {
+              "concurrent_users": 25,
+              "requests_per_second": 171.35466762840994,
+              "success_rate": 1.0,
+              "error_rate": 0.0,
+              "avg_latency_ms": 132.30902999977116
+            },
+            {
+              "concurrent_users": 50,
+              "requests_per_second": 353.4285003240641,
+              "success_rate": 1.0,
+              "error_rate": 0.0,
+              "avg_latency_ms": 132.56795880006393
+            }
+          ]
+        }
+      },
+      {
+        "name": "Resource Usage",
+        "category": "performance",
+        "status": "completed",
+        "primary_score": 0.5,
+        "metrics": {
+          "memory_usage": 1.0,
+          "efficiency": 0.50615,
+          "accuracy": 0.5
+        },
+        "execution_time": 10.242591381072998,
+        "memory_usage": 0.0,
+        "sample_count": 20,
+        "error_message": null,
+        "metadata": {
+          "peak_memory_mb": 339.0859375,
+          "avg_memory_mb": 339.0859375,
+          "peak_cpu_percent": 9.4,
+          "avg_cpu_percent": 1.23,
+          "memory_efficiency": 1.0,
+          "cpu_efficiency": 0.0123,
+          "resource_timeline": [
+            {
+              "timestamp": 1756130342.39294,
+              "memory_mb": 339.0859375,
+              "cpu_percent": 0.0
+            },
+            {
+              "timestamp": 1756130342.90389,
+              "memory_mb": 339.0859375,
+              "cpu_percent": 6.1
+            },
+            {
+              "timestamp": 1756130343.41741,
+              "memory_mb": 339.0859375,
+              "cpu_percent": 0.0
+            },
+            {
+              "timestamp": 1756130343.929923,
+              "memory_mb": 339.0859375,
+              "cpu_percent": 0.0
+            },
+            {
+              "timestamp": 1756130344.4446437,
+              "memory_mb": 339.0859375,
+              "cpu_percent": 0.0
+            },
+            {
+              "timestamp": 1756130344.9575012,
+              "memory_mb": 339.0859375,
+              "cpu_percent": 0.0
+            },
+            {
+              "timestamp": 1756130345.4703836,
+              "memory_mb": 339.0859375,
+              "cpu_percent": 0.0
+            },
+            {
+              "timestamp": 1756130345.9812753,
+              "memory_mb": 339.0859375,
+              "cpu_percent": 3.1
+            },
+            {
+              "timestamp": 1756130346.49302,
+              "memory_mb": 339.0859375,
+              "cpu_percent": 0.0
+            },
+            {
+              "timestamp": 1756130347.0074472,
+              "memory_mb": 339.0859375,
+              "cpu_percent": 0.0
+            },
+            {
+              "timestamp": 1756130347.5217714,
+              "memory_mb": 339.0859375,
+              "cpu_percent": 0.0
+            },
+            {
+              "timestamp": 1756130348.0228817,
+              "memory_mb": 339.0859375,
+              "cpu_percent": 0.0
+            },
+            {
+              "timestamp": 1756130348.5378432,
+              "memory_mb": 339.0859375,
+              "cpu_percent": 0.0
+            },
+            {
+              "timestamp": 1756130349.049847,
+              "memory_mb": 339.0859375,
+              "cpu_percent": 0.0
+            },
+            {
+              "timestamp": 1756130349.5640779,
+              "memory_mb": 339.0859375,
+              "cpu_percent": 3.0
+            },
+            {
+              "timestamp": 1756130350.0645406,
+              "memory_mb": 339.0859375,
+              "cpu_percent": 9.4
+            },
+            {
+              "timestamp": 1756130350.5783763,
+              "memory_mb": 339.0859375,
+              "cpu_percent": 3.0
+            },
+            {
+              "timestamp": 1756130351.093994,
+              "memory_mb": 339.0859375,
+              "cpu_percent": 0.0
+            },
+            {
+              "timestamp": 1756130351.6073318,
+              "memory_mb": 339.0859375,
+              "cpu_percent": 0.0
+            },
+            {
+              "timestamp": 1756130352.1214411,
+              "memory_mb": 339.0859375,
+              "cpu_percent": 0.0
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

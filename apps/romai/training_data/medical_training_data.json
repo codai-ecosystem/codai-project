@@ -1,0 +1,239 @@
+{
+    "metadata": {
+        "generated_at": "2025-08-24T12:10:00.000Z",
+        "num_examples": 50,
+        "generator_version": "1.0_medical_reasoning",
+        "external_ai_used": false,
+        "description": "Medical reasoning training data with clinical cases, differential diagnoses, and evidence-based treatments"
+    },
+    "medical_training_examples": [
+        {
+            "case": "45-year-old male presents with crushing chest pain radiating to left arm, diaphoresis, and nausea. Pain started 2 hours ago during physical exertion.",
+            "primary_diagnosis": "ST-elevation myocardial infarction (STEMI)",
+            "differential_diagnoses": [
+                "Non-ST elevation myocardial infarction (NSTEMI)",
+                "Unstable angina",
+                "Pulmonary embolism",
+                "Aortic dissection"
+            ],
+            "clinical_reasoning": [
+                "Step 1: Classic presentation of acute coronary syndrome",
+                "Step 2: Crushing chest pain with radiation suggests cardiac origin",
+                "Step 3: Associated symptoms (diaphoresis, nausea) support cardiac etiology",
+                "Step 4: Exertional onset indicates supply-demand mismatch",
+                "Step 5: Time course (2 hours) consistent with acute MI"
+            ],
+            "recommended_tests": [
+                "12-lead ECG (immediate)",
+                "Troponin I/T levels",
+                "CK-MB",
+                "Chest X-ray",
+                "PT/PTT, CBC, BMP"
+            ],
+            "treatment_plan": [
+                "Aspirin 325mg chewed immediately",
+                "Clopidogrel 600mg loading dose",
+                "Atorvastatin 80mg",
+                "Metoprolol 25mg BID if stable",
+                "Emergency cardiac catheterization"
+            ],
+            "confidence": 0.9,
+            "medical_domain": "cardiology",
+            "risk_factors": [
+                "male",
+                "middle_age",
+                "exertional_symptoms"
+            ]
+        },
+        {
+            "case": "28-year-old female with 3-week history of polyuria, polydipsia, and 15-pound weight loss. Family history of autoimmune disease.",
+            "primary_diagnosis": "Type 1 Diabetes Mellitus",
+            "differential_diagnoses": [
+                "Type 2 Diabetes Mellitus",
+                "Diabetes insipidus",
+                "Hyperthyroidism",
+                "Urinary tract infection"
+            ],
+            "clinical_reasoning": [
+                "Step 1: Classic triad of diabetes symptoms present",
+                "Step 2: Young age and rapid weight loss suggest Type 1",
+                "Step 3: Family history of autoimmune disease increases T1DM risk",
+                "Step 4: 3-week duration indicates acute onset typical of T1DM",
+                "Step 5: Female gender and age demographic fit T1DM pattern"
+            ],
+            "recommended_tests": [
+                "Random plasma glucose",
+                "Fasting plasma glucose",
+                "HbA1c",
+                "C-peptide level",
+                "GAD antibodies, IA-2 antibodies"
+            ],
+            "treatment_plan": [
+                "Insulin therapy initiation",
+                "Blood glucose monitoring education",
+                "Carbohydrate counting training",
+                "Endocrinology referral",
+                "Ophthalmology screening"
+            ],
+            "confidence": 0.85,
+            "medical_domain": "endocrinology",
+            "risk_factors": [
+                "young_female",
+                "family_autoimmune_history",
+                "rapid_onset"
+            ]
+        },
+        {
+            "case": "65-year-old smoker presents with productive cough, fever 101.5°F, and right-sided pleuritic chest pain. Chest X-ray shows right lower lobe consolidation.",
+            "primary_diagnosis": "Community-acquired pneumonia (CAP)",
+            "differential_diagnoses": [
+                "Lung cancer with post-obstructive pneumonia",
+                "Pulmonary embolism",
+                "Pleural effusion",
+                "Bronchitis"
+            ],
+            "clinical_reasoning": [
+                "Step 1: Classic pneumonia triad: cough, fever, chest pain",
+                "Step 2: Productive cough suggests bacterial etiology",
+                "Step 3: Pleuritic chest pain indicates pleural involvement",
+                "Step 4: Chest X-ray consolidation confirms pneumonia",
+                "Step 5: Smoking history increases infection risk"
+            ],
+            "recommended_tests": [
+                "Sputum culture and gram stain",
+                "Blood cultures",
+                "CBC with differential",
+                "Arterial blood gas if hypoxic",
+                "Pneumococcal/Legionella antigens"
+            ],
+            "treatment_plan": [
+                "Empiric antibiotics (ceftriaxone + azithromycin)",
+                "Supportive care with fluids",
+                "Oxygen therapy if SpO2 < 90%",
+                "Follow-up chest X-ray in 24-48 hours",
+                "Smoking cessation counseling"
+            ],
+            "confidence": 0.9,
+            "medical_domain": "pulmonology",
+            "risk_factors": [
+                "smoking",
+                "elderly",
+                "male"
+            ]
+        },
+        {
+            "case": "22-year-old college student with severe headache, fever 103°F, neck stiffness, and photophobia. Symptoms developed over 6 hours.",
+            "primary_diagnosis": "Acute bacterial meningitis",
+            "differential_diagnoses": [
+                "Viral meningitis",
+                "Subarachnoid hemorrhage",
+                "Brain abscess",
+                "Migraine with fever"
+            ],
+            "clinical_reasoning": [
+                "Step 1: Classic meningitis triad: headache, fever, neck stiffness",
+                "Step 2: Rapid onset (6 hours) suggests bacterial etiology",
+                "Step 3: High fever (103°F) indicates severe infection",
+                "Step 4: Photophobia supports meningeal irritation",
+                "Step 5: Young adult in college setting (close quarters exposure)"
+            ],
+            "recommended_tests": [
+                "Lumbar puncture (URGENT)",
+                "Blood cultures x2",
+                "CT head (if focal deficits)",
+                "CBC, CRP, procalcitonin",
+                "Coagulation studies"
+            ],
+            "treatment_plan": [
+                "IV antibiotics IMMEDIATELY (ceftriaxone + vancomycin)",
+                "Dexamethasone 10mg IV",
+                "Isolation precautions",
+                "Close contact prophylaxis",
+                "Neurology consultation"
+            ],
+            "confidence": 0.95,
+            "medical_domain": "neurology",
+            "risk_factors": [
+                "young_adult",
+                "college_dormitory",
+                "rapid_onset"
+            ]
+        },
+        {
+            "case": "35-year-old woman with right lower quadrant pain, nausea, vomiting, and low-grade fever. Pain started periumbilically and migrated to RLQ.",
+            "primary_diagnosis": "Acute appendicitis",
+            "differential_diagnoses": [
+                "Ovarian cyst rupture",
+                "Ectopic pregnancy",
+                "Pelvic inflammatory disease",
+                "Gastroenteritis"
+            ],
+            "clinical_reasoning": [
+                "Step 1: Classic appendicitis presentation with pain migration",
+                "Step 2: Periumbilical to RLQ pain is pathognomonic pattern",
+                "Step 3: Associated GI symptoms (nausea, vomiting) support diagnosis",
+                "Step 4: Low-grade fever indicates inflammatory process",
+                "Step 5: Female of reproductive age requires gynecologic consideration"
+            ],
+            "recommended_tests": [
+                "CT abdomen/pelvis with contrast",
+                "CBC with differential",
+                "Urinalysis and pregnancy test",
+                "CRP or ESR",
+                "Transvaginal ultrasound if indicated"
+            ],
+            "treatment_plan": [
+                "NPO status immediately",
+                "IV fluid resuscitation",
+                "Pain management (avoid masking symptoms)",
+                "Emergency surgical consultation",
+                "Antibiotics if perforation suspected"
+            ],
+            "confidence": 0.8,
+            "medical_domain": "gastroenterology",
+            "risk_factors": [
+                "female_reproductive_age",
+                "classic_pain_pattern"
+            ]
+        },
+        {
+            "case": "58-year-old diabetic male with gradual vision changes, frequent urination, and fatigue. HbA1c is 11.2%. Blood pressure 160/95.",
+            "primary_diagnosis": "Poorly controlled Type 2 Diabetes Mellitus with complications",
+            "differential_diagnoses": [
+                "Diabetic retinopathy",
+                "Diabetic nephropathy",
+                "Hypertensive emergency",
+                "Diabetic ketoacidosis"
+            ],
+            "clinical_reasoning": [
+                "Step 1: Elevated HbA1c (11.2%) indicates poor glycemic control",
+                "Step 2: Vision changes suggest diabetic retinopathy",
+                "Step 3: Polyuria and fatigue consistent with hyperglycemia",
+                "Step 4: Hypertension compounds cardiovascular risk",
+                "Step 5: Multiple diabetic complications likely present"
+            ],
+            "recommended_tests": [
+                "Comprehensive metabolic panel",
+                "Microalbumin/creatinine ratio",
+                "Dilated fundoscopic examination",
+                "ECG and echocardiogram",
+                "Lipid panel"
+            ],
+            "treatment_plan": [
+                "Intensify diabetes management (insulin)",
+                "ACE inhibitor for blood pressure/nephroprotection",
+                "Statin therapy for cardiovascular protection",
+                "Ophthalmology referral urgently",
+                "Diabetes education and nutrition counseling"
+            ],
+            "confidence": 0.9,
+            "medical_domain": "endocrinology",
+            "risk_factors": [
+                "male",
+                "middle_age",
+                "long_standing_diabetes",
+                "poor_control"
+            ]
+        }
+    ]
+}

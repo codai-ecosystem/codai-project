@@ -1,0 +1,410 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring
+  labels:
+    name: monitoring
+    monitoring.role: "agents"
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-exporter
+  namespace: monitoring
+  labels:
+    app: node-exporter
+spec:
+  selector:
+    matchLabels:
+      app: node-exporter
+  template:
+    metadata:
+      labels:
+        app: node-exporter
+    spec:
+      serviceAccountName: node-exporter
+      hostNetwork: true
+      hostPID: true
+      containers:
+      - name: node-exporter
+        image: prom/node-exporter:v1.6.1
+        args:
+        - --path.sysfs=/host/sys
+        - --path.rootfs=/host/root
+        - --no-collector.wifi
+        - --no-collector.hwmon
+        - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
+        - --collector.netclass.ignored-devices=^(veth.*)$
+        - --collector.netdev.device-exclude=^(veth.*)$
+        ports:
+        - containerPort: 9100
+          protocol: TCP
+          name: metrics
+        resources:
+          limits:
+            cpu: 250m
+            memory: 180Mi
+          requests:
+            cpu: 102m
+            memory: 180Mi
+        volumeMounts:
+        - mountPath: /host/sys
+          name: sys
+          readOnly: true
+        - mountPath: /host/root
+          name: root
+          readOnly: true
+          mountPropagation: HostToContainer
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 65534
+      volumes:
+      - name: sys
+        hostPath:
+          path: /sys
+      - name: root
+        hostPath:
+          path: /
+      tolerations:
+      - effect: NoSchedule
+        operator: Exists
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-exporter
+  namespace: monitoring
+  labels:
+    app: node-exporter
+spec:
+  type: ClusterIP
+  ports:
+  - port: 9100
+    targetPort: 9100
+    protocol: TCP
+    name: metrics
+  selector:
+    app: node-exporter
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-agent
+  namespace: monitoring
+  labels:
+    app: prometheus-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus-agent
+  template:
+    metadata:
+      labels:
+        app: prometheus-agent
+    spec:
+      serviceAccountName: prometheus
+      containers:
+      - name: prometheus
+        image: prom/prometheus:v2.45.0
+        args:
+        - --config.file=/etc/prometheus/prometheus.yml
+        - --storage.agent.path=/prometheus-data
+        - --web.enable-lifecycle
+        - --enable-feature=agent
+        ports:
+        - containerPort: 9090
+          name: web
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+          requests:
+            cpu: 500m
+            memory: 512Mi
+        volumeMounts:
+        - name: prometheus-config
+          mountPath: /etc/prometheus
+        - name: prometheus-data
+          mountPath: /prometheus-data
+      volumes:
+      - name: prometheus-config
+        configMap:
+          name: prometheus-agent-config
+      - name: prometheus-data
+        emptyDir: {}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-agent-config
+  namespace: monitoring
+  labels:
+    app: prometheus-agent
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+      external_labels:
+        cluster: 'romai-cluster'
+        region: '${CLUSTER_REGION}'
+
+    remote_write:
+    - url: 'http://prometheus-central.monitoring.svc.cluster.local:9090/api/v1/write'
+      queue_config:
+        max_samples_per_send: 10000
+        capacity: 100000
+        max_shards: 50
+
+    scrape_configs:
+    - job_name: 'kubernetes-nodes'
+      kubernetes_sd_configs:
+      - role: node
+      relabel_configs:
+      - source_labels: [__address__]
+        regex: '(.*):10250'
+        target_label: __address__
+        replacement: '${1}:9100'
+
+    - job_name: 'kubernetes-pods'
+      kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names:
+          - romai-production
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        action: keep
+        regex: true
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
+      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        action: replace
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        replacement: $1:$2
+        target_label: __address__
+
+    - job_name: 'romai-ml-api'
+      static_configs:
+      - targets: ['romai-ml-api.romai-production.svc.cluster.local:8000']
+      metrics_path: /metrics
+      scrape_interval: 10s
+
+    - job_name: 'memorai-mcp-service'
+      static_configs:
+      - targets: ['memorai-mcp-service.romai-production.svc.cluster.local:4950']
+      metrics_path: /metrics
+      scrape_interval: 10s
+
+    - job_name: 'postgresql-exporter'
+      static_configs:
+      - targets: ['postgresql-exporter.romai-production.svc.cluster.local:9187']
+
+    - job_name: 'redis-exporter'
+      static_configs:
+      - targets: ['redis-exporter.romai-production.svc.cluster.local:9121']
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-agent
+  namespace: monitoring
+  labels:
+    app: prometheus-agent
+spec:
+  type: ClusterIP
+  ports:
+  - port: 9090
+    targetPort: 9090
+    protocol: TCP
+    name: web
+  selector:
+    app: prometheus-agent
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fluent-bit-agent
+  namespace: monitoring
+  labels:
+    app: fluent-bit-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fluent-bit-agent
+  template:
+    metadata:
+      labels:
+        app: fluent-bit-agent
+    spec:
+      serviceAccountName: fluent-bit
+      containers:
+      - name: fluent-bit
+        image: fluent/fluent-bit:2.1.8
+        ports:
+        - containerPort: 2020
+          name: metrics
+        resources:
+          limits:
+            cpu: 200m
+            memory: 100Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        volumeMounts:
+        - name: fluent-bit-config
+          mountPath: /fluent-bit/etc
+        - name: varlog
+          mountPath: /var/log
+          readOnly: true
+        - name: varlibdockercontainers
+          mountPath: /var/lib/docker/containers
+          readOnly: true
+        - name: fluent-bit-db
+          mountPath: /fluent-bit/db
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: CLUSTER_REGION
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.annotations['cluster.region']
+      volumes:
+      - name: fluent-bit-config
+        configMap:
+          name: fluent-bit-agent-config
+      - name: varlog
+        hostPath:
+          path: /var/log
+      - name: varlibdockercontainers
+        hostPath:
+          path: /var/lib/docker/containers
+      - name: fluent-bit-db
+        emptyDir: {}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: fluent-bit
+  namespace: monitoring
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: fluent-bit-read
+rules:
+- apiGroups: [""]
+  resources: ["namespaces", "pods", "nodes"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: fluent-bit-read
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: fluent-bit-read
+subjects:
+- kind: ServiceAccount
+  name: fluent-bit
+  namespace: monitoring
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluent-bit-agent-config
+  namespace: monitoring
+  labels:
+    app: fluent-bit-agent
+data:
+  fluent-bit.conf: |
+    [SERVICE]
+        Daemon Off
+        Flush 1
+        Log_Level info
+        Parsers_File parsers.conf
+        Parsers_File custom_parsers.conf
+        HTTP_Server On
+        HTTP_Listen 0.0.0.0
+        HTTP_Port 2020
+
+    [INPUT]
+        Name tail
+        Path /var/log/containers/*.log
+        Parser docker
+        Tag kube.*
+        Refresh_Interval 5
+        Mem_Buf_Limit 50MB
+        Skip_Long_Lines On
+
+    [INPUT]
+        Name systemd
+        Tag host.*
+        Systemd_Filter _SYSTEMD_UNIT=kubelet.service
+        Systemd_Filter _SYSTEMD_UNIT=docker.service
+
+    [FILTER]
+        Name kubernetes
+        Match kube.*
+        Kube_URL https://kubernetes.default.svc:443
+        Kube_CA_File /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        Kube_Token_File /var/run/secrets/kubernetes.io/serviceaccount/token
+        Kube_Tag_Prefix kube.var.log.containers.
+        Merge_Log On
+        Merge_Log_Key log_processed
+        K8S-Logging.Parser On
+        K8S-Logging.Exclude Off
+
+    [FILTER]
+        Name nest
+        Match kube.*
+        Operation lift
+        Nested_under kubernetes
+        Add_prefix kubernetes_
+
+    [FILTER]
+        Name modify
+        Match *
+        Add cluster_name romai-cluster
+        Add cluster_region ${CLUSTER_REGION}
+
+    [OUTPUT]
+        Name forward
+        Match *
+        Host elasticsearch-central.monitoring.svc.cluster.local
+        Port 9200
+        HTTP_User elastic
+        HTTP_Passwd changeme
+        Logstash_Format On
+        Logstash_Prefix romai-logs
+        Retry_Limit False
+
+  parsers.conf: |
+    [PARSER]
+        Name docker
+        Format json
+        Time_Key time
+        Time_Format %Y-%m-%dT%H:%M:%S.%L
+        Time_Keep On
+
+    [PARSER]
+        Name syslog
+        Format regex
+        Regex ^\<(?<pri>[0-9]+)\>(?<time>[^ ]* {1,2}[^ ]* [^ ]*) (?<host>[^ ]*) (?<ident>[a-zA-Z0-9_\/\.\-]*)(?:\[(?<pid>[0-9]+)\])?(?:[^\:]*\:)? *(?<message>.*)$
+        Time_Key time
+        Time_Format %b %d %H:%M:%S
+
+  custom_parsers.conf: |
+    [PARSER]
+        Name romai_api
+        Format regex
+        Regex ^(?<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}) - (?<level>\w+) - (?<logger>[\w\.]+) - (?<message>.*)$
+        Time_Key timestamp
+        Time_Format %Y-%m-%d %H:%M:%S,%L

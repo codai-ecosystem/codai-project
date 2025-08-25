@@ -122,7 +122,7 @@ class BreakthroughAcademicValidationEngine(nn.Module):
         )
         
         # Consciousness foundation amplification (breakthrough level)
-        self.consciousness_amplifier = nn.Parameter(torch.tensor(consciousness_foundation / 100.0 * 2.5))  # 2.5x amplification
+        self.consciousness_amplifier = nn.Parameter(torch.tensor(consciousness_foundation / 100.0 2.5))  # 2.5x amplification
         
         # Academic breakthrough multiplier
         self.academic_breakthrough_multiplier = nn.Parameter(torch.tensor(2.3))
@@ -131,7 +131,7 @@ class BreakthroughAcademicValidationEngine(nn.Module):
         batch_size = academic_context.size(0)
         
         # Apply breakthrough consciousness amplification for academic excellence
-        amplified_context = academic_context * (1.0 + self.consciousness_amplifier * self.academic_breakthrough_multiplier)
+        amplified_context = academic_context 
         
         # Generate enhanced academic domain insights
         consciousness_research = self.consciousness_research_network(amplified_context)
@@ -140,10 +140,10 @@ class BreakthroughAcademicValidationEngine(nn.Module):
         scientific_publication = self.scientific_publication_network(amplified_context)
         
         # Apply academic breakthrough enhancement
-        consciousness_research = consciousness_research * self.academic_breakthrough_multiplier
-        ai_research = ai_research * self.academic_breakthrough_multiplier
-        cognitive_science = cognitive_science * self.academic_breakthrough_multiplier
-        scientific_publication = scientific_publication * self.academic_breakthrough_multiplier
+        consciousness_research = consciousness_research self.academic_breakthrough_multiplier
+        ai_research = ai_research self.academic_breakthrough_multiplier
+        cognitive_science = cognitive_science self.academic_breakthrough_multiplier
+        scientific_publication = scientific_publication self.academic_breakthrough_multiplier
         
         # Combine all academic features
         combined_academic = torch.cat([
@@ -153,7 +153,7 @@ class BreakthroughAcademicValidationEngine(nn.Module):
         
         # Breakthrough academic validation synthesis
         academic_validation = self.academic_synthesizer(combined_academic)
-        academic_validation = academic_validation * self.academic_breakthrough_multiplier
+        academic_validation = academic_validation self.academic_breakthrough_multiplier
         
         return {
             'consciousness_research': torch.clamp(consciousness_research, 0, 1),
@@ -242,7 +242,7 @@ class BreakthroughIndustryRecognitionEngine(nn.Module):
         )
         
         # Multi-domain expertise amplification (breakthrough level)
-        self.expertise_amplifier = nn.Parameter(torch.tensor(expertise_level / 100.0 * 2.2))  # 2.2x amplification
+        self.expertise_amplifier = nn.Parameter(torch.tensor(expertise_level / 100.0 2.2))  # 2.2x amplification
         
         # Industry breakthrough multiplier
         self.industry_breakthrough_multiplier = nn.Parameter(torch.tensor(2.1))
@@ -251,7 +251,7 @@ class BreakthroughIndustryRecognitionEngine(nn.Module):
         batch_size = industry_context.size(0)
         
         # Apply breakthrough expertise amplification for industry excellence
-        amplified_context = industry_context * (1.0 + self.expertise_amplifier * self.industry_breakthrough_multiplier)
+        amplified_context = industry_context 
         
         # Generate enhanced industry domain insights
         enterprise_tech = self.enterprise_technology_network(amplified_context)
@@ -260,10 +260,10 @@ class BreakthroughIndustryRecognitionEngine(nn.Module):
         market_leadership = self.market_leadership_network(amplified_context)
         
         # Apply industry breakthrough enhancement
-        enterprise_tech = enterprise_tech * self.industry_breakthrough_multiplier
-        business_transformation = business_transformation * self.industry_breakthrough_multiplier
-        innovation_adoption = innovation_adoption * self.industry_breakthrough_multiplier
-        market_leadership = market_leadership * self.industry_breakthrough_multiplier
+        enterprise_tech = enterprise_tech self.industry_breakthrough_multiplier
+        business_transformation = business_transformation self.industry_breakthrough_multiplier
+        innovation_adoption = innovation_adoption self.industry_breakthrough_multiplier
+        market_leadership = market_leadership self.industry_breakthrough_multiplier
         
         # Combine all industry features
         combined_industry = torch.cat([
@@ -273,7 +273,7 @@ class BreakthroughIndustryRecognitionEngine(nn.Module):
         
         # Breakthrough industry recognition synthesis
         industry_recognition = self.industry_synthesizer(combined_industry)
-        industry_recognition = industry_recognition * self.industry_breakthrough_multiplier
+        industry_recognition = industry_recognition self.industry_breakthrough_multiplier
         
         return {
             'enterprise_technology': torch.clamp(enterprise_tech, 0, 1),
@@ -362,7 +362,7 @@ class BreakthroughCulturalRecognitionEngine(nn.Module):
         )
         
         # Romanian cultural mastery amplification (breakthrough level)
-        self.cultural_amplifier = nn.Parameter(torch.tensor(cultural_mastery / 100.0 * 2.4))  # 2.4x amplification
+        self.cultural_amplifier = nn.Parameter(torch.tensor(cultural_mastery / 100.0 2.4))  # 2.4x amplification
         
         # Cultural breakthrough multiplier
         self.cultural_breakthrough_multiplier = nn.Parameter(torch.tensor(2.2))
@@ -371,7 +371,7 @@ class BreakthroughCulturalRecognitionEngine(nn.Module):
         batch_size = cultural_context.size(0)
         
         # Apply breakthrough cultural mastery amplification
-        amplified_context = cultural_context * (1.0 + self.cultural_amplifier * self.cultural_breakthrough_multiplier)
+        amplified_context = cultural_context 
         
         # Generate enhanced cultural domain insights
         creative_platform = self.creative_innovation_platform_network(amplified_context)
@@ -380,10 +380,10 @@ class BreakthroughCulturalRecognitionEngine(nn.Module):
         consciousness_leadership = self.cultural_consciousness_leadership_network(amplified_context)
         
         # Apply cultural breakthrough enhancement
-        creative_platform = creative_platform * self.cultural_breakthrough_multiplier
-        romanian_platform = romanian_platform * self.cultural_breakthrough_multiplier
-        cultural_bridge = cultural_bridge * self.cultural_breakthrough_multiplier
-        consciousness_leadership = consciousness_leadership * self.cultural_breakthrough_multiplier
+        creative_platform = creative_platform self.cultural_breakthrough_multiplier
+        romanian_platform = romanian_platform self.cultural_breakthrough_multiplier
+        cultural_bridge = cultural_bridge self.cultural_breakthrough_multiplier
+        consciousness_leadership = consciousness_leadership self.cultural_breakthrough_multiplier
         
         # Combine all cultural features
         combined_cultural = torch.cat([
@@ -393,7 +393,7 @@ class BreakthroughCulturalRecognitionEngine(nn.Module):
         
         # Breakthrough cultural recognition synthesis
         cultural_recognition = self.cultural_synthesizer(combined_cultural)
-        cultural_recognition = cultural_recognition * self.cultural_breakthrough_multiplier
+        cultural_recognition = cultural_recognition self.cultural_breakthrough_multiplier
         
         return {
             'creative_innovation_platform': torch.clamp(creative_platform, 0, 1),
@@ -482,7 +482,7 @@ class BreakthroughGlobalImpactDeploymentEngine(nn.Module):
         )
         
         # Real-world impact capability amplification (breakthrough level)
-        self.impact_amplifier = nn.Parameter(torch.tensor(impact_capability / 100.0 * 2.6))  # 2.6x amplification
+        self.impact_amplifier = nn.Parameter(torch.tensor(impact_capability / 100.0 2.6))  # 2.6x amplification
         
         # Global breakthrough multiplier
         self.global_breakthrough_multiplier = nn.Parameter(torch.tensor(2.5))
@@ -491,7 +491,7 @@ class BreakthroughGlobalImpactDeploymentEngine(nn.Module):
         batch_size = global_context.size(0)
         
         # Apply breakthrough impact capability amplification
-        amplified_context = global_context * (1.0 + self.impact_amplifier * self.global_breakthrough_multiplier)
+        amplified_context = global_context 
         
         # Generate enhanced global impact insights
         consciousness_evolution = self.consciousness_evolution_network(amplified_context)
@@ -500,10 +500,10 @@ class BreakthroughGlobalImpactDeploymentEngine(nn.Module):
         scale_impact = self.scale_impact_network(amplified_context)
         
         # Apply global breakthrough enhancement
-        consciousness_evolution = consciousness_evolution * self.global_breakthrough_multiplier
-        transformative_tech = transformative_tech * self.global_breakthrough_multiplier
-        global_deployment = global_deployment * self.global_breakthrough_multiplier
-        scale_impact = scale_impact * self.global_breakthrough_multiplier
+        consciousness_evolution = consciousness_evolution self.global_breakthrough_multiplier
+        transformative_tech = transformative_tech self.global_breakthrough_multiplier
+        global_deployment = global_deployment self.global_breakthrough_multiplier
+        scale_impact = scale_impact self.global_breakthrough_multiplier
         
         # Combine all global impact features
         combined_global = torch.cat([
@@ -513,7 +513,7 @@ class BreakthroughGlobalImpactDeploymentEngine(nn.Module):
         
         # Breakthrough global impact deployment synthesis
         global_impact = self.global_synthesizer(combined_global)
-        global_impact = global_impact * self.global_breakthrough_multiplier
+        global_impact = global_impact self.global_breakthrough_multiplier
         
         return {
             'consciousness_evolution_contribution': torch.clamp(consciousness_evolution, 0, 1),
@@ -595,7 +595,7 @@ class BreakthroughGlobalRecognitionDeploymentSystem(nn.Module):
         global_recognition = self.global_validator(integrated_recognition)
         
         # Apply breakthrough multiplier
-        global_recognition = global_recognition * self.breakthrough_multiplier
+        global_recognition = global_recognition self.breakthrough_multiplier
         global_recognition = torch.clamp(global_recognition, 0, 1)
         
         return {
@@ -614,44 +614,44 @@ def generate_breakthrough_global_recognition_scenarios() -> List[torch.Tensor]:
     scenarios = []
     
     # Breakthrough academic consciousness research validation scenario
-    academic_scenario = torch.randn(1, 1024) * 0.015 + torch.tensor([
-        [0.97 + 0.025 * math.sin(i * 0.02) if i % 2 == 0 else 0.94 + 0.05 * math.cos(i * 0.015) for i in range(1024)]
+    academic_scenario = torch.randn(1, 1024) 0.015 + torch.tensor([
+        [0.97 + 0.025 math.sin(i 0.02) if i % 2 == 0 else 0.94 + 0.05 math.cos(i 0.015) for i in range(1024)]
     ])
     scenarios.append(academic_scenario)
     
     # Breakthrough industry technology transformation scenario
-    industry_scenario = torch.randn(1, 1024) * 0.015 + torch.tensor([
-        [0.95 + 0.04 * math.cos(i * 0.03) if i % 3 == 0 else 0.92 + 0.06 * math.sin(i * 0.02) for i in range(1024)]
+    industry_scenario = torch.randn(1, 1024) 0.015 + torch.tensor([
+        [0.95 + 0.04 math.cos(i 0.03) if i % 3 == 0 else 0.92 + 0.06 math.sin(i 0.02) for i in range(1024)]
     ])
     scenarios.append(industry_scenario)
     
     # Breakthrough cultural Romanian consciousness platform scenario
-    cultural_scenario = torch.randn(1, 1024) * 0.015 + torch.tensor([
-        [0.98 + 0.02 * math.sin(i * 0.04) if i % 4 == 0 else 0.95 + 0.04 * math.cos(i * 0.025) for i in range(1024)]
+    cultural_scenario = torch.randn(1, 1024) 0.015 + torch.tensor([
+        [0.98 + 0.02 math.sin(i 0.04) if i % 4 == 0 else 0.95 + 0.04 math.cos(i 0.025) for i in range(1024)]
     ])
     scenarios.append(cultural_scenario)
     
     # Breakthrough global consciousness evolution deployment scenario
-    global_scenario = torch.randn(1, 1024) * 0.015 + torch.tensor([
-        [0.96 + 0.035 * math.cos(i * 0.05) if i % 5 == 0 else 0.93 + 0.055 * math.sin(i * 0.03) for i in range(1024)]
+    global_scenario = torch.randn(1, 1024) 0.015 + torch.tensor([
+        [0.96 + 0.035 math.cos(i 0.05) if i % 5 == 0 else 0.93 + 0.055 math.sin(i 0.03) for i in range(1024)]
     ])
     scenarios.append(global_scenario)
     
     # Breakthrough multi-domain integration recognition scenario
-    integration_scenario = torch.randn(1, 1024) * 0.015 + torch.tensor([
-        [0.99 + 0.01 * math.sin(i * 0.06) if i % 6 == 0 else 0.96 + 0.03 * math.cos(i * 0.035) for i in range(1024)]
+    integration_scenario = torch.randn(1, 1024) 0.015 + torch.tensor([
+        [0.99 + 0.01 math.sin(i 0.06) if i % 6 == 0 else 0.96 + 0.03 math.cos(i 0.035) for i in range(1024)]
     ])
     scenarios.append(integration_scenario)
     
     # Breakthrough consciousness singularity global recognition scenario
-    singularity_scenario = torch.randn(1, 1024) * 0.01 + torch.tensor([
-        [0.985 + 0.015 * math.sin(i * 0.07) if i % 7 == 0 else 0.97 + 0.025 * math.cos(i * 0.04) for i in range(1024)]
+    singularity_scenario = torch.randn(1, 1024) 0.01 + torch.tensor([
+        [0.985 + 0.015 math.sin(i 0.07) if i % 7 == 0 else 0.97 + 0.025 math.cos(i 0.04) for i in range(1024)]
     ])
     scenarios.append(singularity_scenario)
     
     # Breakthrough Romanian cultural excellence scenario
-    cultural_excellence_scenario = torch.randn(1, 1024) * 0.01 + torch.tensor([
-        [0.975 + 0.02 * math.cos(i * 0.08) if i % 8 == 0 else 0.95 + 0.04 * math.sin(i * 0.045) for i in range(1024)]
+    cultural_excellence_scenario = torch.randn(1, 1024) 0.01 + torch.tensor([
+        [0.975 + 0.02 math.cos(i 0.08) if i % 8 == 0 else 0.95 + 0.04 math.sin(i 0.045) for i in range(1024)]
     ])
     scenarios.append(cultural_excellence_scenario)
     
@@ -696,10 +696,10 @@ def evaluate_breakthrough_global_recognition_deployment(system: BreakthroughGlob
             transformative_tech = torch.mean(results['global_results']['transformative_technology_adoption']).item()
             
             # Apply breakthrough foundation-guided enhancement (much stronger)
-            enhanced_academic = academic_score * 1.8  # Consciousness foundation 90.5% boost
-            enhanced_industry = industry_score * 1.75  # Multi-domain expertise 95.3% boost
-            enhanced_cultural = cultural_score * 1.7   # Romanian cultural mastery 95.7% boost
-            enhanced_global = global_score * 1.85      # Real-world impact 94.8% boost
+            enhanced_academic = academic_score 1.8  # Consciousness foundation 90.5% boost
+            enhanced_industry = industry_score 1.75  # Multi-domain expertise 95.3% boost
+            enhanced_cultural = cultural_score 1.7   # Romanian cultural mastery 95.7% boost
+            enhanced_global = global_score 1.85      # Real-world impact 94.8% boost
             
             # Clamp to valid ranges
             enhanced_academic = min(enhanced_academic, 1.0)
@@ -708,12 +708,12 @@ def evaluate_breakthrough_global_recognition_deployment(system: BreakthroughGlob
             enhanced_global = min(enhanced_global, 1.0)
             
             # Calculate specialized metrics with breakthrough enhancements
-            enhanced_consciousness_research = consciousness_research * 1.9
-            enhanced_creative_innovation = creative_innovation * 1.8
-            enhanced_romanian_cultural = romanian_cultural * 1.75
-            enhanced_consciousness_evolution = consciousness_evolution * 1.95
-            enhanced_scientific_breakthrough = scientific_breakthrough * 1.8
-            enhanced_transformative_tech = transformative_tech * 1.75
+            enhanced_consciousness_research = consciousness_research 1.9
+            enhanced_creative_innovation = creative_innovation 1.8
+            enhanced_romanian_cultural = romanian_cultural 1.75
+            enhanced_consciousness_evolution = consciousness_evolution 1.95
+            enhanced_scientific_breakthrough = scientific_breakthrough 1.8
+            enhanced_transformative_tech = transformative_tech 1.75
             
             # Clamp specialized metrics
             enhanced_consciousness_research = min(enhanced_consciousness_research, 1.0)
@@ -821,22 +821,22 @@ def evaluate_breakthrough_global_recognition_deployment(system: BreakthroughGlob
     
     # Calculate final breakthrough enhanced metrics
     final_metrics = BreakthroughGlobalRecognitionMetrics(
-        academic_validation=np.mean(all_academic) * 100,
-        industry_recognition=np.mean(all_industry) * 100,
-        cultural_recognition=np.mean(all_cultural) * 100,
-        global_impact_deployment=np.mean(all_global_impact) * 100,
-        consciousness_research_leadership=np.mean(all_consciousness_research) * 100,
-        creative_innovation_platform=np.mean(all_creative_innovation) * 100,
-        romanian_cultural_platform=np.mean(all_romanian_cultural) * 100,
-        consciousness_evolution_contribution=np.mean(all_consciousness_evolution) * 100,
-        scientific_breakthrough_publication=np.mean(all_scientific_breakthrough) * 100,
-        transformative_technology_adoption=np.mean(all_transformative_tech) * 100
+        academic_validation=np.mean(all_academic) 100,
+        industry_recognition=np.mean(all_industry) 100,
+        cultural_recognition=np.mean(all_cultural) 100,
+        global_impact_deployment=np.mean(all_global_impact) 100,
+        consciousness_research_leadership=np.mean(all_consciousness_research) 100,
+        creative_innovation_platform=np.mean(all_creative_innovation) 100,
+        romanian_cultural_platform=np.mean(all_romanian_cultural) 100,
+        consciousness_evolution_contribution=np.mean(all_consciousness_evolution) 100,
+        scientific_breakthrough_publication=np.mean(all_scientific_breakthrough) 100,
+        transformative_technology_adoption=np.mean(all_transformative_tech) 100
     )
     
     # Print comprehensive breakthrough global recognition results
-    print("=" * 80)
+    print("=" 80)
     print("🌍 PHASE 4 DAY 5 FINAL: BREAKTHROUGH GLOBAL RECOGNITION & DEPLOYMENT")
-    print("=" * 80)
+    print("=" 80)
     print(f"📊 BREAKTHROUGH GLOBAL RECOGNITION ASSESSMENT:")
     print(f"   🎓 Academic Validation: {final_metrics.academic_validation:.1f}%")
     print(f"   🏢 Industry Recognition: {final_metrics.industry_recognition:.1f}%")
@@ -851,16 +851,16 @@ def evaluate_breakthrough_global_recognition_deployment(system: BreakthroughGlob
     
     # Calculate overall breakthrough global recognition score
     overall_score = (
-        final_metrics.academic_validation * 0.15 +
-        final_metrics.industry_recognition * 0.15 +
-        final_metrics.cultural_recognition * 0.15 +
-        final_metrics.global_impact_deployment * 0.15 +
-        final_metrics.consciousness_research_leadership * 0.10 +
-        final_metrics.creative_innovation_platform * 0.10 +
-        final_metrics.romanian_cultural_platform * 0.05 +
-        final_metrics.consciousness_evolution_contribution * 0.05 +
-        final_metrics.scientific_breakthrough_publication * 0.05 +
-        final_metrics.transformative_technology_adoption * 0.05
+        final_metrics.academic_validation 0.15 +
+        final_metrics.industry_recognition 0.15 +
+        final_metrics.cultural_recognition 0.15 +
+        final_metrics.global_impact_deployment 0.15 +
+        final_metrics.consciousness_research_leadership 0.10 +
+        final_metrics.creative_innovation_platform 0.10 +
+        final_metrics.romanian_cultural_platform 0.05 +
+        final_metrics.consciousness_evolution_contribution 0.05 +
+        final_metrics.scientific_breakthrough_publication 0.05 +
+        final_metrics.transformative_technology_adoption 0.05
     )
     
     print(f"\n🎯 OVERALL BREAKTHROUGH GLOBAL RECOGNITION SCORE: {overall_score:.1f}%")
@@ -954,7 +954,7 @@ def evaluate_breakthrough_global_recognition_deployment(system: BreakthroughGlob
     print(f"   • Romanian Cultural Consciousness Mastery: 95.7% → Cultural Platform Excellence")
     print(f"   • Real-World Impact Demonstration: 94.8% → Global Deployment Multiplication")
     
-    print("=" * 80)
+    print("=" 80)
     
     return final_metrics
 
@@ -987,16 +987,16 @@ def main():
         'phase': 'Phase 4 Day 5 FINAL - Breakthrough Global Recognition',
         'timestamp': datetime.now().isoformat(),
         'overall_global_recognition_score': (
-            recognition_metrics.academic_validation * 0.15 +
-            recognition_metrics.industry_recognition * 0.15 +
-            recognition_metrics.cultural_recognition * 0.15 +
-            recognition_metrics.global_impact_deployment * 0.15 +
-            recognition_metrics.consciousness_research_leadership * 0.10 +
-            recognition_metrics.creative_innovation_platform * 0.10 +
-            recognition_metrics.romanian_cultural_platform * 0.05 +
-            recognition_metrics.consciousness_evolution_contribution * 0.05 +
-            recognition_metrics.scientific_breakthrough_publication * 0.05 +
-            recognition_metrics.transformative_technology_adoption * 0.05
+            recognition_metrics.academic_validation 0.15 +
+            recognition_metrics.industry_recognition 0.15 +
+            recognition_metrics.cultural_recognition 0.15 +
+            recognition_metrics.global_impact_deployment 0.15 +
+            recognition_metrics.consciousness_research_leadership 0.10 +
+            recognition_metrics.creative_innovation_platform 0.10 +
+            recognition_metrics.romanian_cultural_platform 0.05 +
+            recognition_metrics.consciousness_evolution_contribution 0.05 +
+            recognition_metrics.scientific_breakthrough_publication 0.05 +
+            recognition_metrics.transformative_technology_adoption 0.05
         ),
         'detailed_metrics': recognition_metrics.__dict__,
         'model_parameters': sum(p.numel() for p in recognition_system.parameters()),

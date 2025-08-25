@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * TeamFooter Component - Footer with team actions
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import { Users, MessageSquare, Calendar, Settings } from 'lucide-react'
@@ -60,4 +61,5 @@ export function TeamFooter() {
         </footer>
     )
 }
+
 

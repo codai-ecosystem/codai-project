@@ -1,0 +1,54 @@
+{
+  "timestamp": 1755944183.7796912,
+  "total_tests": 7,
+  "passed_tests": 1,
+  "failed_tests": 6,
+  "test_results": [
+    {
+      "test_name": "test_online_learning_basic",
+      "status": "ERROR",
+      "error": "Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu! (when checking argument for argument mat1 in method wrapper_CUDA_addmm)"
+    },
+    {
+      "test_name": "test_experience_replay",
+      "status": "ERROR",
+      "error": "Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu! (when checking argument for argument mat1 in method wrapper_CUDA_addmm)"
+    },
+    {
+      "test_name": "meta_learning_adaptation",
+      "status": "FAIL",
+      "query_accuracy": 0.1,
+      "query_loss": 3.8973159790039062,
+      "adaptation_steps": 5,
+      "support_size": 3,
+      "query_size": 5
+    },
+    {
+      "test_name": "test_catastrophic_forgetting_prevention",
+      "status": "ERROR",
+      "error": "Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu! (when checking argument for argument mat1 in method wrapper_CUDA_addmm)"
+    },
+    {
+      "test_name": "test_knowledge_consolidation",
+      "status": "ERROR",
+      "error": "Expected target size [30, 3], got [30, 2]"
+    },
+    {
+      "test_name": "online_learning_thread",
+      "status": "PASS",
+      "queue_size_before": 0,
+      "queue_size_after": 20,
+      "queue_size_processed": 0,
+      "learning_steps_completed": 20,
+      "processing_efficiency": 1.0
+    },
+    {
+      "test_name": "test_checkpoint_save_load",
+      "status": "ERROR",
+      "error": "Weights only load failed. This file can still be loaded, to do so you have two options, \u001b[1mdo those steps only if you trust the source of the checkpoint\u001b[0m. \n\t(1) In PyTorch 2.6, we changed the default value of the `weights_only` argument in `torch.load` from `False` to `True`. Re-running `torch.load` with `weights_only` set to `False` will likely succeed, but it can result in arbitrary code execution. Do it only if you got the file from a trusted source.\n\t(2) Alternatively, to load with `weights_only=True` please check the recommended steps in the following error message.\n\tWeightsUnpickler error: Unsupported global: GLOBAL continuous_learning_pipeline.TaskMetadata was not an allowed global by default. Please use `torch.serialization.add_safe_globals([continuous_learning_pipeline.TaskMetadata])` or the `torch.serialization.safe_globals([continuous_learning_pipeline.TaskMetadata])` context manager to allowlist this global if you trust this class/function.\n\nCheck the documentation of torch.load to learn more about types accepted by default with weights_only https://pytorch.org/docs/stable/generated/torch.load.html."
+    }
+  ],
+  "overall_status": "NEEDS_IMPROVEMENT",
+  "total_time": 5.014856338500977,
+  "success_rate": 14.285714285714285
+}

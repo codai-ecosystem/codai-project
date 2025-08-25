@@ -1,0 +1,146 @@
+{
+  "tests_run": 8,
+  "tests_passed": 2,
+  "tests_failed": 6,
+  "test_details": [
+    {
+      "test_name": "Persistent Memory System Initialization",
+      "passed": false,
+      "timestamp": "2025-08-22T22:54:09.445783",
+      "details": {
+        "error": "Should have world model manager"
+      }
+    },
+    {
+      "test_name": "Memory Storage and Retrieval Operations",
+      "passed": false,
+      "timestamp": "2025-08-22T22:54:10.102662",
+      "details": {
+        "error": "Query 'transformer architecture' should return at least 1 memories"
+      }
+    },
+    {
+      "test_name": "World Model Construction and Management",
+      "passed": false,
+      "timestamp": "2025-08-22T22:54:10.604290",
+      "details": {
+        "error": "Should have entities"
+      }
+    },
+    {
+      "test_name": "Episodic Memory Formation and Time-Indexed Storage",
+      "passed": false,
+      "timestamp": "2025-08-22T22:54:11.632692",
+      "details": {
+        "error": "Should find episodic memories"
+      }
+    },
+    {
+      "test_name": "Memory Consolidation and Pattern Recognition",
+      "passed": false,
+      "timestamp": "2025-08-22T22:54:12.768749",
+      "details": {
+        "error": "Should identify patterns"
+      }
+    },
+    {
+      "test_name": "Model Context Protocol (MCP) Integration Functionality",
+      "passed": false,
+      "timestamp": "2025-08-22T22:54:13.331518",
+      "details": {
+        "error": "'PersistentMemoryWorldModelingSystem' object has no attribute 'get_system_status'"
+      }
+    },
+    {
+      "test_name": "Performance and Scalability Testing",
+      "passed": true,
+      "timestamp": "2025-08-22T22:54:14.551252",
+      "details": {
+        "concurrent_operations": 20,
+        "successful_operations": 20,
+        "failed_operations": 0,
+        "total_time": 0.7072153091430664,
+        "ops_per_second": 28.279930795381144,
+        "avg_response_time": 0.03536076545715332,
+        "success_rate": 1.0
+      }
+    },
+    {
+      "test_name": "Integration with Existing RomAI Memory Components",
+      "passed": true,
+      "timestamp": "2025-08-22T22:54:15.057793",
+      "details": {
+        "total_components": 6,
+        "available_components": 6,
+        "integration_rate": 1.0,
+        "cross_component_test": true,
+        "component_details": {
+          "advanced_memory_core": {
+            "available": true,
+            "status": {
+              "available": true,
+              "status": {
+                "initialized": true,
+                "type": "AdvancedMemoryCore"
+              }
+            }
+          },
+          "episodic_memory_system": {
+            "available": true,
+            "status": {
+              "available": true,
+              "status": {
+                "initialized": true,
+                "type": "EpisodicMemorySystem"
+              }
+            }
+          },
+          "working_memory_processor": {
+            "available": true,
+            "status": {
+              "available": true,
+              "status": {
+                "initialized": true,
+                "type": "WorkingMemoryProcessor"
+              }
+            }
+          },
+          "long_term_storage_manager": {
+            "available": true,
+            "status": {
+              "available": true,
+              "status": {
+                "initialized": true,
+                "type": "LongTermStorageManager"
+              }
+            }
+          },
+          "memory_consolidation_engine": {
+            "available": true,
+            "status": {
+              "available": true,
+              "status": {
+                "initialized": true,
+                "type": "MemoryConsolidationEngine"
+              }
+            }
+          },
+          "memory_pattern_recognizer": {
+            "available": true,
+            "status": {
+              "available": true,
+              "status": {
+                "initialized": true,
+                "type": "MemoryPatternRecognizer"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "performance_metrics": {},
+  "start_time": "2025-08-22 22:54:08.703909",
+  "end_time": "2025-08-22 22:54:15.569201",
+  "total_duration": 6.865292
+}

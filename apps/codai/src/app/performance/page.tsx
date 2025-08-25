@@ -39,6 +39,7 @@ import {
     AlertCircle,
     Info,
     ExternalLink,
+    Tag,
     Code,
     MonitorSpeaker,
     Route,
@@ -455,8 +456,8 @@ export default function PerformancePage() {
                             key={tab.id}
                             onClick={() => setSelectedTab(tab.id)}
                             className={`flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${selectedTab === tab.id
-                                    ? 'bg-white text-blue-600 shadow'
-                                    : 'text-gray-600 hover:text-gray-900'
+                                ? 'bg-white text-blue-600 shadow'
+                                : 'text-gray-600 hover:text-gray-900'
                                 }`}
                         >
                             <tab.icon className="w-4 h-4" />
@@ -483,8 +484,8 @@ export default function PerformancePage() {
                                         key={category.id}
                                         onClick={() => setSelectedCategory(category.id)}
                                         className={`flex items-center space-x-1 px-3 py-1 rounded-full text-sm border ${selectedCategory === category.id
-                                                ? 'bg-blue-100 text-blue-800 border-blue-200'
-                                                : 'border-gray-300 text-gray-600 hover:bg-gray-50'
+                                            ? 'bg-blue-100 text-blue-800 border-blue-200'
+                                            : 'border-gray-300 text-gray-600 hover:bg-gray-50'
                                             }`}
                                     >
                                         <category.icon className="w-4 h-4" />
@@ -523,10 +524,10 @@ export default function PerformancePage() {
                                         <div className="flex items-center space-x-1">
                                             {getTrendIcon(metric.trend, metric.change)}
                                             <span className={`text-sm font-medium ${(metric.trend === 'up' && metric.change > 0) || (metric.trend === 'down' && metric.change < 0)
-                                                    ? 'text-green-600'
-                                                    : (metric.trend === 'up' && metric.change < 0) || (metric.trend === 'down' && metric.change > 0)
-                                                        ? 'text-red-600'
-                                                        : 'text-gray-600'
+                                                ? 'text-green-600'
+                                                : (metric.trend === 'up' && metric.change < 0) || (metric.trend === 'down' && metric.change > 0)
+                                                    ? 'text-red-600'
+                                                    : 'text-gray-600'
                                                 }`}>
                                                 {Math.abs(metric.change)}%
                                             </span>
@@ -541,7 +542,7 @@ export default function PerformancePage() {
                                         <div className="w-full bg-gray-200 rounded-full h-2">
                                             <div
                                                 className={`h-2 rounded-full ${metric.status === 'good' ? 'bg-green-600' :
-                                                        metric.status === 'warning' ? 'bg-yellow-600' : 'bg-red-600'
+                                                    metric.status === 'warning' ? 'bg-yellow-600' : 'bg-red-600'
                                                     }`}
                                                 style={{
                                                     width: `${Math.min(100, (metric.value / metric.target) * 100)}%`
@@ -645,7 +646,7 @@ export default function PerformancePage() {
                                         <div className="w-full bg-gray-200 rounded-full h-3">
                                             <div
                                                 className={`h-3 rounded-full ${service.score >= 90 ? 'bg-green-600' :
-                                                        service.score >= 70 ? 'bg-yellow-600' : 'bg-red-600'
+                                                    service.score >= 70 ? 'bg-yellow-600' : 'bg-red-600'
                                                     }`}
                                                 style={{ width: `${service.score}%` }}
                                             />

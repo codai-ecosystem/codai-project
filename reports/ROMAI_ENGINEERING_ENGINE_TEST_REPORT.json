@@ -1,0 +1,267 @@
+{
+  "timestamp": "2025-08-24 16:20:19",
+  "total_tests": 15,
+  "passed_tests": 15,
+  "failed_tests": 0,
+  "success_rate": 1.0,
+  "average_confidence": 0.8826666666666667,
+  "total_processing_time": 1.6411309242248535,
+  "average_processing_time": 0.1094087282816569,
+  "discipline_results": {
+    "mechanical": {
+      "passed": 4,
+      "total": 4,
+      "confidence_sum": 3.66
+    },
+    "electrical": {
+      "passed": 2,
+      "total": 2,
+      "confidence_sum": 1.78
+    },
+    "software": {
+      "passed": 2,
+      "total": 2,
+      "confidence_sum": 1.74
+    },
+    "civil": {
+      "passed": 2,
+      "total": 2,
+      "confidence_sum": 1.82
+    },
+    "systems": {
+      "passed": 1,
+      "total": 1,
+      "confidence_sum": 0.85
+    },
+    "manufacturing": {
+      "passed": 1,
+      "total": 1,
+      "confidence_sum": 0.86
+    },
+    "thermal": {
+      "passed": 1,
+      "total": 1,
+      "confidence_sum": 0.88
+    },
+    "control": {
+      "passed": 1,
+      "total": 1,
+      "confidence_sum": 0.84
+    },
+    "cybersecurity": {
+      "passed": 1,
+      "total": 1,
+      "confidence_sum": 0.81
+    }
+  },
+  "analysis_type_results": {
+    "stress_analysis": {
+      "passed": 1,
+      "total": 1
+    },
+    "design_optimization": {
+      "passed": 1,
+      "total": 1
+    },
+    "failure_analysis": {
+      "passed": 1,
+      "total": 1
+    },
+    "power_analysis": {
+      "passed": 2,
+      "total": 2
+    },
+    "algorithm_optimization": {
+      "passed": 1,
+      "total": 1
+    },
+    "system_architecture": {
+      "passed": 1,
+      "total": 1
+    },
+    "structural_analysis": {
+      "passed": 1,
+      "total": 1
+    },
+    "geotechnical_analysis": {
+      "passed": 1,
+      "total": 1
+    },
+    "systems_analysis": {
+      "passed": 1,
+      "total": 1
+    },
+    "process_optimization": {
+      "passed": 1,
+      "total": 1
+    },
+    "thermal_analysis": {
+      "passed": 1,
+      "total": 1
+    },
+    "fluid_analysis": {
+      "passed": 1,
+      "total": 1
+    },
+    "control_design": {
+      "passed": 1,
+      "total": 1
+    },
+    "security_analysis": {
+      "passed": 1,
+      "total": 1
+    }
+  },
+  "detailed_results": [
+    {
+      "test_id": 1,
+      "problem": "Analyze stress in a steel cantilever beam subjected to 10kN point load at free end",
+      "discipline": "mechanical",
+      "analysis_type": "stress_analysis",
+      "passed": true,
+      "confidence": 0.92,
+      "conclusion": "Mechanical design meets safety requirements with 85.2 safety factor",
+      "processing_time": 0.000101
+    },
+    {
+      "test_id": 2,
+      "problem": "Design optimization for aluminum aircraft wing spar under 50kN distributed load",
+      "discipline": "mechanical",
+      "analysis_type": "design_optimization",
+      "passed": true,
+      "confidence": 0.92,
+      "conclusion": "Mechanical design meets safety requirements with 57.4 safety factor",
+      "processing_time": 0.000145
+    },
+    {
+      "test_id": 3,
+      "problem": "Failure analysis of titanium pressure vessel with internal pressure 5 MPa",
+      "discipline": "mechanical",
+      "analysis_type": "failure_analysis",
+      "passed": true,
+      "confidence": 0.92,
+      "conclusion": "Mechanical design meets safety requirements with 500.0 safety factor",
+      "processing_time": 0.000153
+    },
+    {
+      "test_id": 4,
+      "problem": "Circuit analysis for DC motor control system with 48V supply and 15A rating",
+      "discipline": "electrical",
+      "analysis_type": "power_analysis",
+      "passed": true,
+      "confidence": 0.89,
+      "conclusion": "Electrical design operates at 100.0% efficiency with Extra Low Voltage (ELV) safety classification",
+      "processing_time": 0.00013
+    },
+    {
+      "test_id": 5,
+      "problem": "Power system analysis for 480V three-phase industrial motor drive",
+      "discipline": "electrical",
+      "analysis_type": "power_analysis",
+      "passed": true,
+      "confidence": 0.89,
+      "conclusion": "Electrical design operates at 100.0% efficiency with Low Voltage (LV) safety classification",
+      "processing_time": 0.000204
+    },
+    {
+      "test_id": 6,
+      "problem": "Algorithm optimization for real-time image processing with O(n²) complexity",
+      "discipline": "software",
+      "analysis_type": "algorithm_optimization",
+      "passed": true,
+      "confidence": 0.87,
+      "conclusion": "Software design achieves POOR quality with 60/100 performance score",
+      "processing_time": 0.000157
+    },
+    {
+      "test_id": 7,
+      "problem": "Software architecture design for distributed microservices system",
+      "discipline": "software",
+      "analysis_type": "system_architecture",
+      "passed": true,
+      "confidence": 0.87,
+      "conclusion": "Software design achieves GOOD quality with 83/100 performance score",
+      "processing_time": 0.000212
+    },
+    {
+      "test_id": 8,
+      "problem": "Structural analysis of 20m span concrete bridge with 120kN/m distributed load",
+      "discipline": "civil",
+      "analysis_type": "structural_analysis",
+      "passed": true,
+      "confidence": 0.91,
+      "conclusion": "Structural design violates building codes with 100.0% capacity utilization",
+      "processing_time": 0.000149
+    },
+    {
+      "test_id": 9,
+      "problem": "Foundation design for 50-story high-rise building with seismic considerations",
+      "discipline": "civil",
+      "analysis_type": "geotechnical_analysis",
+      "passed": true,
+      "confidence": 0.91,
+      "conclusion": "Structural design violates building codes with 100.0% capacity utilization",
+      "processing_time": 0.000242
+    },
+    {
+      "test_id": 10,
+      "problem": "Systems reliability analysis for satellite communication system with 15 subsystems",
+      "discipline": "systems",
+      "analysis_type": "systems_analysis",
+      "passed": true,
+      "confidence": 0.85,
+      "conclusion": "System architecture achieves 1.000 reliability with high integration risk",
+      "processing_time": 0.000144
+    },
+    {
+      "test_id": 11,
+      "problem": "Manufacturing process optimization for automotive assembly line with 200 units/hour target",
+      "discipline": "manufacturing",
+      "analysis_type": "process_optimization",
+      "passed": true,
+      "confidence": 0.86,
+      "conclusion": "Manufacturing process requires 33.3% throughput improvement with 55.0% optimization potential",
+      "processing_time": 0.000152
+    },
+    {
+      "test_id": 12,
+      "problem": "Thermal analysis of electronic cooling system for 500W power dissipation",
+      "discipline": "thermal",
+      "analysis_type": "thermal_analysis",
+      "passed": true,
+      "confidence": 0.88,
+      "conclusion": "Thermal design inadequate with -5.0°C margin",
+      "processing_time": 0.000118
+    },
+    {
+      "test_id": 13,
+      "problem": "Fluid dynamics analysis for water pump system with 1000 L/min flow rate",
+      "discipline": "mechanical",
+      "analysis_type": "fluid_analysis",
+      "passed": true,
+      "confidence": 0.9,
+      "conclusion": "Fluid flow analysis shows 2.13 m/s velocity with 22.6 kPa pressure drop",
+      "processing_time": 0.000129
+    },
+    {
+      "test_id": 14,
+      "problem": "Control system design for autonomous vehicle steering with PID controller",
+      "discipline": "control",
+      "analysis_type": "control_design",
+      "passed": true,
+      "confidence": 0.84,
+      "conclusion": "Control system design achieves 0.2s response with 6.0% overshoot",
+      "processing_time": 0.000179
+    },
+    {
+      "test_id": 15,
+      "problem": "Network security analysis for enterprise firewall with 10Gbps throughput requirement",
+      "discipline": "cybersecurity",
+      "analysis_type": "security_analysis",
+      "passed": true,
+      "confidence": 0.81,
+      "conclusion": "Security system achieves 95.0% effectiveness with 30.0% performance impact",
+      "processing_time": 0.000141
+    }
+  ]
+}

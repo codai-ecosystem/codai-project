@@ -1,0 +1,20 @@
+{
+    "type": "shell",
+    "label": "🚀 Comprehensive Service Health Check",
+    "command": "pwsh",
+    "args": [
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "Write-Host '🚀 CODAI ECOSYSTEM COMPREHENSIVE HEALTH CHECK' -ForegroundColor Green; Write-Host '===============================================' -ForegroundColor Green; Write-Host ''; $healthyServices = 0; $totalServices = 0; Write-Host '📊 Testing Local Docker Services...' -ForegroundColor Cyan; Write-Host ''; $services = @( @{Name='Gateway (Port 4000)'; Url='http://localhost:4000/health'; Icon='🌐'}, @{Name='MemorAI App (Port 4006)'; Url='http://localhost:4006/api/health'; Icon='📱'}, @{Name='CBD Database (Port 4180)'; Url='http://localhost:4180/health'; Icon='🗃️'}, @{Name='MemorAI MCP (Port 4950)'; Url='http://localhost:4950/health'; Icon='🧠'}, @{Name='Grafana (Port 4951)'; Url='http://localhost:4951/api/health'; Icon='📊'} ); foreach ($service in $services) { $totalServices++; try { $response = Invoke-RestMethod -Uri $service.Url -Method Get -TimeoutSec 5; Write-Host \"$($service.Icon) $($service.Name): ✅ HEALTHY\" -ForegroundColor Green; $healthyServices++; } catch { Write-Host \"$($service.Icon) $($service.Name): ❌ FAILED - $($_.Exception.Message)\" -ForegroundColor Red; } } Write-Host ''; Write-Host '☁️ Testing Cloud Services (AWS EKS)...' -ForegroundColor Cyan; Write-Host ''; $cloudServices = @( @{Name='LoadBalancer Gateway'; Url='http://a2a0d97448b094c39b7bd326602802e9-124725516.eu-west-1.elb.amazonaws.com/health'; Icon='☁️'} ); foreach ($service in $cloudServices) { $totalServices++; try { $response = Invoke-RestMethod -Uri $service.Url -Method Get -TimeoutSec 10; Write-Host \"$($service.Icon) $($service.Name): ✅ HEALTHY\" -ForegroundColor Green; $healthyServices++; } catch { Write-Host \"$($service.Icon) $($service.Name): ❌ FAILED - $($_.Exception.Message)\" -ForegroundColor Red; } } Write-Host ''; Write-Host '📋 Service Health Summary:' -ForegroundColor Yellow; Write-Host \"✅ Healthy Services: $healthyServices\" -ForegroundColor Green; Write-Host \"❌ Failed Services: $($totalServices - $healthyServices)\" -ForegroundColor Red; Write-Host \"📊 Success Rate: $([math]::Round(($healthyServices / $totalServices) * 100, 1))%\" -ForegroundColor White; Write-Host ''; if ($healthyServices -eq $totalServices) { Write-Host '🎉 ALL SERVICES HEALTHY - PRODUCTION READY!' -ForegroundColor Green; } elseif ($healthyServices / $totalServices -gt 0.7) { Write-Host '⚠️ MOSTLY HEALTHY - SOME ISSUES DETECTED' -ForegroundColor Yellow; } else { Write-Host '🚨 CRITICAL ISSUES - IMMEDIATE ATTENTION REQUIRED' -ForegroundColor Red; }"
+    ],
+    "group": "test",
+    "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+    }
+}

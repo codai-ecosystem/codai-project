@@ -1,0 +1,204 @@
+{
+    "metadata": {
+        "generated_at": "2025-08-24T12:05:00.000Z",
+        "num_examples": 100,
+        "generator_version": "3.0_advanced_logic",
+        "external_ai_used": false,
+        "description": "Advanced logical reasoning training data including predicate logic, modal logic, temporal logic, and formal reasoning systems"
+    },
+    "advanced_logical_examples": [
+        {
+            "problem": "∀x(Human(x) → Mortal(x)) ∧ Human(Socrates) ⊢ Mortal(Socrates)",
+            "logical_system": "predicate_logic",
+            "premises": [
+                "∀x(Human(x) → Mortal(x))",
+                "Human(Socrates)"
+            ],
+            "reasoning_steps": [
+                "Step 1: Universal instantiation on premise 1 with x = Socrates",
+                "Step 2: Human(Socrates) → Mortal(Socrates)",
+                "Step 3: Apply modus ponens with premise 2: Human(Socrates)",
+                "Step 4: Conclude: Mortal(Socrates)"
+            ],
+            "conclusion": "Mortal(Socrates)",
+            "validity": true,
+            "logical_form": "Universal Instantiation + Modus Ponens",
+            "confidence": 1.0,
+            "domain": "predicate_logic"
+        },
+        {
+            "problem": "□(P → Q) ∧ □P ⊢ □Q (Necessity Distribution)",
+            "logical_system": "modal_logic",
+            "premises": [
+                "□(P → Q) - It is necessary that if P then Q",
+                "□P - P is necessary"
+            ],
+            "reasoning_steps": [
+                "Step 1: From □(P → Q), in all possible worlds: P → Q",
+                "Step 2: From □P, in all possible worlds: P is true",
+                "Step 3: By universal modus ponens across all worlds: Q is true in all worlds",
+                "Step 4: Therefore: □Q (Q is necessary)"
+            ],
+            "conclusion": "□Q",
+            "validity": true,
+            "logical_form": "Modal Modus Ponens",
+            "confidence": 1.0,
+            "domain": "modal_logic"
+        },
+        {
+            "problem": "F(eventually P) ∧ G(always ¬P) ⊢ ⊥ (Temporal Contradiction)",
+            "logical_system": "temporal_logic",
+            "premises": [
+                "F(P) - Eventually P will be true",
+                "G(¬P) - P will always be false"
+            ],
+            "reasoning_steps": [
+                "Step 1: F(P) means there exists future time t where P(t) is true",
+                "Step 2: G(¬P) means for all future times t, ¬P(t) is true",
+                "Step 3: This creates contradiction: P(t) ∧ ¬P(t) for some time t",
+                "Step 4: By principle of non-contradiction: ⊥ (contradiction)"
+            ],
+            "conclusion": "⊥ (contradiction)",
+            "validity": true,
+            "logical_form": "Temporal Contradiction",
+            "confidence": 1.0,
+            "domain": "temporal_logic"
+        },
+        {
+            "problem": "∃x∀y(Loves(x,y)) ⊢ ∀y∃x(Loves(x,y)) (Quantifier Relationship)",
+            "logical_system": "predicate_logic",
+            "premises": [
+                "∃x∀y(Loves(x,y)) - There exists someone who loves everyone"
+            ],
+            "reasoning_steps": [
+                "Step 1: Let a be the witness for ∃x, so ∀y(Loves(a,y))",
+                "Step 2: For any arbitrary person b, we have Loves(a,b)",
+                "Step 3: Since a exists and Loves(a,b), we have ∃x(Loves(x,b))",
+                "Step 4: Since b was arbitrary, ∀y∃x(Loves(x,y))"
+            ],
+            "conclusion": "∀y∃x(Loves(x,y))",
+            "validity": true,
+            "logical_form": "Quantifier Reordering (Strong to Weak)",
+            "confidence": 1.0,
+            "domain": "predicate_logic"
+        },
+        {
+            "problem": "(P ∧ Q) ∨ (R ∧ S) ⊢ (P ∨ R) ∧ (P ∨ S) ∧ (Q ∨ R) ∧ (Q ∨ S)",
+            "logical_system": "propositional_logic",
+            "premises": [
+                "(P ∧ Q) ∨ (R ∧ S)"
+            ],
+            "reasoning_steps": [
+                "Step 1: Case analysis on the disjunction",
+                "Step 2: Case 1: P ∧ Q is true. Then P is true and Q is true",
+                "Step 3: From P true: (P ∨ R), (P ∨ S) are true",
+                "Step 4: From Q true: (Q ∨ R), (Q ∨ S) are true",
+                "Step 5: Case 2: R ∧ S is true. Then R is true and S is true",
+                "Step 6: From R, S true: all four disjunctions are satisfied",
+                "Step 7: In both cases, conclusion holds"
+            ],
+            "conclusion": "(P ∨ R) ∧ (P ∨ S) ∧ (Q ∨ R) ∧ (Q ∨ S)",
+            "validity": true,
+            "logical_form": "Distributivity of Conjunction over Disjunction",
+            "confidence": 1.0,
+            "domain": "propositional_logic"
+        },
+        {
+            "problem": "◊□P ⊢ □◊P (Brouwer Formula - Invalid)",
+            "logical_system": "modal_logic",
+            "premises": [
+                "◊□P - It is possible that P is necessary"
+            ],
+            "reasoning_steps": [
+                "Step 1: ◊□P means there exists world w where □P holds in w",
+                "Step 2: □◊P means in all worlds, P is possibly true",
+                "Step 3: Counter-model: Consider worlds w1, w2 where only w1 satisfies P",
+                "Step 4: At w1: □P is false (P not necessary), so ◊□P is false",
+                "Step 5: But ◊P is true at both worlds, so □◊P could be true",
+                "Step 6: This shows the inference is invalid in general"
+            ],
+            "conclusion": "Invalid inference - requires specific modal conditions",
+            "validity": false,
+            "logical_form": "Modal Formula Relationship (Generally Invalid)",
+            "confidence": 0.9,
+            "domain": "modal_logic"
+        },
+        {
+            "problem": "∀x(Px → Qx) ∧ ∃x(Px ∧ Rx) ⊢ ∃x(Qx ∧ Rx)",
+            "logical_system": "predicate_logic",
+            "premises": [
+                "∀x(Px → Qx) - For all x, if P(x) then Q(x)",
+                "∃x(Px ∧ Rx) - There exists x such that P(x) and R(x)"
+            ],
+            "reasoning_steps": [
+                "Step 1: Let a be witness for ∃x(Px ∧ Rx), so Pa ∧ Ra",
+                "Step 2: From premise 1 by universal instantiation: Pa → Qa",
+                "Step 3: From Pa ∧ Ra, we extract Pa",
+                "Step 4: By modus ponens on Pa → Qa and Pa: Qa",
+                "Step 5: We have Ra from step 1, so Qa ∧ Ra",
+                "Step 6: Therefore ∃x(Qx ∧ Rx) with witness a"
+            ],
+            "conclusion": "∃x(Qx ∧ Rx)",
+            "validity": true,
+            "logical_form": "Existential Instantiation + Universal Instantiation + Modus Ponens",
+            "confidence": 1.0,
+            "domain": "predicate_logic"
+        },
+        {
+            "problem": "X(P U Q) ⊢ XF(Q) (Next Until implies Next Eventually)",
+            "logical_system": "temporal_logic",
+            "premises": [
+                "X(P U Q) - In the next state, P holds until Q"
+            ],
+            "reasoning_steps": [
+                "Step 1: X(P U Q) means at time t+1: (P U Q)",
+                "Step 2: (P U Q) at t+1 means Q will eventually be true from t+1 onwards",
+                "Step 3: This means F(Q) is true at time t+1",
+                "Step 4: Therefore X(F(Q)) is true at current time t",
+                "Step 5: Since XF(Q) is equivalent to X(F(Q)): XF(Q)"
+            ],
+            "conclusion": "XF(Q)",
+            "validity": true,
+            "logical_form": "Temporal Until to Eventually",
+            "confidence": 1.0,
+            "domain": "temporal_logic"
+        },
+        {
+            "problem": "¬∀x(Px) ⊢ ∃x(¬Px) (De Morgan's Law for Quantifiers)",
+            "logical_system": "predicate_logic",
+            "premises": [
+                "¬∀x(Px) - It is not the case that all x have property P"
+            ],
+            "reasoning_steps": [
+                "Step 1: ¬∀x(Px) means it's false that every x satisfies Px",
+                "Step 2: This means there exists at least one x that doesn't satisfy Px",
+                "Step 3: Formally: there exists x such that ¬Px",
+                "Step 4: Therefore: ∃x(¬Px)"
+            ],
+            "conclusion": "∃x(¬Px)",
+            "validity": true,
+            "logical_form": "De Morgan's Law (Quantifiers)",
+            "confidence": 1.0,
+            "domain": "predicate_logic"
+        },
+        {
+            "problem": "K_a(P ∧ Q) ⊢ K_a(P) ∧ K_a(Q) (Knowledge Distribution)",
+            "logical_system": "epistemic_logic",
+            "premises": [
+                "K_a(P ∧ Q) - Agent a knows that both P and Q are true"
+            ],
+            "reasoning_steps": [
+                "Step 1: K_a(P ∧ Q) means in all worlds agent a considers possible, P ∧ Q holds",
+                "Step 2: If P ∧ Q holds in all these worlds, then P holds in all these worlds",
+                "Step 3: Similarly, Q holds in all these worlds",
+                "Step 4: Therefore K_a(P) and K_a(Q) both hold",
+                "Step 5: Conclusion: K_a(P) ∧ K_a(Q)"
+            ],
+            "conclusion": "K_a(P) ∧ K_a(Q)",
+            "validity": true,
+            "logical_form": "Knowledge Distribution over Conjunction",
+            "confidence": 1.0,
+            "domain": "epistemic_logic"
+        }
+    ]
+}

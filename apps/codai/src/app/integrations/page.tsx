@@ -96,7 +96,7 @@ import {
     File,
     Save,
     Share,
-    Print,
+    Printer,
     Bookmark,
     Tag,
     Flag,
@@ -147,6 +147,13 @@ interface Integration {
         key: string;
         permissions: string[];
         lastUsed?: string;
+    }[];
+    configFields?: {
+        name: string;
+        type: 'text' | 'password' | 'select' | 'checkbox' | 'url';
+        label: string;
+        required: boolean;
+        options?: string[];
     }[];
 }
 
@@ -562,8 +569,8 @@ export default function IntegrationsPage() {
                                         key={tab.id}
                                         onClick={() => setSelectedTab(tab.id)}
                                         className={`w-full flex items-center p-3 rounded-lg text-left transition-colors ${selectedTab === tab.id
-                                                ? 'bg-blue-50 text-blue-600 border border-blue-200'
-                                                : 'hover:bg-gray-50'
+                                            ? 'bg-blue-50 text-blue-600 border border-blue-200'
+                                            : 'hover:bg-gray-50'
                                             }`}
                                     >
                                         <TabIcon className="w-5 h-5 mr-3" />
@@ -590,8 +597,8 @@ export default function IntegrationsPage() {
                                         key={category.id}
                                         onClick={() => setSelectedCategory(category.id)}
                                         className={`w-full flex items-center justify-between p-2 rounded-lg text-left transition-colors ${selectedCategory === category.id
-                                                ? 'bg-gray-100 text-gray-900'
-                                                : 'hover:bg-gray-50 text-gray-600'
+                                            ? 'bg-gray-100 text-gray-900'
+                                            : 'hover:bg-gray-50 text-gray-600'
                                             }`}
                                     >
                                         <div className="flex items-center">
@@ -741,8 +748,8 @@ export default function IntegrationsPage() {
                                                                             <div className="text-xs text-gray-500">Events: {webhook.events.join(', ')}</div>
                                                                         </div>
                                                                         <span className={`px-2 py-1 text-xs font-medium rounded-full ${webhook.status === 'active'
-                                                                                ? 'bg-green-100 text-green-600'
-                                                                                : 'bg-gray-100 text-gray-600'
+                                                                            ? 'bg-green-100 text-green-600'
+                                                                            : 'bg-gray-100 text-gray-600'
                                                                             }`}>
                                                                             {webhook.status}
                                                                         </span>
@@ -818,7 +825,12 @@ export default function IntegrationsPage() {
                                             </span>
                                             <button
                                                 onClick={() => {
-                                                    setSelectedIntegration(integration);
+                                                    const integrationObj: Integration = {
+                                                        ...integration,
+                                                        category: integration.category as Integration['category'],
+                                                        status: 'disconnected'
+                                                    };
+                                                    setSelectedIntegration(integrationObj);
                                                     setShowNewIntegration(true);
                                                 }}
                                                 className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700"
@@ -892,7 +904,7 @@ export default function IntegrationsPage() {
                             </div>
 
                             <div className="space-y-4">
-                                {selectedIntegration.configFields.map((field) => (
+                                {selectedIntegration.configFields?.map((field) => (
                                     <div key={field.name}>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">
                                             {field.label}
@@ -971,8 +983,8 @@ export default function IntegrationsPage() {
                                                     <div className="flex items-center space-x-2">
                                                         <span className="font-medium text-gray-900">{integration.name}</span>
                                                         <span className={`px-2 py-1 text-xs font-medium rounded-full ${webhook.status === 'active'
-                                                                ? 'bg-green-100 text-green-600'
-                                                                : 'bg-gray-100 text-gray-600'
+                                                            ? 'bg-green-100 text-green-600'
+                                                            : 'bg-gray-100 text-gray-600'
                                                             }`}>
                                                             {webhook.status}
                                                         </span>

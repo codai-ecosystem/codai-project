@@ -32,7 +32,7 @@
     "clean": "rimraf dist coverage test-results"
   },
   "dependencies": {
-    "@codai/ui": "workspace:*",
+    "@codai/shared-ui": "workspace:*",
     "@codai/sdk": "workspace:*",
     "@codai/realtime": "workspace:*",
     "@electron-toolkit/utils": "^4.0.0",
@@ -53,7 +53,7 @@
   },
   "devDependencies": {
     "@electron/rebuild": "^3.6.0",
-    "@playwright/test": "^1.49.1",
+    "@playwright/test": "^1.54.2",
     "@types/node": "^22.10.2",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
@@ -142,3 +142,4 @@
     }
   }
 }
+

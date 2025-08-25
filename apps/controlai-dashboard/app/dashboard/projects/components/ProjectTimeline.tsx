@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Project Timeline Component - Gantt chart view
  */
-'use client'
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
@@ -313,4 +314,5 @@ export function ProjectTimeline({ projects, onProjectUpdate }: ProjectTimelinePr
         </div>
     )
 }
+
 

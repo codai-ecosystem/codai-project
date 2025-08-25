@@ -4,7 +4,7 @@ import React from 'react'
  * Post-authentication landing page with complete memory management
  */
 
-import MemoryDashboard from '@/components/memory-dashboard';
+import MemoryDashboard from '@/components/dashboard';
 
 export default function DashboardPage() {
     return <MemoryDashboard />;

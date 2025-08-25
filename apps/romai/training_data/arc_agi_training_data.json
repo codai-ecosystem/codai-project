@@ -1,0 +1,1670 @@
+[
+    {
+        "task_id": "arc_task_001_spatial_rotation",
+        "description": "Simple 90-degree rotation transformation",
+        "category": "spatial_transformation",
+        "difficulty": "easy",
+        "expected_confidence": 0.9,
+        "task_data": {
+            "id": "arc_001",
+            "train": [
+                {
+                    "input": [
+                        [
+                            1,
+                            0
+                        ],
+                        [
+                            0,
+                            0
+                        ]
+                    ],
+                    "output": [
+                        [
+                            0,
+                            1
+                        ],
+                        [
+                            0,
+                            0
+                        ]
+                    ]
+                },
+                {
+                    "input": [
+                        [
+                            0,
+                            1
+                        ],
+                        [
+                            1,
+                            0
+                        ]
+                    ],
+                    "output": [
+                        [
+                            1,
+                            0
+                        ],
+                        [
+                            0,
+                            1
+                        ]
+                    ]
+                }
+            ],
+            "test": [
+                {
+                    "input": [
+                        [
+                            1,
+                            1
+                        ],
+                        [
+                            0,
+                            0
+                        ]
+                    ]
+                }
+            ]
+        },
+        "expected_output": [
+            [
+                0,
+                1
+            ],
+            [
+                0,
+                1
+            ]
+        ],
+        "transformation_rule": "rotate_90_degrees",
+        "reasoning": "Each input grid is rotated 90 degrees clockwise to produce the output"
+    },
+    {
+        "task_id": "arc_task_002_color_mapping",
+        "description": "Simple color mapping transformation",
+        "category": "color_transformation",
+        "difficulty": "medium",
+        "expected_confidence": 0.8,
+        "task_data": {
+            "id": "arc_002",
+            "train": [
+                {
+                    "input": [
+                        [
+                            1,
+                            2,
+                            1
+                        ],
+                        [
+                            2,
+                            1,
+                            2
+                        ],
+                        [
+                            1,
+                            2,
+                            1
+                        ]
+                    ],
+                    "output": [
+                        [
+                            3,
+                            4,
+                            3
+                        ],
+                        [
+                            4,
+                            3,
+                            4
+                        ],
+                        [
+                            3,
+                            4,
+                            3
+                        ]
+                    ]
+                },
+                {
+                    "input": [
+                        [
+                            2,
+                            2,
+                            1
+                        ],
+                        [
+                            1,
+                            2,
+                            1
+                        ],
+                        [
+                            2,
+                            1,
+                            2
+                        ]
+                    ],
+                    "output": [
+                        [
+                            4,
+                            4,
+                            3
+                        ],
+                        [
+                            3,
+                            4,
+                            3
+                        ],
+                        [
+                            4,
+                            3,
+                            4
+                        ]
+                    ]
+                }
+            ],
+            "test": [
+                {
+                    "input": [
+                        [
+                            1,
+                            1,
+                            2
+                        ],
+                        [
+                            2,
+                            1,
+                            1
+                        ],
+                        [
+                            1,
+                            2,
+                            2
+                        ]
+                    ]
+                }
+            ]
+        },
+        "expected_output": [
+            [
+                3,
+                3,
+                4
+            ],
+            [
+                4,
+                3,
+                3
+            ],
+            [
+                3,
+                4,
+                4
+            ]
+        ],
+        "transformation_rule": "color_mapping_1_to_3_2_to_4",
+        "reasoning": "Color 1 maps to color 3, color 2 maps to color 4"
+    },
+    {
+        "task_id": "arc_task_003_reflection",
+        "description": "Horizontal reflection transformation",
+        "category": "spatial_transformation",
+        "difficulty": "easy",
+        "expected_confidence": 0.85,
+        "task_data": {
+            "id": "arc_003",
+            "train": [
+                {
+                    "input": [
+                        [
+                            1,
+                            0,
+                            0
+                        ],
+                        [
+                            1,
+                            1,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            0
+                        ]
+                    ],
+                    "output": [
+                        [
+                            0,
+                            0,
+                            1
+                        ],
+                        [
+                            0,
+                            1,
+                            1
+                        ],
+                        [
+                            0,
+                            0,
+                            0
+                        ]
+                    ]
+                },
+                {
+                    "input": [
+                        [
+                            2,
+                            2,
+                            0
+                        ],
+                        [
+                            2,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            1
+                        ]
+                    ],
+                    "output": [
+                        [
+                            0,
+                            2,
+                            2
+                        ],
+                        [
+                            0,
+                            0,
+                            2
+                        ],
+                        [
+                            1,
+                            0,
+                            0
+                        ]
+                    ]
+                }
+            ],
+            "test": [
+                {
+                    "input": [
+                        [
+                            1,
+                            0,
+                            2
+                        ],
+                        [
+                            0,
+                            1,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            0
+                        ]
+                    ]
+                }
+            ]
+        },
+        "expected_output": [
+            [
+                2,
+                0,
+                1
+            ],
+            [
+                0,
+                1,
+                0
+            ],
+            [
+                0,
+                0,
+                0
+            ]
+        ],
+        "transformation_rule": "reflect_horizontal",
+        "reasoning": "Each input grid is reflected horizontally to produce the output"
+    },
+    {
+        "task_id": "arc_task_004_pattern_fill",
+        "description": "Fill background with dominant color pattern",
+        "category": "pattern_completion",
+        "difficulty": "medium",
+        "expected_confidence": 0.7,
+        "task_data": {
+            "id": "arc_004",
+            "train": [
+                {
+                    "input": [
+                        [
+                            0,
+                            1,
+                            0
+                        ],
+                        [
+                            1,
+                            0,
+                            1
+                        ],
+                        [
+                            0,
+                            1,
+                            0
+                        ]
+                    ],
+                    "output": [
+                        [
+                            1,
+                            1,
+                            1
+                        ],
+                        [
+                            1,
+                            1,
+                            1
+                        ],
+                        [
+                            1,
+                            1,
+                            1
+                        ]
+                    ]
+                },
+                {
+                    "input": [
+                        [
+                            2,
+                            0,
+                            2
+                        ],
+                        [
+                            0,
+                            2,
+                            0
+                        ],
+                        [
+                            2,
+                            0,
+                            2
+                        ]
+                    ],
+                    "output": [
+                        [
+                            2,
+                            2,
+                            2
+                        ],
+                        [
+                            2,
+                            2,
+                            2
+                        ],
+                        [
+                            2,
+                            2,
+                            2
+                        ]
+                    ]
+                }
+            ],
+            "test": [
+                {
+                    "input": [
+                        [
+                            0,
+                            3,
+                            0
+                        ],
+                        [
+                            3,
+                            0,
+                            3
+                        ],
+                        [
+                            0,
+                            0,
+                            0
+                        ]
+                    ]
+                }
+            ]
+        },
+        "expected_output": [
+            [
+                3,
+                3,
+                3
+            ],
+            [
+                3,
+                3,
+                3
+            ],
+            [
+                3,
+                3,
+                3
+            ]
+        ],
+        "transformation_rule": "fill_with_dominant_color",
+        "reasoning": "All background (0) cells are filled with the dominant non-background color"
+    },
+    {
+        "task_id": "arc_task_005_object_counting",
+        "description": "Count objects and create output grid based on count",
+        "category": "logical_reasoning",
+        "difficulty": "hard",
+        "expected_confidence": 0.6,
+        "task_data": {
+            "id": "arc_005",
+            "train": [
+                {
+                    "input": [
+                        [
+                            1,
+                            0,
+                            1
+                        ],
+                        [
+                            0,
+                            0,
+                            0
+                        ],
+                        [
+                            1,
+                            0,
+                            0
+                        ]
+                    ],
+                    "output": [
+                        [
+                            3,
+                            3,
+                            3
+                        ]
+                    ]
+                },
+                {
+                    "input": [
+                        [
+                            2,
+                            2,
+                            0
+                        ],
+                        [
+                            0,
+                            2,
+                            0
+                        ],
+                        [
+                            2,
+                            0,
+                            2
+                        ]
+                    ],
+                    "output": [
+                        [
+                            5,
+                            5,
+                            5,
+                            5,
+                            5
+                        ]
+                    ]
+                }
+            ],
+            "test": [
+                {
+                    "input": [
+                        [
+                            4,
+                            0,
+                            4
+                        ],
+                        [
+                            4,
+                            4,
+                            0
+                        ],
+                        [
+                            0,
+                            4,
+                            4
+                        ]
+                    ]
+                }
+            ]
+        },
+        "expected_output": [
+            [
+                6,
+                6,
+                6,
+                6,
+                6,
+                6
+            ]
+        ],
+        "transformation_rule": "count_objects_create_row",
+        "reasoning": "Count non-background objects and create single row with that many cells of the counted value"
+    },
+    {
+        "task_id": "arc_task_006_size_scaling",
+        "description": "Scale grid size by factor of 2",
+        "category": "object_manipulation",
+        "difficulty": "medium",
+        "expected_confidence": 0.75,
+        "task_data": {
+            "id": "arc_006",
+            "train": [
+                {
+                    "input": [
+                        [
+                            1,
+                            0
+                        ],
+                        [
+                            0,
+                            1
+                        ]
+                    ],
+                    "output": [
+                        [
+                            1,
+                            1,
+                            0,
+                            0
+                        ],
+                        [
+                            1,
+                            1,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            1,
+                            1
+                        ],
+                        [
+                            0,
+                            0,
+                            1,
+                            1
+                        ]
+                    ]
+                }
+            ],
+            "test": [
+                {
+                    "input": [
+                        [
+                            2,
+                            3
+                        ],
+                        [
+                            3,
+                            2
+                        ]
+                    ]
+                }
+            ]
+        },
+        "expected_output": [
+            [
+                2,
+                2,
+                3,
+                3
+            ],
+            [
+                2,
+                2,
+                3,
+                3
+            ],
+            [
+                3,
+                3,
+                2,
+                2
+            ],
+            [
+                3,
+                3,
+                2,
+                2
+            ]
+        ],
+        "transformation_rule": "scale_2x",
+        "reasoning": "Each cell in input becomes a 2x2 block in output with the same value"
+    },
+    {
+        "task_id": "arc_task_007_symmetry_completion",
+        "description": "Complete symmetric pattern",
+        "category": "pattern_completion",
+        "difficulty": "medium",
+        "expected_confidence": 0.8,
+        "task_data": {
+            "id": "arc_007",
+            "train": [
+                {
+                    "input": [
+                        [
+                            1,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            1,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            0
+                        ]
+                    ],
+                    "output": [
+                        [
+                            1,
+                            0,
+                            1
+                        ],
+                        [
+                            0,
+                            1,
+                            0
+                        ],
+                        [
+                            1,
+                            0,
+                            1
+                        ]
+                    ]
+                },
+                {
+                    "input": [
+                        [
+                            2,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            0
+                        ]
+                    ],
+                    "output": [
+                        [
+                            2,
+                            0,
+                            2
+                        ],
+                        [
+                            0,
+                            0,
+                            0
+                        ],
+                        [
+                            2,
+                            0,
+                            2
+                        ]
+                    ]
+                }
+            ],
+            "test": [
+                {
+                    "input": [
+                        [
+                            3,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            3,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            3
+                        ]
+                    ]
+                }
+            ]
+        },
+        "expected_output": [
+            [
+                3,
+                0,
+                3
+            ],
+            [
+                0,
+                3,
+                0
+            ],
+            [
+                3,
+                0,
+                3
+            ]
+        ],
+        "transformation_rule": "complete_horizontal_symmetry",
+        "reasoning": "Complete horizontal symmetry by mirroring non-zero elements"
+    },
+    {
+        "task_id": "arc_task_008_complex_rotation",
+        "description": "180-degree rotation with color inversion",
+        "category": "spatial_transformation",
+        "difficulty": "hard",
+        "expected_confidence": 0.65,
+        "task_data": {
+            "id": "arc_008",
+            "train": [
+                {
+                    "input": [
+                        [
+                            1,
+                            2,
+                            0
+                        ],
+                        [
+                            0,
+                            1,
+                            2
+                        ],
+                        [
+                            2,
+                            0,
+                            1
+                        ]
+                    ],
+                    "output": [
+                        [
+                            2,
+                            1,
+                            3
+                        ],
+                        [
+                            3,
+                            2,
+                            1
+                        ],
+                        [
+                            1,
+                            3,
+                            2
+                        ]
+                    ]
+                }
+            ],
+            "test": [
+                {
+                    "input": [
+                        [
+                            1,
+                            0,
+                            2
+                        ],
+                        [
+                            2,
+                            1,
+                            0
+                        ],
+                        [
+                            0,
+                            2,
+                            1
+                        ]
+                    ]
+                }
+            ]
+        },
+        "expected_output": [
+            [
+                2,
+                3,
+                1
+            ],
+            [
+                1,
+                2,
+                3
+            ],
+            [
+                3,
+                1,
+                2
+            ]
+        ],
+        "transformation_rule": "rotate_180_and_increment_colors",
+        "reasoning": "Rotate 180 degrees and increment each color value by 1, with 0->3"
+    },
+    {
+        "task_id": "arc_task_009_connected_components",
+        "description": "Identify and mark connected components",
+        "category": "logical_reasoning",
+        "difficulty": "hard",
+        "expected_confidence": 0.6,
+        "task_data": {
+            "id": "arc_009",
+            "train": [
+                {
+                    "input": [
+                        [
+                            1,
+                            1,
+                            0,
+                            2
+                        ],
+                        [
+                            1,
+                            0,
+                            0,
+                            2
+                        ],
+                        [
+                            0,
+                            0,
+                            2,
+                            2
+                        ],
+                        [
+                            3,
+                            3,
+                            0,
+                            0
+                        ]
+                    ],
+                    "output": [
+                        [
+                            1,
+                            1,
+                            0,
+                            1
+                        ],
+                        [
+                            1,
+                            0,
+                            0,
+                            1
+                        ],
+                        [
+                            0,
+                            0,
+                            1,
+                            1
+                        ],
+                        [
+                            1,
+                            1,
+                            0,
+                            0
+                        ]
+                    ]
+                }
+            ],
+            "test": [
+                {
+                    "input": [
+                        [
+                            1,
+                            0,
+                            2,
+                            2
+                        ],
+                        [
+                            1,
+                            1,
+                            0,
+                            2
+                        ],
+                        [
+                            0,
+                            0,
+                            3,
+                            0
+                        ],
+                        [
+                            4,
+                            4,
+                            3,
+                            3
+                        ]
+                    ]
+                }
+            ]
+        },
+        "expected_output": [
+            [
+                1,
+                0,
+                1,
+                1
+            ],
+            [
+                1,
+                1,
+                0,
+                1
+            ],
+            [
+                0,
+                0,
+                1,
+                0
+            ],
+            [
+                1,
+                1,
+                1,
+                1
+            ]
+        ],
+        "transformation_rule": "mark_connected_components",
+        "reasoning": "Each connected component of non-zero cells gets marked with value 1"
+    },
+    {
+        "task_id": "arc_task_010_sequence_prediction",
+        "description": "Predict next in arithmetic sequence",
+        "category": "sequence_prediction",
+        "difficulty": "medium",
+        "expected_confidence": 0.85,
+        "task_data": {
+            "id": "arc_010",
+            "train": [
+                {
+                    "input": [
+                        [
+                            1,
+                            2,
+                            3
+                        ]
+                    ],
+                    "output": [
+                        [
+                            1,
+                            2,
+                            3,
+                            4
+                        ]
+                    ]
+                },
+                {
+                    "input": [
+                        [
+                            2,
+                            4,
+                            6
+                        ]
+                    ],
+                    "output": [
+                        [
+                            2,
+                            4,
+                            6,
+                            8
+                        ]
+                    ]
+                }
+            ],
+            "test": [
+                {
+                    "input": [
+                        [
+                            3,
+                            6,
+                            9
+                        ]
+                    ]
+                }
+            ]
+        },
+        "expected_output": [
+            [
+                3,
+                6,
+                9,
+                12
+            ]
+        ],
+        "transformation_rule": "extend_arithmetic_sequence",
+        "reasoning": "Identify arithmetic sequence pattern and add the next term"
+    },
+    {
+        "task_id": "arc_task_011_diagonal_reflection",
+        "description": "Reflect along main diagonal",
+        "category": "spatial_transformation",
+        "difficulty": "medium",
+        "expected_confidence": 0.8,
+        "task_data": {
+            "id": "arc_011",
+            "train": [
+                {
+                    "input": [
+                        [
+                            1,
+                            2,
+                            3
+                        ],
+                        [
+                            4,
+                            5,
+                            6
+                        ],
+                        [
+                            7,
+                            8,
+                            9
+                        ]
+                    ],
+                    "output": [
+                        [
+                            1,
+                            4,
+                            7
+                        ],
+                        [
+                            2,
+                            5,
+                            8
+                        ],
+                        [
+                            3,
+                            6,
+                            9
+                        ]
+                    ]
+                }
+            ],
+            "test": [
+                {
+                    "input": [
+                        [
+                            1,
+                            0,
+                            2
+                        ],
+                        [
+                            3,
+                            1,
+                            0
+                        ],
+                        [
+                            0,
+                            2,
+                            3
+                        ]
+                    ]
+                }
+            ]
+        },
+        "expected_output": [
+            [
+                1,
+                3,
+                0
+            ],
+            [
+                0,
+                1,
+                2
+            ],
+            [
+                2,
+                0,
+                3
+            ]
+        ],
+        "transformation_rule": "transpose_matrix",
+        "reasoning": "Reflect the grid along the main diagonal (transpose operation)"
+    },
+    {
+        "task_id": "arc_task_012_boundary_extraction",
+        "description": "Extract boundary of shapes",
+        "category": "object_manipulation",
+        "difficulty": "hard",
+        "expected_confidence": 0.65,
+        "task_data": {
+            "id": "arc_012",
+            "train": [
+                {
+                    "input": [
+                        [
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            1,
+                            1,
+                            0
+                        ],
+                        [
+                            0,
+                            1,
+                            1,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    ],
+                    "output": [
+                        [
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            1,
+                            1,
+                            0
+                        ],
+                        [
+                            0,
+                            1,
+                            1,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    ]
+                },
+                {
+                    "input": [
+                        [
+                            1,
+                            1,
+                            1
+                        ],
+                        [
+                            1,
+                            1,
+                            1
+                        ],
+                        [
+                            1,
+                            1,
+                            1
+                        ]
+                    ],
+                    "output": [
+                        [
+                            1,
+                            1,
+                            1
+                        ],
+                        [
+                            1,
+                            0,
+                            1
+                        ],
+                        [
+                            1,
+                            1,
+                            1
+                        ]
+                    ]
+                }
+            ],
+            "test": [
+                {
+                    "input": [
+                        [
+                            2,
+                            2,
+                            2,
+                            2
+                        ],
+                        [
+                            2,
+                            2,
+                            2,
+                            2
+                        ],
+                        [
+                            2,
+                            2,
+                            2,
+                            2
+                        ],
+                        [
+                            2,
+                            2,
+                            2,
+                            2
+                        ]
+                    ]
+                }
+            ]
+        },
+        "expected_output": [
+            [
+                2,
+                2,
+                2,
+                2
+            ],
+            [
+                2,
+                0,
+                0,
+                2
+            ],
+            [
+                2,
+                0,
+                0,
+                2
+            ],
+            [
+                2,
+                2,
+                2,
+                2
+            ]
+        ],
+        "transformation_rule": "extract_boundary",
+        "reasoning": "Keep only boundary pixels of filled shapes, set interior to background"
+    },
+    {
+        "task_id": "arc_task_013_maze_solving",
+        "description": "Find path from start to end in maze",
+        "category": "logical_reasoning",
+        "difficulty": "hard",
+        "expected_confidence": 0.7,
+        "task_data": {
+            "id": "arc_013",
+            "train": [
+                {
+                    "input": [
+                        [
+                            1,
+                            0,
+                            0,
+                            2
+                        ],
+                        [
+                            1,
+                            1,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            1,
+                            1,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            1,
+                            2
+                        ]
+                    ],
+                    "output": [
+                        [
+                            1,
+                            0,
+                            0,
+                            3
+                        ],
+                        [
+                            1,
+                            3,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            3,
+                            3,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            3,
+                            3
+                        ]
+                    ]
+                }
+            ],
+            "test": [
+                {
+                    "input": [
+                        [
+                            1,
+                            1,
+                            0,
+                            2
+                        ],
+                        [
+                            0,
+                            1,
+                            1,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            1,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            1,
+                            2
+                        ]
+                    ]
+                }
+            ]
+        },
+        "expected_output": [
+            [
+                3,
+                3,
+                0,
+                3
+            ],
+            [
+                0,
+                3,
+                3,
+                0
+            ],
+            [
+                0,
+                0,
+                3,
+                0
+            ],
+            [
+                0,
+                0,
+                3,
+                3
+            ]
+        ],
+        "transformation_rule": "mark_path_start_to_end",
+        "reasoning": "Find path from cells marked 1 (start) to cells marked 2 (end) and mark path with 3"
+    },
+    {
+        "task_id": "arc_task_014_shape_completion",
+        "description": "Complete partial shapes based on symmetry",
+        "category": "pattern_completion",
+        "difficulty": "medium",
+        "expected_confidence": 0.75,
+        "task_data": {
+            "id": "arc_014",
+            "train": [
+                {
+                    "input": [
+                        [
+                            1,
+                            1,
+                            0
+                        ],
+                        [
+                            1,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            0
+                        ]
+                    ],
+                    "output": [
+                        [
+                            1,
+                            1,
+                            1
+                        ],
+                        [
+                            1,
+                            0,
+                            1
+                        ],
+                        [
+                            1,
+                            1,
+                            1
+                        ]
+                    ]
+                },
+                {
+                    "input": [
+                        [
+                            0,
+                            2,
+                            0
+                        ],
+                        [
+                            2,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            0
+                        ]
+                    ],
+                    "output": [
+                        [
+                            2,
+                            2,
+                            2
+                        ],
+                        [
+                            2,
+                            0,
+                            2
+                        ],
+                        [
+                            2,
+                            2,
+                            2
+                        ]
+                    ]
+                }
+            ],
+            "test": [
+                {
+                    "input": [
+                        [
+                            3,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            3
+                        ]
+                    ]
+                }
+            ]
+        },
+        "expected_output": [
+            [
+                3,
+                3,
+                3
+            ],
+            [
+                3,
+                0,
+                3
+            ],
+            [
+                3,
+                3,
+                3
+            ]
+        ],
+        "transformation_rule": "complete_rectangular_frame",
+        "reasoning": "Complete rectangular frame around existing non-zero pixels"
+    },
+    {
+        "task_id": "arc_task_015_advanced_pattern",
+        "description": "Complex multi-step transformation",
+        "category": "logical_reasoning",
+        "difficulty": "expert",
+        "expected_confidence": 0.5,
+        "task_data": {
+            "id": "arc_015",
+            "train": [
+                {
+                    "input": [
+                        [
+                            1,
+                            2,
+                            1
+                        ],
+                        [
+                            2,
+                            3,
+                            2
+                        ],
+                        [
+                            1,
+                            2,
+                            1
+                        ]
+                    ],
+                    "output": [
+                        [
+                            3,
+                            2,
+                            3
+                        ],
+                        [
+                            2,
+                            1,
+                            2
+                        ],
+                        [
+                            3,
+                            2,
+                            3
+                        ]
+                    ]
+                },
+                {
+                    "input": [
+                        [
+                            2,
+                            1,
+                            2
+                        ],
+                        [
+                            1,
+                            4,
+                            1
+                        ],
+                        [
+                            2,
+                            1,
+                            2
+                        ]
+                    ],
+                    "output": [
+                        [
+                            4,
+                            1,
+                            4
+                        ],
+                        [
+                            1,
+                            2,
+                            1
+                        ],
+                        [
+                            4,
+                            1,
+                            4
+                        ]
+                    ]
+                }
+            ],
+            "test": [
+                {
+                    "input": [
+                        [
+                            1,
+                            3,
+                            1
+                        ],
+                        [
+                            3,
+                            2,
+                            3
+                        ],
+                        [
+                            1,
+                            3,
+                            1
+                        ]
+                    ]
+                }
+            ]
+        },
+        "expected_output": [
+            [
+                2,
+                3,
+                2
+            ],
+            [
+                3,
+                1,
+                3
+            ],
+            [
+                2,
+                3,
+                2
+            ]
+        ],
+        "transformation_rule": "swap_center_with_corners_invert_edges",
+        "reasoning": "Center value moves to corners, corner values move to edges, edge values move to center"
+    }
+]

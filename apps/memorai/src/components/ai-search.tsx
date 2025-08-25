@@ -409,8 +409,8 @@ const AISearchComponent: React.FC<AISearchComponentProps> = ({
                             </div>
                         </div>
                     </div>
+                </CardContent>
             </Card>
-            </div >
         ));
     }, [state.results]);
 

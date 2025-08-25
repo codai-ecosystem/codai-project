@@ -1,9 +1,10 @@
+'use client'
+
 import React from 'react'
 /**
  * Integrations Page - Connected Services and API Management
  * Comprehensive integration hub for ControlAI Dashboard
  */
-'use client'
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
@@ -360,8 +361,8 @@ export default function IntegrationsPage() {
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id as any)}
                                     className={`flex items-center space-x-2 py-4 px-2 border-b-2 font-medium text-sm transition-colors ${activeTab === tab.id
-                                            ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                                            : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+                                        ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                                        : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
                                         }`}
                                 >
                                     <Icon className="w-4 h-4" />
@@ -707,8 +708,8 @@ export default function IntegrationsPage() {
                                                     {webhook.name}
                                                 </h3>
                                                 <span className={`text-xs px-2 py-1 rounded-full ${webhook.active
-                                                        ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
-                                                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                                                    ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
+                                                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
                                                     }`}>
                                                     {webhook.active ? 'Active' : 'Inactive'}
                                                 </span>

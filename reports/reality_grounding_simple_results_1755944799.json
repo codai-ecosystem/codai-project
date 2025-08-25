@@ -1,0 +1,67 @@
+{
+  "timestamp": 1755944794.4837189,
+  "total_tests": 3,
+  "passed_tests": 3,
+  "failed_tests": 0,
+  "test_results": [
+    {
+      "test_name": "reality_grounding_basic",
+      "success": true,
+      "initialization": true,
+      "sensors_working": 3,
+      "actuators_working": 2,
+      "world_model_functional": true,
+      "causal_model_functional": true,
+      "error": null,
+      "world_state": {
+        "sensor_readings": 5,
+        "derived_properties": 3,
+        "uncertainty_map": 5
+      }
+    },
+    {
+      "test_name": "simple_hypothesis",
+      "success": true,
+      "hypothesis_created": true,
+      "experiment_designed": true,
+      "quick_validation": true,
+      "error": null
+    },
+    {
+      "test_name": "integration_status",
+      "success": true,
+      "status_retrieved": true,
+      "components_active": 4,
+      "performance_acceptable": true,
+      "error": null,
+      "system_status": {
+        "system_active": true,
+        "azure_connected": false,
+        "sensors": {
+          "registered": 5,
+          "active": 5,
+          "last_readings": 5
+        },
+        "actuators": {
+          "registered": 3,
+          "active": 3
+        },
+        "hypotheses": {
+          "active": 0,
+          "validated": 0,
+          "success_rate": 0.0
+        },
+        "world_state": {
+          "last_update": "2025-08-23T13:26:38.889358",
+          "derived_properties": 3,
+          "uncertainty_level": 3.9266666666666666e-07,
+          "causal_links": 0
+        }
+      },
+      "performance_time": 0.0011472702026367188
+    }
+  ],
+  "overall_status": "EXCELLENT",
+  "total_time": 5.396362066268921,
+  "success_rate": 100.0
+}

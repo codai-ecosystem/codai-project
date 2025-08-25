@@ -1,0 +1,32 @@
+{
+  "deployments": [
+    {
+      "deployment_id": "deploy_mathematical_20250822_164557_c4bf6a58_development_1755870357",
+      "model_version": "mathematical_20250822_164557_c4bf6a58",
+      "environment": "development",
+      "status": "failed",
+      "config": {
+        "model_version": "mathematical_20250822_164557_c4bf6a58",
+        "environment": "development",
+        "replicas": 1,
+        "resource_limits": {
+          "memory": "1g",
+          "cpu": "1"
+        },
+        "health_check_endpoint": "/health",
+        "deployment_strategy": "rolling",
+        "rollback_on_failure": true,
+        "max_unavailable": 1,
+        "readiness_timeout": 300
+      },
+      "started_at": "2025-08-22T13:45:57.621032+00:00",
+      "completed_at": "2025-08-22T13:45:57.622532+00:00",
+      "logs": [
+        "Starting deployment of mathematical_20250822_164557_c4bf6a58 to development"
+      ],
+      "rollback_version": null,
+      "error_message": "Image build failed: [WinError 3] The system cannot find the path specified: '/tmp/test_model.pt'"
+    }
+  ],
+  "last_updated": "2025-08-22T13:45:57.622596+00:00"
+}

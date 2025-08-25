@@ -22,7 +22,7 @@ class TestResult:
     details: Dict[str, Any]
     errors: List[str] = None
 
-class Phase32ProductionTestRunner:
+class EnhancedProductionTestRunner:
     """Production test runner for all Phase 3.2 components"""
     
     def __init__(self):
@@ -135,7 +135,7 @@ class Phase32ProductionTestRunner:
         print("🔗 Running Integration Tests...")
         
         integration_tests = [
-            "integration/test_phase32_model_server_endpoints.py"
+            "integration/test_enhanced_model_server_endpoints.py"
         ]
         
         results = []
@@ -253,7 +253,7 @@ class Phase32ProductionTestRunner:
             {
                 "name": "Phase 3.2 Performance Metrics",
                 "method": "GET",
-                "url": "/api/v1/phase32/performance-metrics",
+                "url": "/api/v1/enhanced-capabilities/performance-metrics",
                 "payload": None
             }
         ]
@@ -582,7 +582,7 @@ class Phase32ProductionTestRunner:
                     print(f"   - {failed_test['test_name']}: {failed_test['status']}")
         
         # Save report to file
-        report_path = self.base_dir / "PHASE32_PRODUCTION_READINESS_REPORT.json"
+        report_path = self.base_dir / "ENHANCED_PRODUCTION_READINESS_REPORT.json"
         with open(report_path, 'w') as f:
             json.dump(report, f, indent=2)
         
@@ -592,7 +592,7 @@ class Phase32ProductionTestRunner:
 
 def main():
     """Main entry point for production test runner"""
-    runner = Phase32ProductionTestRunner()
+    runner = EnhancedProductionTestRunner()
     report = runner.run_all_tests()
     
     # Exit with appropriate code

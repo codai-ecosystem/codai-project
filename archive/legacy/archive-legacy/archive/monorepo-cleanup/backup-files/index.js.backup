@@ -1,3 +1,0 @@
-export default function Home() {
-  return <div>TalentAI is Running on Port 4040!</div>
-}

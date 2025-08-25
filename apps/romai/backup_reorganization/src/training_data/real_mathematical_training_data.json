@@ -1,0 +1,138 @@
+{
+    "mathematical_training_data": [
+        {
+            "problem": "What is 2 + 2?",
+            "solution": "4",
+            "method": "arithmetic",
+            "steps": [
+                "Add 2 + 2",
+                "Result: 4"
+            ],
+            "difficulty": "basic",
+            "category": "arithmetic"
+        },
+        {
+            "problem": "Solve x^2 - 5x + 6 = 0",
+            "solution": "x = 2 or x = 3",
+            "method": "factoring",
+            "steps": [
+                "Factor: (x-2)(x-3) = 0",
+                "x-2 = 0 or x-3 = 0",
+                "x = 2 or x = 3"
+            ],
+            "difficulty": "intermediate",
+            "category": "algebra"
+        },
+        {
+            "problem": "What is the derivative of x^3?",
+            "solution": "3x^2",
+            "method": "power_rule",
+            "steps": [
+                "Apply power rule: d/dx[x^n] = nx^(n-1)",
+                "d/dx[x^3] = 3x^(3-1) = 3x^2"
+            ],
+            "difficulty": "intermediate",
+            "category": "calculus"
+        },
+        {
+            "problem": "Calculate √144",
+            "solution": "12",
+            "method": "square_root",
+            "steps": [
+                "Find the square root of 144",
+                "12 × 12 = 144",
+                "Therefore √144 = 12"
+            ],
+            "difficulty": "basic",
+            "category": "arithmetic"
+        },
+        {
+            "problem": "What is the integral of 2x?",
+            "solution": "x^2 + C",
+            "method": "power_rule_integration",
+            "steps": [
+                "Apply power rule for integration: ∫x^n dx = x^(n+1)/(n+1) + C",
+                "∫2x dx = 2∫x dx = 2 × x^2/2 + C = x^2 + C"
+            ],
+            "difficulty": "intermediate",
+            "category": "calculus"
+        },
+        {
+            "problem": "Solve the system: 2x + y = 5, x - y = 1",
+            "solution": "x = 2, y = 1",
+            "method": "elimination",
+            "steps": [
+                "Add equations: (2x + y) + (x - y) = 5 + 1",
+                "3x = 6",
+                "x = 2",
+                "Substitute: 2(2) + y = 5",
+                "y = 1"
+            ],
+            "difficulty": "intermediate",
+            "category": "algebra"
+        },
+        {
+            "problem": "What is the area of a circle with radius 5?",
+            "solution": "25π",
+            "method": "formula",
+            "steps": [
+                "Use formula A = πr^2",
+                "A = π(5)^2 = π(25) = 25π"
+            ],
+            "difficulty": "basic",
+            "category": "geometry"
+        },
+        {
+            "problem": "Find the limit of (x^2 - 1)/(x - 1) as x approaches 1",
+            "solution": "2",
+            "method": "factoring",
+            "steps": [
+                "Factor numerator: (x^2 - 1) = (x + 1)(x - 1)",
+                "Simplify: (x + 1)(x - 1)/(x - 1) = x + 1",
+                "Take limit: lim(x→1)[x + 1] = 1 + 1 = 2"
+            ],
+            "difficulty": "advanced",
+            "category": "calculus"
+        },
+        {
+            "problem": "What is log₂(8)?",
+            "solution": "3",
+            "method": "logarithm_properties",
+            "steps": [
+                "Find x where 2^x = 8",
+                "2^3 = 8",
+                "Therefore log₂(8) = 3"
+            ],
+            "difficulty": "intermediate",
+            "category": "algebra"
+        },
+        {
+            "problem": "Calculate the determinant of [[1, 2], [3, 4]]",
+            "solution": "-2",
+            "method": "2x2_determinant",
+            "steps": [
+                "For 2×2 matrix [[a, b], [c, d]], det = ad - bc",
+                "det = (1)(4) - (2)(3) = 4 - 6 = -2"
+            ],
+            "difficulty": "intermediate",
+            "category": "linear_algebra"
+        }
+    ],
+    "metadata": {
+        "total_problems": 10,
+        "categories": [
+            "arithmetic",
+            "algebra",
+            "calculus",
+            "geometry",
+            "linear_algebra"
+        ],
+        "difficulty_levels": [
+            "basic",
+            "intermediate",
+            "advanced"
+        ],
+        "version": "1.0.0",
+        "created": "2025-08-24"
+    }
+}

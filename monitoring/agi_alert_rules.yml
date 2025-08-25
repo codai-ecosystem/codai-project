@@ -1,0 +1,92 @@
+# RomAI AGI Alert Rules - Microsoft Azure ML Production Standards
+# Performance and reliability monitoring for AI/ML systems
+
+groups:
+  - name: agi_model_performance
+    rules:
+      # Model Performance Alerts
+      - alert: AGIModelResponseTimeHigh
+        expr: agi_inference_response_time_seconds > 5.0
+        for: 2m
+        labels:
+          severity: warning
+          component: agi-inference
+        annotations:
+          summary: "AGI model response time is high"
+          description: "AGI inference response time has been above 5 seconds for more than 2 minutes"
+
+      - alert: AGIModelErrorRateHigh
+        expr: (rate(agi_inference_errors_total[5m]) / rate(agi_inference_requests_total[5m])) > 0.05
+        for: 1m
+        labels:
+          severity: critical
+          component: agi-inference
+        annotations:
+          summary: "AGI model error rate is high"
+          description: "AGI model error rate is above 5% for the last 5 minutes"
+
+      # Training System Health
+      - alert: AGITrainingSystemDown
+        expr: agi_training_system_status == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: agi-training
+        annotations:
+          summary: "AGI training system is down"
+          description: "One or more AGI training systems are not responding"
+
+      # Romanian Language Processing
+      - alert: RomanianProcessingDegraded
+        expr: romanian_processing_accuracy < 0.85
+        for: 5m
+        labels:
+          severity: warning
+          component: romanian-processing
+        annotations:
+          summary: "Romanian language processing accuracy degraded"
+          description: "Romanian processing accuracy has dropped below 85%"
+
+      # Resource Utilization
+      - alert: AGIMemoryUsageHigh
+        expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes > 0.85
+        for: 2m
+        labels:
+          severity: warning
+          component: system-resources
+        annotations:
+          summary: "High memory usage on AGI server"
+          description: "Memory usage is above 85%"
+
+      - alert: AGICPUUsageHigh
+        expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+          component: system-resources
+        annotations:
+          summary: "High CPU usage on AGI server"
+          description: "CPU usage is above 80% for more than 5 minutes"
+
+  - name: agi_availability
+    rules:
+      # Service Availability
+      - alert: AGIServiceDown
+        expr: up{job="romai-agi-inference"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: agi-service
+        annotations:
+          summary: "AGI service is down"
+          description: "AGI inference service is not responding"
+
+      - alert: AGIHealthCheckFailing
+        expr: agi_health_check_status == 0
+        for: 2m
+        labels:
+          severity: critical
+          component: agi-health
+        annotations:
+          summary: "AGI health check is failing"
+          description: "AGI service health check has been failing for more than 2 minutes"

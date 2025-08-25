@@ -1,0 +1,59 @@
+{
+  "config": {
+    "project_name": "test-small-expansion",
+    "target_scale": "1B",
+    "target_tokens": 50000,
+    "enabled_sources": [
+      "common_crawl",
+      "wikipedia",
+      "arxiv",
+      "github",
+      "romanian_cultural",
+      "multilingual",
+      "technical_docs",
+      "educational"
+    ],
+    "quality_threshold": 0.75,
+    "cultural_priority_weight": 2.0
+  },
+  "metrics": {
+    "total_tokens": 11282,
+    "total_documents": 317,
+    "total_size_gb": 9.844452142715454e-05,
+    "average_quality_score": 0.9632555205047317,
+    "quality_distribution": {
+      "standard": 57,
+      "premium": 260
+    },
+    "source_distribution": {
+      "common_crawl": 53,
+      "wikipedia": 63,
+      "arxiv": 63,
+      "github": 53,
+      "romanian_cultural": 5,
+      "multilingual": 7,
+      "technical_docs": 20,
+      "educational": 53
+    },
+    "token_distribution": {
+      "common_crawl": 1032,
+      "wikipedia": 2961,
+      "arxiv": 2310,
+      "github": 2520,
+      "romanian_cultural": 271,
+      "multilingual": 115,
+      "technical_docs": 481,
+      "educational": 1592
+    },
+    "romanian_content_percentage": 0.0,
+    "cultural_authenticity_avg": 0.0,
+    "language_distribution": {
+      "en": 317
+    },
+    "multilingual_percentage": 0.0,
+    "processing_speed": 90462.88055761065,
+    "total_processing_time": 0.12471413612365723,
+    "deduplication_ratio": 0.0,
+    "collection_timestamp": 1756154003.993445
+  }
+}

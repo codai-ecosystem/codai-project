@@ -1,15 +1,7 @@
-/**
- * Test setup configuration
- */
+// Generated Vitest setup for bancai-mcp app
+// Consolidates common test setup patterns using @codai/testing-utils
 
-// Global test setup
-global.beforeAll = global.beforeAll || (() => { });
-global.afterAll = global.afterAll || (() => { });
-global.beforeEach = global.beforeEach || (() => { });
-global.afterEach = global.afterEach || (() => { });
+import '@codai/testing-utils/setups/vitest/base.setup'
+import '@codai/testing-utils/setups/vitest/nextjs.setup'
 
-// Set test environment variables
-Object.assign(process.env, {
-  NODE_ENV: 'test',
-  LOG_LEVEL: 'error',
-});
+// App-specific customizations

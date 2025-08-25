@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * TeamMemberGrid Component - Grid view of team members
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import { TeamMember } from '../page'
@@ -41,4 +42,5 @@ export function TeamMemberGrid({
         </div>
     )
 }
+
 

@@ -1,0 +1,63 @@
+# Multi-stage Docker build for RomAI Distributed Neural Architecture
+# Optimized for production deployment with CUDA acceleration
+
+# Base stage - Install system dependencies and Python packages
+FROM pytorch/pytorch:2.0.1-cuda11.7-cudnn8-runtime AS base
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    wget \
+    git \
+    build-essential \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
+    libgomp1 \
+    libgfortran5 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+COPY requirements.neural.txt .
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+RUN pip install --no-cache-dir -r requirements.neural.txt
+
+# Production stage - Copy source code and configure application
+FROM base AS production
+
+# Create non-root user for security
+RUN useradd --create-home --shell /bin/bash neural
+USER neural
+WORKDIR /home/neural/app
+
+# Copy application source (only what exists)
+COPY --chown=neural:neural ./neural_architecture_orchestrator.py .
+COPY --chown=neural:neural ./config/ ./config/
+
+# Copy RomAI source files
+COPY --chown=neural:neural ./apps/romai/src/ ./apps/romai/src/
+
+# Set Python path
+ENV PYTHONPATH="/home/neural/app:/home/neural/app/apps/romai/src"
+ENV PYTORCH_CUDA_ALLOC_CONF="max_split_size_mb:1024"
+ENV TRANSFORMERS_CACHE="/home/neural/app/.cache/transformers"
+ENV HF_HOME="/home/neural/app/.cache/huggingface"
+ENV MODEL_CACHE_DIR="/home/neural/app/.cache/models"
+
+# Create cache directories
+RUN mkdir -p .cache/transformers .cache/huggingface .cache/models
+
+# Expose port
+EXPOSE 8000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+# Default command
+CMD ["python", "-m", "uvicorn", "neural_architecture_orchestrator:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]

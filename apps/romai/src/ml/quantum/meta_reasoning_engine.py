@@ -24,7 +24,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Import enhanced reasoning components
 try:
-    from advanced_reasoning_engine import EnhancedAdvancedReasoningEngine
+    from core.reasoning.reasoning_engine import ReasoningEngine
     from consciousness_reasoning_integration import ConsciousnessReasoningIntegrator
     ENHANCED_REASONING_AVAILABLE = True
     logging.info("✅ Enhanced reasoning components imported for meta-analysis")

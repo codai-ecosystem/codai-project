@@ -21,7 +21,7 @@ logging.basicConfig(
 
 # Import enhanced reasoning components
 try:
-    from advanced_reasoning_engine import EnhancedAdvancedReasoningEngine
+    from core.reasoning.reasoning_engine import ReasoningEngine
     from consciousness_reasoning_integration import ConsciousnessReasoningIntegrator
     ENHANCED_AVAILABLE = True
     logging.info("✅ Enhanced reasoning components imported successfully")
@@ -56,7 +56,7 @@ class ProductionReasoningTestSuite:
         
         # Initialize test components
         if ENHANCED_AVAILABLE:
-            self.enhanced_engine = EnhancedAdvancedReasoningEngine()
+            self.enhanced_engine = ReasoningEngine()
             self.consciousness_integrator = ConsciousnessReasoningIntegrator()
         else:
             self.enhanced_engine = None

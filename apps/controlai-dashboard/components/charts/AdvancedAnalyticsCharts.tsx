@@ -1,9 +1,10 @@
+'use client'
+
 import React from 'react'
 /**
  * Advanced Analytics Chart Components
  * Phase 2 Dashboard Enhancement - Interactive Recharts Components
  */
-'use client'
 
 import {
   LineChart,
@@ -571,4 +572,5 @@ export function ChartSkeleton({ height = 300 }: { height?: number }) {
     </div>
   )
 }
+
 

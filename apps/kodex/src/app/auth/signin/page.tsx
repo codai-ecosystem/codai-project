@@ -1,5 +1,6 @@
-import React from 'react'
 "use client";
+
+import React from 'react'
 
 import { signIn, getProviders, getSession } from "next-auth/react";
 import { useState, useEffect } from "react";

@@ -1,0 +1,131 @@
+{
+  "models": {
+    "mathematical_20250822_164557_c4bf6a58": {
+      "version_id": "mathematical_20250822_164557_c4bf6a58",
+      "model_type": "mathematical",
+      "model_path": "/tmp/test_model.pt",
+      "config_path": "/tmp/test_config.json",
+      "status": "testing",
+      "metrics": {
+        "accuracy": 0.85,
+        "latency_ms": 150.0,
+        "throughput_rps": 100.0,
+        "memory_usage_mb": 512.0,
+        "cpu_usage_percent": 25.0,
+        "gpu_usage_percent": 60.0,
+        "error_rate": 0.02,
+        "confidence_score": 0.8,
+        "cultural_accuracy": 0.9
+      },
+      "created_at": "2025-08-22T13:45:57.620216+00:00",
+      "trained_on": null,
+      "deployed_at": null,
+      "metadata": {},
+      "checksum": "847a8e81-e834-45cd-b46d-0734e450015b",
+      "training_logs": [],
+      "validation_results": {}
+    },
+    "mathematical_20250822_164823_4078c12f": {
+      "version_id": "mathematical_20250822_164823_4078c12f",
+      "model_type": "mathematical",
+      "model_path": "/tmp/test_mathematical_model.pt",
+      "config_path": "/tmp/test_mathematical_config.json",
+      "status": "testing",
+      "metrics": {
+        "accuracy": 0.85,
+        "latency_ms": 150.0,
+        "throughput_rps": 100.0,
+        "memory_usage_mb": 512.0,
+        "cpu_usage_percent": 25.0,
+        "gpu_usage_percent": 60.0,
+        "error_rate": 0.02,
+        "confidence_score": 0.8,
+        "cultural_accuracy": 0.0
+      },
+      "created_at": "2025-08-22T13:48:23.429972+00:00",
+      "trained_on": null,
+      "deployed_at": null,
+      "metadata": {},
+      "checksum": "bca3c96c-eaec-434a-805d-d650d3cfa135",
+      "training_logs": [],
+      "validation_results": {}
+    },
+    "logical_20250822_164823_2cbe1572": {
+      "version_id": "logical_20250822_164823_2cbe1572",
+      "model_type": "logical",
+      "model_path": "/tmp/test_logical_model.pt",
+      "config_path": "/tmp/test_logical_config.json",
+      "status": "testing",
+      "metrics": {
+        "accuracy": 0.85,
+        "latency_ms": 150.0,
+        "throughput_rps": 100.0,
+        "memory_usage_mb": 512.0,
+        "cpu_usage_percent": 25.0,
+        "gpu_usage_percent": 60.0,
+        "error_rate": 0.02,
+        "confidence_score": 0.8,
+        "cultural_accuracy": 0.0
+      },
+      "created_at": "2025-08-22T13:48:23.431016+00:00",
+      "trained_on": null,
+      "deployed_at": null,
+      "metadata": {},
+      "checksum": "b571bc1a-11f0-4b43-8e15-5ccbfec23a52",
+      "training_logs": [],
+      "validation_results": {}
+    },
+    "romanian_20250822_164823_bc6438d7": {
+      "version_id": "romanian_20250822_164823_bc6438d7",
+      "model_type": "romanian",
+      "model_path": "/tmp/test_romanian_model.pt",
+      "config_path": "/tmp/test_romanian_config.json",
+      "status": "testing",
+      "metrics": {
+        "accuracy": 0.85,
+        "latency_ms": 150.0,
+        "throughput_rps": 100.0,
+        "memory_usage_mb": 512.0,
+        "cpu_usage_percent": 25.0,
+        "gpu_usage_percent": 60.0,
+        "error_rate": 0.02,
+        "confidence_score": 0.8,
+        "cultural_accuracy": 0.9
+      },
+      "created_at": "2025-08-22T13:48:23.432344+00:00",
+      "trained_on": null,
+      "deployed_at": null,
+      "metadata": {},
+      "checksum": "4d9b0545-a34a-4837-918a-ca30bf1a3a71",
+      "training_logs": [],
+      "validation_results": {}
+    },
+    "multimodal_20250822_164823_eda812fc": {
+      "version_id": "multimodal_20250822_164823_eda812fc",
+      "model_type": "multimodal",
+      "model_path": "/tmp/test_multimodal_model.pt",
+      "config_path": "/tmp/test_multimodal_config.json",
+      "status": "testing",
+      "metrics": {
+        "accuracy": 0.85,
+        "latency_ms": 150.0,
+        "throughput_rps": 100.0,
+        "memory_usage_mb": 512.0,
+        "cpu_usage_percent": 25.0,
+        "gpu_usage_percent": 60.0,
+        "error_rate": 0.02,
+        "confidence_score": 0.8,
+        "cultural_accuracy": 0.0
+      },
+      "created_at": "2025-08-22T13:48:23.433201+00:00",
+      "trained_on": null,
+      "deployed_at": null,
+      "metadata": {},
+      "checksum": "f7695370-637e-4b0f-bcdb-f40c4bb6acf6",
+      "training_logs": [],
+      "validation_results": {}
+    }
+  },
+  "active_models": {},
+  "last_updated": "2025-08-22T13:48:23.433576+00:00"
+}

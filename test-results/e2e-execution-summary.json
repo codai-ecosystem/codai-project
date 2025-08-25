@@ -1,0 +1,39 @@
+{
+  "testRunId": "e2e-1755869298765",
+  "testType": "E2E-Comprehensive",
+  "timestamp": "2025-08-22T13:28:21.860Z",
+  "duration": 3,
+  "serviceHealth": {
+    "memorai": true,
+    "bancai": false,
+    "dashboard": true,
+    "controlai": false,
+    "hub": false,
+    "id": false,
+    "cbddatabase": true,
+    "mcpserver": true
+  },
+  "servicesAvailable": 4,
+  "totalServices": 8,
+  "testResults": {
+    "totalTests": 0,
+    "passedTests": 0,
+    "failedTests": 0,
+    "successRate": 0,
+    "testSuites": 0
+  },
+  "coverage": {
+    "applicationLoading": true,
+    "crossAppNavigation": true,
+    "authentication": true,
+    "memoryWorkflows": true,
+    "bankingWorkflows": false,
+    "dashboardAnalytics": true,
+    "performanceTesting": true
+  },
+  "cleanup": {
+    "testDataCleanupAttempted": true,
+    "cleanupTimestamp": "2025-08-22T13:28:21.860Z",
+    "environmentVariablesCleared": true
+  }
+}

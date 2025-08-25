@@ -16,7 +16,7 @@
         "install": "playwright install"
     },
     "dependencies": {
-        "@playwright/test": "^1.40.1",
+        "@playwright/test": "^1.54.2",
         "axios": "^1.6.2",
         "form-data": "^4.0.0",
         "ws": "^8.14.2"

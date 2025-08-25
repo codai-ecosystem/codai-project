@@ -171,7 +171,7 @@ const networks: NeuralNetwork[] = [
 ];
 
 const sampleLayers: Layer[] = [
-    { id: '1', type: 'input', name: 'Input Layer', neurons: 784, position: { x: 50, y: 100 } },
+    { id: '1', type: 'input', name: 'Input Layer', neurons: 784, parameters: {}, position: { x: 50, y: 100 } },
     { id: '2', type: 'conv2d', name: 'Conv2D', neurons: 32, activationFunction: 'ReLU', parameters: { filters: 32, kernel_size: 3 }, position: { x: 200, y: 80 } },
     { id: '3', type: 'pooling', name: 'MaxPooling2D', neurons: 0, parameters: { pool_size: 2 }, position: { x: 350, y: 80 } },
     { id: '4', type: 'conv2d', name: 'Conv2D', neurons: 64, activationFunction: 'ReLU', parameters: { filters: 64, kernel_size: 3 }, position: { x: 500, y: 80 } },
@@ -313,7 +313,7 @@ export default function NeuralNetworksPage() {
                                         <p className="text-2xl font-bold text-gray-900">{metric.value}</p>
                                         {metric.change !== 0 && (
                                             <div className={`flex items-center text-sm ${metric.trend === 'up' ? 'text-green-600' :
-                                                    metric.trend === 'down' ? 'text-red-600' : 'text-gray-600'
+                                                metric.trend === 'down' ? 'text-red-600' : 'text-gray-600'
                                                 }`}>
                                                 {metric.trend === 'up' && <TrendingUp className="w-3 h-3 mr-1" />}
                                                 {metric.trend === 'down' && <TrendingUp className="w-3 h-3 mr-1 rotate-180" />}

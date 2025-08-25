@@ -1,0 +1,84 @@
+{
+  "evaluation_metadata": {
+    "evaluation_type": "quick",
+    "total_scenarios": 2,
+    "successful_scenarios": 0,
+    "failed_scenarios": 2,
+    "total_evaluation_time": 2.0732080936431885,
+    "average_generation_time": 1.0355923175811768,
+    "timestamp": "2025-08-22 04:10:16"
+  },
+  "overall_performance": {
+    "success_rate": 0.0,
+    "average_overall_score": 0.7552140418691927,
+    "average_romanian_context_score": 0.3961209406767954
+  },
+  "criteria_performance": {
+    "STAKEHOLDER_ACCEPTANCE": 0.3522181011923974,
+    "CULTURAL_FIT": 0.3961209406767954,
+    "FEASIBILITY": 0.3986209406767953,
+    "COST_EFFECTIVENESS": 0.3936209406767953,
+    "REGULATORY_COMPLIANCE": 0.7633390418691928,
+    "SCALABILITY": 0.3572181011923974,
+    "SUSTAINABILITY": 0.3597181011923974
+  },
+  "domain_performance": {
+    "ENTERPRISE_TRANSFORMATION": {
+      "count": 1,
+      "success": 0,
+      "avg_score": 0.7947418813535907,
+      "success_rate": 0.0
+    },
+    "SMART_CITY_PLANNING": {
+      "count": 1,
+      "success": 0,
+      "avg_score": 0.7156862023847947,
+      "success_rate": 0.0
+    }
+  },
+  "competitive_analysis": {
+    "vs_human_experts": 1.0069520558255904,
+    "vs_traditional_approaches": 1.161867756721835,
+    "romanian_specialization_advantage": -0.3038790593232046
+  },
+  "detailed_results": [
+    {
+      "scenario_id": "enterprise_transform_001",
+      "scenario_title": "Romanian Manufacturing Company Digital Transformation",
+      "domain": "ENTERPRISE_TRANSFORMATION",
+      "complexity": "HIGHLY_COMPLEX",
+      "success": false,
+      "overall_score": 0.7947418813535907,
+      "criteria_scores": {
+        "FEASIBILITY": 0.7972418813535906,
+        "COST_EFFECTIVENESS": 0.7872418813535906,
+        "CULTURAL_FIT": 0.7922418813535907,
+        "REGULATORY_COMPLIANCE": 0.8022418813535906
+      },
+      "romanian_context_score": 0.7922418813535907,
+      "generation_time": 1.217531681060791,
+      "strengths": [],
+      "weaknesses": [
+        "Stakeholder acceptance needs attention"
+      ]
+    },
+    {
+      "scenario_id": "smart_city_001",
+      "scenario_title": "Bucharest Smart City Infrastructure Development",
+      "domain": "SMART_CITY_PLANNING",
+      "complexity": "EXTREME",
+      "success": false,
+      "overall_score": 0.7156862023847947,
+      "criteria_scores": {
+        "SCALABILITY": 0.7144362023847948,
+        "SUSTAINABILITY": 0.7194362023847948,
+        "STAKEHOLDER_ACCEPTANCE": 0.7044362023847948,
+        "REGULATORY_COMPLIANCE": 0.7244362023847948
+      },
+      "romanian_context_score": 0.0,
+      "generation_time": 0.8536529541015625,
+      "strengths": [],
+      "weaknesses": []
+    }
+  ]
+}

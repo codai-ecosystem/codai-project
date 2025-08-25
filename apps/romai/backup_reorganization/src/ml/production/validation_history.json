@@ -1,0 +1,445 @@
+{
+  "suites": [
+    {
+      "suite_id": "validation_mathematical_20250822_164823_4078c12f_1755870503",
+      "model_version": "mathematical_20250822_164823_4078c12f",
+      "model_type": "mathematical",
+      "started_at": "2025-08-22T13:48:23.434597+00:00",
+      "completed_at": "2025-08-22T13:48:23.722590+00:00",
+      "status": "failed",
+      "results": [
+        {
+          "test_id": "1c39acb5-ce47-4c90-ba90-8a7f21ddf782",
+          "test_name": "Model Initialization - mathematical",
+          "category": "unit",
+          "status": "passed",
+          "score": 1.0,
+          "duration_ms": 1.2943744659423828,
+          "error_message": null,
+          "details": {
+            "parameter_count": 102913,
+            "model_type": "mathematical"
+          },
+          "timestamp": "2025-08-22T13:48:23.436026+00:00"
+        },
+        {
+          "test_id": "d4728c69-e04d-4c16-b223-ff46af509c3a",
+          "test_name": "Forward Pass - mathematical",
+          "category": "unit",
+          "status": "passed",
+          "score": 1.0,
+          "duration_ms": 18.657922744750977,
+          "error_message": null,
+          "details": {
+            "output_shape": [
+              10,
+              1
+            ],
+            "output_mean": 0.1859990507364273,
+            "output_std": 0.0453142374753952
+          },
+          "timestamp": "2025-08-22T13:48:23.458044+00:00"
+        },
+        {
+          "test_id": "dae9d245-930b-4e3c-9460-3a048e7e5a70",
+          "test_name": "Backward Pass - mathematical",
+          "category": "unit",
+          "status": "failed",
+          "score": 0.0,
+          "duration_ms": 4.435539245605469,
+          "error_message": "type object 'ModelType' has no attribute 'LINGUISTIC'",
+          "details": {
+            "model_type": "mathematical"
+          },
+          "timestamp": "2025-08-22T13:48:23.462807+00:00"
+        },
+        {
+          "test_id": "b6d19f4f-47c3-476a-9424-5b391c39a308",
+          "test_name": "Inference Latency - mathematical",
+          "category": "performance",
+          "status": "passed",
+          "score": 1.0,
+          "duration_ms": 228.7759780883789,
+          "error_message": null,
+          "details": {
+            "avg_latency_ms": 0.27023792266845703,
+            "p95_latency_ms": 0.2995729446411132,
+            "target_latency_ms": 100.0,
+            "device": "cuda",
+            "num_measurements": 100
+          },
+          "timestamp": "2025-08-22T13:48:23.692064+00:00"
+        },
+        {
+          "test_id": "1bb62465-babf-4f4c-bb23-662bfa34760b",
+          "test_name": "Memory Usage - mathematical",
+          "category": "performance",
+          "status": "failed",
+          "score": 0.0,
+          "duration_ms": 8.185386657714844,
+          "error_message": "Expected more than 1 value per channel when training, got input size torch.Size([1, 256])",
+          "details": {
+            "model_type": "mathematical"
+          },
+          "timestamp": "2025-08-22T13:48:23.700518+00:00"
+        },
+        {
+          "test_id": "a4fca076-811e-431a-8a57-fcdced3add76",
+          "test_name": "Mathematical Accuracy",
+          "category": "accuracy",
+          "status": "failed",
+          "score": 0.0,
+          "duration_ms": 21.476030349731445,
+          "error_message": null,
+          "details": {
+            "correct_answers": 0,
+            "total_questions": 10,
+            "accuracy": 0.0
+          },
+          "timestamp": "2025-08-22T13:48:23.722228+00:00"
+        },
+        {
+          "test_id": "c727ffe6-5d10-47e9-b13d-666181d6896c",
+          "test_name": "Logical Reasoning",
+          "category": "accuracy",
+          "status": "skipped",
+          "score": null,
+          "duration_ms": 0.0,
+          "error_message": "Not applicable for this model type",
+          "details": {
+            "model_type": "mathematical"
+          },
+          "timestamp": "2025-08-22T13:48:23.722457+00:00"
+        }
+      ],
+      "overall_score": 0.5,
+      "passed_tests": 3,
+      "failed_tests": 3,
+      "total_tests": 7
+    },
+    {
+      "suite_id": "validation_logical_20250822_164823_2cbe1572_1755870503",
+      "model_version": "logical_20250822_164823_2cbe1572",
+      "model_type": "logical",
+      "started_at": "2025-08-22T13:48:23.723865+00:00",
+      "completed_at": "2025-08-22T13:48:24.005367+00:00",
+      "status": "failed",
+      "results": [
+        {
+          "test_id": "721541b3-9805-4b66-840e-91f53e30abc2",
+          "test_name": "Model Initialization - logical",
+          "category": "unit",
+          "status": "passed",
+          "score": 1.0,
+          "duration_ms": 14.659643173217773,
+          "error_message": null,
+          "details": {
+            "parameter_count": 4664322,
+            "model_type": "logical"
+          },
+          "timestamp": "2025-08-22T13:48:23.738667+00:00"
+        },
+        {
+          "test_id": "3b56c22c-0a05-44e1-a150-bb6a80f5c434",
+          "test_name": "Forward Pass - logical",
+          "category": "unit",
+          "status": "passed",
+          "score": 1.0,
+          "duration_ms": 66.44797325134277,
+          "error_message": null,
+          "details": {
+            "output_shape": [
+              10,
+              2
+            ],
+            "output_mean": -0.024722594767808914,
+            "output_std": 0.04336269572377205
+          },
+          "timestamp": "2025-08-22T13:48:23.805340+00:00"
+        },
+        {
+          "test_id": "668de7a4-c851-4c9b-a1a6-e2cb1eebe78f",
+          "test_name": "Backward Pass - logical",
+          "category": "unit",
+          "status": "failed",
+          "score": 0.0,
+          "duration_ms": 41.121721267700195,
+          "error_message": "type object 'ModelType' has no attribute 'LINGUISTIC'",
+          "details": {
+            "model_type": "logical"
+          },
+          "timestamp": "2025-08-22T13:48:23.846653+00:00"
+        },
+        {
+          "test_id": "78aa1080-0a60-4fbb-9ddf-584bf69bd0a9",
+          "test_name": "Inference Latency - logical",
+          "category": "performance",
+          "status": "failed",
+          "score": 0.0,
+          "duration_ms": 46.95463180541992,
+          "error_message": "Expected tensor for argument #1 'indices' to have one of the following scalar types: Long, Int; but got torch.cuda.FloatTensor instead (while checking arguments for embedding)",
+          "details": {
+            "model_type": "logical"
+          },
+          "timestamp": "2025-08-22T13:48:23.894873+00:00"
+        },
+        {
+          "test_id": "9119652e-8e1d-4aef-aec1-846dd9b70f47",
+          "test_name": "Memory Usage - logical",
+          "category": "performance",
+          "status": "failed",
+          "score": 0.0,
+          "duration_ms": 17.712116241455078,
+          "error_message": "Expected tensor for argument #1 'indices' to have one of the following scalar types: Long, Int; but got torch.cuda.FloatTensor instead (while checking arguments for embedding)",
+          "details": {
+            "model_type": "logical"
+          },
+          "timestamp": "2025-08-22T13:48:23.912784+00:00"
+        },
+        {
+          "test_id": "620d6426-8a7f-4613-84d3-4722b816d5f0",
+          "test_name": "Mathematical Accuracy",
+          "category": "accuracy",
+          "status": "skipped",
+          "score": null,
+          "duration_ms": 0.0,
+          "error_message": "Not applicable for this model type",
+          "details": {
+            "model_type": "logical"
+          },
+          "timestamp": "2025-08-22T13:48:23.912943+00:00"
+        },
+        {
+          "test_id": "e9cc896b-8a0d-490a-994c-76bae6561b69",
+          "test_name": "Logical Reasoning",
+          "category": "accuracy",
+          "status": "passed",
+          "score": 1.0,
+          "duration_ms": 91.9182300567627,
+          "error_message": null,
+          "details": {
+            "correct_reasoning": 10,
+            "total_tests": 10,
+            "accuracy": 1.0
+          },
+          "timestamp": "2025-08-22T13:48:24.004912+00:00"
+        }
+      ],
+      "overall_score": 0.5,
+      "passed_tests": 3,
+      "failed_tests": 3,
+      "total_tests": 7
+    },
+    {
+      "suite_id": "validation_romanian_20250822_164823_bc6438d7_1755870504",
+      "model_version": "romanian_20250822_164823_bc6438d7",
+      "model_type": "romanian",
+      "started_at": "2025-08-22T13:48:24.007231+00:00",
+      "completed_at": "2025-08-22T13:48:24.007981+00:00",
+      "status": "failed",
+      "results": [
+        {
+          "test_id": "f23537d2-fdbb-484a-a0bd-2b1cbd2f4b10",
+          "test_name": "Model Initialization - romanian",
+          "category": "unit",
+          "status": "failed",
+          "score": 0.0,
+          "duration_ms": 0.0064373016357421875,
+          "error_message": "type object 'ModelType' has no attribute 'LINGUISTIC'",
+          "details": {
+            "model_type": "romanian"
+          },
+          "timestamp": "2025-08-22T13:48:24.007336+00:00"
+        },
+        {
+          "test_id": "29cd3f8c-c902-4b37-90b5-085783a77d30",
+          "test_name": "Forward Pass - romanian",
+          "category": "unit",
+          "status": "failed",
+          "score": 0.0,
+          "duration_ms": 0.006198883056640625,
+          "error_message": "type object 'ModelType' has no attribute 'LINGUISTIC'",
+          "details": {
+            "model_type": "romanian"
+          },
+          "timestamp": "2025-08-22T13:48:24.007441+00:00"
+        },
+        {
+          "test_id": "95b156d1-bc06-4171-bde9-2727cfa68818",
+          "test_name": "Backward Pass - romanian",
+          "category": "unit",
+          "status": "failed",
+          "score": 0.0,
+          "duration_ms": 0.0040531158447265625,
+          "error_message": "type object 'ModelType' has no attribute 'LINGUISTIC'",
+          "details": {
+            "model_type": "romanian"
+          },
+          "timestamp": "2025-08-22T13:48:24.007559+00:00"
+        },
+        {
+          "test_id": "d5233a22-972c-447a-828e-b8b3ca4eb791",
+          "test_name": "Inference Latency - romanian",
+          "category": "performance",
+          "status": "failed",
+          "score": 0.0,
+          "duration_ms": 0.0035762786865234375,
+          "error_message": "type object 'ModelType' has no attribute 'LINGUISTIC'",
+          "details": {
+            "model_type": "romanian"
+          },
+          "timestamp": "2025-08-22T13:48:24.007655+00:00"
+        },
+        {
+          "test_id": "97601601-ed06-4f2c-b5ce-8cd023b570a9",
+          "test_name": "Memory Usage - romanian",
+          "category": "performance",
+          "status": "failed",
+          "score": 0.0,
+          "duration_ms": 0.003337860107421875,
+          "error_message": "type object 'ModelType' has no attribute 'LINGUISTIC'",
+          "details": {
+            "model_type": "romanian"
+          },
+          "timestamp": "2025-08-22T13:48:24.007744+00:00"
+        },
+        {
+          "test_id": "b72b6439-d9f0-4609-ba61-04c8cfd2d93f",
+          "test_name": "Mathematical Accuracy",
+          "category": "accuracy",
+          "status": "skipped",
+          "score": null,
+          "duration_ms": 0.0,
+          "error_message": "Not applicable for this model type",
+          "details": {
+            "model_type": "romanian"
+          },
+          "timestamp": "2025-08-22T13:48:24.007823+00:00"
+        },
+        {
+          "test_id": "1ac575d6-6a89-40b6-b4ed-f382a67cbad7",
+          "test_name": "Logical Reasoning",
+          "category": "accuracy",
+          "status": "skipped",
+          "score": null,
+          "duration_ms": 0.0,
+          "error_message": "Not applicable for this model type",
+          "details": {
+            "model_type": "romanian"
+          },
+          "timestamp": "2025-08-22T13:48:24.007879+00:00"
+        }
+      ],
+      "overall_score": 0.0,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "total_tests": 7
+    },
+    {
+      "suite_id": "validation_multimodal_20250822_164823_eda812fc_1755870504",
+      "model_version": "multimodal_20250822_164823_eda812fc",
+      "model_type": "multimodal",
+      "started_at": "2025-08-22T13:48:24.010855+00:00",
+      "completed_at": "2025-08-22T13:48:24.011723+00:00",
+      "status": "failed",
+      "results": [
+        {
+          "test_id": "745480e1-34f6-4999-9484-c9b0b77c39ca",
+          "test_name": "Model Initialization - multimodal",
+          "category": "unit",
+          "status": "failed",
+          "score": 0.0,
+          "duration_ms": 0.0054836273193359375,
+          "error_message": "type object 'ModelType' has no attribute 'LINGUISTIC'",
+          "details": {
+            "model_type": "multimodal"
+          },
+          "timestamp": "2025-08-22T13:48:24.010963+00:00"
+        },
+        {
+          "test_id": "ae286639-c11f-45bc-8e6a-8e3c0a31e514",
+          "test_name": "Forward Pass - multimodal",
+          "category": "unit",
+          "status": "failed",
+          "score": 0.0,
+          "duration_ms": 0.003814697265625,
+          "error_message": "type object 'ModelType' has no attribute 'LINGUISTIC'",
+          "details": {
+            "model_type": "multimodal"
+          },
+          "timestamp": "2025-08-22T13:48:24.011058+00:00"
+        },
+        {
+          "test_id": "c94cf579-5fc8-4836-8d6c-2709f9bd5a6e",
+          "test_name": "Backward Pass - multimodal",
+          "category": "unit",
+          "status": "failed",
+          "score": 0.0,
+          "duration_ms": 0.00476837158203125,
+          "error_message": "type object 'ModelType' has no attribute 'LINGUISTIC'",
+          "details": {
+            "model_type": "multimodal"
+          },
+          "timestamp": "2025-08-22T13:48:24.011159+00:00"
+        },
+        {
+          "test_id": "67310983-0cf1-4525-a150-23ec7a42942f",
+          "test_name": "Inference Latency - multimodal",
+          "category": "performance",
+          "status": "failed",
+          "score": 0.0,
+          "duration_ms": 0.004291534423828125,
+          "error_message": "type object 'ModelType' has no attribute 'LINGUISTIC'",
+          "details": {
+            "model_type": "multimodal"
+          },
+          "timestamp": "2025-08-22T13:48:24.011270+00:00"
+        },
+        {
+          "test_id": "95dc04db-488e-4eb8-8d08-d5b74c541f4b",
+          "test_name": "Memory Usage - multimodal",
+          "category": "performance",
+          "status": "failed",
+          "score": 0.0,
+          "duration_ms": 0.0021457672119140625,
+          "error_message": "type object 'ModelType' has no attribute 'LINGUISTIC'",
+          "details": {
+            "model_type": "multimodal"
+          },
+          "timestamp": "2025-08-22T13:48:24.011376+00:00"
+        },
+        {
+          "test_id": "6994aa98-dc55-4d86-94bd-515a2e543b88",
+          "test_name": "Mathematical Accuracy",
+          "category": "accuracy",
+          "status": "skipped",
+          "score": null,
+          "duration_ms": 0.0,
+          "error_message": "Not applicable for this model type",
+          "details": {
+            "model_type": "multimodal"
+          },
+          "timestamp": "2025-08-22T13:48:24.011465+00:00"
+        },
+        {
+          "test_id": "9c1412b8-c560-4261-af18-82cb2545ce26",
+          "test_name": "Logical Reasoning",
+          "category": "accuracy",
+          "status": "skipped",
+          "score": null,
+          "duration_ms": 0.0,
+          "error_message": "Not applicable for this model type",
+          "details": {
+            "model_type": "multimodal"
+          },
+          "timestamp": "2025-08-22T13:48:24.011583+00:00"
+        }
+      ],
+      "overall_score": 0.0,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "total_tests": 7
+    }
+  ],
+  "last_updated": "2025-08-22T13:48:24.013164+00:00"
+}

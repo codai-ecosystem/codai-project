@@ -9,7 +9,6 @@ import {
     XCircle,
     Clock,
     Scan,
-    FileShield,
     UserCheck,
     Globe,
     Server,
@@ -165,9 +164,9 @@ export function SecurityTab() {
                                 <div className="flex items-center justify-between text-sm">
                                     <span className="text-gray-500">Discovered {vuln.discovered}</span>
                                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${vuln.status === 'pending' ? 'text-yellow-600 bg-yellow-100' :
-                                            vuln.status === 'in-progress' ? 'text-blue-600 bg-blue-100' :
-                                                vuln.status === 'resolved' ? 'text-green-600 bg-green-100' :
-                                                    'text-gray-600 bg-gray-100'
+                                        vuln.status === 'in-progress' ? 'text-blue-600 bg-blue-100' :
+                                            vuln.status === 'resolved' ? 'text-green-600 bg-green-100' :
+                                                'text-gray-600 bg-gray-100'
                                         }`}>
                                         {vuln.status.replace('-', ' ')}
                                     </span>
@@ -275,7 +274,7 @@ export function SecurityTab() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="text-center">
                         <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <FileShield className="w-8 h-8 text-green-600" />
+                            <Shield className="w-8 h-8 text-green-600" />
                         </div>
                         <div className="text-2xl font-bold text-gray-900">128</div>
                         <div className="text-sm text-gray-500">Security Policies</div>

@@ -1,18 +1,20 @@
 # CODAI Ecosystem - Complete Docker Orchestration
 # Multi-service architecture with proper networking and dependencies
 
+name: codai-project
+
 services:
   # PostgreSQL Database
   postgres:
     image: postgres:15-alpine
-    container_name: codai-postgres
+    container_name: codai-postgresql-db
     ports:
-      - "5432:5432"  # Keep PostgreSQL on standard port for compatibility
+      - "4300:5432"  # External 4300, internal 5432 (following port allocation plan)
     environment:
       POSTGRES_DB: codai_ecosystem
       POSTGRES_USER: codai_user
       POSTGRES_PASSWORD: codai_secure_2025
-      POSTGRES_MULTIPLE_DATABASES: codai_main,codai_auth,codai_analytics
+      POSTGRES_MULTIPLE_DATABASES: codai_main,codai_auth,codai_analytics,codai_bancai
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./scripts/init-multiple-databases.sh:/docker-entrypoint-initdb.d/init-multiple-databases.sh:ro
@@ -25,12 +27,12 @@ services:
     networks:
       - codai-network
 
-  # Redis Cache Service (Non-conflicting port)
+  # Redis Cache Service (Following port allocation plan)
   redis:
     image: redis:7.2-alpine
-    container_name: codai-redis
+    container_name: codai-redis-cache
     ports:
-      - "4020:6379"  # External 4020, internal 6379
+      - "8020:6379"  # External 8020, internal 6379 (moved from 4020 to avoid Windows excluded port range)
     volumes:
       - redis_data:/data
     command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
@@ -47,10 +49,10 @@ services:
   gateway:
     build:
       context: ./apps/gateway
-      dockerfile: Dockerfile
-    container_name: codai-gateway
+      dockerfile: Dockerfile.simple
+    container_name: codai-main-api-gateway
     ports:
-      - "4010:4003"  # External 4010, internal 4003
+      - "8010:4003"  # External 4010, internal 4003
     environment:
       NODE_ENV: production
       PORT: "4003"
@@ -76,13 +78,13 @@ services:
   id-service:
     build:
       context: ./apps/id
-      dockerfile: Dockerfile
-    container_name: codai-id-service
+      dockerfile: Dockerfile.express
+    container_name: codai-identity-api
     ports:
-      - "4100:3000"  # External 4100, internal 3000 (Next.js default)
+      - "8100:4004"  # External 4100, internal 4004
     environment:
       NODE_ENV: production
-      PORT: "3000"
+      PORT: "4004"
       DATABASE_URL: "postgresql://codai_user:codai_secure_2025@postgres:5432/codai_auth"
       REDIS_URL: "redis://redis:6379"
       JWT_SECRET: "codai_id_jwt_secret_2025"
@@ -93,7 +95,7 @@ services:
         condition: service_healthy
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:4004/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -105,13 +107,13 @@ services:
   hub-service:
     build:
       context: ./apps/hub
-      dockerfile: Dockerfile
-    container_name: codai-hub-service
+      dockerfile: Dockerfile.express
+    container_name: codai-hub-api
     ports:
-      - "4110:3000"  # External 4110, internal 3000
+      - "8110:4008"  # External 4110, internal 4008
     environment:
       NODE_ENV: production
-      PORT: "3000"
+      PORT: "4008"
       DATABASE_URL: "postgresql://codai_user:codai_secure_2025@postgres:5432/codai_main"
       REDIS_URL: "redis://redis:6379"
     depends_on:
@@ -123,7 +125,66 @@ services:
         condition: service_healthy
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:4008/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - codai-network
+
+  # CBD Database Service
+  cbd-database:
+    build:
+      context: ./packages/cbd
+      dockerfile: Dockerfile
+    container_name: codai-cbd-db
+    ports:
+      - "8180:4180"  # CBD Database port (changed from 4180 to avoid Windows excluded port range)
+    environment:
+      NODE_ENV: production
+      PORT: "4180"
+      CBD_LOG_LEVEL: "info"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4180/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - codai-network
+
+  # MemorAI MCP Service
+  memorai-mcp-service:
+    build:
+      context: ./packages/memorai-mcp
+      dockerfile: Dockerfile
+    container_name: codai-memorai-mcp-api
+    ports:
+      - "4950:4950"  # MemorAI MCP port
+    volumes:
+      - ./apps/romai/src:/app/romai-src:ro  # Mount full RomAI source for advanced AI
+    environment:
+      NODE_ENV: production
+      PORT: "4950"
+      MEMORAI_API_KEY: "memorai-dev-key-2025"
+      CBD_BASE_URL: "http://cbd-database:4180"
+      PYTHON_PATH: "python3"  # Use Python 3 installed in container
+      ROMAI_PATH: "/app/romai-src"  # Path to full RomAI source for advanced AI
+      ROMAI_AGI_BASE_URL: "http://host.docker.internal:6101"  # RomAI AGI Model Server
+      QUANTUM_ENABLED: "true"
+      CONSCIOUSNESS_ENGINE: "true"
+      AZURE_OPENAI_ENDPOINT: "https://swedencentral.api.cognitive.microsoft.com/"
+      AZURE_OPENAI_API_KEY: "8f9d3fd033c04f5ab6b5886c15f16a2c"
+      AZURE_OPENAI_DEPLOYMENT_NAME: "text-embedding-3-large"
+      AZURE_OPENAI_API_VERSION: "2024-02-01"
+    depends_on:
+      cbd-database:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4950/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -135,16 +196,18 @@ services:
   bancai-service:
     build:
       context: ./apps/bancai
-      dockerfile: Dockerfile
-    container_name: codai-bancai-service
+      dockerfile: Dockerfile.express
+    container_name: codai-bancai-frontend
     ports:
-      - "4120:3000"  # External 4120, internal 3000
+      - "8120:4005"  # External 8120, internal 4005 (moved from 4120 to avoid Windows excluded port range)
     environment:
       NODE_ENV: production
-      PORT: "3000"
-      DATABASE_URL: "postgresql://codai_user:codai_secure_2025@postgres:5432/codai_main"
+      PORT: "4005"
+      DATABASE_URL: "postgresql://codai_user:codai_secure_2025@postgres:5432/codai_bancai"
       REDIS_URL: "redis://redis:6379"
       BANCAI_API_KEY: "bancai_secure_key_2025"
+      STRIPE_SECRET_KEY: "sk_test_codai_banking_2025"
+      STRIPE_PUBLISHABLE_KEY: "pk_test_codai_banking_2025"
     depends_on:
       postgres:
         condition: service_healthy
@@ -152,7 +215,7 @@ services:
         condition: service_healthy
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:4005/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -160,20 +223,81 @@ services:
     networks:
       - codai-network
 
-  # RomAI Service (Roman AI)
-  romai-service:
+  # RomAI ML Inference API (Core AI Backend)
+  romai-ml-api:
+    build:
+      context: ./apps/romai
+      dockerfile: Dockerfile.agi
+    container_name: codai-romai-ml-api
+    ports:
+      - "6101:6101"  # ML Inference API port
+    environment:
+      PYTHONPATH: "/app/src"
+      ROMAI_ENV: "production"
+      ROMAI_LOG_LEVEL: "info"
+      PYTORCH_CUDA_ALLOC_CONF: "max_split_size_mb:1024"
+      TRANSFORMERS_CACHE: "/app/cache/transformers"
+      HF_HOME: "/app/cache/huggingface"
+    volumes:
+      - romai_models:/app/cache
+    depends_on:
+      cbd-database:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6101/health"]
+      interval: 30s
+      timeout: 15s
+      retries: 5
+      start_period: 180s
+    networks:
+      - codai-network
+
+  # RomAI Web Frontend Application  
+  romai-web-app:
     build:
       context: ./apps/romai
       dockerfile: Dockerfile
-    container_name: codai-romai-service
+    container_name: codai-romai-frontend
     ports:
-      - "4130:3000"  # External 4130, internal 3000
+      - "6100:6100"  # Frontend port
     environment:
       NODE_ENV: production
-      PORT: "3000"
-      DATABASE_URL: "postgresql://codai_user:codai_secure_2025@postgres:5432/codai_main"
-      REDIS_URL: "redis://redis:6379"
-      ROMAI_API_KEY: "romai_secure_key_2025"
+      PORT: "6100"
+      NEXT_PUBLIC_AGI_API_URL: "http://romai-ml-api:6101"
+      NEXT_PUBLIC_ENTERPRISE_API_URL: "http://romai-compliance-api:8001"
+    depends_on:
+      romai-ml-api:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6100/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - codai-network
+
+  # RomAI Enterprise Compliance API
+  romai-compliance-api:
+    build:
+      context: ./apps/romai
+      dockerfile: Dockerfile.compliance
+    container_name: codai-romai-compliance-api
+    ports:
+      - "8001:8001"  # Compliance API port
+    environment:
+      PYTHONPATH: "/app/src"
+      ROMAI_ENV: "production"
+      ENTERPRISE_API_PORT: "8001"
+      JWT_SECRET_KEY: "enterprise-jwt-secret-2025"
+      API_KEY_ENCRYPTION_KEY: "enterprise-api-encryption-2025"
+      RATE_LIMIT_ENABLED: "true"
+      CORS_ENABLED: "true"
+      CORS_ORIGINS: "http://localhost:6100"
+      COMPLIANCE_MODE: "eu_ai_act"
+      AUDIT_ENABLED: "true"
     depends_on:
       postgres:
         condition: service_healthy
@@ -181,11 +305,11 @@ services:
         condition: service_healthy
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8001/api/v1/health"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 30s
+      start_period: 60s
     networks:
       - codai-network
 
@@ -194,12 +318,12 @@ services:
     build:
       context: ./apps/admin
       dockerfile: Dockerfile
-    container_name: codai-admin-service
+    container_name: codai-admin-frontend
     ports:
-      - "4140:3000"  # External 4140, internal 3000
+      - "8007:4007"  # Admin dashboard port
     environment:
       NODE_ENV: production
-      PORT: "3000"
+      PORT: "4007"
       DATABASE_URL: "postgresql://codai_user:codai_secure_2025@postgres:5432/codai_main"
       REDIS_URL: "redis://redis:6379"
       ADMIN_SECRET: "admin_secret_key_2025"
@@ -210,7 +334,311 @@ services:
         condition: service_healthy
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:4007/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - codai-network
+
+  # MemorAI GraphQL API Server (GraphQL Interface)
+  memorai-graphql-service:
+    build:
+      context: ./apps/memorai/graphql
+      dockerfile: Dockerfile
+    container_name: codai-memorai-graphql-api
+    ports:
+      - "4500:4500"  # MemorAI GraphQL port
+    environment:
+      NODE_ENV: production
+      PORT: "4500"
+      MEMORAI_API_BASE_URL: "http://memorai-app:4006"
+      GRAPHQL_API_BASE_URL: "http://memorai-app:4006"
+      GRAPHQL_REQUIRE_AUTH: "false"  # Disable auth for integration tests
+      CORS_ORIGINS: "http://localhost:4006,http://localhost:3000"
+      GRAPHQL_ALLOWED_ORIGINS: "http://localhost:4006,http://localhost:3000"
+      MEMORAI_GRAPHQL_API_KEY: "memorai-test-key-2025-secure"
+      GRAPHQL_CLIENT_API_KEY: "memorai-test-key-2025-secure"
+      GRAPHQL_SERVICE_TOKEN: "memorai-test-key-2025-secure"
+    depends_on:
+      memorai-mcp-service:
+        condition: service_healthy
+      cbd-database:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "sh", "-c", "curl -X POST -H 'Content-Type: application/json' -d '{\"query\":\"{health{status}}\"' http://localhost:4500 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - codai-network
+
+  # MemorAI Frontend Application (AI Memory Management)
+  memorai-app:
+    build:
+      context: ./apps/memorai
+      dockerfile: Dockerfile
+    container_name: codai-memorai-frontend
+    ports:
+      - "8006:4006"  # MemorAI frontend port
+    environment:
+      NODE_ENV: production
+      PORT: "4006"
+      NEXT_PUBLIC_API_URL: "http://gateway:4003"
+      NEXT_PUBLIC_MCP_URL: "http://memorai-mcp-service:4950"
+      NEXT_PUBLIC_CBD_URL: "http://cbd-database:4180"
+      NEXT_PUBLIC_GRAPHQL_URL: "http://memorai-graphql-service:4500"
+      DATABASE_URL: "postgresql://codai_user:codai_secure_2025@postgres:5432/codai_main"
+      CBD_BASE_URL: "http://cbd-database:4180"  # Internal Docker network URL
+      MEMORAI_API_KEY: "memorai-test-key-2025-secure"  # Add matching API key
+      API_KEY_VALIDATION: "false"  # Disable API key validation for tests
+    depends_on:
+      memorai-mcp-service:
+        condition: service_healthy
+      cbd-database:
+        condition: service_healthy
+      gateway:
+        condition: service_healthy
+      memorai-graphql-service:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4006/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - codai-network
+
+  # Explorer Application (Blockchain Explorer)
+  explorer-app:
+    build:
+      context: .
+      dockerfile: apps/explorer/Dockerfile.simple
+    container_name: codai-explorer-frontend
+    ports:
+      - "4400:4400"  # Explorer application port
+    environment:
+      NODE_ENV: production
+      PORT: "4400"
+      NEXT_PUBLIC_API_URL: "http://gateway:4003"
+      DATABASE_URL: "postgresql://codai_user:codai_secure_2025@postgres:5432/codai_main"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      gateway:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4400/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - codai-network
+
+  # ControlAI Dashboard (AI Control Center)
+  controlai-dashboard:
+    build:
+      context: .
+      dockerfile: apps/controlai-dashboard/Dockerfile.simple
+    container_name: codai-controlai-frontend
+    ports:
+      - "4200:4200"  # ControlAI Dashboard port
+    environment:
+      NODE_ENV: production
+      PORT: "4200"
+      NEXT_PUBLIC_API_URL: "http://gateway:4003"
+      NEXT_PUBLIC_ROMAI_URL: "http://romai-ml-api:6101"
+      NEXT_PUBLIC_ENTERPRISE_URL: "http://romai-compliance-api:8001"
+      DATABASE_URL: "postgresql://codai_user:codai_secure_2025@postgres:5432/codai_main"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      gateway:
+        condition: service_healthy
+      romai-ml-api:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4200/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - codai-network
+
+  # Kodex Application (Code Analysis & Documentation)
+  kodex-app:
+    build:
+      context: .
+      dockerfile: apps/kodex/Dockerfile.simple
+    container_name: codai-kodex-frontend
+    ports:
+      - "5000:5000"  # Kodex application port
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+      NEXT_PUBLIC_API_URL: "http://gateway:4003"
+      NEXT_PUBLIC_ROMAI_URL: "http://romai-ml-api:6101"
+      DATABASE_URL: "postgresql://codai_user:codai_secure_2025@postgres:5432/codai_main"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      gateway:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - codai-network
+
+  # WebSocket Service (Real-time Communication)
+  websocket-service:
+    build:
+      context: ./packages/websocket-service
+      dockerfile: Dockerfile
+    container_name: codai-websocket-api
+    ports:
+      - "4900:4900"  # WebSocket service port
+    environment:
+      NODE_ENV: production
+      PORT: "4900"
+      REDIS_URL: "redis://redis:6379"
+      CORS_ORIGINS: "http://localhost:4000,http://localhost:4006,http://localhost:4200,http://localhost:4400"
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4900/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - codai-network
+
+  # CODAI Main Application (Core Development Environment)
+  codai-main-app:
+    build:
+      context: .
+      dockerfile: ./apps/codai/Dockerfile.simple
+    container_name: codai-main-frontend
+    ports:
+      - "8002:4001"  # External 4002, internal 4001 to avoid conflict
+    environment:
+      NODE_ENV: production
+      PORT: "4001"
+      NEXT_PUBLIC_API_URL: "http://gateway:4003"
+      NEXT_PUBLIC_CBD_URL: "http://cbd-database:4180"
+      DATABASE_URL: "postgresql://codai_user:codai_secure_2025@postgres:5432/codai_main"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      gateway:
+        condition: service_healthy
+      cbd-database:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - codai-network
+
+  # Dash Application (Dashboard & Analytics)
+  dash-app:
+    build:
+      context: .
+      dockerfile: apps/dash/Dockerfile.simple
+    container_name: codai-dash-frontend
+    ports:
+      - "8009:4009"  # Dash application port
+    environment:
+      NODE_ENV: production
+      PORT: "4009"
+      NEXT_PUBLIC_API_URL: "http://gateway:4003"
+      NEXT_PUBLIC_CBD_URL: "http://cbd-database:4180"
+      DATABASE_URL: "postgresql://codai_user:codai_secure_2025@postgres:5432/codai_main"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      gateway:
+        condition: service_healthy
+      cbd-database:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4009/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - codai-network
+
+  # SSL Proxy Service (TLS Termination)
+  ssl-proxy:
+    build:
+      context: ./packages/ssl-proxy
+      dockerfile: Dockerfile
+    container_name: codai-ssl-termination-proxy
+    ports:
+      - "8443:443"   # HTTPS port
+      - "8081:80"    # HTTP redirect port
+    environment:
+      NODE_ENV: production
+      PROXY_TARGET: "http://nginx:80"
+      SSL_CERT_PATH: "/app/certs"
+      FORCE_HTTPS: "true"
+    depends_on:
+      - nginx
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-k", "-f", "https://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - codai-network
+
+  # Secure Gateway Service (API Security Layer)
+  secure-gateway:
+    build:
+      context: ./packages/secure-gateway
+      dockerfile: Dockerfile
+    container_name: codai-secure-api-gateway
+    ports:
+      - "8051:4001"  # Secure API Gateway port (changed from 8001 to avoid conflict)
+    environment:
+      NODE_ENV: production
+      PORT: "4001"
+      TARGET_GATEWAY: "http://gateway:4003"
+      SECURITY_MODE: "enhanced"
+      RATE_LIMIT_ENABLED: "true"
+      API_KEY_VALIDATION: "true"
+      JWT_SECRET: "secure_gateway_jwt_2025"
+    depends_on:
+      gateway:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4001/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -221,18 +649,16 @@ services:
   # Nginx Load Balancer & Reverse Proxy
   nginx:
     image: nginx:alpine
-    container_name: codai-nginx
+    container_name: codai-nginx-load-balancer
     ports:
-      - "4000:80"  # External 4000, internal 80
+      - "8080:80"  # External 8080, internal 80 (changed from 4000 to avoid Windows excluded port range)
     volumes:
-      - ./config/nginx/codai-updated.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./config/nginx/codai-fixed.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - gateway
-      - id-service
-      - hub-service
       - bancai-service
-      - romai-service
-      - admin-service
+      - romai-ml-api
+      - memorai-app
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
@@ -254,3 +680,6 @@ volumes:
   redis_data:
     driver: local
     name: codai_redis_data
+  romai_models:
+    driver: local
+    name: codai_romai_models

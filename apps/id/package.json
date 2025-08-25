@@ -13,11 +13,26 @@
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest watch",
     "lint": "next lint",
-    "type-check": "cd ../../ && npx tsc --noEmit --project apps/id"
+    "type-check": "cd ../../ && npx tsc --noEmit --project apps/id",
+    "build:analyze": "ANALYZE=true next build",
+    "build:speed": "SPEED_MEASURE=true next build",
+    "build:prod": "NODE_ENV=production next build",
+    "build:fast": "NEXT_PHASE=production-server next build",
+    "analyze:bundle": "node ../../analysis/bundle-analysis.js",
+    "analyze:build": "ANALYZE=true pnpm build",
+    "monitor:build": "node ../../lib/build-monitoring/build-monitor.js",
+    "cache:clear": "rm -rf .next/cache && rm -rf node_modules/.cache",
+    "cache:analyze": "next info",
+    "dev:fast": "next dev --turbo",
+    "dev:profile": "next dev --profile",
+    "start:prod": "NODE_ENV=production next start",
+    "preview": "pnpm build && pnpm start",
+    "check:all": "pnpm type-check && pnpm lint && pnpm test",
+    "check:fast": "pnpm type-check && pnpm lint --fix"
   },
   "dependencies": {
-    "@codai/shared-components": "workspace:*",
-    "bcryptjs": "^3.0.2",
+    "@codai/shared-ui": "workspace:*",
+    "bcryptjs": "^2.4.3",
     "clsx": "^2.1.1",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.525.0",
@@ -27,7 +42,13 @@
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.8.3",
-    "zod": "^3.25.1"
+    "zod": "^3.25.1",
+    "@codai/api-utils": "workspace:*",
+    "react-i18next": "^15.3.0",
+    "i18next": "^24.2.0",
+    "i18next-browser-languagedetector": "^8.0.0",
+    "i18next-http-backend": "^3.0.1",
+    "@codai/translations": "workspace:*"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
@@ -53,6 +74,15 @@
     "prettier-plugin-tailwindcss": "^0.6.14",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "@codai/testing-utils": "workspace:*",
+    "i18next-parser": "^9.0.0",
+    "@types/react-i18next": "^8.1.0"
+  },
+  "nextBundleAnalysis": {
+    "enabled": true,
+    "openAnalyzer": false,
+    "analyzerMode": "static",
+    "generateStatsFile": true
   }
 }

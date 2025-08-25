@@ -16,6 +16,7 @@
     "type-check": "pnpm exec tsc --noEmit"
   },
   "dependencies": {
+    "@codai/shared-ui": "workspace:*",
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-dropdown-menu": "^2.1.15",
     "@radix-ui/react-slot": "^1.2.3",
@@ -32,9 +33,7 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.8.3",
     "zustand": "^5.0.6",
-    "geist": "^1.4.2",
-    "@codai/shared-ui": "workspace:*",
-    "@codai/translations": "workspace:*"
+    "geist": "^1.4.2"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
@@ -55,6 +54,7 @@
     "prettier-plugin-tailwindcss": "^0.6.14",
     "tailwindcss": "^3.4.17",
     "vitest": "^3.2.4",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "@codai/testing-utils": "workspace:*"
   }
 }

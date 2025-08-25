@@ -1,0 +1,505 @@
+{
+    "scientific_research_training_data": [
+        {
+            "research_question": "Design an experimental study to investigate the effectiveness of a new antidepressant medication compared to placebo in treating major depressive disorder",
+            "discipline": "psychology",
+            "study_type": "experimental",
+            "data": {
+                "sample_size": 200,
+                "effect_size": 0.4,
+                "alpha_level": 0.05,
+                "power_level": 0.80,
+                "randomization": true,
+                "control_group_size": 100,
+                "intervention_duration": 12
+            },
+            "expected_outcome": {
+                "statistical_power": 0.85,
+                "design_quality": 0.90,
+                "methodology_score": 0.85,
+                "publication_readiness": 0.90,
+                "key_recommendations": [
+                    "randomized_controlled_trial",
+                    "double_blinding",
+                    "intention_to_treat_analysis"
+                ]
+            }
+        },
+        {
+            "research_question": "Analyze the quantum coherence properties of superconducting qubits at different temperatures and magnetic field strengths",
+            "discipline": "physics",
+            "study_type": "experimental",
+            "data": {
+                "measurement_precision": 0.0005,
+                "sample_size": 300,
+                "experimental_conditions": 8,
+                "statistical_power": 0.90,
+                "temperature_range": "0.01-4.2K",
+                "magnetic_field_range": "0-1T"
+            },
+            "expected_outcome": {
+                "design_score": 0.95,
+                "validity_score": 0.90,
+                "measurement_quality": 0.95,
+                "reproducibility_score": 0.85,
+                "key_recommendations": [
+                    "systematic_temperature_variation",
+                    "magnetic_shielding",
+                    "coherence_time_measurement"
+                ]
+            }
+        },
+        {
+            "research_question": "Synthesize and characterize novel organic photovoltaic materials with improved efficiency and stability",
+            "discipline": "chemistry",
+            "study_type": "synthetic",
+            "data": {
+                "reaction_yield": 78.5,
+                "purity": 96.2,
+                "replicates": 5,
+                "analytical_methods": [
+                    "NMR",
+                    "UV-Vis",
+                    "XRD",
+                    "DSC",
+                    "GPC"
+                ],
+                "efficiency_target": 15.0,
+                "stability_test_duration": 1000
+            },
+            "expected_outcome": {
+                "rigor_score": 0.88,
+                "method_score": 0.92,
+                "reproducibility_estimate": 0.82,
+                "innovation_score": 0.85,
+                "key_recommendations": [
+                    "full_characterization",
+                    "stability_testing",
+                    "device_fabrication"
+                ]
+            }
+        },
+        {
+            "research_question": "Investigate gene expression patterns in cancer stem cells using single-cell RNA sequencing to identify therapeutic targets",
+            "discipline": "biology",
+            "study_type": "molecular",
+            "data": {
+                "sample_size": 120,
+                "control_group_size": 60,
+                "biological_replicates": 8,
+                "effect_size": 0.6,
+                "cell_types": [
+                    "cancer_stem_cells",
+                    "differentiated_cancer_cells",
+                    "normal_stem_cells"
+                ],
+                "sequencing_depth": 50000
+            },
+            "expected_outcome": {
+                "design_quality": 0.88,
+                "statistical_power": 0.92,
+                "validity_score": 0.85,
+                "reproducibility_estimate": 0.68,
+                "key_recommendations": [
+                    "multiple_cell_lines",
+                    "pathway_analysis",
+                    "functional_validation"
+                ]
+            }
+        },
+        {
+            "research_question": "Model climate change impacts on Arctic sea ice dynamics using satellite data and machine learning approaches",
+            "discipline": "earth_sciences",
+            "study_type": "modeling",
+            "data": {
+                "data_points": 50000,
+                "temporal_coverage": 40,
+                "spatial_coverage": 15000000,
+                "measurement_accuracy": 0.02,
+                "satellite_missions": [
+                    "MODIS",
+                    "AMSR-E",
+                    "ICESat"
+                ],
+                "model_validation_period": 10
+            },
+            "expected_outcome": {
+                "design_strength": 0.92,
+                "data_quality_score": 0.90,
+                "robustness_score": 0.87,
+                "reproducibility_estimate": 0.78,
+                "key_recommendations": [
+                    "cross_validation",
+                    "ensemble_modeling",
+                    "uncertainty_quantification"
+                ]
+            }
+        },
+        {
+            "research_question": "Evaluate the cognitive behavioral therapy effectiveness for adolescent anxiety disorders in a multicenter randomized trial",
+            "discipline": "psychology",
+            "study_type": "experimental",
+            "data": {
+                "sample_size": 300,
+                "effect_size": 0.35,
+                "alpha_level": 0.05,
+                "power_level": 0.80,
+                "randomization": true,
+                "treatment_duration": 16,
+                "follow_up_period": 12,
+                "centers": 6
+            },
+            "expected_outcome": {
+                "quality_score": 0.90,
+                "achieved_power": 0.85,
+                "design_rigor": 0.88,
+                "external_validity": 0.85,
+                "key_recommendations": [
+                    "multicenter_design",
+                    "therapist_training",
+                    "treatment_fidelity"
+                ]
+            }
+        },
+        {
+            "research_question": "Investigate protein-protein interactions in Alzheimer's disease using cryo-electron microscopy and structural biology",
+            "discipline": "biology",
+            "study_type": "experimental",
+            "data": {
+                "sample_size": 200,
+                "control_group_size": 100,
+                "biological_replicates": 6,
+                "effect_size": 0.7,
+                "resolution_target": 2.5,
+                "protein_complexes": [
+                    "amyloid_beta",
+                    "tau",
+                    "APP"
+                ]
+            },
+            "expected_outcome": {
+                "design_quality": 0.85,
+                "statistical_power": 0.88,
+                "validity_score": 0.82,
+                "technical_quality": 0.90,
+                "key_recommendations": [
+                    "high_resolution_imaging",
+                    "structural_validation",
+                    "functional_assays"
+                ]
+            }
+        },
+        {
+            "research_question": "Develop novel metal-organic frameworks for carbon dioxide capture and storage applications",
+            "discipline": "chemistry",
+            "study_type": "synthetic",
+            "data": {
+                "reaction_yield": 82.1,
+                "purity": 98.5,
+                "replicates": 4,
+                "analytical_methods": [
+                    "XRD",
+                    "BET",
+                    "TGA",
+                    "FTIR",
+                    "SEM"
+                ],
+                "co2_capacity_target": 150,
+                "selectivity_target": 50
+            },
+            "expected_outcome": {
+                "rigor_score": 0.90,
+                "method_score": 0.88,
+                "innovation_potential": 0.92,
+                "practical_applicability": 0.85,
+                "key_recommendations": [
+                    "gas_adsorption_testing",
+                    "selectivity_measurements",
+                    "cycling_stability"
+                ]
+            }
+        },
+        {
+            "research_question": "Study dark matter particle interactions using underground detector arrays and statistical analysis of cosmic ray events",
+            "discipline": "physics",
+            "study_type": "experimental",
+            "data": {
+                "measurement_precision": 0.0001,
+                "sample_size": 100000,
+                "experimental_conditions": 12,
+                "statistical_power": 0.95,
+                "detector_mass": 1000,
+                "background_rate": 0.001,
+                "exposure_time": 3
+            },
+            "expected_outcome": {
+                "design_score": 0.95,
+                "validity_score": 0.92,
+                "sensitivity": 0.98,
+                "statistical_significance": 0.95,
+                "key_recommendations": [
+                    "background_subtraction",
+                    "systematic_uncertainties",
+                    "blind_analysis"
+                ]
+            }
+        },
+        {
+            "research_question": "Assess the impact of microplastics on marine ecosystem food webs through field sampling and laboratory exposure studies",
+            "discipline": "earth_sciences",
+            "study_type": "field_study",
+            "data": {
+                "data_points": 5000,
+                "temporal_coverage": 2,
+                "spatial_coverage": 50000,
+                "measurement_accuracy": 0.05,
+                "sampling_sites": 25,
+                "species_studied": 15,
+                "exposure_levels": 5
+            },
+            "expected_outcome": {
+                "design_strength": 0.82,
+                "data_quality_score": 0.85,
+                "ecological_relevance": 0.90,
+                "policy_implications": 0.88,
+                "key_recommendations": [
+                    "standardized_sampling",
+                    "bioaccumulation_analysis",
+                    "trophic_transfer_studies"
+                ]
+            }
+        },
+        {
+            "research_question": "Investigate social media influence on adolescent mental health using longitudinal survey data and network analysis",
+            "discipline": "psychology",
+            "study_type": "longitudinal",
+            "data": {
+                "sample_size": 2500,
+                "effect_size": 0.25,
+                "alpha_level": 0.05,
+                "power_level": 0.80,
+                "randomization": false,
+                "timepoints": 6,
+                "follow_up_duration": 24,
+                "dropout_rate": 0.15
+            },
+            "expected_outcome": {
+                "quality_score": 0.82,
+                "achieved_power": 0.78,
+                "longitudinal_validity": 0.85,
+                "causal_inference": 0.70,
+                "key_recommendations": [
+                    "attrition_analysis",
+                    "mediation_modeling",
+                    "ethical_considerations"
+                ]
+            }
+        },
+        {
+            "research_question": "Develop high-temperature superconductors through computational materials design and experimental validation",
+            "discipline": "physics",
+            "study_type": "computational",
+            "data": {
+                "measurement_precision": 0.001,
+                "sample_size": 150,
+                "experimental_conditions": 6,
+                "statistical_power": 0.88,
+                "temperature_target": 150,
+                "computational_accuracy": 0.05,
+                "validation_experiments": 20
+            },
+            "expected_outcome": {
+                "design_score": 0.88,
+                "computational_validity": 0.85,
+                "experimental_validation": 0.82,
+                "innovation_potential": 0.95,
+                "key_recommendations": [
+                    "theory_experiment_integration",
+                    "material_characterization",
+                    "scalability_assessment"
+                ]
+            }
+        },
+        {
+            "research_question": "Characterize antibiotic resistance mechanisms in bacterial biofilms using genomic and proteomic approaches",
+            "discipline": "biology",
+            "study_type": "molecular",
+            "data": {
+                "sample_size": 180,
+                "control_group_size": 90,
+                "biological_replicates": 9,
+                "effect_size": 0.5,
+                "bacterial_strains": 8,
+                "antibiotics_tested": 12,
+                "omics_platforms": [
+                    "genomics",
+                    "proteomics",
+                    "metabolomics"
+                ]
+            },
+            "expected_outcome": {
+                "design_quality": 0.87,
+                "statistical_power": 0.90,
+                "mechanistic_insight": 0.88,
+                "clinical_relevance": 0.92,
+                "key_recommendations": [
+                    "multi_omics_integration",
+                    "biofilm_quantification",
+                    "resistance_profiling"
+                ]
+            }
+        },
+        {
+            "research_question": "Optimize green hydrogen production through electrochemical water splitting using novel catalyst materials",
+            "discipline": "chemistry",
+            "study_type": "experimental",
+            "data": {
+                "reaction_yield": 75.8,
+                "purity": 99.9,
+                "replicates": 6,
+                "analytical_methods": [
+                    "XPS",
+                    "XRD",
+                    "SEM",
+                    "Electrochemical",
+                    "GC"
+                ],
+                "efficiency_target": 80,
+                "durability_hours": 1000,
+                "overpotential_target": 300
+            },
+            "expected_outcome": {
+                "rigor_score": 0.92,
+                "method_score": 0.90,
+                "sustainability_score": 0.95,
+                "commercial_potential": 0.88,
+                "key_recommendations": [
+                    "long_term_stability",
+                    "cost_analysis",
+                    "scale_up_feasibility"
+                ]
+            }
+        },
+        {
+            "research_question": "Model global ocean circulation changes under different climate scenarios using coupled atmosphere-ocean models",
+            "discipline": "earth_sciences",
+            "study_type": "modeling",
+            "data": {
+                "data_points": 1000000,
+                "temporal_coverage": 100,
+                "spatial_coverage": 510000000,
+                "measurement_accuracy": 0.01,
+                "climate_scenarios": 4,
+                "model_resolution": 1.0,
+                "ensemble_members": 20
+            },
+            "expected_outcome": {
+                "design_strength": 0.95,
+                "data_quality_score": 0.88,
+                "model_validation": 0.85,
+                "policy_relevance": 0.90,
+                "key_recommendations": [
+                    "ensemble_modeling",
+                    "bias_correction",
+                    "downscaling_techniques"
+                ]
+            }
+        }
+    ],
+    "evaluation_criteria": {
+        "excellent": {
+            "confidence_threshold": 0.85,
+            "design_quality_threshold": 0.85,
+            "methodology_score_threshold": 0.85,
+            "reproducibility_threshold": 0.80
+        },
+        "good": {
+            "confidence_threshold": 0.75,
+            "design_quality_threshold": 0.75,
+            "methodology_score_threshold": 0.75,
+            "reproducibility_threshold": 0.70
+        },
+        "acceptable": {
+            "confidence_threshold": 0.65,
+            "design_quality_threshold": 0.65,
+            "methodology_score_threshold": 0.65,
+            "reproducibility_threshold": 0.60
+        }
+    },
+    "discipline_standards": {
+        "physics": {
+            "typical_sample_sizes": [
+                50,
+                500,
+                5000
+            ],
+            "measurement_precision_levels": [
+                0.001,
+                0.01,
+                0.1
+            ],
+            "statistical_power_target": 0.80,
+            "reproducibility_benchmark": 0.85
+        },
+        "chemistry": {
+            "typical_yields": [
+                60,
+                80,
+                95
+            ],
+            "purity_standards": [
+                90,
+                95,
+                99
+            ],
+            "replication_minimum": 3,
+            "reproducibility_benchmark": 0.82
+        },
+        "biology": {
+            "typical_sample_sizes": [
+                30,
+                100,
+                300
+            ],
+            "effect_size_ranges": [
+                0.2,
+                0.5,
+                0.8
+            ],
+            "biological_replicates_minimum": 6,
+            "reproducibility_benchmark": 0.68
+        },
+        "psychology": {
+            "typical_sample_sizes": [
+                60,
+                150,
+                400
+            ],
+            "effect_size_ranges": [
+                0.2,
+                0.4,
+                0.6
+            ],
+            "statistical_power_target": 0.80,
+            "reproducibility_benchmark": 0.39
+        },
+        "earth_sciences": {
+            "typical_data_points": [
+                1000,
+                10000,
+                100000
+            ],
+            "temporal_coverage_years": [
+                5,
+                20,
+                50
+            ],
+            "measurement_accuracy_levels": [
+                0.01,
+                0.05,
+                0.1
+            ],
+            "reproducibility_benchmark": 0.78
+        }
+    }
+}

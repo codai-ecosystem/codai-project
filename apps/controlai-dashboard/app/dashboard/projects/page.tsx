@@ -1,9 +1,10 @@
+'use client'
+
 import React from 'react'
 /**
  * Enhanced Projects Management Page - Project Tracking and Coordination Center
  * Comprehensive project management with real-time tracking and AI insights
  */
-'use client'
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { motion } from 'framer-motion'

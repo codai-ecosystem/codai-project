@@ -1,47 +1,63 @@
-# Multi-stage build for id
+# Multi-stage build for Next.js ID service
 FROM node:20-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat curl
 WORKDIR /app
 
-# Install dependencies
+# Install dependencies based on the preferred package manager
 COPY package.json pnpm-lock.yaml* ./
 RUN corepack enable pnpm && pnpm install --frozen-lockfile
 
-# Build the source code
+# Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build the application
-RUN corepack enable pnpm && pnpm build
+# Environment variables must be present at build time
+# ARG NEXT_PUBLIC_APP_URL
+# ARG DATABASE_URL
+# ARG NEXTAUTH_SECRET
 
-# Production image
+# Generate Prisma client if needed
+RUN if [ -f prisma/schema.prisma ]; then npx prisma generate; fi
+
+# Build the application
+RUN cd apps/id && corepack enable pnpm && pnpm build
+
+# Production image, copy all the files and run next
 FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 appuser
+RUN adduser --system --uid 1001 nextjs
 
-# Copy built application
-COPY --from=builder --chown=appuser:nodejs /app/dist ./dist
-COPY --from=builder --chown=appuser:nodejs /app/node_modules ./node_modules
-COPY --from=builder --chown=appuser:nodejs /app/package.json ./package.json
+RUN apk add --no-cache curl
 
-USER appuser
+COPY --from=builder /app/apps/id/public ./public
 
-EXPOSE 4008
+# Set the correct permission for prerender cache
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
 
-ENV PORT=4008
+# Automatically leverage output traces to reduce image size
+COPY --from=builder --chown=nextjs:nodejs /app/apps/id/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/apps/id/.next/static ./.next/static
+
+USER nextjs
+
+EXPOSE 4004
+
+ENV PORT=4004
 ENV HOSTNAME="0.0.0.0"
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:4008/health || exit 1
+  CMD curl -f http://localhost:4004/api/health || exit 1
 
-CMD ["node", "dist/index.js"]
+CMD ["node", "server.js"]

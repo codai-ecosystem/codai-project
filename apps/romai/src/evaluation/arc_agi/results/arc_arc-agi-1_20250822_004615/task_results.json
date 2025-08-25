@@ -1,0 +1,502 @@
+[
+  {
+    "task_id": "arc-agi-1_train_0000",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00022912025451660156,
+    "computational_cost": 0.10000229120254517,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0001",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00021529197692871094,
+    "computational_cost": 0.1000021529197693,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0002",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.0003712177276611328,
+    "computational_cost": 0.10000371217727662,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0003",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00019884109497070312,
+    "computational_cost": 0.10000198841094972,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": true
+  },
+  {
+    "task_id": "arc-agi-1_train_0004",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00021886825561523438,
+    "computational_cost": 0.10000218868255616,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": true
+  },
+  {
+    "task_id": "arc-agi-1_train_0005",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00021409988403320312,
+    "computational_cost": 0.10000214099884033,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0006",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00018739700317382812,
+    "computational_cost": 0.10000187397003174,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0007",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00017714500427246094,
+    "computational_cost": 0.10000177145004273,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0008",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00014853477478027344,
+    "computational_cost": 0.1000014853477478,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0009",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00022149085998535156,
+    "computational_cost": 0.10000221490859985,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": true
+  },
+  {
+    "task_id": "arc-agi-1_train_0010",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.0002155303955078125,
+    "computational_cost": 0.10000215530395508,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0011",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.0001876354217529297,
+    "computational_cost": 0.10000187635421753,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0012",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00020837783813476562,
+    "computational_cost": 0.10000208377838135,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": true
+  },
+  {
+    "task_id": "arc-agi-1_train_0013",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00018072128295898438,
+    "computational_cost": 0.1000018072128296,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": true
+  },
+  {
+    "task_id": "arc-agi-1_train_0014",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.0001895427703857422,
+    "computational_cost": 0.10000189542770387,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0015",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00020384788513183594,
+    "computational_cost": 0.10000203847885132,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0016",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.0002028942108154297,
+    "computational_cost": 0.10000202894210816,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": true
+  },
+  {
+    "task_id": "arc-agi-1_train_0017",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.0002410411834716797,
+    "computational_cost": 0.10000241041183472,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0018",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00027370452880859375,
+    "computational_cost": 0.10000273704528809,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0019",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00026702880859375,
+    "computational_cost": 0.10000267028808595,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0020",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00015163421630859375,
+    "computational_cost": 0.10000151634216309,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0021",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00020265579223632812,
+    "computational_cost": 0.10000202655792237,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0022",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00023293495178222656,
+    "computational_cost": 0.10000232934951783,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0023",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.0002148151397705078,
+    "computational_cost": 0.10000214815139771,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0024",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00018525123596191406,
+    "computational_cost": 0.10000185251235963,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0025",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00023794174194335938,
+    "computational_cost": 0.10000237941741943,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0026",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00019931793212890625,
+    "computational_cost": 0.10000199317932129,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0027",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00018906593322753906,
+    "computational_cost": 0.10000189065933228,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0028",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00025963783264160156,
+    "computational_cost": 0.10000259637832642,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0029",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.0001704692840576172,
+    "computational_cost": 0.10000170469284059,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0030",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00016498565673828125,
+    "computational_cost": 0.10000164985656738,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0031",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00012254714965820312,
+    "computational_cost": 0.10000122547149659,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0032",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.0003437995910644531,
+    "computational_cost": 0.10000343799591065,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0033",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.0002498626708984375,
+    "computational_cost": 0.10000249862670899,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0034",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00025463104248046875,
+    "computational_cost": 0.10000254631042481,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0035",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00031447410583496094,
+    "computational_cost": 0.10000314474105836,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0036",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00022482872009277344,
+    "computational_cost": 0.10000224828720093,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0037",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.0002186298370361328,
+    "computational_cost": 0.10000218629837036,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0038",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00027060508728027344,
+    "computational_cost": 0.1000027060508728,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": true
+  },
+  {
+    "task_id": "arc-agi-1_train_0039",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00019407272338867188,
+    "computational_cost": 0.1000019407272339,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0040",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00034546852111816406,
+    "computational_cost": 0.10000345468521118,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0041",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00023412704467773438,
+    "computational_cost": 0.10000234127044678,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0042",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.0002148151397705078,
+    "computational_cost": 0.10000214815139771,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0043",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.0002377033233642578,
+    "computational_cost": 0.10000237703323364,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0044",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00020742416381835938,
+    "computational_cost": 0.10000207424163819,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": true
+  },
+  {
+    "task_id": "arc-agi-1_train_0045",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.0002262592315673828,
+    "computational_cost": 0.10000226259231568,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0046",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.0002048015594482422,
+    "computational_cost": 0.1000020480155945,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0047",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.0002205371856689453,
+    "computational_cost": 0.1000022053718567,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0048",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.0002155303955078125,
+    "computational_cost": 0.10000215530395508,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": false
+  },
+  {
+    "task_id": "arc-agi-1_train_0049",
+    "is_correct": false,
+    "confidence_score": 0.3,
+    "solve_time": 0.00021195411682128906,
+    "computational_cost": 0.10000211954116822,
+    "engines_used": [],
+    "reasoning_steps": [],
+    "romanian_patterns_detected": true
+  }
+]

@@ -1,0 +1,201 @@
+[
+    {
+        "problem": "Analyze stress in a steel cantilever beam subjected to 10kN point load at free end",
+        "parameters": {
+            "material": "steel",
+            "load": 10000,
+            "length": 3.0,
+            "width": 0.2,
+            "height": 0.3,
+            "safety_factor": 2.5,
+            "beam_type": "cantilever"
+        },
+        "expected_analysis": "stress_analysis",
+        "expected_discipline": "mechanical"
+    },
+    {
+        "problem": "Design optimization for aluminum aircraft wing spar under 50kN distributed load",
+        "parameters": {
+            "material": "aluminum",
+            "load": 50000,
+            "length": 8.0,
+            "width": 0.4,
+            "height": 0.6,
+            "safety_factor": 4.0,
+            "application": "aerospace"
+        },
+        "expected_analysis": "design_optimization",
+        "expected_discipline": "mechanical"
+    },
+    {
+        "problem": "Failure analysis of titanium pressure vessel with internal pressure 5 MPa",
+        "parameters": {
+            "material": "titanium",
+            "pressure": 5000000,
+            "diameter": 1.0,
+            "thickness": 0.05,
+            "safety_factor": 4.0,
+            "temperature": 300
+        },
+        "expected_analysis": "failure_analysis",
+        "expected_discipline": "mechanical"
+    },
+    {
+        "problem": "Circuit analysis for DC motor control system with 48V supply and 15A rating",
+        "parameters": {
+            "voltage": 48.0,
+            "current": 15.0,
+            "resistance": 3.2,
+            "inductance": 0.05,
+            "motor_type": "brushless_dc",
+            "power_rating": 720
+        },
+        "expected_analysis": "circuit_analysis",
+        "expected_discipline": "electrical"
+    },
+    {
+        "problem": "Power system analysis for 480V three-phase industrial motor drive",
+        "parameters": {
+            "voltage": 480.0,
+            "current": 100.0,
+            "frequency": 60.0,
+            "power_factor": 0.85,
+            "phases": 3,
+            "motor_power": 50000
+        },
+        "expected_analysis": "power_analysis",
+        "expected_discipline": "electrical"
+    },
+    {
+        "problem": "Algorithm optimization for real-time image processing with O(n²) complexity",
+        "parameters": {
+            "time_complexity": "O(n^2)",
+            "memory_usage": 2048,
+            "lines_of_code": 5000,
+            "cyclomatic_complexity": 25,
+            "test_coverage": 0.75,
+            "target_fps": 30
+        },
+        "expected_analysis": "algorithm_optimization",
+        "expected_discipline": "software"
+    },
+    {
+        "problem": "Software architecture design for distributed microservices system",
+        "parameters": {
+            "services": 12,
+            "expected_load": 10000,
+            "availability_target": 0.999,
+            "latency_requirement": 100,
+            "data_consistency": "eventual",
+            "scaling_factor": 10
+        },
+        "expected_analysis": "system_architecture",
+        "expected_discipline": "software"
+    },
+    {
+        "problem": "Structural analysis of 20m span concrete bridge with 120kN/m distributed load",
+        "parameters": {
+            "concrete_strength": 30000000,
+            "steel_grade": "Grade 60",
+            "dead_load": 120000,
+            "live_load": 80000,
+            "wind_load": 15000,
+            "span": 20.0,
+            "bridge_type": "simply_supported"
+        },
+        "expected_analysis": "structural_analysis",
+        "expected_discipline": "civil"
+    },
+    {
+        "problem": "Foundation design for 50-story high-rise building with seismic considerations",
+        "parameters": {
+            "building_height": 200.0,
+            "total_load": 500000000,
+            "soil_bearing_capacity": 400000,
+            "seismic_zone": 4,
+            "foundation_type": "mat_foundation",
+            "building_class": "essential_facility"
+        },
+        "expected_analysis": "geotechnical_analysis",
+        "expected_discipline": "civil"
+    },
+    {
+        "problem": "Systems reliability analysis for satellite communication system with 15 subsystems",
+        "parameters": {
+            "subsystems": 15,
+            "reliability": 0.9999,
+            "mission_duration": 87600,
+            "redundancy_level": "dual",
+            "environment": "space",
+            "criticality": "mission_critical"
+        },
+        "expected_analysis": "systems_analysis",
+        "expected_discipline": "systems"
+    },
+    {
+        "problem": "Manufacturing process optimization for automotive assembly line with 200 units/hour target",
+        "parameters": {
+            "current_throughput": 150,
+            "target_throughput": 200,
+            "stations": 25,
+            "cycle_time": 180,
+            "defect_rate": 0.02,
+            "efficiency_target": 0.85
+        },
+        "expected_analysis": "process_optimization",
+        "expected_discipline": "manufacturing"
+    },
+    {
+        "problem": "Thermal analysis of electronic cooling system for 500W power dissipation",
+        "parameters": {
+            "power_dissipation": 500.0,
+            "ambient_temperature": 40.0,
+            "max_junction_temperature": 85.0,
+            "thermal_resistance": 0.1,
+            "cooling_method": "forced_air",
+            "airflow_rate": 100
+        },
+        "expected_analysis": "thermal_analysis",
+        "expected_discipline": "thermal"
+    },
+    {
+        "problem": "Fluid dynamics analysis for water pump system with 1000 L/min flow rate",
+        "parameters": {
+            "flow_rate": 0.0167,
+            "pipe_diameter": 0.1,
+            "pipe_length": 50.0,
+            "fluid": "water",
+            "temperature": 20.0,
+            "pressure_drop_limit": 50000,
+            "pump_efficiency": 0.75
+        },
+        "expected_analysis": "fluid_analysis",
+        "expected_discipline": "mechanical"
+    },
+    {
+        "problem": "Control system design for autonomous vehicle steering with PID controller",
+        "parameters": {
+            "plant_type": "vehicle_steering",
+            "control_type": "PID",
+            "desired_response_time": 0.2,
+            "overshoot_limit": 0.05,
+            "steady_state_error": 0.01,
+            "disturbance_rejection": 0.9
+        },
+        "expected_analysis": "control_design",
+        "expected_discipline": "control"
+    },
+    {
+        "problem": "Network security analysis for enterprise firewall with 10Gbps throughput requirement",
+        "parameters": {
+            "throughput": 10000000000,
+            "concurrent_connections": 1000000,
+            "latency_requirement": 1,
+            "packet_inspection": "deep",
+            "threat_detection": "real_time",
+            "compliance": "iso27001"
+        },
+        "expected_analysis": "security_analysis",
+        "expected_discipline": "cybersecurity"
+    }
+]

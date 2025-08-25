@@ -1,9 +1,10 @@
+'use client'
+
 import React from 'react'
 /**
  * Advanced Analytics Dashboard Page - Enhanced ControlAI Analytics Center
  * Real-time analytics and comprehensive reporting with ML-powered insights
  */
-'use client'
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -375,8 +376,8 @@ export default function AnalyticsPage() {
                     key={mode}
                     onClick={() => setAnalyticsState(prev => ({ ...prev, viewMode: mode }))}
                     className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${analyticsState.viewMode === mode
-                        ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
-                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                      ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                       }`}
                   >
                     {mode === 'grid' && <Grid className="w-3 h-3" />}
@@ -402,8 +403,8 @@ export default function AnalyticsPage() {
               <button
                 onClick={() => setShowFilters(!showFilters)}
                 className={`flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${showFilters
-                    ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                   }`}
               >
                 <Filter className="w-4 h-4 mr-2" />
@@ -414,8 +415,8 @@ export default function AnalyticsPage() {
               <button
                 onClick={toggleRealTime}
                 className={`flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${analyticsState.realTimeEnabled
-                    ? 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  ? 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                   }`}
               >
                 <Zap className="w-4 h-4 mr-2" />
@@ -619,8 +620,8 @@ export default function AnalyticsPage() {
                 key={id}
                 onClick={() => handleViewChange(id as AnalyticsState['activeView'])}
                 className={`flex items-center px-6 py-4 text-sm font-medium border-b-2 transition-all duration-200 whitespace-nowrap ${analyticsState.activeView === id
-                    ? 'border-blue-500 text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-900/20'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-50/50 dark:hover:bg-gray-800/50'
+                  ? 'border-blue-500 text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-900/20'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-50/50 dark:hover:bg-gray-800/50'
                   }`}
                 whileHover={{ y: -1 }}
                 whileTap={{ y: 0 }}

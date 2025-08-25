@@ -46,6 +46,7 @@ export { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescri
 export { HoverCard, HoverCardTrigger, HoverCardContent, UserHoverCard, LinkPreviewHoverCard, hoverCardContentVariants } from './components/ui/HoverCard'
 export { Popover, PopoverTrigger, PopoverContent, MenuPopover, FormPopover, popoverContentVariants } from './components/ui/Popover'
 export { Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandSeparator, CommandShortcut, CommandPalette, SearchCommand, commandVariants, commandInputVariants, commandItemVariants } from './components/ui/Command'
+export type { CommandItemData as CommandItemType, CommandPaletteProps } from './components/ui/Command'
 export { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent, TooltipArrow, InfoTooltip, ErrorTooltip, SuccessTooltip, WarningTooltip, tooltipContentVariants, tooltipArrowVariants } from './components/ui/Tooltip'
 
 // Data Display Components (Priority 4 - Phase 1 Implementation)
@@ -117,18 +118,30 @@ export { generateAppCSSVariables } from './config/enhanced-app-themes'
 export { generateAppTailwindClasses } from './config/enhanced-app-themes'
 export type { AppName as EnhancedAppName, AppThemeConfig, ThemeMode } from './config/enhanced-app-themes'
 
-// Testing configuration and utilities
-export { default as testConfig } from './config/test-config'
-export { APP_TEST_CONFIGS, ACCESSIBILITY_CONFIG, PERFORMANCE_THRESHOLDS, SECURITY_CONFIG } from './config/test-config'
-export { test, expect } from './utils/test-utils'
-export { AppTestUtils, ComponentTestUtils } from './utils/test-utils'
-export { setupTestApp, takeAccessibilitySnapshot, validateCrossAppCommunication } from './utils/test-utils'
+// Testing configuration and utilities (Node.js only)
+// Conditionally export test config to avoid browser compilation issues
+export const testConfig = typeof window === 'undefined' ? require('./config/test-config').default : undefined
+export const APP_TEST_CONFIGS = typeof window === 'undefined' ? require('./config/test-config').APP_TEST_CONFIGS : undefined
+export const ACCESSIBILITY_CONFIG = typeof window === 'undefined' ? require('./config/test-config').ACCESSIBILITY_CONFIG : undefined
+export const PERFORMANCE_THRESHOLDS = typeof window === 'undefined' ? require('./config/test-config').PERFORMANCE_THRESHOLDS : undefined
+export const SECURITY_CONFIG = typeof window === 'undefined' ? require('./config/test-config').SECURITY_CONFIG : undefined
+export const test = typeof window === 'undefined' ? require('./utils/test-utils').test : undefined
+export const expect = typeof window === 'undefined' ? require('./utils/test-utils').expect : undefined
+export const AppTestUtils = typeof window === 'undefined' ? require('./utils/test-utils').AppTestUtils : undefined
+export const ComponentTestUtils = typeof window === 'undefined' ? require('./utils/test-utils').ComponentTestUtils : undefined
+export const setupTestApp = typeof window === 'undefined' ? require('./utils/test-utils').setupTestApp : undefined
+export const takeAccessibilitySnapshot = typeof window === 'undefined' ? require('./utils/test-utils').takeAccessibilitySnapshot : undefined
+export const validateCrossAppCommunication = typeof window === 'undefined' ? require('./utils/test-utils').validateCrossAppCommunication : undefined
 
 // Translation Resources
 export { commonTranslations as enCommonTranslations } from './translations/en/common'
-export { commonTranslations as roCommonTranslations } from './translations/ro/common'
+export { roCommonTranslations } from './translations/ro/common'
 
 // ===== UTILITIES & MIDDLEWARE =====
+// Health Utilities
+export { createHealthEndpoint, FeatureStatus, ServiceStatus, CommonFeatures, CommonCapabilities } from './utils/health'
+export type { HealthConfig, HealthResponse } from './utils/health'
+
 // Middleware
 export { createAuthMiddleware } from './middleware/auth'
 export { createSecurityHeaders, applySecurityHeaders, securityMiddleware } from './middleware/security-headers'

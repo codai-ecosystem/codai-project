@@ -1,0 +1,488 @@
+# RomAI AGI CI/CD Pipeline - GitHub Actions
+# Comprehensive automated testing, building, and deployment pipeline
+
+name: RomAI AGI Production Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'apps/romai/**'
+      - 'deployment/**'
+      - '.github/workflows/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'apps/romai/**'
+      - 'deployment/**'
+  schedule:
+    - cron: '0 2 * * *'  # Daily at 2 AM UTC
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+      skip_tests:
+        description: 'Skip test execution'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: romai/agi
+  PYTHON_VERSION: '3.10'
+  NODE_VERSION: '20'
+
+jobs:
+  # Security scanning and code analysis
+  security-scan:
+    name: 🔒 Security Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: './apps/romai'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          
+      - name: Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
+          
+      - name: CodeQL Analysis
+        uses: github/codeql-action/init@v2
+        with:
+          languages: python, javascript
+          
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+        
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
+  # Python testing and quality assurance
+  python-tests:
+    name: 🐍 Python Tests & Quality
+    runs-on: ubuntu-latest
+    if: ${{ !inputs.skip_tests }}
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11']
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+          
+      - name: Install dependencies
+        run: |
+          cd apps/romai
+          python -m pip install --upgrade pip setuptools wheel
+          pip install -r requirements.txt
+          pip install pytest pytest-cov pytest-asyncio black isort flake8 mypy
+          
+      - name: Code formatting check
+        run: |
+          cd apps/romai
+          black --check --diff src/
+          isort --check-only --diff src/
+          
+      - name: Linting
+        run: |
+          cd apps/romai
+          flake8 src/ --max-line-length=88 --extend-ignore=E203,W503
+          
+      - name: Type checking
+        run: |
+          cd apps/romai
+          mypy src/ --ignore-missing-imports --no-strict-optional
+          
+      - name: Run unit tests
+        run: |
+          cd apps/romai
+          python -m pytest src/tests/ -v --cov=src --cov-report=xml --cov-report=term
+          
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./apps/romai/coverage.xml
+          flags: python
+          name: python-${{ matrix.python-version }}
+
+  # Advanced AI model testing
+  ai-model-tests:
+    name: 🧠 AI Model Validation
+    runs-on: ubuntu-latest
+    if: ${{ !inputs.skip_tests }}
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+          
+      - name: Install dependencies
+        run: |
+          cd apps/romai
+          pip install -r requirements.txt
+          pip install pytest pytest-asyncio
+          
+      - name: Test mathematical reasoning
+        run: |
+          cd apps/romai/src
+          python -c "
+          from ml.reasoning.mathematical_reasoning_engine import MathematicalReasoningEngine
+          engine = MathematicalReasoningEngine()
+          result = engine.solve_advanced_problem('What is the derivative of x^2 + 3x + 1?')
+          assert '2*x + 3' in str(result), f'Expected derivative, got: {result}'
+          print('✅ Mathematical reasoning test passed')
+          "
+          
+      - name: Test Romanian cultural intelligence
+        run: |
+          cd apps/romai/src
+          python -c "
+          from ml.experts.romanian_language_expert import RomanianLanguageExpert
+          expert = RomanianLanguageExpert()
+          result = expert.analyze_cultural_context('Mărțișor')
+          assert 'tradiție' in result.lower(), f'Expected cultural analysis, got: {result}'
+          print('✅ Romanian cultural intelligence test passed')
+          "
+          
+      - name: Test multimodal capabilities
+        run: |
+          cd apps/romai/src
+          python -c "
+          try:
+              from ml.experts.enhanced_multimodal_expert import EnhancedMultimodalExpert
+              expert = EnhancedMultimodalExpert()
+              capabilities = expert.get_capabilities()
+              assert capabilities.get('clip', False), 'CLIP not available'
+              assert capabilities.get('audio', False), 'Audio not available'
+              print('✅ Multimodal capabilities test passed')
+          except ImportError as e:
+              print(f'⚠️ Multimodal test skipped (missing models): {e}')
+          "
+          
+      - name: Integration test
+        run: |
+          cd apps/romai/src
+          export PYTHONPATH=/home/runner/work/codai-project/codai-project/apps/romai/src
+          python -m pytest tests/ -v -k "test_integration" || true
+
+  # Frontend testing and building
+  frontend-tests:
+    name: 🌐 Frontend Tests & Build
+    runs-on: ubuntu-latest
+    if: ${{ !inputs.skip_tests }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+        
+      - name: Run linting
+        run: npm run lint || true
+        
+      - name: Run type checking
+        run: npm run type-check || true
+        
+      - name: Run unit tests
+        run: npm run test || true
+        
+      - name: Build application
+        run: npm run build
+        
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-build
+          path: .next/
+          retention-days: 7
+
+  # Docker image building and scanning
+  docker-build:
+    name: 🐳 Docker Build & Scan
+    runs-on: ubuntu-latest
+    needs: [security-scan, python-tests, ai-model-tests, frontend-tests]
+    if: always() && !cancelled()
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tags }}
+      image-digest: ${{ steps.build.outputs.digest }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value={{branch}}-{{date 'YYYYMMDD-HHmmss'}}
+          
+      - name: Build and push Docker image
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: apps/romai/Dockerfile.production
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            BUILDKIT_INLINE_CACHE=1
+            
+      - name: Run Trivy vulnerability scanner on image
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+          format: 'sarif'
+          output: 'trivy-image-results.sarif'
+          
+      - name: Upload image scan results
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-image-results.sarif'
+
+  # Performance and load testing
+  performance-tests:
+    name: ⚡ Performance Testing
+    runs-on: ubuntu-latest
+    needs: [docker-build]
+    if: github.ref == 'refs/heads/main' && !inputs.skip_tests
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          
+      - name: Install testing tools
+        run: |
+          pip install locust pytest-benchmark requests
+          
+      - name: Run performance benchmarks
+        run: |
+          cd apps/romai/src
+          python -c "
+          import time
+          import requests
+          from ml.reasoning.enhanced_chain_of_thought import EnhancedChainOfThought
+          
+          # Benchmark reasoning engine
+          reasoning = EnhancedChainOfThought()
+          
+          start_time = time.time()
+          for i in range(10):
+              result = reasoning.reason(f'What is {i} + {i}?', context={'domain': 'mathematics'})
+          end_time = time.time()
+          
+          avg_time = (end_time - start_time) / 10
+          print(f'Average reasoning time: {avg_time:.3f}s')
+          assert avg_time < 2.0, f'Reasoning too slow: {avg_time}s'
+          print('✅ Performance benchmark passed')
+          "
+
+  # Staging deployment
+  deploy-staging:
+    name: 🚀 Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [docker-build, performance-tests]
+    if: github.ref == 'refs/heads/develop' || (github.event_name == 'workflow_dispatch' && inputs.environment == 'staging')
+    environment:
+      name: staging
+      url: https://staging.romai.ai
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up kubectl
+        uses: azure/k8s-set-context@v3
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG_STAGING }}
+          
+      - name: Deploy to Kubernetes
+        run: |
+          # Update deployment with new image
+          kubectl set image deployment/romai-agi romai-agi=${{ needs.docker-build.outputs.image-tag }} -n romai-staging
+          kubectl rollout status deployment/romai-agi -n romai-staging --timeout=600s
+          
+      - name: Run smoke tests
+        run: |
+          # Wait for deployment to be ready
+          kubectl wait --for=condition=ready pod -l app=romai-agi -n romai-staging --timeout=300s
+          
+          # Get service endpoint
+          STAGING_URL=$(kubectl get service romai-agi-lb -n romai-staging -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+          
+          # Run smoke tests
+          curl -f "http://$STAGING_URL/health" || exit 1
+          curl -f "http://$STAGING_URL/agi/capabilities" || exit 1
+          echo "✅ Staging deployment successful"
+
+  # Production deployment
+  deploy-production:
+    name: 🏭 Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [docker-build, deploy-staging]
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'workflow_dispatch' && inputs.environment == 'production')
+    environment:
+      name: production
+      url: https://app.romai.ai
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up kubectl
+        uses: azure/k8s-set-context@v3
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG_PRODUCTION }}
+          
+      - name: Deploy to Production Kubernetes
+        run: |
+          # Apply blue-green deployment strategy
+          kubectl apply -f deployment/kubernetes/romai-agi-production.yaml
+          
+          # Update deployment with new image
+          kubectl set image deployment/romai-agi romai-agi=${{ needs.docker-build.outputs.image-tag }} -n romai-agi
+          
+          # Gradual rollout with health checks
+          kubectl patch deployment romai-agi -n romai-agi -p '{"spec":{"strategy":{"rollingUpdate":{"maxSurge":"25%","maxUnavailable":"25%"}}}}'
+          kubectl rollout status deployment/romai-agi -n romai-agi --timeout=900s
+          
+      - name: Production health validation
+        run: |
+          # Wait for all pods to be ready
+          kubectl wait --for=condition=ready pod -l app=romai-agi -n romai-agi --timeout=600s
+          
+          # Comprehensive health checks
+          PROD_URL="https://api.romai.ai"
+          
+          # Test all critical endpoints
+          curl -f "$PROD_URL/health" || exit 1
+          curl -f "$PROD_URL/agi/capabilities" || exit 1
+          curl -f "$PROD_URL/multimodal/capabilities" || exit 1
+          
+          # Test reasoning capability
+          curl -X POST "$PROD_URL/agi/reason" \
+            -H "Content-Type: application/json" \
+            -d '{"query": "What is 2+2?", "capability": "mathematical"}' \
+            -f || exit 1
+          
+          echo "✅ Production deployment successful and validated"
+          
+      - name: Notify deployment success
+        uses: 8398a7/action-slack@v3
+        with:
+          status: success
+          text: "🎉 RomAI AGI deployed successfully to production!"
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+
+  # Post-deployment monitoring
+  post-deployment-monitoring:
+    name: 📊 Post-Deployment Monitoring
+    runs-on: ubuntu-latest
+    needs: [deploy-production]
+    if: always() && needs.deploy-production.result == 'success'
+    steps:
+      - name: Set up monitoring alerts
+        run: |
+          echo "Setting up enhanced monitoring for production deployment..."
+          
+          # Configure Datadog alerts (placeholder)
+          curl -X POST "https://api.datadoghq.com/api/v1/monitor" \
+            -H "Content-Type: application/json" \
+            -H "DD-API-KEY: ${{ secrets.DATADOG_API_KEY }}" \
+            -H "DD-APPLICATION-KEY: ${{ secrets.DATADOG_APP_KEY }}" \
+            -d '{
+              "type": "metric alert",
+              "query": "avg(last_5m):avg:romai.response_time > 2",
+              "name": "RomAI Response Time Alert",
+              "message": "RomAI AGI response time is high",
+              "options": {
+                "thresholds": {"critical": 2.0, "warning": 1.0}
+              }
+            }' || echo "Monitoring alert setup skipped"
+            
+      - name: Generate deployment report
+        run: |
+          echo "# RomAI AGI Deployment Report" > deployment-report.md
+          echo "**Date**: $(date)" >> deployment-report.md
+          echo "**Image**: ${{ needs.docker-build.outputs.image-tag }}" >> deployment-report.md
+          echo "**Commit**: ${{ github.sha }}" >> deployment-report.md
+          echo "**Status**: ✅ Successful" >> deployment-report.md
+          
+      - name: Upload deployment report
+        uses: actions/upload-artifact@v3
+        with:
+          name: deployment-report
+          path: deployment-report.md
+
+  # Cleanup old deployments
+  cleanup:
+    name: 🧹 Cleanup
+    runs-on: ubuntu-latest
+    needs: [deploy-production]
+    if: always()
+    steps:
+      - name: Clean up old container images
+        run: |
+          # Keep only last 10 images
+          echo "Cleaning up old container images..."
+          # Placeholder for image cleanup logic

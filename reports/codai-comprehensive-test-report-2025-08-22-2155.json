@@ -1,0 +1,216 @@
+{
+  "SecurityTests": {
+    "Score": 60.0,
+    "PassedChecks": 3,
+    "Results": {
+      "Authentication Headers": {
+        "Details": "Unable to check headers",
+        "Passed": false
+      },
+      "HTTPS Availability": {
+        "Details": "SSL proxy not accessible",
+        "Passed": false
+      },
+      "CORS Configuration": {
+        "Details": "CORS properly configured in applications",
+        "Passed": true
+      },
+      "Input Validation": {
+        "Details": "Input validation working",
+        "Passed": true
+      },
+      "Rate Limiting": {
+        "Details": "Rate limiting configured",
+        "Passed": true
+      }
+    },
+    "TotalChecks": 5
+  },
+  "PerformanceTests": {
+    "WebSocket API": {
+      "AvgResponseTime": 3.817752000000001,
+      "P95ResponseTime": 5.3624,
+      "SuccessRate": 100.0,
+      "TestRuns": 50,
+      "Score": 100
+    },
+    "RomAI Enterprise API": {
+      "AvgResponseTime": 8.667044444444445,
+      "P95ResponseTime": 10.0037,
+      "SuccessRate": 72.0,
+      "TestRuns": 50,
+      "Score": 100
+    },
+    "MemorAI MCP API": {
+      "AvgResponseTime": 101.67068399999998,
+      "P95ResponseTime": 115.6151,
+      "SuccessRate": 100.0,
+      "TestRuns": 50,
+      "Score": 80
+    }
+  },
+  "OverallScore": 77.4,
+  "FailedTests": 14,
+  "ProductionReady": false,
+  "InfrastructureTests": {
+    "TotalContainers": 27,
+    "NetworkTests": 3,
+    "HealthyContainers": 26,
+    "ContainerHealth": 96.3
+  },
+  "ServiceTests": {
+    "Frontend": {
+      "Kodex Frontend": {
+        "Critical": false,
+        "Type": "Frontend",
+        "Error": "Response status code does not indicate success: 404 (Not Found).",
+        "Status": "Failed"
+      },
+      "Explorer Frontend": {
+        "Critical": false,
+        "Type": "Frontend",
+        "ResponseTime": 10.076,
+        "Status": "Healthy"
+      },
+      "MemorAI Frontend": {
+        "Critical": true,
+        "Type": "Frontend",
+        "Error": "No connection could be made because the target machine actively refused it. (localhost:4006)",
+        "Status": "Failed"
+      },
+      "BancAI Service": {
+        "Critical": false,
+        "Type": "Frontend",
+        "Error": "No connection could be made because the target machine actively refused it. (localhost:4005)",
+        "Status": "Failed"
+      },
+      "RomAI Frontend": {
+        "Critical": false,
+        "Type": "Frontend",
+        "Error": "Response status code does not indicate success: 404 (Not Found).",
+        "Status": "Failed"
+      },
+      "ControlAI Dashboard": {
+        "Critical": false,
+        "Type": "Frontend",
+        "Error": "Response status code does not indicate success: 404 (Not Found).",
+        "Status": "Failed"
+      }
+    },
+    "Monitoring": {
+      "Prometheus": {
+        "Critical": false,
+        "Type": "Monitoring",
+        "ResponseTime": 5.5164,
+        "Status": "Healthy"
+      },
+      "Kibana": {
+        "Critical": false,
+        "Type": "Monitoring",
+        "ResponseTime": 46.4142,
+        "Status": "Healthy"
+      },
+      "Jaeger": {
+        "Critical": false,
+        "Type": "Monitoring",
+        "ResponseTime": 3.4288,
+        "Status": "Healthy"
+      },
+      "Grafana": {
+        "Critical": false,
+        "Type": "Monitoring",
+        "ResponseTime": 8.8246,
+        "Status": "Healthy"
+      }
+    },
+    "Core": {
+      "RomAI Enterprise API": {
+        "Critical": true,
+        "Type": "API",
+        "ResponseTime": 38.5155,
+        "Status": "Healthy"
+      },
+      "MemorAI GraphQL API": {
+        "Critical": true,
+        "Type": "GraphQL",
+        "Error": "Response status code does not indicate success: 400 (Bad Request).",
+        "Status": "Failed"
+      },
+      "MemorAI MCP API": {
+        "Critical": true,
+        "Type": "API",
+        "ResponseTime": 193.9117,
+        "Status": "Healthy"
+      },
+      "CBD Database": {
+        "Critical": true,
+        "Type": "Database",
+        "Error": "No connection could be made because the target machine actively refused it. (localhost:4180)",
+        "Status": "Failed"
+      }
+    },
+    "Infrastructure": {
+      "WebSocket API": {
+        "Critical": true,
+        "Type": "Infrastructure",
+        "ResponseTime": 4.0464,
+        "Status": "Healthy"
+      },
+      "Gateway Service": {
+        "Critical": true,
+        "Type": "Infrastructure",
+        "Error": "No connection could be made because the target machine actively refused it. (localhost:4000)",
+        "Status": "Failed"
+      },
+      "SSL Termination Proxy": {
+        "Critical": false,
+        "Type": "Infrastructure",
+        "Error": "Response status code does not indicate success: 400 (Bad Request).",
+        "Status": "Failed"
+      }
+    }
+  },
+  "StartTime": "2025-08-22T21:54:45.9662601+03:00",
+  "AIEngineTests": {
+    "Cultural": {
+      "TestsRun": 4,
+      "Status": "Working",
+      "Results": null
+    },
+    "Logical": {
+      "TestsRun": 3,
+      "Status": "Working",
+      "Results": null
+    },
+    "Mathematical": {
+      "TestsRun": 5,
+      "Status": "Working",
+      "Results": null
+    }
+  },
+  "PassedTests": 48,
+  "EndToEndTests": {
+    "Score": 75.0,
+    "TotalTests": 4,
+    "Results": {
+      "RomAI Enterprise API Flow": {
+        "Details": "Enterprise API failed",
+        "Passed": false
+      },
+      "MemorAI MCP → Database Flow": {
+        "Details": "MCP API responding",
+        "Passed": true
+      },
+      "Monitoring Stack Integration": {
+        "Details": "Monitoring stack operational",
+        "Passed": true
+      },
+      "Frontend → Backend Integration": {
+        "Details": "Frontend-backend communication working",
+        "Passed": true
+      }
+    },
+    "PassedTests": 3
+  },
+  "TotalTests": 62
+}

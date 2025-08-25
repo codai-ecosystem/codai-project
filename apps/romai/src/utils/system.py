@@ -18,7 +18,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Enhanced imports
 try:
-    from enhanced_logic_processor import (
+    from ml.preprocessing.logic_processor import (
         EnhancedFormalLogicProcessor, 
         EnhancedLogicType, 
         EnhancedLogicalPremise,
@@ -30,7 +30,7 @@ except ImportError as e:
     logic_processor_available = False
 
 try:
-    from enhanced_symbolic_recognizer import (
+    from ml.preprocessing.symbolic_recognizer import (
         EnhancedSymbolicPatternRecognizer,
         SymbolicPatternType,
         SymbolicPattern

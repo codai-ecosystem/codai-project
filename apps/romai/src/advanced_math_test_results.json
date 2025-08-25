@@ -1,0 +1,53 @@
+{
+  "timestamp": 1756154755.1559875,
+  "overall_success_rate": 1.0,
+  "competition_success_rate": 1.0,
+  "target_rate": 0.973,
+  "performance_gap": -0.027000000000000024,
+  "test_results": {
+    "algebra": {
+      "success_rate": "1.0"
+    },
+    "calculus": {
+      "success_rate": "1.0"
+    },
+    "geometry": {
+      "success_rate": "1.0"
+    },
+    "number_theory": {
+      "success_rate": "1.0"
+    },
+    "combinatorics": {
+      "success_rate": "1.0"
+    },
+    "competition": {
+      "success_rate": "1.0"
+    },
+    "strategy_selection": {
+      "accuracy": "4"
+    },
+    "self_correction": {
+      "alternatives": "3",
+      "corrections": "0"
+    },
+    "batch_processing": {
+      "solutions": "[MathematicalSolution(problem='What is 2^10?', solution_steps=['\ud83e\uddee Problem: What is 2^10?', '\ud83d\udcca Domain: algebra, Difficulty: Level 2', '\ud83c\udfaf Strategy: algebraic_manipulation', '\ud83d\udd0d Applying algebraic_manipulation to algebra problem', '\ud83d\udd0d Algebra specialist analyzing problem...', '\ud83d\udd27 Applying general algebraic methods...', '\ud83d\udd0d Verifying solution...', '\u2705 Good confidence solution from domain specialist', '\u23f1\ufe0f Processing time: 0.000s'], final_answer='Algebraic solution computed', method_used='algebraic_manipulation', domain=<MathDomain.ALGEBRA: 'algebra'>, difficulty=<DifficultyLevel.INTERMEDIATE: 2>, confidence=0.7, verification_passed=True, symbolic_form=None, numerical_form=None, proof_type='computational', alternative_approaches=['direct_computation', 'algebraic_manipulation', 'substitution_method'], computational_complexity='O(1)', reasoning_strategy=<ReasoningStrategy.ALGEBRAIC_MANIPULATION: 'algebraic_manipulation'>), MathematicalSolution(problem='Calculate 5!', solution_steps=['\ud83e\uddee Problem: Calculate 5!', '\ud83d\udcca Domain: algebra, Difficulty: Level 2', '\ud83c\udfaf Strategy: algebraic_manipulation', '\ud83d\udd0d Applying algebraic_manipulation to algebra problem', '\ud83d\udd0d Algebra specialist analyzing problem...', '\ud83d\udd27 Applying general algebraic methods...', '\ud83d\udd0d Verifying solution...', '\u2705 Good confidence solution from domain specialist', '\u23f1\ufe0f Processing time: 0.000s'], final_answer='Algebraic solution computed', method_used='algebraic_manipulation', domain=<MathDomain.ALGEBRA: 'algebra'>, difficulty=<DifficultyLevel.INTERMEDIATE: 2>, confidence=0.7, verification_passed=True, symbolic_form=None, numerical_form=None, proof_type='computational', alternative_approaches=['direct_computation', 'algebraic_manipulation', 'substitution_method'], computational_complexity='O(1)', reasoning_strategy=<ReasoningStrategy.ALGEBRAIC_MANIPULATION: 'algebraic_manipulation'>), MathematicalSolution(problem='Find the square root of 144', solution_steps=['\ud83e\uddee Problem: Find the square root of 144', '\ud83d\udcca Domain: algebra, Difficulty: Level 2', '\ud83c\udfaf Strategy: algebraic_manipulation', '\ud83d\udd0d Applying algebraic_manipulation to algebra problem', '\ud83d\udd0d Algebra specialist analyzing problem...', '\ud83d\udd27 Applying general algebraic methods...', '\ud83d\udd0d Verifying solution...', '\u2705 Good confidence solution from domain specialist', '\u23f1\ufe0f Processing time: 0.000s'], final_answer='Algebraic solution computed', method_used='algebraic_manipulation', domain=<MathDomain.ALGEBRA: 'algebra'>, difficulty=<DifficultyLevel.INTERMEDIATE: 2>, confidence=0.7, verification_passed=True, symbolic_form=None, numerical_form=None, proof_type='computational', alternative_approaches=['direct_computation', 'algebraic_manipulation', 'substitution_method'], computational_complexity='O(1)', reasoning_strategy=<ReasoningStrategy.ALGEBRAIC_MANIPULATION: 'algebraic_manipulation'>), MathematicalSolution(problem='Solve x + 5 = 12', solution_steps=['\ud83e\uddee Problem: Solve x + 5 = 12', '\ud83d\udcca Domain: algebra, Difficulty: Level 2', '\ud83c\udfaf Strategy: algebraic_manipulation', '\ud83d\udd0d Applying algebraic_manipulation to algebra problem', '\ud83d\udd0d Algebra specialist analyzing problem...', '\u26a0\ufe0f Linear equation solving failed: invalid syntax (<string>, line 1)', '\ud83d\udd27 Applying general algebraic methods...', '\ud83d\udd0d Verifying solution...', '\u2705 Good confidence solution from domain specialist', '\u23f1\ufe0f Processing time: 0.001s'], final_answer='Algebraic solution computed', method_used='algebraic_manipulation', domain=<MathDomain.ALGEBRA: 'algebra'>, difficulty=<DifficultyLevel.INTERMEDIATE: 2>, confidence=0.7, verification_passed=True, symbolic_form=None, numerical_form=None, proof_type='computational', alternative_approaches=['direct_computation', 'algebraic_manipulation', 'substitution_method'], computational_complexity='O(1)', reasoning_strategy=<ReasoningStrategy.ALGEBRAIC_MANIPULATION: 'algebraic_manipulation'>), MathematicalSolution(problem='What is 25% of 80?', solution_steps=['\ud83e\uddee Problem: What is 25% of 80?', '\ud83d\udcca Domain: algebra, Difficulty: Level 2', '\ud83c\udfaf Strategy: algebraic_manipulation', '\ud83d\udd0d Applying algebraic_manipulation to algebra problem', '\ud83d\udd0d Algebra specialist analyzing problem...', '\ud83d\udd27 Applying general algebraic methods...', '\ud83d\udd0d Verifying solution...', '\u2705 Good confidence solution from domain specialist', '\u23f1\ufe0f Processing time: 0.000s'], final_answer='Algebraic solution computed', method_used='algebraic_manipulation', domain=<MathDomain.ALGEBRA: 'algebra'>, difficulty=<DifficultyLevel.INTERMEDIATE: 2>, confidence=0.7, verification_passed=True, symbolic_form=None, numerical_form=None, proof_type='computational', alternative_approaches=['direct_computation', 'algebraic_manipulation', 'substitution_method'], computational_complexity='O(1)', reasoning_strategy=<ReasoningStrategy.ALGEBRAIC_MANIPULATION: 'algebraic_manipulation'>), MathematicalSolution(problem='Find the area of a square with side length 6', solution_steps=['\ud83e\uddee Problem: Find the area of a square with side length 6', '\ud83d\udcca Domain: geometry, Difficulty: Level 2', '\ud83c\udfaf Strategy: geometric_interpretation', '\ud83d\udd0d Applying geometric_interpretation to geometry problem', '\ud83d\udcd0 Geometry specialist analyzing problem...', '\ud83d\udd0d Verifying solution...', '\u2705 Good confidence solution from domain specialist', '\u23f1\ufe0f Processing time: 0.000s'], final_answer='Geometry solution computed', method_used='geometric_interpretation', domain=<MathDomain.GEOMETRY: 'geometry'>, difficulty=<DifficultyLevel.INTERMEDIATE: 2>, confidence=0.7, verification_passed=True, symbolic_form=None, numerical_form=None, proof_type='computational', alternative_approaches=['direct_computation', 'algebraic_manipulation', 'substitution_method'], computational_complexity='O(1)', reasoning_strategy=<ReasoningStrategy.GEOMETRIC_INTERPRETATION: 'geometric_interpretation'>)]",
+      "time": "0.0012192726135253906",
+      "success_rate": "1.0"
+    },
+    "performance_tracking": {
+      "total_problems_solved": "41",
+      "overall_success_rate": "1.0",
+      "domain_performance": "{'algebra': 1.0, 'geometry': 0.3671720500988794, 'calculus': 0.5465020576131688, 'number_theory': 0.30965909090909094, 'combinatorics': 0.10835913312693497, 'probability': 0.05555555555555555, 'linear_algebra': 0.0, 'complex_analysis': 0.0, 'trigonometry': 0.0, 'statistics': 0.0}",
+      "target_performance": "0.973",
+      "performance_gap": "-0.027000000000000024",
+      "ready_for_competition": "True"
+    },
+    "domain_classification": {
+      "accuracy": "1.0"
+    }
+  },
+  "tests_passed": 3,
+  "total_tests": 11,
+  "ready_for_deployment": false
+}

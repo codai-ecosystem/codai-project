@@ -1,0 +1,90 @@
+{
+  "benchmark_version": "arc-agi-1",
+  "evaluation_timestamp": "2025-08-22T00:46:15.708165+00:00",
+  "summary": {
+    "total_tasks": 50,
+    "completed_tasks": 50,
+    "accuracy": 0.0,
+    "average_solve_time": 0.00022146224975585937,
+    "total_cost": 5.000110731124878,
+    "cost_per_task": 0.10000221462249756
+  },
+  "comparative_analysis": {
+    "human_comparison": {
+      "accuracy_ratio": 0.0,
+      "cost_ratio": 0.005882483213088091,
+      "human_accuracy": 0.98,
+      "human_cost": 17.0
+    },
+    "ai_leader_comparison": {
+      "openai_o3_preview_low_accuracy_ratio": 0.0,
+      "openai_o3_preview_low_cost_ratio": 0.0020000442924499513,
+      "grok_4_thinking_accuracy_ratio": 0.0,
+      "grok_4_thinking_cost_ratio": 0.04608396987211869,
+      "openai_o3_high_accuracy_ratio": 0.0,
+      "openai_o3_high_cost_ratio": 0.0005000110731124878,
+      "claude_sonnet_4_thinking_accuracy_ratio": 0.0,
+      "claude_sonnet_4_thinking_cost_ratio": 0.006666814308166504,
+      "architects_team_accuracy_ratio": 0.0,
+      "architects_team_cost_ratio": 0.5000110731124877,
+      "gpt_4o_accuracy_ratio": 0.0,
+      "gpt_4o_cost_ratio": 0.20000442924499512,
+      "vs_best_ai_accuracy": 0.0,
+      "vs_best_ai_cost": 0.5000110731124877
+    }
+  },
+  "detailed_breakdown": {
+    "difficulty_breakdown": {
+      "EXPERT": {
+        "accuracy": 0.0,
+        "average_time": 0.00022146224975585937,
+        "average_cost": 0.10000221462249756,
+        "task_count": 50
+      }
+    },
+    "task_type_breakdown": {
+      "PATTERN_COMPLETION": {
+        "accuracy": 0.0,
+        "average_time": 0.00021352767944335938,
+        "task_count": 5
+      },
+      "OBJECT_TRANSFORMATION": {
+        "accuracy": 0.0,
+        "average_time": 0.0002224104745047433,
+        "task_count": 7
+      },
+      "SPATIAL_REASONING": {
+        "accuracy": 0.0,
+        "average_time": 0.0002243518829345703,
+        "task_count": 7
+      },
+      "LOGICAL_OPERATIONS": {
+        "accuracy": 0.0,
+        "average_time": 0.00021791458129882812,
+        "task_count": 5
+      },
+      "TEMPORAL_SEQUENCES": {
+        "accuracy": 0.0,
+        "average_time": 0.00023589815412248884,
+        "task_count": 7
+      },
+      "SYMMETRY_OPERATIONS": {
+        "accuracy": 0.0,
+        "average_time": 0.00021088123321533203,
+        "task_count": 2
+      },
+      "COLOR_TRANSFORMATIONS": {
+        "accuracy": 0.0,
+        "average_time": 0.00022253990173339843,
+        "task_count": 10
+      },
+      "SHAPE_MANIPULATIONS": {
+        "accuracy": 0.0,
+        "average_time": 0.0002128737313406808,
+        "task_count": 7
+      }
+    },
+    "engine_utilization": {},
+    "romanian_advantage_cases": 9
+  }
+}

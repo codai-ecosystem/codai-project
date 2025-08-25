@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Project List Component - Compact table view
  */
-'use client'
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
@@ -356,4 +357,5 @@ export function ProjectList({
         </div>
     )
 }
+
 

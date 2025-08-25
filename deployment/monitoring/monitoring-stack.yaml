@@ -1,0 +1,698 @@
+# RomAI AGI Monitoring and Observability Stack
+# Comprehensive monitoring with Prometheus, Grafana, and custom dashboards
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: romai-monitoring
+  labels:
+    name: romai-monitoring
+
+---
+# Prometheus Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: romai-monitoring
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+      external_labels:
+        cluster: 'romai-agi-production'
+        environment: 'production'
+
+    rule_files:
+      - "/etc/prometheus/rules/*.yml"
+
+    scrape_configs:
+      # RomAI AGI Application Metrics
+      - job_name: 'romai-agi'
+        kubernetes_sd_configs:
+          - role: endpoints
+            namespaces:
+              names:
+                - romai-agi
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_service_name]
+            action: keep
+            regex: romai-agi-service
+          - source_labels: [__meta_kubernetes_endpoint_port_name]
+            action: keep
+            regex: metrics
+        metrics_path: /metrics
+        scrape_interval: 10s
+        scrape_timeout: 5s
+
+      # Node Exporter
+      - job_name: 'node-exporter'
+        kubernetes_sd_configs:
+          - role: endpoints
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_service_name]
+            action: keep
+            regex: node-exporter
+
+      # Kubernetes API Server
+      - job_name: 'kubernetes-apiservers'
+        kubernetes_sd_configs:
+          - role: endpoints
+        scheme: https
+        tls_config:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+            action: keep
+            regex: default;kubernetes;https
+
+      # Kubelet
+      - job_name: 'kubernetes-nodes'
+        scheme: https
+        tls_config:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        kubernetes_sd_configs:
+          - role: node
+        relabel_configs:
+          - action: labelmap
+            regex: __meta_kubernetes_node_label_(.+)
+
+    alerting:
+      alertmanagers:
+        - static_configs:
+            - targets:
+              - alertmanager:9093
+
+  alerts.yml: |
+    groups:
+      - name: romai-agi-alerts
+        rules:
+          # High Response Time
+          - alert: RomAIHighResponseTime
+            expr: histogram_quantile(0.95, rate(romai_request_duration_seconds_bucket[5m])) > 2
+            for: 2m
+            labels:
+              severity: warning
+              service: romai-agi
+            annotations:
+              summary: "RomAI AGI high response time"
+              description: "95th percentile response time is {{ $value }}s for {{ $labels.instance }}"
+
+          # High Error Rate
+          - alert: RomAIHighErrorRate
+            expr: rate(romai_requests_total{status=~"5.."}[5m]) / rate(romai_requests_total[5m]) > 0.1
+            for: 1m
+            labels:
+              severity: critical
+              service: romai-agi
+            annotations:
+              summary: "RomAI AGI high error rate"
+              description: "Error rate is {{ $value | humanizePercentage }} for {{ $labels.instance }}"
+
+          # Low Success Rate
+          - alert: RomAILowSuccessRate
+            expr: rate(romai_requests_total{status=~"2.."}[5m]) / rate(romai_requests_total[5m]) < 0.95
+            for: 5m
+            labels:
+              severity: warning
+              service: romai-agi
+            annotations:
+              summary: "RomAI AGI low success rate"
+              description: "Success rate is {{ $value | humanizePercentage }} for {{ $labels.instance }}"
+
+          # High Memory Usage
+          - alert: RomAIHighMemoryUsage
+            expr: (container_memory_usage_bytes{container="romai-agi"} / container_spec_memory_limit_bytes{container="romai-agi"}) > 0.9
+            for: 5m
+            labels:
+              severity: warning
+              service: romai-agi
+            annotations:
+              summary: "RomAI AGI high memory usage"
+              description: "Memory usage is {{ $value | humanizePercentage }} for {{ $labels.pod }}"
+
+          # High CPU Usage
+          - alert: RomAIHighCPUUsage
+            expr: rate(container_cpu_usage_seconds_total{container="romai-agi"}[5m]) > 0.8
+            for: 5m
+            labels:
+              severity: warning
+              service: romai-agi
+            annotations:
+              summary: "RomAI AGI high CPU usage"
+              description: "CPU usage is {{ $value | humanizePercentage }} for {{ $labels.pod }}"
+
+          # Pod Restart Rate
+          - alert: RomAIPodRestarting
+            expr: rate(kube_pod_container_status_restarts_total{container="romai-agi"}[1h]) > 0
+            for: 1m
+            labels:
+              severity: warning
+              service: romai-agi
+            annotations:
+              summary: "RomAI AGI pod restarting"
+              description: "Pod {{ $labels.pod }} is restarting frequently"
+
+          # Model Loading Time
+          - alert: RomAISlowModelLoading
+            expr: romai_model_loading_duration_seconds > 30
+            for: 1m
+            labels:
+              severity: warning
+              service: romai-agi
+            annotations:
+              summary: "RomAI AGI slow model loading"
+              description: "Model loading took {{ $value }}s for {{ $labels.model }}"
+
+          # GPU Utilization
+          - alert: RomAILowGPUUtilization
+            expr: nvidia_gpu_utilization_gpu < 30
+            for: 10m
+            labels:
+              severity: info
+              service: romai-agi
+            annotations:
+              summary: "RomAI AGI low GPU utilization"
+              description: "GPU utilization is {{ $value }}% - consider scaling down"
+
+---
+# Prometheus Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: romai-monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      serviceAccountName: prometheus
+      containers:
+      - name: prometheus
+        image: prom/prometheus:v2.47.0
+        args:
+          - '--config.file=/etc/prometheus/prometheus.yml'
+          - '--storage.tsdb.path=/prometheus/'
+          - '--web.console.libraries=/etc/prometheus/console_libraries'
+          - '--web.console.templates=/etc/prometheus/consoles'
+          - '--web.enable-lifecycle'
+          - '--web.enable-admin-api'
+          - '--storage.tsdb.retention.time=15d'
+        ports:
+        - containerPort: 9090
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 2000m
+            memory: 4Gi
+        volumeMounts:
+        - name: prometheus-config
+          mountPath: /etc/prometheus/
+        - name: prometheus-storage
+          mountPath: /prometheus/
+      volumes:
+      - name: prometheus-config
+        configMap:
+          name: prometheus-config
+      - name: prometheus-storage
+        persistentVolumeClaim:
+          claimName: prometheus-pvc
+
+---
+# Prometheus PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prometheus-pvc
+  namespace: romai-monitoring
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: fast-ssd
+
+---
+# Prometheus Service Account
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: prometheus
+  namespace: romai-monitoring
+
+---
+# Prometheus ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: prometheus
+rules:
+- apiGroups: [""]
+  resources:
+  - nodes
+  - nodes/metrics
+  - services
+  - endpoints
+  - pods
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["extensions"]
+  resources:
+  - ingresses
+  verbs: ["get", "list", "watch"]
+- nonResourceURLs: ["/metrics"]
+  verbs: ["get"]
+
+---
+# Prometheus ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: prometheus
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: prometheus
+subjects:
+- kind: ServiceAccount
+  name: prometheus
+  namespace: romai-monitoring
+
+---
+# Prometheus Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+  namespace: romai-monitoring
+  labels:
+    app: prometheus
+spec:
+  selector:
+    app: prometheus
+  ports:
+  - port: 9090
+    targetPort: 9090
+  type: ClusterIP
+
+---
+# Grafana Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-config
+  namespace: romai-monitoring
+data:
+  grafana.ini: |
+    [analytics]
+    check_for_updates = true
+
+    [grafana_net]
+    url = https://grafana.net
+
+    [log]
+    mode = console
+    level = info
+
+    [paths]
+    data = /var/lib/grafana/data
+    logs = /var/log/grafana
+    plugins = /var/lib/grafana/plugins
+    provisioning = /etc/grafana/provisioning
+
+    [server]
+    http_port = 3000
+    domain = monitoring.romai.ai
+
+    [database]
+    type = sqlite3
+    path = grafana.db
+
+    [session]
+    provider = file
+
+    [security]
+    admin_user = admin
+    admin_password = romai-monitoring-2025
+
+  datasource.yml: |
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        url: http://prometheus:9090
+        access: proxy
+        isDefault: true
+        editable: true
+
+  dashboard.yml: |
+    apiVersion: 1
+    providers:
+      - name: 'romai-dashboards'
+        orgId: 1
+        folder: 'RomAI AGI'
+        type: file
+        disableDeletion: false
+        updateIntervalSeconds: 10
+        allowUiUpdates: true
+        options:
+          path: /var/lib/grafana/dashboards
+
+  romai-dashboard.json: |
+    {
+      "dashboard": {
+        "id": null,
+        "title": "RomAI AGI Performance Dashboard",
+        "tags": ["romai", "agi", "performance"],
+        "timezone": "browser",
+        "panels": [
+          {
+            "id": 1,
+            "title": "Request Rate",
+            "type": "graph",
+            "targets": [
+              {
+                "expr": "rate(romai_requests_total[5m])",
+                "legendFormat": "{{method}} {{endpoint}}"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+          },
+          {
+            "id": 2,
+            "title": "Response Time P95",
+            "type": "graph",
+            "targets": [
+              {
+                "expr": "histogram_quantile(0.95, rate(romai_request_duration_seconds_bucket[5m]))",
+                "legendFormat": "95th percentile"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+          },
+          {
+            "id": 3,
+            "title": "Error Rate",
+            "type": "graph",
+            "targets": [
+              {
+                "expr": "rate(romai_requests_total{status=~\"5..\"}[5m]) / rate(romai_requests_total[5m])",
+                "legendFormat": "Error Rate"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8}
+          },
+          {
+            "id": 4,
+            "title": "Memory Usage",
+            "type": "graph",
+            "targets": [
+              {
+                "expr": "container_memory_usage_bytes{container=\"romai-agi\"} / container_spec_memory_limit_bytes{container=\"romai-agi\"}",
+                "legendFormat": "{{pod}}"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8}
+          },
+          {
+            "id": 5,
+            "title": "GPU Utilization",
+            "type": "graph",
+            "targets": [
+              {
+                "expr": "nvidia_gpu_utilization_gpu",
+                "legendFormat": "GPU {{gpu}}"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16}
+          },
+          {
+            "id": 6,
+            "title": "Active Models",
+            "type": "graph",
+            "targets": [
+              {
+                "expr": "romai_active_models",
+                "legendFormat": "{{model}}"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16}
+          }
+        ],
+        "time": {
+          "from": "now-1h",
+          "to": "now"
+        },
+        "refresh": "5s"
+      }
+    }
+
+---
+# Grafana Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: romai-monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+      - name: grafana
+        image: grafana/grafana:10.1.0
+        ports:
+        - containerPort: 3000
+        env:
+        - name: GF_SECURITY_ADMIN_PASSWORD
+          value: "romai-monitoring-2025"
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+        volumeMounts:
+        - name: grafana-config
+          mountPath: /etc/grafana/grafana.ini
+          subPath: grafana.ini
+        - name: grafana-config
+          mountPath: /etc/grafana/provisioning/datasources/datasource.yml
+          subPath: datasource.yml
+        - name: grafana-config
+          mountPath: /etc/grafana/provisioning/dashboards/dashboard.yml
+          subPath: dashboard.yml
+        - name: grafana-config
+          mountPath: /var/lib/grafana/dashboards/romai-dashboard.json
+          subPath: romai-dashboard.json
+        - name: grafana-storage
+          mountPath: /var/lib/grafana
+      volumes:
+      - name: grafana-config
+        configMap:
+          name: grafana-config
+      - name: grafana-storage
+        persistentVolumeClaim:
+          claimName: grafana-pvc
+
+---
+# Grafana PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: grafana-pvc
+  namespace: romai-monitoring
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: fast-ssd
+
+---
+# Grafana Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  namespace: romai-monitoring
+  labels:
+    app: grafana
+spec:
+  selector:
+    app: grafana
+  ports:
+  - port: 3000
+    targetPort: 3000
+  type: ClusterIP
+
+---
+# AlertManager Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+  namespace: romai-monitoring
+data:
+  alertmanager.yml: |
+    global:
+      smtp_smarthost: 'localhost:587'
+      smtp_from: 'alerts@romai.ai'
+      slack_api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+
+    route:
+      group_by: ['alertname']
+      group_wait: 10s
+      group_interval: 10s
+      repeat_interval: 1h
+      receiver: 'web.hook'
+      routes:
+        - match:
+            severity: critical
+          receiver: 'critical-alerts'
+        - match:
+            service: romai-agi
+          receiver: 'romai-alerts'
+
+    receivers:
+      - name: 'web.hook'
+        webhook_configs:
+          - url: 'http://localhost:5001/'
+
+      - name: 'critical-alerts'
+        slack_configs:
+          - channel: '#alerts-critical'
+            title: '🚨 Critical Alert: {{ .GroupLabels.alertname }}'
+            text: '{{ range .Alerts }}{{ .Annotations.description }}{{ end }}'
+            send_resolved: true
+
+      - name: 'romai-alerts'
+        slack_configs:
+          - channel: '#romai-monitoring'
+            title: '⚠️ RomAI AGI Alert: {{ .GroupLabels.alertname }}'
+            text: '{{ range .Alerts }}{{ .Annotations.description }}{{ end }}'
+            send_resolved: true
+
+---
+# AlertManager Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alertmanager
+  namespace: romai-monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alertmanager
+  template:
+    metadata:
+      labels:
+        app: alertmanager
+    spec:
+      containers:
+      - name: alertmanager
+        image: prom/alertmanager:v0.26.0
+        args:
+          - '--config.file=/etc/alertmanager/alertmanager.yml'
+          - '--storage.path=/alertmanager'
+        ports:
+        - containerPort: 9093
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        volumeMounts:
+        - name: alertmanager-config
+          mountPath: /etc/alertmanager/alertmanager.yml
+          subPath: alertmanager.yml
+        - name: alertmanager-storage
+          mountPath: /alertmanager
+      volumes:
+      - name: alertmanager-config
+        configMap:
+          name: alertmanager-config
+      - name: alertmanager-storage
+        emptyDir: {}
+
+---
+# AlertManager Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: alertmanager
+  namespace: romai-monitoring
+  labels:
+    app: alertmanager
+spec:
+  selector:
+    app: alertmanager
+  ports:
+  - port: 9093
+    targetPort: 9093
+  type: ClusterIP
+
+---
+# Monitoring Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: monitoring-ingress
+  namespace: romai-monitoring
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: monitoring-auth
+spec:
+  tls:
+  - hosts:
+    - monitoring.romai.ai
+    secretName: monitoring-tls
+  rules:
+  - host: monitoring.romai.ai
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: grafana
+            port:
+              number: 3000
+      - path: /prometheus
+        pathType: Prefix
+        backend:
+          service:
+            name: prometheus
+            port:
+              number: 9090
+      - path: /alertmanager
+        pathType: Prefix
+        backend:
+          service:
+            name: alertmanager
+            port:
+              number: 9093

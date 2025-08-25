@@ -1,0 +1,122 @@
+{
+  "timestamp": "2025-08-22T23:26:35.742283",
+  "duration_seconds": 16.22598886489868,
+  "overall_success_rate": 100.0,
+  "validation_passed": true,
+  "total_tests": 14,
+  "total_passed": 14,
+  "category_results": {
+    "foundation_training": {
+      "passed": 2,
+      "failed": 0,
+      "total": 2,
+      "success_rate": 100.0
+    },
+    "romanian_specialization": {
+      "passed": 2,
+      "failed": 0,
+      "total": 2,
+      "success_rate": 100.0
+    },
+    "rlhf_alignment": {
+      "passed": 2,
+      "failed": 0,
+      "total": 2,
+      "success_rate": 100.0
+    },
+    "constitutional_ai": {
+      "passed": 2,
+      "failed": 0,
+      "total": 2,
+      "success_rate": 100.0
+    },
+    "eu_compliance": {
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "success_rate": 100.0
+    },
+    "performance_optimization": {
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "success_rate": 100.0
+    },
+    "integration": {
+      "passed": 2,
+      "failed": 0,
+      "total": 2,
+      "success_rate": 100.0
+    },
+    "comprehensive_training": {
+      "passed": 2,
+      "failed": 0,
+      "total": 2,
+      "success_rate": 100.0
+    }
+  },
+  "detailed_results": {
+    "foundation_training": {
+      "passed": 2,
+      "failed": 0,
+      "details": [
+        "Test 1: PASSED - Score: 0.75",
+        "Test 2: PASSED - Score: 0.75"
+      ]
+    },
+    "romanian_specialization": {
+      "passed": 2,
+      "failed": 0,
+      "details": [
+        "Test 1: PASSED - Cultural: 0.90, Language: 0.85",
+        "Test 2: PASSED - Cultural: 0.90, Language: 0.85"
+      ]
+    },
+    "rlhf_alignment": {
+      "passed": 2,
+      "failed": 0,
+      "details": [
+        "Test 1: PASSED - Avg Reward: 0.75",
+        "Test 2: PASSED - Avg Reward: 0.68"
+      ]
+    },
+    "constitutional_ai": {
+      "passed": 2,
+      "failed": 0,
+      "details": [
+        "Test 1: PASSED - Alignment: 0.83",
+        "Test 2: PASSED - Alignment: 0.82"
+      ]
+    },
+    "eu_compliance": {
+      "passed": 1,
+      "failed": 0,
+      "details": [
+        "Test 1: PASSED - EU Compliance: 0.92, Safety: 0.94"
+      ]
+    },
+    "performance_optimization": {
+      "passed": 1,
+      "failed": 0,
+      "details": [
+        "Test 1: PASSED - Efficiency: 0.15, Accuracy: 0.98"
+      ]
+    },
+    "integration": {
+      "passed": 2,
+      "failed": 0,
+      "details": [
+        "Test 1: PASSED - Confidence: 0.38, Time: 0.01s",
+        "Test 2: PASSED - Confidence: 0.38, Time: 0.01s"
+      ]
+    },
+    "comprehensive_training": {
+      "passed": 2,
+      "failed": 0,
+      "details": [
+        "Test 1: PASSED - Success Rate: 83.2%, Phases: 3",
+        "Test 2: PASSED - Success Rate: 88.0%, Phases: 2"
+      ]
+    }
+  }
+}

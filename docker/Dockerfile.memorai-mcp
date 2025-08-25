@@ -1,0 +1,40 @@
+# MemorAI MCP Server - Production Docker Image
+# Microsoft-compliant version with vector search
+# Version: v9.9.0-microsoft-compliant
+
+FROM node:20-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apk add --no-cache curl
+
+# Copy package files
+COPY packages/memorai-mcp/package.json .
+COPY packages/memorai-mcp/package-lock.json .
+
+# Install dependencies
+RUN npm ci --only=production
+
+# Copy application code
+COPY packages/memorai-mcp/src/ ./src/
+COPY packages/memorai-mcp/memorai-mcp-server.cjs .
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV MEMORAI_MCP_PORT=4950
+ENV PORT=4950
+ENV ENABLE_VECTOR_SEARCH=true
+ENV ENABLE_HYBRID_SEARCH=true
+ENV ENABLE_RBAC=true
+
+# Expose port
+EXPOSE 4950
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+  CMD curl -f http://localhost:4950/health || exit 1
+
+# Start the server
+CMD ["node", "memorai-mcp-server.cjs"]

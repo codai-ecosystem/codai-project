@@ -12,7 +12,7 @@
         "test:ui": "playwright test --ui"
     },
     "dependencies": {
-        "@playwright/test": "^1.40.1",
+        "@playwright/test": "^1.54.2",
         "@codai/auth": "workspace:*",
         "@codai/shared-ui": "workspace:*"
     },

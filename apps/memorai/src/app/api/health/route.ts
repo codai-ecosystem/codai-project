@@ -1,49 +1,46 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
     try {
-        return NextResponse.json({
+        // Basic health check for MemorAI service
+        const healthData = {
+            status: 'healthy',
             service: 'MemorAI Service',
             serviceId: 'memorai',
-            status: 'operational',
-            timestamp: new Date().toISOString(),
             version: '1.0.0',
-            ecosystem: 'codai-ecosystem',
-            domain: 'memorai.codai.ro',
-            uptime: Math.floor(process.uptime()),
-            memory: process.memoryUsage(),
-            capabilities: [
-                'memory_management',
-                'context_storage',
-                'intelligent_recall',
-                'agent_memory',
-                'ecosystem_integration'
-            ],
+            timestamp: new Date().toISOString(),
+            uptime: process.uptime(),
+            environment: process.env.NODE_ENV || 'development',
             endpoints: {
                 health: '/api/health',
-                ecosystem: '/api/ecosystem',
                 memories: '/api/memories',
                 search: '/api/search',
                 analytics: '/api/analytics'
             },
-            communication: {
-                enabledServices: ['codai', 'romai', 'admin', 'hub', 'control', 'id'],
-                protocol: 'https',
-                authentication: 'ecosystem_token'
-            },
-            message: 'MemorAI service is running successfully with ecosystem integration'
+            message: 'MemorAI service is running successfully'
+        };
+
+        return NextResponse.json(healthData, {
+            status: 200,
+            headers: {
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            }
         });
     } catch (error) {
         return NextResponse.json(
             {
+                status: 'unhealthy',
                 service: 'MemorAI Service',
-                serviceId: 'memorai',
-                status: 'error',
-                timestamp: new Date().toISOString(),
-                ecosystem: 'codai-ecosystem',
-                error: error instanceof Error ? error.message : 'Unknown error'
+                error: error instanceof Error ? error.message : 'Unknown error',
+                timestamp: new Date().toISOString()
             },
             { status: 500 }
         );
     }
+}
+
+export async function HEAD(request: NextRequest) {
+    return new NextResponse(null, { status: 200 });
 }

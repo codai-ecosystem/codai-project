@@ -1,9 +1,10 @@
+'use client'
+
 import React from 'react'
 /**
  * Enhanced Analytics Dashboard Page - Advanced Reporting and Data Insights
  * Comprehensive analytics with real-time monitoring and AI-powered insights
  */
-'use client'
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { motion } from 'framer-motion'
@@ -364,8 +365,8 @@ export default function AnalyticsPage() {
             {/* Analytics Footer */}
             <AnalyticsFooter
                 onNavigate={(page) => console.log('Navigate to:', page)}
-                currentView={state.activeView}
-                lastUpdated={state.lastUpdated}
+                currentView={analyticsState.activeView}
+                lastUpdated={new Date().toISOString()}
                 totalMetrics={filteredMetrics.length}
                 activeUsers={1247}
             />

@@ -1,0 +1,338 @@
+# RomAI AGI System - Production Deployment Configuration
+# Optimized for production-ready deployment with comprehensive monitoring and security
+# Built for 5-engine AGI system with full operational capabilities
+
+name: romai-agi-production
+
+services:
+  # RomAI AGI Core System
+  romai-agi-system:
+    build:
+      context: .
+      dockerfile: Dockerfile.agi.production
+      args:
+        BUILD_ENV: production
+        ENABLE_CUDA: "true"
+        OPTIMIZATION_LEVEL: "O3"
+    image: romai/agi-system:latest
+    container_name: romai-agi-system-production
+    ports:
+      - "6101:6101"  # AGI API port
+      - "9090:9090"  # Prometheus metrics
+      - "8080:8080"  # Health check dashboard
+    environment:
+      # Production Environment
+      NODE_ENV: production
+      ROMAI_ENV: production
+      ROMAI_LOG_LEVEL: info
+      PYTHONPATH: /app/src
+      
+      # Performance Optimization
+      PYTORCH_CUDA_ALLOC_CONF: "max_split_size_mb:2048"
+      TRANSFORMERS_CACHE: /app/cache/transformers
+      HF_HOME: /app/cache/huggingface
+      MODEL_CACHE_DIR: /app/cache/models
+      OMP_NUM_THREADS: "8"
+      
+      # AGI Configuration
+      ROMAI_AGI_PORT: "6101"
+      ROMAI_AGI_HOST: "0.0.0.0"
+      QUANTUM_ENABLED: "true"
+      CONSCIOUSNESS_ENGINE: "true"
+      
+      # Azure OpenAI Integration
+      AZURE_OPENAI_ENDPOINT: "https://swedencentral.api.cognitive.microsoft.com/"
+      AZURE_OPENAI_API_KEY: "${AZURE_OPENAI_API_KEY}"
+      AZURE_OPENAI_DEPLOYMENT_NAME: "gpt-4o-realtime"
+      AZURE_OPENAI_API_VERSION: "2024-10-01-preview"
+      
+      # Security Configuration
+      JWT_SECRET_KEY: "${JWT_SECRET_KEY:-romai-agi-production-jwt-2025}"
+      API_KEY_ENCRYPTION_KEY: "${API_KEY_ENCRYPTION_KEY:-romai-agi-encryption-2025}"
+      RATE_LIMIT_ENABLED: "true"
+      CORS_ENABLED: "true"
+      CORS_ORIGINS: "https://romai.codai.ro,https://admin.codai.ro"
+      
+      # Monitoring and Observability
+      ENABLE_PROMETHEUS: "true"
+      ENABLE_HEALTH_DASHBOARD: "true"
+      ENABLE_PERFORMANCE_MONITORING: "true"
+      METRICS_PORT: "9090"
+      HEALTH_PORT: "8080"
+      
+      # Database Integration
+      CBD_BASE_URL: "http://cbd-database:4180"
+      CBD_API_KEY: "${CBD_API_KEY:-cbd-agi-production-key-2025}"
+      
+      # Engine-Specific Configuration
+      ENABLE_VECTOR_SEARCH: "true"
+      ENABLE_HYBRID_SEARCH: "true"
+      ENABLE_RBAC: "true"
+      ENABLE_MONITORING: "true"
+      
+      # Resource Allocation
+      MAX_WORKERS: "4"
+      WORKER_TIMEOUT: "300"
+      MAX_CONCURRENT_REQUESTS: "50"
+      MEMORY_LIMIT: "8G"
+      
+    volumes:
+      # Model and Cache Persistence
+      - romai_agi_models:/app/cache
+      - romai_agi_logs:/app/logs
+      - romai_agi_data:/app/data
+      - romai_agi_checkpoints:/app/checkpoints
+      
+      # Configuration Mounts (read-only)
+      - ./config/production:/app/config:ro
+      - ./secrets:/app/secrets:ro
+      
+    depends_on:
+      cbd-database:
+        condition: service_healthy
+      redis-cache:
+        condition: service_healthy
+      
+    restart: unless-stopped
+    
+    # Resource Limits for Production
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+          cpus: '4.0'
+        reservations:
+          memory: 4G
+          cpus: '2.0'
+    
+    # Comprehensive Health Checks
+    healthcheck:
+      test: |
+        curl -f http://localhost:6101/health && \
+        curl -f http://localhost:6101/engines/status && \
+        python -c "
+        import requests, sys
+        try:
+          r = requests.get('http://localhost:6101/engines/test', timeout=30)
+          sys.exit(0 if r.status_code == 200 and r.json().get('success_rate', 0) >= 0.8 else 1)
+        except:
+          sys.exit(1)
+        "
+      interval: 60s
+      timeout: 45s
+      retries: 3
+      start_period: 300s
+    
+    networks:
+      - romai-agi-network
+    
+    # Security Context
+    security_opt:
+      - no-new-privileges:true
+    user: "1000:1000"
+    
+    # Logging Configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+        labels: "service=romai-agi,environment=production"
+
+  # CBD Database for AGI Memory Storage
+  cbd-database:
+    image: node:20-alpine
+    container_name: romai-agi-cbd-database
+    ports:
+      - "4180:4180"
+    environment:
+      NODE_ENV: production
+      PORT: "4180"
+      DATABASE_URL: "postgresql://agi_user:agi_secure_2025@postgres:5432/romai_agi"
+      ENABLE_VECTOR_STORAGE: "true"
+      ENABLE_GRAPH_STORAGE: "true"
+    command: >
+      sh -c "
+        npm install -g @codai/cbd-database@latest &&
+        cbd-server --port 4180 --production
+      "
+    volumes:
+      - romai_agi_cbd_data:/app/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:4180/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - romai-agi-network
+
+  # Redis Cache for AGI Performance
+  redis-cache:
+    image: redis:7.2-alpine
+    container_name: romai-agi-redis-cache
+    ports:
+      - "6379:6379"
+    environment:
+      REDIS_PASSWORD: "${REDIS_PASSWORD:-romai-agi-redis-2025}"
+    command: >
+      redis-server 
+      --appendonly yes 
+      --maxmemory 2gb 
+      --maxmemory-policy allkeys-lru
+      --requirepass ${REDIS_PASSWORD:-romai-agi-redis-2025}
+    volumes:
+      - romai_agi_redis_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - romai-agi-network
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: romai-agi-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: romai_agi
+      POSTGRES_USER: agi_user
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-agi_secure_2025}"
+      POSTGRES_MULTIPLE_DATABASES: "romai_agi,romai_analytics,romai_logs"
+    volumes:
+      - romai_agi_postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-agi-databases.sql:/docker-entrypoint-initdb.d/init-agi-databases.sql:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agi_user -d romai_agi"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - romai-agi-network
+
+  # Prometheus Monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: romai-agi-prometheus
+    ports:
+      - "9091:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - romai_agi_prometheus_data:/prometheus
+    restart: unless-stopped
+    networks:
+      - romai-agi-network
+
+  # Grafana Dashboard
+  grafana:
+    image: grafana/grafana:latest
+    container_name: romai-agi-grafana
+    ports:
+      - "3001:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: "${GRAFANA_PASSWORD:-romai-agi-admin-2025}"
+      GF_INSTALL_PLUGINS: "grafana-piechart-panel,grafana-worldmap-panel"
+    volumes:
+      - romai_agi_grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+    networks:
+      - romai-agi-network
+
+  # NGINX Load Balancer with SSL
+  nginx-agi-lb:
+    image: nginx:alpine
+    container_name: romai-agi-nginx-lb
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./nginx/production.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/ssl/certs:ro
+      - romai_agi_nginx_logs:/var/log/nginx
+    depends_on:
+      - romai-agi-system
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - romai-agi-network
+
+# Persistent Volumes for Production Data
+volumes:
+  romai_agi_models:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/romai-agi/models
+  romai_agi_logs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/romai-agi/logs
+  romai_agi_data:
+    driver: local
+  romai_agi_checkpoints:
+    driver: local
+  romai_agi_cbd_data:
+    driver: local
+  romai_agi_redis_data:
+    driver: local
+  romai_agi_postgres_data:
+    driver: local
+  romai_agi_prometheus_data:
+    driver: local
+  romai_agi_grafana_data:
+    driver: local
+  romai_agi_nginx_logs:
+    driver: local
+
+# Production Network Configuration
+networks:
+  romai-agi-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/16
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+      com.docker.network.bridge.enable_icc: "true"
+      com.docker.network.bridge.enable_ip_masquerade: "true"
+
+# Production Deployment Labels
+x-production-labels: &production-labels
+  labels:
+    - "com.romai.agi.environment=production"
+    - "com.romai.agi.service=core"
+    - "com.romai.agi.version=1.0.0"
+    - "com.romai.agi.maintainer=RomAI Team"
+    - "com.romai.agi.engines=5"
+    - "com.romai.agi.capabilities=mathematical,logical,cultural,creative,cross-modal"
+    - "deployment.ready=true"
+    - "deployment.date=2025-08-23"
+    - "quality.score=100%"

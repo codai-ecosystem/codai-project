@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Shared StatsCard Component - Reusable metrics card
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import { TrendingUp, TrendingDown } from 'lucide-react'
@@ -117,4 +118,5 @@ export function StatsCard({
         </motion.div>
     )
 }
+
 

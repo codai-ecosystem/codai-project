@@ -1,0 +1,84 @@
+{
+  "test_metadata": {
+    "timestamp": 1755838118,
+    "total_tests": 5,
+    "successful_tests": 0,
+    "success_rate": 0.0,
+    "server_url": "http://localhost:6101",
+    "test_type": "romanian_cultural_intelligence_integration"
+  },
+  "integration_metrics": {
+    "average_romanian_cultural_score": 0.0,
+    "average_general_agi_score": 0.0,
+    "average_integration_score": 0.0,
+    "average_confidence": 0.25,
+    "average_response_time_ms": 5.13157844543457
+  },
+  "detailed_results": [
+    {
+      "test_category": "business_cultural_integration",
+      "test_name": "Romanian Business Etiquette AGI Integration",
+      "romanian_cultural_score": 0.0,
+      "general_agi_score": 0.0,
+      "integration_score": 0.0,
+      "success": false,
+      "response_time_ms": 5.637645721435547,
+      "cultural_response": "Error: 500",
+      "agi_response": "{'status': 'error', 'message': 'Prompt is required'}",
+      "integration_analysis": "\nIntegration Analysis for Romanian Business Etiquette AGI Integration:\n- Romanian Cultural Elements: 0/4 themes detected\n- AGI Strategic Elements: 0/4 Romanian themes integrated\n- Cultural Response Length: 10 characters\n- AGI Response Length: 52 characters\n- Integration Quality: LOW\n- Thematic Coherence: ❌ MISSING\n        ",
+      "confidence": 0.25
+    },
+    {
+      "test_category": "technical_cultural_integration",
+      "test_name": "Romanian Tech Industry AGI Analysis",
+      "romanian_cultural_score": 0.0,
+      "general_agi_score": 0.0,
+      "integration_score": 0.0,
+      "success": false,
+      "response_time_ms": 5.804777145385742,
+      "cultural_response": "Error: 500",
+      "agi_response": "{'status': 'error', 'message': 'Prompt is required'}",
+      "integration_analysis": "\nIntegration Analysis for Romanian Tech Industry AGI Analysis:\n- Romanian Cultural Elements: 0/4 themes detected\n- AGI Strategic Elements: 0/4 Romanian themes integrated\n- Cultural Response Length: 10 characters\n- AGI Response Length: 52 characters\n- Integration Quality: LOW\n- Thematic Coherence: ❌ MISSING\n        ",
+      "confidence": 0.25
+    },
+    {
+      "test_category": "historical_cultural_integration",
+      "test_name": "Romanian Historical Context AGI Integration",
+      "romanian_cultural_score": 0.0,
+      "general_agi_score": 0.0,
+      "integration_score": 0.0,
+      "success": false,
+      "response_time_ms": 5.198955535888672,
+      "cultural_response": "Error: 500",
+      "agi_response": "{'status': 'error', 'message': 'Prompt is required'}",
+      "integration_analysis": "\nIntegration Analysis for Romanian Historical Context AGI Integration:\n- Romanian Cultural Elements: 0/4 themes detected\n- AGI Strategic Elements: 0/4 Romanian themes integrated\n- Cultural Response Length: 10 characters\n- AGI Response Length: 52 characters\n- Integration Quality: LOW\n- Thematic Coherence: ❌ MISSING\n        ",
+      "confidence": 0.25
+    },
+    {
+      "test_category": "linguistic_cultural_integration",
+      "test_name": "Romanian Language AGI Processing",
+      "romanian_cultural_score": 0.0,
+      "general_agi_score": 0.0,
+      "integration_score": 0.0,
+      "success": false,
+      "response_time_ms": 5.00035285949707,
+      "cultural_response": "Error: 500",
+      "agi_response": "{'status': 'error', 'message': 'Prompt is required'}",
+      "integration_analysis": "\nIntegration Analysis for Romanian Language AGI Processing:\n- Romanian Cultural Elements: 0/4 themes detected\n- AGI Strategic Elements: 0/4 Romanian themes integrated\n- Cultural Response Length: 10 characters\n- AGI Response Length: 52 characters\n- Integration Quality: LOW\n- Thematic Coherence: ❌ MISSING\n        ",
+      "confidence": 0.25
+    },
+    {
+      "test_category": "educational_cultural_integration",
+      "test_name": "Romanian Education System AGI Integration",
+      "romanian_cultural_score": 0.0,
+      "general_agi_score": 0.0,
+      "integration_score": 0.0,
+      "success": false,
+      "response_time_ms": 4.01616096496582,
+      "cultural_response": "Error: 500",
+      "agi_response": "{'status': 'error', 'message': 'Prompt is required'}",
+      "integration_analysis": "\nIntegration Analysis for Romanian Education System AGI Integration:\n- Romanian Cultural Elements: 0/4 themes detected\n- AGI Strategic Elements: 0/4 Romanian themes integrated\n- Cultural Response Length: 10 characters\n- AGI Response Length: 52 characters\n- Integration Quality: LOW\n- Thematic Coherence: ❌ MISSING\n        ",
+      "confidence": 0.25
+    }
+  ]
+}

@@ -1,0 +1,203 @@
+{
+  "benchmark_results": {
+    "overall_performance": 0.8895686803768788,
+    "complexity_performance": {
+      "simple": {
+        "average_performance": 0.8903713437142194,
+        "individual_results": [
+          {
+            "problem": "What is 15 + 27?",
+            "performance_score": 0.8800007688999176,
+            "compute_used": 0.0003075599670410156,
+            "reasoning_steps": 5,
+            "confidence": 0.7,
+            "improvement": 0.10001537799835214,
+            "verification_passed": true
+          },
+          {
+            "problem": "Solve for x: 2x = 10",
+            "performance_score": 0.9111123258537716,
+            "compute_used": 0.0004858970642089844,
+            "reasoning_steps": 9,
+            "confidence": 0.7944444444444445,
+            "improvement": 0.2500242948532104,
+            "verification_passed": false
+          },
+          {
+            "problem": "What is the square root of 64?",
+            "performance_score": 0.8800009363889695,
+            "compute_used": 0.0003745555877685547,
+            "reasoning_steps": 5,
+            "confidence": 0.7,
+            "improvement": 0.10001872777938851,
+            "verification_passed": true
+          }
+        ]
+      },
+      "moderate": {
+        "average_performance": 0.8872656763685077,
+        "individual_results": [
+          {
+            "problem": "Solve the quadratic equation: x\u00b2 - 5x + 6 = 0",
+            "performance_score": 0.9111123419470256,
+            "compute_used": 0.0004923343658447266,
+            "reasoning_steps": 9,
+            "confidence": 0.7944444444444445,
+            "improvement": 0.25002461671829224,
+            "verification_passed": true
+          },
+          {
+            "problem": "Calculate the derivative of f(x) = x\u00b3 + 2x\u00b2 - x + ...",
+            "performance_score": 0.8706839033574185,
+            "compute_used": 0.00047779083251953125,
+            "reasoning_steps": 20,
+            "confidence": 0.5827308355213492,
+            "improvement": 0.500023889541626,
+            "verification_passed": false
+          },
+          {
+            "problem": "A ball is thrown upward with initial velocity 20 m...",
+            "performance_score": 0.8800007838010788,
+            "compute_used": 0.0003135204315185547,
+            "reasoning_steps": 5,
+            "confidence": 0.7,
+            "improvement": 0.10001567602157602,
+            "verification_passed": true
+          }
+        ]
+      },
+      "challenging": {
+        "average_performance": 0.8844600904005903,
+        "individual_results": [
+          {
+            "problem": "Prove that the sum of angles in any triangle is 18...",
+            "performance_score": 0.8933786457831076,
+            "compute_used": 0.0004916191101074219,
+            "reasoning_steps": 20,
+            "confidence": 0.6735096669413293,
+            "improvement": 0.5000245809555054,
+            "verification_passed": true
+          },
+          {
+            "problem": "Find the minimum value of f(x) = x\u2074 - 4x\u00b3 + 6x\u00b2 - ...",
+            "performance_score": 0.8800008606910705,
+            "compute_used": 0.00034427642822265625,
+            "reasoning_steps": 5,
+            "confidence": 0.7,
+            "improvement": 0.10001721382141122,
+            "verification_passed": true
+          },
+          {
+            "problem": "Explain the mechanism of enzyme catalysis in bioch...",
+            "performance_score": 0.8800007647275925,
+            "compute_used": 0.0003058910369873047,
+            "reasoning_steps": 5,
+            "confidence": 0.7,
+            "improvement": 0.10001529455184946,
+            "verification_passed": true
+          }
+        ]
+      },
+      "expert": {
+        "average_performance": 0.9051165484752047,
+        "individual_results": [
+          {
+            "problem": "Prove Fermat's Last Theorem for the case n=3",
+            "performance_score": 0.8931252506140903,
+            "compute_used": 0.00048279762268066406,
+            "reasoning_steps": 20,
+            "confidence": 0.6724961744801344,
+            "improvement": 0.500024139881134,
+            "verification_passed": false
+          },
+          {
+            "problem": "Derive the Schr\u00f6dinger equation from first princip...",
+            "performance_score": 0.9111122269100612,
+            "compute_used": 0.000446319580078125,
+            "reasoning_steps": 9,
+            "confidence": 0.7944444444444445,
+            "improvement": 0.25002231597900393,
+            "verification_passed": true
+          },
+          {
+            "problem": "Design an algorithm to solve the traveling salesma...",
+            "performance_score": 0.9111121679014629,
+            "compute_used": 0.0004227161407470703,
+            "reasoning_steps": 9,
+            "confidence": 0.7944444444444445,
+            "improvement": 0.25002113580703733,
+            "verification_passed": false
+          }
+        ]
+      },
+      "research": {
+        "average_performance": 0.8806297429258717,
+        "individual_results": [
+          {
+            "problem": "Develop a unified theory combining quantum mechani...",
+            "performance_score": 0.8800007998943329,
+            "compute_used": 0.0003199577331542969,
+            "reasoning_steps": 5,
+            "confidence": 0.7,
+            "improvement": 0.1000159978866578,
+            "verification_passed": true
+          },
+          {
+            "problem": "Prove or disprove the Riemann Hypothesis",
+            "performance_score": 0.8818876826331294,
+            "compute_used": 0.0005154609680175781,
+            "reasoning_steps": 20,
+            "confidence": 0.6275455759228379,
+            "improvement": 0.5000257730484009,
+            "verification_passed": true
+          },
+          {
+            "problem": "Design a conscious artificial intelligence system",
+            "performance_score": 0.8800007462501526,
+            "compute_used": 0.00029850006103515625,
+            "reasoning_steps": 5,
+            "confidence": 0.7,
+            "improvement": 0.10001492500305184,
+            "verification_passed": true
+          }
+        ]
+      }
+    },
+    "compute_efficiency": {
+      "simple": 2286.887990462906,
+      "moderate": 2073.622943232803,
+      "challenging": 2323.8846283196226,
+      "expert": 2008.6423067384894,
+      "research": 2329.8752228382814
+    },
+    "verification_success_rates": {
+      "simple": 0.6666666666666666,
+      "moderate": 0.6666666666666666,
+      "challenging": 1.0,
+      "expert": 0.3333333333333333,
+      "research": 1.0
+    },
+    "performance_improvements": {
+      "simple": 0.1500194668769837,
+      "moderate": 0.2833547274271648,
+      "challenging": 0.2333523631095887,
+      "expert": 0.3333558638890584,
+      "research": 0.2333522319793702
+    },
+    "reasoning_quality": {},
+    "architecture_grade": "COMPETENT",
+    "breakthrough_achieved": "False"
+  },
+  "system_config": {
+    "max_compute_budget": "300 seconds",
+    "reasoning_strategies": [
+      "direct",
+      "chain_of_thought",
+      "monte_carlo",
+      "synthesis"
+    ],
+    "verification_enabled": true,
+    "adaptive_complexity": true
+  },
+  "timestamp": "2025-08-21T03:05:00Z"
+}

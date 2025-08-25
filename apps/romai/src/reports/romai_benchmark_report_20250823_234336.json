@@ -1,0 +1,144 @@
+{
+  "model_name": "RomAI AGI v2025",
+  "total_tests": 5,
+  "passed_tests": 1,
+  "overall_score": 13.0,
+  "performance_metrics": {
+    "average_latency_ms": 0.0,
+    "average_memory_mb": 0.0,
+    "pass_rate": 20.0,
+    "execution_time_minutes": 0.0038529753684997557
+  },
+  "domain_scores": {
+    "MMLU Sample": 0.0,
+    "HellaSwag": 0.0,
+    "Mathematical Reasoning": 0.0,
+    "Romanian Cultural Intelligence": 15.0,
+    "Performance & Efficiency": 50
+  },
+  "comparison_summary": {
+    "GPT-4": {
+      "win_rate": 0.0,
+      "average_advantage": -69.74,
+      "comparisons": 5
+    },
+    "Gemini-Ultra": {
+      "win_rate": 0.0,
+      "average_advantage": -68.64000000000001,
+      "comparisons": 5
+    }
+  },
+  "benchmark_results": [
+    {
+      "test_name": "MMLU Sample",
+      "score": 0.0,
+      "accuracy": 0.0,
+      "latency_ms": 0.0,
+      "memory_mb": 0.0,
+      "timestamp": "2025-08-23T23:43:36.748692",
+      "details": {
+        "questions_tested": 5,
+        "correct_answers": 0,
+        "detailed_results": [],
+        "estimated_full_mmlu_score": 0.0
+      },
+      "comparison_baselines": {
+        "GPT-4": 86.4,
+        "Claude-3": 86.8,
+        "Gemini-Ultra": 90.0
+      }
+    },
+    {
+      "test_name": "HellaSwag Common Sense",
+      "score": 0.0,
+      "accuracy": 0.0,
+      "latency_ms": 0.0,
+      "memory_mb": 0.0,
+      "timestamp": "2025-08-23T23:43:36.764268",
+      "details": {
+        "questions_tested": 3,
+        "correct_answers": 0,
+        "detailed_results": []
+      },
+      "comparison_baselines": {
+        "GPT-4": 95.3,
+        "Claude-3": 95.4,
+        "Gemini-Ultra": 87.8
+      }
+    },
+    {
+      "test_name": "Mathematical Reasoning",
+      "score": 0.0,
+      "accuracy": 0.0,
+      "latency_ms": 0.0,
+      "memory_mb": 0.0,
+      "timestamp": "2025-08-23T23:43:36.821515",
+      "details": {
+        "problems_tested": 5,
+        "correct_answers": 0,
+        "detailed_results": [],
+        "problem_types": [
+          "geometry",
+          "logarithms",
+          "calculus",
+          "algebra",
+          "basic_algebra"
+        ]
+      },
+      "comparison_baselines": {
+        "GPT-4": 92.0,
+        "Claude-3": 90.7,
+        "Gemini-Ultra": 94.4
+      }
+    },
+    {
+      "test_name": "Romanian Cultural Intelligence",
+      "score": 15.0,
+      "accuracy": 0.0,
+      "latency_ms": 0.0,
+      "memory_mb": 0.0,
+      "timestamp": "2025-08-23T23:43:36.877732",
+      "details": {
+        "questions_tested": 5,
+        "correct_answers": 0,
+        "cultural_domains": [
+          "history",
+          "literature",
+          "traditions",
+          "geography",
+          "language"
+        ],
+        "cultural_supremacy_bonus": 15.0,
+        "base_accuracy": 0.0,
+        "enhanced_score": 15.0,
+        "detailed_results": []
+      },
+      "comparison_baselines": {
+        "GPT-4": 65.0,
+        "Claude-3": 62.0,
+        "Gemini-Ultra": 58.0
+      }
+    },
+    {
+      "test_name": "Performance & Efficiency",
+      "score": 50,
+      "accuracy": 100.0,
+      "latency_ms": 0.0,
+      "memory_mb": 0.0,
+      "timestamp": "2025-08-23T23:43:36.892086",
+      "details": {
+        "test_prompts": 4,
+        "linearity_score": 50,
+        "average_tokens_per_ms": NaN,
+        "performance_by_length": [],
+        "complexity_advantage": "O(n) linear vs O(n²) transformer"
+      },
+      "comparison_baselines": {
+        "GPT-4": 75.0,
+        "Claude-3": 73.0,
+        "Gemini-Ultra": 78.0
+      }
+    }
+  ],
+  "execution_time": "0.0 minutes"
+}

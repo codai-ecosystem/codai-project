@@ -33,9 +33,6 @@ import {
   X
 } from 'lucide-react';
 
-// Import ecosystem navigation
-import { EcosystemNavigation as SharedEcosystemNavigation } from '@codai/shared-components';
-
 interface NavigationSection {
   title: string;
   items: NavigationItem[];
@@ -203,8 +200,8 @@ export default function EcosystemNavigation() {
                         key={item.href}
                         href={item.href}
                         className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors group ${isActive
-                            ? 'bg-blue-600 text-white'
-                            : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                          ? 'bg-blue-600 text-white'
+                          : 'text-gray-300 hover:bg-gray-700 hover:text-white'
                           } ${isCollapsed ? 'justify-center' : ''}`}
                         title={isCollapsed ? item.name : undefined}
                       >
@@ -246,7 +243,9 @@ export default function EcosystemNavigation() {
               </button>
             </div>
             <div className="p-6">
-              <SharedEcosystemNavigation currentApp="codai" />
+              <div className="text-center text-gray-500">
+                <p>Ecosystem navigation will be available soon</p>
+              </div>
             </div>
           </div>
         </div>

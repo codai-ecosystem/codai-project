@@ -1,0 +1,86 @@
+{
+  "validation_timestamp": "2025-08-22T21:13:28.053686",
+  "models_tested": {
+    "mathematical": {
+      "model_type": "mathematical_neural_network",
+      "tests_passed": 0,
+      "total_tests": 3,
+      "responses": [
+        {
+          "problem": "What is the square root of 144?",
+          "solution": "Unable to solve - requires model training",
+          "confidence": 0.1,
+          "genuine": false,
+          "steps": 3
+        },
+        {
+          "problem": "Solve: 2x + 5 = 13",
+          "solution": "Unable to solve - requires model training",
+          "confidence": 0.1,
+          "genuine": false,
+          "steps": 3
+        },
+        {
+          "problem": "Calculate the derivative of x² + 3x + 5",
+          "solution": "Unable to solve - requires model training",
+          "confidence": 0.1,
+          "genuine": false,
+          "steps": 3
+        }
+      ]
+    },
+    "logical": {
+      "model_type": "logical_neural_network",
+      "tests_passed": 0,
+      "total_tests": 3,
+      "responses": [
+        {
+          "problem": "All roses are flowers. This is a rose. What can we conclude?",
+          "conclusion": "then since then then <UNK> ¬ then then every all then <UNK>",
+          "confidence": 0.4263959527015686,
+          "genuine": false,
+          "reasoning_steps": 3
+        },
+        {
+          "problem": "If it rains, the ground gets wet. It is raining. What follows?",
+          "conclusion": "and and and → and every <UNK> and then and → and",
+          "confidence": 0.3909153938293457,
+          "genuine": false,
+          "reasoning_steps": 3
+        },
+        {
+          "problem": "Some birds can fly. Penguins are birds. Can all birds fly?",
+          "conclusion": "then ¬ ¬ → <UNK> then <UNK> <UNK> <UNK> and all",
+          "confidence": 0.43695610761642456,
+          "genuine": false,
+          "reasoning_steps": 3
+        }
+      ]
+    },
+    "cultural": {
+      "model_type": "cultural_neural_network",
+      "tests_passed": 0,
+      "total_tests": 3,
+      "responses": [
+        {
+          "query": "Ce știi despre cultura românească?",
+          "error": "'CulturalAnalysis' object has no attribute 'cultural_analysis'",
+          "genuine": false
+        },
+        {
+          "query": "Explică-mi tradiția Mărțișorului",
+          "error": "'CulturalAnalysis' object has no attribute 'cultural_analysis'",
+          "genuine": false
+        },
+        {
+          "query": "Care este importanța Mioriței în folclorul românesc?",
+          "error": "'CulturalAnalysis' object has no attribute 'cultural_analysis'",
+          "genuine": false
+        }
+      ]
+    }
+  },
+  "response_quality": {},
+  "template_detection": {},
+  "overall_score": 0.0
+}

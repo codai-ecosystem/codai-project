@@ -1,0 +1,127 @@
+{
+  "global_summary": {
+    "validation_completed": "2025-08-25T15:51:17.279838",
+    "validation_duration_seconds": 0.3039541244506836,
+    "total_endpoints": 1,
+    "healthy_endpoints": 0,
+    "global_health_percentage": 0.0,
+    "meets_availability_target": false,
+    "world_class_ready": false
+  },
+  "endpoint_results": {
+    "http://localhost:6101": {
+      "mathematical": {
+        "domain": "mathematical",
+        "accuracy": 0.0,
+        "target": 0.98,
+        "meets_target": false,
+        "avg_response_time_ms": 58.79411697387695,
+        "test_results": [
+          {
+            "query": "What is the derivative of x^3 + 2x^2 - 5x + 1?",
+            "difficulty": "intermediate",
+            "correct": false,
+            "response_time_ms": 288.2215976715088,
+            "response": "I'm experiencing a processing error with mathematical_reasoning. The neural system is being enhanced. Please try rephrasing your request or try again in a moment."
+          },
+          {
+            "query": "Solve the integral of sin(x)cos(x) dx",
+            "difficulty": "intermediate",
+            "correct": false,
+            "response_time_ms": 1.9676685333251953,
+            "response": "I'm experiencing a processing error with reasoning. The neural system is being enhanced. Please try rephrasing your request or try again in a moment."
+          },
+          {
+            "query": "Find the eigenvalues of the matrix [[2, 1], [1, 2]]",
+            "difficulty": "advanced",
+            "correct": false,
+            "response_time_ms": 1.3930797576904297,
+            "response": "I'm experiencing a processing error with reasoning. The neural system is being enhanced. Please try rephrasing your request or try again in a moment."
+          },
+          {
+            "query": "What is the solution to the differential equation dy/dx = y?",
+            "difficulty": "advanced",
+            "correct": false,
+            "response_time_ms": 1.1327266693115234,
+            "response": "I'm experiencing a processing error with mathematical_reasoning. The neural system is being enhanced. Please try rephrasing your request or try again in a moment."
+          },
+          {
+            "query": "Prove that sqrt(2) is irrational",
+            "difficulty": "expert",
+            "correct": false,
+            "response_time_ms": 1.2555122375488281,
+            "response": "I'm experiencing a processing error with reasoning. The neural system is being enhanced. Please try rephrasing your request or try again in a moment."
+          }
+        ]
+      },
+      "programming": {
+        "domain": "programming",
+        "accuracy": 0.0,
+        "target": 0.95,
+        "meets_target": false,
+        "avg_response_time_ms": 1.237630844116211,
+        "test_results": [
+          {
+            "query": "Write a Python function to implement binary search",
+            "language": "python",
+            "correct": false,
+            "response_time_ms": 1.3606548309326172,
+            "response": "I'm experiencing a processing error with reasoning. The neural system is being enhanced. Please try rephrasing your request or try again in a moment."
+          },
+          {
+            "query": "Create a JavaScript function to debounce user input",
+            "language": "javascript",
+            "correct": false,
+            "response_time_ms": 1.157999038696289,
+            "response": "I'm experiencing a processing error with reasoning. The neural system is being enhanced. Please try rephrasing your request or try again in a moment."
+          },
+          {
+            "query": "Implement a quicksort algorithm in C++",
+            "language": "cpp",
+            "correct": false,
+            "response_time_ms": 1.2226104736328125,
+            "response": "I'm experiencing a processing error with reasoning. The neural system is being enhanced. Please try rephrasing your request or try again in a moment."
+          },
+          {
+            "query": "Write a SQL query to find the top 5 customers by revenue",
+            "language": "sql",
+            "correct": false,
+            "response_time_ms": 1.18255615234375,
+            "response": "I'm experiencing a processing error with reasoning. The neural system is being enhanced. Please try rephrasing your request or try again in a moment."
+          },
+          {
+            "query": "Create a React component with hooks for state management",
+            "language": "react",
+            "correct": false,
+            "response_time_ms": 1.264333724975586,
+            "response": "I'm experiencing a processing error with reasoning. The neural system is being enhanced. Please try rephrasing your request or try again in a moment."
+          }
+        ]
+      },
+      "error": "mean requires at least one data point",
+      "endpoint_status": {
+        "healthy": false,
+        "endpoint": "http://localhost:6101",
+        "error": "mean requires at least one data point"
+      }
+    }
+  },
+  "performance_targets": {
+    "mathematical_accuracy": 0.98,
+    "programming_accuracy": 0.95,
+    "logical_accuracy": 0.9,
+    "creative_quality": 0.85,
+    "multimodal_accuracy": 0.9,
+    "romanian_cultural": 0.92,
+    "general_knowledge": 0.95,
+    "max_latency_ms": 50,
+    "min_throughput_rps": 1000,
+    "min_availability": 0.9999,
+    "concurrent_users": 10000,
+    "test_duration_seconds": 3600,
+    "ramp_up_seconds": 300,
+    "endpoints": [
+      "http://localhost:6101"
+    ]
+  }
+}

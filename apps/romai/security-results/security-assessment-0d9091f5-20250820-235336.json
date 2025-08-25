@@ -1,0 +1,114 @@
+{
+  "Results": {
+    "Data": {
+      "Score": 70,
+      "DataEncryptionInTransit": false,
+      "DataEncryptionAtRest": true,
+      "SensitiveDataExposure": [],
+      "TLSVersion": ""
+    },
+    "Model": {
+      "Score": 20,
+      "ModelAccessControl": false,
+      "ModelIntegrity": true,
+      "OutputSanitization": false,
+      "PromptInjectionProtection": false
+    },
+    "Compliance": {
+      "DataRetention": true,
+      "Score": 50,
+      "AuditLogging": true,
+      "SOX_Compliance": 0,
+      "HIPAA_Compliance": 0,
+      "GDPR_Compliance": 50
+    },
+    "Authentication": {
+      "Score": 30,
+      "WeakEndpoints": [
+        "/reasoning",
+        "/consciousness/process",
+        "/intelligence/process",
+        "/romanian/analyze_text"
+      ],
+      "APIKeyProtection": true,
+      "AuthenticationRequired": false,
+      "RateLimitingEnabled": false
+    },
+    "Network": {
+      "Score": 25,
+      "HTTPSEnabled": false,
+      "FirewallStatus": true,
+      "UnauthorizedPortsOpen": [
+        22,
+        80,
+        135,
+        445,
+        3389
+      ],
+      "NetworkIsolation": false
+    }
+  },
+  "Configuration": {
+    "TestId": "0d9091f5",
+    "Timestamp": "2025-08-20 23:52:02",
+    "SecurityMode": "full"
+  },
+  "Report": {
+    "SecurityRating": "NEEDS IMMEDIATE ATTENTION",
+    "ModelResults": {
+      "Score": 20,
+      "ModelAccessControl": false,
+      "ModelIntegrity": true,
+      "OutputSanitization": false,
+      "PromptInjectionProtection": false
+    },
+    "OverallScore": 39.0,
+    "DataResults": {
+      "Score": 70,
+      "DataEncryptionInTransit": false,
+      "DataEncryptionAtRest": true,
+      "SensitiveDataExposure": [],
+      "TLSVersion": ""
+    },
+    "NetworkResults": {
+      "Score": 25,
+      "HTTPSEnabled": false,
+      "FirewallStatus": true,
+      "UnauthorizedPortsOpen": [
+        22,
+        80,
+        135,
+        445,
+        3389
+      ],
+      "NetworkIsolation": false
+    },
+    "ComplianceResults": {
+      "DataRetention": true,
+      "Score": 50,
+      "AuditLogging": true,
+      "SOX_Compliance": 0,
+      "HIPAA_Compliance": 0,
+      "GDPR_Compliance": 50
+    },
+    "AuthResults": {
+      "Score": 30,
+      "WeakEndpoints": [
+        "/reasoning",
+        "/consciousness/process",
+        "/intelligence/process",
+        "/romanian/analyze_text"
+      ],
+      "APIKeyProtection": true,
+      "AuthenticationRequired": false,
+      "RateLimitingEnabled": false
+    },
+    "CategoryScores": {
+      "Data Protection & Encryption": 70,
+      "Authentication & Authorization": 30,
+      "Network Security": 25,
+      "Compliance Frameworks": 50,
+      "AI Model Security": 20
+    }
+  }
+}

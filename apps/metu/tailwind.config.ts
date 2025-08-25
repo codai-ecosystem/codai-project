@@ -1,17 +1,107 @@
-import { createCodaiTailwindConfig } from '../../packages/shared-ui/tailwind-master.config';
+import type { Config } from 'tailwindcss';
 
-export default createCodaiTailwindConfig(
-  'metu',
-  undefined, // Use default brand colors for metu
-  {
+const config: Config = {
     content: [
-      './app/**/*.{js,ts,jsx,tsx,mdx}',
-      './src/**/*.{js,ts,jsx,tsx,mdx}',
-      './components/**/*.{js,ts,jsx,tsx,mdx}',
-      './lib/**/*.{js,ts,jsx,tsx,mdx}',
-      './utils/**/*.{js,ts,jsx,tsx,mdx}',
-      '../../packages/shared-ui/src/**/*.{js,ts,jsx,tsx,mdx}',
-      '../../packages/ui/src/**/*.{js,ts,jsx,tsx,mdx}',
+        './index.html',
+        './src/**/*.{js,ts,jsx,tsx}',
+        './src/renderer/**/*.{js,ts,jsx,tsx}',
+        './src/components/**/*.{js,ts,jsx,tsx}',
+        '../../../packages/ui/src/**/*.{js,ts,jsx,tsx}'
     ],
-  }
-);
+    darkMode: 'class',
+    theme: {
+        extend: {
+            colors: {
+                border: 'hsl(var(--border))',
+                input: 'hsl(var(--input))',
+                ring: 'hsl(var(--ring))',
+                background: 'hsl(var(--background))',
+                foreground: 'hsl(var(--foreground))',
+                primary: {
+                    DEFAULT: 'hsl(var(--primary))',
+                    foreground: 'hsl(var(--primary-foreground))'
+                },
+                secondary: {
+                    DEFAULT: 'hsl(var(--secondary))',
+                    foreground: 'hsl(var(--secondary-foreground))'
+                },
+                destructive: {
+                    DEFAULT: 'hsl(var(--destructive))',
+                    foreground: 'hsl(var(--destructive-foreground))'
+                },
+                muted: {
+                    DEFAULT: 'hsl(var(--muted))',
+                    foreground: 'hsl(var(--muted-foreground))'
+                },
+                accent: {
+                    DEFAULT: 'hsl(var(--accent))',
+                    foreground: 'hsl(var(--accent-foreground))'
+                },
+                popover: {
+                    DEFAULT: 'hsl(var(--popover))',
+                    foreground: 'hsl(var(--popover-foreground))'
+                },
+                card: {
+                    DEFAULT: 'hsl(var(--card))',
+                    foreground: 'hsl(var(--card-foreground))'
+                },
+                // METU specific colors
+                metu: {
+                    primary: '#6366f1',
+                    secondary: '#8b5cf6',
+                    accent: '#06b6d4',
+                    success: '#10b981',
+                    warning: '#f59e0b',
+                    error: '#ef4444',
+                    voice: '#7c3aed',
+                    listening: '#22c55e',
+                    speaking: '#f97316'
+                }
+            },
+            borderRadius: {
+                lg: 'var(--radius)',
+                md: 'calc(var(--radius) - 2px)',
+                sm: 'calc(var(--radius) - 4px)'
+            },
+            keyframes: {
+                'accordion-down': {
+                    from: { height: '0' },
+                    to: { height: 'var(--radix-accordion-content-height)' }
+                },
+                'accordion-up': {
+                    from: { height: 'var(--radix-accordion-content-height)' },
+                    to: { height: '0' }
+                },
+                'voice-pulse': {
+                    '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+                    '50%': { transform: 'scale(1.1)', opacity: '0.8' }
+                },
+                'wave': {
+                    '0%, 100%': { transform: 'scaleY(1)' },
+                    '50%': { transform: 'scaleY(1.5)' }
+                },
+                'float': {
+                    '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                    '50%': { transform: 'translateY(-20px) rotate(180deg)' }
+                },
+                'breathe': {
+                    '0%, 100%': { opacity: '0.05' },
+                    '50%': { opacity: '0.1' }
+                }
+            },
+            animation: {
+                'accordion-down': 'accordion-down 0.2s ease-out',
+                'accordion-up': 'accordion-up 0.2s ease-out',
+                'voice-pulse': 'voice-pulse 1.5s ease-in-out infinite',
+                'wave': 'wave 1s ease-in-out infinite',
+                'float': 'float 8s ease-in-out infinite',
+                'breathe': 'breathe 4s ease-in-out infinite'
+            }
+        }
+    },
+    plugins: []
+}
+;
+
+export default config;
+

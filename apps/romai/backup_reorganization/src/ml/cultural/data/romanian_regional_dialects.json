@@ -1,0 +1,358 @@
+{
+    "romanian_regional_dialects": {
+        "muntenia": {
+            "region_name": "Muntenia (Țara Românească)",
+            "major_cities": [
+                "București",
+                "Pitești",
+                "Târgoviște",
+                "Ploiești"
+            ],
+            "linguistic_characteristics": {
+                "pronunciation": {
+                    "vowels": "Clare și deschise, apropiate de română standard",
+                    "consonants": "Pronunțarea standard a consoanelor",
+                    "stress": "Accent pe penultima silabă în majoritatea cuvintelor",
+                    "intonation": "Tonalitate neutră, urbană"
+                },
+                "vocabulary": {
+                    "specific_words": {
+                        "gagică": "fată, iubită (specific București)",
+                        "mătăluță": "băiat mic, copil",
+                        "bulangiu": "persoană ciudată, excentric",
+                        "iotei": "foarte mic",
+                        "șmecher": "deștept, șiret",
+                        "mișto": "frumos, plăcut",
+                        "bomboană": "dulciuri (diminutiv afectiv)"
+                    },
+                    "expressions": {
+                        "Să trăiești!": "Mulțumire căldurosă, echivalent cu 'mersi mult!'",
+                        "Ce faci, măi?": "Salut informal între prieteni",
+                        "Hai noroc!": "Îmboldire la băut sau la început de activitate",
+                        "Las' că merge!": "Acceptare resemnată dar optimistă",
+                        "Păi și?": "Întrebare retorică exprimând indiferența"
+                    },
+                    "diminutives": "Frecventă folosirea diminutivelor afectuoase"
+                },
+                "grammar": {
+                    "verb_forms": "Folosirea verbelor auxiliare standard",
+                    "pronouns": "Pronumele standard fără variații regionale",
+                    "syntax": "Construcții sintactice standard românești"
+                }
+            },
+            "cultural_markers": {
+                "urban_culture": "Cultura bucureșteană, influențe balcanice",
+                "humor": "Ironie urbană, glume cu dublă înțelegere",
+                "traditions": "Tradițiile Munteniei, mix urban-rural",
+                "food": "Mici, ciorbă de burtă, papanași",
+                "attitudes": "Deschidere către nou, adaptabilitate urbană"
+            },
+            "social_context": {
+                "formality": "Mai puțin formal în comparație cu alte regiuni",
+                "communication_style": "Direct, practic, uneori ironic",
+                "social_hierarchy": "Respectarea seniorilor dar relații mai relaxate"
+            }
+        },
+        "moldova": {
+            "region_name": "Moldova",
+            "major_cities": [
+                "Iași",
+                "Bacău",
+                "Suceava",
+                "Piatra Neamț"
+            ],
+            "linguistic_characteristics": {
+                "pronunciation": {
+                    "vowels": "Vocale mai moi, 'â' pronunțat mai deschis",
+                    "consonants": "Consoane mai moi, palatalizare subtilă",
+                    "stress": "Accent muzical, melodic",
+                    "intonation": "Tonalitate melodică, expresivă"
+                },
+                "vocabulary": {
+                    "specific_words": {
+                        "măi": "particulă de întărire sau adresare familială",
+                        "hăi": "particulă de întărire (mai dialectală)",
+                        "cuconiță": "fată, domnișoară (afectuos)",
+                        "lelea": "soră mai mare, femeie respectată",
+                        "fiu-meu": "fiul meu (adresare afectuoasă către băieți)",
+                        "mărică": "diminutiv pentru Maria, nume generic pentru fată",
+                        "neică": "tinere (adresare familiară)"
+                    },
+                    "expressions": {
+                        "Noroc și sănătate!": "Urare complexă de bine",
+                        "Ce mai faci, măi?": "Salut moldovenesc clasic",
+                        "Să-ți dea Dumnezeu sănătate!": "Mulțumire cu conotații religioase",
+                        "Ia să vezi!": "Exprimare a surprinzii sau introducere în poveste",
+                        "Dacă-i vorba de...": "Formulă de introducere în discuție"
+                    },
+                    "archaic_forms": "Păstrarea unor forme arhaice ale limbii române"
+                },
+                "grammar": {
+                    "verb_forms": "Unele forme verbale arhaice: 'făcui', 'vorcând'",
+                    "pronouns": "Folosirea pronumelor enclitice: 'mi-i foame'",
+                    "syntax": "Construcții sintactice influențate de substratul daco-getic"
+                }
+            },
+            "cultural_markers": {
+                "religious_tradition": "Ortodoxism tradițional puternic",
+                "folklore": "Bogat folclor, balade populare",
+                "hospitality": "Ospitalitatea moldovenească legendară",
+                "food": "Tocană moldovenească, răcituri, țuică de prune",
+                "attitudes": "Conservatorism tradițional, respectul pentru străbuni"
+            },
+            "social_context": {
+                "formality": "Formal în relațiile sociale, respectuos",
+                "communication_style": "Narativ, bogat în detalii, expresiv",
+                "social_hierarchy": "Respectul față de bătrâni, ierarhii tradiționale"
+            }
+        },
+        "transilvania": {
+            "region_name": "Transilvania (Ardeal)",
+            "major_cities": [
+                "Cluj-Napoca",
+                "Brașov",
+                "Sibiu",
+                "Târgu Mureș"
+            ],
+            "linguistic_characteristics": {
+                "pronunciation": {
+                    "vowels": "Influența maghiară în pronunția vocalelor",
+                    "consonants": "Unele consoane cu pronunție maghiară",
+                    "stress": "Accentul poate fi influențat de maghiară",
+                    "intonation": "Intonație distinctă, influențe austro-ungare"
+                },
+                "vocabulary": {
+                    "specific_words": {
+                        "măi frate": "adresare familiară (influență maghiară)",
+                        "bátyám": "frate mare (împrumut maghiar)",
+                        "szervusz": "salut (împrumut maghiar)",
+                        "kék": "albastru (împrumut maghiar folosit local)",
+                        "piac": "piață (împrumut maghiar)",
+                        "templom": "biserică (împrumut maghiar folosit local)",
+                        "gazda": "proprietarul casei (influență maghiară)"
+                    },
+                    "expressions": {
+                        "Szervusz!": "Salut informal (influență maghiară)",
+                        "Egészségére!": "Noroc! (la băut, influență maghiară)",
+                        "Mi újság?": "Ce mai faci? (influență maghiară)",
+                        "Hát igen": "Păi da (calchiu maghiar)",
+                        "Úgy igaz": "Așa este (calchiu maghiar)"
+                    },
+                    "borrowed_words": "Multe împrumuturi din maghiară, germană, slavă"
+                },
+                "grammar": {
+                    "verb_forms": "Unele calchieri sintactice din maghiară",
+                    "pronouns": "Folosirea pronumelor influențată de maghiară",
+                    "syntax": "Ordine a cuvintelor uneori influențată de maghiară"
+                }
+            },
+            "cultural_markers": {
+                "multiethnic_heritage": "Moștenire română-maghiară-săsească",
+                "architecture": "Influențe austro-ungare, biserici fortificate",
+                "traditions": "Mix de tradițiilor românești, maghiare, săsești",
+                "food": "Gulas, varză a la Cluj, kurtos kalacs",
+                "attitudes": "Pragmatism, spirit civic dezvoltat"
+            },
+            "social_context": {
+                "formality": "Mai formal, influența austro-ungară",
+                "communication_style": "Precis, organizat, direct",
+                "social_hierarchy": "Respectul pentru competență și educație"
+            }
+        },
+        "banat": {
+            "region_name": "Banat",
+            "major_cities": [
+                "Timișoara",
+                "Reșița",
+                "Caransebeș",
+                "Lugoj"
+            ],
+            "linguistic_characteristics": {
+                "pronunciation": {
+                    "vowels": "Influențe sârbești în pronunția vocalelor",
+                    "consonants": "Consoane influențate de sârbă și germană",
+                    "stress": "Accentul poate fi diferit față de standard",
+                    "intonation": "Intonație banatană caracteristică, melodică"
+                },
+                "vocabulary": {
+                    "specific_words": {
+                        "bre": "particulă de adresare (împrumut sârbesc)",
+                        "vazduh": "aer (împrumut sârbesc folosit local)",
+                        "kirmes": "festival, sărbătoare (împrumut german)",
+                        "šaini": "frumos (împrumut sârbesc)",
+                        "kapu": "poartă (împrumut maghiar)",
+                        "štrand": "plajă, loc de îmbăiere (împrumut german)",
+                        "špriț": "băutură cu apă minerală (împrumut german)"
+                    },
+                    "expressions": {
+                        "Bre băiete!": "Măi băiete! (influență sârbească)",
+                        "Zdravo!": "Salut! (împrumut sârbesc)",
+                        "Wie geht's?": "Ce mai faci? (împrumut german)",
+                        "Ma bre": "Măi, mă (combinație româno-sârbească)",
+                        "Ajde bre": "Hai mă (combinație româno-sârbească)"
+                    },
+                    "multilingual": "Frecventă alternarea între română, sârbă, maghiară"
+                },
+                "grammar": {
+                    "verb_forms": "Influențe din sârbă și maghiară",
+                    "pronouns": "Unele construcții pronominale din sârbă",
+                    "syntax": "Sintaxă influențată de contactul multilingv"
+                }
+            },
+            "cultural_markers": {
+                "multicultural_identity": "Identitate multiculturală română-sârbă-maghiară-germană",
+                "music": "Muzică balcanică, influențe sârbești",
+                "traditions": "Tradițiis multietnice, toleranță religioasă",
+                "food": "Ciorbă de pește, șvițer, kurtosh",
+                "attitudes": "Deschidere, toleranță, spirit multicultural"
+            },
+            "social_context": {
+                "formality": "Informal, deschis, prietenos",
+                "communication_style": "Expresiv, gestual, multicultural",
+                "social_hierarchy": "Egalitarism, respectul pentru diversitate"
+            }
+        },
+        "oltenia": {
+            "region_name": "Oltenia (Țara de Sus)",
+            "major_cities": [
+                "Craiova",
+                "Slatina",
+                "Caracal",
+                "Turnu Severin"
+            ],
+            "linguistic_characteristics": {
+                "pronunciation": {
+                    "vowels": "Vocale clare, deschise",
+                    "consonants": "Consoane puternice, expresive",
+                    "stress": "Accent puternic, energic",
+                    "intonation": "Intonație expresivă, uneori dramatică"
+                },
+                "vocabulary": {
+                    "specific_words": {
+                        "lelea": "soră mare, femeie respectată",
+                        "nenea": "frate mare, bărbat respectat",
+                        "mătuși": "mătușă (plural afectuos)",
+                        "cucoane": "domn, persoană respectată",
+                        "copile": "copilă (adresare afectuoasă)",
+                        "băiete": "băiatul (adresare familiară)",
+                        "moșnege": "bătrân respectat (fără conotație peiorativă)"
+                    },
+                    "expressions": {
+                        "Să trăiești mult și bine!": "Urare complexă de sănătate și longevitate",
+                        "Ce mai zici?": "Ce mai spui? (salut informal)",
+                        "Noroc cu sănătatea!": "Urare de bine la întâlnire sau despărțire",
+                        "Dacă nu te superi...": "Formulă de politețe pentru cerere",
+                        "Să-ți fie cu noroc!": "Urare de succes"
+                    },
+                    "strong_expressions": "Tendința către expresii puternice, dramatice"
+                },
+                "grammar": {
+                    "verb_forms": "Unele forme verbale arhaice păstrate",
+                    "pronouns": "Folosirea pronumelor în construcții emfatice",
+                    "syntax": "Sintaxă expresivă, uneori redundantă pentru întărire"
+                }
+            },
+            "cultural_markers": {
+                "humor": "Umorul oltenesc legendar, glume și povești",
+                "agriculture": "Tradițiile agricole, legătura cu pământul",
+                "storytelling": "Arta povestirii, narațiunea bogată",
+                "food": "Mâncăruri consistente, țuică de prune",
+                "attitudes": "Sinceritate directă, generozitate, umor"
+            },
+            "social_context": {
+                "formality": "Informal dar respectuos cu bătrânii",
+                "communication_style": "Narativ, bogat, plin de umor",
+                "social_hierarchy": "Respectul pentru experiență și înțelepciune"
+            }
+        },
+        "dobrogea": {
+            "region_name": "Dobrogea",
+            "major_cities": [
+                "Constanța",
+                "Tulcea",
+                "Medgidia",
+                "Măcin"
+            ],
+            "linguistic_characteristics": {
+                "pronunciation": {
+                    "vowels": "Influențe din turcă și bulgară",
+                    "consonants": "Unele consoane cu pronunție balcanică",
+                    "stress": "Accentul poate fi influențat de substrat",
+                    "intonation": "Intonație specifică zonei pontice"
+                },
+                "vocabulary": {
+                    "specific_words": {
+                        "chibrit": "chibrit (influență turcă)",
+                        "han": "han, cârciumă (influență turcă)",
+                        "geamie": "moschee (influență turcă)",
+                        "ciulama": "mâncare din carne albă (influență turcă)",
+                        "pilaf": "orez cu carne (influență turcă)",
+                        "baclava": "desert turcesc adoptat local"
+                    },
+                    "expressions": {
+                        "expressions": "Influențate de contactul multicultural"
+                    },
+                    "borrowed_words": "Multe împrumuturi din turcă, bulgară, rusă"
+                }
+            },
+            "cultural_markers": {
+                "maritime_culture": "Cultura pontică, legătura cu marea",
+                "multicultural": "Moștenire română-turcă-bulgară-tătară",
+                "fishing": "Tradițiile pescărești deltaice",
+                "food": "Pește, ciorbă de pește, specialități pontice"
+            }
+        },
+        "maramures": {
+            "region_name": "Maramureș",
+            "major_cities": [
+                "Baia Mare",
+                "Sighetu Marmației",
+                "Vișeu de Sus"
+            ],
+            "linguistic_characteristics": {
+                "pronunciation": {
+                    "vowels": "Vocale specifice nordului",
+                    "consonants": "Consoane cu pronunție nordică",
+                    "stress": "Accent specific zonei montane",
+                    "intonation": "Intonație caracteristică maramureșeană"
+                },
+                "vocabulary": {
+                    "specific_words": {
+                        "words": "Vocabular specific zonei montane și forestiere"
+                    },
+                    "expressions": {
+                        "expressions": "Expresii specifice culturii montane"
+                    },
+                    "archaic_preservation": "Păstrarea cuvintelor arhaice"
+                }
+            },
+            "cultural_markers": {
+                "wood_culture": "Cultura lemnului, meșteșuguri tradiționale",
+                "mountain_traditions": "Tradițiile montane, păstoritul",
+                "architecture": "Arhitectura în lemn, biserici de lemn UNESCO",
+                "crafts": "Meșteșuguri tradiționale, sculptură în lemn"
+            }
+        }
+    },
+    "dialect_interaction_patterns": {
+        "formal_communication": {
+            "all_regions": "Tendința către română standard în context formal",
+            "educated_speakers": "Schimbarea către registru standard"
+        },
+        "informal_communication": {
+            "regional_markers": "Păstrarea caracteristicilor regionale",
+            "emotional_expression": "Revenirea la dialect în momente emoționale"
+        },
+        "generational_differences": {
+            "older_generations": "Păstrarea mai puternică a dialectului",
+            "younger_generations": "Standardizare crescută, influențe urbane",
+            "urban_vs_rural": "Dialectul mai puternic în mediul rural"
+        }
+    },
+    "cultural_sensitivity_guidelines": {
+        "regional_pride": "Respectarea mândriei regionale și a specificului local",
+        "stereotype_avoidance": "Evitarea stereotipurilor negative despre regiuni",
+        "linguistic_respect": "Respectarea varietății dialectale ca bogăție culturală",
+        "historical_awareness": "Conștientizarea contextului istoric al fiecărei regiuni"
+    }
+}

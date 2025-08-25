@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Insights Panel Component - AI-Powered Analytics Insights
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import { useState } from 'react'
@@ -449,4 +450,5 @@ export function InsightsPanel({ metrics, summary, timeRange }: InsightsPanelProp
         </div>
     )
 }
+
 

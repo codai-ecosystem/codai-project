@@ -1,1 +1,1 @@
-export * from './cbd-mcp-server.js';
+export * from './src/advanced-mcp-server.js';

@@ -37,6 +37,7 @@
     "src/utils/**/*",
     "src/hooks/**/*",
     "src/middleware/**/*",
+    "src/translations/**/*",
     "src/index.ts"
   ],
   "exclude": [

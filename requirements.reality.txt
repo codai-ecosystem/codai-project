@@ -1,0 +1,19 @@
+# Reality Grounding System Requirements
+# Core scientific computing
+numpy>=1.21.0
+torch>=1.11.0
+opencv-python>=4.5.0
+
+# Azure IoT and Cognitive Services
+azure-iot-device>=2.12.0
+azure-cognitiveservices-vision-computervision>=0.9.0
+azure-core>=1.24.0
+
+# Web and async communication
+requests>=2.28.0
+websockets>=10.0
+aiohttp>=3.8.0
+
+# Utilities
+python-dateutil>=2.8.0
+pytz>=2022.1

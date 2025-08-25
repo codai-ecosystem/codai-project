@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Settings Header Component - Navigation and Quick Actions
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import {
@@ -192,4 +193,5 @@ export function SettingsHeader({
         </div>
     )
 }
+
 

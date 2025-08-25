@@ -256,6 +256,7 @@ export default function Analytics() {
         datasets: [{
             label: 'Users by Device',
             data: [5847, 4923, 1777],
+            // @ts-ignore
             backgroundColor: [
                 'rgba(59, 130, 246, 0.8)',
                 'rgba(16, 185, 129, 0.8)',
@@ -382,7 +383,7 @@ export default function Analytics() {
                             <div className="flex items-center justify-between mb-3">
                                 <h3 className="text-sm font-medium text-gray-600">{metric.name}</h3>
                                 <div className={`w-2 h-2 rounded-full ${metric.status === 'good' ? 'bg-green-500' :
-                                        metric.status === 'warning' ? 'bg-yellow-500' : 'bg-red-500'
+                                    metric.status === 'warning' ? 'bg-yellow-500' : 'bg-red-500'
                                     }`} />
                             </div>
 
@@ -414,8 +415,8 @@ export default function Analytics() {
                                     key={category.id}
                                     onClick={() => setSelectedCategory(category.id)}
                                     className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${selectedCategory === category.id
-                                            ? 'border-blue-500 text-blue-600'
-                                            : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                                        ? 'border-blue-500 text-blue-600'
+                                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                                         }`}
                                 >
                                     {category.icon}

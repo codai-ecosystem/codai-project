@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Real-time Charts Component - Live Data Visualization
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
@@ -364,4 +365,5 @@ export function RealtimeCharts({
         </div>
     )
 }
+
 

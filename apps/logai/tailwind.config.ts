@@ -1,17 +1,22 @@
-import { createCodaiTailwindConfig } from '../../packages/shared-ui/tailwind-master.config';
+import type { Config } from 'tailwindcss';
 
-export default createCodaiTailwindConfig(
-  'logai',
-  undefined, // Use default brand colors for logai
-  {
-    content: [
-      './app/**/*.{js,ts,jsx,tsx,mdx}',
-      './src/**/*.{js,ts,jsx,tsx,mdx}',
-      './components/**/*.{js,ts,jsx,tsx,mdx}',
-      './lib/**/*.{js,ts,jsx,tsx,mdx}',
-      './utils/**/*.{js,ts,jsx,tsx,mdx}',
-      '../../packages/shared-ui/src/**/*.{js,ts,jsx,tsx,mdx}',
-      '../../packages/ui/src/**/*.{js,ts,jsx,tsx,mdx}',
-    ],
-  }
-);
+const config: Config = 
+import type { Config } from 'tailwindcss'
+
+const config: Config = {
+  content: [
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+
+config;
+
+export default config;
+

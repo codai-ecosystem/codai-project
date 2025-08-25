@@ -18,7 +18,7 @@ import os
 sys.path.append(os.path.dirname(__file__))
 
 try:
-    from advanced_reasoning_engine import (
+    from core.reasoning.reasoning_engine import (
         FormalLogicProcessor, SymbolicReasoningSystem, RomanianPhilosophicalReasoner,
         LogicType, ReasoningMethod, LogicalPremise, ReasoningResult
     )

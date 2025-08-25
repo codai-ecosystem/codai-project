@@ -55,7 +55,8 @@ import {
     Smartphone,
     Laptop,
     Router,
-    HelpCircle
+    HelpCircle,
+    Link
 } from 'lucide-react';
 
 interface SystemMetric {
@@ -489,7 +490,7 @@ export default function MonitoringPage() {
                                 <Gauge className="w-6 h-6 text-blue-600" />
                             </div>
                             <span className={`text-2xl font-bold ${systemHealthScore >= 90 ? 'text-green-600' :
-                                    systemHealthScore >= 70 ? 'text-yellow-600' : 'text-red-600'
+                                systemHealthScore >= 70 ? 'text-yellow-600' : 'text-red-600'
                                 }`}>
                                 {systemHealthScore}%
                             </span>
@@ -551,8 +552,8 @@ export default function MonitoringPage() {
                             <button
                                 onClick={() => setActiveTab('overview')}
                                 className={`py-2 px-1 border-b-2 font-medium text-sm ${activeTab === 'overview'
-                                        ? 'border-blue-500 text-blue-600'
-                                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                                    ? 'border-blue-500 text-blue-600'
+                                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                                     }`}
                             >
                                 Overview
@@ -560,8 +561,8 @@ export default function MonitoringPage() {
                             <button
                                 onClick={() => setActiveTab('services')}
                                 className={`py-2 px-1 border-b-2 font-medium text-sm ${activeTab === 'services'
-                                        ? 'border-blue-500 text-blue-600'
-                                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                                    ? 'border-blue-500 text-blue-600'
+                                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                                     }`}
                             >
                                 Services
@@ -569,8 +570,8 @@ export default function MonitoringPage() {
                             <button
                                 onClick={() => setActiveTab('alerts')}
                                 className={`py-2 px-1 border-b-2 font-medium text-sm ${activeTab === 'alerts'
-                                        ? 'border-blue-500 text-blue-600'
-                                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                                    ? 'border-blue-500 text-blue-600'
+                                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                                     }`}
                             >
                                 Alerts
@@ -578,8 +579,8 @@ export default function MonitoringPage() {
                             <button
                                 onClick={() => setActiveTab('infrastructure')}
                                 className={`py-2 px-1 border-b-2 font-medium text-sm ${activeTab === 'infrastructure'
-                                        ? 'border-blue-500 text-blue-600'
-                                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                                    ? 'border-blue-500 text-blue-600'
+                                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                                     }`}
                             >
                                 Infrastructure
@@ -620,7 +621,7 @@ export default function MonitoringPage() {
                                                 <div className="w-full bg-gray-200 rounded-full h-2">
                                                     <div
                                                         className={`h-2 rounded-full ${metric.status === 'healthy' ? 'bg-green-600' :
-                                                                metric.status === 'warning' ? 'bg-yellow-600' : 'bg-red-600'
+                                                            metric.status === 'warning' ? 'bg-yellow-600' : 'bg-red-600'
                                                             }`}
                                                         style={{
                                                             width: `${Math.min((metric.value / metric.threshold.critical) * 100, 100)}%`
@@ -684,8 +685,8 @@ export default function MonitoringPage() {
                                                             {service.status}
                                                         </span>
                                                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${service.environment === 'production' ? 'bg-red-100 text-red-800' :
-                                                                service.environment === 'staging' ? 'bg-yellow-100 text-yellow-800' :
-                                                                    'bg-blue-100 text-blue-800'
+                                                            service.environment === 'staging' ? 'bg-yellow-100 text-yellow-800' :
+                                                                'bg-blue-100 text-blue-800'
                                                             }`}>
                                                             {service.environment}
                                                         </span>
@@ -858,8 +859,8 @@ export default function MonitoringPage() {
                                                 <div className="flex items-center justify-between mb-4">
                                                     <div className="flex items-center space-x-3">
                                                         <div className={`p-2 rounded-lg ${node.status === 'healthy' ? 'bg-green-100' :
-                                                                node.status === 'warning' ? 'bg-yellow-100' :
-                                                                    node.status === 'critical' ? 'bg-red-100' : 'bg-gray-100'
+                                                            node.status === 'warning' ? 'bg-yellow-100' :
+                                                                node.status === 'critical' ? 'bg-red-100' : 'bg-gray-100'
                                                             }`}>
                                                             {getTypeIcon(node.type)}
                                                         </div>

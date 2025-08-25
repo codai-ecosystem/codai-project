@@ -1,0 +1,72 @@
+{
+  "report_timestamp": "2025-08-22T21:51:26.885976",
+  "system_performance": {
+    "total_queries": 3,
+    "successful_queries": 3,
+    "failed_queries": 0,
+    "success_rate": 1.0,
+    "average_response_time": 0.6810029347737631,
+    "average_confidence": 0.6,
+    "average_genuineness": 0.9333333333333333,
+    "peak_memory_usage": -0.640625,
+    "average_cpu_usage": -9.799999999999999,
+    "uptime_hours": 0.00011776916666666666,
+    "engines_status": {
+      "mathematical": "excellent",
+      "logical": "excellent",
+      "cultural": "excellent"
+    }
+  },
+  "optimization_recommendations": [
+    "\u2705 Performance is within acceptable thresholds",
+    "\ud83d\udcca Continue monitoring for sustained performance",
+    "\ud83d\udd04 Consider periodic model retraining to maintain quality",
+    "\ud83d\udcc8 Monitor for gradual performance degradation over time"
+  ],
+  "performance_thresholds": {
+    "max_response_time_ms": 5000,
+    "min_confidence_score": 0.3,
+    "min_genuineness_score": 0.6,
+    "max_memory_usage_mb": 2048,
+    "max_cpu_usage_percent": 80,
+    "min_success_rate": 0.8
+  },
+  "recent_metrics_sample": [
+    {
+      "timestamp": "2025-08-22T21:51:26.463055",
+      "engine_type": "mathematical",
+      "query": "\u221a144 + 5 * 3",
+      "response_time_ms": 0.4723072052001953,
+      "confidence_score": 0.95,
+      "genuineness_score": 1.0,
+      "memory_usage_mb": -0.640625,
+      "cpu_usage_percent": -29.4,
+      "success": true,
+      "error_message": null
+    },
+    {
+      "timestamp": "2025-08-22T21:51:26.464317",
+      "engine_type": "logical",
+      "query": "All programmers are logical thinkers. John is a programmer.",
+      "response_time_ms": 0.8413791656494141,
+      "confidence_score": 0.0,
+      "genuineness_score": 0.8,
+      "memory_usage_mb": -1.56640625,
+      "cpu_usage_percent": 0.0,
+      "success": true,
+      "error_message": null
+    },
+    {
+      "timestamp": "2025-08-22T21:51:26.465862",
+      "engine_type": "cultural",
+      "query": "Explain the significance of M\u0103r\u021bi\u0219or in Romanian culture",
+      "response_time_ms": 0.7293224334716797,
+      "confidence_score": 0.85,
+      "genuineness_score": 1.0,
+      "memory_usage_mb": -1.6640625,
+      "cpu_usage_percent": 0.0,
+      "success": true,
+      "error_message": null
+    }
+  ]
+}

@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Theme Settings Component - Appearance and Visual Customization
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import {
@@ -458,4 +459,5 @@ export function ThemeSettings({ settings, onChange }: ThemeSettingsProps) {
         </motion.div>
     )
 }
+
 

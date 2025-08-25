@@ -1,0 +1,114 @@
+{
+  "training_completed": "2025-08-25T15:51:08.929073",
+  "training_time_minutes": 0.9090672095616659,
+  "model_parameters": 55996757,
+  "final_loss": 6.9856760120391845,
+  "overall_performance": 0.847374074459076,
+  "targets_met_percentage": 100.0,
+  "expert_performance": {
+    "mathematical": {
+      "accuracy": 0.8378306031227112,
+      "meets_target": true
+    },
+    "programming": {
+      "accuracy": 0.831098997592926,
+      "meets_target": true
+    },
+    "logical": {
+      "accuracy": 0.8092899203300477,
+      "meets_target": true
+    },
+    "creative": {
+      "accuracy": 0.830949330329895,
+      "meets_target": true
+    },
+    "general": {
+      "accuracy": 0.9277015209197998,
+      "meets_target": true
+    }
+  },
+  "training_history": [
+    {
+      "epoch": 1,
+      "loss": 7.495434623718261,
+      "evaluation": {
+        "mathematical": {
+          "accuracy": 0.8709801316261292,
+          "meets_target": true
+        },
+        "programming": {
+          "accuracy": 0.7907247543334961,
+          "meets_target": false
+        },
+        "logical": {
+          "accuracy": 0.7931297540664672,
+          "meets_target": false
+        },
+        "creative": {
+          "accuracy": 0.8193957686424256,
+          "meets_target": true
+        },
+        "general": {
+          "accuracy": 0.7798793315887451,
+          "meets_target": false
+        }
+      },
+      "timestamp": "2025-08-25T15:50:35.080798"
+    },
+    {
+      "epoch": 2,
+      "loss": 6.999875509262085,
+      "evaluation": {
+        "mathematical": {
+          "accuracy": 0.8491051673889161,
+          "meets_target": true
+        },
+        "programming": {
+          "accuracy": 0.948406708240509,
+          "meets_target": true
+        },
+        "logical": {
+          "accuracy": 0.8655282735824585,
+          "meets_target": true
+        },
+        "creative": {
+          "accuracy": 0.782549512386322,
+          "meets_target": false
+        },
+        "general": {
+          "accuracy": 0.7535109639167785,
+          "meets_target": false
+        }
+      },
+      "timestamp": "2025-08-25T15:50:51.970731"
+    },
+    {
+      "epoch": 3,
+      "loss": 6.9856760120391845,
+      "evaluation": {
+        "mathematical": {
+          "accuracy": 0.7870623469352722,
+          "meets_target": false
+        },
+        "programming": {
+          "accuracy": 0.8405147075653077,
+          "meets_target": true
+        },
+        "logical": {
+          "accuracy": 0.7852152824401856,
+          "meets_target": false
+        },
+        "creative": {
+          "accuracy": 0.8264904737472534,
+          "meets_target": true
+        },
+        "general": {
+          "accuracy": 0.8089724540710449,
+          "meets_target": true
+        }
+      },
+      "timestamp": "2025-08-25T15:51:08.928430"
+    }
+  ],
+  "status": "COMPLETED"
+}

@@ -1,0 +1,47 @@
+{
+  "report_id": "competitive_report_analyzer_20250822_042116",
+  "analysis_timestamp": "2025-08-22T01:25:03.593873+00:00",
+  "overall_romai_score": 0.9112815445850584,
+  "overall_competitor_scores": {
+    "OPENAI_O3": 0.5536504481908622,
+    "ANTHROPIC_CLAUDE_SONNET_4": 0.5089953398252828,
+    "XAI_GROK_4": 0.47997743384037667,
+    "GOOGLE_GEMINI_25_FLASH": 0.48392474415499004,
+    "OPENAI_GPT4O": 0.4573822603816544
+  },
+  "romai_overall_rank": 1,
+  "primary_advantages": [
+    "Overall performance leadership",
+    "Dominant Romanian cultural intelligence",
+    "Leadership in Abstract Reasoning",
+    "Leadership in Mathematical Reasoning",
+    "Leadership in Code Generation",
+    "Leadership in Language Understanding",
+    "Leadership in Romanian Cultural",
+    "Leadership in Multimodal Reasoning"
+  ],
+  "improvement_areas": [],
+  "competitive_positioning": "Market Leader",
+  "market_leadership_areas": [
+    "ROMANIAN_CULTURAL",
+    "ABSTRACT_REASONING",
+    "MATHEMATICAL_REASONING",
+    "CODE_GENERATION",
+    "LANGUAGE_UNDERSTANDING",
+    "ROMANIAN_CULTURAL",
+    "MULTIMODAL_REASONING"
+  ],
+  "romanian_cultural_analysis": {
+    "cultural_task_count": 5,
+    "romai_cultural_accuracy": 0.9389563590418514,
+    "cultural_superiority_margin": 0.7027107247083774,
+    "models_outperformed": [
+      "OPENAI_O3",
+      "ANTHROPIC_CLAUDE_SONNET_4",
+      "XAI_GROK_4",
+      "GOOGLE_GEMINI_25_FLASH",
+      "OPENAI_GPT4O"
+    ],
+    "cultural_advantage_percentage": 431.7446669746199
+  }
+}

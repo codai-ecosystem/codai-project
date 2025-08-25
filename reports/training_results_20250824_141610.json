@@ -1,0 +1,15 @@
+{
+  "mathematics": {
+    "accuracy": 83.33333333333334,
+    "loss": 0.25
+  },
+  "logic": {
+    "accuracy": 0.0,
+    "loss": 1.0
+  },
+  "overall": {
+    "accuracy": 41.66666666666667,
+    "loss": 0.625,
+    "status": "needs_improvement"
+  }
+}

@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Data Settings Component - Data Management and Privacy Controls
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import {
@@ -524,4 +525,5 @@ export function DataSettings({ settings, onChange }: DataSettingsProps) {
         </motion.div>
     )
 }
+
 

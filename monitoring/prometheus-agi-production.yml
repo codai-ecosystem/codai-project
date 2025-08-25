@@ -1,0 +1,90 @@
+# RomAI AGI Production Monitoring - Microsoft Azure ML Standards
+# Specialized configuration for AI/ML model performance tracking
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 30s
+  external_labels:
+    cluster: 'romai-agi-production'
+    environment: 'production'
+    service_type: 'ai-ml-inference'
+
+rule_files:
+  - "agi_alert_rules.yml"
+  - "performance_rules.yml"
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+scrape_configs:
+  # AGI Model Server - Core metrics (Microsoft best practice: 15s interval)
+  - job_name: 'romai-agi-inference'
+    scrape_interval: 15s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:6101']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'agi-production-server'
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: 'agi_(inference|training|performance).*'
+        target_label: __tmp_agi_metric
+        replacement: 'agi_core'
+
+  # AGI Health Monitoring - Enhanced health checks
+  - job_name: 'romai-agi-health'
+    scrape_interval: 30s
+    metrics_path: '/health'
+    static_configs:
+      - targets: ['localhost:6101']
+    scrape_timeout: 10s
+
+  # AGI Training Systems Metrics - All 14 systems
+  - job_name: 'romai-agi-training-systems'
+    scrape_interval: 60s
+    metrics_path: '/training/metrics'
+    static_configs:
+      - targets: ['localhost:6101']
+    params:
+      systems: ['mathematical_reasoning', 'autonomous_problem_solving', 'meta_learning', 
+                'real_time_learning', 'code_generation', 'rlhf_training', 
+                'constitutional_ai', 'multimodal_training', 'synthetic_data_generation',
+                'advanced_training_methodologies', 'romanian_language_specialization',
+                'consciousness_processing', 'quantum_computing']
+
+  # AGI Capability Scores - Performance tracking
+  - job_name: 'romai-agi-capabilities'
+    scrape_interval: 120s
+    metrics_path: '/capabilities/scores'
+    static_configs:
+      - targets: ['localhost:6101']
+
+  # Romanian Language Processing Metrics
+  - job_name: 'romai-romanian-processing'
+    scrape_interval: 60s
+    metrics_path: '/romanian/metrics'
+    static_configs:
+      - targets: ['localhost:6101']
+
+  # System Resource Monitoring
+  - job_name: 'node-exporter'
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['localhost:9100']
+
+  # Memory & Cache Performance
+  - job_name: 'memory-cache-metrics'
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['localhost:4950']  # MemorAI MCP Server
+
+  # Self-monitoring
+  - job_name: 'prometheus'
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['localhost:9090']

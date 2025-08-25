@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Project Footer Component - Footer with quick actions and information
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import {
@@ -196,4 +197,5 @@ export function ProjectFooter() {
         </footer>
     )
 }
+
 

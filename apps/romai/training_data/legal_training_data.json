@@ -1,0 +1,438 @@
+[
+    {
+        "legal_question": "Is a contract valid if one party lacks legal capacity due to age?",
+        "legal_area": "contract_law",
+        "jurisdiction": "US_Common_Law",
+        "facts": [
+            "17-year-old minor entered into contract",
+            "Contract involves purchase of expensive item",
+            "Minor misrepresented age as 18"
+        ],
+        "legal_analysis": [
+            "Contract capacity requires parties to be of legal age (18 in most states)",
+            "Minors generally lack capacity to enter binding contracts",
+            "Contracts with minors are typically voidable at minor's option",
+            "Misrepresentation of age does not cure incapacity"
+        ],
+        "applicable_laws": [
+            "State contract law statutes",
+            "Restatement (Second) of Contracts § 14",
+            "Common law minority rules"
+        ],
+        "legal_conclusion": "Contract is likely voidable due to minor's lack of legal capacity, regardless of age misrepresentation",
+        "confidence_score": 0.90,
+        "case_precedents": [
+            {
+                "case_name": "Halbman v. Lemke",
+                "principle": "Minor can disaffirm contract even after misrepresenting age"
+            }
+        ]
+    },
+    {
+        "legal_question": "What constitutes negligence in a medical malpractice case?",
+        "legal_area": "tort_law",
+        "jurisdiction": "US_State",
+        "facts": [
+            "Doctor failed to diagnose obvious symptoms",
+            "Patient suffered harm due to delayed treatment",
+            "Standard medical protocols were not followed"
+        ],
+        "legal_analysis": [
+            "Medical negligence requires duty, breach, causation, and damages",
+            "Duty established by doctor-patient relationship",
+            "Breach shown by deviation from standard of care",
+            "Causation requires but-for and proximate cause",
+            "Damages must be actual and foreseeable"
+        ],
+        "applicable_laws": [
+            "State medical malpractice statutes",
+            "Restatement (Third) of Torts",
+            "Professional standard of care rules"
+        ],
+        "legal_conclusion": "Negligence likely established if expert testimony confirms breach of medical standard of care",
+        "confidence_score": 0.85,
+        "case_precedents": [
+            {
+                "case_name": "Helling v. Carey",
+                "principle": "Standard of care determined by reasonable medical practice"
+            }
+        ]
+    },
+    {
+        "legal_question": "Does prior restraint of speech violate the First Amendment?",
+        "legal_area": "constitutional_law",
+        "jurisdiction": "US_Federal",
+        "facts": [
+            "Government seeks to prevent publication",
+            "Content involves national security information",
+            "No immediate clear and present danger"
+        ],
+        "legal_analysis": [
+            "Prior restraint is presumptively unconstitutional",
+            "Government bears heavy burden to justify restraint",
+            "National security alone insufficient without imminent harm",
+            "Strict scrutiny applies to content-based restrictions"
+        ],
+        "applicable_laws": [
+            "First Amendment to U.S. Constitution",
+            "Supreme Court precedents on prior restraint",
+            "Pentagon Papers doctrine"
+        ],
+        "legal_conclusion": "Prior restraint likely unconstitutional without showing of imminent and irreparable harm to national security",
+        "confidence_score": 0.92,
+        "case_precedents": [
+            {
+                "case_name": "New York Times Co. v. United States",
+                "principle": "Heavy presumption against prior restraint of speech"
+            }
+        ]
+    },
+    {
+        "legal_question": "Can an employee be terminated for refusing to work overtime?",
+        "legal_area": "employment_law",
+        "jurisdiction": "US_State",
+        "facts": [
+            "At-will employment relationship",
+            "Employee refused mandatory overtime",
+            "No union contract or employment agreement"
+        ],
+        "legal_analysis": [
+            "At-will employment allows termination for any lawful reason",
+            "Employer can generally require reasonable overtime",
+            "Refusal to work overtime is typically valid grounds for termination",
+            "No public policy exception applies to overtime refusal"
+        ],
+        "applicable_laws": [
+            "State employment-at-will doctrine",
+            "Fair Labor Standards Act (overtime provisions)",
+            "State labor law statutes"
+        ],
+        "legal_conclusion": "Termination for overtime refusal is likely lawful under at-will employment doctrine",
+        "confidence_score": 0.88,
+        "case_precedents": [
+            {
+                "case_name": "Payne v. Western & Atlantic Railroad Co.",
+                "principle": "At-will employees may be discharged for good cause, bad cause, or no cause"
+            }
+        ]
+    },
+    {
+        "legal_question": "Is a liquidated damages clause enforceable?",
+        "legal_area": "contract_law",
+        "jurisdiction": "US_Common_Law",
+        "facts": [
+            "Contract specifies $50,000 damages for breach",
+            "Actual damages difficult to estimate at formation",
+            "Liquidated amount appears reasonable"
+        ],
+        "legal_analysis": [
+            "Liquidated damages must be reasonable estimate of actual harm",
+            "Amount must be difficult to determine at contract formation",
+            "Clause will be enforced if not punitive in nature",
+            "Courts examine reasonableness at time of contract formation"
+        ],
+        "applicable_laws": [
+            "Restatement (Second) of Contracts § 356",
+            "UCC § 2-718 (if goods involved)",
+            "State contract law precedents"
+        ],
+        "legal_conclusion": "Liquidated damages clause likely enforceable if reasonable approximation of anticipated harm",
+        "confidence_score": 0.86,
+        "case_precedents": [
+            {
+                "case_name": "Wasserman's Inc. v. Township of Middletown",
+                "principle": "Liquidated damages enforceable if reasonable and harm difficult to estimate"
+            }
+        ]
+    },
+    {
+        "legal_question": "What are the elements of adverse possession?",
+        "legal_area": "property_law",
+        "jurisdiction": "US_State",
+        "facts": [
+            "Person occupied land for 15 years",
+            "Occupation was open and notorious",
+            "True owner was aware but took no action"
+        ],
+        "legal_analysis": [
+            "Adverse possession requires actual, open, notorious, exclusive, and continuous possession",
+            "Possession must be hostile (without owner's permission)",
+            "Statutory period must be satisfied (varies by state)",
+            "Possessor must claim right to property"
+        ],
+        "applicable_laws": [
+            "State adverse possession statutes",
+            "Common law property principles",
+            "Recording acts and notice requirements"
+        ],
+        "legal_conclusion": "Adverse possession likely established if all elements met for statutory period",
+        "confidence_score": 0.87,
+        "case_precedents": [
+            {
+                "case_name": "Nome 2000 v. Fagerstrom",
+                "principle": "Adverse possession requires all statutory elements for continuous period"
+            }
+        ]
+    },
+    {
+        "legal_question": "Does corporate veil piercing require fraud?",
+        "legal_area": "corporate_law",
+        "jurisdiction": "US_State",
+        "facts": [
+            "Corporation undercapitalized from formation",
+            "Personal and corporate assets commingled",
+            "No fraud or intentional wrongdoing proven"
+        ],
+        "legal_analysis": [
+            "Veil piercing requires showing corporation is alter ego of shareholders",
+            "Factors include undercapitalization, commingling, and lack of formalities",
+            "Fraud not always required, but inequitable result must be shown",
+            "Courts reluctant to pierce absent compelling circumstances"
+        ],
+        "applicable_laws": [
+            "State corporate law statutes",
+            "Common law piercing doctrines",
+            "Delaware General Corporation Law precedents"
+        ],
+        "legal_conclusion": "Veil piercing possible based on alter ego theory without requiring proof of fraud",
+        "confidence_score": 0.83,
+        "case_precedents": [
+            {
+                "case_name": "Kinney Shoe Corp. v. Polan",
+                "principle": "Veil piercing available when corporation is alter ego and inequity results"
+            }
+        ]
+    },
+    {
+        "legal_question": "Is specific performance available for breach of contract?",
+        "legal_area": "contract_law",
+        "jurisdiction": "US_Common_Law",
+        "facts": [
+            "Contract involves sale of unique artwork",
+            "Seller refuses to transfer despite payment",
+            "Monetary damages insufficient remedy"
+        ],
+        "legal_analysis": [
+            "Specific performance is equitable remedy for contract breach",
+            "Available when monetary damages inadequate",
+            "Requires unique subject matter or special circumstances",
+            "Court has discretion to grant or deny relief"
+        ],
+        "applicable_laws": [
+            "Restatement (Second) of Contracts § 359",
+            "State equity jurisprudence",
+            "UCC § 2-716 (if applicable)"
+        ],
+        "legal_conclusion": "Specific performance likely available for unique artwork where damages inadequate",
+        "confidence_score": 0.89,
+        "case_precedents": [
+            {
+                "case_name": "Curtice Brothers Co. v. Catts",
+                "principle": "Specific performance granted for unique goods where damages inadequate"
+            }
+        ]
+    },
+    {
+        "legal_question": "What constitutes reasonable suspicion for Terry stop?",
+        "legal_area": "criminal_law",
+        "jurisdiction": "US_Federal",
+        "facts": [
+            "Person in high-crime area late at night",
+            "Nervous behavior when seeing police",
+            "No specific criminal activity observed"
+        ],
+        "legal_analysis": [
+            "Terry stop requires reasonable suspicion of criminal activity",
+            "Suspicion must be based on specific and articulable facts",
+            "Location and time alone insufficient for stop",
+            "Nervous behavior in presence of police not necessarily suspicious"
+        ],
+        "applicable_laws": [
+            "Fourth Amendment to U.S. Constitution",
+            "Terry v. Ohio precedent",
+            "Federal criminal procedure rules"
+        ],
+        "legal_conclusion": "Reasonable suspicion likely not established based solely on location and nervous behavior",
+        "confidence_score": 0.84,
+        "case_precedents": [
+            {
+                "case_name": "Terry v. Ohio",
+                "principle": "Reasonable suspicion requires specific articulable facts supporting inference of criminal activity"
+            }
+        ]
+    },
+    {
+        "legal_question": "Are non-compete agreements enforceable?",
+        "legal_area": "employment_law",
+        "jurisdiction": "US_State",
+        "facts": [
+            "Employee signed non-compete for 2 years",
+            "Restriction covers entire state",
+            "Employee has specialized knowledge"
+        ],
+        "legal_analysis": [
+            "Non-compete enforceability varies significantly by state",
+            "Generally requires reasonable scope in time, geography, and activity",
+            "Must protect legitimate business interest",
+            "Courts balance employer interests against employee mobility"
+        ],
+        "applicable_laws": [
+            "State non-compete statutes",
+            "Common law restraint of trade principles",
+            "Uniform Trade Secrets Act (if applicable)"
+        ],
+        "legal_conclusion": "Enforceability depends on reasonableness of scope and legitimate business interests protected",
+        "confidence_score": 0.78,
+        "case_precedents": [
+            {
+                "case_name": "BDO Seidman v. Hirshberg",
+                "principle": "Non-compete must be reasonable in scope and protect legitimate business interest"
+            }
+        ]
+    },
+    {
+        "legal_question": "Does Miranda warning requirement apply to custody?",
+        "legal_area": "criminal_law",
+        "jurisdiction": "US_Federal",
+        "facts": [
+            "Suspect questioned at police station",
+            "Told he was free to leave",
+            "No formal arrest made"
+        ],
+        "legal_analysis": [
+            "Miranda applies to custodial interrogation",
+            "Custody determined by whether reasonable person would feel free to leave",
+            "Police station setting suggests custody",
+            "Statement that person free to leave weighs against custody"
+        ],
+        "applicable_laws": [
+            "Fifth Amendment to U.S. Constitution",
+            "Miranda v. Arizona precedent",
+            "Federal constitutional criminal procedure"
+        ],
+        "legal_conclusion": "Custody determination requires analysis of totality of circumstances",
+        "confidence_score": 0.81,
+        "case_precedents": [
+            {
+                "case_name": "Miranda v. Arizona",
+                "principle": "Warnings required for custodial interrogation to protect Fifth Amendment rights"
+            }
+        ]
+    },
+    {
+        "legal_question": "Is hearsay evidence admissible under excited utterance exception?",
+        "legal_area": "evidence_law",
+        "jurisdiction": "US_Federal",
+        "facts": [
+            "Statement made immediately after car accident",
+            "Speaker was visibly shaken and emotional",
+            "Statement describes what happened"
+        ],
+        "legal_analysis": [
+            "Excited utterance exception requires startling event",
+            "Statement must be made while under stress of excitement",
+            "Statement must relate to startling event",
+            "Time gap between event and statement relevant"
+        ],
+        "applicable_laws": [
+            "Federal Rules of Evidence Rule 803(2)",
+            "State evidence rules (if applicable)",
+            "Common law hearsay exceptions"
+        ],
+        "legal_conclusion": "Statement likely admissible as excited utterance if made while under stress of accident",
+        "confidence_score": 0.88,
+        "case_precedents": [
+            {
+                "case_name": "United States v. Iron Shell",
+                "principle": "Excited utterance requires statement made while under influence of startling event"
+            }
+        ]
+    },
+    {
+        "legal_question": "Can trademark rights be acquired through use?",
+        "legal_area": "intellectual_property",
+        "jurisdiction": "US_Federal",
+        "facts": [
+            "Business used mark in commerce for 5 years",
+            "No federal registration obtained",
+            "Mark identifies source of goods"
+        ],
+        "legal_analysis": [
+            "Trademark rights can be acquired through actual use in commerce",
+            "Use must be bona fide commercial use",
+            "Rights limited to geographic area of use",
+            "Federal registration provides additional benefits"
+        ],
+        "applicable_laws": [
+            "Lanham Act (15 U.S.C. § 1051 et seq.)",
+            "Common law trademark principles",
+            "State trademark statutes"
+        ],
+        "legal_conclusion": "Common law trademark rights likely established through continuous commercial use",
+        "confidence_score": 0.90,
+        "case_precedents": [
+            {
+                "case_name": "United Drug Co. v. Theodore Rectanus Co.",
+                "principle": "Trademark rights acquired through actual use in commerce"
+            }
+        ]
+    },
+    {
+        "legal_question": "What constitutes substantial performance of contract?",
+        "legal_area": "contract_law",
+        "jurisdiction": "US_Common_Law",
+        "facts": [
+            "Contractor completed 95% of work",
+            "Minor deviations from specifications",
+            "Owner refuses to pay citing incomplete performance"
+        ],
+        "legal_analysis": [
+            "Substantial performance doctrine excuses minor breaches",
+            "Performance must achieve essential purpose of contract",
+            "Minor deviations do not defeat substantial performance",
+            "Non-breaching party entitled to damages for incomplete performance"
+        ],
+        "applicable_laws": [
+            "Restatement (Second) of Contracts § 237",
+            "Common law substantial performance doctrine",
+            "State contract law precedents"
+        ],
+        "legal_conclusion": "Substantial performance likely achieved, entitling contractor to payment minus damages for deviations",
+        "confidence_score": 0.87,
+        "case_precedents": [
+            {
+                "case_name": "Jacob & Youngs v. Kent",
+                "principle": "Substantial performance excuses minor breaches that don't defeat contract purpose"
+            }
+        ]
+    },
+    {
+        "legal_question": "Is involuntary manslaughter distinct from murder?",
+        "legal_area": "criminal_law",
+        "jurisdiction": "US_State",
+        "facts": [
+            "Death resulted from reckless driving",
+            "No intent to kill or cause serious harm",
+            "Defendant aware of risk but proceeded"
+        ],
+        "legal_analysis": [
+            "Involuntary manslaughter requires reckless or negligent conduct",
+            "No intent to kill required unlike murder",
+            "Conscious disregard of substantial risk sufficient",
+            "Lesser included offense of murder charges"
+        ],
+        "applicable_laws": [
+            "State criminal code homicide statutes",
+            "Model Penal Code § 210.3",
+            "Common law manslaughter principles"
+        ],
+        "legal_conclusion": "Involuntary manslaughter charge appropriate for reckless conduct causing death without intent",
+        "confidence_score": 0.91,
+        "case_precedents": [
+            {
+                "case_name": "People v. Knoller",
+                "principle": "Involuntary manslaughter requires proof of criminal negligence or recklessness"
+            }
+        ]
+    }
+]

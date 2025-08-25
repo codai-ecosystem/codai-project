@@ -27,7 +27,7 @@ try:
     from meta_reasoning_engine import MetaReasoningEngine, MetaReasoningType, MetaReasoningResult
     from dialectical_reasoning_system import DialecticalReasoningSystem, DialecticalSynthesis
     from consciousness_engine import QuantumConsciousnessEngine
-    from advanced_reasoning_engine import EnhancedAdvancedReasoningEngine
+    from core.reasoning.reasoning_engine import ReasoningEngine
     from consciousness_reasoning_integration import ConsciousnessReasoningIntegrator
     ADVANCED_COMPONENTS_AVAILABLE = True
     logging.info("✅ All advanced reasoning components imported for emergent coordination")

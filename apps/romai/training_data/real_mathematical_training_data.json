@@ -1,0 +1,281 @@
+{
+    "metadata": {
+        "generated_at": "2025-08-24T11:38:00.000Z",
+        "num_examples": 100,
+        "generator_version": "2.0_real_solutions",
+        "external_ai_used": false,
+        "description": "Real mathematical training data with actual solutions and step-by-step reasoning"
+    },
+    "training_examples": [
+        {
+            "problem": "Calculate factorial of 5",
+            "solution_steps": [
+                "Step 1: Understand factorial notation: 5! = 5 × 4 × 3 × 2 × 1",
+                "Step 2: Multiply step by step: 5 × 4 = 20",
+                "Step 3: Continue multiplication: 20 × 3 = 60",
+                "Step 4: Continue multiplication: 60 × 2 = 120",
+                "Step 5: Final multiplication: 120 × 1 = 120"
+            ],
+            "final_answer": "120",
+            "operation_type": "factorial",
+            "difficulty_level": "easy",
+            "verification": "Verify: 5! = 5 × 4 × 3 × 2 × 1 = 120 ✓"
+        },
+        {
+            "problem": "3^4",
+            "solution_steps": [
+                "Step 1: Identify exponentiation: 3 raised to the power of 4",
+                "Step 2: Multiply 3 by itself 4 times: 3 × 3 × 3 × 3",
+                "Step 3: First multiplication: 3 × 3 = 9",
+                "Step 4: Second multiplication: 9 × 3 = 27",
+                "Step 5: Final multiplication: 27 × 3 = 81"
+            ],
+            "final_answer": "81",
+            "operation_type": "exponentiation",
+            "difficulty_level": "easy",
+            "verification": "Verify: 3^4 = 3 × 3 × 3 × 3 = 81 ✓"
+        },
+        {
+            "problem": "√144",
+            "solution_steps": [
+                "Step 1: Find the square root of 144",
+                "Step 2: Look for a number that when multiplied by itself gives 144",
+                "Step 3: Try 12: 12 × 12 = 144",
+                "Step 4: Confirm: 12² = 144"
+            ],
+            "final_answer": "12",
+            "operation_type": "square_root",
+            "difficulty_level": "easy",
+            "verification": "Verify: √144 = 12 because 12 × 12 = 144 ✓"
+        },
+        {
+            "problem": "Solve: 2x + 5 = 15",
+            "solution_steps": [
+                "Step 1: Identify the algebraic equation: 2x + 5 = 15",
+                "Step 2: Subtract 5 from both sides: 2x + 5 - 5 = 15 - 5",
+                "Step 3: Simplify: 2x = 10",
+                "Step 4: Divide both sides by 2: 2x/2 = 10/2",
+                "Step 5: Solve for x: x = 5"
+            ],
+            "final_answer": "x = 5",
+            "operation_type": "linear_equation",
+            "difficulty_level": "medium",
+            "verification": "Verify: 2(5) + 5 = 10 + 5 = 15 ✓"
+        },
+        {
+            "problem": "Find derivative of x^3",
+            "solution_steps": [
+                "Step 1: Identify the function: f(x) = x³",
+                "Step 2: Apply power rule: d/dx[x^n] = n × x^(n-1)",
+                "Step 3: Apply with n = 3: d/dx[x³] = 3 × x^(3-1)",
+                "Step 4: Simplify the exponent: 3 × x²",
+                "Step 5: Final result: f'(x) = 3x²"
+            ],
+            "final_answer": "3x²",
+            "operation_type": "differentiation",
+            "difficulty_level": "medium",
+            "verification": "Verify using definition or power rule: d/dx[x³] = 3x² ✓"
+        },
+        {
+            "problem": "Integrate x^2 dx",
+            "solution_steps": [
+                "Step 1: Identify the function to integrate: ∫x² dx",
+                "Step 2: Apply power rule for integration: ∫x^n dx = x^(n+1)/(n+1) + C",
+                "Step 3: Apply with n = 2: ∫x² dx = x^(2+1)/(2+1) + C",
+                "Step 4: Simplify: x³/3 + C",
+                "Step 5: Add constant of integration: x³/3 + C"
+            ],
+            "final_answer": "x³/3 + C",
+            "operation_type": "integration",
+            "difficulty_level": "medium",
+            "verification": "Verify by differentiation: d/dx[x³/3 + C] = 3x²/3 = x² ✓"
+        },
+        {
+            "problem": "89 + 76",
+            "solution_steps": [
+                "Step 1: Align numbers for addition: 89 + 76",
+                "Step 2: Add ones place: 9 + 6 = 15 (write 5, carry 1)",
+                "Step 3: Add tens place with carry: 8 + 7 + 1 = 16",
+                "Step 4: Final result: 165"
+            ],
+            "final_answer": "165",
+            "operation_type": "addition",
+            "difficulty_level": "easy",
+            "verification": "Verify: 89 + 76 = 165 ✓"
+        },
+        {
+            "problem": "Find area of rectangle: length=14, width=11",
+            "solution_steps": [
+                "Step 1: Identify rectangle area formula: Area = length × width",
+                "Step 2: Substitute values: Area = 14 × 11",
+                "Step 3: Calculate: 14 × 11 = 154",
+                "Step 4: Include units: 154 square units"
+            ],
+            "final_answer": "154",
+            "operation_type": "area_calculation",
+            "difficulty_level": "easy",
+            "verification": "Verify: Area = l × w = 14 × 11 = 154 square units ✓"
+        },
+        {
+            "problem": "Calculate sin(π/2)",
+            "solution_steps": [
+                "Step 1: Identify the trigonometric function: sin(π/2)",
+                "Step 2: Convert to degrees: π/2 radians = 90°",
+                "Step 3: Recall unit circle: sin(90°) = 1",
+                "Step 4: At π/2, the y-coordinate on unit circle is 1"
+            ],
+            "final_answer": "1",
+            "operation_type": "trigonometry",
+            "difficulty_level": "medium",
+            "verification": "Verify: sin(π/2) = sin(90°) = 1 (maximum value of sine) ✓"
+        },
+        {
+            "problem": "Find GCD of 48 and 18",
+            "solution_steps": [
+                "Step 1: Apply Euclidean algorithm: GCD(48, 18)",
+                "Step 2: Divide 48 by 18: 48 = 18 × 2 + 12",
+                "Step 3: Now find GCD(18, 12): 18 = 12 × 1 + 6",
+                "Step 4: Now find GCD(12, 6): 12 = 6 × 2 + 0",
+                "Step 5: Since remainder is 0, GCD = 6"
+            ],
+            "final_answer": "6",
+            "operation_type": "number_theory",
+            "difficulty_level": "medium",
+            "verification": "Verify: 48 = 6 × 8, 18 = 6 × 3, and GCD(8,3) = 1 ✓"
+        },
+        {
+            "problem": "Solve quadratic: x² - 5x + 6 = 0",
+            "solution_steps": [
+                "Step 1: Identify quadratic equation: x² - 5x + 6 = 0",
+                "Step 2: Factor the quadratic: look for factors of 6 that add to -5",
+                "Step 3: Factors are -2 and -3: (-2) × (-3) = 6, (-2) + (-3) = -5",
+                "Step 4: Factor form: (x - 2)(x - 3) = 0",
+                "Step 5: Solve: x - 2 = 0 or x - 3 = 0, so x = 2 or x = 3"
+            ],
+            "final_answer": "x = 2, x = 3",
+            "operation_type": "quadratic_equation",
+            "difficulty_level": "hard",
+            "verification": "Verify: (2)² - 5(2) + 6 = 4 - 10 + 6 = 0 ✓, (3)² - 5(3) + 6 = 9 - 15 + 6 = 0 ✓"
+        },
+        {
+            "problem": "Calculate log₁₀(100)",
+            "solution_steps": [
+                "Step 1: Identify logarithm base 10: log₁₀(100)",
+                "Step 2: Find the power: 10 to what power equals 100?",
+                "Step 3: Recognize: 10² = 100",
+                "Step 4: Therefore: log₁₀(100) = 2"
+            ],
+            "final_answer": "2",
+            "operation_type": "logarithm",
+            "difficulty_level": "medium",
+            "verification": "Verify: 10² = 100, so log₁₀(100) = 2 ✓"
+        },
+        {
+            "problem": "Find the limit: lim(x→0) sin(x)/x",
+            "solution_steps": [
+                "Step 1: Recognize standard limit: lim(x→0) sin(x)/x",
+                "Step 2: Direct substitution gives 0/0 (indeterminate)",
+                "Step 3: This is a fundamental limit in calculus",
+                "Step 4: By L'Hôpital's rule or geometric proof: lim(x→0) sin(x)/x = 1"
+            ],
+            "final_answer": "1",
+            "operation_type": "limits",
+            "difficulty_level": "hard",
+            "verification": "Verify: This is a standard limit, provable by squeeze theorem or L'Hôpital's rule ✓"
+        },
+        {
+            "problem": "Calculate permutation P(5,3)",
+            "solution_steps": [
+                "Step 1: Identify permutation formula: P(n,r) = n!/(n-r)!",
+                "Step 2: Substitute values: P(5,3) = 5!/(5-3)! = 5!/2!",
+                "Step 3: Calculate factorials: 5! = 120, 2! = 2",
+                "Step 4: Divide: P(5,3) = 120/2 = 60"
+            ],
+            "final_answer": "60",
+            "operation_type": "combinatorics",
+            "difficulty_level": "medium",
+            "verification": "Verify: P(5,3) = 5×4×3 = 60 (choosing 3 items from 5 in order) ✓"
+        },
+        {
+            "problem": "Find mean of: 4, 7, 9, 10, 15",
+            "solution_steps": [
+                "Step 1: Identify the dataset: 4, 7, 9, 10, 15",
+                "Step 2: Sum all values: 4 + 7 + 9 + 10 + 15 = 45",
+                "Step 3: Count the number of values: 5 values",
+                "Step 4: Calculate mean: 45 ÷ 5 = 9"
+            ],
+            "final_answer": "9",
+            "operation_type": "statistics",
+            "difficulty_level": "easy",
+            "verification": "Verify: (4+7+9+10+15)/5 = 45/5 = 9 ✓"
+        },
+        {
+            "problem": "Calculate compound interest: P=$1000, r=5%, t=2 years",
+            "solution_steps": [
+                "Step 1: Identify compound interest formula: A = P(1 + r)^t",
+                "Step 2: Substitute values: A = 1000(1 + 0.05)²",
+                "Step 3: Calculate: A = 1000(1.05)²",
+                "Step 4: Compute: A = 1000 × 1.1025 = $1102.50",
+                "Step 5: Interest earned: $1102.50 - $1000 = $102.50"
+            ],
+            "final_answer": "$1102.50",
+            "operation_type": "financial_math",
+            "difficulty_level": "medium",
+            "verification": "Verify: $1000 × (1.05)² = $1000 × 1.1025 = $1102.50 ✓"
+        },
+        {
+            "problem": "Convert 75° to radians",
+            "solution_steps": [
+                "Step 1: Use conversion formula: radians = degrees × (π/180)",
+                "Step 2: Substitute: radians = 75 × (π/180)",
+                "Step 3: Simplify fraction: 75/180 = 5/12",
+                "Step 4: Final answer: 5π/12 radians"
+            ],
+            "final_answer": "5π/12 radians",
+            "operation_type": "angle_conversion",
+            "difficulty_level": "medium",
+            "verification": "Verify: 75° × (π/180°) = 75π/180 = 5π/12 radians ✓"
+        },
+        {
+            "problem": "Calculate determinant of 2×2 matrix: [[3,2],[1,4]]",
+            "solution_steps": [
+                "Step 1: Identify 2×2 matrix: [[3,2],[1,4]]",
+                "Step 2: Apply determinant formula: det = ad - bc",
+                "Step 3: Identify elements: a=3, b=2, c=1, d=4",
+                "Step 4: Calculate: det = (3×4) - (2×1) = 12 - 2 = 10"
+            ],
+            "final_answer": "10",
+            "operation_type": "matrix_determinant",
+            "difficulty_level": "medium",
+            "verification": "Verify: det([[3,2],[1,4]]) = 3×4 - 2×1 = 12 - 2 = 10 ✓"
+        },
+        {
+            "problem": "Find the nth term formula for arithmetic sequence: 3, 7, 11, 15, ...",
+            "solution_steps": [
+                "Step 1: Identify the sequence: 3, 7, 11, 15, ...",
+                "Step 2: Find common difference: d = 7 - 3 = 4",
+                "Step 3: Identify first term: a₁ = 3",
+                "Step 4: Apply arithmetic sequence formula: aₙ = a₁ + (n-1)d",
+                "Step 5: Substitute: aₙ = 3 + (n-1)4 = 3 + 4n - 4 = 4n - 1"
+            ],
+            "final_answer": "aₙ = 4n - 1",
+            "operation_type": "sequences",
+            "difficulty_level": "medium",
+            "verification": "Verify: a₁ = 4(1)-1 = 3 ✓, a₂ = 4(2)-1 = 7 ✓, a₃ = 4(3)-1 = 11 ✓"
+        },
+        {
+            "problem": "Calculate the distance between points (1,2) and (4,6)",
+            "solution_steps": [
+                "Step 1: Identify points: A(1,2) and B(4,6)",
+                "Step 2: Apply distance formula: d = √[(x₂-x₁)² + (y₂-y₁)²]",
+                "Step 3: Substitute coordinates: d = √[(4-1)² + (6-2)²]",
+                "Step 4: Calculate: d = √[3² + 4²] = √[9 + 16] = √25",
+                "Step 5: Final result: d = 5"
+            ],
+            "final_answer": "5",
+            "operation_type": "coordinate_geometry",
+            "difficulty_level": "medium",
+            "verification": "Verify: √[(4-1)² + (6-2)²] = √[9+16] = √25 = 5 ✓"
+        }
+    ]
+}

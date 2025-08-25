@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * TeamAnalytics Component - Comprehensive team performance analytics
  */
-'use client'
 
 import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
@@ -400,4 +401,5 @@ export function TeamAnalytics({ members, analytics }: TeamAnalyticsProps) {
         </div>
     )
 }
+
 

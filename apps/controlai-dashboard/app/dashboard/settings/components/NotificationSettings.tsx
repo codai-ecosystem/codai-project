@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Notification Settings Component - Alerts and Communication Preferences
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import {
@@ -475,4 +476,5 @@ export function NotificationSettings({ settings, onChange }: NotificationSetting
         </motion.div>
     )
 }
+
 

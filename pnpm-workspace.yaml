@@ -13,6 +13,7 @@ packages:
 
   # Shared packages and libraries
   - 'packages/*'
+  - 'packages/config-consolidated/*'
   - 'libs/*'
   - '!libs/ai-intelligence'
   - '!libs/service-stability'

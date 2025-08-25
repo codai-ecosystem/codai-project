@@ -27,9 +27,9 @@ test.describe('MemorAI MCP Server E2E Tests', () => {
 
   test('should have health endpoint responding', async ({ request }) => {
     const response = await request.get('http://localhost:4950/health');
-    
+
     expect(response.ok()).toBeTruthy();
-    
+
     const health = await response.json();
     expect(health.status).toBe('healthy');
     expect(health.service).toBe('memorai-mcp-server');
@@ -62,7 +62,7 @@ test.describe('MemorAI MCP Server E2E Tests', () => {
     });
 
     expect(response.ok()).toBeTruthy();
-    
+
     const result = await parseSSEResponse(response);
     expect(result.jsonrpc).toBe('2.0');
     expect(result.id).toBe('e2e-test-1');
@@ -117,7 +117,7 @@ test.describe('MemorAI MCP Server E2E Tests', () => {
     });
 
     expect(response.ok()).toBeTruthy();
-    
+
     const result = await parseSSEResponse(response);
     expect(result.jsonrpc).toBe('2.0');
     expect(result.id).toBe('e2e-test-2');
@@ -146,7 +146,7 @@ test.describe('MemorAI MCP Server E2E Tests', () => {
     });
 
     expect(response.ok()).toBeTruthy();
-    
+
     const result = await parseSSEResponse(response);
     expect(result.jsonrpc).toBe('2.0');
     expect(result.id).toBe('e2e-test-3');
@@ -172,7 +172,7 @@ test.describe('MemorAI MCP Server E2E Tests', () => {
     });
 
     expect(response.ok()).toBeTruthy(); // JSON-RPC returns 200 even for errors
-    
+
     const result = await parseSSEResponse(response);
     expect(result.jsonrpc).toBe('2.0');
     expect(result.id).toBe('e2e-test-error');
@@ -256,17 +256,17 @@ test.describe('MemorAI MCP Server E2E Tests', () => {
 
     const resultB = await parseSSEResponse(recallB);
     expect(resultB.result.content.length).toBeGreaterThan(0);
-    
+
     // Verify isolation - content should be different
     const agentAContent = resultA.result.content.map((c: any) => c.text).join(' ');
     const agentBContent = resultB.result.content.map((c: any) => c.text).join(' ');
-    
+
     expect(agentAContent.includes('Agent A')).toBe(true);
     expect(agentBContent.includes('Agent B')).toBe(true);
   });
 
   test('should handle concurrent requests efficiently', async ({ request }) => {
-    const concurrentRequests = Array.from({ length: 20 }, (_, i) => 
+    const concurrentRequests = Array.from({ length: 20 }, (_, i) =>
       request.post('http://localhost:4950/mcp', {
         data: {
           jsonrpc: '2.0',
@@ -286,7 +286,7 @@ test.describe('MemorAI MCP Server E2E Tests', () => {
     );
 
     const responses = await Promise.all(concurrentRequests);
-    
+
     // All requests should succeed
     for (const response of responses) {
       expect(response.ok()).toBeTruthy();
@@ -314,15 +314,15 @@ test.describe('MemorAI MCP Server E2E Tests', () => {
     });
 
     expect(response.ok()).toBeTruthy();
-    
+
     const result = await parseSSEResponse(response);
-    
+
     // JSON-RPC 2.0 compliance
     expect(result.jsonrpc).toBe('2.0');
     expect(result.id).toBe('format-test');
     expect(result.result).toBeDefined();
     expect(result.error).toBeUndefined();
-    
+
     // MCP tool response format
     expect(result.result.content).toBeDefined();
     expect(Array.isArray(result.result.content)).toBe(true);
@@ -334,7 +334,7 @@ test.describe('MemorAI MCP Server E2E Tests', () => {
   test('should handle large content payloads', async ({ request }) => {
     // Create a 1MB content string
     const largeContent = 'x'.repeat(1024 * 1024);
-    
+
     const response = await request.post('http://localhost:4950/mcp', {
       data: {
         jsonrpc: '2.0',
@@ -353,7 +353,7 @@ test.describe('MemorAI MCP Server E2E Tests', () => {
     });
 
     expect(response.ok()).toBeTruthy();
-    
+
     const result = await parseSSEResponse(response);
     expect(result.result.content).toBeDefined();
     expect(Array.isArray(result.result.content)).toBe(true);
@@ -361,7 +361,7 @@ test.describe('MemorAI MCP Server E2E Tests', () => {
 
   test('should handle special characters and Unicode', async ({ request }) => {
     const specialContent = 'Special characters: 你好世界 🚀 💡 "quotes" \'apostrophes\' <tags> & entities \\n\\t\\r';
-    
+
     const response = await request.post('http://localhost:4950/mcp', {
       data: {
         jsonrpc: '2.0',
@@ -380,11 +380,11 @@ test.describe('MemorAI MCP Server E2E Tests', () => {
     });
 
     expect(response.ok()).toBeTruthy();
-    
+
     const result = await parseSSEResponse(response);
     expect(result.result.content).toBeDefined();
     expect(Array.isArray(result.result.content)).toBe(true);
-    
+
     // Verify we can recall the special content
     const recallResponse = await request.post('http://localhost:4950/mcp', {
       data: {

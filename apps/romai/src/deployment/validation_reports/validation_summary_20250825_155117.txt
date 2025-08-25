@@ -1,0 +1,12 @@
+RUAGA Global Deployment Validation Summary
+==================================================
+
+Validation Completed: 2025-08-25T15:51:17.279838
+Duration: 0.01 minutes
+Global Health: 0.0%
+Healthy Endpoints: 0/1
+World-Class Ready: NOT YET
+
+Endpoint Details:
+--------------------
+http://localhost:6101: ISSUES

@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Performance Metrics Component - Detailed Performance Analysis
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import { useState } from 'react'
@@ -383,4 +384,5 @@ export function PerformanceMetrics({
         </div>
     )
 }
+
 

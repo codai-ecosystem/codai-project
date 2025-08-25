@@ -42,11 +42,12 @@
     "zustand": "^5.0.6",
     "geist": "^1.4.2",
     "@codai/shared-ui": "workspace:*",
-    "@codai/translations": "workspace:*"
+    "@codai/translations": "workspace:*",
+    "@codai/api-utils": "workspace:*"
   },
   "devDependencies": {
     "@codai/eslint-config": "workspace:*",
-    "@playwright/test": "^1.48.2",
+    "@playwright/test": "^1.54.2",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
@@ -67,6 +68,7 @@
     "prettier-plugin-tailwindcss": "^0.6.14",
     "tailwindcss": "^3.4.17",
     "vitest": "^3.2.4",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "@codai/testing-utils": "workspace:*"
   }
 }

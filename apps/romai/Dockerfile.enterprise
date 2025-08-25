@@ -2,7 +2,8 @@
 # Production-grade containerization for on-premise deployment
 
 # Base image with Python 3.13 and enterprise security
-FROM python:3.13-slim-bullseye
+# Use Python 3.11-slim for better compatibility
+FROM python:3.11-slim-bullseye
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1 \
@@ -33,12 +34,11 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copy requirements first for better caching
-COPY apps/romai/src/api/enterprise/requirements-compliance.txt /app/requirements.txt
+COPY src/api/enterprise/requirements-compliance.txt /app/requirements.txt
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Install additional enterprise dependencies
+    # Install Python dependencies
+    RUN pip install --upgrade pip setuptools wheel
+    RUN pip install --no-cache-dir -r requirements.txt# Install additional enterprise dependencies
 RUN pip install --no-cache-dir \
     gunicorn==21.2.0 \
     uvicorn[standard]==0.24.0 \
@@ -49,10 +49,10 @@ RUN pip install --no-cache-dir \
     structlog==23.2.0
 
 # Copy application code
-COPY apps/romai/src/ /app/src/
+COPY src/ /app/src/
 
 # Copy startup scripts (conditional copy)
-COPY --from=builder /app/apps/romai/scripts/docker/ /app/scripts/ || true
+RUN mkdir -p /app/scripts && echo "#!/bin/bash\necho 'Enterprise API Server Starting...'" > /app/scripts/start.sh && chmod +x /app/scripts/start.sh
 
 # Create necessary directories
 RUN mkdir -p /app/logs /app/data /app/cache /app/models /app/config
@@ -75,7 +75,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
 EXPOSE 8001
 
 # Production startup command
-CMD ["uvicorn", "src.api.enterprise.api_platform_minimal:app", \
+CMD ["uvicorn", "src.api.enterprise.api_platform:app", \
      "--host", "0.0.0.0", \
      "--port", "8001", \
      "--workers", "4", \

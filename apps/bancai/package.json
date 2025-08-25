@@ -13,9 +13,25 @@
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest watch",
     "lint": "next lint",
-    "type-check": "pnpm exec tsc --noEmit"
+    "type-check": "pnpm exec tsc --noEmit",
+    "build:analyze": "ANALYZE=true next build",
+    "build:speed": "SPEED_MEASURE=true next build",
+    "build:prod": "NODE_ENV=production next build",
+    "build:fast": "NEXT_PHASE=production-server next build",
+    "analyze:bundle": "node ../../analysis/bundle-analysis.js",
+    "analyze:build": "ANALYZE=true pnpm build",
+    "monitor:build": "node ../../lib/build-monitoring/build-monitor.js",
+    "cache:clear": "rm -rf .next/cache && rm -rf node_modules/.cache",
+    "cache:analyze": "next info",
+    "dev:fast": "next dev --turbo",
+    "dev:profile": "next dev --profile",
+    "start:prod": "NODE_ENV=production next start",
+    "preview": "pnpm build && pnpm start",
+    "check:all": "pnpm type-check && pnpm lint && pnpm test",
+    "check:fast": "pnpm type-check && pnpm lint --fix"
   },
   "dependencies": {
+    "@codai/shared-ui": "workspace:*",
     "@codai/logai-sdk": "^1.0.0",
     "@stripe/stripe-js": "^7.5.0",
     "@types/node": "^24.0.14",
@@ -37,7 +53,12 @@
     "typescript": "^5.8.3",
     "uuid": "^11.1.0",
     "zustand": "^5.0.6",
-    "geist": "^1.4.2"
+    "geist": "^1.4.2",
+    "react-i18next": "^15.3.0",
+    "i18next": "^24.2.0",
+    "i18next-browser-languagedetector": "^8.0.0",
+    "i18next-http-backend": "^3.0.1",
+    "@codai/translations": "workspace:*"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
@@ -57,6 +78,15 @@
     "@types/node": "^24.0.14",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "@codai/testing-utils": "workspace:*",
+    "i18next-parser": "^9.0.0",
+    "@types/react-i18next": "^8.1.0"
+  },
+  "nextBundleAnalysis": {
+    "enabled": true,
+    "openAnalyzer": false,
+    "analyzerMode": "static",
+    "generateStatsFile": true
   }
 }

@@ -1,4 +1,4 @@
-# 🚀 RomAI AGI Week 3 Production Docker Compose
+# 🚀 RomAI AGI Production Docker Compose
 # Local production environment with full service stack
 
 version: '3.8'

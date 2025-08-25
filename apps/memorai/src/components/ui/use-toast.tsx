@@ -7,15 +7,21 @@ export interface ToastProps {
 }
 
 export function toast(props: ToastProps) {
-  // Simple toast implementation for demo purposes
+  // Simple toast implementation for demo purposes with SSR safety
   // In production, you'd want a proper toast library like react-hot-toast or sonner
   console.log('Toast:', props);
+
+  // Check if we're in a browser environment
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    console.warn('Toast not available in server environment');
+    return;
+  }
 
   // Create a simple toast notification
   const toastElement = document.createElement('div');
   toastElement.className = `fixed top-4 right-4 z-50 p-4 rounded-md shadow-lg max-w-sm ${props.variant === 'destructive'
-      ? 'bg-red-600 text-white'
-      : 'bg-green-600 text-white'
+    ? 'bg-red-600 text-white'
+    : 'bg-green-600 text-white'
     }`;
 
   toastElement.innerHTML = `
@@ -34,7 +40,9 @@ export function toast(props: ToastProps) {
 
   // Auto remove after 5 seconds
   setTimeout(() => {
-    toastElement.remove();
+    if (toastElement.parentNode) {
+      toastElement.remove();
+    }
   }, 5000);
 }
 

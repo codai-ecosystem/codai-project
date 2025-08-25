@@ -1,21 +1,42 @@
 {
   "name": "controlai-dashboard",
   "version": "1.0.0",
-  "type": "module",
   "description": "Real-time dashboard for ControlAI MCP project management and coordination",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 4200",
+    "dev": "next dev -p 3001",
     "build": "next build",
-    "start": "next start -p 4200",
+    "start": "next start -p 3001",
     "lint": "next lint",
     "type-check": "pnpm exec tsc --noEmit",
-    "test": "vitest",
-    "test:watch": "vitest --watch",
-    "test:coverage": "vitest --coverage",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
     "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:accessibility": "playwright test tests/accessibility",
+    "test:performance": "playwright test tests/performance",
+    "test:all": "pnpm test && pnpm test:e2e",
+    "playwright:install": "playwright install",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
-    "clean": "rimraf .next dist coverage test-results"
+    "clean": "rimraf .next dist coverage test-results playwright-report",
+    "build:analyze": "ANALYZE=true next build",
+    "build:speed": "SPEED_MEASURE=true next build",
+    "build:prod": "NODE_ENV=production next build",
+    "build:fast": "next build",
+    "analyze:bundle": "node ../../analysis/bundle-analysis.js",
+    "analyze:build": "ANALYZE=true pnpm build",
+    "monitor:build": "node ../../lib/build-monitoring/build-monitor.js",
+    "cache:clear": "rimraf .next/cache node_modules/.cache",
+    "cache:analyze": "next info",
+    "dev:fast": "next dev --turbo",
+    "dev:profile": "next dev --profile",
+    "start:prod": "NODE_ENV=production next start",
+    "preview": "pnpm build && pnpm start",
+    "check:all": "pnpm type-check && pnpm lint && pnpm test",
+    "check:fast": "pnpm type-check && pnpm lint --fix"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.14",
@@ -41,11 +62,16 @@
     "swr": "^2.2.5",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
-    "zustand": "^5.0.2"
+    "zustand": "^5.0.2",
+    "react-i18next": "^15.3.0",
+    "i18next": "^24.2.0",
+    "i18next-browser-languagedetector": "^8.0.0",
+    "i18next-http-backend": "^3.0.1",
+    "@codai/translations": "workspace:*"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^15.1.0",
-    "@playwright/test": "^1.49.1",
+    "@playwright/test": "^1.54.2",
     "@types/node": "^22.10.2",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
@@ -65,10 +91,19 @@
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.2",
     "vite": "^6.0.5",
-    "vitest": "^2.1.8"
+    "vitest": "^2.1.8",
+    "@codai/testing-utils": "workspace:*",
+    "i18next-parser": "^9.0.0",
+    "@types/react-i18next": "^8.1.0"
   },
   "engines": {
-    "node": ">=18.0.0",
+    "node": ">=20.0.0",
     "pnpm": ">=8.0.0"
+  },
+  "nextBundleAnalysis": {
+    "enabled": true,
+    "openAnalyzer": false,
+    "analyzerMode": "static",
+    "generateStatsFile": true
   }
 }

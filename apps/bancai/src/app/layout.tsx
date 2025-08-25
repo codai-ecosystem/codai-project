@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import BancaiSessionProvider from '../components/BancaiSessionProvider'
 import { AuthProvider } from '../lib/auth'
 import BancaiNavigation from '../components/BancaiNavigation'
+import './lib/i18n/config';
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -17,6 +18,10 @@ export const metadata: Metadata = {
     title: 'BancAI'
   }
 }
+
+
+// Initialize i18n for bancai
+// This import must be before any components that use translations
 
 export default function RootLayout({
   children,

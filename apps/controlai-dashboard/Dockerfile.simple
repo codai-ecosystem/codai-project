@@ -1,0 +1,61 @@
+# Multi-stage build for controlai-dashboard
+FROM node:20-alpine AS base
+RUN apk add --no-cache libc6-compat curl
+WORKDIR /app
+
+# Dependencies stage
+FROM base AS deps
+# Copy package files
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+
+# Copy necessary packages
+COPY packages/api-utils ./packages/api-utils
+COPY packages/shared-ui ./packages/shared-ui  
+COPY packages/testing-utils ./packages/testing-utils
+
+# Copy app
+COPY apps/controlai-dashboard ./apps/controlai-dashboard
+
+# Install pnpm and dependencies
+RUN npm install -g pnpm
+RUN pnpm install --filter=controlai-dashboard --no-frozen-lockfile --prefer-offline
+
+# Builder stage
+FROM base AS builder
+WORKDIR /app
+
+# Install pnpm
+RUN npm install -g pnpm
+
+COPY --from=deps /app .
+
+# Build the app
+RUN pnpm --filter=controlai-dashboard build
+
+# Runner stage
+FROM node:20-alpine AS runner
+WORKDIR /app
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# Copy the built application first
+COPY --from=builder /app/apps/controlai-dashboard/.next/standalone ./
+COPY --from=builder /app/apps/controlai-dashboard/.next/static ./.next/static
+
+# Copy only the .pnpm directory to resolve dependencies correctly
+COPY --from=builder /app/node_modules/.pnpm ./node_modules/.pnpm
+
+# Fix the broken symlinks by removing them and creating correct ones
+RUN rm -f /app/node_modules/next /app/node_modules/react
+RUN ln -s ./.pnpm/next@15.4.5_@babel+core@7.28.3_@opentelemetry+api@1.9.0_@playwright+test@1.54.2_babel-p_04aecc64ee30d27b7365b6b77f03bb24/node_modules/next /app/node_modules/next
+RUN ln -s ./.pnpm/react@19.1.1/node_modules/react /app/node_modules/react
+
+USER nextjs
+
+EXPOSE 4200
+
+ENV PORT=4200
+ENV HOSTNAME="0.0.0.0"
+
+CMD ["node", "server.js"]

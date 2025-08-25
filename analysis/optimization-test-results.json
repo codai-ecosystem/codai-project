@@ -1,0 +1,14 @@
+[
+  {
+    "app": "controlai-dashboard",
+    "success": false,
+    "error": "Command failed: pnpm build:fast\n'NEXT_PHASE' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n",
+    "optimized": false
+  },
+  {
+    "app": "memorai",
+    "success": false,
+    "error": "Command failed: pnpm build:fast\n'NEXT_PHASE' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n",
+    "optimized": false
+  }
+]

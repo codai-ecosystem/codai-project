@@ -411,8 +411,8 @@ export default function SettingsPage() {
                                         key={category.id}
                                         onClick={() => setSelectedCategory(category.id)}
                                         className={`w-full flex items-center p-3 rounded-lg text-left transition-colors ${selectedCategory === category.id
-                                                ? 'bg-blue-50 text-blue-600 border border-blue-200'
-                                                : 'hover:bg-gray-50'
+                                            ? 'bg-blue-50 text-blue-600 border border-blue-200'
+                                            : 'hover:bg-gray-50'
                                             }`}
                                     >
                                         <CategoryIcon className="w-5 h-5 mr-3" />
@@ -466,8 +466,8 @@ export default function SettingsPage() {
                                                         key={theme.id}
                                                         onClick={() => updateSetting('general', 'theme', theme.id)}
                                                         className={`flex items-center justify-center p-4 border-2 rounded-lg transition-colors ${settings.general.theme === theme.id
-                                                                ? 'border-blue-500 bg-blue-50'
-                                                                : 'border-gray-200 hover:border-gray-300'
+                                                            ? 'border-blue-500 bg-blue-50'
+                                                            : 'border-gray-200 hover:border-gray-300'
                                                             }`}
                                                     >
                                                         <ThemeIcon className="w-6 h-6 mr-2" />
@@ -616,8 +616,8 @@ export default function SettingsPage() {
                                                         <button
                                                             onClick={() => updateSetting('notifications', channel.key, !settings.notifications[channel.key as keyof typeof settings.notifications])}
                                                             className={`w-full p-4 rounded-lg border-2 transition-colors ${settings.notifications[channel.key as keyof typeof settings.notifications]
-                                                                    ? 'border-blue-500 bg-blue-50'
-                                                                    : 'border-gray-200 hover:border-gray-300'
+                                                                ? 'border-blue-500 bg-blue-50'
+                                                                : 'border-gray-200 hover:border-gray-300'
                                                                 }`}
                                                         >
                                                             <ChannelIcon className="w-8 h-8 mx-auto mb-2" />
@@ -851,8 +851,8 @@ export default function SettingsPage() {
                                                     key={size}
                                                     onClick={() => updateSetting('editor', 'tabSize', size)}
                                                     className={`px-4 py-2 border rounded-lg transition-colors ${settings.editor.tabSize === size
-                                                            ? 'border-blue-500 bg-blue-50 text-blue-600'
-                                                            : 'border-gray-300 hover:border-gray-400'
+                                                        ? 'border-blue-500 bg-blue-50 text-blue-600'
+                                                        : 'border-gray-300 hover:border-gray-400'
                                                         }`}
                                                 >
                                                     {size} spaces
@@ -893,7 +893,7 @@ export default function SettingsPage() {
                                             <div className="text-green-400">// React Component Example</div>
                                             <div className="text-blue-400">import</div> <div className="text-white">React</div> <div className="text-blue-400">from</div> <div className="text-yellow-300">'react'</div><div className="text-white">;</div>
                                             <br />
-                                            <div className="text-blue-400">const</div> <div className="text-white">MyComponent = () => {`{`}</div>
+                                            <div className="text-blue-400">const</div> <div className="text-white">MyComponent = () =&gt; {`{`}</div>
                                             <div className="text-white ml-4"><div className="text-blue-400">return</div> <div className="text-red-400">&lt;div&gt;</div><div className="text-white">Hello World</div><div className="text-red-400">&lt;/div&gt;</div>;</div>
                                             <div className="text-white">{`}`};</div>
                                         </div>

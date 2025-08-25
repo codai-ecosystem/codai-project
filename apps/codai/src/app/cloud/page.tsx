@@ -31,6 +31,7 @@ import {
     AlertTriangle,
     CheckCircle,
     Clock,
+    Circle,
     Calendar,
     Users,
     Tag,
@@ -82,7 +83,6 @@ import {
     FolderOpen,
     Save,
     Import,
-    Export,
     Building,
     Building2,
     Briefcase,
@@ -530,8 +530,8 @@ export default function CloudPage() {
                             key={tab.id}
                             onClick={() => setSelectedTab(tab.id)}
                             className={`flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${selectedTab === tab.id
-                                    ? 'bg-white text-blue-600 shadow'
-                                    : 'text-gray-600 hover:text-gray-900'
+                                ? 'bg-white text-blue-600 shadow'
+                                : 'text-gray-600 hover:text-gray-900'
                                 }`}
                         >
                             <tab.icon className="w-4 h-4" />

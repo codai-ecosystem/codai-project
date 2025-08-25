@@ -22,10 +22,12 @@
     "outDir": "./dist",
     "sourceMap": true,
     "incremental": true,
-    "rootDir": "src"
+    "rootDir": ".",
+    "types": ["@testing-library/jest-dom", "bcryptjs", "minimatch"]
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "configs/**/*"
   ],
   "exclude": [
     "node_modules",

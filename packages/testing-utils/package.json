@@ -8,6 +8,33 @@
     "dist",
     "configs"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./configs/vitest.base.config": {
+      "import": "./dist/configs/vitest.base.config.js",
+      "require": "./dist/configs/vitest.base.config.js",
+      "types": "./dist/configs/vitest.base.config.d.ts"
+    },
+    "./configs/playwright.base.config": {
+      "import": "./dist/configs/playwright.base.config.js",
+      "require": "./dist/configs/playwright.base.config.js",
+      "types": "./dist/configs/playwright.base.config.d.ts"
+    },
+    "./test-utils": {
+      "import": "./dist/test-utils.js",
+      "require": "./dist/test-utils.js",
+      "types": "./dist/test-utils.d.ts"
+    },
+    "./setup": {
+      "import": "./dist/setup.js",
+      "require": "./dist/setup.js",
+      "types": "./dist/setup.d.ts"
+    }
+  },
   "scripts": {
     "build": "pnpm exec tsc",
     "dev": "tsc --watch",
@@ -19,7 +46,7 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@playwright/test": "^1.54.1",
+    "@playwright/test": "^1.54.2",
     "@testing-library/react": "^16.1.0",
     "@testing-library/user-event": "^14.5.2",
     "@types/node": "^24.0.15",
@@ -32,19 +59,22 @@
     "nock": "^13.5.6",
     "playwright": "^1.54.1",
     "react-router-dom": "^7.7.0",
-    "supertest": "^7.1.3"
+    "supertest": "^7.1.3",
+    "tslib": "^2.7.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/minimatch": "^5.1.2",
     "@types/mock-fs": "^4.13.4",
+    "@types/node": "^22.0.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@types/supertest": "^6.0.3",
     "@types/testing-library__jest-dom": "^6.0.0",
     "eslint": "^9.31.0",
     "typescript": "^5.8.3",
-    "vitest": "^3.2.4",
-    "@types/node": "^22.0.0"
+    "vitest": "^3.2.4"
   },
   "peerDependencies": {
     "react": ">=18",

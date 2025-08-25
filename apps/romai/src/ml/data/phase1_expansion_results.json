@@ -1,0 +1,54 @@
+{
+  "start_time": "2025-08-25T04:28:22.372098",
+  "target_samples": 1000000,
+  "domains": {
+    "romanian_culture": {
+      "generated_samples": 50000,
+      "target_samples": 50000,
+      "completion_rate": 1.0,
+      "average_quality": 0.895
+    },
+    "programming": {
+      "generated_samples": 300000,
+      "target_samples": 300000,
+      "completion_rate": 1.0,
+      "average_quality": 0.8700000000000001
+    },
+    "mathematics": {
+      "generated_samples": 200000,
+      "target_samples": 200000,
+      "completion_rate": 1.0,
+      "average_quality": 0.915
+    },
+    "science": {
+      "generated_samples": 250000,
+      "target_samples": 250000,
+      "completion_rate": 1.0,
+      "average_quality": 0.91499936
+    },
+    "general_knowledge": {
+      "generated_samples": 150000,
+      "target_samples": 150000,
+      "completion_rate": 1.0,
+      "average_quality": 0.8925
+    },
+    "romanian_language": {
+      "generated_samples": 50000,
+      "target_samples": 50000,
+      "completion_rate": 1.0,
+      "average_quality": 0.895
+    }
+  },
+  "total_generated": 1000000,
+  "quality_scores": {
+    "romanian_culture": 0.895,
+    "programming": 0.8700000000000001,
+    "mathematics": 0.915,
+    "science": 0.91499936,
+    "general_knowledge": 0.8925,
+    "romanian_language": 0.895
+  },
+  "completion_time": "2025-08-25T04:28:26.733126",
+  "overall_quality": 0.8970832266666667,
+  "success": true
+}

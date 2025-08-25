@@ -1,0 +1,2159 @@
+{
+  "audit_summary": {
+    "total_files_analyzed": 1202,
+    "duplicate_files_found": 63,
+    "obsolete_files_found": 9,
+    "high_complexity_files": 333,
+    "recommendations_count": 10
+  },
+  "file_categories": {
+    "reasoning_engines": 697,
+    "validation": 109,
+    "uncategorized": 220,
+    "infrastructure": 130,
+    "utilities": 12,
+    "multimodal": 25,
+    "obsolete": 9
+  },
+  "duplicate_analysis": {
+    "duplicate_pairs": [
+      [
+        "romai_production_validation.py",
+        "tests\\scattered\\romai_production_validation.py"
+      ],
+      [
+        "test_production_infrastructure.py",
+        "tests\\scattered\\test_production_infrastructure.py"
+      ],
+      [
+        "models\\test_enhanced_multimodal.py",
+        "archive\\synthetic_cleanup_backup\\models\\test_enhanced_multimodal.py"
+      ],
+      [
+        "testing\\agi_capability_tests.py",
+        "tests\\testing\\agi_capability_tests.py"
+      ],
+      [
+        "testing\\core_testing_framework.py",
+        "tests\\testing\\core_testing_framework.py"
+      ],
+      [
+        "testing\\integration_tests.py",
+        "tests\\testing\\integration_tests.py"
+      ],
+      [
+        "testing\\performance_tests.py",
+        "tests\\testing\\performance_tests.py"
+      ],
+      [
+        "testing\\production_deployment.py",
+        "tests\\testing\\production_deployment.py"
+      ],
+      [
+        "testing\\production_monitoring.py",
+        "tests\\testing\\production_monitoring.py"
+      ],
+      [
+        "testing\\production_test_suite.py",
+        "tests\\testing\\production_test_suite.py"
+      ],
+      [
+        "testing\\__init__.py",
+        "tests\\testing\\__init__.py"
+      ],
+      [
+        "validation\\ai_evaluation_frameworks_catalog.py",
+        "tests\\validation\\ai_evaluation_frameworks_catalog.py"
+      ],
+      [
+        "validation\\azure_ai_integration.py",
+        "tests\\validation\\azure_ai_integration.py"
+      ],
+      [
+        "validation\\benchmark_testing_core.py",
+        "tests\\validation\\benchmark_testing_core.py"
+      ],
+      [
+        "validation\\comparative_analysis_system.py",
+        "tests\\validation\\comparative_analysis_system.py"
+      ],
+      [
+        "validation\\comprehensive_validation_system.py",
+        "tests\\validation\\comprehensive_validation_system.py"
+      ],
+      [
+        "validation\\final_performance_analysis.py",
+        "tests\\validation\\final_performance_analysis.py"
+      ],
+      [
+        "validation\\romai_api_client.py",
+        "tests\\validation\\romai_api_client.py"
+      ],
+      [
+        "validation\\benchmark_implementations\\humaneval.py",
+        "tests\\validation\\benchmark_implementations\\humaneval.py"
+      ],
+      [
+        "validation\\benchmark_implementations\\mmlu.py",
+        "tests\\validation\\benchmark_implementations\\mmlu.py"
+      ],
+      [
+        "utils\\features\\ai-models\\advanced-intelligence\\romanian_art_media_intelligence.py",
+        "python\\romanian\\culture\\art_media.py"
+      ],
+      [
+        "utils\\features\\ai-models\\advanced-intelligence\\romanian_knowledge_graph.py",
+        "python\\romanian\\knowledge\\graph.py"
+      ],
+      [
+        "utils\\features\\ai-models\\advanced-intelligence\\romanian_literature_analyzer.py",
+        "python\\romanian\\culture\\literature.py"
+      ],
+      [
+        "python\\romanian\\evolution.py",
+        "core\\agi\\learning\\romanian_capability_evolution.py"
+      ],
+      [
+        "python\\romanian\\applications\\romanian_cultural_heritage_explorer.py",
+        "core\\agi\\multimodal\\romanian_cultural_heritage_explorer.py"
+      ],
+      [
+        "python\\romanian\\applications\\romanian_educational_assistant.py",
+        "core\\agi\\multimodal\\romanian_educational_assistant.py"
+      ],
+      [
+        "python\\romanian\\applications\\romanian_healthcare_ai_assistant.py",
+        "core\\agi\\multimodal\\romanian_healthcare_ai_assistant.py"
+      ],
+      [
+        "python\\romanian\\applications\\romanian_media_analysis_platform.py",
+        "core\\agi\\multimodal\\romanian_media_analysis_platform.py"
+      ],
+      [
+        "python\\ml\\data\\romanian_dataset.py",
+        "ml\\data\\romanian_dataset.py"
+      ],
+      [
+        "python\\ml\\data\\__init__.py",
+        "ml\\data\\__init__.py"
+      ],
+      [
+        "python\\ml\\models\\autonomous_agents.py",
+        "ml\\models\\autonomous_agents.py"
+      ],
+      [
+        "python\\ml\\models\\mamba_layer.py",
+        "ml\\models\\mamba_layer.py"
+      ],
+      [
+        "python\\ml\\models\\moe_routing.py",
+        "ml\\models\\moe_routing.py"
+      ],
+      [
+        "python\\ml\\models\\multimodal_architecture.py",
+        "ml\\models\\multimodal_architecture.py"
+      ],
+      [
+        "python\\ml\\models\\quick_test.py",
+        "ml\\models\\quick_test.py"
+      ],
+      [
+        "python\\ml\\models\\romanian_attention.py",
+        "ml\\models\\romanian_attention.py"
+      ],
+      [
+        "python\\ml\\models\\romanian_cpu_processor.py",
+        "ml\\models\\romanian_cpu_processor.py"
+      ],
+      [
+        "python\\ml\\models\\romanian_language.py",
+        "ml\\models\\romanian_language.py"
+      ],
+      [
+        "python\\ml\\models\\__init__.py",
+        "ml\\models\\__init__.py"
+      ],
+      [
+        "python\\ml\\training\\romanian_training_config.py",
+        "ml\\training\\romanian_training_config.py"
+      ],
+      [
+        "python\\ml\\training\\trainer.py",
+        "ml\\training\\trainer.py"
+      ],
+      [
+        "python\\ml\\training\\training_executor.py",
+        "ml\\training\\training_executor.py"
+      ],
+      [
+        "python\\agi\\consciousness\\cultural_engine.py",
+        "core\\agi\\consciousness\\cultural_awareness_engine_engine.py"
+      ],
+      [
+        "python\\agi\\consciousness\\interfaces.py",
+        "core\\agi\\consciousness\\awareness_engine_interfaces.py"
+      ],
+      [
+        "python\\agi\\consciousness\\self_awareness.py",
+        "core\\agi\\consciousness\\self_awareness_engine.py"
+      ],
+      [
+        "python\\agi\\integration\\comprehensive_testing.py",
+        "python\\agi\\integration\\verification.py"
+      ],
+      [
+        "python\\agi\\integration\\final_agi_integration.py",
+        "core\\testing\\integration\\final_agi_integration.py"
+      ],
+      [
+        "python\\agi\\integration\\full_agi_integration.py",
+        "core\\testing\\integration\\full_agi_integration.py"
+      ],
+      [
+        "python\\agi\\orchestration\\cultural_integration.py",
+        "core\\agi\\cultural\\cultural_integration_orchestrator.py"
+      ],
+      [
+        "python\\agi\\orchestration\\system_coordinator.py",
+        "core\\testing\\integration\\system_orchestrator.py"
+      ],
+      [
+        "python\\agi\\reasoning\\cultural_engine.py",
+        "ml\\cultural_reasoning\\cultural_reasoning_engine.py"
+      ],
+      [
+        "python\\agi\\learning\\cultural\\integration.py",
+        "core\\agi\\cultural\\cultural_meta_learning_integration.py"
+      ],
+      [
+        "python\\agi\\learning\\meta\\engine.py",
+        "core\\agi\\learning\\meta_learning_engine.py"
+      ],
+      [
+        "ml\\quantum\\complete_system.py",
+        "ml\\quantum\\archive\\complete_system.py"
+      ],
+      [
+        "ml\\quantum\\final_merger_system.py",
+        "ml\\archive\\legacy_implementations\\final_merger_system.py"
+      ],
+      [
+        "ml\\quantum\\multimodal_awareness_engine.py",
+        "ml\\archive\\legacy_implementations\\multimodal_awareness_engine.py"
+      ],
+      [
+        "ml\\training\\advanced_reasoning_training_system.py",
+        "ml\\training\\reasoning_trainer.py"
+      ],
+      [
+        "ml\\consciousness\\phase9\\awareness_engine_acceleration_manager.py",
+        "archive\\consolidated\\phase9\\awareness_engine_acceleration_manager.py"
+      ],
+      [
+        "ml\\consciousness\\phase9\\quantum_computing_meta_awareness_engine_engine.py",
+        "archive\\consolidated\\phase9\\quantum_computing_meta_awareness_engine_engine.py"
+      ],
+      [
+        "ml\\consciousness\\phase9\\quantum_learning_optimizer.py",
+        "archive\\consolidated\\phase9\\quantum_learning_optimizer.py"
+      ],
+      [
+        "core\\agi\\consciousness\\awareness_engine_simulator.py",
+        "core\\agi\\learning\\awareness_engine_simulator.py"
+      ],
+      [
+        "core\\agi\\consciousness\\test_awareness_engine_simulation.py",
+        "core\\agi\\learning\\test_awareness_engine_simulation.py"
+      ],
+      [
+        "api\\compliance\\compliance_endpoints.py",
+        "api\\enterprise\\compliance_endpoints.py"
+      ]
+    ],
+    "potential_consolidation_savings": "126 files"
+  },
+  "complexity_analysis": [
+    "romai_production_validation.py: complexity 7.4",
+    "config\\caching_framework.py: complexity 7.8",
+    "ml\\advanced_memory_core.py: complexity 7.6",
+    "ml\\breakthrough_scientific_excellence.py: complexity 6.4",
+    "ml\\code_generation_engine.py: complexity 7.4",
+    "ml\\document_processor.py: complexity 12.5",
+    "ml\\enhanced_scientific_excellence.py: complexity 5.9",
+    "ml\\enhanced_software_engineering_supremacy.py: complexity 7.2",
+    "ml\\episodic_memory_system.py: complexity 9.7",
+    "ml\\long_term_storage_manager.py: complexity 7.7",
+    "ml\\mathematical_reasoning_engine_fixed.py: complexity 8.4",
+    "ml\\memory_consolidation_engine.py: complexity 6.5",
+    "ml\\memory_pattern_recognizer.py: complexity 6.6",
+    "ml\\multimodal_intelligence_core.py: complexity 7.3",
+    "ml\\multimodal_intelligence_integration.py: complexity 6.5",
+    "ml\\multimodal_intelligence_integration_simplified.py: complexity 6.5",
+    "ml\\multimodal_reasoner.py: complexity 8.0",
+    "ml\\realtime_learning_adaptation.py: complexity 7.4",
+    "ml\\scientific_research_excellence.py: complexity 5.7",
+    "ml\\software_engineering_supremacy.py: complexity 5.4"
+  ],
+  "recommendations": [
+    "\ud83d\udd04 Remove 63 duplicate files to reduce codebase by 30%+",
+    "\ud83e\udde0 Consolidate 697 reasoning engine files into 5 core engines",
+    "\ud83d\udcc1 Reorganize uncategorized files into proper module structure",
+    "\ud83d\udd27 Refactor high-complexity files to improve maintainability",
+    "\ud83d\uddd1\ufe0f Remove 9 obsolete files",
+    "\ud83c\udfd7\ufe0f Implement unified AGI architecture with clear separation of concerns",
+    "\ud83e\udde0 Replace multiple math engines with single transformer-based system",
+    "\ud83d\udd17 Create proper dependency injection and interface abstractions",
+    "\ud83d\udcca Add comprehensive testing and validation framework",
+    "\ud83d\ude80 Implement production-ready deployment and monitoring"
+  ],
+  "detailed_file_analysis": [
+    {
+      "path": "comprehensive_romai_validation.py",
+      "size_bytes": 17225,
+      "lines_of_code": 300,
+      "classes": [],
+      "functions": [
+        "test_component_availability",
+        "run_mathematical_tests",
+        "run_logical_tests",
+        "run_cultural_tests",
+        "run_multimodal_tests",
+        "run_context_tests",
+        "run_competitive_analysis",
+        "assess_agi_capabilities",
+        "validate_todo_completion",
+        "generate_final_assessment"
+      ],
+      "imports": [
+        "sys",
+        "os",
+        "asyncio",
+        "time",
+        "pathlib",
+        "autonomous_math_engine",
+        "autonomous_logical_engine",
+        "romanian_cultural_engine",
+        "multimodal_integration",
+        "advanced_context_manager",
+        "advanced_romanian_tokenizer",
+        "math"
+      ],
+      "complexity_score": 2.5,
+      "last_modified": 1755909643.288483,
+      "hash_signature": "5f09af05387b30ab480633f014b116de",
+      "issues": [
+        "Contains TODO/FIXME comments",
+        "Test functions in non-test file"
+      ],
+      "category": "reasoning_engines",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "debug_endpoint.py",
+      "size_bytes": 2511,
+      "lines_of_code": 61,
+      "classes": [],
+      "functions": [
+        "test_romanian_cultural_endpoint",
+        "test_server_health"
+      ],
+      "imports": [
+        "requests",
+        "json"
+      ],
+      "complexity_score": 0.8,
+      "last_modified": 1755844824.4333296,
+      "hash_signature": "b625a57c477370d489b58e463396e735",
+      "issues": [
+        "Test functions in non-test file"
+      ],
+      "category": "reasoning_engines",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "debug_factory.py",
+      "size_bytes": 4117,
+      "lines_of_code": 71,
+      "classes": [],
+      "functions": [
+        "debug_factory_method",
+        "debug_server_import_pattern",
+        "get_reasoning_system"
+      ],
+      "imports": [
+        "sys",
+        "os",
+        "ml.reasoning.self_supervised_reasoning_system",
+        "inspect",
+        "traceback",
+        "inspect",
+        "traceback",
+        "ml.reasoning.self_supervised_reasoning_system"
+      ],
+      "complexity_score": 0.9,
+      "last_modified": 1755844824.4288244,
+      "hash_signature": "8712f041a10f25d4fc6b5292b2508b75",
+      "issues": [],
+      "category": "reasoning_engines",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "debug_standalone.py",
+      "size_bytes": 5098,
+      "lines_of_code": 103,
+      "classes": [],
+      "functions": [
+        "get_reasoning_system"
+      ],
+      "imports": [
+        "asyncio",
+        "sys",
+        "os",
+        "ml.reasoning.standalone_reasoning",
+        "ml.reasoning.standalone_reasoning",
+        "sys",
+        "traceback",
+        "traceback",
+        "traceback",
+        "ml.reasoning.standalone_reasoning",
+        "ml.reasoning.self_supervised_reasoning_system"
+      ],
+      "complexity_score": 1.0,
+      "last_modified": 1755844824.4338305,
+      "hash_signature": "a889cd1d3fac777a437eda951fa8572a",
+      "issues": [],
+      "category": "reasoning_engines",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "enhanced_romanian_processor.py",
+      "size_bytes": 6175,
+      "lines_of_code": 122,
+      "classes": [
+        "RomanianFormality",
+        "RomanianAnalysis",
+        "EnhancedRomanianProcessor"
+      ],
+      "functions": [
+        "__init__",
+        "_initialize_diacritics_map",
+        "_initialize_formality_markers",
+        "_initialize_cultural_patterns",
+        "_detect_formality",
+        "_restore_diacritics",
+        "_extract_cultural_markers",
+        "_analyze_linguistic_features"
+      ],
+      "imports": [
+        "re",
+        "typing",
+        "dataclasses",
+        "enum",
+        "logging"
+      ],
+      "complexity_score": 0.8,
+      "last_modified": 1755863109.808874,
+      "hash_signature": "752bc4802d1759db39cbba8581e6fb55",
+      "issues": [],
+      "category": "reasoning_engines",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "romai_agi_system.py",
+      "size_bytes": 21775,
+      "lines_of_code": 451,
+      "classes": [
+        "RomAIConfig",
+        "RomAIResponse",
+        "RomAI"
+      ],
+      "functions": [
+        "__init__",
+        "_initialize_engines_sync",
+        "math_engine",
+        "logic_engine",
+        "romanian_engine",
+        "creative_engine",
+        "cross_modal_engine",
+        "_detect_query_domain",
+        "get_status",
+        "is_ready"
+      ],
+      "imports": [
+        "asyncio",
+        "logging",
+        "typing",
+        "dataclasses",
+        "pathlib",
+        "sys",
+        "time",
+        "time",
+        "time",
+        "time",
+        "time",
+        "ml.reasoning.autonomous_math_engine",
+        "ml.reasoning.autonomous_logical_engine",
+        "ml.reasoning.real_romanian_engine_simple",
+        "ml.reasoning.creative_intelligence_system",
+        "ml.reasoning.cross_modal_knowledge_integration_engine",
+        "ml.reasoning",
+        "ml.reasoning",
+        "ml.reasoning",
+        "ml.reasoning",
+        "ml.reasoning"
+      ],
+      "complexity_score": 4.4,
+      "last_modified": 1755911371.7642663,
+      "hash_signature": "9dc3c78dc3b17ac18f14e99a0e2b472a",
+      "issues": [],
+      "category": "reasoning_engines",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "romai_production_validation.py",
+      "size_bytes": 25805,
+      "lines_of_code": 474,
+      "classes": [
+        "RomAIProductionValidator"
+      ],
+      "functions": [
+        "__init__",
+        "_generate_final_assessment",
+        "_generate_global_recommendations"
+      ],
+      "imports": [
+        "asyncio",
+        "logging",
+        "os",
+        "sys",
+        "json",
+        "time",
+        "datetime",
+        "typing"
+      ],
+      "complexity_score": 7.4,
+      "last_modified": 1755843912.559554,
+      "hash_signature": "7b7e3f035d3937367bf239087378ff2a",
+      "issues": [],
+      "category": "validation",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "test_live_endpoint.py",
+      "size_bytes": 1266,
+      "lines_of_code": 30,
+      "classes": [],
+      "functions": [
+        "test_live_endpoint"
+      ],
+      "imports": [
+        "requests",
+        "json",
+        "time"
+      ],
+      "complexity_score": 0.5,
+      "last_modified": 1755844824.4378414,
+      "hash_signature": "e6323b34f552c89826bb577e551ba596",
+      "issues": [],
+      "category": "validation",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "test_production_infrastructure.py",
+      "size_bytes": 6896,
+      "lines_of_code": 119,
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "asyncio",
+        "logging",
+        "sys",
+        "time",
+        "pathlib",
+        "testing.core_testing_framework",
+        "testing.agi_capability_tests",
+        "testing.performance_tests",
+        "testing.security_tests",
+        "testing.integration_tests",
+        "testing.production_test_suite",
+        "testing.core_testing_framework",
+        "datetime",
+        "traceback"
+      ],
+      "complexity_score": 0.6,
+      "last_modified": 1755843912.1560555,
+      "hash_signature": "7296fc155551721826dc696a738fcb6b",
+      "issues": [
+        "No classes or functions defined"
+      ],
+      "category": "validation",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "test_romai_system.py",
+      "size_bytes": 5608,
+      "lines_of_code": 108,
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "sys",
+        "asyncio",
+        "logging",
+        "romai_agi_system",
+        "romai_agi_system"
+      ],
+      "complexity_score": 1.4,
+      "last_modified": 1755910774.6210608,
+      "hash_signature": "77aa831e2487defdaee0aaf0776372fe",
+      "issues": [
+        "No classes or functions defined"
+      ],
+      "category": "validation",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "__init__.py",
+      "size_bytes": 5558,
+      "lines_of_code": 121,
+      "classes": [
+        "RomAI"
+      ],
+      "functions": [
+        "get_system_status",
+        "validate_system",
+        "__init__"
+      ],
+      "imports": [
+        "logging",
+        "sys",
+        "pathlib",
+        "romai_agi_system"
+      ],
+      "complexity_score": 1.3,
+      "last_modified": 1755910228.6270096,
+      "hash_signature": "8bde52c10845dd0c8eb31d07dfc22ca7",
+      "issues": [],
+      "category": "uncategorized",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ai\\azure_openai_service.py",
+      "size_bytes": 18310,
+      "lines_of_code": 320,
+      "classes": [
+        "AIResponse",
+        "ContextEngine",
+        "AzureOpenAIService",
+        "SimplifiedAzureOpenAIService"
+      ],
+      "functions": [
+        "__init__",
+        "engineer_context",
+        "_get_domain_role",
+        "_retrieve_relevant_knowledge",
+        "_get_conversation_memory",
+        "_get_reasoning_framework",
+        "_apply_token_budgeting",
+        "update_memory",
+        "__init__",
+        "_initialize_client",
+        "health_check",
+        "__init__",
+        "_perform_cultural_analysis",
+        "_detect_cultural_indicators"
+      ],
+      "imports": [
+        "os",
+        "asyncio",
+        "logging",
+        "typing",
+        "dataclasses",
+        "json",
+        "time",
+        "datetime",
+        "romai_config",
+        "config.romai_config",
+        "config.romai_config"
+      ],
+      "complexity_score": 1.6,
+      "last_modified": 1755911078.3339193,
+      "hash_signature": "b73770c0dc51eb8f260b86f310ec9be3",
+      "issues": [],
+      "category": "reasoning_engines",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ai\\mock_azure_openai_service.py",
+      "size_bytes": 11706,
+      "lines_of_code": 221,
+      "classes": [
+        "MockAIResponse",
+        "MockAzureOpenAIService",
+        "MockRealMathematicalEngine"
+      ],
+      "functions": [
+        "__init__",
+        "_generate_domain_specific_response",
+        "_generate_math_response",
+        "_generate_logic_response",
+        "_generate_culture_response",
+        "health_check",
+        "__init__",
+        "get_engine_status"
+      ],
+      "imports": [
+        "asyncio",
+        "logging",
+        "typing",
+        "dataclasses",
+        "datetime",
+        "time",
+        "random",
+        "json",
+        "ml.reasoning.real_mathematical_engine"
+      ],
+      "complexity_score": 1.7,
+      "last_modified": 1755886468.6908298,
+      "hash_signature": "2cb357ebff138e34e1976d1cca1f6e2e",
+      "issues": [],
+      "category": "reasoning_engines",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ai\\romai_config.py",
+      "size_bytes": 2665,
+      "lines_of_code": 56,
+      "classes": [
+        "AzureOpenAIConfig",
+        "RomAIConfig"
+      ],
+      "functions": [
+        "get_romai_config",
+        "__post_init__"
+      ],
+      "imports": [
+        "os",
+        "typing",
+        "dataclasses"
+      ],
+      "complexity_score": 0.2,
+      "last_modified": 1755911020.4970858,
+      "hash_signature": "a88fc9c5d79af3b3abb4afa509f3eaee",
+      "issues": [],
+      "category": "infrastructure",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ai\\romai_intelligence_system.py",
+      "size_bytes": 11460,
+      "lines_of_code": 233,
+      "classes": [
+        "UnifiedResult",
+        "RomAIIntelligenceSystem"
+      ],
+      "functions": [
+        "__init__"
+      ],
+      "imports": [
+        "asyncio",
+        "logging",
+        "typing",
+        "dataclasses",
+        "time",
+        "datetime",
+        "sys",
+        "os",
+        "ml.reasoning.real_mathematical_engine",
+        "ml.reasoning.real_logical_engine",
+        "ml.reasoning.real_romanian_engine",
+        "ai.azure_openai_service",
+        "config.romai_config"
+      ],
+      "complexity_score": 1.6,
+      "last_modified": 1755886468.6908298,
+      "hash_signature": "87bc972cec631f5ce1501f30489057ad",
+      "issues": [],
+      "category": "uncategorized",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ai\\__init__.py",
+      "size_bytes": 164,
+      "lines_of_code": 5,
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "azure_openai_service"
+      ],
+      "complexity_score": 0.1,
+      "last_modified": 1755910388.7704763,
+      "hash_signature": "b6bc5bb582ccd0b1f393ff11aae95e40",
+      "issues": [
+        "No classes or functions defined"
+      ],
+      "category": "uncategorized",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "api\\meta_learning.py",
+      "size_bytes": 16615,
+      "lines_of_code": 350,
+      "classes": [
+        "MetaLearningRequest",
+        "FewShotRequest",
+        "AdaptiveFewShotRequest",
+        "MetaLearningResponse",
+        "FewShotResponse"
+      ],
+      "functions": [],
+      "imports": [
+        "fastapi",
+        "pydantic",
+        "typing",
+        "datetime",
+        "asyncio",
+        "json",
+        "uuid",
+        "ml.meta_learning.romanian_meta_learner",
+        "ml.few_shot.romanian_few_shot_engine"
+      ],
+      "complexity_score": 1.9,
+      "last_modified": 1754226205.7473774,
+      "hash_signature": "d4d992f3ae924e330bcb010f71c3db9e",
+      "issues": [],
+      "category": "infrastructure",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "api\\meta_learning_api.py",
+      "size_bytes": 17862,
+      "lines_of_code": 359,
+      "classes": [
+        "TaskRequest",
+        "AdaptationRequest",
+        "TrainingRequest",
+        "MetaLearningResponse"
+      ],
+      "functions": [
+        "initialize_meta_learning"
+      ],
+      "imports": [
+        "fastapi",
+        "pydantic",
+        "typing",
+        "asyncio",
+        "json",
+        "time",
+        "logging",
+        "datetime",
+        "maml_implementation",
+        "romanian_task_generator",
+        "meta_trainer",
+        "romanian_task_generator",
+        "maml_implementation"
+      ],
+      "complexity_score": 2.1,
+      "last_modified": 1754226205.755428,
+      "hash_signature": "dd9caec0f8f5f4ece104c209197bd364",
+      "issues": [],
+      "category": "infrastructure",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "api\\romai_api_integration.py",
+      "size_bytes": 10539,
+      "lines_of_code": 255,
+      "classes": [
+        "QueryRequest",
+        "QueryResponse",
+        "MultiDomainRequest",
+        "SystemStatusResponse"
+      ],
+      "functions": [],
+      "imports": [
+        "asyncio",
+        "logging",
+        "typing",
+        "fastapi",
+        "fastapi.middleware.cors",
+        "pydantic",
+        "time",
+        "datetime",
+        "uvicorn",
+        "sys",
+        "os",
+        "ai.romai_intelligence_system",
+        "config.romai_config"
+      ],
+      "complexity_score": 1.2,
+      "last_modified": 1755886468.6908298,
+      "hash_signature": "31d491ce3d7369ff92e2e7c72ff6c72e",
+      "issues": [],
+      "category": "infrastructure",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "config\\caching_framework.py",
+      "size_bytes": 39471,
+      "lines_of_code": 782,
+      "classes": [
+        "CachePolicy",
+        "CacheLevel",
+        "CacheStatus",
+        "CompressionType",
+        "CacheEntry",
+        "LRUCache",
+        "LFUCache",
+        "MultiLevelCache",
+        "CacheWarmer",
+        "AdvancedCachingFramework"
+      ],
+      "functions": [
+        "__init__",
+        "_calculate_size",
+        "_compress_value",
+        "get_value",
+        "is_expired",
+        "get_metadata",
+        "__init__",
+        "get",
+        "put",
+        "delete",
+        "clear",
+        "get_stats",
+        "_calculate_memory_usage",
+        "__init__",
+        "get",
+        "put",
+        "delete",
+        "clear",
+        "get_stats",
+        "_calculate_memory_usage",
+        "_get_frequency_distribution",
+        "__init__",
+        "get_comprehensive_stats",
+        "__init__",
+        "stop_warming",
+        "__init__",
+        "_init_database",
+        "_evaluate_cache_performance",
+        "_calculate_performance_metrics",
+        "_calculate_cache_score",
+        "_get_cache_grade",
+        "_generate_caching_recommendations",
+        "_assess_caching_health"
+      ],
+      "imports": [
+        "asyncio",
+        "json",
+        "logging",
+        "sqlite3",
+        "time",
+        "uuid",
+        "hashlib",
+        "pickle",
+        "gzip",
+        "datetime",
+        "enum",
+        "pathlib",
+        "typing",
+        "threading",
+        "concurrent.futures",
+        "collections",
+        "weakref",
+        "zlib",
+        "zlib"
+      ],
+      "complexity_score": 7.8,
+      "last_modified": 1754593748.8214905,
+      "hash_signature": "9226a7fa2594642d066e6f078357a9f8",
+      "issues": [
+        "Very large file (>1000 lines)"
+      ],
+      "category": "infrastructure",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "config\\consciousness_framework.py",
+      "size_bytes": 28362,
+      "lines_of_code": 430,
+      "classes": [
+        "ConsciousnessLevel",
+        "ConsciousnessMetrics",
+        "AdvancedConsciousnessEngine"
+      ],
+      "functions": [
+        "__init__",
+        "__init__",
+        "_initialize_self_model"
+      ],
+      "imports": [
+        "asyncio",
+        "logging",
+        "time",
+        "json",
+        "numpy",
+        "torch",
+        "datetime",
+        "typing",
+        "dataclasses",
+        "enum",
+        "math",
+        "random"
+      ],
+      "complexity_score": 0.5,
+      "last_modified": 1754740270.05134,
+      "hash_signature": "438e85ae35bce94f0215e04e531bd847",
+      "issues": [],
+      "category": "reasoning_engines",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "config\\eu_ai_act_framework.py",
+      "size_bytes": 24390,
+      "lines_of_code": 455,
+      "classes": [
+        "AIRiskCategory",
+        "ComplianceStatus",
+        "BiasType",
+        "ComplianceMetadata",
+        "RiskAssessmentResult",
+        "BiasDetectionResult",
+        "TransparencyReport",
+        "AuditTrailEntry",
+        "IncidentReport",
+        "EUAIActComplianceFramework"
+      ],
+      "functions": [
+        "__init__",
+        "_initialize_compliance_framework",
+        "_generate_mitigation_measures",
+        "_detect_demographic_bias",
+        "_detect_cultural_bias",
+        "_detect_linguistic_bias",
+        "_detect_geographic_bias",
+        "_apply_bias_mitigation",
+        "get_compliance_status"
+      ],
+      "imports": [
+        "os",
+        "json",
+        "logging",
+        "hashlib",
+        "datetime",
+        "typing",
+        "enum",
+        "dataclasses",
+        "uuid",
+        "pydantic",
+        "fastapi",
+        "numpy"
+      ],
+      "complexity_score": 4.0,
+      "last_modified": 1754593748.8149533,
+      "hash_signature": "10699bad84fa559802abbd8033168e2e",
+      "issues": [],
+      "category": "reasoning_engines",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "config\\romai_config.py",
+      "size_bytes": 1238,
+      "lines_of_code": 20,
+      "classes": [
+        "RomAIConfig"
+      ],
+      "functions": [
+        "__init__"
+      ],
+      "imports": [],
+      "complexity_score": 0.1,
+      "last_modified": 1755910693.5795052,
+      "hash_signature": "0173610e746fd2b12875e941419022e1",
+      "issues": [],
+      "category": "infrastructure",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "config\\__init__.py",
+      "size_bytes": 118,
+      "lines_of_code": 5,
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "romai_config"
+      ],
+      "complexity_score": 0.1,
+      "last_modified": 1755910349.861042,
+      "hash_signature": "0da075a70daf3098f5f1cd88350c4133",
+      "issues": [
+        "No classes or functions defined"
+      ],
+      "category": "infrastructure",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "core\\utils.py",
+      "size_bytes": 4021,
+      "lines_of_code": 92,
+      "classes": [
+        "PerformanceMetrics"
+      ],
+      "functions": [
+        "get_logger",
+        "profile_operation",
+        "sync_wrapper",
+        "record_operation",
+        "get_summary",
+        "get_operation_stats"
+      ],
+      "imports": [
+        "logging",
+        "time",
+        "functools",
+        "typing",
+        "dataclasses",
+        "collections"
+      ],
+      "complexity_score": 1.0,
+      "last_modified": 1754398605.576074,
+      "hash_signature": "bdd34efd05a321ae6df7604e6c958859",
+      "issues": [],
+      "category": "utilities",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "core\\__init__.py",
+      "size_bytes": 2249,
+      "lines_of_code": 50,
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "mathematical",
+        "reasoning",
+        "learning",
+        "integration",
+        "agi",
+        "ml",
+        "utils"
+      ],
+      "complexity_score": 0.1,
+      "last_modified": 1754752630.943719,
+      "hash_signature": "98c7812bb19205721fd83c7df8a32e1a",
+      "issues": [
+        "No classes or functions defined"
+      ],
+      "category": "uncategorized",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "deployment\\__init__.py",
+      "size_bytes": 5772,
+      "lines_of_code": 117,
+      "classes": [
+        "RomAIDeploymentManager"
+      ],
+      "functions": [
+        "create_azure_deployment_config",
+        "create_deployment_manager",
+        "__init__",
+        "_initialize_deployment_system"
+      ],
+      "imports": [
+        "typing",
+        "logging",
+        "azure"
+      ],
+      "complexity_score": 0.3,
+      "last_modified": 1755844822.139522,
+      "hash_signature": "7eaae171e145e23a639eb003a4897d3e",
+      "issues": [],
+      "category": "infrastructure",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "domains\\__init__.py",
+      "size_bytes": 164,
+      "lines_of_code": 8,
+      "classes": [],
+      "functions": [],
+      "imports": [],
+      "complexity_score": 0.1,
+      "last_modified": 1755803775.2007794,
+      "hash_signature": "634f54899addc595ed36589c4701a3b1",
+      "issues": [
+        "No classes or functions defined"
+      ],
+      "category": "uncategorized",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "enterprise\\__init__.py",
+      "size_bytes": 20598,
+      "lines_of_code": 339,
+      "classes": [
+        "EnterpriseSolutionStatus",
+        "RomAIEnterpriseBusiness"
+      ],
+      "functions": [
+        "initialize_enterprise_business",
+        "get_enterprise_business",
+        "__init__",
+        "get_component_status"
+      ],
+      "imports": [
+        "asyncio",
+        "logging",
+        "json",
+        "datetime",
+        "typing",
+        "dataclasses",
+        "integrations.erp_integration",
+        "integrations.crm_integration",
+        "integrations.workflow_automation",
+        "business_intelligence.advanced_analytics",
+        "compliance.compliance_governance"
+      ],
+      "complexity_score": 2.4,
+      "last_modified": 1754593748.8214905,
+      "hash_signature": "9a9294fd62c200aad01ab955d60f1c1d",
+      "issues": [],
+      "category": "uncategorized",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "evaluation\\__init__.py",
+      "size_bytes": 501,
+      "lines_of_code": 14,
+      "classes": [],
+      "functions": [],
+      "imports": [],
+      "complexity_score": 0.1,
+      "last_modified": 1755844822.1736188,
+      "hash_signature": "ffd22eb747171ca587b57a8c0856fef7",
+      "issues": [
+        "No classes or functions defined"
+      ],
+      "category": "uncategorized",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "inference\\execution_engine.py",
+      "size_bytes": 27346,
+      "lines_of_code": 498,
+      "classes": [
+        "ExecutionContext",
+        "ActionResult",
+        "ReinforcementLearningActionSelector",
+        "MultiStepExecutionFramework",
+        "RealTimeAdaptationSystem",
+        "OutcomePredictionNetwork",
+        "ExecutionFeedbackLoop",
+        "AdvancedExecutionEngine"
+      ],
+      "functions": [
+        "__init__",
+        "encode_context",
+        "encode_action",
+        "select_action",
+        "__init__",
+        "_create_step_decomposer",
+        "_create_step_executor",
+        "_create_progress_monitor",
+        "__init__",
+        "_create_adaptation_network",
+        "record_performance",
+        "__init__",
+        "predict_outcome",
+        "__init__",
+        "record_execution_result",
+        "extract_patterns",
+        "_extract_success_factors",
+        "_extract_failure_factors",
+        "_generate_improvement_suggestions",
+        "__init__",
+        "_update_statistics",
+        "get_execution_capability_score",
+        "get_detailed_metrics"
+      ],
+      "imports": [
+        "torch",
+        "torch.nn",
+        "torch.nn.functional",
+        "numpy",
+        "typing",
+        "asyncio",
+        "json",
+        "time",
+        "dataclasses",
+        "collections",
+        "random",
+        "asyncio"
+      ],
+      "complexity_score": 3.3,
+      "last_modified": 1754740270.0828893,
+      "hash_signature": "466e4e0eafefa770bfc536c9246f0036",
+      "issues": [],
+      "category": "reasoning_engines",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "inference\\training_execution.py",
+      "size_bytes": 7608,
+      "lines_of_code": 138,
+      "classes": [],
+      "functions": [
+        "main",
+        "get_training_config"
+      ],
+      "imports": [
+        "os",
+        "sys",
+        "torch",
+        "pytorch_lightning",
+        "time",
+        "pathlib",
+        "trainer",
+        "config",
+        "data.romanian_dataset",
+        "sys",
+        "os",
+        "training.trainer",
+        "data.romanian_dataset",
+        "training.config",
+        "traceback"
+      ],
+      "complexity_score": 0.7,
+      "last_modified": 1754174164.002164,
+      "hash_signature": "398b08d0ff0675bb3643979cf935a225",
+      "issues": [],
+      "category": "infrastructure",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ml\\advanced_memory_core.py",
+      "size_bytes": 38332,
+      "lines_of_code": 623,
+      "classes": [
+        "MemoryType",
+        "MemoryStrength",
+        "ConsolidationStatus",
+        "MemoryTrace",
+        "WorkingMemorySlot",
+        "EpisodicEvent",
+        "MemoryConsolidationResult",
+        "AdvancedMemoryCore"
+      ],
+      "functions": [
+        "__init__",
+        "set_external_memory_systems",
+        "generate_memory_id",
+        "calculate_memory_strength",
+        "get_working_memory_slot",
+        "get_memory_statistics"
+      ],
+      "imports": [
+        "asyncio",
+        "time",
+        "json",
+        "uuid",
+        "typing",
+        "dataclasses",
+        "enum",
+        "datetime",
+        "logging",
+        "pathlib",
+        "romai_api_client",
+        "episodic_memory_system",
+        "working_memory_processor",
+        "long_term_storage_manager"
+      ],
+      "complexity_score": 7.6,
+      "last_modified": 1755794203.0632513,
+      "hash_signature": "af8da626e5f859d293ddf88abda806cc",
+      "issues": [],
+      "category": "uncategorized",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ml\\breakthrough_scientific_excellence.py",
+      "size_bytes": 32310,
+      "lines_of_code": 563,
+      "classes": [
+        "ScientificReasoningChain"
+      ],
+      "functions": [
+        "__init__"
+      ],
+      "imports": [
+        "asyncio",
+        "json",
+        "logging",
+        "time",
+        "dataclasses",
+        "enum",
+        "typing",
+        "datetime",
+        "numpy"
+      ],
+      "complexity_score": 6.4,
+      "last_modified": 1755737798.1422615,
+      "hash_signature": "a28f3fd20a392c8065398023c991c07e",
+      "issues": [],
+      "category": "reasoning_engines",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ml\\code_generation_engine.py",
+      "size_bytes": 23666,
+      "lines_of_code": 488,
+      "classes": [
+        "CodeComplexity",
+        "CodeGenerationRequest",
+        "GeneratedCode",
+        "CodeOptimization",
+        "CodeGenerationEngine"
+      ],
+      "functions": [
+        "__init__",
+        "_load_generation_patterns",
+        "_load_optimization_rules",
+        "assess_code_complexity",
+        "generate_code_with_romai",
+        "_extract_code_from_response",
+        "_fallback_code_generation",
+        "validate_syntax",
+        "execute_code_safely",
+        "optimize_code",
+        "_calculate_readability_score",
+        "_check_indentation_consistency"
+      ],
+      "imports": [
+        "asyncio",
+        "ast",
+        "re",
+        "subprocess",
+        "tempfile",
+        "os",
+        "sys",
+        "typing",
+        "dataclasses",
+        "enum",
+        "time",
+        "logging",
+        "romai_api_client"
+      ],
+      "complexity_score": 7.4,
+      "last_modified": 1755791566.1213803,
+      "hash_signature": "83ac4d3a18ff46a0399a2977c0e81d03",
+      "issues": [
+        "Contains TODO/FIXME comments"
+      ],
+      "category": "reasoning_engines",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ml\\debug_code_gen.py",
+      "size_bytes": 1659,
+      "lines_of_code": 41,
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "asyncio",
+        "code_generation_engine"
+      ],
+      "complexity_score": 0.4,
+      "last_modified": 1755791566.1239083,
+      "hash_signature": "dd5ddd357c4f9f380fa34c7e4f0fd21f",
+      "issues": [
+        "No classes or functions defined"
+      ],
+      "category": "uncategorized",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ml\\document_processor.py",
+      "size_bytes": 39084,
+      "lines_of_code": 757,
+      "classes": [
+        "DocumentType",
+        "ProcessingMode",
+        "DocumentMetadata",
+        "DocumentStructure",
+        "DocumentContent",
+        "DocumentProcessingResult",
+        "DocumentProcessor"
+      ],
+      "functions": [
+        "__init__",
+        "detect_document_type",
+        "extract_metadata",
+        "detect_language",
+        "extract_structure",
+        "_extract_markdown_structure",
+        "_extract_html_structure",
+        "_extract_code_structure",
+        "_extract_text_structure",
+        "_build_heading_hierarchy",
+        "_preprocess_text",
+        "_extract_key_phrases",
+        "_parse_semantic_analysis",
+        "_calculate_confidence_score"
+      ],
+      "imports": [
+        "asyncio",
+        "time",
+        "json",
+        "re",
+        "typing",
+        "dataclasses",
+        "pathlib",
+        "logging",
+        "enum",
+        "romai_api_client"
+      ],
+      "complexity_score": 12.5,
+      "last_modified": 1755791566.1320808,
+      "hash_signature": "0737c8eb4a26a27af2419aca02b6ea21",
+      "issues": [],
+      "category": "uncategorized",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ml\\enhanced_scientific_excellence.py",
+      "size_bytes": 41033,
+      "lines_of_code": 723,
+      "classes": [
+        "EnhancedScientificExpertSystem"
+      ],
+      "functions": [
+        "__init__",
+        "_initialize_massive_knowledge_base",
+        "_initialize_phd_reasoning_patterns",
+        "_initialize_domain_experts",
+        "_extract_key_terms",
+        "_calculate_relevance",
+        "_check_contradiction"
+      ],
+      "imports": [
+        "asyncio",
+        "json",
+        "logging",
+        "time",
+        "dataclasses",
+        "enum",
+        "typing",
+        "datetime",
+        "numpy",
+        "networkx",
+        "re"
+      ],
+      "complexity_score": 5.9,
+      "last_modified": 1755737798.1397536,
+      "hash_signature": "31b8becd1becec3a50b291f97fc46a7c",
+      "issues": [],
+      "category": "reasoning_engines",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ml\\enhanced_software_engineering_supremacy.py",
+      "size_bytes": 59265,
+      "lines_of_code": 987,
+      "classes": [
+        "ReasoningStep",
+        "SoftwareReasoningChain",
+        "EnhancedSoftwareEngineeringSolver",
+        "EnhancedSoftwareEngineeringSupremacy"
+      ],
+      "functions": [
+        "__init__",
+        "_estimate_cyclomatic_complexity",
+        "__init__"
+      ],
+      "imports": [
+        "asyncio",
+        "json",
+        "time",
+        "logging",
+        "typing",
+        "dataclasses",
+        "enum",
+        "re",
+        "ast",
+        "pathlib"
+      ],
+      "complexity_score": 7.2,
+      "last_modified": 1755737798.1427658,
+      "hash_signature": "e4d8cc53151ee4d87ebeb4e56434f283",
+      "issues": [
+        "Very large file (>1000 lines)"
+      ],
+      "category": "reasoning_engines",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ml\\episodic_memory_system.py",
+      "size_bytes": 42735,
+      "lines_of_code": 664,
+      "classes": [
+        "EpisodicContext",
+        "TemporalGranularity",
+        "EpisodicMemoryTrace",
+        "EpisodicQuery",
+        "EpisodicRetrievalResult",
+        "EpisodicMemorySystem"
+      ],
+      "functions": [
+        "__init__",
+        "generate_episode_id",
+        "_fallback_insight_extraction",
+        "_calculate_vividness",
+        "_calculate_confidence",
+        "_analyze_temporal_patterns",
+        "_generate_retrieval_insights",
+        "get_system_statistics"
+      ],
+      "imports": [
+        "asyncio",
+        "time",
+        "json",
+        "uuid",
+        "typing",
+        "dataclasses",
+        "datetime",
+        "enum",
+        "logging",
+        "math",
+        "romai_api_client",
+        "re"
+      ],
+      "complexity_score": 9.7,
+      "last_modified": 1755794203.0637581,
+      "hash_signature": "27799a75817e856822a0cc5cdd07d5b1",
+      "issues": [],
+      "category": "uncategorized",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ml\\execution_tester.py",
+      "size_bytes": 18661,
+      "lines_of_code": 371,
+      "classes": [
+        "ExecutionResult",
+        "TestCase",
+        "ExecutionMetrics",
+        "TestResult",
+        "ExecutionSummary",
+        "ExecutionTester"
+      ],
+      "functions": [
+        "test_execution_tester",
+        "__init__",
+        "_get_safe_builtins",
+        "execute_code_safely",
+        "_execute_in_thread",
+        "execute_with_subprocess",
+        "_set_subprocess_limits",
+        "_create_metrics",
+        "run_test_suite",
+        "_outputs_equal"
+      ],
+      "imports": [
+        "asyncio",
+        "subprocess",
+        "tempfile",
+        "os",
+        "sys",
+        "time",
+        "signal",
+        "typing",
+        "dataclasses",
+        "enum",
+        "logging",
+        "traceback",
+        "threading",
+        "queue",
+        "resource",
+        "json"
+      ],
+      "complexity_score": 3.6,
+      "last_modified": 1755791566.1223845,
+      "hash_signature": "e2d72a48f54175e3022be735bede5215",
+      "issues": [],
+      "category": "validation",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ml\\humaneval_runner.py",
+      "size_bytes": 17727,
+      "lines_of_code": 379,
+      "classes": [
+        "HumanEvalProblem",
+        "HumanEvalResult",
+        "HumanEvalSummary",
+        "HumanEvalRunner"
+      ],
+      "functions": [
+        "__init__",
+        "_load_humaneval_problems",
+        "extract_function_from_generated_code",
+        "create_test_execution_code",
+        "_indent_test_cases",
+        "print_detailed_results"
+      ],
+      "imports": [
+        "asyncio",
+        "json",
+        "os",
+        "re",
+        "typing",
+        "dataclasses",
+        "time",
+        "logging",
+        "code_generation_engine",
+        "execution_tester",
+        "syntax_validator"
+      ],
+      "complexity_score": 2.3,
+      "last_modified": 1755791566.123404,
+      "hash_signature": "606f6eb8ea2bd87a9c81d8d94c9ba556",
+      "issues": [],
+      "category": "validation",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ml\\long_term_storage_manager.py",
+      "size_bytes": 45389,
+      "lines_of_code": 742,
+      "classes": [
+        "StorageCategory",
+        "StorageIntegrity",
+        "AccessPattern",
+        "LongTermMemoryEntry",
+        "StorageMetrics",
+        "RetrievalQuery",
+        "RetrievalResult",
+        "LongTermStorageManager"
+      ],
+      "functions": [
+        "__init__",
+        "_initialize_database",
+        "_generate_entry_id",
+        "_calculate_content_hash",
+        "_compress_content",
+        "_decompress_content",
+        "_extract_semantic_tags",
+        "get_storage_metrics",
+        "close"
+      ],
+      "imports": [
+        "asyncio",
+        "time",
+        "json",
+        "uuid",
+        "sqlite3",
+        "pickle",
+        "typing",
+        "dataclasses",
+        "datetime",
+        "enum",
+        "pathlib",
+        "logging",
+        "hashlib",
+        "zlib",
+        "romai_api_client"
+      ],
+      "complexity_score": 7.7,
+      "last_modified": 1755794203.0784097,
+      "hash_signature": "fa1e618763816b7e2f5afba1d10ae195",
+      "issues": [],
+      "category": "uncategorized",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ml\\mathematical_reasoning_engine.py",
+      "size_bytes": 30411,
+      "lines_of_code": 552,
+      "classes": [
+        "MathematicalProblem",
+        "ReasoningStep",
+        "MathematicalSolution",
+        "MathematicalConceptExtractor",
+        "ChainOfThoughtGenerator",
+        "MathematicalVerificationEngine",
+        "TestTimeComputeEngine",
+        "AdvancedMathematicalReasoningEngine"
+      ],
+      "functions": [
+        "__init__",
+        "extract_concepts",
+        "classify_problem_type",
+        "assess_difficulty",
+        "__init__",
+        "__init__",
+        "__init__",
+        "__init__",
+        "_update_performance_metrics",
+        "get_performance_report"
+      ],
+      "imports": [
+        "asyncio",
+        "json",
+        "logging",
+        "re",
+        "math",
+        "sympy",
+        "dataclasses",
+        "datetime",
+        "typing",
+        "pathlib",
+        "numpy",
+        "torch",
+        "torch.nn",
+        "transformers",
+        "sys",
+        "romai_api_client",
+        "sys"
+      ],
+      "complexity_score": 3.4,
+      "last_modified": 1755789802.9295948,
+      "hash_signature": "d1ae01fdbe6d391f5a447e1056026dbd",
+      "issues": [],
+      "category": "reasoning_engines",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ml\\mathematical_reasoning_engine_fixed.py",
+      "size_bytes": 22802,
+      "lines_of_code": 393,
+      "classes": [
+        "ProblemType",
+        "MathematicalSolution",
+        "EnhancedMathematicalReasoningEngine"
+      ],
+      "functions": [
+        "__init__",
+        "_create_forcing_prompt",
+        "_extract_numerical_answer",
+        "_fallback_computation",
+        "_classify_problem"
+      ],
+      "imports": [
+        "asyncio",
+        "logging",
+        "re",
+        "math",
+        "time",
+        "dataclasses",
+        "typing",
+        "enum",
+        "romai_api_client"
+      ],
+      "complexity_score": 8.4,
+      "last_modified": 1755789802.9386423,
+      "hash_signature": "17451ae3421e1d94923bd098fe8fcf6f",
+      "issues": [
+        "Potential duplicate functionality"
+      ],
+      "category": "reasoning_engines",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ml\\memory_consolidation_engine.py",
+      "size_bytes": 41547,
+      "lines_of_code": 698,
+      "classes": [
+        "ConsolidationStrategy",
+        "ConsolidationTrigger",
+        "ConsolidationQuality",
+        "ConsolidationTask",
+        "ConsolidationResult",
+        "ConsolidationMetrics",
+        "MemoryConsolidationEngine"
+      ],
+      "functions": [
+        "__init__",
+        "_generate_task_id",
+        "_map_chunk_type_to_memory_type",
+        "_estimate_processing_complexity",
+        "_analyze_quality_distribution",
+        "get_consolidation_metrics"
+      ],
+      "imports": [
+        "asyncio",
+        "time",
+        "json",
+        "uuid",
+        "typing",
+        "dataclasses",
+        "datetime",
+        "enum",
+        "logging",
+        "math",
+        "collections",
+        "romai_api_client",
+        "advanced_memory_core",
+        "episodic_memory_system",
+        "working_memory_processor",
+        "long_term_storage_manager"
+      ],
+      "complexity_score": 6.5,
+      "last_modified": 1755794203.0784097,
+      "hash_signature": "2b401ad96a0e81fabad2ca5738b3444b",
+      "issues": [
+        "Potential duplicate functionality"
+      ],
+      "category": "reasoning_engines",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ml\\memory_pattern_recognizer.py",
+      "size_bytes": 53164,
+      "lines_of_code": 819,
+      "classes": [
+        "PatternType",
+        "PatternStrength",
+        "PatternCategory",
+        "MemoryPattern",
+        "PatternPrediction",
+        "PatternInsight",
+        "MemoryPatternRecognizer"
+      ],
+      "functions": [
+        "__init__",
+        "_generate_pattern_id",
+        "get_pattern_recognition_metrics"
+      ],
+      "imports": [
+        "asyncio",
+        "time",
+        "json",
+        "uuid",
+        "typing",
+        "dataclasses",
+        "datetime",
+        "enum",
+        "logging",
+        "math",
+        "numpy",
+        "collections",
+        "romai_api_client",
+        "advanced_memory_core",
+        "episodic_memory_system",
+        "working_memory_processor",
+        "long_term_storage_manager",
+        "memory_consolidation_engine",
+        "memory_consolidation_engine",
+        "episodic_memory_system",
+        "episodic_memory_system",
+        "long_term_storage_manager"
+      ],
+      "complexity_score": 6.6,
+      "last_modified": 1755794203.082938,
+      "hash_signature": "20a1bba0ef80d082389ed67ae741026d",
+      "issues": [],
+      "category": "uncategorized",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ml\\multimodal_intelligence_core.py",
+      "size_bytes": 26837,
+      "lines_of_code": 491,
+      "classes": [
+        "ModalityType",
+        "ProcessingComplexity",
+        "MultiModalInput",
+        "MultiModalOutput",
+        "VisionLanguageResult",
+        "MultiModalIntelligenceCore"
+      ],
+      "functions": [
+        "__init__",
+        "_initialize_vision_capabilities",
+        "_initialize_document_capabilities",
+        "assess_processing_complexity",
+        "load_image_from_path",
+        "load_image_from_bytes",
+        "analyze_image_content",
+        "_assess_image_brightness",
+        "_assess_image_contrast",
+        "_assess_image_sharpness",
+        "_estimate_scene_type",
+        "extract_text_from_document"
+      ],
+      "imports": [
+        "asyncio",
+        "base64",
+        "io",
+        "time",
+        "typing",
+        "dataclasses",
+        "enum",
+        "logging",
+        "pathlib",
+        "romai_api_client",
+        "PIL"
+      ],
+      "complexity_score": 7.3,
+      "last_modified": 1755791566.1279242,
+      "hash_signature": "6cb19cf24416ba18ddc0e85284fa3fdc",
+      "issues": [],
+      "category": "multimodal",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ml\\multimodal_intelligence_integration.py",
+      "size_bytes": 41269,
+      "lines_of_code": 735,
+      "classes": [
+        "MultiModalIntelligenceIntegration",
+        "VisionAnalysisResult",
+        "AudioAnalysisResult",
+        "MultiModalResult",
+        "VisionLanguageProcessor",
+        "AudioIntelligenceEngine",
+        "MultiModalFusionEngine",
+        "MultiModalReasoningEngine"
+      ],
+      "functions": [
+        "__init__",
+        "__init__",
+        "_initialize_object_detection",
+        "_initialize_scene_analysis",
+        "_initialize_ocr_engine",
+        "_initialize_visual_reasoning",
+        "__init__",
+        "_initialize_speech_recognition",
+        "_initialize_speaker_analysis",
+        "_initialize_audio_classification",
+        "_initialize_emotion_detection",
+        "__init__",
+        "_initialize_cross_modal_attention",
+        "_initialize_feature_alignment",
+        "_initialize_temporal_sync",
+        "__init__",
+        "_initialize_reasoning_strategies",
+        "_initialize_multimodal_knowledge"
+      ],
+      "imports": [
+        "asyncio",
+        "json",
+        "time",
+        "math",
+        "numpy",
+        "cv2",
+        "librosa",
+        "typing",
+        "dataclasses",
+        "pathlib"
+      ],
+      "complexity_score": 6.5,
+      "last_modified": 1755737798.1487415,
+      "hash_signature": "f9096281e81e04aa485d19a5fbac851b",
+      "issues": [],
+      "category": "reasoning_engines",
+      "is_duplicate": false,
+      "duplicate_of": null
+    },
+    {
+      "path": "ml\\multimodal_intelligence_integration_simplified.py",
+      "size_bytes": 41241,
+      "lines_of_code": 733,
+      "classes": [
+        "MultiModalIntelligenceIntegration",
+        "VisionAnalysisResult",
+        "AudioAnalysisResult",
+        "MultiModalResult",
+        "VisionLanguageProcessor",
+        "AudioIntelligenceEngine",
+        "MultiModalFusionEngine",
+        "MultiModalReasoningEngine"
+      ],
+      "functions": [
+        "__init__",
+        "__init__",
+        "_initialize_object_detection",
+        "_initialize_scene_analysis",
+        "_initialize_ocr_engine",
+        "_initialize_visual_reasoning",
+        "__init__",
+        "_initialize_speech_recognition",
+        "_initialize_speaker_analysis",
+        "_initialize_audio_classification",
+        "_initialize_emotion_detection",
+        "__init__",
+        "_initialize_cross_modal_attention",
+        "_initialize_feature_alignment",
+        "_initialize_temporal_sync",
+        "__init__",
+        "_initialize_reasoning_strategies",
+        "_initialize_multimodal_knowledge"
+      ],
+      "imports": [
+        "asyncio",
+        "json",
+        "time",
+        "math",
+        "numpy",
+        "typing",
+        "dataclasses",
+        "pathlib"
+      ],
+      "complexity_score": 6.5,
+      "last_modified": 1755737798.1487415,
+      "hash_signature": "979f8e18df4e428ba72817acf73df0d8",
+      "issues": [],
+      "category": "reasoning_engines",
+      "is_duplicate": false,
+      "duplicate_of": null
+    }
+  ]
+}

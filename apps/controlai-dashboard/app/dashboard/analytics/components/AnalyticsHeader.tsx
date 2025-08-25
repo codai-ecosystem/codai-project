@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Analytics Header Component - Navigation and Controls
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import {
@@ -185,4 +186,5 @@ export function AnalyticsHeader({
         </div>
     )
 }
+
 

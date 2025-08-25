@@ -240,7 +240,7 @@ export default function MemoryDashboard() {
                                 <Database className="w-8 h-8 text-blue-500" />
                                 <div className="ml-4">
                                     <p className="text-sm font-medium text-gray-600">Total Memories</p>
-                                    <p className="text-2xl font-bold text-gray-900">{stats.totalMemories}</p>
+                                    <p className="text-2xl font-bold text-gray-900">{stats?.totalMemories || 0}</p>
                                 </div>
                             </div>
                         </CardContent>
@@ -252,7 +252,7 @@ export default function MemoryDashboard() {
                                 <Clock className="w-8 h-8 text-green-500" />
                                 <div className="ml-4">
                                     <p className="text-sm font-medium text-gray-600">Recently Added</p>
-                                    <p className="text-2xl font-bold text-gray-900">{stats.recentlyAdded}</p>
+                                    <p className="text-2xl font-bold text-gray-900">{stats?.recentlyAdded || 0}</p>
                                 </div>
                             </div>
                         </CardContent>
@@ -264,7 +264,7 @@ export default function MemoryDashboard() {
                                 <Star className="w-8 h-8 text-yellow-500" />
                                 <div className="ml-4">
                                     <p className="text-sm font-medium text-gray-600">Avg. Importance</p>
-                                    <p className="text-2xl font-bold text-gray-900">{stats.averageImportance.toFixed(1)}</p>
+                                    <p className="text-2xl font-bold text-gray-900">{(stats?.averageImportance || 0).toFixed(1)}</p>
                                 </div>
                             </div>
                         </CardContent>
@@ -276,7 +276,7 @@ export default function MemoryDashboard() {
                                 <Activity className="w-8 h-8 text-purple-500" />
                                 <div className="ml-4">
                                     <p className="text-sm font-medium text-gray-600">Active Projects</p>
-                                    <p className="text-2xl font-bold text-gray-900">{stats.topProjects.length}</p>
+                                    <p className="text-2xl font-bold text-gray-900">{stats?.topProjects?.length || 0}</p>
                                 </div>
                             </div>
                         </CardContent>
@@ -355,6 +355,7 @@ export default function MemoryDashboard() {
                                                 onChange={(e) => setSearchQuery(e.target.value)}
                                                 onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                                                 className="w-64"
+                                                data-testid="search-memories-input"
                                             />
                                             <Button onClick={handleSearch} disabled={isLoading}>
                                                 <Search className="w-4 h-4" />
@@ -453,6 +454,7 @@ export default function MemoryDashboard() {
                                                 value={newMemory}
                                                 onChange={(e) => setNewMemory(e.target.value)}
                                                 rows={8}
+                                                data-testid="memory-content-textarea"
                                             />
                                         </div>
 
@@ -461,6 +463,7 @@ export default function MemoryDashboard() {
                                                 onClick={handleAddMemory}
                                                 disabled={isLoading || !newMemory.trim()}
                                                 className="flex items-center gap-2"
+                                                data-testid="add-memory-button"
                                             >
                                                 <Plus className="w-4 h-4" />
                                                 {isLoading ? 'Adding Memory...' : 'Add Memory'}

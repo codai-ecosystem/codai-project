@@ -1,0 +1,1 @@
+                        elif any(pattern in question for pattern in ["romanian", "romania", "cultura", "traditional", "cultural", "romanian culture", "history", "heritage"]):

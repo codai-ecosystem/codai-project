@@ -1,0 +1,38 @@
+# Simple ID Service Dockerfile
+FROM node:20-alpine as base
+
+# Install curl for health checks
+RUN apk add --no-cache curl
+
+# Set working directory
+WORKDIR /app
+
+# Add non-root user
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# Copy just the ID app files
+COPY apps/id/package.json ./
+COPY apps/id/pnpm-lock.yaml* ./
+
+# Install dependencies
+RUN corepack enable pnpm && pnpm install --frozen-lockfile --prod
+
+# Copy application code
+COPY apps/id/ ./
+
+# Create production build
+RUN corepack enable pnpm && pnpm build
+
+# Switch to non-root user
+USER nextjs
+
+# Expose port
+EXPOSE 4004
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+  CMD curl -f http://localhost:4004/api/health || exit 1
+
+# Start the application
+CMD ["pnpm", "start"]

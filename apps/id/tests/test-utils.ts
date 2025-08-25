@@ -2,8 +2,8 @@
  * Test utilities for consistent test setup and teardown
  */
 
-import { SimpleAuthService } from '../src/services/simple-auth';
-import type { CreateUserData } from '../src/services/simple-auth';
+import { SimpleAuthService } from '../src/services/identity-auth';
+import type { CreateUserData } from '../src/services/identity-auth';
 
 let testCounter = 0;
 

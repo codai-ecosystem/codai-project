@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * TeamCommunication Component - Comprehensive team communication hub
  */
-'use client'
 
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -441,4 +442,5 @@ export function TeamCommunication({ members, communicationMode, onModeChange }: 
         </div>
     )
 }
+
 

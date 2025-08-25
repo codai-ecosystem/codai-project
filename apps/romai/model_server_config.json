@@ -1,0 +1,41 @@
+{
+  "romai_model_server_config": {
+    "version": "2.0",
+    "updated": "2025-08-22T21:13:24.484195",
+    "priority_loading": "trained_neural_networks",
+    "fallback_mode": "legacy_autonomous_engines",
+    "models": {
+      "mathematical_reasoning": {
+        "primary": "apps/romai/trained_models/mathematical_model_best.pt",
+        "fallback": "apps/romai/trained_models/mathematical_model_final.pt",
+        "type": "neural_network",
+        "architecture": "transformer_neural_symbolic"
+      },
+      "logical_reasoning": {
+        "primary": "apps/romai/trained_models/logical_model_best.pt",
+        "fallback": "apps/romai/trained_models/logical_model_final.pt",
+        "type": "neural_network",
+        "architecture": "transformer_logical_forms"
+      },
+      "cultural_intelligence": {
+        "primary": "apps/romai/trained_models/cultural_model_best.pt",
+        "fallback": "apps/romai/trained_models/cultural_model_final.pt",
+        "type": "neural_network",
+        "architecture": "transformer_cultural_encoding"
+      }
+    },
+    "inference_settings": {
+      "max_tokens": 512,
+      "temperature": 0.7,
+      "top_p": 0.9,
+      "batch_size": 1,
+      "use_cache": true
+    },
+    "monitoring": {
+      "track_performance": true,
+      "log_responses": true,
+      "measure_confidence": true,
+      "detect_template_responses": true
+    }
+  }
+}

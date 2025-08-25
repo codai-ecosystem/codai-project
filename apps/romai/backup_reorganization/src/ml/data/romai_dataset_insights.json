@@ -1,0 +1,132 @@
+{
+  "dataset_insights": {
+    "dataset_summary": {
+      "total_entries": 97,
+      "total_collections": 12,
+      "average_quality_score": 0.9126144329896907,
+      "average_cultural_relevance": 0.8702061855670102
+    },
+    "content_distribution": {
+      "cultural": 32,
+      "folklore": 15,
+      "literature": 20,
+      "philosophical": 22,
+      "technical": 8
+    },
+    "language_distribution": {
+      "ro": 97
+    },
+    "quality_distribution": {
+      "high": 97
+    },
+    "collections_overview": {
+      "literature": {
+        "entries": 23,
+        "category": "literature",
+        "average_quality": 0.8344521739130435
+      },
+      "culture": {
+        "entries": 16,
+        "category": "culture",
+        "average_quality": 0.9371
+      },
+      "philosophy": {
+        "entries": 12,
+        "category": "philosophy",
+        "average_quality": 0.9688666666666667
+      },
+      "technical": {
+        "entries": 6,
+        "category": "technical",
+        "average_quality": 0.9833333333333334
+      }
+    }
+  },
+  "preprocessing_insights": {
+    "preprocessing_summary": {
+      "total_processed_entries": 97,
+      "total_augmented_variants": 79,
+      "processing_stats": {
+        "total_processed": 97,
+        "augmented_entries": 97,
+        "cultural_markers_found": 36,
+        "quality_improvements": 89
+      }
+    },
+    "quality_metrics": {
+      "average_complexity_score": 0.6773066225276554,
+      "average_readability_score": 0.8554521653263416,
+      "quality_improvements": 89
+    },
+    "data_splits": {
+      "test": 16,
+      "train": 67,
+      "validation": 14
+    },
+    "cultural_analysis": {
+      "total_cultural_markers": 36,
+      "unique_cultural_markers": 8,
+      "top_cultural_markers": {
+        "tradiție": 18,
+        "țară": 7,
+        "frumos": 3,
+        "să_fiți_sănătoși": 3,
+        "dor": 2,
+        "noapte_bună": 1,
+        "jale": 1,
+        "bună_ziua": 1
+      }
+    },
+    "augmentation_effectiveness": {
+      "augmented_entry_ratio": 0.8144329896907216,
+      "augmented_entries": 97
+    }
+  },
+  "collection_insights": {
+    "collection_summary": {
+      "total_content_pieces": 5,
+      "average_quality_score": 0.9560000000000001,
+      "average_cultural_relevance": 1.0,
+      "average_educational_value": 0.512,
+      "recent_collections_24h": 5
+    },
+    "content_distribution": {
+      "by_type": {
+        "Wikipedia România": 5
+      },
+      "by_source": {
+        "Wikipedia România": 5
+      },
+      "by_quality": {
+        "high": 5
+      }
+    },
+    "collection_statistics": {
+      "total_collected": 5,
+      "successful_extractions": 5,
+      "failed_extractions": 0,
+      "high_quality_content": 5,
+      "culturally_relevant_content": 5
+    },
+    "source_overview": {
+      "total_sources": 5,
+      "active_sources": 5
+    }
+  },
+  "pipeline_statistics": {
+    "start_time": "2025-08-23 01:53:18.022023",
+    "end_time": "2025-08-23 01:53:26.131192",
+    "total_duration": 8.109169,
+    "phase_durations": {
+      "phase_1_base_dataset": 0.0413815975189209,
+      "phase_2_content_collection": 6.809510231018066,
+      "phase_3_preprocessing": 1.2512574195861816,
+      "phase_4_insights": 0.004650592803955078
+    },
+    "total_entries_created": 57,
+    "total_entries_processed": 97,
+    "total_content_collected": 5,
+    "quality_improvements": 89,
+    "cultural_relevance_score": 0.8849932065217392
+  }
+}

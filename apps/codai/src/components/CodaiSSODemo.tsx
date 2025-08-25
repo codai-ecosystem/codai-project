@@ -1,10 +1,10 @@
+'use client';
+
 import React from 'react'
 /**
  * CODAI Platform - Main Application with Integrated Authentication
  * Cross-app authentication system with working navigation
  */
-
-'use client';
 
 import { useAuth, AppConfig, NavigationManager } from '../lib/auth';
 import { useState } from 'react';
@@ -99,8 +99,8 @@ export default function CodaiSSODemo() {
                   key={app.key}
                   href={app.url}
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${app.active
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                    ? 'bg-blue-100 text-blue-700'
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                     }`}
                 >
                   {app.name}
@@ -233,8 +233,8 @@ export default function CodaiSSODemo() {
                   key={app.key}
                   href={app.url}
                   className={`p-3 rounded-lg border transition-all duration-200 hover:shadow-md ${app.active
-                      ? 'bg-blue-50 border-blue-200 text-blue-900'
-                      : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100'
+                    ? 'bg-blue-50 border-blue-200 text-blue-900'
+                    : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100'
                     }`}
                 >
                   <div className="text-center">

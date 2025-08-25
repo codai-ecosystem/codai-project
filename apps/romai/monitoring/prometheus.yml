@@ -1,0 +1,160 @@
+# Prometheus Configuration for RomAI AGI System
+# Production monitoring setup for 5-engine AGI system
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    environment: 'production'
+    service: 'romai-agi'
+    deployment: 'docker'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+# Load rules once and periodically evaluate them
+rule_files:
+  - "alert_rules.yml"
+  - "recording_rules.yml"
+
+# Scrape configurations
+scrape_configs:
+  # RomAI AGI System Metrics
+  - job_name: 'romai-agi-system'
+    static_configs:
+      - targets: ['romai-agi-system:9090']
+    metrics_path: /metrics
+    scrape_interval: 10s
+    scrape_timeout: 8s
+    honor_labels: true
+    params:
+      format: ['prometheus']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'romai-agi-system'
+      - source_labels: [__address__]
+        target_label: service
+        replacement: 'agi-core'
+
+  # AGI Health Dashboard Metrics
+  - job_name: 'romai-agi-health'
+    static_configs:
+      - targets: ['romai-agi-system:8080']
+    metrics_path: /metrics
+    scrape_interval: 30s
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: service
+        replacement: 'agi-health'
+
+  # PostgreSQL Database Metrics
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+    scrape_interval: 30s
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: service
+        replacement: 'postgres'
+
+  # Redis Cache Metrics
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis-exporter:9121']
+    scrape_interval: 30s
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: service
+        replacement: 'redis'
+
+  # CBD Database Metrics
+  - job_name: 'cbd-database'
+    static_configs:
+      - targets: ['cbd-database:4180']
+    metrics_path: /metrics
+    scrape_interval: 30s
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: service
+        replacement: 'cbd-database'
+
+  # Container Metrics (cAdvisor)
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+    scrape_interval: 30s
+    metrics_path: /metrics
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: service
+        replacement: 'container-metrics'
+
+  # Node Exporter (Host Metrics)
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+    scrape_interval: 30s
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: service
+        replacement: 'host-metrics'
+
+  # NGINX Load Balancer Metrics
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['nginx-agi-lb:9113']
+    scrape_interval: 30s
+    metrics_path: /metrics
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: service
+        replacement: 'nginx-lb'
+
+  # Custom AGI Engine Metrics
+  - job_name: 'agi-engines'
+    static_configs:
+      - targets: ['romai-agi-system:6101']
+    metrics_path: /engines/metrics
+    scrape_interval: 15s
+    params:
+      engines: ['math', 'logic', 'cultural', 'creative', 'integration']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: service
+        replacement: 'agi-engines'
+
+  # Prometheus Self-Monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    scrape_interval: 30s
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: service
+        replacement: 'prometheus'
+
+# Storage configuration
+storage:
+  tsdb:
+    retention.time: 30d
+    retention.size: 10GB
+    path: /prometheus
+    wal-compression: true
+
+# Remote write configuration (optional - for long-term storage)
+# remote_write:
+#   - url: "https://your-remote-prometheus-endpoint/api/v1/write"
+#     queue_config:
+#       max_samples_per_send: 1000
+#       max_shards: 200
+#       capacity: 2500
+
+# Query performance settings
+query:
+  timeout: 2m
+  max_concurrent: 20
+  max_samples: 50000000

@@ -1,0 +1,316 @@
+# 🆔 CODAI Core Services - ID, Hub, and BancAI Services
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: codai-services
+  labels:
+    name: codai-services
+    tier: application
+---
+# CODAI ID Service - Identity and Authentication
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-id
+  namespace: codai-services
+  labels:
+    app: codai-id
+    tier: service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: codai-id
+  template:
+    metadata:
+      labels:
+        app: codai-id
+        tier: service
+    spec:
+      containers:
+        - name: codai-id
+          image: 567877624442.dkr.ecr.eu-west-1.amazonaws.com/codai-id:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4004
+              name: http
+          env:
+            - name: NODE_ENV
+              value: 'production'
+            - name: PORT
+              value: '4004'
+            - name: DATABASE_URL
+              value: 'postgresql://codai:codai123@postgresql.codai-data:5432/codai'
+            - name: REDIS_URL
+              value: 'redis://redis.codai-data:6379'
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: codai-secrets
+                  key: jwt-secret
+            - name: JWT_EXPIRES_IN
+              value: '24h'
+            - name: CORS_ORIGIN
+              value: '*'
+          resources:
+            requests:
+              memory: '128Mi'
+              cpu: '100m'
+            limits:
+              memory: '512Mi'
+              cpu: '500m'
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 4004
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 4004
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-id
+  namespace: codai-services
+  labels:
+    app: codai-id
+    tier: service
+spec:
+  selector:
+    app: codai-id
+  ports:
+    - port: 4100
+      targetPort: 4004
+      name: http
+  type: ClusterIP
+---
+# CODAI Hub Service - Ecosystem Management and Orchestration
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codai-hub
+  namespace: codai-services
+  labels:
+    app: codai-hub
+    tier: service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: codai-hub
+  template:
+    metadata:
+      labels:
+        app: codai-hub
+        tier: service
+    spec:
+      containers:
+        - name: codai-hub
+          image: 567877624442.dkr.ecr.eu-west-1.amazonaws.com/codai-hub:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4008
+              name: http
+          env:
+            - name: NODE_ENV
+              value: 'production'
+            - name: PORT
+              value: '4008'
+            - name: DATABASE_URL
+              value: 'postgresql://codai:codai123@postgresql.codai-data:5432/codai'
+            - name: REDIS_URL
+              value: 'redis://redis.codai-data:6379'
+            - name: GATEWAY_URL
+              value: 'http://gateway.codai-infrastructure'
+            - name: CORS_ORIGIN
+              value: '*'
+          resources:
+            requests:
+              memory: '128Mi'
+              cpu: '100m'
+            limits:
+              memory: '512Mi'
+              cpu: '500m'
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 4008
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 4008
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: codai-hub
+  namespace: codai-services
+  labels:
+    app: codai-hub
+    tier: service
+spec:
+  selector:
+    app: codai-hub
+  ports:
+    - port: 4110
+      targetPort: 4008
+      name: http
+  type: ClusterIP
+---
+# BancAI Service - AI-Powered Banking Operations
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bancai
+  namespace: codai-services
+  labels:
+    app: bancai
+    tier: service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bancai
+  template:
+    metadata:
+      labels:
+        app: bancai
+        tier: service
+    spec:
+      containers:
+        - name: bancai
+          image: 567877624442.dkr.ecr.eu-west-1.amazonaws.com/bancai-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4005
+              name: http
+          env:
+            - name: NODE_ENV
+              value: 'production'
+            - name: PORT
+              value: '4005'
+            - name: DATABASE_URL
+              value: 'postgresql://codai:codai123@postgresql.codai-data:5432/codai_bancai'
+            - name: REDIS_URL
+              value: 'redis://redis.codai-data:6379'
+            - name: CORS_ORIGIN
+              value: '*'
+            - name: BANKING_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: codai-secrets
+                  key: banking-api-key
+            - name: AI_MODEL_ENDPOINT
+              value: 'http://romai-mcp.codai-infrastructure:8000'
+            - name: FRAUD_DETECTION_THRESHOLD
+              value: '0.85'
+            - name: CREDIT_SCORING_MODEL
+              value: 'production'
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '200m'
+            limits:
+              memory: '1Gi'
+              cpu: '1000m'
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 4005
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 4005
+            initialDelaySeconds: 45
+            periodSeconds: 30
+            timeoutSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bancai
+  namespace: codai-services
+  labels:
+    app: bancai
+    tier: service
+spec:
+  selector:
+    app: bancai
+  ports:
+    - port: 4120
+      targetPort: 4005
+      name: http
+  type: ClusterIP
+---
+# Secrets for the services
+apiVersion: v1
+kind: Secret
+metadata:
+  name: codai-secrets
+  namespace: codai-services
+type: Opaque
+data:
+  jwt-secret: Y29kYWktand0LXNlY3JldC1wcm9kdWN0aW9uLTIwMjU= # base64 encoded: codai-jwt-secret-production-2025
+  banking-api-key: YmFuY2FpLWFwaS1rZXktcHJvZHVjdGlvbi0yMDI1 # base64 encoded: bancai-api-key-production-2025
+---
+# Network Policy for secure inter-service communication
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: codai-services-policy
+  namespace: codai-services
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: codai-infrastructure
+    - namespaceSelector:
+        matchLabels:
+          name: codai-services
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: codai-data
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: codai-infrastructure
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: codai-services
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 80

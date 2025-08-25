@@ -1,0 +1,235 @@
+"""
+Kubernetes Deployment Configuration for RomAI
+Production-ready Kubernetes manifests for scalable Romanian AI deployment
+"""
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: romai-agi-server
+  namespace: romai-production
+  labels:
+    app: romai-agi-server
+    component: ai-engine
+    cultural-context: romanian
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: romai-agi-server
+  template:
+    metadata:
+      labels:
+        app: romai-agi-server
+        component: ai-engine
+        cultural-context: romanian
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+      - name: romai-agi
+        image: romai/agi-server:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 6101
+          name: api
+        - containerPort: 9090
+          name: metrics
+        
+        env:
+        - name: ROMAI_ENV
+          value: "production"
+        - name: ROMAI_AGI_PORT
+          value: "6101"
+        - name: ROMAI_AGI_HOST
+          value: "0.0.0.0"
+        - name: ROMAI_LOG_LEVEL
+          value: "INFO"
+        - name: PYTORCH_CUDA_ALLOC_CONF
+          value: "max_split_size_mb:1024"
+        - name: QUANTUM_ENABLED
+          value: "true"
+        - name: CONSCIOUSNESS_ENGINE
+          value: "true"
+        - name: ROMANIAN_CULTURAL_MODE
+          value: "enhanced"
+        
+        resources:
+          requests:
+            memory: "4Gi"
+            cpu: "2"
+          limits:
+            memory: "8Gi"
+            cpu: "4"
+        
+        volumeMounts:
+        - name: model-cache
+          mountPath: /app/.cache/models
+        - name: logs
+          mountPath: /app/logs
+        - name: config
+          mountPath: /app/config
+        
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 6101
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: 6101
+          initialDelaySeconds: 30
+          periodSeconds: 15
+          timeoutSeconds: 5
+          failureThreshold: 3
+        
+        startupProbe:
+          httpGet:
+            path: /health/startup
+            port: 6101
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 12
+
+      volumes:
+      - name: model-cache
+        persistentVolumeClaim:
+          claimName: romai-model-cache-pvc
+      - name: logs
+        persistentVolumeClaim:
+          claimName: romai-logs-pvc
+      - name: config
+        configMap:
+          name: romai-config
+
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - romai-agi-server
+              topologyKey: kubernetes.io/hostname
+
+      tolerations:
+      - key: "romai.ai/gpu"
+        operator: "Equal"
+        value: "true"
+        effect: "NoSchedule"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: romai-agi-service
+  namespace: romai-production
+  labels:
+    app: romai-agi-server
+    component: ai-engine
+spec:
+  selector:
+    app: romai-agi-server
+  ports:
+  - name: api
+    port: 6101
+    targetPort: 6101
+    protocol: TCP
+  - name: metrics
+    port: 9090
+    targetPort: 9090
+    protocol: TCP
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: romai-enterprise-api
+  namespace: romai-production
+  labels:
+    app: romai-enterprise-api
+    component: api-gateway
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: romai-enterprise-api
+  template:
+    metadata:
+      labels:
+        app: romai-enterprise-api
+        component: api-gateway
+    spec:
+      containers:
+      - name: enterprise-api
+        image: romai/enterprise-api:latest
+        ports:
+        - containerPort: 8001
+        
+        env:
+        - name: ENTERPRISE_API_PORT
+          value: "8001"
+        - name: ROMAI_AGI_BASE_URL
+          value: "http://romai-agi-service:6101"
+        - name: JWT_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: romai-secrets
+              key: jwt-secret
+        - name: RATE_LIMIT_ENABLED
+          value: "true"
+        - name: COMPLIANCE_MODE
+          value: "eu_ai_act"
+        - name: ROMANIAN_CULTURAL_COMPLIANCE
+          value: "strict"
+        
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1"
+        
+        livenessProbe:
+          httpGet:
+            path: /api/v1/health
+            port: 8001
+          periodSeconds: 30
+        
+        readinessProbe:
+          httpGet:
+            path: /api/v1/health/ready
+            port: 8001
+          periodSeconds: 15
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: romai-enterprise-service
+  namespace: romai-production
+spec:
+  selector:
+    app: romai-enterprise-api
+  ports:
+  - port: 8001
+    targetPort: 8001
+  type: ClusterIP

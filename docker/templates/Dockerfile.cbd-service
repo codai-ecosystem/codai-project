@@ -1,0 +1,80 @@
+# ===========================================================
+# CODAI Ecosystem - CBD (Universal Database) Service
+# Microsoft Best Practices: Multi-stage Build with Security
+# Base: Node.js 20 LTS Alpine (Microsoft Recommended)
+# ===========================================================
+
+# Stage 1: Build Stage
+FROM node:20-alpine AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Install build dependencies for native modules
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    sqlite-dev \
+    postgresql-dev \
+    git
+
+# Copy package files for dependency caching
+COPY package.json pnpm-lock.yaml* ./
+COPY packages/cbd/package.json ./packages/cbd/
+
+# Install dependencies using pnpm (workspace aware)
+RUN npm install -g pnpm@latest && \
+    pnpm install --frozen-lockfile --prod=false
+
+# Copy source code
+COPY packages/cbd ./packages/cbd/
+COPY packages/shared-types ./packages/shared-types/
+
+# Build application (if TypeScript)
+RUN cd packages/cbd && \
+    pnpm build && \
+    pnpm prune --prod
+
+# Stage 2: Runtime Stage (Microsoft Security Best Practices)
+FROM node:20-alpine AS runtime
+
+# Add security labels (Microsoft compliance)
+LABEL org.opencontainers.image.title="CODAI CBD Service"
+LABEL org.opencontainers.image.description="Universal Database Service"
+LABEL org.opencontainers.image.vendor="CODAI Ecosystem"
+LABEL org.opencontainers.image.version="1.0.0"
+
+# Install runtime dependencies and dumb-init
+RUN apk add --no-cache \
+    dumb-init \
+    sqlite \
+    postgresql-client \
+    curl \
+    && rm -rf /var/cache/apk/*
+
+# Create non-root user (Microsoft security requirement)
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+
+# Set working directory
+WORKDIR /app
+
+# Copy built application from builder stage
+COPY --from=builder --chown=nodejs:nodejs /app/packages/cbd/dist ./dist
+COPY --from=builder --chown=nodejs:nodejs /app/packages/cbd/node_modules ./node_modules
+COPY --from=builder --chown=nodejs:nodejs /app/packages/cbd/package.json ./
+
+# Switch to non-root user
+USER nodejs
+
+# Expose port
+EXPOSE 4180
+
+# Health check (Microsoft reliability pattern)
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:4180/health || exit 1
+
+# Use dumb-init for proper signal handling
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["node", "dist/start.js"]

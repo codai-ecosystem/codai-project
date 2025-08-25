@@ -1,0 +1,107 @@
+{
+  "timestamp": "2025-08-24T02:11:00.038852",
+  "total_replacements": 29,
+  "total_size_reduction": 459,
+  "results": {
+    "src/ml/serving/model_server.py": {
+      "status": "cleaned",
+      "original_size": 517892,
+      "new_size": 517633,
+      "replacements": 16,
+      "backup": "backups\\phase3\\model_server.py.phase3.backup",
+      "size_reduction": 259
+    },
+    "src/ml/orchestration/agi_orchestrator.py": {
+      "status": "cleaned",
+      "original_size": 34120,
+      "new_size": 34104,
+      "replacements": 1,
+      "backup": "backups\\phase3\\agi_orchestrator.py.phase3.backup",
+      "size_reduction": 16
+    },
+    "src/ml/orchestration/enterprise_agi_orchestrator.py": {
+      "status": "skipped",
+      "reason": "file not found"
+    },
+    "testing/mathematical_reasoning_engine.py": {
+      "status": "cleaned",
+      "original_size": 48165,
+      "new_size": 48141,
+      "replacements": 1,
+      "backup": "backups\\phase3\\mathematical_reasoning_engine.py.phase3.backup",
+      "size_reduction": 24
+    },
+    "testing/medical_reasoning.py": {
+      "status": "cleaned",
+      "original_size": 35989,
+      "new_size": 35973,
+      "replacements": 1,
+      "backup": "backups\\phase3\\medical_reasoning.py.phase3.backup",
+      "size_reduction": 16
+    },
+    "testing/performance_optimization_core.py": {
+      "status": "cleaned",
+      "original_size": 38529,
+      "new_size": 38513,
+      "replacements": 1,
+      "backup": "backups\\phase3\\performance_optimization_core.py.phase3.backup",
+      "size_reduction": 16
+    },
+    "testing/vision_processing.py": {
+      "status": "cleaned",
+      "original_size": 31242,
+      "new_size": 31226,
+      "replacements": 1,
+      "backup": "backups\\phase3\\vision_processing.py.phase3.backup",
+      "size_reduction": 16
+    },
+    "testing/financial_modeling.py": {
+      "status": "cleaned",
+      "original_size": 35437,
+      "new_size": 35421,
+      "replacements": 1,
+      "backup": "backups\\phase3\\financial_modeling.py.phase3.backup",
+      "size_reduction": 16
+    },
+    "testing/conversational_quality_enhancement.py": {
+      "status": "cleaned",
+      "original_size": 47387,
+      "new_size": 47359,
+      "replacements": 2,
+      "backup": "backups\\phase3\\conversational_quality_enhancement.py.phase3.backup",
+      "size_reduction": 28
+    },
+    "testing/audio_processing.py": {
+      "status": "cleaned",
+      "original_size": 36965,
+      "new_size": 36949,
+      "replacements": 1,
+      "backup": "backups\\phase3\\audio_processing.py.phase3.backup",
+      "size_reduction": 16
+    },
+    "src/romai_neural_architecture_v3.py": {
+      "status": "cleaned",
+      "original_size": 22736,
+      "new_size": 22716,
+      "replacements": 2,
+      "backup": "backups\\phase3\\romai_neural_architecture_v3.py.phase3.backup",
+      "size_reduction": 20
+    },
+    "src/romai_theory_of_mind_v1.py": {
+      "status": "cleaned",
+      "original_size": 54172,
+      "new_size": 54156,
+      "replacements": 1,
+      "backup": "backups\\phase3\\romai_theory_of_mind_v1.py.phase3.backup",
+      "size_reduction": 16
+    },
+    "tests/ml/reasoning/test_problem_solver.py": {
+      "status": "cleaned",
+      "original_size": 16665,
+      "new_size": 16649,
+      "replacements": 1,
+      "backup": "backups\\phase3\\test_problem_solver.py.phase3.backup",
+      "size_reduction": 16
+    }
+  }
+}

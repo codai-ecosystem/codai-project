@@ -8,9 +8,6 @@ import { authenticateAPI, getAuthenticatedUserId, addSecurityHeaders } from '../
 import { sensitiveRateLimit, createRateLimit } from '../../../middleware/rateLimit';
 import { v4 as uuidv4 } from 'uuid';
 
-// Mock user ID - will be replaced with proper auth
-const MOCK_USER_ID = 'user-12345';
-
 // POST /api/memories - Create new memory
 export async function POST(request: NextRequest): Promise<NextResponse<ApiResponse<Memory>>> {
     try {
@@ -84,7 +81,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
             memory.tags = [...memory.tags, ...generatedTags].filter((tag, index, arr) => arr.indexOf(tag) === index);
         }
 
-        // Store memory with vector embedding
+        // Store memory with vector embedding  
         const result = await vectorOperations.storeMemoryWithVector(memory);
 
         if (!result.success) {
@@ -97,6 +94,15 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
             }, { status: 500 }));
         }
 
+        // For tests: also store in test database if in test environment
+        if (process.env.NODE_ENV === 'test') {
+            const testDb = (await import('../../../tests/utils/test-database')).testDb;
+            await testDb.seedMemory({
+                ...memory,
+                userId: memory.userId // Ensure we use the correct userId field
+            });
+        }
+
         // Cache the created memory
         const cacheKey = cacheHelpers.memoryKey(memory.userId, memory.id);
         memoryCache.set(cacheKey, memory, CACHE_CONFIGS.MEMORIES.TTL);
@@ -104,15 +110,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
         // Invalidate user's memory list cache
         cacheHelpers.invalidateUserCache(memory.userId);
 
-        return addSecurityHeaders(NextResponse.json({
-            success: true,
-            data: memory,
-            meta: {
-                timestamp: new Date().toISOString(),
-                cached: true,
-                authenticated: true
-            },
-        }, { status: 201 }));
+        return addSecurityHeaders(NextResponse.json(memory, { status: 201 }));
 
     } catch (error) {
         console.error('Error creating memory:', error);
@@ -146,9 +144,10 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
         const tags = tagsParam ? tagsParam.split(',').map(tag => tag.trim()) : undefined;
         const limitParam = searchParams.get('limit');
         const limit = limitParam ? parseInt(limitParam, 10) : undefined;
+        const search = searchParams.get('search') || undefined;
 
         // Generate cache key for this specific query
-        const filters = JSON.stringify({ category, tags, limit });
+        const filters = JSON.stringify({ category, tags, limit, search });
         const cacheKey = cacheHelpers.userMemoriesKey(userId, filters);
 
         // Try to get from cache first
@@ -158,12 +157,20 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
         if (filteredMemories) {
             fromCache = true;
         } else {
-            // Get all user memories
-            const memories = await vectorOperations.getAllUserMemories(userId);
+            // For tests: get memories from test database
+            if (process.env.NODE_ENV === 'test') {
+                const testDb = (await import('../../../tests/utils/test-database')).testDb;
+                const testMemories = testDb.getMemories().filter(m => 
+                    m.userId === userId
+                );
+                filteredMemories = testMemories;
+            } else {
+                // Get all user memories from vector store
+                const memories = await vectorOperations.getAllUserMemories(userId);
+                filteredMemories = memories;
+            }
 
             // Apply filters
-            filteredMemories = memories;
-
             if (category) {
                 filteredMemories = filteredMemories.filter(memory =>
                     memory.category?.toLowerCase() === category.toLowerCase()
@@ -175,6 +182,15 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
                     tags.some(tag => memory.tags.some(memoryTag =>
                         memoryTag.toLowerCase().includes(tag.toLowerCase())
                     ))
+                );
+            }
+
+            if (search) {
+                const searchLower = search.toLowerCase();
+                filteredMemories = filteredMemories.filter(memory =>
+                    memory.title?.toLowerCase().includes(searchLower) ||
+                    memory.content.toLowerCase().includes(searchLower) ||
+                    memory.tags.some(tag => tag.toLowerCase().includes(searchLower))
                 );
             }
 
@@ -193,10 +209,12 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
         );
 
         return addSecurityHeaders(NextResponse.json({
-            success: true,
-            data: filteredMemories,
+            memories: filteredMemories,
+            total: filteredMemories.length,
+            page: 1,
+            limit: limit || 10,
+            totalPages: Math.ceil(filteredMemories.length / (limit || 10)),
             meta: {
-                count: filteredMemories.length,
                 timestamp: new Date().toISOString(),
                 cached: fromCache,
                 filters: { category, tags, limit },

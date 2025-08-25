@@ -1,0 +1,27 @@
+{
+  "experiment_id": "exp_romai_agi_v1_1755966089",
+  "experiment_name": "romai_agi_v1",
+  "model_type": "transformer",
+  "hyperparameters": {
+    "learning_rate": 0.0001,
+    "batch_size": 16,
+    "epochs": 5,
+    "hidden_size": 256
+  },
+  "training_config": {
+    "data_size": 1000
+  },
+  "data_config": {
+    "features": 9
+  },
+  "infrastructure_config": {
+    "device": "cpu"
+  },
+  "evaluation_metrics": [
+    "accuracy",
+    "loss",
+    "f1_score"
+  ],
+  "tags": [],
+  "created_at": "2025-08-23T19:21:29.349238"
+}

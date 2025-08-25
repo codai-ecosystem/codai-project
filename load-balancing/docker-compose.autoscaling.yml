@@ -1,0 +1,647 @@
+# ======================================
+# CODAI Ecosystem - Auto-Scaling Configuration
+# Docker Compose for Scalable Production Deployment
+# ======================================
+
+version: '3.8'
+
+services:
+  # ======================================
+  # Load Balancer
+  # ======================================
+  nginx-loadbalancer:
+    image: nginx:alpine
+    container_name: codai-nginx-lb
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"  # Health checks
+      - "9113:9113"  # Metrics
+    volumes:
+      - ./nginx-advanced-loadbalancer.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - ./dhparam.pem:/etc/nginx/dhparam.pem:ro
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      - cbd-database-1
+      - memorai-app-1
+      - romai-agi-1
+    networks:
+      - codai-frontend
+      - codai-backend
+    labels:
+      - "com.codai.service=load-balancer"
+      - "com.codai.component=nginx"
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/nginx-health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ======================================
+  # Core Services - Scalable Instances
+  # ======================================
+  
+  # CBD Database - Primary and Replica
+  cbd-database-1:
+    image: codai/cbd-database:latest
+    container_name: cbd-database-primary
+    restart: unless-stopped
+    ports:
+      - "4180:4180"
+    environment:
+      - PORT=4180
+      - NODE_ENV=production
+      - CBD_LOG_LEVEL=info
+      - INSTANCE_ROLE=primary
+      - REPLICATION_ENABLED=true
+    volumes:
+      - cbd_data_primary:/app/data
+      - cbd_logs:/app/logs
+    networks:
+      - codai-backend
+    labels:
+      - "com.codai.service=cbd-database"
+      - "com.codai.instance=primary"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4180/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  cbd-database-2:
+    image: codai/cbd-database:latest
+    container_name: cbd-database-replica
+    restart: unless-stopped
+    environment:
+      - PORT=4180
+      - NODE_ENV=production
+      - CBD_LOG_LEVEL=info
+      - INSTANCE_ROLE=replica
+      - PRIMARY_HOST=cbd-database-1
+      - REPLICATION_ENABLED=true
+    volumes:
+      - cbd_data_replica:/app/data
+      - cbd_logs:/app/logs
+    networks:
+      - codai-backend
+    depends_on:
+      - cbd-database-1
+    labels:
+      - "com.codai.service=cbd-database"
+      - "com.codai.instance=replica"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4180/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+
+  # MemorAI MCP Server - Multiple Instances
+  memorai-mcp-1:
+    image: codai/memorai-mcp:latest
+    container_name: memorai-mcp-1
+    restart: unless-stopped
+    environment:
+      - MEMORAI_MCP_PORT=4950
+      - PORT=4950
+      - CBD_BASE_URL=http://cbd-database-1:4180
+      - NODE_ENV=production
+      - INSTANCE_ID=mcp-1
+      - CLUSTER_ENABLED=true
+    volumes:
+      - memorai_mcp_data_1:/app/data
+    networks:
+      - codai-backend
+    depends_on:
+      - cbd-database-1
+    labels:
+      - "com.codai.service=memorai-mcp"
+      - "com.codai.instance=1"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+
+  memorai-mcp-2:
+    image: codai/memorai-mcp:latest
+    container_name: memorai-mcp-2
+    restart: unless-stopped
+    environment:
+      - MEMORAI_MCP_PORT=4950
+      - PORT=4950
+      - CBD_BASE_URL=http://cbd-database-1:4180
+      - NODE_ENV=production
+      - INSTANCE_ID=mcp-2
+      - CLUSTER_ENABLED=true
+    volumes:
+      - memorai_mcp_data_2:/app/data
+    networks:
+      - codai-backend
+    depends_on:
+      - cbd-database-1
+      - memorai-mcp-1
+    labels:
+      - "com.codai.service=memorai-mcp"
+      - "com.codai.instance=2"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+
+  memorai-mcp-3:
+    image: codai/memorai-mcp:latest
+    container_name: memorai-mcp-3
+    restart: unless-stopped
+    environment:
+      - MEMORAI_MCP_PORT=4950
+      - PORT=4950
+      - CBD_BASE_URL=http://cbd-database-1:4180
+      - NODE_ENV=production
+      - INSTANCE_ID=mcp-3
+      - CLUSTER_ENABLED=true
+    volumes:
+      - memorai_mcp_data_3:/app/data
+    networks:
+      - codai-backend
+    depends_on:
+      - cbd-database-1
+      - memorai-mcp-1
+    labels:
+      - "com.codai.service=memorai-mcp"
+      - "com.codai.instance=3"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+
+  # MemorAI Application - Auto-Scaling Instances
+  memorai-app-1:
+    image: codai/memorai-app:latest
+    container_name: memorai-app-1
+    restart: unless-stopped
+    environment:
+      - PORT=4006
+      - NODE_ENV=production
+      - INSTANCE_ID=app-1
+      - DATABASE_URL=http://cbd-database-1:4180
+      - MCP_SERVER_URL=http://memorai-mcp-1:4950
+    volumes:
+      - memorai_app_data_1:/app/data
+    networks:
+      - codai-backend
+    depends_on:
+      - cbd-database-1
+      - memorai-mcp-1
+    labels:
+      - "com.codai.service=memorai-app"
+      - "com.codai.instance=1"
+      - "com.codai.scaling-group=memorai-app"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+        reservations:
+          cpus: '1.0'
+          memory: 2G
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4006/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  memorai-app-2:
+    image: codai/memorai-app:latest
+    container_name: memorai-app-2
+    restart: unless-stopped
+    environment:
+      - PORT=4006
+      - NODE_ENV=production
+      - INSTANCE_ID=app-2
+      - DATABASE_URL=http://cbd-database-1:4180
+      - MCP_SERVER_URL=http://memorai-mcp-2:4950
+    volumes:
+      - memorai_app_data_2:/app/data
+    networks:
+      - codai-backend
+    depends_on:
+      - memorai-app-1
+    labels:
+      - "com.codai.service=memorai-app"
+      - "com.codai.instance=2"
+      - "com.codai.scaling-group=memorai-app"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+        reservations:
+          cpus: '1.0'
+          memory: 2G
+
+  memorai-app-3:
+    image: codai/memorai-app:latest
+    container_name: memorai-app-3
+    restart: unless-stopped
+    environment:
+      - PORT=4006
+      - NODE_ENV=production
+      - INSTANCE_ID=app-3
+      - DATABASE_URL=http://cbd-database-2:4180
+      - MCP_SERVER_URL=http://memorai-mcp-3:4950
+    volumes:
+      - memorai_app_data_3:/app/data
+    networks:
+      - codai-backend
+    depends_on:
+      - memorai-app-1
+    labels:
+      - "com.codai.service=memorai-app"
+      - "com.codai.instance=3"
+      - "com.codai.scaling-group=memorai-app"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+        reservations:
+          cpus: '1.0'
+          memory: 2G
+    profiles:
+      - scaling  # Only started when scaling is needed
+
+  memorai-app-4:
+    image: codai/memorai-app:latest
+    container_name: memorai-app-4
+    restart: unless-stopped
+    environment:
+      - PORT=4006
+      - NODE_ENV=production
+      - INSTANCE_ID=app-4-backup
+      - DATABASE_URL=http://cbd-database-2:4180
+      - MCP_SERVER_URL=http://memorai-mcp-1:4950
+    volumes:
+      - memorai_app_data_4:/app/data
+    networks:
+      - codai-backend
+    depends_on:
+      - memorai-app-1
+    labels:
+      - "com.codai.service=memorai-app"
+      - "com.codai.instance=4"
+      - "com.codai.role=backup"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+    profiles:
+      - backup  # Backup instance
+
+  # MemorAI GraphQL - Multiple Instances
+  memorai-graphql-1:
+    image: codai/memorai-graphql:latest
+    container_name: memorai-graphql-1
+    restart: unless-stopped
+    environment:
+      - PORT=4500
+      - NODE_ENV=production
+      - INSTANCE_ID=graphql-1
+      - MEMORAI_API_BASE_URL=http://memorai-app-1:4006
+    networks:
+      - codai-backend
+    depends_on:
+      - memorai-app-1
+    labels:
+      - "com.codai.service=memorai-graphql"
+      - "com.codai.instance=1"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+
+  memorai-graphql-2:
+    image: codai/memorai-graphql:latest
+    container_name: memorai-graphql-2
+    restart: unless-stopped
+    environment:
+      - PORT=4500
+      - NODE_ENV=production
+      - INSTANCE_ID=graphql-2
+      - MEMORAI_API_BASE_URL=http://memorai-app-2:4006
+    networks:
+      - codai-backend
+    depends_on:
+      - memorai-app-2
+    labels:
+      - "com.codai.service=memorai-graphql"
+      - "com.codai.instance=2"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+
+  memorai-graphql-3:
+    image: codai/memorai-graphql:latest
+    container_name: memorai-graphql-3
+    restart: unless-stopped
+    environment:
+      - PORT=4500
+      - NODE_ENV=production
+      - INSTANCE_ID=graphql-3
+      - MEMORAI_API_BASE_URL=http://memorai-app-3:4006
+    networks:
+      - codai-backend
+    depends_on:
+      - memorai-app-3
+    labels:
+      - "com.codai.service=memorai-graphql"
+      - "com.codai.instance=3"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+    profiles:
+      - scaling
+
+  # RomAI AGI Server - High-Performance Instances
+  romai-agi-1:
+    image: codai/romai-agi:latest
+    container_name: romai-agi-1
+    restart: unless-stopped
+    environment:
+      - ROMAI_AGI_PORT=6101
+      - PORT=6101
+      - NODE_ENV=production
+      - INSTANCE_ID=agi-1
+      - GPU_DEVICE=0
+    volumes:
+      - romai_model_cache:/app/.cache
+      - romai_agi_data_1:/app/data
+    networks:
+      - codai-backend
+    labels:
+      - "com.codai.service=romai-agi"
+      - "com.codai.instance=1"
+      - "com.codai.gpu-enabled=true"
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 8G
+        reservations:
+          cpus: '2.0'
+          memory: 4G
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6101/health"]
+      interval: 60s
+      timeout: 30s
+      retries: 3
+      start_period: 120s
+
+  romai-agi-2:
+    image: codai/romai-agi:latest
+    container_name: romai-agi-2
+    restart: unless-stopped
+    environment:
+      - ROMAI_AGI_PORT=6101
+      - PORT=6101
+      - NODE_ENV=production
+      - INSTANCE_ID=agi-2
+      - GPU_DEVICE=1
+    volumes:
+      - romai_model_cache:/app/.cache
+      - romai_agi_data_2:/app/data
+    networks:
+      - codai-backend
+    depends_on:
+      - romai-agi-1
+    labels:
+      - "com.codai.service=romai-agi"
+      - "com.codai.instance=2"
+      - "com.codai.gpu-enabled=true"
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 8G
+        reservations:
+          cpus: '2.0'
+          memory: 4G
+    profiles:
+      - high-performance
+
+  romai-agi-3:
+    image: codai/romai-agi:latest
+    container_name: romai-agi-3
+    restart: unless-stopped
+    environment:
+      - ROMAI_AGI_PORT=6101
+      - PORT=6101
+      - NODE_ENV=production
+      - INSTANCE_ID=agi-3
+      - GPU_DEVICE=2
+    volumes:
+      - romai_model_cache:/app/.cache
+      - romai_agi_data_3:/app/data
+    networks:
+      - codai-backend
+    depends_on:
+      - romai-agi-1
+    labels:
+      - "com.codai.service=romai-agi"
+      - "com.codai.instance=3"
+      - "com.codai.gpu-enabled=true"
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 8G
+        reservations:
+          cpus: '2.0'
+          memory: 4G
+    profiles:
+      - high-performance
+
+  # RomAI Enterprise API - Scalable Instances
+  romai-enterprise-1:
+    image: codai/romai-enterprise:latest
+    container_name: romai-enterprise-1
+    restart: unless-stopped
+    environment:
+      - ENTERPRISE_API_PORT=8001
+      - PORT=8001
+      - NODE_ENV=production
+      - INSTANCE_ID=enterprise-1
+      - ROMAI_AGI_BASE_URL=http://romai-agi-1:6101
+    networks:
+      - codai-backend
+    depends_on:
+      - romai-agi-1
+    labels:
+      - "com.codai.service=romai-enterprise"
+      - "com.codai.instance=1"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+        reservations:
+          cpus: '1.0'
+          memory: 2G
+
+  romai-enterprise-2:
+    image: codai/romai-enterprise:latest
+    container_name: romai-enterprise-2
+    restart: unless-stopped
+    environment:
+      - ENTERPRISE_API_PORT=8001
+      - PORT=8001
+      - NODE_ENV=production
+      - INSTANCE_ID=enterprise-2
+      - ROMAI_AGI_BASE_URL=http://romai-agi-2:6101
+    networks:
+      - codai-backend
+    depends_on:
+      - romai-agi-1
+    labels:
+      - "com.codai.service=romai-enterprise"
+      - "com.codai.instance=2"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+        reservations:
+          cpus: '1.0'
+          memory: 2G
+    profiles:
+      - scaling
+
+  # ======================================
+  # Auto-Scaling Controller
+  # ======================================
+  autoscaler:
+    image: codai/autoscaler:latest
+    container_name: codai-autoscaler
+    restart: unless-stopped
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - SCALING_ENABLED=true
+      - MIN_INSTANCES=1
+      - MAX_INSTANCES=5
+      - CPU_THRESHOLD=70
+      - MEMORY_THRESHOLD=80
+      - SCALE_UP_COOLDOWN=300
+      - SCALE_DOWN_COOLDOWN=600
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./autoscaler:/app/config:ro
+    networks:
+      - codai-backend
+    depends_on:
+      - nginx-loadbalancer
+    labels:
+      - "com.codai.service=autoscaler"
+      - "com.codai.component=controller"
+
+# ======================================
+# Volumes
+# ======================================
+volumes:
+  # Database volumes
+  cbd_data_primary:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/cbd/primary
+  cbd_data_replica:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/cbd/replica
+  cbd_logs:
+    driver: local
+
+  # MemorAI volumes
+  memorai_mcp_data_1:
+    driver: local
+  memorai_mcp_data_2:
+    driver: local
+  memorai_mcp_data_3:
+    driver: local
+  memorai_app_data_1:
+    driver: local
+  memorai_app_data_2:
+    driver: local
+  memorai_app_data_3:
+    driver: local
+  memorai_app_data_4:
+    driver: local
+
+  # RomAI volumes
+  romai_model_cache:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/romai/models
+  romai_agi_data_1:
+    driver: local
+  romai_agi_data_2:
+    driver: local
+  romai_agi_data_3:
+    driver: local
+
+  # Nginx logs
+  nginx_logs:
+    driver: local
+
+# ======================================
+# Networks
+# ======================================
+networks:
+  codai-frontend:
+    driver: bridge
+    name: codai-frontend
+  codai-backend:
+    driver: bridge
+    name: codai-backend
+    internal: false
+  codai-monitoring:
+    driver: bridge
+    name: codai-monitoring
+    external: true

@@ -1,0 +1,78 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "RomAI AGI Production Monitoring",
+    "tags": ["agi", "romai", "production", "ml"],
+    "style": "dark",
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "AGI Model Performance",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "rate(agi_inference_requests_total[5m])",
+            "legendFormat": "Requests/sec"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "thresholds": {
+              "steps": [
+                {"color": "green", "value": null},
+                {"color": "yellow", "value": 80},
+                {"color": "red", "value": 100}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 2,
+        "title": "AGI Training Systems Status",
+        "type": "heatmap",
+        "targets": [
+          {
+            "expr": "agi_training_system_status",
+            "legendFormat": "{{system}}"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Romanian Language Processing Accuracy",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "romanian_processing_accuracy",
+            "legendFormat": "Accuracy"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "System Resources",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "100 - (avg(irate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)",
+            "legendFormat": "CPU Usage %"
+          },
+          {
+            "expr": "(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100",
+            "legendFormat": "Memory Usage %"
+          }
+        ]
+      }
+    ],
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "refresh": "30s"
+  }
+}

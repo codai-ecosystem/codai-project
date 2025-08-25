@@ -1,31 +1,7 @@
-/**
- * Test setup configuration
- */
+// Generated Vitest setup for conversai-mcp app
+// Consolidates common test setup patterns using @codai/testing-utils
 
-import { beforeAll, afterAll, beforeEach, afterEach, vi } from 'vitest';
+import '@codai/testing-utils/setups/vitest/base.setup'
+import '@codai/testing-utils/setups/vitest/nextjs.setup'
 
-// Global test setup
-beforeAll(async () => {
-  // Set test environment variables
-  Object.assign(process.env, {
-    NODE_ENV: 'test',
-    LOG_LEVEL: 'error', // Suppress logs during testing
-  });
-});
-
-afterAll(async () => {
-  // Global cleanup
-});
-
-beforeEach(() => {
-  // Reset any global state before each test
-});
-
-afterEach(() => {
-  // Cleanup after each test
-});
-
-// Example mock - uncomment and modify as needed
-// vi.mock('external-dependency', () => ({
-//   default: vi.fn(),
-// }));
+// App-specific customizations

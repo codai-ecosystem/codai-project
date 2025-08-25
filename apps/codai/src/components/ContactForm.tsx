@@ -78,13 +78,13 @@ const ContactForm: React.FC<ContactFormProps> = ({
         agreeToTerms: false
     })
 
-    const [errors, setErrors] = useState<Partial<ContactFormData>>({})
+    const [errors, setErrors] = useState<Record<string, string>>({})
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isSubmitted, setIsSubmitted] = useState(false)
     const [submitError, setSubmitError] = useState<string | null>(null)
 
     const validateForm = (): boolean => {
-        const newErrors: Partial<ContactFormData> = {}
+        const newErrors: Record<string, string> = {}
 
         // Required fields validation
         if (!formData.firstName.trim()) {
@@ -149,7 +149,11 @@ const ContactForm: React.FC<ContactFormProps> = ({
 
         // Clear error when user starts typing
         if (errors[field]) {
-            setErrors(prev => ({ ...prev, [field]: undefined }))
+            setErrors(prev => {
+                const newErrors = { ...prev }
+                delete newErrors[field]
+                return newErrors
+            })
         }
     }
 

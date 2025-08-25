@@ -2,9 +2,9 @@
 
 import React from 'react'
 import { useState, useEffect, useRef } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@codai/shared-ui'
-import { Badge } from '@codai/shared-ui'
-import { Button } from '@codai/shared-ui'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
     Search,
     Code,
@@ -230,8 +230,8 @@ export function ExplorerDashboard() {
                     </div>
                     <div className="flex items-center gap-2">
                         <Badge variant="secondary" className={`${networkStatus === 'online' ? 'bg-green-100 text-green-700 hover:bg-green-200' :
-                                networkStatus === 'degraded' ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' :
-                                    'bg-red-100 text-red-700 hover:bg-red-200'
+                            networkStatus === 'degraded' ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' :
+                                'bg-red-100 text-red-700 hover:bg-red-200'
                             }`}>
                             <Activity className="mr-1 h-3 w-3" />
                             Network {networkStatus === 'online' ? 'Online' : networkStatus === 'degraded' ? 'Degraded' : 'Offline'}

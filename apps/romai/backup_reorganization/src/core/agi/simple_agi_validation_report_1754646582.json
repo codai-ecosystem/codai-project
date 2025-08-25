@@ -1,0 +1,90 @@
+{
+  "total_tests": 6,
+  "passed_tests": 6,
+  "failed_tests": 0,
+  "overall_score": 0.97930625,
+  "validation_time": 0.08518624305725098,
+  "test_results": [
+    {
+      "test_name": "file_structure",
+      "component": "infrastructure",
+      "passed": true,
+      "score": 1.0,
+      "details": {
+        "existing_files": 7,
+        "missing_files": 0,
+        "total_required": 7
+      },
+      "execution_time": 0.0003752708435058594,
+      "error": null
+    },
+    {
+      "test_name": "python_syntax",
+      "component": "code_quality",
+      "passed": true,
+      "score": 1.0,
+      "details": {
+        "valid_files": 4,
+        "syntax_errors": 0,
+        "total_files": 4
+      },
+      "execution_time": 0.07758116722106934,
+      "error": null
+    },
+    {
+      "test_name": "code_quality",
+      "component": "code_quality",
+      "passed": true,
+      "score": 0.8758375,
+      "details": {
+        "total_lines": 4689,
+        "class_count": 33,
+        "function_count": 214,
+        "comment_ratio": 0.1418212838558328,
+        "code_complexity": 18.983805668016196
+      },
+      "execution_time": 0.0019440650939941406,
+      "error": null
+    },
+    {
+      "test_name": "import_structure",
+      "component": "code_quality",
+      "passed": true,
+      "score": 1.0,
+      "details": {
+        "valid_imports": 4,
+        "import_errors": 0,
+        "total_files": 4
+      },
+      "execution_time": 0.0012979507446289062,
+      "error": null
+    },
+    {
+      "test_name": "agi_classes",
+      "component": "agi_structure",
+      "passed": true,
+      "score": 1.0,
+      "details": {
+        "found_classes": 17,
+        "missing_classes": 0,
+        "total_expected": 17
+      },
+      "execution_time": 0.002295970916748047,
+      "error": null
+    },
+    {
+      "test_name": "documentation",
+      "component": "code_quality",
+      "passed": true,
+      "score": 1.0,
+      "details": {
+        "files_checked": 4,
+        "avg_doc_score": 1.0,
+        "files_with_good_docs": 4
+      },
+      "execution_time": 0.0014996528625488281,
+      "error": null
+    }
+  ],
+  "timestamp": "2025-08-08 12:49:42.439190"
+}

@@ -1,0 +1,23 @@
+{
+  "phase1_config": {
+    "scale": "phase1",
+    "d_model": 1280,
+    "n_layers": 18,
+    "n_heads": 20,
+    "d_ff": 5120,
+    "num_experts": 10,
+    "max_seq_length": 4096,
+    "vocab_size": 50000
+  },
+  "parameters": {
+    "total_parameters": 4970076160,
+    "embedding_parameters": 69242880,
+    "layer_parameters": 4836833280,
+    "parameters_per_layer": 268712960,
+    "attention_per_layer": 6553600,
+    "feedforward_per_layer": 262156800,
+    "scale": "phase1"
+  },
+  "scaling_factor": 2.8150069830134137,
+  "memory_requirements_gb": 9.257488250732422
+}

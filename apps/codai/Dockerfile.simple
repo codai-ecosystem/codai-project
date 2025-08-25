@@ -1,0 +1,73 @@
+# CODAI Main Application - Following Successful Kodex Pattern  
+FROM node:20-alpine AS base
+RUN apk add --no-cache libc6-compat curl
+
+# Build stage
+FROM base AS builder
+WORKDIR /app
+
+# Install pnpm and npm for flexibility
+RUN npm install -g pnpm
+
+# Copy workspace files
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml tsconfig.base.json ./
+
+# Copy necessary packages
+COPY packages/api-utils ./packages/api-utils/
+COPY packages/testing-utils ./packages/testing-utils/
+
+# Copy codai app
+COPY apps/codai ./apps/codai/
+
+# Set build environment
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_OPTIONS="--max-old-space-size=2048"
+
+# Install dependencies for necessary packages and codai app
+RUN pnpm install --filter=@codai/api-utils --filter=@codai/testing-utils --filter=codai --prod=false
+
+# Build the required packages first
+WORKDIR /app/packages/api-utils
+RUN pnpm build
+WORKDIR /app/packages/testing-utils
+RUN pnpm build
+
+# Build the codai app
+WORKDIR /app/apps/codai
+RUN pnpm build
+
+# Runtime stage
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Create user
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# Copy the built application and resolve pnpm symlink issues
+COPY --from=builder /app/apps/codai/.next/standalone ./
+COPY --from=builder /app/apps/codai/.next/static ./apps/codai/.next/static
+COPY --from=builder /app/apps/codai/public ./apps/codai/public
+
+# Copy node_modules from the build stage, then copy the entire pnpm structure to resolve symlinks
+COPY --from=builder /app/node_modules ./node_modules
+
+# Set permissions
+RUN chown -R nextjs:nodejs /app
+
+USER nextjs
+
+EXPOSE 4001
+
+ENV PORT=4001
+ENV HOSTNAME="0.0.0.0"
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+  CMD curl -f http://localhost:4001/api/health || exit 1
+
+# Start the application
+CMD ["node", "server.js"]

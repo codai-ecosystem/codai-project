@@ -1,13 +1,46 @@
+# PNPM Configuration for Large Monorepo - Verbose + Fast
+
+# Dependency resolution optimizations
 auto-install-peers=true
 strict-peer-dependencies=false
-resolution-mode=highest
+resolution-mode=lowest-direct
 prefer-workspace-packages=true
+
+# Hoisting patterns for performance
 hoist-pattern=*
+public-hoist-pattern=*
 public-hoist-pattern=*eslint*
 public-hoist-pattern=*prettier*
 public-hoist-pattern=*typescript*
 public-hoist-pattern=@types/*
 shamefully-hoist=true
 node-linker=hoisted
+
+# File system optimizations
 symlink=false
-store-dir=E:/pnpm-store
+package-import-method=hardlink
+prefer-symlinked-executables=false
+
+# Store and cache configuration
+store-dir=E:\.pnpm-store
+cache-dir=E:\.pnpm-cache
+side-effects-cache=true
+
+# Performance tuning for workspace - Conservative settings
+network-concurrency=6
+child-concurrency=3
+
+# Workspace settings
+link-workspace-packages=true
+save-workspace-protocol=rolling
+shared-workspace-lockfile=true
+
+# Installation optimizations
+prefer-offline=true
+verify-store-integrity=false
+lockfile-include-tarball-url=false
+
+# Verbose output settings
+progress=true
+reporter=default
+loglevel=info

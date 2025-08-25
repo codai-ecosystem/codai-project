@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * TeamMemberList Component - Comprehensive team member list with advanced features
  */
-'use client'
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
@@ -496,4 +497,5 @@ export function TeamMemberList({ members, selectedMembers, onMemberSelect, onMem
         </div>
     )
 }
+
 

@@ -1,7 +1,7 @@
 {
-    "name": "@codai/cli",
+    "name": "@codai/cli-simple",
     "version": "1.0.0",
-    "description": "CODAI Ecosystem Command Line Interface",
+    "description": "CODAI Ecosystem Command Line Interface (Simple)",
     "main": "codai.js",
     "bin": {
         "codai": "./codai.js"

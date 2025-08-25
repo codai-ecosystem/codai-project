@@ -293,7 +293,7 @@ describe('Memory Tools Schema Validation', () => {
   describe('Data Types and Limits', () => {
     it('should handle large content strings', () => {
       const contentSchema = z.string().min(1);
-      
+
       // Test large content (1MB string)
       const largeContent = 'x'.repeat(1024 * 1024);
       expect(() => contentSchema.parse(largeContent)).not.toThrow();

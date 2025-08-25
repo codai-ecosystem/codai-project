@@ -1,0 +1,129 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
+  "daemon": true,
+  "remoteCache": {
+    "enabled": false
+  },
+  "globalDependencies": [
+    "**/.env.*local",
+    "tsconfig.base.json",
+    "package.json"
+  ],
+  "globalEnv": [
+    "NODE_ENV",
+    "NEXT_PUBLIC_*",
+    "DATABASE_URL",
+    "AZURE_OPENAI_*",
+    "FIREBASE_*"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": [
+        "^build",
+        "type-check"
+      ],
+      "inputs": [
+        "src/**/*.{ts,tsx,js,jsx}",
+        "app/**/*.{ts,tsx,js,jsx}",
+        "pages/**/*.{ts,tsx,js,jsx}",
+        "components/**/*.{ts,tsx,js,jsx}",
+        "lib/**/*.{ts,tsx,js,jsx}",
+        "public/**/*",
+        "next.config.js",
+        "tailwind.config.ts",
+        "tsconfig.json",
+        "package.json"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "dist/**",
+        "build/**",
+        "out/**"
+      ],
+      "env": [
+        "NODE_ENV",
+        "NEXT_PUBLIC_*"
+      ],
+      "cache": true,
+      "persistent": false
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "inputs": [
+        "src/**/*.{ts,tsx,js,jsx}",
+        "app/**/*.{ts,tsx,js,jsx}",
+        "pages/**/*.{ts,tsx,js,jsx}",
+        "components/**/*.{ts,tsx,js,jsx}",
+        "lib/**/*.{ts,tsx,js,jsx}",
+        "public/**/*",
+        "next.config.js",
+        "tailwind.config.ts",
+        ".env*"
+      ]
+    },
+    "lint": {
+      "dependsOn": [
+        "^lint"
+      ],
+      "inputs": [
+        "src/**/*.{ts,tsx,js,jsx}",
+        "app/**/*.{ts,tsx,js,jsx}",
+        "pages/**/*.{ts,tsx,js,jsx}",
+        "components/**/*.{ts,tsx,js,jsx}",
+        "lib/**/*.{ts,tsx,js,jsx}",
+        ".eslintrc.*",
+        "config/dev/eslint.config.*",
+        "package.json"
+      ],
+      "cache": true,
+      "persistent": false
+    },
+    "type-check": {
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "src/**/*.{ts,tsx}",
+        "app/**/*.{ts,tsx}",
+        "pages/**/*.{ts,tsx}",
+        "components/**/*.{ts,tsx}",
+        "lib/**/*.{ts,tsx}",
+        "types/**/*.ts",
+        "tsconfig.json",
+        "package.json"
+      ],
+      "outputs": [
+        "tsconfig.tsbuildinfo"
+      ],
+      "cache": true,
+      "persistent": false
+    },
+    "test": {
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "src/**/*.{ts,tsx,js,jsx}",
+        "app/**/*.{ts,tsx,js,jsx}",
+        "tests/**/*.{ts,tsx,js,jsx}",
+        "**/*.test.{ts,tsx,js,jsx}",
+        "**/*.spec.{ts,tsx,js,jsx}",
+        "config/test/vitest.config.*",
+        "config/test/jest.config.*",
+        "package.json"
+      ],
+      "outputs": [
+        "coverage/**"
+      ],
+      "cache": true,
+      "persistent": false
+    },
+    "clean": {
+      "cache": false
+    }
+  },
+  "cacheDir": ".turbo"
+}

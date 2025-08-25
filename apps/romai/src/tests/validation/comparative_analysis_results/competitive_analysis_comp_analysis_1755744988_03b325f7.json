@@ -1,0 +1,189 @@
+{
+  "analysis_id": "comp_analysis_1755744988_03b325f7",
+  "target_model": "romai_agi",
+  "comparison_models": [
+    "gpt4o",
+    "claude_3_7",
+    "gemini_2_5_pro"
+  ],
+  "overall_performance_ranking": {
+    "romai_agi": 0.29975236689854223,
+    "gpt4o": 0.8927952853023368,
+    "claude_3_7": 0.894005169548826,
+    "gemini_2_5_pro": 0.8935405746185422
+  },
+  "statistical_summary": {
+    "total_comparisons": 9,
+    "statistically_significant_wins": 1,
+    "win_rate": 0.1111111111111111,
+    "wins_against": {
+      "gpt4o": 0,
+      "claude_3_7": 0,
+      "gemini_2_5_pro": 1
+    },
+    "average_effect_size": -0.7887343465358325,
+    "average_performance_difference": -65.95104528959506
+  },
+  "competitive_advantages": [],
+  "areas_for_improvement": [
+    "Inconsistent performance across some benchmarks"
+  ],
+  "market_positioning": "Developing Competitor",
+  "confidence_score": 0.4627133851306709,
+  "timestamp": "2025-08-21T05:56:28.437784",
+  "benchmark_results": [
+    {
+      "benchmark_name": "humaneval",
+      "model_a": "romai_agi",
+      "model_b": "gpt4o",
+      "model_a_score": 0.0,
+      "model_b_score": 1.0,
+      "statistical_significance": 0.0,
+      "effect_size": 0,
+      "confidence_interval": [
+        NaN,
+        NaN
+      ],
+      "winner": "gpt4o",
+      "performance_difference": -100.0,
+      "sample_size": 3,
+      "timestamp": "2025-08-21T05:56:28.363181"
+    },
+    {
+      "benchmark_name": "humaneval",
+      "model_a": "romai_agi",
+      "model_b": "claude_3_7",
+      "model_a_score": 0.0,
+      "model_b_score": 1.0,
+      "statistical_significance": 0.0,
+      "effect_size": 0,
+      "confidence_interval": [
+        NaN,
+        NaN
+      ],
+      "winner": "claude_3_7",
+      "performance_difference": -100.0,
+      "sample_size": 3,
+      "timestamp": "2025-08-21T05:56:28.366122"
+    },
+    {
+      "benchmark_name": "humaneval",
+      "model_a": "romai_agi",
+      "model_b": "gemini_2_5_pro",
+      "model_a_score": 0.0,
+      "model_b_score": 1.0,
+      "statistical_significance": 0.0,
+      "effect_size": 0,
+      "confidence_interval": [
+        NaN,
+        NaN
+      ],
+      "winner": "gemini_2_5_pro",
+      "performance_difference": -100.0,
+      "sample_size": 3,
+      "timestamp": "2025-08-21T05:56:28.368841"
+    },
+    {
+      "benchmark_name": "mmlu",
+      "model_a": "romai_agi",
+      "model_b": "gpt4o",
+      "model_a_score": 0.0,
+      "model_b_score": 0.8,
+      "statistical_significance": 0.0002024993220676408,
+      "effect_size": -2.6832815729997477,
+      "confidence_interval": [
+        -1.1016209550472134,
+        -0.4983790449527868
+      ],
+      "winner": "gpt4o",
+      "performance_difference": -100.0,
+      "sample_size": 10,
+      "timestamp": "2025-08-21T05:56:28.378072"
+    },
+    {
+      "benchmark_name": "mmlu",
+      "model_a": "romai_agi",
+      "model_b": "claude_3_7",
+      "model_a_score": 0.0,
+      "model_b_score": 0.8,
+      "statistical_significance": 0.0002024993220676408,
+      "effect_size": -2.6832815729997477,
+      "confidence_interval": [
+        -1.1016209550472134,
+        -0.4983790449527868
+      ],
+      "winner": "claude_3_7",
+      "performance_difference": -100.0,
+      "sample_size": 10,
+      "timestamp": "2025-08-21T05:56:28.385625"
+    },
+    {
+      "benchmark_name": "mmlu",
+      "model_a": "romai_agi",
+      "model_b": "gemini_2_5_pro",
+      "model_a_score": 0.0,
+      "model_b_score": 0.8,
+      "statistical_significance": 0.0002024993220676408,
+      "effect_size": -2.6832815729997477,
+      "confidence_interval": [
+        -1.1016209550472134,
+        -0.4983790449527868
+      ],
+      "winner": "gemini_2_5_pro",
+      "performance_difference": -100.0,
+      "sample_size": 10,
+      "timestamp": "2025-08-21T05:56:28.393308"
+    },
+    {
+      "benchmark_name": "math",
+      "model_a": "romai_agi",
+      "model_b": "gpt4o",
+      "model_a_score": 0.8727294912414347,
+      "model_b_score": 0.8783858559070101,
+      "statistical_significance": 0.8145393682126357,
+      "effect_size": -0.08968752250745682,
+      "confidence_interval": [
+        -0.05542989873732351,
+        0.044117169406172524
+      ],
+      "winner": null,
+      "performance_difference": -0.6439498800597953,
+      "sample_size": 20,
+      "timestamp": "2025-08-21T05:56:28.407194"
+    },
+    {
+      "benchmark_name": "math",
+      "model_a": "romai_agi",
+      "model_b": "claude_3_7",
+      "model_a_score": 0.8924950438893191,
+      "model_b_score": 0.8820155086464782,
+      "statistical_significance": 0.6135800467321801,
+      "effect_size": 0.16674533698551794,
+      "confidence_interval": [
+        -0.03224212699793709,
+        0.053201197483618845
+      ],
+      "winner": null,
+      "performance_difference": 1.1881350316529717,
+      "sample_size": 20,
+      "timestamp": "2025-08-21T05:56:28.421264"
+    },
+    {
+      "benchmark_name": "math",
+      "model_a": "romai_agi",
+      "model_b": "gemini_2_5_pro",
+      "model_a_score": 0.9325467669561263,
+      "model_b_score": 0.8806217238556263,
+      "statistical_significance": 0.015859024788094957,
+      "effect_size": 0.8741777856986896,
+      "confidence_interval": [
+        0.01088707472345693,
+        0.092963011477543
+      ],
+      "winner": "romai_agi",
+      "performance_difference": 5.896407242051277,
+      "sample_size": 20,
+      "timestamp": "2025-08-21T05:56:28.437496"
+    }
+  ]
+}

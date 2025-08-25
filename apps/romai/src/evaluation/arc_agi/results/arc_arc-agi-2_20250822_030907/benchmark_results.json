@@ -1,0 +1,81 @@
+{
+  "benchmark_version": "arc-agi-2",
+  "evaluation_timestamp": "2025-08-22T03:09:07.046252+00:00",
+  "summary": {
+    "total_tasks": 25,
+    "completed_tasks": 25,
+    "accuracy": 0.0,
+    "average_solve_time": 0.00018960952758789062,
+    "total_cost": 2.500047402381897,
+    "cost_per_task": 0.10000189609527588
+  },
+  "comparative_analysis": {
+    "human_comparison": {
+      "accuracy_ratio": 0.0,
+      "cost_ratio": 0.0058824644761926986,
+      "human_accuracy": 1.0,
+      "human_cost": 17.0
+    },
+    "ai_leader_comparison": {
+      "grok_4_thinking_accuracy_ratio": 0.0,
+      "grok_4_thinking_cost_ratio": 0.04608382308538059,
+      "claude_opus_4_thinking_accuracy_ratio": 0.0,
+      "claude_opus_4_thinking_cost_ratio": 0.005555660894181993,
+      "openai_o3_variants_accuracy_ratio": 0.0,
+      "openai_o3_variants_cost_ratio": 0.0010000189609527589,
+      "most_frontier_models_accuracy_ratio": 0.0,
+      "most_frontier_models_cost_ratio": 0.0040000758438110354,
+      "vs_best_ai_accuracy": 0.0,
+      "vs_best_ai_cost": 0.04608382308538059
+    }
+  },
+  "detailed_breakdown": {
+    "difficulty_breakdown": {
+      "EXPERT": {
+        "accuracy": 0.0,
+        "average_time": 0.00018960952758789062,
+        "average_cost": 0.10000189609527588,
+        "task_count": 25
+      }
+    },
+    "task_type_breakdown": {
+      "PATTERN_COMPLETION": {
+        "accuracy": 0.0,
+        "average_time": 0.00025534629821777344,
+        "task_count": 2
+      },
+      "OBJECT_TRANSFORMATION": {
+        "accuracy": 0.0,
+        "average_time": 0.00018869127546037947,
+        "task_count": 7
+      },
+      "SPATIAL_REASONING": {
+        "accuracy": 0.0,
+        "average_time": 0.00018648306528727213,
+        "task_count": 6
+      },
+      "LOGICAL_OPERATIONS": {
+        "accuracy": 0.0,
+        "average_time": 0.0001710653305053711,
+        "task_count": 2
+      },
+      "TEMPORAL_SEQUENCES": {
+        "accuracy": 0.0,
+        "average_time": 0.0001659393310546875,
+        "task_count": 1
+      },
+      "SYMMETRY_OPERATIONS": {
+        "accuracy": 0.0,
+        "average_time": 0.00016729036966959635,
+        "task_count": 3
+      },
+      "SHAPE_MANIPULATIONS": {
+        "accuracy": 0.0,
+        "average_time": 0.00019496679306030273,
+        "task_count": 4
+      }
+    },
+    "engine_utilization": {},
+    "romanian_advantage_cases": 3
+  }
+}

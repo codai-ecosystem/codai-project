@@ -1,0 +1,285 @@
+{
+    "metadata": {
+        "generated_at": "2025-08-24T11:45:00.000Z",
+        "num_examples": 40,
+        "generator_version": "2.0_real_solutions",
+        "external_ai_used": false,
+        "description": "Real scientific reasoning training data with actual scientific principles and analysis"
+    },
+    "training_examples": [
+        {
+            "question": "Why do objects fall to the ground when dropped?",
+            "scientific_domain": "physics",
+            "principle": "gravitational force",
+            "reasoning_steps": [
+                "Step 1: Objects have mass, Earth has much larger mass",
+                "Step 2: Newton's law of universal gravitation: F = G(m1*m2)/r²",
+                "Step 3: Gravitational force creates acceleration toward Earth's center",
+                "Step 4: Without air resistance, all objects accelerate at 9.8 m/s²"
+            ],
+            "explanation": "Objects fall due to gravitational attraction between their mass and Earth's mass. The gravitational force creates a constant downward acceleration of approximately 9.8 m/s² near Earth's surface.",
+            "evidence": "Galileo's experiments, Newton's laws, modern gravitational measurements",
+            "applications": [
+                "projectile motion",
+                "orbital mechanics",
+                "weight calculations"
+            ]
+        },
+        {
+            "question": "What happens to water when it reaches 100°C at sea level?",
+            "scientific_domain": "thermodynamics",
+            "principle": "phase transition",
+            "reasoning_steps": [
+                "Step 1: Water molecules gain kinetic energy as temperature increases",
+                "Step 2: At 100°C, molecular kinetic energy overcomes intermolecular forces",
+                "Step 3: Vapor pressure equals atmospheric pressure (1 atm at sea level)",
+                "Step 4: Phase transition from liquid to gas occurs (boiling)"
+            ],
+            "explanation": "Water boils at 100°C at sea level because this is the temperature where water's vapor pressure equals atmospheric pressure, allowing molecules to escape the liquid phase and form steam.",
+            "evidence": "Phase diagrams, vapor pressure measurements, thermodynamic experiments",
+            "applications": [
+                "cooking",
+                "steam engines",
+                "distillation processes"
+            ]
+        },
+        {
+            "question": "Why do we see lightning before hearing thunder?",
+            "scientific_domain": "physics",
+            "principle": "speed of light vs speed of sound",
+            "reasoning_steps": [
+                "Step 1: Lightning produces both light and sound simultaneously",
+                "Step 2: Light travels at ~300,000,000 m/s in air",
+                "Step 3: Sound travels at ~343 m/s in air at room temperature",
+                "Step 4: Light reaches our eyes much faster than sound reaches our ears"
+            ],
+            "explanation": "We see lightning before hearing thunder because light travels approximately 874,000 times faster than sound through air, so the visual signal reaches us almost instantaneously while the audio signal is delayed.",
+            "evidence": "Measured speeds of light and sound, electromagnetic theory",
+            "applications": [
+                "lightning distance calculation",
+                "acoustic ranging",
+                "optical communications"
+            ]
+        },
+        {
+            "question": "Why do plants appear green?",
+            "scientific_domain": "biology/chemistry",
+            "principle": "chlorophyll absorption spectrum",
+            "reasoning_steps": [
+                "Step 1: Plants contain chlorophyll pigments for photosynthesis",
+                "Step 2: Chlorophyll absorbs red and blue light wavelengths efficiently",
+                "Step 3: Green light (500-550 nm) is poorly absorbed by chlorophyll",
+                "Step 4: Unabsorbed green light is reflected, making plants appear green"
+            ],
+            "explanation": "Plants appear green because chlorophyll pigments absorb red and blue light for photosynthesis but reflect green light, which our eyes perceive as the plant's color.",
+            "evidence": "Absorption spectra of chlorophyll, photosynthesis research, spectrophotometry",
+            "applications": [
+                "agriculture optimization",
+                "plant health assessment",
+                "photosynthesis efficiency"
+            ]
+        },
+        {
+            "question": "What causes the seasons on Earth?",
+            "scientific_domain": "astronomy",
+            "principle": "axial tilt and orbital mechanics",
+            "reasoning_steps": [
+                "Step 1: Earth's axis is tilted 23.5° relative to its orbital plane",
+                "Step 2: As Earth orbits the Sun, different hemispheres tilt toward/away from Sun",
+                "Step 3: Tilted hemisphere receives more direct sunlight and longer days",
+                "Step 4: This creates seasonal temperature and daylight variations"
+            ],
+            "explanation": "Seasons are caused by Earth's 23.5° axial tilt. As Earth orbits the Sun, the tilt causes each hemisphere to alternately receive more or less direct solar radiation, creating seasonal variations in temperature and daylight hours.",
+            "evidence": [
+                "Kepler's laws",
+                "solar irradiance measurements",
+                "astronomical observations"
+            ],
+            "applications": [
+                "climate prediction",
+                "agriculture planning",
+                "solar energy optimization"
+            ]
+        },
+        {
+            "question": "Why does ice float on water?",
+            "scientific_domain": "chemistry/physics",
+            "principle": "density and molecular structure",
+            "reasoning_steps": [
+                "Step 1: Water molecules form hydrogen bonds in both liquid and solid states",
+                "Step 2: In ice, molecules arrange in rigid hexagonal crystal structure",
+                "Step 3: Crystal structure creates more space between molecules than liquid water",
+                "Step 4: Less dense ice (0.92 g/cm³) floats on denser water (1.00 g/cm³)"
+            ],
+            "explanation": "Ice floats because its crystalline structure makes it less dense than liquid water. The rigid hexagonal arrangement of molecules in ice occupies more volume than the more flexible liquid arrangement.",
+            "evidence": "Density measurements, X-ray crystallography of ice, molecular dynamics simulations",
+            "applications": [
+                "lake ecology",
+                "pipe freezing prevention",
+                "cryopreservation"
+            ]
+        },
+        {
+            "question": "How do vaccines work?",
+            "scientific_domain": "immunology",
+            "principle": "adaptive immune response",
+            "reasoning_steps": [
+                "Step 1: Vaccine contains weakened/dead pathogen or pathogen proteins",
+                "Step 2: Immune system recognizes foreign antigens and creates antibodies",
+                "Step 3: Memory B cells and T cells remember the pathogen signature",
+                "Step 4: Upon real infection, immune system rapidly produces specific antibodies"
+            ],
+            "explanation": "Vaccines work by training the immune system to recognize specific pathogens. They contain harmless versions of antigens that trigger antibody production and create immunological memory for rapid future response.",
+            "evidence": "Clinical trials, antibody measurements, epidemiological data",
+            "applications": [
+                "disease prevention",
+                "herd immunity",
+                "pandemic control"
+            ]
+        },
+        {
+            "question": "What causes rust on iron?",
+            "scientific_domain": "chemistry",
+            "principle": "oxidation reaction",
+            "reasoning_steps": [
+                "Step 1: Iron (Fe) reacts with oxygen (O₂) in presence of water",
+                "Step 2: Electrochemical process: Fe → Fe²⁺ + 2e⁻ (oxidation)",
+                "Step 3: Oxygen reduction: O₂ + 4H⁺ + 4e⁻ → 2H₂O",
+                "Step 4: Iron ions form iron oxide hydroxide (Fe₂O₃·H₂O) - rust"
+            ],
+            "explanation": "Rust forms through oxidation of iron in the presence of oxygen and water. Iron atoms lose electrons to form ions that combine with oxygen and water to create iron oxide hydroxide (rust).",
+            "evidence": "Chemical analysis of rust, electrochemical studies, corrosion research",
+            "applications": [
+                "corrosion prevention",
+                "material science",
+                "structural engineering"
+            ]
+        },
+        {
+            "question": "Why do we need sleep?",
+            "scientific_domain": "neuroscience/biology",
+            "principle": "neural maintenance and memory consolidation",
+            "reasoning_steps": [
+                "Step 1: Brain accumulates metabolic waste during wakeful activity",
+                "Step 2: Sleep activates glymphatic system to clear toxins like amyloid-beta",
+                "Step 3: Memory consolidation transfers information from hippocampus to cortex",
+                "Step 4: Neural connections are strengthened (LTP) and pruned during sleep"
+            ],
+            "explanation": "Sleep is essential for brain maintenance and memory processing. It clears metabolic waste, consolidates memories, and optimizes neural connections for optimal cognitive function.",
+            "evidence": "Sleep deprivation studies, brain imaging, cerebrospinal fluid analysis",
+            "applications": [
+                "sleep medicine",
+                "cognitive enhancement",
+                "neurological disorder treatment"
+            ]
+        },
+        {
+            "question": "How does a magnet work?",
+            "scientific_domain": "physics",
+            "principle": "magnetic field and electron spin",
+            "reasoning_steps": [
+                "Step 1: Electrons have intrinsic property called spin, creating magnetic moments",
+                "Step 2: In ferromagnetic materials, electron spins align in same direction",
+                "Step 3: Aligned spins create magnetic domains with net magnetic moment",
+                "Step 4: Magnetic field lines flow from north to south pole, attracting ferromagnetic materials"
+            ],
+            "explanation": "Magnets work because aligned electron spins in ferromagnetic materials create magnetic domains with net magnetic moments, generating magnetic fields that can attract other magnetic materials.",
+            "evidence": "Magnetic domain imaging, quantum mechanics, magnetization curves",
+            "applications": [
+                "electric motors",
+                "data storage",
+                "medical imaging (MRI)"
+            ]
+        },
+        {
+            "question": "What causes earthquakes?",
+            "scientific_domain": "geology",
+            "principle": "plate tectonics and elastic rebound",
+            "reasoning_steps": [
+                "Step 1: Earth's lithosphere consists of moving tectonic plates",
+                "Step 2: Plates interact at boundaries, building up stress in rocks",
+                "Step 3: When stress exceeds rock strength, rocks fracture along fault lines",
+                "Step 4: Sudden release of stored elastic energy creates seismic waves"
+            ],
+            "explanation": "Earthquakes occur when tectonic plates moving at boundaries build up stress in rocks until they fracture, suddenly releasing stored elastic energy as seismic waves that propagate through the Earth.",
+            "evidence": "Seismic monitoring, plate motion measurements, geological surveys",
+            "applications": [
+                "earthquake prediction",
+                "building codes",
+                "tsunami warning systems"
+            ]
+        },
+        {
+            "question": "Why does oil float on water?",
+            "scientific_domain": "chemistry/physics",
+            "principle": "density and polarity differences",
+            "reasoning_steps": [
+                "Step 1: Oil has lower density (~0.8-0.9 g/cm³) than water (1.0 g/cm³)",
+                "Step 2: Oil molecules are nonpolar hydrocarbons",
+                "Step 3: Water molecules are polar with hydrogen bonding",
+                "Step 4: Immiscible liquids separate by density due to different intermolecular forces"
+            ],
+            "explanation": "Oil floats on water because it is less dense and nonpolar, while water is denser and polar. The different intermolecular forces prevent mixing, and density difference causes stratification.",
+            "evidence": "Density measurements, molecular polarity studies, phase separation experiments",
+            "applications": [
+                "oil spill cleanup",
+                "extraction processes",
+                "cooking techniques"
+            ]
+        },
+        {
+            "question": "How do antibiotics kill bacteria?",
+            "scientific_domain": "microbiology/pharmacology",
+            "principle": "selective toxicity mechanisms",
+            "reasoning_steps": [
+                "Step 1: Antibiotics target specific bacterial cellular processes",
+                "Step 2: Common targets: cell wall synthesis, protein synthesis, DNA replication",
+                "Step 3: Human cells lack these specific bacterial targets",
+                "Step 4: Selective disruption kills bacteria while minimally harming human cells"
+            ],
+            "explanation": "Antibiotics kill bacteria by selectively targeting bacterial-specific processes like cell wall synthesis or ribosomal protein production that don't exist in human cells, achieving therapeutic selectivity.",
+            "evidence": "Mechanism of action studies, bacterial culture experiments, clinical trials",
+            "applications": [
+                "infection treatment",
+                "surgical prophylaxis",
+                "antimicrobial resistance research"
+            ]
+        },
+        {
+            "question": "What makes the sky blue?",
+            "scientific_domain": "physics",
+            "principle": "Rayleigh scattering",
+            "reasoning_steps": [
+                "Step 1: Sunlight contains all colors (wavelengths) of visible light",
+                "Step 2: Light interacts with gas molecules in Earth's atmosphere",
+                "Step 3: Shorter wavelengths (blue, ~450 nm) scatter more than longer ones",
+                "Step 4: Scattered blue light reaches our eyes from all directions in the sky"
+            ],
+            "explanation": "The sky appears blue due to Rayleigh scattering, where shorter blue wavelengths of sunlight are scattered more efficiently by atmospheric molecules than longer wavelengths, creating the blue appearance we observe.",
+            "evidence": "Scattering theory, spectroscopic measurements, atmospheric optics research",
+            "applications": [
+                "atmospheric science",
+                "optical communications",
+                "remote sensing"
+            ]
+        },
+        {
+            "question": "How do birds fly?",
+            "scientific_domain": "physics/biology",
+            "principle": "aerodynamics and lift generation",
+            "reasoning_steps": [
+                "Step 1: Wing shape creates airfoil that generates pressure difference",
+                "Step 2: Air moves faster over curved top surface than flat bottom surface",
+                "Step 3: Bernoulli's principle: faster airflow creates lower pressure above wing",
+                "Step 4: Pressure difference creates upward lift force greater than bird's weight"
+            ],
+            "explanation": "Birds fly by using their wings as airfoils that create lift through aerodynamic principles. The wing shape causes air pressure differences that generate upward force sufficient to overcome gravity.",
+            "evidence": "Wind tunnel studies, high-speed photography of flight, aerodynamic calculations",
+            "applications": [
+                "aircraft design",
+                "drone technology",
+                "bio-inspired engineering"
+            ]
+        }
+    ]
+}

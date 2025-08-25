@@ -8,10 +8,10 @@ import os
 import re
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from enhanced_mathematical_reasoning_engine import EnhancedMathematicalReasoningEngine
+from ml.math.mathematical_reasoning_engine import MathematicalReasoningEngine
 
 # Test the linear equation solver directly
-engine = EnhancedMathematicalReasoningEngine()
+engine = MathematicalReasoningEngine()
 
 # Clean the left side like the real code does
 left_raw = "2x + 5"

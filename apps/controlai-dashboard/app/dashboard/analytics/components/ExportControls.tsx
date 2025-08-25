@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Export Controls Component - Data Export and Sharing
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import { useState } from 'react'
@@ -438,4 +439,5 @@ export function ExportControls({ onExport, metrics, timeRange }: ExportControlsP
         </div>
     )
 }
+
 

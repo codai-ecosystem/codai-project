@@ -1,9 +1,10 @@
+'use client'
+
 import React from 'react'
 /**
  * Reports Page - Comprehensive Analytics and Reporting Dashboard
  * Final page for ControlAI Dashboard with advanced reporting capabilities
  */
-'use client'
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
@@ -376,8 +377,8 @@ export default function ReportsPage() {
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id as any)}
                                     className={`flex items-center space-x-2 py-4 px-2 border-b-2 font-medium text-sm transition-colors ${activeTab === tab.id
-                                            ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                                            : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+                                        ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                                        : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
                                         }`}
                                 >
                                     <Icon className="w-4 h-4" />
@@ -602,8 +603,8 @@ export default function ReportsPage() {
                                     <button
                                         onClick={() => setViewMode('grid')}
                                         className={`p-2 rounded-md transition-colors ${viewMode === 'grid'
-                                                ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
-                                                : 'text-gray-500 dark:text-gray-400'
+                                            ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
+                                            : 'text-gray-500 dark:text-gray-400'
                                             }`}
                                     >
                                         <Grid className="w-4 h-4" />
@@ -611,8 +612,8 @@ export default function ReportsPage() {
                                     <button
                                         onClick={() => setViewMode('list')}
                                         className={`p-2 rounded-md transition-colors ${viewMode === 'list'
-                                                ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
-                                                : 'text-gray-500 dark:text-gray-400'
+                                            ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
+                                            : 'text-gray-500 dark:text-gray-400'
                                             }`}
                                     >
                                         <List className="w-4 h-4" />

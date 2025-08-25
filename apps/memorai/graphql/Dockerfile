@@ -36,7 +36,9 @@ USER memorai
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
-    CMD curl -f http://localhost:4500/health || exit 1
+    CMD curl -X POST -H "Content-Type: application/json" \
+        -d '{"query":"{ health { status } }"}' \
+        http://localhost:4500 || exit 1
 
 # Expose port
 EXPOSE 4500

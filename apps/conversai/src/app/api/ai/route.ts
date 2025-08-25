@@ -1,7 +1,14 @@
-import { NextRequest, NextResponse } from 'next/server'
+/**
+ * ConversAI AI Chat Endpoint - Migrated to Centralized RomAI
+ */
 
-interface AIRequest {
-    type: 'compose' | 'reply' | 'summary' | 'suggestions'
+import { NextRequest } from "next/server";
+import { createConversAIRomAIProvider } from '@codai/api-utils/romai';
+import { getCBDClient, createDevice, createConversation, createMessage } from '@codai/api-utils/cbd';
+import { getServerSession } from "next-auth/next";
+
+interface ConversAIRequest {
+    type: 'compose' | 'reply' | 'summary' | 'suggestions' | 'chat'
     context?: {
         originalEmail?: string
         subject?: string
@@ -11,20 +18,21 @@ interface AIRequest {
     }
 }
 
-interface AIResponse {
+interface ConversAIResponse {
     success: boolean
     data?: {
         suggestions?: string[]
         composition?: string
         summary?: string
         smartReply?: string[]
+        chatResponse?: string
     }
     error?: string
 }
 
-// Mock AI responses based on context
-const generateAIResponse = (request: AIRequest): AIResponse => {
-    const { type, context } = request
+// ConversAI-specific response generation (preserved for reference, now handled by RomAI)
+const generateConversAIResponse = (request: ConversAIRequest): ConversAIResponse => {
+    const { type, context } = request;
 
     switch (type) {
         case 'compose':
@@ -49,7 +57,7 @@ Please let me know if you have any questions or if there's anything else I can h
 Best regards,
 [Your name]`
                 }
-            }
+            };
 
         case 'reply':
             return {
@@ -70,14 +78,14 @@ Best regards,
                         "End with a professional closing"
                     ]
                 }
-            }
+            };
 
         case 'summary':
             if (!context?.originalEmail) {
                 return {
                     success: false,
                     error: 'Original email content required for summary'
-                }
+                };
             }
 
             return {
@@ -85,7 +93,7 @@ Best regards,
                 data: {
                     summary: generateEmailSummary(context.originalEmail)
                 }
-            }
+            };
 
         case 'suggestions':
             return {
@@ -93,19 +101,27 @@ Best regards,
                 data: {
                     suggestions: getContextualSuggestions(context)
                 }
-            }
+            };
+
+        case 'chat':
+            return {
+                success: true,
+                data: {
+                    chatResponse: "How can I assist you with your email communication today?"
+                }
+            };
 
         default:
             return {
                 success: false,
                 error: 'Invalid AI request type'
-            }
+            };
     }
-}
+};
 
 const generateEmailSummary = (emailContent: string): string => {
     // Simple keyword-based summarization (in production, use actual AI)
-    const lines = emailContent.split('\n').filter(line => line.trim().length > 0)
+    const lines = emailContent.split('\n').filter(line => line.trim().length > 0);
     const importantLines = lines.filter(line =>
         line.includes('important') ||
         line.includes('urgent') ||
@@ -116,14 +132,14 @@ const generateEmailSummary = (emailContent: string): string => {
         line.includes('request') ||
         line.includes('•') ||
         line.includes('✓')
-    )
+    );
 
     if (importantLines.length === 0) {
-        return "This email contains general information and communication."
+        return "This email contains general information and communication.";
     }
 
-    return `Key points from this email:\n${importantLines.slice(0, 3).map(line => `• ${line.trim()}`).join('\n')}`
-}
+    return `Key points from this email:\n${importantLines.slice(0, 3).map(line => `• ${line.trim()}`).join('\n')}`;
+};
 
 const getContextualSuggestions = (context?: any): string[] => {
     const baseSuggestions = [
@@ -132,18 +148,18 @@ const getContextualSuggestions = (context?: any): string[] => {
         "Confirm understanding of requirements",
         "Provide status update",
         "Thank for the information shared"
-    ]
+    ];
 
-    if (!context) return baseSuggestions
+    if (!context) return baseSuggestions;
 
-    const contextualSuggestions = []
+    const contextualSuggestions = [];
 
     if (context.subject?.toLowerCase().includes('meeting')) {
         contextualSuggestions.push(
             "Confirm your availability for the meeting",
             "Suggest alternative meeting times",
             "Request meeting agenda in advance"
-        )
+        );
     }
 
     if (context.subject?.toLowerCase().includes('project')) {
@@ -151,7 +167,7 @@ const getContextualSuggestions = (context?: any): string[] => {
             "Provide project status update",
             "Request project timeline clarification",
             "Offer to schedule project review meeting"
-        )
+        );
     }
 
     if (context.subject?.toLowerCase().includes('report')) {
@@ -159,45 +175,168 @@ const getContextualSuggestions = (context?: any): string[] => {
             "Acknowledge receipt of the report",
             "Request clarification on specific metrics",
             "Schedule presentation of findings"
-        )
+        );
     }
 
-    return [...contextualSuggestions, ...baseSuggestions].slice(0, 5)
-}
+    return [...contextualSuggestions, ...baseSuggestions].slice(0, 5);
+};
 
-// POST /api/ai - AI assistant for email operations
+// Enhanced POST handler for ConversAI
 export async function POST(request: NextRequest) {
     try {
-        const body: AIRequest = await request.json()
+        // Get user session for tracking
+        const session = await getServerSession();
 
-        if (!body.type) {
-            return NextResponse.json(
-                { success: false, error: 'Missing AI request type' },
-                { status: 400 }
-            )
+        // Initialize CBD database tracking
+        const cbdClient = getCBDClient();
+        let deviceId: string | null = null;
+        let conversationId: string | null = null;
+
+        try {
+            // Create device for ConversAI tracking
+            deviceId = await createDevice(cbdClient, {
+                name: 'ConversAI-Email-Assistant',
+                type: 'email_assistant',
+                status: 'active',
+                lastSeen: new Date(),
+                metadata: {
+                    platform: 'ConversAI',
+                    features: ['email_compose', 'smart_reply', 'summary', 'suggestions']
+                },
+                capabilities: ['compose', 'reply', 'summary', 'suggestions', 'chat']
+            });
+
+            // Create conversation for this request
+            conversationId = await createConversation(cbdClient, deviceId, 'ConversAI Email Session', {
+                type: 'email_assistance',
+                platform: 'ConversAI',
+                userId: session?.user?.email || 'anonymous'
+            });
+        } catch (error) {
+            console.warn('CBD tracking setup failed:', error);
         }
 
-        // Simulate AI processing delay
-        await new Promise(resolve => setTimeout(resolve, 500))
+        // Parse request body
+        const body = await request.json();
 
-        const aiResponse = generateAIResponse(body)
+        // Log incoming message to CBD
+        if (deviceId && conversationId) {
+            try {
+                await createMessage(cbdClient, {
+                    conversationId,
+                    deviceId,
+                    content: JSON.stringify(body),
+                    type: 'command',
+                    sender: session?.user?.email || 'anonymous',
+                    metadata: { platform: 'ConversAI', direction: 'incoming' },
+                    processed: false
+                });
+            } catch (error) {
+                console.warn('CBD message logging failed:', error);
+            }
+        }
 
-        return NextResponse.json(aiResponse)
+        // Create ConversAI RomAI provider with email-specific context
+        const romaiProvider = createConversAIRomAIProvider();
+
+        // Add small delay to simulate AI processing
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // Process with RomAI
+        const response = await romaiProvider.chat({
+            messages: [{
+                role: 'user',
+                content: JSON.stringify(body)
+            }],
+            model: 'conversai-v1',
+            stream: false,
+            temperature: 0.7,
+            max_tokens: 1000
+        });
+
+        // Log response to CBD
+        if (deviceId && conversationId) {
+            try {
+                await createMessage(cbdClient, {
+                    conversationId,
+                    deviceId,
+                    content: response.message.content,
+                    type: 'text',
+                    sender: 'ConversAI-RomAI',
+                    metadata: {
+                        platform: 'ConversAI',
+                        direction: 'outgoing',
+                        romai_used: true,
+                        model: response.model,
+                        usage: response.usage
+                    },
+                    processed: true
+                });
+            } catch (error) {
+                console.warn('CBD response logging failed:', error);
+            }
+        }
+
+        // Parse the RomAI response back to ConversAI format
+        let conversaiResponse: ConversAIResponse;
+        try {
+            // Try to parse the Romanian AGI response as ConversAI format
+            const parsedResponse = JSON.parse(response.message.content);
+            conversaiResponse = parsedResponse;
+        } catch (parseError) {
+            // Fallback: treat as a simple chat response
+            conversaiResponse = {
+                success: true,
+                data: {
+                    chatResponse: response.message.content
+                }
+            };
+        }
+
+        return Response.json(conversaiResponse);
     } catch (error) {
-        console.error('Error processing AI request:', error)
-        return NextResponse.json(
-            { success: false, error: 'Failed to process AI request' },
+        console.error('ConversAI endpoint error:', error);
+        return Response.json(
+            { success: false, error: 'Internal server error' },
             { status: 500 }
-        )
+        );
     }
 }
 
-// GET /api/ai/templates - Get email templates
+// Enhanced GET handler for templates (preserved functionality)
 export async function GET(request: NextRequest) {
     try {
-        const { searchParams } = new URL(request.url)
-        const category = searchParams.get('category') || 'all'
+        const { searchParams } = new URL(request.url);
+        const category = searchParams.get('category') || 'all';
 
+        // Check if requesting models vs templates  
+        if (searchParams.get('type') === 'models') {
+            // Use centralized RomAI for models
+            const romaiProvider = createConversAIRomAIProvider();
+            const models = await romaiProvider.getModels();
+
+            return Response.json({
+                models,
+                capabilities: [
+                    "email-composition",
+                    "smart-replies",
+                    "email-summarization",
+                    "contextual-suggestions",
+                    "template-generation",
+                    "tone-adjustment",
+                    "romanian-cultural-context"
+                ],
+                limits: {
+                    maxTokens: 4000,
+                    requestsPerMinute: 100
+                },
+                service: "ConversAI Email Assistant with Romanian AGI",
+                version: "3.0.0-romai",
+                romai_integration: true
+            });
+        }
+
+        // Original templates functionality
         const templates = {
             meeting: [
                 {
@@ -271,22 +410,22 @@ Best regards,
 {{sender}}`
                 }
             ]
-        }
+        };
 
         const result = category === 'all'
             ? Object.values(templates).flat()
-            : templates[category as keyof typeof templates] || []
+            : templates[category as keyof typeof templates] || [];
 
-        return NextResponse.json({
+        return Response.json({
             success: true,
             data: result,
             categories: Object.keys(templates)
-        })
+        });
     } catch (error) {
-        console.error('Error fetching templates:', error)
-        return NextResponse.json(
+        console.error('ConversAI templates error:', error);
+        return Response.json(
             { success: false, error: 'Failed to fetch templates' },
             { status: 500 }
-        )
+        );
     }
 }

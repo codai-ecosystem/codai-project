@@ -1,4 +1,4 @@
-# 📊 RomAI AGI Week 3 Prometheus Configuration
+# 📊 RomAI AGI Production Prometheus Configuration
 # Monitoring configuration for production deployment
 
 global:

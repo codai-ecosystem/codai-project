@@ -1,6 +1,7 @@
 import React from 'react'
 import type { Metadata } from 'next'
-import { SharedEcosystemNavigation } from '@codai/shared-components'
+import './lib/i18n/config';
+// import { SharedEcosystemNavigation } from '@codai/shared-components'
 import Script from 'next/script'
 import './globals.css'
 import '../styles/animation-enhancements.css'
@@ -9,6 +10,10 @@ export const metadata: Metadata = {
   title: 'CODAI ID - Enterprise Identity & Authentication Platform',
   description: 'Secure identity and authentication services for the CODAI ecosystem with enterprise-grade security',
 }
+
+
+// Initialize i18n for id
+// This import must be before any components that use translations
 
 export default function RootLayout({
   children,
@@ -40,10 +45,10 @@ export default function RootLayout({
         </Script>
       </head>
       <body className="min-h-screen flex bg-gray-50">
-        <SharedEcosystemNavigation
+        {/* <SharedEcosystemNavigation
           appName="id"
           currentPath="/"
-        />
+        /> */}
         <main className="flex-1 overflow-auto">
           {children}
         </main>

@@ -1,0 +1,53 @@
+# Multi-stage build for dash app
+FROM node:20-alpine AS base
+RUN apk add --no-cache libc6-compat curl
+WORKDIR /app
+
+# Dependencies stage
+FROM base AS deps
+# Copy package files
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json ./
+
+# Copy necessary packages
+COPY packages/api-utils ./packages/api-utils
+COPY packages/shared-ui ./packages/shared-ui  
+COPY packages/translations ./packages/translations
+
+# Copy app
+COPY apps/dash ./apps/dash
+
+# Install pnpm and dependencies
+RUN npm install -g pnpm
+RUN pnpm install --filter=dash --no-frozen-lockfile --prefer-offline
+
+# Builder stage
+FROM base AS builder
+WORKDIR /app
+
+# Install pnpm
+RUN npm install -g pnpm
+
+COPY --from=deps /app .
+
+# Build the app
+RUN pnpm --filter=dash build
+
+# Runner stage
+FROM node:20-alpine AS runner
+WORKDIR /app
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# Copy the built application
+COPY --from=builder /app/apps/dash/.next/standalone ./
+COPY --from=builder /app/apps/dash/.next/static ./apps/dash/.next/static
+
+USER nextjs
+
+EXPOSE 4009
+
+ENV PORT=4009
+ENV HOSTNAME="0.0.0.0"
+
+CMD ["node", "apps/dash/server.js"]

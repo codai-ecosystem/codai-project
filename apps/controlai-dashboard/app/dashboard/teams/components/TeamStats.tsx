@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * TeamStats Component - Analytics overview cards
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import { Users, UserCheck, TrendingUp, Target, Crown, Shield, Activity, Clock } from 'lucide-react'
@@ -98,4 +99,5 @@ export function TeamStats({ analytics }: TeamStatsProps) {
         </div>
     )
 }
+
 

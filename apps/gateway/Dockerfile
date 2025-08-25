@@ -15,8 +15,8 @@ COPY tsconfig.json ./
 RUN npm pkg delete dependencies.@codai/api-standards dependencies.@codai/security && \
     npm install
 
-# Copy only the main gateway file for a simpler build
-COPY src/gateway.ts ./src/
+# Copy source files
+COPY src/ ./src/
 RUN mkdir -p src/monitoring && echo 'export const healthCheck = () => ({ status: "ok" });' > src/monitoring/production-health-check.ts
 
 # Compile with error tolerance

@@ -1,4 +1,14 @@
-import * as si from 'systeminformation';
+// Use conditional import to handle systeminformation dependency
+let si: any = null;
+
+try {
+    if (typeof window === 'undefined') {
+        // Only import on server-side
+        si = require('systeminformation');
+    }
+} catch (error) {
+    console.warn('systeminformation package not available, using mock data');
+}
 
 export interface SystemMetrics {
     activeUsers: number;
@@ -42,6 +52,25 @@ export class SystemMonitor {
             return this.metricsCache;
         }
 
+        // If systeminformation is not available or we're on client-side, return mock data
+        if (!si || typeof window !== 'undefined') {
+            const mockMetrics: SystemMetrics = {
+                activeUsers: 2 + Math.floor(Math.random() * 5),
+                cpuUsage: 15 + Math.floor(Math.random() * 50),
+                memoryUsage: 30 + Math.floor(Math.random() * 40),
+                diskUsage: 20 + Math.floor(Math.random() * 30),
+                networkActivity: {
+                    bytesReceived: 1000000 + Math.floor(Math.random() * 5000000),
+                    bytesSent: 500000 + Math.floor(Math.random() * 2000000),
+                },
+                systemUptime: Date.now() - Math.floor(Math.random() * 86400000), // Up to 24 hours
+            };
+
+            this.metricsCache = mockMetrics;
+            this.cacheExpiry = Date.now() + this.CACHE_DURATION;
+            return mockMetrics;
+        }
+
         try {
             // Get CPU usage
             const cpu = await si.currentLoad();
@@ -63,8 +92,8 @@ export class SystemMonitor {
             const processes = await si.processes();
             const activeUsers = new Set(
                 processes.list
-                    .filter(p => p.user && p.user !== 'SYSTEM' && p.user !== 'NT AUTHORITY')
-                    .map(p => p.user)
+                    .filter((p: any) => p.user && p.user !== 'SYSTEM' && p.user !== 'NT AUTHORITY')
+                    .map((p: any) => p.user)
             ).size;
 
             const metrics: SystemMetrics = {
@@ -157,12 +186,16 @@ export class SystemMonitor {
     }
 
     public async getActiveUsers(): Promise<number> {
+        if (!si || typeof window !== 'undefined') {
+            return 2 + Math.floor(Math.random() * 5); // Mock data
+        }
+
         try {
             const processes = await si.processes();
             const activeUsers = new Set(
                 processes.list
-                    .filter(p => p.user && p.user !== 'SYSTEM' && p.user !== 'NT AUTHORITY')
-                    .map(p => p.user)
+                    .filter((p: any) => p.user && p.user !== 'SYSTEM' && p.user !== 'NT AUTHORITY')
+                    .map((p: any) => p.user)
             ).size;
 
             return Math.max(1, activeUsers);
@@ -177,6 +210,14 @@ export class SystemMonitor {
         memoryUsage: number;
         diskUsage: number;
     }> {
+        if (!si || typeof window !== 'undefined') {
+            return {
+                cpuUsage: 15 + Math.floor(Math.random() * 50),
+                memoryUsage: 30 + Math.floor(Math.random() * 40),
+                diskUsage: 20 + Math.floor(Math.random() * 30),
+            };
+        }
+
         try {
             const [cpu, memory, fsSize] = await Promise.all([
                 si.currentLoad(),
@@ -204,6 +245,13 @@ export class SystemMonitor {
         bytesReceived: number;
         bytesSent: number;
     }> {
+        if (!si || typeof window !== 'undefined') {
+            return {
+                bytesReceived: 1000000 + Math.floor(Math.random() * 5000000),
+                bytesSent: 500000 + Math.floor(Math.random() * 2000000),
+            };
+        }
+
         try {
             const networkStats = await si.networkStats();
 

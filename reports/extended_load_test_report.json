@@ -1,0 +1,89 @@
+{
+  "load_test_summary": {
+    "timestamp": "2025-08-21 00:50:35",
+    "docker_container": "codai-romai-ml-api:6101",
+    "total_test_scenarios": 6,
+    "total_requests": 11784,
+    "total_successful_requests": 11784,
+    "overall_success_rate": 1.0,
+    "average_rps": 80.85264115935698,
+    "average_latency_ms": 2.569354255312705,
+    "max_error_rate": 0.0,
+    "performance_grade": "EXCELLENT",
+    "production_status": "PRODUCTION READY - HIGH PERFORMANCE \u2705"
+  },
+  "detailed_results": [
+    {
+      "test_name": "Health Endpoint Load Test",
+      "concurrent_users": 20,
+      "duration_seconds": 30,
+      "total_requests": 5500,
+      "successful_requests": 5500,
+      "success_rate": 1.0,
+      "avg_latency_ms": 3.0342583656311035,
+      "p95_latency_ms": 4.334235191345215,
+      "requests_per_second": 183.2735487136801,
+      "error_rate": 0.0
+    },
+    {
+      "test_name": "Romanian Intelligence Load Test",
+      "concurrent_users": 10,
+      "duration_seconds": 30,
+      "total_requests": 2750,
+      "successful_requests": 2750,
+      "success_rate": 1.0,
+      "avg_latency_ms": 3.260168682445179,
+      "p95_latency_ms": 4.432070255279541,
+      "requests_per_second": 91.45647157953603,
+      "error_rate": 0.0
+    },
+    {
+      "test_name": "Math Processing Load Test",
+      "concurrent_users": 8,
+      "duration_seconds": 20,
+      "total_requests": 1464,
+      "successful_requests": 1464,
+      "success_rate": 1.0,
+      "avg_latency_ms": 2.4099960678913552,
+      "p95_latency_ms": 3.5231709480285645,
+      "requests_per_second": 73.128740388193,
+      "error_rate": 0.0
+    },
+    {
+      "test_name": "Mixed Workload - health",
+      "concurrent_users": 5,
+      "duration_seconds": 15,
+      "total_requests": 690,
+      "successful_requests": 690,
+      "success_rate": 1.0,
+      "avg_latency_ms": 1.9737257473710654,
+      "p95_latency_ms": 2.763843536376953,
+      "requests_per_second": 45.77177827312241,
+      "error_rate": 0.0
+    },
+    {
+      "test_name": "Mixed Workload - chat",
+      "concurrent_users": 5,
+      "duration_seconds": 15,
+      "total_requests": 690,
+      "successful_requests": 690,
+      "success_rate": 1.0,
+      "avg_latency_ms": 2.597465031388877,
+      "p95_latency_ms": 3.949916362762451,
+      "requests_per_second": 45.791678612062675,
+      "error_rate": 0.0
+    },
+    {
+      "test_name": "Mixed Workload - simple",
+      "concurrent_users": 5,
+      "duration_seconds": 15,
+      "total_requests": 690,
+      "successful_requests": 690,
+      "success_rate": 1.0,
+      "avg_latency_ms": 2.14051163714865,
+      "p95_latency_ms": 3.2039999961853027,
+      "requests_per_second": 45.69362938954767,
+      "error_rate": 0.0
+    }
+  ]
+}

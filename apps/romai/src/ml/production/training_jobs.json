@@ -1,0 +1,48 @@
+{
+  "jobs": [
+    {
+      "job_id": "train_mathematical_1755870363",
+      "config": {
+        "model_type": "mathematical",
+        "training_mode": "initial",
+        "dataset_path": "synthetic_data.json",
+        "validation_split": 0.2,
+        "batch_size": 32,
+        "epochs": 50,
+        "learning_rate": 0.001,
+        "optimizer": "adam",
+        "loss_function": "mse",
+        "device": "cpu",
+        "mixed_precision": false,
+        "gradient_clipping": 1.0,
+        "early_stopping_patience": 10,
+        "checkpoint_interval": 10,
+        "validation_interval": 5,
+        "scheduler_config": {
+          "type": "step",
+          "step_size": 20,
+          "gamma": 0.1
+        },
+        "augmentation_config": {
+          "noise": true,
+          "noise_std": 0.05
+        },
+        "regularization_config": null
+      },
+      "status": "failed",
+      "created_at": "2025-08-22T13:46:03.170130+00:00",
+      "started_at": "2025-08-22T13:46:03.170375+00:00",
+      "completed_at": "2025-08-22T13:46:03.170614+00:00",
+      "model_version": null,
+      "metrics_history": [],
+      "best_metrics": null,
+      "checkpoint_path": null,
+      "error_message": "[Errno 2] No such file or directory: 'synthetic_data.json'",
+      "logs": [
+        "Starting training job: train_mathematical_1755870363",
+        "Training failed: [Errno 2] No such file or directory: 'synthetic_data.json'"
+      ]
+    }
+  ],
+  "last_updated": "2025-08-22T13:46:03.170813+00:00"
+}

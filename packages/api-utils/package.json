@@ -1,0 +1,86 @@
+{
+    "name": "@codai/api-utils",
+    "version": "1.0.0",
+    "description": "Shared API utilities and standardized endpoints for CODAI ecosystem",
+    "main": "dist/index.js",
+    "module": "dist/index.mjs",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js"
+        },
+        "./health": {
+            "types": "./dist/health.d.ts",
+            "import": "./dist/health.mjs",
+            "require": "./dist/health.js"
+        },
+        "./auth": {
+            "types": "./dist/auth.d.ts",
+            "import": "./dist/auth.mjs",
+            "require": "./dist/auth.js"
+        },
+        "./user": {
+            "types": "./dist/user.d.ts",
+            "import": "./dist/user.mjs",
+            "require": "./dist/user.js"
+        },
+        "./ai": {
+            "types": "./dist/ai.d.ts",
+            "import": "./dist/ai.mjs",
+            "require": "./dist/ai.js"
+        },
+        "./analytics": {
+            "types": "./dist/analytics.d.ts",
+            "import": "./dist/analytics.mjs",
+            "require": "./dist/analytics.js"
+        },
+        "./status": {
+            "types": "./dist/status.d.ts",
+            "import": "./dist/status.mjs",
+            "require": "./dist/status.js"
+        },
+        "./cbd": {
+            "types": "./dist/cbd.d.ts",
+            "import": "./dist/cbd.mjs",
+            "require": "./dist/cbd.js"
+        },
+        "./romai": {
+            "types": "./dist/romai.d.ts",
+            "import": "./dist/romai.mjs",
+            "require": "./dist/romai.js"
+        }
+    },
+    "scripts": {
+        "build": "tsup",
+        "dev": "tsup --watch",
+        "lint": "eslint src --ext .ts,.tsx",
+        "test": "vitest",
+        "type-check": "tsc --noEmit"
+    },
+    "dependencies": {
+        "next": "^15.4.5",
+        "zod": "^3.23.8",
+        "jose": "^5.9.6"
+    },
+    "devDependencies": {
+        "@types/node": "^22.10.2",
+        "eslint": "^9.17.0",
+        "tsup": "^8.3.5",
+        "typescript": "^5.7.2"
+    },
+    "files": [
+        "dist",
+        "README.md"
+    ],
+    "keywords": [
+        "codai",
+        "api",
+        "utilities",
+        "health",
+        "auth",
+        "standardization"
+    ],
+    "license": "MIT"
+}

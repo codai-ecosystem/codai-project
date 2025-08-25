@@ -1,6 +1,7 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import './lib/i18n/config';
 import './globals.css'
 import '../styles/modern-enhancements.css'
 import '../styles/animation-enhancements.css'
@@ -27,6 +28,10 @@ export const metadata: Metadata = {
     'apple-mobile-web-app-status-bar-style': 'black-translucent'
   }
 }
+
+
+// Initialize i18n for admin
+// This import must be before any components that use translations
 
 export default function RootLayout({
   children,

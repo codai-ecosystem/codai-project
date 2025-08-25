@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 /**
  * Project Analytics Component - Detailed analytics and reporting
  */
-'use client'
 
 import { motion } from 'framer-motion'
 import {
@@ -430,4 +431,5 @@ export function ProjectAnalytics({ projects, analytics }: ProjectAnalyticsProps)
         </div>
     )
 }
+
 

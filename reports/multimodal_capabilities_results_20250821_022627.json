@@ -1,0 +1,309 @@
+{
+  "timestamp": "2025-08-21T02:26:25.541413",
+  "total_tasks": 11,
+  "successful_tasks": 7,
+  "failed_tasks": 4,
+  "average_accuracy": 0.5353971609785563,
+  "modality_performance": {},
+  "benchmark_scores": {},
+  "capabilities_status": {
+    "vision_object_detection": {
+      "modality": "vision",
+      "capability_type": "object_detection",
+      "description": "Detect and identify objects in images",
+      "implementation_status": "implemented",
+      "performance_target": 0.85,
+      "current_performance": 0.8
+    },
+    "vision_scene_understanding": {
+      "modality": "vision",
+      "capability_type": "scene_understanding",
+      "description": "Understand complex visual scenes and contexts",
+      "implementation_status": "implemented",
+      "performance_target": 0.78,
+      "current_performance": 0.8
+    },
+    "audio_speech_recognition": {
+      "modality": "audio",
+      "capability_type": "speech_recognition",
+      "description": "Transcribe and understand speech content",
+      "implementation_status": "implemented",
+      "performance_target": 0.94,
+      "current_performance": 0.85
+    },
+    "audio_sound_classification": {
+      "modality": "audio",
+      "capability_type": "sound_classification",
+      "description": "Classify and understand environmental sounds",
+      "implementation_status": "implemented",
+      "performance_target": 0.88,
+      "current_performance": 0.85
+    },
+    "multimodal_cross_modal_reasoning": {
+      "modality": "multimodal",
+      "capability_type": "cross_modal_reasoning",
+      "description": "Integrate and reason across multiple modalities",
+      "implementation_status": "implemented",
+      "performance_target": 0.75,
+      "current_performance": 0.75
+    },
+    "multimodal_multimodal_generation": {
+      "modality": "multimodal",
+      "capability_type": "multimodal_generation",
+      "description": "Generate content that integrates multiple modalities",
+      "implementation_status": "implemented",
+      "performance_target": 0.7,
+      "current_performance": 0.75
+    }
+  },
+  "detailed_results": [],
+  "vision_performance": {
+    "modality": "vision",
+    "results": [
+      {
+        "task": "object_detection",
+        "analysis": {
+          "format": "detected_format",
+          "dimensions": [
+            1024,
+            768
+          ],
+          "objects": [
+            "person",
+            "computer",
+            "desk"
+          ],
+          "scene_type": "office_environment",
+          "text_content": "Sample recognized text",
+          "confidence": 0.85,
+          "detected_objects": [
+            {
+              "object": "person",
+              "confidence": 0.89,
+              "bbox": [
+                100,
+                200,
+                300,
+                400
+              ]
+            },
+            {
+              "object": "laptop",
+              "confidence": 0.92,
+              "bbox": [
+                150,
+                350,
+                400,
+                500
+              ]
+            }
+          ]
+        },
+        "description": "This image shows a office_environment containing person, computer, desk. Visible text includes: 'Sample recognized text'. The overall composition appears neutral with standard lighting.",
+        "accuracy": 0.8,
+        "success": true
+      },
+      {
+        "task": "scene_understanding",
+        "analysis": {
+          "format": "detected_format",
+          "dimensions": [
+            1024,
+            768
+          ],
+          "objects": [
+            "person",
+            "computer",
+            "desk"
+          ],
+          "scene_type": "office_environment",
+          "text_content": "Sample recognized text",
+          "confidence": 0.78,
+          "scene_description": "Modern office workspace with person working on laptop",
+          "mood": "professional and focused",
+          "lighting": "natural daylight",
+          "composition": "balanced and organized"
+        },
+        "description": "This image shows a office_environment containing person, computer, desk. Visible text includes: 'Sample recognized text'. The overall composition appears professional and focused with natural daylight lighting.",
+        "accuracy": 0.8,
+        "success": true
+      },
+      {
+        "task": "text_recognition",
+        "analysis": {
+          "format": "detected_format",
+          "dimensions": [
+            1024,
+            768
+          ],
+          "objects": [
+            "person",
+            "computer",
+            "desk"
+          ],
+          "scene_type": "office_environment",
+          "text_content": "Sample recognized text",
+          "confidence": 0.92,
+          "recognized_text": "Advanced Multi-Modal AI System",
+          "text_regions": [
+            {
+              "text": "AI System",
+              "bbox": [
+                200,
+                100,
+                400,
+                150
+              ]
+            }
+          ],
+          "language": "english"
+        },
+        "description": "This image shows a office_environment containing person, computer, desk. Visible text includes: 'Sample recognized text'. The overall composition appears neutral with standard lighting.",
+        "accuracy": 0.8,
+        "success": true
+      }
+    ]
+  },
+  "audio_performance": {
+    "modality": "audio",
+    "results": [
+      {
+        "task": "speech_recognition",
+        "analysis": {
+          "format": "wav",
+          "duration": 5.2,
+          "sample_rate": 44100,
+          "channels": 2,
+          "transcription": "Hello, this is a sample audio transcription.",
+          "language": "english",
+          "confidence": 0.94,
+          "words": [
+            {
+              "word": "hello",
+              "start": 0.1,
+              "end": 0.4,
+              "confidence": 0.95
+            },
+            {
+              "word": "this",
+              "start": 0.5,
+              "end": 0.7,
+              "confidence": 0.93
+            }
+          ],
+          "speaking_rate": 150,
+          "clarity_score": 0.91
+        },
+        "description": "This 5.2-second audio clip in english contains the speech: 'Hello, this is a sample audio transcription.'. ",
+        "accuracy": 0.85,
+        "success": true
+      },
+      {
+        "task": "emotion_detection",
+        "analysis": {
+          "format": "wav",
+          "duration": 5.2,
+          "sample_rate": 44100,
+          "channels": 2,
+          "transcription": "Hello, this is a sample audio transcription.",
+          "language": "english",
+          "confidence": 0.79,
+          "emotions": {
+            "joy": 0.3,
+            "neutral": 0.5,
+            "excitement": 0.2
+          },
+          "dominant_emotion": "neutral",
+          "emotional_intensity": 0.6
+        },
+        "description": "This 5.2-second audio clip in english contains the speech: 'Hello, this is a sample audio transcription.'. The speaker's tone conveys neutral emotion. ",
+        "accuracy": 0.85,
+        "success": true
+      },
+      {
+        "task": "sound_classification",
+        "analysis": {
+          "format": "wav",
+          "duration": 5.2,
+          "sample_rate": 44100,
+          "channels": 2,
+          "transcription": "Hello, this is a sample audio transcription.",
+          "language": "english",
+          "confidence": 0.88
+        },
+        "description": "This 5.2-second audio clip in english contains the speech: 'Hello, this is a sample audio transcription.'. ",
+        "accuracy": 0.85,
+        "success": true
+      }
+    ]
+  },
+  "fusion_performance": {
+    "modality": "multimodal",
+    "results": [
+      {
+        "task": "multimodal_fusion",
+        "fusion_result": {
+          "fusion_strategy": "cross_modal_attention",
+          "confidence": 0.89,
+          "modalities_integrated": [
+            "vision",
+            "audio",
+            "text"
+          ],
+          "cross_modal_correlations": {
+            "vision_audio_alignment": 0.73,
+            "vision_text_alignment": 0.81,
+            "audio_text_alignment": 0.76,
+            "temporal_synchronization": 0.85
+          },
+          "unified_representation": {
+            "visual_features": {
+              "scene_context": "office",
+              "object_count": 2,
+              "visual_complexity": 0.75
+            },
+            "audio_features": {
+              "speech_present": true,
+              "audio_quality": 0.9,
+              "temporal_length": 0
+            },
+            "text_features": {
+              "text_length": 29,
+              "language_complexity": 0.68,
+              "semantic_richness": 0.72
+            }
+          }
+        },
+        "response": "Based on analysis of 3 modalities (vision, audio, text), the visual scene shows a office with 2 key objects. The audio contains clear speech content. Audio quality is high with 0.0s duration. The text content provides 29 characters of contextual information. Cross-modal analysis shows 85% alignment between modalities, indicating coherent multimodal content.",
+        "accuracy": 0.75,
+        "success": true
+      }
+    ]
+  },
+  "benchmark_performance": {
+    "benchmarks_tested": 3,
+    "task_results": [
+      "MultiModalResult(task_id='vqa_001', task_type='visual_question_answering', modalities_used=['vision', 'text'], response='RomAI API error: 404', confidence=0.2, processing_time=0.009609222412109375, success=False, accuracy_score=0.0, quality_metrics={'length_appropriateness': 0.1, 'coherence': 0.75, 'completeness': 0.3, 'confidence': 0.2, 'relevance': 0.5, 'visual_grounding': 0.4})",
+      "MultiModalResult(task_id='vqa_002', task_type='scene_reasoning', modalities_used=['vision', 'text'], response='RomAI API error: 404', confidence=0.2, processing_time=0.0013191699981689453, success=False, accuracy_score=0.0, quality_metrics={'length_appropriateness': 0.1, 'coherence': 0.75, 'completeness': 0.3, 'confidence': 0.2, 'relevance': 0.5})",
+      "MultiModalResult(task_id='audio_001', task_type='speech_recognition', modalities_used=['audio'], response='RomAI API error: 404', confidence=0.2, processing_time=0.0012142658233642578, success=False, accuracy_score=0.046511627906976744, quality_metrics={'length_appropriateness': 0.1, 'coherence': 0.75, 'completeness': 0.3, 'confidence': 0.2, 'relevance': 0.5, 'transcription_accuracy': 0.9})",
+      "MultiModalResult(task_id='audio_002', task_type='audio_classification', modalities_used=['audio'], response='RomAI API error: 404', confidence=0.2, processing_time=0.0010755062103271484, success=False, accuracy_score=0.14285714285714285, quality_metrics={'length_appropriateness': 0.1, 'coherence': 0.75, 'completeness': 0.3, 'confidence': 0.2, 'relevance': 0.5})"
+    ],
+    "benchmark_summary": {
+      "VQA_v2": {
+        "average_accuracy": 0.0,
+        "success_rate": 0.0,
+        "tasks_evaluated": 2
+      },
+      "SpeechCommands": {
+        "average_accuracy": 0.046511627906976744,
+        "success_rate": 0.0,
+        "tasks_evaluated": 1
+      },
+      "AudioSet": {
+        "average_accuracy": 0.14285714285714285,
+        "success_rate": 0.0,
+        "tasks_evaluated": 1
+      }
+    }
+  }
+}

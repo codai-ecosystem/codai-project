@@ -1,0 +1,14 @@
+{
+  "services_deployed": [],
+  "timestamp": "2025-08-23 04:24:36",
+  "steps_completed": [
+    "pre_deployment_validation",
+    "environment_preparation"
+  ],
+  "errors": [
+    "Infrastructure deployment failed: Infrastructure services are not healthy",
+    "Infrastructure deployment failed"
+  ],
+  "endpoints": {},
+  "status": "FAILED"
+}

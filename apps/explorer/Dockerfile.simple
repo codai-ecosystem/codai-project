@@ -1,0 +1,98 @@
+# CODAI Explorer Application - Simplified Docker Configuration
+FROM node:20-alpine AS base
+RUN apk add --no-cache libc6-compat curl
+
+# Install dependencies
+FROM base AS deps
+WORKDIR /app
+
+# Copy package files
+COPY apps/explorer/package.json ./
+COPY pnpm-lock.yaml ./
+
+# Install pnpm and dependencies
+RUN npm install -g pnpm
+RUN pnpm install --no-frozen-lockfile --prefer-offline
+
+# Build stage
+FROM base AS builder
+WORKDIR /app
+
+# Copy dependencies
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/package.json ./package.json
+
+# Copy source code
+COPY apps/explorer ./
+
+# Set build environment
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_OPTIONS="--max-old-space-size=2048"
+
+# Create a local tsconfig without extends
+RUN echo '{\
+  "compilerOptions": {\
+    "target": "ES2020",\
+    "lib": ["dom", "dom.iterable", "es6"],\
+    "allowJs": true,\
+    "skipLibCheck": true,\
+    "strict": true,\
+    "forceConsistentCasingInFileNames": true,\
+    "noEmit": true,\
+    "esModuleInterop": true,\
+    "module": "esnext",\
+    "moduleResolution": "bundler",\
+    "resolveJsonModule": true,\
+    "isolatedModules": true,\
+    "jsx": "preserve",\
+    "incremental": true,\
+    "plugins": [{"name": "next"}],\
+    "baseUrl": ".",\
+    "paths": {\
+      "@/*": ["./src/*"],\
+      "@/components/*": ["./src/components/*"],\
+      "@/lib/*": ["./src/lib/*"],\
+      "@/types/*": ["./src/types/*"]\
+    }\
+  },\
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],\
+  "exclude": ["node_modules", ".next", "out", "dist", "playwright.config.ts", "vitest.config.ts", "tests/**/*"]\
+}' > tsconfig.json
+
+# Build the application
+RUN npm install -g pnpm && pnpm build
+
+# Runtime stage
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Create user
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# Copy built application
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+
+# Create public directory if it doesn't exist
+RUN mkdir -p ./public
+
+# Set permissions
+RUN chown -R nextjs:nodejs /app
+
+USER nextjs
+
+EXPOSE 4400
+
+ENV PORT=4400
+ENV HOSTNAME="0.0.0.0"
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+  CMD curl -f http://localhost:4400/health || exit 1
+
+# Start the application
+CMD ["node", "server.js"]

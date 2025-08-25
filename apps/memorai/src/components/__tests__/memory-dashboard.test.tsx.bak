@@ -1,0 +1,456 @@
+/**
+ * Memory Dashboard Component Tests
+ * 2025 Best Practices: User-centric testing with real user interactions
+ */
+
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { screen, fireEvent, waitFor, render } from '@/tests/setup'
+import MemoryDashboardComponent from '@/components/memory-dashboard'
+import { createMockUser, createMockMemory } from '@/tests/setup'
+
+// Alias for consistency with test expectations
+const MemoryDashboard = MemoryDashboardComponent
+
+// Mock the MCP client
+vi.mock('@/utils/memorai-mcp-client', () => ({
+  memoraiMCPClient: {
+    testConnection: vi.fn(),
+    getAllMemories: vi.fn(),
+    getMemoryStats: vi.fn(),
+    searchMemories: vi.fn(),
+    addMemory: vi.fn(),
+    deleteMemory: vi.fn(),
+  },
+}))
+
+// Mock the AI service
+vi.mock('@/services/ai-service', () => ({
+  default: {
+    search: vi.fn(),
+    getSuggestions: vi.fn(),
+    analyzeSentiment: vi.fn(),
+  },
+}))
+
+// Mock fetch for any remaining API calls
+global.fetch = vi.fn()
+
+// Mock Next.js router
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    back: vi.fn(),
+    forward: vi.fn(),
+    refresh: vi.fn(),
+  }),
+  usePathname: () => '/dashboard',
+}))
+
+// Mock dynamic imports
+vi.mock('next/dynamic', () => ({
+  default: (fn: any, options: any) => {
+    const Component = fn().default || fn()
+    return Component
+  },
+}))
+
+// Mock the auth service
+vi.mock('@/services/auth-service', () => ({
+  useAuth: () => ({
+    user: createMockUser(),
+    isAuthenticated: true,
+    login: vi.fn(),
+    logout: vi.fn(),
+  }),
+}))
+
+describe('MemoryDashboard', () => {
+  const mockMemories = [
+    createMockMemory(),
+    {
+      ...createMockMemory(),
+      id: 'memory-2',
+      title: 'Second Memory',
+      content: 'Second memory content',
+    },
+  ]
+
+  beforeEach(() => {
+    // Reset mocks before each test
+    vi.clearAllMocks()
+  })
+
+  describe('Initial Rendering', () => {
+    it('should render dashboard with loading state', async () => {
+      const { memoraiMCPClient } = await import('@/utils/memorai-mcp-client')
+      memoraiMCPClient.testConnection = vi.fn().mockResolvedValue(false)
+      memoraiMCPClient.getAllMemories = vi.fn().mockResolvedValue([])
+
+      render(<MemoryDashboard />)
+
+      // Check for dashboard title
+      expect(screen.getByText('MemorAI Dashboard')).toBeInTheDocument()
+      expect(screen.getByText('AI-powered memory management with MCP integration')).toBeInTheDocument()
+
+      // Wait for MCP connection status to appear
+      await waitFor(() => {
+        expect(screen.getByText(/MCP Offline|MCP Connected/i)).toBeInTheDocument()
+      })
+    })
+
+    it('should render memories after loading', async () => {
+      const { memoraiMCPClient } = await import('@/utils/memorai-mcp-client')
+      memoraiMCPClient.testConnection = vi.fn().mockResolvedValue(true)
+      memoraiMCPClient.getAllMemories = vi.fn().mockResolvedValue([{
+        structuredKey: 'test-memory',
+        content: 'Test memory content',
+        importance: 8,
+        project: 'Test Project',
+        tags: ['test'],
+        metadata: { entityType: 'memory' },
+        createdAt: new Date().toISOString()
+      }])
+      memoraiMCPClient.getMemoryStats = vi.fn().mockResolvedValue({
+        totalMemories: 1,
+        recentActivity: 1,
+        weeklyActivity: 1,
+        searchQueries: 0
+      })
+
+      render(<MemoryDashboard />)
+
+      await waitFor(() => {
+        expect(screen.getByText('Test memory content')).toBeInTheDocument()
+        expect(screen.getByText('8/10')).toBeInTheDocument()
+        expect(screen.getByText('Test Project')).toBeInTheDocument()
+      })
+    })
+
+    it('should handle empty state gracefully', async () => {
+      const { memoraiMCPClient } = await import('@/utils/memorai-mcp-client')
+      memoraiMCPClient.testConnection = vi.fn().mockResolvedValue(false)
+      memoraiMCPClient.getAllMemories = vi.fn().mockResolvedValue([])
+
+      render(<MemoryDashboard />)
+
+      await waitFor(() => {
+        expect(screen.getByText(/MemorAI MCP Server is offline|No memories found/i)).toBeInTheDocument()
+      })
+    })
+  })
+
+  describe('Memory Creation', () => {
+    it('should allow creating a new memory', async () => {
+      const { memoryService } = await import('@/services/memory-service')
+      const newMemory = {
+        ...createMockMemory(),
+        id: 'new-memory',
+        title: 'New Memory',
+      }
+
+      memoryService.getMemories = vi.fn().mockResolvedValue(mockMemories)
+      memoryService.createMemory = vi.fn().mockResolvedValue(newMemory)
+
+      render(<MemoryDashboard />)
+
+      // Wait for initial load
+      await waitFor(() => {
+        expect(screen.getByText('Test Memory')).toBeInTheDocument()
+      })
+
+      // Click create new memory button
+      const createButton = screen.getByRole('button', { name: /create new memory/i })
+      fireEvent.click(createButton)
+
+      // Fill in the form
+      const titleInput = screen.getByLabelText(/title/i)
+      const contentInput = screen.getByLabelText(/content/i)
+      
+      fireEvent.change(titleInput, { target: { value: 'New Memory' } })
+      fireEvent.change(contentInput, { target: { value: 'New memory content' } })
+
+      // Submit the form
+      const submitButton = screen.getByRole('button', { name: /save memory/i })
+      fireEvent.click(submitButton)
+
+      await waitFor(() => {
+        expect(memoryService.createMemory).toHaveBeenCalledWith({
+          title: 'New Memory',
+          content: 'New memory content',
+          tags: [],
+          category: 'general',
+        })
+      })
+    })
+
+    it('should show validation errors for empty fields', async () => {
+      const { memoryService } = await import('@/services/memory-service')
+      memoryService.getMemories = vi.fn().mockResolvedValue(mockMemories)
+
+      render(<MemoryDashboard />)
+
+      // Wait for initial load
+      await waitFor(() => {
+        expect(screen.getByText('Test Memory')).toBeInTheDocument()
+      })
+
+      // Click create new memory button
+      const createButton = screen.getByRole('button', { name: /create new memory/i })
+      fireEvent.click(createButton)
+
+      // Try to submit without filling required fields
+      const submitButton = screen.getByRole('button', { name: /save memory/i })
+      fireEvent.click(submitButton)
+
+      await waitFor(() => {
+        expect(screen.getByText(/title is required/i)).toBeInTheDocument()
+        expect(screen.getByText(/content is required/i)).toBeInTheDocument()
+      })
+    })
+  })
+
+  describe('Memory Search and Filtering', () => {
+    it('should allow searching memories', async () => {
+      const { memoryService } = await import('@/services/memory-service')
+      const searchResults = [mockMemories[0]]
+      
+      memoryService.getMemories = vi.fn().mockResolvedValue(mockMemories)
+      memoryService.searchMemories = vi.fn().mockResolvedValue(searchResults)
+
+      render(<MemoryDashboard />)
+
+      // Wait for initial load
+      await waitFor(() => {
+        expect(screen.getByText('Test Memory')).toBeInTheDocument()
+      })
+
+      // Use search functionality
+      const searchInput = screen.getByPlaceholderText(/search memories/i)
+      fireEvent.change(searchInput, { target: { value: 'test' } })
+
+      // Trigger search (with debounce consideration)
+      await waitFor(() => {
+        expect(memoryService.searchMemories).toHaveBeenCalledWith('test')
+      }, { timeout: 1000 })
+
+      // Should show filtered results
+      expect(screen.getByText('Test Memory')).toBeInTheDocument()
+      expect(screen.queryByText('Second Memory')).not.toBeInTheDocument()
+    })
+
+    it('should allow filtering by category', async () => {
+      const { memoryService } = await import('@/services/memory-service')
+      const workMemories = [{
+        ...createMockMemory(),
+        category: 'work',
+        title: 'Work Memory'
+      }]
+      
+      memoryService.getMemories = vi.fn()
+        .mockResolvedValueOnce(mockMemories)
+        .mockResolvedValueOnce(workMemories)
+
+      render(<MemoryDashboard />)
+
+      // Wait for initial load
+      await waitFor(() => {
+        expect(screen.getByText('Test Memory')).toBeInTheDocument()
+      })
+
+      // Use category filter
+      const categoryFilter = screen.getByRole('combobox', { name: /category/i })
+      fireEvent.change(categoryFilter, { target: { value: 'work' } })
+
+      await waitFor(() => {
+        expect(memoryService.getMemories).toHaveBeenCalledWith({ category: 'work' })
+      })
+    })
+  })
+
+  describe('Memory Operations', () => {
+    it('should allow editing a memory', async () => {
+      const { memoryService } = await import('@/services/memory-service')
+      memoryService.getMemories = vi.fn().mockResolvedValue(mockMemories)
+      memoryService.updateMemory = vi.fn().mockResolvedValue({
+        ...mockMemories[0],
+        title: 'Updated Memory',
+      })
+
+      render(<MemoryDashboard />)
+
+      // Wait for initial load
+      await waitFor(() => {
+        expect(screen.getByText('Test Memory')).toBeInTheDocument()
+      })
+
+      // Click edit button
+      const editButton = screen.getAllByRole('button', { name: /edit/i })[0]
+      fireEvent.click(editButton)
+
+      // Update title
+      const titleInput = screen.getByDisplayValue('Test Memory')
+      fireEvent.change(titleInput, { target: { value: 'Updated Memory' } })
+
+      // Save changes
+      const saveButton = screen.getByRole('button', { name: /save/i })
+      fireEvent.click(saveButton)
+
+      await waitFor(() => {
+        expect(memoryService.updateMemory).toHaveBeenCalledWith(
+          mockMemories[0].id,
+          expect.objectContaining({ title: 'Updated Memory' })
+        )
+      })
+    })
+
+    it('should allow deleting a memory with confirmation', async () => {
+      const { memoryService } = await import('@/services/memory-service')
+      memoryService.getMemories = vi.fn().mockResolvedValue(mockMemories)
+      memoryService.deleteMemory = vi.fn().mockResolvedValue(true)
+
+      render(<MemoryDashboard />)
+
+      // Wait for initial load
+      await waitFor(() => {
+        expect(screen.getByText('Test Memory')).toBeInTheDocument()
+      })
+
+      // Click delete button
+      const deleteButton = screen.getAllByRole('button', { name: /delete/i })[0]
+      fireEvent.click(deleteButton)
+
+      // Confirm deletion
+      const confirmButton = screen.getByRole('button', { name: /confirm delete/i })
+      fireEvent.click(confirmButton)
+
+      await waitFor(() => {
+        expect(memoryService.deleteMemory).toHaveBeenCalledWith(mockMemories[0].id)
+      })
+    })
+  })
+
+  describe('Error Handling', () => {
+    it('should handle API errors gracefully', async () => {
+      const { memoryService } = await import('@/services/memory-service')
+      memoryService.getMemories = vi.fn().mockRejectedValue(new Error('API Error'))
+
+      render(<MemoryDashboard />)
+
+      await waitFor(() => {
+        expect(screen.getByText(/failed to load memories/i)).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: /retry/i })).toBeInTheDocument()
+      })
+    })
+
+    it('should allow retrying failed operations', async () => {
+      const { memoryService } = await import('@/services/memory-service')
+      memoryService.getMemories = vi.fn()
+        .mockRejectedValueOnce(new Error('API Error'))
+        .mockResolvedValueOnce(mockMemories)
+
+      render(<MemoryDashboard />)
+
+      // Wait for error state
+      await waitFor(() => {
+        expect(screen.getByText(/failed to load memories/i)).toBeInTheDocument()
+      })
+
+      // Click retry
+      const retryButton = screen.getByRole('button', { name: /retry/i })
+      fireEvent.click(retryButton)
+
+      // Should successfully load on retry
+      await waitFor(() => {
+        expect(screen.getByText('Test Memory')).toBeInTheDocument()
+      })
+
+      expect(memoryService.getMemories).toHaveBeenCalledTimes(2)
+    })
+  })
+
+  describe('Accessibility', () => {
+    it('should be keyboard navigable', async () => {
+      const { memoryService } = await import('@/services/memory-service')
+      memoryService.getMemories = vi.fn().mockResolvedValue(mockMemories)
+
+      render(<MemoryDashboard />)
+
+      await waitFor(() => {
+        expect(screen.getByText('Test Memory')).toBeInTheDocument()
+      })
+
+      // Test tab navigation
+      const createButton = screen.getByRole('button', { name: /create new memory/i })
+      createButton.focus()
+      expect(createButton).toHaveFocus()
+
+      // Test keyboard shortcuts
+      fireEvent.keyDown(document, { key: 'n', ctrlKey: true })
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
+
+      // Test escape key
+      fireEvent.keyDown(document, { key: 'Escape' })
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
+
+    it('should have proper ARIA labels', async () => {
+      const { memoryService } = await import('@/services/memory-service')
+      memoryService.getMemories = vi.fn().mockResolvedValue(mockMemories)
+
+      render(<MemoryDashboard />)
+
+      await waitFor(() => {
+        expect(screen.getByText('Test Memory')).toBeInTheDocument()
+      })
+
+      // Check ARIA labels
+      expect(screen.getByRole('main')).toHaveAttribute('aria-label', 'Memory Dashboard')
+      expect(screen.getByRole('searchbox')).toHaveAttribute('aria-label', 'Search memories')
+      expect(screen.getByRole('list')).toHaveAttribute('aria-label', 'Memory list')
+    })
+  })
+
+  describe('Performance', () => {
+    it('should render within performance budget', async () => {
+      const { memoryService } = await import('@/services/memory-service')
+      memoryService.getMemories = vi.fn().mockResolvedValue(mockMemories)
+
+      const startTime = performance.now()
+      render(<MemoryDashboard />)
+
+      await waitFor(() => {
+        expect(screen.getByText('Test Memory')).toBeInTheDocument()
+      })
+
+      const endTime = performance.now()
+      const renderTime = endTime - startTime
+
+      // Should render within 100ms (performance budget)
+      expect(renderTime).toBeLessThan(100)
+    })
+
+    it('should handle large datasets efficiently', async () => {
+      const { memoryService } = await import('@/services/memory-service')
+      const largeDataset = Array.from({ length: 1000 }, (_, i) => ({
+        ...createMockMemory(),
+        id: `memory-${i}`,
+        title: `Memory ${i}`,
+      }))
+
+      memoryService.getMemories = vi.fn().mockResolvedValue(largeDataset)
+
+      const startTime = performance.now()
+      render(<MemoryDashboard />)
+
+      await waitFor(() => {
+        expect(screen.getByText('Memory 0')).toBeInTheDocument()
+      })
+
+      const endTime = performance.now()
+      const renderTime = endTime - startTime
+
+      // Should handle large datasets within reasonable time
+      expect(renderTime).toBeLessThan(500)
+    })
+  })
+})

@@ -8,7 +8,7 @@ import os
 import re
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from enhanced_mathematical_reasoning_engine import EnhancedMathematicalReasoningEngine
+from ml.math.mathematical_reasoning_engine import MathematicalReasoningEngine
 
 # Test the specific equation parsing
 problem = "Solve for x: 2x + 5 = 15"
@@ -26,7 +26,7 @@ if equation_match:
         print(f"Right side: '{eq_parts[1].strip()}'")
         
         # Test clean function
-        engine = EnhancedMathematicalReasoningEngine()
+        engine = MathematicalReasoningEngine()
         left_clean = engine._clean_algebraic_expression(eq_parts[0].strip())
         right_clean = engine._clean_algebraic_expression(eq_parts[1].strip())
         print(f"Cleaned left: '{left_clean}'")

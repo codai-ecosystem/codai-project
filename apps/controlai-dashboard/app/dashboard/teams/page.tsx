@@ -1,9 +1,10 @@
+'use client'
+
 import React from 'react'
 /**
  * Enhanced Teams Management Page - Real-time Team Collaboration Center
  * Comprehensive team management with communication and performance tracking
  */
-'use client'
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { motion } from 'framer-motion'
@@ -338,4 +339,5 @@ export default function TeamsPage() {
         </div>
     )
 }
+
 

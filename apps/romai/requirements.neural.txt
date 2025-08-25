@@ -1,0 +1,45 @@
+# Neural Architecture Requirements
+# Core PyTorch and ML dependencies
+torch>=2.0.1
+torchvision>=0.15.2
+torchaudio>=2.0.2
+transformers>=4.21.0
+accelerate>=0.21.0
+datasets>=2.14.0
+
+# Web framework and API
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.4.0
+requests>=2.31.0
+
+# Neural processing
+sentence-transformers>=2.2.2
+torch-audio>=0.13.0
+whisper-openai>=1.1.10
+numpy>=1.24.0
+scipy>=1.11.0
+
+# System monitoring
+psutil>=5.9.0
+nvidia-ml-py>=11.525.0
+
+# Audio/Video processing
+librosa>=0.10.0
+soundfile>=0.12.0
+opencv-python>=4.8.0
+Pillow>=10.0.0
+
+# Distributed computing
+ray[default]>=2.7.0
+redis>=4.6.0
+
+# Utilities
+python-multipart>=0.0.6
+aiofiles>=23.2.0
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+
+# Romanian language support
+polyglot>=16.7.4
+pyicu>=2.11

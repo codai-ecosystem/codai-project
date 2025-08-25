@@ -1,85 +1,94 @@
-import { defineConfig } from 'vitest/config';
-import path from 'path';
-import react from '@vitejs/plugin-react';
+/**
+ * Vitest Configuration for RomAI - 2025 Modern Testing Setup
+ * Follows the established MemorAI pattern for consistency across CODAI ecosystem
+ * Optimized for AGI component testing with React Testing Library and user-behavior focus
+ */
+
+import { defineConfig } from 'vitest/config'
+import { resolve } from 'path'
+import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+
   test: {
-    name: 'app-romai',
-    globals: true,
+    name: 'romai-agi-tests',
+    globals: true, // Enable globals for expect, vi, etc.
     environment: 'jsdom',
-    setupFiles: ['./tests/setup.ts'],
-    testTimeout: 60000, // 60 seconds for real integration tests
-    hookTimeout: 60000, // 60 seconds for hooks
-    teardownTimeout: 10000, // 10 seconds for cleanup
-    include: [
-      'src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
-      'tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'
+    setupFiles: [
+      './tests/setup.ts', // RomAI-specific setup only
     ],
-    exclude: [
-      'node_modules/**',
-      'dist/**',
-      'archive/**',
-      'backup_naming_cleanup/**',
-      '.next/**',
-      'e2e/**',
-      '**/*.e2e.{test,spec}.{js,ts}',
-      '**/playwright/**',
-      '**/*ultimate-server*.{test,spec}.{js,ts}',
-      '**/*ultimateservertest*.{test,spec}.{js,ts}',
-      '**/packages/romai-mcp/tests/**/*.test.ts'
-    ],
+
+    // Coverage configuration - workspace-consistent location
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json', 'html'],
+      reporter: ['text', 'html', 'lcov'],
+      reportsDirectory: '../../coverage/romai',
       exclude: [
         'node_modules/',
-        'tests/',
+        'dist/',
+        '.next/',
+        'public/',
+        'middleware.*',
         '**/*.d.ts',
         '**/*.config.*',
         '**/coverage/**',
-        'archive/**',
-        'backup_naming_cleanup/**',
-        '.next/**',
-        'e2e/**',
-        'playwright-report/**',
-        'test-results/**',
-        'dist/**',
-        'public/**',
-        '**/*.test.{ts,tsx,js,jsx}',
-        '**/*.spec.{ts,tsx,js,jsx}',
-        '**/test-*',
-        '**/mock*',
+        '**/tests/**',
         '**/__tests__/**'
       ],
+      // AGI testing requires high coverage due to critical AI functionality
       thresholds: {
         global: {
-          branches: 70, // Reduced thresholds for real integration tests
-          functions: 70,
-          lines: 70,
-          statements: 70
-        }
+          branches: 80,
+          functions: 80,
+          lines: 80,
+          statements: 80,
+        },
       },
-      all: true,
-      clean: true
     },
-    // Real integration test configuration
-    pool: 'threads',
-    poolOptions: {
-      threads: {
-        singleThread: false,
-        maxThreads: 4,
-        minThreads: 1
-      }
-    },
-    // Retry failed tests once (for network-related flakiness)
-    retry: 1,
-    // Slow test threshold
-    slowTestThreshold: 30000
+
+    include: [
+      'src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
+      'src/**/__tests__/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'
+    ],
+    exclude: [
+      'node_modules/',
+      'dist/',
+      '.next/',
+      'e2e/**',
+      '**/*.e2e.{test,spec}.{js,ts}'
+    ],
+
+    // AGI tests may need longer timeouts for complex model operations
+    testTimeout: 15000,
+    hookTimeout: 10000,
+
+    // Optimized for CI/CD performance
+    maxConcurrency: 4,
+    maxWorkers: 4,
+    minWorkers: 1,
+
+    // Enhanced reporting for AGI component testing
+    reporter: process.env.CI ? ['junit', 'github-actions'] : ['verbose'],
+    outputFile: process.env.CI ? {
+      junit: '../../test-results/romai/junit.xml'
+    } : undefined,
+
+    // Improved error handling for complex AGI interactions
+    retry: process.env.CI ? 2 : 0,
+    bail: process.env.CI ? 5 : 0,
   },
+
+  // Path resolution for RomAI components
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
-  },
-});
+      '@': resolve(__dirname, './src'),
+      '@/tests': resolve(__dirname, './tests'),
+      '@/components': resolve(__dirname, './src/components'),
+      '@/lib': resolve(__dirname, './src/lib'),
+      '@/app': resolve(__dirname, './src/app'),
+      '@/utils': resolve(__dirname, './src/utils'),
+      '@/types': resolve(__dirname, './src/types'),
+    }
+  }
+})

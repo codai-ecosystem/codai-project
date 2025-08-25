@@ -1,116 +1,19 @@
-import React from 'react'
-import { cva, type VariantProps } from 'class-variance-authority';
-import { forwardRef, type HTMLAttributes } from 'react';
+// CONSOLIDATED: This component has been replaced by @codai/shared-ui Card component
+// The shared-ui Card provides comprehensive functionality including:
+// - 7+ variants: default, elevated, ghost, outline, gradient, glass, neon
+// - Advanced features: app-specific theming, interactive states, loading states
+// - Size variants: sm, default, lg, xl with proper spacing
+// - Enhanced compositions: MetricCard, FeatureCard with built-in features
+// - Better accessibility and responsive design
 
-import { cn } from '@/lib/utils';
+// Use the shared Card component instead:
+// import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@codai/shared-ui"
 
-const cardVariants = cva(
-  'rounded-lg border bg-card text-card-foreground shadow-sm',
-  {
-    variants: {
-      variant: {
-        default: '',
-        outlined: 'border-2',
-        elevated: 'shadow-lg',
-        ghost: 'border-transparent shadow-none',
-      },
-      padding: {
-        none: '',
-        sm: 'p-4',
-        default: 'p-6',
-        lg: 'p-8',
-      },
-    },
-    defaultVariants: {
-      variant: 'default',
-      padding: 'default',
-    },
-  }
-);
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, MetricCard, FeatureCard, cardVariants } from "@codai/shared-ui"
 
-export interface CardProps
-  extends HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof cardVariants> {}
+// Re-export for backward compatibility
+export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, MetricCard, FeatureCard, cardVariants }
+export type { CardProps, CardHeaderProps, CardTitleProps, CardDescriptionProps, CardContentProps, CardFooterProps } from "@codai/shared-ui"
 
-const Card = forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant, padding, ...props }, ref): React.ReactElement => (
-    <div
-      ref={ref}
-      className={cn(cardVariants({ variant, padding }), className)}
-      {...props}
-    />
-  )
-);
-Card.displayName = 'Card';
-
-const CardHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref): React.ReactElement => (
-    <div
-      ref={ref}
-      className={cn('flex flex-col space-y-1.5 p-6', className)}
-      {...props}
-    />
-  )
-);
-CardHeader.displayName = 'CardHeader';
-
-const CardTitle = forwardRef<
-  HTMLParagraphElement,
-  HTMLAttributes<HTMLHeadingElement>
->(
-  ({ className, children, ...props }, ref): React.ReactElement => (
-    <h3
-      ref={ref}
-      className={cn(
-        'text-2xl font-semibold leading-none tracking-tight',
-        className
-      )}
-      {...props}
-    >
-      {children ?? 'Card Title'}
-    </h3>
-  )
-);
-CardTitle.displayName = 'CardTitle';
-
-const CardDescription = forwardRef<
-  HTMLParagraphElement,
-  HTMLAttributes<HTMLParagraphElement>
->(
-  ({ className, ...props }, ref): React.ReactElement => (
-    <p
-      ref={ref}
-      className={cn('text-sm text-muted-foreground', className)}
-      {...props}
-    />
-  )
-);
-CardDescription.displayName = 'CardDescription';
-
-const CardContent = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref): React.ReactElement => (
-    <div ref={ref} className={cn('p-6 pt-0', className)} {...props} />
-  )
-);
-CardContent.displayName = 'CardContent';
-
-const CardFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref): React.ReactElement => (
-    <div
-      ref={ref}
-      className={cn('flex items-center p-6 pt-0', className)}
-      {...props}
-    />
-  )
-);
-CardFooter.displayName = 'CardFooter';
-
-export {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-};
-
+// For existing default exports to continue working
+export default Card

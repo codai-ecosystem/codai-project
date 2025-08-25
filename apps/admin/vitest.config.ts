@@ -8,7 +8,7 @@ export default defineConfig({
     name: 'app-admin',
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./tests/setup.ts'],
+    // setupFiles: ['./tests/setup.ts'], // Commented out for reliability - using direct imports in test files
     include: ['tests/**/*.{test,spec}.{ts,tsx}'],
     exclude: ['tests/e2e/**/*'],
     testTimeout: 10000,

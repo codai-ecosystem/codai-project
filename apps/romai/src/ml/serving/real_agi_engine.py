@@ -123,7 +123,7 @@ class AGICapabilities:
 
 # Import advanced consciousness framework
 try:
-    from advanced_consciousness_framework import (
+    from config.consciousness_framework import (
         AdvancedConsciousnessEngine,
         ConsciousnessMetrics,
         ConsciousnessLevel
@@ -178,7 +178,7 @@ class BasicConsciousnessEngine:
 
 # Import advanced reasoning engine
 try:
-    from advanced_reasoning_engine import (
+    from core.reasoning.reasoning_engine import (
         AdvancedReasoningEngine,
         ReasoningType,
         ReasoningResult

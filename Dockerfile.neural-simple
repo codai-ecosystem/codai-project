@@ -1,0 +1,69 @@
+# RomAI Neural Architecture Orchestrator - Simple Version
+# Fast-building orchestrator with simple startup
+FROM python:3.11-slim
+
+# Set environment variables
+ENV PYTHONPATH=/app/romai_src
+ENV PYTHONUNBUFFERED=1
+ENV ROMAI_LOG_LEVEL=INFO
+
+# Create non-root user
+RUN useradd -m -u 1001 -s /bin/bash neural && \
+    mkdir -p /app && \
+    chown -R neural:neural /app
+
+# Install system dependencies (minimal)
+RUN apt-get update && apt-get install -y \
+    --no-install-recommends \
+    build-essential \
+    curl \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
+# Switch to non-root user
+USER neural
+WORKDIR /app
+
+# Install compatible NumPy version first (prevents NumPy 2.x issues)
+RUN pip install --no-cache-dir --user numpy==1.24.3
+
+# Install PyTorch with compatible version (2.1.2 supports torch.compiler)
+RUN pip install --no-cache-dir --user \
+    torch==2.1.2+cpu \
+    torchvision==0.16.2+cpu \
+    torchaudio==2.1.2+cpu \
+    --index-url https://download.pytorch.org/whl/cpu
+
+# Install other ML dependencies with pinned compatible versions
+RUN pip install --no-cache-dir --user \
+    fastapi==0.100.0 \
+    uvicorn[standard]==0.23.0 \
+    pydantic==2.4.2 \
+    starlette==0.27.0 \
+    scipy==1.11.4 \
+    psutil==5.9.5 \
+    requests==2.31.0 \
+    httpx==0.24.1 \
+    structlog==23.1.0 \
+    python-dotenv==1.0.0 \
+    transformers==4.36.2 \
+    sentence-transformers==2.2.2 \
+    networkx==3.2.1
+
+# Copy RomAI source code
+COPY --chown=neural:neural apps/romai/src /app/romai_src
+
+# Health check (using correct port 8800)
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:8800/health || exit 1
+
+# Expose port (neural orchestrator uses 8800)
+EXPOSE 8800
+
+# Start the orchestrator directly
+CMD cd /app && \
+    export PATH="$HOME/.local/bin:$PATH" && \
+    echo "🧠 Starting RomAI Neural Architecture Orchestrator..." && \
+    echo "🔧 Environment: $ROMAI_LOG_LEVEL" && \
+    echo "📂 Python Path: $PYTHONPATH" && \
+    python -m romai_src.ml.distributed.neural_architecture_orchestrator serve

@@ -1,0 +1,606 @@
+{
+  "summary": {
+    "timestamp": "2025-08-22T03:42:46.851Z",
+    "totalApplications": 8,
+    "totalTestingModules": 7,
+    "overallStatus": "ISSUES_FOUND",
+    "totalTests": 0,
+    "passedTests": 0,
+    "failedTests": 0,
+    "coverage": {},
+    "frameworks": [
+      {
+        "module": "unit-testing-validator",
+        "status": "completed",
+        "results": {
+          "framework": "Jest/Vitest",
+          "coverage": 0,
+          "testCount": 0,
+          "realTests": 0,
+          "mockedTests": 0,
+          "issues": [
+            "Too many mocked tests - consider integration testing approach",
+            "Test coverage below 80% - increase unit test coverage"
+          ],
+          "recommendations": [
+            "Increase unit test coverage - aim for comprehensive test suite",
+            "Aim for 80% real tests with minimal mocking",
+            "Use Test Containers for database testing",
+            "Implement in-memory implementations for external services"
+          ],
+          "realismScore": 0
+        }
+      },
+      {
+        "module": "integration-testing-validator",
+        "status": "completed",
+        "results": {
+          "framework": "Playwright/Jest Integration",
+          "integrationTestCount": 24,
+          "serviceTests": 0,
+          "databaseTests": 29,
+          "apiTests": 5,
+          "realConnections": 40,
+          "mockConnections": 18,
+          "issues": [
+            "No integration tests found for service: memorai-mcp",
+            "No integration tests found for service: cbd",
+            "No integration tests found for service: romai-agi",
+            "No integration tests found for service: enterprise-api",
+            "No integration tests found for service: gateway"
+          ],
+          "recommendations": [
+            "Add proper timeouts in: E:\\GitHub\\codai-project\\tests\\api-sdk-cli\\load-testing.spec.ts",
+            "Add proper timeouts in: E:\\GitHub\\codai-project\\tests\\api-sdk-cli\\sdk-testing.spec.ts",
+            "Add proper timeouts in: E:\\GitHub\\codai-project\\tests\\api-sdk-cli\\security-testing.spec.ts",
+            "Add integration tests for all critical services"
+          ]
+        }
+      },
+      {
+        "module": "e2e-testing-validator",
+        "status": "completed",
+        "results": {
+          "framework": "Playwright/Cypress",
+          "e2eTestCount": 65,
+          "userScenarios": 7,
+          "crossBrowserTests": 1,
+          "mobileTests": 4,
+          "realUserFlows": 13,
+          "issues": [
+            "Cross-browser testing not properly configured"
+          ],
+          "recommendations": [
+            "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\admin-comprehensive-testing.spec.ts",
+            "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\e2e\\api-workflows.spec.ts",
+            "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\bancai-comprehensive-testing.spec.ts",
+            "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\codai-detailed-testing.spec.ts",
+            "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\e2e\\complete-modern-app-suite.spec.ts",
+            "Add proper waits for stability in: E:\\GitHub\\codai-project\\tests\\e2e\\complete-modern-app-suite.spec.ts",
+            "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\complete-modern-app-suite.spec.ts",
+            "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\comprehensive-ui-ux-testing.spec.ts",
+            "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\financial-ecosystem-integration.spec.ts",
+            "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\gateway\\routingValidation.spec.ts",
+            "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\gateway-comprehensive-testing.spec.ts",
+            "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\gateway-service-e2e.spec.ts",
+            "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\hub-comprehensive-testing.spec.ts",
+            "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\id-comprehensive-testing.spec.ts",
+            "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\test-working-services.spec.ts",
+            "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\workflows\\newUserJourney.spec.ts",
+            "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\admin-service-integration.test.ts",
+            "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\admin-service.test.ts",
+            "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\bancai-service.test.ts",
+            "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\codai-service-integration.test.ts",
+            "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\codai-service.test.ts",
+            "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\gateway-service-integration.test.ts",
+            "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\gateway-service-real.test.ts",
+            "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\gateway-service.test.ts",
+            "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\hub-service-integration.test.ts",
+            "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\hub-service.test.ts",
+            "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\id-service-integration.test.ts",
+            "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\id-service.test.ts",
+            "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\memorai-service.test.ts",
+            "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\tests\\deployment-testing.spec.ts",
+            "Add error handling in: E:\\GitHub\\codai-project\\tests\\integration\\tests\\e2e.spec.ts",
+            "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\tests\\resilience-testing.spec.ts",
+            "Add error handling in: E:\\GitHub\\codai-project\\tests\\integration\\tests\\service-communication.spec.ts",
+            "Add E2E test for user scenario: form-submission",
+            "Add E2E test for user scenario: data-creation",
+            "Add E2E test for user scenario: data-editing",
+            "Configure tests to run on Chrome, Firefox, and Safari",
+            "Ensure all services are running before E2E tests",
+            "Ensure all services are running before E2E tests",
+            "Ensure all services are running before E2E tests"
+          ]
+        }
+      },
+      {
+        "module": "performance-testing-validator",
+        "status": "completed",
+        "results": {
+          "framework": "k6/Artillery/Lighthouse",
+          "loadTestCount": 3,
+          "performanceTestCount": 5,
+          "metricsTracking": false,
+          "realLoadTests": 2,
+          "issues": [],
+          "recommendations": [
+            "Add comprehensive performance testing with k6 or Artillery",
+            "Implement realistic load testing scenarios",
+            "Add Core Web Vitals monitoring and alerting",
+            "Set up performance regression testing in CI/CD"
+          ]
+        }
+      },
+      {
+        "module": "security-testing-validator",
+        "status": "completed",
+        "results": {
+          "framework": "OWASP ZAP/Snyk/ESLint Security",
+          "securityTestCount": 8,
+          "vulnerabilityScans": 3,
+          "penetrationTests": 1,
+          "issues": [],
+          "recommendations": [
+            "Add comprehensive security testing suite",
+            "Implement automated vulnerability scanning",
+            "Add automated penetration testing"
+          ]
+        }
+      },
+      {
+        "module": "accessibility-testing-validator",
+        "status": "completed",
+        "results": {
+          "framework": "axe-core/Playwright a11y",
+          "accessibilityTestCount": 12,
+          "wcagCompliance": true,
+          "automatedA11yTests": 8,
+          "issues": [],
+          "recommendations": [
+            "Add comprehensive accessibility testing with axe-core",
+            "Ensure WCAG 2.1 AA compliance testing",
+            "Add automated accessibility testing to CI/CD pipeline"
+          ]
+        }
+      },
+      {
+        "module": "visual-regression-validator",
+        "status": "completed",
+        "results": {
+          "framework": "Playwright Visual/Percy/Chromatic",
+          "visualTestCount": 6,
+          "screenshotTests": 4,
+          "crossBrowserVisuals": 0,
+          "issues": [
+            "results is not defined"
+          ],
+          "recommendations": [
+            "Add comprehensive visual regression testing",
+            "Implement automated screenshot comparison testing"
+          ]
+        }
+      }
+    ],
+    "applications": [
+      {
+        "name": "controlai-dashboard",
+        "hasTests": false,
+        "testFrameworks": [
+          "Vitest",
+          "Playwright"
+        ],
+        "coverage": 0,
+        "testCount": 0,
+        "passedTests": 0,
+        "issues": []
+      },
+      {
+        "name": "memorai",
+        "hasTests": false,
+        "testFrameworks": [
+          "Vitest",
+          "React Testing Library",
+          "Jest DOM"
+        ],
+        "coverage": 0,
+        "testCount": 0,
+        "passedTests": 0,
+        "issues": []
+      },
+      {
+        "name": "romai",
+        "hasTests": false,
+        "testFrameworks": [
+          "Vitest",
+          "Playwright",
+          "React Testing Library",
+          "Jest DOM"
+        ],
+        "coverage": 0,
+        "testCount": 0,
+        "passedTests": 0,
+        "issues": []
+      },
+      {
+        "name": "bancai",
+        "hasTests": false,
+        "testFrameworks": [
+          "Vitest",
+          "Playwright",
+          "React Testing Library",
+          "Jest DOM"
+        ],
+        "coverage": 0,
+        "testCount": 0,
+        "passedTests": 0,
+        "issues": []
+      },
+      {
+        "name": "codai",
+        "hasTests": false,
+        "testFrameworks": [
+          "Vitest",
+          "Playwright",
+          "React Testing Library",
+          "Jest DOM"
+        ],
+        "coverage": 0,
+        "testCount": 0,
+        "passedTests": 0,
+        "issues": []
+      },
+      {
+        "name": "admin",
+        "hasTests": false,
+        "testFrameworks": [
+          "Jest",
+          "Vitest",
+          "Playwright",
+          "React Testing Library",
+          "Jest DOM"
+        ],
+        "coverage": 0,
+        "testCount": 0,
+        "passedTests": 0,
+        "issues": []
+      },
+      {
+        "name": "hub",
+        "hasTests": false,
+        "testFrameworks": [
+          "Vitest",
+          "Playwright",
+          "React Testing Library",
+          "Jest DOM"
+        ],
+        "coverage": 0,
+        "testCount": 0,
+        "passedTests": 0,
+        "issues": []
+      },
+      {
+        "name": "id",
+        "hasTests": false,
+        "testFrameworks": [
+          "Vitest",
+          "Playwright",
+          "React Testing Library",
+          "Jest DOM"
+        ],
+        "coverage": 0,
+        "testCount": 0,
+        "passedTests": 0,
+        "issues": []
+      }
+    ],
+    "issues": [
+      {
+        "category": "test-execution",
+        "error": "Command failed: pnpm test:jest\n'jest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+      }
+    ],
+    "recommendations": []
+  },
+  "applications": [
+    {
+      "name": "controlai-dashboard",
+      "hasTests": false,
+      "testFrameworks": [
+        "Vitest",
+        "Playwright"
+      ],
+      "coverage": 0,
+      "testCount": 0,
+      "passedTests": 0,
+      "issues": []
+    },
+    {
+      "name": "memorai",
+      "hasTests": false,
+      "testFrameworks": [
+        "Vitest",
+        "React Testing Library",
+        "Jest DOM"
+      ],
+      "coverage": 0,
+      "testCount": 0,
+      "passedTests": 0,
+      "issues": []
+    },
+    {
+      "name": "romai",
+      "hasTests": false,
+      "testFrameworks": [
+        "Vitest",
+        "Playwright",
+        "React Testing Library",
+        "Jest DOM"
+      ],
+      "coverage": 0,
+      "testCount": 0,
+      "passedTests": 0,
+      "issues": []
+    },
+    {
+      "name": "bancai",
+      "hasTests": false,
+      "testFrameworks": [
+        "Vitest",
+        "Playwright",
+        "React Testing Library",
+        "Jest DOM"
+      ],
+      "coverage": 0,
+      "testCount": 0,
+      "passedTests": 0,
+      "issues": []
+    },
+    {
+      "name": "codai",
+      "hasTests": false,
+      "testFrameworks": [
+        "Vitest",
+        "Playwright",
+        "React Testing Library",
+        "Jest DOM"
+      ],
+      "coverage": 0,
+      "testCount": 0,
+      "passedTests": 0,
+      "issues": []
+    },
+    {
+      "name": "admin",
+      "hasTests": false,
+      "testFrameworks": [
+        "Jest",
+        "Vitest",
+        "Playwright",
+        "React Testing Library",
+        "Jest DOM"
+      ],
+      "coverage": 0,
+      "testCount": 0,
+      "passedTests": 0,
+      "issues": []
+    },
+    {
+      "name": "hub",
+      "hasTests": false,
+      "testFrameworks": [
+        "Vitest",
+        "Playwright",
+        "React Testing Library",
+        "Jest DOM"
+      ],
+      "coverage": 0,
+      "testCount": 0,
+      "passedTests": 0,
+      "issues": []
+    },
+    {
+      "name": "id",
+      "hasTests": false,
+      "testFrameworks": [
+        "Vitest",
+        "Playwright",
+        "React Testing Library",
+        "Jest DOM"
+      ],
+      "coverage": 0,
+      "testCount": 0,
+      "passedTests": 0,
+      "issues": []
+    }
+  ],
+  "frameworks": [
+    {
+      "module": "unit-testing-validator",
+      "status": "completed",
+      "results": {
+        "framework": "Jest/Vitest",
+        "coverage": 0,
+        "testCount": 0,
+        "realTests": 0,
+        "mockedTests": 0,
+        "issues": [
+          "Too many mocked tests - consider integration testing approach",
+          "Test coverage below 80% - increase unit test coverage"
+        ],
+        "recommendations": [
+          "Increase unit test coverage - aim for comprehensive test suite",
+          "Aim for 80% real tests with minimal mocking",
+          "Use Test Containers for database testing",
+          "Implement in-memory implementations for external services"
+        ],
+        "realismScore": 0
+      }
+    },
+    {
+      "module": "integration-testing-validator",
+      "status": "completed",
+      "results": {
+        "framework": "Playwright/Jest Integration",
+        "integrationTestCount": 24,
+        "serviceTests": 0,
+        "databaseTests": 29,
+        "apiTests": 5,
+        "realConnections": 40,
+        "mockConnections": 18,
+        "issues": [
+          "No integration tests found for service: memorai-mcp",
+          "No integration tests found for service: cbd",
+          "No integration tests found for service: romai-agi",
+          "No integration tests found for service: enterprise-api",
+          "No integration tests found for service: gateway"
+        ],
+        "recommendations": [
+          "Add proper timeouts in: E:\\GitHub\\codai-project\\tests\\api-sdk-cli\\load-testing.spec.ts",
+          "Add proper timeouts in: E:\\GitHub\\codai-project\\tests\\api-sdk-cli\\sdk-testing.spec.ts",
+          "Add proper timeouts in: E:\\GitHub\\codai-project\\tests\\api-sdk-cli\\security-testing.spec.ts",
+          "Add integration tests for all critical services"
+        ]
+      }
+    },
+    {
+      "module": "e2e-testing-validator",
+      "status": "completed",
+      "results": {
+        "framework": "Playwright/Cypress",
+        "e2eTestCount": 65,
+        "userScenarios": 7,
+        "crossBrowserTests": 1,
+        "mobileTests": 4,
+        "realUserFlows": 13,
+        "issues": [
+          "Cross-browser testing not properly configured"
+        ],
+        "recommendations": [
+          "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\admin-comprehensive-testing.spec.ts",
+          "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\e2e\\api-workflows.spec.ts",
+          "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\bancai-comprehensive-testing.spec.ts",
+          "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\codai-detailed-testing.spec.ts",
+          "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\e2e\\complete-modern-app-suite.spec.ts",
+          "Add proper waits for stability in: E:\\GitHub\\codai-project\\tests\\e2e\\complete-modern-app-suite.spec.ts",
+          "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\complete-modern-app-suite.spec.ts",
+          "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\comprehensive-ui-ux-testing.spec.ts",
+          "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\financial-ecosystem-integration.spec.ts",
+          "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\gateway\\routingValidation.spec.ts",
+          "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\gateway-comprehensive-testing.spec.ts",
+          "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\gateway-service-e2e.spec.ts",
+          "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\hub-comprehensive-testing.spec.ts",
+          "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\id-comprehensive-testing.spec.ts",
+          "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\test-working-services.spec.ts",
+          "Add error handling in: E:\\GitHub\\codai-project\\tests\\e2e\\workflows\\newUserJourney.spec.ts",
+          "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\admin-service-integration.test.ts",
+          "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\admin-service.test.ts",
+          "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\bancai-service.test.ts",
+          "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\codai-service-integration.test.ts",
+          "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\codai-service.test.ts",
+          "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\gateway-service-integration.test.ts",
+          "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\gateway-service-real.test.ts",
+          "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\gateway-service.test.ts",
+          "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\hub-service-integration.test.ts",
+          "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\hub-service.test.ts",
+          "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\id-service-integration.test.ts",
+          "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\id-service.test.ts",
+          "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\memorai-service.test.ts",
+          "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\tests\\deployment-testing.spec.ts",
+          "Add error handling in: E:\\GitHub\\codai-project\\tests\\integration\\tests\\e2e.spec.ts",
+          "Consider using Page Object pattern in: E:\\GitHub\\codai-project\\tests\\integration\\tests\\resilience-testing.spec.ts",
+          "Add error handling in: E:\\GitHub\\codai-project\\tests\\integration\\tests\\service-communication.spec.ts",
+          "Add E2E test for user scenario: form-submission",
+          "Add E2E test for user scenario: data-creation",
+          "Add E2E test for user scenario: data-editing",
+          "Configure tests to run on Chrome, Firefox, and Safari",
+          "Ensure all services are running before E2E tests",
+          "Ensure all services are running before E2E tests",
+          "Ensure all services are running before E2E tests"
+        ]
+      }
+    },
+    {
+      "module": "performance-testing-validator",
+      "status": "completed",
+      "results": {
+        "framework": "k6/Artillery/Lighthouse",
+        "loadTestCount": 3,
+        "performanceTestCount": 5,
+        "metricsTracking": false,
+        "realLoadTests": 2,
+        "issues": [],
+        "recommendations": [
+          "Add comprehensive performance testing with k6 or Artillery",
+          "Implement realistic load testing scenarios",
+          "Add Core Web Vitals monitoring and alerting",
+          "Set up performance regression testing in CI/CD"
+        ]
+      }
+    },
+    {
+      "module": "security-testing-validator",
+      "status": "completed",
+      "results": {
+        "framework": "OWASP ZAP/Snyk/ESLint Security",
+        "securityTestCount": 8,
+        "vulnerabilityScans": 3,
+        "penetrationTests": 1,
+        "issues": [],
+        "recommendations": [
+          "Add comprehensive security testing suite",
+          "Implement automated vulnerability scanning",
+          "Add automated penetration testing"
+        ]
+      }
+    },
+    {
+      "module": "accessibility-testing-validator",
+      "status": "completed",
+      "results": {
+        "framework": "axe-core/Playwright a11y",
+        "accessibilityTestCount": 12,
+        "wcagCompliance": true,
+        "automatedA11yTests": 8,
+        "issues": [],
+        "recommendations": [
+          "Add comprehensive accessibility testing with axe-core",
+          "Ensure WCAG 2.1 AA compliance testing",
+          "Add automated accessibility testing to CI/CD pipeline"
+        ]
+      }
+    },
+    {
+      "module": "visual-regression-validator",
+      "status": "completed",
+      "results": {
+        "framework": "Playwright Visual/Percy/Chromatic",
+        "visualTestCount": 6,
+        "screenshotTests": 4,
+        "crossBrowserVisuals": 0,
+        "issues": [
+          "results is not defined"
+        ],
+        "recommendations": [
+          "Add comprehensive visual regression testing",
+          "Implement automated screenshot comparison testing"
+        ]
+      }
+    }
+  ],
+  "issues": [
+    {
+      "category": "test-execution",
+      "error": "Command failed: pnpm test:jest\n'jest' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+    }
+  ],
+  "recommendations": [
+    "🔧 Address identified testing issues before proceeding",
+    "📝 Add comprehensive tests to: controlai-dashboard, memorai, romai, bancai, codai, admin, hub, id",
+    "📈 Increase test coverage to minimum 80% for production readiness",
+    "🚀 Implement continuous integration with automated testing",
+    "🔒 Add security testing automation",
+    "⚡ Include performance regression testing",
+    "♿ Validate accessibility compliance in automated tests"
+  ]
+}

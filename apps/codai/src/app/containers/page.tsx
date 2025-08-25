@@ -34,6 +34,8 @@ import {
     AlertTriangle,
     CheckCircle,
     Clock,
+    Circle,
+    Minus,
     Calendar,
     Users,
     Tag,
@@ -428,8 +430,8 @@ export default function ContainersPage() {
                                 <button
                                     onClick={() => setViewMode('list')}
                                     className={`px-3 py-2 text-sm ${viewMode === 'list'
-                                            ? 'bg-blue-100 text-blue-700'
-                                            : 'text-gray-600 hover:text-gray-900'
+                                        ? 'bg-blue-100 text-blue-700'
+                                        : 'text-gray-600 hover:text-gray-900'
                                         }`}
                                 >
                                     <BarChart3 className="w-4 h-4" />
@@ -437,8 +439,8 @@ export default function ContainersPage() {
                                 <button
                                     onClick={() => setViewMode('grid')}
                                     className={`px-3 py-2 text-sm border-l border-gray-300 ${viewMode === 'grid'
-                                            ? 'bg-blue-100 text-blue-700'
-                                            : 'text-gray-600 hover:text-gray-900'
+                                        ? 'bg-blue-100 text-blue-700'
+                                        : 'text-gray-600 hover:text-gray-900'
                                         }`}
                                 >
                                     <Box className="w-4 h-4" />
@@ -516,15 +518,15 @@ export default function ContainersPage() {
                             key={tab.id}
                             onClick={() => setSelectedTab(tab.id)}
                             className={`flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${selectedTab === tab.id
-                                    ? 'bg-white text-blue-600 shadow'
-                                    : 'text-gray-600 hover:text-gray-900'
+                                ? 'bg-white text-blue-600 shadow'
+                                : 'text-gray-600 hover:text-gray-900'
                                 }`}
                         >
                             <tab.icon className="w-4 h-4" />
                             <span>{tab.label}</span>
                             <span className={`px-2 py-1 rounded-full text-xs ${selectedTab === tab.id
-                                    ? 'bg-blue-100 text-blue-700'
-                                    : 'bg-gray-200 text-gray-600'
+                                ? 'bg-blue-100 text-blue-700'
+                                : 'bg-gray-200 text-gray-600'
                                 }`}>
                                 {tab.count}
                             </span>
@@ -798,8 +800,8 @@ export default function ContainersPage() {
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${image.inUse
-                                                            ? 'text-green-600 bg-green-100 border border-green-200'
-                                                            : 'text-gray-600 bg-gray-100 border border-gray-200'
+                                                        ? 'text-green-600 bg-green-100 border border-green-200'
+                                                        : 'text-gray-600 bg-gray-100 border border-gray-200'
                                                         }`}>
                                                         {image.inUse ? 'In Use' : 'Unused'}
                                                     </span>
@@ -884,8 +886,8 @@ export default function ContainersPage() {
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${volume.inUse
-                                                            ? 'text-green-600 bg-green-100 border border-green-200'
-                                                            : 'text-gray-600 bg-gray-100 border border-gray-200'
+                                                        ? 'text-green-600 bg-green-100 border border-green-200'
+                                                        : 'text-gray-600 bg-gray-100 border border-gray-200'
                                                         }`}>
                                                         {volume.inUse ? 'In Use' : 'Unused'}
                                                     </span>
@@ -959,8 +961,8 @@ export default function ContainersPage() {
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${network.internal
-                                                            ? 'text-orange-600 bg-orange-100 border border-orange-200'
-                                                            : 'text-green-600 bg-green-100 border border-green-200'
+                                                        ? 'text-orange-600 bg-orange-100 border border-orange-200'
+                                                        : 'text-green-600 bg-green-100 border border-green-200'
                                                         }`}>
                                                         {network.internal ? 'Internal' : 'External'}
                                                     </span>

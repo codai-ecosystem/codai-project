@@ -1,0 +1,130 @@
+{
+  "benchmark_id": "46f85655-8072-42e5-b954-5eb7b9dbe8e1",
+  "evaluation_mode": "COMPREHENSIVE",
+  "timestamp": "2025-08-22T03:08:12.550001+00:00",
+  "summary": {
+    "total_tests": 9,
+    "passed_tests": 0,
+    "failed_tests": 9,
+    "overall_agi_score": 0.47280713351373166,
+    "success_rate": 0.0
+  },
+  "category_scores": {
+    "CROSS_DOMAIN_TRANSFER": 0.6173486543061477,
+    "KNOWLEDGE_SYNTHESIS": 0.6166082891371033,
+    "MULTI_ENGINE_COORDINATION": 0.49075604705024395,
+    "COMPLEX_DECOMPOSITION": 0.471011335890602,
+    "REAL_WORLD_SCENARIOS": 0.4954374824941272,
+    "CREATIVE_PROBLEM_SOLVING": 0.5095254878475234,
+    "META_COGNITIVE_REASONING": 0.12038575885370437,
+    "CULTURAL_INTELLIGENCE": 0.3168424917379847
+  },
+  "difficulty_scores": {
+    "INTERMEDIATE": 0.6216766587898019,
+    "ADVANCED": 0.47979620980266713,
+    "EXPERT": 0.5276857025072775,
+    "SUPERHUMAN": 0.30557090295197414
+  },
+  "advanced_metrics": {
+    "cross_domain_transfer_ability": 0.7827351960881919,
+    "knowledge_synthesis_capability": 0.7986188441608194,
+    "multi_engine_coordination_efficiency": 0.8614071400061672,
+    "creative_problem_solving_score": 0.7572039353913794,
+    "meta_cognitive_reasoning_level": 0.12038575885370437
+  },
+  "romanian_advantages": {
+    "cultural_advantage_score": 0.3168424917379847,
+    "context_understanding": 0.3010003671510854
+  },
+  "comparative_analysis": {
+    "human_expert_comparison": {
+      "overall_performance": 0.49644749018941825,
+      "speed": 0.9456142670274633,
+      "consistency": 0.567368560216478,
+      "domain_coverage": 0.6146492735678512
+    },
+    "ai_model_comparison": {
+      "gpt4_turbo": 0.5437282035407913,
+      "claude_sonnet": 0.567368560216478,
+      "gemini_pro": 0.5910089168921646,
+      "grok_4": 0.5200878468651049
+    }
+  },
+  "engine_utilization": {
+    "business_intelligence": {
+      "usage_count": 6,
+      "total_score": 5.233389971023221,
+      "avg_score": 0.8722316618372035
+    },
+    "financial_modeling": {
+      "usage_count": 4,
+      "total_score": 3.0304501371663415,
+      "avg_score": 0.7576125342915854
+    },
+    "risk_assessment": {
+      "usage_count": 4,
+      "total_score": 3.322270696649826,
+      "avg_score": 0.8305676741624565
+    },
+    "computer_vision": {
+      "usage_count": 2,
+      "total_score": 1.5527943865074483,
+      "avg_score": 0.7763971932537241
+    },
+    "nlp": {
+      "usage_count": 2,
+      "total_score": 1.6893871052572433,
+      "avg_score": 0.8446935526286217
+    },
+    "content_generation": {
+      "usage_count": 3,
+      "total_score": 2.373056062988133,
+      "avg_score": 0.791018687662711
+    },
+    "predictive_analytics": {
+      "usage_count": 3,
+      "total_score": 2.615759376671241,
+      "avg_score": 0.871919792223747
+    },
+    "sentiment_analysis": {
+      "usage_count": 1,
+      "total_score": 0.8176866948609817,
+      "avg_score": 0.8176866948609817
+    },
+    "recommendation_systems": {
+      "usage_count": 1,
+      "total_score": 0.7909195613321091,
+      "avg_score": 0.7909195613321091
+    },
+    "machine_learning": {
+      "usage_count": 1,
+      "total_score": 0.7527548317202738,
+      "avg_score": 0.7527548317202738
+    },
+    "deep_learning": {
+      "usage_count": 1,
+      "total_score": 0.8783744954541632,
+      "avg_score": 0.8783744954541632
+    },
+    "optimization": {
+      "usage_count": 3,
+      "total_score": 2.658055428358151,
+      "avg_score": 0.8860184761193836
+    },
+    "decision_support": {
+      "usage_count": 2,
+      "total_score": 1.5396251879376468,
+      "avg_score": 0.7698125939688234
+    },
+    "knowledge_management": {
+      "usage_count": 1,
+      "total_score": 0.8645244793071474,
+      "avg_score": 0.8645244793071474
+    },
+    "cybersecurity": {
+      "usage_count": 3,
+      "total_score": 2.4158472626061247,
+      "avg_score": 0.8052824208687083
+    }
+  }
+}

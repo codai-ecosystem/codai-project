@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
-  outputFileTracingRoot: require('path').join(__dirname, '../../'),
+  // Remove standalone output to fix Vercel deployment issues
+  // output: 'standalone',
+  // outputFileTracingRoot: require('path').join(__dirname, '../../'),
   experimental: {
     // Remove deprecated settings that cause warnings
   },

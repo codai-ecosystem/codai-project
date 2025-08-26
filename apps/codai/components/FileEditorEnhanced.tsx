@@ -175,7 +175,7 @@ export default function FileEditorEnhanced({ projectId, fileName, onClose }: Fil
     const handleApplySuggestion = (suggestion: AISuggestion) => {
         if (suggestion.changes && suggestion.changes.length > 0) {
             // Apply changes to content
-            let newContent = content
+            const newContent = content
             const lines = newContent.split('\n')
 
             // Sort changes by position (reverse order to maintain positions)

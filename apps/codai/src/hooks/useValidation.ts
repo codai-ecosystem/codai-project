@@ -32,9 +32,17 @@ export function useFormValidation<T extends Record<string, any>>(
 
     const validateField = useCallback((name: string, value: any) => {
         try {
-            const fieldSchema = schema.shape[name as keyof typeof schema.shape];
-            if (fieldSchema) {
-                fieldSchema.parse(value);
+            // For object schemas, we can validate individual fields
+            if ('shape' in schema && typeof schema.shape === 'object' && schema.shape) {
+                const fieldSchema = (schema.shape as any)[name];
+                if (fieldSchema) {
+                    fieldSchema.parse(value);
+                    setErrors(prev => ({ ...prev, [name]: '' }));
+                    return true;
+                }
+            } else {
+                // For other schemas, validate the entire value
+                schema.parse({ [name]: value });
                 setErrors(prev => ({ ...prev, [name]: '' }));
                 return true;
             }
@@ -42,7 +50,7 @@ export function useFormValidation<T extends Record<string, any>>(
             if (error instanceof z.ZodError) {
                 setErrors(prev => ({ 
                     ...prev, 
-                    [name]: error.errors[0]?.message || 'Validation error' 
+                    [name]: error.issues[0]?.message || 'Validation error' 
                 }));
             }
             return false;
@@ -61,7 +69,7 @@ export function useFormValidation<T extends Record<string, any>>(
             return true;
         } else {
             const newErrors: Record<string, string> = {};
-            result.errors.forEach(error => {
+            result.errors.forEach((error: any) => {
                 const field = error.path[0] as string;
                 if (field && !newErrors[field]) {
                     newErrors[field] = error.message;

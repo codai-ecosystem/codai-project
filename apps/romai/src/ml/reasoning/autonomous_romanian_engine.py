@@ -57,6 +57,17 @@ class RomanianResponse:
     neural_enhanced: bool = False
     attention_weights: Optional[Dict[str, float]] = None
     diacritics_correct: bool = False
+    
+    # Aliases for compatibility with validation scripts
+    @property
+    def analysis(self) -> str:
+        """Compatibility alias for response"""
+        return self.response
+    
+    @property
+    def cultural_elements(self) -> List[str]:
+        """Compatibility alias for cultural_context"""
+        return self.cultural_context
 
 class AutonomousRomanianEngine:
     """
@@ -69,8 +80,9 @@ class AutonomousRomanianEngine:
         logger.info("🇷🇴 Initializing Neural-Symbolic Romanian Engine...")
         
         try:
-            # Initialize neural Romanian engine
-            self.neural_engine = NeuralRomanianEngine()
+            # Initialize neural Romanian engine with proper config
+            from .neural_romanian_transformer import RomanianTransformerConfig, create_romanian_transformer
+            self.neural_engine = create_romanian_transformer()
             logger.info("✅ Neural transformer engine loaded successfully")
         except Exception as e:
             logger.warning(f"⚠️ Neural engine initialization failed: {e}")

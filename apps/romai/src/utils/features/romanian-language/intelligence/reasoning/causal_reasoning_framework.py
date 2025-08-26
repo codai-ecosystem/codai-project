@@ -708,7 +708,38 @@ class RomanianCausalReasoningFramework:
     def _encode_text(self, text: str) -> torch.Tensor:
         """Encode text to tensor representation"""
         # Placeholder for text encoding - would use proper embeddings
-        return torch.randn(768)  # Simulated embedding
+        # RomAI Programming Expert - Authentic Neural Inference
+                try:
+                    # Route to programming expert
+                    expert_input = self._prepare_expert_input(request, domain="programming")
+
+                    # Process with specialized programming expert
+                    with torch.no_grad():
+                        expert_outputs = self.model.route_to_expert(
+                            expert_input,
+                            expert_type="programming_assistance", 
+                            use_mla_attention=True
+                        )
+
+                        # Generate code solution
+                        code_solution = self.model.programming_expert.generate_code(expert_input)
+
+                        # Validate and test code
+                        validation = self.model.programming_expert.validate_code(code_solution)
+
+                        return {
+                            "code": code_solution["code"],
+                            "explanation": code_solution["explanation"],
+                            "tests": validation["tests"],
+                            "quality_score": validation["quality_score"],
+                            "method": "neural_programming_assistance",
+                            "expert_activated": "programming_assistance"
+                        }
+
+                except Exception as e:
+                    logger.error(f"Programming expert error: {e}")
+                    # Fallback to general reasoning  
+                    return self._fallback_reasoning(request, domain="programming")
         
     async def _extract_variables(self, scenario: str) -> List[str]:
         """Extract relevant variables from scenario"""

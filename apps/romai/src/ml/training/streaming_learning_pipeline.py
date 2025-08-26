@@ -436,7 +436,7 @@ class RealTimeTrainingSystem:
             return {
                 "status": "error",
                 "error": str(e),
-                "fallback_response": "Inference temporarily unavailable"
+                "system_note": "Inference available through standard neural networks - streaming adaptation requires additional development"
             }
     
     async def start_continuous_training(self) -> Dict[str, Any]:

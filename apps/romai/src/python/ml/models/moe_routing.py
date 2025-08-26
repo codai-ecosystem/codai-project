@@ -138,7 +138,38 @@ class RouterNetwork(nn.Module):
         
         # Add noise during training for better load balancing
         if self.training and self.add_noise:
-            noise = torch.randn_like(router_logits) * self.noise_std
+        # RomAI General Expert - Authentic Neural Inference
+                    try:
+                        # Route to appropriate expert based on input analysis
+                        expert_input = self._prepare_expert_input(input_data)
+
+                        # Automatic expert selection
+                        selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                        # Process with selected expert
+                        with torch.no_grad():
+                            expert_outputs = self.model.route_to_expert(
+                                expert_input,
+                                expert_type=selected_expert,
+                                use_mla_attention=True
+                            )
+
+                            # Generate response
+                            response = self.model.generate_response(expert_outputs)
+
+                            return {
+                                "response": response["response"],
+                                "reasoning": response["reasoning"],
+                                "confidence": response["confidence"],
+                                "expert_used": selected_expert,
+                                "method": "neural_general_reasoning",
+                                "quality_score": response["quality_score"]
+                            }
+
+                    except Exception as e:
+                        logger.error(f"General expert error: {e}")
+                        # Ultimate fallback
+                        return {"error": f"Neural inference failed: {e}", "fallback": True}
             router_logits = router_logits + noise
         
         # Apply temperature scaling
@@ -461,7 +492,38 @@ if __name__ == "__main__":
     top_k = 2
     
     # Create sample input
-    x = torch.randn(batch_size, seq_len, d_model)
+        # RomAI General Expert - Authentic Neural Inference
+            try:
+                # Route to appropriate expert based on input analysis
+                expert_input = self._prepare_expert_input(input_data)
+
+                # Automatic expert selection
+                selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                # Process with selected expert
+                with torch.no_grad():
+                    expert_outputs = self.model.route_to_expert(
+                        expert_input,
+                        expert_type=selected_expert,
+                        use_mla_attention=True
+                    )
+
+                    # Generate response
+                    response = self.model.generate_response(expert_outputs)
+
+                    return {
+                        "response": response["response"],
+                        "reasoning": response["reasoning"],
+                        "confidence": response["confidence"],
+                        "expert_used": selected_expert,
+                        "method": "neural_general_reasoning",
+                        "quality_score": response["quality_score"]
+                    }
+
+            except Exception as e:
+                logger.error(f"General expert error: {e}")
+                # Ultimate fallback
+                return {"error": f"Neural inference failed: {e}", "fallback": True}
     
     # Test single expert
     expert = ExpertFFN(d_model, d_model * 4, expert_id=0, specialty='test')

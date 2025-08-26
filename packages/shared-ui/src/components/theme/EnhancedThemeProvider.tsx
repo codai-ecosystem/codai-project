@@ -6,7 +6,7 @@
 'use client'
 
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react'
-import { appThemes, type AppName, type AppThemeConfig, generateAppCSSVariables } from '../../config/enhanced-app-themes'
+import { appThemes, type AppName, type AppThemeConfig, generateAppCSSVariables } from '../../config/app-themes'
 
 export type ThemeMode = 'light' | 'dark' | 'system'
 

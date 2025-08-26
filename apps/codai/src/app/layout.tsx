@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Metadata } from 'next';
-import './lib/i18n/config';
+import '../lib/i18n/config';
 import './globals.css';
 import { AuthProvider } from '../lib/auth';
 import EcosystemNavigation from '../components/EcosystemNavigation';

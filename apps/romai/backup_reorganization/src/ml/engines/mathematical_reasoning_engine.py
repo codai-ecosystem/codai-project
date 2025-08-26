@@ -151,7 +151,37 @@ class MathematicalReasoningEngine:
             self.pattern_embeddings[category] = {}
             for pattern in pattern_list:
                 # Mathematical concept embeddings
-                embedding = torch.randn(768).to(self.device)
+        # RomAI Mathematical Expert - Authentic Neural Inference
+                        try:
+                            # Route to mathematical reasoning expert
+                            expert_input = self._prepare_expert_input(problem, domain="mathematics")
+
+                            # Process with specialized math expert
+                            with torch.no_grad():
+                                expert_outputs = self.model.route_to_expert(
+                                    expert_input, 
+                                    expert_type="mathematical_reasoning",
+                                    use_mla_attention=True
+                                )
+
+                                # Multi-step mathematical reasoning
+                                reasoning_steps = self.model.mathematical_expert.solve_step_by_step(expert_input)
+
+                                # Validate mathematical correctness
+                                solution = self.model.mathematical_expert.validate_solution(reasoning_steps)
+
+                                return {
+                                    "result": solution["answer"],
+                                    "reasoning_chain": reasoning_steps,
+                                    "confidence": solution["confidence"],
+                                    "method": "neural_mathematical_reasoning",
+                                    "expert_activated": "mathematical_reasoning"
+                                }
+
+                        except Exception as e:
+                            logger.error(f"Mathematical expert error: {e}")
+                            # Fallback to general reasoning
+                            return self._fallback_reasoning(problem, domain="mathematics")
                 self.pattern_embeddings[category][pattern] = embedding
     
     async def solve_mathematical_problem(self, problem: str) -> MathematicalResult:

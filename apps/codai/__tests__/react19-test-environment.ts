@@ -35,8 +35,8 @@ beforeAll(() => {
     if (typeof window !== 'undefined') {
         // React 19 Concurrent Features mock
         if (!window.requestIdleCallback) {
-            window.requestIdleCallback = (callback: any) => {
-                return setTimeout(() => callback({ timeRemaining: () => 50 }), 1)
+            window.requestIdleCallback = (callback: IdleRequestCallback) => {
+                return window.setTimeout(() => callback({ timeRemaining: () => 50, didTimeout: false }), 1) as unknown as number
             }
         }
 

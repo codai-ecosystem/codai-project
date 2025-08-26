@@ -1,0 +1,136 @@
+{
+  "job_config": {
+    "type": "command",
+    "display_name": "RomAI World-Class AGI Training - 20250826-033135",
+    "description": "Training RomAI to become the best AI by miles using 100x H100 GPUs",
+    "tags": {
+      "project": "RomAI-AGI",
+      "model": "100B-parameter-MoE",
+      "target": "world-class-performance",
+      "budget": "3,500,000-EUR",
+      "completion_date": "2025-04-16"
+    },
+    "compute": "romai-h100-cluster",
+    "instance_count": 50,
+    "resources": {
+      "instance_type": "Standard_NC96ads_H100_v5"
+    },
+    "environment": "romai-agi-training-env:1.0",
+    "code": "./src",
+    "command": "python ml/training/azure_ml_training_main.py --model-name romai-world-class-agi-v1 --vocab-size 50000 --d-model 4096 --num-layers 48 --num-experts 64 --num-experts-per-token 6 --max-seq-length 128000 --learning-rate 0.0001 --weight-decay 0.1 --batch-size-per-gpu 4 --gradient-accumulation-steps 32 --max-epochs 100 --total-steps 1000000 --warmup-steps 10000 --checkpoint-interval 5000 --evaluation-interval 10000 --log-interval 100 --training-data ${{inputs.training_data}} --model-output ${{outputs.model_output}} --checkpoints-output ${{outputs.checkpoints}} --logs-output ${{outputs.logs}} --use-fp16 --use-mla",
+    "inputs": {
+      "training_data": {
+        "type": "uri_folder",
+        "path": "azureml://datastores/workspaceblobstore/paths//mnt/romai/data/massive_training_dataset"
+      }
+    },
+    "outputs": {
+      "model_output": {
+        "type": "mlflow_model",
+        "path": "azureml://datastores/workspaceblobstore/paths/romai_models/world_class_agi_v1"
+      },
+      "checkpoints": {
+        "type": "uri_folder",
+        "path": "azureml://datastores/workspaceblobstore/paths/romai_checkpoints"
+      },
+      "logs": {
+        "type": "uri_folder",
+        "path": "azureml://datastores/workspaceblobstore/paths/romai_logs"
+      }
+    },
+    "distribution": {
+      "type": "pytorch",
+      "process_count_per_instance": 2
+    },
+    "environment_variables": {
+      "MASTER_PORT": "12355",
+      "NCCL_SOCKET_IFNAME": "eth0",
+      "NCCL_IB_DISABLE": "0",
+      "NCCL_IB_HCA": "mlx5",
+      "NCCL_NET_GDR_LEVEL": "2",
+      "NCCL_NET_GDR_READ": "1",
+      "PYTORCH_CUDA_ALLOC_CONF": "max_split_size_mb:1024",
+      "WANDB_PROJECT": "romai-world-class-agi",
+      "ROMAI_MODEL_NAME": "romai-world-class-agi-v1",
+      "ROMAI_TARGET": "world-class-agi"
+    },
+    "experiment_name": "romai-world-class-agi-training",
+    "timeout": "P7D",
+    "max_retry": 3
+  },
+  "training_script": "#!/usr/bin/env python3\n\"\"\"\nRomAI World-Class AGI Training Script\n====================================\n\nMain training script for RomAI's world-class AGI using distributed H100 infrastructure.\n\nAuthor: GitHub Copilot Agent\nDate: August 26, 2025\nTarget: Best AI by miles\n\"\"\"\n\nimport os\nimport sys\nimport argparse\nimport logging\nimport torch\nimport torch.distributed as dist\nfrom datetime import datetime\n\n# Set up logging\nlogging.basicConfig(\n    level=logging.INFO,\n    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'\n)\nlogger = logging.getLogger(__name__)\n\ndef parse_args():\n    \"\"\"Parse command line arguments\"\"\"\n    \n    parser = argparse.ArgumentParser(description='RomAI World-Class AGI Training')\n    \n    # Model configuration\n    parser.add_argument('--model-name', type=str, default='romai-world-class-agi-v1')\n    parser.add_argument('--vocab-size', type=int, default=50000)\n    parser.add_argument('--d-model', type=int, default=4096)\n    parser.add_argument('--num-layers', type=int, default=48)\n    parser.add_argument('--num-experts', type=int, default=64)\n    parser.add_argument('--num-experts-per-token', type=int, default=6)\n    parser.add_argument('--max-seq-length', type=int, default=128000)\n    parser.add_argument('--use-mla', action='store_true', default=True)\n    \n    # Training configuration\n    parser.add_argument('--learning-rate', type=float, default=1e-4)\n    parser.add_argument('--weight-decay', type=float, default=0.1)\n    parser.add_argument('--batch-size-per-gpu', type=int, default=4)\n    parser.add_argument('--gradient-accumulation-steps', type=int, default=32)\n    parser.add_argument('--max-epochs', type=int, default=100)\n    parser.add_argument('--total-steps', type=int, default=1000000)\n    parser.add_argument('--warmup-steps', type=int, default=10000)\n    parser.add_argument('--use-fp16', action='store_true', default=True)\n    \n    # Intervals and logging\n    parser.add_argument('--checkpoint-interval', type=int, default=5000)\n    parser.add_argument('--evaluation-interval', type=int, default=10000)\n    parser.add_argument('--log-interval', type=int, default=100)\n    \n    # Paths\n    parser.add_argument('--training-data', type=str, required=True)\n    parser.add_argument('--model-output', type=str, required=True)\n    parser.add_argument('--checkpoints-output', type=str, required=True)\n    parser.add_argument('--logs-output', type=str, required=True)\n    \n    return parser.parse_args()\n\ndef main():\n    \"\"\"Main training function\"\"\"\n    \n    args = parse_args()\n    \n    logger.info(\"\ud83d\ude80 Starting RomAI World-Class AGI Training\")\n    logger.info(\"==========================================\")\n    logger.info(f\"Model: {args.model_name}\")\n    logger.info(f\"Target: Best AI by miles\")\n    logger.info(f\"Start time: {datetime.now()}\")\n    \n    # Initialize distributed training\n    if 'RANK' in os.environ:\n        rank = int(os.environ['RANK'])\n        world_size = int(os.environ['WORLD_SIZE'])\n        local_rank = int(os.environ['LOCAL_RANK'])\n        \n        logger.info(f\"Distributed training: Rank {rank}/{world_size}\")\n        \n        # Set up device\n        torch.cuda.set_device(local_rank)\n        device = torch.device(f\"cuda:{local_rank}\")\n        \n        # Initialize process group\n        dist.init_process_group(backend='nccl')\n    else:\n        logger.info(\"Single GPU training\")\n        device = torch.device(\"cuda\" if torch.cuda.is_available() else \"cpu\")\n    \n    # Model configuration\n    model_config = {\n        \"vocab_size\": args.vocab_size,\n        \"d_model\": args.d_model,\n        \"num_layers\": args.num_layers,\n        \"num_experts\": args.num_experts,\n        \"num_experts_per_token\": args.num_experts_per_token,\n        \"max_seq_length\": args.max_seq_length,\n        \"use_mla\": args.use_mla,\n        \"learning_rate\": args.learning_rate,\n        \"weight_decay\": args.weight_decay\n    }\n    \n    # Create distributed training configuration\n    from ml.training.distributed_training import DistributedConfig, RomAIDistributedTrainer\n    \n    dist_config = DistributedConfig(\n        world_size=world_size if 'RANK' in os.environ else 1,\n        batch_size_per_gpu=args.batch_size_per_gpu,\n        gradient_accumulation_steps=args.gradient_accumulation_steps,\n        fp16=args.use_fp16,\n        checkpoint_dir=args.checkpoints_output,\n        log_interval=args.log_interval,\n        checkpoint_interval=args.checkpoint_interval\n    )\n    \n    # Create trainer\n    trainer = RomAIDistributedTrainer(dist_config)\n    \n    # Set up distributed training\n    if 'RANK' in os.environ:\n        trainer.setup_distributed()\n    else:\n        trainer.device = device\n    \n    # Set up model and optimizer\n    trainer.setup_model_and_optimizer(model_config)\n    \n    # Set up data loader\n    data_loader = trainer.setup_data_loader(args.training_data)\n    \n    if trainer.rank == 0 or 'RANK' not in os.environ:\n        logger.info(f\"\ud83d\udcca Training Configuration:\")\n        logger.info(f\"   Model parameters: {sum(p.numel() for p in trainer.model.parameters()):,}\")\n        logger.info(f\"   Global batch size: {args.batch_size_per_gpu * dist_config.world_size * args.gradient_accumulation_steps}\")\n        logger.info(f\"   Training steps: {args.total_steps}\")\n        logger.info(f\"   Target epochs: {args.max_epochs}\")\n        logger.info(f\"   Hardware: {torch.cuda.device_count()} GPUs\")\n    \n    # Run training\n    try:\n        results = trainer.train(\n            data_loader=data_loader,\n            num_epochs=args.max_epochs\n        )\n        \n        if trainer.rank == 0 or 'RANK' not in os.environ:\n            logger.info(\"\ud83c\udf89 Training completed successfully!\")\n            logger.info(f\"Final loss: {results['training_history'][-1]['loss']:.6f}\")\n            logger.info(f\"Training time: {results['total_time'] / 3600:.1f} hours\")\n            \n            # Save final model\n            final_model_path = os.path.join(args.model_output, \"final_model.pt\")\n            torch.save({\n                'model_state_dict': trainer.model.module.state_dict() if hasattr(trainer.model, 'module') else trainer.model.state_dict(),\n                'training_history': results['training_history'],\n                'model_config': model_config,\n                'training_config': asdict(dist_config)\n            }, final_model_path)\n            \n            logger.info(f\"\ud83d\udcbe Final model saved: {final_model_path}\")\n            logger.info(\"\ud83c\udfaf RomAI is now ready to be the best AI by miles!\")\n    \n    except Exception as e:\n        logger.error(f\"\u274c Training failed: {e}\")\n        raise\n    \n    finally:\n        # Cleanup\n        if dist.is_initialized():\n            dist.destroy_process_group()\n\nif __name__ == \"__main__\":\n    main()\n",
+  "cost_estimate": {
+    "training_time_days": 57.870370370370374,
+    "training_time_hours": 1388.888888888889,
+    "tokens_trained": 1000000000000,
+    "compute_cost_eur": 486111.1111111111,
+    "storage_cost_eur": 50000,
+    "network_cost_eur": 25000,
+    "management_cost_eur": 75000,
+    "total_cost_eur": 636111.1111111111,
+    "cost_per_token": 636.1111111111111,
+    "budget_utilization": 18.174603174603174
+  },
+  "monitoring_dashboard": {
+    "dashboard_name": "RomAI World-Class AGI Training Monitor",
+    "metrics": [
+      {
+        "name": "Training Loss",
+        "type": "line_chart",
+        "source": "training_logs",
+        "query": "SELECT timestamp, loss FROM training_metrics ORDER BY timestamp"
+      },
+      {
+        "name": "GPU Utilization",
+        "type": "gauge",
+        "source": "system_metrics",
+        "target": ">80%"
+      },
+      {
+        "name": "Tokens per Second",
+        "type": "line_chart",
+        "source": "performance_metrics",
+        "target": ">100000"
+      },
+      {
+        "name": "Memory Usage",
+        "type": "area_chart",
+        "source": "system_metrics",
+        "threshold": "90%"
+      },
+      {
+        "name": "Cost Tracking",
+        "type": "bar_chart",
+        "source": "cost_metrics",
+        "budget_limit": 3500000.0
+      },
+      {
+        "name": "Expert Activation",
+        "type": "heatmap",
+        "source": "expert_metrics",
+        "description": "MoE expert utilization patterns"
+      }
+    ],
+    "alerts": [
+      {
+        "name": "High Cost Alert",
+        "condition": "cost > budget * 0.8",
+        "action": "email_notification"
+      },
+      {
+        "name": "Training Stall",
+        "condition": "tokens_per_second < 50000",
+        "action": "slack_notification"
+      },
+      {
+        "name": "GPU Failure",
+        "condition": "gpu_utilization < 50%",
+        "action": "immediate_alert"
+      }
+    ]
+  },
+  "creation_timestamp": "2025-08-26T03:31:35.746428",
+  "target": "world-class AGI by miles",
+  "budget_eur": 3500000.0,
+  "completion_target": "2025-04-16"
+}

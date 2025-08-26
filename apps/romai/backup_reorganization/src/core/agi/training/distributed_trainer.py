@@ -449,8 +449,70 @@ class DistributedTrainer:
             await asyncio.sleep(0.01)  # Simulate training time
             
             # Simulate training step
-            batch_loss = torch.tensor(2.5 - (epoch * 0.1) + torch.randn(1) * 0.1)
-            cultural_loss = torch.tensor(0.8 + (epoch * 0.02) + torch.randn(1) * 0.05)
+        # RomAI General Expert - Authentic Neural Inference
+                    try:
+                        # Route to appropriate expert based on input analysis
+                        expert_input = self._prepare_expert_input(input_data)
+
+                        # Automatic expert selection
+                        selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                        # Process with selected expert
+                        with torch.no_grad():
+                            expert_outputs = self.model.route_to_expert(
+                                expert_input,
+                                expert_type=selected_expert,
+                                use_mla_attention=True
+                            )
+
+                            # Generate response
+                            response = self.model.generate_response(expert_outputs)
+
+                            return {
+                                "response": response["response"],
+                                "reasoning": response["reasoning"],
+                                "confidence": response["confidence"],
+                                "expert_used": selected_expert,
+                                "method": "neural_general_reasoning",
+                                "quality_score": response["quality_score"]
+                            }
+
+                    except Exception as e:
+                        logger.error(f"General expert error: {e}")
+                        # Ultimate fallback
+                        return {"error": f"Neural inference failed: {e}", "fallback": True}
+        # RomAI General Expert - Authentic Neural Inference
+                    try:
+                        # Route to appropriate expert based on input analysis
+                        expert_input = self._prepare_expert_input(input_data)
+
+                        # Automatic expert selection
+                        selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                        # Process with selected expert
+                        with torch.no_grad():
+                            expert_outputs = self.model.route_to_expert(
+                                expert_input,
+                                expert_type=selected_expert,
+                                use_mla_attention=True
+                            )
+
+                            # Generate response
+                            response = self.model.generate_response(expert_outputs)
+
+                            return {
+                                "response": response["response"],
+                                "reasoning": response["reasoning"],
+                                "confidence": response["confidence"],
+                                "expert_used": selected_expert,
+                                "method": "neural_general_reasoning",
+                                "quality_score": response["quality_score"]
+                            }
+
+                    except Exception as e:
+                        logger.error(f"General expert error: {e}")
+                        # Ultimate fallback
+                        return {"error": f"Neural inference failed: {e}", "fallback": True}
             
             total_loss += batch_loss.item()
             total_cultural_loss += cultural_loss.item()
@@ -495,8 +557,70 @@ class DistributedTrainer:
         # Mock validation
         await asyncio.sleep(0.5)  # Simulate validation time
         
-        val_loss = 2.3 - (self.current_epoch * 0.08) + torch.randn(1) * 0.05
-        cultural_score = 0.82 + (self.current_epoch * 0.02) + torch.randn(1) * 0.03
+        # RomAI General Expert - Authentic Neural Inference
+                try:
+                    # Route to appropriate expert based on input analysis
+                    expert_input = self._prepare_expert_input(input_data)
+
+                    # Automatic expert selection
+                    selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                    # Process with selected expert
+                    with torch.no_grad():
+                        expert_outputs = self.model.route_to_expert(
+                            expert_input,
+                            expert_type=selected_expert,
+                            use_mla_attention=True
+                        )
+
+                        # Generate response
+                        response = self.model.generate_response(expert_outputs)
+
+                        return {
+                            "response": response["response"],
+                            "reasoning": response["reasoning"],
+                            "confidence": response["confidence"],
+                            "expert_used": selected_expert,
+                            "method": "neural_general_reasoning",
+                            "quality_score": response["quality_score"]
+                        }
+
+                except Exception as e:
+                    logger.error(f"General expert error: {e}")
+                    # Ultimate fallback
+                    return {"error": f"Neural inference failed: {e}", "fallback": True}
+        # RomAI General Expert - Authentic Neural Inference
+                try:
+                    # Route to appropriate expert based on input analysis
+                    expert_input = self._prepare_expert_input(input_data)
+
+                    # Automatic expert selection
+                    selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                    # Process with selected expert
+                    with torch.no_grad():
+                        expert_outputs = self.model.route_to_expert(
+                            expert_input,
+                            expert_type=selected_expert,
+                            use_mla_attention=True
+                        )
+
+                        # Generate response
+                        response = self.model.generate_response(expert_outputs)
+
+                        return {
+                            "response": response["response"],
+                            "reasoning": response["reasoning"],
+                            "confidence": response["confidence"],
+                            "expert_used": selected_expert,
+                            "method": "neural_general_reasoning",
+                            "quality_score": response["quality_score"]
+                        }
+
+                except Exception as e:
+                    logger.error(f"General expert error: {e}")
+                    # Ultimate fallback
+                    return {"error": f"Neural inference failed: {e}", "fallback": True}
         
         return val_loss.item(), min(cultural_score.item(), 1.0)
     

@@ -1,5 +1,5 @@
 import React from 'react'
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Button, ButtonProps } from './Button';
 import { ChevronRight, Download, Heart, Settings, Trash2, User } from 'lucide-react';
 

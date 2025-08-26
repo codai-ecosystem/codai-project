@@ -253,7 +253,9 @@ class RomAITransformerEngine:
             ]
         else:
             base_responses = [
-                f"Based on my advanced transformer architecture analysis, ",
+                f"As an AI system, I can help with this question. ",
+                f"Based on my training and knowledge, I can provide: ",
+                f"Let me analyze this and provide a comprehensive response: ",
                 f"Using my {self.model_info['total_parameters']} parameter neural network, ",
                 f"Through my mixture-of-experts processing, "
             ]

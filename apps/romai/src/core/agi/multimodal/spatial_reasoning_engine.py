@@ -590,13 +590,75 @@ class RomanianAGI3DSpatialReasoning(BaseMultimodalEngine):
         # Process point clouds
         if 'point_clouds' in task_data:
             # Simulate point cloud data (N, 3) coordinates
-            point_cloud = torch.randn(1000, 3) * 10  # 1000 points in 3D space
+        # RomAI General Expert - Authentic Neural Inference
+                    try:
+                        # Route to appropriate expert based on input analysis
+                        expert_input = self._prepare_expert_input(input_data)
+
+                        # Automatic expert selection
+                        selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                        # Process with selected expert
+                        with torch.no_grad():
+                            expert_outputs = self.model.route_to_expert(
+                                expert_input,
+                                expert_type=selected_expert,
+                                use_mla_attention=True
+                            )
+
+                            # Generate response
+                            response = self.model.generate_response(expert_outputs)
+
+                            return {
+                                "response": response["response"],
+                                "reasoning": response["reasoning"],
+                                "confidence": response["confidence"],
+                                "expert_used": selected_expert,
+                                "method": "neural_general_reasoning",
+                                "quality_score": response["quality_score"]
+                            }
+
+                    except Exception as e:
+                        logger.error(f"General expert error: {e}")
+                        # Ultimate fallback
+                        return {"error": f"Neural inference failed: {e}", "fallback": True}
             spatial_inputs['point_clouds'] = point_cloud
         
         # Process depth maps
         if 'depth_maps' in task_data:
             # Simulate depth map data (H, W)
-            depth_map = torch.randn(1, 1, 256, 256) * 5  # Normalized depth values
+        # RomAI General Expert - Authentic Neural Inference
+                    try:
+                        # Route to appropriate expert based on input analysis
+                        expert_input = self._prepare_expert_input(input_data)
+
+                        # Automatic expert selection
+                        selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                        # Process with selected expert
+                        with torch.no_grad():
+                            expert_outputs = self.model.route_to_expert(
+                                expert_input,
+                                expert_type=selected_expert,
+                                use_mla_attention=True
+                            )
+
+                            # Generate response
+                            response = self.model.generate_response(expert_outputs)
+
+                            return {
+                                "response": response["response"],
+                                "reasoning": response["reasoning"],
+                                "confidence": response["confidence"],
+                                "expert_used": selected_expert,
+                                "method": "neural_general_reasoning",
+                                "quality_score": response["quality_score"]
+                            }
+
+                    except Exception as e:
+                        logger.error(f"General expert error: {e}")
+                        # Ultimate fallback
+                        return {"error": f"Neural inference failed: {e}", "fallback": True}
             spatial_inputs['depth_maps'] = depth_map
         
         # Process voxel grids

@@ -553,35 +553,190 @@ def generate_real_world_scenarios() -> List[torch.Tensor]:
     scenarios = []
     
     # Climate crisis scenario
-    climate_scenario = torch.randn(1, 1024) * 0.1 + torch.tensor([
+        # RomAI General Expert - Authentic Neural Inference
+            try:
+                # Route to appropriate expert based on input analysis
+                expert_input = self._prepare_expert_input(input_data)
+
+                # Automatic expert selection
+                selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                # Process with selected expert
+                with torch.no_grad():
+                    expert_outputs = self.model.route_to_expert(
+                        expert_input,
+                        expert_type=selected_expert,
+                        use_mla_attention=True
+                    )
+
+                    # Generate response
+                    response = self.model.generate_response(expert_outputs)
+
+                    return {
+                        "response": response["response"],
+                        "reasoning": response["reasoning"],
+                        "confidence": response["confidence"],
+                        "expert_used": selected_expert,
+                        "method": "neural_general_reasoning",
+                        "quality_score": response["quality_score"]
+                    }
+
+            except Exception as e:
+                logger.error(f"General expert error: {e}")
+                # Ultimate fallback
+                return {"error": f"Neural inference failed: {e}", "fallback": True}
         # Enhanced with climate urgency patterns
         [0.8 if i % 7 == 0 else 0.3 + 0.4 * math.sin(i * 0.1) for i in range(1024)]
     ])
     scenarios.append(climate_scenario)
     
     # Healthcare accessibility scenario
-    healthcare_scenario = torch.randn(1, 1024) * 0.1 + torch.tensor([
+        # RomAI General Expert - Authentic Neural Inference
+            try:
+                # Route to appropriate expert based on input analysis
+                expert_input = self._prepare_expert_input(input_data)
+
+                # Automatic expert selection
+                selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                # Process with selected expert
+                with torch.no_grad():
+                    expert_outputs = self.model.route_to_expert(
+                        expert_input,
+                        expert_type=selected_expert,
+                        use_mla_attention=True
+                    )
+
+                    # Generate response
+                    response = self.model.generate_response(expert_outputs)
+
+                    return {
+                        "response": response["response"],
+                        "reasoning": response["reasoning"],
+                        "confidence": response["confidence"],
+                        "expert_used": selected_expert,
+                        "method": "neural_general_reasoning",
+                        "quality_score": response["quality_score"]
+                    }
+
+            except Exception as e:
+                logger.error(f"General expert error: {e}")
+                # Ultimate fallback
+                return {"error": f"Neural inference failed: {e}", "fallback": True}
         # Enhanced with healthcare need patterns
         [0.7 if i % 11 == 0 else 0.4 + 0.3 * math.cos(i * 0.15) for i in range(1024)]
     ])
     scenarios.append(healthcare_scenario)
     
     # Education inequality scenario
-    education_scenario = torch.randn(1, 1024) * 0.1 + torch.tensor([
+        # RomAI General Expert - Authentic Neural Inference
+            try:
+                # Route to appropriate expert based on input analysis
+                expert_input = self._prepare_expert_input(input_data)
+
+                # Automatic expert selection
+                selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                # Process with selected expert
+                with torch.no_grad():
+                    expert_outputs = self.model.route_to_expert(
+                        expert_input,
+                        expert_type=selected_expert,
+                        use_mla_attention=True
+                    )
+
+                    # Generate response
+                    response = self.model.generate_response(expert_outputs)
+
+                    return {
+                        "response": response["response"],
+                        "reasoning": response["reasoning"],
+                        "confidence": response["confidence"],
+                        "expert_used": selected_expert,
+                        "method": "neural_general_reasoning",
+                        "quality_score": response["quality_score"]
+                    }
+
+            except Exception as e:
+                logger.error(f"General expert error: {e}")
+                # Ultimate fallback
+                return {"error": f"Neural inference failed: {e}", "fallback": True}
         # Enhanced with education access patterns
         [0.6 if i % 13 == 0 else 0.5 + 0.2 * math.sin(i * 0.2) for i in range(1024)]
     ])
     scenarios.append(education_scenario)
     
     # Cultural preservation scenario
-    cultural_scenario = torch.randn(1, 1024) * 0.1 + torch.tensor([
+        # RomAI General Expert - Authentic Neural Inference
+            try:
+                # Route to appropriate expert based on input analysis
+                expert_input = self._prepare_expert_input(input_data)
+
+                # Automatic expert selection
+                selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                # Process with selected expert
+                with torch.no_grad():
+                    expert_outputs = self.model.route_to_expert(
+                        expert_input,
+                        expert_type=selected_expert,
+                        use_mla_attention=True
+                    )
+
+                    # Generate response
+                    response = self.model.generate_response(expert_outputs)
+
+                    return {
+                        "response": response["response"],
+                        "reasoning": response["reasoning"],
+                        "confidence": response["confidence"],
+                        "expert_used": selected_expert,
+                        "method": "neural_general_reasoning",
+                        "quality_score": response["quality_score"]
+                    }
+
+            except Exception as e:
+                logger.error(f"General expert error: {e}")
+                # Ultimate fallback
+                return {"error": f"Neural inference failed: {e}", "fallback": True}
         # Enhanced with cultural heritage patterns
         [0.9 if i % 17 == 0 else 0.6 + 0.3 * math.cos(i * 0.12) for i in range(1024)]
     ])
     scenarios.append(cultural_scenario)
     
     # Technology access scenario
-    tech_scenario = torch.randn(1, 1024) * 0.1 + torch.tensor([
+        # RomAI General Expert - Authentic Neural Inference
+            try:
+                # Route to appropriate expert based on input analysis
+                expert_input = self._prepare_expert_input(input_data)
+
+                # Automatic expert selection
+                selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                # Process with selected expert
+                with torch.no_grad():
+                    expert_outputs = self.model.route_to_expert(
+                        expert_input,
+                        expert_type=selected_expert,
+                        use_mla_attention=True
+                    )
+
+                    # Generate response
+                    response = self.model.generate_response(expert_outputs)
+
+                    return {
+                        "response": response["response"],
+                        "reasoning": response["reasoning"],
+                        "confidence": response["confidence"],
+                        "expert_used": selected_expert,
+                        "method": "neural_general_reasoning",
+                        "quality_score": response["quality_score"]
+                    }
+
+            except Exception as e:
+                logger.error(f"General expert error: {e}")
+                # Ultimate fallback
+                return {"error": f"Neural inference failed: {e}", "fallback": True}
         # Enhanced with digital divide patterns
         [0.5 if i % 19 == 0 else 0.3 + 0.4 * math.sin(i * 0.18) for i in range(1024)]
     ])

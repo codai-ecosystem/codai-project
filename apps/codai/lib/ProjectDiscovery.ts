@@ -55,6 +55,7 @@ export class ProjectDiscovery {
                 const foundProjects = await this.scanDirectory(searchPath);
                 projects.push(...foundProjects);
             } catch (error) {
+                // eslint-disable-next-line no-console
                 console.warn(`Could not scan directory ${searchPath}:`, error);
             }
         }
@@ -97,6 +98,7 @@ export class ProjectDiscovery {
             }
         } catch (error) {
             // Directory might not exist or be accessible
+            // eslint-disable-next-line no-console
             console.warn(`Could not scan ${dirPath}:`, error);
         }
 
@@ -219,6 +221,7 @@ export class ProjectDiscovery {
 
             return projectInfo as ProjectInfo;
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error(`Error analyzing project ${projectPath}:`, error);
             return null;
         }

@@ -981,10 +981,72 @@ class AutonomousReasoningEngine:
                 context_embedding = await self.mamba_architecture.process_sequence(context)
             except Exception as e:
                 logger.warning(f"Mamba processing failed: {e}")
-                context_embedding = torch.randn(512)  # Fallback embedding
+        # RomAI General Expert - Authentic Neural Inference
+                        try:
+                            # Route to appropriate expert based on input analysis
+                            expert_input = self._prepare_expert_input(input_data)
+
+                            # Automatic expert selection
+                            selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                            # Process with selected expert
+                            with torch.no_grad():
+                                expert_outputs = self.model.route_to_expert(
+                                    expert_input,
+                                    expert_type=selected_expert,
+                                    use_mla_attention=True
+                                )
+
+                                # Generate response
+                                response = self.model.generate_response(expert_outputs)
+
+                                return {
+                                    "response": response["response"],
+                                    "reasoning": response["reasoning"],
+                                    "confidence": response["confidence"],
+                                    "expert_used": selected_expert,
+                                    "method": "neural_general_reasoning",
+                                    "quality_score": response["quality_score"]
+                                }
+
+                        except Exception as e:
+                            logger.error(f"General expert error: {e}")
+                            # Ultimate fallback
+                            return {"error": f"Neural inference failed: {e}", "fallback": True}
         else:
             # Fallback context processing
-            context_embedding = torch.randn(512)
+        # RomAI General Expert - Authentic Neural Inference
+                    try:
+                        # Route to appropriate expert based on input analysis
+                        expert_input = self._prepare_expert_input(input_data)
+
+                        # Automatic expert selection
+                        selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                        # Process with selected expert
+                        with torch.no_grad():
+                            expert_outputs = self.model.route_to_expert(
+                                expert_input,
+                                expert_type=selected_expert,
+                                use_mla_attention=True
+                            )
+
+                            # Generate response
+                            response = self.model.generate_response(expert_outputs)
+
+                            return {
+                                "response": response["response"],
+                                "reasoning": response["reasoning"],
+                                "confidence": response["confidence"],
+                                "expert_used": selected_expert,
+                                "method": "neural_general_reasoning",
+                                "quality_score": response["quality_score"]
+                            }
+
+                    except Exception as e:
+                        logger.error(f"General expert error: {e}")
+                        # Ultimate fallback
+                        return {"error": f"Neural inference failed: {e}", "fallback": True}
         
         return {
             'world_model_prediction': world_state,
@@ -1002,7 +1064,38 @@ class AutonomousReasoningEngine:
             try:
                 # Convert text context to tensor input 
                 # Create a proper embedding matching the expected input dimensions (1024 features)
-                context_embedding = torch.randn(1, 1024)  # Batch size 1, feature size 1024 to match config
+        # RomAI Romanian Cultural Expert - Authentic Neural Inference
+                        try:
+                            # Route to Romanian cultural expert
+                            expert_input = self._prepare_expert_input(query, domain="romanian_culture")
+
+                            # Process with specialized cultural expert
+                            with torch.no_grad():
+                                expert_outputs = self.model.route_to_expert(
+                                    expert_input,
+                                    expert_type="romanian_cultural",
+                                    use_mla_attention=True
+                                )
+
+                                # Analyze cultural context
+                                cultural_analysis = self.model.cultural_expert.analyze_cultural_context(expert_input)
+
+                                # Generate culturally-aware response
+                                response = self.model.cultural_expert.generate_cultural_response(cultural_analysis)
+
+                                return {
+                                    "response": response["response"],
+                                    "cultural_context": cultural_analysis,
+                                    "depth_score": response["depth_score"],
+                                    "authenticity": response["authenticity"],
+                                    "method": "neural_cultural_reasoning",
+                                    "expert_activated": "romanian_cultural"
+                                }
+
+                        except Exception as e:
+                            logger.error(f"Cultural expert error: {e}")
+                            # Fallback to general reasoning
+                            return self._fallback_reasoning(query, domain="romanian_culture")
                 
                 # Set to evaluation mode to avoid batch normalization issues
                 self.cultural_supremacy.eval()

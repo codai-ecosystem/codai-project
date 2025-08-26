@@ -1,0 +1,9 @@
+{
+  "url": "https://gov.ro/ro/guvernul/palatul-victoria",
+  "title": "Palatul Victoria",
+  "content": "Palatul Victoria ROEN Caută în site Meniu Prim-ministru AgendaBiografieEchipa prim-ministruluiAlbum foto Guvern Cabinetul de miniștriPalatul VictoriaOrganizareOportunități de angajareProcesul legislativ Guvernul României Guvernul este autoritatea publică a puterii executive, care funcționează în baza votului de încredere acordat de Parlament și care asigură realizarea politicii interne și externe a țării și exercită conducerea generală a administrației publice. Află mai multe Istoricul Palatului Victoria Obiective Programul de GuvernareStrategii, politici, programe Program de Guvernare Află mai multe Media Comunicate și acte ședință de guvernȘtiriComunicate de presăAcreditare presăGalerie FotoVideo Contact GuvernPalatul Victoria Palatul Victoria Istoricul clădiriiGalerie foto exteriorGalerie foto interior AcasăContactHartă siteInstituții publiceInternaționalInstituții europeneLegislațieUtile Guvernul României Copyright © Guvernul României 2025 RSS Condiții de utilizare Condiții legale",
+  "source": "Romanian Government",
+  "category": "government",
+  "collected_at": "2025-08-26T02:25:05.057312",
+  "content_hash": "391866bac83185eb42de50965455fa3d930247d0a1bd6801073d6b9a7f318eff"
+}

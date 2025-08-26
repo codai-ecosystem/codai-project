@@ -623,7 +623,7 @@ class PerformanceOptimizationSystem:
         before_metrics = await self._collect_performance_metrics()
         
         # Execute GPU acceleration
-        sample_tensors = [torch.randn(100, 100) for _ in range(5)]
+        sample_tensors = torch.randn((1024, 1024), dtype=torch.float32)
         accelerated_tensors = await self.gpu_accelerator.optimize_tensor_operations(sample_tensors)
         
         after_metrics = await self._collect_performance_metrics()

@@ -58,7 +58,7 @@ export class EnhancedMemoryStore {
     private embeddings: Map<string, number[]> = new Map();
     private azureClient: OpenAI;
     private persistentStore?: PersistentMemoryStore;
-    
+
     // Phase 4 Advanced Components
     private analytics: AdvancedMemoryAnalytics;
     private summarization: IntelligentMemorySummarization;
@@ -66,12 +66,12 @@ export class EnhancedMemoryStore {
 
     constructor(azureConfig?: any, persistentStore?: PersistentMemoryStore) {
         console.error('[MemorAI] Enhanced Memory Store initialized with Azure OpenAI Phase 2+3+4');
-        
+
         this.persistentStore = persistentStore;
 
         // Use provided config or environment variables  
         const config = azureConfig || {};
-        
+
         // Initialize Azure OpenAI client
         this.azureClient = new OpenAI({
             apiKey: config.apiKey || process.env.AZURE_OPENAI_API_KEY || '',
@@ -81,7 +81,7 @@ export class EnhancedMemoryStore {
                 'api-key': config.apiKey || process.env.AZURE_OPENAI_API_KEY || '',
             },
         });
-        
+
         // Initialize Phase 4 components
         this.analytics = new AdvancedMemoryAnalytics(config);
         this.summarization = new IntelligentMemorySummarization(config);
@@ -135,24 +135,24 @@ export class EnhancedMemoryStore {
 
     async recall(agentId: string, query: string, options: SearchOptions = {}): Promise<ScoredMemory[]> {
         console.log(`🔍 Enhanced recall for agent "${agentId}" with query: "${query}"`);
-        
+
         let searchResults: ScoredMemory[] = [];
-        
+
         // Search own memories first
         const ownResults = await this.enhancedRecall(agentId, query, options);
         searchResults.push(...ownResults);
-        
+
         // If enabled and not enough results, search across agents
         if (options.includeOtherAgents && searchResults.length < (options.limit || 10)) {
             console.log(`🌐 Searching across other agents for additional results...`);
-            
+
             for (const [otherAgentId, memories] of this.memories.entries()) {
                 if (otherAgentId !== agentId && memories.length > 0) {
                     const crossAgentResults = await this.enhancedRecall(otherAgentId, query, {
                         ...options,
                         limit: Math.max(3, (options.limit || 10) - searchResults.length)
                     });
-                    
+
                     // Mark as cross-agent memories
                     crossAgentResults.forEach(memory => {
                         memory.crossAgent = true;
@@ -162,9 +162,9 @@ export class EnhancedMemoryStore {
                             memory.relevanceScore *= 0.9;
                         }
                     });
-                    
+
                     searchResults.push(...crossAgentResults);
-                    
+
                     // Break if we have enough results
                     if (searchResults.length >= (options.limit || 10)) {
                         break;
@@ -172,14 +172,14 @@ export class EnhancedMemoryStore {
                 }
             }
         }
-        
+
         // Final sort and limit
         const finalResults = searchResults
             .sort((a, b) => (b.relevanceScore || 0) - (a.relevanceScore || 0))
             .slice(0, options.limit || 10);
-            
+
         console.log(`📊 Found ${finalResults.length} memories (${finalResults.filter(r => r.crossAgent).length} cross-agent)`);
-        
+
         return finalResults;
     }
 
@@ -216,14 +216,14 @@ export class EnhancedMemoryStore {
 
         // Phase 2: Generate query embedding for semantic search
         const queryEmbedding = await this.generateEmbedding(query);
-        
+
         console.error(`[MemorAI] Phase 2 Search: ${queryEmbedding ? 'Vector + Keyword' : 'Keyword only'} search`);
 
         // Hybrid search implementation (Phase 2)
         const scoredResults = candidateMemories.map(memory => {
             // Calculate keyword-based relevance score (Phase 1)
             const keywordScore = this.calculateRelevanceScore(memory, query);
-            
+
             // Calculate vector similarity score (Phase 2)
             let vectorScore = 0;
             if (queryEmbedding && memory.embeddings && memory.embeddings.length > 0) {
@@ -231,7 +231,7 @@ export class EnhancedMemoryStore {
             }
 
             // Hybrid scoring: combine vector and keyword scores
-            const hybridScore = queryEmbedding && memory.embeddings 
+            const hybridScore = queryEmbedding && memory.embeddings
                 ? (vectorScore * 0.7) + (keywordScore * 0.3) // Prefer vector similarity
                 : keywordScore; // Fallback to keyword-only
 
@@ -263,12 +263,12 @@ export class EnhancedMemoryStore {
         if (!query || query.trim().length === 0) {
             return 0;
         }
-        
+
         const queryLower = query.toLowerCase();
         const queryWords = queryLower.split(/\s+/).filter(word => word.length > 2);
         const contentLower = memory.content.toLowerCase();
         const contentWords = contentLower.split(/\s+/);
-        
+
         let totalScore = 0;
         const weights = {
             exactPhrase: 0.4,
@@ -285,10 +285,10 @@ export class EnhancedMemoryStore {
         // 2. Individual word matching with position bonus
         let wordMatchScore = 0;
         let matchedWords = 0;
-        
+
         for (const queryWord of queryWords) {
             let bestMatch = 0;
-            
+
             // Exact word match
             if (contentWords.some(word => word === queryWord)) {
                 bestMatch = 1.0;
@@ -306,13 +306,13 @@ export class EnhancedMemoryStore {
                     }
                 }
             }
-            
+
             if (bestMatch > 0) {
                 matchedWords++;
                 wordMatchScore += bestMatch;
             }
         }
-        
+
         // Normalize word match score
         if (queryWords.length > 0) {
             wordMatchScore = (wordMatchScore / queryWords.length) * (matchedWords / queryWords.length);
@@ -323,7 +323,7 @@ export class EnhancedMemoryStore {
         let fuzzyScore = 0;
         const queryTerms = queryLower.split(/[-_\s]+/);
         const contentTerms = contentLower.split(/[-_\s]+/);
-        
+
         for (const queryTerm of queryTerms) {
             if (queryTerm.length > 3) {
                 for (const contentTerm of contentTerms) {
@@ -339,20 +339,20 @@ export class EnhancedMemoryStore {
         // 4. Metadata matching
         let metadataScore = 0;
         const metadataText = JSON.stringify(memory.metadata).toLowerCase();
-        
+
         for (const queryWord of queryWords) {
             if (metadataText.includes(queryWord)) {
                 metadataScore += 0.5;
             }
-            
+
             // Check tags specifically
-            if (memory.metadata.tags?.some(tag => 
+            if (memory.metadata.tags?.some(tag =>
                 tag.toLowerCase().includes(queryWord) || queryWord.includes(tag.toLowerCase())
             )) {
                 metadataScore += 0.8;
             }
         }
-        
+
         metadataScore = Math.min(metadataScore, 1.0); // Cap at 1.0
         totalScore += metadataScore * weights.metadata;
 
@@ -362,10 +362,10 @@ export class EnhancedMemoryStore {
     private fuzzyMatchScore(str1: string, str2: string): number {
         if (str1 === str2) return 1.0;
         if (str1.length < 3 || str2.length < 3) return 0;
-        
+
         const maxLen = Math.max(str1.length, str2.length);
         const distance = this.levenshteinDistance(str1, str2);
-        
+
         return 1 - (distance / maxLen);
     }
 
@@ -483,7 +483,7 @@ export class EnhancedMemoryStore {
         if (agentId) {
             return this.memories.get(agentId)?.length || 0;
         }
-        
+
         let total = 0;
         for (const memories of this.memories.values()) {
             total += memories.length;
@@ -505,7 +505,7 @@ export class EnhancedMemoryStore {
     async clusterMemories(agentId: string, clusterCount?: number): Promise<MemoryCluster[]> {
         const memories = this.memories.get(agentId) || [];
         if (memories.length === 0) return [];
-        
+
         console.log(`🧠 Clustering ${memories.length} memories for agent ${agentId}`);
         return await this.analytics.clusterMemories(memories, clusterCount);
     }
@@ -516,7 +516,7 @@ export class EnhancedMemoryStore {
     async analyzeTemporalPatterns(agentId: string): Promise<TemporalPattern[]> {
         const memories = this.memories.get(agentId) || [];
         if (memories.length === 0) return [];
-        
+
         console.log(`📊 Analyzing temporal patterns for agent ${agentId}`);
         return await this.analytics.analyzeTemporalPatterns(memories);
     }
@@ -524,16 +524,16 @@ export class EnhancedMemoryStore {
     /**
      * Apply importance decay to memories
      */
-    async applyImportanceDecay(agentId: string, decayRate?: number): Promise<{updated: number, results: StoredMemory[]}> {
+    async applyImportanceDecay(agentId: string, decayRate?: number): Promise<{ updated: number, results: StoredMemory[] }> {
         const memories = this.memories.get(agentId) || [];
         if (memories.length === 0) return { updated: 0, results: [] };
-        
+
         console.log(`⏳ Applying importance decay to ${memories.length} memories for agent ${agentId}`);
         const decayedMemories = this.analytics.applyImportanceDecay(memories, decayRate);
-        
+
         // Update stored memories
         this.memories.set(agentId, decayedMemories);
-        
+
         return { updated: decayedMemories.length, results: decayedMemories };
     }
 
@@ -543,7 +543,7 @@ export class EnhancedMemoryStore {
     async generateInsights(agentId: string): Promise<MemoryInsight[]> {
         const memories = this.memories.get(agentId) || [];
         if (memories.length === 0) return [];
-        
+
         console.log(`💡 Generating insights for agent ${agentId}`);
         return await this.analytics.generateInsights(agentId, memories);
     }
@@ -566,20 +566,20 @@ export class EnhancedMemoryStore {
         if (memories.length === 0) {
             return { toArchive: [], toCompress: [], toDelete: [], suggestions: [] };
         }
-        
+
         console.log(`🔄 Performing lifecycle management for agent ${agentId}`);
         const management = await this.analytics.performMemoryLifecycleManagement(memories);
-        
+
         // Auto-execute lifecycle actions (configurable)
         const autoExecute = process.env.MEMORAI_AUTO_LIFECYCLE === 'true';
         let executed: { archived: number; compressed: number; deleted: number } | undefined;
-        
+
         if (autoExecute) {
             // Delete old, low-importance memories
-            const remainingMemories = memories.filter(m => 
+            const remainingMemories = memories.filter(m =>
                 !management.toDelete.some(del => del.id === m.id)
             );
-            
+
             // Compress large memories (simplified - just truncate for now)
             const compressedMemories = remainingMemories.map(m => {
                 if (management.toCompress.some(comp => comp.id === m.id)) {
@@ -591,18 +591,18 @@ export class EnhancedMemoryStore {
                 }
                 return m;
             });
-            
+
             this.memories.set(agentId, compressedMemories);
-            
+
             executed = {
                 archived: 0, // Archive functionality would need external storage
                 compressed: management.toCompress.length,
                 deleted: management.toDelete.length
             };
-            
+
             console.log(`✅ Lifecycle management executed: ${executed.deleted} deleted, ${executed.compressed} compressed`);
         }
-        
+
         return { ...management, executed };
     }
 
@@ -610,7 +610,7 @@ export class EnhancedMemoryStore {
      * Summarize a group of memories
      */
     async summarizeMemories(
-        memories: StoredMemory[], 
+        memories: StoredMemory[],
         options?: SummarizationOptions
     ): Promise<SummarizedMemory> {
         console.log(`📝 Summarizing ${memories.length} memories`);
@@ -647,10 +647,10 @@ export class EnhancedMemoryStore {
                 savings: { originalSize: 0, compressedSize: 0, compressionRatio: 0, spaceSaved: 0 }
             };
         }
-        
+
         console.log(`🗜️ Compressing memories for agent ${agentId}`);
         const result = await this.summarization.compressMemories(memories);
-        
+
         // Optionally replace original memories with compressed versions
         const replaceOriginals = process.env.MEMORAI_AUTO_COMPRESS === 'true';
         if (replaceOriginals) {
@@ -665,11 +665,11 @@ export class EnhancedMemoryStore {
                 embeddings: s.embeddings,
                 crossAgent: false
             }));
-            
+
             this.memories.set(agentId, compressedAsStored);
             console.log(`✅ Replaced original memories with ${compressedAsStored.length} compressed versions`);
         }
-        
+
         return result;
     }
 
@@ -726,25 +726,25 @@ export class EnhancedMemoryStore {
      * Enhanced cross-agent recall with permission checking
      */
     async secureRecall(
-        requestingAgent: string, 
-        targetAgent: string, 
-        query: string, 
+        requestingAgent: string,
+        targetAgent: string,
+        query: string,
         options: SearchOptions = {}
     ): Promise<ScoredMemory[]> {
         console.log(`🔒 Secure recall: ${requestingAgent} → ${targetAgent}`);
-        
+
         // If requesting own memories, use regular recall
         if (requestingAgent === targetAgent) {
             return await this.recall(requestingAgent, query, options);
         }
-        
+
         // Get target agent memories
         const targetMemories = this.memories.get(targetAgent) || [];
         if (targetMemories.length === 0) return [];
-        
+
         // Check permissions for each memory
         const allowedMemories: StoredMemory[] = [];
-        
+
         for (const memory of targetMemories) {
             const request: AccessRequest = {
                 requestingAgent,
@@ -753,30 +753,30 @@ export class EnhancedMemoryStore {
                 memory,
                 accessType: 'read'
             };
-            
+
             const result = await this.checkPermission(request);
             if (result.granted) {
                 allowedMemories.push(memory);
             }
         }
-        
+
         if (allowedMemories.length === 0) {
             console.log(`❌ No permissions granted for ${requestingAgent} → ${targetAgent}`);
             return [];
         }
-        
+
         // Perform search on allowed memories only
         console.log(`✅ Access granted to ${allowedMemories.length}/${targetMemories.length} memories`);
-        
+
         // Use existing search logic on filtered memories
         const searchResults = await this.searchMemories(allowedMemories, query, options);
-        
+
         // Mark as cross-agent
         searchResults.forEach(memory => {
             memory.crossAgent = true;
             memory.sourceAgent = targetAgent;
         });
-        
+
         return searchResults;
     }
 
@@ -803,19 +803,19 @@ export class EnhancedMemoryStore {
         };
     }> {
         const memories = this.memories.get(agentId) || [];
-        
+
         console.log(`📊 Generating analytics dashboard for agent ${agentId}`);
-        
+
         const [clusters, temporalPatterns, insights, lifecycle] = await Promise.all([
             this.clusterMemories(agentId, 5),
             this.analyzeTemporalPatterns(agentId),
             this.generateInsights(agentId),
             this.performLifecycleManagement(agentId)
         ]);
-        
+
         const timestamps = memories.map(m => new Date(m.timestamp).getTime());
         const importances = memories.map(m => m.metadata.importance || 5);
-        
+
         return {
             overview: {
                 totalMemories: memories.length,
@@ -847,13 +847,13 @@ export class EnhancedMemoryStore {
         // Score and search memories
         const scoredResults = memories.map(memory => {
             const keywordScore = this.calculateRelevanceScore(memory, query);
-            
+
             let vectorScore = 0;
             if (queryEmbedding && memory.embeddings && memory.embeddings.length > 0) {
                 vectorScore = this.cosineSimilarity(queryEmbedding, memory.embeddings);
             }
 
-            const hybridScore = queryEmbedding && memory.embeddings 
+            const hybridScore = queryEmbedding && memory.embeddings
                 ? (vectorScore * 0.7) + (keywordScore * 0.3)
                 : keywordScore;
 
@@ -871,7 +871,7 @@ export class EnhancedMemoryStore {
 
         // Filter and sort results
         const relevantResults = scoredResults.filter(result => (result.relevanceScore || 0) > 0.1);
-        
+
         return relevantResults.sort((a, b) => {
             const scoreA = (a.relevanceScore || 0) + ((a.metadata.importance || 5) / 100);
             const scoreB = (b.relevanceScore || 0) + ((b.metadata.importance || 5) / 100);

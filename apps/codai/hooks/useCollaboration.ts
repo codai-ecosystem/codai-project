@@ -18,6 +18,31 @@ interface CollaborationUser {
     lastSeen: Date
 }
 
+// Define Socket.IO event interfaces
+interface ServerToClientEvents {
+    'session:joined': (sessionData: CollaborationSession) => void
+    'session:user-joined': (user: CollaborationUser) => void
+    'session:user-left': (userId: string) => void
+    'change:received': (change: CollaborationChange) => void
+    'conflict:detected': (conflicts: CollaborationChange[]) => void
+    'cursor:update': (userId: string, cursor: CollaborationUser['cursor']) => void
+    disconnect: () => void
+    connect: () => void
+}
+
+interface ClientToServerEvents {
+    'session:join': (data: {
+        projectId: string
+        filePath: string
+        user: Omit<CollaborationUser, 'isActive' | 'lastSeen'>
+    }) => void
+    'session:leave': (data: { sessionId: string; userId: string }) => void
+    'change:broadcast': (data: { sessionId: string; changes: CollaborationChange[] }) => void
+    'cursor:update': (data: { sessionId: string; cursor: CollaborationUser['cursor'] }) => void
+}
+
+type CollaborationSocket = Socket<ServerToClientEvents, ClientToServerEvents>
+
 interface CollaborationSession {
     id: string
     projectId: string
@@ -74,7 +99,7 @@ export function useCollaboration({
     onConflict,
     autoResolveConflicts = true
 }: UseCollaborationOptions) {
-    const [socket, setSocket] = useState<Socket | null>(null)
+    const [socket, setSocket] = useState<CollaborationSocket | null>(null)
     const [session, setSession] = useState<CollaborationSession | null>(null)
     const [isConnected, setIsConnected] = useState(false)
     const [users, setUsers] = useState<CollaborationUser[]>([])
@@ -87,7 +112,7 @@ export function useCollaboration({
 
     // Initialize socket connection
     useEffect(() => {
-        const newSocket = io('/collaboration', {
+        const newSocket: CollaborationSocket = io('/collaboration', {
             transports: ['websocket'],
             autoConnect: false,
             reconnection: true,
@@ -96,12 +121,14 @@ export function useCollaboration({
         })
 
         newSocket.on('connect', () => {
+            // eslint-disable-next-line no-console
             console.log('Collaboration socket connected')
             setIsConnected(true)
             joinSession()
         })
 
         newSocket.on('disconnect', () => {
+            // eslint-disable-next-line no-console
             console.log('Collaboration socket disconnected')
             setIsConnected(false)
         })
@@ -160,9 +187,7 @@ export function useCollaboration({
             user: {
                 id: userId,
                 name: userName,
-                color: generateUserColor(userId),
-                isActive: true,
-                lastSeen: new Date()
+                color: generateUserColor(userId)
             }
         })
     }, [socket, projectId, filePath, userId, userName])

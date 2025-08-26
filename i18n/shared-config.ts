@@ -3,6 +3,9 @@
  * @description Common internationalization settings for all CODAI applications
  */
 
+// Type definitions for supported languages and locales
+export type SupportedLanguage = keyof typeof SUPPORTED_LOCALES;
+
 export const SUPPORTED_LOCALES = {
   en: {
     code: 'en',
@@ -145,4 +148,31 @@ export const NAMESPACES = {
   NOTIFICATIONS: 'notifications',
   SETTINGS: 'settings',
   HELP: 'help'
+};
+
+// Utility functions for language management
+export const changeLanguage = (language: SupportedLanguage): void => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('codai-language', language);
+    document.documentElement.lang = language;
+    // Trigger custom event for language change
+    window.dispatchEvent(new CustomEvent('languageChanged', { detail: language }));
+  }
+};
+
+export const getCurrentLanguage = (): SupportedLanguage => {
+  if (typeof window === 'undefined') return DEFAULT_LOCALE as SupportedLanguage;
+  
+  const stored = localStorage.getItem('codai-language') as SupportedLanguage;
+  if (stored && isLanguageSupported(stored)) {
+    return stored;
+  }
+  
+  // Detect from browser
+  const browserLang = navigator.language.substring(0, 2) as SupportedLanguage;
+  return isLanguageSupported(browserLang) ? browserLang : DEFAULT_LOCALE as SupportedLanguage;
+};
+
+export const isLanguageSupported = (language: string): language is SupportedLanguage => {
+  return language in SUPPORTED_LOCALES;
 };

@@ -104,13 +104,16 @@ export function preventMockData() {
   if (process.env.NODE_ENV === 'development') {
     // Override console.warn to detect mock data warnings
     const originalWarn = console.warn
-    console.warn = (...args: any[]) => {
+    console.warn = (...args: unknown[]) => {
       const message = args.join(' ')
       const { hasMockData, violations } = containsMockData(message)
 
       if (hasMockData) {
+        // eslint-disable-next-line no-console
         console.error('🚫 MOCK DATA DETECTED! This is forbidden.')
+        // eslint-disable-next-line no-console
         console.error('Violations:', violations)
+        // eslint-disable-next-line no-console
         console.error('Please replace with real data sources.')
 
         // In strict mode, throw an error
@@ -129,6 +132,7 @@ export function preventMockData() {
  */
 export function validateRealData<T>(data: T, dataName: string): T {
   if (data === null || data === undefined) {
+    // eslint-disable-next-line no-console
     console.warn(`⚠️ ${dataName} is null/undefined - ensure real data is loaded`)
     return data
   }
@@ -138,8 +142,11 @@ export function validateRealData<T>(data: T, dataName: string): T {
     const { hasMockData, violations } = containsMockData(jsonData)
 
     if (hasMockData) {
+      // eslint-disable-next-line no-console
       console.error(`🚫 MOCK DATA DETECTED in ${dataName}!`)
+      // eslint-disable-next-line no-console
       console.error('Violations:', violations)
+      // eslint-disable-next-line no-console
       console.error('Data:', data)
 
       if (process.env.STRICT_NO_MOCK === 'true') {
@@ -163,7 +170,9 @@ export function withRealDataOnly<P extends object>(
     const { hasMockData, violations } = containsMockData(JSON.stringify(props))
 
     if (hasMockData) {
+      // eslint-disable-next-line no-console
       console.error(`🚫 MOCK DATA DETECTED in ${componentName} props!`)
+      // eslint-disable-next-line no-console
       console.error('Violations:', violations)
 
       if (process.env.STRICT_NO_MOCK === 'true') {

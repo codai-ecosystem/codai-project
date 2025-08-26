@@ -12,7 +12,6 @@ interface CodaiState {
   // Detected state patterns (migrate from useState)
   messages: any; // TODO: Define proper type
   input: any; // TODO: Define proper type
-  isLoading: any; // TODO: Define proper type
   selectedModel: any; // TODO: Define proper type
   showHistory: any; // TODO: Define proper type
   selectedPeriod: any; // TODO: Define proper type
@@ -51,7 +50,6 @@ export const useCodaiStore = create<CodaiState>()(
         // Initialize detected patterns
         messages: null,
         input: null,
-        isLoading: null,
         selectedModel: null,
         showHistory: null,
         selectedPeriod: null,
@@ -126,7 +124,6 @@ export const codaiSelectors = {
   hasError: (state: CodaiState) => state.error !== null,
   messages: (state: CodaiState) => state.messages,
   input: (state: CodaiState) => state.input,
-  isLoading: (state: CodaiState) => state.isLoading,
   selectedModel: (state: CodaiState) => state.selectedModel,
   showHistory: (state: CodaiState) => state.showHistory,
   selectedPeriod: (state: CodaiState) => state.selectedPeriod,

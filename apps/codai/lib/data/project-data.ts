@@ -80,6 +80,7 @@ export function getWorkspaceProjects(): ProjectInfo[] {
     }
 
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error reading workspace projects:', error)
   }
 
@@ -138,6 +139,7 @@ function analyzeProject(projectPath: string, type: 'app' | 'package' | 'service'
       url: port ? `http://localhost:${port}` : undefined
     }
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(`Error analyzing project ${name}:`, error)
     return null
   }
@@ -175,6 +177,7 @@ function detectLanguages(projectPath: string): string[] {
     if (extensions.has('yaml') || extensions.has('yml')) languages.push('YAML')
 
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error detecting languages:', error)
   }
 
@@ -271,6 +274,7 @@ function calculateProjectSize(projectPath: string): number {
 
     totalSize = calculateDirSize(projectPath)
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error calculating project size:', error)
   }
 

@@ -237,10 +237,12 @@ export default function CollaborativeFileEditor({
 
     function handleUsersChange(newUsers: CollaborationUser[]) {
         // Update UI to show active users
+        // eslint-disable-next-line no-console
         console.log('Active users:', newUsers)
     }
 
-    function handleConflictDetected(conflicts: any[]) {
+    function handleConflictDetected(conflicts: unknown[]) {
+        // eslint-disable-next-line no-console
         console.log('Conflicts detected:', conflicts)
         setShowConflictDialog(true)
     }
@@ -300,7 +302,7 @@ export default function CollaborativeFileEditor({
     const handleApplySuggestion = (suggestion: AISuggestion) => {
         if (suggestion.changes && suggestion.changes.length > 0) {
             // Apply changes to content
-            let newContent = content
+            const newContent = content
             const lines = newContent.split('\n')
 
             // Sort changes by position (reverse order to maintain positions)

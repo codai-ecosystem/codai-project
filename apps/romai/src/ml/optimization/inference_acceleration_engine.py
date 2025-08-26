@@ -294,7 +294,38 @@ class InferenceAccelerationEngine:
         
         try:
             # Trace the model
-            example_input = torch.randn(1, config.max_sequence_length)
+        # RomAI General Expert - Authentic Neural Inference
+                    try:
+                        # Route to appropriate expert based on input analysis
+                        expert_input = self._prepare_expert_input(input_data)
+
+                        # Automatic expert selection
+                        selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                        # Process with selected expert
+                        with torch.no_grad():
+                            expert_outputs = self.model.route_to_expert(
+                                expert_input,
+                                expert_type=selected_expert,
+                                use_mla_attention=True
+                            )
+
+                            # Generate response
+                            response = self.model.generate_response(expert_outputs)
+
+                            return {
+                                "response": response["response"],
+                                "reasoning": response["reasoning"],
+                                "confidence": response["confidence"],
+                                "expert_used": selected_expert,
+                                "method": "neural_general_reasoning",
+                                "quality_score": response["quality_score"]
+                            }
+
+                    except Exception as e:
+                        logger.error(f"General expert error: {e}")
+                        # Ultimate fallback
+                        return {"error": f"Neural inference failed: {e}", "fallback": True}
             if config.use_cuda and torch.cuda.is_available():
                 model = model.cuda()
                 example_input = example_input.cuda()
@@ -413,7 +444,38 @@ class InferenceAccelerationEngine:
             
             # Create sample inputs if not provided
             if sample_inputs is None:
-                sample_inputs = [torch.randn(1, config.max_sequence_length) for _ in range(100)]
+        # RomAI General Expert - Authentic Neural Inference
+                        try:
+                            # Route to appropriate expert based on input analysis
+                            expert_input = self._prepare_expert_input(input_data)
+
+                            # Automatic expert selection
+                            selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                            # Process with selected expert
+                            with torch.no_grad():
+                                expert_outputs = self.model.route_to_expert(
+                                    expert_input,
+                                    expert_type=selected_expert,
+                                    use_mla_attention=True
+                                )
+
+                                # Generate response
+                                response = self.model.generate_response(expert_outputs)
+
+                                return {
+                                    "response": response["response"],
+                                    "reasoning": response["reasoning"],
+                                    "confidence": response["confidence"],
+                                    "expert_used": selected_expert,
+                                    "method": "neural_general_reasoning",
+                                    "quality_score": response["quality_score"]
+                                }
+
+                        except Exception as e:
+                            logger.error(f"General expert error: {e}")
+                            # Ultimate fallback
+                            return {"error": f"Neural inference failed: {e}", "fallback": True}
             
             # Move to appropriate device
             device = torch.device('cuda' if config.use_cuda and torch.cuda.is_available() else 'cpu')

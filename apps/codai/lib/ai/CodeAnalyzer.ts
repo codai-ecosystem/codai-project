@@ -283,6 +283,7 @@ export class CodeAnalyzer {
             const batch = files.slice(i, i + concurrency)
             const batchResults = await Promise.all(
                 batch.map(file => this.analyzeFile(file).catch(error => {
+                    // eslint-disable-next-line no-console
                     console.warn(`Failed to analyze ${file}:`, error)
                     return null
                 }))

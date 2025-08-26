@@ -193,6 +193,7 @@ export default function RealTimeCodeAssistant({
                 }))
             }
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Real-time analysis failed:', error)
         } finally {
             setAssistanceState(prev => ({ ...prev, pendingAnalysis: false }))
@@ -256,6 +257,7 @@ export default function RealTimeCodeAssistant({
                 setChatHistory(prev => [...prev, assistantMessage])
             }
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Chat request failed:', error)
         }
     }
@@ -267,6 +269,7 @@ export default function RealTimeCodeAssistant({
             setCopiedSuggestionId(suggestion.id)
             setTimeout(() => setCopiedSuggestionId(null), 2000)
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Failed to copy:', error)
         }
     }

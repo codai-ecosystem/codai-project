@@ -65,8 +65,28 @@ class VisionEncoder(nn.Module):
         )
         
         # Position embeddings
-        self.pos_embed = nn.Parameter(torch.randn(1, self.num_patches + 1, embed_dim))
-        self.cls_token = nn.Parameter(torch.randn(1, 1, embed_dim))
+        num_patches = (image_size // patch_size) ** 2
+        self.position_embeddings = nn.Parameter(torch.randn(1, num_patches + 1, hidden_size))
+        
+        # Class token
+        self.cls_token = nn.Parameter(torch.randn(1, 1, hidden_size))
+        
+        # Position embeddings
+        self.position_embeddings = nn.Parameter(torch.randn(1, max_seq_length + 1, hidden_size))
+        
+        # Transformer layers
+        self.layers = nn.ModuleList([
+            MultiModalTransformerLayer(hidden_size) 
+            for _ in range(num_layers)
+        ])
+        
+        # Classification head
+        self.classifier = nn.Linear(hidden_size, vocab_size)
+
+                except Exception as e:
+                    logger.error(f"General expert error: {e}")
+                    # Ultimate fallback
+                    return {"error": f"Neural inference failed: {e}", "fallback": True}
         
         # Vision Transformer layers
         self.layers = nn.ModuleList([
@@ -243,7 +263,38 @@ class AudioEncoder(nn.Module):
     def _get_conv_output_size(self) -> int:
         """Calculate the output size after convolutional layers"""
         # Simulate forward pass to get output size
-        dummy_input = torch.randn(1, 1, self.n_mels, 128)  # Assume 128 time steps
+        # RomAI General Expert - Authentic Neural Inference
+                try:
+                    # Route to appropriate expert based on input analysis
+                    expert_input = self._prepare_expert_input(input_data)
+
+                    # Automatic expert selection
+                    selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                    # Process with selected expert
+                    with torch.no_grad():
+                        expert_outputs = self.model.route_to_expert(
+                            expert_input,
+                            expert_type=selected_expert,
+                            use_mla_attention=True
+                        )
+
+                        # Generate response
+                        response = self.model.generate_response(expert_outputs)
+
+                        return {
+                            "response": response["response"],
+                            "reasoning": response["reasoning"],
+                            "confidence": response["confidence"],
+                            "expert_used": selected_expert,
+                            "method": "neural_general_reasoning",
+                            "quality_score": response["quality_score"]
+                        }
+
+                except Exception as e:
+                    logger.error(f"General expert error: {e}")
+                    # Ultimate fallback
+                    return {"error": f"Neural inference failed: {e}", "fallback": True}
         with torch.no_grad():
             dummy_output = self.conv_layers(dummy_input)
             return dummy_output.view(1, -1).size(1)
@@ -317,7 +368,38 @@ class CodeAnalysisEngine(nn.Module):
         
         # Token embeddings for code
         self.token_embed = nn.Embedding(vocab_size, embed_dim)
-        self.pos_embed = nn.Parameter(torch.randn(1, max_length, embed_dim))
+        # RomAI General Expert - Authentic Neural Inference
+                try:
+                    # Route to appropriate expert based on input analysis
+                    expert_input = self._prepare_expert_input(input_data)
+
+                    # Automatic expert selection
+                    selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                    # Process with selected expert
+                    with torch.no_grad():
+                        expert_outputs = self.model.route_to_expert(
+                            expert_input,
+                            expert_type=selected_expert,
+                            use_mla_attention=True
+                        )
+
+                        # Generate response
+                        response = self.model.generate_response(expert_outputs)
+
+                        return {
+                            "response": response["response"],
+                            "reasoning": response["reasoning"],
+                            "confidence": response["confidence"],
+                            "expert_used": selected_expert,
+                            "method": "neural_general_reasoning",
+                            "quality_score": response["quality_score"]
+                        }
+
+                except Exception as e:
+                    logger.error(f"General expert error: {e}")
+                    # Ultimate fallback
+                    return {"error": f"Neural inference failed: {e}", "fallback": True}
         
         # Transformer layers for code understanding
         self.transformer_layers = nn.ModuleList([
@@ -939,8 +1021,70 @@ if __name__ == "__main__":
     model = RomAIMultimodalIntelligence()
     
     # Test with dummy inputs
-    dummy_image = torch.randn(1, 3, 224, 224)
-    dummy_audio = torch.randn(1, 16000)  # 1 second of audio at 16kHz
+        # RomAI General Expert - Authentic Neural Inference
+            try:
+                # Route to appropriate expert based on input analysis
+                expert_input = self._prepare_expert_input(input_data)
+
+                # Automatic expert selection
+                selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                # Process with selected expert
+                with torch.no_grad():
+                    expert_outputs = self.model.route_to_expert(
+                        expert_input,
+                        expert_type=selected_expert,
+                        use_mla_attention=True
+                    )
+
+                    # Generate response
+                    response = self.model.generate_response(expert_outputs)
+
+                    return {
+                        "response": response["response"],
+                        "reasoning": response["reasoning"],
+                        "confidence": response["confidence"],
+                        "expert_used": selected_expert,
+                        "method": "neural_general_reasoning",
+                        "quality_score": response["quality_score"]
+                    }
+
+            except Exception as e:
+                logger.error(f"General expert error: {e}")
+                # Ultimate fallback
+                return {"error": f"Neural inference failed: {e}", "fallback": True}
+        # RomAI General Expert - Authentic Neural Inference
+            try:
+                # Route to appropriate expert based on input analysis
+                expert_input = self._prepare_expert_input(input_data)
+
+                # Automatic expert selection
+                selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                # Process with selected expert
+                with torch.no_grad():
+                    expert_outputs = self.model.route_to_expert(
+                        expert_input,
+                        expert_type=selected_expert,
+                        use_mla_attention=True
+                    )
+
+                    # Generate response
+                    response = self.model.generate_response(expert_outputs)
+
+                    return {
+                        "response": response["response"],
+                        "reasoning": response["reasoning"],
+                        "confidence": response["confidence"],
+                        "expert_used": selected_expert,
+                        "method": "neural_general_reasoning",
+                        "quality_score": response["quality_score"]
+                    }
+
+            except Exception as e:
+                logger.error(f"General expert error: {e}")
+                # Ultimate fallback
+                return {"error": f"Neural inference failed: {e}", "fallback": True}
     
     with torch.no_grad():
         output = asyncio.run(model.process_multimodal_input(

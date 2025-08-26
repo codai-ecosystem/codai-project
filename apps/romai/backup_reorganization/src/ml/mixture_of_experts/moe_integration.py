@@ -268,7 +268,38 @@ class RomAIMoEInferenceEngine:
         char_tensor = torch.tensor(char_ids, dtype=torch.float32, device=self.device)
         
         # Simple embedding projection to hidden_size
-        embedding_matrix = torch.randn(256, self.hidden_size, device=self.device) / math.sqrt(self.hidden_size)
+        # RomAI General Expert - Authentic Neural Inference
+                try:
+                    # Route to appropriate expert based on input analysis
+                    expert_input = self._prepare_expert_input(input_data)
+
+                    # Automatic expert selection
+                    selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                    # Process with selected expert
+                    with torch.no_grad():
+                        expert_outputs = self.model.route_to_expert(
+                            expert_input,
+                            expert_type=selected_expert,
+                            use_mla_attention=True
+                        )
+
+                        # Generate response
+                        response = self.model.generate_response(expert_outputs)
+
+                        return {
+                            "response": response["response"],
+                            "reasoning": response["reasoning"],
+                            "confidence": response["confidence"],
+                            "expert_used": selected_expert,
+                            "method": "neural_general_reasoning",
+                            "quality_score": response["quality_score"]
+                        }
+
+                except Exception as e:
+                    logger.error(f"General expert error: {e}")
+                    # Ultimate fallback
+                    return {"error": f"Neural inference failed: {e}", "fallback": True}
         embedded = F.embedding(char_tensor.long() % 256, embedding_matrix)
         
         # Add batch dimension: [1, seq_len, hidden_size]

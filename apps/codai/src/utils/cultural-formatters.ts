@@ -77,6 +77,16 @@ export class CulturalFormatter {
       timeStyle?: 'full' | 'long' | 'medium' | 'short';
       includeTime?: boolean;
       calendar?: string;
+      // Add support for standard Intl.DateTimeFormat options
+      weekday?: 'narrow' | 'short' | 'long';
+      year?: 'numeric' | '2-digit';
+      month?: 'numeric' | '2-digit' | 'narrow' | 'short' | 'long';
+      day?: 'numeric' | '2-digit';
+      hour?: 'numeric' | '2-digit';
+      minute?: 'numeric' | '2-digit';
+      second?: 'numeric' | '2-digit';
+      timeZoneName?: 'short' | 'long';
+      hour12?: boolean;
     } = {}
   ): string {
     const dateObj = new Date(date);
@@ -86,9 +96,24 @@ export class CulturalFormatter {
         calendar: options.calendar || this.preferences.calendar.type
       };
 
-      if (options.dateStyle) {
+      // Handle individual format options first
+      if (options.weekday) formatOptions.weekday = options.weekday;
+      if (options.year) formatOptions.year = options.year;
+      if (options.month) formatOptions.month = options.month;
+      if (options.day) formatOptions.day = options.day;
+      if (options.hour) formatOptions.hour = options.hour;
+      if (options.minute) formatOptions.minute = options.minute;
+      if (options.second) formatOptions.second = options.second;
+      if (options.timeZoneName) formatOptions.timeZoneName = options.timeZoneName;
+      if (typeof options.hour12 !== 'undefined') formatOptions.hour12 = options.hour12;
+
+      // Handle dateStyle and timeStyle (but not if individual options are set)
+      const hasIndividualDateOptions = options.weekday || options.year || options.month || options.day;
+      const hasIndividualTimeOptions = options.hour || options.minute || options.second;
+
+      if (options.dateStyle && !hasIndividualDateOptions) {
         formatOptions.dateStyle = options.dateStyle;
-      } else {
+      } else if (!hasIndividualDateOptions && !options.dateStyle) {
         // Use cultural date format preference
         switch (this.preferences.dateFormat) {
           case 'mdy':
@@ -109,10 +134,10 @@ export class CulturalFormatter {
         }
       }
 
-      if (options.includeTime || options.timeStyle) {
-        if (options.timeStyle) {
+      if (options.includeTime || options.timeStyle || hasIndividualTimeOptions) {
+        if (options.timeStyle && !hasIndividualTimeOptions) {
           formatOptions.timeStyle = options.timeStyle;
-        } else {
+        } else if (!hasIndividualTimeOptions && !options.timeStyle) {
           formatOptions.hour = '2-digit';
           formatOptions.minute = '2-digit';
           formatOptions.hour12 = this.preferences.timeFormat === '12';

@@ -131,7 +131,24 @@ class RomAIMLAServer:
             hidden_size = mla_instance.config.hidden_size
             
             # Create dummy input tensor (in real implementation, this would be tokenized input)
-            hidden_states = torch.randn(batch_size, seq_len, hidden_size)
+            dummy_input = torch.randn(1, seq_len, hidden_size).to(device)
+            
+            # Process through MLA
+            with torch.no_grad():
+                outputs = mla_instance(dummy_input)
+                
+            # Extract response (simplified)
+            response = f"MLA processed response based on input: {input_text[:100]}..."
+            
+            return response
+        
+        except Exception as e:
+            logger.error(f"MLA processing error: {e}")
+            return f"Fallback response for: {input_text[:50]}..."
+    
+    async def process_with_mla_batch(self, texts: List[str]) -> List[str]:
+        """Process multiple texts through MLA system"""
+        try:
             if torch.cuda.is_available():
                 hidden_states = hidden_states.cuda()
                 mla_instance = mla_instance.cuda()

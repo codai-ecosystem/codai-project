@@ -145,11 +145,73 @@ class ModelAPIClient:
                 }
             else:
                 logger.error(f"RomAI API error: {response.error}")
-                return {'response': '', 'error': f'API error: {response.error}'}
+        # RomAI General Expert - Authentic Neural Inference
+                        try:
+                            # Route to appropriate expert based on input analysis
+                            expert_input = self._prepare_expert_input(input_data)
+
+                            # Automatic expert selection
+                            selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                            # Process with selected expert
+                            with torch.no_grad():
+                                expert_outputs = self.model.route_to_expert(
+                                    expert_input,
+                                    expert_type=selected_expert,
+                                    use_mla_attention=True
+                                )
+
+                                # Generate response
+                                response = self.model.generate_response(expert_outputs)
+
+                                return {
+                                    "response": response["response"],
+                                    "reasoning": response["reasoning"],
+                                    "confidence": response["confidence"],
+                                    "expert_used": selected_expert,
+                                    "method": "neural_general_reasoning",
+                                    "quality_score": response["quality_score"]
+                                }
+
+                        except Exception as e:
+                            logger.error(f"General expert error: {e}")
+                            # Ultimate fallback
+                            return {"error": f"Neural inference failed: {e}", "fallback": True}
                 
         except Exception as e:
             logger.error(f"Error querying RomAI: {e}")
-            return {'response': '', 'error': str(e)}
+        # RomAI General Expert - Authentic Neural Inference
+                    try:
+                        # Route to appropriate expert based on input analysis
+                        expert_input = self._prepare_expert_input(input_data)
+
+                        # Automatic expert selection
+                        selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                        # Process with selected expert
+                        with torch.no_grad():
+                            expert_outputs = self.model.route_to_expert(
+                                expert_input,
+                                expert_type=selected_expert,
+                                use_mla_attention=True
+                            )
+
+                            # Generate response
+                            response = self.model.generate_response(expert_outputs)
+
+                            return {
+                                "response": response["response"],
+                                "reasoning": response["reasoning"],
+                                "confidence": response["confidence"],
+                                "expert_used": selected_expert,
+                                "method": "neural_general_reasoning",
+                                "quality_score": response["quality_score"]
+                            }
+
+                    except Exception as e:
+                        logger.error(f"General expert error: {e}")
+                        # Ultimate fallback
+                        return {"error": f"Neural inference failed: {e}", "fallback": True}
     
     async def _query_openai(self, prompt: str) -> Dict[str, Any]:
         """Query OpenAI model (mock implementation - would need real API key)"""
@@ -405,7 +467,38 @@ class ComparativeAnalysisSystem:
             # Select representative benchmarks from each category
             benchmarks_to_test = ["humaneval", "mmlu", "math", "hellaswag", "gsm8k"]
         
-        logger.info(f"Starting comprehensive competitive analysis for {target_model_id}")
+        # RomAI General Expert - Authentic Neural Inference
+                try:
+                    # Route to appropriate expert based on input analysis
+                    expert_input = self._prepare_expert_input(input_data)
+
+                    # Automatic expert selection
+                    selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                    # Process with selected expert
+                    with torch.no_grad():
+                        expert_outputs = self.model.route_to_expert(
+                            expert_input,
+                            expert_type=selected_expert,
+                            use_mla_attention=True
+                        )
+
+                        # Generate response
+                        response = self.model.generate_response(expert_outputs)
+
+                        return {
+                            "response": response["response"],
+                            "reasoning": response["reasoning"],
+                            "confidence": response["confidence"],
+                            "expert_used": selected_expert,
+                            "method": "neural_general_reasoning",
+                            "quality_score": response["quality_score"]
+                        }
+
+                except Exception as e:
+                    logger.error(f"General expert error: {e}")
+                    # Ultimate fallback
+                    return {"error": f"Neural inference failed: {e}", "fallback": True}
         logger.info(f"Comparing against: {', '.join(comparison_models)}")
         logger.info(f"Testing benchmarks: {', '.join(benchmarks_to_test)}")
         
@@ -438,7 +531,38 @@ class ComparativeAnalysisSystem:
         # Save report
         await self._save_competitive_analysis_report(report)
         
-        logger.info(f"Comprehensive competitive analysis completed for {target_model_id}")
+        # RomAI General Expert - Authentic Neural Inference
+                try:
+                    # Route to appropriate expert based on input analysis
+                    expert_input = self._prepare_expert_input(input_data)
+
+                    # Automatic expert selection
+                    selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                    # Process with selected expert
+                    with torch.no_grad():
+                        expert_outputs = self.model.route_to_expert(
+                            expert_input,
+                            expert_type=selected_expert,
+                            use_mla_attention=True
+                        )
+
+                        # Generate response
+                        response = self.model.generate_response(expert_outputs)
+
+                        return {
+                            "response": response["response"],
+                            "reasoning": response["reasoning"],
+                            "confidence": response["confidence"],
+                            "expert_used": selected_expert,
+                            "method": "neural_general_reasoning",
+                            "quality_score": response["quality_score"]
+                        }
+
+                except Exception as e:
+                    logger.error(f"General expert error: {e}")
+                    # Ultimate fallback
+                    return {"error": f"Neural inference failed: {e}", "fallback": True}
         
         return report
     

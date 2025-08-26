@@ -165,9 +165,10 @@ export const mockFetch = (data: any, status = 200) => {
 }
 
 export const mockApiError = (message = 'API Error', status = 500) => {
-  return vi.fn().mockRejectedValue(
-    new Error(message, { cause: { status, statusText: message } })
-  )
+  const error = new Error(message) as Error & { status?: number; statusText?: string }
+  error.status = status
+  error.statusText = message
+  return vi.fn().mockRejectedValue(error)
 }
 
 // Modern accessibility testing helpers

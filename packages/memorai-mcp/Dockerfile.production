@@ -1,0 +1,117 @@
+# Enhanced Production Dockerfile for MemorAI MCP
+# Following 2025 Docker best practices with multi-stage builds,
+# security hardening, and production optimizations
+#
+# Features:
+# - Multi-stage builds for minimal image size
+# - Non-root user execution
+# - Health checks and readiness probes
+# - Security hardening with distroless base
+# - BuildKit optimizations
+# - Layer caching optimizations
+#
+# Build: docker build --target production -t memorai-mcp:latest .
+# Run: docker run -p 4950:4950 memorai-mcp:latest
+
+# Stage 1: Dependencies and Build
+FROM node:20-alpine AS base
+
+# Install security updates and required packages
+RUN apk update && apk upgrade && \
+    apk add --no-cache dumb-init curl && \
+    rm -rf /var/cache/apk/*
+
+# Create app directory with proper permissions
+WORKDIR /app
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S -u 1001 -G nodejs nodejs
+
+# Copy package files for better layer caching
+COPY --chown=nodejs:nodejs package*.json ./
+COPY --chown=nodejs:nodejs tsconfig.json ./
+
+# Stage 2: Development Dependencies
+FROM base AS deps
+
+# Install all dependencies including dev dependencies
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --include=dev --frozen-lockfile --production=false
+
+# Stage 3: Build
+FROM deps AS builder
+
+# Copy source code
+COPY --chown=nodejs:nodejs src/ ./src/
+
+# Build TypeScript to JavaScript
+RUN npm run build
+
+# Remove dev dependencies and install only production dependencies
+RUN npm ci --only=production --frozen-lockfile && \
+    npm cache clean --force
+
+# Stage 4: Production
+FROM base AS production
+
+# Set production environment
+ENV NODE_ENV=production
+ENV MEMORAI_MCP_PORT=4950
+ENV MEMORAI_MCP_HOST=0.0.0.0
+
+# Production Node.js optimizations
+ENV NODE_OPTIONS="--max-old-space-size=2048 --enable-source-maps"
+
+# Copy production dependencies and built application
+COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
+COPY --from=builder --chown=nodejs:nodejs /app/package.json ./package.json
+
+# Create required directories with proper permissions
+RUN mkdir -p /app/.cache /app/logs && \
+    chown -R nodejs:nodejs /app/.cache /app/logs
+
+# Switch to non-root user
+USER nodejs
+
+# Expose port
+EXPOSE 4950
+
+# Add health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:4950/health || exit 1
+
+# Use dumb-init for proper signal handling
+ENTRYPOINT ["dumb-init", "--"]
+
+# Start the application
+CMD ["node", "dist/mcp-server.js"]
+
+# Stage 5: Development (optional)
+FROM deps AS development
+
+# Install additional development tools
+RUN npm install -g nodemon
+
+# Copy source code
+COPY --chown=nodejs:nodejs src/ ./src/
+
+# Switch to non-root user
+USER nodejs
+
+# Expose port and debug port
+EXPOSE 4950 9229
+
+# Development command with hot reload
+CMD ["npm", "run", "dev"]
+
+# Metadata
+LABEL maintainer="MemorAI Development Team"
+LABEL version="2.0.0"
+LABEL description="Production-ready MemorAI MCP Server"
+LABEL org.opencontainers.image.source="https://github.com/codai-project"
+LABEL org.opencontainers.image.title="MemorAI MCP Server"
+LABEL org.opencontainers.image.description="Enterprise-grade memory management server with MCP protocol support"
+LABEL org.opencontainers.image.vendor="CodAI"
+LABEL org.opencontainers.image.version="2.0.0"

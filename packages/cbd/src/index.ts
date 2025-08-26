@@ -9,6 +9,28 @@ export { FaissVectorStore, InMemoryVectorIndex } from './vector/VectorStore.js';
 export { OpenAIEmbeddingModel, LocalEmbeddingModel } from './embedding/EmbeddingService.js';
 export { CBDNativeStorageAdapter } from './storage/CBDNativeStorageAdapter.js';
 
+// HTAP Database Engines (Phase 1)
+export { CBDRowStoreEngine } from './htap/RowStoreEngine.js';
+export { CBDColumnarStoreEngine } from './htap/ColumnarStoreEngine.js';
+export { CBDDocumentStoreEngine } from './htap/DocumentStoreEngine.js';
+export { CBDQueryRouter } from './htap/QueryRouter.js';
+
+// Graph Database Engine (Phase 2)
+export { CBDGraphDatabaseEngine } from './graph/GraphDatabaseEngine.js';
+export { CBDGremlinAPI } from './graph/GremlinAPI.js';
+export { CBDCypherEngine } from './graph/CypherEngine.js';
+
+// Time-Series Database Engine (Phase 3)
+export { CBDTimeSeriesEngine } from './time-series/TimeSeriesEngine.js';
+
+// Multi-Modal Vector Database Engine (Phase 4)
+export { 
+  CBDMultiModalVectorEngine,
+  AzureMultiModalProvider,
+  VectorSimilarityEngine,
+  MultiModalFusionEngine 
+} from './multi-modal/MultiModalVectorEngine.js';
+
 // CND Compatibility Layer
 export { CBDClient, CND, createCBDClient } from './client/CBDClient.js';
 export type { CBDClientConfig, CBDQueryResult } from './client/CBDClient.js';
@@ -29,6 +51,33 @@ export type {
     CBDConfig,
     MemorySummary
 } from './types/index.js';
+
+// Time-Series Database Types
+export type {
+    TimeSeriesPoint,
+    TimeSeriesMetrics,
+    TimeSeriesBucket,
+    TimeSeriesPartition,
+    TimeSeriesAggregation,
+    OHLCData,
+    MovingAverageResult,
+    TimeSeriesQuery,
+    TimeSeriesQueryResult,
+    RetentionPolicy,
+    TimeSeriesEngineOptions,
+    TimeSeriesStatistics,
+    AnomalyDetectionResult
+} from './time-series/TimeSeriesEngine.js';
+
+// Multi-Modal Vector Database Types
+export type {
+    MultiModalDocument,
+    MultiModalQuery,
+    MultiModalSearchResult,
+    MultiModalEmbeddingProvider,
+    ModalityType,
+    EmbeddingModel as MultiModalEmbeddingModel
+} from './multi-modal/MultiModalVectorEngine.js';
 
 /**
  * Factory function to create a CBD Memory Engine with sensible defaults

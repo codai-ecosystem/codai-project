@@ -21,6 +21,7 @@ export class GitHubService {
       });
       return response.ok;
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Connection failed:', error);
       return false;
     }
@@ -38,6 +39,7 @@ export class GitHubService {
       });
       return await response.json();
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Request processing failed:', error);
       throw error;
     }
@@ -63,6 +65,7 @@ export class AIService {
       });
       return response.ok;
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Connection failed:', error);
       return false;
     }
@@ -80,6 +83,7 @@ export class AIService {
       });
       return await response.json();
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Request processing failed:', error);
       throw error;
     }
@@ -105,6 +109,7 @@ export class VSCodeService {
       });
       return response.ok;
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Connection failed:', error);
       return false;
     }
@@ -122,6 +127,7 @@ export class VSCodeService {
       });
       return await response.json();
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Request processing failed:', error);
       throw error;
     }
@@ -159,6 +165,7 @@ export class CodaiIntegrationManager {
       );
       return connections.every(connected => connected);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Integration connection failed:', error);
       return false;
     }

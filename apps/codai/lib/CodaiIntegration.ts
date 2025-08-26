@@ -64,7 +64,7 @@ const memorai = {
     },
     update: async (table: string, id: string, data: any) => ({ id, ...data }),
     delete: async (table: string, id: string) => ({ success: true }),
-    query: async (sql: string, params?: any[]): Promise<any[]> => {
+    query: async (sql: string, params?: unknown[]): Promise<any[]> => {
       // Return appropriate stub data based on SQL
       if (sql.includes('codai_code_files')) {
         // Always return empty array for code files queries (never count objects)
@@ -167,13 +167,16 @@ class CodaiIntegrationService {
     try {
       // Initialize memorai for project and code storage
       await memorai.initialize()
+      // eslint-disable-next-line no-console
       console.log('✅ CODAI memorai integration initialized')
 
       // Initialize auth for user management
+      // eslint-disable-next-line no-console
       console.log('✅ CODAI auth integration initialized')
 
       this.initialized = true
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('❌ CODAI integration initialization failed:', error)
       throw error
     }
@@ -211,6 +214,7 @@ class CodaiIntegrationService {
       const project = await memorai.database.findById('codai_projects', projectId)
       return project as CodaiProject
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to get project:', error)
       return null
     }
@@ -236,6 +240,7 @@ class CodaiIntegrationService {
 
       return updatedProject as CodaiProject
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to update project:', error)
       return null
     }
@@ -254,6 +259,7 @@ class CodaiIntegrationService {
 
       return true
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to delete project:', error)
       return false
     }
@@ -279,6 +285,7 @@ class CodaiIntegrationService {
 
       return projects.filter(Boolean) as CodaiProject[]
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to search projects:', error)
       return []
     }
@@ -330,6 +337,7 @@ class CodaiIntegrationService {
 
       return file
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to get code file:', error)
       return null
     }
@@ -347,6 +355,7 @@ class CodaiIntegrationService {
       }
       return files as CodeFile[]
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to get project files:', error)
       return []
     }
@@ -388,6 +397,7 @@ class CodaiIntegrationService {
       )
       return assistants as AIAssistant[]
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to get active assistants:', error)
       return []
     }
@@ -412,6 +422,7 @@ class CodaiIntegrationService {
         }
       )
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to update assistant metrics:', error)
     }
   }
@@ -468,6 +479,7 @@ class CodaiIntegrationService {
         topFrameworks: frameworkStats as Array<{ framework: string; count: number }>
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to get project stats:', error)
       return {
         totalProjects: 0,
@@ -491,6 +503,7 @@ class CodaiIntegrationService {
 
       return context || 'No relevant context found.'
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to get AI context:', error)
       return 'Context retrieval failed.'
     }

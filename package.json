@@ -1,0 +1,58 @@
+{
+  "name": "codai-project",
+  "version": "1.0.0",
+  "description": "CODAI Ecosystem - AI-native development platform",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*",
+      "apps/aide/apps/*",
+      "apps/aide/packages/*",
+      "apps/memorai/apps/*",
+      "apps/memorai/packages/*",
+      "libs/*"
+    ]
+  },
+  "packageManager": "pnpm@8.15.6",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "scripts": {
+    "build": "pnpm run build:packages && pnpm run build:apps",
+    "build:packages": "pnpm --filter './packages/*' run build",
+    "build:apps": "pnpm --filter './apps/*' run build",
+    "build:codai": "pnpm --filter '@codai/shared-ui' run build && pnpm --filter '@codai/api-utils' run build && pnpm --filter codai run build",
+    "dev": "pnpm --filter codai run dev",
+    "test": "pnpm --recursive run test",
+    "lint": "pnpm --recursive run lint",
+    "type-check": "pnpm --recursive run type-check",
+    "clean": "pnpm --recursive run clean",
+    "install:all": "pnpm install --frozen-lockfile",
+    "build:production": "NODE_ENV=production pnpm run build:codai"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2",
+    "@types/node": "^24.0.14",
+    "prettier": "^3.6.2",
+    "eslint": "^9.31.0",
+    "@typescript-eslint/eslint-plugin": "8.41.0",
+    "@typescript-eslint/parser": "8.41.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "next": "15.4.2",
+      "typescript": "5.9.2",
+      "@typescript-eslint/eslint-plugin": "8.41.0",
+      "@typescript-eslint/parser": "8.41.0"
+    },
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "react": "18.3.1",
+        "react-dom": "18.3.1"
+      }
+    }
+  }
+}

@@ -122,11 +122,15 @@ Object.defineProperty(window, 'sessionStorage', {
 })
 
 // Mock IntersectionObserver
-global.IntersectionObserver = vi.fn(() => ({
+global.IntersectionObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),
   disconnect: vi.fn(),
   unobserve: vi.fn(),
-}))
+  root: null,
+  rootMargin: '',
+  thresholds: [],
+  takeRecords: vi.fn().mockReturnValue([])
+})) as any
 
 // Mock ResizeObserver
 global.ResizeObserver = vi.fn(() => ({

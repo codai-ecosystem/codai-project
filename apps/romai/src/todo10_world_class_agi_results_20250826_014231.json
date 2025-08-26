@@ -1,0 +1,13 @@
+{
+  "status": "failed",
+  "reason": "system_not_ready",
+  "details": {
+    "ready": false,
+    "status": "20.0% components available",
+    "available_components": [
+      "neural_engine"
+    ],
+    "server_available": false,
+    "readiness_score": 0.2
+  }
+}

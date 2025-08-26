@@ -103,6 +103,7 @@ export default function BuildPipeline({ projectId }: BuildPipelineProps) {
         setBuilds(data.builds || [])
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to load builds:', error)
     }
   }, [projectId])
@@ -117,6 +118,7 @@ export default function BuildPipeline({ projectId }: BuildPipelineProps) {
         setDetectedFramework(data.detectedFramework)
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to load deployments:', error)
     }
   }, [projectId])
@@ -169,6 +171,7 @@ export default function BuildPipeline({ projectId }: BuildPipelineProps) {
       }
     } catch (error) {
       alert('Failed to start build')
+      // eslint-disable-next-line no-console
       console.error('Build error:', error)
     } finally {
       setIsBuilding(false)
@@ -190,6 +193,7 @@ export default function BuildPipeline({ projectId }: BuildPipelineProps) {
       }
     } catch (error) {
       alert('Failed to cancel build')
+      // eslint-disable-next-line no-console
       console.error('Cancel build error:', error)
     }
   }
@@ -220,6 +224,7 @@ export default function BuildPipeline({ projectId }: BuildPipelineProps) {
       }
     } catch (error) {
       alert('Failed to start deployment')
+      // eslint-disable-next-line no-console
       console.error('Deployment error:', error)
     } finally {
       setIsDeploying(false)

@@ -4,12 +4,12 @@
  */
 import { useTranslation as useI18nextTranslation, UseTranslationOptions } from 'react-i18next';
 import { useState, useEffect, useCallback } from 'react';
-import { SupportedLanguage, changeLanguage, getCurrentLanguage, isLanguageSupported } from '../lib/i18n/config';
+import { SupportedLanguage, changeLanguage, getCurrentLanguage, isLanguageSupported } from '../lib/i18n/constants';
 
 /**
  * Enhanced useTranslation hook with type safety
  */
-export function useTranslation(ns?: string | string[], options?: UseTranslationOptions) {
+export function useTranslation(ns?: string | string[], options?: UseTranslationOptions<string>) {
   const { t, i18n, ready } = useI18nextTranslation(ns, options);
   
   return {
@@ -70,7 +70,7 @@ export function useLanguage() {
     currentLanguage,
     changeLanguage: handleLanguageChange,
     isChanging,
-    availableLanguages: ['en', 'ro'] as const,
+    availableLanguages: ['en', 'es'] as const,
     isRTL: false, // Neither English nor Romanian are RTL
   };
 }

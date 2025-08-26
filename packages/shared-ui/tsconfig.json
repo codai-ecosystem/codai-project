@@ -45,6 +45,7 @@
     "dist",
     "**/*.test.*",
     "**/*.spec.*",
+    "**/*.stories.*",
     "src/animations/**/*",
     "src/gestures/**/*",
     "src/accessibility.tsx",

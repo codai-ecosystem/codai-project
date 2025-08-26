@@ -2,6 +2,23 @@ import { describe, test, expect, beforeAll, afterAll, beforeEach } from 'vitest'
 import axios from 'axios'
 
 // Integration Testing Configuration
+interface ServiceConfig {
+  url: string;
+  name: string;
+}
+
+interface ServicesConfig {
+  [key: string]: ServiceConfig;
+  gateway: ServiceConfig;
+  codai: ServiceConfig;
+  memorai: ServiceConfig;
+  admin: ServiceConfig;
+  hub: ServiceConfig;
+  id: ServiceConfig;
+  romai: ServiceConfig;
+  cbd: ServiceConfig;
+}
+
 export const INTEGRATION_CONFIG = {
   services: {
     gateway: { url: 'http://localhost:4003', name: 'API Gateway' },
@@ -12,7 +29,7 @@ export const INTEGRATION_CONFIG = {
     id: { url: 'http://localhost:4004', name: 'ID App' },
     romai: { url: 'http://localhost:6100', name: 'RomAI App' },
     cbd: { url: 'http://localhost:4180', name: 'CBD Database' }
-  },
+  } as ServicesConfig,
   timeouts: {
     healthCheck: 5000,
     apiCall: 10000,
@@ -37,10 +54,12 @@ export async function checkServiceHealth(serviceKey: string, retries = INTEGRATI
       })
 
       if (response.status === 200) {
+        // eslint-disable-next-line no-console
         console.log(`✅ ${service.name} health check passed (attempt ${attempt})`)
         return true
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(`❌ ${service.name} health check failed (attempt ${attempt}/${retries})`)
       if (attempt < retries) {
         await new Promise(resolve => setTimeout(resolve, 2000 * attempt))
@@ -70,8 +89,9 @@ export async function testCrossServiceCall(fromService: string, toService: strin
     })
 
     return response.data
-  } catch (error) {
-    console.error(`Cross-service call failed: ${fromService} -> ${toService}${endpoint}`, error.message)
+  } catch (error: unknown) {
+    // eslint-disable-next-line no-console
+    console.error(`Cross-service call failed: ${fromService} -> ${toService}${endpoint}`, error instanceof Error ? error.message : 'Unknown error')
     throw error
   }
 }
@@ -87,8 +107,9 @@ export async function testGatewayRouting(route: string, expectedService: string)
     // Check if the response indicates it came from the expected service
     const serviceHeader = response.headers['x-service-name'] || response.data?.service
     return serviceHeader === expectedService
-  } catch (error) {
-    console.error(`Gateway routing test failed for ${route}`, error.message)
+  } catch (error: unknown) {
+    // eslint-disable-next-line no-console
+    console.error(`Gateway routing test failed for ${route}`, error instanceof Error ? error.message : 'Unknown error')
     return false
   }
 }
@@ -105,8 +126,9 @@ export async function testDatabaseIntegration(operation: string, data?: any): Pr
     })
 
     return response.data
-  } catch (error) {
-    console.error(`Database integration test failed for operation: ${operation}`, error.message)
+  } catch (error: unknown) {
+    // eslint-disable-next-line no-console
+    console.error(`Database integration test failed for operation: ${operation}`, error instanceof Error ? error.message : 'Unknown error')
     throw error
   }
 }
@@ -132,8 +154,9 @@ export async function testAuthenticationFlow(credentials: any, targetService: st
       serviceAccess: serviceResponse.status === 200,
       token
     }
-  } catch (error) {
-    console.error(`Authentication flow test failed for ${targetService}`, error.message)
+  } catch (error: unknown) {
+    // eslint-disable-next-line no-console
+    console.error(`Authentication flow test failed for ${targetService}`, error instanceof Error ? error.message : 'Unknown error')
     throw error
   }
 }
@@ -149,6 +172,7 @@ export async function discoverServices(): Promise<string[]> {
         activeServices.push(key)
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(`Service discovery failed for ${service.name}`)
     }
   }
@@ -194,7 +218,7 @@ export const integrationHelpers = {
   },
 
   createTestData(type: string): any {
-    const testData = {
+    const testData: { [key: string]: any } = {
       user: {
         id: 'test-user-' + Date.now(),
         email: 'test@codai.ro',

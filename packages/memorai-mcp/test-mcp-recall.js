@@ -17,7 +17,7 @@ function testMCPServer() {
         });
 
         let responses = [];
-        
+
         server.stdout.on('data', (data) => {
             const lines = data.toString().split('\n');
             for (const line of lines) {
@@ -91,9 +91,9 @@ function testMCPServer() {
 testMCPServer().then(responses => {
     console.log('\n🎯 Test Results Summary:');
     console.log('='.repeat(25));
-    
+
     let success = false;
-    
+
     for (const response of responses) {
         if (response.id === 2 && response.result) {
             // Check if recall returned memories
@@ -105,13 +105,13 @@ testMCPServer().then(responses => {
             }
         }
     }
-    
+
     if (!success) {
         console.log('❌ FAILED: Query still not returning memories');
     }
-    
+
     console.log(`\n📈 Total responses received: ${responses.length}`);
-    
+
 }).catch(error => {
     console.error('🚨 Test failed:', error.message);
 });

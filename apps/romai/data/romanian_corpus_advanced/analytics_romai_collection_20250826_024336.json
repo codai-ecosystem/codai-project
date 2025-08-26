@@ -1,0 +1,38 @@
+{
+  "session_info": {
+    "session_id": "romai_collection_20250826_024336",
+    "start_time": "2025-08-26T02:43:36.134322",
+    "end_time": "2025-08-26T02:45:01.266109",
+    "duration_seconds": 85.131787,
+    "total_documents": 1,
+    "total_size_gb": 2.056453377008438e-05,
+    "success_rate": 1.0,
+    "average_quality": 0.8124999999999999
+  },
+  "category_breakdown": [
+    {
+      "category": "news",
+      "document_count": 1,
+      "average_quality": 0.8124999999999999,
+      "total_size_mb": 0.021058082580566406,
+      "avg_processing_time_ms": 1.0
+    }
+  ],
+  "quality_distribution": [
+    {
+      "tier": "Very Good",
+      "count": 1
+    }
+  ],
+  "source_performance": [
+    {
+      "source": "Adevarul News Portal",
+      "documents": 1,
+      "quality": 0.8124999999999999,
+      "min_time_ms": 1,
+      "max_time_ms": 1,
+      "avg_time_ms": 1.0
+    }
+  ],
+  "generated_at": "2025-08-26T02:45:01.278476"
+}

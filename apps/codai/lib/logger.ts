@@ -13,24 +13,29 @@ export class Logger {
     }
 
     info(message: string, meta?: any) {
+        // eslint-disable-next-line no-console
         console.log(this.formatMessage('INFO', message, meta));
     }
 
     error(message: string, meta?: any) {
+        // eslint-disable-next-line no-console
         console.error(this.formatMessage('ERROR', message, meta));
     }
 
     warn(message: string, meta?: any) {
+        // eslint-disable-next-line no-console
         console.warn(this.formatMessage('WARN', message, meta));
     }
 
     debug(message: string, meta?: any) {
         if (process.env.NODE_ENV === 'development') {
+            // eslint-disable-next-line no-console
             console.debug(this.formatMessage('DEBUG', message, meta));
         }
     }
 
     log(message: string, meta?: any) {
+        // eslint-disable-next-line no-console
         console.log(this.formatMessage('LOG', message, meta));
     }
 }

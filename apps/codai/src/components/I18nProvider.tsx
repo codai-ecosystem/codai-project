@@ -5,8 +5,8 @@
 
 import React, { Suspense, useEffect, useState } from 'react';
 import { I18nextProvider } from 'react-i18next';
-import i18n, { getCurrentLocale, isRTL } from '../i18n';
-import { SUPPORTED_LOCALES } from '../../../../i18n/shared-config';
+import i18n from 'i18next';
+import { SUPPORTED_LOCALES, SupportedLanguage, isRTL } from '../lib/i18n/constants';
 
 interface I18nProviderProps {
   children: React.ReactNode;
@@ -14,7 +14,7 @@ interface I18nProviderProps {
 }
 
 interface I18nContextType {
-  currentLocale: typeof SUPPORTED_LOCALES[keyof typeof SUPPORTED_LOCALES];
+  currentLocale: SupportedLanguage;
   supportedLocales: typeof SUPPORTED_LOCALES;
   changeLanguage: (lng: string) => Promise<boolean>;
   isLoading: boolean;
@@ -40,14 +40,16 @@ const LoadingFallback = () => (
 
 export const I18nProvider: React.FC<I18nProviderProps> = ({ children, locale }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [currentLocale, setCurrentLocale] = useState(() => getCurrentLocale());
-  const [rtl, setRTL] = useState(() => isRTL());
+  const [currentLocale, setCurrentLocale] = useState<SupportedLanguage>('en');
+  const [rtlMode, setRTLMode] = useState(false);
 
   useEffect(() => {
     const handleLanguageChanged = (event: CustomEvent) => {
-      const { lng, locale: newLocale } = event.detail;
-      setCurrentLocale(newLocale);
-      setRTL(isRTL(lng));
+      const { lng } = event.detail;
+      if (lng in SUPPORTED_LOCALES) {
+        setCurrentLocale(lng as SupportedLanguage);
+        setRTLMode(isRTL(lng as SupportedLanguage));
+      }
     };
 
     window.addEventListener('languageChanged', handleLanguageChanged as EventListener);
@@ -68,7 +70,7 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children, locale }) 
   }, [locale]);
 
   const changeLanguage = async (lng: string): Promise<boolean> => {
-    if (!SUPPORTED_LOCALES[lng]) {
+    if (!SUPPORTED_LOCALES[lng as keyof typeof SUPPORTED_LOCALES]) {
       console.warn(`Unsupported locale: ${lng}`);
       return false;
     }
@@ -77,8 +79,8 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children, locale }) 
     
     try {
       await i18n.changeLanguage(lng);
-      setCurrentLocale(SUPPORTED_LOCALES[lng]);
-      setRTL(isRTL(lng));
+      setCurrentLocale(lng as SupportedLanguage);
+      setRTLMode(isRTL(lng as SupportedLanguage));
       setIsLoading(false);
       return true;
     } catch (error) {
@@ -93,14 +95,14 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children, locale }) 
     supportedLocales: SUPPORTED_LOCALES,
     changeLanguage,
     isLoading,
-    isRTL: rtl
+    isRTL: rtlMode
   };
 
   return (
     <I18nextProvider i18n={i18n}>
       <I18nContext.Provider value={contextValue}>
         <Suspense fallback={<LoadingFallback />}>
-          <div className={`${rtl ? 'rtl' : 'ltr'}`} dir={rtl ? 'rtl' : 'ltr'}>
+          <div className={`${rtlMode ? 'rtl' : 'ltr'}`} dir={rtlMode ? 'rtl' : 'ltr'}>
             {children}
           </div>
         </Suspense>

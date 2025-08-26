@@ -1,0 +1,160 @@
+# Enhanced Production Docker Compose for MemorAI MCP
+# Following 2025 best practices with health checks, security,
+# monitoring, and production-ready configurations
+#
+# Usage:
+#   Production: docker-compose -f docker-compose.production.yml up -d
+#   Development: docker-compose -f docker-compose.production.yml -f docker-compose.override.yml up -d
+
+services:
+  memorai-mcp-production:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+      target: production
+      cache_from:
+        - memorai-mcp:latest
+        - node:20-alpine
+    image: memorai-mcp:latest
+    container_name: codai-memorai-mcp-production
+    restart: unless-stopped
+    
+    # Health check configuration
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4950/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 40s
+      retries: 3
+      
+    # Port mapping
+    ports:
+      - "${MEMORAI_MCP_PORT:-4950}:4950"
+      
+    # Environment variables
+    environment:
+      - NODE_ENV=production
+      - MEMORAI_MCP_PORT=4950
+      - MEMORAI_MCP_HOST=0.0.0.0
+      - MEMORAI_API_KEY=${MEMORAI_API_KEY:-memorai-prod-key-2025}
+      - CBD_BASE_URL=${CBD_BASE_URL:-http://codai-cbd-db:4180}
+      - AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT}
+      - AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}
+      - AZURE_OPENAI_DEPLOYMENT_NAME=${AZURE_OPENAI_DEPLOYMENT_NAME:-text-embedding-3-large}
+      - AZURE_OPENAI_API_VERSION=${AZURE_OPENAI_API_VERSION:-2024-02-01}
+      - ENABLE_VECTOR_SEARCH=true
+      - ENABLE_HYBRID_SEARCH=true
+      - ENABLE_RBAC=true
+      - ENABLE_MONITORING=true
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000,http://localhost:4006}
+      # Monitoring and logging
+      - LOG_LEVEL=info
+      - ENABLE_STRUCTURED_LOGGING=true
+      - ENABLE_CORRELATION_ID=true
+      - ENABLE_SENSITIVE_DATA_MASKING=true
+      # Performance settings
+      - NODE_OPTIONS=--max-old-space-size=2048 --enable-source-maps
+      - UV_THREADPOOL_SIZE=16
+      
+    # Resource limits for production
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    
+    # Security settings
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: false  # Set to true if no write access needed
+    
+    # Non-root user
+    user: "1001:1001"
+    
+    # Volumes for persistence and logs
+    volumes:
+      - memorai-cache:/app/.cache:rw
+      - memorai-logs:/app/logs:rw
+      # Bind mount for configuration (optional)
+      # - ./config/production.json:/app/config/production.json:ro
+      
+    # Network configuration
+    networks:
+      - codai-network
+      
+    # Dependencies
+    depends_on:
+      codai-cbd-db:
+        condition: service_healthy
+      codai-redis-cache:
+        condition: service_healthy
+        
+    # Labels for monitoring and management
+    labels:
+      - "com.codai.service=memorai-mcp"
+      - "com.codai.version=2.0.0"
+      - "com.codai.environment=production"
+      - "traefik.enable=true"
+      - "traefik.http.routers.memorai-mcp.rule=Host(`memorai-mcp.codai.local`)"
+      - "traefik.http.services.memorai-mcp.loadbalancer.server.port=4950"
+      - "traefik.http.routers.memorai-mcp.tls=true"
+
+  # Monitoring and observability
+  memorai-mcp-monitoring:
+    image: prom/node-exporter:latest
+    container_name: codai-memorai-mcp-monitoring
+    restart: unless-stopped
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    networks:
+      - codai-network
+    labels:
+      - "com.codai.service=memorai-mcp-monitoring"
+      
+  # Log aggregation (optional)
+  memorai-mcp-logs:
+    image: fluent/fluentd:edge-debian
+    container_name: codai-memorai-mcp-logs
+    restart: unless-stopped
+    volumes:
+      - memorai-logs:/fluentd/log:ro
+      - ./config/fluentd.conf:/fluentd/etc/fluentd.conf:ro
+    ports:
+      - "24224:24224"
+    networks:
+      - codai-network
+    labels:
+      - "com.codai.service=memorai-mcp-logs"
+
+# Named volumes for data persistence
+volumes:
+  memorai-cache:
+    driver: local
+    labels:
+      - "com.codai.volume=memorai-cache"
+  memorai-logs:
+    driver: local
+    labels:
+      - "com.codai.volume=memorai-logs"
+
+# Networks
+networks:
+  codai-network:
+    external: true
+    name: codai-network

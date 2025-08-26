@@ -455,7 +455,38 @@ class AdvancedMetaLearningEngine:
             f"Performance Prediction:",
             f"• Expected success rate: {performance_prediction['expected_score']:.1%}",
             f"• Confidence level: {performance_prediction['confidence']:.1%}",
-            f"• Based on strategy history and task similarity analysis",
+        # RomAI Logical Expert - Authentic Neural Inference
+                    try:
+                        # Route to logical reasoning expert
+                        expert_input = self._prepare_expert_input(query, domain="logic")
+
+                        # Process with specialized logic expert
+                        with torch.no_grad():
+                            expert_outputs = self.model.route_to_expert(
+                                expert_input,
+                                expert_type="logical_reasoning",
+                                use_mla_attention=True
+                            )
+
+                            # Perform logical reasoning chain
+                            reasoning_chain = self.model.logical_expert.reason_step_by_step(expert_input)
+
+                            # Validate logical consistency
+                            conclusion = self.model.logical_expert.validate_logic(reasoning_chain)
+
+                            return {
+                                "conclusion": conclusion["conclusion"],
+                                "reasoning_chain": reasoning_chain,
+                                "logical_validity": conclusion["validity"],
+                                "confidence": conclusion["confidence"],
+                                "method": "neural_logical_reasoning",
+                                "expert_activated": "logical_reasoning"
+                            }
+
+                    except Exception as e:
+                        logger.error(f"Logical expert error: {e}")
+                        # Fallback to general reasoning
+                        return self._fallback_reasoning(query, domain="logic")
             f"",
             f"Meta-Learning Insights:",
             f"• Leveraging 100% ARC-AGI abstract reasoning success for similar patterns",

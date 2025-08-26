@@ -113,10 +113,10 @@ export { AppSelector } from './components/theme/EnhancedThemeProvider'
 export { AppThemeWrapper } from './components/theme/EnhancedThemeProvider'
 
 // Theme configuration and utilities
-export { appThemes } from './config/enhanced-app-themes'
-export { generateAppCSSVariables } from './config/enhanced-app-themes'
-export { generateAppTailwindClasses } from './config/enhanced-app-themes'
-export type { AppName as EnhancedAppName, AppThemeConfig, ThemeMode } from './config/enhanced-app-themes'
+export { appThemes } from './config/app-themes'
+export { generateAppCSSVariables } from './config/app-themes'
+export { generateAppTailwindClasses } from './config/app-themes'
+export type { AppName as EnhancedAppName, AppThemeConfig, ThemeMode } from './config/app-themes'
 
 // Testing configuration and utilities (Node.js only)
 // Conditionally export test config to avoid browser compilation issues

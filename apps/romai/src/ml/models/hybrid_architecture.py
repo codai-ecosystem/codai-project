@@ -62,7 +62,7 @@ class RomanianLinguisticAttention(nn.Module):
         self.cultural_context = nn.MultiheadAttention(d_model, num_heads, batch_first=True)
         
         # Romanian-specific attention weights
-        self.romanian_bias = nn.Parameter(torch.randn(num_heads, 64, 64))
+        self.cultural_attention_weights = nn.Parameter(torch.ones(num_heads))
         
     def forward(self, x: torch.Tensor, cultural_context: bool = True) -> torch.Tensor:
         batch_size, seq_len, d_model = x.shape

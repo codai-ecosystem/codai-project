@@ -47,20 +47,22 @@ except ImportError:
 
 # Import existing RomAI memory components
 try:
-    from ml.memory_core import MemoryCore, MemoryType, MemoryStrength, MemoryTrace
-    from ml.episodic_memory_system import EpisodicMemorySystem, EpisodicContext, EpisodicMemoryTrace
-    from ml.working_memory_processor import WorkingMemoryProcessor, WorkingMemoryPriority
-    from ml.long_term_storage_manager import LongTermStorageManager, StorageCategory
-    from ml.memory_consolidation_engine import MemoryConsolidationEngine
-    from ml.memory_pattern_recognizer import MemoryPatternRecognizer
+    from ml.memory.memory_core import MemoryCore, MemoryType, MemoryStrength, MemoryTrace
+    from ml.memory.memory_consolidation import MemoryConsolidationEngine
+    # Set other components as placeholders if they don't exist
+    EpisodicMemorySystem = None
+    WorkingMemoryProcessor = None
+    LongTermStorageManager = None
+    MemoryPatternRecognizer = None
 except ImportError:
     try:
-        from memory_core import MemoryCore, MemoryType, MemoryStrength, MemoryTrace
-        from episodic_memory_system import EpisodicMemorySystem, EpisodicContext, EpisodicMemoryTrace
-        from working_memory_processor import WorkingMemoryProcessor, WorkingMemoryPriority
-        from long_term_storage_manager import LongTermStorageManager, StorageCategory
-        from memory_consolidation_engine import MemoryConsolidationEngine
-        from memory_pattern_recognizer import MemoryPatternRecognizer
+        from memory.memory_core import MemoryCore, MemoryType, MemoryStrength, MemoryTrace
+        from memory.memory_consolidation import MemoryConsolidationEngine
+        # Set other components as placeholders
+        EpisodicMemorySystem = None
+        WorkingMemoryProcessor = None
+        LongTermStorageManager = None
+        MemoryPatternRecognizer = None
     except ImportError as e:
         logging.warning(f"Memory components not available: {e}")
         MemoryCore = None

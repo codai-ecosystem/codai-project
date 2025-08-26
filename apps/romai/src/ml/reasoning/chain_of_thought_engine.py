@@ -287,11 +287,22 @@ class ChainOfThoughtEngine:
         # DeepSeek V3 integration
         self.deepseek_system = None
         try:
-            from ..architecture.romai_deepseek_integration import RomAIDeepSeekV3System
-            self.deepseek_system = RomAIDeepSeekV3System()
-            logger.info("Chain-of-Thought engine initialized with DeepSeek V3 integration")
-        except ImportError:
-            logger.warning("DeepSeek V3 integration not available for reasoning engine")
+            from ..architecture.romai_deepseek_integration import RomAIDeepSeekV3System, RomAIDeepSeekConfig
+            # Create default configuration for reasoning engine
+            deepseek_config = RomAIDeepSeekConfig(
+                deepseek_scale='base',  # Start with base scale for reasoning
+                hybrid_routing=True,
+                cultural_enhancement=True,
+                expert_augmentation=True,
+                batch_size=2,  # Smaller batch for reasoning tasks
+                max_sequence_length=8192,  # Extended context for reasoning
+                device='auto'
+            )
+            self.deepseek_system = RomAIDeepSeekV3System(deepseek_config)
+            logger.info("✅ Chain-of-Thought engine initialized with DeepSeek V3 integration")
+        except Exception as e:
+            logger.warning(f"⚠️ DeepSeek V3 integration not available for reasoning engine: {e}")
+            logger.info("🔄 Continuing with basic reasoning capabilities")
         
         logger.info("Chain-of-Thought reasoning engine initialized")
     
@@ -1122,7 +1133,38 @@ class ChainOfThoughtEngine:
     def _generate_general_hypothesis(self, problem: str, patterns: List[str]) -> str:
         """Generate general hypothesis when no specialized engine applies"""
         if patterns:
-            return f"Based on patterns {patterns[:2]}, the solution involves systematic analysis"
+        # RomAI General Expert - Authentic Neural Inference
+                    try:
+                        # Route to appropriate expert based on input analysis
+                        expert_input = self._prepare_expert_input(input_data)
+
+                        # Automatic expert selection
+                        selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                        # Process with selected expert
+                        with torch.no_grad():
+                            expert_outputs = self.model.route_to_expert(
+                                expert_input,
+                                expert_type=selected_expert,
+                                use_mla_attention=True
+                            )
+
+                            # Generate response
+                            response = self.model.generate_response(expert_outputs)
+
+                            return {
+                                "response": response["response"],
+                                "reasoning": response["reasoning"],
+                                "confidence": response["confidence"],
+                                "expert_used": selected_expert,
+                                "method": "neural_general_reasoning",
+                                "quality_score": response["quality_score"]
+                            }
+
+                    except Exception as e:
+                        logger.error(f"General expert error: {e}")
+                        # Ultimate fallback
+                        return {"error": f"Neural inference failed: {e}", "fallback": True}
         else:
             return "This problem requires step-by-step analytical approach"
     

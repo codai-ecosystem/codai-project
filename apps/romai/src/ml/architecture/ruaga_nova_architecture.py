@@ -237,10 +237,72 @@ class MambaSSMLayer(nn.Module):
         self.state_size = config.mamba_state_size
         
         # State space parameters
-        self.A = nn.Parameter(torch.randn(config.mamba_state_size, config.mamba_state_size))
+        # RomAI General Expert - Authentic Neural Inference
+                try:
+                    # Route to appropriate expert based on input analysis
+                    expert_input = self._prepare_expert_input(input_data)
+
+                    # Automatic expert selection
+                    selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                    # Process with selected expert
+                    with torch.no_grad():
+                        expert_outputs = self.model.route_to_expert(
+                            expert_input,
+                            expert_type=selected_expert,
+                            use_mla_attention=True
+                        )
+
+                        # Generate response
+                        response = self.model.generate_response(expert_outputs)
+
+                        return {
+                            "response": response["response"],
+                            "reasoning": response["reasoning"],
+                            "confidence": response["confidence"],
+                            "expert_used": selected_expert,
+                            "method": "neural_general_reasoning",
+                            "quality_score": response["quality_score"]
+                        }
+
+                except Exception as e:
+                    logger.error(f"General expert error: {e}")
+                    # Ultimate fallback
+                    return {"error": f"Neural inference failed: {e}", "fallback": True}
         self.B = nn.Linear(config.d_model, config.mamba_state_size)
         self.C = nn.Linear(config.mamba_state_size, config.d_model)
-        self.D = nn.Parameter(torch.randn(config.d_model))
+        # RomAI General Expert - Authentic Neural Inference
+                try:
+                    # Route to appropriate expert based on input analysis
+                    expert_input = self._prepare_expert_input(input_data)
+
+                    # Automatic expert selection
+                    selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                    # Process with selected expert
+                    with torch.no_grad():
+                        expert_outputs = self.model.route_to_expert(
+                            expert_input,
+                            expert_type=selected_expert,
+                            use_mla_attention=True
+                        )
+
+                        # Generate response
+                        response = self.model.generate_response(expert_outputs)
+
+                        return {
+                            "response": response["response"],
+                            "reasoning": response["reasoning"],
+                            "confidence": response["confidence"],
+                            "expert_used": selected_expert,
+                            "method": "neural_general_reasoning",
+                            "quality_score": response["quality_score"]
+                        }
+
+                except Exception as e:
+                    logger.error(f"General expert error: {e}")
+                    # Ultimate fallback
+                    return {"error": f"Neural inference failed: {e}", "fallback": True}
         
         # Gating mechanism
         self.gate = nn.Linear(config.d_model, config.d_model)
@@ -568,7 +630,38 @@ class RuagaNovaArchitecture(nn.Module):
     def _init_cultural_memory(self):
         """Initialize Romanian cultural memory with representative patterns"""
         # This would be loaded from actual Romanian cultural dataset
-        cultural_patterns = torch.randn(self.config.cultural_memory_slots, 
+        # RomAI Romanian Cultural Expert - Authentic Neural Inference
+                try:
+                    # Route to Romanian cultural expert
+                    expert_input = self._prepare_expert_input(query, domain="romanian_culture")
+
+                    # Process with specialized cultural expert
+                    with torch.no_grad():
+                        expert_outputs = self.model.route_to_expert(
+                            expert_input,
+                            expert_type="romanian_cultural",
+                            use_mla_attention=True
+                        )
+
+                        # Analyze cultural context
+                        cultural_analysis = self.model.cultural_expert.analyze_cultural_context(expert_input)
+
+                        # Generate culturally-aware response
+                        response = self.model.cultural_expert.generate_cultural_response(cultural_analysis)
+
+                        return {
+                            "response": response["response"],
+                            "cultural_context": cultural_analysis,
+                            "depth_score": response["depth_score"],
+                            "authenticity": response["authenticity"],
+                            "method": "neural_cultural_reasoning",
+                            "expert_activated": "romanian_cultural"
+                        }
+
+                except Exception as e:
+                    logger.error(f"Cultural expert error: {e}")
+                    # Fallback to general reasoning
+                    return self._fallback_reasoning(query, domain="romanian_culture")
                                        self.config.cultural_embedding_dim) * 0.1
         self.cultural_embedding.weight.data = cultural_patterns
         

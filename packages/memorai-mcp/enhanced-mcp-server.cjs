@@ -19,7 +19,7 @@ class EnhancedMemoryStore {
 
     async remember(agentId, content, metadata = {}) {
         const structuredKey = `${agentId}/${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-        
+
         const memory = {
             structuredKey,
             content,
@@ -32,30 +32,30 @@ class EnhancedMemoryStore {
 
         this.memories.set(structuredKey, memory);
         console.error(`[MemorAI] Stored memory: ${structuredKey}`);
-        
+
         return { structuredKey, success: true };
     }
 
     async recall(agentId, query, options = {}) {
         const { limit = 10, includeOtherAgents = false } = options;
-        
+
         console.error(`[MemorAI] Enhanced recall - Agent: ${agentId}, Query: "${query}"`);
         console.error(`[MemorAI] Total memories in store: ${this.memories.size}`);
         console.error(`[MemorAI] Include other agents: ${includeOtherAgents}`);
-        
+
         const queryLower = query.toLowerCase();
         const queryWords = queryLower.split(/\s+/).filter(word => word.length > 2);
-        
+
         const results = [];
-        
+
         for (const [key, memory] of this.memories.entries()) {
             // Skip other agents unless explicitly included
             if (!includeOtherAgents && memory.metadata.agentId !== agentId) {
                 continue;
             }
-            
+
             const relevanceScore = this.calculateRelevanceScore(memory, queryLower, queryWords);
-            
+
             if (relevanceScore > 0) {
                 results.push({
                     ...memory,
@@ -63,24 +63,24 @@ class EnhancedMemoryStore {
                 });
             }
         }
-        
+
         // Sort by relevance score (highest first)
         results.sort((a, b) => b.relevanceScore - a.relevanceScore);
-        
+
         console.error(`[MemorAI] Found ${results.length} relevant memories`);
-        
+
         return results.slice(0, limit);
     }
 
     calculateRelevanceScore(memory, queryLower, queryWords) {
         const contentLower = memory.content.toLowerCase();
         let score = 0;
-        
+
         // 1. Exact phrase matching (highest score)
         if (contentLower.includes(queryLower)) {
             score += 10;
         }
-        
+
         // 2. Word matching
         let wordMatches = 0;
         for (const word of queryWords) {
@@ -89,7 +89,7 @@ class EnhancedMemoryStore {
                 score += 2;
             }
         }
-        
+
         // 3. Fuzzy matching for compound terms
         const compoundTerms = ['test-time', 'chain-of-thought', 'GPT-5'];
         for (const term of compoundTerms) {
@@ -97,7 +97,7 @@ class EnhancedMemoryStore {
                 score += 5;
             }
         }
-        
+
         // 4. Tag matching
         if (memory.metadata.tags) {
             for (const tag of memory.metadata.tags) {
@@ -108,11 +108,11 @@ class EnhancedMemoryStore {
                 }
             }
         }
-        
+
         // 5. Importance weighting
         const importance = memory.metadata.importance || 5;
         score = score * (importance / 10);
-        
+
         return score;
     }
 
@@ -149,7 +149,7 @@ class EnhancedMemorAIMCPServer {
 
         this.memoryStore = new EnhancedMemoryStore();
         this.setupToolHandlers();
-        
+
         console.error('[MemorAI] Enhanced MCP Server initialized');
     }
 
@@ -251,7 +251,7 @@ class EnhancedMemorAIMCPServer {
     async handleRemember(args) {
         const { agentId, content, metadata } = args;
         const result = await this.memoryStore.remember(agentId, content, metadata);
-        
+
         return {
             content: [{
                 type: 'text',
@@ -262,7 +262,7 @@ class EnhancedMemorAIMCPServer {
 
     async handleRecall(args) {
         const { agentId, query, limit, includeOtherAgents, minImportance, project, session } = args;
-        
+
         const memories = await this.memoryStore.recall(agentId, query, {
             limit,
             includeOtherAgents,
@@ -298,7 +298,7 @@ class EnhancedMemorAIMCPServer {
     async handleForget(args) {
         const { agentId, structuredKey } = args;
         const result = await this.memoryStore.forget(agentId, structuredKey);
-        
+
         return {
             content: [{
                 type: 'text',
@@ -336,26 +336,26 @@ Phase 1 fixes: ACTIVE`
 // Start the server
 if (require.main === module) {
     const server = new EnhancedMemorAIMCPServer();
-    
+
     // Add some test memories for validation
     setTimeout(async () => {
-        await server.memoryStore.remember('romai_agi_agent', 
-            'Advanced test-time compute scaling with chain-of-thought verification loops provides superior reasoning capabilities similar to GPT-5 thinking mode', 
+        await server.memoryStore.remember('romai_agi_agent',
+            'Advanced test-time compute scaling with chain-of-thought verification loops provides superior reasoning capabilities similar to GPT-5 thinking mode',
             { entityType: 'insight', importance: 8, tags: ['reasoning', 'scaling', 'verification'] }
         );
-        
-        await server.memoryStore.remember('romai_agi_agent', 
+
+        await server.memoryStore.remember('romai_agi_agent',
             'Chain-of-thought verification loops enable iterative reasoning improvement during test-time compute scaling',
             { entityType: 'technical_insight', importance: 7, tags: ['chain-of-thought', 'verification', 'compute'] }
         );
-        
-        await server.memoryStore.remember('romai_agi_agent', 
+
+        await server.memoryStore.remember('romai_agi_agent',
             'GPT-5 thinking mode demonstrates advanced reasoning through multi-step verification and self-correction mechanisms',
             { entityType: 'analysis', importance: 9, tags: ['GPT-5', 'thinking', 'reasoning'] }
         );
-        
+
         console.error('[MemorAI] Test memories added for validation');
     }, 100);
-    
+
     server.run().catch(console.error);
 }

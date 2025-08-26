@@ -1,0 +1,73 @@
+{
+  "collection_date": "2025-08-26T02:26:39.811872",
+  "total_documents": 0,
+  "total_size_mb": 0,
+  "sources_processed": 8,
+  "successful_sources": 8,
+  "results": [
+    {
+      "source_name": "Romanian Parliament",
+      "documents_collected": 0,
+      "total_size_mb": 0,
+      "success": true,
+      "error_message": null,
+      "collection_time_seconds": 0.03608226776123047
+    },
+    {
+      "source_name": "Romanian Government",
+      "documents_collected": 0,
+      "total_size_mb": 0,
+      "success": true,
+      "error_message": null,
+      "collection_time_seconds": 5.790308952331543
+    },
+    {
+      "source_name": "Agerpres News",
+      "documents_collected": 0,
+      "total_size_mb": 0,
+      "success": true,
+      "error_message": null,
+      "collection_time_seconds": 0.1273348331451416
+    },
+    {
+      "source_name": "Romanian Academy",
+      "documents_collected": 0,
+      "total_size_mb": 0,
+      "success": true,
+      "error_message": null,
+      "collection_time_seconds": 0.05084514617919922
+    },
+    {
+      "source_name": "Adevarul News",
+      "documents_collected": 0,
+      "total_size_mb": 0,
+      "success": true,
+      "error_message": null,
+      "collection_time_seconds": 12.215794563293457
+    },
+    {
+      "source_name": "Biblioteca Digitala",
+      "documents_collected": 0,
+      "total_size_mb": 0,
+      "success": true,
+      "error_message": null,
+      "collection_time_seconds": 0.1239628791809082
+    },
+    {
+      "source_name": "Romanian Cultural Institute",
+      "documents_collected": 0,
+      "total_size_mb": 0,
+      "success": true,
+      "error_message": null,
+      "collection_time_seconds": 7.43976902961731
+    },
+    {
+      "source_name": "Ziare.com",
+      "documents_collected": 0,
+      "total_size_mb": 0,
+      "success": true,
+      "error_message": null,
+      "collection_time_seconds": 2.0828816890716553
+    }
+  ]
+}

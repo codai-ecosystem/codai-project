@@ -1,0 +1,398 @@
+{
+  "phase6_overview": {
+    "budget_eur": 10000000,
+    "timeline_months": 2,
+    "target_size_tb": 5.0,
+    "expansion_factor": 2000,
+    "success_metrics": {
+      "corpus_size_tb": 5.0,
+      "domain_coverage_percent": 95,
+      "quality_score": 0.9,
+      "romanian_accuracy_target": 0.99,
+      "mathematical_content_percent": 15
+    }
+  },
+  "data_sources": {
+    "mathematical_texts": {
+      "target_size_gb": 750,
+      "target_documents": 500000,
+      "quality_threshold": 0.95,
+      "cultural_weight": 0.7,
+      "mathematical_weight": 1.0,
+      "priority": 1,
+      "collection_methods": [
+        "Publisher APIs",
+        "Educational institution access",
+        "Open source repositories"
+      ],
+      "azure_services": [
+        "Azure AI Language - Language Detection",
+        "Azure AI Language - Custom Text Classification",
+        "Azure AI Language - Custom NER",
+        "Azure Data Factory",
+        "Azure Blob Storage",
+        "Azure Cognitive Search"
+      ],
+      "estimated_cost_eur": 1283343.7500000002
+    },
+    "academic_papers": {
+      "target_size_gb": 600,
+      "target_documents": 300000,
+      "quality_threshold": 0.95,
+      "cultural_weight": 0.8,
+      "mathematical_weight": 0.6,
+      "priority": 2,
+      "collection_methods": [
+        "Web scraping",
+        "API integration",
+        "Institution partnerships"
+      ],
+      "azure_services": [
+        "Azure AI Language - Language Detection",
+        "Azure AI Language - Custom Text Classification",
+        "Azure AI Language - Custom NER",
+        "Azure Data Factory",
+        "Azure Blob Storage",
+        "Azure Cognitive Search"
+      ],
+      "estimated_cost_eur": 966420.0
+    },
+    "cultural_literature": {
+      "target_size_gb": 800,
+      "target_documents": 400000,
+      "quality_threshold": 0.9,
+      "cultural_weight": 1.0,
+      "mathematical_weight": 0.1,
+      "priority": 3,
+      "collection_methods": [
+        "Digital library APIs",
+        "Publisher partnerships",
+        "Cultural institution collaboration"
+      ],
+      "azure_services": [
+        "Azure AI Language - Language Detection",
+        "Azure AI Language - Custom Text Classification",
+        "Azure AI Language - Custom NER",
+        "Azure Data Factory",
+        "Azure Blob Storage",
+        "Azure Cognitive Search"
+      ],
+      "estimated_cost_eur": 1174200.0
+    },
+    "scientific_journals": {
+      "target_size_gb": 500,
+      "target_documents": 250000,
+      "quality_threshold": 0.92,
+      "cultural_weight": 0.6,
+      "mathematical_weight": 0.8,
+      "priority": 4,
+      "collection_methods": [
+        "Academic database APIs",
+        "Research institution partnerships",
+        "Open access repositories"
+      ],
+      "azure_services": [
+        "Azure AI Language - Language Detection",
+        "Azure AI Language - Custom Text Classification",
+        "Azure AI Language - Custom NER",
+        "Azure Data Factory",
+        "Azure Blob Storage",
+        "Azure Cognitive Search"
+      ],
+      "estimated_cost_eur": 773760.0
+    },
+    "educational_materials": {
+      "target_size_gb": 650,
+      "target_documents": 800000,
+      "quality_threshold": 0.88,
+      "cultural_weight": 0.9,
+      "mathematical_weight": 0.7,
+      "priority": 5,
+      "collection_methods": [
+        "Educational platform APIs",
+        "Ministry of Education collaboration",
+        "University partnerships"
+      ],
+      "azure_services": [
+        "Azure AI Language - Language Detection",
+        "Azure AI Language - Custom Text Classification",
+        "Azure AI Language - Custom NER",
+        "Azure Data Factory",
+        "Azure Blob Storage",
+        "Azure Cognitive Search"
+      ],
+      "estimated_cost_eur": 1071999.5
+    },
+    "news_articles": {
+      "target_size_gb": 600,
+      "target_documents": 2000000,
+      "quality_threshold": 0.8,
+      "cultural_weight": 0.9,
+      "mathematical_weight": 0.2,
+      "priority": 6,
+      "collection_methods": [
+        "News API services",
+        "RSS feed aggregation",
+        "Media partnership agreements"
+      ],
+      "azure_services": [
+        "Azure AI Language - Language Detection",
+        "Azure AI Language - Custom Text Classification",
+        "Azure AI Language - Custom NER",
+        "Azure Data Factory",
+        "Azure Blob Storage",
+        "Azure Cognitive Search"
+      ],
+      "estimated_cost_eur": 829980.0
+    },
+    "technical_documentation": {
+      "target_size_gb": 400,
+      "target_documents": 150000,
+      "quality_threshold": 0.85,
+      "cultural_weight": 0.5,
+      "mathematical_weight": 0.9,
+      "priority": 7,
+      "collection_methods": [
+        "GitHub repositories",
+        "Technical platform APIs",
+        "Company partnerships"
+      ],
+      "azure_services": [
+        "Azure AI Language - Language Detection",
+        "Azure AI Language - Custom Text Classification",
+        "Azure AI Language - Custom NER",
+        "Azure Data Factory",
+        "Azure Blob Storage",
+        "Azure Cognitive Search"
+      ],
+      "estimated_cost_eur": 587375.0
+    },
+    "government_documents": {
+      "target_size_gb": 300,
+      "target_documents": 100000,
+      "quality_threshold": 0.9,
+      "cultural_weight": 1.0,
+      "mathematical_weight": 0.3,
+      "priority": 8,
+      "collection_methods": [
+        "Official API access",
+        "Open data portals",
+        "FOIA requests"
+      ],
+      "azure_services": [
+        "Azure AI Language - Language Detection",
+        "Azure AI Language - Custom Text Classification",
+        "Azure AI Language - Custom NER",
+        "Azure Data Factory",
+        "Azure Blob Storage",
+        "Azure Cognitive Search"
+      ],
+      "estimated_cost_eur": 465975.00000000006
+    },
+    "wikipedia_content": {
+      "target_size_gb": 250,
+      "target_documents": 75000,
+      "quality_threshold": 0.85,
+      "cultural_weight": 0.8,
+      "mathematical_weight": 0.4,
+      "priority": 9,
+      "collection_methods": [
+        "Wikipedia API",
+        "Wikimedia dumps",
+        "Real-time synchronization"
+      ],
+      "azure_services": [
+        "Azure AI Language - Language Detection",
+        "Azure AI Language - Custom Text Classification",
+        "Azure AI Language - Custom NER",
+        "Azure Data Factory",
+        "Azure Blob Storage",
+        "Azure Cognitive Search"
+      ],
+      "estimated_cost_eur": 362600.00000000006
+    },
+    "social_media": {
+      "target_size_gb": 150,
+      "target_documents": 5000000,
+      "quality_threshold": 0.7,
+      "cultural_weight": 0.6,
+      "mathematical_weight": 0.1,
+      "priority": 10,
+      "collection_methods": [
+        "Platform APIs",
+        "Public data aggregators",
+        "Ethical scraping"
+      ],
+      "azure_services": [
+        "Azure AI Language - Language Detection",
+        "Azure AI Language - Custom Text Classification",
+        "Azure AI Language - Custom NER",
+        "Azure Data Factory",
+        "Azure Blob Storage",
+        "Azure Cognitive Search"
+      ],
+      "estimated_cost_eur": 170722.5
+    }
+  },
+  "processing_pipeline": {
+    "raw_collection": {
+      "description": "Collect raw Romanian text from all sources",
+      "azure_services": [
+        "Azure Data Factory",
+        "Azure Blob Storage"
+      ],
+      "estimated_duration_days": 10,
+      "parallelization_factor": 50,
+      "cost_eur": 200000
+    },
+    "language_detection": {
+      "description": "Detect and filter Romanian content using Azure AI",
+      "azure_services": [
+        "Azure AI Language - Language Detection"
+      ],
+      "estimated_duration_days": 5,
+      "accuracy_target": 0.99,
+      "cost_eur": 500000
+    },
+    "quality_filtering": {
+      "description": "Filter high-quality content using AI models",
+      "azure_services": [
+        "Azure AI Language - Custom Classification"
+      ],
+      "estimated_duration_days": 8,
+      "quality_threshold": 0.85,
+      "cost_eur": 800000
+    },
+    "deduplication": {
+      "description": "Remove duplicate and near-duplicate content",
+      "azure_services": [
+        "Azure AI Language - Similarity Detection"
+      ],
+      "estimated_duration_days": 12,
+      "deduplication_threshold": 0.8,
+      "cost_eur": 600000
+    },
+    "content_classification": {
+      "description": "Classify content by domain and topic",
+      "azure_services": [
+        "Azure AI Language - Custom Text Classification"
+      ],
+      "estimated_duration_days": 15,
+      "classification_categories": 50,
+      "cost_eur": 1200000
+    },
+    "cultural_annotation": {
+      "description": "Annotate cultural context and Romanian-specific content",
+      "azure_services": [
+        "Azure AI Language - Custom NER"
+      ],
+      "estimated_duration_days": 20,
+      "cultural_entities": 1000,
+      "cost_eur": 2500000
+    },
+    "mathematical_tagging": {
+      "description": "Identify and tag mathematical content",
+      "azure_services": [
+        "Azure AI Language - Custom NER"
+      ],
+      "estimated_duration_days": 18,
+      "mathematical_patterns": 500,
+      "cost_eur": 2000000
+    },
+    "final_validation": {
+      "description": "Human validation and quality assurance",
+      "azure_services": [
+        "Azure Machine Learning - Human-in-the-loop"
+      ],
+      "estimated_duration_days": 7,
+      "validation_sample_size": 100000,
+      "cost_eur": 2200000
+    }
+  },
+  "azure_infrastructure": {
+    "resource_name": "romai-language-processing-eu",
+    "region": "West Europe",
+    "pricing_tier": "S4",
+    "concurrent_requests": 100,
+    "monthly_processing_limit": 50000000000,
+    "estimated_monthly_cost_usd": 150000
+  },
+  "timeline": {
+    "start_date": "2025-08-26T09:13:40.802013",
+    "month_1": {
+      "focus": "Data Collection and Initial Processing",
+      "milestones": [
+        "Azure infrastructure deployment",
+        "Data source partnerships established",
+        "Raw data collection 60% complete",
+        "Language detection and filtering active"
+      ]
+    },
+    "month_2": {
+      "focus": "Quality Enhancement and Cultural Annotation",
+      "milestones": [
+        "Quality filtering 90% complete",
+        "Cultural annotation system operational",
+        "Mathematical content tagging complete",
+        "Final validation and quality assurance",
+        "5TB corpus ready for Phase 7 training"
+      ]
+    },
+    "end_date": "2025-10-25T09:13:40.802013"
+  },
+  "budget_allocation": {
+    "infrastructure_eur": 330000,
+    "data_collection_eur": 3000000,
+    "processing_pipeline_eur": 4800000,
+    "human_validation_eur": 1200000,
+    "partnerships_eur": 500000,
+    "contingency_eur": 170000,
+    "total_eur": 10000000
+  },
+  "risk_mitigation": {
+    "data_quality_risk": "Multi-stage quality filtering with human validation loops",
+    "copyright_risk": "Legal compliance review and licensing agreements",
+    "technical_risk": "Redundant Azure infrastructure and backup processing pipelines",
+    "timeline_risk": "Parallel processing streams and agile milestone tracking",
+    "cost_risk": "Real-time budget monitoring with automated cost controls",
+    "cultural_accuracy_risk": "Romanian linguistics experts and cultural consultants"
+  },
+  "quality_assurance": {
+    "automated_quality_checks": [
+      "Language detection accuracy validation",
+      "Duplicate content identification",
+      "Content quality scoring",
+      "Cultural relevance assessment",
+      "Mathematical content verification"
+    ],
+    "human_validation_process": {
+      "sample_size": 100000,
+      "validation_criteria": [
+        "Language accuracy",
+        "Cultural appropriateness",
+        "Content quality",
+        "Mathematical correctness",
+        "Ethical compliance"
+      ],
+      "quality_gates": [
+        "90% language detection accuracy",
+        "95% cultural relevance score",
+        "85% overall content quality",
+        "98% mathematical accuracy",
+        "100% ethical compliance"
+      ]
+    },
+    "continuous_monitoring": {
+      "real_time_metrics": true,
+      "quality_dashboards": true,
+      "automated_alerts": true,
+      "feedback_loops": true
+    }
+  },
+  "totals": {
+    "target_size_gb": 5000,
+    "target_documents": 9575000,
+    "pipeline_duration_days": 95,
+    "pipeline_cost_eur": 10000000
+  }
+}

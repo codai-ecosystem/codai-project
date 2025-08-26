@@ -81,17 +81,17 @@ export function cspMiddleware(request: NextRequest) {
     const cspHeader = buildCSPHeader();
     
     // Set security headers
-    const securityHeaders = {
+    const securityHeaders: Record<string, string> = {
         'Content-Security-Policy': cspHeader,
         'X-Content-Type-Options': 'nosniff',
         'X-Frame-Options': 'DENY',
         'X-XSS-Protection': '1; mode=block',
         'Referrer-Policy': 'strict-origin-when-cross-origin',
         'Permissions-Policy': [
-            'geolocation=()',
-            'microphone=()',
             'camera=()',
-            'fullscreen=(self)',
+            'microphone=()',
+            'geolocation=()',
+            'interest-cohort=()',
             'payment=()'
         ].join(', '),
     };

@@ -1,0 +1,411 @@
+{
+  "benchmark_info": {
+    "name": "RomAI Comprehensive Benchmark 2025",
+    "timestamp": "2025-08-26T04:32:24.648173",
+    "server_url": "http://localhost:6101"
+  },
+  "overall_results": {
+    "total_tests": 6,
+    "passed_tests": 3,
+    "pass_rate": 0.5,
+    "total_score": 26.0,
+    "max_total_score": 52,
+    "score_percentage": 50.0,
+    "average_accuracy": 0.5,
+    "average_latency_ms": 3136.567791302999,
+    "category_breakdown": {
+      "algebra": {
+        "tests": 1,
+        "passed": 1,
+        "total_score": 10.0,
+        "max_score": 10,
+        "accuracies": [
+          1.0
+        ],
+        "avg_accuracy": 1.0,
+        "pass_rate": 1.0,
+        "score_percentage": 100.0
+      },
+      "calculus": {
+        "tests": 1,
+        "passed": 0,
+        "total_score": 0.0,
+        "max_score": 10,
+        "accuracies": [
+          0.0
+        ],
+        "avg_accuracy": 0.0,
+        "pass_rate": 0.0,
+        "score_percentage": 0.0
+      },
+      "geometry": {
+        "tests": 1,
+        "passed": 1,
+        "total_score": 8.0,
+        "max_score": 8,
+        "accuracies": [
+          1.0
+        ],
+        "avg_accuracy": 1.0,
+        "pass_rate": 1.0,
+        "score_percentage": 100.0
+      },
+      "arithmetic": {
+        "tests": 1,
+        "passed": 0,
+        "total_score": 0.0,
+        "max_score": 6,
+        "accuracies": [
+          0.0
+        ],
+        "avg_accuracy": 0.0,
+        "pass_rate": 0.0,
+        "score_percentage": 0.0
+      },
+      "statistics": {
+        "tests": 1,
+        "passed": 1,
+        "total_score": 8.0,
+        "max_score": 8,
+        "accuracies": [
+          1.0
+        ],
+        "avg_accuracy": 1.0,
+        "pass_rate": 1.0,
+        "score_percentage": 100.0
+      },
+      "romanian_math": {
+        "tests": 1,
+        "passed": 0,
+        "total_score": 0.0,
+        "max_score": 10,
+        "accuracies": [
+          0.0
+        ],
+        "avg_accuracy": 0.0,
+        "pass_rate": 0.0,
+        "score_percentage": 0.0
+      }
+    },
+    "individual_results": [
+      {
+        "test_name": "algebra_1",
+        "category": "algebra",
+        "problem": "Solve for x: 3x² - 12x + 9 = 0",
+        "expected": [
+          "x = 1",
+          "x = 3",
+          "1",
+          "3"
+        ],
+        "response": {
+          "success": true,
+          "problem": "Solve for x: 3x² - 12x + 9 = 0",
+          "solution": "Algebraic solution computed",
+          "solution_steps": [
+            "🧮 Problem: Solve for x: 3x² - 12x + 9 = 0",
+            "📊 Domain: algebra, Difficulty: Level 2",
+            "🎯 Strategy: algebraic_manipulation",
+            "🔍 Applying algebraic_manipulation to algebra problem",
+            "🔍 Algebra specialist analyzing problem...",
+            "⚠️ Linear equation solving failed: invalid syntax (<string>, line 1)",
+            "🔧 Applying general algebraic methods...",
+            "🔍 Verifying solution...",
+            "✅ Good confidence solution from domain specialist",
+            "⏱️ Processing time: 0.001s"
+          ],
+          "confidence": 0.7,
+          "domain": "algebra",
+          "difficulty": 2,
+          "method_used": "algebraic_manipulation",
+          "verification_passed": true,
+          "proof_type": "computational",
+          "alternative_approaches": [
+            "direct_computation",
+            "algebraic_manipulation",
+            "substitution_method"
+          ],
+          "symbolic_form": null,
+          "numerical_form": null,
+          "reasoning_strategy": "algebraic_manipulation",
+          "engine_used": "advanced_mathematical_engine_v2",
+          "performance_target": "DeepSeek_R1_97.3%_MATH500",
+          "processing_time_ms": 1.2078285217285156,
+          "timestamp": "2025-08-26T04:32:14.380413"
+        },
+        "accuracy": 1.0,
+        "score": 10.0,
+        "max_score": 10,
+        "latency_ms": 8556.735515594482,
+        "timestamp": "2025-08-26T04:32:14.381141"
+      },
+      {
+        "test_name": "calculus_2",
+        "category": "calculus",
+        "problem": "Find the derivative of f(x) = x³ + 2x² - 5x + 1",
+        "expected": [
+          "3x² + 4x - 5",
+          "3x^2 + 4x - 5"
+        ],
+        "response": {
+          "success": true,
+          "problem": "Find the derivative of f(x) = x³ + 2x² - 5x + 1",
+          "solution": "Calculus solution computed",
+          "solution_steps": [
+            "🧮 Problem: Find the derivative of f(x) = x³ + 2x² - 5x + 1",
+            "📊 Domain: calculus, Difficulty: Level 2",
+            "🎯 Strategy: direct_computation",
+            "🔍 Applying direct_computation to calculus problem",
+            "📈 Calculus specialist analyzing problem...",
+            "⚠️ Derivative computation failed: invalid syntax (<string>, line 1)",
+            "🔍 Verifying solution...",
+            "✅ Good confidence solution from domain specialist",
+            "⏱️ Processing time: 0.001s"
+          ],
+          "confidence": 0.7,
+          "domain": "calculus",
+          "difficulty": 2,
+          "method_used": "direct_computation",
+          "verification_passed": true,
+          "proof_type": "computational",
+          "alternative_approaches": [
+            "direct_computation",
+            "algebraic_manipulation",
+            "substitution_method"
+          ],
+          "symbolic_form": null,
+          "numerical_form": null,
+          "reasoning_strategy": "direct_computation",
+          "engine_used": "advanced_mathematical_engine_v2",
+          "performance_target": "DeepSeek_R1_97.3%_MATH500",
+          "processing_time_ms": 1.2049674987792969,
+          "timestamp": "2025-08-26T04:32:16.435121"
+        },
+        "accuracy": 0.0,
+        "score": 0.0,
+        "max_score": 10,
+        "latency_ms": 2054.567575454712,
+        "timestamp": "2025-08-26T04:32:16.435965"
+      },
+      {
+        "test_name": "geometry_3",
+        "category": "geometry",
+        "problem": "Calculate the area of a circle with radius 5 units",
+        "expected": [
+          "25π",
+          "78.54",
+          "25*π",
+          "25 π"
+        ],
+        "response": {
+          "success": true,
+          "problem": "Calculate the area of a circle with radius 5 units",
+          "solution": "78.54",
+          "solution_steps": [
+            "🧮 Problem: Calculate the area of a circle with radius 5 units",
+            "📊 Domain: geometry, Difficulty: Level 2",
+            "🎯 Strategy: geometric_interpretation",
+            "🔍 Applying geometric_interpretation to geometry problem",
+            "📐 Geometry specialist analyzing problem...",
+            "🔵 Computing area of circle with radius 5.0",
+            "📏 Formula: A = πr² = π × 5.0² = π × 25.0",
+            "✅ Area: 78.54 square units",
+            "🔍 Verifying solution...",
+            "✅ High confidence solution from domain specialist",
+            "⏱️ Processing time: 0.000s"
+          ],
+          "confidence": 0.99,
+          "domain": "geometry",
+          "difficulty": 2,
+          "method_used": "geometric_interpretation",
+          "verification_passed": true,
+          "proof_type": "computational",
+          "alternative_approaches": [
+            "direct_computation",
+            "algebraic_manipulation",
+            "substitution_method"
+          ],
+          "symbolic_form": null,
+          "numerical_form": null,
+          "reasoning_strategy": "geometric_interpretation",
+          "engine_used": "advanced_mathematical_engine_v2",
+          "performance_target": "DeepSeek_R1_97.3%_MATH500",
+          "processing_time_ms": 0.2837181091308594,
+          "timestamp": "2025-08-26T04:32:18.485252"
+        },
+        "accuracy": 1.0,
+        "score": 8.0,
+        "max_score": 8,
+        "latency_ms": 2049.2444038391113,
+        "timestamp": "2025-08-26T04:32:18.485798"
+      },
+      {
+        "test_name": "arithmetic_4",
+        "category": "arithmetic",
+        "problem": "Calculate: √144 + 15 - 8",
+        "expected": [
+          "19",
+          "12 + 15 - 8 = 19"
+        ],
+        "response": {
+          "success": true,
+          "problem": "Calculate: √144 + 15 - 8",
+          "solution": "Algebraic solution computed",
+          "solution_steps": [
+            "🧮 Problem: Calculate: √144 + 15 - 8",
+            "📊 Domain: algebra, Difficulty: Level 2",
+            "🎯 Strategy: algebraic_manipulation",
+            "🔍 Applying algebraic_manipulation to algebra problem",
+            "🔍 Algebra specialist analyzing problem...",
+            "🔧 Applying general algebraic methods...",
+            "🔍 Verifying solution...",
+            "✅ Good confidence solution from domain specialist",
+            "⏱️ Processing time: 0.000s"
+          ],
+          "confidence": 0.7,
+          "domain": "algebra",
+          "difficulty": 2,
+          "method_used": "algebraic_manipulation",
+          "verification_passed": true,
+          "proof_type": "computational",
+          "alternative_approaches": [
+            "direct_computation",
+            "algebraic_manipulation",
+            "substitution_method"
+          ],
+          "symbolic_form": null,
+          "numerical_form": null,
+          "reasoning_strategy": "algebraic_manipulation",
+          "engine_used": "advanced_mathematical_engine_v2",
+          "performance_target": "DeepSeek_R1_97.3%_MATH500",
+          "processing_time_ms": 0.20051002502441406,
+          "timestamp": "2025-08-26T04:32:20.550092"
+        },
+        "accuracy": 0.0,
+        "score": 0.0,
+        "max_score": 6,
+        "latency_ms": 2064.5551681518555,
+        "timestamp": "2025-08-26T04:32:20.550619"
+      },
+      {
+        "test_name": "statistics_5",
+        "category": "statistics",
+        "problem": "Find the mean of: [2, 4, 6, 8, 10]",
+        "expected": [
+          "6",
+          "6.0"
+        ],
+        "response": {
+          "success": true,
+          "problem": "Find the mean of: [2, 4, 6, 8, 10]",
+          "solution": "Algebraic solution computed",
+          "solution_steps": [
+            "🧮 Problem: Find the mean of: [2, 4, 6, 8, 10]",
+            "📊 Domain: algebra, Difficulty: Level 2",
+            "🎯 Strategy: algebraic_manipulation",
+            "🔍 Applying algebraic_manipulation to algebra problem",
+            "🔍 Algebra specialist analyzing problem...",
+            "🔧 Applying general algebraic methods...",
+            "🔍 Verifying solution...",
+            "✅ Good confidence solution from domain specialist",
+            "⏱️ Processing time: 0.000s"
+          ],
+          "confidence": 0.7,
+          "domain": "algebra",
+          "difficulty": 2,
+          "method_used": "algebraic_manipulation",
+          "verification_passed": true,
+          "proof_type": "computational",
+          "alternative_approaches": [
+            "direct_computation",
+            "algebraic_manipulation",
+            "substitution_method"
+          ],
+          "symbolic_form": null,
+          "numerical_form": null,
+          "reasoning_strategy": "algebraic_manipulation",
+          "engine_used": "advanced_mathematical_engine_v2",
+          "performance_target": "DeepSeek_R1_97.3%_MATH500",
+          "processing_time_ms": 0.2079010009765625,
+          "timestamp": "2025-08-26T04:32:22.604884"
+        },
+        "accuracy": 1.0,
+        "score": 8.0,
+        "max_score": 8,
+        "latency_ms": 2054.5389652252197,
+        "timestamp": "2025-08-26T04:32:22.605458"
+      },
+      {
+        "test_name": "romanian_math_6",
+        "category": "romanian_math",
+        "problem": "Calculați aria unui dreptunghi cu lungimea 8 și lățimea 5",
+        "expected": [
+          "40",
+          "8 * 5 = 40"
+        ],
+        "response": {
+          "success": true,
+          "problem": "Calculați aria unui dreptunghi cu lungimea 8 și lățimea 5",
+          "solution": "Algebraic solution computed",
+          "solution_steps": [
+            "🧮 Problem: Calculați aria unui dreptunghi cu lungimea 8 și lățimea 5",
+            "📊 Domain: algebra, Difficulty: Level 2",
+            "🎯 Strategy: algebraic_manipulation",
+            "🔍 Applying algebraic_manipulation to algebra problem",
+            "🔍 Algebra specialist analyzing problem...",
+            "🔧 Applying general algebraic methods...",
+            "🔍 Verifying solution...",
+            "✅ Good confidence solution from domain specialist",
+            "⏱️ Processing time: 0.000s"
+          ],
+          "confidence": 0.7,
+          "domain": "algebra",
+          "difficulty": 2,
+          "method_used": "algebraic_manipulation",
+          "verification_passed": true,
+          "proof_type": "computational",
+          "alternative_approaches": [
+            "direct_computation",
+            "algebraic_manipulation",
+            "substitution_method"
+          ],
+          "symbolic_form": null,
+          "numerical_form": null,
+          "reasoning_strategy": "algebraic_manipulation",
+          "engine_used": "advanced_mathematical_engine_v2",
+          "performance_target": "DeepSeek_R1_97.3%_MATH500",
+          "processing_time_ms": 0.2951622009277344,
+          "timestamp": "2025-08-26T04:32:24.644951"
+        },
+        "accuracy": 0.0,
+        "score": 0.0,
+        "max_score": 10,
+        "latency_ms": 2039.7651195526123,
+        "timestamp": "2025-08-26T04:32:24.645467"
+      }
+    ]
+  },
+  "sota_comparison": {
+    "domain": "mathematical_reasoning",
+    "romai_score": 50.0,
+    "deepseek_r1_score": 97.3,
+    "gpt4o_score": 76.6,
+    "claude35_score": 71.1,
+    "world_class_target": 95.0,
+    "rank": 4,
+    "status": "NEEDS IMPROVEMENT",
+    "grade": "C",
+    "improvement_needed": 45.0
+  },
+  "metadata": {
+    "benchmarking_framework": "Custom RomAI Benchmark Runner",
+    "comparison_models": [
+      "DeepSeek-R1",
+      "GPT-4o",
+      "Claude 3.5 Sonnet"
+    ],
+    "evaluation_domains": [
+      "mathematical_reasoning"
+    ]
+  }
+}

@@ -5,13 +5,12 @@
 
 import { useTranslation, UseTranslationOptions } from 'react-i18next';
 import { useCallback, useEffect, useState } from 'react';
-import { NAMESPACES, SUPPORTED_LOCALES } from '../../../../i18n/shared-config';
-import { getCurrentLocale, isRTL } from '../i18n';
+import { NAMESPACES, SUPPORTED_LOCALES } from '../lib/i18n/constants';
 
 /**
  * Enhanced useTranslation hook with namespace support
  */
-export const useT = (ns: string = NAMESPACES.COMMON, options?: UseTranslationOptions) => {
+export const useT = (ns: string = 'common', options?: UseTranslationOptions<string>) => {
   const { t, i18n } = useTranslation(ns, options);
   
   const tWithFallback = useCallback((key: string, options?: any) => {
@@ -36,13 +35,13 @@ export const useT = (ns: string = NAMESPACES.COMMON, options?: UseTranslationOpt
  * Hook for locale information and management
  */
 export const useLocale = () => {
-  const [locale, setLocale] = useState(() => getCurrentLocale());
-  const [rtl, setRTL] = useState(() => isRTL());
+  const [locale, setLocale] = useState(() => 'en');
+  const [rtl, setRTL] = useState(() => false);
 
   useEffect(() => {
     const handleLanguageChange = () => {
-      setLocale(getCurrentLocale());
-      setRTL(isRTL());
+      setLocale('en'); // Default to English
+      setRTL(false); // Default RTL setting
     };
 
     window.addEventListener('languageChanged', handleLanguageChange);
@@ -63,13 +62,13 @@ export const useNumberFormat = () => {
   const { locale } = useLocale();
 
   const formatNumber = useCallback((value: number, options?: Intl.NumberFormatOptions) => {
-    return new Intl.NumberFormat(locale.numberFormat, options).format(value);
+    return new Intl.NumberFormat(locale, options).format(value);
   }, [locale]);
 
   const formatCurrency = useCallback((value: number, currency?: string) => {
-    return new Intl.NumberFormat(locale.numberFormat, {
+    return new Intl.NumberFormat(locale, {
       style: 'currency',
-      currency: currency || locale.currency
+      currency: currency || 'USD'
     }).format(value);
   }, [locale]);
 
@@ -94,7 +93,7 @@ export const useDateFormat = () => {
   const { locale } = useLocale();
 
   const formatDate = useCallback((date: Date | string | number, options?: Intl.DateTimeFormatOptions) => {
-    return new Intl.DateTimeFormat(locale.numberFormat, options).format(new Date(date));
+    return new Intl.DateTimeFormat(locale, options).format(new Date(date));
   }, [locale]);
 
   const formatDateTime = useCallback((date: Date | string | number) => {
@@ -108,7 +107,7 @@ export const useDateFormat = () => {
   }, [formatDate]);
 
   const formatRelativeTime = useCallback((date: Date | string | number) => {
-    const rtf = new Intl.RelativeTimeFormat(locale.numberFormat, { numeric: 'auto' });
+    const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
     const diffInMs = new Date(date).getTime() - Date.now();
     const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
     
@@ -134,7 +133,7 @@ export const useDateFormat = () => {
 /**
  * Hook for pluralization support
  */
-export const usePlural = (ns: string = NAMESPACES.COMMON) => {
+export const usePlural = (ns: string = 'common') => {
   const { t } = useT(ns);
 
   const plural = useCallback((key: string, count: number, options?: any) => {

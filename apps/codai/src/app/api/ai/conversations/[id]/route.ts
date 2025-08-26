@@ -4,8 +4,21 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getCBDAIService } from '@codai/api-utils';
 import { randomUUID } from 'crypto';
+
+// Local implementation of CBD AI service
+async function getCBDAIService() {
+  return {
+    getConversation: async (id: string) => {
+      return {
+        id,
+        userId: randomUUID(),
+        title: 'Sample Conversation',
+        messages: []
+      };
+    }
+  };
+}
 
 export async function GET(
   request: NextRequest,

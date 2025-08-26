@@ -94,7 +94,7 @@ class EnhancedMemorAIMCPServer {
             },
             async ({ agentId, content, metadata }) => {
                 const startTime = Date.now();
-                
+
                 try {
                     const memory = await this.memoryStore.store(agentId, content, metadata || {});
 
@@ -147,7 +147,7 @@ class EnhancedMemorAIMCPServer {
             },
             async ({ agentId, query, limit = 10, minImportance = 0, project, session, includeOtherAgents = false }) => {
                 const startTime = Date.now();
-                
+
                 try {
                     const searchOptions: SearchOptions = {
                         limit,
@@ -179,7 +179,7 @@ class EnhancedMemorAIMCPServer {
                                 `⏱️ Search Time: ${duration}ms\n` +
                                 `🔍 Search Features Used: Multi-layer matching, Fuzzy search, Metadata indexing\n\n` +
                                 `📋 Results:\n` +
-                                `${memories.map((memory, index) => 
+                                `${memories.map((memory, index) =>
                                     `${index + 1}. ${memory.crossAgent ? '🌐' : '👤'} ${memory.content.substring(0, 150)}${memory.content.length > 150 ? '...' : ''}\n` +
                                     `   🔑 Key: ${memory.structuredKey}\n` +
                                     `   👤 Agent: ${memory.crossAgent ? `${memory.sourceAgent} (cross-agent)` : memory.agentId}\n` +
@@ -254,7 +254,7 @@ class EnhancedMemorAIMCPServer {
                 try {
                     const context = await this.memoryStore.getContext(agentId, contextSize);
                     const totalMemories = this.memoryStore.getMemoryCount(agentId);
-                    
+
                     return {
                         content: [{
                             type: 'text',
@@ -296,14 +296,14 @@ class EnhancedMemorAIMCPServer {
                 try {
                     const agents = this.memoryStore.listAgents();
                     const totalMemories = this.memoryStore.getMemoryCount();
-                    
+
                     let statsText = '';
                     if (includeStats) {
                         const agentStats = agents.map(agent => ({
                             agent,
                             count: this.memoryStore.getMemoryCount(agent)
                         }));
-                        
+
                         statsText = `\n📊 Memory Statistics by Agent:\n` +
                             agentStats.map(stat => `   ${stat.agent}: ${stat.count} memories`).join('\n') + '\n';
                     }
@@ -368,7 +368,7 @@ class EnhancedMemorAIMCPServer {
             try {
                 const agents = this.memoryStore.listAgents();
                 const totalMemories = this.memoryStore.getMemoryCount();
-                
+
                 res.json({
                     status: 'healthy',
                     service: 'enhanced-memorai-mcp-server',
@@ -419,9 +419,9 @@ class EnhancedMemorAIMCPServer {
         this.app.post('/test-original-query', async (req: Request, res: Response) => {
             try {
                 const { agentId = 'test_agent', query = 'test-time compute scaling chain-of-thought verification loops GPT-5 thinking mode' } = req.body;
-                
+
                 // First, store a test memory if needed
-                await this.memoryStore.store(agentId, 
+                await this.memoryStore.store(agentId,
                     'Advanced Chain-of-Thought Reasoning Implementation with test-time compute scaling for complex problem solving, multi-step verification loops, and GPT-5 style thinking mode integration',
                     {
                         entityType: 'test',
@@ -429,11 +429,11 @@ class EnhancedMemorAIMCPServer {
                         tags: ['chain-of-thought', 'test-time', 'compute-scaling', 'verification', 'gpt-5', 'thinking-mode']
                     }
                 );
-                
+
                 const startTime = Date.now();
                 const results = await this.memoryStore.recall(agentId, query, { includeOtherAgents: true });
                 const duration = Date.now() - startTime;
-                
+
                 res.json({
                     success: results.length > 0,
                     query,
@@ -446,7 +446,7 @@ class EnhancedMemorAIMCPServer {
                         importance: r.metadata?.importance,
                         crossAgent: r.crossAgent
                     })),
-                    message: results.length > 0 
+                    message: results.length > 0
                         ? '✅ Original failing query now works!'
                         : '❌ Query still failing - needs further investigation'
                 });
@@ -573,7 +573,7 @@ class EnhancedMemorAIMCPServer {
                 console.log(`   🌐 MCP Endpoint: http://localhost:${CONFIG.port}/mcp`);
                 console.log(`   💚 Health Check: http://localhost:${CONFIG.port}/health`);
                 console.log(`   🧪 Test Endpoint: http://localhost:${CONFIG.port}/test-original-query`);
-                
+
                 console.log('\n🎯 Phase 1 Enhancements Applied:');
                 console.log('   ✅ Multi-layer search (exact + fuzzy + metadata)');
                 console.log('   ✅ Cross-agent memory access with permissions');
@@ -581,7 +581,7 @@ class EnhancedMemorAIMCPServer {
                 console.log('   ✅ Improved compound word matching');
                 console.log('   ✅ Performance monitoring and logging');
                 console.log('   ✅ Original failing query resolution');
-                
+
                 console.log('\n💡 Test the fix with:');
                 console.log(`   curl -X POST http://localhost:${CONFIG.port}/test-original-query`);
                 console.log('\n✅ Enhanced MemorAI MCP Server ready!\n');

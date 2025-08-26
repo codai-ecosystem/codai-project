@@ -59,9 +59,8 @@ class RomAIMoEInferenceEngine:
         self.moe_system = create_romai_moe_system(
             num_experts=8,  # Added multimodal expert
             hidden_size=hidden_size,
-            intermediate_size=intermediate_size,
-            experts_per_token=experts_per_token,
-            device=self.device
+            num_experts_per_token=experts_per_token,
+            enable_romanian_specialization=True
         )
         
         # Expert role mapping for backward compatibility
@@ -85,7 +84,7 @@ class RomAIMoEInferenceEngine:
         self.expert_usage_history = []
         
         logger.info("🚀 RomAI MoE Inference Engine initialized successfully")
-        logger.info(f"📊 Total parameters: {self.moe_system._count_total_parameters():,}")
+        logger.info(f"📊 Total parameters: {self.moe_system.get_total_parameters():,}")
         logger.info(f"⚡ Device: {self.device}")
     
     def _initialize_routing_intelligence(self) -> Dict[str, List[ExpertType]]:
@@ -208,7 +207,7 @@ class RomAIMoEInferenceEngine:
             'performance': {
                 'avg_inference_time_ms': self.total_inference_time / self.inference_count,
                 'total_inferences': self.inference_count,
-                'parameters_used': moe_info['num_active_experts'] * (self.moe_system._count_total_parameters() // 7),
+                'parameters_used': moe_info['num_active_experts'] * (self.moe_system.get_total_parameters() // 7),
                 'memory_efficiency': self._calculate_memory_efficiency(moe_info)
             }
         }
@@ -281,7 +280,14 @@ class RomAIMoEInferenceEngine:
         char_tensor = torch.tensor(char_ids, dtype=torch.float32, device=self.device)
         
         # Simple embedding projection to hidden_size
-        embedding_matrix = torch.randn(256, self.hidden_size, device=self.device) / math.sqrt(self.hidden_size)
+        embedding = torch.randn(1, len(char_ids), self.hidden_size, device=self.device)
+        
+        return embedding
+    
+    def _create_embedding_projection(self, char_tensor: torch.Tensor) -> torch.Tensor:
+        """Create embedding projection from character tensor"""
+        # Create embedding matrix for character-level processing
+        embedding_matrix = torch.randn(256, self.hidden_size, device=self.device)
         embedded = F.embedding(char_tensor.long() % 256, embedding_matrix)
         
         # Add batch dimension: [1, seq_len, hidden_size]
@@ -363,7 +369,7 @@ class RomAIMoEInferenceEngine:
     def _calculate_memory_efficiency(self, moe_info: Dict[str, Any]) -> float:
         """Calculate memory efficiency compared to loading all models"""
         # Traditional approach: load all 7 models simultaneously
-        total_parameters = self.moe_system._count_total_parameters()
+        total_parameters = self.moe_system.get_total_parameters()
         active_parameters = moe_info['num_active_experts'] * (total_parameters // 7)
         
         efficiency = active_parameters / total_parameters
@@ -392,7 +398,7 @@ class RomAIMoEInferenceEngine:
             'avg_active_experts_per_inference': avg_active_experts,
             'avg_efficiency_ratio': avg_efficiency,
             'parameter_efficiency': f"{avg_efficiency * 100:.1f}%",
-            'total_parameters': self.moe_system._count_total_parameters(),
+            'total_parameters': self.moe_system.get_total_parameters(),
             'utilization_stats': self.moe_system.get_expert_utilization(),
             'memory_savings': f"{(1 - avg_efficiency) * 100:.1f}%",
             'last_updated': datetime.now().isoformat()
@@ -474,7 +480,7 @@ class LegacyAgentWrapper:
     def __init__(self, moe_engine: RomAIMoEInferenceEngine, agent_type: str):
         self.moe_engine = moe_engine
         self.agent_type = agent_type
-        self.parameters_count = moe_engine.moe_system._count_total_parameters() // 7  # Simulated per-agent count
+        self.parameters_count = moe_engine.moe_system.get_total_parameters() // 7  # Simulated per-agent count
     
     async def process_task(self, task: Dict[str, Any]) -> Dict[str, Any]:
         """Process task using MoE backend with agent-specific routing"""

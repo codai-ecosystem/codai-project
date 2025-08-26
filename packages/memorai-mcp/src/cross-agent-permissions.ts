@@ -104,7 +104,7 @@ export class CrossAgentPermissionManager {
     private rules: Map<string, PermissionRule> = new Map();
     private auditLog: MemoryAuditLog[] = [];
     private defaultRules: PermissionRule[] = [];
-    
+
     constructor() {
         this.initializeDefaultRules();
         console.log('[MemorAI Permissions] Cross-Agent Permission Manager initialized');
@@ -115,20 +115,20 @@ export class CrossAgentPermissionManager {
      */
     async checkPermission(request: AccessRequest): Promise<AccessResult> {
         const startTime = Date.now();
-        
+
         try {
             // Get applicable rules sorted by priority
             const applicableRules = this.getApplicableRules(request);
-            
+
             if (applicableRules.length === 0) {
                 const result = this.createDeniedResult('No applicable rules found');
                 await this.logAccess(request, result);
                 return result;
             }
-            
+
             // Apply highest priority rule
             const topRule = applicableRules[0];
-            
+
             // Check additional conditions
             const conditionResult = await this.checkConditions(request, topRule);
             if (!conditionResult.passed) {
@@ -136,18 +136,18 @@ export class CrossAgentPermissionManager {
                 await this.logAccess(request, result);
                 return result;
             }
-            
+
             // Create result based on rule
             const result = this.createAccessResult(request, topRule, applicableRules);
-            
+
             // Log the access attempt
             await this.logAccess(request, result);
-            
+
             // Update rule usage count
             topRule.usageCount++;
-            
+
             return result;
-            
+
         } catch (error) {
             console.error('[MemorAI Permissions] Permission check failed:', error);
             const result = this.createDeniedResult('Permission check error');
@@ -167,7 +167,7 @@ export class CrossAgentPermissionManager {
             updatedAt: new Date().toISOString(),
             usageCount: 0
         };
-        
+
         this.rules.set(fullRule.id, fullRule);
         console.log(`[MemorAI Permissions] Added rule: ${fullRule.name}`);
         return fullRule;
@@ -179,7 +179,7 @@ export class CrossAgentPermissionManager {
     updateRule(ruleId: string, updates: Partial<PermissionRule>): PermissionRule | null {
         const rule = this.rules.get(ruleId);
         if (!rule) return null;
-        
+
         const updatedRule = {
             ...rule,
             ...updates,
@@ -187,7 +187,7 @@ export class CrossAgentPermissionManager {
             createdAt: rule.createdAt, // Preserve creation time
             updatedAt: new Date().toISOString()
         };
-        
+
         this.rules.set(ruleId, updatedRule);
         console.log(`[MemorAI Permissions] Updated rule: ${updatedRule.name}`);
         return updatedRule;
@@ -220,7 +220,7 @@ export class CrossAgentPermissionManager {
     toggleRule(ruleId: string, enabled: boolean): boolean {
         const rule = this.rules.get(ruleId);
         if (!rule) return false;
-        
+
         rule.enabled = enabled;
         rule.updatedAt = new Date().toISOString();
         console.log(`[MemorAI Permissions] Rule ${rule.name} ${enabled ? 'enabled' : 'disabled'}`);
@@ -232,13 +232,13 @@ export class CrossAgentPermissionManager {
      */
     getAuditLog(limit: number = 100, agentFilter?: string): MemoryAuditLog[] {
         let logs = [...this.auditLog].reverse(); // Most recent first
-        
+
         if (agentFilter) {
-            logs = logs.filter(log => 
+            logs = logs.filter(log =>
                 log.requestingAgent === agentFilter || log.targetAgent === agentFilter
             );
         }
-        
+
         return logs.slice(0, limit);
     }
 
@@ -248,12 +248,12 @@ export class CrossAgentPermissionManager {
     cleanupAuditLog(olderThanDays: number = 30): number {
         const cutoffDate = new Date();
         cutoffDate.setDate(cutoffDate.getDate() - olderThanDays);
-        
+
         const initialCount = this.auditLog.length;
-        this.auditLog = this.auditLog.filter(log => 
+        this.auditLog = this.auditLog.filter(log =>
             new Date(log.timestamp) > cutoffDate
         );
-        
+
         const removedCount = initialCount - this.auditLog.length;
         console.log(`[MemorAI Permissions] Cleaned up ${removedCount} audit log entries`);
         return removedCount;
@@ -278,7 +278,7 @@ export class CrossAgentPermissionManager {
         createdAt: string;
     } {
         const linkId = `share-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-        
+
         // Create temporary rule for this share link
         const shareRule = this.addRule({
             name: `Share Link: ${memory.id}`,
@@ -336,7 +336,7 @@ export class CrossAgentPermissionManager {
         });
 
         const topAgents = Array.from(agentCounts.entries())
-            .sort(([,a], [,b]) => b - a)
+            .sort(([, a], [, b]) => b - a)
             .slice(0, 10)
             .map(([agent, requests]) => ({ agent, requests }));
 
@@ -421,40 +421,40 @@ export class CrossAgentPermissionManager {
 
     private getApplicableRules(request: AccessRequest): PermissionRule[] {
         const { requestingAgent, targetAgent, memory } = request;
-        
+
         return Array.from(this.rules.values())
             .filter(rule => rule.enabled)
             .filter(rule => {
                 // Check agent patterns
                 const sourceMatches = new RegExp(rule.sourceAgentPattern).test(requestingAgent);
                 const targetMatches = new RegExp(rule.targetAgentPattern).test(targetAgent);
-                
+
                 if (!sourceMatches || !targetMatches) return false;
-                
+
                 // Check content pattern if specified
                 if (rule.contentPattern) {
                     const contentMatches = new RegExp(rule.contentPattern, 'i').test(memory.content);
                     if (!contentMatches) return false;
                 }
-                
+
                 // Check metadata conditions if specified
                 if (rule.metadataConditions) {
                     for (const [key, value] of Object.entries(rule.metadataConditions)) {
                         if (memory.metadata[key] !== value) return false;
                     }
                 }
-                
+
                 return true;
             })
             .sort((a, b) => b.priority - a.priority);
     }
 
-    private async checkConditions(request: AccessRequest, rule: PermissionRule): Promise<{passed: boolean, reason: string}> {
+    private async checkConditions(request: AccessRequest, rule: PermissionRule): Promise<{ passed: boolean, reason: string }> {
         if (!rule.conditions) return { passed: true, reason: 'No conditions' };
-        
+
         const { memory } = request;
         const conditions = rule.conditions;
-        
+
         // Time restriction check
         if (conditions.timeRestriction) {
             const now = new Date();
@@ -471,7 +471,7 @@ export class CrossAgentPermissionManager {
                 }
             }
         }
-        
+
         // Importance threshold check
         if (conditions.importanceThreshold) {
             const importance = memory.metadata.importance || 5;
@@ -479,7 +479,7 @@ export class CrossAgentPermissionManager {
                 return { passed: false, reason: `Memory importance ${importance} below threshold ${conditions.importanceThreshold}` };
             }
         }
-        
+
         // Project whitelist/blacklist
         if (conditions.projectWhitelist && memory.metadata.project) {
             if (!conditions.projectWhitelist.includes(memory.metadata.project)) {
@@ -491,10 +491,10 @@ export class CrossAgentPermissionManager {
                 return { passed: false, reason: `Project ${memory.metadata.project} is blacklisted` };
             }
         }
-        
+
         // Tag whitelist/blacklist
         if (conditions.tagWhitelist && memory.metadata.tags) {
-            const hasWhitelistedTag = memory.metadata.tags.some(tag => 
+            const hasWhitelistedTag = memory.metadata.tags.some(tag =>
                 conditions.tagWhitelist!.includes(tag)
             );
             if (!hasWhitelistedTag) {
@@ -502,14 +502,14 @@ export class CrossAgentPermissionManager {
             }
         }
         if (conditions.tagBlacklist && memory.metadata.tags) {
-            const hasBlacklistedTag = memory.metadata.tags.some(tag => 
+            const hasBlacklistedTag = memory.metadata.tags.some(tag =>
                 conditions.tagBlacklist!.includes(tag)
             );
             if (hasBlacklistedTag) {
                 return { passed: false, reason: 'Memory contains blacklisted tags' };
             }
         }
-        
+
         // Entity type whitelist/blacklist
         if (conditions.entityTypeWhitelist && memory.metadata.entityType) {
             if (!conditions.entityTypeWhitelist.includes(memory.metadata.entityType)) {
@@ -521,17 +521,17 @@ export class CrossAgentPermissionManager {
                 return { passed: false, reason: `Entity type ${memory.metadata.entityType} is blacklisted` };
             }
         }
-        
+
         return { passed: true, reason: 'All conditions passed' };
     }
 
     private createAccessResult(request: AccessRequest, rule: PermissionRule, applicableRules: PermissionRule[]): AccessResult {
         const { accessType } = request;
-        
+
         // Check if requested access type is allowed by the rule
         let granted = false;
         let level = rule.accessLevel;
-        
+
         switch (accessType) {
             case 'read':
                 granted = ['read', 'read_write', 'full'].includes(rule.accessLevel);
@@ -543,30 +543,30 @@ export class CrossAgentPermissionManager {
                 granted = rule.accessLevel === 'full';
                 break;
         }
-        
+
         const result: AccessResult = {
             granted,
             level: granted ? level : 'none',
-            reason: granted 
+            reason: granted
                 ? `Access granted by rule: ${rule.name}`
                 : `Access denied: rule ${rule.name} does not allow ${accessType} access`,
             appliedRules: applicableRules.map(r => r.name)
         };
-        
+
         // Add restrictions if applicable
         if (granted && rule.conditions?.timeRestriction?.endTime) {
             result.restrictions = {
                 expiresAt: rule.conditions.timeRestriction.endTime
             };
         }
-        
+
         if (granted && level === 'read') {
             result.restrictions = {
                 ...result.restrictions,
                 readOnly: true
             };
         }
-        
+
         return result;
     }
 
@@ -598,9 +598,9 @@ export class CrossAgentPermissionManager {
                 context: request.context
             }
         };
-        
+
         this.auditLog.push(logEntry);
-        
+
         // Keep only last 10000 entries to prevent memory bloat
         if (this.auditLog.length > 10000) {
             this.auditLog = this.auditLog.slice(-5000); // Keep last 5000

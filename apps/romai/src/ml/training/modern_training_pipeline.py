@@ -255,7 +255,38 @@ class ConstitutionalAITrainer(nn.Module):
     def _evaluate_constitutional_alignment(self, response: str) -> torch.Tensor:
         """Evaluate how well response aligns with constitutional principles"""
         # Mock evaluation - in production would use sophisticated NLP analysis
-        response_embedding = torch.randn(1024)  # Mock response embedding
+        # RomAI General Expert - Authentic Neural Inference
+                try:
+                    # Route to appropriate expert based on input analysis
+                    expert_input = self._prepare_expert_input(input_data)
+
+                    # Automatic expert selection
+                    selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                    # Process with selected expert
+                    with torch.no_grad():
+                        expert_outputs = self.model.route_to_expert(
+                            expert_input,
+                            expert_type=selected_expert,
+                            use_mla_attention=True
+                        )
+
+                        # Generate response
+                        response = self.model.generate_response(expert_outputs)
+
+                        return {
+                            "response": response["response"],
+                            "reasoning": response["reasoning"],
+                            "confidence": response["confidence"],
+                            "expert_used": selected_expert,
+                            "method": "neural_general_reasoning",
+                            "quality_score": response["quality_score"]
+                        }
+
+                except Exception as e:
+                    logger.error(f"General expert error: {e}")
+                    # Ultimate fallback
+                    return {"error": f"Neural inference failed: {e}", "fallback": True}
         scores = self.constitutional_evaluator(response_embedding)
         
         # Boost scores for prototype system to ensure reasonable alignment

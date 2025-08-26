@@ -23,6 +23,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { EnhancedMemoryStore } from './enhanced-memory-store.js';
 import { PersistentMemoryStore } from './persistent-memory-store.js';
+import { ProductionMonitoringSystem, DEFAULT_MONITORING_CONFIG } from './production-monitoring.js';
 import type { SearchOptions } from './enhanced-memory-store.js';
 
 // Load environment variables
@@ -60,10 +61,25 @@ const FEATURES = {
 class EnhancedMemorAIMCPServer {
     private memoryStore: EnhancedMemoryStore | undefined;
     private app: express.Express;
+    private monitoringSystem: ProductionMonitoringSystem;
 
     constructor() {
         this.app = express();
         this.setupExpressApp();
+
+        // Initialize production monitoring
+        if (process.env.NODE_ENV === 'production' || process.env.ENABLE_MONITORING === 'true') {
+            this.monitoringSystem = new ProductionMonitoringSystem(DEFAULT_MONITORING_CONFIG);
+            console.log('[MemorAI MCP] ✅ Production monitoring enabled');
+        } else {
+            // Create a minimal monitoring system for development
+            this.monitoringSystem = new ProductionMonitoringSystem({
+                ...DEFAULT_MONITORING_CONFIG,
+                performanceCollection: { ...DEFAULT_MONITORING_CONFIG.performanceCollection, enabled: false },
+                healthChecks: { ...DEFAULT_MONITORING_CONFIG.healthChecks, enabled: false }
+            });
+            console.log('[MemorAI MCP] ✅ Development monitoring enabled');
+        }
     }
 
     /**
@@ -74,8 +90,8 @@ class EnhancedMemorAIMCPServer {
             try {
                 console.log('[MemorAI MCP] Testing CBD database connection...');
                 // Test CBD database connection
-                const response = await fetch(`${CONFIG.cbdBaseUrl}/health`, { 
-                    signal: AbortSignal.timeout(5000) 
+                const response = await fetch(`${CONFIG.cbdBaseUrl}/health`, {
+                    signal: AbortSignal.timeout(5000)
                 });
                 if (response.ok) {
                     console.log('[MemorAI MCP] ✅ CBD database available - using persistent storage');
@@ -87,7 +103,7 @@ class EnhancedMemorAIMCPServer {
                     throw new Error(`CBD database health check failed: ${response.status}`);
                 }
             } catch (error) {
-                console.warn('[MemorAI MCP] ⚠️ CBD database not available, falling back to in-memory storage:', 
+                console.warn('[MemorAI MCP] ⚠️ CBD database not available, falling back to in-memory storage:',
                     error instanceof Error ? error.message : 'Unknown error');
                 this.memoryStore = new EnhancedMemoryStore(CONFIG.azure);
                 console.log('[MemorAI MCP] ✅ In-memory store initialized');
@@ -137,7 +153,7 @@ class EnhancedMemorAIMCPServer {
             },
             async ({ agentId, content, metadata }) => {
                 const startTime = Date.now();
-                
+
                 try {
                     this.ensureMemoryStore();
                     const memory = await this.memoryStore!.store(agentId, content, metadata || {});
@@ -191,7 +207,7 @@ class EnhancedMemorAIMCPServer {
             },
             async ({ agentId, query, limit = 10, minImportance = 0, project, session, includeOtherAgents = false }) => {
                 const startTime = Date.now();
-                
+
                 try {
                     const searchOptions: SearchOptions = {
                         limit,
@@ -224,7 +240,7 @@ class EnhancedMemorAIMCPServer {
                                 `⏱️ Search Time: ${duration}ms\n` +
                                 `🔍 Search Features Used: Multi-layer matching, Fuzzy search, Metadata indexing\n\n` +
                                 `📋 Results:\n` +
-                                `${memories.map((memory, index) => 
+                                `${memories.map((memory, index) =>
                                     `${index + 1}. ${memory.crossAgent ? '🌐' : '👤'} ${memory.content.substring(0, 150)}${memory.content.length > 150 ? '...' : ''}\n` +
                                     `   🔑 Key: ${memory.structuredKey}\n` +
                                     `   👤 Agent: ${memory.crossAgent ? `${memory.sourceAgent} (cross-agent)` : memory.agentId}\n` +
@@ -300,7 +316,7 @@ class EnhancedMemorAIMCPServer {
                 try {
                     const context = await this.memoryStore.getContext(agentId, contextSize);
                     const totalMemories = this.memoryStore.getMemoryCount(agentId);
-                    
+
                     return {
                         content: [{
                             type: 'text',
@@ -342,14 +358,14 @@ class EnhancedMemorAIMCPServer {
                 try {
                     const agents = this.memoryStore.listAgents();
                     const totalMemories = this.memoryStore.getMemoryCount();
-                    
+
                     let statsText = '';
                     if (includeStats) {
                         const agentStats = agents.map(agent => ({
                             agent,
                             count: this.memoryStore.getMemoryCount(agent)
                         }));
-                        
+
                         statsText = `\n📊 Memory Statistics by Agent:\n` +
                             agentStats.map(stat => `   ${stat.agent}: ${stat.count} memories`).join('\n') + '\n';
                     }
@@ -393,7 +409,7 @@ class EnhancedMemorAIMCPServer {
         );
 
         // Phase 4 Advanced Tools
-        
+
         // Analytics Dashboard Tool
         server.registerTool(
             'get_analytics_dashboard',
@@ -407,7 +423,7 @@ class EnhancedMemorAIMCPServer {
                 try {
                     this.ensureMemoryStore();
                     const dashboard = await this.memoryStore!.getAnalyticsDashboard(agentId);
-                    
+
                     return {
                         content: [{
                             type: 'text',
@@ -420,15 +436,15 @@ class EnhancedMemorAIMCPServer {
                                 `  • Oldest Memory: ${dashboard.overview.oldestMemory}\n` +
                                 `  • Newest Memory: ${dashboard.overview.newestMemory}\n\n` +
                                 `🔍 Memory Clusters: ${dashboard.clusters.length} found\n` +
-                                dashboard.clusters.map((c, i) => 
-                                    `  ${i+1}. Cluster ${c.id}: ${c.memories.length} memories (${c.label})`
+                                dashboard.clusters.map((c, i) =>
+                                    `  ${i + 1}. Cluster ${c.id}: ${c.memories.length} memories (${c.label})`
                                 ).join('\n') + '\n\n' +
                                 `⏰ Temporal Patterns: ${dashboard.temporalPatterns.length} detected\n` +
-                                dashboard.temporalPatterns.map(p => 
+                                dashboard.temporalPatterns.map(p =>
                                     `  • ${p.pattern}: ${p.memoryCount} memories (confidence: ${(p.confidence * 100).toFixed(1)}%)`
                                 ).join('\n') + '\n\n' +
                                 `💡 Insights: ${dashboard.insights.length} generated\n` +
-                                dashboard.insights.slice(0, 3).map(i => 
+                                dashboard.insights.slice(0, 3).map(i =>
                                     `  • ${i.type}: ${i.title} (confidence: ${(i.confidence * 100).toFixed(1)}%)`
                                 ).join('\n') + '\n\n' +
                                 `🔄 Lifecycle Management:\n` +
@@ -464,15 +480,15 @@ class EnhancedMemorAIMCPServer {
                 try {
                     this.ensureMemoryStore();
                     const clusters = await this.memoryStore!.clusterMemories(agentId, clusterCount);
-                    
+
                     return {
                         content: [{
                             type: 'text',
                             text: `🧠 Memory Clusters for Agent: ${agentId}\n` +
                                 `=======================================\n\n` +
                                 `Found ${clusters.length} clusters:\n\n` +
-                                clusters.map((cluster, i) => 
-                                    `📦 Cluster ${i+1} (ID: ${cluster.id})\n` +
+                                clusters.map((cluster, i) =>
+                                    `📦 Cluster ${i + 1} (ID: ${cluster.id})\n` +
                                     `   Label: ${cluster.label}\n` +
                                     `   Memories: ${cluster.memories.length}\n` +
                                     `   Coherence: ${cluster.coherence.toFixed(4)}\n` +
@@ -507,14 +523,14 @@ class EnhancedMemorAIMCPServer {
                 try {
                     this.ensureMemoryStore();
                     const patterns = await this.memoryStore!.analyzeTemporalPatterns(agentId);
-                    
+
                     return {
                         content: [{
                             type: 'text',
                             text: `⏰ Temporal Patterns for Agent: ${agentId}\n` +
                                 `=========================================\n\n` +
                                 `Detected ${patterns.length} patterns:\n\n` +
-                                patterns.map(pattern => 
+                                patterns.map(pattern =>
                                     `🔄 Pattern: ${pattern.pattern}\n` +
                                     `   Frequency: ${pattern.memoryCount} memories\n` +
                                     `   Confidence: ${(pattern.confidence * 100).toFixed(1)}%\n` +
@@ -550,7 +566,7 @@ class EnhancedMemorAIMCPServer {
                 try {
                     this.ensureMemoryStore();
                     const result = await this.memoryStore!.applyImportanceDecay(agentId, decayRate);
-                    
+
                     return {
                         content: [{
                             type: 'text',
@@ -587,15 +603,15 @@ class EnhancedMemorAIMCPServer {
                 try {
                     this.ensureMemoryStore();
                     const insights = await this.memoryStore!.generateInsights(agentId);
-                    
+
                     return {
                         content: [{
                             type: 'text',
                             text: `💡 Memory Insights for Agent: ${agentId}\n` +
                                 `====================================\n\n` +
                                 `Generated ${insights.length} insights:\n\n` +
-                                insights.map((insight, i) => 
-                                    `${i+1}. ${insight.type.toUpperCase()}: ${insight.title}\n` +
+                                insights.map((insight, i) =>
+                                    `${i + 1}. ${insight.type.toUpperCase()}: ${insight.title}\n` +
                                     `   Description: ${insight.description}\n` +
                                     `   Confidence: ${(insight.confidence * 100).toFixed(1)}%\n` +
                                     `   Affected Memories: ${insight.memories.length}\n` +
@@ -630,7 +646,7 @@ class EnhancedMemorAIMCPServer {
                 try {
                     this.ensureMemoryStore();
                     const result = await this.memoryStore!.compressMemories(agentId);
-                    
+
                     return {
                         content: [{
                             type: 'text',
@@ -674,12 +690,12 @@ class EnhancedMemorAIMCPServer {
                 try {
                     this.ensureMemoryStore();
                     const memories = await this.memoryStore!.secureRecall(
-                        requestingAgent, 
-                        targetAgent, 
-                        query, 
+                        requestingAgent,
+                        targetAgent,
+                        query,
                         { limit, minImportance }
                     );
-                    
+
                     return {
                         content: [{
                             type: 'text',
@@ -689,8 +705,8 @@ class EnhancedMemorAIMCPServer {
                                 `🎯 Target Agent: ${targetAgent}\n` +
                                 `🔍 Query: "${query}"\n` +
                                 `📊 Results: ${memories.length} permitted memories\n\n` +
-                                memories.map((memory, i) => 
-                                    `${i+1}. 🔑 ${memory.structuredKey}\n` +
+                                memories.map((memory, i) =>
+                                    `${i + 1}. 🔑 ${memory.structuredKey}\n` +
                                     `   📄 ${memory.content.substring(0, 100)}${memory.content.length > 100 ? '...' : ''}\n` +
                                     `   ⭐ Relevance: ${((memory.relevanceScore || 0) * 100).toFixed(1)}%\n` +
                                     `   🏷️ Source: ${memory.sourceAgent} (cross-agent)\n` +
@@ -739,7 +755,7 @@ class EnhancedMemorAIMCPServer {
                         priority,
                         enabled: true
                     });
-                    
+
                     return {
                         content: [{
                             type: 'text',
@@ -782,14 +798,14 @@ class EnhancedMemorAIMCPServer {
                 try {
                     this.ensureMemoryStore();
                     const auditLog = this.memoryStore!.getPermissionAuditLog(limit, agentFilter);
-                    
+
                     return {
                         content: [{
                             type: 'text',
                             text: `📋 Permission Audit Log\n` +
                                 `=======================\n\n` +
                                 `Found ${auditLog.length} audit entries:\n\n` +
-                                auditLog.map(entry => 
+                                auditLog.map(entry =>
                                     `📅 ${entry.timestamp}\n` +
                                     `👤 ${entry.requestingAgent} → ${entry.targetAgent}\n` +
                                     `🔍 Memory ID: ${entry.memoryId}\n` +
@@ -830,246 +846,294 @@ class EnhancedMemorAIMCPServer {
 
         this.app.use(express.json({ limit: '10mb' }));
 
-        // Enhanced health endpoint
+        // Enhanced health endpoint with production monitoring
         this.app.get('/health', async (req: Request, res: Response) => {
             try {
-                const agents = this.memoryStore!.listAgents();
-                const totalMemories = this.memoryStore!.getMemoryCount();
-                
-                res.json({
-                    status: 'healthy',
+                const correlationId = randomUUID();
+                const systemStatus = this.monitoringSystem.getSystemStatus();
+
+                const agents = this.memoryStore?.listAgents() || [];
+                const totalMemories = this.memoryStore?.getMemoryCount() || 0;
+
+                const healthData = {
+                    status: systemStatus.status,
                     service: 'enhanced-memorai-mcp-server',
-                    version: '11.0.0-enhanced',
+                    version: '2.0.0',
                     mcpProtocol: '2025-03-26',
                     transports: ['stdio', 'streamable-http'],
+                    uptime: systemStatus.uptime,
+                    correlationId,
                     enhancements: {
                         phase1Fixes: true,
                         enhancedSearch: true,
                         crossAgentAccess: FEATURES.crossAgentAccess,
                         fuzzyMatching: true,
-                        relevanceScoring: true
-                    },
-                    statistics: {
-                        activeAgents: agents.length,
-                        totalMemories: totalMemories,
-                        features: FEATURES
-                    },
-                    config: {
-                        port: CONFIG.port,
                         vectorSearch: FEATURES.vectorSearch,
-                        azureOpenAI: !!CONFIG.azure.apiKey
+                        hybridSearch: FEATURES.hybridSearch,
+                        persistentStorage: FEATURES.persistentStorage,
+                        productionMonitoring: true
                     },
-                    tools: {
-                        core: ['remember', 'recall', 'forget', 'context'],
-                        debug: ['debug_info'],
-                        enhancements: [
-                            'Multi-layer search',
-                            'Fuzzy matching',
-                            'Cross-agent access',
-                            'Relevance scoring',
-                            'Performance monitoring'
-                        ]
+                    memory: {
+                        totalAgents: agents.length,
+                        totalMemories,
+                        enabledFeatures: {
+                            vectorSearch: FEATURES.vectorSearch,
+                            hybridSearch: FEATURES.hybridSearch,
+                            rbac: FEATURES.rbac,
+                            monitoring: FEATURES.monitoring,
+                            analytics: FEATURES.analytics
+                        }
+                    },
+                    monitoring: {
+                        metrics: systemStatus.metrics,
+                        healthChecks: systemStatus.healthChecks,
+                        circuitBreakers: systemStatus.circuitBreakers
                     }
-                });
+                };
+
+                this.monitoringSystem.recordRequest(Date.now() - Date.now(), true, correlationId);
+
+                if (systemStatus.status === 'unhealthy') {
+                    res.status(503).json(healthData);
+                } else if (systemStatus.status === 'degraded') {
+                    res.status(200).json(healthData);
+                } else {
+                    res.status(200).json(healthData);
+                }
             } catch (error) {
-                console.error('Health check error:', error);
+                console.error('[MemorAI MCP] Health check failed:', error);
+                this.monitoringSystem.recordRequest(Date.now() - Date.now(), false);
                 res.status(500).json({
-                    status: 'error',
+                    status: 'unhealthy',
                     service: 'enhanced-memorai-mcp-server',
-                    version: '11.0.0-enhanced',
-                    error: error instanceof Error ? error.message : 'Unknown error'
+                    version: '2.0.0',
+                    error: 'Health check failed'
                 });
             }
         });
-
-        // Test endpoint for validating the fix
-        this.app.post('/test-original-query', async (req: Request, res: Response) => {
-            try {
-                const { agentId = 'test_agent', query = 'test-time compute scaling chain-of-thought verification loops GPT-5 thinking mode' } = req.body;
-                
-                // First, store a test memory if needed
-                await this.memoryStore!.store(agentId, 
-                    'Advanced Chain-of-Thought Reasoning Implementation with test-time compute scaling for complex problem solving, multi-step verification loops, and GPT-5 style thinking mode integration',
-                    {
-                        entityType: 'test',
-                        importance: 8,
-                        tags: ['chain-of-thought', 'test-time', 'compute-scaling', 'verification', 'gpt-5', 'thinking-mode']
-                    }
-                );
-                
-                const startTime = Date.now();
-                const results = await this.memoryStore!.recall(agentId, query, { includeOtherAgents: true });
-                const duration = Date.now() - startTime;
-                
-                res.json({
-                    success: results.length > 0,
-                    query,
-                    agentId,
-                    resultsCount: results.length,
-                    searchTime: duration,
-                    results: results.map(r => ({
-                        content: r.content.substring(0, 200),
-                        relevanceScore: r.relevanceScore,
-                        importance: r.metadata?.importance,
-                        crossAgent: r.crossAgent
-                    })),
-                    message: results.length > 0 
-                        ? '✅ Original failing query now works!'
-                        : '❌ Query still failing - needs further investigation'
-                });
+        relevanceScoring: true
+    },
+    statistics: {
+        activeAgents: agents.length,
+        totalMemories: totalMemories,
+        features: FEATURES
+    },
+    config: {
+        port: CONFIG.port,
+        vectorSearch: FEATURES.vectorSearch,
+        azureOpenAI: !!CONFIG.azure.apiKey
+    },
+    tools: {
+        core: ['remember', 'recall', 'forget', 'context'],
+        debug: ['debug_info'],
+        enhancements: [
+            'Multi-layer search',
+            'Fuzzy matching',
+            'Cross-agent access',
+            'Relevance scoring',
+            'Performance monitoring'
+        ]
+    }
+});
             } catch (error) {
-                res.status(500).json({
-                    success: false,
-                    error: error instanceof Error ? error.message : 'Unknown error'
-                });
-            }
+    console.error('Health check error:', error);
+    res.status(500).json({
+        status: 'error',
+        service: 'enhanced-memorai-mcp-server',
+        version: '11.0.0-enhanced',
+        error: error instanceof Error ? error.message : 'Unknown error'
+    });
+}
         });
 
-        // SSE endpoint for MCP HTTP transport
-        this.app.get('/mcp/sse', async (req: Request, res: Response) => {
-            try {
-                res.writeHead(200, {
-                    'Content-Type': 'text/event-stream',
-                    'Cache-Control': 'no-cache',
-                    'Connection': 'keep-alive',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Headers': 'Cache-Control'
-                });
+// Test endpoint for validating the fix
+this.app.post('/test-original-query', async (req: Request, res: Response) => {
+    try {
+        const { agentId = 'test_agent', query = 'test-time compute scaling chain-of-thought verification loops GPT-5 thinking mode' } = req.body;
 
-                const server = this.createMCPServerWithTools();
-                const transport = new StreamableHTTPServerTransport({
-                    sessionIdGenerator: undefined,
-                });
-
-                req.on('close', () => {
-                    res.end();
-                    transport.close?.();
-                    server.close?.();
-                });
-
-                await server.connect(transport);
-
-                const keepAlive = setInterval(() => {
-                    if (!res.destroyed) {
-                        res.write('data: {"type":"ping"}\n\n');
-                    } else {
-                        clearInterval(keepAlive);
-                    }
-                }, 30000);
-
-                console.log('🔗 New Enhanced SSE connection established');
-
-            } catch (error) {
-                console.error('SSE connection error:', error);
-                if (!res.headersSent) {
-                    res.status(500).json({ error: 'SSE connection failed' });
-                }
+        // First, store a test memory if needed
+        await this.memoryStore!.store(agentId,
+            'Advanced Chain-of-Thought Reasoning Implementation with test-time compute scaling for complex problem solving, multi-step verification loops, and GPT-5 style thinking mode integration',
+            {
+                entityType: 'test',
+                importance: 8,
+                tags: ['chain-of-thought', 'test-time', 'compute-scaling', 'verification', 'gpt-5', 'thinking-mode']
             }
+        );
+
+        const startTime = Date.now();
+        const results = await this.memoryStore!.recall(agentId, query, { includeOtherAgents: true });
+        const duration = Date.now() - startTime;
+
+        res.json({
+            success: results.length > 0,
+            query,
+            agentId,
+            resultsCount: results.length,
+            searchTime: duration,
+            results: results.map(r => ({
+                content: r.content.substring(0, 200),
+                relevanceScore: r.relevanceScore,
+                importance: r.metadata?.importance,
+                crossAgent: r.crossAgent
+            })),
+            message: results.length > 0
+                ? '✅ Original failing query now works!'
+                : '❌ Query still failing - needs further investigation'
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error instanceof Error ? error.message : 'Unknown error'
+        });
+    }
+});
+
+// SSE endpoint for MCP HTTP transport
+this.app.get('/mcp/sse', async (req: Request, res: Response) => {
+    try {
+        res.writeHead(200, {
+            'Content-Type': 'text/event-stream',
+            'Cache-Control': 'no-cache',
+            'Connection': 'keep-alive',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Cache-Control'
         });
 
-        // MCP HTTP endpoint
-        this.app.post('/mcp', async (req: Request, res: Response) => {
-            try {
-                const server = this.createMCPServerWithTools();
-                const transport = new StreamableHTTPServerTransport({
-                    sessionIdGenerator: undefined,
-                });
-
-                res.on('close', () => {
-                    transport.close?.();
-                    server.close?.();
-                });
-
-                await server.connect(transport);
-                await transport.handleRequest(req, res, req.body);
-
-            } catch (error) {
-                console.error('MCP HTTP request error:', error);
-                if (!res.headersSent) {
-                    res.status(500).json({
-                        jsonrpc: '2.0',
-                        error: {
-                            code: -32603,
-                            message: 'Internal server error',
-                        },
-                        id: null,
-                    });
-                }
-            }
+        const server = this.createMCPServerWithTools();
+        const transport = new StreamableHTTPServerTransport({
+            sessionIdGenerator: undefined,
         });
+
+        req.on('close', () => {
+            res.end();
+            transport.close?.();
+            server.close?.();
+        });
+
+        await server.connect(transport);
+
+        const keepAlive = setInterval(() => {
+            if (!res.destroyed) {
+                res.write('data: {"type":"ping"}\n\n');
+            } else {
+                clearInterval(keepAlive);
+            }
+        }, 30000);
+
+        console.log('🔗 New Enhanced SSE connection established');
+
+    } catch (error) {
+        console.error('SSE connection error:', error);
+        if (!res.headersSent) {
+            res.status(500).json({ error: 'SSE connection failed' });
+        }
+    }
+});
+
+// MCP HTTP endpoint
+this.app.post('/mcp', async (req: Request, res: Response) => {
+    try {
+        const server = this.createMCPServerWithTools();
+        const transport = new StreamableHTTPServerTransport({
+            sessionIdGenerator: undefined,
+        });
+
+        res.on('close', () => {
+            transport.close?.();
+            server.close?.();
+        });
+
+        await server.connect(transport);
+        await transport.handleRequest(req, res, req.body);
+
+    } catch (error) {
+        console.error('MCP HTTP request error:', error);
+        if (!res.headersSent) {
+            res.status(500).json({
+                jsonrpc: '2.0',
+                error: {
+                    code: -32603,
+                    message: 'Internal server error',
+                },
+                id: null,
+            });
+        }
+    }
+});
     }
 
     /**
      * Start the enhanced server
      */
-    async start(): Promise<void> {
-        try {
-            console.log('🧠 Starting Enhanced MemorAI MCP Server (Phase 1+2+3 Fixes)...');
+    async start(): Promise < void> {
+    try {
+        console.log('🧠 Starting Enhanced MemorAI MCP Server (Phase 1+2+3 Fixes)...');
 
-            // Initialize memory store first
-            await this.initializeMemoryStore();
+        // Initialize memory store first
+        await this.initializeMemoryStore();
 
-            const isStdioOnly = process.argv.includes('--stdio');
+        const isStdioOnly = process.argv.includes('--stdio');
 
-            if (isStdioOnly) {
-                console.log('📡 Starting in STDIO-only mode...');
-                const server = this.createMCPServerWithTools();
-                const transport = new StdioServerTransport();
-                await server.connect(transport);
-
-                console.log('✅ Enhanced MemorAI MCP Server connected via STDIO');
-                console.log('🚀 Phase 1+2+3 Enhancements Active:');
-                console.log('   ✅ Multi-layer search algorithm');
-                console.log('   ✅ Fuzzy matching for compound words');
-                console.log('   ✅ Cross-agent memory access');
-                console.log('   ✅ Enhanced relevance scoring');
-                console.log('   ✅ Azure OpenAI vector embeddings');
-                console.log('   ✅ Hybrid search (vector + keyword)');
-                console.log('   ✅ Persistent CBD database storage');
-                console.log('   ✅ Original failing queries now work!');
-                console.log('📅 Ready for enhanced MCP clients\n');
-                return;
-            }
-
-            // Display enhanced configuration
-            console.log('📋 Enhanced Configuration:');
-            console.log(`   🚀 Version: 11.0.0-enhanced`);
-            console.log(`   🌐 Port: ${CONFIG.port}`);
-            console.log(`   🔍 Enhanced Search: Active`);
-            console.log(`   🌐 Cross-Agent Access: ${FEATURES.crossAgentAccess ? 'Enabled' : 'Disabled'}`);
-            console.log(`   ⚡ Performance Logging: ${FEATURES.performanceLogging ? 'Enabled' : 'Disabled'}`);
-
-            // Start HTTP server
-            this.app.listen(CONFIG.port, () => {
-                console.log('🚀 Enhanced Server Status:');
-                console.log(`   ✅ HTTP Server listening on port ${CONFIG.port}`);
-                console.log(`   🌐 MCP Endpoint: http://localhost:${CONFIG.port}/mcp`);
-                console.log(`   💚 Health Check: http://localhost:${CONFIG.port}/health`);
-                console.log(`   🧪 Test Endpoint: http://localhost:${CONFIG.port}/test-original-query`);
-                
-                console.log('\n🎯 Phase 1 Enhancements Applied:');
-                console.log('   ✅ Multi-layer search (exact + fuzzy + metadata)');
-                console.log('   ✅ Cross-agent memory access with permissions');
-                console.log('   ✅ Enhanced relevance scoring');
-                console.log('   ✅ Improved compound word matching');
-                console.log('   ✅ Performance monitoring and logging');
-                console.log('   ✅ Original failing query resolution');
-                
-                console.log('\n💡 Test the fix with:');
-                console.log(`   curl -X POST http://localhost:${CONFIG.port}/test-original-query`);
-                console.log('\n✅ Enhanced MemorAI MCP Server ready!\n');
-            });
-
-            // Also setup STDIO transport
+        if(isStdioOnly) {
+            console.log('📡 Starting in STDIO-only mode...');
             const server = this.createMCPServerWithTools();
             const transport = new StdioServerTransport();
             await server.connect(transport);
 
-        } catch (error) {
-            console.error('❌ Failed to start enhanced server:', error);
-            process.exit(1);
+            console.log('✅ Enhanced MemorAI MCP Server connected via STDIO');
+            console.log('🚀 Phase 1+2+3 Enhancements Active:');
+            console.log('   ✅ Multi-layer search algorithm');
+            console.log('   ✅ Fuzzy matching for compound words');
+            console.log('   ✅ Cross-agent memory access');
+            console.log('   ✅ Enhanced relevance scoring');
+            console.log('   ✅ Azure OpenAI vector embeddings');
+            console.log('   ✅ Hybrid search (vector + keyword)');
+            console.log('   ✅ Persistent CBD database storage');
+            console.log('   ✅ Original failing queries now work!');
+            console.log('📅 Ready for enhanced MCP clients\n');
+            return;
         }
+
+            // Display enhanced configuration
+            console.log('📋 Enhanced Configuration:');
+        console.log(`   🚀 Version: 11.0.0-enhanced`);
+        console.log(`   🌐 Port: ${CONFIG.port}`);
+        console.log(`   🔍 Enhanced Search: Active`);
+        console.log(`   🌐 Cross-Agent Access: ${FEATURES.crossAgentAccess ? 'Enabled' : 'Disabled'}`);
+        console.log(`   ⚡ Performance Logging: ${FEATURES.performanceLogging ? 'Enabled' : 'Disabled'}`);
+
+        // Start HTTP server
+        this.app.listen(CONFIG.port, () => {
+            console.log('🚀 Enhanced Server Status:');
+            console.log(`   ✅ HTTP Server listening on port ${CONFIG.port}`);
+            console.log(`   🌐 MCP Endpoint: http://localhost:${CONFIG.port}/mcp`);
+            console.log(`   💚 Health Check: http://localhost:${CONFIG.port}/health`);
+            console.log(`   🧪 Test Endpoint: http://localhost:${CONFIG.port}/test-original-query`);
+
+            console.log('\n🎯 Phase 1 Enhancements Applied:');
+            console.log('   ✅ Multi-layer search (exact + fuzzy + metadata)');
+            console.log('   ✅ Cross-agent memory access with permissions');
+            console.log('   ✅ Enhanced relevance scoring');
+            console.log('   ✅ Improved compound word matching');
+            console.log('   ✅ Performance monitoring and logging');
+            console.log('   ✅ Original failing query resolution');
+
+            console.log('\n💡 Test the fix with:');
+            console.log(`   curl -X POST http://localhost:${CONFIG.port}/test-original-query`);
+            console.log('\n✅ Enhanced MemorAI MCP Server ready!\n');
+        });
+
+        // Also setup STDIO transport
+        const server = this.createMCPServerWithTools();
+        const transport = new StdioServerTransport();
+        await server.connect(transport);
+
+    } catch(error) {
+        console.error('❌ Failed to start enhanced server:', error);
+        process.exit(1);
     }
+}
 }
 
 // Graceful shutdown

@@ -675,7 +675,7 @@ class SelfSupervisedReasoningSystem:
             return "No clear conclusion could be reached."
         
         # Simple synthesis based on step content
-        conclusion = f"Based on the analysis of {len(steps)} reasoning steps, "
+        conclusion = "Based on the reasoning steps, "
         
         if romanian_emphasis > 0.7:
             conclusion += "considering Romanian cultural values and practical wisdom, "

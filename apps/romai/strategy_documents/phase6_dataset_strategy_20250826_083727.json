@@ -1,0 +1,238 @@
+{
+  "phase6_overview": {
+    "budget_eur": 10000000,
+    "timeline_months": 2,
+    "target_size_tb": 5.0,
+    "expansion_factor": 2000,
+    "success_metrics": {
+      "corpus_size_tb": 5.0,
+      "domain_coverage_percent": 95,
+      "quality_score": 0.9,
+      "romanian_accuracy_target": 0.99,
+      "mathematical_content_percent": 15
+    }
+  },
+  "data_sources": {
+    "mathematical_texts": {
+      "target_size_gb": 750,
+      "target_documents": 500000,
+      "quality_threshold": 0.95,
+      "cultural_weight": 0.7,
+      "mathematical_weight": 1.0,
+      "priority": 1,
+      "collection_methods": [
+        "Publisher APIs",
+        "Educational institution access",
+        "Open source repositories"
+      ],
+      "azure_services": [
+        "Azure AI Language - Language Detection",
+        "Azure AI Language - Custom Text Classification",
+        "Azure AI Language - Custom NER",
+        "Azure Data Factory",
+        "Azure Blob Storage",
+        "Azure Cognitive Search"
+      ],
+      "estimated_cost_eur": 1283343.7500000002
+    },
+    "academic_papers": {
+      "target_size_gb": 600,
+      "target_documents": 300000,
+      "quality_threshold": 0.95,
+      "cultural_weight": 0.8,
+      "mathematical_weight": 0.6,
+      "priority": 2,
+      "collection_methods": [
+        "Web scraping",
+        "API integration",
+        "Institution partnerships"
+      ],
+      "azure_services": [
+        "Azure AI Language - Language Detection",
+        "Azure AI Language - Custom Text Classification",
+        "Azure AI Language - Custom NER",
+        "Azure Data Factory",
+        "Azure Blob Storage",
+        "Azure Cognitive Search"
+      ],
+      "estimated_cost_eur": 966420.0
+    },
+    "cultural_literature": {
+      "target_size_gb": 800,
+      "target_documents": 400000,
+      "quality_threshold": 0.9,
+      "cultural_weight": 1.0,
+      "mathematical_weight": 0.1,
+      "priority": 3,
+      "collection_methods": [
+        "Digital library APIs",
+        "Publisher partnerships",
+        "Cultural institution collaboration"
+      ],
+      "azure_services": [
+        "Azure AI Language - Language Detection",
+        "Azure AI Language - Custom Text Classification",
+        "Azure AI Language - Custom NER",
+        "Azure Data Factory",
+        "Azure Blob Storage",
+        "Azure Cognitive Search"
+      ],
+      "estimated_cost_eur": 1174200.0
+    },
+    "scientific_journals": {
+      "target_size_gb": 500,
+      "target_documents": 250000,
+      "quality_threshold": 0.92,
+      "cultural_weight": 0.6,
+      "mathematical_weight": 0.8,
+      "priority": 4,
+      "collection_methods": [
+        "Academic database APIs",
+        "Research institution partnerships",
+        "Open access repositories"
+      ],
+      "azure_services": [
+        "Azure AI Language - Language Detection",
+        "Azure AI Language - Custom Text Classification",
+        "Azure AI Language - Custom NER",
+        "Azure Data Factory",
+        "Azure Blob Storage",
+        "Azure Cognitive Search"
+      ],
+      "estimated_cost_eur": 773760.0
+    },
+    "educational_materials": {
+      "target_size_gb": 650,
+      "target_documents": 800000,
+      "quality_threshold": 0.88,
+      "cultural_weight": 0.9,
+      "mathematical_weight": 0.7,
+      "priority": 5,
+      "collection_methods": [
+        "Educational platform APIs",
+        "Ministry of Education collaboration",
+        "University partnerships"
+      ],
+      "azure_services": [
+        "Azure AI Language - Language Detection",
+        "Azure AI Language - Custom Text Classification",
+        "Azure AI Language - Custom NER",
+        "Azure Data Factory",
+        "Azure Blob Storage",
+        "Azure Cognitive Search"
+      ],
+      "estimated_cost_eur": 1071999.5
+    },
+    "news_articles": {
+      "target_size_gb": 600,
+      "target_documents": 2000000,
+      "quality_threshold": 0.8,
+      "cultural_weight": 0.9,
+      "mathematical_weight": 0.2,
+      "priority": 6,
+      "collection_methods": [
+        "News API services",
+        "RSS feed aggregation",
+        "Media partnership agreements"
+      ],
+      "azure_services": [
+        "Azure AI Language - Language Detection",
+        "Azure AI Language - Custom Text Classification",
+        "Azure AI Language - Custom NER",
+        "Azure Data Factory",
+        "Azure Blob Storage",
+        "Azure Cognitive Search"
+      ],
+      "estimated_cost_eur": 829980.0
+    },
+    "technical_documentation": {
+      "target_size_gb": 400,
+      "target_documents": 150000,
+      "quality_threshold": 0.85,
+      "cultural_weight": 0.5,
+      "mathematical_weight": 0.9,
+      "priority": 7,
+      "collection_methods": [
+        "GitHub repositories",
+        "Technical platform APIs",
+        "Company partnerships"
+      ],
+      "azure_services": [
+        "Azure AI Language - Language Detection",
+        "Azure AI Language - Custom Text Classification",
+        "Azure AI Language - Custom NER",
+        "Azure Data Factory",
+        "Azure Blob Storage",
+        "Azure Cognitive Search"
+      ],
+      "estimated_cost_eur": 587375.0
+    },
+    "government_documents": {
+      "target_size_gb": 300,
+      "target_documents": 100000,
+      "quality_threshold": 0.9,
+      "cultural_weight": 1.0,
+      "mathematical_weight": 0.3,
+      "priority": 8,
+      "collection_methods": [
+        "Official API access",
+        "Open data portals",
+        "FOIA requests"
+      ],
+      "azure_services": [
+        "Azure AI Language - Language Detection",
+        "Azure AI Language - Custom Text Classification",
+        "Azure AI Language - Custom NER",
+        "Azure Data Factory",
+        "Azure Blob Storage",
+        "Azure Cognitive Search"
+      ],
+      "estimated_cost_eur": 465975.00000000006
+    },
+    "wikipedia_content": {
+      "target_size_gb": 250,
+      "target_documents": 75000,
+      "quality_threshold": 0.85,
+      "cultural_weight": 0.8,
+      "mathematical_weight": 0.4,
+      "priority": 9,
+      "collection_methods": [
+        "Wikipedia API",
+        "Wikimedia dumps",
+        "Real-time synchronization"
+      ],
+      "azure_services": [
+        "Azure AI Language - Language Detection",
+        "Azure AI Language - Custom Text Classification",
+        "Azure AI Language - Custom NER",
+        "Azure Data Factory",
+        "Azure Blob Storage",
+        "Azure Cognitive Search"
+      ],
+      "estimated_cost_eur": 362600.00000000006
+    },
+    "social_media": {
+      "target_size_gb": 150,
+      "target_documents": 5000000,
+      "quality_threshold": 0.7,
+      "cultural_weight": 0.6,
+      "mathematical_weight": 0.1,
+      "priority": 10,
+      "collection_methods": [
+        "Platform APIs",
+        "Public data aggregators",
+        "Ethical scraping"
+      ],
+      "azure_services": [
+        "Azure AI Language - Language Detection",
+        "Azure AI Language - Custom Text Classification",
+        "Azure AI Language - Custom NER",
+        "Azure Data Factory",
+        "Azure Blob Storage",
+        "Azure Cognitive Search"
+      ],
+      "estimated_cost_eur": 170722.5
+    }
+  },
+  "processing_pipeline": {
+    

@@ -22,6 +22,7 @@ export interface JWTPayload {
     iat: number; // issued at
     exp: number; // expiration
     jti: string; // JWT ID for revocation
+    type?: string; // token type (access, refresh, mfa)
 }
 
 export interface APIKey {
@@ -137,7 +138,7 @@ export class AuthenticationService {
      * Generate API key
      */
     generateAPIKey(userId: string, name: string, permissions: string[]): APIKey {
-        const key = `${appName}_${crypto.randomBytes(32).toString('hex')}`;
+        const key = `codai_${crypto.randomBytes(32).toString('hex')}`;
         
         return {
             id: crypto.randomUUID(),
@@ -251,7 +252,7 @@ export function requireAuth(permissions: string[] = []) {
             req.user = decoded;
             next();
         } catch (error) {
-            return res.status(401).json({ error: error.message });
+            return res.status(401).json({ error: (error as Error).message });
         }
     };
 }
@@ -287,7 +288,7 @@ export function requireAPIKey(permissions: string[] = []) {
             req.apiKey = keyData;
             next();
         } catch (error) {
-            return res.status(401).json({ error: error.message });
+            return res.status(401).json({ error: (error as Error).message });
         }
     };
 }

@@ -1,6 +1,10 @@
 /**
  * @fileoverview Validation Schemas
- * @description Comprehensive validation schemas using Zod for type safety
+ * @description Comprehensive validation schemas using     query: z.s    comment: z.string()
+        .min(1)
+        .max(1000),ng()
+        .min(1)
+        .max(100), for type safety
  */
 
 import { z } from 'zod';
@@ -17,8 +21,11 @@ export const ValidationPatterns = {
 
 // Password validation schema
 export const passwordSchema = z.string()
-    .min(12, 'Password must be at least 12 characters long')
-    .regex(ValidationPatterns.password, 'Password must contain uppercase, lowercase, number, and special character');
+        .min(12)
+    .max(128)
+    .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+    );;
 
 // Email validation schema
 export const emailSchema = z.string()
@@ -31,13 +38,13 @@ export const userRegistrationSchema = z.object({
     password: passwordSchema,
     confirmPassword: z.string(),
     firstName: z.string()
-        .min(1, 'First name is required')
-        .max(50, 'First name cannot exceed 50 characters')
-        .regex(/^[a-zA-Z\s'-]+$/, 'First name contains invalid characters'),
+        .min(1)
+        .max(50)
+        .regex(/^[a-zA-Z\s'-]+$/),
     lastName: z.string()
-        .min(1, 'Last name is required')
-        .max(50, 'Last name cannot exceed 50 characters')
-        .regex(/^[a-zA-Z\s'-]+$/, 'Last name contains invalid characters'),
+        .min(1)
+        .max(50)
+        .regex(/^[a-zA-Z\s'-]+$/),
     acceptTerms: z.boolean().refine(val => val === true, 'You must accept the terms and conditions')
 }).refine(data => data.password === data.confirmPassword, {
     message: "Passwords don't match",
@@ -47,7 +54,7 @@ export const userRegistrationSchema = z.object({
 // User login schema
 export const userLoginSchema = z.object({
     email: emailSchema,
-    password: z.string().min(1, 'Password is required'),
+  password: z.string().min(1).max(128),
     rememberMe: z.boolean().optional()
 });
 
@@ -65,14 +72,14 @@ export const profileUpdateSchema = z.object({
 // API request validation schemas
 export const apiRequestSchema = z.object({
     method: z.enum(['GET', 'POST', 'PUT', 'DELETE', 'PATCH']),
-    headers: z.record(z.string()).optional(),
+    headers: z.record(z.string(), z.string()).optional(),
     body: z.any().optional(),
-    query: z.record(z.string()).optional()
+    query: z.record(z.string(), z.string()).optional()
 });
 
 // File upload schema
 export const fileUploadSchema = z.object({
-    name: z.string().min(1, 'File name is required'),
+    name: z.string().min(1).max(255),
     size: z.number().max(10 * 1024 * 1024, 'File size cannot exceed 10MB'),
     type: z.string().refine(type => {
         const allowedTypes = [
@@ -112,12 +119,12 @@ export const commentSchema = z.object({
 
 // Contact form schema
 export const contactFormSchema = z.object({
-    name: z.string().min(1, 'Name is required').max(100),
+    name: z.string().min(1).max(100),
     email: emailSchema,
-    subject: z.string().min(1, 'Subject is required').max(200),
+    subject: z.string().min(1).max(200),
     message: z.string()
-        .min(10, 'Message must be at least 10 characters')
-        .max(2000, 'Message cannot exceed 2000 characters'),
+        .min(10)
+        .max(2000),
     category: z.enum(['general', 'support', 'business', 'feedback']).optional()
 });
 
@@ -141,7 +148,7 @@ export const settingsSchema = z.object({
 });
 
 export class ValidationError extends Error {
-    constructor(public errors: z.ZodError['errors']) {
+    constructor(public errors: z.ZodError['issues']) {
         super('Validation failed');
         this.name = 'ValidationError';
     }
@@ -152,7 +159,7 @@ export function validateInput<T>(schema: z.ZodSchema<T>, data: unknown): T {
         return schema.parse(data);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            throw new ValidationError(error.errors);
+            throw new ValidationError(error.issues);
         }
         throw error;
     }
@@ -161,10 +168,10 @@ export function validateInput<T>(schema: z.ZodSchema<T>, data: unknown): T {
 export function safeValidateInput<T>(
     schema: z.ZodSchema<T>, 
     data: unknown
-): { success: true; data: T } | { success: false; errors: z.ZodError['errors'] } {
+): { success: true; data: T } | { success: false; errors: z.ZodError['issues'] } {
     const result = schema.safeParse(data);
     if (result.success) {
         return { success: true, data: result.data };
     }
-    return { success: false, errors: result.error.errors };
+    return { success: false, errors: result.error.issues };
 }

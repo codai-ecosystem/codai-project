@@ -78,7 +78,7 @@ export class InputSanitizer {
      */
     static sanitizeSQL(input: string): string {
         const sqlPatterns = [
-            /('|(\')|(;)|(\|)|(\*)|(\-\-)|(\+)|(\|)|(\%)/gi,
+            /('|'|(;)|(\|)|(\*)|(\-\-)|(\+)|(\|)|(\%))/gi,
             /(select|insert|update|delete|drop|create|alter|exec|execute|union|script)/gi
         ];
         

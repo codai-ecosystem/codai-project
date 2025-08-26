@@ -52,52 +52,62 @@ export function substituteTemplateVariables(
 
   // Conditional content {{#if condition}}content{{/if}}
   const conditionalRegex = /{{#if\s+(\w+)}}([\s\S]*?){{\/if}}/g
-  result = result.replace(conditionalRegex, (match, condition, content) => {
+  result = result.replace(conditionalRegex, (match: string, ...args: unknown[]) => {
+    const condition = args[0] as string
+    const content = args[1] as string
     return variables[condition] ? content : ''
   })
 
   // List iteration {{#each items}}{{this}}{{/each}}
   const eachRegex = /{{#each\s+(\w+)}}([\s\S]*?){{\/each}}/g
-  result = result.replace(eachRegex, (match, listName, template) => {
+  result = result.replace(eachRegex, (match: string, ...args: unknown[]) => {
+    const listName = args[0] as string
+    const template = args[1] as string
     const list = variables[listName]
     if (Array.isArray(list)) {
-      return list.map(item => template.replace(/{{this}}/g, item)).join('')
+      return list.map((item: string) => template.replace(/{{this}}/g, item)).join('')
     }
     return ''
   })
 
   // Helper functions
-  result = result.replace(/{{camelCase\s+(\w+)}}/g, (match, varName) => {
+  result = result.replace(/{{camelCase\s+(\w+)}}/g, (match: string, ...args: unknown[]) => {
+    const varName = args[0] as string
     const value = variables[varName]
-    if (value) {
-      return value.replace(/[-_\s]+(.)?/g, (_, char) =>
-        char ? char.toUpperCase() : ''
-      ).replace(/^./, char => char.toLowerCase())
+    if (typeof value === 'string') {
+      return value.replace(/[-_\s]+(.)?/g, (...replaceArgs: unknown[]) => {
+        const char = replaceArgs[1] as string | undefined
+        return char ? char.toUpperCase() : ''
+      }).replace(/^./, (firstChar: string) => firstChar.toLowerCase())
     }
     return match
   })
 
-  result = result.replace(/{{pascalCase\s+(\w+)}}/g, (match, varName) => {
+  result = result.replace(/{{pascalCase\s+(\w+)}}/g, (match: string, ...args: unknown[]) => {
+    const varName = args[0] as string
     const value = variables[varName]
-    if (value) {
-      return value.replace(/[-_\s]+(.)?/g, (_, char) =>
-        char ? char.toUpperCase() : ''
-      ).replace(/^./, char => char.toUpperCase())
+    if (typeof value === 'string') {
+      return value.replace(/[-_\s]+(.)?/g, (...replaceArgs: unknown[]) => {
+        const char = replaceArgs[1] as string | undefined
+        return char ? char.toUpperCase() : ''
+      }).replace(/^./, (firstChar: string) => firstChar.toUpperCase())
     }
     return match
   })
 
-  result = result.replace(/{{kebabCase\s+(\w+)}}/g, (match, varName) => {
+  result = result.replace(/{{kebabCase\s+(\w+)}}/g, (match: string, ...args: unknown[]) => {
+    const varName = args[0] as string
     const value = variables[varName]
-    if (value) {
+    if (typeof value === 'string') {
       return value.replace(/[_\s]+/g, '-').toLowerCase()
     }
     return match
   })
 
-  result = result.replace(/{{snakeCase\s+(\w+)}}/g, (match, varName) => {
+  result = result.replace(/{{snakeCase\s+(\w+)}}/g, (match: string, ...args: unknown[]) => {
+    const varName = args[0] as string
     const value = variables[varName]
-    if (value) {
+    if (typeof value === 'string') {
       return value.replace(/[-\s]+/g, '_').toLowerCase()
     }
     return match

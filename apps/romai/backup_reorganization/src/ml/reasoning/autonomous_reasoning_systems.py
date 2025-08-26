@@ -93,7 +93,38 @@ class GoalGenerationEngine:
         with torch.no_grad():
             for i in range(num_goals):
                 # Generate goal embedding
-                noise = torch.randn(1, 1024, device=self.device) * 0.1
+        # RomAI General Expert - Authentic Neural Inference
+                        try:
+                            # Route to appropriate expert based on input analysis
+                            expert_input = self._prepare_expert_input(input_data)
+
+                            # Automatic expert selection
+                            selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                            # Process with selected expert
+                            with torch.no_grad():
+                                expert_outputs = self.model.route_to_expert(
+                                    expert_input,
+                                    expert_type=selected_expert,
+                                    use_mla_attention=True
+                                )
+
+                                # Generate response
+                                response = self.model.generate_response(expert_outputs)
+
+                                return {
+                                    "response": response["response"],
+                                    "reasoning": response["reasoning"],
+                                    "confidence": response["confidence"],
+                                    "expert_used": selected_expert,
+                                    "method": "neural_general_reasoning",
+                                    "quality_score": response["quality_score"]
+                                }
+
+                        except Exception as e:
+                            logger.error(f"General expert error: {e}")
+                            # Ultimate fallback
+                            return {"error": f"Neural inference failed: {e}", "fallback": True}
                 goal_input = context_state + noise
                 goal_embedding = self.goal_generator(goal_input)
                 
@@ -123,7 +154,38 @@ class GoalGenerationEngine:
                 )
                 
                 # Predict success probability
-                context_features = torch.randn(1, 64, device=self.device)  # Simulated context
+        # RomAI General Expert - Authentic Neural Inference
+                        try:
+                            # Route to appropriate expert based on input analysis
+                            expert_input = self._prepare_expert_input(input_data)
+
+                            # Automatic expert selection
+                            selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                            # Process with selected expert
+                            with torch.no_grad():
+                                expert_outputs = self.model.route_to_expert(
+                                    expert_input,
+                                    expert_type=selected_expert,
+                                    use_mla_attention=True
+                                )
+
+                                # Generate response
+                                response = self.model.generate_response(expert_outputs)
+
+                                return {
+                                    "response": response["response"],
+                                    "reasoning": response["reasoning"],
+                                    "confidence": response["confidence"],
+                                    "expert_used": selected_expert,
+                                    "method": "neural_general_reasoning",
+                                    "quality_score": response["quality_score"]
+                                }
+
+                        except Exception as e:
+                            logger.error(f"General expert error: {e}")
+                            # Ultimate fallback
+                            return {"error": f"Neural inference failed: {e}", "fallback": True}
                 goal_context = torch.cat([goal_embedding, context_features], dim=1)
                 success_prob = self.success_predictor(goal_context).item()
                 
@@ -984,7 +1046,38 @@ if __name__ == "__main__":
     model = agi_engine.model
     
     # Create context state
-    context_state = torch.randn(1, 1024, device=agi_engine.device)
+        # RomAI General Expert - Authentic Neural Inference
+            try:
+                # Route to appropriate expert based on input analysis
+                expert_input = self._prepare_expert_input(input_data)
+
+                # Automatic expert selection
+                selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                # Process with selected expert
+                with torch.no_grad():
+                    expert_outputs = self.model.route_to_expert(
+                        expert_input,
+                        expert_type=selected_expert,
+                        use_mla_attention=True
+                    )
+
+                    # Generate response
+                    response = self.model.generate_response(expert_outputs)
+
+                    return {
+                        "response": response["response"],
+                        "reasoning": response["reasoning"],
+                        "confidence": response["confidence"],
+                        "expert_used": selected_expert,
+                        "method": "neural_general_reasoning",
+                        "quality_score": response["quality_score"]
+                    }
+
+            except Exception as e:
+                logger.error(f"General expert error: {e}")
+                # Ultimate fallback
+                return {"error": f"Neural inference failed: {e}", "fallback": True}
     
     # Initialize autonomous systems
     goal_generator = GoalGenerationEngine(model)

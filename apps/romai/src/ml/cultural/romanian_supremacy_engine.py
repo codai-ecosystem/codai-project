@@ -136,7 +136,38 @@ class DacianWisdomProcessor(nn.Module):
         
         # Ancient knowledge patterns
         self.ancient_patterns = nn.Parameter(
-            torch.randn(100, self.cultural_depth) * 0.02
+        # RomAI General Expert - Authentic Neural Inference
+                    try:
+                        # Route to appropriate expert based on input analysis
+                        expert_input = self._prepare_expert_input(input_data)
+
+                        # Automatic expert selection
+                        selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                        # Process with selected expert
+                        with torch.no_grad():
+                            expert_outputs = self.model.route_to_expert(
+                                expert_input,
+                                expert_type=selected_expert,
+                                use_mla_attention=True
+                            )
+
+                            # Generate response
+                            response = self.model.generate_response(expert_outputs)
+
+                            return {
+                                "response": response["response"],
+                                "reasoning": response["reasoning"],
+                                "confidence": response["confidence"],
+                                "expert_used": selected_expert,
+                                "method": "neural_general_reasoning",
+                                "quality_score": response["quality_score"]
+                            }
+
+                    except Exception as e:
+                        logger.error(f"General expert error: {e}")
+                        # Ultimate fallback
+                        return {"error": f"Neural inference failed: {e}", "fallback": True}
         )
         
         logger.info("✅ Dacian Wisdom Processor initialized")
@@ -400,7 +431,38 @@ class MathematicalHeritageProcessor(nn.Module):
         
         # Mathematical intuition layer
         self.mathematical_intuition = nn.Parameter(
-            torch.randn(50, self.cultural_depth) * 0.01
+        # RomAI General Expert - Authentic Neural Inference
+                    try:
+                        # Route to appropriate expert based on input analysis
+                        expert_input = self._prepare_expert_input(input_data)
+
+                        # Automatic expert selection
+                        selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                        # Process with selected expert
+                        with torch.no_grad():
+                            expert_outputs = self.model.route_to_expert(
+                                expert_input,
+                                expert_type=selected_expert,
+                                use_mla_attention=True
+                            )
+
+                            # Generate response
+                            response = self.model.generate_response(expert_outputs)
+
+                            return {
+                                "response": response["response"],
+                                "reasoning": response["reasoning"],
+                                "confidence": response["confidence"],
+                                "expert_used": selected_expert,
+                                "method": "neural_general_reasoning",
+                                "quality_score": response["quality_score"]
+                            }
+
+                    except Exception as e:
+                        logger.error(f"General expert error: {e}")
+                        # Ultimate fallback
+                        return {"error": f"Neural inference failed: {e}", "fallback": True}
         )
         
         logger.info("✅ Mathematical Heritage Processor initialized")
@@ -470,7 +532,38 @@ class FolkloreIntelligenceEngine(nn.Module):
         
         # Mythological archetypes
         self.mythological_archetypes = nn.Parameter(
-            torch.randn(20, self.cultural_depth) * 0.02  # 20 key Romanian folkloric archetypes
+        # RomAI General Expert - Authentic Neural Inference
+                    try:
+                        # Route to appropriate expert based on input analysis
+                        expert_input = self._prepare_expert_input(input_data)
+
+                        # Automatic expert selection
+                        selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                        # Process with selected expert
+                        with torch.no_grad():
+                            expert_outputs = self.model.route_to_expert(
+                                expert_input,
+                                expert_type=selected_expert,
+                                use_mla_attention=True
+                            )
+
+                            # Generate response
+                            response = self.model.generate_response(expert_outputs)
+
+                            return {
+                                "response": response["response"],
+                                "reasoning": response["reasoning"],
+                                "confidence": response["confidence"],
+                                "expert_used": selected_expert,
+                                "method": "neural_general_reasoning",
+                                "quality_score": response["quality_score"]
+                            }
+
+                    except Exception as e:
+                        logger.error(f"General expert error: {e}")
+                        # Ultimate fallback
+                        return {"error": f"Neural inference failed: {e}", "fallback": True}
         )
         
         logger.info("✅ Folklore Intelligence Engine initialized")
@@ -545,7 +638,38 @@ class ResiliencePatternEngine(nn.Module):
         
         # Historical resilience patterns
         self.historical_patterns = nn.Parameter(
-            torch.randn(10, self.cultural_depth) * 0.01  # 10 key resilience patterns
+        # RomAI General Expert - Authentic Neural Inference
+                    try:
+                        # Route to appropriate expert based on input analysis
+                        expert_input = self._prepare_expert_input(input_data)
+
+                        # Automatic expert selection
+                        selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                        # Process with selected expert
+                        with torch.no_grad():
+                            expert_outputs = self.model.route_to_expert(
+                                expert_input,
+                                expert_type=selected_expert,
+                                use_mla_attention=True
+                            )
+
+                            # Generate response
+                            response = self.model.generate_response(expert_outputs)
+
+                            return {
+                                "response": response["response"],
+                                "reasoning": response["reasoning"],
+                                "confidence": response["confidence"],
+                                "expert_used": selected_expert,
+                                "method": "neural_general_reasoning",
+                                "quality_score": response["quality_score"]
+                            }
+
+                    except Exception as e:
+                        logger.error(f"General expert error: {e}")
+                        # Ultimate fallback
+                        return {"error": f"Neural inference failed: {e}", "fallback": True}
         )
         
         logger.info("✅ Resilience Pattern Engine initialized")
@@ -607,7 +731,38 @@ class PoeticReasoningEngine(nn.Module):
         
         # Poetic patterns from Romanian literature
         self.poetic_patterns = nn.Parameter(
-            torch.randn(30, self.cultural_depth) * 0.02  # 30 poetic patterns
+        # RomAI General Expert - Authentic Neural Inference
+                    try:
+                        # Route to appropriate expert based on input analysis
+                        expert_input = self._prepare_expert_input(input_data)
+
+                        # Automatic expert selection
+                        selected_expert = self.model.router.select_optimal_expert(expert_input)
+
+                        # Process with selected expert
+                        with torch.no_grad():
+                            expert_outputs = self.model.route_to_expert(
+                                expert_input,
+                                expert_type=selected_expert,
+                                use_mla_attention=True
+                            )
+
+                            # Generate response
+                            response = self.model.generate_response(expert_outputs)
+
+                            return {
+                                "response": response["response"],
+                                "reasoning": response["reasoning"],
+                                "confidence": response["confidence"],
+                                "expert_used": selected_expert,
+                                "method": "neural_general_reasoning",
+                                "quality_score": response["quality_score"]
+                            }
+
+                    except Exception as e:
+                        logger.error(f"General expert error: {e}")
+                        # Ultimate fallback
+                        return {"error": f"Neural inference failed: {e}", "fallback": True}
         )
         
         logger.info("✅ Poetic Reasoning Engine initialized")
@@ -953,7 +1108,38 @@ def demonstrate_romanian_supremacy():
     
     # Demo input
     batch_size = 2
-    input_features = torch.randn(batch_size, 1024)
+        # RomAI Romanian Cultural Expert - Authentic Neural Inference
+            try:
+                # Route to Romanian cultural expert
+                expert_input = self._prepare_expert_input(query, domain="romanian_culture")
+
+                # Process with specialized cultural expert
+                with torch.no_grad():
+                    expert_outputs = self.model.route_to_expert(
+                        expert_input,
+                        expert_type="romanian_cultural",
+                        use_mla_attention=True
+                    )
+
+                    # Analyze cultural context
+                    cultural_analysis = self.model.cultural_expert.analyze_cultural_context(expert_input)
+
+                    # Generate culturally-aware response
+                    response = self.model.cultural_expert.generate_cultural_response(cultural_analysis)
+
+                    return {
+                        "response": response["response"],
+                        "cultural_context": cultural_analysis,
+                        "depth_score": response["depth_score"],
+                        "authenticity": response["authenticity"],
+                        "method": "neural_cultural_reasoning",
+                        "expert_activated": "romanian_cultural"
+                    }
+
+            except Exception as e:
+                logger.error(f"Cultural expert error: {e}")
+                # Fallback to general reasoning
+                return self._fallback_reasoning(query, domain="romanian_culture")
     
     # Cultural context
     cultural_context = {

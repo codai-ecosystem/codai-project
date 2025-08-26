@@ -14,35 +14,35 @@ async function testEnhancedServer() {
     try {
         // Create enhanced server instance
         const server = new EnhancedMemorAIMCPServer();
-        
+
         console.log('✅ Server instance created');
 
         // Test store some memories first
         console.log('\n📝 Storing test memories...');
-        
+
         // Store the exact memory that should match our failing query
-        await server.memoryStore.remember('romai_agi_agent', 
+        await server.memoryStore.remember('romai_agi_agent',
             '✅ COMPLETED Todo #2: DeepSeek-style MoE Architecture Implementation with Romanian mathematical reasoning engines and advanced chain-of-thought verification loops for test-time compute scaling scenarios', {
-                importance: 8,
-                entityType: 'todo_completion',
-                project: 'romai_enhancement', 
-                tags: ['moe-architecture', 'romanian-reasoning', 'chain-of-thought', 'test-time-compute', 'verification-loops', 'mathematical-engines', 'thinking-mode', 'GPT-5-style']
+            importance: 8,
+            entityType: 'todo_completion',
+            project: 'romai_enhancement',
+            tags: ['moe-architecture', 'romanian-reasoning', 'chain-of-thought', 'test-time-compute', 'verification-loops', 'mathematical-engines', 'thinking-mode', 'GPT-5-style']
         });
 
         await server.memoryStore.remember('romai_agi_agent',
             'Advanced Chain-of-Thought Reasoning Implementation with GPT-5 thinking mode capabilities for enhanced problem-solving accuracy', {
-                importance: 9,
-                entityType: 'implementation_note',
-                project: 'romai_enhancement',
-                tags: ['chain-of-thought', 'reasoning', 'GPT-5', 'thinking-mode', 'problem-solving', 'verification-loops']
+            importance: 9,
+            entityType: 'implementation_note',
+            project: 'romai_enhancement',
+            tags: ['chain-of-thought', 'reasoning', 'GPT-5', 'thinking-mode', 'problem-solving', 'verification-loops']
         });
 
         await server.memoryStore.remember('github_copilot',
             'GitHub Copilot context analysis for workspace AI integration with test-time compute scaling methodologies', {
-                importance: 6,
-                entityType: 'integration_note', 
-                project: 'workspace_ai',
-                tags: ['github-copilot', 'context-analysis', 'test-time-compute', 'scaling', 'ai-integration']
+            importance: 6,
+            entityType: 'integration_note',
+            project: 'workspace_ai',
+            tags: ['github-copilot', 'context-analysis', 'test-time-compute', 'scaling', 'ai-integration']
         });
 
         console.log('✅ Test memories stored');
@@ -50,14 +50,14 @@ async function testEnhancedServer() {
         // Test the original failing query
         console.log('\n🔍 Testing original failing query...');
         const originalQuery = 'test-time compute scaling chain-of-thought verification loops GPT-5 thinking mode';
-        
+
         console.log(`Query: "${originalQuery}"`);
         console.log(`Agent: "romai_agi_agent"`);
 
         const results = await server.memoryStore.recall('romai_agi_agent', originalQuery);
-        
+
         console.log(`\n📊 Results: Found ${results.length} memories`);
-        
+
         if (results.length > 0) {
             console.log('🎉 SUCCESS! The original failing query now returns results!');
             console.log('\n📋 Results:');
@@ -85,7 +85,7 @@ async function testEnhancedServer() {
             includeOtherAgents: true,
             limit: 5
         });
-        
+
         console.log(`Cross-agent search found: ${crossAgentResults.length} memories`);
         const crossAgentCount = crossAgentResults.filter(r => r.crossAgent).length;
         console.log(`Cross-agent memories: ${crossAgentCount}`);
@@ -103,15 +103,15 @@ async function testEnhancedServer() {
         // Test performance
         console.log('\n⚡ Testing performance...');
         const startTime = Date.now();
-        
+
         // Add more memories for performance test
         for (let i = 0; i < 50; i++) {
-            await server.memoryStore.remember(`test_agent_${i % 5}`, 
+            await server.memoryStore.remember(`test_agent_${i % 5}`,
                 `Performance test memory ${i} with machine learning and neural networks content for benchmarking`, {
-                    importance: Math.floor(Math.random() * 10) + 1,
-                    entityType: 'performance_test',
-                    project: 'benchmarking'
-                });
+                importance: Math.floor(Math.random() * 10) + 1,
+                entityType: 'performance_test',
+                project: 'benchmarking'
+            });
         }
 
         const storageTime = Date.now() - startTime;
@@ -123,7 +123,7 @@ async function testEnhancedServer() {
             limit: 20
         });
         const retrievalTime = Date.now() - retrievalStart;
-        
+
         console.log(`📊 Retrieved ${perfResults.length} memories in: ${retrievalTime}ms`);
 
         console.log('\n🎯 PHASE 1 VALIDATION SUMMARY:');
@@ -135,7 +135,7 @@ async function testEnhancedServer() {
         console.log(`✅ Performance: Storage ${storageTime}ms, Retrieval ${retrievalTime}ms`);
 
         const allWorking = results.length > 0 && crossAgentCount > 0 && fuzzyResults.length > 0 && tagResults.length > 0;
-        
+
         if (allWorking) {
             console.log('\n🏆 ALL PHASE 1 FEATURES ARE WORKING CORRECTLY!');
             console.log('🚀 Ready for production deployment!');

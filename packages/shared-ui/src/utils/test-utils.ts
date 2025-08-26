@@ -4,7 +4,7 @@
  */
 
 import { test as base, expect, type Page, type Locator } from '@playwright/test'
-import { type AppName, appThemes } from '../config/enhanced-app-themes'
+import { type AppName, appThemes } from '../config/app-themes'
 import { ACCESSIBILITY_CONFIG, PERFORMANCE_THRESHOLDS, SECURITY_CONFIG } from '../config/test-config'
 
 // Extended test with custom fixtures

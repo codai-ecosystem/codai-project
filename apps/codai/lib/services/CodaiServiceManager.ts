@@ -130,6 +130,8 @@ class CodaiServiceManager {
     // Initialize base services
     await this.hubServices.initialize(config);
 
+     
+
     console.log('🤖 CODAI Service Manager initialized with AI development features');
 
     if (config.codai.enableAIAssistant) {
@@ -142,6 +144,7 @@ class CodaiServiceManager {
   }
 
   private async initializeAIAssistant(): Promise<void> {
+    // eslint-disable-next-line no-console
     console.log('🧠 Initializing AI Assistant...');
 
     // Load AI assistant context and preferences
@@ -166,13 +169,17 @@ class CodaiServiceManager {
         projectHistory: userMemories.filter((m: any) => m.metadata?.type === 'project_context')
       });
 
+       
+
       console.log(`✅ AI Assistant context loaded for user ${user.id}`);
     }
   }
 
   private async initializeProjectMemory(): Promise<void> {
+    // eslint-disable-next-line no-console
     console.log('💾 Initializing Project Memory...');
     // Project memory initialization logic would go here
+    // eslint-disable-next-line no-console
     console.log('✅ Project Memory initialized');
   }
 

@@ -87,6 +87,7 @@ export default function CollaborationPanel({ projectId, currentUserId, isOwner }
                 setIsEnabled(data.enabled)
             }
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Failed to load collaboration session:', error)
         }
     }
@@ -105,6 +106,7 @@ export default function CollaborationPanel({ projectId, currentUserId, isOwner }
                 setIsEnabled(data.enabled)
             }
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Failed to toggle collaboration:', error)
         }
     }
@@ -123,6 +125,7 @@ export default function CollaborationPanel({ projectId, currentUserId, isOwner }
                 setShowInviteDialog(true)
             }
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Failed to generate invite link:', error)
         }
     }
@@ -139,6 +142,7 @@ export default function CollaborationPanel({ projectId, currentUserId, isOwner }
                 await loadCollaborationSession()
             }
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Failed to update user role:', error)
         }
     }
@@ -153,6 +157,7 @@ export default function CollaborationPanel({ projectId, currentUserId, isOwner }
                 await loadCollaborationSession()
             }
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Failed to remove user:', error)
         }
     }
@@ -169,6 +174,7 @@ export default function CollaborationPanel({ projectId, currentUserId, isOwner }
                 await loadCollaborationSession()
             }
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Failed to update settings:', error)
         }
     }

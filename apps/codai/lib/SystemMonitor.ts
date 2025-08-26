@@ -7,6 +7,7 @@ try {
         si = require('systeminformation');
     }
 } catch (error) {
+    // eslint-disable-next-line no-console
     console.warn('systeminformation package not available, using mock data');
 }
 
@@ -114,6 +115,7 @@ export class SystemMonitor {
 
             return metrics;
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Error getting system metrics:', error);
 
             // Return fallback mock data if real metrics fail
@@ -200,6 +202,7 @@ export class SystemMonitor {
 
             return Math.max(1, activeUsers);
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Error getting active users:', error);
             return 1; // Default to 1 active user
         }
@@ -231,6 +234,7 @@ export class SystemMonitor {
                 diskUsage: fsSize.length > 0 ? Math.round((fsSize[0].used / fsSize[0].size) * 100) : 0,
             };
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Error getting system performance:', error);
             // Return fallback data
             return {
@@ -260,6 +264,7 @@ export class SystemMonitor {
                 bytesSent: networkStats.length > 0 ? networkStats[0].tx_bytes || 0 : 0,
             };
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Error getting network activity:', error);
             // Return fallback data
             return {

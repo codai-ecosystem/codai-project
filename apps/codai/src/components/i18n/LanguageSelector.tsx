@@ -1,10 +1,16 @@
 /**
- * Language Selector Component for codai
+ * Language Selector   // Use shared config for language info, but safely access only available languages
+  const languages = SUPPORTED_LOCALES;
+  
+  // Safe language access helper
+  const getLanguageInfo = (lang: string) => {
+    return languages[lang as SupportedLanguage] || { name: lang, flag: '🌐', nativeName: lang };
+  };onent for codai
  * Provides UI for switching between supported languages
  */
 import React, { useState } from 'react';
 import { useLanguage, useTranslation } from '../../hooks/useI18n';
-import { SupportedLanguage } from '../../lib/i18n/config';
+import { SupportedLanguage, SUPPORTED_LOCALES } from '../../../../../i18n/shared-config';
 
 interface LanguageSelectorProps {
   className?: string;
@@ -25,7 +31,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
 
   const languages = {
     en: { name: 'English', flag: '🇺🇸', nativeName: 'English' },
-    ro: { name: 'Română', flag: '🇷🇴', nativeName: 'Română' }
+    es: { name: 'Spanish', flag: '��', nativeName: 'Español' }
   };
 
   const handleLanguageChange = async (language: SupportedLanguage) => {
@@ -50,7 +56,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
           </span>
         )}
         <button
-          onClick={() => handleLanguageChange(currentLanguage === 'en' ? 'ro' : 'en')}
+          onClick={() => handleLanguageChange(currentLanguage === 'en' ? 'es' : 'en')}
           disabled={isChanging}
           className={`
             inline-flex items-center gap-2 ${getSizeClasses()}
@@ -62,8 +68,8 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
           `}
           aria-label={t('common.changeLanguage', 'Change Language')}
         >
-          <span className="text-lg">{languages[currentLanguage].flag}</span>
-          <span>{languages[currentLanguage].nativeName}</span>
+          <span className="text-lg">{getLanguageInfo(currentLanguage).flag}</span>
+          <span>{getLanguageInfo(currentLanguage).nativeName}</span>
           {isChanging && (
             <svg className="animate-spin -ml-1 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -78,10 +84,10 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   if (variant === 'inline') {
     return (
       <div className={`flex items-center gap-1 ${className}`}>
-        {availableLanguages.map((lang) => (
+        {availableLanguages.filter(lang => lang in languages).map((lang) => (
           <button
             key={lang}
-            onClick={() => handleLanguageChange(lang)}
+            onClick={() => handleLanguageChange(lang as SupportedLanguage)}
             disabled={isChanging}
             className={`
               ${getSizeClasses()} rounded-md transition-all duration-200
@@ -92,10 +98,10 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
               border focus:outline-none focus:ring-2 focus:ring-blue-500
               disabled:opacity-50 disabled:cursor-not-allowed
             `}
-            aria-label={`Switch to ${languages[lang].name}`}
+            aria-label={`Switch to ${languages[lang as SupportedLanguage]?.name}`}
           >
-            <span className="text-base mr-1">{languages[lang].flag}</span>
-            {languages[lang].nativeName}
+            <span className="text-base mr-1">{languages[lang as SupportedLanguage]?.flag}</span>
+            {languages[lang as SupportedLanguage]?.nativeName}
           </button>
         ))}
       </div>

@@ -161,8 +161,38 @@ class LogicalInferenceEngine:
         for category, pattern_dict in patterns.items():
             self.logic_patterns[category] = {}
             for pattern_name, pattern_text in pattern_dict.items():
-                embedding = torch.randn(768).to(self.device)
-                self.logic_patterns[category][pattern_name] = embedding
+        # RomAI Logical Expert - Authentic Neural Inference
+                        try:
+                            # Route to logical reasoning expert
+                            expert_input = self._prepare_expert_input(query, domain="logic")
+
+                            # Process with specialized logic expert
+                            with torch.no_grad():
+                                expert_outputs = self.model.route_to_expert(
+                                    expert_input,
+                                    expert_type="logical_reasoning",
+                                    use_mla_attention=True
+                                )
+
+                                # Perform logical reasoning chain
+                                reasoning_chain = self.model.logical_expert.reason_step_by_step(expert_input)
+
+                                # Validate logical consistency
+                                conclusion = self.model.logical_expert.validate_logic(reasoning_chain)
+
+                                return {
+                                    "conclusion": conclusion["conclusion"],
+                                    "reasoning_chain": reasoning_chain,
+                                    "logical_validity": conclusion["validity"],
+                                    "confidence": conclusion["confidence"],
+                                    "method": "neural_logical_reasoning",
+                                    "expert_activated": "logical_reasoning"
+                                }
+
+                        except Exception as e:
+                            logger.error(f"Logical expert error: {e}")
+                            # Fallback to general reasoning
+                            return self._fallback_reasoning(query, domain="logic")
     
     async def perform_logical_reasoning(self, premise_text: str) -> LogicalResult:
         """
@@ -269,7 +299,7 @@ class LogicalInferenceEngine:
         
         for premise in premises:
             # Text encoding (simplified - in production use proper tokenizer/encoder)
-            text_embedding = torch.randn(768).to(self.device)
+            text_embedding = self.text_embedder(premise)
             
             # Analyze premise
             premise_repr = self.premise_analyzer(text_embedding)
@@ -344,7 +374,7 @@ class LogicalInferenceEngine:
             return 0.1
         
         # Encode conclusion (simplified)
-        conclusion_repr = torch.randn(64).to(self.device)
+        conclusion_repr = self.text_embedder(conclusion)
         
         # Combine premise representations
         combined_premises = torch.stack(premise_reprs).mean(dim=0) if len(premise_reprs) > 1 else premise_reprs[0]

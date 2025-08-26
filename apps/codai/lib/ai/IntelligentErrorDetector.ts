@@ -269,6 +269,7 @@ export class IntelligentErrorDetector {
 
             return false
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Auto-fix application failed:', error)
             return false
         }
@@ -303,6 +304,7 @@ export class IntelligentErrorDetector {
             )
 
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Failed to get code suggestions:', error)
             return []
         }
@@ -791,6 +793,7 @@ export class IntelligentErrorDetector {
             return true
 
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Failed to execute auto-fix:', error)
             return false
         }
@@ -819,6 +822,7 @@ export class IntelligentErrorDetector {
             try {
                 callback(result)
             } catch (error) {
+                // eslint-disable-next-line no-console
                 console.error('Error in real-time callback:', error)
             }
         })

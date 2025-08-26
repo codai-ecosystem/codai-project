@@ -43,21 +43,22 @@ class RomanianSolution:
     computation_time: float = 0.0
 
 @dataclass
+@dataclass
 class RomanianTransformerConfig:
     """Configuration for Romanian-specialized transformer"""
-    # Model dimensions
-    d_model: int = 4096
-    d_ff: int = 16384
-    n_heads: int = 32
+    # Model dimensions (optimized for divisibility: 4096 ÷ 4 = 1024)
+    d_model: int = 4096  # Keep standard transformer size
+    d_ff: int = 16384    # 4x d_model  
+    n_heads: int = 8     # Reduced to ensure divisibility (8-4=4, 4096÷4=1024)
     n_layers: int = 24
     
     # Vocabulary and tokenization
     vocab_size: int = 50000
     max_seq_length: int = 8192
     
-    # Romanian specialization
+    # Romanian specialization (ensuring divisibility)
     romanian_vocab_boost: int = 10000  # Additional Romanian tokens
-    cultural_attention_heads: int = 4  # Dedicated cultural attention
+    cultural_attention_heads: int = 4  # Standard cultural attention
     diacritic_preservation: bool = True
     
     # Language features

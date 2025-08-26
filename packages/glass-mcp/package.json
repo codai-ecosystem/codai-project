@@ -1,10 +1,14 @@
 {
   "name": "@codai/glass-mcp",
-  "version": "7.0.0",
-  "description": "Glass MCP - AI-Powered Visual Automation Platform with Drawing Intelligence",
+  "version": "8.1.0",
+  "description": "Glass MCP v8.1 - AI-Powered Visual Automation Platform with Real Mouse Cursor Drawing",
+  "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": {
+    "glass-mcp": "./dist/mcp-server-enhanced-drawing.cjs"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -37,7 +41,8 @@
   "author": "CODAI Team",
   "license": "MIT",
   "dependencies": {
-    "onnxruntime-node": "^1.19.0"
+    "onnxruntime-node": "^1.19.0",
+    "@modelcontextprotocol/sdk": "^1.17.4"
   },
   "devDependencies": {
     "typescript": "^5.6.3",
@@ -47,13 +52,16 @@
     "jest": "^29.5.0",
     "ts-jest": "^29.1.0"
   },
-  "peerDependencies": {
-    "@codai/shared-types": "workspace:*",
-    "@codai/api-utils": "workspace:*"
-  },
+
   "files": [
     "dist/**/*",
     "README.md",
     "package.json"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "os": [
+    "win32"
   ]
 }

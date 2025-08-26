@@ -121,12 +121,24 @@ async def comprehensive_ai_benchmark():
         for category, problem, expected_keywords in science_tests:
             try:
                 result = await science_engine.analyze_scientific_problem(problem)
-                result_text = str(result.analysis).lower()
-                if any(keyword in result_text for keyword in expected_keywords.split('|')):
-                    print(f'  ✅ {category}: {problem[:30]}... → Contains scientific knowledge')
-                    science_passed += 1
+                # Check both result and analysis text (with proper case handling)
+                result_text_lower = str(result.analysis).lower()
+                result_text_original = str(result.analysis)
+                
+                # Special handling for chemical formulas (case-sensitive)
+                if category == 'Chemistry' and expected_keywords == 'H2O':
+                    if 'H2O' in result_text_original or 'h2o' in result_text_lower:
+                        print(f'  ✅ {category}: {problem[:30]}... → Contains scientific knowledge')
+                        science_passed += 1
+                    else:
+                        print(f'  ❌ {category}: {problem[:30]}... → Missing scientific knowledge')
                 else:
-                    print(f'  ❌ {category}: {problem[:30]}... → Missing scientific knowledge')
+                    # Standard keyword matching for other categories
+                    if any(keyword in result_text_lower for keyword in expected_keywords.split('|')):
+                        print(f'  ✅ {category}: {problem[:30]}... → Contains scientific knowledge')
+                        science_passed += 1
+                    else:
+                        print(f'  ❌ {category}: {problem[:30]}... → Missing scientific knowledge')
             except Exception as e:
                 print(f'  ❌ {category}: {problem[:30]}... → ERROR: {str(e)[:50]}')
         

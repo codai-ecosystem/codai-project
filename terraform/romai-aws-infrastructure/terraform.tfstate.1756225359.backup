@@ -1,0 +1,1321 @@
+{
+  "version": 4,
+  "terraform_version": "1.12.2",
+  "serial": 28,
+  "lineage": "f8e5f1fb-e653-356c-9338-a4feae83e194",
+  "outputs": {
+    "cost_estimation": {
+      "value": {
+        "compute_cost_usd": 141566.4,
+        "daily_cost_usd": 4735.546666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666667,
+        "storage_cost_usd": 500,
+        "total_monthly_usd": 142066.4
+      },
+      "type": [
+        "object",
+        {
+          "compute_cost_usd": "number",
+          "daily_cost_usd": "number",
+          "storage_cost_usd": "number",
+          "total_monthly_usd": "number"
+        }
+      ]
+    }
+  },
+  "resources": [
+    {
+      "mode": "data",
+      "type": "aws_ami",
+      "name": "ubuntu_hpc",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "architecture": "x86_64",
+            "arn": "arn:aws:ec2:us-west-2::image/ami-065778886ef8ec7c8",
+            "block_device_mappings": [
+              {
+                "device_name": "/dev/sda1",
+                "ebs": {
+                  "delete_on_termination": "true",
+                  "encrypted": "false",
+                  "iops": "0",
+                  "snapshot_id": "snap-00a56dd10af9e4454",
+                  "throughput": "0",
+                  "volume_initialization_rate": "0",
+                  "volume_size": "8",
+                  "volume_type": "gp2"
+                },
+                "no_device": "",
+                "virtual_name": ""
+              },
+              {
+                "device_name": "/dev/sdb",
+                "ebs": {},
+                "no_device": "",
+                "virtual_name": "ephemeral0"
+              },
+              {
+                "device_name": "/dev/sdc",
+                "ebs": {},
+                "no_device": "",
+                "virtual_name": "ephemeral1"
+              }
+            ],
+            "boot_mode": "uefi-preferred",
+            "creation_date": "2025-08-22T06:58:34.000Z",
+            "deprecation_time": "2027-08-22T06:58:34.000Z",
+            "description": "Canonical, Ubuntu, 22.04, amd64 jammy image",
+            "ena_support": true,
+            "executable_users": null,
+            "filter": [
+              {
+                "name": "name",
+                "values": [
+                  "ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"
+                ]
+              },
+              {
+                "name": "virtualization-type",
+                "values": [
+                  "hvm"
+                ]
+              }
+            ],
+            "hypervisor": "xen",
+            "id": "ami-065778886ef8ec7c8",
+            "image_id": "ami-065778886ef8ec7c8",
+            "image_location": "amazon/ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-20250822",
+            "image_owner_alias": "amazon",
+            "image_type": "machine",
+            "imds_support": "",
+            "include_deprecated": false,
+            "kernel_id": "",
+            "last_launched_time": "",
+            "most_recent": true,
+            "name": "ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-20250822",
+            "name_regex": null,
+            "owner_id": "099720109477",
+            "owners": [
+              "099720109477"
+            ],
+            "platform": "",
+            "platform_details": "Linux/UNIX",
+            "product_codes": [],
+            "public": true,
+            "ramdisk_id": "",
+            "root_device_name": "/dev/sda1",
+            "root_device_type": "ebs",
+            "root_snapshot_id": "snap-00a56dd10af9e4454",
+            "sriov_net_support": "simple",
+            "state": "available",
+            "state_reason": {
+              "code": "UNSET",
+              "message": "UNSET"
+            },
+            "tags": {},
+            "timeouts": null,
+            "tpm_support": "",
+            "uefi_data": null,
+            "usage_operation": "RunInstances",
+            "virtualization_type": "hvm"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "mode": "data",
+      "type": "aws_availability_zones",
+      "name": "available",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "all_availability_zones": null,
+            "exclude_names": null,
+            "exclude_zone_ids": null,
+            "filter": null,
+            "group_names": [
+              "us-west-2-zg-1"
+            ],
+            "id": "us-west-2",
+            "names": [
+              "us-west-2a",
+              "us-west-2b",
+              "us-west-2c",
+              "us-west-2d"
+            ],
+            "state": "available",
+            "timeouts": null,
+            "zone_ids": [
+              "usw2-az2",
+              "usw2-az1",
+              "usw2-az3",
+              "usw2-az4"
+            ]
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "mode": "data",
+      "type": "aws_caller_identity",
+      "name": "current",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "account_id": "567877624442",
+            "arn": "arn:aws:iam::567877624442:user/codai-deployer",
+            "id": "567877624442",
+            "user_id": "AIDAYIOBE4J5MDCEUH3X7"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_iam_instance_profile",
+      "name": "gpu_instance_profile",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "status": "tainted",
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::567877624442:instance-profile/romai-phase2b-26a4a9af-gpu-instance-profile",
+            "create_date": "2025-08-26T16:18:24Z",
+            "id": "romai-phase2b-26a4a9af-gpu-instance-profile",
+            "name": "romai-phase2b-26a4a9af-gpu-instance-profile",
+            "name_prefix": "",
+            "path": "/",
+            "role": "romai-phase2b-26a4a9af-gpu-instance-role",
+            "tags": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "GPU-Cluster-150B-Tokens"
+            },
+            "tags_all": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "GPU-Cluster-150B-Tokens"
+            },
+            "unique_id": "AIPAYIOBE4J5OUNIBGF7T"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_iam_role.gpu_instance_role",
+            "random_id.deployment"
+          ],
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_iam_policy",
+      "name": "secrets_access",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::567877624442:policy/romai-phase2b-26a4a9af-secrets-policy",
+            "attachment_count": 1,
+            "description": "Policy for accessing RomAI secrets",
+            "id": "arn:aws:iam::567877624442:policy/romai-phase2b-26a4a9af-secrets-policy",
+            "name": "romai-phase2b-26a4a9af-secrets-policy",
+            "name_prefix": "",
+            "path": "/",
+            "policy": "{\"Statement\":[{\"Action\":[\"secretsmanager:GetSecretValue\",\"secretsmanager:DescribeSecret\"],\"Effect\":\"Allow\",\"Resource\":\"arn:aws:secretsmanager:us-west-2:567877624442:secret:romai-phase2b-26a4a9af-romai-secrets-G8Iurc\"}],\"Version\":\"2012-10-17\"}",
+            "policy_id": "ANPAYIOBE4J5IZF3WP7VF",
+            "tags": {},
+            "tags_all": {}
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_secretsmanager_secret.romai_config",
+            "random_id.deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_iam_role",
+      "name": "gpu_instance_role",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::567877624442:role/romai-phase2b-26a4a9af-gpu-instance-role",
+            "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"ec2.amazonaws.com\"}}],\"Version\":\"2012-10-17\"}",
+            "create_date": "2025-08-26T16:18:23Z",
+            "description": "",
+            "force_detach_policies": false,
+            "id": "romai-phase2b-26a4a9af-gpu-instance-role",
+            "inline_policy": [],
+            "managed_policy_arns": [
+              "arn:aws:iam::567877624442:policy/romai-phase2b-26a4a9af-secrets-policy",
+              "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess",
+              "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
+              "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+            ],
+            "max_session_duration": 3600,
+            "name": "romai-phase2b-26a4a9af-gpu-instance-role",
+            "name_prefix": "",
+            "path": "/",
+            "permissions_boundary": "",
+            "tags": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-gpu-instance-role",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "GPU-Instance-Role"
+            },
+            "tags_all": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-gpu-instance-role",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "GPU-Instance-Role"
+            },
+            "unique_id": "AROAYIOBE4J5CRWMGPDBA"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "random_id.deployment"
+          ],
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_iam_role_policy_attachment",
+      "name": "cloudwatch_agent_server_policy",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "romai-phase2b-26a4a9af-gpu-instance-role-20250826161823641900000002",
+            "policy_arn": "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy",
+            "role": "romai-phase2b-26a4a9af-gpu-instance-role"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_iam_role.gpu_instance_role",
+            "random_id.deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_iam_role_policy_attachment",
+      "name": "s3_readonly_access",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "romai-phase2b-26a4a9af-gpu-instance-role-20250826161823988300000005",
+            "policy_arn": "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess",
+            "role": "romai-phase2b-26a4a9af-gpu-instance-role"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_iam_role.gpu_instance_role",
+            "random_id.deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_iam_role_policy_attachment",
+      "name": "secrets_access",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "romai-phase2b-26a4a9af-gpu-instance-role-20250826161824519900000006",
+            "policy_arn": "arn:aws:iam::567877624442:policy/romai-phase2b-26a4a9af-secrets-policy",
+            "role": "romai-phase2b-26a4a9af-gpu-instance-role"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_iam_policy.secrets_access",
+            "aws_iam_role.gpu_instance_role",
+            "aws_secretsmanager_secret.romai_config",
+            "random_id.deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_iam_role_policy_attachment",
+      "name": "ssm_managed_instance_core",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "romai-phase2b-26a4a9af-gpu-instance-role-20250826161823845600000004",
+            "policy_arn": "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
+            "role": "romai-phase2b-26a4a9af-gpu-instance-role"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_iam_role.gpu_instance_role",
+            "random_id.deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_internet_gateway",
+      "name": "main",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-west-2:567877624442:internet-gateway/igw-0f5e24b100fcbca5a",
+            "id": "igw-0f5e24b100fcbca5a",
+            "owner_id": "567877624442",
+            "tags": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-igw",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "GPU-Cluster-150B-Tokens"
+            },
+            "tags_all": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-igw",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "GPU-Cluster-150B-Tokens"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-0951c091d74c38800"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "aws_vpc.main",
+            "random_id.deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_placement_group",
+      "name": "gpu_cluster",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-west-2:567877624442:placement-group/romai-phase2b-26a4a9af-cluster-pg",
+            "id": "romai-phase2b-26a4a9af-cluster-pg",
+            "name": "romai-phase2b-26a4a9af-cluster-pg",
+            "partition_count": 0,
+            "placement_group_id": "pg-008ccc6b930b434e7",
+            "spread_level": "",
+            "strategy": "cluster",
+            "tags": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-cluster-pg",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "EFA-GPU-Cluster"
+            },
+            "tags_all": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-cluster-pg",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "EFA-GPU-Cluster"
+            }
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "random_id.deployment"
+          ],
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_route_table",
+      "name": "main",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-west-2:567877624442:route-table/rtb-02f82250eed6ce281",
+            "id": "rtb-02f82250eed6ce281",
+            "owner_id": "567877624442",
+            "propagating_vgws": [],
+            "route": [
+              {
+                "carrier_gateway_id": "",
+                "cidr_block": "0.0.0.0/0",
+                "core_network_arn": "",
+                "destination_prefix_list_id": "",
+                "egress_only_gateway_id": "",
+                "gateway_id": "igw-0f5e24b100fcbca5a",
+                "ipv6_cidr_block": "",
+                "local_gateway_id": "",
+                "nat_gateway_id": "",
+                "network_interface_id": "",
+                "transit_gateway_id": "",
+                "vpc_endpoint_id": "",
+                "vpc_peering_connection_id": ""
+              }
+            ],
+            "tags": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-rt",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "GPU-Cluster-150B-Tokens"
+            },
+            "tags_all": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-rt",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "GPU-Cluster-150B-Tokens"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-0951c091d74c38800"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsImRlbGV0ZSI6MzAwMDAwMDAwMDAwLCJ1cGRhdGUiOjEyMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "aws_internet_gateway.main",
+            "aws_vpc.main",
+            "random_id.deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_route_table_association",
+      "name": "gpu_subnets",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 0,
+          "attributes": {
+            "gateway_id": "",
+            "id": "rtbassoc-0a952e538f96ce1a9",
+            "route_table_id": "rtb-02f82250eed6ce281",
+            "subnet_id": "subnet-0b11fc0ce15e018b1",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsImRlbGV0ZSI6MzAwMDAwMDAwMDAwLCJ1cGRhdGUiOjEyMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "aws_internet_gateway.main",
+            "aws_route_table.main",
+            "aws_subnet.gpu_subnets",
+            "aws_vpc.main",
+            "data.aws_availability_zones.available",
+            "random_id.deployment"
+          ]
+        },
+        {
+          "index_key": 1,
+          "schema_version": 0,
+          "attributes": {
+            "gateway_id": "",
+            "id": "rtbassoc-0d7e8bd2279308247",
+            "route_table_id": "rtb-02f82250eed6ce281",
+            "subnet_id": "subnet-08cf7a0b91164168e",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsImRlbGV0ZSI6MzAwMDAwMDAwMDAwLCJ1cGRhdGUiOjEyMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "aws_internet_gateway.main",
+            "aws_route_table.main",
+            "aws_subnet.gpu_subnets",
+            "aws_vpc.main",
+            "data.aws_availability_zones.available",
+            "random_id.deployment"
+          ]
+        },
+        {
+          "index_key": 2,
+          "schema_version": 0,
+          "attributes": {
+            "gateway_id": "",
+            "id": "rtbassoc-0cda67bc624f92466",
+            "route_table_id": "rtb-02f82250eed6ce281",
+            "subnet_id": "subnet-0c48136c0f0c3f635",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsImRlbGV0ZSI6MzAwMDAwMDAwMDAwLCJ1cGRhdGUiOjEyMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "aws_internet_gateway.main",
+            "aws_route_table.main",
+            "aws_subnet.gpu_subnets",
+            "aws_vpc.main",
+            "data.aws_availability_zones.available",
+            "random_id.deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_secretsmanager_secret",
+      "name": "romai_config",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:secretsmanager:us-west-2:567877624442:secret:romai-phase2b-26a4a9af-romai-secrets-G8Iurc",
+            "description": "RomAI GPU cluster configuration secrets",
+            "force_overwrite_replica_secret": false,
+            "id": "arn:aws:secretsmanager:us-west-2:567877624442:secret:romai-phase2b-26a4a9af-romai-secrets-G8Iurc",
+            "kms_key_id": "",
+            "name": "romai-phase2b-26a4a9af-romai-secrets",
+            "name_prefix": "",
+            "policy": "",
+            "recovery_window_in_days": 30,
+            "replica": [],
+            "tags": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-romai-secrets",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "RomAI-Configuration"
+            },
+            "tags_all": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-romai-secrets",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "RomAI-Configuration"
+            }
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "random_id.deployment"
+          ],
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_secretsmanager_secret_version",
+      "name": "romai_config",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:secretsmanager:us-west-2:567877624442:secret:romai-phase2b-26a4a9af-romai-secrets-G8Iurc",
+            "has_secret_string_wo": null,
+            "id": "arn:aws:secretsmanager:us-west-2:567877624442:secret:romai-phase2b-26a4a9af-romai-secrets-G8Iurc|terraform-20250826161823663900000003",
+            "secret_binary": "",
+            "secret_id": "arn:aws:secretsmanager:us-west-2:567877624442:secret:romai-phase2b-26a4a9af-romai-secrets-G8Iurc",
+            "secret_string": "{\"container_toolkit_version\":\"1.14.0\",\"cuda_version\":\"12.2\",\"dcgm_version\":\"3.3.0\",\"huggingface_token\":\"hf_[REPLACE_WITH_ACTUAL_TOKEN]\",\"nvidia_driver_version\":\"535.104.12\",\"nvvs_version\":\"4.7.0\",\"romai_api_key\":\"romai-aws-cluster-key-2025\"}",
+            "secret_string_wo": null,
+            "secret_string_wo_version": null,
+            "version_id": "terraform-20250826161823663900000003",
+            "version_stages": [
+              "AWSCURRENT"
+            ]
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_binary"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_string"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_string_wo"
+              }
+            ]
+          ],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_secretsmanager_secret.romai_config",
+            "random_id.deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "gpu_cluster",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "status": "tainted",
+          "schema_version": 1,
+          "attributes": {
+            "arn": null,
+            "description": "Enhanced security group for RomAI GPU cluster with EFA",
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-052ca84fb12f37ea9",
+            "ingress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "RomAI Enterprise API",
+                "from_port": 8001,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 8001
+              },
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "RomAI ML API",
+                "from_port": 6101,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 6101
+              },
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "SSH access",
+                "from_port": 22,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 22
+              },
+              {
+                "cidr_blocks": [
+                  "10.0.0.0/16"
+                ],
+                "description": "Kubernetes API",
+                "from_port": 6443,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 6443
+              },
+              {
+                "cidr_blocks": [],
+                "description": "EFA inter-node communication",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": true,
+                "to_port": 65535
+              },
+              {
+                "cidr_blocks": [],
+                "description": "NCCL multi-GPU communication",
+                "from_port": 23000,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": true,
+                "to_port": 23999
+              }
+            ],
+            "name": null,
+            "name_prefix": "romai-phase2b-26a4a9af-gpu-cluster",
+            "owner_id": null,
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-gpu-cluster-sg",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "GPU-EFA-Cluster"
+            },
+            "tags_all": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-gpu-cluster-sg",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "GPU-EFA-Cluster"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-0951c091d74c38800"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "aws_vpc.main",
+            "random_id.deployment"
+          ],
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_subnet",
+      "name": "gpu_subnets",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-west-2:567877624442:subnet/subnet-0b11fc0ce15e018b1",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "us-west-2a",
+            "availability_zone_id": "usw2-az2",
+            "cidr_block": "10.0.1.0/24",
+            "customer_owned_ipv4_pool": "",
+            "enable_dns64": false,
+            "enable_lni_at_device_index": 0,
+            "enable_resource_name_dns_a_record_on_launch": false,
+            "enable_resource_name_dns_aaaa_record_on_launch": false,
+            "id": "subnet-0b11fc0ce15e018b1",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "ipv6_native": false,
+            "map_customer_owned_ip_on_launch": false,
+            "map_public_ip_on_launch": true,
+            "outpost_arn": "",
+            "owner_id": "567877624442",
+            "private_dns_hostname_type_on_launch": "ip-name",
+            "tags": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-gpu-subnet-us-west-2a",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "GPU-Cluster-150B-Tokens",
+              "Type": "GPU-EFA-Optimized"
+            },
+            "tags_all": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-gpu-subnet-us-west-2a",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "GPU-Cluster-150B-Tokens",
+              "Type": "GPU-EFA-Optimized"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-0951c091d74c38800"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "aws_vpc.main",
+            "data.aws_availability_zones.available",
+            "random_id.deployment"
+          ],
+          "create_before_destroy": true
+        },
+        {
+          "index_key": 1,
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-west-2:567877624442:subnet/subnet-08cf7a0b91164168e",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "us-west-2b",
+            "availability_zone_id": "usw2-az1",
+            "cidr_block": "10.0.2.0/24",
+            "customer_owned_ipv4_pool": "",
+            "enable_dns64": false,
+            "enable_lni_at_device_index": 0,
+            "enable_resource_name_dns_a_record_on_launch": false,
+            "enable_resource_name_dns_aaaa_record_on_launch": false,
+            "id": "subnet-08cf7a0b91164168e",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "ipv6_native": false,
+            "map_customer_owned_ip_on_launch": false,
+            "map_public_ip_on_launch": true,
+            "outpost_arn": "",
+            "owner_id": "567877624442",
+            "private_dns_hostname_type_on_launch": "ip-name",
+            "tags": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-gpu-subnet-us-west-2b",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "GPU-Cluster-150B-Tokens",
+              "Type": "GPU-EFA-Optimized"
+            },
+            "tags_all": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-gpu-subnet-us-west-2b",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "GPU-Cluster-150B-Tokens",
+              "Type": "GPU-EFA-Optimized"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-0951c091d74c38800"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "aws_vpc.main",
+            "data.aws_availability_zones.available",
+            "random_id.deployment"
+          ],
+          "create_before_destroy": true
+        },
+        {
+          "index_key": 2,
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-west-2:567877624442:subnet/subnet-0c48136c0f0c3f635",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "us-west-2c",
+            "availability_zone_id": "usw2-az3",
+            "cidr_block": "10.0.3.0/24",
+            "customer_owned_ipv4_pool": "",
+            "enable_dns64": false,
+            "enable_lni_at_device_index": 0,
+            "enable_resource_name_dns_a_record_on_launch": false,
+            "enable_resource_name_dns_aaaa_record_on_launch": false,
+            "id": "subnet-0c48136c0f0c3f635",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "ipv6_native": false,
+            "map_customer_owned_ip_on_launch": false,
+            "map_public_ip_on_launch": true,
+            "outpost_arn": "",
+            "owner_id": "567877624442",
+            "private_dns_hostname_type_on_launch": "ip-name",
+            "tags": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-gpu-subnet-us-west-2c",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "GPU-Cluster-150B-Tokens",
+              "Type": "GPU-EFA-Optimized"
+            },
+            "tags_all": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-gpu-subnet-us-west-2c",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "GPU-Cluster-150B-Tokens",
+              "Type": "GPU-EFA-Optimized"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-0951c091d74c38800"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "aws_vpc.main",
+            "data.aws_availability_zones.available",
+            "random_id.deployment"
+          ],
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_vpc",
+      "name": "main",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-west-2:567877624442:vpc/vpc-0951c091d74c38800",
+            "assign_generated_ipv6_cidr_block": false,
+            "cidr_block": "10.0.0.0/16",
+            "default_network_acl_id": "acl-080db8615c76f3537",
+            "default_route_table_id": "rtb-0aac087157eee15c7",
+            "default_security_group_id": "sg-099c7926e260f5c65",
+            "dhcp_options_id": "dopt-000b2d9c794206a4c",
+            "enable_dns_hostnames": true,
+            "enable_dns_support": true,
+            "enable_network_address_usage_metrics": false,
+            "id": "vpc-0951c091d74c38800",
+            "instance_tenancy": "default",
+            "ipv4_ipam_pool_id": null,
+            "ipv4_netmask_length": null,
+            "ipv6_association_id": "",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_network_border_group": "",
+            "ipv6_ipam_pool_id": "",
+            "ipv6_netmask_length": 0,
+            "main_route_table_id": "rtb-0aac087157eee15c7",
+            "owner_id": "567877624442",
+            "tags": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-vpc",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "GPU-Cluster-150B-Tokens"
+            },
+            "tags_all": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-vpc",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "GPU-Cluster-150B-Tokens"
+            }
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ==",
+          "dependencies": [
+            "random_id.deployment"
+          ],
+          "create_before_destroy": true
+        },
+        {
+          "status": "tainted",
+          "deposed": "e9bc8f39",
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-west-2:567877624442:vpc/vpc-050bef6f8d671e4cf",
+            "assign_generated_ipv6_cidr_block": false,
+            "cidr_block": "10.0.0.0/16",
+            "default_network_acl_id": "acl-03750f58e46298cd2",
+            "default_route_table_id": "rtb-04e528f22586dee42",
+            "default_security_group_id": "sg-0be9c8b4800c2acc7",
+            "dhcp_options_id": "dopt-000b2d9c794206a4c",
+            "enable_dns_hostnames": true,
+            "enable_dns_support": true,
+            "enable_network_address_usage_metrics": false,
+            "id": "vpc-050bef6f8d671e4cf",
+            "instance_tenancy": "default",
+            "ipv4_ipam_pool_id": null,
+            "ipv4_netmask_length": null,
+            "ipv6_association_id": "",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_network_border_group": "",
+            "ipv6_ipam_pool_id": "",
+            "ipv6_netmask_length": 0,
+            "main_route_table_id": "rtb-04e528f22586dee42",
+            "owner_id": "567877624442",
+            "tags": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-vpc",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "GPU-Cluster-150B-Tokens"
+            },
+            "tags_all": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-vpc",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "GPU-Cluster-150B-Tokens"
+            }
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ==",
+          "dependencies": [
+            "random_id.deployment"
+          ],
+          "create_before_destroy": true
+        },
+        {
+          "status": "tainted",
+          "deposed": "f233a969",
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-west-2:567877624442:vpc/vpc-0acba699aa85ab342",
+            "assign_generated_ipv6_cidr_block": false,
+            "cidr_block": "10.0.0.0/16",
+            "default_network_acl_id": "acl-0a8fbf6e031de62f2",
+            "default_route_table_id": "rtb-0ba719ae9562f4ca0",
+            "default_security_group_id": "sg-0d00d46a0e88fd19f",
+            "dhcp_options_id": "dopt-000b2d9c794206a4c",
+            "enable_dns_hostnames": true,
+            "enable_dns_support": true,
+            "enable_network_address_usage_metrics": false,
+            "id": "vpc-0acba699aa85ab342",
+            "instance_tenancy": "default",
+            "ipv4_ipam_pool_id": null,
+            "ipv4_netmask_length": null,
+            "ipv6_association_id": "",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_network_border_group": "",
+            "ipv6_ipam_pool_id": "",
+            "ipv6_netmask_length": 0,
+            "main_route_table_id": "rtb-0ba719ae9562f4ca0",
+            "owner_id": "567877624442",
+            "tags": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-vpc",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "GPU-Cluster-150B-Tokens"
+            },
+            "tags_all": {
+              "AutoShutdown": "Disabled",
+              "Compliance": "Enterprise-AI",
+              "CostCenter": "AI-Research",
+              "DeploymentId": "romai-phase2b-26a4a9af",
+              "Environment": "production",
+              "Monitoring": "Enhanced-CloudWatch",
+              "Name": "romai-phase2b-26a4a9af-vpc",
+              "Owner": "RomAI-DevTeam",
+              "Project": "RomAI-Phase2B",
+              "Purpose": "GPU-Cluster-150B-Tokens"
+            }
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ==",
+          "dependencies": [
+            "random_id.deployment"
+          ],
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "random_id",
+      "name": "deployment",
+      "provider": "provider[\"registry.terraform.io/hashicorp/random\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "b64_std": "JqSprw==",
+            "b64_url": "JqSprw",
+            "byte_length": 4,
+            "dec": "648325551",
+            "hex": "26a4a9af",
+            "id": "JqSprw",
+            "keepers": null,
+            "prefix": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "create_before_destroy": true
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}

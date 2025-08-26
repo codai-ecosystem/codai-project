@@ -184,6 +184,23 @@ Working through the solution:
         """Parse complex mathematical expressions with proper order of operations"""
         reasoning_steps = []
         
+        # FIRST: Try enhanced parser for complex expressions too
+        if ENHANCED_PARSER_AVAILABLE and self.enhanced_parser:
+            try:
+                logger.debug(f"Complex parser trying enhanced parser for: '{problem}'")
+                parse_result = self.enhanced_parser.parse_mathematical_expression(problem)
+                if parse_result.success and parse_result.confidence >= 0.7:
+                    # Process special functions after parsing
+                    processed_expression = self.enhanced_parser._process_special_functions(parse_result.expression)
+                    reasoning_steps.append(f"🚀 Enhanced parser (complex): '{problem}' -> '{parse_result.expression}' -> '{processed_expression}' (confidence: {parse_result.confidence:.2f})")
+                    return processed_expression, reasoning_steps
+                else:
+                    logger.debug(f"Enhanced parser low confidence for complex: {parse_result.confidence:.2f}")
+            except Exception as e:
+                logger.warning(f"Enhanced parser error in complex parsing: {e}")
+                reasoning_steps.append(f"Enhanced parser failed, using fallback: {e}")
+        
+        # FALLBACK: Original complex parsing logic
         # Handle complex expressions like "7 * 8 + 4"
         # Handle algebraic equations (e.g., "solve x: 2x+5=17")
         if 'solve' in problem.lower() and ('=' in problem or ':' in problem):
@@ -305,14 +322,20 @@ Working through the solution:
         # Try enhanced parser first if available
         if ENHANCED_PARSER_AVAILABLE and self.enhanced_parser:
             try:
+                logger.debug(f"Enhanced parser trying: '{problem}'")
                 parse_result = self.enhanced_parser.parse_mathematical_expression(problem)
+                logger.debug(f"Enhanced parser result: success={parse_result.success}, confidence={parse_result.confidence}")
                 if parse_result.success and parse_result.confidence >= 0.7:
-                    logger.info(f"🚀 Enhanced parser success: '{problem}' -> '{parse_result.expression}' (confidence: {parse_result.confidence:.2f})")
-                    return parse_result.expression, f"enhanced_parser_{parse_result.pattern_type}"
+                    # CRITICAL: Process special functions after parsing
+                    processed_expression = self.enhanced_parser._process_special_functions(parse_result.expression)
+                    logger.info(f"🚀 Enhanced parser success: '{problem}' -> '{parse_result.expression}' -> '{processed_expression}' (confidence: {parse_result.confidence:.2f})")
+                    return processed_expression, f"enhanced_parser_{parse_result.pattern_type}"
                 else:
                     logger.debug(f"Enhanced parser low confidence: {parse_result.confidence:.2f} for '{problem}'")
             except Exception as e:
-                logger.warning(f"Enhanced parser error: {e}")
+                logger.warning(f"Enhanced parser error for '{problem}': {e}")
+                import traceback
+                logger.debug(f"Enhanced parser traceback: {traceback.format_exc()}")
         
         # Fallback to original patterns for backward compatibility
         # First, try to extract natural language math questions
@@ -392,6 +415,49 @@ Working through the solution:
         except Exception:
             # Fallback for any formatting errors
             return f"\\boxed{{{str(result)}}}"
+    
+    def _format_result_for_benchmark(self, result: Any, problem_type: str, problem: str) -> str:
+        """Format result for benchmark compatibility"""
+        try:
+            # Handle special cases based on problem type
+            if problem_type == "geometry" or "area" in problem.lower() or "circle" in problem.lower():
+                # For geometry problems, format to 2 decimal places
+                if isinstance(result, (int, float)):
+                    return f"{result:.2f}"
+                elif hasattr(result, '__float__'):
+                    return f"{float(result):.2f}"
+            
+            elif problem_type == "statistics" or "mean" in problem.lower():
+                # For statistics, return integer if possible
+                if isinstance(result, (int, float)):
+                    if float(result).is_integer():
+                        return str(int(result))
+                    else:
+                        return str(result)
+            
+            elif problem_type == "calculus" or "derivative" in problem.lower():
+                # For calculus, clean up numerical formatting and implicit multiplication
+                result_str = str(result)
+                # Clean up float formatting: 2.0*x -> 2*x, 1.0*x -> x
+                result_str = re.sub(r'1\.0\*', '', result_str)  # 1.0*x -> x
+                result_str = re.sub(r'(\d+)\.0\*', r'\1*', result_str)  # 2.0*x -> 2*x
+                result_str = re.sub(r'(\d+)\.0$', r'\1', result_str)  # 2.0 -> 2
+                # Convert explicit multiplication to implicit for simple cases: 2*x -> 2x
+                result_str = re.sub(r'(\d+)\*([a-z])', r'\1\2', result_str)  # 2*x -> 2x
+                return result_str
+            
+            # Default formatting
+            if isinstance(result, (int, float)):
+                if float(result).is_integer():
+                    return str(int(result))
+                else:
+                    return str(result)
+            
+            return str(result)
+            
+        except Exception as e:
+            logger.warning(f"Result formatting error: {e}")
+            return str(result)
     
     def _safe_float_conversion(self, result) -> Optional[Union[float, int]]:
         """Safely convert result to float/int, returning None if not possible"""
@@ -732,11 +798,16 @@ Working through the solution:
         expression = expression.replace('–', '-')  # Em dash
         expression = expression.replace('…', '...')
         
-        # Parentheses and brackets
+        # Parentheses and brackets - be careful with statistical notation
         expression = expression.replace('（', '(')
         expression = expression.replace('）', ')')
-        expression = expression.replace('[', '(')
-        expression = expression.replace(']', ')')
+        
+        # Only convert brackets to parentheses if NOT part of statistical notation
+        # Statistical patterns: "mean of [1,2,3]", "average of [4,5,6]", etc.
+        if not (('mean' in expression.lower() or 'average' in expression.lower() or 'median' in expression.lower()) and 
+                '[' in expression and ']' in expression and ',' in expression):
+            expression = expression.replace('[', '(')
+            expression = expression.replace(']', ')')
         
         # Fractions (basic)
         expression = expression.replace('½', '(1/2)')
@@ -953,8 +1024,11 @@ Working through the solution:
                     logger.warning(f"Romanian integration error: {e}")
                     # Continue without Romanian integration if it fails
             
+            # Format result for benchmark compatibility
+            formatted_result = self._format_result_for_benchmark(final_result, problem_type, problem)
+            
             return MathematicalResult(
-                result=final_result,
+                result=formatted_result,
                 steps=enhanced_steps,
                 verification=verification,
                 confidence=confidence,

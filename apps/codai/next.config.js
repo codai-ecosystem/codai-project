@@ -12,34 +12,35 @@ const nextConfig = {
     ignoreDuringBuilds: true
   },
   
-  // Webpack configuration for better module resolution and pnpm compatibility
+  // Webpack configuration for better module resolution and stable versions
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    // Ensure we're only using App Router, not Pages Router
+    // Ensure proper module resolution for stable versions
     config.resolve.fallback = {
       ...config.resolve.fallback,
       fs: false,
       path: false,
     };
     
-    // Fix pnpm symlink resolution issues by enabling symlinks
-    config.resolve.symlinks = true;
+    // Enable symlinks resolution for pnpm compatibility
+    config.resolve.symlinks = false; // Disable symlinks to avoid pnpm global cache issues
     
-    // Ensure node_modules resolution works with pnpm monorepo
+    // Ensure proper node_modules resolution
     config.resolve.modules = [
+      require('path').resolve(__dirname, 'node_modules'), // Local node_modules first
       'node_modules',
       '../../node_modules', // Root workspace node_modules
-      require('path').resolve(__dirname, '../../node_modules'), // Absolute path to root
     ];
     
-    // Add resolve alias for problematic modules
+    // Fix absolute paths that cause build issues
     config.resolve.alias = {
       ...config.resolve.alias,
-      'source-map-js': require('path').resolve(__dirname, '../../node_modules/source-map/source-map.js'),
-      // Temporarily stub lucide-react until we can fix pnpm issues
-      'lucide-react': require('path').resolve(__dirname, 'src/lib/lucide-stub.tsx'),
-      // Use local stubs for missing dependencies
-      'zod': require('path').resolve(__dirname, 'src/lib/zod-stub.ts'),
-      'next-auth': require('path').resolve(__dirname, 'src/lib/next-auth-stub.ts'),
+      // Remove problematic absolute path references
+    };
+    
+    // Add optimization for stable builds
+    config.optimization = {
+      ...config.optimization,
+      moduleIds: 'deterministic',
     };
     
     return config;

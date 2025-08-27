@@ -37,16 +37,126 @@ afterAll(() => {
 });
 
 // Test utilities
+export const createMockWorkflow = (id: string) => ({
+  id,
+  name: `Test Workflow ${id}`,
+  description: 'Test automation workflow',
+  version: '1.0.0',
+  category: 'UI_AUTOMATION' as any,
+  priority: 2 as any,
+  executionMode: 'SEQUENTIAL' as any,
+  timeout: 30000,
+  creator: 'test-user',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  tags: ['test'],
+  tasks: [
+    {
+      id: `${id}-task-1`,
+      name: 'Test Task 1',
+      description: 'First test task',
+      type: 'UI_INTERACTION' as any,
+      priority: 2 as any,
+      parameters: {
+        input: { action: 'click', target: 'button' },
+        configuration: {}
+      },
+      timeout: 5000,
+      retryCount: 2,
+      dependencies: [],
+      preconditions: [],
+      operation: {
+        provider: 'AI_INTELLIGENCE' as any,
+        method: 'processTask',
+        parameters: { action: 'click', target: 'button' }
+      }
+    },
+    {
+      id: `${id}-task-2`,
+      name: 'Test Task 2',
+      description: 'Second test task',
+      type: 'OCR_EXTRACTION' as any,
+      priority: 2 as any,
+      parameters: {
+        input: { selector: '.data', format: 'json' },
+        configuration: {}
+      },
+      timeout: 3000,
+      retryCount: 1,
+      dependencies: [],
+      preconditions: [],
+      operation: {
+        provider: 'AI_INTELLIGENCE' as any,
+        method: 'processTask',
+        parameters: { selector: '.data', format: 'json' }
+      }
+    }
+  ],
+  dependencies: []
+});
+
+export const createMockTask = (id: string, type: any = 'UI_INTERACTION') => ({
+  id,
+  name: `Test Task ${id}`,
+  description: 'Test task description',
+  type,
+  priority: 2 as any,
+  parameters: {
+    input: { mock: true },
+    configuration: {}
+  },
+  timeout: 5000,
+  retryCount: 1,
+  dependencies: [],
+  preconditions: [],
+  operation: {
+    provider: 'AI_INTELLIGENCE' as any,
+    method: 'processTask',
+    parameters: { mock: true }
+  }
+});
+
 export const createMockAutomationContext = () => ({
-  workflowId: 'test-workflow-123',
-  taskId: 'test-task-456',
   sessionId: 'test-session-789',
+  executionId: 'test-execution-001',
   userId: 'test-user',
-  timestamp: new Date().toISOString(),
-  environment: 'test',
-  metadata: {
-    testRun: true,
-    mock: true
+  screenResolution: { width: 1920, height: 1080 },
+  activeApplications: [],
+  inputData: { testRun: true, mock: true },
+  variables: { environment: 'test' },
+  configuration: {
+    maxConcurrentWorkflows: 3,
+    maxConcurrentTasks: 5,
+    defaultTimeout: 30000,
+    defaultRetryCount: 3,
+    providers: {
+      'ai_intelligence': {
+        enabled: true,
+        settings: {},
+        timeout: 30000,
+        retryCount: 3
+      },
+      'drawing_intelligence': {
+        enabled: true,
+        settings: {},
+        timeout: 30000,
+        retryCount: 3
+      }
+    },
+    performanceSettings: {
+      enableCaching: true,
+      cacheSize: 100,
+      enableOptimizations: true,
+      maxResourceUsage: {
+        maxCpuUsage: 0.8,
+        maxMemoryUsage: 1024,
+        maxDiskUsage: 500
+      }
+    }
+  },
+  featureFlags: {
+    enableAdvancedLogging: true,
+    useExperimentalFeatures: false
   }
 });
 

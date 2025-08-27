@@ -1,0 +1,30 @@
+{
+  "timestamp": "2025-08-27T11:33:29.958Z",
+  "summary": {
+    "total": 4,
+    "passed": 4,
+    "failed": 0,
+    "successRate": 100
+  },
+  "tests": [
+    {
+      "test": "compilation",
+      "passed": true
+    },
+    {
+      "test": "workflow_schema",
+      "passed": true
+    },
+    {
+      "test": "workflow_functions",
+      "passed": true
+    },
+    {
+      "test": "tool_integration",
+      "passed": true,
+      "details": {
+        "toolCount": 178
+      }
+    }
+  ]
+}

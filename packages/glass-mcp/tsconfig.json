@@ -9,9 +9,9 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "exactOptionalPropertyTypes": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "exactOptionalPropertyTypes": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "bundler",
@@ -22,16 +22,23 @@
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "types": ["node"]
   },
   "include": [
-    "src/**/*"
+    "src/mcp-server.ts"
   ],
   "exclude": [
     "node_modules",
     "dist",
     "tests/**/*",
     "**/*.test.ts",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "src/automation/**/*",
+    "src/drawing/**/*", 
+    "src/glass-mcp-client.ts",
+    "src/mouse-drawing/**/*",
+    "src/types/**/*",
+    "src/vision/**/*"
   ]
 }

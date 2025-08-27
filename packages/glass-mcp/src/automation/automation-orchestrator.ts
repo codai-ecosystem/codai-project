@@ -531,7 +531,7 @@ export class AdvancedAutomationOrchestrator implements AdvancedAutomationEngine 
     
     this.logger.debug(`🎯 Executing task: ${task.name} (${task.id})`, { 
       taskType: task.type,
-      provider: task.operation.provider
+      provider: task.operation?.provider || 'unknown'
     });
     
     // Create task execution context
@@ -1143,6 +1143,32 @@ export class AdvancedAutomationOrchestrator implements AdvancedAutomationEngine 
 
   private getRecentErrors(): any[] {
     return []; // Placeholder
+  }
+
+  // Public health methods required by tests
+  public isHealthy(): boolean {
+    return this.healthStatus === HealthStatus.HEALTHY;
+  }
+
+  public async getHealthReport(): Promise<any> {
+    const cpuUtil = await this.getCpuUtilization();
+    const memUtil = await this.getMemoryUtilization();
+    const errors = this.getRecentErrors();
+    
+    return {
+      status: this.healthStatus,
+      timestamp: new Date().toISOString(),
+      components: {
+        orchestrator: this.healthStatus,
+        providers: Object.values(this.providers).length
+      },
+      performance: {
+        cpu: cpuUtil,
+        memory: memUtil
+      },
+      errors: errors,
+      uptime: Date.now() - this.initializationTime
+    };
   }
 }
 

@@ -1,58 +1,100 @@
 {
   "name": "@codai/glass-mcp",
-  "version": "8.1.0",
-  "description": "Glass MCP v8.1 - AI-Powered Visual Automation Platform with Real Mouse Cursor Drawing",
+  "version": "11.2.5",
+  "description": "Glass MCP v11.2.5 - Complete Revolutionary Windows Automation Platform with comprehensive Paint automation solutions. Features 6 consolidated tools (glass_vision, glass_drawing, glass_interact, glass_workflows, glass_system, glass_network) with 37 operations plus advanced Paint integration: precise button clicking, Bezier curve drawing, color palette management, shape tools, mathematical drawing engine, PowerShell Core integration, Win32 API control, and pixel-perfect automation. Production-ready MCP server with demonstrated Paint automation superiority.",
   "type": "module",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/mcp-server.js",
   "bin": {
-    "glass-mcp": "./dist/mcp-server-enhanced-drawing.cjs"
+    "glass-mcp": "./dist/mcp-server.js"
   },
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
-    "./drawing": {
-      "import": "./dist/drawing/index.js",
-      "types": "./dist/drawing/index.d.ts"
-    }
+    ".": "./dist/mcp-server.js"
   },
   "scripts": {
-    "build": "tsc src/**/*.ts --outDir dist --declaration --declarationMap --sourceMap --target ES2022 --module ESNext --lib ES2022,DOM --moduleResolution bundler --skipLibCheck --allowSyntheticDefaultImports --esModuleInterop",
+    "build": "tsc --project tsconfig.json",
     "clean": "rimraf dist",
     "dev": "tsc --build --watch",
     "type-check": "tsc --noEmit",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:consolidated": "vitest run src/__tests__/consolidated-tools.test.ts",
+    "start": "node dist/mcp-server.js"
   },
   "keywords": [
-    "ai",
-    "automation",
-    "drawing",
-    "graphics",
-    "windows",
-    "vision",
     "mcp",
-    "glass"
+    "windows", 
+    "automation",
+    "glass",
+    "revolutionary-platform",
+    "visual-intelligence",
+    "smart-interaction",
+    "workflow-automation",
+    "screen-capture",
+    "ocr",
+    "ui-detection",
+    "overlay-engine",
+    "drag-drop",
+    "macro-recording",
+    "system-integration",
+    "network-automation",
+    "connectivity-testing",
+    "wifi-management",
+    "vpn-control",
+    "process-management",
+    "service-management",
+    "registry-management",
+    "system-monitoring",
+    "consolidated-tools",
+    "glass_vision",
+    "glass_drawing", 
+    "glass_interact",
+    "glass_workflows",
+    "glass_system",
+    "glass_network",
+    "paint-automation",
+    "precise-clicking",
+    "bezier-curves",
+    "color-palette-management",
+    "shape-drawing-tools",
+    "mathematical-drawing-engine",
+    "powershell-core-integration",
+    "win32-api-control",
+    "pixel-perfect-automation",
+    "advanced-paint-integration",
+    "comprehensive-solutions",
+    "demonstration-ready",
+    "microsoft-mcp",
+    "enterprise-grade",
+    "ui-automation",
+    "backwards-compatible",
+    "vs-code",
+    "claude-desktop",
+    "comprehensive-automation",
+    "better-than-playwright",
+    "comprehensive-documentation",
+    "api-reference",
+    "quick-start-guide",
+    "enterprise-documentation",
+    "production-ready-docs"
   ],
   "author": "CODAI Team",
   "license": "MIT",
   "dependencies": {
-    "onnxruntime-node": "^1.19.0",
-    "@modelcontextprotocol/sdk": "^1.17.4"
+    "@modelcontextprotocol/sdk": "^1.17.4",
+    "zod": "^3.23.8",
+    "sharp": "^0.33.0",
+    "jimp": "^0.22.0",
+    "node-addon-api": "^7.0.0",
+    "buffer": "^6.0.3"
   },
   "devDependencies": {
     "typescript": "^5.6.3",
     "rimraf": "^6.0.1",
-    "@types/jest": "^29.5.0",
     "@types/node": "^20.0.0",
-    "jest": "^29.5.0",
-    "ts-jest": "^29.1.0"
+    "vitest": "^2.0.0",
+    "@vitest/coverage-v8": "^2.0.0"
   },
-
   "files": [
     "dist/**/*",
     "README.md",

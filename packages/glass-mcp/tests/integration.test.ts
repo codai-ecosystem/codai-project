@@ -205,7 +205,7 @@ describe('Glass MCP v7.0 Integration Tests', () => {
       // Validate task dependencies were respected
       const screenCaptureResult = result.taskResults.find(tr => tr.taskId === 'screen-capture-task');
       const aiAnalysisResult = result.taskResults.find(tr => tr.taskId === 'ai-analysis-task');
-      expect(screenCaptureResult?.startTime).toBeLessThan(aiAnalysisResult?.startTime || 0);
+      expect(screenCaptureResult?.startTime.getTime()).toBeLessThan(aiAnalysisResult?.startTime.getTime() || 0);
     });
 
     it('should handle complex parallel workflows', async () => {
@@ -358,14 +358,14 @@ describe('Glass MCP v7.0 Integration Tests', () => {
       // Comprehensive validation
       expect(result.status).toBe('completed');
       expect(result.taskResults.length).toBe(5);
-      expect(result.totalDuration).toBeDefined();
-      expect(result.totalDuration).toBeLessThan(60000); // Complete within 1 minute
+      expect(result.duration).toBeDefined();
+      expect(result.duration).toBeLessThan(60000); // Complete within 1 minute
 
       // Validate task completion order
       const taskCompletionTimes = result.taskResults.map(tr => ({
         id: tr.taskId,
         time: tr.startTime
-      })).sort((a, b) => a.time - b.time);
+      })).sort((a, b) => a.time.getTime() - b.time.getTime());
 
       expect(taskCompletionTimes[0].id).toBe('document-capture');
       expect(taskCompletionTimes[4].id).toBe('final-validation');

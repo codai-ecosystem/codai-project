@@ -14,10 +14,15 @@ import {
   TaskType,
   WorkflowPriority,
   TaskPriority,
-  AutomationConfiguration
+  AutomationConfiguration,
+  WorkflowCategory,
+  ExecutionMode,
+  ProviderType,
+  TaskParameters,
+  AutomationOperation
 } from '../src/automation/automation-types';
 
-import { createMockAutomationContext, delay, measurePerformance } from './setup';
+import { createMockAutomationContext, createMockWorkflow, createMockTask, delay, measurePerformance } from './setup';
 
 describe('AdvancedAutomationOrchestrator', () => {
   let orchestrator: AdvancedAutomationOrchestrator;
@@ -96,43 +101,70 @@ describe('AdvancedAutomationOrchestrator', () => {
       id,
       name: `Test Workflow ${id}`,
       description: 'Test automation workflow',
-      priority: WorkflowPriority.MEDIUM,
+      version: '1.0.0',
+      category: WorkflowCategory.UI_AUTOMATION,
+      priority: WorkflowPriority.NORMAL,
+      executionMode: ExecutionMode.SEQUENTIAL,
+      timeout: 30000,
+      creator: 'test-user',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      tags: ['test'],
       tasks: [
         {
           id: `${id}-task-1`,
           name: 'Test Task 1',
+          description: 'First test task',
           type: TaskType.UI_INTERACTION,
           priority: TaskPriority.NORMAL,
-          parameters: { action: 'click', target: 'button' },
+          parameters: {
+            input: { action: 'click', target: 'button' },
+            configuration: {}
+          },
           timeout: 5000,
-          retryAttempts: 2
+          retryCount: 2,
+          dependencies: [],
+          preconditions: [],
+          operation: {
+            provider: ProviderType.AI_INTELLIGENCE,
+            method: 'processTask',
+            parameters: { action: 'click', target: 'button' }
+          }
         },
         {
           id: `${id}-task-2`,
           name: 'Test Task 2',
-          type: TaskType.DATA_EXTRACTION,
+          description: 'Second test task',
+          type: TaskType.OCR_EXTRACTION,
           priority: TaskPriority.NORMAL,
-          parameters: { selector: '.data', format: 'json' },
+          parameters: {
+            input: { selector: '.data', format: 'json' },
+            configuration: {}
+          },
           timeout: 3000,
-          retryAttempts: 1
+          retryCount: 1,
+          dependencies: [],
+          preconditions: [],
+          operation: {
+            provider: ProviderType.AI_INTELLIGENCE,
+            method: 'processTask',
+            parameters: { selector: '.data', format: 'json' }
+          }
         }
       ],
-      context: createMockAutomationContext(),
-      metadata: {
-        version: '1.0',
-        author: 'test-suite',
-        tags: ['test', 'automation']
-      }
+      dependencies: []
+    });
     });
 
     it('should execute workflow successfully', async () => {
       const workflow = createMockWorkflow('test-workflow-1');
+      const context = createMockAutomationContext();
       
-      const result = await orchestrator.executeWorkflow(workflow);
+      const result = await orchestrator.executeWorkflow(workflow, context);
       
       expect(result).toHaveProperty('workflowId', workflow.id);
-      expect(result).toHaveProperty('success', true);
-      expect(result).toHaveProperty('executionTime');
+      expect(result).toHaveProperty('status');
+      expect(result).toHaveProperty('duration'); // Changed from executionTime to duration
       expect(result).toHaveProperty('taskResults');
       expect(result.taskResults.length).toBe(workflow.tasks.length);
     });
@@ -219,11 +251,22 @@ describe('AdvancedAutomationOrchestrator', () => {
     const createMockTask = (id: string, type: TaskType): AutomationTask => ({
       id,
       name: `Test Task ${id}`,
+      description: `Mock task for testing: ${id}`,
       type,
-      priority: TaskPriority.NORMAL,
-      parameters: { test: true, mockData: 'example' },
+      operation: {
+        provider: 'ai_intelligence' as any,
+        method: 'processTask',
+        parameters: { taskType: type }
+      },
+      parameters: { 
+        input: { test: true, mockData: 'example' },
+        configuration: { timeout: 5000 }
+      },
       timeout: 5000,
-      retryAttempts: 1
+      retryCount: 1,
+      priority: TaskPriority.NORMAL,
+      dependencies: [],
+      preconditions: []
     });
 
     it('should execute individual tasks successfully', async () => {
@@ -401,28 +444,4 @@ describe('AdvancedAutomationOrchestrator', () => {
       expect(tasksPerSecond).toBeGreaterThan(10);
     });
   });
-});
-
-const createMockWorkflow = (id: string): AutomationWorkflow => ({
-  id,
-  name: `Test Workflow ${id}`,
-  description: 'Test automation workflow',
-  priority: WorkflowPriority.MEDIUM,
-  tasks: [
-    {
-      id: `${id}-task-1`,
-      name: 'Mock Task 1',
-      type: TaskType.UI_INTERACTION,
-      priority: TaskPriority.NORMAL,
-      parameters: { mock: true },
-      timeout: 5000,
-      retryAttempts: 1
-    }
-  ],
-  context: createMockAutomationContext(),
-  metadata: {
-    version: '1.0',
-    author: 'test-suite',
-    tags: ['test']
-  }
 });

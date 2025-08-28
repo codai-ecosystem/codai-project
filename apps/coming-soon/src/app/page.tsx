@@ -1,8 +1,8 @@
 'use client'
 
-import { ComingSoonPage } from '@/components/pages/ComingSoonPage'
+import { SimpleComingSoonPage } from '@/components/pages/SimpleComingSoonPage'
 import React from 'react'
 
 export default function HomePage() {
-  return <ComingSoonPage />
+  return <SimpleComingSoonPage />
 }

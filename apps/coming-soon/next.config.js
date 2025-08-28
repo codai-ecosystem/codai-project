@@ -1,16 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Static export configuration
-  output: 'export',
-  trailingSlash: true,
-  images: {
-    unoptimized: true
-  },
-  
   // Minimal configuration to prevent build hanging
   experimental: {
     // No experimental features to avoid conflicts
   },
+  
+  // Output configuration - using standalone for compatibility
+  output: 'standalone',
   
   // Allow builds to continue with TypeScript/ESLint errors for now
   typescript: {

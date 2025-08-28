@@ -133,9 +133,14 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
                 {...props}
             >
                 <div className="flex items-start space-x-3 flex-1">
-                    {(icon || IconComponent) && (
+                    {icon && (
                         <div className="flex-shrink-0">
-                            {icon || <IconComponent className="h-5 w-5" />}
+                            {icon}
+                        </div>
+                    )}
+                    {!icon && IconComponent && (
+                        <div className="flex-shrink-0">
+                            <IconComponent className="h-5 w-5" />
                         </div>
                     )}
 

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@/tests/setup'
 import { MemoryCard } from '../MemoryCard'
-import type { Memory } from '@/lib/api'
+import type { Memory } from '@/types'
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
@@ -44,7 +44,6 @@ const mockMemory: Memory = {
   id: 'test-memory-1',
   agentId: 'test-agent-1',
   content: 'This is a test memory content that demonstrates the memory card functionality.',
-  structuredKey: 'test.memory.1',
   metadata: {
     importance: 8,
     tags: ['testing', 'component', 'ui'],

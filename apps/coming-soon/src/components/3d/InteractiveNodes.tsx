@@ -164,10 +164,10 @@ const InteractiveNodes: React.FC<InteractiveNodesProps> = ({
             <div
                 onClick={() => handleNodeSelect(node.id)}
                 className={`relative overflow-hidden rounded-2xl border-2 p-4 backdrop-blur-sm transition-all duration-300 ${isSelected
-                        ? 'border-blue-500 shadow-2xl'
-                        : theme === 'dark'
-                            ? 'border-slate-700 hover:border-slate-600 bg-slate-900/50'
-                            : 'border-gray-200 hover:border-gray-300 bg-white/50'
+                    ? 'border-blue-500 shadow-2xl'
+                    : theme === 'dark'
+                        ? 'border-slate-700 hover:border-slate-600 bg-slate-900/50'
+                        : 'border-gray-200 hover:border-gray-300 bg-white/50'
                     } ${isAnimationPlaying ? 'animate-pulse' : ''}`}
                 style={{
                     animationDuration: `${2 / animationSpeed}s`,
@@ -204,8 +204,8 @@ const InteractiveNodes: React.FC<InteractiveNodesProps> = ({
 
                 {/* Category */}
                 <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs mb-3 ${theme === 'dark'
-                        ? 'bg-blue-900/50 text-blue-300'
-                        : 'bg-blue-100 text-blue-700'
+                    ? 'bg-blue-900/50 text-blue-300'
+                    : 'bg-blue-100 text-blue-700'
                     }`}>
                     <Layers className="w-3 h-3 mr-1" />
                     {node.category}
@@ -236,8 +236,8 @@ const InteractiveNodes: React.FC<InteractiveNodesProps> = ({
 
                 {/* Hover overlay */}
                 <div className={`absolute inset-0 rounded-2xl transition-opacity duration-300 opacity-0 group-hover:opacity-100 ${theme === 'dark'
-                        ? 'bg-gradient-to-br from-blue-900/20 to-purple-900/20'
-                        : 'bg-gradient-to-br from-blue-100/30 to-purple-100/30'
+                    ? 'bg-gradient-to-br from-blue-900/20 to-purple-900/20'
+                    : 'bg-gradient-to-br from-blue-100/30 to-purple-100/30'
                     }`} />
             </div>
         </AnimatedSection>
@@ -247,8 +247,8 @@ const InteractiveNodes: React.FC<InteractiveNodesProps> = ({
         <div className={`w-full h-full flex flex-col ${className}`}>
             {/* Controls Panel */}
             <div className={`flex flex-wrap items-center gap-4 p-4 border-b ${theme === 'dark'
-                    ? 'border-slate-700 bg-slate-900/50'
-                    : 'border-gray-200 bg-white/50'
+                ? 'border-slate-700 bg-slate-900/50'
+                : 'border-gray-200 bg-white/50'
                 } backdrop-blur-sm`}>
                 {/* Search */}
                 <div className="relative flex-1 min-w-64">
@@ -260,8 +260,8 @@ const InteractiveNodes: React.FC<InteractiveNodesProps> = ({
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className={`w-full pl-10 pr-4 py-2 text-sm rounded-lg border transition-colors ${theme === 'dark'
-                                ? 'bg-slate-800 border-slate-600 text-white placeholder-gray-400'
-                                : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                            ? 'bg-slate-800 border-slate-600 text-white placeholder-gray-400'
+                            : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
                             } focus:outline-none focus:ring-2 focus:ring-blue-500`}
                     />
                 </div>
@@ -274,8 +274,8 @@ const InteractiveNodes: React.FC<InteractiveNodesProps> = ({
                         value={filterCategory}
                         onChange={(e) => setFilterCategory(e.target.value)}
                         className={`px-3 py-2 text-sm rounded-lg border ${theme === 'dark'
-                                ? 'bg-slate-800 border-slate-600 text-white'
-                                : 'bg-white border-gray-300 text-gray-900'
+                            ? 'bg-slate-800 border-slate-600 text-white'
+                            : 'bg-white border-gray-300 text-gray-900'
                             } focus:outline-none focus:ring-2 focus:ring-blue-500`}
                     >
                         <option value="all">All Categories</option>
@@ -288,8 +288,8 @@ const InteractiveNodes: React.FC<InteractiveNodesProps> = ({
                         value={filterStatus}
                         onChange={(e) => setFilterStatus(e.target.value)}
                         className={`px-3 py-2 text-sm rounded-lg border ${theme === 'dark'
-                                ? 'bg-slate-800 border-slate-600 text-white'
-                                : 'bg-white border-gray-300 text-gray-900'
+                            ? 'bg-slate-800 border-slate-600 text-white'
+                            : 'bg-white border-gray-300 text-gray-900'
                             } focus:outline-none focus:ring-2 focus:ring-blue-500`}
                     >
                         <option value="all">All Status</option>
@@ -303,8 +303,8 @@ const InteractiveNodes: React.FC<InteractiveNodesProps> = ({
                         value={filterTier}
                         onChange={(e) => setFilterTier(e.target.value)}
                         className={`px-3 py-2 text-sm rounded-lg border ${theme === 'dark'
-                                ? 'bg-slate-800 border-slate-600 text-white'
-                                : 'bg-white border-gray-300 text-gray-900'
+                            ? 'bg-slate-800 border-slate-600 text-white'
+                            : 'bg-white border-gray-300 text-gray-900'
                             } focus:outline-none focus:ring-2 focus:ring-blue-500`}
                     >
                         <option value="all">All Tiers</option>
@@ -321,10 +321,10 @@ const InteractiveNodes: React.FC<InteractiveNodesProps> = ({
                     <button
                         onClick={() => setShowMetrics(!showMetrics)}
                         className={`p-2 rounded-lg transition-colors ${showMetrics
-                                ? 'bg-blue-500 text-white'
-                                : theme === 'dark'
-                                    ? 'bg-slate-700 text-gray-300 hover:bg-slate-600'
-                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            ? 'bg-blue-500 text-white'
+                            : theme === 'dark'
+                                ? 'bg-slate-700 text-gray-300 hover:bg-slate-600'
+                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                             }`}
                         title="Toggle Metrics"
                     >
@@ -334,8 +334,8 @@ const InteractiveNodes: React.FC<InteractiveNodesProps> = ({
                     <button
                         onClick={() => setIsAnimationPlaying(!isAnimationPlaying)}
                         className={`p-2 rounded-lg transition-colors ${theme === 'dark'
-                                ? 'bg-slate-700 text-gray-300 hover:bg-slate-600'
-                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            ? 'bg-slate-700 text-gray-300 hover:bg-slate-600'
+                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                             }`}
                         title={isAnimationPlaying ? 'Pause Animation' : 'Play Animation'}
                     >
@@ -346,8 +346,8 @@ const InteractiveNodes: React.FC<InteractiveNodesProps> = ({
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value as any)}
                         className={`px-3 py-2 text-sm rounded-lg border ${theme === 'dark'
-                                ? 'bg-slate-800 border-slate-600 text-white'
-                                : 'bg-white border-gray-300 text-gray-900'
+                            ? 'bg-slate-800 border-slate-600 text-white'
+                            : 'bg-white border-gray-300 text-gray-900'
                             } focus:outline-none focus:ring-2 focus:ring-blue-500`}
                     >
                         <option value="tier">Sort by Tier</option>
@@ -360,8 +360,8 @@ const InteractiveNodes: React.FC<InteractiveNodesProps> = ({
 
             {/* Results Summary */}
             <div className={`px-4 py-2 border-b text-sm ${theme === 'dark'
-                    ? 'border-slate-700 text-gray-400 bg-slate-900/30'
-                    : 'border-gray-200 text-gray-600 bg-gray-50/30'
+                ? 'border-slate-700 text-gray-400 bg-slate-900/30'
+                : 'border-gray-200 text-gray-600 bg-gray-50/30'
                 }`}>
                 Showing {filteredNodes.length} of {nodes.length} nodes
                 {selectedNode && (

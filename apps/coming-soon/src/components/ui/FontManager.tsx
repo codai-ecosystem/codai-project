@@ -53,7 +53,7 @@ export const useFontLoader = () => {
 
   const loadFont = async (fontConfig: FontConfig) => {
     const fontKey = `${fontConfig.family}-${fontConfig.weights.join('-')}`
-    
+
     if (loadedFonts.has(fontKey) || loadingFonts.has(fontKey)) {
       return
     }
@@ -154,13 +154,13 @@ export const FontPreview: React.FC<FontPreviewProps> = ({
         )} style={{ fontFamily }}>
           {fontFamily}
         </h3>
-        
+
         <button
           onClick={copyFontFamily}
           className={cn(
             'p-2 rounded-lg transition-colors duration-200',
-            theme === 'dark' 
-              ? 'hover:bg-gray-700 text-gray-400 hover:text-gray-200' 
+            theme === 'dark'
+              ? 'hover:bg-gray-700 text-gray-400 hover:text-gray-200'
               : 'hover:bg-gray-100 text-gray-600 hover:text-gray-800'
           )}
         >
@@ -303,14 +303,14 @@ export const FontManager: React.FC<FontManagerProps> = ({ className = '' }) => {
           sizes={['text-xs', 'text-sm', 'text-base', 'text-lg', 'text-xl', 'text-2xl', 'text-3xl']}
           weights={['font-light', 'font-normal', 'font-medium', 'font-semibold', 'font-bold', 'font-extrabold']}
         />
-        
+
         <FontPreview
           fontFamily="JetBrains Mono, monospace"
           text="const codai = { status: 'revolutionary', impact: 'global' };"
           sizes={['text-xs', 'text-sm', 'text-base', 'text-lg']}
           weights={['font-light', 'font-normal', 'font-medium', 'font-semibold', 'font-bold']}
         />
-        
+
         <FontPreview
           fontFamily="Cal Sans, Inter, system-ui, sans-serif"
           text="Experience the Next Generation AI Platform"
@@ -330,7 +330,7 @@ export const FontManager: React.FC<FontManagerProps> = ({ className = '' }) => {
         )}>
           Typography Scale
         </h3>
-        
+
         <div className="space-y-6">
           {Object.entries(designSystem.typography.fontSize).map(([size, [fontSize, config]]) => (
             <div key={size} className="flex items-center gap-6">
@@ -365,7 +365,7 @@ export const FontManager: React.FC<FontManagerProps> = ({ className = '' }) => {
         )}>
           Font Loading Strategy
         </h3>
-        
+
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className={cn(
@@ -382,7 +382,7 @@ export const FontManager: React.FC<FontManagerProps> = ({ className = '' }) => {
                 <li>• font-display: swap for smooth loading</li>
               </ul>
             </div>
-            
+
             <div className={cn(
               'p-4 rounded-lg',
               theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'

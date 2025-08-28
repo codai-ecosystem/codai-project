@@ -122,7 +122,7 @@ export const CODAIWebsiteSchema: React.FC = () => (
             applicationCategory: "BusinessApplication"
           },
           {
-            "@type": "SoftwareApplication", 
+            "@type": "SoftwareApplication",
             name: "MemorAI",
             description: "Intelligent memory management and knowledge organization system",
             applicationCategory: "ProductivityApplication"
@@ -135,7 +135,7 @@ export const CODAIWebsiteSchema: React.FC = () => (
           },
           {
             "@type": "SoftwareApplication",
-            name: "StudiAI", 
+            name: "StudiAI",
             description: "Comprehensive educational AI platform for personalized learning",
             applicationCategory: "EducationalApplication"
           },
@@ -193,7 +193,7 @@ export const CODAISoftwareApplicationSchema: React.FC = () => (
         "42+ AI Applications",
         "Foundation Services",
         "New Generation AI",
-        "Infrastructure Tools", 
+        "Infrastructure Tools",
         "Specialized Services",
         "Emerging Platforms",
         "Real-time Processing",

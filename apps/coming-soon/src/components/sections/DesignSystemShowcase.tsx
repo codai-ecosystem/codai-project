@@ -6,13 +6,13 @@ import { useTheme } from '@/contexts/ThemeContext'
 import { useI18n } from '@/contexts/I18nContext'
 import { cn } from '@/lib/utils'
 import { designSystem } from '@/lib/design-system'
-import { 
-  Typography, 
-  Display, 
-  Heading, 
-  Body, 
-  Caption, 
-  Overline, 
+import {
+  Typography,
+  Display,
+  Heading,
+  Body,
+  Caption,
+  Overline,
   GradientText,
   H1,
   H2,
@@ -34,14 +34,14 @@ import {
 } from '@heroicons/react/24/outline'
 
 // Design System Section Types
-type DesignSystemSection = 
-  | 'overview' 
-  | 'colors' 
-  | 'typography' 
-  | 'components' 
-  | 'spacing' 
-  | 'elevation' 
-  | 'animation' 
+type DesignSystemSection =
+  | 'overview'
+  | 'colors'
+  | 'typography'
+  | 'components'
+  | 'spacing'
+  | 'elevation'
+  | 'animation'
   | 'usage'
 
 interface DesignSystemShowcaseProps {
@@ -52,7 +52,7 @@ interface DesignSystemShowcaseProps {
 // Component Examples for Showcase
 const ComponentExamples: React.FC = () => {
   const { theme } = useTheme()
-  
+
   return (
     <div className="space-y-8">
       {/* Buttons */}
@@ -178,7 +178,7 @@ const ComponentExamples: React.FC = () => {
 // Spacing System Showcase
 const SpacingShowcase: React.FC = () => {
   const { theme } = useTheme()
-  
+
   const spacingExamples = [
     { key: '1', value: '0.25rem', label: '4px' },
     { key: '2', value: '0.5rem', label: '8px' },
@@ -227,7 +227,7 @@ const SpacingShowcase: React.FC = () => {
 // Elevation System Showcase
 const ElevationShowcase: React.FC = () => {
   const { theme } = useTheme()
-  
+
   const elevationLevels = [
     { level: '0', shadow: 'shadow-none', name: 'None' },
     { level: '1', shadow: 'shadow-sm', name: 'Small' },
@@ -309,12 +309,12 @@ export const DesignSystemShowcase: React.FC<DesignSystemShowcaseProps> = ({
                 CODAI Design System
               </Display>
               <Body size="xl" color="secondary" className="max-w-4xl mx-auto">
-                A comprehensive design system built for the future of AI development. 
-                Every component, color, and interaction is carefully crafted to ensure 
+                A comprehensive design system built for the future of AI development.
+                Every component, color, and interaction is carefully crafted to ensure
                 consistency, accessibility, and exceptional user experience.
               </Body>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {sections.slice(1, -1).map((section) => (
                 <motion.button
@@ -322,8 +322,8 @@ export const DesignSystemShowcase: React.FC<DesignSystemShowcaseProps> = ({
                   onClick={() => setActiveSection(section.key as DesignSystemSection)}
                   className={cn(
                     'p-6 rounded-2xl border text-left transition-all duration-300',
-                    theme === 'dark' 
-                      ? 'bg-gray-800 border-gray-700 hover:bg-gray-700' 
+                    theme === 'dark'
+                      ? 'bg-gray-800 border-gray-700 hover:bg-gray-700'
                       : 'bg-white border-gray-200 hover:bg-gray-50'
                   )}
                   whileHover={{ scale: 1.02, y: -2 }}
@@ -347,7 +347,7 @@ export const DesignSystemShowcase: React.FC<DesignSystemShowcaseProps> = ({
             </div>
           </div>
         )
-      
+
       case 'colors':
         return (
           <div className="space-y-8">
@@ -355,19 +355,19 @@ export const DesignSystemShowcase: React.FC<DesignSystemShowcaseProps> = ({
             <GradientGenerator />
           </div>
         )
-      
+
       case 'typography':
         return <FontManager />
-      
+
       case 'components':
         return <ComponentExamples />
-      
+
       case 'spacing':
         return <SpacingShowcase />
-      
+
       case 'elevation':
         return <ElevationShowcase />
-      
+
       case 'usage':
         return (
           <div className="space-y-8">
@@ -389,7 +389,7 @@ export const DesignSystemShowcase: React.FC<DesignSystemShowcaseProps> = ({
                     </pre>
                   </div>
                 </div>
-                
+
                 <div className={cn(
                   'p-6 rounded-xl border',
                   theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
@@ -401,7 +401,7 @@ export const DesignSystemShowcase: React.FC<DesignSystemShowcaseProps> = ({
                       'p-4 rounded-lg text-sm font-mono overflow-x-auto',
                       theme === 'dark' ? 'bg-gray-900 text-gray-200' : 'bg-gray-100 text-gray-800'
                     )}>
-{`import { Display, Heading, Body } from '@/components/ui/Typography'
+                      {`import { Display, Heading, Body } from '@/components/ui/Typography'
 import { useTheme } from '@/contexts/ThemeContext'
 
 export default function MyComponent() {
@@ -428,7 +428,7 @@ export default function MyComponent() {
             </div>
           </div>
         )
-      
+
       default:
         return <div>Section not found</div>
     }
@@ -452,8 +452,8 @@ export default function MyComponent() {
                   activeSection === section.key
                     ? 'bg-blue-600 text-white shadow-lg'
                     : theme === 'dark'
-                    ? 'text-gray-300 hover:text-gray-100 hover:bg-gray-700'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-white'
+                      ? 'text-gray-300 hover:text-gray-100 hover:bg-gray-700'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-white'
                 )}
               >
                 <section.icon className="w-4 h-4" />

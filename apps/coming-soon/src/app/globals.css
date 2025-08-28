@@ -12,6 +12,162 @@
     transition: all 0.3s ease-in-out;
 }
 
+/* Masonry Grid Layout for Modern Portfolio Design */
+.masonry-grid {
+    column-gap: 2rem;
+    column-fill: balance;
+}
+
+.masonry-grid>* {
+    break-inside: avoid;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 640px) {
+    .masonry-grid {
+        column-count: 1;
+    }
+}
+
+@media (min-width: 640px) and (max-width: 1024px) {
+    .masonry-grid {
+        column-count: 2;
+    }
+}
+
+@media (min-width: 1024px) and (max-width: 1280px) {
+    .masonry-grid {
+        column-count: 3;
+    }
+}
+
+@media (min-width: 1280px) {
+    .masonry-grid {
+        column-count: 4;
+    }
+}
+
+/* Responsive Card Variants for Enhanced Portfolio Layout */
+.card-large {
+    min-height: 420px;
+    aspect-ratio: 16/10;
+}
+
+.card-medium {
+    min-height: 340px;
+    aspect-ratio: 4/3;
+}
+
+.card-compact {
+    min-height: 280px;
+    aspect-ratio: 1/1;
+}
+
+/* Responsive Card Breakpoints */
+@media (max-width: 640px) {
+    .card-large {
+        min-height: 380px;
+    }
+
+    .card-medium {
+        min-height: 320px;
+    }
+
+    .card-compact {
+        min-height: 260px;
+    }
+}
+
+@media (min-width: 640px) and (max-width: 1024px) {
+    .card-large {
+        min-height: 400px;
+    }
+
+    .card-medium {
+        min-height: 330px;
+    }
+
+    .card-compact {
+        min-height: 270px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .card-large {
+        min-height: 420px;
+    }
+
+    .card-medium {
+        min-height: 340px;
+    }
+
+    .card-compact {
+        min-height: 280px;
+    }
+}
+
+/* Enhanced Tier-Specific Shadow System */
+.card-tier-premium {
+    --shadow-color: rgba(147, 51, 234, 0.25);
+    /* Purple */
+    --shadow-hover-color: rgba(147, 51, 234, 0.4);
+    --border-hover-color: rgba(168, 85, 247, 0.8);
+}
+
+.card-tier-core {
+    --shadow-color: rgba(16, 185, 129, 0.25);
+    /* Emerald */
+    --shadow-hover-color: rgba(16, 185, 129, 0.4);
+    --border-hover-color: rgba(52, 211, 153, 0.8);
+}
+
+.card-tier-standard {
+    --shadow-color: rgba(249, 115, 22, 0.25);
+    /* Orange */
+    --shadow-hover-color: rgba(249, 115, 22, 0.4);
+    --border-hover-color: rgba(251, 146, 60, 0.8);
+}
+
+.card-tier-default {
+    --shadow-color: rgba(59, 130, 246, 0.2);
+    /* Blue */
+    --shadow-hover-color: rgba(59, 130, 246, 0.3);
+    --border-hover-color: rgba(96, 165, 250, 0.7);
+}
+
+/* Enhanced Card Hover Effects with GPU Acceleration */
+.project-card-enhanced {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateZ(0);
+    /* GPU acceleration */
+    will-change: transform, box-shadow, border-color;
+    box-shadow: 0 4px 12px var(--shadow-color), 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.project-card-enhanced:hover {
+    transform: translateY(-4px) scale(1.02) translateZ(0);
+    box-shadow:
+        0 12px 28px var(--shadow-hover-color),
+        0 6px 12px rgba(0, 0, 0, 0.15),
+        0 0 0 1px var(--border-hover-color);
+}
+
+.project-card-enhanced:active {
+    transform: translateY(-2px) scale(1.01) translateZ(0);
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Refined Animation Performance */
+@media (prefers-reduced-motion: reduce) {
+
+    .project-card-enhanced,
+    .project-card-enhanced:hover,
+    .project-card-enhanced:active {
+        transform: none;
+        transition: box-shadow 0.2s ease;
+    }
+}
+
 /* Custom CSS Variables for Enhanced Design Tokens */
 :root {
     --font-inter: 'Inter', system-ui, -apple-system, sans-serif;

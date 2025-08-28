@@ -83,8 +83,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, viewMode, cat
             className={cn(
                 "group relative overflow-hidden rounded-2xl transition-all duration-500",
                 viewMode === 'grid' ? "h-full" : "h-40",
-                theme === 'dark' 
-                    ? "bg-gray-900/80 border border-gray-700/50" 
+                theme === 'dark'
+                    ? "bg-gray-900/80 border border-gray-700/50"
                     : "bg-white/80 border border-gray-200/50",
                 "backdrop-blur-sm hover:shadow-2xl",
                 categoryTheme.glow
@@ -141,8 +141,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, viewMode, cat
                         `bg-gradient-to-br ${project.gradient}`,
                         isHovered && "scale-110 shadow-lg"
                     )}>
-                        {React.createElement(project.icon as React.ComponentType<{ className?: string }>, { 
-                            className: "w-6 h-6 text-white" 
+                        {React.createElement(project.icon as React.ComponentType<{ className?: string }>, {
+                            className: "w-6 h-6 text-white"
                         })}
                     </div>
                     <div>
@@ -222,7 +222,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, viewMode, cat
                         {viewMode === 'grid' ? 'Preview' : 'View'}
                         <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                     </motion.button>
-                    
+
                     {viewMode === 'grid' && (
                         <motion.button
                             className="flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-white font-medium rounded-xl shadow-lg hover:shadow-xl backdrop-blur-sm border border-gray-200 dark:border-gray-700 transition-all duration-300"
@@ -293,15 +293,15 @@ const CategorySection: React.FC<CategorySectionProps> = ({ category, index }) =>
     const CategoryIcon = categoryTheme.icon;
 
     const projects = getProjectsByCategory(category);
-    
+
     // Filter projects based on search and filters
     const filteredProjects = projects.filter(project => {
         const matchesSearch = project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            project.domain.toLowerCase().includes(searchQuery.toLowerCase());
+            project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            project.domain.toLowerCase().includes(searchQuery.toLowerCase());
         const matchesStatus = selectedStatus === 'all' || project.status === selectedStatus;
         const matchesPriority = selectedPriority === 'all' || project.priority === selectedPriority;
-        
+
         return matchesSearch && matchesStatus && matchesPriority;
     });
 
@@ -309,7 +309,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({ category, index }) =>
     const displayedProjects = isExpanded ? filteredProjects : filteredProjects.slice(0, 6);
 
     return (
-        <section 
+        <section
             ref={sectionRef}
             className="relative py-20 overflow-hidden"
         >
@@ -319,7 +319,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({ category, index }) =>
                     "absolute inset-0 opacity-5",
                     `bg-gradient-to-br ${categoryTheme.primary}`
                 )} />
-                
+
                 {/* Floating Particles */}
                 {Array.from({ length: 20 }).map((_, i) => (
                     <motion.div
@@ -367,7 +367,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({ category, index }) =>
                             {category}
                         </span>
                     </h2>
-                    
+
                     <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
                         {categoryTheme.description}
                     </p>
@@ -439,8 +439,8 @@ const CategorySection: React.FC<CategorySectionProps> = ({ category, index }) =>
                                 onClick={() => setViewMode('grid')}
                                 className={cn(
                                     "p-3 transition-colors",
-                                    viewMode === 'grid' 
-                                        ? `bg-gradient-to-r ${categoryTheme.primary} text-white` 
+                                    viewMode === 'grid'
+                                        ? `bg-gradient-to-r ${categoryTheme.primary} text-white`
                                         : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                                 )}
                             >
@@ -450,8 +450,8 @@ const CategorySection: React.FC<CategorySectionProps> = ({ category, index }) =>
                                 onClick={() => setViewMode('list')}
                                 className={cn(
                                     "p-3 transition-colors",
-                                    viewMode === 'list' 
-                                        ? `bg-gradient-to-r ${categoryTheme.primary} text-white` 
+                                    viewMode === 'list'
+                                        ? `bg-gradient-to-r ${categoryTheme.primary} text-white`
                                         : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                                 )}
                             >
@@ -468,8 +468,8 @@ const CategorySection: React.FC<CategorySectionProps> = ({ category, index }) =>
                     transition={{ duration: 0.8, delay: index * 0.2 + 0.4 }}
                     className={cn(
                         "transition-all duration-500",
-                        viewMode === 'grid' 
-                            ? "grid gap-8 grid-cols-1 md:grid-cols-2 xl:grid-cols-3" 
+                        viewMode === 'grid'
+                            ? "grid gap-8 grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
                             : "space-y-4"
                     )}
                 >
@@ -554,8 +554,8 @@ export const ProjectCategorySections: React.FC = () => {
                         </h2>
 
                         <p className="text-xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed mb-12">
-                            Discover the most comprehensive AI ecosystem ever created. From core infrastructure to 
-                            cutting-edge specialized platforms, each service is designed to work seamlessly together 
+                            Discover the most comprehensive AI ecosystem ever created. From core infrastructure to
+                            cutting-edge specialized platforms, each service is designed to work seamlessly together
                             while pushing the boundaries of what's possible with artificial intelligence.
                         </p>
 
@@ -599,10 +599,10 @@ export const ProjectCategorySections: React.FC = () => {
                             The Future of AI is Integrated
                         </h3>
                         <p className="text-xl text-white/90 mb-12 max-w-3xl mx-auto">
-                            Unlike fragmented solutions, CODAI creates a unified ecosystem where every 
+                            Unlike fragmented solutions, CODAI creates a unified ecosystem where every
                             platform enhances the others. Experience the power of true AI integration.
                         </p>
-                        
+
                         <div className="flex flex-wrap justify-center gap-4">
                             <motion.button
                                 className="group flex items-center gap-2 px-8 py-4 bg-white text-purple-600 font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
@@ -613,7 +613,7 @@ export const ProjectCategorySections: React.FC = () => {
                                 Watch Demo
                                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </motion.button>
-                            
+
                             <motion.button
                                 className="group flex items-center gap-2 px-8 py-4 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-purple-600 transition-all duration-300 transform hover:scale-105"
                                 whileHover={{ scale: 1.05 }}

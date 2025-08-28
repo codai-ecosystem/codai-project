@@ -63,7 +63,7 @@ export class CodeSecurityAnalyzer {
             description: 'Avoid weak cryptographic hash functions',
             severity: 'warning',
             category: 'security',
-            pattern: /crypto\.createHash\(['"]md5['"]|crypto\.createHash\(['"]sha1['"])/g,
+            pattern: /crypto\.createHash\(['"]md5['"]|crypto\.createHash\(['"]sha1['"]\)/g,
             message: 'Weak cryptographic hash function detected',
             recommendation: 'Use SHA-256 or stronger hash functions'
         },

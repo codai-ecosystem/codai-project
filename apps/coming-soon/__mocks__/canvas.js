@@ -5,7 +5,7 @@ module.exports = {
       this.width = width;
       this.height = height;
     }
-    
+
     getContext() {
       return {
         fillRect: jest.fn(),
@@ -28,20 +28,20 @@ module.exports = {
         strokeText: jest.fn(),
       };
     }
-    
+
     toDataURL() {
       return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
     }
-    
+
     toBuffer() {
       return Buffer.from('');
     }
   },
-  
+
   createCanvas: jest.fn().mockImplementation((width = 150, height = 150) => {
     return new module.exports.Canvas(width, height);
   }),
-  
+
   createImageData: jest.fn(() => ({ data: [] })),
   loadImage: jest.fn(() => Promise.resolve({})),
   registerFont: jest.fn(),

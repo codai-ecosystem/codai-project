@@ -381,8 +381,8 @@ export default function TeamWorkspacesDashboard(): React.JSX.Element {
                   <Label htmlFor="workspace-visibility">Visibility</Label>
                   <Select
                     value={newWorkspace.visibility}
-                    onValueChange={(value: 'private' | 'team' | 'public') =>
-                      setNewWorkspace(prev => ({ ...prev, visibility: value }))}
+                    onValueChange={(value) => 
+                      setNewWorkspace(prev => ({ ...prev, visibility: value } as any))}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select visibility" />
@@ -594,8 +594,8 @@ export default function TeamWorkspacesDashboard(): React.JSX.Element {
                           <Label htmlFor="invite-role">Role</Label>
                           <Select
                             value={inviteMember.role}
-                            onValueChange={(value: 'admin' | 'member' | 'viewer') =>
-                              setInviteMember(prev => ({ ...prev, role: value }))}
+                            onValueChange={(value) =>
+                              setInviteMember(prev => ({ ...prev, role: value } as any))}
                           >
                             <SelectTrigger>
                               <SelectValue placeholder="Select role" />
@@ -756,7 +756,7 @@ export default function TeamWorkspacesDashboard(): React.JSX.Element {
                             cy="50%"
                             outerRadius={80}
                             dataKey="count"
-                            label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                            label={({ name, percent }) => `${name} (${((percent || 0) * 100).toFixed(0)}%)`}
                           >
                             {[
                               { name: 'Code', count: 45, color: '#3b82f6' },

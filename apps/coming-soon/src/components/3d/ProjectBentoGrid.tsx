@@ -51,8 +51,8 @@ const FilterTabs: React.FC<FilterTabsProps> = ({ activeFilter, onFilterChange, t
                         key={key}
                         onClick={() => onFilterChange(key)}
                         className={`group relative px-6 py-4 rounded-2xl font-bold transition-all duration-500 transform hover:scale-110 overflow-hidden ${isActive
-                                ? 'scale-110 shadow-2xl'
-                                : 'hover:shadow-xl'
+                            ? 'scale-110 shadow-2xl'
+                            : 'hover:shadow-xl'
                             }`}
                         style={{
                             background: isActive
@@ -65,10 +65,10 @@ const FilterTabs: React.FC<FilterTabsProps> = ({ activeFilter, onFilterChange, t
                                     ? 'rgba(51, 65, 85, 0.8)'
                                     : 'rgba(255, 255, 255, 0.8)',
                             border: `2px solid ${isActive
-                                    ? 'rgba(255, 255, 255, 0.3)'
-                                    : theme === 'dark'
-                                        ? 'rgba(71, 85, 105, 0.5)'
-                                        : 'rgba(203, 213, 225, 0.5)'
+                                ? 'rgba(255, 255, 255, 0.3)'
+                                : theme === 'dark'
+                                    ? 'rgba(71, 85, 105, 0.5)'
+                                    : 'rgba(203, 213, 225, 0.5)'
                                 }`,
                             backdropFilter: 'blur(20px)',
                             color: isActive
@@ -100,10 +100,10 @@ const FilterTabs: React.FC<FilterTabsProps> = ({ activeFilter, onFilterChange, t
                             </span>
                             <span
                                 className={`text-sm px-2 py-1 rounded-full transition-all duration-300 ${isActive
-                                        ? 'bg-white/20 text-white'
-                                        : theme === 'dark'
-                                            ? 'bg-slate-600/50 text-slate-300'
-                                            : 'bg-gray-200/80 text-gray-600'
+                                    ? 'bg-white/20 text-white'
+                                    : theme === 'dark'
+                                        ? 'bg-slate-600/50 text-slate-300'
+                                        : 'bg-gray-200/80 text-gray-600'
                                     }`}
                             >
                                 {count}
@@ -308,8 +308,8 @@ export const ProjectShowcase3D: React.FC<ProjectShowcase3DProps> = ({ isVisible 
                     >
                         <div
                             className={`w-16 h-16 ${['triangle', 'square', 'circle', 'hexagon'][i % 4] === 'circle'
-                                    ? 'rounded-full'
-                                    : 'rounded-lg'
+                                ? 'rounded-full'
+                                : 'rounded-lg'
                                 } ${theme === 'dark'
                                     ? 'bg-gradient-to-br from-blue-500/30 to-purple-500/30'
                                     : 'bg-gradient-to-br from-blue-400/20 to-purple-400/20'
@@ -361,8 +361,8 @@ export const ProjectShowcase3D: React.FC<ProjectShowcase3DProps> = ({ isVisible 
                     }`}>
                     <div
                         className={`inline-flex items-center space-x-3 backdrop-blur-xl border rounded-full px-6 py-3 mb-8 ${theme === 'dark'
-                                ? 'bg-slate-800/80 border-slate-600/50 text-slate-300'
-                                : 'bg-white/80 border-gray-200/50 text-gray-600'
+                            ? 'bg-slate-800/80 border-slate-600/50 text-slate-300'
+                            : 'bg-white/80 border-gray-200/50 text-gray-600'
                             }`}
                         style={{
                             boxShadow: `0 10px 30px ${theme === 'dark' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)'
@@ -376,8 +376,8 @@ export const ProjectShowcase3D: React.FC<ProjectShowcase3DProps> = ({ isVisible 
 
                     <h2 className="text-5xl sm:text-6xl md:text-7xl font-black mb-8 leading-tight">
                         <span className={`bg-gradient-to-r bg-clip-text text-transparent ${theme === 'dark'
-                                ? 'from-white via-blue-100 to-white'
-                                : 'from-gray-900 via-blue-900 to-gray-900'
+                            ? 'from-white via-blue-100 to-white'
+                            : 'from-gray-900 via-blue-900 to-gray-900'
                             }`}>
                             Explore the
                         </span>
@@ -425,8 +425,8 @@ export const ProjectShowcase3D: React.FC<ProjectShowcase3DProps> = ({ isVisible 
                     }`}>
                     <div
                         className={`backdrop-blur-xl border rounded-3xl p-12 max-w-5xl mx-auto relative overflow-hidden ${theme === 'dark'
-                                ? 'bg-slate-800/60 border-slate-600/40'
-                                : 'bg-white/60 border-gray-200/40'
+                            ? 'bg-slate-800/60 border-slate-600/40'
+                            : 'bg-white/60 border-gray-200/40'
                             }`}
                         style={{
                             background: `
@@ -477,8 +477,8 @@ export const ProjectShowcase3D: React.FC<ProjectShowcase3DProps> = ({ isVisible 
                                     }
                                 }}
                                 className={`group backdrop-blur-xl border px-10 py-5 rounded-2xl font-black text-lg transition-all duration-500 transform hover:scale-110 hover:shadow-xl ${theme === 'dark'
-                                        ? 'bg-slate-700/50 border-slate-500/50 text-white hover:bg-slate-600/60'
-                                        : 'bg-white/50 border-gray-300/50 text-gray-900 hover:bg-white/70'
+                                    ? 'bg-slate-700/50 border-slate-500/50 text-white hover:bg-slate-600/60'
+                                    : 'bg-white/50 border-gray-300/50 text-gray-900 hover:bg-white/70'
                                     }`}
                             >
                                 <span className="flex items-center justify-center space-x-3">

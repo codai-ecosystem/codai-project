@@ -151,7 +151,7 @@ export const ColorPalette: React.FC<ColorPaletteProps> = ({
           {title}
         </h3>
       )}
-      
+
       <div className="space-y-8">
         {Object.entries(colors).map(([key, value]) => {
           if (typeof value === 'string') {
@@ -210,7 +210,7 @@ export const ColorProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [selectedColors, setSelectedColors] = React.useState<string[]>([])
 
   const selectColor = (color: string) => {
-    setSelectedColors(prev => 
+    setSelectedColors(prev =>
       prev.includes(color) ? prev : [...prev, color]
     )
   }
@@ -289,7 +289,7 @@ export const GradientGenerator: React.FC = () => {
             className="w-full h-10 rounded-lg border-2 border-gray-200 dark:border-gray-600"
           />
         </div>
-        
+
         <div>
           <label className={cn(
             'block text-sm font-medium mb-2',
@@ -304,7 +304,7 @@ export const GradientGenerator: React.FC = () => {
             className="w-full h-10 rounded-lg border-2 border-gray-200 dark:border-gray-600"
           />
         </div>
-        
+
         <div>
           <label className={cn(
             'block text-sm font-medium mb-2',
@@ -317,8 +317,8 @@ export const GradientGenerator: React.FC = () => {
             onChange={(e) => setDirection(e.target.value)}
             className={cn(
               'w-full h-10 rounded-lg border-2 px-3',
-              theme === 'dark' 
-                ? 'bg-gray-700 border-gray-600 text-gray-200' 
+              theme === 'dark'
+                ? 'bg-gray-700 border-gray-600 text-gray-200'
                 : 'bg-white border-gray-200 text-gray-900'
             )}
           >

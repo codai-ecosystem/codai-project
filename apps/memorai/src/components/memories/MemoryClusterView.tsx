@@ -452,3 +452,5 @@ export function MemoryClusterView({
     </div>
   )
 }
+
+export default MemoryClusterView;

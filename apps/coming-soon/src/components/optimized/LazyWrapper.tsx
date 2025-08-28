@@ -125,13 +125,13 @@ const LoadingSkeleton: React.FC<{ className?: string; priority?: 'high' | 'mediu
     return (
         <div className={`relative overflow-hidden ${className}`}>
             <div className={`w-full h-full rounded-2xl ${theme === 'dark'
-                    ? 'bg-gradient-to-br from-slate-800 to-slate-700'
-                    : 'bg-gradient-to-br from-gray-200 to-gray-100'
+                ? 'bg-gradient-to-br from-slate-800 to-slate-700'
+                : 'bg-gradient-to-br from-gray-200 to-gray-100'
                 } ${skeletonAnimation}`}>
                 {/* Shimmer effect */}
                 <div className={`absolute inset-0 ${theme === 'dark'
-                        ? 'bg-gradient-to-r from-transparent via-slate-600/20 to-transparent'
-                        : 'bg-gradient-to-r from-transparent via-white/30 to-transparent'
+                    ? 'bg-gradient-to-r from-transparent via-slate-600/20 to-transparent'
+                    : 'bg-gradient-to-r from-transparent via-white/30 to-transparent'
                     } transform -skew-x-12 animate-shimmer`}
                     style={{
                         animation: `shimmer 2s infinite linear`,
@@ -282,18 +282,18 @@ export const createLazyComponent = <P extends Record<string, any>>(
 
     return React.forwardRef<HTMLDivElement, P & LazyWrapperProps>((props, ref) => {
         // Extract wrapper-specific props and pass the rest to the lazy component
-        const { 
-            fallback, 
-            errorBoundary, 
-            retryCount, 
-            onError, 
-            onLoad, 
-            priority, 
-            preload, 
+        const {
+            fallback,
+            errorBoundary,
+            retryCount,
+            onError,
+            onLoad,
+            priority,
+            preload,
             children,
-            ...componentProps 
+            ...componentProps
         } = props;
-        
+
         return (
             <LazyWrapper {...options} {...{ fallback, errorBoundary, retryCount, onError, onLoad, priority, preload }}>
                 {/* @ts-expect-error - Complex generic type issue with dynamic props */}

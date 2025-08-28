@@ -1,0 +1,81 @@
+{
+  "assessment_id": "romai_security_1756364476",
+  "target_system": "http://localhost:6101",
+  "assessment_type": "Comprehensive Security Assessment",
+  "start_time": "2025-08-28T10:01:16.654417",
+  "end_time": "2025-08-28T10:01:17.816974",
+  "findings": [
+    {
+      "id": "no_ssl_encryption",
+      "title": "Unencrypted Communication",
+      "description": "Service is running over HTTP without SSL/TLS encryption",
+      "severity": "critical",
+      "category": "Encryption",
+      "affected_component": "Web Server",
+      "recommendation": "Enable HTTPS with proper SSL/TLS configuration",
+      "compliance_impact": [
+        "gdpr",
+        "iso_27001",
+        "soc_2"
+      ],
+      "cvss_score": 9.1,
+      "remediation_effort": "medium",
+      "timestamp": "2025-08-28T10:01:16.654614",
+      "evidence": {
+        "protocol": "http"
+      }
+    }
+  ],
+  "compliance_assessments": [
+    {
+      "standard": "eu_ai_act",
+      "overall_score": 50.0,
+      "compliant": false,
+      "requirements_tested": 8,
+      "requirements_passed": 4,
+      "critical_gaps": [
+        "Missing AI transparency endpoint",
+        "Missing human oversight mechanisms",
+        "Missing accuracy monitoring",
+        "Unencrypted communications"
+      ],
+      "recommendations": [
+        "Implement AI system transparency documentation endpoint",
+        "Implement human oversight controls and monitoring",
+        "Implement AI accuracy and robustness monitoring",
+        "Enable HTTPS encryption for all communications"
+      ],
+      "assessment_date": "2025-08-28T10:01:17.554510"
+    },
+    {
+      "standard": "gdpr",
+      "overall_score": 62.5,
+      "compliant": false,
+      "requirements_tested": 8,
+      "requirements_passed": 5,
+      "critical_gaps": [
+        "Missing privacy policy",
+        "Missing data subject rights interface",
+        "Unencrypted data transmission"
+      ],
+      "recommendations": [
+        "Publish comprehensive privacy policy",
+        "Implement data subject rights management system",
+        "Enable HTTPS encryption for data protection"
+      ],
+      "assessment_date": "2025-08-28T10:01:17.816799"
+    }
+  ],
+  "overall_security_score": 80,
+  "risk_level": "CRITICAL",
+  "executive_summary": "Security Assessment Executive Summary\n=====================================\n\nOverall Security Score: 80.0/100\n\nSecurity Findings:\n- Critical Issues: 1\n- High Risk Issues: 0\n- Medium Risk Issues: 0\n- Total Findings: 1\n\nCompliance Status:\n- EU_AI_ACT: 50.0% \u274c NON-COMPLIANT\n- GDPR: 62.5% \u274c NON-COMPLIANT\n\n\u26a0\ufe0f  IMMEDIATE ACTION REQUIRED: Critical security vulnerabilities detected.",
+  "recommendations": [
+    "[CRITICAL] Enable HTTPS with proper SSL/TLS configuration",
+    "[COMPLIANCE] Implement AI system transparency documentation endpoint",
+    "[COMPLIANCE] Implement human oversight controls and monitoring",
+    "[COMPLIANCE] Publish comprehensive privacy policy",
+    "[COMPLIANCE] Implement data subject rights management system",
+    "[MONITORING] Deploy continuous security monitoring and alerting",
+    "[TRAINING] Conduct regular security awareness training for development team"
+  ]
+}

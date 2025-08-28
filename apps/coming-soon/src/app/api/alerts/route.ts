@@ -17,7 +17,7 @@ interface AlertData {
 export async function POST(request: NextRequest) {
   try {
     const alert: AlertData = await request.json();
-    
+
     // Validate required fields
     if (!alert.id || !alert.type || !alert.message || !alert.severity) {
       return NextResponse.json(
@@ -74,7 +74,7 @@ async function sendSlackAlert(alert: AlertData) {
 
   const color = {
     critical: 'danger',
-    high: 'warning', 
+    high: 'warning',
     medium: 'warning',
     low: 'good'
   }[alert.severity] || 'warning';
@@ -143,9 +143,9 @@ async function sendEmailAlert(alert: AlertData) {
   // - AWS SES
   // - Mailgun
   // - Nodemailer with SMTP
-  
+
   console.log(`📧 Email alert would be sent for: ${alert.message}`);
-  
+
   // Example email content
   const emailContent = {
     to: process.env.ALERT_EMAIL_RECIPIENTS?.split(',') || ['alerts@codai.com'],
@@ -183,7 +183,7 @@ async function sendEmailAlert(alert: AlertData) {
 
 export async function GET() {
   // Return recent alerts for dashboard
-  
+
   const mockAlerts = [
     {
       id: 'alert-001',

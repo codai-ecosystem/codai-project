@@ -15,7 +15,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { cn } from '@/lib/utils'
 import { touchTargets } from '@/lib/utils/responsive'
-import type { Memory } from '@/lib/api'
+import type { Memory } from '@/types'
 import {
   Dialog,
   DialogContent,

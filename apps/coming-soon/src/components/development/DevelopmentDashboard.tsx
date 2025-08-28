@@ -27,10 +27,10 @@ const PerformanceTab: React.FC = () => {
     const suggestions = await LighthouseOptimizer.runOptimization();
     const report = LighthouseOptimizer.generateReport();
     setOptimizationReport(report);
-    
+
     const analysis = await BundleAnalyzer.analyzeBundleSize();
     setBundleAnalysis(analysis);
-    
+
     trackEvent('dev_dashboard', 'performance', 'optimization_run', suggestions.length);
   };
 
@@ -52,7 +52,7 @@ const PerformanceTab: React.FC = () => {
             {isMonitoring ? 'Monitoring' : 'Idle'}
           </div>
         </div>
-        
+
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           <div className="text-center">
             <div className={`text-2xl font-bold ${getScoreColor(metrics.lcp < 2500 ? 90 : metrics.lcp < 4000 ? 70 : 30)}`}>
@@ -60,28 +60,28 @@ const PerformanceTab: React.FC = () => {
             </div>
             <div className="text-sm text-gray-400">LCP</div>
           </div>
-          
+
           <div className="text-center">
             <div className={`text-2xl font-bold ${getScoreColor(metrics.fid < 100 ? 90 : metrics.fid < 300 ? 70 : 30)}`}>
               {metrics.fid > 0 ? `${Math.round(metrics.fid)}ms` : '-'}
             </div>
             <div className="text-sm text-gray-400">FID</div>
           </div>
-          
+
           <div className="text-center">
             <div className={`text-2xl font-bold ${getScoreColor(metrics.cls < 0.1 ? 90 : metrics.cls < 0.25 ? 70 : 30)}`}>
               {metrics.cls > 0 ? metrics.cls.toFixed(3) : '-'}
             </div>
             <div className="text-sm text-gray-400">CLS</div>
           </div>
-          
+
           <div className="text-center">
             <div className={`text-2xl font-bold ${getScoreColor(metrics.fcp < 1800 ? 90 : metrics.fcp < 3000 ? 70 : 30)}`}>
               {metrics.fcp > 0 ? `${Math.round(metrics.fcp)}ms` : '-'}
             </div>
             <div className="text-sm text-gray-400">FCP</div>
           </div>
-          
+
           <div className="text-center">
             <div className={`text-2xl font-bold ${getScoreColor(metrics.ttfb < 800 ? 90 : metrics.ttfb < 1800 ? 70 : 30)}`}>
               {metrics.ttfb > 0 ? `${Math.round(metrics.ttfb)}ms` : '-'}
@@ -113,7 +113,7 @@ const PerformanceTab: React.FC = () => {
               <div className="text-sm text-gray-400">Images</div>
             </div>
           </div>
-          
+
           {bundleAnalysis.recommendations.length > 0 && (
             <div className="mt-4">
               <h4 className="text-sm font-medium text-gray-300 mb-2">Recommendations:</h4>
@@ -192,7 +192,7 @@ const AccessibilityTab: React.FC = () => {
             {isChecking ? '⏳ Checking...' : '🔄 Run Check'}
           </button>
         </div>
-        
+
         {report && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
@@ -203,7 +203,7 @@ const AccessibilityTab: React.FC = () => {
                 {report.score}/100
               </div>
             </div>
-            
+
             <div className="grid grid-cols-3 gap-4">
               <div className="text-center">
                 <div className="text-xl font-bold text-red-400">{report.errors.length}</div>
@@ -226,7 +226,7 @@ const AccessibilityTab: React.FC = () => {
       {report && (report.errors.length > 0 || report.warnings.length > 0) && (
         <div className="bg-black/40 backdrop-blur-lg rounded-lg p-6 border border-white/10">
           <h3 className="text-lg font-semibold text-white mb-4">Issues Found</h3>
-          
+
           {report.errors.length > 0 && (
             <div className="mb-4">
               <h4 className="text-md font-medium text-red-400 mb-2">Errors ({report.errors.length})</h4>
@@ -308,7 +308,7 @@ const SystemTab: React.FC = () => {
   useEffect(() => {
     const getSystemInfo = () => {
       const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
-      
+
       setSystemInfo({
         userAgent: navigator.userAgent,
         viewport: `${window.innerWidth}×${window.innerHeight}`,
@@ -367,7 +367,7 @@ const SystemTab: React.FC = () => {
                 <div>Online: {systemInfo.onLine ? 'Yes' : 'No'}</div>
               </div>
             </div>
-            
+
             <div>
               <h4 className="font-medium text-green-400 mb-2">Display</h4>
               <div className="text-sm text-gray-300">
@@ -378,7 +378,7 @@ const SystemTab: React.FC = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="space-y-4">
             {systemInfo.connection && (
               <div>
@@ -390,7 +390,7 @@ const SystemTab: React.FC = () => {
                 </div>
               </div>
             )}
-            
+
             {systemInfo.memory && (
               <div>
                 <h4 className="font-medium text-yellow-400 mb-2">Memory</h4>
@@ -401,7 +401,7 @@ const SystemTab: React.FC = () => {
                 </div>
               </div>
             )}
-            
+
             {systemInfo.timing && (
               <div>
                 <h4 className="font-medium text-red-400 mb-2">Timing</h4>
@@ -481,7 +481,7 @@ export const DevelopmentDashboard: React.FC = () => {
                   ✕
                 </button>
               </div>
-              
+
               {/* Tab Navigation */}
               <div className="flex space-x-2">
                 {tabs.map((tab) => (
@@ -491,11 +491,10 @@ export const DevelopmentDashboard: React.FC = () => {
                       setActiveTab(tab.id);
                       trackEvent('dev_dashboard', 'navigation', tab.id);
                     }}
-                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      activeTab === tab.id
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === tab.id
                         ? 'bg-blue-600 text-white'
                         : 'bg-white/5 text-gray-300 hover:bg-white/10'
-                    }`}
+                      }`}
                   >
                     <span className="mr-2">{tab.icon}</span>
                     {tab.label}

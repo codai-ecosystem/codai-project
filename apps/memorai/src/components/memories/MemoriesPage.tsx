@@ -232,3 +232,5 @@ export function MemoriesPage() {
     </div>
   )
 }
+
+export default MemoriesPage;

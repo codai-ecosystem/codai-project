@@ -31,9 +31,9 @@ import numpy as np
 # Import Phase 1 infrastructure
 try:
     from ..models.simple_transformer import ModelScale
-    from ..neural.architectures.multi_domain_reasoning_engine import (
-        MultiDomainReasoningEngine, ReasoningDomain, ReasoningConfig
-    )
+    # from ..neural.architectures.multi_domain_reasoning_engine import (
+    #     MultiDomainReasoningEngine, ReasoningDomain, ReasoningConfig
+    # )
     from ..inference.real_neural_engine import get_neural_response, RealNeuralEngine
     from ..data.phase1_dataset_expansion import Phase1DatasetExpander
 except ImportError as e:
@@ -51,6 +51,15 @@ class AdvancedReasoningType(Enum):
     SCIENTIFIC_HYPOTHESIS = "scientific_hypothesis_reasoning"
     PROGRAMMING_LOGIC = "programming_logic_reasoning"
     ABSTRACT_CONCEPTUAL = "abstract_conceptual_reasoning"
+
+class ReasoningDomain(Enum):
+    """Domains for specialized reasoning"""
+    MATHEMATICAL = "mathematical"
+    LOGICAL = "logical"
+    SCIENTIFIC = "scientific"
+    CULTURAL = "cultural"
+    PROGRAMMING = "programming"
+    GENERAL = "general"
 
 class ReasoningQuality(Enum):
     """Quality levels for reasoning assessment"""
@@ -140,17 +149,17 @@ class AdvancedReasoningEngine:
             logger.info("✅ Advanced reasoning engine initialized with neural inference")
             
             # Initialize multi-domain reasoning
-            if 'MultiDomainReasoningEngine' in globals():
-                config = ReasoningConfig(
-                    d_model=1280,  # Phase 1 scaling
-                    n_layers=18,   # Phase 1 scaling
-                    n_heads=20,    # Phase 1 scaling
-                    d_ff=5120,     # Phase 1 scaling
-                    vocab_size=50000,
-                    max_seq_length=4096
-                )
-                self.multi_domain_engine = MultiDomainReasoningEngine(config)
-                logger.info("✅ Multi-domain reasoning engine initialized with Phase 1 scaling")
+            # if 'MultiDomainReasoningEngine' in globals():
+            #     config = ReasoningConfig(
+            #         d_model=1280,  # Phase 1 scaling
+            #         n_layers=18,   # Phase 1 scaling
+            #         n_heads=20,    # Phase 1 scaling
+            #         d_ff=5120,     # Phase 1 scaling
+            #         vocab_size=50000,
+            #         max_seq_length=4096
+            #     )
+            #     self.multi_domain_engine = MultiDomainReasoningEngine(config)
+            #     logger.info("✅ Multi-domain reasoning engine initialized with Phase 1 scaling")
             
             # Initialize dataset access
             try:

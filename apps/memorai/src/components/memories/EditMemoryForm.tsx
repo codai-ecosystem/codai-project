@@ -335,3 +335,5 @@ export function EditMemoryForm({ memory, onSuccess, onCancel }: EditMemoryFormPr
     </Card>
   )
 }
+
+export default EditMemoryForm;

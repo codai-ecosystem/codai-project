@@ -1,7 +1,7 @@
 {
   "navigation": {
     "hero": "Home",
-    "ecosystem": "Ecosystem", 
+    "ecosystem": "Ecosystem",
     "projects": "Projects",
     "about": "About",
     "contact": "Contact",
@@ -14,7 +14,7 @@
     "submenu": {
       "ai": "AI & Machine Learning",
       "financial": "Financial Services",
-      "development": "Development Tools", 
+      "development": "Development Tools",
       "infrastructure": "Infrastructure",
       "admin": "Administration"
     }

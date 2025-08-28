@@ -74,18 +74,17 @@ export function SectionScrollProgress({ sections, className = '' }: SectionScrol
           <motion.button
             key={section.id}
             onClick={() => scrollToSection(section.id)}
-            className={`group relative w-3 h-3 rounded-full border-2 transition-colors ${
-              activeSection === section.id
+            className={`group relative w-3 h-3 rounded-full border-2 transition-colors ${activeSection === section.id
                 ? 'border-white bg-white'
                 : 'border-white/40 hover:border-white/60'
-            }`}
+              }`}
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.9 }}
           >
             <motion.div
               className="absolute left-6 top-1/2 -translate-y-1/2 px-2 py-1 bg-black/80 text-white text-xs rounded whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none"
               initial={{ opacity: 0, x: -10 }}
-              animate={{ 
+              animate={{
                 opacity: activeSection === section.id ? 1 : 0,
                 x: activeSection === section.id ? 0 : -10
               }}

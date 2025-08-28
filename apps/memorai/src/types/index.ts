@@ -29,6 +29,8 @@ export interface Memory {
   importance?: number;
   createdAt: string;
   updatedAt: string;
+  accessCount?: number;
+  lastAccessed?: string;
 }
 
 export interface MemoryItem extends BaseEntity {

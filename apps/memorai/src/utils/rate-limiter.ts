@@ -70,10 +70,10 @@ export class RateLimiter {
         }
 
         return {
-            allowed,
-            limit: this.options.maxRequests,
-            remaining: Math.max(0, this.options.maxRequests - record.count),
-            resetTime: record.resetTime,
+            allowed: allowed,
+            limit: (this as any).options.maxRequests,
+            remaining: Math.max(0, (this as any).options.maxRequests - record.requests.length),
+            resetTime: now + (this as any).options.windowMs,
             retryAfter: allowed ? undefined : Math.ceil((record.resetTime - now) / 1000)
         };
     }
@@ -102,22 +102,22 @@ export class RateLimiter {
 
 // Specialized rate limiters for different use cases
 export class SlidingWindowRateLimiter extends RateLimiter {
-    checkLimit(identifier: string): RateLimitResult {
-        const key = this.options.keyGenerator(identifier);
+    override checkLimit(identifier: string): RateLimitResult {
+        const key = (this as any).options.keyGenerator(identifier);
         const now = Date.now();
-        const windowStart = now - this.options.windowMs;
+        const windowStart = now - (this as any).options.windowMs;
 
-        let record = this.store.get(key);
+        let record = (this as any).store.get(key);
         
         if (!record) {
             record = { count: 0, resetTime: 0, requests: [] };
-            this.store.set(key, record);
+            (this as any).store.set(key, record);
         }
 
         // Remove old requests
-        record.requests = record.requests.filter(time => time > windowStart);
+        record.requests = record.requests.filter((time: number) => time > windowStart);
         
-        const allowed = record.requests.length < this.options.maxRequests;
+        const allowed = record.requests.length < (this as any).options.maxRequests;
         
         if (allowed) {
             record.requests.push(now);
@@ -125,9 +125,9 @@ export class SlidingWindowRateLimiter extends RateLimiter {
 
         return {
             allowed,
-            limit: this.options.maxRequests,
-            remaining: Math.max(0, this.options.maxRequests - record.requests.length),
-            resetTime: now + this.options.windowMs,
+            limit: (this as any).options.maxRequests,
+            remaining: Math.max(0, (this as any).options.maxRequests - record.requests.length),
+            resetTime: now + (this as any).options.windowMs,
             retryAfter: allowed ? undefined : 1
         };
     }
@@ -204,7 +204,7 @@ export function rateLimited(
         const originalMethod = descriptor.value;
         
         descriptor.value = async function (...args: any[]) {
-            const identifier = this.getClientIdentifier ? this.getClientIdentifier() : 'default';
+            const identifier = (this as any).getClientIdentifier ? (this as any).getClientIdentifier() : 'default';
             const result = limiter.checkLimit(identifier);
             
             if (!result.allowed) {

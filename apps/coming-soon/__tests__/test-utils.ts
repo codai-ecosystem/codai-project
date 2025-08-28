@@ -172,7 +172,7 @@ export const expectKeyboardNavigable = async (element: HTMLElement) => {
   const user = createMockUser()
   element.focus()
   expect(document.activeElement).toBe(element)
-  
+
   await user.keyboard('{Enter}')
   // Additional assertions can be added based on expected behavior
 }
@@ -182,11 +182,11 @@ export const expectAriaCompliant = (element: HTMLElement) => {
   const role = element.getAttribute('role')
   const ariaLabel = element.getAttribute('aria-label')
   const ariaLabelledBy = element.getAttribute('aria-labelledby')
-  
+
   if (role) {
     expect(role).toBeTruthy()
   }
-  
+
   // Interactive elements should have accessible names
   if (element.tagName.match(/^(BUTTON|A|INPUT|SELECT|TEXTAREA)$/)) {
     expect(ariaLabel || ariaLabelledBy || element.textContent).toBeTruthy()
@@ -196,13 +196,13 @@ export const expectAriaCompliant = (element: HTMLElement) => {
 export const expectResponsiveElement = (element: HTMLElement) => {
   // Check for responsive classes
   const classList = Array.from(element.classList)
-  const responsiveClasses = classList.filter(className => 
-    className.includes('sm:') || 
-    className.includes('md:') || 
-    className.includes('lg:') || 
+  const responsiveClasses = classList.filter(className =>
+    className.includes('sm:') ||
+    className.includes('md:') ||
+    className.includes('lg:') ||
     className.includes('xl:')
   )
-  
+
   expect(responsiveClasses.length).toBeGreaterThan(0)
 }
 
@@ -227,29 +227,29 @@ export const waitForAnimation = (duration = 1000) => {
 export const expectSmoothAnimation = async (element: HTMLElement, property: string) => {
   const computedStyle = window.getComputedStyle(element)
   const transition = computedStyle.getPropertyValue('transition')
-  
+
   expect(transition).toContain(property)
 }
 
 // Theme testing utilities
 export const expectDarkTheme = (container: HTMLElement) => {
   expect(container.classList.contains('dark')).toBe(true)
-  
+
   // Check for dark theme colors
   const style = window.getComputedStyle(container)
   const backgroundColor = style.backgroundColor
-  
+
   // Dark theme should have dark background
   expect(backgroundColor).toMatch(/rgba?\(0,\s*0,\s*0|rgb\(0,\s*0,\s*0|#000/)
 }
 
 export const expectLightTheme = (container: HTMLElement) => {
   expect(container.classList.contains('dark')).toBe(false)
-  
+
   // Check for light theme colors
   const style = window.getComputedStyle(container)
   const backgroundColor = style.backgroundColor
-  
+
   // Light theme should have light background
   expect(backgroundColor).toMatch(/rgba?\(255,\s*255,\s*255|rgb\(255,\s*255,\s*255|#fff/)
 }

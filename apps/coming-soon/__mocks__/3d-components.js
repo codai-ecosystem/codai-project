@@ -2,9 +2,9 @@
 import React from 'react';
 
 const MockComponent = ({ children, ...props }) => (
-  <div data-testid="mock-3d-component" {...props}>
-    {children}
-  </div>
+    <div data-testid="mock-3d-component" {...props}>
+        {children}
+    </div>
 );
 
 export const HeroSection3D = MockComponent;

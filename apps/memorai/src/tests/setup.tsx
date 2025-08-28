@@ -1,11 +1,61 @@
 // 2025 Test Setup - Modern Testing Best Practices
-// Note: jest-dom matchers are available via vitest globals
+// Import jest-dom matchers for enhanced DOM assertions
+import '@testing-library/jest-dom'
 import { beforeAll, afterEach, afterAll, vi } from 'vitest'
 import { cleanup } from '@testing-library/react'
 import React from 'react'
 
 // Enable React 18 concurrent features in tests
 global.React = React
+
+// Mock global fetch function for API calls
+global.fetch = vi.fn().mockImplementation(async (url: string, options?: RequestInit) => {
+  // Handle different API endpoints
+  if (typeof url === 'string') {
+    if (url.includes('/api/ai/natural-query?action=suggestions')) {
+      return Promise.resolve(new Response(JSON.stringify({
+        success: true,
+        data: {
+          commonQueries: [
+            'Show me React components from last month',
+            'Find TypeScript interfaces I created',
+            'Search for important notes about authentication',
+            'Display all project documentation'
+          ]
+        }
+      }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
+    }
+    
+    if (url.includes('/api/ai/natural-query') && options?.method === 'POST') {
+      return Promise.resolve(new Response(JSON.stringify({
+        success: true,
+        data: {
+          results: [],
+          summary: {
+            query: {
+              originalQuery: 'test query',
+              searchType: 'semantic',
+              confidence: 0.85
+            }
+          },
+          insights: {
+            resultPatterns: [],
+            suggestions: ['Try a more specific search term']
+          },
+          relatedQueries: []
+        }
+      }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
+    }
+    
+    // Default mock response for other API calls
+    return Promise.resolve(new Response(JSON.stringify({
+      success: true,
+      data: null
+    }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
+  }
+  
+  return Promise.reject(new Error('Invalid URL'));
+});
 
 // Mock Next.js router
 vi.mock('next/router', () => ({

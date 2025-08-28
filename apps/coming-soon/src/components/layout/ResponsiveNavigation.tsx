@@ -116,9 +116,8 @@ const NavigationLogo: React.FC = () => {
       `}>
         <Brain className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
       </div>
-      <span className={`font-brand font-bold text-lg sm:text-xl transition-colors ${
-        theme === 'dark' ? 'text-text-primary' : 'text-gray-900'
-      }`}>
+      <span className={`font-brand font-bold text-lg sm:text-xl transition-colors ${theme === 'dark' ? 'text-text-primary' : 'text-gray-900'
+        }`}>
         CODAI
       </span>
     </a>
@@ -126,7 +125,7 @@ const NavigationLogo: React.FC = () => {
 };
 
 // Desktop Navigation Links
-const DesktopNavigation: React.FC<{ 
+const DesktopNavigation: React.FC<{
   activeSection: string;
   showProjectsSubmenu: boolean;
   setShowProjectsSubmenu: (show: boolean) => void;
@@ -153,7 +152,7 @@ const DesktopNavigation: React.FC<{
               min-h-[44px] flex items-center
               focus:outline-none focus:ring-4 focus:ring-primary-400/50
               ${activeSection === id
-                ? theme === 'dark' 
+                ? theme === 'dark'
                   ? 'text-primary-400 bg-primary-900/20'
                   : 'text-primary-600 bg-primary-50'
                 : theme === 'dark'
@@ -166,17 +165,17 @@ const DesktopNavigation: React.FC<{
             onMouseLeave={() => id === 'projects' && setShowProjectsSubmenu(false)}
           >
             <span className="relative z-10">{label}</span>
-            
+
             {/* Active indicator */}
             {activeSection === id && (
-              <div 
+              <div
                 className="absolute inset-0 bg-gradient-to-r from-primary-500/10 via-secondary-500/10 to-accent-500/10 rounded-xl border border-primary-400/20"
                 aria-hidden="true"
               />
             )}
 
             {/* Hover effect */}
-            <div 
+            <div
               className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-primary-500/5 via-secondary-500/5 to-accent-500/5"
               aria-hidden="true"
             />
@@ -257,8 +256,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, activeSection 
           fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] z-50 md:hidden
           transform transition-transform duration-300 ease-out
           ${isOpen ? 'translate-x-0' : 'translate-x-full'}
-          ${theme === 'dark' 
-            ? 'bg-background-secondary/95 border-border-primary' 
+          ${theme === 'dark'
+            ? 'bg-background-secondary/95 border-border-primary'
             : 'bg-white/95 border-gray-200'
           }
           backdrop-blur-lg border-l shadow-2xl
@@ -270,9 +269,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, activeSection 
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-current border-opacity-10">
-            <h2 className={`font-semibold text-lg ${
-              theme === 'dark' ? 'text-text-primary' : 'text-gray-900'
-            }`}>
+            <h2 className={`font-semibold text-lg ${theme === 'dark' ? 'text-text-primary' : 'text-gray-900'
+              }`}>
               Menu
             </h2>
             <button
@@ -321,17 +319,17 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, activeSection 
                     aria-current={activeSection === id ? 'page' : undefined}
                   >
                     <span className="relative z-10">{label}</span>
-                    
+
                     {/* Active indicator */}
                     {activeSection === id && (
-                      <div 
+                      <div
                         className="absolute right-4 w-2 h-2 rounded-full bg-primary-500"
                         aria-hidden="true"
                       />
                     )}
 
                     {/* Arrow indicator */}
-                    <ChevronDown 
+                    <ChevronDown
                       className="absolute right-4 w-4 h-4 -rotate-90 transition-transform group-hover:translate-x-1"
                       aria-hidden="true"
                     />
@@ -416,8 +414,8 @@ export default function ResponsiveNavigation() {
             <NavigationLogo />
 
             {/* Desktop Navigation */}
-            <DesktopNavigation 
-              activeSection={activeSection} 
+            <DesktopNavigation
+              activeSection={activeSection}
               showProjectsSubmenu={showProjectsSubmenu}
               setShowProjectsSubmenu={setShowProjectsSubmenu}
             />
@@ -431,7 +429,7 @@ export default function ResponsiveNavigation() {
               >
                 EN
               </button>
-              
+
               <a
                 href="#contact"
                 onClick={(e) => {

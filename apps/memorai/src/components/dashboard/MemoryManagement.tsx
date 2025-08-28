@@ -374,7 +374,6 @@ export default function MemoryManagement({ stats, isLoading }: MemoryManagementP
                                                         className="h-4 w-4 text-yellow-500 fill-current"
                                                         role="img"
                                                         aria-label="Favorite memory"
-                                                        title="This memory is marked as favorite"
                                                     />
                                                 )}
                                             </div>

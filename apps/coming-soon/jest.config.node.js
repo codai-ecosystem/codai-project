@@ -34,8 +34,8 @@ const customJestConfig = {
         '!src/components/optimized/OptimizedParticleSystem.tsx', // Exclude particle system
     ],
     testPathIgnorePatterns: [
-        '<rootDir>/.next/', 
-        '<rootDir>/node_modules/', 
+        '<rootDir>/.next/',
+        '<rootDir>/node_modules/',
         '<rootDir>/__tests__/mocks/',
         '<rootDir>/e2e/',
         '<rootDir>/__tests__/e2e/'
@@ -49,21 +49,21 @@ const customJestConfig = {
         'node_modules/three/',
         'node_modules/jsdom/',
     ],
-    
+
     // Handle canvas and other problematic modules
     moduleDirectories: ['node_modules', '<rootDir>/'],
     setupFiles: [
         '<rootDir>/__mocks__/canvas.js'
     ],
-    
+
     // Clear mocks between tests
     clearMocks: true,
     resetMocks: true,
     restoreMocks: true,
-    
+
     // Verbose output for debugging
     verbose: false,
-    
+
     // Match only relevant test files (exclude Playwright e2e tests)
     testMatch: [
         '**/__tests__/**/*.(test|spec).{js,jsx,ts,tsx}',
@@ -72,14 +72,14 @@ const customJestConfig = {
         '!**/__tests__/**/*3d*', // Exclude any 3D-related tests
         '!**/__tests__/**/*canvas*', // Exclude any canvas-related tests
     ],
-    
+
     // Globals for node environment testing
     globals: {
         'ts-jest': {
             useESM: true
         }
     },
-    
+
     // Transform configuration
     transform: {
         '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', {

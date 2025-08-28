@@ -85,6 +85,17 @@ export class SecurityAlertingSystem {
     }
 
     /**
+     * Process alert for immediate actions
+     */
+    private processAlert(alert: SecurityAlert): void {
+        // Log the alert
+        console.log(`Security Alert: ${alert.title} [${alert.severity}]`);
+        
+        // Add any immediate processing logic here
+        // This could include notifications, automatic responses, etc.
+    }
+
+    /**
      * Acknowledge alert
      */
     acknowledgeAlert(alertId: string, userId: string): boolean {
@@ -336,7 +347,8 @@ export class SecurityAlertingSystem {
             switch (action.type) {
                 case 'log':
                     const level = action.config?.level || 'info';
-                    console[level](`🚨 Security Alert [${alert.severity.toUpperCase()}]: ${alert.title}`);
+                    const consoleMethod = (console as any)[level] || console.info;
+                    consoleMethod(`🚨 Security Alert [${alert.severity.toUpperCase()}]: ${alert.title}`);
                     break;
 
                 case 'email':
@@ -394,8 +406,8 @@ export class SecurityAlertingSystem {
         const totalAlerts = this.alerts.length;
         const activeAlerts = this.alerts.filter(a => a.status === 'active').length;
         
-        const alertsBySeverity = {};
-        const alertsByCategory = {};
+        const alertsBySeverity: Record<string, number> = {};
+        const alertsByCategory: Record<string, number> = {};
         let totalResolutionTime = 0;
         let resolvedCount = 0;
         let falsePositives = 0;

@@ -4,8 +4,12 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { SUPPORTED_LOCALES, DEFAULT_LOCALE } from '../../i18n/shared-config';
 
+const SUPPORTED_LOCALES = {
+  en: 'English',
+  ro: 'Română'
+};
+const DEFAULT_LOCALE = 'en';
 const SUPPORTED_LOCALE_CODES = Object.keys(SUPPORTED_LOCALES);
 
 /**

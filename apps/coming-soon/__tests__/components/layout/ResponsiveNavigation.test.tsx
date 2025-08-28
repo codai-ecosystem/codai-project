@@ -63,7 +63,7 @@ describe('ResponsiveNavigation', () => {
   beforeEach(() => {
     // Mock scrollTo
     window.scrollTo = vi.fn()
-    
+
     // Mock getElementById
     document.getElementById = vi.fn((id) => ({
       getBoundingClientRect: () => ({ top: 100, bottom: 200 }),
@@ -98,7 +98,7 @@ describe('ResponsiveNavigation', () => {
 
       const logo = screen.getAllByText('CODAI')[0]
       expect(logo).toBeInTheDocument()
-      
+
       // Logo should be clickable
       fireEvent.click(logo.closest('a')!)
       expect(window.scrollTo).toHaveBeenCalled()
@@ -106,7 +106,7 @@ describe('ResponsiveNavigation', () => {
 
     it('handles navigation item clicks', async () => {
       const user = userEvent.setup()
-      
+
       render(
         <TestWrapper>
           <ResponsiveNavigation />
@@ -115,7 +115,7 @@ describe('ResponsiveNavigation', () => {
 
       const homeLink = screen.getByText('Home').closest('a')!
       await user.click(homeLink)
-      
+
       expect(window.scrollTo).toHaveBeenCalledWith({
         top: expect.any(Number),
         behavior: 'smooth',
@@ -124,7 +124,7 @@ describe('ResponsiveNavigation', () => {
 
     it('shows submenu on hover for projects', async () => {
       const user = userEvent.setup()
-      
+
       render(
         <TestWrapper>
           <ResponsiveNavigation />
@@ -133,13 +133,13 @@ describe('ResponsiveNavigation', () => {
 
       const projectsLink = screen.getByText('Projects').closest('a')!
       await user.hover(projectsLink)
-      
+
       // Should show submenu items
       await waitFor(() => {
         // First check if submenu container exists
         expect(screen.getByTestId('projects-submenu')).toBeInTheDocument()
       }, { timeout: 3000 })
-      
+
       // Then check for submenu content
       expect(screen.getByText('AI & Machine Learning')).toBeInTheDocument()
       expect(screen.getByText('Financial Services')).toBeInTheDocument()
@@ -180,7 +180,7 @@ describe('ResponsiveNavigation', () => {
 
     it('opens mobile menu when menu button is clicked', async () => {
       const user = userEvent.setup()
-      
+
       render(
         <TestWrapper>
           <ResponsiveNavigation />
@@ -197,7 +197,7 @@ describe('ResponsiveNavigation', () => {
 
     it('closes mobile menu when close button is clicked', async () => {
       const user = userEvent.setup()
-      
+
       render(
         <TestWrapper>
           <ResponsiveNavigation />
@@ -219,7 +219,7 @@ describe('ResponsiveNavigation', () => {
 
     it('closes mobile menu when navigation item is clicked', async () => {
       const user = userEvent.setup()
-      
+
       render(
         <TestWrapper>
           <ResponsiveNavigation />
@@ -241,7 +241,7 @@ describe('ResponsiveNavigation', () => {
 
     it('shows submenu items in mobile menu', async () => {
       const user = userEvent.setup()
-      
+
       render(
         <TestWrapper>
           <ResponsiveNavigation />
@@ -274,7 +274,7 @@ describe('ResponsiveNavigation', () => {
 
     it('handles keyboard navigation', async () => {
       const user = userEvent.setup()
-      
+
       render(
         <TestWrapper>
           <ResponsiveNavigation />

@@ -31,32 +31,32 @@ const buttonVariants: Variants = {
 }
 
 export const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>(
-  ({ 
-    children, 
-    variant = 'primary', 
-    size = 'md', 
+  ({
+    children,
+    variant = 'primary',
+    size = 'md',
     loading = false,
     glowEffect = false,
     magneticEffect = false,
     className,
-    ...props 
+    ...props
   }, ref) => {
     const baseStyles = 'relative inline-flex items-center justify-center font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none'
-    
+
     const variantStyles = {
       primary: 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 focus:ring-blue-500',
       secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700 focus:ring-gray-500',
       outline: 'border-2 border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 focus:ring-gray-500',
       ghost: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 focus:ring-gray-500',
     }
-    
+
     const sizeStyles = {
       sm: 'px-3 py-2 text-sm',
       md: 'px-4 py-2.5 text-base',
       lg: 'px-6 py-3 text-lg',
     }
 
-    const glowStyles = glowEffect 
+    const glowStyles = glowEffect
       ? 'before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-r before:from-blue-600 before:to-purple-600 before:blur-lg before:opacity-0 hover:before:opacity-30 before:transition-opacity before:-z-10'
       : ''
 
@@ -101,7 +101,7 @@ export const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>
           </motion.div>
         )}
         {children}
-        
+
         {/* Ripple effect overlay */}
         <div className="absolute inset-0 rounded-lg overflow-hidden">
           <motion.div
@@ -162,7 +162,7 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
       whileHover="hover"
     >
       {children}
-      
+
       {/* Animated border gradient */}
       <motion.div
         className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 opacity-0"
@@ -294,33 +294,33 @@ interface AnimatedCounterProps {
 
 function useAnimatedCounter(from: number, to: number, duration: number = 2) {
   const [count, setCount] = useState(from)
-  
+
   useEffect(() => {
     let startTime: number
     let animationFrame: number
-    
+
     const animate = (timestamp: number) => {
       if (!startTime) startTime = timestamp
-      
+
       const progress = Math.min((timestamp - startTime) / (duration * 1000), 1)
       const currentCount = Math.floor(from + (to - from) * progress)
-      
+
       setCount(currentCount)
-      
+
       if (progress < 1) {
         animationFrame = requestAnimationFrame(animate)
       }
     }
-    
+
     animationFrame = requestAnimationFrame(animate)
-    
+
     return () => {
       if (animationFrame) {
         cancelAnimationFrame(animationFrame)
       }
     }
   }, [from, to, duration])
-  
+
   return count
 }
 

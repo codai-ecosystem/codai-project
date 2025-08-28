@@ -18,7 +18,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 // Custom hook to use theme
 export const useTheme = () => {
     const context = useContext(ThemeContext);
-    
+
     // During SSR or before ThemeProvider is mounted, return default theme
     if (context === undefined) {
         if (typeof window === 'undefined') {
@@ -29,12 +29,12 @@ export const useTheme = () => {
                 setTheme: () => { }
             };
         }
-        
+
         // In development, warn about missing provider
         if (process.env.NODE_ENV === 'development') {
             console.warn('useTheme must be used within a ThemeProvider. Falling back to default theme.');
         }
-        
+
         // Return fallback theme for production
         return {
             theme: 'dark' as Theme,
@@ -43,7 +43,7 @@ export const useTheme = () => {
             setTheme: () => { }
         };
     }
-    
+
     return context;
 };
 
@@ -80,7 +80,7 @@ interface ThemeProviderProps {
     storageKey?: string;
 }
 
-export const ThemeProvider: React.FC<ThemeProviderProps> = ({ 
+export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     children,
     defaultTheme = 'system',
     storageKey = 'codai-theme'
@@ -95,16 +95,16 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
         const stored = getStoredTheme(storageKey);
         const initialTheme = stored || defaultTheme;
         const initialResolvedTheme = initialTheme === 'system' ? getSystemTheme() : initialTheme;
-        
+
         setThemeState(initialTheme);
         setResolvedTheme(initialResolvedTheme);
         setMounted(true);
-        
+
         // Update document immediately on first mount
         document.documentElement.setAttribute('data-theme', initialResolvedTheme);
         document.documentElement.classList.remove('light', 'dark');
         document.documentElement.classList.add(initialResolvedTheme);
-        
+
         // Update meta theme-color
         const metaThemeColor = document.querySelector('meta[name="theme-color"]');
         if (metaThemeColor) {
@@ -150,7 +150,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
             if (theme === 'system') {
                 const newResolvedTheme = mediaQuery.matches ? 'dark' : 'light';
                 setResolvedTheme(newResolvedTheme);
-                
+
                 // Update document class
                 document.documentElement.setAttribute('data-theme', newResolvedTheme);
                 document.documentElement.classList.remove('light', 'dark');
@@ -196,7 +196,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
 
     return (
         <ThemeContext.Provider value={value}>
-            <motion.div 
+            <motion.div
                 className={`theme-transition ${resolvedTheme}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -238,16 +238,14 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
         return (
             <motion.button
                 onClick={toggleTheme}
-                className={`relative inline-flex items-center h-6 w-11 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                    resolvedTheme === 'dark' ? 'bg-blue-600' : 'bg-gray-200'
-                } ${className}`}
+                className={`relative inline-flex items-center h-6 w-11 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${resolvedTheme === 'dark' ? 'bg-blue-600' : 'bg-gray-200'
+                    } ${className}`}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Toggle theme"
             >
                 <motion.span
-                    className={`inline-block w-4 h-4 transform rounded-full bg-white shadow-lg transition-transform ${
-                        resolvedTheme === 'dark' ? 'translate-x-6' : 'translate-x-1'
-                    }`}
+                    className={`inline-block w-4 h-4 transform rounded-full bg-white shadow-lg transition-transform ${resolvedTheme === 'dark' ? 'translate-x-6' : 'translate-x-1'
+                        }`}
                     layout
                     transition={{ type: 'spring', stiffness: 700, damping: 30 }}
                 />
@@ -365,9 +363,8 @@ export const ThemeSelector: React.FC<{ className?: string }> = ({
                                         setTheme(themeOption.value);
                                         setIsOpen(false);
                                     }}
-                                    className={`w-full flex items-center gap-3 px-3 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
-                                        theme === themeOption.value ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'
-                                    }`}
+                                    className={`w-full flex items-center gap-3 px-3 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${theme === themeOption.value ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'
+                                        }`}
                                     whileHover={{ backgroundColor: theme === themeOption.value ? undefined : 'rgba(0,0,0,0.05)' }}
                                 >
                                     {themeOption.icon}

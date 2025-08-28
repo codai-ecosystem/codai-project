@@ -10,9 +10,9 @@ interface LanguageSwitcherProps {
   variant?: 'default' | 'mobile' | 'footer'
 }
 
-export default function LanguageSwitcher({ 
-  className = '', 
-  variant = 'default' 
+export default function LanguageSwitcher({
+  className = '',
+  variant = 'default'
 }: LanguageSwitcherProps) {
   const { t, language, changeLanguage } = useI18n()
   const [isOpen, setIsOpen] = useState(false)
@@ -92,9 +92,8 @@ export default function LanguageSwitcher({
                 <button
                   key={lang.code}
                   onClick={() => handleLanguageChange(lang.code)}
-                  className={`w-full px-4 py-3 text-left flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ${
-                    lang.code === language ? 'bg-gray-100 dark:bg-gray-800' : ''
-                  }`}
+                  className={`w-full px-4 py-3 text-left flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ${lang.code === language ? 'bg-gray-100 dark:bg-gray-800' : ''
+                    }`}
                   role="option"
                   aria-selected={lang.code === language}
                 >

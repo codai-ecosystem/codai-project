@@ -1,0 +1,406 @@
+/**
+ * CODAI Design System - CSS Custom Properties
+ * Cinematic Scrollytelling Theme Variables
+ */
+
+:root {
+  /* ===== TYPOGRAPHY ===== */
+  
+  /* Font Stacks */
+  --font-primary: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, 'Liberation Mono', monospace;
+  --font-display: 'Inter Display', 'Inter', sans-serif;
+  
+  /* Fluid Type Scale */
+  --text-hero: clamp(3.5rem, 8vw, 8rem);
+  --text-h1: clamp(2.5rem, 5vw, 4.5rem);
+  --text-h2: clamp(2rem, 4vw, 3.5rem);
+  --text-h3: clamp(1.5rem, 3vw, 2.5rem);
+  --text-h4: clamp(1.25rem, 2.5vw, 2rem);
+  --text-xl: clamp(1.25rem, 2vw, 1.5rem);
+  --text-lg: clamp(1.125rem, 1.5vw, 1.25rem);
+  --text-base: clamp(1rem, 1vw, 1.125rem);
+  --text-sm: clamp(0.875rem, 0.8vw, 1rem);
+  --text-xs: clamp(0.75rem, 0.6vw, 0.875rem);
+  --text-micro: 0.6875rem;
+  
+  /* Font Weights */
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-black: 900;
+  
+  /* Line Heights */
+  --leading-tight: 1.1;
+  --leading-snug: 1.3;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.6;
+
+  /* ===== COLORS ===== */
+  
+  /* Base Neutral Palette */
+  --gray-50: #fafafa;
+  --gray-100: #f4f4f5;
+  --gray-200: #e4e4e7;
+  --gray-300: #d4d4d8;
+  --gray-400: #a1a1aa;
+  --gray-500: #71717a;
+  --gray-600: #52525b;
+  --gray-700: #3f3f46;
+  --gray-800: #27272a;
+  --gray-900: #18181b;
+  --gray-950: #09090b;
+  
+  /* Semantic Colors */
+  --color-background: var(--gray-50);
+  --color-surface: #ffffff;
+  --color-text-primary: var(--gray-900);
+  --color-text-secondary: var(--gray-600);
+  --color-text-tertiary: var(--gray-400);
+  --color-border: var(--gray-200);
+  --color-border-focus: var(--gray-400);
+
+  /* ===== CHAPTER PALETTES ===== */
+  
+  /* Chapter 1: Intro - Ethereal */
+  --intro-primary: #8b5cf6;
+  --intro-secondary: #a78bfa;
+  --intro-accent: #c084fc;
+  --intro-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+  --intro-glow: rgba(139, 92, 246, 0.3);
+  
+  /* Chapter 2: Foundation - Professional Trust */
+  --foundation-primary: #3b82f6;
+  --foundation-secondary: #60a5fa;
+  --foundation-accent: #93c5fd;
+  --foundation-gradient: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #6366f1 100%);
+  --foundation-glow: rgba(59, 130, 246, 0.25);
+  
+  /* Chapter 3: Revolution - Bold Energy */
+  --revolution-primary: #ef4444;
+  --revolution-secondary: #f87171;
+  --revolution-accent: #fca5a5;
+  --revolution-gradient: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #f97316 100%);
+  --revolution-glow: rgba(239, 68, 68, 0.3);
+  
+  /* Chapter 4: Infrastructure - Technical Precision */
+  --infrastructure-primary: #6b7280;
+  --infrastructure-secondary: #9ca3af;
+  --infrastructure-accent: #d1d5db;
+  --infrastructure-gradient: linear-gradient(135deg, #374151 0%, #6b7280 50%, #1f2937 100%);
+  --infrastructure-glow: rgba(107, 114, 128, 0.2);
+  
+  /* Chapter 5: Developers - Creative Coding */
+  --developers-primary: #10b981;
+  --developers-secondary: #34d399;
+  --developers-accent: #6ee7b7;
+  --developers-gradient: linear-gradient(135deg, #059669 0%, #10b981 50%, #06b6d4 100%);
+  --developers-glow: rgba(16, 185, 129, 0.25);
+  
+  /* Chapter 6: Finance - Luxury Gold */
+  --finance-primary: #f59e0b;
+  --finance-secondary: #fbbf24;
+  --finance-accent: #fcd34d;
+  --finance-gradient: linear-gradient(135deg, #d97706 0%, #f59e0b 50%, #eab308 100%);
+  --finance-glow: rgba(245, 158, 11, 0.3);
+  
+  /* Chapter 7: Blockchain - Crypto Blue */
+  --blockchain-primary: #06b6d4;
+  --blockchain-secondary: #22d3ee;
+  --blockchain-accent: #67e8f9;
+  --blockchain-gradient: linear-gradient(135deg, #0891b2 0%, #06b6d4 50%, #3b82f6 100%);
+  --blockchain-glow: rgba(6, 182, 212, 0.25);
+  
+  /* Chapter 8: Society - Human Warmth */
+  --society-primary: #f97316;
+  --society-secondary: #fb923c;
+  --society-accent: #fdba74;
+  --society-gradient: linear-gradient(135deg, #ea580c 0%, #f97316 50%, #fbbf24 100%);
+  --society-glow: rgba(249, 115, 22, 0.25);
+  
+  /* Chapter 9: Creativity - Artistic Purple */
+  --creativity-primary: #a855f7;
+  --creativity-secondary: #c084fc;
+  --creativity-accent: #d8b4fe;
+  --creativity-gradient: linear-gradient(135deg, #9333ea 0%, #a855f7 50%, #ec4899 100%);
+  --creativity-glow: rgba(168, 85, 247, 0.3);
+  
+  /* Chapter 10: Lifestyle - Natural Green */
+  --lifestyle-primary: #22c55e;
+  --lifestyle-secondary: #4ade80;
+  --lifestyle-accent: #86efac;
+  --lifestyle-gradient: linear-gradient(135deg, #16a34a 0%, #22c55e 50%, #65a30d 100%);
+  --lifestyle-glow: rgba(34, 197, 94, 0.25);
+  
+  /* Chapter 11: Constellation - Cosmic Deep */
+  --constellation-primary: #1e1b4b;
+  --constellation-secondary: #3730a3;
+  --constellation-accent: #6366f1;
+  --constellation-gradient: linear-gradient(135deg, #0f0f23 0%, #1e1b4b 50%, #312e81 100%);
+  --constellation-glow: rgba(99, 102, 241, 0.4);
+  
+  /* Chapter 12: Future - Success Green */
+  --future-primary: #059669;
+  --future-secondary: #10b981;
+  --future-accent: #34d399;
+  --future-gradient: linear-gradient(135deg, #047857 0%, #059669 50%, #0891b2 100%);
+  --future-glow: rgba(5, 150, 105, 0.3);
+
+  /* ===== DYNAMIC THEME VARIABLES ===== */
+  /* These change based on active chapter */
+  --current-primary: var(--intro-primary);
+  --current-secondary: var(--intro-secondary);
+  --current-accent: var(--intro-accent);
+  --current-gradient: var(--intro-gradient);
+  --current-glow: var(--intro-glow);
+
+  /* ===== SPACING SCALE ===== */
+  --space-px: 1px;
+  --space-0: 0;
+  --space-0_5: 0.125rem;
+  --space-1: 0.25rem;
+  --space-1_5: 0.375rem;
+  --space-2: 0.5rem;
+  --space-2_5: 0.625rem;
+  --space-3: 0.75rem;
+  --space-3_5: 0.875rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-7: 1.75rem;
+  --space-8: 2rem;
+  --space-9: 2.25rem;
+  --space-10: 2.5rem;
+  --space-11: 2.75rem;
+  --space-12: 3rem;
+  --space-14: 3.5rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-28: 7rem;
+  --space-32: 8rem;
+  --space-36: 9rem;
+  --space-40: 10rem;
+  --space-44: 11rem;
+  --space-48: 12rem;
+  --space-52: 13rem;
+  --space-56: 14rem;
+  --space-60: 15rem;
+  --space-64: 16rem;
+  --space-72: 18rem;
+  --space-80: 20rem;
+  --space-96: 24rem;
+  
+  /* Contextual Spacing */
+  --layout-padding: clamp(1rem, 5vw, 6rem);
+  --layout-margin: clamp(2rem, 8vw, 12rem);
+  --section-gap: clamp(4rem, 12vw, 16rem);
+  --chapter-gap: clamp(6rem, 15vw, 20rem);
+  --component-padding: clamp(1rem, 3vw, 2rem);
+  --component-gap: clamp(0.5rem, 2vw, 1.5rem);
+  --button-padding: clamp(0.75rem, 2vw, 1.25rem);
+
+  /* ===== BORDER RADIUS ===== */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
+  --radius-full: 9999px;
+
+  /* ===== SHADOWS & GLOWS ===== */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+  
+  --glow-sm: 0 0 10px var(--current-glow);
+  --glow-md: 0 0 20px var(--current-glow);
+  --glow-lg: 0 0 30px var(--current-glow);
+
+  /* ===== MOTION SYSTEM ===== */
+  
+  /* Timing Functions */
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4, 0.0, 1, 1);
+  --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-elastic: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-circ: cubic-bezier(0.85, 0, 0.15, 1);
+  --ease-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+  
+  /* Duration Scale */
+  --duration-75: 75ms;
+  --duration-100: 100ms;
+  --duration-150: 150ms;
+  --duration-200: 200ms;
+  --duration-300: 300ms;
+  --duration-500: 500ms;
+  --duration-700: 700ms;
+  --duration-1000: 1000ms;
+  --duration-1500: 1500ms;
+  --duration-2000: 2000ms;
+  
+  /* Animation Presets */
+  --anim-fade-in: opacity var(--duration-300) var(--ease-out);
+  --anim-fade-out: opacity var(--duration-200) var(--ease-in);
+  --anim-slide-up: transform var(--duration-500) var(--ease-out);
+  --anim-slide-down: transform var(--duration-500) var(--ease-out);
+  --anim-scale-in: transform var(--duration-300) var(--ease-back);
+  --anim-scale-out: transform var(--duration-200) var(--ease-in);
+  --anim-morph: all var(--duration-700) var(--ease-elastic);
+  --anim-float: transform var(--duration-2000) var(--ease-in-out) infinite alternate;
+
+  /* ===== RESPONSIVE BREAKPOINTS ===== */
+  --bp-xs: 475px;
+  --bp-sm: 640px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+  --bp-2xl: 1536px;
+
+  /* ===== CONTAINER WIDTHS ===== */
+  --container-xs: 20rem;
+  --container-sm: 24rem;
+  --container-md: 28rem;
+  --container-lg: 32rem;
+  --container-xl: 36rem;
+  --container-2xl: 42rem;
+  --container-3xl: 48rem;
+  --container-4xl: 56rem;
+  --container-5xl: 64rem;
+  --container-6xl: 72rem;
+  --container-7xl: 80rem;
+  --container-full: 100%;
+
+  /* ===== Z-INDEX SCALE ===== */
+  --z-behind: -1;
+  --z-base: 0;
+  --z-docked: 10;
+  --z-dropdown: 1000;
+  --z-sticky: 1100;
+  --z-banner: 1200;
+  --z-overlay: 1300;
+  --z-modal: 1400;
+  --z-popover: 1500;
+  --z-skipnav: 1600;
+  --z-toast: 1700;
+  --z-tooltip: 1800;
+}
+
+/* ===== DARK MODE THEME ===== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--gray-900);
+    --color-surface: var(--gray-800);
+    --color-text-primary: var(--gray-100);
+    --color-text-secondary: var(--gray-400);
+    --color-text-tertiary: var(--gray-500);
+    --color-border: var(--gray-700);
+    --color-border-focus: var(--gray-500);
+  }
+}
+
+[data-theme="dark"] {
+  --color-background: var(--gray-900);
+  --color-surface: var(--gray-800);
+  --color-text-primary: var(--gray-100);
+  --color-text-secondary: var(--gray-400);
+  --color-text-tertiary: var(--gray-500);
+  --color-border: var(--gray-700);
+  --color-border-focus: var(--gray-500);
+}
+
+/* ===== REDUCED MOTION PREFERENCES ===== */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-75: 0ms;
+    --duration-100: 0ms;
+    --duration-150: 0ms;
+    --duration-200: 0ms;
+    --duration-300: 0ms;
+    --duration-500: 100ms;
+    --duration-700: 150ms;
+    --duration-1000: 200ms;
+    --duration-1500: 250ms;
+    --duration-2000: 300ms;
+    
+    --anim-fade-in: opacity 100ms var(--ease-out);
+    --anim-fade-out: opacity 100ms var(--ease-in);
+    --anim-slide-up: none;
+    --anim-slide-down: none;
+    --anim-scale-in: none;
+    --anim-scale-out: none;
+    --anim-morph: none;
+    --anim-float: none;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===== HIGH CONTRAST SUPPORT ===== */
+@media (prefers-contrast: high) {
+  :root {
+    --color-border: var(--gray-900);
+    --color-border-focus: var(--current-primary);
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+  }
+}
+
+/* ===== COMPONENT BASE STYLES ===== */
+
+/* Typography Classes */
+.text-hero { font-size: var(--text-hero); line-height: var(--leading-tight); font-weight: var(--font-black); }
+.text-h1 { font-size: var(--text-h1); line-height: var(--leading-tight); font-weight: var(--font-bold); }
+.text-h2 { font-size: var(--text-h2); line-height: var(--leading-snug); font-weight: var(--font-bold); }
+.text-h3 { font-size: var(--text-h3); line-height: var(--leading-snug); font-weight: var(--font-semibold); }
+.text-h4 { font-size: var(--text-h4); line-height: var(--leading-snug); font-weight: var(--font-semibold); }
+.text-xl { font-size: var(--text-xl); line-height: var(--leading-normal); }
+.text-lg { font-size: var(--text-lg); line-height: var(--leading-normal); }
+.text-base { font-size: var(--text-base); line-height: var(--leading-normal); }
+.text-sm { font-size: var(--text-sm); line-height: var(--leading-normal); }
+.text-xs { font-size: var(--text-xs); line-height: var(--leading-normal); }
+
+/* Utility Classes */
+.current-color { color: var(--current-primary); }
+.current-bg { background: var(--current-gradient); }
+.current-glow { box-shadow: var(--glow-sm); }
+.current-border { border-color: var(--current-primary); }
+
+/* Focus Visible */
+.focus-visible:focus-visible {
+  outline: 2px solid var(--current-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Print Styles */
+@media print {
+  :root {
+    --color-background: white;
+    --color-surface: white;
+    --color-text-primary: black;
+    --color-text-secondary: #333;
+    --color-text-tertiary: #666;
+    --current-primary: black;
+    --current-gradient: none;
+  }
+  
+  .no-print { display: none; }
+}

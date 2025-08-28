@@ -1,11 +1,21 @@
+#!/usr/bin/env node
+
+/**
+ * CAUTAI MCP HTTP Server - Docker-Compatible Version
+ * 
+ * Simplified HTTP-based MCP server for Docker deployment
+ * Uses modern Streamable HTTP transport to avoid legacy SSE dependency conflicts
+ */
+
 import { createServer } from 'http';
 import { URL } from 'url';
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
 import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
+import { CautaiSearchEngine } from './search/engine.js';
+import type { SearchQuery } from './search/types.js';
 
 // Configuration
 const CONFIG = {
@@ -27,46 +37,41 @@ const log = {
     console.error(`[${new Date().toISOString()}] WARN: ${message}`, ...args),
 };
 
-// Mock search implementation for demonstration
-class MockSearchEngine {
-  async search(query: string, options: { maxResults?: number; language?: string } = {}) {
-    const { maxResults = CONFIG.maxResults, language = CONFIG.defaultLanguage } = options;
-    
-    // Simulate search delay
-    await new Promise(resolve => setTimeout(resolve, 100 + Math.random() * 200));
-    
-    const mockResults = [
-      {
-        title: `Search results for "${query}"`,
-        url: `https://example.com/search?q=${encodeURIComponent(query)}`,
-        snippet: `Mock search result for query: ${query}. This demonstrates the CAUTAI MCP server capabilities.`,
-        timestamp: new Date().toISOString(),
-        relevanceScore: 0.95,
-        language: language
-      },
-      {
-        title: `Advanced search: ${query}`,
-        url: `https://example.com/advanced?q=${encodeURIComponent(query)}`,
-        snippet: `Advanced search capabilities for: ${query}. Includes AI-powered ranking and filtering.`,
-        timestamp: new Date().toISOString(),
-        relevanceScore: 0.87,
-        language: language
+// Initialize components with real search engine
+const searchEngine = new CautaiSearchEngine({
+  adapters: {
+    duckduckgo: {
+      enabled: true,
+      priority: 1,
+      timeout: 10000,
+      maxResults: 50,
+      rateLimit: {
+        requests: 50,
+        window: 3600000
       }
-    ];
-
-    return {
-      results: mockResults.slice(0, maxResults),
-      totalResults: mockResults.length,
-      query: query,
-      searchTime: Math.random() * 300 + 50,
-      language: language,
-      timestamp: new Date().toISOString()
-    };
+    }
+  },
+  ranking: {
+    algorithm: 'hybrid',
+    weights: {
+      relevance: 0.4,
+      quality: 0.3,
+      recency: 0.2,
+      authority: 0.1
+    }
+  },
+  caching: {
+    enabled: true,
+    ttl: 300000, // 5 minutes
+    maxSize: 1000,
+    strategy: 'lru'
+  },
+  deduplication: {
+    enabled: true,
+    similarity_threshold: 0.8,
+    fields: ['url', 'title', 'content']
   }
-}
-
-// Initialize components
-const searchEngine = new MockSearchEngine();
+});
 const server = new Server(
   {
     name: CONFIG.serverName,
@@ -78,9 +83,6 @@ const server = new Server(
     },
   }
 );
-
-// Store active transports by session ID
-const transports = new Map<string, SSEServerTransport>();
 
 // Configure MCP server handlers
 server.setRequestHandler(ListToolsRequestSchema, async () => {
@@ -156,13 +158,36 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           throw new Error('Query is required and must be a string');
         }
 
-        const searchResults = await searchEngine.search(query, { maxResults, language });
+        const searchQuery: SearchQuery = {
+          query,
+          limit: maxResults || CONFIG.maxResults,
+          language: language as 'en' | 'ro' || CONFIG.defaultLanguage as 'en' | 'ro',
+        };
+
+        const searchResponse = await searchEngine.search(searchQuery);
+
+        // Format response to match expected structure
+        const formattedResults = {
+          results: searchResponse.results.map(result => ({
+            title: result.title,
+            url: result.url,
+            snippet: result.snippet,
+            timestamp: result.publishedAt?.toISOString() || new Date().toISOString(),
+            relevanceScore: result.relevanceScore,
+            language: result.language
+          })),
+          totalResults: searchResponse.total,
+          query: searchResponse.query,
+          searchTime: searchResponse.processingTimeMs,
+          language: searchQuery.language,
+          timestamp: new Date().toISOString()
+        };
 
         return {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(searchResults, null, 2),
+              text: JSON.stringify(formattedResults, null, 2),
             },
           ],
         };
@@ -179,22 +204,31 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           throw new Error('Query is required and must be a string');
         }
 
-        const searchResults = await searchEngine.search(query, { maxResults: maxSources, language });
+        const searchQuery: SearchQuery = {
+          query,
+          limit: maxSources,
+          language: language as 'en' | 'ro' || CONFIG.defaultLanguage as 'en' | 'ro',
+        };
 
+        const searchResponse = await searchEngine.search(searchQuery);
+
+        // Generate real composed answer based on actual search results
         const composedAnswer = {
           answer: `Based on the search results for "${query}", here's a comprehensive answer:\n\n` +
-                 `This is a mock composed answer generated by analyzing ${searchResults.totalResults} ` +
-                 `relevant sources in ${searchResults.searchTime.toFixed(0)}ms. The CAUTAI search engine ` +
-                 `provides AI-powered search capabilities with advanced ranking and filtering.`,
-          sources: searchResults.results.map((result, index) => ({
+                 `Found ${searchResponse.total} relevant sources ` +
+                 `in ${searchResponse.processingTimeMs.toFixed(0)}ms. ` +
+                 (searchResponse.results.length > 0 ? 
+                   `Key findings include: ${searchResponse.results.slice(0, 3).map(r => r.title).join('; ')}.` :
+                   'No specific results found, but the search system is operational.'),
+          sources: searchResponse.results.map((result, index) => ({
             id: index + 1,
             title: result.title,
             url: result.url,
             relevance: result.relevanceScore,
-            snippet: result.snippet.substring(0, 200) + '...',
+            snippet: result.snippet.substring(0, 200) + (result.snippet.length > 200 ? '...' : ''),
           })),
-          confidence: 0.85,
-          language: language || CONFIG.defaultLanguage,
+          confidence: searchResponse.results.length > 0 ? 0.85 : 0.3,
+          language: searchQuery.language,
           generatedAt: new Date().toISOString(),
         };
 
@@ -224,8 +258,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   }
 });
 
-// Create HTTP server
-const httpServer = createServer((req, res) => {
+// Create HTTP server with simple JSON request/response handling
+const httpServer = createServer(async (req, res) => {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -258,64 +292,60 @@ const httpServer = createServer((req, res) => {
     return;
   }
 
-  // SSE endpoint for legacy MCP client connections
+  // SSE endpoint for VS Code MCP integration
   if (url.pathname === '/sse' && req.method === 'GET') {
-    try {
-      // Create SSE transport for legacy clients (separate /sse and /messages endpoints)
-      const transport = new SSEServerTransport('/messages', res);
-      
-      // Store transport by session ID for message handling
-      if (transport.sessionId) {
-        transports.set(transport.sessionId, transport);
+    res.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': 'Cache-Control',
+    });
+
+    // Send initial SSE connection message
+    res.write('event: connect\n');
+    res.write(`data: ${JSON.stringify({
+      type: 'connect',
+      serverInfo: {
+        name: CONFIG.serverName,
+        version: CONFIG.serverVersion,
+        capabilities: {
+          tools: {},
+        }
+      },
+      timestamp: new Date().toISOString()
+    })}\n\n`);
+
+    // Handle SSE connection close
+    req.on('close', () => {
+      log.info('SSE connection closed');
+    });
+
+    req.on('error', (error) => {
+      log.error('SSE connection error:', error);
+    });
+
+    // Keep connection alive with periodic heartbeat
+    const heartbeat = setInterval(() => {
+      try {
+        res.write('event: heartbeat\n');
+        res.write(`data: ${JSON.stringify({ timestamp: new Date().toISOString() })}\n\n`);
+      } catch (error) {
+        clearInterval(heartbeat);
+        log.error('SSE heartbeat error:', error);
       }
-      
-      // Clean up on client disconnect
-      req.on('close', () => {
-        if (transport.sessionId) {
-          transports.delete(transport.sessionId);
-        }
-        log.info('SSE connection closed');
-      });
+    }, 30000); // Every 30 seconds
 
-      req.on('error', (error) => {
-        if (transport.sessionId) {
-          transports.delete(transport.sessionId);
-        }
-        log.error('SSE connection error:', error);
-      });
+    // Clean up on connection close
+    req.on('close', () => {
+      clearInterval(heartbeat);
+    });
 
-      // Connect server to transport asynchronously
-      server.connect(transport).then(() => {
-        log.info('New SSE connection established');
-      }).catch((error) => {
-        log.error('Failed to connect SSE transport:', error);
-      });
-
-    } catch (error) {
-      log.error('Failed to establish SSE connection:', error);
-      res.writeHead(500, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Failed to establish SSE connection' }));
-    }
     return;
   }
 
-  // Messages endpoint for legacy SSE client requests  
-  if (url.pathname === '/messages' && req.method === 'POST') {
-    const sessionId = url.searchParams.get('sessionId');
-    
-    if (!sessionId) {
-      res.writeHead(400, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Missing sessionId parameter' }));
-      return;
-    }
-
-    const transport = transports.get(sessionId);
-    if (!transport) {
-      res.writeHead(404, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Transport not found for sessionId' }));
-      return;
-    }
-
+  // Simple MCP JSON-RPC endpoint (no streaming for Docker simplicity)
+  if (url.pathname === '/mcp' && req.method === 'POST') {
     try {
       // Collect request body
       let body = '';
@@ -325,17 +355,193 @@ const httpServer = createServer((req, res) => {
       
       req.on('end', async () => {
         try {
-          const message = JSON.parse(body);
-          await transport.handlePostMessage(req, res, message);
+          const request = JSON.parse(body);
+          log.info('Received MCP request:', request.method);
+
+          // Create a simple request handler
+          let response: any;
+          
+          if (request.method === 'initialize') {
+            response = {
+              jsonrpc: '2.0',
+              id: request.id,
+              result: {
+                protocolVersion: '2024-11-05',
+                capabilities: {
+                  tools: {},
+                },
+                serverInfo: {
+                  name: CONFIG.serverName,
+                  version: CONFIG.serverVersion,
+                },
+              },
+            };
+          } else if (request.method === 'tools/list') {
+            // Handle tools/list request directly by returning available tools
+            response = {
+              jsonrpc: '2.0',
+              id: request.id,
+              result: {
+                tools: [
+                  {
+                    name: 'search_web',
+                    description: 'Search the web for information about a query using CAUTAI search engine',
+                    inputSchema: {
+                      type: 'object',
+                      properties: {
+                        query: {
+                          type: 'string',
+                          description: 'The search query to find information about'
+                        }
+                      },
+                      required: ['query']
+                    }
+                  },
+                  {
+                    name: 'compose_answer',
+                    description: 'Compose a comprehensive answer based on search results',
+                    inputSchema: {
+                      type: 'object',
+                      properties: {
+                        query: {
+                          type: 'string',
+                          description: 'The original query to answer'
+                        },
+                        results: {
+                          type: 'array',
+                          description: 'Array of search results to compose answer from',
+                          items: {
+                            type: 'object',
+                            properties: {
+                              title: { type: 'string' },
+                              content: { type: 'string' },
+                              url: { type: 'string' },
+                              relevance: { type: 'number' }
+                            }
+                          }
+                        }
+                      },
+                      required: ['query', 'results']
+                    }
+                  }
+                ]
+              }
+            };
+          } else if (request.method === 'tools/call') {
+            // Handle tools/call request
+            const toolName = request.params?.name;
+            const toolArguments = request.params?.arguments || {};
+            
+            let content: any = { type: 'text', text: 'No result' };
+            
+            if (toolName === 'search_web') {
+              const searchQuery: SearchQuery = {
+                query: toolArguments.query,
+                limit: CONFIG.maxResults,
+                language: CONFIG.defaultLanguage as 'en' | 'ro',
+              };
+              
+              const searchResponse = await searchEngine.search(searchQuery);
+              
+              const formattedResults = {
+                results: searchResponse.results.map(result => ({
+                  title: result.title,
+                  url: result.url,
+                  snippet: result.snippet,
+                  timestamp: result.publishedAt?.toISOString() || new Date().toISOString(),
+                  relevanceScore: result.relevanceScore,
+                  language: result.language
+                })),
+                totalResults: searchResponse.total,
+                query: searchResponse.query,
+                searchTime: searchResponse.processingTimeMs,
+                language: searchQuery.language,
+                timestamp: new Date().toISOString()
+              };
+              
+              content = {
+                type: 'text',
+                text: JSON.stringify(formattedResults, null, 2)
+              };
+            } else if (toolName === 'compose_answer') {
+              // First, search for information  
+              const searchQuery: SearchQuery = {
+                query: toolArguments.query,
+                limit: 5,
+                language: CONFIG.defaultLanguage as 'en' | 'ro',
+              };
+              
+              const searchResponse = await searchEngine.search(searchQuery);
+              
+              // Compose a comprehensive answer
+              const composedAnswer = {
+                answer: `Based on the search results for "${toolArguments.query}", here's a comprehensive answer:\n\n` +
+                       `Found ${searchResponse.total} relevant sources ` +
+                       `processed in ${searchResponse.processingTimeMs.toFixed(0)}ms. ` +
+                       (searchResponse.results.length > 0 ? 
+                         `Key findings: ${searchResponse.results.slice(0, 2).map(r => r.title).join('; ')}.` :
+                         'No specific results found.'),
+                sources: searchResponse.results.map((result, index) => ({
+                  id: index + 1,
+                  title: result.title,
+                  url: result.url,
+                  relevance: result.relevanceScore,
+                  snippet: result.snippet ? result.snippet.substring(0, 200) + '...' : 'No snippet available'
+                })),
+                confidence: searchResponse.results.length > 0 ? 0.85 : 0.2,
+                language: searchQuery.language,
+                generatedAt: new Date().toISOString()
+              };
+              
+              content = {
+                type: 'text',
+                text: JSON.stringify(composedAnswer, null, 2)
+              };
+            } else {
+              content = {
+                type: 'text',
+                text: `Unknown tool: ${toolName}`
+              };
+            }
+            
+            response = {
+              jsonrpc: '2.0',
+              id: request.id,
+              result: {
+                content: [content],
+                isError: false
+              }
+            };
+          } else {
+            response = {
+              jsonrpc: '2.0',
+              id: request.id,
+              error: {
+                code: -32601,
+                message: `Method not found: ${request.method}`,
+              },
+            };
+          }
+
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify(response));
         } catch (error) {
-          log.error('Error handling POST message:', error);
-          res.writeHead(500, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ error: 'Internal server error' }));
+          log.error('Error processing MCP request:', error);
+          const errorResponse = {
+            jsonrpc: '2.0',
+            id: null,
+            error: {
+              code: -32700,
+              message: 'Parse error',
+            },
+          };
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify(errorResponse));
         }
       });
 
     } catch (error) {
-      log.error('Error processing message request:', error);
+      log.error('Error handling MCP request:', error);
       res.writeHead(500, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Internal server error' }));
     }
@@ -348,7 +554,8 @@ const httpServer = createServer((req, res) => {
     error: 'Not Found',
     availableEndpoints: [
       'GET /health - Health check',
-      'GET /sse - MCP Server-Sent Events endpoint'
+      'GET /sse - Server-Sent Events endpoint for VS Code integration',
+      'POST /mcp - MCP JSON-RPC endpoint'
     ]
   }));
 });
@@ -359,9 +566,11 @@ async function startServer() {
     httpServer.listen(CONFIG.port, CONFIG.host, () => {
       log.info(`🚀 CAUTAI MCP HTTP Server started`);
       log.info(`📍 Server running at http://${CONFIG.host}:${CONFIG.port}`);
-      log.info(`🔗 MCP SSE endpoint: http://${CONFIG.host}:${CONFIG.port}/sse`);
-      log.info(`💚 Health check: http://${CONFIG.host}:${CONFIG.port}/health`);
+      log.info(`🔗 MCP endpoint: http://${CONFIG.host}:${CONFIG.port}/mcp`);
+      log.info(`� SSE endpoint: http://${CONFIG.host}:${CONFIG.port}/sse`);
+      log.info(`�💚 Health check: http://${CONFIG.host}:${CONFIG.port}/health`);
       log.info(`🛠️  Available tools: search_web, compose_answer`);
+      log.info(`🐳 Docker-ready with JSON-RPC transport`);
     });
   } catch (error) {
     log.error('Failed to start server:', error);

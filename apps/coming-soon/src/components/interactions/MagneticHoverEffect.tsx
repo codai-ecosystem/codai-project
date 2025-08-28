@@ -82,7 +82,7 @@ export const MagneticHoverEffect: React.FC<MagneticHoverEffectProps> = ({
             if (dist <= range) {
                 const normalizedX = (deltaX / range) * 100;
                 const normalizedY = (deltaY / range) * 100;
-                
+
                 mouseX.set(deltaX);
                 mouseY.set(deltaY);
                 distance.set(dist);
@@ -173,7 +173,7 @@ export const MagneticHoverEffect: React.FC<MagneticHoverEffectProps> = ({
                     ))}
 
                     {/* Magnetic field lines */}
-                    <svg 
+                    <svg
                         className="absolute inset-0 w-full h-full"
                         viewBox="0 0 200 200"
                         style={{
@@ -191,7 +191,7 @@ export const MagneticHoverEffect: React.FC<MagneticHoverEffectProps> = ({
                                 <stop offset="100%" stopColor="transparent" />
                             </radialGradient>
                         </defs>
-                        
+
                         {/* Dynamic field lines */}
                         {[...Array(8)].map((_, i) => {
                             const angle = (i * 45) * Math.PI / 180;
@@ -264,7 +264,7 @@ export const MagneticHoverEffect: React.FC<MagneticHoverEffectProps> = ({
                     {[...Array(12)].map((_, i) => {
                         const angle = (i * 30) * Math.PI / 180;
                         const baseRadius = 60 + i * 10;
-                        
+
                         return (
                             <motion.div
                                 key={i}

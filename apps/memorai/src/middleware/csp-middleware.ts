@@ -98,10 +98,10 @@ export function cspMiddleware(request: NextRequest) {
 
     // Add HTTPS-only headers in production
     if (process.env.NODE_ENV === 'production') {
-        securityHeaders['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains; preload';
-        securityHeaders['Cross-Origin-Embedder-Policy'] = 'require-corp';
-        securityHeaders['Cross-Origin-Opener-Policy'] = 'same-origin';
-        securityHeaders['Cross-Origin-Resource-Policy'] = 'same-origin';
+        (securityHeaders as any)['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains; preload';
+        (securityHeaders as any)['Cross-Origin-Embedder-Policy'] = 'require-corp';
+        (securityHeaders as any)['Cross-Origin-Opener-Policy'] = 'same-origin';
+        (securityHeaders as any)['Cross-Origin-Resource-Policy'] = 'same-origin';
     }
 
     // Apply headers

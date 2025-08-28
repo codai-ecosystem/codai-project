@@ -12,15 +12,15 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
-import { Badge } from '../ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
-import { Avatar, AvatarFallback } from '../ui/avatar';
-import { toast } from '../ui/use-toast';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { toast } from '@/components/ui/use-toast';
 import {
     Users,
     Plus,
@@ -680,7 +680,7 @@ const TeamWorkspaceDashboard: React.FC = () => {
 
                                             <div className="space-y-2">
                                                 <label className="text-sm font-medium">Role</label>
-                                                <Select value={memberForm.role} onValueChange={(value: TeamRole) => setMemberForm(prev => ({ ...prev, role: value }))}>
+                                                <Select value={memberForm.role} onValueChange={(value) => setMemberForm(prev => ({ ...prev, role: value as TeamRole }))}>
                                                     <SelectTrigger>
                                                         <SelectValue />
                                                     </SelectTrigger>

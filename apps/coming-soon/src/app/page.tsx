@@ -44,82 +44,82 @@ export default function HomePage() {
       <CODAIHomePageSchemas />
       <EnhancedStructuredData type="home" />
       <ScrollAnimationProvider>
-      <main id="main" className="min-h-screen bg-black text-white overflow-x-hidden">
-        {/* Scroll Progress Indicator */}
-        <ScrollIndicator position="top" />
+        <main id="main" className="min-h-screen bg-black text-white overflow-x-hidden">
+          {/* Scroll Progress Indicator */}
+          <ScrollIndicator position="top" />
 
-        {/* Navigation */}
-        <Navigation />
+          {/* Navigation */}
+          <Navigation />
 
-        {/* Revolutionary Clean Hero Section */}
-        <SectionLoader>
-          <CleanHero />
-        </SectionLoader>
+          {/* Revolutionary Clean Hero Section */}
+          <SectionLoader>
+            <CleanHero />
+          </SectionLoader>
 
-        {/* Unified Project Gallery - All 42 CODAI Projects */}
-        <SectionLoader>
-          <UnifiedProjectGallery />
-        </SectionLoader>
+          {/* Unified Project Gallery - All 42 CODAI Projects */}
+          <SectionLoader>
+            <UnifiedProjectGallery />
+          </SectionLoader>
 
-        {/* About Section - Vision, Mission, Values */}
-        <SectionLoader>
-          <AboutSection />
-        </SectionLoader>
+          {/* About Section - Vision, Mission, Values */}
+          <SectionLoader>
+            <AboutSection />
+          </SectionLoader>
 
-        {/* Technology Stack Showcase */}
-        <SectionLoader>
-          <TechnologyStack />
-        </SectionLoader>
+          {/* Technology Stack Showcase */}
+          <SectionLoader>
+            <TechnologyStack />
+          </SectionLoader>
 
-        {/* Contact & Early Access Signup */}
-        <SectionLoader>
-          <ContactSection />
-        </SectionLoader>
+          {/* Contact & Early Access Signup */}
+          <SectionLoader>
+            <ContactSection />
+          </SectionLoader>
 
-        {/* Social Media Integration Section */}
-        <SectionLoader>
-          <AnimatedSection
-            animationType="fade-in"
-            duration={1.0}
-            className="py-20 bg-gradient-to-b from-gray-900 via-purple-900/20 to-gray-900"
-          >
-            <div className="container mx-auto px-6">
-              <div className="text-center mb-12">
-                <h2 className={`text-4xl md:text-6xl font-bold mb-6 ${theme === 'dark'
+          {/* Social Media Integration Section */}
+          <SectionLoader>
+            <AnimatedSection
+              animationType="fade-in"
+              duration={1.0}
+              className="py-20 bg-gradient-to-b from-gray-900 via-purple-900/20 to-gray-900"
+            >
+              <div className="container mx-auto px-6">
+                <div className="text-center mb-12">
+                  <h2 className={`text-4xl md:text-6xl font-bold mb-6 ${theme === 'dark'
                     ? 'bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent'
                     : 'bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 bg-clip-text text-transparent'
-                  }`}>
-                  Join Our Community
-                </h2>
-                <p className={`text-xl max-w-3xl mx-auto mb-12 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                  }`}>
-                  Connect with us across social platforms and be part of the AI revolution
-                </p>
-              </div>
-              
-              <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
-                <SocialProof />
-                <SocialMediaFollow />
-                <SocialShareButtons />
-              </div>
-            </div>
-          </AnimatedSection>
-        </SectionLoader>
+                    }`}>
+                    Join Our Community
+                  </h2>
+                  <p className={`text-xl max-w-3xl mx-auto mb-12 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                    }`}>
+                    Connect with us across social platforms and be part of the AI revolution
+                  </p>
+                </div>
 
-        {/* Footer */}
-        <SectionLoader>
-          <ModernFooter />
-        </SectionLoader>
+                <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+                  <SocialProof />
+                  <SocialMediaFollow />
+                  <SocialShareButtons />
+                </div>
+              </div>
+            </AnimatedSection>
+          </SectionLoader>
 
-        {/* Development Tools (only in development) */}
-        {process.env.NODE_ENV === 'development' && (
-          <>
-            <AccessibilityTester />
-            <DevelopmentDashboard />
-          </>
-        )}
-      </main>
-    </ScrollAnimationProvider>
-  </SocialMediaProvider>
+          {/* Footer */}
+          <SectionLoader>
+            <ModernFooter />
+          </SectionLoader>
+
+          {/* Development Tools (only in development) */}
+          {process.env.NODE_ENV === 'development' && (
+            <>
+              <AccessibilityTester />
+              <DevelopmentDashboard />
+            </>
+          )}
+        </main>
+      </ScrollAnimationProvider>
+    </SocialMediaProvider>
   )
 }

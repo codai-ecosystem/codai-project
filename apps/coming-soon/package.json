@@ -23,7 +23,7 @@
         "test:all": "npm run test:ci && npm run test:e2e",
         "test:comprehensive": "node run-tests.js",
         "test:unit": "vitest run --testNamePattern=\"(components|utils|hooks)\" --reporter=verbose",
-        "test:integration": "vitest run --testNamePattern=\"integration\" --reporter=verbose", 
+        "test:integration": "vitest run --testNamePattern=\"integration\" --reporter=verbose",
         "test:accessibility": "vitest run --testNamePattern=\"accessibility\" --reporter=verbose",
         "test:performance": "vitest run --testNamePattern=\"performance\" --reporter=verbose",
         "test:responsive": "vitest run --testNamePattern=\"responsive\" --reporter=verbose",

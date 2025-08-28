@@ -1,7 +1,7 @@
 {
   "navigation": {
     "hero": "Acasă",
-    "ecosystem": "Ecosistem", 
+    "ecosystem": "Ecosistem",
     "projects": "Proiecte",
     "about": "Despre",
     "contact": "Contact",
@@ -13,7 +13,7 @@
     "skip_to_main": "Sari la conținutul principal",
     "submenu": {
       "ai": "AI și Învățare Automată",
-      "financial": "Servicii Financiare", 
+      "financial": "Servicii Financiare",
       "development": "Instrumente de Dezvoltare",
       "infrastructure": "Infrastructură",
       "admin": "Administrare"

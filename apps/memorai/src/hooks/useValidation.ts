@@ -15,7 +15,7 @@ export interface UseValidationOptions {
 }
 
 export function useFormValidation<T extends Record<string, any>>(
-    schema: z.ZodSchema<T>,
+    schema: z.ZodObject<any>,
     initialValues: T,
     options: UseValidationOptions = {}
 ) {
@@ -132,7 +132,7 @@ export function useInputSanitization() {
 }
 
 export function useSecureForm<T extends Record<string, any>>(
-    schema: z.ZodSchema<T>,
+    schema: z.ZodObject<any>,
     initialValues: T,
     onSubmit: (values: T) => Promise<void> | void
 ) {

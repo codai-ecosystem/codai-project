@@ -29,7 +29,7 @@ export function I18nProvider({ children }: I18nProviderProps) {
 
 function I18nContextProvider({ children }: I18nProviderProps) {
   const { t, i18n: i18nInstance, ready } = useTranslation()
-  
+
   const changeLanguage = async (lng: string) => {
     await i18nInstance.changeLanguage(lng)
   }

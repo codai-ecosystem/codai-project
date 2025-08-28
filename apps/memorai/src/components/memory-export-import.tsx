@@ -67,7 +67,7 @@ export default function MemoryExportImport() {
         } catch (error) {
             setStatus({
                 type: 'error',
-                message: `Export failed: ${error.message}`
+                message: `Export failed: ${error instanceof Error ? error.message : 'Unknown error'}`
             });
         } finally {
             setIsExporting(false);
@@ -114,7 +114,7 @@ export default function MemoryExportImport() {
         } catch (error) {
             setStatus({
                 type: 'error',
-                message: `Import failed: ${error.message}`
+                message: `Import failed: ${error instanceof Error ? error.message : 'Unknown error'}`
             });
         } finally {
             setIsImporting(false);
@@ -170,7 +170,7 @@ export default function MemoryExportImport() {
                 <CardContent className="space-y-4">
                     <div className="space-y-2">
                         <Label htmlFor="export-format">Export Format</Label>
-                        <Select value={exportFormat} onValueChange={(value: 'json' | 'csv') => setExportFormat(value)}>
+                        <Select value={exportFormat} onValueChange={(value) => setExportFormat(value as 'json' | 'csv')}>
                             <SelectTrigger>
                                 <SelectValue />
                             </SelectTrigger>

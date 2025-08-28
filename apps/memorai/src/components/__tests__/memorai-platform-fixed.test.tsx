@@ -8,7 +8,7 @@ import MemorAIPlatform from '../MemorAIPlatform';
 vi.mock('../../lib/auth.tsx', () => ({
   useAuth: () => ({
     authState: {
-      user: { name: 'John Doe', email: 'john@example.com' },
+      user: { name: 'Test User', email: 'test@example.com' },
       isAuthenticated: true,
       isLoading: false,
     },
@@ -51,8 +51,8 @@ describe('MemorAI Platform - Real Component Tests', () => {
       render(<MemorAIPlatform />);
 
       await waitFor(() => {
-        expect(screen.getByText('Welcome back, John Doe!')).toBeInTheDocument();
-        expect(screen.getByText('John Doe')).toBeInTheDocument();
+        expect(screen.getByText('Welcome back, Test User!')).toBeInTheDocument();
+        expect(screen.getByText('Test User')).toBeInTheDocument();
         expect(screen.getByText('Logout')).toBeInTheDocument();
       });
     });
@@ -228,7 +228,7 @@ describe('MemorAI Platform - Real Component Tests', () => {
 
       await waitFor(() => {
         expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('MemorAI');
-        expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Welcome back, John Doe!');
+        expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Welcome back, Test User!');
 
         const headings = screen.getAllByRole('heading', { level: 3 });
         expect(headings.length).toBeGreaterThan(0);
@@ -250,7 +250,7 @@ describe('MemorAI Platform - Real Component Tests', () => {
       render(<MemorAIPlatform />);
 
       await waitFor(() => {
-        expect(screen.getByText('Welcome back, John Doe!')).toBeInTheDocument();
+        expect(screen.getByText('Welcome back, Test User!')).toBeInTheDocument();
         expect(screen.getByText('Your intelligent memory dashboard with AI-powered insights and analytics')).toBeInTheDocument();
       });
     });

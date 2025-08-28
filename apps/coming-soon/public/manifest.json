@@ -7,7 +7,13 @@
   "background_color": "#0f172a",
   "theme_color": "#6366f1",
   "orientation": "portrait-primary",
-  "categories": ["business", "productivity", "utilities", "education", "finance"],
+  "categories": [
+    "business",
+    "productivity",
+    "utilities",
+    "education",
+    "finance"
+  ],
   "lang": "en",
   "dir": "ltr",
   "scope": "/",
@@ -166,9 +172,15 @@
     {
       "action": "/import",
       "accept": {
-        "application/json": [".json"],
-        "text/csv": [".csv"],
-        "application/pdf": [".pdf"]
+        "application/json": [
+          ".json"
+        ],
+        "text/csv": [
+          ".csv"
+        ],
+        "application/pdf": [
+          ".pdf"
+        ]
       }
     }
   ],
@@ -183,7 +195,11 @@
       "files": [
         {
           "name": "files",
-          "accept": ["image/*", "text/*", "application/pdf"]
+          "accept": [
+            "image/*",
+            "text/*",
+            "application/pdf"
+          ]
         }
       ]
     }

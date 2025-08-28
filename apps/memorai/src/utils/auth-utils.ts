@@ -70,7 +70,7 @@ export class AuthenticationService {
             jti
         };
 
-        const accessToken = jwt.default.sign(payload, this.jwtSecret, {
+        const accessToken = (jwt.default.sign as any)(payload, this.jwtSecret, {
             expiresIn: this.jwtExpiration,
             issuer: 'memorai',
             audience: 'memorai-api'

@@ -58,7 +58,7 @@ export const Typography = React.forwardRef<HTMLElement, BaseTypographyProps>(
     // Get gradient classes
     const getGradientClasses = () => {
       if (!gradient) return ''
-      
+
       const gradients = {
         primary: 'bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent',
         secondary: 'bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent',
@@ -70,7 +70,7 @@ export const Typography = React.forwardRef<HTMLElement, BaseTypographyProps>(
         muted: 'bg-gradient-to-r from-gray-500 to-gray-600 bg-clip-text text-transparent',
         tertiary: 'bg-gradient-to-r from-gray-600 to-gray-700 bg-clip-text text-transparent'
       }
-      
+
       return gradients[color] || gradients.primary
     }
 
@@ -108,7 +108,7 @@ export const Typography = React.forwardRef<HTMLElement, BaseTypographyProps>(
           fontWeight: 'font-bold'
         }
       }
-      
+
       const variantStyle = variants[variant]
       return `${variantStyle.fontFamily} ${variantStyle.letterSpacing} ${variantStyle.lineHeight} ${variantStyle.fontWeight}`
     }
@@ -141,20 +141,20 @@ export const Typography = React.forwardRef<HTMLElement, BaseTypographyProps>(
         right: 'text-right',
         justify: 'text-justify'
       }
-      
+
       const decorationClasses = {
         none: 'no-underline',
         underline: 'underline',
         'line-through': 'line-through'
       }
-      
+
       const transformClasses = {
         none: '',
         uppercase: 'uppercase',
         lowercase: 'lowercase',
         capitalize: 'capitalize'
       }
-      
+
       const weightClasses = {
         thin: 'font-thin',
         extralight: 'font-extralight',

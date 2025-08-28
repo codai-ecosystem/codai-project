@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { screen, fireEvent, waitFor, render } from '@/tests/setup'
+import { screen, fireEvent, waitFor, render, act } from '@/tests/setup'
 import MemoryDashboardComponent from '@/components/memory-dashboard'
 
 const MemoryDashboard = MemoryDashboardComponent
@@ -25,12 +25,20 @@ describe('MemoryDashboard Component', () => {
   })
 
   it('should render the memory dashboard', async () => {
-    render(<MemoryDashboard />)
-    expect(screen.getByText('AI Search')).toBeInTheDocument()
+    await act(async () => {
+      render(<MemoryDashboard />)
+    })
+    
+    await waitFor(() => {
+      expect(screen.getByText('AI Search')).toBeInTheDocument()
+    })
   })
 
   it('should handle connection status', async () => {
-    render(<MemoryDashboard />)
+    await act(async () => {
+      render(<MemoryDashboard />)
+    })
+    
     await waitFor(() => {
       expect(screen.getByText('MCP Connected')).toBeInTheDocument()
     })

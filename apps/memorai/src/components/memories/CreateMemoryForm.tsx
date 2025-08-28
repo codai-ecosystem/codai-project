@@ -378,3 +378,5 @@ export function CreateMemoryForm({ onSuccess, onCancel }: CreateMemoryFormProps)
     </Card>
   )
 }
+
+export default CreateMemoryForm;

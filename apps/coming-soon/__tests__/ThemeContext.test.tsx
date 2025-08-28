@@ -83,10 +83,10 @@ describe('ThemeContext', () => {
 
     it('provides fallback theme when used outside provider', () => {
         // Mock console.warn to avoid test output noise
-        const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+        const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => { });
 
         const { unmount } = render(<TestThemeComponent />);
-        
+
         // Should render with fallback theme, not throw error
         expect(screen.getByTestId('current-theme')).toHaveTextContent('dark');
 
@@ -107,7 +107,7 @@ describe('ThemeContext', () => {
     });
 
     it('saves theme to localStorage when theme changes', () => {
-        const setItemSpy = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {});
+        const setItemSpy = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { });
 
         render(
             <ThemeProvider>
@@ -122,7 +122,7 @@ describe('ThemeContext', () => {
         setTimeout(() => {
             expect(setItemSpy).toHaveBeenCalledWith('codai-theme', expect.any(String));
         }, 100);
-        
+
         setItemSpy.mockRestore();
     });
 });

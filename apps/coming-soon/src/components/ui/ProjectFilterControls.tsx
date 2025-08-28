@@ -73,13 +73,13 @@ export const ProjectFilterControls: React.FC<ProjectFilterControlsProps> = ({
             // Search filter
             if (filters.search) {
                 const searchLower = filters.search.toLowerCase();
-                const searchMatch = 
+                const searchMatch =
                     project.name.toLowerCase().includes(searchLower) ||
                     project.description.toLowerCase().includes(searchLower) ||
                     project.domain.toLowerCase().includes(searchLower) ||
                     project.features.some(f => f.toLowerCase().includes(searchLower)) ||
                     (project.techStack?.some(t => t.toLowerCase().includes(searchLower)) || false);
-                
+
                 if (!searchMatch) return false;
             }
 
@@ -105,7 +105,7 @@ export const ProjectFilterControls: React.FC<ProjectFilterControlsProps> = ({
 
             // Tech stack filter
             if (filters.techStack.length > 0) {
-                const hasMatchingTech = filters.techStack.some(tech => 
+                const hasMatchingTech = filters.techStack.some(tech =>
                     project.techStack?.includes(tech) || false
                 );
                 if (!hasMatchingTech) return false;
@@ -117,7 +117,7 @@ export const ProjectFilterControls: React.FC<ProjectFilterControlsProps> = ({
         // Sort results
         result.sort((a, b) => {
             let comparison = 0;
-            
+
             switch (filters.sortBy) {
                 case 'name':
                     comparison = a.name.localeCompare(b.name);
@@ -127,8 +127,8 @@ export const ProjectFilterControls: React.FC<ProjectFilterControlsProps> = ({
                     break;
                 case 'priority':
                     const priorityOrder = { 'critical': 4, 'high': 3, 'medium': 2, 'low': 1 };
-                    comparison = priorityOrder[a.priority as keyof typeof priorityOrder] - 
-                                priorityOrder[b.priority as keyof typeof priorityOrder];
+                    comparison = priorityOrder[a.priority as keyof typeof priorityOrder] -
+                        priorityOrder[b.priority as keyof typeof priorityOrder];
                     break;
                 case 'tier':
                     comparison = a.tier - b.tier;
@@ -159,7 +159,7 @@ export const ProjectFilterControls: React.FC<ProjectFilterControlsProps> = ({
     const toggleArrayFilter = (key: 'status' | 'category' | 'priority' | 'tier' | 'techStack', value: string) => {
         setFilters(prev => ({
             ...prev,
-            [key]: prev[key].includes(value) 
+            [key]: prev[key].includes(value)
                 ? prev[key].filter(item => item !== value)
                 : [...prev[key], value]
         }));
@@ -178,12 +178,12 @@ export const ProjectFilterControls: React.FC<ProjectFilterControlsProps> = ({
         });
     };
 
-    const hasActiveFilters = 
-        filters.search || 
-        filters.status.length > 0 || 
-        filters.category.length > 0 || 
-        filters.priority.length > 0 || 
-        filters.tier.length > 0 || 
+    const hasActiveFilters =
+        filters.search ||
+        filters.status.length > 0 ||
+        filters.category.length > 0 ||
+        filters.priority.length > 0 ||
+        filters.tier.length > 0 ||
         filters.techStack.length > 0;
 
     return (
@@ -191,8 +191,8 @@ export const ProjectFilterControls: React.FC<ProjectFilterControlsProps> = ({
             {/* Main Filter Bar */}
             <div className={cn(
                 "flex flex-col lg:flex-row gap-4 items-start lg:items-center p-6 rounded-2xl border backdrop-blur-sm transition-all duration-300",
-                theme === 'dark' 
-                    ? "bg-gray-900/80 border-gray-700/50" 
+                theme === 'dark'
+                    ? "bg-gray-900/80 border-gray-700/50"
                     : "bg-white/80 border-gray-200/50",
                 isExpanded && "shadow-2xl"
             )}>
@@ -219,7 +219,7 @@ export const ProjectFilterControls: React.FC<ProjectFilterControlsProps> = ({
                     {filterOptions.categories.slice(0, 3).map(category => {
                         const Icon = categoryIcons[category] || Building;
                         const isActive = filters.category.includes(category);
-                        
+
                         return (
                             <motion.button
                                 key={category}
@@ -252,7 +252,7 @@ export const ProjectFilterControls: React.FC<ProjectFilterControlsProps> = ({
                             <option value="tier">Tier</option>
                             <option value="launchDate">Launch</option>
                         </select>
-                        
+
                         <button
                             onClick={() => updateFilter('sortDirection', filters.sortDirection === 'asc' ? 'desc' : 'asc')}
                             className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
@@ -334,8 +334,8 @@ export const ProjectFilterControls: React.FC<ProjectFilterControlsProps> = ({
                         transition={{ duration: 0.3 }}
                         className={cn(
                             "mt-4 p-6 rounded-2xl border backdrop-blur-sm",
-                            theme === 'dark' 
-                                ? "bg-gray-900/90 border-gray-700/50" 
+                            theme === 'dark'
+                                ? "bg-gray-900/90 border-gray-700/50"
                                 : "bg-white/90 border-gray-200/50"
                         )}
                     >
@@ -451,7 +451,7 @@ export const ProjectFilterControls: React.FC<ProjectFilterControlsProps> = ({
                     Showing {filteredProjects.length} of {projects.length} projects
                     {hasActiveFilters && " (filtered)"}
                 </span>
-                
+
                 {filteredProjects.length > 0 && (
                     <div className="flex items-center gap-4">
                         <div className="flex items-center gap-1">

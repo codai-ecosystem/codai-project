@@ -31,7 +31,7 @@ interface MetricsData {
 export async function POST(request: NextRequest) {
   try {
     const metrics: MetricsData = await request.json();
-    
+
     // Validate required fields
     if (!metrics.timestamp || !metrics.url) {
       return NextResponse.json(
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     // 1. Store metrics in a time-series database (InfluxDB, CloudWatch, etc.)
     // 2. Send to monitoring service (DataDog, New Relic, etc.)
     // 3. Trigger alerts based on thresholds
-    
+
     console.log('📊 Metrics received:', {
       timestamp: metrics.timestamp,
       url: metrics.url,
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
 
     // Check for performance alerts
     const alerts = [];
-    
+
     if (metrics.performance.lcp > 2500) {
       alerts.push({
         type: 'performance',
@@ -126,7 +126,7 @@ export async function POST(request: NextRequest) {
 export async function GET() {
   // Return aggregated metrics for dashboard
   // In a real application, this would query your metrics database
-  
+
   const mockMetrics = {
     summary: {
       totalPageViews: 1250,

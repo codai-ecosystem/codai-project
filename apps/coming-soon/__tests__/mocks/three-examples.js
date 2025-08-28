@@ -17,9 +17,9 @@ module.exports = {
     }
   },
   RenderPass: class MockRenderPass {
-    constructor() {}
+    constructor() { }
   },
   UnrealBloomPass: class MockUnrealBloomPass {
-    constructor() {}
+    constructor() { }
   }
 };

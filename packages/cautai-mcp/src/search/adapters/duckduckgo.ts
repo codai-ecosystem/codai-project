@@ -288,13 +288,16 @@ export class DuckDuckGoAdapter extends BaseSearchAdapter {
    * Clean DuckDuckGo redirect URLs
    */
   private cleanUrl(href: string): string {
+    let cleanedUrl = href;
+    
+    // Handle DuckDuckGo redirect URLs
     if (href.startsWith('/l/?uddg=')) {
       const urlMatch = href.match(/uddg=([^&]+)/);
       if (urlMatch) {
         try {
-          return decodeURIComponent(urlMatch[1]);
+          cleanedUrl = decodeURIComponent(urlMatch[1]);
         } catch {
-          return href;
+          cleanedUrl = href;
         }
       }
     }
@@ -303,14 +306,19 @@ export class DuckDuckGoAdapter extends BaseSearchAdapter {
       const urlMatch = href.match(/uddg=([^&]+)/);
       if (urlMatch) {
         try {
-          return decodeURIComponent(urlMatch[1]);
+          cleanedUrl = decodeURIComponent(urlMatch[1]);
         } catch {
-          return href;
+          cleanedUrl = href;
         }
       }
     }
+    
+    // Handle protocol-relative URLs that start with //
+    if (cleanedUrl.startsWith('//')) {
+      cleanedUrl = 'https:' + cleanedUrl;
+    }
 
-    return href;
+    return cleanedUrl;
   }
 
   /**

@@ -50,8 +50,8 @@ services:
   # Cautai MCP HTTP Server (HTTP Transport for VS Code)
   cautai-mcp-http:
     build:
-      context: .
-      dockerfile: packages/cautai-mcp/Dockerfile
+      context: ./packages/cautai-mcp
+      dockerfile: Dockerfile
     container_name: cautai-mcp-http-server
     ports:
       - "4952:4952"  # HTTP MCP Server with SSE transport
@@ -98,7 +98,7 @@ services:
         reservations:
           memory: 128M
           cpus: '0.1'
-    command: ["npm", "run", "start:http"]
+    command: ["npx", "tsx", "src/mcp-http-server.ts"]
 
 
   # Cautai HTTP Server (REST API Gateway)

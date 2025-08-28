@@ -41,8 +41,8 @@ describe('MemoryService', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     // Clear internal cache
-    memoryService['memoryCache']?.clear?.()
-    memoryService['requestCache']?.clear?.()
+    ;(memoryService as any)['memoryCache']?.clear?.()
+    ;(memoryService as any)['requestCache']?.clear?.()
   })
 
   afterEach(() => {

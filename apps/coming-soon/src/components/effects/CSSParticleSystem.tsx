@@ -40,8 +40,8 @@ const CSSParticleSystem: React.FC<CSSParticleSystemProps> = ({
         }
 
         // Reduce motion support
-        const prefersReducedMotion = typeof window !== 'undefined' 
-            ? window.matchMedia('(prefers-reduced-motion: reduce)').matches 
+        const prefersReducedMotion = typeof window !== 'undefined'
+            ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
             : false;
 
         if (prefersReducedMotion) {
@@ -281,7 +281,7 @@ const CSSParticleSystem: React.FC<CSSParticleSystemProps> = ({
             `}</style>
 
             {/* Particle Container */}
-            <div 
+            <div
                 className={`css-particle-system relative w-full h-full overflow-hidden ${className}`}
                 style={{
                     background: 'transparent',
@@ -290,19 +290,18 @@ const CSSParticleSystem: React.FC<CSSParticleSystemProps> = ({
             >
                 {/* Connection effect background */}
                 <div className="particle-connections" />
-                
+
                 {/* Individual particles */}
                 {particles.map(particle => (
                     <CSSParticle key={particle.id} particle={particle} />
                 ))}
-                
+
                 {/* Interactive hover effect */}
-                <div 
+                <div
                     className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300"
                     style={{
-                        background: `radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), ${
-                            theme === 'dark' ? '#3B82F615' : '#1E40AF15'
-                        } 0%, transparent 50%)`,
+                        background: `radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), ${theme === 'dark' ? '#3B82F615' : '#1E40AF15'
+                            } 0%, transparent 50%)`,
                     }}
                     onMouseMove={(e) => {
                         const rect = e.currentTarget.getBoundingClientRect();

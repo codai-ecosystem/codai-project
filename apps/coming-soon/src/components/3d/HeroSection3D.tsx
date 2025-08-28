@@ -244,8 +244,8 @@ export const HeroSection3D: React.FC = () => {
                             >
                                 <Icon
                                     className={`w-8 h-8 md:w-12 md:h-12 transition-all duration-700 group-hover:scale-150 ${theme === 'dark'
-                                            ? 'text-blue-400/90'
-                                            : 'text-blue-500/70'
+                                        ? 'text-blue-400/90'
+                                        : 'text-blue-500/70'
                                         }`}
                                 />
 
@@ -439,8 +439,8 @@ export const HeroSection3D: React.FC = () => {
                                     <div
                                         key={label}
                                         className={`group relative p-8 rounded-3xl transition-all duration-700 hover:scale-110 hover:-translate-y-4 cursor-pointer overflow-hidden ${theme === 'dark'
-                                                ? 'bg-slate-800/70 border-slate-600/50'
-                                                : 'bg-white/80 border-gray-200/50'
+                                            ? 'bg-slate-800/70 border-slate-600/50'
+                                            : 'bg-white/80 border-gray-200/50'
                                             } backdrop-blur-lg border shadow-xl hover:shadow-2xl`}
                                         style={{
                                             transform: `translateZ(${20 + index * 10}px) rotateY(${Math.sin(time * 0.1 + index) * 5}deg)`,
@@ -510,8 +510,8 @@ export const HeroSection3D: React.FC = () => {
 
                                     <button
                                         className={`group relative px-10 py-6 rounded-full font-semibold text-lg transition-all duration-700 transform hover:scale-105 ${theme === 'dark'
-                                                ? 'bg-slate-800/80 text-white border border-slate-600/50'
-                                                : 'bg-white/80 text-gray-900 border border-gray-300/50'
+                                            ? 'bg-slate-800/80 text-white border border-slate-600/50'
+                                            : 'bg-white/80 text-gray-900 border border-gray-300/50'
                                             } backdrop-blur-xl shadow-xl hover:shadow-2xl overflow-hidden`}
                                         style={{
                                             transform: `translateZ(20px) rotateX(${Math.cos(time * 0.15) * 2}deg)`,

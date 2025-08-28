@@ -30,27 +30,27 @@ export const ANIMATION_CONFIG = {
     easeIn: 'power2.in',
     easeOut: 'power2.out',
     easeInOut: 'power2.inOut',
-    
+
     // Bouncy and playful
     bounce: 'back.out(1.7)',
     bounceIn: 'back.in(1.7)',
     bounceOut: 'back.out(1.7)',
-    
+
     // Elastic and dynamic
     elastic: 'elastic.out(1, 0.3)',
     elasticIn: 'elastic.in(1, 0.3)',
     elasticOut: 'elastic.out(1, 0.3)',
-    
+
     // Sharp and precise
     expo: 'expo.out',
     expoIn: 'expo.in',
     expoOut: 'expo.out',
-    
+
     // Smooth curves
     circ: 'circ.out',
     circIn: 'circ.in',
     circOut: 'circ.out',
-    
+
     // Linear for precise timing
     none: 'none',
   },
@@ -106,7 +106,7 @@ export function AnimationProvider({ children, reducedMotion = false }: Animation
       const handleChange = (e: MediaQueryListEvent) => {
         isReducedRef.current = reducedMotion || e.matches
       }
-      
+
       mediaQuery.addEventListener('change', handleChange)
 
       // Set global GSAP defaults for performance
@@ -132,8 +132,8 @@ export function AnimationProvider({ children, reducedMotion = false }: Animation
     const tl = gsap.timeline({
       defaults: {
         ease: ANIMATION_CONFIG.easings.ease,
-        duration: isReducedRef.current 
-          ? ANIMATION_CONFIG.durations.instant 
+        duration: isReducedRef.current
+          ? ANIMATION_CONFIG.durations.instant
           : ANIMATION_CONFIG.durations.normal,
       },
     })

@@ -91,7 +91,7 @@ export const GoogleTagManager: React.FC<{ gtmId: string }> = ({ gtmId }) => {
 export const FacebookPixel: React.FC<{ pixelId: string }> = ({ pixelId }) => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      (window as any).fbq = function(...args: any[]) {
+      (window as any).fbq = function (...args: any[]) {
         (window as any).fbq.callMethod ?
           (window as any).fbq.callMethod(...args) :
           (window as any).fbq.queue.push(...args);
@@ -277,8 +277,8 @@ export const trackEngagement = (engagement_time: number, scroll_depth: number) =
 
     (window as any).gtag('event', 'scroll', {
       scroll_depth_percent: scroll_depth,
-      custom_dimension_1: scroll_depth > 90 ? 'very_high_engagement' : 
-                           scroll_depth > 50 ? 'high_engagement' : 'medium_engagement'
+      custom_dimension_1: scroll_depth > 90 ? 'very_high_engagement' :
+        scroll_depth > 50 ? 'high_engagement' : 'medium_engagement'
     });
   }
 };
@@ -305,7 +305,7 @@ export const trackConversion = (conversion_type: string, value?: number, currenc
 
   // LinkedIn conversion
   if (typeof window !== 'undefined' && 'lintrk' in window) {
-    (window as any).lintrk('track', { 
+    (window as any).lintrk('track', {
       conversion_id: process.env.NEXT_PUBLIC_LINKEDIN_CONVERSION_ID,
       conversion_value: value
     });

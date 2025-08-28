@@ -107,16 +107,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const projectSlugs = [
     // Foundation Services
     'romai', 'memorai', 'bancai', 'studiai', 'conversai', 'controlai', 'creatai', 'deepai', 'expertai',
-    
+
     // New Generation
     'financeai', 'gameai', 'healthai', 'legalai', 'marketai', 'mediaai', 'projectai', 'salesai', 'secureai',
-    
+
     // Infrastructure  
     'socialai', 'travelai', 'voiceai', 'workflowai', 'analyticsai', 'cloudai', 'edgeai', 'federatedai',
-    
+
     // Specialized Services
     'quantumai', 'blockchainai', 'iotai', 'roboticsai', 'autonomousai', 'biomedicai', 'climateai', 'energyai',
-    
+
     // Emerging Platforms
     'metaverseai', 'neuralinterfaceai', 'spatialai', 'holographicai', 'cognitivearchai', 'consciousnessai',
     'syntheticai', 'hybridai', 'evolutionaryai', 'transcendentai'

@@ -1,7 +1,7 @@
 # CAUTAI MCP HTTP Server Dockerfile
 # Optimized for HTTP-based MCP server with SSE transport
 
-FROM node:18-alpine AS base
+FROM node:20-alpine AS base
 
 # Install dependencies for native modules
 RUN apk add --no-cache \
@@ -18,14 +18,14 @@ RUN addgroup -g 1001 -S cautai && \
 WORKDIR /app
 
 # Copy package files
-COPY packages/cautai-mcp/package.json ./
-COPY packages/cautai-mcp/package-lock.json* ./
+COPY package.json ./
+COPY package-lock.json* ./
 
 # Install dependencies
-RUN npm ci --only=production --no-audit --no-fund
+RUN npm install --only=production --no-audit --no-fund
 
 # Copy source code
-COPY packages/cautai-mcp/src ./src
+COPY src ./src
 
 # Create necessary directories and set permissions
 RUN mkdir -p /app/logs /app/cache && \

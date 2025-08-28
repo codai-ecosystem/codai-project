@@ -79,7 +79,7 @@ const serviceCategories = [
   },
   {
     id: 'specialized-apps',
-    key: 'specialized_apps', 
+    key: 'specialized_apps',
     name: 'Specialized Apps',
     description: 'Domain-specific intelligent applications',
     icon: SparklesIcon,
@@ -119,7 +119,7 @@ const developmentPhases = [
     color: '#10b981'
   },
   {
-    phase: 'Phase 2', 
+    phase: 'Phase 2',
     title: 'AI Enhancement',
     period: '2024 Q3-Q4',
     status: 'completed',
@@ -158,7 +158,7 @@ interface ServiceNodeProps {
 
 const ServiceNode: React.FC<ServiceNodeProps> = ({ service, isActive, onHover, connections, theme }) => {
   const Icon = service.icon
-  
+
   return (
     <motion.div
       className="absolute cursor-pointer"
@@ -171,10 +171,10 @@ const ServiceNode: React.FC<ServiceNodeProps> = ({ service, isActive, onHover, c
       onHoverEnd={() => onHover(null)}
       whileHover={{ scale: 1.1, zIndex: 10 }}
       initial={{ opacity: 0, scale: 0 }}
-      animate={{ 
-        opacity: 1, 
+      animate={{
+        opacity: 1,
         scale: isActive ? 1.2 : 1,
-        boxShadow: isActive 
+        boxShadow: isActive
           ? `0 0 40px ${service.color}40`
           : '0 8px 32px rgba(0,0,0,0.12)'
       }}
@@ -184,15 +184,15 @@ const ServiceNode: React.FC<ServiceNodeProps> = ({ service, isActive, onHover, c
       {isActive && connections.map((connectionId) => {
         const targetService = serviceCategories.find(s => s.id === connectionId)
         if (!targetService) return null
-        
+
         const startX = service.position.x
         const startY = service.position.y
         const endX = targetService.position.x
         const endY = targetService.position.y
-        
+
         const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2))
         const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI
-        
+
         return (
           <motion.div
             key={connectionId}
@@ -213,31 +213,31 @@ const ServiceNode: React.FC<ServiceNodeProps> = ({ service, isActive, onHover, c
           />
         )
       })}
-      
+
       {/* Service node */}
       <div className={`
         relative w-24 h-24 rounded-full 
-        ${theme === 'dark' 
-          ? 'bg-gray-800 border-2 border-gray-700' 
+        ${theme === 'dark'
+          ? 'bg-gray-800 border-2 border-gray-700'
           : 'bg-white border-2 border-gray-200'
         }
         flex items-center justify-center transition-all duration-300
         ${isActive ? 'shadow-2xl' : 'shadow-lg'}
       `}>
         {/* Background gradient */}
-        <div 
+        <div
           className="absolute inset-0 rounded-full opacity-10"
           style={{ background: `linear-gradient(135deg, ${service.color}, ${service.color}80)` }}
         />
-        
+
         {/* Icon */}
         <AnimatedIcon animation="scale" trigger="hover">
-          <Icon 
+          <Icon
             className="w-10 h-10 z-10 relative"
             style={{ color: service.color }}
           />
         </AnimatedIcon>
-        
+
         {/* Pulse animation */}
         <motion.div
           className="absolute inset-0 rounded-full border-2 opacity-30"
@@ -253,20 +253,20 @@ const ServiceNode: React.FC<ServiceNodeProps> = ({ service, isActive, onHover, c
           }}
         />
       </div>
-      
+
       {/* Service label */}
       <motion.div
         className={`
           absolute top-full mt-3 left-1/2 transform -translate-x-1/2
           text-center min-w-max px-3 py-1 rounded-lg
-          ${theme === 'dark' 
-            ? 'bg-gray-800 text-white border border-gray-700' 
+          ${theme === 'dark'
+            ? 'bg-gray-800 text-white border border-gray-700'
             : 'bg-white text-gray-900 border border-gray-200'
           }
         `}
         initial={{ opacity: 0, y: -10 }}
-        animate={{ 
-          opacity: isActive ? 1 : 0.8, 
+        animate={{
+          opacity: isActive ? 1 : 0.8,
           y: 0,
           scale: isActive ? 1.05 : 1
         }}
@@ -284,24 +284,23 @@ const ServiceNode: React.FC<ServiceNodeProps> = ({ service, isActive, onHover, c
 // Statistics display component
 const StatsDisplay: React.FC<{ category: typeof serviceCategories[0], theme: string }> = ({ category, theme }) => {
   const { t } = useI18n()
-  
+
   return (
     <motion.div
-      className={`p-6 rounded-xl border ${
-        theme === 'dark' 
-          ? 'bg-gray-800 border-gray-700' 
+      className={`p-6 rounded-xl border ${theme === 'dark'
+          ? 'bg-gray-800 border-gray-700'
           : 'bg-white border-gray-200'
-      } shadow-lg`}
+        } shadow-lg`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
       <div className="flex items-center gap-3 mb-4">
-        <div 
+        <div
           className="w-12 h-12 rounded-lg flex items-center justify-center"
           style={{ backgroundColor: `${category.color}20` }}
         >
-          <category.icon 
+          <category.icon
             className="w-6 h-6"
             style={{ color: category.color }}
           />
@@ -315,12 +314,12 @@ const StatsDisplay: React.FC<{ category: typeof serviceCategories[0], theme: str
           </p>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-3 gap-4">
         <div className="text-center">
-          <AnimatedCounter 
+          <AnimatedCounter
             from={0}
-            to={category.stats.services} 
+            to={category.stats.services}
             className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}
           />
           <div className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -328,9 +327,9 @@ const StatsDisplay: React.FC<{ category: typeof serviceCategories[0], theme: str
           </div>
         </div>
         <div className="text-center">
-          <AnimatedCounter 
+          <AnimatedCounter
             from={0}
-            to={category.stats.users} 
+            to={category.stats.users}
             suffix="+"
             className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}
           />
@@ -339,10 +338,10 @@ const StatsDisplay: React.FC<{ category: typeof serviceCategories[0], theme: str
           </div>
         </div>
         <div className="text-center">
-          <AnimatedCounter 
+          <AnimatedCounter
             from={0}
-            to={category.stats.uptime} 
-            suffix="%" 
+            to={category.stats.uptime}
+            suffix="%"
             className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}
           />
           <div className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -350,7 +349,7 @@ const StatsDisplay: React.FC<{ category: typeof serviceCategories[0], theme: str
           </div>
         </div>
       </div>
-      
+
       {/* Technology stack */}
       <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
         <div className={`text-sm font-semibold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
@@ -360,18 +359,17 @@ const StatsDisplay: React.FC<{ category: typeof serviceCategories[0], theme: str
           {category.techStack.map((tech) => (
             <span
               key={tech}
-              className={`px-2 py-1 text-xs rounded ${
-                theme === 'dark' 
-                  ? 'bg-gray-700 text-gray-300' 
+              className={`px-2 py-1 text-xs rounded ${theme === 'dark'
+                  ? 'bg-gray-700 text-gray-300'
                   : 'bg-gray-100 text-gray-700'
-              }`}
+                }`}
             >
               {tech}
             </span>
           ))}
         </div>
       </div>
-      
+
       {/* Services list */}
       <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
         <div className={`text-sm font-semibold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
@@ -383,7 +381,7 @@ const StatsDisplay: React.FC<{ category: typeof serviceCategories[0], theme: str
               key={service}
               className={`text-sm flex items-center gap-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}
             >
-              <div 
+              <div
                 className="w-2 h-2 rounded-full"
                 style={{ backgroundColor: category.color }}
               />
@@ -400,7 +398,7 @@ const StatsDisplay: React.FC<{ category: typeof serviceCategories[0], theme: str
 const TechnologyShowcase: React.FC<{ theme: string }> = ({ theme }) => {
   const { t } = useI18n()
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
-  
+
   const categories = useMemo(() => {
     const cats = [...new Set(technologyStack.map(tech => tech.category))]
     return cats.map(cat => ({
@@ -409,7 +407,7 @@ const TechnologyShowcase: React.FC<{ theme: string }> = ({ theme }) => {
       color: technologyStack.find(tech => tech.category === cat)?.color || '#6366f1'
     }))
   }, [])
-  
+
   return (
     <div className="space-y-6">
       <div className="text-center">
@@ -420,16 +418,15 @@ const TechnologyShowcase: React.FC<{ theme: string }> = ({ theme }) => {
           Modern tech stack powering the CODAI ecosystem
         </p>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         {categories.map((category) => (
           <motion.div
             key={category.name}
-            className={`p-4 rounded-lg border cursor-pointer ${
-              theme === 'dark' 
-                ? 'bg-gray-800 border-gray-700 hover:border-gray-600' 
+            className={`p-4 rounded-lg border cursor-pointer ${theme === 'dark'
+                ? 'bg-gray-800 border-gray-700 hover:border-gray-600'
                 : 'bg-white border-gray-200 hover:border-gray-300'
-            }`}
+              }`}
             whileHover={{ scale: 1.02 }}
             onHoverStart={() => setActiveCategory(category.name)}
             onHoverEnd={() => setActiveCategory(null)}
@@ -448,7 +445,7 @@ const TechnologyShowcase: React.FC<{ theme: string }> = ({ theme }) => {
                   }}
                   transition={{ duration: 0.2 }}
                 >
-                  <div 
+                  <div
                     className="w-3 h-3 rounded-full"
                     style={{ backgroundColor: tech.color }}
                   />
@@ -486,7 +483,7 @@ const DevelopmentTimeline: React.FC<{ theme: string }> = ({ theme }) => {
   const { t } = useI18n()
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true })
-  
+
   return (
     <div ref={ref} className="space-y-6">
       <div className="text-center">
@@ -497,29 +494,26 @@ const DevelopmentTimeline: React.FC<{ theme: string }> = ({ theme }) => {
           Our journey from foundation to global expansion
         </p>
       </div>
-      
+
       <div className="relative">
         {/* Timeline line */}
-        <div className={`absolute left-1/2 top-0 bottom-0 w-1 transform -translate-x-1/2 ${
-          theme === 'dark' ? 'bg-gray-700' : 'bg-gray-300'
-        }`} />
-        
+        <div className={`absolute left-1/2 top-0 bottom-0 w-1 transform -translate-x-1/2 ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-300'
+          }`} />
+
         <div className="space-y-12">
           {developmentPhases.map((phase, index) => (
             <motion.div
               key={phase.phase}
-              className={`relative flex items-center ${
-                index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'
-              }`}
+              className={`relative flex items-center ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'
+                }`}
               initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
               animate={isInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.6, delay: index * 0.2 }}
             >
               {/* Timeline node */}
-              <div 
-                className={`absolute left-1/2 transform -translate-x-1/2 w-6 h-6 rounded-full border-4 ${
-                  theme === 'dark' ? 'border-gray-800' : 'border-white'
-                } z-10`}
+              <div
+                className={`absolute left-1/2 transform -translate-x-1/2 w-6 h-6 rounded-full border-4 ${theme === 'dark' ? 'border-gray-800' : 'border-white'
+                  } z-10`}
                 style={{ backgroundColor: phase.color }}
               >
                 <motion.div
@@ -536,15 +530,14 @@ const DevelopmentTimeline: React.FC<{ theme: string }> = ({ theme }) => {
                   }}
                 />
               </div>
-              
+
               {/* Phase content */}
               <div className={`w-5/12 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8 text-left'}`}>
                 <motion.div
-                  className={`p-6 rounded-xl border ${
-                    theme === 'dark' 
-                      ? 'bg-gray-800 border-gray-700' 
+                  className={`p-6 rounded-xl border ${theme === 'dark'
+                      ? 'bg-gray-800 border-gray-700'
                       : 'bg-white border-gray-200'
-                  } shadow-lg`}
+                    } shadow-lg`}
                   whileHover={{ scale: 1.02, y: -5 }}
                   transition={{ duration: 0.2 }}
                 >
@@ -552,27 +545,26 @@ const DevelopmentTimeline: React.FC<{ theme: string }> = ({ theme }) => {
                     <h4 className={`text-lg font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                       {phase.title}
                     </h4>
-                    <span 
+                    <span
                       className="px-2 py-1 text-xs font-semibold rounded-full text-white"
                       style={{ backgroundColor: phase.color }}
                     >
                       {phase.phase}
                     </span>
                   </div>
-                  
+
                   <p className={`text-sm mb-3 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
                     {phase.period}
                   </p>
-                  
+
                   <div className="space-y-2 mb-4">
                     {phase.milestones.map((milestone) => (
                       <div
                         key={milestone}
-                        className={`text-sm flex items-center gap-2 ${
-                          index % 2 === 0 ? 'flex-row-reverse' : 'flex-row'
-                        }`}
+                        className={`text-sm flex items-center gap-2 ${index % 2 === 0 ? 'flex-row-reverse' : 'flex-row'
+                          }`}
                       >
-                        <div 
+                        <div
                           className="w-2 h-2 rounded-full"
                           style={{ backgroundColor: phase.color }}
                         />
@@ -582,7 +574,7 @@ const DevelopmentTimeline: React.FC<{ theme: string }> = ({ theme }) => {
                       </div>
                     ))}
                   </div>
-                  
+
                   {/* Progress bar */}
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
@@ -621,21 +613,20 @@ export default function EcosystemOverviewAnimated() {
   const [currentView, setCurrentView] = useState<'overview' | 'technology' | 'timeline'>('overview')
   const sectionRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(sectionRef, { once: true })
-  
-  const activeCategory = useMemo(() => 
+
+  const activeCategory = useMemo(() =>
     serviceCategories.find(cat => cat.id === activeService),
     [activeService]
   )
 
   return (
-    <section 
+    <section
       id="ecosystem"
       ref={sectionRef}
-      className={`py-20 transition-colors duration-300 ${
-        theme === 'dark' 
-          ? 'bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900' 
+      className={`py-20 transition-colors duration-300 ${theme === 'dark'
+          ? 'bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900'
           : 'bg-gradient-to-b from-gray-50 via-white to-gray-50'
-      }`}
+        }`}
     >
       <div className="container mx-auto px-6">
         {/* Header */}
@@ -643,7 +634,7 @@ export default function EcosystemOverviewAnimated() {
           <div className="text-center mb-16">
             <motion.div
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6"
-              style={{ 
+              style={{
                 backgroundColor: `#6366f120`,
                 color: '#6366f1'
               }}
@@ -653,15 +644,14 @@ export default function EcosystemOverviewAnimated() {
               <SparklesIcon className="w-4 h-4" />
               Ecosystem Overview
             </motion.div>
-            
+
             <TypewriterText
               text="Interconnected AI Ecosystem"
               className={`text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent`}
             />
-            
-            <p className={`text-xl max-w-4xl mx-auto ${
-              theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-            }`}>
+
+            <p className={`text-xl max-w-4xl mx-auto ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+              }`}>
               Our comprehensive ecosystem of AI services, tools, and platforms work together to create seamless development experiences.
             </p>
           </div>
@@ -670,9 +660,8 @@ export default function EcosystemOverviewAnimated() {
         {/* Navigation tabs */}
         <Reveal delay={0.2}>
           <div className="flex justify-center mb-12">
-            <div className={`inline-flex rounded-lg p-1 ${
-              theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
-            }`}>
+            <div className={`inline-flex rounded-lg p-1 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+              }`}>
               {[
                 { key: 'overview', icon: GlobeAltIcon, label: 'Overview' },
                 { key: 'technology', icon: CogIcon, label: 'Technology' },
@@ -707,23 +696,21 @@ export default function EcosystemOverviewAnimated() {
                 {/* Interactive Ecosystem Diagram */}
                 <div className="lg:col-span-2">
                   <Parallax>
-                    <div className={`relative h-[500px] rounded-2xl border ${
-                      theme === 'dark' 
-                        ? 'bg-gray-800 border-gray-700' 
+                    <div className={`relative h-[500px] rounded-2xl border ${theme === 'dark'
+                        ? 'bg-gray-800 border-gray-700'
                         : 'bg-white border-gray-200'
-                    } shadow-2xl overflow-hidden`}>
+                      } shadow-2xl overflow-hidden`}>
                       {/* Background grid */}
-                      <div className={`absolute inset-0 opacity-10 ${
-                        theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'
-                      }`} 
-                      style={{
-                        backgroundImage: `
+                      <div className={`absolute inset-0 opacity-10 ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'
+                        }`}
+                        style={{
+                          backgroundImage: `
                           linear-gradient(90deg, currentColor 1px, transparent 1px),
                           linear-gradient(currentColor 1px, transparent 1px)
                         `,
-                        backgroundSize: '20px 20px'
-                      }} />
-                      
+                          backgroundSize: '20px 20px'
+                        }} />
+
                       {/* Service nodes */}
                       <Stagger>
                         {serviceCategories.map((service, index) => (
@@ -737,7 +724,7 @@ export default function EcosystemOverviewAnimated() {
                           />
                         ))}
                       </Stagger>
-                      
+
                       {/* Center logo/title */}
                       <motion.div
                         className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center"
@@ -747,14 +734,12 @@ export default function EcosystemOverviewAnimated() {
                         }}
                         transition={{ duration: 0.3 }}
                       >
-                        <div className={`text-2xl font-bold mb-2 ${
-                          theme === 'dark' ? 'text-white' : 'text-gray-900'
-                        }`}>
+                        <div className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+                          }`}>
                           CODAI
                         </div>
-                        <div className={`text-sm ${
-                          theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                        }`}>
+                        <div className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                          }`}>
                           Ecosystem Core
                         </div>
                       </motion.div>
@@ -781,20 +766,17 @@ export default function EcosystemOverviewAnimated() {
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -20 }}
-                        className={`p-8 rounded-xl border ${
-                          theme === 'dark' 
-                            ? 'bg-gray-800 border-gray-700' 
+                        className={`p-8 rounded-xl border ${theme === 'dark'
+                            ? 'bg-gray-800 border-gray-700'
                             : 'bg-white border-gray-200'
-                        } shadow-lg text-center`}
+                          } shadow-lg text-center`}
                       >
-                        <LightBulbIcon 
-                          className={`w-16 h-16 mx-auto mb-4 ${
-                            theme === 'dark' ? 'text-gray-600' : 'text-gray-400'
-                          }`} 
+                        <LightBulbIcon
+                          className={`w-16 h-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'
+                            }`}
                         />
-                        <h3 className={`text-xl font-bold mb-2 ${
-                          theme === 'dark' ? 'text-white' : 'text-gray-900'
-                        }`}>
+                        <h3 className={`text-xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+                          }`}>
                           Explore Services
                         </h3>
                         <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -806,19 +788,17 @@ export default function EcosystemOverviewAnimated() {
 
                   {/* Overall statistics */}
                   <Floating>
-                    <div className={`p-6 rounded-xl border ${
-                      theme === 'dark' 
-                        ? 'bg-gray-800 border-gray-700' 
+                    <div className={`p-6 rounded-xl border ${theme === 'dark'
+                        ? 'bg-gray-800 border-gray-700'
                         : 'bg-white border-gray-200'
-                    } shadow-lg`}>
-                      <h3 className={`font-bold text-lg mb-4 ${
-                        theme === 'dark' ? 'text-white' : 'text-gray-900'
-                      }`}>
+                      } shadow-lg`}>
+                      <h3 className={`font-bold text-lg mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'
+                        }`}>
                         Overall Statistics
                       </h3>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="text-center">
-                          <AnimatedCounter 
+                          <AnimatedCounter
                             from={0}
                             to={serviceCategories.reduce((sum, cat) => sum + cat.stats.services, 0)}
                             className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}
@@ -828,7 +808,7 @@ export default function EcosystemOverviewAnimated() {
                           </div>
                         </div>
                         <div className="text-center">
-                          <AnimatedCounter 
+                          <AnimatedCounter
                             from={0}
                             to={serviceCategories.reduce((sum, cat) => sum + cat.stats.users, 0)}
                             suffix="+"

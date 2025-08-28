@@ -8,16 +8,6 @@ import { colors, gradients } from '../../design-system/colors'
 import { durations, easings } from '../../design-system/animations'
 import { codaiProjects, getProjectsByTier } from '@/data/projects'
 
-'use client'
-
-import React, { useState } from 'react'
-import { motion } from 'framer-motion'
-import { Github, Twitter, Linkedin, Mail, Send, ExternalLink, Heart, Zap, Shield, FileText } from 'lucide-react'
-import { useTheme } from '../../contexts/ThemeContext'
-import { colors, gradients } from '../../design-system/colors'
-import { durations, easings } from '../../design-system/animations'
-import { codaiProjects, getProjectsByTier } from '@/data/projects'
-
 interface FooterLinkProps {
     href: string
     children: React.ReactNode
@@ -226,18 +216,18 @@ export default function Footer() {
                                             background: theme === 'dark'
                                                 ? 'rgba(34, 197, 94, 0.1)'
                                                 : 'rgba(34, 197, 94, 0.1)',
-                                            borderColor: colors.emerald[500],
+                                            borderColor: colors.success[500],
                                         }}
                                     >
                                         <div
                                             className="w-6 h-6 rounded-full flex items-center justify-center text-white text-sm"
-                                            style={{ background: colors.emerald[500] }}
+                                            style={{ background: colors.success[500] }}
                                         >
                                             ✓
                                         </div>
                                         <span
                                             className="font-medium"
-                                            style={{ color: colors.emerald[600] }}
+                                            style={{ color: colors.success[600] }}
                                         >
                                             Thank you for subscribing!
                                         </span>
@@ -501,7 +491,7 @@ export default function Footer() {
                             </span>
                             <Heart
                                 className="w-4 h-4 fill-current"
-                                style={{ color: colors.rose[500] }}
+                                style={{ color: colors.error[500] }}
                             />
                             <span
                                 style={{ color: theme === 'dark' ? colors.text.tertiary : colors.gray[600] }}
@@ -513,7 +503,5 @@ export default function Footer() {
                 </motion.div>
             </div>
         </footer>
-    )
-}
     )
 }

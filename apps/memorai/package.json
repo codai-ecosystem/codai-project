@@ -82,7 +82,7 @@
     "zustand": "^5.0.6",
     "@codai/api-utils": "workspace:*",
     "react-i18next": "^15.3.0",
-    "i18next": "^24.2.0",
+    "i18next": "^25.4.2",
     "i18next-browser-languagedetector": "^8.0.0",
     "i18next-http-backend": "^3.0.1",
     "@codai/translations": "workspace:*"

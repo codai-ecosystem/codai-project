@@ -163,6 +163,11 @@ export class SecurityUtils {
      */
     static async generateJWT(payload: any, secret: string, expiresIn: string = '24h'): Promise<string> {
         const jwt = await import('jsonwebtoken');
-        return jwt.sign(payload, secret, { expiresIn });
+        return new Promise((resolve, reject) => {
+            jwt.sign(payload, secret, { expiresIn: expiresIn as any }, (err: any, token: any) => {
+                if (err) reject(err);
+                else resolve(token);
+            });
+        });
     }
 }

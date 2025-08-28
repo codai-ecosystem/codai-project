@@ -5,6 +5,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
@@ -47,6 +48,9 @@ interface MemoryManagementProps {
 }
 
 export default function MemoryManagement({ stats, isLoading }: MemoryManagementProps) {
+    const t = useTranslations('memories.page');
+    const tCommon = useTranslations('common');
+    
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [recentMemories, setRecentMemories] = useState<MemoryItem[]>([
@@ -485,7 +489,7 @@ export default function MemoryManagement({ stats, isLoading }: MemoryManagementP
                             title="Start creating a new memory entry"
                         >
                             <Plus className="h-6 w-6" aria-hidden="true" />
-                            <span>Create Memory</span>
+                            <span>{t('actions.createMemory')}</span>
                         </Button>
                         <Button
                             variant="outline"

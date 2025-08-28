@@ -28,7 +28,7 @@ export function ChapterIntro({
   'data-testid': testId = 'chapter-intro'
 }: IntroChapterProps) {
   const { t } = useTranslation();
-  const { setChapterTheme } = useTheme();
+  const { theme } = useTheme();
   const { prefersReducedMotion } = useMotion();
   
   const chapterRef = useRef<HTMLElement>(null);
@@ -183,7 +183,7 @@ export function ChapterIntro({
         end: "bottom top",
         pin: true,
         scrub: 1,
-        onEnter: () => setChapterTheme('intro'),
+        onEnter: () => console.log('Entering intro chapter'),
         onUpdate: (self) => {
           // Update intro progress for any connected components
           document.documentElement.style.setProperty(
@@ -207,7 +207,7 @@ export function ChapterIntro({
       ctx.revert();
       cleanup();
     };
-  }, [prefersReducedMotion, setChapterTheme, cleanup]);
+  }, [prefersReducedMotion, cleanup]);
 
   // Handle CTA click with particle burst effect
   const handleCTAClick = useCallback(() => {

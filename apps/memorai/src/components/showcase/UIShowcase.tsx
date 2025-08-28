@@ -6,6 +6,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Button, IconButton } from '../ui/button';
 import { Input } from '../ui/input';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../ui/card';
@@ -22,6 +23,7 @@ import {
 import { ThemeToggle } from '../theme/ThemeToggle';
 
 export function UIShowcase() {
+  const t = useTranslations('common');
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -189,7 +191,7 @@ export function UIShowcase() {
                 />
                 
                 <Input
-                  label="Error State"
+                  label={t('errorState')}
                   placeholder="Invalid input"
                   error="This field is required"
                 />
@@ -325,8 +327,8 @@ export function UIShowcase() {
                   </p>
                 </div>
                 <DialogFooter>
-                  <Button variant="tertiary">Cancel</Button>
-                  <Button variant="primary">Confirm</Button>
+                  <Button variant="tertiary">{t('cancel')}</Button>
+                  <Button variant="primary">{t('confirm')}</Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>

@@ -1,11 +1,11 @@
 {
-  "name": "@codai/controlai-mcp",
-  "version": "2.1.0",
+  "name": "@codai/glass-mcp",
+  "version": "11.4.0",
   "description": "High-Performance Enterprise AI Project Management MCP Server with advanced optimization and multi-agent coordination",
   "type": "module",
   "main": "dist/server.js",
   "bin": {
-    "controlai-mcp": "./dist/server.js"
+    "glass-mcp": "./dist/server.js"
   },
   "exports": {
     ".": "./dist/server.js"

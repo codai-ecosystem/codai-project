@@ -234,9 +234,9 @@ export class SecurityMetricsCollector {
                 securityScore
             },
             trends: {
-                eventTrends,
-                threatTrends,
-                performanceImpact
+                eventTrends: eventTrends.map(item => ({ time: item.time, count: item.value })),
+                threatTrends: threatTrends.map(item => ({ time: item.time, threats: item.value })),
+                performanceImpact: performanceImpact.map(item => ({ time: item.time, latency: item.value }))
             },
             topThreats,
             recommendations

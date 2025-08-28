@@ -301,8 +301,8 @@ export const areLocalesCompatible = (locale1: string, locale2: string): boolean 
  */
 export const getSupportedLocalesInfo = () => {
   return Object.entries(SUPPORTED_LOCALES).map(([code, info]) => ({
-    code,
     ...info,
+    code,
     isRTL: isRTLLocale(code),
     direction: getLocaleDirection(code)
   }));

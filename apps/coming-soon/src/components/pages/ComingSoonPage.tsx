@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Lenis from 'lenis';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useMotion } from '@/contexts/MotionContext';
@@ -41,16 +40,26 @@ interface ComingSoonPageProps {
 
 export function ComingSoonPage({ className = '' }: ComingSoonPageProps) {
   const { t } = useTranslation('common');
-  const { chapterTheme } = useTheme();
+  const { theme } = useTheme();
   const { prefersReducedMotion } = useMotion();
   
   const containerRef = useRef<HTMLDivElement>(null);
-  const lenisRef = useRef<Lenis | null>(null);
+  const lenisRef = useRef<any | null>(null);
   const chaptersRef = useRef<(HTMLElement | null)[]>([]);
   
   const [currentChapter, setCurrentChapter] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(true);
   const [scrollProgress, setScrollProgress] = useState(0);
+
+  // Ensure loading state is always resolved
+  useEffect(() => {
+    const failsafeTimeout = setTimeout(() => {
+      console.log('Failsafe: Setting loading to false after 3 seconds');
+      setIsLoading(false);
+    }, 3000);
+
+    return () => clearTimeout(failsafeTimeout);
+  }, []);
 
   // Initialize smooth scrolling with Lenis
   useEffect(() => {
@@ -59,51 +68,70 @@ export function ComingSoonPage({ className = '' }: ComingSoonPageProps) {
       return;
     }
 
-    // Initialize Lenis
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      direction: 'vertical',
-      gestureDirection: 'vertical',
-      smooth: true,
-      mouseMultiplier: 1,
-      smoothTouch: false,
-      touchMultiplier: 2,
-      infinite: false,
-    });
+    let cleanupFn: (() => void) | null = null;
 
-    lenisRef.current = lenis;
+    // Dynamic import of Lenis to handle build-time dependencies
+    const initLenis = async () => {
+      try {
+        const Lenis = (await import('lenis')).default;
+        
+        // Initialize Lenis
+        const lenis = new Lenis({
+          duration: 1.2,
+          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+          // Only use supported Lenis v@5 options
+        });
 
-    // Animation frame loop
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
+        lenisRef.current = lenis;
 
-    // Integrate with ScrollTrigger
-    lenis.on('scroll', ScrollTrigger.update);
+        // Animation frame loop
+        function raf(time: number) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
 
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
+        // Integrate with ScrollTrigger
+        lenis.on('scroll', ScrollTrigger.update);
 
-    gsap.ticker.lagSmoothing(0);
+        gsap.ticker.add((time) => {
+          lenis.raf(time * 1000);
+        });
 
-    // Performance monitoring
-    performance.mark('coming-soon-init-start');
+        gsap.ticker.lagSmoothing(0);
 
-    setIsLoading(false);
+        // Performance monitoring
+        performance.mark('coming-soon-init-start');
 
-    performance.mark('coming-soon-init-end');
-    performance.measure('coming-soon-init', 'coming-soon-init-start', 'coming-soon-init-end');
+        setIsLoading(false);
 
+        performance.mark('coming-soon-init-end');
+        performance.measure('coming-soon-init', 'coming-soon-init-start', 'coming-soon-init-end');
+
+        cleanupFn = () => {
+          lenis.destroy();
+          gsap.ticker.remove((time) => {
+            lenis.raf(time * 1000);
+          });
+        };
+      } catch (error) {
+        console.warn('Lenis not available, falling back to native scroll:', error);
+        setIsLoading(false);
+      }
+    };
+
+    // Always ensure loading is set to false
+    const timeoutId = setTimeout(() => {
+      setIsLoading(false);
+    }, 100);
+
+    initLenis();
+    
     return () => {
-      lenis.destroy();
-      gsap.ticker.remove((time) => {
-        lenis.raf(time * 1000);
-      });
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      clearTimeout(timeoutId);
+      if (cleanupFn) {
+        cleanupFn();
+      }
     };
   }, [prefersReducedMotion]);
 
@@ -224,13 +252,14 @@ export function ComingSoonPage({ className = '' }: ComingSoonPageProps) {
     }
   }, [currentChapter, handleChapterTransition]);
 
-  // Loading state
+  // Loading state with better visual feedback
   if (isLoading) {
     return (
-      <div className="fixed inset-0 bg-intro-900 flex items-center justify-center">
+      <div className="fixed inset-0 bg-black flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin w-8 h-8 border-2 border-intro-300 border-t-transparent rounded-full mx-auto mb-4" />
-          <div className="text-intro-200 text-lg">{t('loading', 'Loading...')}</div>
+          <div className="animate-spin w-12 h-12 border-3 border-blue-500 border-t-transparent rounded-full mx-auto mb-4" />
+          <div className="text-white text-lg mb-2">CODAI</div>
+          <div className="text-gray-300 text-sm">The AI Renaissance is Coming Soon</div>
         </div>
       </div>
     );
@@ -262,17 +291,12 @@ export function ComingSoonPage({ className = '' }: ComingSoonPageProps) {
       </nav>
 
       {/* Scroll Progress Indicator */}
-      <ScrollProgress 
-        progress={scrollProgress}
+      <ScrollProgress
+        onProgress={(progress: number) => setScrollProgress(progress)}
         className="fixed top-0 left-0 right-0 z-50"
-        chapterProgress={{
-          current: currentChapter + 1,
-          total: CHAPTERS.length,
-          chapterTitle: t(`chapters.${CHAPTERS[currentChapter]?.id}.title`, CHAPTERS[currentChapter]?.title || '')
-        }}
-      />
-
-      {/* Chapter Navigation (Visual) */}
+        showIndicator={true}
+        indicatorPosition="top"
+      />      {/* Chapter Navigation (Visual) */}
       <nav 
         className="fixed right-6 top-1/2 transform -translate-y-1/2 z-40 hidden lg:block"
         role="navigation" 
@@ -304,7 +328,7 @@ export function ComingSoonPage({ className = '' }: ComingSoonPageProps) {
           return (
             <section
               key={chapter.id}
-              ref={el => chaptersRef.current[index] = el}
+              ref={(el) => { chaptersRef.current[index] = el; }}
               className="chapter-section"
               data-chapter={chapter.id}
               aria-label={t(`chapters.${chapter.id}.title`, chapter.title)}
@@ -328,7 +352,7 @@ export function ComingSoonPage({ className = '' }: ComingSoonPageProps) {
         <div className="fixed bottom-4 left-4 bg-black/80 text-white p-2 rounded text-xs font-mono z-50">
           <div>Chapter: {currentChapter + 1}/{CHAPTERS.length}</div>
           <div>Progress: {Math.round(scrollProgress * 100)}%</div>
-          <div>Theme: {chapterTheme}</div>
+          <div>Theme: {theme}</div>
           <div>Reduced Motion: {prefersReducedMotion ? 'ON' : 'OFF'}</div>
         </div>
       )}

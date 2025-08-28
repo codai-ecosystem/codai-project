@@ -57,7 +57,7 @@ import {
 } from './drawing-intelligence-types';
 
 import { AdvancedShapeRecognitionEngine } from './shape-recognition-engine';
-import { AdvancedPathOptimizationEngine } from './path-optimization-engine';
+import { PathOptimizationEngine } from './path-optimization-engine';
 
 /**
  * Stroke synthesis configuration
@@ -166,7 +166,7 @@ interface DrawingExecutionState {
 export class AdvancedDrawingAutomationEngine implements DrawingAutomationEngine {
   private isInitialized: boolean = false;
   private shapeRecognitionEngine: AdvancedShapeRecognitionEngine;
-  private pathOptimizationEngine: AdvancedPathOptimizationEngine;
+  private pathOptimizationEngine: PathOptimizationEngine;
   
   // Configuration
   private strokeSynthesisConfig: StrokeSynthesisConfig;
@@ -186,10 +186,10 @@ export class AdvancedDrawingAutomationEngine implements DrawingAutomationEngine 
 
   constructor(
     shapeRecognitionEngine?: AdvancedShapeRecognitionEngine,
-    pathOptimizationEngine?: AdvancedPathOptimizationEngine
+    pathOptimizationEngine?: PathOptimizationEngine
   ) {
     this.shapeRecognitionEngine = shapeRecognitionEngine || new AdvancedShapeRecognitionEngine();
-    this.pathOptimizationEngine = pathOptimizationEngine || new AdvancedPathOptimizationEngine();
+    this.pathOptimizationEngine = pathOptimizationEngine || new PathOptimizationEngine();
     
     this.strokeSynthesisConfig = {
       smoothingFactor: 0.7,
@@ -239,8 +239,8 @@ export class AdvancedDrawingAutomationEngine implements DrawingAutomationEngine 
       }
       
       if (!this.pathOptimizationEngine) {
-        this.pathOptimizationEngine = new AdvancedPathOptimizationEngine();
-        await this.pathOptimizationEngine.initialize();
+        this.pathOptimizationEngine = new PathOptimizationEngine();
+        // Note: PathOptimizationEngine doesn't have initialize method
       }
       
       // Initialize Windows UI automation context

@@ -24,7 +24,7 @@
     "@codai/analytics": "workspace:*",
     "@codai/auth": "workspace:*",
     "@codai/memorai": "workspace:*",
-    "controlai-mcp": "workspace:*",
+    "@codai/glass-mcp": "workspace:*",
     "@codai/romai": "workspace:*",
     "@codai/logai-sdk": "workspace:*",
     "zod": "^3.23.8",

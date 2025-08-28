@@ -288,6 +288,7 @@ ControlledTabs.displayName = "ControlledTabs";
 export interface LazyTabsProps extends TabsProps {
     lazy?: boolean;
     keepMounted?: string[]; // tabs to keep mounted even when inactive
+    loadingText?: string;
 }
 
 const LazyTabs = React.forwardRef<HTMLDivElement, LazyTabsProps>(
@@ -295,6 +296,7 @@ const LazyTabs = React.forwardRef<HTMLDivElement, LazyTabsProps>(
         {
             lazy = true,
             keepMounted = [],
+            loadingText = "Loading...",
             tabs,
             ...props
         },
@@ -314,7 +316,7 @@ const LazyTabs = React.forwardRef<HTMLDivElement, LazyTabsProps>(
         const lazyTabs = tabs.map(tab => ({
             ...tab,
             content: (lazy && !mountedTabs.has(tab.value) && !keepMounted.includes(tab.value))
-                ? <div>Loading...</div>
+                ? <div>{loadingText}</div>
                 : tab.content
         }));
 

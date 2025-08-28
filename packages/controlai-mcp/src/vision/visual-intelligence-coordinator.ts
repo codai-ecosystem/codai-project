@@ -472,7 +472,10 @@ export class VisualIntelligenceCoordinator {
    */
   public clearCaches(): void {
     this.resultCache.clear();
-    this.screenEngine.clearCache?.();
+    // Clear cache if method exists
+    if ('clearCache' in this.screenEngine && typeof (this.screenEngine as any).clearCache === 'function') {
+      (this.screenEngine as any).clearCache();
+    }
     this.ocrEngine.clearCache();
     this.detectionEngine.clearCache();
     console.log('🧹 All vision caches cleared');
@@ -532,7 +535,7 @@ export class VisualIntelligenceCoordinator {
         imageData: request.imageData,
         bounds: { x: 0, y: 0, width: request.imageData.width, height: request.imageData.height },
         metadata: {
-          captureMethod: 'provided',
+          captureMethod: 'graphics-api',
           colorSpace: 'rgba',
           bitDepth: 32,
           quality: 100

@@ -2,7 +2,7 @@
 // Advanced AI-powered visual automation capabilities
 
 import { ImageBuffer, Rectangle, OCRResult, TextLocation, UIElement, DialogInfo } from '../types/vision-types.js';
-import { PowerShell } from 'node-powershell';
+import { execSync } from 'child_process';
 import sharp from 'sharp';
 
 export interface ScreenVisionCapabilities {
@@ -24,15 +24,12 @@ export interface ChangeResult {
 }
 
 export class ScreenVisionEngine {
-  private ps: PowerShell;
+  private initialized: boolean = false;
   private azureVisionEnabled: boolean;
   private tesseractEnabled: boolean;
   
   constructor() {
-    this.ps = new PowerShell({
-      executionPolicy: 'Bypass',
-      noProfile: true
-    });
+    this.initialized = true;
     this.azureVisionEnabled = process.env.AZURE_AI_VISION_KEY !== undefined;
     this.tesseractEnabled = true;
   }
@@ -84,7 +81,7 @@ export class ScreenVisionEngine {
         timestamp: new Date()
       };
     } catch (error) {
-      throw new Error(`Screen capture failed: ${error.message}`);
+      throw new Error(`Screen capture failed: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
@@ -114,7 +111,7 @@ export class ScreenVisionEngine {
         timestamp: new Date()
       };
     } catch (error) {
-      throw new Error(`Region capture failed: ${error.message}`);
+      throw new Error(`Region capture failed: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
@@ -165,7 +162,7 @@ export class ScreenVisionEngine {
         timestamp: new Date()
       };
     } catch (error) {
-      throw new Error(`Window capture failed: ${error.message}`);
+      throw new Error(`Window capture failed: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
@@ -182,7 +179,7 @@ export class ScreenVisionEngine {
       // Fallback to Tesseract OCR
       return await this.extractTextWithTesseract(image, language);
     } catch (error) {
-      throw new Error(`OCR extraction failed: ${error.message}`);
+      throw new Error(`OCR extraction failed: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
@@ -227,7 +224,7 @@ export class ScreenVisionEngine {
       
       return locations;
     } catch (error) {
-      throw new Error(`Text search failed: ${error.message}`);
+      throw new Error(`Text search failed: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
@@ -291,7 +288,7 @@ export class ScreenVisionEngine {
         confidence: 1.0 // UI Automation has 100% confidence
       }));
     } catch (error) {
-      throw new Error(`UI element detection failed: ${error.message}`);
+      throw new Error(`UI element detection failed: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
@@ -336,7 +333,7 @@ export class ScreenVisionEngine {
         confidence: 0.9
       }));
     } catch (error) {
-      throw new Error(`Dialog detection failed: ${error.message}`);
+      throw new Error(`Dialog detection failed: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
@@ -407,7 +404,7 @@ export class ScreenVisionEngine {
         changeType: changePercentage > 10 ? 'ui' : 'content'
       };
     } catch (error) {
-      throw new Error(`Screenshot comparison failed: ${error.message}`);
+      throw new Error(`Screenshot comparison failed: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 

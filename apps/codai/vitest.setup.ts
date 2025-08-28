@@ -1,22 +1,14 @@
 import '@testing-library/jest-dom'
 import { expect, afterEach, vi } from 'vitest'
+import { cleanup } from '@testing-library/react'
+import React from 'react'
 
-// Only import React cleanup if React is available
-let cleanup: (() => void) | undefined;
-try {
-  // Use require to conditionally load React testing library
-  const { cleanup: reactCleanup } = require('@testing-library/react');
-  cleanup = reactCleanup;
-} catch (error) {
-  // React not available or not needed for this test
-  cleanup = undefined;
-}
+// Ensure React is properly initialized for tests
+global.React = React
 
-// Cleanup after each test case (only for React component tests)
+// Cleanup after each test case
 afterEach(() => {
-  if (cleanup) {
-    cleanup();
-  }
+  cleanup()
 })
 
 // Mock window.matchMedia
@@ -48,17 +40,17 @@ global.IntersectionObserver = vi.fn().mockImplementation(() => ({
   disconnect: vi.fn(),
 }))
 
-// Minimal framer-motion mock for real functionality testing
+// Mock framer-motion completely for testing
 vi.mock('framer-motion', () => ({
   motion: {
-    div: 'div',
-    button: 'button',
-    span: 'span',
-    h1: 'h1',
-    h2: 'h2',
-    h3: 'h3',
-    p: 'p',
-    header: 'header'
+    div: ({ children, ...props }: any) => React.createElement('div', props, children),
+    button: ({ children, ...props }: any) => React.createElement('button', props, children),
+    span: ({ children, ...props }: any) => React.createElement('span', props, children),
+    h1: ({ children, ...props }: any) => React.createElement('h1', props, children),
+    h2: ({ children, ...props }: any) => React.createElement('h2', props, children),
+    h3: ({ children, ...props }: any) => React.createElement('h3', props, children),
+    p: ({ children, ...props }: any) => React.createElement('p', props, children),
+    header: ({ children, ...props }: any) => React.createElement('header', props, children)
   },
   AnimatePresence: ({ children }: any) => children,
   useAnimation: () => ({
@@ -68,7 +60,7 @@ vi.mock('framer-motion', () => ({
   })
 }))
 
-// Mock performance API for performance tests
+// Mock performance API
 Object.defineProperty(global, 'performance', {
   writable: true,
   value: {

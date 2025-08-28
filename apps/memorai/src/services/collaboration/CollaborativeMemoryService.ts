@@ -13,6 +13,33 @@
 
 import { v4 as uuidv4 } from 'uuid';
 
+// Additional export types for compatibility
+export interface ActivityLogEntry {
+  id: string;
+  userId: string;
+  action: string;
+  details: any;
+  timestamp: Date;
+  ipAddress?: string;
+  userAgent?: string;
+}
+
+export interface CollaborationAnalytics {
+  totalMemories: number;
+  sharedMemories: number;
+  activeCollaborators: number;
+  teamCount: number;
+  activityTrends: Array<{
+    date: string;
+    activities: number;
+    collaborations: number;
+  }>;
+  popularTags: Array<{
+    tag: string;
+    count: number;
+  }>;
+}
+
 // Types for collaborative memory management
 export interface CollaborativeMemory {
   id: string;
@@ -88,7 +115,8 @@ export interface MemoryActivity {
 export type MemoryActionType =
   | 'created' | 'updated' | 'deleted' | 'shared' | 'unshared'
   | 'collaborated' | 'forked' | 'merged' | 'commented' | 'tagged'
-  | 'permission_changed' | 'team_added' | 'team_removed';
+  | 'permission_changed' | 'team_added' | 'team_removed'
+  | 'accessed' | 'collaboration_requested' | 'conflict_detected';
 
 export type ConflictResolutionStrategy =
   | 'last_writer_wins' | 'merge_changes' | 'require_manual_resolution' | 'version_control';

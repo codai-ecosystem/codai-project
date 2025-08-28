@@ -331,7 +331,7 @@ export class OCRAnalysisEngine {
 
       // Perform text recognition using MaskOCR
       const recognitionStart = performance.now();
-      const rawResult = await this.performMaskOCRRecognition(preprocessedImage, language, options);
+      const rawResult = await this.performMaskOCRRecognition(preprocessedImage, Array.isArray(language) ? language[0] : language, options);
       const recognitionTime = performance.now() - recognitionStart;
 
       // Post-process and enhance results

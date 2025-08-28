@@ -530,7 +530,7 @@ export class AnalyticsDashboardService implements ForecastingEngine {
      */
     private async analyzeTemporalPatterns(memories: any[]): Promise<TemporalAnalytics> {
         // Initialize pattern arrays
-        const hourlyPattern = Array.from({ length: 24 }, (_, i) => ({ hour: i, count: 0, activity: 'low' as const }));
+        const hourlyPattern: Array<{ hour: number; count: number; activity: 'low' | 'medium' | 'high' }> = Array.from({ length: 24 }, (_, i) => ({ hour: i, count: 0, activity: 'low' }));
         const dailyPattern: Array<{ day: string; count: number; trend: number }> = [];
         const weeklyPattern: Array<{ week: string; count: number; growth: number }> = [];
         const monthlyPattern: Array<{ month: string; count: number; year: number }> = [];
@@ -1077,7 +1077,7 @@ export class AnalyticsDashboardService implements ForecastingEngine {
             projectAnalytics: [],
             tagAnalytics: [],
             temporalAnalytics: {
-                hourlyPattern: Array.from({ length: 24 }, (_, i) => ({ hour: i, count: 0, activity: 'low' as const })),
+                hourlyPattern: Array.from({ length: 24 }, (_, i) => ({ hour: i, count: 0, activity: 'low' as 'low' | 'medium' | 'high' })),
                 dailyPattern: [],
                 weeklyPattern: [],
                 monthlyPattern: [],

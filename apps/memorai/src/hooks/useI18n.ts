@@ -9,7 +9,7 @@ import { SupportedLanguage, changeLanguage, getCurrentLanguage, isLanguageSuppor
 /**
  * Enhanced useTranslation hook with type safety
  */
-export function useTranslation(ns?: string | string[], options?: UseTranslationOptions) {
+export function useTranslation<TKPrefix extends string | undefined = undefined>(ns?: string | string[], options?: UseTranslationOptions<TKPrefix>) {
   const { t, i18n, ready } = useI18nextTranslation(ns, options);
   
   return {

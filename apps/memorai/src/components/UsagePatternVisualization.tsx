@@ -608,7 +608,7 @@ export default function UsagePatternVisualization({
                                             x={peak.hour}
                                             stroke="#EF4444"
                                             strokeDasharray="5 5"
-                                            label={{ value: "Peak", position: "topLeft" }}
+                                            label={{ value: "Peak", position: "top" as const }}
                                         />
                                     ))}
 

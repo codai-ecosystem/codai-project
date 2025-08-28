@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react'
+import { useTranslations } from 'next-intl';
 /**
  * Performance Metrics Visualization Component
  * 
@@ -16,10 +17,12 @@ interface PerformanceChartProps {
 }
 
 export function PerformanceChart({ data, title, type, color = '#3B82F6', height = 200 }: PerformanceChartProps) {
+  const t = useTranslations('common');
+  
   if (!data || data.length === 0) {
     return (
       <div className="bg-gray-50 rounded-lg p-6 text-center" style={{ height }}>
-        <p className="text-gray-500">No data available</p>
+        <p className="text-gray-500">{t('noData')}</p>
       </div>
     );
   }

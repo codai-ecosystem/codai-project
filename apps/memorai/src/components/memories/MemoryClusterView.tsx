@@ -1,11 +1,12 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { responsive } from '@/lib/utils/responsive'
+import { clusteringService, type MemoryCluster } from '@/lib/services/clustering.service'
 import type { Memory } from '@/types'
 import { 
   ChartBarIcon,
@@ -13,19 +14,9 @@ import {
   TagIcon,
   Squares2X2Icon,
   ListBulletIcon,
-  AdjustmentsHorizontalIcon
+  AdjustmentsHorizontalIcon,
+  ArrowPathIcon
 } from '@heroicons/react/24/outline'
-
-interface MemoryCluster {
-  id: string
-  name: string
-  description: string
-  memories: Memory[]
-  keywords: string[]
-  averageImportance: number
-  createdAt: string
-  color: string
-}
 
 interface MemoryClusterViewProps {
   memories: Memory[]
@@ -43,81 +34,79 @@ export function MemoryClusterView({
   const t = useTranslations('clustering')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [selectedCluster, setSelectedCluster] = useState<MemoryCluster | null>(null)
-  const [isClustering] = useState(false)
-  const isLoadingStats = false
-  const clusterError = null
+  const [isClustering, setIsClustering] = useState(false)
+  const [clusters, setClusters] = useState<MemoryCluster[]>([])
+  const [clusteringStats, setClusteringStats] = useState<any>(null)
+  const [clusterError, setClusterError] = useState<string | null>(null)
   
-  const recluster = () => {
-    // TODO: Implement reclustering functionality
-    console.log('Reclustering memories...')
-  }
+  // Perform clustering when memories change
+  useEffect(() => {
+    if (memories.length === 0) {
+      setClusters([])
+      setClusteringStats(null)
+      return
+    }
+
+    const performClustering = async () => {
+      setIsClustering(true)
+      setClusterError(null)
+      
+      try {
+        const newClusters = await clusteringService.clusterMemories(memories, {
+          maxClusters: 8,
+          minClusterSize: 2,
+          algorithm: 'hybrid'
+        })
+        
+        setClusters(newClusters)
+        
+        if (newClusters.length > 0) {
+          const stats = await clusteringService.getClusteringStats(newClusters)
+          setClusteringStats(stats)
+        }
+      } catch (error) {
+        console.error('Clustering failed:', error)
+        setClusterError('Failed to cluster memories. Please try again.')
+      } finally {
+        setIsClustering(false)
+      }
+    }
+
+    performClustering()
+  }, [memories])
   
-  // Mock stats for demonstration
-  const mockStats = {
-    averageImportance: memories.reduce((sum, m) => sum + (m.metadata?.importance || 5), 0) / (memories.length || 1),
-    topTags: [...new Set(memories.flatMap(m => m.metadata?.tags || []))].slice(0, 10),
-    totalMemories: memories.length
+  const handleRecluster = async () => {
+    if (memories.length === 0) return
+    
+    setIsClustering(true)
+    setClusterError(null)
+    
+    try {
+      const newClusters = await clusteringService.clusterMemories(memories, {
+        maxClusters: 8,
+        minClusterSize: 2,
+        algorithm: 'hybrid'
+      })
+      
+      setClusters(newClusters)
+      
+      if (newClusters.length > 0) {
+        const stats = await clusteringService.getClusteringStats(newClusters)
+        setClusteringStats(stats)
+      }
+    } catch (error) {
+      console.error('Reclustering failed:', error)
+      setClusterError('Failed to recluster memories. Please try again.')
+    } finally {
+      setIsClustering(false)
+    }
   }
-
-  // Generate cluster colors
-  const clusterColors = useMemo(() => [
-    'bg-blue-500/10 border-blue-500/20 text-blue-700',
-    'bg-green-500/10 border-green-500/20 text-green-700',
-    'bg-purple-500/10 border-purple-500/20 text-purple-700',
-    'bg-orange-500/10 border-orange-500/20 text-orange-700',
-    'bg-pink-500/10 border-pink-500/20 text-pink-700',
-    'bg-cyan-500/10 border-cyan-500/20 text-cyan-700',
-    'bg-red-500/10 border-red-500/20 text-red-700',
-    'bg-yellow-500/10 border-yellow-500/20 text-yellow-700',
-  ], [])
-
-  // Mock clustering data for demonstration
-  const mockClusters: MemoryCluster[] = useMemo(() => {
-    if (!memories.length) return []
-    
-    // Simple clustering by tags and importance
-    const clusterMap = new Map<string, Memory[]>()
-    
-    memories.forEach(memory => {
-      const tags = memory.metadata?.tags || []
-      const importance = memory.metadata?.importance || 5
-      
-      let clusterKey = 'uncategorized'
-      
-      if (tags.length > 0 && tags[0]) {
-        clusterKey = tags[0] // Use first tag as cluster
-      } else if (importance >= 8) {
-        clusterKey = 'high-priority'
-      } else if (memory.metadata?.project) {
-        clusterKey = `project-${memory.metadata.project}`
-      }
-      
-      if (!clusterMap.has(clusterKey)) {
-        clusterMap.set(clusterKey, [])
-      }
-      clusterMap.get(clusterKey)!.push(memory)
-    })
-    
-    return Array.from(clusterMap.entries()).map(([key, clusterMemories], index) => ({
-      id: key,
-      name: key === 'uncategorized' ? t('clusters.uncategorized') : 
-            key === 'high-priority' ? t('clusters.highPriority') :
-            key.startsWith('project-') ? key.replace('project-', '') :
-            key,
-      description: t('clusters.description', { count: clusterMemories.length }),
-      memories: clusterMemories,
-      keywords: [...new Set(clusterMemories.flatMap(m => m.metadata?.tags || []))],
-      averageImportance: clusterMemories.reduce((sum, m) => sum + (m.metadata?.importance || 5), 0) / clusterMemories.length,
-      createdAt: new Date().toISOString(),
-      color: clusterColors[index % clusterColors.length] || clusterColors[0] || 'bg-gray-500/10 border-gray-500/20 text-gray-700'
-    })).sort((a, b) => b.memories.length - a.memories.length)
-  }, [memories, t, clusterColors])
 
   const handleClusterClick = (cluster: MemoryCluster) => {
     setSelectedCluster(cluster)
     onClusterSelect?.(cluster)
   }
-
+  
   const renderClusterStats = () => (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       <Card className="p-4">
@@ -127,10 +116,26 @@ export function MemoryClusterView({
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-xl sm:text-2xl font-bold text-foreground truncate">
-              {mockClusters.length}
+              {clusters.length}
             </p>
             <p className="text-xs sm:text-sm text-muted-foreground truncate">
-              {t('stats.clusters')}
+              {t('stats.totalClusters')}
+            </p>
+          </div>
+        </div>
+      </Card>
+
+      <Card className="p-4">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-blue-500/10 rounded-lg">
+            <FolderIcon className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-xl sm:text-2xl font-bold text-foreground truncate">
+              {clusteringStats?.averageClusterSize || 0}
+            </p>
+            <p className="text-xs sm:text-sm text-muted-foreground truncate">
+              {t('stats.avgSize')}
             </p>
           </div>
         </div>
@@ -143,7 +148,7 @@ export function MemoryClusterView({
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-xl sm:text-2xl font-bold text-foreground truncate">
-              {mockStats.averageImportance.toFixed(1) || '5.0'}
+              {clusteringStats?.averageImportance?.toFixed(1) || '0.0'}
             </p>
             <p className="text-xs sm:text-sm text-muted-foreground truncate">
               {t('stats.avgImportance')}
@@ -154,31 +159,15 @@ export function MemoryClusterView({
 
       <Card className="p-4">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-blue-500/10 rounded-lg">
-            <TagIcon className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+          <div className="p-2 bg-orange-500/10 rounded-lg">
+            <TagIcon className="w-4 h-4 sm:w-5 sm:h-5 text-orange-600" />
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-xl sm:text-2xl font-bold text-foreground truncate">
-              {mockStats.topTags.length || 0}
+              {clusteringStats?.topKeywords?.length || 0}
             </p>
             <p className="text-xs sm:text-sm text-muted-foreground truncate">
-              {t('stats.uniqueTags')}
-            </p>
-          </div>
-        </div>
-      </Card>
-
-      <Card className="p-4">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-purple-500/10 rounded-lg">
-            <FolderIcon className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="text-xl sm:text-2xl font-bold text-foreground truncate">
-              {memories.length}
-            </p>
-            <p className="text-xs sm:text-sm text-muted-foreground truncate">
-              {t('stats.totalMemories')}
+              {t('stats.totalKeywords')}
             </p>
           </div>
         </div>
@@ -188,7 +177,7 @@ export function MemoryClusterView({
 
   const renderClusterGrid = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-      {mockClusters.map((cluster) => (
+      {clusters.map((cluster) => (
         <Card
           key={cluster.id}
           className={`p-4 cursor-pointer transition-all duration-200 hover:shadow-md border-2 ${
@@ -247,7 +236,7 @@ export function MemoryClusterView({
 
   const renderClusterList = () => (
     <div className="space-y-3">
-      {mockClusters.map((cluster) => (
+      {clusters.map((cluster) => (
         <Card
           key={cluster.id}
           className={`p-4 cursor-pointer transition-all duration-200 hover:shadow-md border-l-4 ${
@@ -391,11 +380,11 @@ export function MemoryClusterView({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => recluster()}
-            disabled={isClustering}
+            onClick={handleRecluster}
+            disabled={isClustering || memories.length === 0}
             className={`${responsive.touchTargets.default} flex-1 sm:flex-none`}
           >
-            <AdjustmentsHorizontalIcon className="w-4 h-4 mr-2" />
+            <ArrowPathIcon className={`w-4 h-4 mr-2 ${isClustering ? 'animate-spin' : ''}`} />
             <span className="truncate">{isClustering ? t('reclustering') : t('recluster')}</span>
           </Button>
 
@@ -424,7 +413,7 @@ export function MemoryClusterView({
       {renderClusterStats()}
 
       {/* Loading State */}
-      {(isClustering || isLoadingStats) && (
+      {isClustering && (
         <Card className="p-8 text-center">
           <div className="flex items-center justify-center space-x-2">
             <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
@@ -441,7 +430,7 @@ export function MemoryClusterView({
       )}
 
       {/* Cluster Views */}
-      {!isClustering && !isLoadingStats && (
+      {!isClustering && (
         <div>
           {viewMode === 'grid' ? renderClusterGrid() : renderClusterList()}
         </div>

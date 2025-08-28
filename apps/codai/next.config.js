@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
+import path from 'path';
+
 const nextConfig = {
-  // Remove standalone output to fix Vercel deployment issues
-  // output: 'standalone',
-  // outputFileTracingRoot: require('path').join(__dirname, '../../'),
+  // Set proper output file tracing root to silence Next.js warnings
+  outputFileTracingRoot: path.join(process.cwd(), '../../'),
   experimental: {
     // Remove deprecated settings that cause warnings
   },
@@ -27,7 +28,7 @@ const nextConfig = {
     
     // Ensure proper node_modules resolution
     config.resolve.modules = [
-      require('path').resolve(__dirname, 'node_modules'), // Local node_modules first
+      path.resolve(process.cwd(), 'node_modules'), // Local node_modules first
       'node_modules',
       '../../node_modules', // Root workspace node_modules
     ];
@@ -67,4 +68,4 @@ const nextConfig = {
   }
 };
 
-module.exports = nextConfig;
+export default nextConfig;

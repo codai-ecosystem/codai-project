@@ -4,7 +4,7 @@ import { useState, useCallback, useMemo } from 'react'
 import { useTranslations } from 'next-intl'
 import { useSearchMemories, useDeleteMemory } from '@/lib/api'
 import { useAgentId } from '@/lib/hooks/useSession'
-import { useToast } from '@/lib/providers/toast.provider'
+import { useToast } from '@/components/ui/use-toast'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { CreateMemoryForm } from './CreateMemoryForm'
@@ -16,9 +16,10 @@ import { responsiveSpacing, responsiveText, layoutPatterns, touchTargets } from 
 import type { Memory } from '@/lib/api'
 
 export function MemoriesPage() {
-  const t = useTranslations('memories.page')
+  const tPage = useTranslations('memories.page')
+  const tCommon = useTranslations('common')
   const agentId = useAgentId()
-  const { showToast } = useToast()
+  const { toast: showToast } = useToast()
   
   // State management
   const [filters, setFilters] = useState<MemoryFilters>({
@@ -64,22 +65,20 @@ export function MemoriesPage() {
   const handleCreateSuccess = useCallback((_memory: Memory) => {
     setShowCreateForm(false)
     refetchSearch()
-    showToast({
-      type: 'success',
-      title: t('actions.create.success.title'),
-      description: t('actions.create.success.description')
+    showToast({ 
+      title: 'Success',
+      description: 'Memory created successfully'
     })
-  }, [refetchSearch, showToast, t])
+  }, [refetchSearch, showToast])
 
   const handleEditSuccess = useCallback((_memory: Memory) => {
     setEditingMemory(null)
     refetchSearch()
-    showToast({
-      type: 'success',
-      title: t('actions.edit.success.title'), 
-      description: t('actions.edit.success.description')
+    showToast({ 
+      title: 'Success',
+      description: 'Memory updated successfully'
     })
-  }, [refetchSearch, showToast, t])
+  }, [refetchSearch, showToast])
 
   const handleEdit = useCallback((memory: Memory) => {
     setEditingMemory(memory)
@@ -89,21 +88,20 @@ export function MemoriesPage() {
     deleteMemoryMutation.mutateAsync(memoryId)
       .then(() => {
         refetchSearch()
-        showToast({
-          type: 'success',
-          title: t('actions.delete.success.title'),
-          description: t('actions.delete.success.description')
+        showToast({ 
+          title: 'Success',
+          description: 'Memory deleted successfully'
         })
       })
       .catch((error) => {
         console.error('Failed to delete memory:', error)
-        showToast({
-          type: 'error',
-          title: t('actions.delete.error.title'),
-          description: t('actions.delete.error.description')
+        showToast({ 
+          title: 'Error',
+          description: 'Failed to delete memory',
+          variant: 'destructive'
         })
       })
-  }, [deleteMemoryMutation, refetchSearch, showToast, t])
+  }, [deleteMemoryMutation, refetchSearch, showToast])
 
   const handleCancelCreate = useCallback(() => {
     setShowCreateForm(false)
@@ -118,10 +116,10 @@ export function MemoriesPage() {
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
       <div className="flex-1 min-w-0">
         <h1 className="text-2xl sm:text-3xl font-bold text-foreground truncate">
-          {t('title')}
+          {tPage('title')}
         </h1>
         <p className="text-sm sm:text-base text-muted-foreground mt-1">
-          {t('subtitle')}
+          {tPage('subtitle')}
         </p>
       </div>
       
@@ -132,7 +130,7 @@ export function MemoriesPage() {
           size="md"
         >
           <PlusIcon className="w-4 h-4" />
-          <span className="block sm:inline">{t('actions.createMemory')}</span>
+          <span className="block sm:inline">{tPage('actions.createMemory')}</span>
         </Button>
       )}
     </div>
@@ -192,9 +190,9 @@ export function MemoriesPage() {
               <PlusIcon className="w-8 h-8 text-muted-foreground" />
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg sm:text-xl font-semibold text-foreground">{t('welcome.title')}</h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-foreground">{tPage('welcome.title')}</h3>
               <p className="text-sm sm:text-base text-muted-foreground">
-                {t('welcome.description')}
+                {tPage('welcome.description')}
               </p>
             </div>
             <div className="pt-2">
@@ -204,7 +202,7 @@ export function MemoriesPage() {
                 className="w-full sm:w-auto flex items-center justify-center gap-2 min-h-[48px]"
               >
                 <PlusIcon className="w-5 h-5" />
-                <span>{t('actions.createFirstMemory')}</span>
+                <span>{tPage('actions.createFirstMemory')}</span>
               </Button>
             </div>
           </div>
@@ -229,11 +227,11 @@ export function MemoriesPage() {
     return (
       <div className="mb-4 flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
         <span>
-          {t('stats.found', { count: searchResults.length })}
+          {tPage('stats.found', { count: searchResults.length })}
         </span>
         {searchQuery && (
           <span className="truncate max-w-xs sm:max-w-none">
-            {t('stats.searchQuery', { query: searchQuery })}
+            {tPage('stats.searchQuery', { query: searchQuery })}
           </span>
         )}
       </div>
@@ -254,4 +252,4 @@ export function MemoriesPage() {
   )
 }
 
-export default MemoriesPage;
+export default MemoriesPage

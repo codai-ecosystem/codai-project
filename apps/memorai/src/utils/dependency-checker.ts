@@ -113,7 +113,7 @@ export class DependencyChecker {
     private async checkIfOutdated(packageName: string, currentVersion: string) {
         // This would typically call npm registry API
         // Simplified implementation
-        const knownUpdates = {
+        const knownUpdates: Record<string, string> = {
             'lodash': '4.17.21',
             'react': '18.2.0',
             'next': '14.0.0',

@@ -71,6 +71,10 @@ export interface MemoryStats {
   readonly recentMemories: number;
   readonly favorites: number;
   readonly connections: number;
+  readonly agentDistribution: { [key: string]: number };
+  readonly tagDistribution: { [key: string]: number };
+  readonly averageImportance: number;
+  readonly lastUpdated: string;
 }
 
 // AI Search types with strict typing
@@ -83,6 +87,12 @@ export interface QueryResult extends BaseEntity {
   tags: readonly string[];
   url?: string;
   metadata?: QueryResultMetadata;
+}
+
+export interface SearchResult {
+  memory: Memory;
+  relevanceScore: number;
+  matchedTerms: string[];
 }
 
 export interface QueryResultMetadata {

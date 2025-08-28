@@ -36,7 +36,7 @@ export function createTestUser(overrides: Partial<TestUser> = {}): TestUser {
     id,
     email: `test-${id.substring(0, 8)}@example.com`,
     name: `Test User ${id.substring(0, 8)}`,
-    avatar: null,
+    avatar: undefined,
     createdAt: timestamp,
     updatedAt: timestamp,
     ...overrides

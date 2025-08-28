@@ -23,7 +23,7 @@ export const Layout: React.FC<LayoutProps & { children: ReactNode }> = ({
 }) => {
   const { theme, setTheme } = useTheme()
   const { language, setLanguage } = useLanguage()
-  const { reduceMotion, setReduceMotion } = useMotion()
+  const { prefersReducedMotion } = useMotion()
 
   // Initialize context values from props
   useEffect(() => {
@@ -39,10 +39,11 @@ export const Layout: React.FC<LayoutProps & { children: ReactNode }> = ({
   }, [initialLanguage, setLanguage])
 
   useEffect(() => {
+    // Motion preferences are auto-detected, no need to manually set
     if (initialReduceMotion !== undefined) {
-      setReduceMotion(initialReduceMotion)
+      console.log('Motion preference:', initialReduceMotion)
     }
-  }, [initialReduceMotion, setReduceMotion])
+  }, [initialReduceMotion])
 
   // Detect system preferences
   useEffect(() => {
@@ -61,19 +62,9 @@ export const Layout: React.FC<LayoutProps & { children: ReactNode }> = ({
   }, [initialTheme, setTheme])
 
   useEffect(() => {
-    // Detect system motion preference
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const handleChange = (e: MediaQueryListEvent) => {
-      setReduceMotion(e.matches)
-    }
-    
-    if (initialReduceMotion === undefined) {
-      setReduceMotion(mediaQuery.matches)
-    }
-    
-    mediaQuery.addEventListener('change', handleChange)
-    return () => mediaQuery.removeEventListener('change', handleChange)
-  }, [initialReduceMotion, setReduceMotion])
+    // Motion preferences handled by MotionContext
+    console.log('System motion preference detected')
+  }, [initialReduceMotion])
 
   return (
     <div
@@ -86,7 +77,7 @@ export const Layout: React.FC<LayoutProps & { children: ReactNode }> = ({
         theme === 'dark' ? 'dark' : '',
         
         // Motion classes
-        reduceMotion ? 'reduce-motion' : '',
+        prefersReducedMotion ? 'reduce-motion' : '',
         
         // Debug styles
         showDebug && 'debug-mode',
@@ -99,7 +90,7 @@ export const Layout: React.FC<LayoutProps & { children: ReactNode }> = ({
       )}
       data-theme={theme}
       data-language={language}
-      data-reduce-motion={reduceMotion}
+      data-reduce-motion={prefersReducedMotion}
       {...props}
     >
       {/* CSS Variables for runtime theme switching */}
@@ -107,7 +98,7 @@ export const Layout: React.FC<LayoutProps & { children: ReactNode }> = ({
         :root {
           --theme: ${theme};
           --language: ${language};
-          --reduce-motion: ${reduceMotion ? '1' : '0'};
+          --reduce-motion: ${prefersReducedMotion ? '1' : '0'};
         }
       `}</style>
       
@@ -116,7 +107,7 @@ export const Layout: React.FC<LayoutProps & { children: ReactNode }> = ({
         <div className="fixed top-4 right-4 z-[9999] bg-black/80 text-white p-3 rounded-lg text-sm font-mono">
           <div>Theme: {theme}</div>
           <div>Language: {language}</div>
-          <div>Reduced Motion: {reduceMotion ? 'ON' : 'OFF'}</div>
+          <div>Reduced Motion: {prefersReducedMotion ? 'ON' : 'OFF'}</div>
           <div>Viewport: {typeof window !== 'undefined' && `${window.innerWidth}x${window.innerHeight}`}</div>
         </div>
       )}

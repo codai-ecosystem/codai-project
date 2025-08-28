@@ -21,7 +21,7 @@ export { Card as LayoutCard } from './layout'; // Renamed to avoid conflict with
 export { ScrollProgress, ScrollSection, ScrollObserver } from './scroll';
 
 // Interactive Components
-export { InteractiveElement } from './interactions';
+// export { InteractiveElement } from './interactions';
 
 // Types (using type-only exports)
 export type * from './types';

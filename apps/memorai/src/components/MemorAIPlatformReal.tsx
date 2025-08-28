@@ -1,11 +1,16 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { Brain, Search, Star, Tag, Users, Settings, BarChart3, Plus, Filter, Archive, Download, Upload, Trash2 } from 'lucide-react';
 import { Memory } from '@/types/memory';
 import memoraiApiClient from '@/lib/memorai-api';
 
 const MemorAIPlatform = () => {
+    const t = useTranslations('memories.page');
+    const tCreate = useTranslations('memories.create');
+    const tCommon = useTranslations('common');
+    
     const [memories, setMemories] = useState<Memory[]>([]);
     const [filteredMemories, setFilteredMemories] = useState<Memory[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
@@ -132,11 +137,11 @@ const MemorAIPlatform = () => {
                 setShowCreateForm(false);
                 loadInitialData(); // Refresh data
             } else {
-                throw new Error(response.error?.message || 'Failed to create memory');
+                throw new Error(response.error?.message || tCreate('errors.createFailed'));
             }
         } catch (err) {
             console.error('Error creating memory:', err);
-            setError(err instanceof Error ? err.message : 'Failed to create memory');
+            setError(err instanceof Error ? err.message : tCreate('errors.createFailed'));
         }
     };
 
@@ -444,6 +449,9 @@ const CreateMemoryModal = ({
     categories: string[];
     tags: string[];
 }) => {
+    const tCreate = useTranslations('memories.create');
+    const tCommon = useTranslations('common');
+    
     const [formData, setFormData] = useState({
         title: '',
         content: '',
@@ -550,7 +558,7 @@ const CreateMemoryModal = ({
                             type="submit"
                             className="flex-1 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
                         >
-                            Create Memory
+                            {tCreate('actions.create')}
                         </button>
                     </div>
                 </form>

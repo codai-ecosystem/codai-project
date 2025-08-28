@@ -112,6 +112,49 @@ const designSystem = {
             accent: '#6366f1',      // Accent border
             focus: '#8b5cf6',       // Focus border
         },
+
+        // Chapter-specific color themes for scrollytelling
+        intro: {
+            50: '#f0f9ff',   // Very light blue
+            100: '#e0f2fe',  // Light blue
+            200: '#bae6fd',  // Lighter blue
+            300: '#7dd3fc',  // Light blue
+            400: '#38bdf8',  // Medium blue
+            500: '#0ea5e9',  // Primary blue
+            600: '#0284c7',  // Darker blue
+            700: '#0369a1',  // Dark blue
+            800: '#075985',  // Very dark blue
+            900: '#0c4a6e',  // Darkest blue
+            950: '#082f49',  // Almost black blue
+        },
+
+        foundation: {
+            50: '#f0fdf4',   // Very light green
+            100: '#dcfce7',  // Light green
+            200: '#bbf7d0',  // Lighter green
+            300: '#86efac',  // Light green
+            400: '#4ade80',  // Medium green
+            500: '#22c55e',  // Primary green
+            600: '#16a34a',  // Darker green
+            700: '#15803d',  // Dark green
+            800: '#166534',  // Very dark green
+            900: '#14532d',  // Darkest green
+            950: '#052e16',  // Almost black green
+        },
+
+        revolution: {
+            50: '#fef7ff',   // Very light purple
+            100: '#fceeff',  // Light purple
+            200: '#f9ddff',  // Lighter purple
+            300: '#f4bbff',  // Light purple
+            400: '#ec88ff',  // Medium purple
+            500: '#dd55ff',  // Primary purple
+            600: '#c233ee',  // Darker purple
+            700: '#a322d3',  // Dark purple
+            800: '#8a1fb8',  // Very dark purple
+            900: '#7c2d96',  // Darkest purple
+            950: '#4a0d5c',  // Almost black purple
+        },
     },
 
     spacing: {

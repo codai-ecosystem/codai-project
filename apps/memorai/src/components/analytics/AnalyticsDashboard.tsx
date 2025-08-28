@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from 'react'
 import { useTranslations } from 'next-intl'
+import { analyticsService } from '@/lib/services/analytics.service'
+import { useAgentId } from '@/lib/hooks/useSession'
 import { 
   ChartBarIcon, 
   ChartPieIcon, 
@@ -42,8 +44,9 @@ export function AnalyticsDashboard({
 }: AnalyticsDashboardProps) {
   const t = useTranslations('analytics')
   const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month' | 'quarter' | 'year'>('month')
+  const agentId = useAgentId() // Get the current agent ID
 
-  // Calculate comprehensive analytics
+  // Calculate comprehensive analytics using real service
   const analytics = useMemo((): AnalyticsMetrics => {
     if (!memories.length) {
       return {
@@ -61,91 +64,25 @@ export function AnalyticsDashboard({
       }
     }
 
-    const now = new Date()
-    const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
-    const oneMonthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
-
-    // Filter memories by time periods
-    const memoriesThisWeek = memories.filter(m => 
-      new Date(m.createdAt) >= oneWeekAgo
-    ).length
-
-    const memoriesThisMonth = memories.filter(m => 
-      new Date(m.createdAt) >= oneMonthAgo
-    ).length
-
-    // Calculate average importance
-    const averageImportance = memories.reduce((sum, m) => 
-      sum + (m.metadata?.importance || 5), 0
-    ) / memories.length
-
-    // Analyze tags
-    const tagCounts = new Map<string, number>()
-    memories.forEach(memory => {
-      const tags = memory.metadata?.tags || []
-      tags.forEach((tag: string) => {
-        if (tag) {
-          tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1)
-        }
-      })
-    })
-
-    const topTags = Array.from(tagCounts.entries())
-      .map(([tag, count]) => ({ tag, count }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 10)
-
-    // Calculate importance distribution
-    const importanceDistribution = [
-      { range: '1-2', count: memories.filter(m => (m.metadata?.importance || 5) <= 2).length },
-      { range: '3-4', count: memories.filter(m => {
-        const imp = m.metadata?.importance || 5
-        return imp >= 3 && imp <= 4
-      }).length },
-      { range: '5-6', count: memories.filter(m => {
-        const imp = m.metadata?.importance || 5
-        return imp >= 5 && imp <= 6
-      }).length },
-      { range: '7-8', count: memories.filter(m => {
-        const imp = m.metadata?.importance || 5
-        return imp >= 7 && imp <= 8
-      }).length },
-      { range: '9-10', count: memories.filter(m => (m.metadata?.importance || 5) >= 9).length }
-    ]
-
-    // Calculate activity by day
-    const dayActivity = new Map<string, number>()
-    memories.forEach(memory => {
-      const day = new Date(memory.createdAt).toLocaleDateString('en-US', { weekday: 'long' })
-      dayActivity.set(day, (dayActivity.get(day) || 0) + 1)
-    })
-
-    const activityByDay = Array.from(dayActivity.entries())
-      .map(([day, count]) => ({ day, count }))
-      .sort((a, b) => b.count - a.count)
-
-    // Calculate growth rate (simplified)
-    const memoryGrowthRate = memoriesThisMonth > 0 ? 
-      ((memoriesThisMonth - memoriesThisWeek) / Math.max(memoriesThisWeek, 1)) * 100 : 0
-
+    const realAnalytics = analyticsService.calculateAnalytics(memories, agentId || 'default-agent')
+    
     return {
-      totalMemories: memories.length,
-      memoriesThisWeek,
-      memoriesThisMonth,
-      averageImportance,
-      topTags,
-      memoryGrowthRate,
-      searchFrequency: Math.floor(Math.random() * 10) + 5, // Mock data
-      activeStreak: Math.floor(Math.random() * 30) + 1, // Mock data
-      importanceDistribution,
-      activityByDay,
-      recentActivity: [
-        { date: 'Today', action: 'Created', count: memoriesThisWeek > 0 ? Math.floor(memoriesThisWeek / 7) : 0 },
-        { date: 'Yesterday', action: 'Updated', count: Math.floor(Math.random() * 5) },
-        { date: 'This Week', action: 'Searched', count: Math.floor(Math.random() * 15) + 5 }
-      ]
+      totalMemories: realAnalytics.totalMemories,
+      memoriesThisWeek: realAnalytics.memoriesThisWeek,
+      memoriesThisMonth: realAnalytics.memoriesThisMonth,
+      averageImportance: realAnalytics.averageImportance,
+      topTags: realAnalytics.topTags.map(tag => ({ tag: tag.name, count: tag.count })),
+      memoryGrowthRate: realAnalytics.memoryGrowthRate,
+      searchFrequency: realAnalytics.searchFrequency,
+      activeStreak: realAnalytics.activeStreak,
+      importanceDistribution: realAnalytics.importanceDistribution,
+      activityByDay: realAnalytics.activityByDay.map(activity => ({
+        day: activity.day,
+        count: activity.memories
+      })),
+      recentActivity: realAnalytics.recentActivity
     }
-  }, [memories])
+  }, [memories, agentId || 'default-agent'])
 
   const renderMetricCard = (
     title: string, 

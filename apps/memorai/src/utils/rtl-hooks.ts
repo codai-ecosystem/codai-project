@@ -17,7 +17,7 @@ export const useRTL = () => {
 
   return {
     ...rtlUtils,
-    locale: currentLocale.code
+    locale: currentLocale as string
   };
 };
 

@@ -221,7 +221,7 @@ export class MissingTranslationDetector {
 
         await this.addTranslation(missingKey.locale, missingKey.namespace, missingKey.key, translationValue);
       } catch (error) {
-        console.warn(`Could not auto-fix translation ${missingKey.namespace}:${missingKey.key} for ${missingKey.locale}:`, error.message);
+        console.warn(`Could not auto-fix translation ${missingKey.namespace}:${missingKey.key} for ${missingKey.locale}:`, (error as Error).message);
       }
     }
 
@@ -423,7 +423,7 @@ export class MissingTranslationDetector {
     
     console.log('\n🌐 Coverage by Locale:');
     for (const [locale, coverage] of Object.entries(summary.localesCoverage)) {
-      const status = coverage >= this.options.minCoverageThreshold ? '✅' : '⚠️';
+      const status = (coverage as number) >= this.options.minCoverageThreshold ? '✅' : '⚠️';
       console.log(`   ${status} ${locale}: ${coverage}%`);
     }
     console.log('');
@@ -440,12 +440,12 @@ export class MissingTranslationDetector {
       fs.mkdirSync(fileDir, { recursive: true });
     }
 
-    let translations = {};
+    let translations: Record<string, any> = {};
     if (fs.existsSync(filePath)) {
       translations = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
     }
 
-    translations[key] = value;
+    (translations as any)[key] = value;
     fs.writeFileSync(filePath, JSON.stringify(translations, null, 2));
   }
 

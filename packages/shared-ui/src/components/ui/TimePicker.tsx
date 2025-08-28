@@ -260,6 +260,9 @@ export interface TimePickerProps
     showClearButton?: boolean;
     dropdownPosition?: "bottom" | "top";
     closeOnSelect?: boolean;
+    // i18n props
+    cancelText?: string;
+    confirmText?: string;
 }
 
 export interface TimeUnitProps {
@@ -394,6 +397,8 @@ const TimePicker = React.forwardRef<HTMLDivElement, TimePickerProps>(
             showClearButton = true,
             dropdownPosition = "bottom",
             closeOnSelect = false,
+            cancelText = "Cancel",
+            confirmText = "OK",
             ...props
         },
         ref
@@ -645,7 +650,7 @@ const TimePicker = React.forwardRef<HTMLDivElement, TimePickerProps>(
                                 onClick={() => setIsOpen(false)}
                                 className="px-3 py-1 text-sm text-slate-600 hover:text-slate-700 focus:outline-none focus:text-slate-700"
                             >
-                                Cancel
+                                {cancelText}
                             </button>
                             <button
                                 type="button"
@@ -667,7 +672,7 @@ const TimePicker = React.forwardRef<HTMLDivElement, TimePickerProps>(
                                     (!app || app === "donai") && "bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-300"
                                 )}
                             >
-                                Set Time
+                                {confirmText}
                             </button>
                         </div>
                     </div>

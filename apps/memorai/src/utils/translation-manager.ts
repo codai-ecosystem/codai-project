@@ -115,7 +115,7 @@ export class TranslationManager {
 
       console.log('\n🎉 Translation workflow completed successfully!');
     } catch (error) {
-      console.error('❌ Translation workflow failed:', error.message);
+      console.error('❌ Translation workflow failed:', (error as Error).message);
       throw error;
     }
   }
@@ -230,7 +230,7 @@ export class TranslationManager {
           }
 
         } catch (error) {
-          validationErrors.push(`${locale}/${namespace}.json: Invalid JSON - ${error.message}`);
+          validationErrors.push(`${locale}/${namespace}.json: Invalid JSON - ${(error as Error).message}`);
         }
       }
     }

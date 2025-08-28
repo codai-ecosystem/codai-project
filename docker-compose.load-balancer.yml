@@ -156,7 +156,7 @@ services:
       target: enterprise-api
     container_name: romai-enterprise-1
     restart: unless-stopped
-    command: ["python", "-m", "uvicorn", "api.enterprise.api_platform:app", "--host", "0.0.0.0", "--port", "8001"]
+    command: ["python", "-m", "uvicorn", "api.production.main:app", "--host", "0.0.0.0", "--port", "8001"]
     environment:
       - ENTERPRISE_API_PORT=8001
       - ROMAI_ENV=production

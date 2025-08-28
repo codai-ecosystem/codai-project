@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react';
-
+import { useTranslations } from 'next-intl';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { User, LogOut, Settings } from 'lucide-react';
@@ -12,12 +12,14 @@ import Link from 'next/link';
  * Handles sign in/out and displays user info
  */
 export function AuthButton() {
+    const tCommon = useTranslations('common');
+    const tAuth = useTranslations('auth');
     const { data: session, status } = useSession();
 
     if (status === 'loading') {
         return (
             <Button variant="ghost" disabled>
-                Loading...
+                {tCommon('loading')}
             </Button>
         );
     }
@@ -66,7 +68,7 @@ export function AuthButton() {
                         onClick={() => signOut({ callbackUrl: '/' })}
                     >
                         <LogOut className="w-4 h-4 mr-2" />
-                        Sign Out
+                        {tAuth('signout')}
                     </Button>
                 </div>
             </div>
@@ -79,7 +81,7 @@ export function AuthButton() {
                 variant="outline"
                 onClick={() => signIn('codai', { callbackUrl: '/dashboard' })}
             >
-                Sign In with CODAI
+                {tAuth('signInWithCodai')}
             </Button>
         </div>
     );
@@ -102,6 +104,8 @@ export function ProtectedRoute({
     requireRoles = [],
     requirePermissions = []
 }: ProtectedRouteProps) {
+    const tCommon = useTranslations('common');
+    const tAuth = useTranslations('auth');
     const { data: session, status } = useSession();
 
     if (status === 'loading') {
@@ -117,16 +121,16 @@ export function ProtectedRoute({
             fallback || (
                 <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                        Authentication Required
+                        {tAuth('authRequired')}
                     </h1>
                     <p className="text-gray-600 dark:text-gray-400 text-center max-w-md">
-                        You need to sign in to access this page. Please sign in with your CODAI account.
+                        {tAuth('signInRequired')}
                     </p>
                     <Button
                         onClick={() => signIn('codai', { callbackUrl: window.location.pathname })}
                         className="mt-4"
                     >
-                        Sign In with CODAI
+                        {tAuth('signInWithCodai')}
                     </Button>
                 </div>
             )

@@ -22,7 +22,7 @@
   "dependencies": {
     "@codai/shared-types": "workspace:*",
     "@codai/config": "workspace:*",
-    "controlai-mcp": "workspace:*",
+    "@codai/glass-mcp": "workspace:*",
     "@codai/memorai": "workspace:*",
     "zod": "^3.23.8"
   },

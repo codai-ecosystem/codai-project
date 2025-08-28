@@ -122,6 +122,7 @@ class PerformanceAnalyticsService {
   private metrics: PerformanceMetrics[] = [];
   private systemMetrics: SystemResourceMetrics[] = [];
   private alerts: PerformanceAlert[] = [];
+  private performanceMetrics: PerformanceMetrics[] = [];
   private startTime: Date = new Date();
   private isMonitoring: boolean = false;
   private monitoringInterval?: NodeJS.Timeout;
@@ -702,13 +703,24 @@ class PerformanceAnalyticsService {
       sampleMetrics.push({
         timestamp: new Date(timestamp).toISOString(),
         responseTime: Math.round(baseResponse),
-        memoryUsage: Math.round(baseMemory),
-        cpuUsage: Math.round(baseCpu),
+        memoryUsage: {
+          heapUsed: Math.round(baseMemory * 1024 * 1024),
+          heapTotal: Math.round(baseMemory * 1024 * 1024 * 1.5),
+          external: Math.round(baseMemory * 1024 * 1024 * 0.2),
+          rss: Math.round(baseMemory * 1024 * 1024 * 1.8),
+          arrayBuffers: Math.round(baseMemory * 1024 * 1024 * 0.1)
+        },
+        cpuUsage: {
+          user: Math.round(baseCpu * 0.6),
+          system: Math.round(baseCpu * 0.4),
+          percentage: Math.round(baseCpu)
+        },
         requestCount: Math.round(50 + Math.random() * 100),
         errorRate: Math.max(0, (Math.random() - 0.95) * 20), // Mostly low error rates
         throughput: Math.round(25 + Math.random() * 50),
         latencyPercentiles: {
           p50: Math.round(baseResponse * 0.8),
+          p75: Math.round(baseResponse * 1.2),
           p90: Math.round(baseResponse * 1.4),
           p95: Math.round(baseResponse * 1.8),
           p99: Math.round(baseResponse * 2.5)
@@ -723,38 +735,51 @@ class PerformanceAnalyticsService {
 
     // Generate sample system resources
     const systemResources: SystemResourceMetrics = {
-      cpuPercent: latestMetrics.cpuUsage + Math.random() * 5,
-      memoryPercent: latestMetrics.memoryUsage + Math.random() * 5,
-      diskUsage: {
+      timestamp: new Date().toISOString(),
+      cpu: {
+        usage: latestMetrics.cpuUsage.percentage + Math.random() * 5,
+        cores: 8,
+        loadAverage: [1.2, 1.4, 1.1]
+      },
+      memory: {
+        total: 16000000000, // 16GB
+        used: latestMetrics.memoryUsage.heapUsed + latestMetrics.memoryUsage.rss,
+        free: 16000000000 - (latestMetrics.memoryUsage.heapUsed + latestMetrics.memoryUsage.rss),
+        percentage: ((latestMetrics.memoryUsage.heapUsed + latestMetrics.memoryUsage.rss) / 16000000000) * 100
+      },
+      disk: {
         used: 45000000000, // 45GB
         total: 100000000000, // 100GB
-        percent: 45 + Math.random() * 10
+        free: 55000000000, // 55GB
+        percentage: 45 + Math.random() * 10
       },
-      networkTraffic: {
+      network: {
         bytesIn: Math.round(1000000 + Math.random() * 5000000),
-        bytesOut: Math.round(800000 + Math.random() * 3000000)
+        bytesOut: Math.round(800000 + Math.random() * 3000000),
+        packetsIn: Math.round(1000 + Math.random() * 5000),
+        packetsOut: Math.round(800 + Math.random() * 3000)
       }
     };
 
     // Generate sample bottlenecks
     const bottlenecks: PerformanceBottleneck[] = [
       {
-        id: 'bottleneck_1',
-        type: 'Database Query Optimization',
+        component: 'Database Query Optimization',
         severity: 'medium',
         description: 'Slow JOIN operations detected in memory queries',
-        impact: 'Average query time increased by 35%',
-        recommendation: 'Add database indexes for frequently queried fields',
-        estimatedImprovementPercent: 25
+        impact: 35, // 0-100 scale
+        rootCause: 'Missing database indexes on frequently queried fields',
+        recommendations: ['Add database indexes for frequently queried fields', 'Optimize JOIN queries'],
+        estimatedFix: 'Add composite indexes on memory content and tags fields'
       },
       {
-        id: 'bottleneck_2',
-        type: 'Memory Allocation',
+        component: 'Memory Allocation',
         severity: 'low',
         description: 'Frequent garbage collection cycles observed',
-        impact: 'Minor impact on response times during peak usage',
-        recommendation: 'Optimize memory pooling and object reuse',
-        estimatedImprovementPercent: 15
+        impact: 15, // 0-100 scale  
+        rootCause: 'Inefficient object allocation and reuse patterns',
+        recommendations: ['Optimize memory pooling and object reuse', 'Implement object caching'],
+        estimatedFix: 'Configure memory pool with 1000 pre-allocated objects'
       }
     ];
 
@@ -762,24 +787,36 @@ class PerformanceAnalyticsService {
     const trends: PerformanceTrend[] = [
       {
         metric: 'responseTime',
-        direction: 'up',
-        changePercent: 12.5,
+        direction: 'degrading',
+        changeRate: 12.5,
         confidence: 0.85,
-        prediction: 'Response times have increased 12.5% over the last hour, likely due to increased load'
+        prediction: {
+          nextHour: 185, // estimated response time in ms
+          nextDay: 200,
+          nextWeek: 210
+        }
       },
       {
         metric: 'throughput',
         direction: 'stable',
-        changePercent: -2.1,
+        changeRate: -2.1,
         confidence: 0.92,
-        prediction: 'Throughput remains stable with minor fluctuations within normal range'
+        prediction: {
+          nextHour: 75, // estimated requests per second
+          nextDay: 74,
+          nextWeek: 73
+        }
       },
       {
         metric: 'errorRate',
-        direction: 'down',
-        changePercent: -45.2,
+        direction: 'improving',
+        changeRate: -45.2,
         confidence: 0.78,
-        prediction: 'Error rate has significantly decreased, indicating improved stability'
+        prediction: {
+          nextHour: 0.8, // estimated error percentage
+          nextDay: 0.6,
+          nextWeek: 0.4
+        }
       }
     ];
 
@@ -804,23 +841,30 @@ class PerformanceAnalyticsService {
 
     return {
       overview: {
-        status: latestMetrics.responseTime > 200 ? 'warning' : 'healthy',
-        uptime: 3600000, // 1 hour
-        totalRequests: sampleMetrics.reduce((sum, m) => sum + m.requestCount, 0),
-        avgResponseTime: Math.round(sampleMetrics.reduce((sum, m) => sum + m.responseTime, 0) / sampleMetrics.length),
-        currentThroughput: latestMetrics.throughput
+        status: latestMetrics.responseTime > 500 ? 'critical' : 
+                latestMetrics.responseTime > 300 ? 'poor' : 
+                latestMetrics.responseTime > 200 ? 'fair' : 
+                latestMetrics.responseTime > 100 ? 'good' : 'excellent',
+        score: Math.max(0, 100 - Math.round((latestMetrics.responseTime / 10))),
+        uptime: 99.9,
+        availability: 99.9
       },
       realTimeMetrics: latestMetrics,
       systemResources,
-      historicalData: sampleMetrics.map(metrics => ({
-        timestamp: metrics.timestamp,
-        metrics,
-        systemResources: {
-          ...systemResources,
-          cpuPercent: metrics.cpuUsage + Math.random() * 3,
-          memoryPercent: metrics.memoryUsage + Math.random() * 3
-        }
-      })),
+      historicalData: {
+        responseTimeHistory: sampleMetrics.map(metrics => ({
+          timestamp: metrics.timestamp,
+          value: metrics.responseTime
+        })),
+        throughputHistory: sampleMetrics.map(metrics => ({
+          timestamp: metrics.timestamp,
+          value: metrics.throughput
+        })),
+        errorRateHistory: sampleMetrics.map(metrics => ({
+          timestamp: metrics.timestamp,
+          value: metrics.errorRate
+        }))
+      },
       bottlenecks,
       trends,
       alerts,

@@ -59,7 +59,7 @@ import {
   IntelligenceProviderFactory
 } from './intelligence-adapters';
 import { AdvancedShapeRecognitionEngine } from '../drawing/shape-recognition-engine';
-import { AdvancedPathOptimizationEngine } from '../drawing/path-optimization-engine';
+import { PathOptimizationEngine } from '../drawing/path-optimization-engine';
 import { AdvancedDrawingAutomationEngine } from '../drawing/drawing-automation-engine';
 
 /**
@@ -141,6 +141,7 @@ interface PerformanceTracker {
  */
 export class AdvancedAutomationOrchestrator implements AdvancedAutomationEngine {
   private isInitialized: boolean = false;
+  private initializationTime: number = Date.now();
   private configuration: AutomationConfiguration;
   private providers: Map<ProviderType, AutomationProvider> = new Map();
   private eventBus: EventBus;
@@ -151,7 +152,7 @@ export class AdvancedAutomationOrchestrator implements AdvancedAutomationEngine 
   private decisionEngine: DecisionEngineAdapter;
   private learningSystem: LearningSystemAdapter;
   private shapeRecognitionEngine: AdvancedShapeRecognitionEngine;
-  private pathOptimizationEngine: AdvancedPathOptimizationEngine;
+  private pathOptimizationEngine: PathOptimizationEngine;
   private drawingAutomationEngine: AdvancedDrawingAutomationEngine;
 
   // Execution state
@@ -174,7 +175,7 @@ export class AdvancedAutomationOrchestrator implements AdvancedAutomationEngine 
     this.decisionEngine = new DecisionEngineAdapter();
     this.learningSystem = new LearningSystemAdapter();
     this.shapeRecognitionEngine = new AdvancedShapeRecognitionEngine();
-    this.pathOptimizationEngine = new AdvancedPathOptimizationEngine();
+    this.pathOptimizationEngine = new PathOptimizationEngine();
     this.drawingAutomationEngine = new AdvancedDrawingAutomationEngine();
   }
 
@@ -223,7 +224,7 @@ export class AdvancedAutomationOrchestrator implements AdvancedAutomationEngine 
 
     } catch (error) {
       this.healthStatus = HealthStatus.CRITICAL;
-      this.logger.error('❌ Failed to initialize automation orchestrator', error);
+      this.logger.error('❌ Failed to initialize automation orchestrator', error instanceof Error ? error : new Error(String(error)));
       throw new Error(`Orchestrator initialization failed: ${error}`);
     }
   }
@@ -254,7 +255,7 @@ export class AdvancedAutomationOrchestrator implements AdvancedAutomationEngine 
           await provider.shutdown();
           this.logger.info(`✅ Provider ${type} shutdown successfully`);
         } catch (error) {
-          this.logger.error(`❌ Error shutting down provider ${type}`, error);
+          this.logger.error(`❌ Error shutting down provider ${type}`, error instanceof Error ? error : new Error(String(error)));
         }
       }
 
@@ -267,7 +268,7 @@ export class AdvancedAutomationOrchestrator implements AdvancedAutomationEngine 
       this.logger.info('✅ Orchestrator shutdown completed');
 
     } catch (error) {
-      this.logger.error('❌ Error during orchestrator shutdown', error);
+      this.logger.error('❌ Error during orchestrator shutdown', error instanceof Error ? error : new Error(String(error)));
       throw error;
     }
   }
@@ -396,7 +397,7 @@ export class AdvancedAutomationOrchestrator implements AdvancedAutomationEngine 
         sessionId: context.sessionId
       });
 
-      this.logger.error(`❌ Workflow execution failed`, error, {
+      this.logger.error(`❌ Workflow execution failed`, error instanceof Error ? error : new Error(String(error)), {
         workflowId: workflow.id,
         executionId
       });
@@ -436,7 +437,7 @@ export class AdvancedAutomationOrchestrator implements AdvancedAutomationEngine 
           const context = this.createDefaultContext();
           await this.executeWorkflow(workflow, context);
         } catch (error) {
-          this.logger.error(`❌ Scheduled workflow execution failed`, error);
+          this.logger.error(`❌ Scheduled workflow execution failed`, error instanceof Error ? error : new Error(String(error)));
         }
       }, 0);
 
@@ -449,7 +450,7 @@ export class AdvancedAutomationOrchestrator implements AdvancedAutomationEngine 
             await this.executeWorkflow(workflow, context);
             this.scheduledWorkflows.delete(scheduleId);
           } catch (error) {
-            this.logger.error(`❌ Scheduled workflow execution failed`, error);
+            this.logger.error(`❌ Scheduled workflow execution failed`, error instanceof Error ? error : new Error(String(error)));
           }
         }, delay);
       }
@@ -466,7 +467,7 @@ export class AdvancedAutomationOrchestrator implements AdvancedAutomationEngine 
             scheduledWorkflow.timerId = setTimeout(executeRecurring, schedule.interval!);
           }
         } catch (error) {
-          this.logger.error(`❌ Recurring workflow execution failed`, error);
+          this.logger.error(`❌ Recurring workflow execution failed`, error instanceof Error ? error : new Error(String(error)));
         }
       };
 
@@ -625,7 +626,7 @@ export class AdvancedAutomationOrchestrator implements AdvancedAutomationEngine 
         sessionId: context.sessionId
       });
 
-      this.logger.error(`❌ Task execution failed`, error, { taskId: task.id });
+      this.logger.error(`❌ Task execution failed`, error instanceof Error ? error : new Error(String(error)), { taskId: task.id });
 
       return result;
     }
@@ -748,7 +749,7 @@ export class AdvancedAutomationOrchestrator implements AdvancedAutomationEngine 
         // Providers would implement configuration update if needed
         this.logger.debug(`Updated configuration for provider: ${type}`);
       } catch (error) {
-        this.logger.error(`Failed to update configuration for provider: ${type}`, error);
+        this.logger.error(`Failed to update configuration for provider: ${type}`, error instanceof Error ? error : new Error(String(error)));
       }
     }
 
@@ -803,7 +804,7 @@ export class AdvancedAutomationOrchestrator implements AdvancedAutomationEngine 
         try {
           await handler(event);
         } catch (error) {
-          this.logger.error('Event handler error', error);
+          this.logger.error('Event handler error', error instanceof Error ? error : new Error(String(error)));
         }
       }
     }
@@ -826,7 +827,7 @@ export class AdvancedAutomationOrchestrator implements AdvancedAutomationEngine 
 
     // Initialize Drawing Intelligence components
     await this.shapeRecognitionEngine.initialize();
-    await this.pathOptimizationEngine.initialize();
+    // Note: PathOptimizationEngine doesn't have initialize method
     await this.drawingAutomationEngine.initialize();
 
     this.logger.info('✅ All subsystems initialized');
@@ -879,7 +880,21 @@ export class AdvancedAutomationOrchestrator implements AdvancedAutomationEngine 
       executeOperation: async (operation: string, parameters: any) => {
         switch (operation) {
           case 'recognize_shape':
-            return await this.shapeRecognitionEngine.recognizeShape(parameters.strokes);
+            // Create a basic DrawingContext for shape recognition
+            const drawingContext = {
+              id: `shape-recognition-${Date.now()}`,
+              canvasId: 'automation-canvas',
+              targetShape: { 
+                type: 'unknown' as any,
+                parameters: {},
+                expectedElements: 1,
+                qualityRequirements: {}
+              },
+              constraints: {},
+              preferences: {},
+              environment: {}
+            } as any;
+            return await this.shapeRecognitionEngine.recognizeShape(parameters.strokes, drawingContext);
           case 'optimize_path':
             return await this.pathOptimizationEngine.optimizePath(parameters.path);
           case 'execute_drawing':
@@ -1111,7 +1126,7 @@ export class AdvancedAutomationOrchestrator implements AdvancedAutomationEngine 
         this.healthStatus = health.overall;
       } catch (error) {
         this.healthStatus = HealthStatus.DEGRADED;
-        this.logger.error('Health monitoring error', error);
+        this.logger.error('Health monitoring error', error instanceof Error ? error : new Error(String(error)));
       }
     }, 30000); // Check every 30 seconds
   }

@@ -6,12 +6,12 @@
 import { useTranslation, UseTranslationOptions } from 'react-i18next';
 import { useCallback, useEffect, useState } from 'react';
 import { NAMESPACES, SUPPORTED_LOCALES } from '../../../../i18n/shared-config';
-import { getCurrentLocale, isRTL } from '../i18n';
+import { getCurrentLocale, isRTL, localeConfig, type Locale } from '../i18n';
 
 /**
  * Enhanced useTranslation hook with namespace support
  */
-export const useT = (ns: string = NAMESPACES.COMMON, options?: UseTranslationOptions) => {
+export const useT = (ns: string = NAMESPACES.COMMON, options?: UseTranslationOptions<any>) => {
   const { t, i18n } = useTranslation(ns, options);
   
   const tWithFallback = useCallback((key: string, options?: any) => {
@@ -36,12 +36,13 @@ export const useT = (ns: string = NAMESPACES.COMMON, options?: UseTranslationOpt
  * Hook for locale information and management
  */
 export const useLocale = () => {
-  const [locale, setLocale] = useState(() => getCurrentLocale());
+  const [currentLocaleKey, setCurrentLocaleKey] = useState(() => getCurrentLocale());
   const [rtl, setRTL] = useState(() => isRTL());
+  const locale = localeConfig[currentLocaleKey];
 
   useEffect(() => {
     const handleLanguageChange = () => {
-      setLocale(getCurrentLocale());
+      setCurrentLocaleKey(getCurrentLocale());
       setRTL(isRTL());
     };
 
@@ -51,6 +52,7 @@ export const useLocale = () => {
 
   return {
     locale,
+    currentLocale: currentLocaleKey,
     isRTL: rtl,
     supportedLocales: Object.values(SUPPORTED_LOCALES)
   };

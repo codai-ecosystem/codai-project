@@ -88,7 +88,7 @@ export class RTLClassNames {
         'l': 'r',
         'r': 'l'
       };
-      actualCorner = cornerMap[corner] || corner;
+      actualCorner = (cornerMap as any)[corner] || corner;
     }
     
     return size ? `rounded-${actualCorner}-${size}` : `rounded-${actualCorner}`;

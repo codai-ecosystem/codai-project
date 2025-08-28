@@ -52,7 +52,7 @@ export function ValidatedInput({
                 onChange={handleChange}
                 onBlur={handleBlur}
                 className={`form-input ${hasError ? 'form-input-error' : ''} ${className}`}
-                aria-invalid={hasError}
+                aria-invalid={hasError ? 'true' : 'false'}
                 aria-describedby={hasError ? `${name}-error` : undefined}
             />
             {hasError && (
@@ -113,7 +113,7 @@ export function ValidatedTextarea({
                 onBlur={handleBlur}
                 maxLength={maxLength}
                 className={`form-textarea ${hasError ? 'form-textarea-error' : ''} ${className}`}
-                aria-invalid={hasError}
+                aria-invalid={hasError ? 'true' : 'false'}
                 aria-describedby={hasError ? `${name}-error` : undefined}
             />
             {maxLength && (

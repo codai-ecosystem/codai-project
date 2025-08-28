@@ -122,7 +122,7 @@ export class SecurityScanner {
                 vulnerabilities.push(...fileVulns);
                 scannedFiles++;
             } catch (error) {
-                console.warn(`Failed to scan file ${filePath}:`, error.message);
+                console.warn(`Failed to scan file ${filePath}:`, (error as Error).message);
             }
         }
 

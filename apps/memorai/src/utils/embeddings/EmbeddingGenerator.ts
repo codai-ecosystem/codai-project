@@ -31,10 +31,10 @@ export class EmbeddingGenerator {
 
     constructor(config: EmbeddingConfig = { provider: 'local' }) {
         this.config = {
-            provider: 'local',
-            model: 'all-MiniLM-L6-v2',
-            dimensions: 384,
-            ...config
+            ...config,
+            provider: config.provider || 'local',
+            model: config.model || 'all-MiniLM-L6-v2',
+            dimensions: config.dimensions || 384
         };
     }
 
@@ -399,7 +399,7 @@ export class EmbeddingGenerator {
         const commonTerms = new Set<string>();
         similar.forEach(result => {
             const words = result.memory.content.toLowerCase().split(/\s+/);
-            words.forEach(word => {
+            words.forEach((word: string) => {
                 if (word.length > 3 && !query.toLowerCase().includes(word)) {
                     commonTerms.add(word);
                 }

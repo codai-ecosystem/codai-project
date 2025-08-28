@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { Memory } from '@/types/memory';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -16,6 +17,10 @@ interface MemoryEditorProps {
 }
 
 export default function MemoryEditor({ memory, isCreating, onSave, onCancel }: MemoryEditorProps) {
+    const tCreate = useTranslations('memories.create');
+    const tEdit = useTranslations('memories.edit');
+    const tCommon = useTranslations('common');
+    
     const [formData, setFormData] = useState({
         content: memory?.content || '',
         category: memory?.category || 'general',
@@ -212,7 +217,7 @@ export default function MemoryEditor({ memory, isCreating, onSave, onCancel }: M
                                 loading={isLoading}
                             >
                                 <Save className="h-4 w-4 mr-2" />
-                                {memory ? 'Update Memory' : 'Create Memory'}
+                                {memory ? tEdit('actions.update') : tCreate('actions.create')}
                             </Button>
                         </div>
                     </form>

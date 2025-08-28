@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslations } from 'next-intl';
 /**
  * MemorAI - Intelligent Memory Management Platform
  * Full-featured memory management with AI-powered search, analytics, 
@@ -102,6 +103,9 @@ interface MemoryAnalytics {
 }
 
 export default function MemorAIPlatform() {
+  const t = useTranslations('memories.page');
+  const tCommon = useTranslations('common');
+  
   const { authState, logout, hasRole, isAdmin } = useAuth();
   const { user, isAuthenticated, isLoading } = authState;
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -384,7 +388,7 @@ export default function MemorAIPlatform() {
                   className="flex items-center space-x-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors"
                 >
                   <Plus className="h-5 w-5" />
-                  <span>Create Memory</span>
+                  <span>{t('actions.createMemory')}</span>
                 </button>
               </div>
               <p className="text-gray-600">Your intelligent memory dashboard with AI-powered insights and analytics</p>

@@ -679,10 +679,8 @@ export class MemorAIMCPClient {
                     // Import the memory
                     await this.addMemory(
                         memory.content,
-                        memory.importance || 5,
                         agentId,
-                        memory.project,
-                        memory.tags
+                        { project: memory.project, tags: memory.tags, importance: memory.importance || 5 }
                     );
                     imported++;
                 } catch (error) {

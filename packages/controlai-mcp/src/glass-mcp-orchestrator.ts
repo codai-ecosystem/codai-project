@@ -50,6 +50,13 @@ import type {
     LearningContext
 } from './intelligence/intelligence-types.js';
 import type {
+    DecisionResult,
+    IntelligenceContext
+} from './automation/intelligence-adapters.js';
+import type {
+    AutomationTask
+} from './automation/automation-types.js';
+import type {
     DrawingContext,
     DrawingCommand,
     PathOptimization

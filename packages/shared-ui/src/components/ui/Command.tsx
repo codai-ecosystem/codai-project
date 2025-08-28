@@ -480,7 +480,7 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({
                         {loading ? (
                             <div className="py-6 text-center">
                                 <div className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-r-transparent" />
-                                <span className="ml-2 text-sm text-slate-500">Loading...</span>
+                                <span className="ml-2 text-sm text-slate-500">{loadingMessage}</span>
                             </div>
                         ) : (
                             <>
@@ -565,6 +565,7 @@ export interface SearchCommandProps {
     items?: CommandItemData[];
     onItemSelect?: (item: CommandItemData) => void;
     loading?: boolean;
+    loadingMessage?: string;
     className?: string;
 }
 
@@ -574,6 +575,7 @@ const SearchCommand: React.FC<SearchCommandProps> = ({
     items = [],
     onItemSelect,
     loading = false,
+    loadingMessage = "Loading...",
     className,
 }) => {
     const [search, setSearch] = React.useState("");

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { useCreateMemory } from '@/lib/api'
 import { useAgentId } from '@/lib/hooks/useSession'
-import { useToast } from '@/lib/providers/toast.provider'
+import { useToast } from '@/components/ui/use-toast'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -21,9 +21,10 @@ interface CreateMemoryFormProps {
 
 export function CreateMemoryForm({ onSuccess, onCancel }: CreateMemoryFormProps) {
   const t = useTranslations('memories.create')
-  const vt = useTranslations('memories.create.validation')  // Add validation translations
+  const tValidation = useTranslations('validation')
+  const tCommon = useTranslations('common')
   const agentId = useAgentId()
-  const { showToast } = useToast()
+  const { toast: showToast } = useToast()
   const createMemoryMutation = useCreateMemory()
   
   const [formData, setFormData] = useState<CreateMemory>({
@@ -44,14 +45,14 @@ export function CreateMemoryForm({ onSuccess, onCancel }: CreateMemoryFormProps)
     const newErrors: Record<string, string> = {}
     
     if (!formData.content.trim()) {
-      newErrors['content'] = vt('contentRequired')
+      newErrors['content'] = tValidation('required')
     } else if (formData.content.trim().length < 10) {
-      newErrors['content'] = vt('contentMinLength')
+      newErrors['content'] = tValidation('minLength', { min: 10 })
     }
 
     const importance = formData.metadata?.importance || 5
     if (importance < 1 || importance > 10) {
-      newErrors['importance'] = vt('importanceRange')
+      newErrors['importance'] = tValidation('number')
     }
     
     // Debug logging for tests
@@ -60,7 +61,7 @@ export function CreateMemoryForm({ onSuccess, onCancel }: CreateMemoryFormProps)
       contentTrimmed: formData.content.trim(),
       hasContentError: !formData.content.trim(),
       newErrors: newErrors,
-      contentRequiredText: vt('contentRequired')
+      contentRequiredText: tValidation('required')
     })
     
     setErrors(newErrors)
@@ -92,9 +93,18 @@ export function CreateMemoryForm({ onSuccess, onCancel }: CreateMemoryFormProps)
       
       // Clear errors on successful submission
       setErrors({})
+      showToast({ 
+        title: 'Success',
+        description: t('fields.content.label') + ' created successfully'
+      })
       onSuccess?.(memory)
     } catch (error) {
       console.error('Failed to create memory:', error)
+      showToast({ 
+        title: 'Error',
+        description: t('errors.createFailed'),
+        variant: 'destructive'
+      })
     }
   }
 
@@ -104,7 +114,7 @@ export function CreateMemoryForm({ onSuccess, onCancel }: CreateMemoryFormProps)
     const trimmedTag = tag.trim().toLowerCase()
     
     if (formData.metadata.tags?.includes(trimmedTag)) {
-      setErrors(prev => ({ ...prev, tagExists: vt('tagExists') }))
+      setErrors(prev => ({ ...prev, tagExists: tValidation('pattern') }))
       return
     }
     
@@ -222,7 +232,7 @@ export function CreateMemoryForm({ onSuccess, onCancel }: CreateMemoryFormProps)
                     <button
                       type="button"
                       onClick={() => removeTag(tag)}
-                      aria-label={`Remove tag ${tag}`}
+                      aria-label={`${tCommon('delete')} ${tag}`}
                       className={cn(
                         "ml-1 hover:bg-muted rounded-full p-0.5 flex-shrink-0",
                         touchTargets.iconButton
@@ -249,7 +259,7 @@ export function CreateMemoryForm({ onSuccess, onCancel }: CreateMemoryFormProps)
                   size="sm"
                   onClick={() => addTag(tagInput)}
                   disabled={!tagInput.trim() || createMemoryMutation.isPending}
-                  aria-label="Add tag"
+                  aria-label={`${tCommon('create')} tag`}
                   className={cn(
                     "w-full sm:w-auto",
                     touchTargets.button
@@ -383,4 +393,4 @@ export function CreateMemoryForm({ onSuccess, onCancel }: CreateMemoryFormProps)
   )
 }
 
-export default CreateMemoryForm;
+export default CreateMemoryForm

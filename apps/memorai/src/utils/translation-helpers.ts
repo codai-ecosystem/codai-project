@@ -97,7 +97,7 @@ export const hasTranslation = (
   namespace?: string
 ): boolean => {
   try {
-    const translation = t(key, { ns: namespace, fallbackLng: false });
+    const translation = t(key, { ns: namespace });
     return translation !== key;
   } catch {
     return false;
@@ -221,7 +221,7 @@ export const formatCurrencyWithLocale = (
   locale: string,
   currency?: string
 ): string => {
-  const localeConfig = SUPPORTED_LOCALES[locale];
+  const localeConfig = (SUPPORTED_LOCALES as any)[locale];
   if (!localeConfig) {
     return amount.toString();
   }
@@ -240,7 +240,7 @@ export const formatDateWithLocale = (
   locale: string,
   options?: Intl.DateTimeFormatOptions
 ): string => {
-  const localeConfig = SUPPORTED_LOCALES[locale];
+  const localeConfig = (SUPPORTED_LOCALES as any)[locale];
   if (!localeConfig) {
     return new Date(date).toLocaleDateString();
   }

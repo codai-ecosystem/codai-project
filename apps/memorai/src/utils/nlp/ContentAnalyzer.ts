@@ -28,9 +28,9 @@ export interface CategorizationRules {
 }
 
 export class ContentAnalyzer {
-    private rules: CategorizationRules;
-    private stopWords: Set<string>;
-    private techTerms: Map<string, { category: string; importance: number }>;
+    private rules!: CategorizationRules;
+    private stopWords!: Set<string>;
+    private techTerms!: Map<string, { category: string; importance: number }>;
 
     constructor() {
         this.initializeStopWords();

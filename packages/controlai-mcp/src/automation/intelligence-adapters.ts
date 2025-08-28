@@ -30,6 +30,19 @@ export interface DecisionResult {
 }
 
 /**
+ * Intelligence context interface for enhanced decision making
+ */
+export interface IntelligenceContext {
+  sessionId: string;
+  timestamp: Date;
+  userIntent?: string;
+  screenState?: any;
+  applicationState?: any;
+  previousActions?: any[];
+  metadata: Record<string, any>;
+}
+
+/**
  * Learning feedback interface
  */
 export interface LearningFeedback {

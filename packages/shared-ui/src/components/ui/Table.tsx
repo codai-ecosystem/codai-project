@@ -181,6 +181,7 @@ export interface TableProps<T = unknown>
     onRowClick?: (row: T) => void;
     onSelectionChange?: (selectedRows: T[]) => void;
     loading?: boolean;
+    loadingMessage?: string;
     emptyMessage?: string;
 }
 
@@ -321,6 +322,7 @@ const Table = React.forwardRef<HTMLTableElement, TableProps>(
             onRowClick,
             onSelectionChange,
             loading = false,
+            loadingMessage = "Loading...",
             emptyMessage = "No data available",
             ...props
         },
@@ -470,7 +472,7 @@ const Table = React.forwardRef<HTMLTableElement, TableProps>(
                                         <TableCell colSpan={columns.length + (enableRowSelection ? 1 : 0)} className="h-24 text-center">
                                             <div className="flex items-center justify-center">
                                                 <div className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-r-transparent mr-2" />
-                                                Loading...
+                                                {loadingMessage}
                                             </div>
                                         </TableCell>
                                     </TableRow>

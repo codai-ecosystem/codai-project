@@ -14,6 +14,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -106,6 +107,9 @@ interface TeamMember {
 const COLORS = ['#3b82f6', '#8b5cf6', '#06d6a0', '#f59e0b', '#ef4444', '#10b981', '#f97316'];
 
 export default function TeamWorkspacesDashboard(): React.JSX.Element {
+  const t = useTranslations('memories.page');
+  const tCommon = useTranslations('common');
+  
   // State management
   const [workspaces, setWorkspaces] = useState<TeamWorkspace[]>([]);
   const [selectedWorkspace, setSelectedWorkspace] = useState<TeamWorkspace | null>(null);
@@ -537,7 +541,7 @@ export default function TeamWorkspacesDashboard(): React.JSX.Element {
                   <Card className="hover:shadow-md transition-shadow cursor-pointer">
                     <CardContent className="p-4 text-center">
                       <Plus className="h-8 w-8 mx-auto mb-2 text-green-500" />
-                      <div className="text-sm font-medium">Create Memory</div>
+                      <div className="text-sm font-medium">{t('actions.createMemory')}</div>
                       <div className="text-xs text-gray-500">Add new memory</div>
                     </CardContent>
                   </Card>

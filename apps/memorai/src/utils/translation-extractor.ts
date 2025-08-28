@@ -64,7 +64,7 @@ export class TranslationExtractor {
         const keys = await this.extractFromFile(file);
         allKeys.push(...keys);
       } catch (error) {
-        console.warn(`Warning: Could not extract keys from ${file}:`, error.message);
+        console.warn(`Warning: Could not extract keys from ${file}:`, (error as Error).message);
       }
     }
 

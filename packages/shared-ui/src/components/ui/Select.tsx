@@ -76,6 +76,7 @@ export interface SelectProps
     searchable?: boolean;
     clearable?: boolean;
     loading?: boolean;
+    loadingMessage?: string;
     emptyMessage?: string;
 }
 
@@ -97,6 +98,7 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
             searchable = false,
             clearable = false,
             loading = false,
+            loadingMessage = "Loading...",
             emptyMessage = "No options found",
             disabled,
             ...props
@@ -228,7 +230,7 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
                             )}
                             <div className="max-h-60 overflow-auto p-1">
                                 {loading ? (
-                                    <div className="p-2 text-sm text-center text-slate-500">Loading...</div>
+                                    <div className="p-2 text-sm text-center text-slate-500">{loadingMessage}</div>
                                 ) : filteredOptions.length === 0 ? (
                                     <div className="p-2 text-sm text-center text-slate-500">{emptyMessage}</div>
                                 ) : (

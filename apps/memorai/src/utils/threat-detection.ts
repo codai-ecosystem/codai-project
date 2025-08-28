@@ -290,7 +290,7 @@ export class ThreatDetectionEngine {
 
     private checkIPPattern(pattern: string, ip: string): any {
         // Check against known malicious IP lists, IP ranges, etc.
-        const maliciousIPs = [
+        const maliciousIPs: string[] = [
             // Add known malicious IPs or IP ranges
         ];
 
@@ -416,13 +416,13 @@ export class ThreatDetectionEngine {
     }
 
     private findCommonElements(arr: any[]): any[] {
-        const counts = {};
+        const counts: Record<string, number> = {};
         arr.forEach(item => {
             counts[item] = (counts[item] || 0) + 1;
         });
 
         return Object.entries(counts)
-            .filter(([, count]) => count >= arr.length * 0.1) // 10% threshold
+            .filter(([, count]) => (count as number) >= arr.length * 0.1) // 10% threshold
             .map(([item]) => item);
     }
 }

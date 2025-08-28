@@ -60,6 +60,29 @@ vi.mock('@/lib/api', () => ({
   })
 }))
 
+// Mock session hooks
+vi.mock('@/lib/hooks/useSession', () => ({
+  useAgentId: () => 'test-agent-id',
+  useSessionContext: () => ({
+    data: {
+      user: {
+        id: 'test-user-id',
+        email: 'test@example.com',
+        name: 'Test User'
+      }
+    },
+    status: 'authenticated'
+  })
+}))
+
+// Mock toast provider
+const mockShowToast = vi.fn()
+vi.mock('@/lib/providers/toast.provider', () => ({
+  useToast: () => ({
+    showToast: mockShowToast
+  })
+}))
+
 describe('CreateMemoryForm', () => {
   const defaultProps = {
     onSuccess: vi.fn(),
@@ -69,6 +92,7 @@ describe('CreateMemoryForm', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mockMutateAsync.mockResolvedValue({ id: 'test-id', content: 'test memory' })
+    mockShowToast.mockClear()
   })
 
   describe('Rendering', () => {
@@ -290,7 +314,7 @@ describe('CreateMemoryForm', () => {
       
       await waitFor(() => {
         expect(mockMutateAsync).toHaveBeenCalledWith({
-          agentId: 'default-agent',
+          agentId: 'test-agent-id',
           content: 'This is a test memory content',
           metadata: {
             importance: 7,
